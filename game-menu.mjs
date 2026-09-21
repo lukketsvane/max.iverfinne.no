@@ -1,13 +1,15 @@
+import { pixelText } from './pixel-text.mjs';
 import { createClient } from '@supabase/supabase-js';
-import { credentials, playerName, captureSnapshot, restoreSnapshot, snapshotSummary, accountError, CloudSlot } from './player-account.mjs';
+import { credentials, playerName, accountError } from './player-account.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
 const client = config.publishableKey ? createClient(config.url, config.publishableKey, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, storageKey: 'max-player-session-v1' },
 }) : null;
-let game, overlay, card, pause, user = null, slot = null, busy = false, opened = false, screen = 'home';
+let game, overlay, card, user = null, busy = false, opened = false, screen = 'home';
 let sessionReady = !client;
-let status, saveButton, loadButton, cloudText;
+let status, scenery;
+let sceneFrame = 0, sceneStarted = 0;
 
 function el(tag, text, className) {
   const n = document.createElement(tag);
@@ -23,7 +25,7 @@ function message(text, error = false) {
   status.textContent = text; status.dataset.error = String(error);
 }
 function page(name, title) {
-  screen = name; card.replaceChildren();
+  screen = name; overlay.dataset.screen = name; card.replaceChildren();
   card.append(el('p', 'MAX / THE WILD GARDEN', 'max-menu-kicker'));
   const h = el('h2', title); h.id = 'max-menu-title'; h.tabIndex = -1; card.append(h);
   status = el('p', '', 'max-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
@@ -32,36 +34,72 @@ function page(name, title) {
 function back() { card.append(button('Back', home, 'subtle')); }
 function home() {
   page('home', 'MAX');
-  const oldTitle = card.querySelector('h2');
-  const title = el('h1', 'MAX'); title.id = oldTitle.id; title.tabIndex = -1; oldTitle.replaceWith(title);
+  card.replaceChildren();
+  const title = pixelText(el('h1'), 'MAX', 12, 2); title.id = 'max-menu-title'; title.tabIndex = -1;
+  const nav = el('nav', undefined, 'max-home-nav'); nav.setAttribute('aria-label', 'Main menu');
+  const icons = {
+    play: '<path d="M7 0h2v4H7zM7 12h2v4H7zM0 7h4v2H0zM12 7h4v2h-4zM2 2h3v3H2zM11 2h3v3h-3zM2 11h3v3H2zM11 11h3v3h-3zM5 5h6v6H5z"/>',
+    garden: '<path d="M7 1h2v4h2v3h2v6h-2v2H5v-2H3V8h2V5h2z"/>',
+    settings: '<path d="M7 0h2v16H7zM3 3h4v3H3zM9 7h4v3H9zM4 11h3v3H4z"/>',
+    credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
+  };
+  for (const [label, action, icon] of [['Play', close, 'play'], ['Garden', garden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
+    const b = button('', action, 'max-home-button max-icon-' + icon);
+    b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
+    pixelText(b, label, icon === 'play' ? 4 : 2, 2); nav.append(b);
+  }
+  card.append(title, nav);
   queueMicrotask(() => { if (opened && screen === 'home') title.focus({ preventScroll: true }); });
-  const info = game.summary();
-  card.append(el('p', 'One seed. A wild garden. How far will you grow?'));
-  card.append(button(info.ended ? 'See your garden' : info.started ? 'Continue run' : 'Start growing', close, 'primary'));
-  if (info.started || info.ended) card.append(button('New run', () => confirm('Start a new garden?', 'This ends the run on this device. Your personal bests are kept.', 'Start new run', () => { game.newRun(); close(); })));
-  card.append(button(user ? `Account · ${playerName(user)}` : 'Sign in / create account', account));
-  card.append(button('How to play', help, 'subtle'));
-  card.append(el('p', user ? `Signed in as ${playerName(user)}. Open Account to save or load your garden.` : 'Your game is saved on this device. An account is optional.', 'max-menu-foot'));
 }
-function help() {
-  page('help', 'Grow. Defend. Climb.');
-  const rows = [
-    ['YOUR COMPANION', 'Your little robot follows you and waters thirsty plants. Tap it, or press R nearby, then stand still while its tank refills. Upgrade it twice during a run for a bigger tank and more reach.'],
-    ['FIND SEEDS', 'Walk to glowing seeds. Plant, water and protect your garden from pests.'],
-    ['TOUCH CONTROLS', 'Hold and drag on the ground to walk. Swipe up to jump. Hold a plant to water it; tap a ripe plant to harvest. Hold empty soil to plant.'],
-    ['KEYBOARD', 'Arrows / WASD: move and jump. Shift: run. E: plant, water or climb. B: bomb. L: lantern. R: refill robot. Escape: pause.'],
-    ['MAKE YOUR BUILD', 'Choose faster growth, better defence, bigger blasts or a robot upgrade. Climb a tall beanstalk to reach the next world.'],
-  ];
-  for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
+function garden() {
+  page('garden', 'Your garden');
+  const records = game.records?.() || { runs: 0, world: 0, plants: 0 };
+  card.append(el('p', records.runs ? 'Best: world ' + records.world + ' · ' + records.plants + ' plants' : 'Your first garden awaits.'), button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
   back();
 }
-function confirm(title, text, label, action, cancel = home) {
-  page('confirm', title); card.append(el('p', text), button(label, action, 'primary'), button('Cancel', cancel, 'subtle'));
+function settings() {
+  page('settings', 'Settings');
+  const enabled = game.soundEnabled?.() !== false;
+  const sound = button('Sound ' + (enabled ? 'on' : 'off'), () => { game.setSoundEnabled?.(!enabled); settings(); });
+  sound.setAttribute('aria-pressed', String(enabled));
+  card.append(sound, button('Controls', help));
+  back();
+}
+function help() {
+  page('help', 'Controls');
+  const rows = [
+    ['MOVE', 'Drag left / right.'],
+    ['JUMP', 'Swipe up.'],
+    ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
+    ['DEFEND', 'Tap a pest.'],
+    ['ROBOT', 'Tap your robot nearby to refill.'],
+    ['KEYBOARD', '← → move · ↑ jump · ↓ / Space grow · B defend · R refill'],
+  ];
+  for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
+  card.append(button('Back', settings, 'subtle'));
+}
+function credits() {
+  page('credits', 'MAX');
+  card.append(el('p', 'A little night garden.'), el('p', 'Original pixel art, plants and companions from the MAX collection.'));
+  back();
+}
+function drawScenery(now) {
+  if (!opened) return;
+  const w = window.innerWidth, h = window.innerHeight, dpr = window.devicePixelRatio || 1;
+  const scale = Math.max(2, Math.round(Math.min(w, h) * dpr / 150));
+  scenery.width = Math.ceil(w * dpr / scale); scenery.height = Math.ceil(h * dpr / scale);
+  const ready = game.drawMenuScene?.(scenery);
+  // Redraw while the original atlases load; no perpetual animation on a paused phone.
+  if (!ready && now - sceneStarted < 10000) sceneFrame = requestAnimationFrame(drawScenery);
+}
+function refreshScenery() {
+  cancelAnimationFrame(sceneFrame); sceneStarted = performance.now();
+  if (opened && game.drawMenuScene) drawScenery(sceneStarted);
 }
 function login(create = false) {
   if (user) { account(); return; }
-  page('login', create ? 'Create an account' : 'Welcome back');
-  card.append(el('p', create ? 'Just a username and password. No email or confirmation.' : 'Use the same account on your phone and computer.'));
+  page('login', create ? 'Create account' : 'Sign in');
+  card.append(el('p', create ? 'Just a username and password. No email or confirmation.' : 'Username and password.'));
   const form = el('form');
   const nameLabel = el('label', 'Username');
   const name = el('input'); Object.assign(name, { name: 'username', required: true, minLength: 3, maxLength: 24, autocomplete: 'username', autocapitalize: 'none', spellcheck: false });
@@ -91,89 +129,38 @@ function login(create = false) {
   card.append(button(create ? 'Already have an account? Sign in' : 'New player? Create account', () => { if (!busy) login(!create); }, 'subtle'));
   back();
 }
-function setUser(next) {
-  if (next?.id !== user?.id) { slot?.invalidate(); slot = next ? new CloudSlot(client, next.id) : null; }
-  user = next;
-}
-function renderCloud(current) {
-  if (screen !== 'account' || slot !== current) return;
-  cloudText.textContent = current.row ? `${snapshotSummary(current.row.snapshot)}. Saved ${new Date(current.row.updated_at).toLocaleString('en-GB')}.` : 'No garden saved to this account yet.';
-  saveButton.disabled = current.revision === null || busy;
-  loadButton.disabled = !current.row || busy;
-}
-async function refreshCloud() {
-  const current = slot;
-  if (!current || busy) return;
-  busy = true; renderCloud(current); message('Checking cloud save …');
-  try { await current.read(); if (slot === current && screen === 'account') message(''); }
-  catch (error) { if (slot === current && screen === 'account') message(accountError(error), true); }
-  finally { busy = false; renderCloud(current); }
-}
-async function saveCloud(current) {
-  if (busy || slot !== current) return;
-  page('account', `Hello, ${playerName(user)}`);
-  card.append(status); busy = true; message('Saving your garden …');
-  try {
-    if (!game.checkpoint()) throw new Error('storage');
-    await current.save(captureSnapshot(localStorage));
-    if (slot === current) { busy = false; account(false); message('Your garden is saved to your account.'); }
-  } catch (error) { if (slot === current) { busy = false; account(false); message(accountError(error), true); } }
-  finally { busy = false; }
-}
-function account(refresh = true) {
-  if (!sessionReady) { page('account', 'Account'); card.append(el('p', 'Restoring your session …')); back(); return; }
-  if (!client) { page('account', 'Accounts are coming soon'); card.append(el('p', 'You can play as a guest. Your garden is saved on this device.')); back(); return; }
+function setUser(next) { user = next; }
+function account() {
+  if (!sessionReady) { page('account', 'Account'); card.append(el('p', 'Connecting…')); back(); return; }
+  if (!client) { page('account', 'Guest'); card.append(el('p', 'Play without an account.')); back(); return; }
   if (!user) { login(); return; }
-  const current = slot;
-  page('account', `Hello, ${playerName(user)}`);
-  card.append(el('p', 'This browser remembers you. Choose when to save or load your garden across devices.'));
-  const cloud = el('div', undefined, 'max-cloud'); cloudText = el('p', 'Checking cloud save …'); cloud.append(cloudText); card.append(cloud);
-  saveButton = button('Save garden to account', () => {
-    if (busy) return;
-    if (current.row) confirm('Replace the cloud save?', 'The garden on this device will replace the account save.', 'Save this garden', () => saveCloud(current), () => account(false));
-    else saveCloud(current);
-  }, 'primary');
-  loadButton = button('Load garden from account', () => {
-    if (busy || !current.row) return;
-    confirm('Load this garden?', `${snapshotSummary(current.row.snapshot)}. This replaces the game on this device. A local backup is made first.`, 'Load garden', () => {
-      try {
-        if (slot !== current || !current.active) return;
-        if (!game.checkpoint()) throw new Error('storage');
-        restoreSnapshot(localStorage, current.row.snapshot);
-        // No checkpoint may run after import and overwrite the restored game.
-        game.prepareReload(); location.reload();
-      } catch (error) { account(false); message(error.message || accountError(error), true); }
-    }, () => account(false));
-  });
-  card.append(saveButton, loadButton, button('Refresh save status', refreshCloud, 'subtle'), status);
+  page('account', playerName(user));
   card.append(button('Sign out', async () => {
     if (busy) return;
     busy = true;
     try { const { error } = await client.auth.signOut({ scope: 'local' }); if (error) throw error; setUser(null); home(); }
     catch (error) { message(accountError(error), true); }
     finally { busy = false; }
-  }, 'subtle'));
-  back(); renderCloud(current);
-  if (refresh) refreshCloud();
+  }, 'subtle'), status);
+  back();
 }
 function open() {
-  if (opened || !game) return;
-  opened = true; game.pause(true); overlay.hidden = false; pause.hidden = true; home();
+  if (opened || !game || game.canOpenMenu?.() === false) return;
+  opened = true; game.pause(true); overlay.hidden = false; home(); refreshScenery();
 }
 function close() {
-  opened = false; overlay.hidden = true; pause.hidden = false; pause.focus({ preventScroll: true }); game.pause(false);
+  opened = false; cancelAnimationFrame(sceneFrame); overlay.hidden = true; game.beginRun(); game.pause(false);
 }
 function attach(bridge) {
   if (game) return;
   game = bridge;
-  pause = button('', open, 'max-pause'); pause.setAttribute('aria-label', 'Pause and menu');
-  // Static, trusted icon markup only. All account and save data uses textContent.
-  pause.innerHTML = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 3h3v12H4zM11 3h3v12h-3z"/></svg>';
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
-  card = el('div', undefined, 'max-menu-card'); overlay.append(card);
+  scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
+  card = el('div', undefined, 'max-menu-card'); overlay.append(scenery, card);
+  window.addEventListener('resize', refreshScenery);
   overlay.addEventListener('keydown', event => {
     event.stopPropagation();
-    if (event.key === 'Escape') { event.preventDefault(); if (!busy) screen === 'home' ? close() : home(); }
+    if (event.key === 'Escape') { event.preventDefault(); if (!busy) screen !== 'home' && home(); }
     if (event.key !== 'Tab') return;
     const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled)')].filter(n => n.getClientRects().length);
     if (!controls.length) return;
@@ -182,10 +169,7 @@ function attach(bridge) {
     else if (!event.shiftKey && (i === -1 || i === controls.length - 1)) { event.preventDefault(); controls[0].focus(); }
   });
   overlay.addEventListener('keyup', e => e.stopPropagation());
-  document.body.append(pause, overlay);
-  window.addEventListener('keydown', event => { if (event.key === 'Escape' && !opened) { event.preventDefault(); open(); } });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) open(); });
-  // Keep the icon behind existing mutation/result dialogs; Escape can still pause.
+  document.body.append(overlay);
   open();
 }
 window.MaxGameMenu = { attach, open };

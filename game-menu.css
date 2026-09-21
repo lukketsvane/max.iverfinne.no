@@ -30,3 +30,23 @@
 @media(max-width:430px){.max-menu{padding:18px;align-items:safe center}.max-menu-card{padding:25px}.max-menu h1{font-size:58px}}
 @media(max-height:600px){.max-menu{align-items:flex-start;padding-top:14px}.max-menu-card{padding:22px}.max-menu h1{font-size:44px}.max-menu p{margin-bottom:14px}}
 @media(prefers-reduced-motion:no-preference){.max-menu-card{animation:max-menu-in .18s ease-out}@keyframes max-menu-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+/* Open night scene: the garden is the menu. */
+.max-menu{background:#080d1c;isolation:isolate;padding:max(22px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));justify-content:center}
+.max-menu-scene{position:fixed;inset:0;width:100%;height:100%;z-index:-2;image-rendering:pixelated;pointer-events:none}
+.max-menu-card{background:#0b131dea;border-color:#64726c;box-shadow:0 12px 60px #0006;max-height:calc(100dvh - 48px);overflow:auto}
+.max-menu[data-screen="home"]{padding:0;overflow:hidden}
+.max-menu[data-screen="home"] .max-menu-card{position:absolute;inset:0;width:100%;height:100%;max-height:none;padding:0;border:0;box-shadow:none;border-radius:0;background:transparent;overflow:visible;animation:none}
+.max-menu h1{position:absolute;top:max(8%,env(safe-area-inset-top));left:50%;transform:translateX(-50%);margin:0;text-shadow:none;letter-spacing:.12em;color:#eeeed9;font-size:80px}
+.max-menu h1 .pixel-label{width:min(29vw,264px)!important;height:auto!important;max-width:none}
+.max-home-nav{position:absolute;left:50%;top:37%;transform:translateX(-50%);width:226px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.max-menu .max-home-button{display:flex;align-items:center;justify-content:center;gap:22px;min-height:52px;width:196px;padding:14px 18px;border:1px solid #6b796c99;border-radius:7px;background:#071018e8;box-shadow:inset 0 0 0 2px #ffffff04,0 4px 10px #0002;margin:0;font-size:13px;letter-spacing:.2em}
+.max-menu .max-home-button svg{width:18px;height:18px;flex:none;fill:currentColor}
+.max-menu .max-icon-play{width:226px;min-height:66px;color:#e6cc78}
+.max-menu .max-icon-play svg{width:26px;height:26px}
+.max-icon-garden svg{color:#8bd0e3}.max-icon-settings svg{color:#92a875}.max-icon-credits svg{color:#e1e5d0}
+.max-menu .max-menu-foot{border:0;font-size:10px;text-align:center;margin:16px 0 0;padding:0}
+.max-pause{width:44px;height:44px;border:0;border-radius:8px;background:#080d184a;opacity:.55}
+.max-pause:hover,.max-pause:focus-visible{opacity:1}
+@media(orientation:landscape){.max-menu h1{left:27%;top:12%}.max-menu h1 .pixel-label{width:210px!important}.max-home-nav{left:27%;top:37%;gap:10px}}
+@media(max-height:540px) and (orientation:landscape){.max-menu h1{top:9%}.max-menu h1 .pixel-label{width:150px!important}.max-home-nav{top:31%;gap:8px}.max-menu .max-home-button{min-height:42px;padding:10px 16px}.max-menu .max-icon-play{min-height:50px}.max-menu-card{padding:20px}}
+@media(max-width:430px) and (orientation:portrait){.max-menu h1 .pixel-label{width:130px!important}.max-home-nav{width:204px;top:36%;gap:10px}.max-menu .max-home-button{width:180px;min-height:46px}.max-menu .max-icon-play{width:204px;min-height:58px}}

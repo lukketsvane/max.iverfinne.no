@@ -30,4 +30,11 @@ buildSync({
   define: { __MAX_SUPABASE_CONFIG__: JSON.stringify(config) },
 });
 
+// The isolated visual fixture has no connected account client.
+buildSync({
+  entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu-review.js'),
+  bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],
+  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify({ ...config, publishableKey: '' }) },
+});
+
 console.log(`Built game in dist/. Accounts: ${config.publishableKey ? 'configured' : 'guest mode (publishable key missing)'}.`);
