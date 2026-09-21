@@ -1,197 +1,143 @@
 (function () {
   'use strict';
-
-  var PAGE_SIZE = 12;
-  var panel, title, subtitle, outcome, gallery, empty, previous, next, pageLabel;
-  var record, recordText, retry, menuButton, details, run, page = 0, previousFocus;
-  var visiblePlants = [];
-
-  function element(tag, className, text) {
-    var node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text !== undefined) node.textContent = text;
-    return node;
+  var PAGE_SIZE = 24;
+  var panel, title, subtitle, scene, bouquet, collection, gallery, previous, next, pageLabel;
+  var recordText, details, retry, recordsButton, menuButton, empty, run, page = 0, previousFocus;
+  var visiblePlants = [], labels = [], font = new Image();
+  font.onload = function () { labels.forEach(paintLabel); layout(); };
+  font.src = 'assets/results-native/sprites/font-5x7.png';
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
+  function count(n, fallback) { return typeof n === 'number' && Number.isFinite(n) ? Math.max(0, Math.floor(n)) : fallback; }
+  function paintLabel(entry) {
+    if (!font.complete || !font.naturalWidth) return;
+    var c = entry.canvas, x = c.getContext('2d'); if (!x) return;
+    x.clearRect(0, 0, c.width, c.height); x.imageSmoothingEnabled = false;
+    for (var i = 0; i < entry.text.length; i++) {
+      var code = entry.text.charCodeAt(i) - 32;
+      if (code >= 0 && code < 64) x.drawImage(font, code % 16 * 6, Math.floor(code / 16) * 8, 5, 7, i * 6, 0, 5, 7);
+    }
+    entry.node.classList.add('pixel-ready');
   }
-
-  function count(value, fallback) {
-    return typeof value === 'number' && Number.isFinite(value)
-      ? Math.max(0, Math.floor(value)) : fallback;
+  function label(node, text) {
+    var c = el('canvas', 'pixel-label'); c.width = text.length * 6 - 1; c.height = 7; c.setAttribute('aria-hidden', 'true');
+    node.append(c, el('span', 'pixel-copy', text));
+    var entry = { node: node, canvas: c, text: text }; labels.push(entry); paintLabel(entry);
+    return entry;
   }
-
-  function plantCount(value) {
-    return value === 1 ? '1 plante' : value + ' plantar';
+  function button(text, cls, action) {
+    var b = el('button', cls); b.type = 'button'; b.setAttribute('aria-label', text); label(b, text.toUpperCase()); b.addEventListener('click', action); return b;
   }
-
   function create() {
     if (panel) return;
-    panel = element('section', 'run-results');
-    panel.id = 'runResults';
-    panel.hidden = true;
-    panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-modal', 'true');
-    panel.setAttribute('aria-labelledby', 'runResultsTitle');
-    panel.setAttribute('aria-describedby', 'runResultsSubtitle');
-
-    var card = element('div', 'run-results-card');
-    var header = element('header', 'run-results-header');
-    outcome = element('p', 'run-results-outcome');
-    title = element('h1', '', 'Hagen din');
-    title.id = 'runResultsTitle';
-    title.tabIndex = -1;
-    subtitle = element('p', 'run-results-subtitle');
-    subtitle.id = 'runResultsSubtitle';
-    header.append(outcome, title, subtitle);
-
-    gallery = element('ol', 'run-results-garden');
-    gallery.setAttribute('aria-label', 'Alle plantane du dyrka denne runda');
-    empty = element('p', 'run-results-empty', 'Neste hage byrjar med eitt frø.');
-    empty.hidden = true;
-
-    var pagination = element('nav', 'run-results-pages');
-    pagination.setAttribute('aria-label', 'Bla gjennom hagen');
-    previous = element('button', 'run-results-page', 'Førre');
-    previous.type = 'button';
-    previous.setAttribute('aria-label', 'Førre side med plantar');
-    next = element('button', 'run-results-page', 'Neste');
-    next.type = 'button';
-    next.setAttribute('aria-label', 'Neste side med plantar');
-    pageLabel = element('span', 'run-results-page-label');
-    pageLabel.setAttribute('role', 'status');
-    pageLabel.setAttribute('aria-live', 'polite');
-    previous.addEventListener('click', function () { changePage(-1); });
-    next.addEventListener('click', function () { changePage(1); });
-    pagination.append(previous, pageLabel, next);
-
-    details = element('p', 'run-results-details');
-    record = element('details', 'run-results-record');
-    record.appendChild(element('summary', '', 'Beste hage på denne eininga'));
-    recordText = element('p');
-    record.appendChild(recordText);
-    retry = element('button', 'run-results-retry', 'Ny runde');
-    retry.type = 'button';
-    retry.addEventListener('click', function () {
+    panel = el('section', 'run-results'); panel.id = 'runResults'; panel.hidden = true;
+    panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-modal', 'true'); panel.setAttribute('aria-labelledby', 'runResultsTitle');
+    scene = el('canvas', 'run-results-scene'); scene.setAttribute('aria-hidden', 'true'); bouquet = el('canvas');
+    var header = el('header', 'run-results-header');
+    title = el('h1'); title.id = 'runResultsTitle'; title.tabIndex = -1;
+    label(title, 'GAME OVER');
+    subtitle = el('p', 'run-results-subtitle'); label(subtitle, 'WHAT YOU GREW');
+    empty = el('p', 'run-results-empty', 'Your next garden starts with one seed.');
+    header.append(title, subtitle, empty);
+    collection = el('div', 'run-results-collection'); collection.hidden = true;
+    var h = el('h2', '', 'Your garden'); h.tabIndex = -1;
+    details = el('p', 'run-results-details'); recordText = el('p', 'run-results-record');
+    gallery = el('ol', 'run-results-garden'); gallery.setAttribute('aria-label', 'Every plant you grew this run');
+    var back = button('Back to garden', 'run-results-back', function () { showCollection(false); });
+    collection.append(h, details, recordText, gallery, back);
+    var footer = el('footer', 'run-results-footer');
+    var nav = el('nav', 'run-results-pages'); nav.setAttribute('aria-label', 'Browse all bouquets');
+    previous = button('Previous bouquet', 'run-results-page', function () { changePage(-1); });
+    previous.replaceChildren(document.createTextNode('‹'));
+    next = button('Next bouquet', 'run-results-page', function () { changePage(1); }); next.replaceChildren(document.createTextNode('›'));
+    pageLabel = el('span'); pageLabel.setAttribute('role', 'status'); pageLabel.setAttribute('aria-live', 'polite'); nav.append(previous, pageLabel, next);
+    var actions = el('div', 'run-results-actions');
+    retry = button('Play again', 'run-results-retry', function () {
       if (!run || retry.disabled) return;
-      var onRetry = run.onRetry;
-      retry.disabled = true;
-      hide();
-      if (typeof onRetry === 'function') onRetry();
+      var action = run.onRetry; retry.disabled = true; hide(); if (typeof action === 'function') action();
     });
-
-    menuButton = element('button', 'run-results-page', 'Meny');
-    menuButton.type = 'button';
-    menuButton.addEventListener('click', function () { if (run && typeof run.onMenu === 'function') run.onMenu(); });
-    card.append(header, gallery, empty, pagination, details, record, retry, menuButton);
-    panel.appendChild(card);
+    recordsButton = button('Garden records', 'run-results-records', function () { showCollection(collection.hidden); });
+    actions.append(retry, recordsButton); footer.append(nav, actions);
+    menuButton = button('Menu', 'run-results-menu', function () { if (run && run.onMenu) run.onMenu(); });
+    panel.append(scene, header, collection, footer, menuButton);
     panel.addEventListener('keydown', function (event) {
-      // The game also listens for keys. Keep result-screen input in the dialog.
       event.stopPropagation();
+      if (event.key === 'Escape') { event.preventDefault(); if (!collection.hidden) showCollection(false); else if (run.onMenu) run.onMenu(); return; }
       if (event.key !== 'Tab') return;
-      var controls = Array.prototype.slice.call(panel.querySelectorAll('button:not(:disabled), summary'))
-        .filter(function (node) { return node.getClientRects().length > 0; });
-      if (!controls.length) return;
-      var first = controls[0], last = controls[controls.length - 1];
-      var active = document.activeElement;
-      if (event.shiftKey && (active === first || active === title || !panel.contains(active))) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && (active === last || !panel.contains(active))) {
-        event.preventDefault();
-        first.focus();
-      }
+      var controls = Array.from(panel.querySelectorAll('button:not(:disabled)')).filter(function (n) { return n.getClientRects().length; });
+      var i = controls.indexOf(document.activeElement);
+      if (event.shiftKey && i <= 0) { event.preventDefault(); controls[controls.length - 1].focus(); }
+      else if (!event.shiftKey && (i < 0 || i === controls.length - 1)) { event.preventDefault(); controls[0].focus(); }
     });
     panel.addEventListener('keyup', function (event) { event.stopPropagation(); });
-    document.body.appendChild(panel);
+    document.body.appendChild(panel); window.addEventListener('resize', layout);
   }
-
+  function showCollection(show) {
+    collection.hidden = !show; panel.classList.toggle('show-collection', show);
+    recordsButton.setAttribute('aria-expanded', String(show));
+    if (show) { redraw(); collection.scrollTop = 0; collection.querySelector('h2').focus({ preventScroll: true }); }
+    else recordsButton.focus({ preventScroll: true });
+  }
+  function layout() {
+    if (!panel || panel.hidden || !run) return;
+    var dpr = window.devicePixelRatio || 1, w = window.innerWidth, h = window.innerHeight;
+    var scale = Math.max(2, Math.round(Math.min(w * dpr, h * dpr) / 150));
+    scene.width = Math.ceil(w * dpr / scale); scene.height = Math.ceil(h * dpr / scale);
+    scene.style.width = scene.width * scale / dpr + 'px'; scene.style.height = scene.height * scale / dpr + 'px';
+    labels.forEach(function (entry) {
+      var heading = entry.node === title;
+      var desired = heading ? Math.min(w * .76 / entry.canvas.width, 11) : w < 600 ? 2 : 3;
+      var pixel = Math.max(1, Math.floor(desired * dpr)) / dpr;
+      entry.canvas.style.width = entry.canvas.width * pixel + 'px'; entry.canvas.style.height = 7 * pixel + 'px';
+    });
+    redraw();
+  }
   function redraw() {
-    if (!run || !panel || panel.hidden || typeof run.drawPlant !== 'function') return;
-    visiblePlants.forEach(function (entry) {
-      var ctx = entry.canvas.getContext('2d');
-      if (ctx) {
-        ctx.clearRect(0, 0, 64, 80);
-        ctx.imageSmoothingEnabled = false;
-      }
+    if (!run || !panel || panel.hidden) return;
+    if (window.MaxBouquet && typeof run.drawPlant === 'function') {
+      window.MaxBouquet.render(bouquet, run.plants, { drawPlant: run.drawPlant, bundle: page, capacity: PAGE_SIZE });
+      if (run.drawScene) run.drawScene(scene, bouquet);
+    }
+    if (!collection.hidden && run.drawPlant) visiblePlants.forEach(function (entry) {
+      var ctx = entry.canvas.getContext('2d'); if (ctx) { ctx.clearRect(0, 0, 64, 80); ctx.imageSmoothingEnabled = false; }
       run.drawPlant(entry.canvas, entry.plant);
     });
   }
-
   function renderPage() {
-    var plants = run.plants;
-    var start = page * PAGE_SIZE, end = Math.min(start + PAGE_SIZE, plants.length);
-    gallery.replaceChildren();
-    gallery.start = start + 1;
-    visiblePlants = [];
+    var start = page * PAGE_SIZE, end = Math.min(start + PAGE_SIZE, run.plants.length);
+    gallery.replaceChildren(); gallery.start = start + 1; visiblePlants = [];
     for (var i = start; i < end; i++) {
-      var item = element('li', 'run-results-plant');
-      item.setAttribute('aria-label', 'Plante ' + (i + 1));
-      var canvas = element('canvas');
-      canvas.width = 64;
-      canvas.height = 80;
-      canvas.setAttribute('aria-hidden', 'true');
-      item.appendChild(canvas);
-      gallery.appendChild(item);
-      visiblePlants.push({canvas: canvas, plant: plants[i]});
+      var item = el('li', 'run-results-plant'); item.setAttribute('aria-label', 'Plant ' + (i + 1));
+      var c = el('canvas'); c.width = 64; c.height = 80; c.setAttribute('aria-hidden', 'true');
+      item.appendChild(c); gallery.appendChild(item); visiblePlants.push({ canvas: c, plant: run.plants[i] });
     }
-    empty.hidden = plants.length > 0;
-    gallery.hidden = plants.length === 0;
-    previous.parentNode.hidden = plants.length <= PAGE_SIZE;
-    previous.disabled = page === 0;
-    next.disabled = end >= plants.length;
-    pageLabel.textContent = plants.length ? (start + 1) + '–' + end + ' av ' + plants.length : '';
+    empty.hidden = !!run.plants.length;
+    previous.parentNode.hidden = run.plants.length <= PAGE_SIZE;
+    previous.disabled = page === 0; next.disabled = end >= run.plants.length;
+    pageLabel.textContent = 'Bouquet ' + (page + 1) + ' of ' + Math.max(1, Math.ceil(run.plants.length / PAGE_SIZE));
     redraw();
   }
-
   function changePage(direction) {
-    var nextPage = Math.max(0, Math.min(Math.ceil(run.plants.length / PAGE_SIZE) - 1, page + direction));
-    if (nextPage === page) return;
-    page = nextPage;
-    renderPage();
-    // A boundary button becomes disabled; preserve a useful keyboard focus.
+    page = Math.max(0, Math.min(Math.ceil(run.plants.length / PAGE_SIZE) - 1, page + direction)); renderPage();
     if (document.activeElement === next && next.disabled) previous.focus();
-    if (document.activeElement === previous && previous.disabled) next.focus();
+    else if (document.activeElement === previous && previous.disabled) next.focus();
   }
-
   function show(options) {
-    create();
-    options = options || {};
-    run = {
-      plants: Array.isArray(options.plants) ? options.plants.slice() : [],
-      drawPlant: options.drawPlant,
-      onRetry: options.onRetry,
-      onMenu: options.onMenu
-    };
-    page = 0;
-    if (panel.hidden) previousFocus = document.activeElement;
-    var world = count(options.world, 1);
-    outcome.textContent = options.won ? 'Til topps' : 'Runda er over';
-    subtitle.textContent = plantCount(run.plants.length) + ' · verd ' + world;
+    create(); options = options || {};
+    run = { plants: Array.isArray(options.plants) ? options.plants.slice() : [], drawPlant: options.drawPlant, drawScene: options.drawScene, onRetry: options.onRetry, onMenu: options.onMenu };
+    page = 0; if (panel.hidden) previousFocus = document.activeElement;
+    var heading = labels.find(function (entry) { return entry.node === title; }); heading.text = options.won ? 'GARDEN GROWN' : 'GAME OVER'; heading.canvas.width = heading.text.length * 6 - 1;
+    title.querySelector('.pixel-copy').textContent = heading.text; paintLabel(heading);
     var seconds = count(options.seconds, 0);
-    details.textContent = 'Bølgje ' + count(options.wave, 1) + ' · ' +
-      Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
-    var bestPlants = Array.isArray(options.bestPlants) ? options.bestPlants.length : count(options.bestPlants, 0);
-    var bestWorld = count(options.bestWorld, 0);
-    record.hidden = !bestPlants && !bestWorld;
-    record.open = false;
-    recordText.textContent = 'Flest plantar: ' + bestPlants + ' · Lengst: verd ' + Math.max(1, bestWorld);
-    retry.disabled = false;
-    menuButton.hidden = typeof run.onMenu !== 'function';
-    panel.hidden = false;
-    panel.scrollTop = 0;
-    renderPage();
-    title.focus({preventScroll: true});
+    details.textContent = run.plants.length + (run.plants.length === 1 ? ' plant' : ' plants') + ' · World ' + count(options.world, 1) + ' · Wave ' + count(options.wave, 1) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
+    recordText.textContent = 'Personal bests on this device: ' + count(options.bestPlants, 0) + ' plants · World ' + count(options.bestWorld, 1);
+    retry.disabled = false; menuButton.hidden = typeof run.onMenu !== 'function'; collection.hidden = true;
+    panel.classList.remove('show-collection'); recordsButton.setAttribute('aria-expanded', 'false');
+    panel.hidden = false; renderPage(); layout(); title.focus({ preventScroll: true });
   }
-
   function hide() {
-    if (!panel) return;
-    panel.hidden = true;
-    gallery.replaceChildren();
-    visiblePlants = [];
-    run = null;
-    if (previousFocus && previousFocus.isConnected && typeof previousFocus.focus === 'function') {
-      previousFocus.focus({preventScroll: true});
-    }
+    if (!panel) return; panel.hidden = true; gallery.replaceChildren(); visiblePlants = []; run = null;
+    if (previousFocus && previousFocus.isConnected && previousFocus.focus) previousFocus.focus({ preventScroll: true });
     previousFocus = null;
   }
-
-  window.MaxRunResults = {show: show, hide: hide, redraw: redraw};
+  window.MaxRunResults = { show: show, hide: hide, redraw: redraw };
 }());

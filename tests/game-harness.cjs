@@ -9,11 +9,11 @@ const stateNames = [
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
-  'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'restoringCheckpoint',
+  'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'restoringCheckpoint',
 ];
 const functionNames = [
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
-  'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
+  'updateCompanion', 'ensureCompanion', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'surfaceY', 'updateGarden', 'updateGardenFun', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
 ];
@@ -91,6 +91,7 @@ function loadGame(saved = {}) {
     addEventListener() {},
   };
   sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {
     game: sandbox.game, document, elements, storage, timers,
