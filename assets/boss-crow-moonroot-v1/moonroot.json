@@ -1,0 +1,1452 @@
+{
+  "schema": "max-native-atlas/1",
+  "name": "moonroot",
+  "nativeScale": 1,
+  "defaultFacing": 1,
+  "sheets": {
+    "main": {
+      "image": "moonroot.png",
+      "size": [
+        384,
+        192
+      ],
+      "cell": [
+        48,
+        48
+      ],
+      "columns": 8,
+      "rows": 4
+    }
+  },
+  "frames": {
+    "idle_00": {
+      "sheet": "main",
+      "rect": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        15,
+        16,
+        19,
+        28
+      ],
+      "sourceFrame": "r0_c0",
+      "source": {
+        "sourceCell": [
+          0,
+          0
+        ],
+        "component": 7,
+        "sourceBox": [
+          53,
+          23,
+          142,
+          192
+        ],
+        "sourceAnchor": [
+          122.0,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          23,
+          24
+        ]
+      }
+    },
+    "idle_01": {
+      "sheet": "main",
+      "rect": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        14,
+        15,
+        21,
+        29
+      ],
+      "sourceFrame": "r0_c1",
+      "source": {
+        "sourceCell": [
+          1,
+          0
+        ],
+        "component": 6,
+        "sourceBox": [
+          283,
+          12,
+          146,
+          203
+        ],
+        "sourceAnchor": [
+          354.0,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          23,
+          23
+        ]
+      }
+    },
+    "idle_02": {
+      "sheet": "main",
+      "rect": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        15,
+        15,
+        20,
+        29
+      ],
+      "sourceFrame": "r0_c2",
+      "source": {
+        "sourceCell": [
+          2,
+          0
+        ],
+        "component": 4,
+        "sourceBox": [
+          507,
+          11,
+          145,
+          205
+        ],
+        "sourceAnchor": [
+          576.0,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          23,
+          23
+        ]
+      }
+    },
+    "idle_03": {
+      "sheet": "main",
+      "rect": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        14,
+        15,
+        20,
+        29
+      ],
+      "sourceFrame": "r0_c3",
+      "source": {
+        "sourceCell": [
+          3,
+          0
+        ],
+        "component": 1,
+        "sourceBox": [
+          722,
+          10,
+          145,
+          205
+        ],
+        "sourceAnchor": [
+          794.0,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          25,
+          22
+        ]
+      }
+    },
+    "idle_04": {
+      "sheet": "main",
+      "rect": [
+        192,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        17,
+        25,
+        27
+      ],
+      "sourceFrame": "r0_c4",
+      "source": {
+        "sourceCell": [
+          4,
+          0
+        ],
+        "component": 8,
+        "sourceBox": [
+          919,
+          25,
+          175,
+          190
+        ],
+        "sourceAnchor": [
+          1015.5,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          22,
+          23
+        ]
+      }
+    },
+    "idle_05": {
+      "sheet": "main",
+      "rect": [
+        240,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        13,
+        15,
+        21,
+        29
+      ],
+      "sourceFrame": "r0_c5",
+      "source": {
+        "sourceCell": [
+          5,
+          0
+        ],
+        "component": 5,
+        "sourceBox": [
+          1162,
+          11,
+          151,
+          204
+        ],
+        "sourceAnchor": [
+          1240.0,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          22,
+          23
+        ]
+      }
+    },
+    "idle_06": {
+      "sheet": "main",
+      "rect": [
+        288,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        12,
+        15,
+        23,
+        29
+      ],
+      "sourceFrame": "r0_c6",
+      "source": {
+        "sourceCell": [
+          6,
+          0
+        ],
+        "component": 2,
+        "sourceBox": [
+          1378,
+          10,
+          159,
+          206
+        ],
+        "sourceAnchor": [
+          1461.5,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          25,
+          26
+        ]
+      }
+    },
+    "idle_07": {
+      "sheet": "main",
+      "rect": [
+        336,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        13,
+        15,
+        22,
+        29
+      ],
+      "sourceFrame": "r0_c7",
+      "source": {
+        "sourceCell": [
+          7,
+          0
+        ],
+        "component": 3,
+        "sourceBox": [
+          1601,
+          10,
+          152,
+          205
+        ],
+        "sourceAnchor": [
+          1679.0,
+          216
+        ]
+      },
+      "sockets": {
+        "core": [
+          25,
+          24
+        ]
+      }
+    },
+    "move_00": {
+      "sheet": "main",
+      "rect": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        12,
+        14,
+        24,
+        30
+      ],
+      "sourceFrame": "r1_c0",
+      "source": {
+        "sourceCell": [
+          0,
+          1
+        ],
+        "component": 28,
+        "sourceBox": [
+          42,
+          228,
+          169,
+          209
+        ],
+        "sourceAnchor": [
+          125.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          23,
+          22
+        ]
+      }
+    },
+    "move_01": {
+      "sheet": "main",
+      "rect": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        15,
+        28,
+        29
+      ],
+      "sourceFrame": "r1_c1",
+      "source": {
+        "sourceCell": [
+          1,
+          1
+        ],
+        "component": 30,
+        "sourceBox": [
+          256,
+          234,
+          195,
+          203
+        ],
+        "sourceAnchor": [
+          356.5,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          26,
+          23
+        ]
+      }
+    },
+    "move_02": {
+      "sheet": "main",
+      "rect": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        14,
+        16,
+        25,
+        28
+      ],
+      "sourceFrame": "r1_c2",
+      "source": {
+        "sourceCell": [
+          2,
+          1
+        ],
+        "component": 33,
+        "sourceBox": [
+          501,
+          238,
+          183,
+          199
+        ],
+        "sourceAnchor": [
+          576.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          31,
+          22
+        ]
+      }
+    },
+    "move_03": {
+      "sheet": "main",
+      "rect": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        13,
+        15,
+        26,
+        29
+      ],
+      "sourceFrame": "r1_c3",
+      "source": {
+        "sourceCell": [
+          3,
+          1
+        ],
+        "component": 32,
+        "sourceBox": [
+          733,
+          237,
+          182,
+          200
+        ],
+        "sourceAnchor": [
+          811.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          31,
+          22
+        ]
+      }
+    },
+    "move_04": {
+      "sheet": "main",
+      "rect": [
+        192,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        11,
+        16,
+        27,
+        28
+      ],
+      "sourceFrame": "r1_c4",
+      "source": {
+        "sourceCell": [
+          4,
+          1
+        ],
+        "component": 35,
+        "sourceBox": [
+          959,
+          243,
+          187,
+          194
+        ],
+        "sourceAnchor": [
+          1047.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          30,
+          22
+        ]
+      }
+    },
+    "move_05": {
+      "sheet": "main",
+      "rect": [
+        240,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        14,
+        16,
+        23,
+        28
+      ],
+      "sourceFrame": "r1_c5",
+      "source": {
+        "sourceCell": [
+          5,
+          1
+        ],
+        "component": 34,
+        "sourceBox": [
+          1186,
+          242,
+          166,
+          195
+        ],
+        "sourceAnchor": [
+          1259.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          29,
+          23
+        ]
+      }
+    },
+    "move_06": {
+      "sheet": "main",
+      "rect": [
+        288,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        13,
+        15,
+        24,
+        29
+      ],
+      "sourceFrame": "r1_c6",
+      "source": {
+        "sourceCell": [
+          6,
+          1
+        ],
+        "component": 31,
+        "sourceBox": [
+          1395,
+          236,
+          163,
+          201
+        ],
+        "sourceAnchor": [
+          1469.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          26,
+          22
+        ]
+      }
+    },
+    "move_07": {
+      "sheet": "main",
+      "rect": [
+        336,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        13,
+        14,
+        22,
+        30
+      ],
+      "sourceFrame": "r1_c7",
+      "source": {
+        "sourceCell": [
+          7,
+          1
+        ],
+        "component": 29,
+        "sourceBox": [
+          1608,
+          228,
+          156,
+          209
+        ],
+        "sourceAnchor": [
+          1685.0,
+          437
+        ]
+      },
+      "sockets": {
+        "core": [
+          26,
+          21
+        ]
+      }
+    },
+    "windup_00": {
+      "sheet": "main",
+      "rect": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        12,
+        16,
+        22,
+        28
+      ],
+      "sourceFrame": "r2_c0",
+      "source": {
+        "sourceCell": [
+          0,
+          2
+        ],
+        "component": 80,
+        "sourceBox": [
+          37,
+          457,
+          158,
+          197
+        ],
+        "sourceAnchor": [
+          123.0,
+          654
+        ]
+      },
+      "sockets": {
+        "core": [
+          25,
+          25
+        ]
+      }
+    },
+    "lash_00": {
+      "sheet": "main",
+      "rect": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        19,
+        25,
+        25
+      ],
+      "sourceFrame": "r2_c1",
+      "source": {
+        "sourceCell": [
+          1,
+          2
+        ],
+        "component": 84,
+        "sourceBox": [
+          222,
+          477,
+          225,
+          177
+        ],
+        "sourceAnchor": [
+          320.0,
+          654
+        ]
+      },
+      "sockets": {
+        "core": [
+          19,
+          24
+        ],
+        "lash": [
+          26,
+          35
+        ]
+      }
+    },
+    "slam_00": {
+      "sheet": "main",
+      "rect": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        16,
+        28,
+        28
+      ],
+      "sourceFrame": "r2_c2",
+      "source": {
+        "sourceCell": [
+          2,
+          2
+        ],
+        "component": 81,
+        "sourceBox": [
+          460,
+          457,
+          203,
+          197
+        ],
+        "sourceAnchor": [
+          561.5,
+          654
+        ]
+      },
+      "sockets": {
+        "core": [
+          25,
+          27
+        ]
+      }
+    },
+    "cast_00": {
+      "sheet": "main",
+      "rect": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        11,
+        17,
+        29,
+        27
+      ],
+      "sourceFrame": "r2_c3",
+      "source": {
+        "sourceCell": [
+          3,
+          2
+        ],
+        "component": 83,
+        "sourceBox": [
+          700,
+          468,
+          205,
+          186
+        ],
+        "sourceAnchor": [
+          789.0,
+          654
+        ]
+      },
+      "sockets": {
+        "core": [
+          26,
+          24
+        ]
+      }
+    },
+    "brace_00": {
+      "sheet": "main",
+      "rect": [
+        192,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        9,
+        17,
+        28,
+        27
+      ],
+      "sourceFrame": "r2_c5",
+      "source": {
+        "sourceCell": [
+          5,
+          2
+        ],
+        "component": 82,
+        "sourceBox": [
+          1124,
+          465,
+          197,
+          189
+        ],
+        "sourceAnchor": [
+          1228.0,
+          654
+        ]
+      },
+      "sockets": {
+        "core": [
+          21,
+          24
+        ]
+      }
+    },
+    "summon_00": {
+      "sheet": "main",
+      "rect": [
+        240,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        16,
+        27,
+        28
+      ],
+      "sourceFrame": "r2_c7",
+      "source": {
+        "sourceCell": [
+          7,
+          2
+        ],
+        "component": 79,
+        "sourceBox": [
+          1569,
+          455,
+          192,
+          199
+        ],
+        "sourceAnchor": [
+          1668.5,
+          654
+        ]
+      },
+      "sockets": {
+        "core": [
+          21,
+          19
+        ]
+      }
+    },
+    "hurt_00": {
+      "sheet": "main",
+      "rect": [
+        288,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        14,
+        15,
+        20,
+        29
+      ],
+      "sourceFrame": "r3_c0",
+      "source": {
+        "sourceCell": [
+          0,
+          3
+        ],
+        "component": 157,
+        "sourceBox": [
+          51,
+          675,
+          143,
+          201
+        ],
+        "sourceAnchor": [
+          122.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          23,
+          23
+        ]
+      }
+    },
+    "hurt_01": {
+      "sheet": "main",
+      "rect": [
+        336,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        14,
+        15,
+        21,
+        29
+      ],
+      "sourceFrame": "r3_c1",
+      "source": {
+        "sourceCell": [
+          1,
+          3
+        ],
+        "component": 154,
+        "sourceBox": [
+          271,
+          674,
+          150,
+          202
+        ],
+        "sourceAnchor": [
+          341.5,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          21,
+          27
+        ]
+      }
+    },
+    "hurt_02": {
+      "sheet": "main",
+      "rect": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        12,
+        15,
+        22,
+        29
+      ],
+      "sourceFrame": "r3_c2",
+      "source": {
+        "sourceCell": [
+          2,
+          3
+        ],
+        "component": 155,
+        "sourceBox": [
+          484,
+          674,
+          160,
+          202
+        ],
+        "sourceAnchor": [
+          571.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          18,
+          24
+        ]
+      }
+    },
+    "enrage_00": {
+      "sheet": "main",
+      "rect": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        15,
+        27,
+        29
+      ],
+      "sourceFrame": "r3_c3",
+      "source": {
+        "sourceCell": [
+          3,
+          3
+        ],
+        "component": 156,
+        "sourceBox": [
+          695,
+          674,
+          188,
+          202
+        ],
+        "sourceAnchor": [
+          791.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          24,
+          24
+        ]
+      }
+    },
+    "enrage_01": {
+      "sheet": "main",
+      "rect": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        14,
+        28,
+        30
+      ],
+      "sourceFrame": "r3_c4",
+      "source": {
+        "sourceCell": [
+          4,
+          3
+        ],
+        "component": 153,
+        "sourceBox": [
+          910,
+          668,
+          200,
+          208
+        ],
+        "sourceAnchor": [
+          1009.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          24,
+          22
+        ]
+      }
+    },
+    "death_00": {
+      "sheet": "main",
+      "rect": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        10,
+        22,
+        28,
+        22
+      ],
+      "sourceFrame": "r3_c5",
+      "source": {
+        "sourceCell": [
+          5,
+          3
+        ],
+        "component": 165,
+        "sourceBox": [
+          1129,
+          726,
+          197,
+          150
+        ],
+        "sourceAnchor": [
+          1226.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          24,
+          33
+        ]
+      }
+    },
+    "death_01": {
+      "sheet": "main",
+      "rect": [
+        192,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        11,
+        33,
+        27,
+        11
+      ],
+      "sourceFrame": "r3_c6",
+      "source": {
+        "sourceCell": [
+          6,
+          3
+        ],
+        "component": 196,
+        "sourceBox": [
+          1354,
+          800,
+          193,
+          77
+        ],
+        "sourceAnchor": [
+          1450.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          22,
+          33
+        ]
+      }
+    },
+    "death_02": {
+      "sheet": "main",
+      "rect": [
+        240,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "opaqueBounds": [
+        9,
+        34,
+        28,
+        10
+      ],
+      "sourceFrame": "r3_c7",
+      "source": {
+        "sourceCell": [
+          7,
+          3
+        ],
+        "component": 197,
+        "sourceBox": [
+          1565,
+          806,
+          202,
+          73
+        ],
+        "sourceAnchor": [
+          1675.0,
+          879
+        ]
+      },
+      "sockets": {
+        "core": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "animations": {
+    "idle": {
+      "frames": [
+        "idle_00",
+        "idle_01",
+        "idle_02",
+        "idle_03",
+        "idle_04",
+        "idle_05",
+        "idle_06",
+        "idle_07"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "move": {
+      "frames": [
+        "move_00",
+        "move_01",
+        "move_02",
+        "move_03",
+        "move_04",
+        "move_05",
+        "move_06",
+        "move_07"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "windup": {
+      "frames": [
+        "windup_00",
+        "windup_00",
+        "brace_00"
+      ],
+      "fps": 6,
+      "loop": false
+    },
+    "lash": {
+      "frames": [
+        "windup_00",
+        "lash_00",
+        "brace_00"
+      ],
+      "fps": 8,
+      "loop": false,
+      "suggestedEvents": [
+        {
+          "frameIndex": 1,
+          "name": "attach_lash_fx"
+        }
+      ]
+    },
+    "slam": {
+      "frames": [
+        "windup_00",
+        "slam_00",
+        "brace_00"
+      ],
+      "fps": 8,
+      "loop": false,
+      "suggestedEvents": [
+        {
+          "frameIndex": 1,
+          "name": "root_impact"
+        }
+      ]
+    },
+    "attack": {
+      "frames": [
+        "windup_00",
+        "cast_00",
+        "brace_00"
+      ],
+      "fps": 8,
+      "loop": false,
+      "suggestedEvents": [
+        {
+          "frameIndex": 1,
+          "name": "release_moon_seed"
+        }
+      ]
+    },
+    "summon": {
+      "frames": [
+        "brace_00",
+        "summon_00",
+        "brace_00"
+      ],
+      "fps": 6,
+      "loop": false,
+      "suggestedEvents": [
+        {
+          "frameIndex": 1,
+          "name": "summon_sprouts"
+        }
+      ]
+    },
+    "hurt": {
+      "frames": [
+        "hurt_00",
+        "hurt_01",
+        "hurt_02"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "enrage": {
+      "frames": [
+        "enrage_00",
+        "enrage_01",
+        "enrage_00",
+        "enrage_01"
+      ],
+      "fps": 7,
+      "loop": true
+    },
+    "death": {
+      "frames": [
+        "death_00",
+        "death_01",
+        "death_02"
+      ],
+      "fps": 5,
+      "loop": false
+    },
+    "recover": {
+      "frames": [
+        "brace_00",
+        "idle_00"
+      ],
+      "fps": 6,
+      "loop": false
+    }
+  }
+}

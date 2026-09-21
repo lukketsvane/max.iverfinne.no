@@ -1,0 +1,114 @@
+{
+  "schema": "max-crow-moonroot/1",
+  "nativeScale": 1,
+  "palette": [
+    "#000000",
+    "#0e111b",
+    "#151926",
+    "#1b1f2e",
+    "#242a3e",
+    "#333d55",
+    "#3c4762",
+    "#0e1e1d",
+    "#142722",
+    "#183427",
+    "#294321",
+    "#3b5a2e",
+    "#54755a",
+    "#585633",
+    "#80993f",
+    "#a3bf59",
+    "#acb771",
+    "#c9bd73",
+    "#e9e6d6",
+    "#315f6a",
+    "#5d93d5",
+    "#86c6db",
+    "#1b171d",
+    "#473344",
+    "#68435f",
+    "#9f469a",
+    "#b34bb9",
+    "#3b2d21",
+    "#6a5a44"
+  ],
+  "assets": {
+    "raven": {
+      "atlas": "raven.json",
+      "png": "raven.png",
+      "cell": [
+        48,
+        48
+      ],
+      "size": [
+        384,
+        192
+      ],
+      "frames": 32,
+      "uniquePixelBuffers": 32,
+      "anchor": [
+        24,
+        44
+      ],
+      "firstPoseBounds": [
+        11,
+        22,
+        27,
+        22
+      ],
+      "sha256": "4f77befd8a84278f39bb8b95948bf1f38567e55b3e9f198f8e45b9af0d9560c5"
+    },
+    "moonroot": {
+      "atlas": "moonroot.json",
+      "png": "moonroot.png",
+      "cell": [
+        48,
+        48
+      ],
+      "size": [
+        384,
+        192
+      ],
+      "frames": 30,
+      "uniquePixelBuffers": 30,
+      "anchor": [
+        24,
+        44
+      ],
+      "firstPoseBounds": [
+        15,
+        16,
+        19,
+        28
+      ],
+      "sha256": "f68a89745d8d96489e448df41712191714263b18633910bf700bb7cdb12b0a1a"
+    },
+    "effects": {
+      "atlas": "effects.json",
+      "png": "effects.png",
+      "cell": [
+        32,
+        24
+      ],
+      "size": [
+        256,
+        120
+      ],
+      "frames": 33,
+      "uniquePixelBuffers": 31,
+      "anchor": [
+        3,
+        12
+      ],
+      "firstPoseBounds": [
+        3,
+        11,
+        16,
+        5
+      ],
+      "sha256": "717849aa64f20695453605b817709cf8cb218d0f9c1c93257e2374dcfd7d177f"
+    }
+  },
+  "auditedMain": "a24a164f767023e5ee76c44a05c34f4328e2d2a0",
+  "runtimeStatus": "art handoff; no gameplay activation"
+}
