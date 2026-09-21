@@ -13,9 +13,20 @@
   const gameplay=['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   const count=mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
-  const setup=`
-    const fixtureStorage=new Map();const localStorage={getItem:k=>fixtureStorage.get(k)||null,setItem:(k,v)=>fixtureStorage.set(k,String(v)),removeItem:k=>fixtureStorage.delete(k)};
-  `;
+  // Install storage before the first external script, so the game, result
+  // archive and menu preferences all share the same isolated fixture store.
+  const setup='<script>'+`(function(){
+    const entries=new Map();
+    const storage={
+      get length(){return entries.size;},
+      key:index=>Array.from(entries.keys())[Number(index)]??null,
+      getItem:key=>entries.has(String(key))?entries.get(String(key)):null,
+      setItem:(key,value)=>{entries.set(String(key),String(value));},
+      removeItem:key=>{entries.delete(String(key));},
+      clear:()=>entries.clear()
+    };
+    Object.defineProperty(window,'localStorage',{value:storage,enumerable:true,configurable:false,writable:false});
+  }());`+'<'+'/script>';
   const hook=`
     menuPaused=false;runActive=${gameplay};rogueRun.next=1000000000;rogueRun.ended=false;rogueRun.choice=null;rogueRun.perks.robot=${tier};
     companion=null;P.x=0;P.y=surfaceY(0);P.vx=0;P.face=1;gardenSeeds=3;
@@ -50,10 +61,8 @@
     }
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
   `;
-  let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">')
+  let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">'+setup)
    .replace('<script src="game-menu.js" defer><'+'/script>',menu?'<script src="game-menu-review.js" defer><'+'/script>':'')
-   .replaceAll('window.localStorage','localStorage')
-   .replace('"use strict";','"use strict";'+setup)
    .replace(/\}\)\(\);\s*<\/script>/g,hook+'})();<'+'/script>');
   frame.srcdoc=html;
  }
