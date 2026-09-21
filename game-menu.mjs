@@ -87,7 +87,7 @@ function credits() {
 function drawScenery(now) {
   if (!opened) return;
   const w = window.innerWidth, h = window.innerHeight, dpr = window.devicePixelRatio || 1;
-  const scale = Math.max(2, Math.round(Math.min(w, h) * dpr / 150));
+  const scale = Math.max(2, Math.round(Math.min(w, h) * dpr / 192));
   scenery.width = Math.ceil(w * dpr / scale); scenery.height = Math.ceil(h * dpr / scale);
   const ready = game.drawMenuScene?.(scenery);
   // Redraw while the original atlases load; no perpetual animation on a paused phone.

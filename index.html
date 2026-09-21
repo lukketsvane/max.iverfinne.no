@@ -238,8 +238,8 @@ function requestDodge(direction) { dodgeBuf = .12; dodgeDirection = direction ||
 
 window.addEventListener('keydown', function (e) {
   var k = e.key;
-  if (runIsPaused()) return;
   if(rogueRun.choice&&/^[123]$/.test(k)){if(!e.repeat&&rogueRun.choice[+k-1])chooseRoguePerk(rogueRun.choice[+k-1].id);e.preventDefault();return;}
+  if (runIsPaused()) return;
   if (k === 'ArrowLeft' || k === 'a' || k === 'A') heldL = true;
   else if (k === 'ArrowRight' || k === 'd' || k === 'D') heldR = true;
   else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!heldUp) doJump(true); heldUp = true; }
@@ -2581,7 +2581,7 @@ function clearRunInput(){
   if(P){P.dodgeT=0;P.throwPose=0;}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
-function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
+function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&(rogueRun.ended||rogueRun.choice)));}
 function setMenuPaused(paused){
   if(paused&&runActive&&!rogueRun.ended)return;
   menuPaused=!!paused;clearRunInput();
@@ -2669,55 +2669,84 @@ function drawResultPlant(canvas,p){
   }finally{ctx=old;IH=oldH;ANCHOR=oldA;}
 }
 function resultAssetsReady(){return plantAtlasReady&&sheetReady&&ready(soilImg)&&Object.keys(IMG).every(function(k){return ready(IMG[k]);});}
-// Menu art uses the same native sprites as play, on a separate canvas.
+// Native sprite layers keep their pixel grid; only the menu palette changes.
+var menuNightCache=new WeakMap();
+function menuNightLayer(im,palette){
+  if(!ready(im))return im;
+  var variants=menuNightCache.get(im);if(!variants){variants={};menuNightCache.set(im,variants);}
+  var key=palette.join(',');if(variants[key])return variants[key];
+  var layer=document.createElement('canvas');layer.width=im.naturalWidth;layer.height=im.naturalHeight;
+  var c=layer.getContext('2d');c.imageSmoothingEnabled=false;c.drawImage(im,0,0);
+  var pixels=c.getImageData(0,0,layer.width,layer.height),data=pixels.data;
+  for(var i=0;i<data.length;i+=4){
+    if(!data[i+3])continue;
+    var lum=data[i]*.25+data[i+1]*.55+data[i+2]*.20;
+    var color=palette[Math.min(palette.length-1,Math.floor(lum/256*palette.length))];
+    data[i]=color[0];data[i+1]=color[1];data[i+2]=color[2];
+  }
+  c.putImageData(pixels,0,0);layer.complete=true;layer.naturalWidth=layer.width;layer.naturalHeight=layer.height;
+  variants[key]=layer;return layer;
+}
 function drawMenuScene(canvas){
   var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY,sky:SKY};
   try{
     ctx=canvas.getContext('2d');if(!ctx)return false;
     IW=canvas.width;IH=canvas.height;ctx.imageSmoothingEnabled=false;
-    var portrait=IH>IW,gy=Math.round(IH*.79),pool=Math.round(IH*.87),tx=Math.round(IW*(portrait?.79:.71));
-    camX=180;camY=0;ANCHOR=gy;SKY='#080c1c';
-    drawSky(0,gy);
-    var my=Math.max(gy,159+Math.round(IH*.20));
-    drawTiled(IMG.mtn,.10,my,true,MTN_BASE);
-    drawTiled(IMG.forest,.35,Math.max(gy,108+Math.round(IH*.46)),false,FOREST_BASE);
-    drawClouds(Math.round(IH*.82),0);
-    ctx.fillStyle='rgba(5,20,49,.62)';ctx.fillRect(0,0,IW,IH);
-    var moonX=Math.round(IW*.84),moonY=Math.round(IH*.22);
-    disc(moonX,moonY,11,'rgba(157,178,232,.04)');disc(moonX,moonY,7,'rgba(157,178,232,.06)');
-    disc(moonX,moonY,6,'#dedfd4');disc(moonX-2,moonY+1,2,'#b9bdca');rect(moonX+2,moonY-3,2,2,'#b9bdca');
-    ctx.fillStyle='#111a23';ctx.fillRect(0,gy,IW,IH-gy);
-    if(ready(soilImg))for(var x=6;x<IW;x+=29)rootSystem(0,x,gy,x*.73,2);
+    var portrait=IH>IW,gy=Math.round(IH*.80),pool=Math.round(IH*.86),stemX=Math.round(IW*(portrait?.23:.77));
+    camX=180;camY=0;ANCHOR=gy;SKY='#080e20';drawSky(0,gy);
+    for(var star=0;star<55;star++){
+      var sx=Math.round(h1(star*9.71+4)*IW),sy=Math.round(h1(star*7.12+1)*IH*.65);
+      rect(sx,sy,1,1,star%7?'#465678':'#c9d2dd');
+      if(star%13===0){rect(sx-1,sy,3,1,'#8194b9');rect(sx,sy-1,1,3,'#8194b9');rect(sx,sy,1,1,'#e8edeb');}
+    }
+    var far=menuNightLayer(IMG.mtn,[[15,23,52],[22,32,73],[28,40,88],[35,49,99],[46,62,113],[60,76,126]]);
+    drawTiled(far,.10,Math.max(159+Math.round(IH*.16),Math.round(IH*.55)),true,'#1b2a4d');
+    var mid=menuNightLayer(IMG.mtn,[[14,25,44],[23,40,59],[31,50,69],[42,64,82],[55,78,98],[69,91,111]]);
+    camX=510;drawTiled(mid,.35,Math.max(159+Math.round(IH*.33),Math.round(IH*.74)),true,'#203549');
+    var trees=menuNightLayer(IMG.forest,[[10,21,33],[15,30,42],[22,40,51],[29,49,59],[35,57,68],[43,65,75]]);
+    drawTiled(trees,.35,Math.max(108+Math.round(IH*.52),gy),false,'#142532');
+    var clouds=menuNightLayer(IMG.clouds,[[28,40,65],[42,56,82],[55,71,98],[72,89,112],[89,105,127],[108,124,144]]);
+    if(ready(clouds)){ctx.globalAlpha=.30;ctx.drawImage(clouds,-45,Math.round(IH*.28));ctx.globalAlpha=.18;ctx.drawImage(clouds,Math.round(IW*.40),Math.round(IH*.49));ctx.globalAlpha=1;}
+    var moonX=Math.round(IW*.82),moonY=Math.round(IH*.215);
+    disc(moonX,moonY,15,'rgba(139,165,222,.025)');disc(moonX,moonY,11,'rgba(139,165,222,.045)');
+    disc(moonX,moonY,7,'#dfe3dd');disc(moonX-2,moonY+2,3,'#b6bdc9');disc(moonX+2,moonY-3,2,'#c0c6cf');rect(moonX-4,moonY-2,2,2,'#aab4c5');
+    ctx.fillStyle='#121c28';ctx.fillRect(0,gy,IW,IH-gy);
+    if(ready(soilImg))for(var root=6;root<IW;root+=29)rootSystem(0,root,gy,root*.73,2);
     if(gardenReady){
-      for(var x=0,k=0;x<IW;x+=17,k++){
-        var rocks=GM.rock[k%GM.rock.length];gRect(rocks,x,gy+2-rocks[3],!!(k%2));
-        var bush=GM.bush[k%GM.bush.length];gRect(bush,x+8,gy-bush[3],false);
-        if(k%3===0){var flower=GM.tall_blue[0];gPlant(flower,x+5,gy,0,!!(k%2));}
+      for(var x=-8,k=0;x<IW+12;x+=11+Math.round(h1(k*3.7)*14),k++){
+        var rocks=GM.rock[k%GM.rock.length];gRect(rocks,x,gy+1-rocks[3],!!(k%2));
+        var bush=GM.bush[k%GM.bush.length];gRect(bush,x+7,gy-bush[3],false);
+        if(k%2===0)gPlant(GM.tall_blue[0],x-3,gy,0,!!(k%3));
+        if(k%3===1)gPlant(GM.posy[k%GM.posy.length],x+6,gy,0,false);
       }
+      // Layer original mossy stone and vine cells into a small standing cairn.
+      var stoneX=Math.round(IW*(portrait?.78:.65));
+      for(var row=0;row<3;row++)gRect(GM.rock[3],stoneX-9,gy-17-row*10,false);
+      gPlant(GM.vine[2],stoneX-6,gy-12,0,false);gPlant(GM.vine[5],stoneX+5,gy-9,0,true);
+      if(ready(crowImg))drawCrowCell(crowImg,CR_STAND,stoneX+2,gy-38,-1);
     }
-    var maxX=Math.round(IW*(portrait?.33:.59));
-    drawGrowingFigmaPlant({kind:0,seed:79,growth:2.7,health:1,hit:0,pulse:0,moisture:1,stalk:false},tx,gy,0,Math.round(IH*.54));
-    drawGrowingFigmaPlant({kind:6,seed:32,growth:1.1,health:1,hit:0,pulse:0,moisture:1,stalk:false},tx-21,gy,0,37);
+    drawGrowingFigmaPlant({kind:0,seed:79,growth:3,health:1,hit:0,pulse:0,moisture:1,stalk:false},stemX,gy,0,Math.round(IH*(portrait?.59:.68)));
+    drawGrowingFigmaPlant({kind:6,seed:32,growth:1.1,health:1,hit:0,pulse:0,moisture:1,stalk:false},stemX+23,gy,0,31);
+    var maxX=Math.round(IW*(portrait?.38:.58));
     if(sheetReady)ctx.drawImage(sheet,0,0,CELL,CELL,maxX-16,gy-31,CELL,CELL);
-    if(ready(crowImg))drawCrowCell(crowImg,CR_STAND,tx+17,gy-13,-1);
-    // A small sprig under the logo, built from the plant atlas.
+    if(ready(crowImg))drawCrowCell(crowImg,CR_STAND,Math.round(IW*.08),gy-14,1);
     if(plantAtlasReady){
-      var logoX=Math.round(IW*(portrait?.50:.27)),logoY=Math.round(IH*(portrait?.175:.27));
-      for(var n=-3;n<=3;n++){rect(logoX+n*5,logoY+Math.abs(n%2),6,1,'#2e4b38');}
-      figmaSeg(PA.fam[0].f[0],logoX,logoY+4,false);
+      var logoX=Math.round(IW*(portrait?.50:.28)),logoY=Math.round(IH*(portrait?.167:.26));
+      for(var n=-4;n<=4;n++)rect(logoX+n*4,logoY+Math.abs(n%3),5,1,'#315647');
+      figmaSeg(PA.fam[0].f[0],logoX,logoY+5,false);figmaSeg(PA.fam[0].f[0],logoX+18,logoY,false);
     }
-    for(var f=0;f<11;f++){
-      var fx=Math.round(IW*(.08+h1(f*9.13)*.84)),fy=Math.round(gy-8-h1(f*12.1)*IH*.23);
-      disc(fx,fy,4,'rgba(199,217,100,.045)');disc(fx,fy,2,'rgba(199,217,100,.085)');rect(fx,fy,1,1,'#d8de7a');
+    for(var f=0;f<15;f++){
+      var fx=Math.round(IW*(.06+h1(f*9.13)*.88)),fy=Math.round(gy-7-h1(f*12.1)*IH*.27);
+      disc(fx,fy,5,'rgba(199,217,100,.028)');disc(fx,fy,3,'rgba(199,217,100,.07)');rect(fx,fy,1,2,'#d8de7a');
     }
-    // Native scanlines reflected in the pond; no sprite rescaling.
-    ctx.fillStyle='#080f21';ctx.fillRect(0,pool,IW,IH-pool);
+    ctx.fillStyle='#091329';ctx.fillRect(0,pool,IW,IH-pool);
     for(var y=pool+1;y<IH;y++){
       var src=gy-1-(y-pool),shift=(y%7<2?2:0)-(y%13<3?1:0);
-      if(src<0)break;ctx.globalAlpha=.36;ctx.drawImage(canvas,0,src,IW,1,shift,y,IW,1);
+      if(src<0)break;ctx.globalAlpha=.46;ctx.drawImage(canvas,0,src,IW,1,shift,y,IW,1);
     }
     ctx.globalAlpha=1;
-    for(var r=0;r<18;r++)rect(Math.round(h1(r*7.31)*IW),pool+2+(r*7)%(IH-pool),3+r%5,1,r%3?'#15243e':'#263b55');
+    for(var r=0;r<35;r++)rect(Math.round(h1(r*7.31)*IW),pool+2+(r*7)%(IH-pool),3+r%8,1,r%3?'#1b2d4c':'#344866');
+    if(gardenReady)for(var island=0;island<3;island++){var ir=GM.rock[island?1:0];gRect(ir,Math.round(IW*(island===0?.06:island===1?.76:.91)),pool+9+(island%2)*19,false);}
     return resultAssetsReady()&&gardenReady&&ready(crowImg);
   }finally{ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;SKY=old.sky;}
 }
@@ -2789,7 +2818,7 @@ function perkDots(n,max){
 function renderRogueChoice(){
   if(!perkMenu||!rogueRun.choice)return;
   perkMenu.innerHTML='';
-  perkMenu.setAttribute('role','group');perkMenu.setAttribute('aria-label','Choose an upgrade');
+  perkMenu.setAttribute('role','dialog');perkMenu.setAttribute('aria-modal','true');perkMenu.setAttribute('aria-label','Choose a boon');
   rogueRun.choice.forEach(function(p,index){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
@@ -2803,11 +2832,12 @@ function renderRogueChoice(){
 function offerRogueChoice(){
   if(rogueRun.choice||rogueRun.ended)return;
   var choices=perkChoices();if(!choices.length)return;
-  rogueRun.choice=choices;renderRogueChoice();saveGarden();
+  clearRunInput();rogueRun.choice=choices;renderRogueChoice();saveGarden();
+  var first=perkMenu&&perkMenu.querySelector('button');if(first&&first.focus)first.focus({preventScroll:true});
 }
 function chooseRoguePerk(id){
   if(rogueRun.ended||!rogueRun.choice||!rogueRun.choice.some(function(p){return p.id===id;})||(rogueRun.perks[id]||0)>=perkMax(id))return;
-  rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;
+  rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();clearRunInput();
   if(perkMenu)perkMenu.style.display='none';
   socialTone('gift');grantRogueXP(0);saveGarden();updateGardenHud();
 }
