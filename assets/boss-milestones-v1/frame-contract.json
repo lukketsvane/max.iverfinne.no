@@ -1,0 +1,265 @@
+{
+  "schema": "max-boss-native-delivery/v1",
+  "status": "native-art-ready-for-integration",
+  "pixelRequirements": {
+    "sourceScale": 1,
+    "alpha": [
+      0,
+      255
+    ],
+    "imageSmoothingEnabled": false,
+    "integerPlacement": true,
+    "trimFrames": false,
+    "windupSignal": "amber",
+    "vulnerableSignal": "cyan"
+  },
+  "preview": {
+    "fps": 8,
+    "scales": [
+      4,
+      6
+    ],
+    "repeatsEveryRowForInspection": true,
+    "timingsAreGameplayApproved": false,
+    "gifFrameCount": 64,
+    "gifDurationSeconds": 8,
+    "gifTiming": "Alternating120/130ms delays; exact8fps average required by GIF centisecond precision."
+  },
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "loop": true,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "move": {
+      "row": 1,
+      "frames": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "loop": true,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "windup": {
+      "row": 2,
+      "frames": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "loop": false,
+      "timing": "gameplay-progress",
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "attack": {
+      "row": 3,
+      "frames": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "loop": false,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "recover": {
+      "row": 4,
+      "frames": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "loop": false,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "vulnerable": {
+      "row": 5,
+      "frames": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "loop": true,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "hurt": {
+      "row": 6,
+      "frames": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "loop": false,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    },
+    "death": {
+      "row": 7,
+      "frames": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "loop": false,
+      "lastFrameIntendedTransparent": true,
+      "fps": 8,
+      "timingStatus": "proposal-only"
+    }
+  },
+  "bosses": [
+    {
+      "id": "mossback",
+      "level": 5,
+      "name": "Mossback",
+      "image": "native/05-mossback.png",
+      "concept": "Moss-armoured beetle with a planted charging stance.",
+      "atlas": "native/05-mossback.json",
+      "individualFrames": "frames/mossback/{state}-{00..07}.png",
+      "individualFrameCount": 64
+    },
+    {
+      "id": "bellkeeper",
+      "level": 10,
+      "name": "Bellkeeper",
+      "image": "native/10-bellkeeper.png",
+      "concept": "Tall bent bellflower, three root legs and spore-ring release.",
+      "atlas": "native/10-bellkeeper.json",
+      "individualFrames": "frames/bellkeeper/{state}-{00..07}.png",
+      "individualFrameCount": 64,
+      "intentionalHold": {
+        "frames": [
+          22,
+          23
+        ],
+        "sourceFrame": 21,
+        "reason": "Hold strongest amber pose through the end of anticipation."
+      }
+    },
+    {
+      "id": "moon-moth",
+      "level": 15,
+      "name": "Moon Moth",
+      "image": "native/15-moon-moth.png",
+      "concept": "Broad pale moth with a small dark central body.",
+      "atlas": "native/15-moon-moth.json",
+      "individualFrames": "frames/moon-moth/{state}-{00..07}.png",
+      "individualFrameCount": 64,
+      "hoverRegistration": {
+        "anchor": [
+          16,
+          31
+        ],
+        "opaqueBottomRange": [
+          30,
+          31
+        ],
+        "onePixelHigherFrames": [
+          0,
+          3,
+          18,
+          21,
+          22,
+          36,
+          39,
+          41,
+          49
+        ]
+      }
+    },
+    {
+      "id": "hollow-crown",
+      "level": 20,
+      "name": "Hollow Crown",
+      "image": "native/20-hollow-crown.png",
+      "concept": "Root crown variant with a hollow opening through its chest.",
+      "existingContract": {
+        "frameCount": 128,
+        "phases": 3
+      },
+      "replacesExistingContract": false,
+      "atlas": "native/20-hollow-crown.json",
+      "individualFrames": "frames/hollow-crown/{state}-{00..07}.png",
+      "individualFrameCount": 64
+    }
+  ],
+  "validationNote": "Passed delivery checks are recorded in validation.json, including per-frame dimensions, alpha bounds, colour signal counts, SHA-256 and exact packed/isolated pixel equivalence. Gameplay integration and encounter balance remain separate.",
+  "gameplayIntegration": "not-wired",
+  "geometryVerified": {
+    "sheet": [
+      256,
+      256
+    ],
+    "cell": [
+      32,
+      32
+    ],
+    "columns": 8,
+    "rows": 8,
+    "frameCount": 64,
+    "anchor": [
+      16,
+      31
+    ],
+    "facing": "right",
+    "frameIndex": "row * 8 + column",
+    "rectangle": "[column * 32, row * 32, 32, 32]"
+  },
+  "validation": {
+    "report": "validation.json",
+    "individualFrames": 256,
+    "packedSheets": 4,
+    "nativeFramesMatchPackedCells": true,
+    "approvedHoverException": "Moon Moth alpha bottoms30\u201331 with constant anchor16,31"
+  }
+}

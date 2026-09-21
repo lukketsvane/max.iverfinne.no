@@ -1,0 +1,62 @@
+{
+  "schema": "max-native-pack/v1",
+  "id": "boss-milestones-v1",
+  "status": "native-art-ready-for-integration",
+  "gameplayIntegration": "not-wired",
+  "assets": [
+    {
+      "id": "mossback",
+      "level": 5,
+      "manifest": "native/05-mossback.json",
+      "image": "native/05-mossback.png",
+      "individualFrames": "frames/mossback/{state}-{00..07}.png",
+      "frameCount": 64
+    },
+    {
+      "id": "bellkeeper",
+      "level": 10,
+      "manifest": "native/10-bellkeeper.json",
+      "image": "native/10-bellkeeper.png",
+      "individualFrames": "frames/bellkeeper/{state}-{00..07}.png",
+      "frameCount": 64
+    },
+    {
+      "id": "moon-moth",
+      "level": 15,
+      "manifest": "native/15-moon-moth.json",
+      "image": "native/15-moon-moth.png",
+      "individualFrames": "frames/moon-moth/{state}-{00..07}.png",
+      "frameCount": 64
+    },
+    {
+      "id": "hollow-crown",
+      "level": 20,
+      "manifest": "native/20-hollow-crown.json",
+      "image": "native/20-hollow-crown.png",
+      "individualFrames": "frames/hollow-crown/{state}-{00..07}.png",
+      "frameCount": 64
+    }
+  ],
+  "frameContract": "frame-contract.json",
+  "validation": "validation.json",
+  "provenance": "provenance.json",
+  "prompts": "prompts.json",
+  "viewer": "viewer-standalone.html",
+  "relativeViewer": "viewer.html",
+  "scaleReference": "preview/scale-contact-4x.png",
+  "previewTimings": {
+    "atlasFps": 8,
+    "status": "proposal-only",
+    "gifFrameCount": 64,
+    "gifDurationSeconds": 8
+  },
+  "existingHollowCrownContract": {
+    "frameCount": 128,
+    "phases": 3,
+    "replaced": false
+  },
+  "sourceMasters": {
+    "includedInRepository": false,
+    "location": "source/ in separately supplied user ZIP"
+  }
+}
