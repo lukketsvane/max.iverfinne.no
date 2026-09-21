@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAX watering robot — candidate review only</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#12181a;color:#e9e6d6}body{max-width:900px;margin:0 auto;padding:24px}h1{font-size:24px;line-height:1.2}a{color:#86b9ea}p{max-width:75ch}button,select{font:inherit;padding:8px;color:inherit;background:#23282c;border:1px solid #62744e}fieldset{display:flex;flex-wrap:wrap;align-items:center;gap:12px;border:1px solid #44533a;margin:24px 0;padding:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,412px),1fr));gap:16px}figure{margin:0;padding:12px;background:#1d2124;border:1px solid #2d3338;overflow:auto}figcaption{margin-bottom:8px}canvas{display:block;image-rendering:pixelated;background:#1d2124}small{color:#c3cdcd}#status{min-height:1.5em}
+</style>
+<h1>Watering robot — review candidate</h1>
+<p><strong>Not approved or enabled in the game.</strong> Compare this candidate with the other supplied robot assets. Prefer another design when it fits MAX better. This page is an atlas inspection bench, not a gameplay screenshot or a watering simulation.</p>
+<p><a href="README.md">Developer handoff and comparison checklist</a> · <a href="native/rover.png">Native PNG</a> · <a href="native/rover.json">Frame metadata</a></p>
+<fieldset><legend>Preview only</legend><label>Maximum whole-image enlargement <select id="zoom"><option value="1">1×</option><option value="2">2×</option><option value="4" selected>4×</option></select></label><button id="pause" type="button" disabled>Pause</button><small>Left and right facing. One source pixel stays one canvas pixel.</small></fieldset>
+<p id="status" role="status">Loading candidate sheets…</p>
+<div id="grid" class="grid"></div>
+<p>For acceptance, render beside the original Max and plants in the <em>current</em> game, using its camera, terrain and lighting. Technical dimensions alone do not establish visual suitability. No saved games or accounts are accessed here.</p>
+<script src="native/runtime.js"></script>
+<script>
+'use strict';
+(async function(){
+ const status=document.getElementById('status'),grid=document.getElementById('grid'),zoom=document.getElementById('zoom'),pause=document.getElementById('pause');
+ try{
+  const sprites=await new MaxNativeSprites().load('native/');
+  const views=Object.keys(sprites.sheets.rover.meta.animations).map(animation=>{
+   const figure=document.createElement('figure'),caption=document.createElement('figcaption'),canvas=document.createElement('canvas');
+   caption.textContent=animation+' — left / right';canvas.width=96;canvas.height=48;canvas.setAttribute('role','img');canvas.setAttribute('aria-label',animation+' animation facing both directions');
+   figure.append(caption,canvas);grid.append(figure);return{animation,canvas,ctx:canvas.getContext('2d')};
+  });
+  function resize(){for(const v of views){const z=Math.max(1,Math.min(Number(zoom.value),Math.floor((v.canvas.parentElement.clientWidth-24)/96)));v.canvas.style.width=(96*z)+'px';v.canvas.style.height=(48*z)+'px';}}
+  zoom.addEventListener('change',resize);window.addEventListener('resize',resize);resize();
+  let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,elapsed=0,previous=null;
+  function label(){pause.textContent=paused?'Play':'Pause';pause.setAttribute('aria-pressed',String(paused));}
+  pause.disabled=false;label();pause.addEventListener('click',()=>{paused=!paused;previous=null;label();});
+  status.textContent='48 existing rover frames. 32 × 32 source cells. Ground anchor (16, 31). Water effects are separate.';
+  function paint(now){
+   if(previous!==null&&!paused&&!document.hidden)elapsed+=Math.min((now-previous)/1000,0.1);previous=now;
+   for(const v of views){
+    v.ctx.clearRect(0,0,96,48);v.ctx.fillStyle='#36423a';v.ctx.fillRect(0,39,96,1);
+    for(const [x,facing] of [[24,-1],[72,1]]){
+     const out=sprites.drawRover(v.ctx,{x,y:38,animation:v.animation,seconds:elapsed,facing});
+     if(v.animation==='water')sprites.drawSpray(v.ctx,out.emitter,elapsed,facing);
+    }
+   }
+   requestAnimationFrame(paint);
+  }
+  requestAnimationFrame(paint);
+ }catch(error){status.textContent='Preview could not load: '+error.message+'. Serve the repository over HTTP; do not open this page as a file:// URL.';}
+})();
+</script>
+</html>
