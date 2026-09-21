@@ -4004,6 +4004,7 @@ var soundEnabled=true;
 try{soundEnabled=localStorage.getItem('max-sound-enabled')!=='0';}catch(e){}
 function setSoundEnabled(value){
   soundEnabled=!!value;
+  if(window.MaxSoundtrack)window.MaxSoundtrack.setEnabled(soundEnabled);
   try{localStorage.setItem('max-sound-enabled',soundEnabled?'1':'0');}catch(e){}
   [socialTone.ac,blastTone.ac].forEach(function(ac){if(ac){if(soundEnabled)ac.resume();else ac.suspend();}});
 }

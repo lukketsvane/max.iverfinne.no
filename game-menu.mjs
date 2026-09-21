@@ -1,4 +1,5 @@
 import { pixelText } from './pixel-text.mjs';
+import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
@@ -163,6 +164,7 @@ function help() {
 function credits() {
   page('credits', 'MAX');
   card.append(el('p', 'A little night garden.'), el('p', 'Original pixel art, plants and companions from the MAX collection.'));
+  for (const track of SOUNDTRACK) card.append(el('p', track.title + ' · ' + track.artist));
   back();
 }
 function drawScenery(now) {
@@ -238,6 +240,7 @@ function close() {
 function attach(bridge) {
   if (game) return;
   game = bridge;
+  window.MaxSoundtrack = createSoundtrack({ enabled: game.soundEnabled?.() !== false });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
   scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
   card = el('div', undefined, 'max-menu-card'); overlay.append(scenery, card);
