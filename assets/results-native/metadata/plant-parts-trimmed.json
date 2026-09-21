@@ -1,0 +1,4550 @@
+{
+  "image": "plant-parts-trimmed.png",
+  "scale": 1,
+  "size": [
+    256,
+    128
+  ],
+  "frames": {
+    "family-0-stem-0": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 14,
+        "h": 7
+      },
+      "sourceRect": [
+        37,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-1": {
+      "frame": {
+        "x": 18,
+        "y": 2,
+        "w": 16,
+        "h": 7
+      },
+      "sourceRect": [
+        433,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-2": {
+      "frame": {
+        "x": 36,
+        "y": 2,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        469,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-3": {
+      "frame": {
+        "x": 55,
+        "y": 2,
+        "w": 13,
+        "h": 7
+      },
+      "sourceRect": [
+        1,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-4": {
+      "frame": {
+        "x": 70,
+        "y": 2,
+        "w": 12,
+        "h": 7
+      },
+      "sourceRect": [
+        37,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-5": {
+      "frame": {
+        "x": 84,
+        "y": 2,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        73,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-6": {
+      "frame": {
+        "x": 101,
+        "y": 2,
+        "w": 13,
+        "h": 7
+      },
+      "sourceRect": [
+        109,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-7": {
+      "frame": {
+        "x": 116,
+        "y": 2,
+        "w": 16,
+        "h": 7
+      },
+      "sourceRect": [
+        145,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-8": {
+      "frame": {
+        "x": 134,
+        "y": 2,
+        "w": 16,
+        "h": 7
+      },
+      "sourceRect": [
+        181,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-9": {
+      "frame": {
+        "x": 152,
+        "y": 2,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        73,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-10": {
+      "frame": {
+        "x": 169,
+        "y": 2,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        109,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-11": {
+      "frame": {
+        "x": 188,
+        "y": 2,
+        "w": 18,
+        "h": 7
+      },
+      "sourceRect": [
+        145,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-12": {
+      "frame": {
+        "x": 208,
+        "y": 2,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        181,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-13": {
+      "frame": {
+        "x": 225,
+        "y": 2,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        217,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-14": {
+      "frame": {
+        "x": 2,
+        "y": 11,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        253,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-15": {
+      "frame": {
+        "x": 19,
+        "y": 11,
+        "w": 12,
+        "h": 7
+      },
+      "sourceRect": [
+        289,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-16": {
+      "frame": {
+        "x": 33,
+        "y": 11,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        325,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-17": {
+      "frame": {
+        "x": 50,
+        "y": 11,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        361,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-stem-18": {
+      "frame": {
+        "x": 69,
+        "y": 11,
+        "w": 16,
+        "h": 7
+      },
+      "sourceRect": [
+        397,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "s"
+    },
+    "family-0-flower-0": {
+      "frame": {
+        "x": 87,
+        "y": 11,
+        "w": 13,
+        "h": 7
+      },
+      "sourceRect": [
+        211,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-1": {
+      "frame": {
+        "x": 102,
+        "y": 11,
+        "w": 14,
+        "h": 7
+      },
+      "sourceRect": [
+        247,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-2": {
+      "frame": {
+        "x": 118,
+        "y": 11,
+        "w": 10,
+        "h": 7
+      },
+      "sourceRect": [
+        283,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-3": {
+      "frame": {
+        "x": 130,
+        "y": 11,
+        "w": 10,
+        "h": 7
+      },
+      "sourceRect": [
+        319,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-4": {
+      "frame": {
+        "x": 142,
+        "y": 11,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        355,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-5": {
+      "frame": {
+        "x": 159,
+        "y": 11,
+        "w": 8,
+        "h": 7
+      },
+      "sourceRect": [
+        391,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-6": {
+      "frame": {
+        "x": 169,
+        "y": 11,
+        "w": 16,
+        "h": 7
+      },
+      "sourceRect": [
+        427,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-7": {
+      "frame": {
+        "x": 187,
+        "y": 11,
+        "w": 14,
+        "h": 7
+      },
+      "sourceRect": [
+        463,
+        70,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-0-flower-8": {
+      "frame": {
+        "x": 203,
+        "y": 11,
+        "w": 8,
+        "h": 7
+      },
+      "sourceRect": [
+        1,
+        78,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        1,
+        7
+      ],
+      "family": 0,
+      "kind": "f"
+    },
+    "family-1-stem-0": {
+      "frame": {
+        "x": 213,
+        "y": 11,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        323,
+        62,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-1": {
+      "frame": {
+        "x": 2,
+        "y": 20,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        365,
+        62,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-2": {
+      "frame": {
+        "x": 26,
+        "y": 20,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        407,
+        62,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-3": {
+      "frame": {
+        "x": 51,
+        "y": 20,
+        "w": 20,
+        "h": 7
+      },
+      "sourceRect": [
+        449,
+        62,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-4": {
+      "frame": {
+        "x": 73,
+        "y": 20,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        1,
+        70,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-5": {
+      "frame": {
+        "x": 98,
+        "y": 20,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        43,
+        70,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-6": {
+      "frame": {
+        "x": 123,
+        "y": 20,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        85,
+        70,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-7": {
+      "frame": {
+        "x": 147,
+        "y": 20,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        127,
+        70,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-8": {
+      "frame": {
+        "x": 171,
+        "y": 20,
+        "w": 21,
+        "h": 7
+      },
+      "sourceRect": [
+        169,
+        70,
+        41,
+        7
+      ],
+      "untrimmed": [
+        41,
+        7
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-9": {
+      "frame": {
+        "x": 194,
+        "y": 20,
+        "w": 23,
+        "h": 9
+      },
+      "sourceRect": [
+        448,
+        41,
+        41,
+        9
+      ],
+      "untrimmed": [
+        41,
+        9
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        9
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-stem-10": {
+      "frame": {
+        "x": 219,
+        "y": 20,
+        "w": 22,
+        "h": 8
+      },
+      "sourceRect": [
+        359,
+        52,
+        41,
+        8
+      ],
+      "untrimmed": [
+        41,
+        8
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        8
+      ],
+      "family": 1,
+      "kind": "s"
+    },
+    "family-1-flower-0": {
+      "frame": {
+        "x": 2,
+        "y": 31,
+        "w": 17,
+        "h": 8
+      },
+      "sourceRect": [
+        275,
+        52,
+        41,
+        8
+      ],
+      "untrimmed": [
+        41,
+        8
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        8
+      ],
+      "family": 1,
+      "kind": "f"
+    },
+    "family-1-flower-1": {
+      "frame": {
+        "x": 21,
+        "y": 31,
+        "w": 20,
+        "h": 10
+      },
+      "sourceRect": [
+        217,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        3,
+        10
+      ],
+      "family": 1,
+      "kind": "f"
+    },
+    "family-1-flower-2": {
+      "frame": {
+        "x": 43,
+        "y": 31,
+        "w": 18,
+        "h": 8
+      },
+      "sourceRect": [
+        317,
+        52,
+        41,
+        8
+      ],
+      "untrimmed": [
+        41,
+        8
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        8
+      ],
+      "family": 1,
+      "kind": "f"
+    },
+    "family-2-stem-0": {
+      "frame": {
+        "x": 63,
+        "y": 31,
+        "w": 20,
+        "h": 7
+      },
+      "sourceRect": [
+        1,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        20,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-stem-1": {
+      "frame": {
+        "x": 85,
+        "y": 31,
+        "w": 24,
+        "h": 7
+      },
+      "sourceRect": [
+        47,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        19,
+        0
+      ],
+      "anchor": [
+        3,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-stem-2": {
+      "frame": {
+        "x": 111,
+        "y": 31,
+        "w": 28,
+        "h": 7
+      },
+      "sourceRect": [
+        93,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        5,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-stem-3": {
+      "frame": {
+        "x": 141,
+        "y": 31,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        139,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        20,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-stem-4": {
+      "frame": {
+        "x": 165,
+        "y": 31,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        185,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        20,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-stem-5": {
+      "frame": {
+        "x": 190,
+        "y": 31,
+        "w": 20,
+        "h": 7
+      },
+      "sourceRect": [
+        231,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        20,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-stem-6": {
+      "frame": {
+        "x": 212,
+        "y": 31,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        277,
+        62,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        19,
+        0
+      ],
+      "anchor": [
+        3,
+        7
+      ],
+      "family": 2,
+      "kind": "s"
+    },
+    "family-2-flower-0": {
+      "frame": {
+        "x": 2,
+        "y": 43,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        417,
+        52,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        20,
+        0
+      ],
+      "anchor": [
+        2,
+        7
+      ],
+      "family": 2,
+      "kind": "f"
+    },
+    "family-2-flower-1": {
+      "frame": {
+        "x": 27,
+        "y": 43,
+        "w": 25,
+        "h": 7
+      },
+      "sourceRect": [
+        463,
+        52,
+        45,
+        7
+      ],
+      "untrimmed": [
+        45,
+        7
+      ],
+      "trim": [
+        19,
+        0
+      ],
+      "anchor": [
+        3,
+        7
+      ],
+      "family": 2,
+      "kind": "f"
+    },
+    "family-3-stem-0": {
+      "frame": {
+        "x": 54,
+        "y": 43,
+        "w": 13,
+        "h": 10
+      },
+      "sourceRect": [
+        186,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        13,
+        0
+      ],
+      "anchor": [
+        1,
+        10
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-1": {
+      "frame": {
+        "x": 69,
+        "y": 43,
+        "w": 14,
+        "h": 10
+      },
+      "sourceRect": [
+        216,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        13,
+        0
+      ],
+      "anchor": [
+        1,
+        10
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-2": {
+      "frame": {
+        "x": 85,
+        "y": 43,
+        "w": 18,
+        "h": 9
+      },
+      "sourceRect": [
+        246,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        10,
+        1
+      ],
+      "anchor": [
+        4,
+        9
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-3": {
+      "frame": {
+        "x": 105,
+        "y": 43,
+        "w": 17,
+        "h": 9
+      },
+      "sourceRect": [
+        276,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        12,
+        1
+      ],
+      "anchor": [
+        2,
+        9
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-4": {
+      "frame": {
+        "x": 124,
+        "y": 43,
+        "w": 15,
+        "h": 10
+      },
+      "sourceRect": [
+        306,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        12,
+        0
+      ],
+      "anchor": [
+        2,
+        10
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-5": {
+      "frame": {
+        "x": 141,
+        "y": 43,
+        "w": 16,
+        "h": 10
+      },
+      "sourceRect": [
+        336,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        12,
+        0
+      ],
+      "anchor": [
+        2,
+        10
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-6": {
+      "frame": {
+        "x": 159,
+        "y": 43,
+        "w": 16,
+        "h": 9
+      },
+      "sourceRect": [
+        366,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        12,
+        1
+      ],
+      "anchor": [
+        2,
+        9
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-stem-7": {
+      "frame": {
+        "x": 177,
+        "y": 43,
+        "w": 15,
+        "h": 9
+      },
+      "sourceRect": [
+        396,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        1,
+        9
+      ],
+      "family": 3,
+      "kind": "s"
+    },
+    "family-3-flower-0": {
+      "frame": {
+        "x": 194,
+        "y": 43,
+        "w": 16,
+        "h": 9
+      },
+      "sourceRect": [
+        126,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        10,
+        1
+      ],
+      "anchor": [
+        4,
+        9
+      ],
+      "family": 3,
+      "kind": "f"
+    },
+    "family-3-flower-1": {
+      "frame": {
+        "x": 212,
+        "y": 43,
+        "w": 13,
+        "h": 9
+      },
+      "sourceRect": [
+        156,
+        41,
+        29,
+        10
+      ],
+      "untrimmed": [
+        29,
+        10
+      ],
+      "trim": [
+        12,
+        1
+      ],
+      "anchor": [
+        2,
+        9
+      ],
+      "family": 3,
+      "kind": "f"
+    },
+    "family-4-stem-0": {
+      "frame": {
+        "x": 227,
+        "y": 43,
+        "w": 19,
+        "h": 12
+      },
+      "sourceRect": [
+        281,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        2,
+        12
+      ],
+      "family": 4,
+      "kind": "s"
+    },
+    "family-4-stem-1": {
+      "frame": {
+        "x": 2,
+        "y": 57,
+        "w": 16,
+        "h": 12
+      },
+      "sourceRect": [
+        321,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        1,
+        12
+      ],
+      "family": 4,
+      "kind": "s"
+    },
+    "family-4-stem-2": {
+      "frame": {
+        "x": 20,
+        "y": 57,
+        "w": 16,
+        "h": 12
+      },
+      "sourceRect": [
+        361,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        1,
+        12
+      ],
+      "family": 4,
+      "kind": "s"
+    },
+    "family-4-stem-3": {
+      "frame": {
+        "x": 38,
+        "y": 57,
+        "w": 18,
+        "h": 13
+      },
+      "sourceRect": [
+        121,
+        1,
+        39,
+        13
+      ],
+      "untrimmed": [
+        39,
+        13
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        1,
+        13
+      ],
+      "family": 4,
+      "kind": "s"
+    },
+    "family-4-stem-4": {
+      "frame": {
+        "x": 58,
+        "y": 57,
+        "w": 20,
+        "h": 12
+      },
+      "sourceRect": [
+        401,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        1,
+        12
+      ],
+      "family": 4,
+      "kind": "s"
+    },
+    "family-4-flower-0": {
+      "frame": {
+        "x": 80,
+        "y": 57,
+        "w": 24,
+        "h": 12
+      },
+      "sourceRect": [
+        161,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        10,
+        0
+      ],
+      "anchor": [
+        9,
+        12
+      ],
+      "family": 4,
+      "kind": "f"
+    },
+    "family-4-flower-1": {
+      "frame": {
+        "x": 106,
+        "y": 57,
+        "w": 23,
+        "h": 12
+      },
+      "sourceRect": [
+        201,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        10,
+        0
+      ],
+      "anchor": [
+        9,
+        12
+      ],
+      "family": 4,
+      "kind": "f"
+    },
+    "family-4-flower-2": {
+      "frame": {
+        "x": 131,
+        "y": 57,
+        "w": 23,
+        "h": 12
+      },
+      "sourceRect": [
+        241,
+        1,
+        39,
+        12
+      ],
+      "untrimmed": [
+        39,
+        12
+      ],
+      "trim": [
+        10,
+        0
+      ],
+      "anchor": [
+        9,
+        12
+      ],
+      "family": 4,
+      "kind": "f"
+    },
+    "family-5-stem-0": {
+      "frame": {
+        "x": 156,
+        "y": 57,
+        "w": 19,
+        "h": 11
+      },
+      "sourceRect": [
+        441,
+        1,
+        41,
+        11
+      ],
+      "untrimmed": [
+        41,
+        11
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        11
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-1": {
+      "frame": {
+        "x": 177,
+        "y": 57,
+        "w": 21,
+        "h": 11
+      },
+      "sourceRect": [
+        1,
+        29,
+        41,
+        11
+      ],
+      "untrimmed": [
+        41,
+        11
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        3,
+        11
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-2": {
+      "frame": {
+        "x": 200,
+        "y": 57,
+        "w": 21,
+        "h": 10
+      },
+      "sourceRect": [
+        301,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        14,
+        0
+      ],
+      "anchor": [
+        6,
+        10
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-3": {
+      "frame": {
+        "x": 223,
+        "y": 57,
+        "w": 21,
+        "h": 11
+      },
+      "sourceRect": [
+        43,
+        29,
+        41,
+        11
+      ],
+      "untrimmed": [
+        41,
+        11
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        3,
+        11
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-4": {
+      "frame": {
+        "x": 2,
+        "y": 72,
+        "w": 20,
+        "h": 10
+      },
+      "sourceRect": [
+        343,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        16,
+        0
+      ],
+      "anchor": [
+        4,
+        10
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-5": {
+      "frame": {
+        "x": 24,
+        "y": 72,
+        "w": 25,
+        "h": 9
+      },
+      "sourceRect": [
+        85,
+        52,
+        41,
+        9
+      ],
+      "untrimmed": [
+        41,
+        9
+      ],
+      "trim": [
+        15,
+        0
+      ],
+      "anchor": [
+        5,
+        9
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-6": {
+      "frame": {
+        "x": 51,
+        "y": 72,
+        "w": 19,
+        "h": 9
+      },
+      "sourceRect": [
+        127,
+        52,
+        41,
+        9
+      ],
+      "untrimmed": [
+        41,
+        9
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        9
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-7": {
+      "frame": {
+        "x": 72,
+        "y": 72,
+        "w": 18,
+        "h": 10
+      },
+      "sourceRect": [
+        385,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        3,
+        10
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-8": {
+      "frame": {
+        "x": 92,
+        "y": 72,
+        "w": 16,
+        "h": 9
+      },
+      "sourceRect": [
+        169,
+        52,
+        41,
+        9
+      ],
+      "untrimmed": [
+        41,
+        9
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        3,
+        9
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-stem-9": {
+      "frame": {
+        "x": 110,
+        "y": 72,
+        "w": 16,
+        "h": 9
+      },
+      "sourceRect": [
+        43,
+        52,
+        41,
+        9
+      ],
+      "untrimmed": [
+        41,
+        9
+      ],
+      "trim": [
+        17,
+        0
+      ],
+      "anchor": [
+        3,
+        9
+      ],
+      "family": 5,
+      "kind": "s"
+    },
+    "family-5-flower-0": {
+      "frame": {
+        "x": 128,
+        "y": 72,
+        "w": 10,
+        "h": 9
+      },
+      "sourceRect": [
+        1,
+        52,
+        41,
+        9
+      ],
+      "untrimmed": [
+        41,
+        9
+      ],
+      "trim": [
+        18,
+        0
+      ],
+      "anchor": [
+        2,
+        9
+      ],
+      "family": 5,
+      "kind": "f"
+    },
+    "family-5-flower-1": {
+      "frame": {
+        "x": 140,
+        "y": 72,
+        "w": 11,
+        "h": 10
+      },
+      "sourceRect": [
+        259,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        11,
+        0
+      ],
+      "anchor": [
+        9,
+        10
+      ],
+      "family": 5,
+      "kind": "f"
+    },
+    "family-6-stem-0": {
+      "frame": {
+        "x": 153,
+        "y": 72,
+        "w": 18,
+        "h": 9
+      },
+      "sourceRect": [
+        235,
+        52,
+        19,
+        9
+      ],
+      "untrimmed": [
+        19,
+        9
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        9,
+        9
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-stem-1": {
+      "frame": {
+        "x": 173,
+        "y": 72,
+        "w": 19,
+        "h": 9
+      },
+      "sourceRect": [
+        211,
+        52,
+        23,
+        9
+      ],
+      "untrimmed": [
+        23,
+        9
+      ],
+      "trim": [
+        3,
+        0
+      ],
+      "anchor": [
+        8,
+        9
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-stem-2": {
+      "frame": {
+        "x": 194,
+        "y": 72,
+        "w": 15,
+        "h": 10
+      },
+      "sourceRect": [
+        426,
+        41,
+        21,
+        10
+      ],
+      "untrimmed": [
+        21,
+        10
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        9,
+        10
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-stem-3": {
+      "frame": {
+        "x": 211,
+        "y": 72,
+        "w": 16,
+        "h": 9
+      },
+      "sourceRect": [
+        255,
+        52,
+        19,
+        9
+      ],
+      "untrimmed": [
+        19,
+        9
+      ],
+      "trim": [
+        3,
+        0
+      ],
+      "anchor": [
+        6,
+        9
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-stem-4": {
+      "frame": {
+        "x": 229,
+        "y": 72,
+        "w": 15,
+        "h": 7
+      },
+      "sourceRect": [
+        205,
+        110,
+        21,
+        7
+      ],
+      "untrimmed": [
+        21,
+        7
+      ],
+      "trim": [
+        6,
+        0
+      ],
+      "anchor": [
+        4,
+        7
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-stem-5": {
+      "frame": {
+        "x": 2,
+        "y": 84,
+        "w": 13,
+        "h": 8
+      },
+      "sourceRect": [
+        401,
+        52,
+        15,
+        8
+      ],
+      "untrimmed": [
+        15,
+        8
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        7,
+        8
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-stem-6": {
+      "frame": {
+        "x": 17,
+        "y": 84,
+        "w": 16,
+        "h": 7
+      },
+      "sourceRect": [
+        181,
+        110,
+        23,
+        7
+      ],
+      "untrimmed": [
+        23,
+        7
+      ],
+      "trim": [
+        7,
+        0
+      ],
+      "anchor": [
+        4,
+        7
+      ],
+      "family": 6,
+      "kind": "s"
+    },
+    "family-6-flower-0": {
+      "frame": {
+        "x": 35,
+        "y": 84,
+        "w": 14,
+        "h": 10
+      },
+      "sourceRect": [
+        427,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        13,
+        0
+      ],
+      "anchor": [
+        7,
+        10
+      ],
+      "family": 6,
+      "kind": "f"
+    },
+    "family-6-flower-1": {
+      "frame": {
+        "x": 51,
+        "y": 84,
+        "w": 15,
+        "h": 10
+      },
+      "sourceRect": [
+        469,
+        29,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        13,
+        0
+      ],
+      "anchor": [
+        7,
+        10
+      ],
+      "family": 6,
+      "kind": "f"
+    },
+    "family-6-flower-2": {
+      "frame": {
+        "x": 68,
+        "y": 84,
+        "w": 16,
+        "h": 9
+      },
+      "sourceRect": [
+        1,
+        41,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        12,
+        1
+      ],
+      "anchor": [
+        8,
+        9
+      ],
+      "family": 6,
+      "kind": "f"
+    },
+    "family-6-flower-3": {
+      "frame": {
+        "x": 86,
+        "y": 84,
+        "w": 15,
+        "h": 10
+      },
+      "sourceRect": [
+        43,
+        41,
+        41,
+        10
+      ],
+      "untrimmed": [
+        41,
+        10
+      ],
+      "trim": [
+        13,
+        0
+      ],
+      "anchor": [
+        7,
+        10
+      ],
+      "family": 6,
+      "kind": "f"
+    },
+    "family-6-flower-4": {
+      "frame": {
+        "x": 103,
+        "y": 84,
+        "w": 14,
+        "h": 9
+      },
+      "sourceRect": [
+        85,
+        41,
+        40,
+        10
+      ],
+      "untrimmed": [
+        40,
+        10
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        7,
+        9
+      ],
+      "family": 6,
+      "kind": "f"
+    },
+    "family-7-stem-0": {
+      "frame": {
+        "x": 119,
+        "y": 84,
+        "w": 13,
+        "h": 11
+      },
+      "sourceRect": [
+        151,
+        29,
+        21,
+        11
+      ],
+      "untrimmed": [
+        21,
+        11
+      ],
+      "trim": [
+        3,
+        0
+      ],
+      "anchor": [
+        7,
+        11
+      ],
+      "family": 7,
+      "kind": "s"
+    },
+    "family-7-stem-1": {
+      "frame": {
+        "x": 134,
+        "y": 84,
+        "w": 12,
+        "h": 11
+      },
+      "sourceRect": [
+        173,
+        29,
+        21,
+        11
+      ],
+      "untrimmed": [
+        21,
+        11
+      ],
+      "trim": [
+        5,
+        0
+      ],
+      "anchor": [
+        5,
+        11
+      ],
+      "family": 7,
+      "kind": "s"
+    },
+    "family-7-stem-2": {
+      "frame": {
+        "x": 148,
+        "y": 84,
+        "w": 13,
+        "h": 11
+      },
+      "sourceRect": [
+        195,
+        29,
+        21,
+        11
+      ],
+      "untrimmed": [
+        21,
+        11
+      ],
+      "trim": [
+        4,
+        0
+      ],
+      "anchor": [
+        6,
+        11
+      ],
+      "family": 7,
+      "kind": "s"
+    },
+    "family-7-flower-0": {
+      "frame": {
+        "x": 163,
+        "y": 84,
+        "w": 15,
+        "h": 11
+      },
+      "sourceRect": [
+        85,
+        29,
+        21,
+        11
+      ],
+      "untrimmed": [
+        21,
+        11
+      ],
+      "trim": [
+        3,
+        0
+      ],
+      "anchor": [
+        7,
+        11
+      ],
+      "family": 7,
+      "kind": "f"
+    },
+    "family-7-flower-1": {
+      "frame": {
+        "x": 180,
+        "y": 84,
+        "w": 15,
+        "h": 11
+      },
+      "sourceRect": [
+        107,
+        29,
+        21,
+        11
+      ],
+      "untrimmed": [
+        21,
+        11
+      ],
+      "trim": [
+        4,
+        0
+      ],
+      "anchor": [
+        6,
+        11
+      ],
+      "family": 7,
+      "kind": "f"
+    },
+    "family-7-flower-2": {
+      "frame": {
+        "x": 197,
+        "y": 84,
+        "w": 17,
+        "h": 10
+      },
+      "sourceRect": [
+        129,
+        29,
+        21,
+        11
+      ],
+      "untrimmed": [
+        21,
+        11
+      ],
+      "trim": [
+        1,
+        1
+      ],
+      "anchor": [
+        9,
+        10
+      ],
+      "family": 7,
+      "kind": "f"
+    },
+    "roots-0": {
+      "frame": {
+        "x": 216,
+        "y": 84,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        217,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "roots-1": {
+      "frame": {
+        "x": 2,
+        "y": 97,
+        "w": 21,
+        "h": 7
+      },
+      "sourceRect": [
+        433,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        17,
+        7
+      ]
+    },
+    "roots-2": {
+      "frame": {
+        "x": 25,
+        "y": 97,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        469,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "roots-3": {
+      "frame": {
+        "x": 49,
+        "y": 97,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        1,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        2,
+        0
+      ],
+      "anchor": [
+        15,
+        7
+      ]
+    },
+    "roots-4": {
+      "frame": {
+        "x": 68,
+        "y": 97,
+        "w": 18,
+        "h": 7
+      },
+      "sourceRect": [
+        37,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        2,
+        0
+      ],
+      "anchor": [
+        15,
+        7
+      ]
+    },
+    "roots-5": {
+      "frame": {
+        "x": 88,
+        "y": 97,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        73,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "roots-6": {
+      "frame": {
+        "x": 107,
+        "y": 97,
+        "w": 17,
+        "h": 7
+      },
+      "sourceRect": [
+        109,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        2,
+        0
+      ],
+      "anchor": [
+        15,
+        7
+      ]
+    },
+    "roots-7": {
+      "frame": {
+        "x": 126,
+        "y": 97,
+        "w": 23,
+        "h": 7
+      },
+      "sourceRect": [
+        145,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        17,
+        7
+      ]
+    },
+    "roots-8": {
+      "frame": {
+        "x": 151,
+        "y": 97,
+        "w": 20,
+        "h": 7
+      },
+      "sourceRect": [
+        181,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        17,
+        7
+      ]
+    },
+    "roots-9": {
+      "frame": {
+        "x": 173,
+        "y": 97,
+        "w": 20,
+        "h": 7
+      },
+      "sourceRect": [
+        253,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "roots-10": {
+      "frame": {
+        "x": 195,
+        "y": 97,
+        "w": 21,
+        "h": 7
+      },
+      "sourceRect": [
+        289,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "roots-11": {
+      "frame": {
+        "x": 218,
+        "y": 97,
+        "w": 19,
+        "h": 7
+      },
+      "sourceRect": [
+        325,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        17,
+        7
+      ]
+    },
+    "roots-12": {
+      "frame": {
+        "x": 2,
+        "y": 106,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        361,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "roots-13": {
+      "frame": {
+        "x": 26,
+        "y": 106,
+        "w": 22,
+        "h": 7
+      },
+      "sourceRect": [
+        397,
+        86,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        16,
+        7
+      ]
+    },
+    "seeds-0": {
+      "frame": {
+        "x": 50,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        217,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-1": {
+      "frame": {
+        "x": 59,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        109,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-2": {
+      "frame": {
+        "x": 68,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        433,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-3": {
+      "frame": {
+        "x": 77,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        469,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-4": {
+      "frame": {
+        "x": 86,
+        "y": 106,
+        "w": 9,
+        "h": 6
+      },
+      "sourceRect": [
+        1,
+        110,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        4,
+        6
+      ]
+    },
+    "seeds-5": {
+      "frame": {
+        "x": 97,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        37,
+        110,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-6": {
+      "frame": {
+        "x": 106,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        73,
+        110,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-7": {
+      "frame": {
+        "x": 115,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        109,
+        110,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-8": {
+      "frame": {
+        "x": 124,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        145,
+        110,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-9": {
+      "frame": {
+        "x": 133,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        253,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-10": {
+      "frame": {
+        "x": 142,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        289,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-11": {
+      "frame": {
+        "x": 151,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        325,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-12": {
+      "frame": {
+        "x": 160,
+        "y": 106,
+        "w": 9,
+        "h": 6
+      },
+      "sourceRect": [
+        361,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        4,
+        6
+      ]
+    },
+    "seeds-13": {
+      "frame": {
+        "x": 171,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        397,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-14": {
+      "frame": {
+        "x": 180,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        433,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-15": {
+      "frame": {
+        "x": 189,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        469,
+        94,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-16": {
+      "frame": {
+        "x": 198,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        1,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-17": {
+      "frame": {
+        "x": 207,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        37,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-18": {
+      "frame": {
+        "x": 216,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        73,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-19": {
+      "frame": {
+        "x": 225,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        145,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-20": {
+      "frame": {
+        "x": 234,
+        "y": 106,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        181,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-21": {
+      "frame": {
+        "x": 243,
+        "y": 106,
+        "w": 9,
+        "h": 6
+      },
+      "sourceRect": [
+        217,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        4,
+        6
+      ]
+    },
+    "seeds-22": {
+      "frame": {
+        "x": 2,
+        "y": 115,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        253,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-23": {
+      "frame": {
+        "x": 11,
+        "y": 115,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        289,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-24": {
+      "frame": {
+        "x": 20,
+        "y": 115,
+        "w": 9,
+        "h": 6
+      },
+      "sourceRect": [
+        325,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        4,
+        6
+      ]
+    },
+    "seeds-25": {
+      "frame": {
+        "x": 31,
+        "y": 115,
+        "w": 7,
+        "h": 6
+      },
+      "sourceRect": [
+        361,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        14,
+        1
+      ],
+      "anchor": [
+        3,
+        6
+      ]
+    },
+    "seeds-26": {
+      "frame": {
+        "x": 40,
+        "y": 115,
+        "w": 9,
+        "h": 6
+      },
+      "sourceRect": [
+        397,
+        102,
+        35,
+        7
+      ],
+      "untrimmed": [
+        35,
+        7
+      ],
+      "trim": [
+        13,
+        1
+      ],
+      "anchor": [
+        4,
+        6
+      ]
+    },
+    "icons-0": {
+      "frame": {
+        "x": 51,
+        "y": 115,
+        "w": 3,
+        "h": 4
+      },
+      "sourceRect": [
+        227,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-1": {
+      "frame": {
+        "x": 56,
+        "y": 115,
+        "w": 5,
+        "h": 4
+      },
+      "sourceRect": [
+        293,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-2": {
+      "frame": {
+        "x": 63,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        347,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-3": {
+      "frame": {
+        "x": 68,
+        "y": 115,
+        "w": 3,
+        "h": 4
+      },
+      "sourceRect": [
+        353,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-4": {
+      "frame": {
+        "x": 73,
+        "y": 115,
+        "w": 3,
+        "h": 4
+      },
+      "sourceRect": [
+        359,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-5": {
+      "frame": {
+        "x": 78,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        365,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-6": {
+      "frame": {
+        "x": 83,
+        "y": 115,
+        "w": 3,
+        "h": 4
+      },
+      "sourceRect": [
+        371,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-7": {
+      "frame": {
+        "x": 88,
+        "y": 115,
+        "w": 5,
+        "h": 4
+      },
+      "sourceRect": [
+        377,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-8": {
+      "frame": {
+        "x": 95,
+        "y": 115,
+        "w": 3,
+        "h": 4
+      },
+      "sourceRect": [
+        383,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-9": {
+      "frame": {
+        "x": 100,
+        "y": 115,
+        "w": 3,
+        "h": 2
+      },
+      "sourceRect": [
+        233,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-10": {
+      "frame": {
+        "x": 105,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        239,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-11": {
+      "frame": {
+        "x": 110,
+        "y": 115,
+        "w": 5,
+        "h": 3
+      },
+      "sourceRect": [
+        245,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-12": {
+      "frame": {
+        "x": 117,
+        "y": 115,
+        "w": 4,
+        "h": 4
+      },
+      "sourceRect": [
+        251,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-13": {
+      "frame": {
+        "x": 123,
+        "y": 115,
+        "w": 5,
+        "h": 3
+      },
+      "sourceRect": [
+        257,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-14": {
+      "frame": {
+        "x": 130,
+        "y": 115,
+        "w": 5,
+        "h": 3
+      },
+      "sourceRect": [
+        263,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-15": {
+      "frame": {
+        "x": 137,
+        "y": 115,
+        "w": 5,
+        "h": 3
+      },
+      "sourceRect": [
+        269,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        1
+      ],
+      "anchor": [
+        2,
+        3
+      ]
+    },
+    "icons-16": {
+      "frame": {
+        "x": 144,
+        "y": 115,
+        "w": 3,
+        "h": 2
+      },
+      "sourceRect": [
+        275,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        1
+      ],
+      "anchor": [
+        1,
+        3
+      ]
+    },
+    "icons-17": {
+      "frame": {
+        "x": 149,
+        "y": 115,
+        "w": 5,
+        "h": 3
+      },
+      "sourceRect": [
+        281,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-18": {
+      "frame": {
+        "x": 156,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        287,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-19": {
+      "frame": {
+        "x": 161,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        299,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-20": {
+      "frame": {
+        "x": 166,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        305,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-21": {
+      "frame": {
+        "x": 171,
+        "y": 115,
+        "w": 5,
+        "h": 4
+      },
+      "sourceRect": [
+        311,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-22": {
+      "frame": {
+        "x": 178,
+        "y": 115,
+        "w": 3,
+        "h": 2
+      },
+      "sourceRect": [
+        317,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-23": {
+      "frame": {
+        "x": 183,
+        "y": 115,
+        "w": 2,
+        "h": 2
+      },
+      "sourceRect": [
+        323,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        2,
+        1
+      ],
+      "anchor": [
+        0,
+        3
+      ]
+    },
+    "icons-24": {
+      "frame": {
+        "x": 187,
+        "y": 115,
+        "w": 5,
+        "h": 3
+      },
+      "sourceRect": [
+        329,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    },
+    "icons-25": {
+      "frame": {
+        "x": 194,
+        "y": 115,
+        "w": 3,
+        "h": 3
+      },
+      "sourceRect": [
+        335,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        1,
+        0
+      ],
+      "anchor": [
+        1,
+        4
+      ]
+    },
+    "icons-26": {
+      "frame": {
+        "x": 199,
+        "y": 115,
+        "w": 5,
+        "h": 4
+      },
+      "sourceRect": [
+        341,
+        110,
+        5,
+        4
+      ],
+      "untrimmed": [
+        5,
+        4
+      ],
+      "trim": [
+        0,
+        0
+      ],
+      "anchor": [
+        2,
+        4
+      ]
+    }
+  }
+}

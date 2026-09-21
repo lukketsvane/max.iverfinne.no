@@ -1,0 +1,153 @@
+{
+  "image": "ui-labels-en.png",
+  "scale": 1,
+  "size": [
+    256,
+    64
+  ],
+  "frames": {
+    "game-over": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 106,
+        "h": 14
+      },
+      "text": "GAME OVER",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "what-you-grew": {
+      "frame": {
+        "x": 110,
+        "y": 2,
+        "w": 77,
+        "h": 7
+      },
+      "text": "WHAT YOU GREW",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "global": {
+      "frame": {
+        "x": 2,
+        "y": 18,
+        "w": 70,
+        "h": 14
+      },
+      "text": "GLOBAL",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "leaderboard-title": {
+      "frame": {
+        "x": 74,
+        "y": 18,
+        "w": 130,
+        "h": 14
+      },
+      "text": "LEADERBOARD",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "all-time": {
+      "frame": {
+        "x": 206,
+        "y": 18,
+        "w": 47,
+        "h": 7
+      },
+      "text": "ALL TIME",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "play-again": {
+      "frame": {
+        "x": 2,
+        "y": 34,
+        "w": 59,
+        "h": 7
+      },
+      "text": "PLAY AGAIN",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "leaderboard-button": {
+      "frame": {
+        "x": 63,
+        "y": 34,
+        "w": 65,
+        "h": 7
+      },
+      "text": "LEADERBOARD",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "back": {
+      "frame": {
+        "x": 130,
+        "y": 34,
+        "w": 23,
+        "h": 7
+      },
+      "text": "BACK",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "you": {
+      "frame": {
+        "x": 155,
+        "y": 34,
+        "w": 17,
+        "h": 7
+      },
+      "text": "YOU",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "grow-something": {
+      "frame": {
+        "x": 2,
+        "y": 43,
+        "w": 83,
+        "h": 7
+      },
+      "text": "GROW SOMETHING",
+      "anchor": [
+        0,
+        0
+      ]
+    },
+    "next-bundle": {
+      "frame": {
+        "x": 87,
+        "y": 43,
+        "w": 65,
+        "h": 7
+      },
+      "text": "NEXT BUNDLE",
+      "anchor": [
+        0,
+        0
+      ]
+    }
+  }
+}

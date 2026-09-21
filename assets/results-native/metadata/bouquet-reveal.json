@@ -1,0 +1,140 @@
+{
+  "image": "bouquet-reveal.png",
+  "scale": 1,
+  "width": 768,
+  "height": 96,
+  "cell": [
+    96,
+    96
+  ],
+  "columns": 8,
+  "rows": 1,
+  "anchor": [
+    48,
+    91
+  ],
+  "durationMs": 120,
+  "loop": false,
+  "frames": [
+    {
+      "name": "reveal-0",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 0,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-1",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 1,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-2",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 2,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-3",
+      "frame": {
+        "x": 288,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 4,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-4",
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 6,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-5",
+      "frame": {
+        "x": 480,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 8,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-6",
+      "frame": {
+        "x": 576,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 10,
+      "durationMs": 120
+    },
+    {
+      "name": "reveal-7",
+      "frame": {
+        "x": 672,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "anchor": [
+        48,
+        91
+      ],
+      "plants": 12,
+      "durationMs": 120
+    }
+  ]
+}

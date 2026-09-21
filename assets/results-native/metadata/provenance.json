@@ -1,0 +1,55 @@
+{
+  "repository": "https://github.com/lukketsvane/max.iverfinne.no",
+  "commit": "cca0f5c46ca2a2e55bdae52569984f44499d4b11",
+  "indexBlobSha": "f222296a9bbb4e177cb7e482b28ba0b182eea236",
+  "sourceFileSha256": "33270bf54e18bd9b30114eacd0eeb014d2d5367c422b3faa2c05ae86df3403f6",
+  "sourceFunctions": {
+    "imod": "bc2e2732d59836c37c13d7c063155a6db55ae1ed1ab3f468e9164e0f98f9f70c",
+    "clamp01": "b222b02b4b1f333bddf36f991742203e047ef983e184afdf205f981d3f10a2c3",
+    "h1": "e0f7fd773b34bb76566f56688027b0475ea5001bfc93bd9f1115207de32b1783",
+    "gardenFigForm": "9253809264982ac759afd40204b89af05c19afce1069694f46c1b83740a2eaeb",
+    "drawRootAsset": "bf04ab82144f7596f08e3e06f8146d27473335108ad218105e372bc9bac08596",
+    "drawSeedAsset": "03fd8d9e0351e942d3f94f8ab8c688a55cfc85da31c617948936374f42c422f7",
+    "figmaSeg": "c6ef1871c50f4618e5503e24b5a6cfeba1272ffc2b445a76ccff1dbea9f9b794",
+    "plantTopH": "05b43d39d7d5dff141ad1a423f12f3bb97f3d8fa330f5ccf2800512533dc5f72",
+    "plantHeight": "2af27183be8f5056c5523ec192503be443ae2e3c16e85cad0cc45155a4237258",
+    "plantLean": "16b483beeb5932de41212687def821a5725fe8c0d0d19d2c6440ffc4cc3e608b",
+    "stemRuns": "274650a3a110acc6f3b055474d37753d568db54d9470ae8af51b2c4ac53895ee",
+    "paintRuns": "5cef6dcc466fcc3a82084681a6a55910e90e7cf2401b06f070222138f382b4bb",
+    "drawGrowingFigmaPlant": "8c0b658eb576db049be1f9c3d9914674d44026b8ec4a7adf74604a6792a4b74f"
+  },
+  "nativeRule": "SCALE=max(2,round(min(deviceWidth,deviceHeight)/150)); imageSmoothingEnabled=false",
+  "playerFrame": [
+    32,
+    32
+  ],
+  "plantAtlas": [
+    512,
+    118
+  ],
+  "plantResultFrame": [
+    64,
+    80
+  ],
+  "plantResultAnchor": [
+    32,
+    65
+  ],
+  "plantMatureHeight": 46,
+  "plantResultHeightCap": 58,
+  "sourceNormalization": "Only plant atlas copy: alpha threshold 128; four partial-alpha pixels affected. RGB unchanged.",
+  "referenceFiles": "Unmodified embedded source PNGs. Existing player art contains partial alpha; these are references, not newly generated sprites.",
+  "status": "Asset pack prepared for assets/results-native/ in the repository; live result UI integration is not included.",
+  "leaderboard": "Demo entries only; this repository revision has local personal bests, not a global score service.",
+  "compatibleWithCommit": "5e6b05aa65b86d86cdaddf73c5038ad18d097781",
+  "compatibilityChecks": {
+    "drawResultPlant": true,
+    "drawGrowingFigmaPlant": true,
+    "plantHeight": true,
+    "plantLean": true,
+    "figmaSeg": true,
+    "resize": true,
+    "recordGardenPlant": true,
+    "native_plant_atlas": true
+  }
+}
