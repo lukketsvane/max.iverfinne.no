@@ -80,7 +80,7 @@ async function enterRoom(code) {
   if (busy || session) return;
   busy = true; message('Connecting…');
   const candidate = new CoopSession(client, user, {
-    room: room => { game.coopRoster?.(room); if (opened && session === candidate) lobby(room); },
+    room: room => { game.coopRoster?.(room); if (opened && !candidate.playing && session === candidate) lobby(room); },
     start: network => {
       opened = false; overlay.hidden = true; cancelAnimationFrame(sceneFrame);
       settingsButton.hidden = false;
