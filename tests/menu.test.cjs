@@ -39,7 +39,7 @@ async function menu() {
     async rpc(_name, args) { saves++; row = { snapshot: args.p_snapshot, revision: saves, updated_at: '2026-09-21T16:00:00Z' }; return { data: { revision: row.revision, updated_at: row.updated_at } }; },
   };
   w.eval(await compiled);
-  w.MaxGameMenu.attach({ pause: value => pauses.push(value), summary: () => ({ started: false, ended: false }), canOpenMenu: () => !active, beginRun() { active = true; }, soundEnabled: () => sound, setSoundEnabled: value => { sound = value; } });
+  w.MaxGameMenu.attach({ pause: value => pauses.push(value), summary: () => ({ started: false, ended: false }), canOpenMenu: () => !active, beginRun() { active = true; }, exitRun() { active = false; }, soundEnabled: () => sound, setSoundEnabled: value => { sound = value; } });
   const settle = () => new Promise(resolve => setTimeout(resolve, 15));
   await settle();
   function click(text) {
@@ -68,10 +68,15 @@ test('login needs only username and password, with no save/load or in-run pause 
     assert.equal(m.w.document.querySelector('input[type="password"]'), null);
     assert.equal(m.saves, 0, 'signing in must not automatically upload a device garden');
     assert.doesNotMatch(m.w.document.body.textContent,/Save garden|Load garden/);
-    m.click('Sign out'); await m.settle(); m.click('Play');
+    m.click('Sign out'); await m.settle(); m.click('Play'); m.click('Solo');
     m.w.dispatchEvent(new m.w.KeyboardEvent('keydown',{key:'Escape'}));m.w.MaxGameMenu.open();
     assert.equal(m.pauses.at(-1),false);assert.equal(m.w.document.querySelector('.max-pause'),null);
-    assert.equal(m.w.document.querySelector('.max-menu').hidden,true);
+    assert.equal(m.w.document.querySelector('.max-menu').dataset.live,'true');
+    assert.equal(m.pauses.at(-1),false,'settings never pauses the run');
+    m.click('Back');assert.equal(m.w.document.querySelector('.max-menu').hidden,true);
+    m.w.document.querySelector('.max-live-settings').click();m.click('Exit to main menu');
+    assert.ok(m.w.document.querySelector('nav[aria-label="Main menu"]'));
+    assert.equal(m.w.document.querySelector('.max-live-settings').hidden,true);
   } finally { m.dom.window.close(); }
 });
 
@@ -81,7 +86,7 @@ test('a wrong password clears the password field and keeps guest play available'
     m.click('Garden'); m.click('Sign in / create account'); m.failAuth({ code: 'invalid_credentials' }); await m.submit();
     assert.match(m.w.document.body.textContent, /The username or password is incorrect/);
     assert.equal(m.w.document.querySelector('input[name="password"]').value, '');
-    m.click('Back'); m.click('Play'); assert.equal(m.pauses.at(-1), false);
+    m.click('Back'); m.click('Play'); m.click('Solo'); assert.equal(m.pauses.at(-1), false);
   } finally { m.dom.window.close(); }
 });
 

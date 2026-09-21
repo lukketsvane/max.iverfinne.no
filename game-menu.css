@@ -60,3 +60,15 @@
 .max-menu .max-icon-play svg{width:23px;height:23px}
 @media(orientation:landscape){.max-menu h1{left:28%;top:13%}.max-home-nav{left:28%;top:37%}}
 @media(max-height:540px) and (orientation:landscape){.max-menu h1{top:8%}.max-menu h1 .pixel-label{width:126px!important}.max-home-nav{top:29%;gap:5px}.max-menu .max-home-button{min-height:40px;padding:8px 14px}.max-menu .max-icon-play{min-height:46px}}
+.max-room-code{letter-spacing:.25em;color:#e6d28c;user-select:all;font-size:20px}
+.max-room-player{padding-left:14px;border-left:3px solid #e6d28c;text-align:left}
+.max-room-player[data-slot="2"]{border-color:#87bccf}
+.max-room-player[data-slot="3"]{border-color:#b79bcb}
+.max-room-player[data-slot="4"]{border-color:#a4bf87}
+.max-live-settings{position:fixed;z-index:42;right:max(4px,env(safe-area-inset-right));top:max(4px,env(safe-area-inset-top));width:44px;height:44px;background:none;border:0;padding:14px;opacity:.55;touch-action:manipulation;color:#d8dfcd}
+.max-live-settings svg{width:16px;height:16px;fill:currentColor}
+.max-live-settings:focus-visible{outline:1px solid #e7d997;opacity:1}
+.max-live-settings[hidden]{display:none}
+.max-menu[data-live="true"]{background:rgba(3,8,14,.18);backdrop-filter:none}
+.max-menu[data-live="true"] .max-menu-scene{display:none}
+.max-menu[data-live="true"] .max-menu-kicker{display:none}
