@@ -1,0 +1,1264 @@
+{
+  "schema": "max-native-assets/1",
+  "image": "garden-props.png",
+  "size": {
+    "w": 512,
+    "h": 256
+  },
+  "cell": {
+    "w": 64,
+    "h": 64
+  },
+  "columns": 8,
+  "rows": 4,
+  "origin": {
+    "x": 32,
+    "y": 56
+  },
+  "frames": {
+    "stations_a_00": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 24,
+        "y": 25,
+        "w": 24,
+        "h": 31
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_01": {
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 16,
+        "y": 39,
+        "w": 30,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_02": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 28,
+        "w": 16,
+        "h": 28
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_03": {
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 31,
+        "y": 29,
+        "w": 12,
+        "h": 27
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_04": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 18,
+        "y": 43,
+        "w": 28,
+        "h": 13
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_05": {
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 43,
+        "w": 18,
+        "h": 13
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_06": {
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 43,
+        "w": 18,
+        "h": 13
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_a_07": {
+      "frame": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 28,
+        "y": 44,
+        "w": 8,
+        "h": 12
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_00": {
+      "frame": {
+        "x": 0,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 29,
+        "y": 49,
+        "w": 7,
+        "h": 7
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_01": {
+      "frame": {
+        "x": 64,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 26,
+        "y": 35,
+        "w": 21,
+        "h": 21
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_02": {
+      "frame": {
+        "x": 128,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 28,
+        "y": 41,
+        "w": 6,
+        "h": 11
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_03": {
+      "frame": {
+        "x": 192,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 21,
+        "y": 28,
+        "w": 16,
+        "h": 28
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_04": {
+      "frame": {
+        "x": 256,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 19,
+        "y": 30,
+        "w": 26,
+        "h": 26
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_05": {
+      "frame": {
+        "x": 320,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 21,
+        "y": 33,
+        "w": 22,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_06": {
+      "frame": {
+        "x": 384,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 27,
+        "y": 32,
+        "w": 8,
+        "h": 24
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "stations_b_07": {
+      "frame": {
+        "x": 448,
+        "y": 64,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 19,
+        "y": 7,
+        "w": 27,
+        "h": 49
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_00": {
+      "frame": {
+        "x": 0,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 43,
+        "w": 18,
+        "h": 13
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_01": {
+      "frame": {
+        "x": 64,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 43,
+        "w": 18,
+        "h": 13
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_02": {
+      "frame": {
+        "x": 128,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 28,
+        "y": 48,
+        "w": 9,
+        "h": 7
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_03": {
+      "frame": {
+        "x": 192,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 25,
+        "y": 39,
+        "w": 11,
+        "h": 16
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_04": {
+      "frame": {
+        "x": 256,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 19,
+        "y": 20,
+        "w": 28,
+        "h": 36
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_05": {
+      "frame": {
+        "x": 320,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 26,
+        "w": 20,
+        "h": 30
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_06": {
+      "frame": {
+        "x": 384,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 29,
+        "y": 23,
+        "w": 6,
+        "h": 33
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "garden_objects_07": {
+      "frame": {
+        "x": 448,
+        "y": 128,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 22,
+        "y": 27,
+        "w": 21,
+        "h": 29
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_00": {
+      "frame": {
+        "x": 0,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 23,
+        "y": 20,
+        "w": 17,
+        "h": 34
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_01": {
+      "frame": {
+        "x": 64,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 16,
+        "y": 48,
+        "w": 28,
+        "h": 8
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_02": {
+      "frame": {
+        "x": 128,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 16,
+        "y": 51,
+        "w": 32,
+        "h": 5
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_03": {
+      "frame": {
+        "x": 192,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 17,
+        "y": 50,
+        "w": 30,
+        "h": 5
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_04": {
+      "frame": {
+        "x": 256,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 17,
+        "y": 52,
+        "w": 31,
+        "h": 4
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_05": {
+      "frame": {
+        "x": 320,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 21,
+        "y": 38,
+        "w": 24,
+        "h": 18
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_06": {
+      "frame": {
+        "x": 384,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 11,
+        "y": 38,
+        "w": 44,
+        "h": 18
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    },
+    "structures_07": {
+      "frame": {
+        "x": 448,
+        "y": 192,
+        "w": 64,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "bounds": {
+        "x": 24,
+        "y": 50,
+        "w": 17,
+        "h": 5
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 56
+        }
+      }
+    }
+  },
+  "animations": {
+    "stations_a": {
+      "frames": [
+        "stations_a_00",
+        "stations_a_01",
+        "stations_a_02",
+        "stations_a_03",
+        "stations_a_04",
+        "stations_a_05",
+        "stations_a_06",
+        "stations_a_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "stations_b": {
+      "frames": [
+        "stations_b_00",
+        "stations_b_01",
+        "stations_b_02",
+        "stations_b_03",
+        "stations_b_04",
+        "stations_b_05",
+        "stations_b_06",
+        "stations_b_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "garden_objects": {
+      "frames": [
+        "garden_objects_00",
+        "garden_objects_01",
+        "garden_objects_02",
+        "garden_objects_03",
+        "garden_objects_04",
+        "garden_objects_05",
+        "garden_objects_06",
+        "garden_objects_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "structures": {
+      "frames": [
+        "structures_00",
+        "structures_01",
+        "structures_02",
+        "structures_03",
+        "structures_04",
+        "structures_05",
+        "structures_06",
+        "structures_07"
+      ],
+      "fps": 0,
+      "loop": false
+    }
+  },
+  "spriteNames": [
+    "refill_pump",
+    "reservoir",
+    "hose_reel",
+    "nozzle_stand",
+    "charging_dock",
+    "battery_crate",
+    "repair_crate",
+    "water_tank",
+    "spare_wheel",
+    "arm_module",
+    "lantern",
+    "signpost",
+    "planter",
+    "compost_bin",
+    "fence_post",
+    "trellis",
+    "storage_chest",
+    "seed_box",
+    "mug",
+    "campfire",
+    "garden_door",
+    "garden_terminal",
+    "beacon",
+    "cabinet",
+    "hanging_planter",
+    "grass_edge",
+    "soil_edge",
+    "stone_edge",
+    "puddle_edge",
+    "short_fence",
+    "long_fence",
+    "bouquet_tie"
+  ]
+}

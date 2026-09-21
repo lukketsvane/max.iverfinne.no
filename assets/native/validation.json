@@ -1,0 +1,97 @@
+{
+  "source": {
+    "repository": "lukketsvane/max.iverfinne.no",
+    "indexSha256": "11ac649776ab24266a954f8252000509dd7056be68eded03a6bee2bb9833c3e5",
+    "plantAtlasSha256": "02a73b7685361fc0766497409e31f25416ed55e043720f623e755ed2eb0ab5b3"
+  },
+  "checks": [
+    "Exact grid dimensions",
+    "Binary alpha",
+    "Transparent RGB zero",
+    "Every individual frame equals its atlas crop",
+    "One fixed origin per animation sheet",
+    "Native source crow pixels preserved",
+    "No image resampling in exporter"
+  ],
+  "sheets": {
+    "watering-robot": {
+      "frames": 64,
+      "uniqueFrames": 45,
+      "opaquePixels": 23539,
+      "sha256": "0bab31c821918fd9fb7c33af97f3a006993db1508f4d30605e921245687418e4"
+    },
+    "watering-robot-left": {
+      "frames": 64,
+      "uniqueFrames": 45,
+      "opaquePixels": 23539,
+      "sha256": "047fd35fa2d30a7983781734a019830843109cfbccb8a29de94d069d4d07c0de"
+    },
+    "plant-thief-drone": {
+      "frames": 64,
+      "uniqueFrames": 47,
+      "opaquePixels": 8986,
+      "sha256": "8e7e79b9ef511646c13017b3f380100ccd0c01cd54439753d79278f3a23124fc"
+    },
+    "water-fx": {
+      "frames": 64,
+      "uniqueFrames": 56,
+      "opaquePixels": 761,
+      "sha256": "b65effd321dc22b23c8719e737420ff1387d1151d19d3e9df271ecb316e4ab2d"
+    },
+    "water-fx-left": {
+      "frames": 64,
+      "uniqueFrames": 56,
+      "opaquePixels": 761,
+      "sha256": "f35d84c911648cf79e072b6669c5099c8bd910a049ba7d603239a2c3d0968d64"
+    },
+    "plant-growth": {
+      "frames": 64,
+      "uniqueFrames": 64,
+      "opaquePixels": 23828,
+      "sha256": "c87bf3b1db0e321e5a2b4b89204a93e2babfa05b64d2a3292630cbe82411fc84"
+    },
+    "plant-cargo": {
+      "frames": 64,
+      "uniqueFrames": 48,
+      "opaquePixels": 19932,
+      "sha256": "f0729aa91dc41760f4b374a003399773b91e16965c51ab2a9c6f88704e29cb10"
+    },
+    "garden-props": {
+      "frames": 32,
+      "uniqueFrames": 32,
+      "opaquePixels": 6749,
+      "sha256": "2a9f7323bdc53a06a3d2be5e83301774cfb107c5692f38adb0f3fcd6157300c0"
+    },
+    "tiny-fauna": {
+      "frames": 64,
+      "uniqueFrames": 23,
+      "opaquePixels": 1480,
+      "sha256": "2926a153ab7e8061426696649ff9190fc03300ebbf8d33d925a2e043206a7838"
+    },
+    "ui-icons": {
+      "frames": 16,
+      "uniqueFrames": 16,
+      "opaquePixels": 937,
+      "sha256": "bba4fd996244c7d3a19fb367e47f90a7ca3a8adc27754f848d9d0d9b267dd7f9"
+    },
+    "interaction-fx": {
+      "frames": 64,
+      "uniqueFrames": 47,
+      "opaquePixels": 857,
+      "sha256": "f343647bfee1df07d7524e085f53b6fe348b50e36886331e0168b33e3ebf4fd6"
+    },
+    "crow-original": {
+      "frames": 64,
+      "uniqueFrames": 64,
+      "opaquePixels": 2798,
+      "sha256": "cdd6ec2565861e93ef0838124ca166b899c975a8d90e2ef3f0faa93d70f97458"
+    },
+    "drone-with-cargo": {
+      "frames": 64,
+      "uniqueFrames": 47,
+      "opaquePixels": 15592,
+      "sha256": "1c4ada7ccb7fd24eb8ac32be339fb890af72242d2340552c4a25a484d29b5d88"
+    }
+  },
+  "totalFrames": 752
+}

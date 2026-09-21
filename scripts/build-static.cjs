@@ -1,14 +1,14 @@
 'use strict';
-
-const { copyFileSync, mkdirSync, rmSync } = require('node:fs');
+const { copyFileSync, cpSync, mkdirSync, rmSync } = require('node:fs');
 const { join } = require('node:path');
-
+const { execFileSync } = require('node:child_process');
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css'];
-
-rmSync(output, { recursive: true, force: true });
-mkdirSync(output, { recursive: true });
-for (const file of files) copyFileSync(join(root, file), join(output, file));
-
-console.log(`Built ${files.length} static game files in dist/`);
+execFileSync(process.execPath, [join(__dirname,'build-native-assets.cjs')], {stdio:'inherit'});
+execFileSync(process.execPath, [join(__dirname,'build-native-review.cjs')], {stdio:'inherit'});
+const files = ['index.html','run-results.js','run-results.css','native-sprites.js','native-asset-review.html'];
+rmSync(output, { recursive:true, force:true });
+mkdirSync(output, { recursive:true });
+for (const file of files) copyFileSync(join(root,file),join(output,file));
+cpSync(join(root,'assets'),join(output,'assets'),{recursive:true});
+console.log(`Built ${files.length} static game files and native PNG assets in dist/`);

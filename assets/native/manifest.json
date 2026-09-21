@@ -1,0 +1,403 @@
+{
+  "schema": "max-native-assets/1",
+  "source": {
+    "repository": "lukketsvane/max.iverfinne.no",
+    "indexSha256": "11ac649776ab24266a954f8252000509dd7056be68eded03a6bee2bb9833c3e5",
+    "plantAtlasSha256": "02a73b7685361fc0766497409e31f25416ed55e043720f623e755ed2eb0ab5b3"
+  },
+  "pixelPolicy": {
+    "nativeScale": 1,
+    "alpha": "0 or 255",
+    "filter": "nearest",
+    "drawCoordinates": "integer",
+    "rotation": "none",
+    "trim": false
+  },
+  "palette": {
+    "o": "#0e111b",
+    "d": "#151926",
+    "n": "#1b1f2e",
+    "s": "#242a3e",
+    "v": "#38475f",
+    "m": "#5e6781",
+    "l": "#b2af99",
+    "w": "#ffffff",
+    "t": "#1e4852",
+    "u": "#315f6a",
+    "a": "#4a868d",
+    "c": "#58b1cc",
+    "b": "#3b77dc",
+    "f": "#5d93d5",
+    "g": "#0e1e1d",
+    "h": "#183427",
+    "j": "#274628",
+    "k": "#3b5a2e",
+    "e": "#54755a",
+    "q": "#80993f",
+    "r": "#a3bf59",
+    "z": "#261e18",
+    "x": "#3b2d21",
+    "y": "#6a5a44",
+    "p": "#7e7347",
+    "A": "#f5d25a",
+    "B": "#d9b350",
+    "M": "#9f469a",
+    "P": "#dba995"
+  },
+  "sheets": {
+    "watering-robot": {
+      "image": "watering-robot.png",
+      "metadata": "watering-robot.json",
+      "cell": {
+        "w": 64,
+        "h": 48
+      },
+      "size": {
+        "w": 512,
+        "h": 384
+      },
+      "origin": {
+        "x": 32,
+        "y": 44
+      },
+      "frames": 64,
+      "animations": [
+        "idle",
+        "drive",
+        "deploy",
+        "water",
+        "retract",
+        "empty",
+        "refill",
+        "sleep"
+      ],
+      "uniqueFrames": 45
+    },
+    "watering-robot-left": {
+      "image": "watering-robot-left.png",
+      "metadata": "watering-robot-left.json",
+      "cell": {
+        "w": 64,
+        "h": 48
+      },
+      "size": {
+        "w": 512,
+        "h": 384
+      },
+      "origin": {
+        "x": 32,
+        "y": 44
+      },
+      "frames": 64,
+      "animations": [
+        "idle",
+        "drive",
+        "deploy",
+        "water",
+        "retract",
+        "empty",
+        "refill",
+        "sleep"
+      ],
+      "uniqueFrames": 45
+    },
+    "plant-thief-drone": {
+      "image": "plant-thief-drone.png",
+      "metadata": "plant-thief-drone.json",
+      "cell": {
+        "w": 64,
+        "h": 48
+      },
+      "size": {
+        "w": 512,
+        "h": 384
+      },
+      "origin": {
+        "x": 32,
+        "y": 12
+      },
+      "frames": 64,
+      "animations": [
+        "hover",
+        "approach",
+        "brake",
+        "lower_claw",
+        "grip",
+        "lift",
+        "carry",
+        "release"
+      ],
+      "uniqueFrames": 47
+    },
+    "water-fx": {
+      "image": "water-fx.png",
+      "metadata": "water-fx.json",
+      "cell": {
+        "w": 64,
+        "h": 48
+      },
+      "size": {
+        "w": 512,
+        "h": 384
+      },
+      "origin": {
+        "x": 32,
+        "y": 44
+      },
+      "frames": 64,
+      "animations": [
+        "spray",
+        "arc",
+        "drips",
+        "splash",
+        "refill_stream",
+        "leak",
+        "ripples",
+        "bubbles"
+      ],
+      "uniqueFrames": 56
+    },
+    "water-fx-left": {
+      "image": "water-fx-left.png",
+      "metadata": "water-fx-left.json",
+      "cell": {
+        "w": 64,
+        "h": 48
+      },
+      "size": {
+        "w": 512,
+        "h": 384
+      },
+      "origin": {
+        "x": 32,
+        "y": 44
+      },
+      "frames": 64,
+      "animations": [
+        "spray",
+        "arc",
+        "drips",
+        "splash",
+        "refill_stream",
+        "leak",
+        "ripples",
+        "bubbles"
+      ],
+      "uniqueFrames": 56
+    },
+    "plant-growth": {
+      "image": "plant-growth.png",
+      "metadata": "plant-growth.json",
+      "cell": {
+        "w": 64,
+        "h": 96
+      },
+      "size": {
+        "w": 512,
+        "h": 768
+      },
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "frames": 64,
+      "animations": [
+        "bell",
+        "branch",
+        "vine",
+        "spray",
+        "arch",
+        "fork",
+        "starburst",
+        "cluster"
+      ],
+      "uniqueFrames": 64
+    },
+    "plant-cargo": {
+      "image": "plant-cargo.png",
+      "metadata": "plant-cargo.json",
+      "cell": {
+        "w": 64,
+        "h": 64
+      },
+      "size": {
+        "w": 512,
+        "h": 512
+      },
+      "origin": {
+        "x": 32,
+        "y": 48
+      },
+      "frames": 64,
+      "animations": [
+        "bell",
+        "branch",
+        "vine",
+        "spray",
+        "arch",
+        "fork",
+        "starburst",
+        "cluster"
+      ],
+      "uniqueFrames": 48
+    },
+    "garden-props": {
+      "image": "garden-props.png",
+      "metadata": "garden-props.json",
+      "cell": {
+        "w": 64,
+        "h": 64
+      },
+      "size": {
+        "w": 512,
+        "h": 256
+      },
+      "origin": {
+        "x": 32,
+        "y": 56
+      },
+      "frames": 32,
+      "animations": [
+        "stations_a",
+        "stations_b",
+        "garden_objects",
+        "structures"
+      ],
+      "uniqueFrames": 32
+    },
+    "tiny-fauna": {
+      "image": "tiny-fauna.png",
+      "metadata": "tiny-fauna.json",
+      "cell": {
+        "w": 16,
+        "h": 16
+      },
+      "size": {
+        "w": 128,
+        "h": 128
+      },
+      "origin": {
+        "x": 8,
+        "y": 14
+      },
+      "frames": 64,
+      "animations": [
+        "ant",
+        "bee",
+        "firefly",
+        "butterfly",
+        "worm",
+        "beetle",
+        "snail",
+        "pillbug"
+      ],
+      "uniqueFrames": 23
+    },
+    "ui-icons": {
+      "image": "ui-icons.png",
+      "metadata": "ui-icons.json",
+      "cell": {
+        "w": 16,
+        "h": 16
+      },
+      "size": {
+        "w": 128,
+        "h": 32
+      },
+      "origin": {
+        "x": 8,
+        "y": 8
+      },
+      "frames": 16,
+      "animations": [
+        "status",
+        "actions"
+      ],
+      "uniqueFrames": 16
+    },
+    "interaction-fx": {
+      "image": "interaction-fx.png",
+      "metadata": "interaction-fx.json",
+      "cell": {
+        "w": 32,
+        "h": 32
+      },
+      "size": {
+        "w": 256,
+        "h": 256
+      },
+      "origin": {
+        "x": 16,
+        "y": 24
+      },
+      "frames": 64,
+      "animations": [
+        "soil_burst",
+        "growth_spark",
+        "pickup",
+        "alert",
+        "leaf_fall",
+        "hit",
+        "success",
+        "empty_water"
+      ],
+      "uniqueFrames": 47
+    },
+    "crow-original": {
+      "image": "crow-original.png",
+      "metadata": "crow-original.json",
+      "cell": {
+        "w": 20,
+        "h": 16
+      },
+      "size": {
+        "w": 160,
+        "h": 128
+      },
+      "origin": {
+        "x": 10,
+        "y": 12
+      },
+      "frames": 64,
+      "animations": [
+        "idle",
+        "walk",
+        "run",
+        "peck",
+        "takeoff",
+        "flap",
+        "flight",
+        "landing"
+      ],
+      "uniqueFrames": 64
+    },
+    "drone-with-cargo": {
+      "image": "drone-with-cargo.png",
+      "metadata": "drone-with-cargo.json",
+      "cell": {
+        "w": 64,
+        "h": 96
+      },
+      "size": {
+        "w": 512,
+        "h": 768
+      },
+      "origin": {
+        "x": 32,
+        "y": 12
+      },
+      "frames": 64,
+      "animations": [
+        "hover",
+        "approach",
+        "brake",
+        "lower_claw",
+        "grip",
+        "lift",
+        "carry",
+        "release"
+      ],
+      "uniqueFrames": 47
+    }
+  }
+}

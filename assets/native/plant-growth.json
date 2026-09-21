@@ -1,0 +1,2664 @@
+{
+  "schema": "max-native-assets/1",
+  "image": "plant-growth.png",
+  "size": {
+    "w": 512,
+    "h": 768
+  },
+  "cell": {
+    "w": 64,
+    "h": 96
+  },
+  "columns": 8,
+  "rows": 8,
+  "origin": {
+    "x": 32,
+    "y": 84
+  },
+  "frames": {
+    "bell_00": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "bell_01": {
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 76,
+        "w": 29,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "bell_02": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 70,
+        "w": 29,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "bell_03": {
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 59,
+        "w": 32,
+        "h": 34
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "bell_04": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 51,
+        "w": 32,
+        "h": 42
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "bell_05": {
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 42,
+        "w": 32,
+        "h": 51
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "bell_06": {
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 34,
+        "w": 32,
+        "h": 59
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "bell_07": {
+      "frame": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 15,
+        "w": 32,
+        "h": 78
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "branch_00": {
+      "frame": {
+        "x": 0,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "branch_01": {
+      "frame": {
+        "x": 64,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 76,
+        "w": 37,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "branch_02": {
+      "frame": {
+        "x": 128,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 12,
+        "y": 70,
+        "w": 40,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "branch_03": {
+      "frame": {
+        "x": 192,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 12,
+        "y": 58,
+        "w": 40,
+        "h": 35
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "branch_04": {
+      "frame": {
+        "x": 256,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 12,
+        "y": 48,
+        "w": 40,
+        "h": 45
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "branch_05": {
+      "frame": {
+        "x": 320,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 12,
+        "y": 41,
+        "w": 41,
+        "h": 52
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "branch_06": {
+      "frame": {
+        "x": 384,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 12,
+        "y": 33,
+        "w": 41,
+        "h": 60
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "branch_07": {
+      "frame": {
+        "x": 448,
+        "y": 96,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 12,
+        "y": 12,
+        "w": 41,
+        "h": 81
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "vine_00": {
+      "frame": {
+        "x": 0,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "vine_01": {
+      "frame": {
+        "x": 64,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 76,
+        "w": 39,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "vine_02": {
+      "frame": {
+        "x": 128,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 13,
+        "y": 70,
+        "w": 42,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "vine_03": {
+      "frame": {
+        "x": 192,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 13,
+        "y": 59,
+        "w": 42,
+        "h": 34
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "vine_04": {
+      "frame": {
+        "x": 256,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 13,
+        "y": 51,
+        "w": 42,
+        "h": 42
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "vine_05": {
+      "frame": {
+        "x": 320,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 13,
+        "y": 42,
+        "w": 42,
+        "h": 51
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "vine_06": {
+      "frame": {
+        "x": 384,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 13,
+        "y": 34,
+        "w": 42,
+        "h": 59
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "vine_07": {
+      "frame": {
+        "x": 448,
+        "y": 192,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 10,
+        "y": 15,
+        "w": 45,
+        "h": 78
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "spray_00": {
+      "frame": {
+        "x": 0,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "spray_01": {
+      "frame": {
+        "x": 64,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 76,
+        "w": 30,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "spray_02": {
+      "frame": {
+        "x": 128,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 70,
+        "w": 30,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "spray_03": {
+      "frame": {
+        "x": 192,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 57,
+        "w": 30,
+        "h": 36
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "spray_04": {
+      "frame": {
+        "x": 256,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 49,
+        "w": 30,
+        "h": 44
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "spray_05": {
+      "frame": {
+        "x": 320,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 40,
+        "w": 30,
+        "h": 53
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "spray_06": {
+      "frame": {
+        "x": 384,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 32,
+        "w": 30,
+        "h": 61
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "spray_07": {
+      "frame": {
+        "x": 448,
+        "y": 288,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 13,
+        "w": 30,
+        "h": 80
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "arch_00": {
+      "frame": {
+        "x": 0,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 28,
+        "y": 78,
+        "w": 9,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "arch_01": {
+      "frame": {
+        "x": 64,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 73,
+        "w": 34,
+        "h": 20
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "arch_02": {
+      "frame": {
+        "x": 128,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 70,
+        "w": 34,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "arch_03": {
+      "frame": {
+        "x": 192,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 54,
+        "w": 34,
+        "h": 39
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "arch_04": {
+      "frame": {
+        "x": 256,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 46,
+        "w": 35,
+        "h": 47
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "arch_05": {
+      "frame": {
+        "x": 320,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 37,
+        "w": 35,
+        "h": 56
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "arch_06": {
+      "frame": {
+        "x": 384,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 29,
+        "w": 35,
+        "h": 64
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "arch_07": {
+      "frame": {
+        "x": 448,
+        "y": 384,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 10,
+        "w": 35,
+        "h": 83
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "fork_00": {
+      "frame": {
+        "x": 0,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "fork_01": {
+      "frame": {
+        "x": 64,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 76,
+        "w": 36,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "fork_02": {
+      "frame": {
+        "x": 128,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 70,
+        "w": 36,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "fork_03": {
+      "frame": {
+        "x": 192,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 56,
+        "w": 36,
+        "h": 37
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "fork_04": {
+      "frame": {
+        "x": 256,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 49,
+        "w": 36,
+        "h": 44
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "fork_05": {
+      "frame": {
+        "x": 320,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 39,
+        "w": 36,
+        "h": 54
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "fork_06": {
+      "frame": {
+        "x": 384,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 32,
+        "w": 36,
+        "h": 61
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "fork_07": {
+      "frame": {
+        "x": 448,
+        "y": 480,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 16,
+        "y": 12,
+        "w": 36,
+        "h": 81
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "starburst_00": {
+      "frame": {
+        "x": 0,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "starburst_01": {
+      "frame": {
+        "x": 64,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 76,
+        "w": 27,
+        "h": 17
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "starburst_02": {
+      "frame": {
+        "x": 128,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 70,
+        "w": 27,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "starburst_03": {
+      "frame": {
+        "x": 192,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 56,
+        "w": 27,
+        "h": 37
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "starburst_04": {
+      "frame": {
+        "x": 256,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 49,
+        "w": 27,
+        "h": 44
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "starburst_05": {
+      "frame": {
+        "x": 320,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 39,
+        "w": 27,
+        "h": 54
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "starburst_06": {
+      "frame": {
+        "x": 384,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 31,
+        "w": 27,
+        "h": 62
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "starburst_07": {
+      "frame": {
+        "x": 448,
+        "y": 576,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 17,
+        "y": 13,
+        "w": 27,
+        "h": 80
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    },
+    "cluster_00": {
+      "frame": {
+        "x": 0,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 29,
+        "y": 78,
+        "w": 7,
+        "h": 6
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        }
+      }
+    },
+    "cluster_01": {
+      "frame": {
+        "x": 64,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 74,
+        "w": 24,
+        "h": 19
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 73
+        }
+      }
+    },
+    "cluster_02": {
+      "frame": {
+        "x": 128,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 70,
+        "w": 24,
+        "h": 23
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 67
+        }
+      }
+    },
+    "cluster_03": {
+      "frame": {
+        "x": 192,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 55,
+        "w": 25,
+        "h": 38
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 59
+        }
+      }
+    },
+    "cluster_04": {
+      "frame": {
+        "x": 256,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 47,
+        "w": 26,
+        "h": 46
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 51
+        }
+      }
+    },
+    "cluster_05": {
+      "frame": {
+        "x": 320,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 39,
+        "w": 25,
+        "h": 54
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 42
+        }
+      }
+    },
+    "cluster_06": {
+      "frame": {
+        "x": 384,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 30,
+        "w": 25,
+        "h": 63
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 34
+        }
+      }
+    },
+    "cluster_07": {
+      "frame": {
+        "x": 448,
+        "y": 672,
+        "w": 64,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 96
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "origin": {
+        "x": 32,
+        "y": 84
+      },
+      "bounds": {
+        "x": 15,
+        "y": 11,
+        "w": 26,
+        "h": 82
+      },
+      "sockets": {
+        "ground": {
+          "x": 32,
+          "y": 84
+        },
+        "grip": {
+          "x": 32,
+          "y": 15
+        }
+      }
+    }
+  },
+  "animations": {
+    "bell": {
+      "frames": [
+        "bell_00",
+        "bell_01",
+        "bell_02",
+        "bell_03",
+        "bell_04",
+        "bell_05",
+        "bell_06",
+        "bell_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "branch": {
+      "frames": [
+        "branch_00",
+        "branch_01",
+        "branch_02",
+        "branch_03",
+        "branch_04",
+        "branch_05",
+        "branch_06",
+        "branch_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "vine": {
+      "frames": [
+        "vine_00",
+        "vine_01",
+        "vine_02",
+        "vine_03",
+        "vine_04",
+        "vine_05",
+        "vine_06",
+        "vine_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "spray": {
+      "frames": [
+        "spray_00",
+        "spray_01",
+        "spray_02",
+        "spray_03",
+        "spray_04",
+        "spray_05",
+        "spray_06",
+        "spray_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "arch": {
+      "frames": [
+        "arch_00",
+        "arch_01",
+        "arch_02",
+        "arch_03",
+        "arch_04",
+        "arch_05",
+        "arch_06",
+        "arch_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "fork": {
+      "frames": [
+        "fork_00",
+        "fork_01",
+        "fork_02",
+        "fork_03",
+        "fork_04",
+        "fork_05",
+        "fork_06",
+        "fork_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "starburst": {
+      "frames": [
+        "starburst_00",
+        "starburst_01",
+        "starburst_02",
+        "starburst_03",
+        "starburst_04",
+        "starburst_05",
+        "starburst_06",
+        "starburst_07"
+      ],
+      "fps": 0,
+      "loop": false
+    },
+    "cluster": {
+      "frames": [
+        "cluster_00",
+        "cluster_01",
+        "cluster_02",
+        "cluster_03",
+        "cluster_04",
+        "cluster_05",
+        "cluster_06",
+        "cluster_07"
+      ],
+      "fps": 0,
+      "loop": false
+    }
+  },
+  "sequenceType": "growth states, not a time loop",
+  "source": "Original PA.fam segments, unchanged RGB and native dimensions. Four nearly invisible source-alpha pixels are excluded from binary export."
+}
