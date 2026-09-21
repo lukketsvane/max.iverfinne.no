@@ -2,9 +2,9 @@ name: Native pixel asset validation
 on:
   push:
     branches: [main, 'codex/native-pixel-assets']
-    paths: ['assets/**', 'native-*', 'scripts/*native*', 'scripts/build-static.cjs', 'tests/*asset*', '.github/workflows/native-assets.yml']
+    paths: ['assets/**', 'native-*', 'scripts/*native*', 'tests/*asset*', '.github/workflows/native-assets.yml']
   pull_request:
-    paths: ['assets/**', 'native-*', 'scripts/*native*', 'scripts/build-static.cjs', 'tests/*asset*', '.github/workflows/native-assets.yml']
+    paths: ['assets/**', 'native-*', 'scripts/*native*', 'tests/*asset*', '.github/workflows/native-assets.yml']
 permissions:
   contents: read
 jobs:
@@ -15,8 +15,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install current game dependencies when a lockfile exists
+        run: if test -f package-lock.json; then npm ci; fi
       - run: npm test
       - run: npm run build
+      - run: node scripts/stage-native-assets.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: native-pixel-assets
@@ -26,4 +29,5 @@ jobs:
             native-asset-review.html
             scripts/build-native-assets.cjs
             scripts/build-native-review.cjs
+            scripts/stage-native-assets.cjs
           retention-days: 14
