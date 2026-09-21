@@ -6,7 +6,8 @@ then climb a beanstalk to the next world. Your result is the garden you grew.
 ## Run locally
 
 Serve this directory with any static server, for example `python -m http.server 8765`.
-Open `http://localhost:8765`. There is no build step or runtime dependency.
+Open `http://localhost:8765`. There is no runtime dependency. For deployment,
+`npm run build` copies the three game files into `dist/` without changing them.
 
 - `index.html`: game, original embedded artwork and simulation.
 - `run-results.js` / `run-results.css`: paged result garden using the game's plant atlas.
@@ -57,8 +58,14 @@ project (`prj_VQXHj0WNLhHH0OplajrjZ5Q4LH9F`). The repository's former
 project. That stale local link is removed. A merge into this repository alone
 does not establish that the domain will serve the new commit.
 
-Before publishing, connect this repository to its intended static Vercel project
-and verify the domain against the exact deployment. Do not deploy this game over
-the unrelated project or change the TV site's deployment in order to preview it.
+The repository has since been connected to the **max.iverfinne.no** Vercel project
+(`prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`). Its old Next.js preset is overridden by
+`vercel.json`: Other framework, no dependency install, and a static `dist/` build.
+The legacy hard-coded alias is removed; domain assignment belongs in that
+project's Vercel settings. Preview branches can now deploy independently.
+
+Before publishing, verify the custom domain against the exact deployment.
+At the connection check it was still attached to the TV project. Do not deploy
+this game over the unrelated project or change the TV site's deployment to preview it.
 The legacy live workflow is only a smoke check; it does not prove byte-for-byte
 equality between main and the public site.
