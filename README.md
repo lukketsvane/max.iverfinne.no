@@ -27,10 +27,19 @@ holds never queue plant actions or walk to targets. Tap pests to defend.
 Tap the robot nearby to refill. Moving cancels a hand action immediately.
 
 Keyboard: Left / Right (or A / D) to move, Up (or W) to jump, Down / Space to
-tend the garden, Shift to run, B to defend, L for the lantern and R to refill.
-There is no in-run menu or pause button. Upgrade offers are three live icons:
-tap one or use keys 1–3 while the run continues. Reloading always starts a fresh
-attempt; no local or cloud checkpoint is written or loaded. The browser may
+tend the garden, Shift to run, X to dodge, B to defend, L for the lantern and R
+to refill. Settings and Exit are available during play and leave the world
+running. Only boon choices pause an active run; in co-op everyone chooses
+before the team resumes. Tap a boon or use keys 1–3.
+
+Choose Mech, Runner, Bulwark or Herbalist before Solo or Together. Classes
+provide different starting abilities and remain open to every boon path. Moss,
+Tide, Ember and Moon are independent costumes with the original animation
+timings and anchors. Together supports a private room of 1–4 signed-in players;
+the host starts after each player's class, costume and readiness are confirmed.
+
+Reloading always starts a fresh attempt; no local or cloud checkpoint is
+written or loaded. Finished garden records remain available. The browser may
 suspend a background page, but this creates no resumable saved run.
 
 ## Accounts and Supabase
@@ -43,10 +52,13 @@ refreshable sessions. The frontend never stores the password, and does not use
 IP addresses as identity. The reserved identifier is an implementation detail,
 not a player contact address. There is no email-based password recovery.
 
-Only finished-run personal bests, sound preferences and remembered login persist.
+Only finished garden records, sound preferences and remembered login persist.
 There are no save/load controls. Old cloud data and its protected database schema
 are left intact, but the current frontend never reads or writes that slot.
-Personal records are local, not verified global leaderboard entries.
+Garden records are saved on the device. A signed-in player can choose to publish
+a completed bouquet to the online leaderboard. Each published entry retains its
+complete plant records; it never reads a private checkpoint. Published runs are
+client-reported, rather than server-verified competitive scores.
 
 Project: `zuezxsuqkvrzypjhbbqq`.
 
@@ -98,54 +110,62 @@ points or artificial growth. A harvest needs 0.35 new growth since the previous
 one. Tall plants keep their height. Mutation ranks stop at five, offers span
 different play styles, and surplus XP retains every earned choice.
 
-Each raid has a fixed enemy budget. Faster defence clears it sooner. Time in the
-current world adds bounded pressure every 90 active seconds: up to three extra
-enemies, 18% movement and 15% damage. Time continues during upgrade choices; browser background suspension does not
-advance pressure. An approaching wave gives three brief edge flashes and chimes.
+Each raid has a fixed enemy budget. Faster defence clears it sooner. Pressure
+increases continuously with active run time and garden number, carrying across
+travel. It increases enemy movement and damage, and affects the health and
+finite budget of later encounters. Boon choices freeze this clock; Settings
+does not. An approaching wave gives three brief edge flashes and chimes.
+
+The run ends at the three-phase Hollow Crown in garden 20. Three encounters
+unlock each earlier garden's exit stalk. Optional shrine routes and passing
+weather events offer rewards at the cost of time. Swan feathers, embers and dew
+pearls stack independently per player. See [the run design](docs/run-design.md)
+for exact progression and counterplay.
 
 Every attempt starts at world one. The run keeps its full bouquet across worlds
-in memory and displays it on death. Only completed personal-best statistics are
-stored, once per finished attempt. Old v6/v7 checkpoints are ignored.
+in memory and displays it when the attempt ends. Each finished attempt stores
+its complete plant records and updates personal-best statistics on this device.
+Completed bouquets remain available after reload and retry. Old v6/v7
+checkpoints are ignored.
 
-## Deployment audit (21 September 2026)
+## Deployment and database
 
-The audited main commit was `1283708c708ef65609c1b3af1d51733a2a048d78`.
-It lacked the supplied beanstalk/world-progression prototype. Those changes are
-restored here without the prototype's four automatically planted demo crops.
+The connected Vercel project is **max.iverfinne.no**
+(`prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`). `vercel.json` selects the Other framework,
+`npm ci`, and the static `dist/` build. Pushes to a branch create a preview;
+`main` is the production branch. Verify the deployment's commit and the custom
+domain before calling a release live.
 
-Live Vercel inspection found `max.iverfinne.no` attached to the **tv.iverfinne.no**
-project (`prj_VQXHj0WNLhHH0OplajrjZ5Q4LH9F`). The repository's former
-`.vercel/project.json` pointed to **v0-image-analysis-xy_gitless**, an unrelated
-project. That stale local link is removed. A merge into this repository alone
-does not establish that the domain will serve the new commit.
+The hosted bouquet migration is
+`20260921204258_bouquet_leaderboard.sql`. It creates public read access to
+published personal bests, a private immutable submission receipt, and the
+ownership-checked `submit_max_garden` RPC. Direct client writes are denied.
+No private saved game is copied into the leaderboard.
 
-The repository has since been connected to the **max.iverfinne.no** Vercel project
-(`prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`). Its old Next.js preset is overridden by
-`vercel.json`: Other framework, `npm ci`, and a static `dist/` build.
-The legacy hard-coded alias is removed; domain assignment belongs in that
-project's Vercel settings. Preview branches can now deploy independently.
-
-Before publishing, verify the custom domain against the exact deployment.
-At the connection check it was still attached to the TV project. Do not deploy
-this game over the unrelated project or change the TV site's deployment to preview it.
-The legacy live workflow is only a smoke check; it does not prove byte-for-byte
-equality between main and the public site.
-
+The earlier room migration was applied under hosted version `20260921182418`.
+The local file retains its original generated version `20260921180722`; reconcile
+that existing migration history before using CLI `db push`. The two earlier
+cloud-save migrations were applied manually as documented above. Do not apply
+already-installed schemas again.
 
 ## Companion and result artwork
 
-Every new run starts with the small watering companion. It follows Max, approaches
+Mech starts with the small watering companion; other classes can unlock one
+with their first Companion boon. It follows its owner, approaches
 reachable thirsty plants, and transfers water from a finite tank up to 78%
 moisture. It gives no care-score, XP, healing or instant growth. Tap the robot or
 press R while nearby, then stay still for the two-second refill.
 Ponds and steep ground block its walking route. It packs away during climbing
 and world travel and rejoins after leaving the visible garden.
 
-The `robot` run upgrade has two ranks and competes with the normal upgrade
-choices. Small / upgraded / large tanks hold 1 / 1.6 / 2.4 units, with watering
+The `robot` run upgrade unlocks the companion and then has two further upgrades,
+competing with normal boon choices. Small / upgraded / large tanks hold
+1 / 1.6 / 2.4 units, with watering
 rates of 0.10 / 0.13 / 0.16 moisture per second. Both upgrades reset on a new run.
 Water remains consistent during world travel within the current attempt. Reload
-or retry creates the small robot with a fresh tank. All UI text is English.
+or retry clears companion upgrades: Mech starts with the small robot and a fresh
+tank; other classes begin without a robot until they choose a Companion boon.
+All UI text is English.
 
 Artwork is imported without resampling: the 32×32 starter from
 `fix/native-sprite-contract` at `31805b7`, the supplied 48×40 robot developer pack,
@@ -154,16 +174,21 @@ padding; the visible robots are 20–22, 29 and 31 pixels tall. Each tier uses i
 own documented anchor and animation timing. The small rover uses the supplied
 separate spray; larger watering frames already contain it.
 
-The incoming `assets/results-native/` pack at `205aae9` supplies the bouquet
+The `assets/results-native/` pack at `205aae9` supplies the bouquet
 compositor and 5×7 font. The live result uses `rogueRun.garden`, the original
 plant drawing callback and the original landscape/Max sprites. Each bundle
 contains up to 24 records; previous/next controls retain every plant in longer
 runs. Static example bouquets and sample leaderboard names are never used as a
-player result. Garden Records shows personal bests on this device.
+player result. Garden Records retains completed runs on this device, and the
+online leaderboard renders each published entry from its own saved plants.
 
 `/review.html` offers portrait/landscape result fixtures, empty and 53-plant
-runs, and all three companion tiers. Its game copy replaces storage with an
-in-memory map and uses a disconnected guest menu; sample runs never replace player saves.
+runs, all three companion tiers, all five Max appearances, enemy animation
+states, and the Hollow Crown's three phases and attack tells. The native art
+fixtures are `native-skins`, `native-enemies` and `native-crown`; choose one with
+`?mode=native-skins&portrait=1`, or use the review page buttons. Its game copy
+replaces storage with an in-memory map and uses a disconnected guest menu;
+sample runs never replace player saves.
 The production game exports no debug API.
 
 The main menu uses native game sprites in a separate night scene with Play,

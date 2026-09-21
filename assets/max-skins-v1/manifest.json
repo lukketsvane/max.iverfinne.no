@@ -1,0 +1,22 @@
+{
+  "schema": "max-native-pack/v1",
+  "id": "max-skins-v1",
+  "assets": [
+    {
+      "id": "moss",
+      "manifest": "moss/atlas.json"
+    },
+    {
+      "id": "tide",
+      "manifest": "tide/atlas.json"
+    },
+    {
+      "id": "ember",
+      "manifest": "ember/atlas.json"
+    },
+    {
+      "id": "moon",
+      "manifest": "moon/atlas.json"
+    }
+  ]
+}

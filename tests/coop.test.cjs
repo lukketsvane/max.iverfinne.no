@@ -33,7 +33,7 @@ test('every player receives their own boon; the team resumes only after all choo
   const first=host.rogueRun.choice[0].id;host.chooseRoguePerk(first);
   assert.equal(host.runIsPaused(),true);assert.equal(host.rogueRun.perks[first],1);
   for(let i=1;i<4;i++){const g=games[i].game;g.chooseRoguePerk(g.rogueRun.choice[i%3].id);send(i,games[i].pending);}
-  sync();games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(Object.values(h.game.rogueRun.perks).reduce((a,b)=>a+b,0),1);});
+  sync();games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(Object.values(h.game.rogueRun.perks).reduce((a,b)=>a+b,0),2,'one earned boon plus the Mech starting rover');});
   host.grantRogueXP(7);sync();host.chooseRoguePerk(host.rogueRun.choice[0].id);
   for(let i=1;i<4;i++)host.coopDepart(ids[i]);
   assert.equal(host.runIsPaused(),false,'disconnected players cannot hold a boon open');

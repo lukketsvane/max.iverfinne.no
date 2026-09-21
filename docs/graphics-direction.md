@@ -42,9 +42,9 @@ and leaving original uploads unchanged. AAC keeps the long track under the uploa
 `scripts/build-static.cjs` copies them into the build. Physical iPhone playback
 still needs a device check; lifecycle behaviour is exercised automatically.
 
-Validation: all 81 tests and the production build pass, including gesture start,
-both-track cycling, mute, background/foreground position, blocked playback,
-missing tracks and disposal. Both complete recordings are retained.
+Validation covers gesture start, both-track cycling, mute,
+background/foreground position, blocked playback, missing tracks and disposal.
+Both complete recordings are retained.
 
 ## Remaining result work
 
@@ -53,11 +53,39 @@ developer should verify saved stalk/growth appearance and complete run records
 for every leaderboard entry against the approved reference. This graphics pass
 does not replace that data/gameplay integration.
 
-## Next co-op art handoff
+## Native co-op art integration
 
-Main developer requested four recognisable cosmetic Max skins, separate from
-build paths. Preserve 32×32 cells, anchor (16,31), roughly 11×24 standing
-silhouette, existing rows/timings and binary alpha. Deliver matching main and
-interaction sheets, JSON and an actual-scale contact sheet. Distinguish
-accessories/silhouettes as well as palette. These assets are not part of the
-soundtrack PR. Future scenery layers must contain no baked text/buttons.
+Four cosmetic Max skins are integrated independently of Mech, Runner, Bulwark
+and Herbalist class choice: Moss (hood/satchel), Tide (rain hood/collar), Ember
+(headband/ribbon), and Moon (cape/cap). Original Max remains available. The
+current costumes supply the class selection; they do not change class powers.
+Each skin retains the original 32×32 cells, anchor (16,31), animation rows,
+timings and gameplay event markers. All exported pixels have binary alpha.
+
+`native-art.mjs` preloads each complete main/interaction pair once. `drawPlayer`
+uses the selected player's sheets while retaining all original animation and
+water-clipping behavior. Missing or loading art falls back to original Max.
+Co-op snapshots carry each player's cosmetic selection separately from class.
+
+The same module integrates the four 16×16 role enemies and 32×32 Hollow Crown.
+Enemy world coordinates remain body centres; rendering converts them to the
+documented foot/hover anchor without moving physics or hitboxes. Windup frames
+follow the actual tell timer. All three Crown phases retain the complete cyan
+exposure window, and their health lights track the native crown. Healing links,
+elite marks, amber attack tells and damage flash remain visible overlays.
+
+Animation clocks are local to each visual state and survive replacement objects
+from co-op snapshots through the existing enemy seed. Death effects are separate
+from damage, rewards and victory. Retrying clears these visual clocks/effects.
+Each failed enemy asset keeps its original primitive renderer. The production
+build copies runtime sheets/JSON only; source masters and contact previews stay
+in the repository.
+
+Validation: `scripts/verify-native-art.py` checks all 896 cells and 152 clips,
+including palettes, alpha, bounds, foot registration and original hit/pour
+markers. `tests/native-art.test.cjs` checks loading failure isolation, original
+fallback, exact source frames/native scale, co-op animation continuity,
+timer-driven tells, Crown phases/exposure, specials and death cleanup.
+`review.html` provides isolated `native-skins`, `native-enemies` and
+`native-crown` fixtures using the actual game renderer, including portrait mode.
+Future scenery layers must contain no baked text/buttons.

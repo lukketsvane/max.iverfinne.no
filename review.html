@@ -1,14 +1,16 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAX · visual review</title>
 <style>body{margin:20px;background:#111;color:#eee;font:14px monospace}nav{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}button{padding:12px;background:#253026;color:#eee;border:1px solid #889279}iframe{display:block;border:1px solid #444;max-width:100%;background:#111}p{max-width:70em;line-height:1.6}</style>
 <h1>MAX · visual review</h1><p>Isolated fixtures using the actual game renderer. These sample gardens do not read or change your saves.</p>
-<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button><button id="rotate">Portrait / landscape</button></nav><p id="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
+<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button><button id="rotate">Portrait / landscape</button></nav><p id="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
 <script>
 (async function(){
  const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
- let current='results';
+ const params=new URLSearchParams(location.search);
+ let current=[...document.querySelectorAll('[data-mode]')].some(b=>b.dataset.mode===params.get('mode'))?params.get('mode'):'results';
+ if(params.has('portrait')){frame.width='390';frame.height='844';}
  function show(mode){
   current=mode;status.textContent='Fixture: '+mode;
-  const gameplay=['controls','combat','feathers','trial','enemies','boss'].includes(mode);
+  const gameplay=['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   const count=mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   const setup=`
@@ -27,6 +29,25 @@
     if(${mode==='trial'}){runEncounters=[{id:1,x:-38,type:'rain',cost:2,active:false,done:false,locked:false,progress:0,duration:14},{id:2,x:38,type:'cache',cost:3,active:false,done:false,locked:false,progress:0,duration:14}];gardenSeeds=5;}
     if(${mode==='enemies'}){rogueRun.world=10;for(var q=0;q<4;q++){var k=makeKrek(1);k.kind=q+3;k.x=15+q*27;k.y=surfaceY(k.x)-20;k.vx=k.vy=0;floatKrek.push(k);}}
     if(${mode==='boss'}){P.x=24;P.y=surfaceY(24);started=false;rogueRun.world=20;gardenWave=3;gardenRaidActive=true;rogueRun.raidRemaining=0;gardenRaidGrace=0;var crown=makeHollowCrown();crown.cool=.5;floatKrek=[crown];rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;}
+    if(${mode==='native-skins'}){
+      var nativePlayerRenderer=drawPlayer;
+      drawPlayer=function(){var actual=P;['original','moss','tide','ember','moon'].forEach(function(skin,i){
+        var x=actual.x+(i-2)*24;P=Object.assign({},actual,{x:x,y:surfaceY(x),skin:skin,face:1,anim:'idle',frame:Math.floor(tSec*8)%ANIM.idle.f.length});nativePlayerRenderer();
+      });P=actual;};
+    }
+    if(${mode==='native-enemies'}){
+      floatKrek=[];for(var q=0;q<4;q++){var k=makeKrek(1);k.kind=q+3;k.x=P.x+(q-1.5)*27;k.y=surfaceY(k.x)-34;k.vx=k.vy=0;floatKrek.push(k);}
+      updateKrek=function(){floatKrek.forEach(function(k){var cycle=tSec%6;k.flash=cycle>5.5?1-(cycle-5.5)*2:0;k.windup=cycle<.95?.95-cycle:0;k.tell=.95;
+        k.bite=cycle>=.95&&cycle<2?2:0;k.stolen=k.kind===3&&cycle>=2?2:0;k.flee=k.kind===5&&cycle>=2?1:0;k.healing=k.kind===6&&cycle>=2;
+        k.healX=P.x;k.healY=P.y-12;k.vx=cycle>=4?10:0;
+      });};
+    }
+    if(${mode==='native-crown'}){
+      floatKrek=[];for(var q=0;q<3;q++){var k=makeHollowCrown();k.phase=q+1;k.hp=k.maxHp*(1-q*.35);k.x=P.x+(q-1)*38;k.y=surfaceY(k.x)-48;k.vx=k.vy=0;floatKrek.push(k);}
+      updateKrek=function(){floatKrek.forEach(function(k){var cycle=tSec%5.2;k.windup=cycle<1.4?1.4-cycle:0;k.tell=1.4;
+        k.exposed=cycle>=1.4&&cycle<3.2?3.2-cycle:0;k.cool=cycle>=3.2?5.2-cycle:0;k.flash=0;
+      });};
+    }
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
   `;
   let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">')

@@ -13,7 +13,7 @@ test('XP earned across several levels offers every earned upgrade', () => {
   assert.equal(choices, 6);
   assert.equal(game.rogueRun.level, 7);
   assert.equal(game.rogueRun.xp, 22, 'the gentler run curve retains every surplus point');
-  assert.equal(Object.values(game.rogueRun.perks).reduce((a, b) => a + b, 0), 6);
+  assert.equal(Object.values(game.rogueRun.perks).reduce((a, b) => a + b, 0), 7, 'six earned boons plus Mech’s starting rover');
 });
 
 test('only an offered mutation can be selected', () => {
@@ -112,7 +112,7 @@ test('legacy checkpoint storage is ignored; login and finished records stay inta
   const h = loadGame({'max-fuglesprenger-rogue-v6':JSON.stringify(old),'max-night-garden-x':'950','max-player-session-v1':'remember-me','max-fuglesprenger-meta-v1':JSON.stringify({runs:8,bestWorld:4,bestPlants:12})});
   const g=h.game;
   assert.equal(g.P.x,0); assert.equal(g.gardenWave,0); assert.equal(g.gardenPlots.length,0);
-  assert.equal(g.rogueRun.world,1); assert.equal(g.rogueRun.perks.robot,0);
+  assert.equal(g.rogueRun.world,1); assert.equal(g.rogueRun.perks.robot,1, 'Mech starts with a basic rover, without the old saved upgrades');
   assert.equal(g.rogueMeta.runs,8); assert.equal(h.storage.get('max-player-session-v1'),'remember-me');
   g.saveGarden(); assert.equal(h.storage.get('max-fuglesprenger-rogue-v6'),JSON.stringify(old));
 });
@@ -196,7 +196,7 @@ test('the result garden keeps every plant through death and world changes; only 
   assert.equal(resumed.rogueRun.garden.length, 0);
   assert.equal(resumed.gardenSeeds, 0);
   assert.equal(resumed.rogueMeta.bestPlants, 2);
-  assert.ok(Object.values(resumed.rogueRun.perks).every(rank => rank === 0));
+  assert.deepEqual({...resumed.rogueRun.perks},require('../max-classes.js').perks('mech'));
 });
 
 test('a seed pickup offering a boon suspends the rest of that frame', () => {

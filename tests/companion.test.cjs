@@ -33,12 +33,12 @@ test('pause and transport stop watering and refilling; refill requires Max to re
   env.player.vx = 10; advance(bot, env, 3); assert.equal(bot.state.water, .2);
   env.player.vx = 0; advance(bot, env, 2); assert.equal(bot.state.water, tiers[0].capacity);
 });
-test('robot upgrades cap at two, travel retains water, and reload starts small', () => {
+test('the robot unlock and two upgrades cap at rank three, travel retains water, and reload starts small', () => {
   const h = loadGame(), g = h.game;
   g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot');
   g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot');
   g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot');
-  assert.equal(g.rogueRun.perks.robot, 2);
+  assert.equal(g.rogueRun.perks.robot, 3);
   g.companion.state.water = .123; g.saveGarden();
   const again = g; assert.equal(again.companion.state.water, .123);
   again.enterLevel(2); assert.equal(again.companion.state.water, .123);

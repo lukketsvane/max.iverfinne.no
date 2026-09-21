@@ -4,6 +4,8 @@
 <script src="run-results.js"></script>
 <script src="companion.js"></script>
 <script src="build-paths.js"></script>
+<script src="max-classes.js"></script>
+<script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
 <style>
@@ -422,6 +424,7 @@ function readInput() {
 
 /* ---------------------------------------------------------------- player */
 var P = {
+  classId: 'mech', skin: 'original',
   x: 0, y: 0, vx: 0, vy: 0, face: 1, grounded: true, coyote: 0,
   anim: 'idle', frame: 0, clock: 0, done: false,
   land: 0, idleT: 0, fidget: null, held: false,
@@ -446,10 +449,12 @@ function setAnim(n) { if (P.anim !== n) { P.anim = n; P.frame = 0; P.clock = 0; 
 
 var GRAV = 430, JUMP_V = -154, ACC = 720, BRAKE = 980, FRIC = 1100;
 var DODGE_TIME = .16, DODGE_SPEED = 156, DODGE_COOLDOWN = .85;
+function ownClass(){return window.MaxClasses.get(rogueRun.classId);}
+function dodgeRecovery(){return DODGE_COOLDOWN*ownClass().dodgeRecovery*Math.pow(.83,rogueRun.perks.dash||0);}
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
   if(P.dodgeCool>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
-  P.dodgeT=DODGE_TIME;P.dodgeCool=DODGE_COOLDOWN*Math.pow(.83,rogueRun.perks.dash||0);P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
+  P.dodgeT=DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
   setAnim('run');puff(P.x,P.y,4,.3);sfx('swish',0);
@@ -468,7 +473,7 @@ function dodgeSweep(x0,y0,x1,y1){
     var k=floatKrek[i],along=length?clamp01(((k.x-x0)*dx+(k.y-(y0-12))*dy)/length):0;
     if((!k.dodgeHits||k.dodgeHits[actor]!==P.dodgeId)&&Math.hypot(k.x-(x0+dx*along),k.y-(y0-12+dy*along))<18){
       if(!k.dodgeHits)k.dodgeHits={};k.dodgeHits[actor]=P.dodgeId;
-      k.lastDodge=actor+':'+P.dodgeId;staggerKrek(k,.5);k.vx=P.dodgeDir*65;k.vy=-15;k.flash=.6;
+      k.lastDodge=actor+':'+P.dodgeId;staggerKrek(k,.5*ownClass().stagger);k.vx=P.dodgeDir*65*ownClass().stagger;k.vy=-15;k.flash=.6;
     }
   }
 }
@@ -495,8 +500,8 @@ function physics(dt, inp) {
   if(P.dodgeT>0){P.face=P.dodgeDir;P.vx=P.dodgeDir*DODGE_SPEED;}
   else if (inp.axis !== 0) {
     P.face = inp.axis;
-    var topW = inp.top * (P.wet ? 0.5 : 1) * (P.st === 'float' ? 0.55 : 1);
-    P.vx=approach(P.vx,inp.axis*topW,(P.vx*inp.axis<0?BRAKE:ACC)*dt);
+    var topW = inp.top * ownClass().speed * (P.wet ? 0.5 : 1) * (P.st === 'float' ? 0.55 : 1);
+    P.vx=approach(P.vx,inp.axis*topW,(P.vx*inp.axis<0?BRAKE:ACC)*ownClass().control*dt);
   } else {
     P.vx=approach(P.vx,0,FRIC*dt);
   }
@@ -510,7 +515,7 @@ function physics(dt, inp) {
   if (jumpBuf > 0 && (groundJump || airJump)) {
     P.dodgeT=0;
     P.airJumpUsed=!groundJump;
-    P.vy = JUMP_V*featherJump()*(groundJump?1:.9); P.grounded = false; P.coyote = 0; jumpBuf = 0;
+    P.vy = JUMP_V*ownClass().jump*featherJump()*(groundJump?1:.9); P.grounded = false; P.coyote = 0; jumpBuf = 0;
     P.held = jumpVariable; P.land = 0;
     setAnim('rise'); if (P.wet) ripple(P.x, wp0.level, 'splash'); else puff(P.x, P.y, 5, 0.45);
     if(airJump){for(var f=0;f<5;f++)feathers.push({x:P.x,y:P.y-4,vx:(f-2)*9,vy:8,c:'#dddcca',life:.5,ph:f});}
@@ -2567,34 +2572,59 @@ var WILD_PLANTS=false, seedPickups=[], seedCollected={}, seedSpawnClock=0, seedS
 var FINAL_WAVE=3,runElapsed=0,runFinishT=0,runWon=false,raidLostStart=0,gardenBossSpawned=false;
 var rogueMeta={runs:0,wins:0,bestWave:0,bestScore:0,bestTime:0,petals:0};
 var selectedPerk=null, resultAtlasReady=false, menuPaused=false, runActive=false, companion=null;
-var rogueRun={garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,traits:emptyTraits(),perks:window.MaxBuilds.empty()};
+var rogueRun={classId:'mech',ownerId:null,playerName:'Guest',garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,traits:emptyTraits(),perks:window.MaxClasses.perks('mech')};
 try{
   var rm=JSON.parse(localStorage.getItem('max-fuglesprenger-meta-v1')||'null');if(rm)rogueMeta=Object.assign(rogueMeta,rm);
 }catch(e){}
 if(!Array.isArray(rogueRun.garden))rogueRun.garden=[];
 rogueRun.nextPlantId=Math.max(1,rogueRun.nextPlantId|0);
 Object.keys(rogueRun.perks).forEach(function(id){rogueRun.perks[id]=Math.max(0,Math.min(perkMax(id),rogueRun.perks[id]|0));});
-function ensureCompanion(){
-  if(!companion&&window.MaxCompanion)companion=window.MaxCompanion.create(rogueRun.companion,P.x,rogueRun.perks.robot||0);
-  return companion;
+function ensureCompanion(member){
+  var m=member||(coop&&(coopActor||coop.members[coop.me])),perks=m?m.perks:rogueRun.perks;
+  if(!window.MaxCompanion||!perks||!perks.robot)return null;
+  var bot=m?m.companion:companion,avatar=m?coopMemberAvatar(m):P;
+  if(!bot){bot=window.MaxCompanion.create(m?null:rogueRun.companion,avatar.x,Math.max(0,perks.robot-1));if(m)m.companion=bot;}
+  if(!m||m.id===coop.me)companion=bot;
+  return bot;
+}
+function eachCompanion(fn){
+  if(coop)coopMembers().forEach(function(m){var bot=ensureCompanion(m);if(bot)fn(bot,m);});
+  else {var bot=ensureCompanion();if(bot)fn(bot,null);}
 }
 function companionAt(x,y){
-  return companion&&companion.state.state!=='packed'&&Math.abs(x-companion.state.x)<18&&Math.abs(y-(surfaceY(companion.state.x)-12))<17;
+  var found=false;eachCompanion(function(bot){if(bot.state.state!=='packed'&&Math.abs(x-bot.state.x)<18&&Math.abs(y-(surfaceY(bot.state.x)-12))<17)found=true;});return found;
 }
 function refillCompanion(){
   if(coopGuest())return coopAction('refill');
-  var bot=ensureCompanion();if(!bot||runIsPaused())return false;
-  if(bot.requestRefill(P.x)){if(coop)coop.refiller=coopActor?coopActor.id:coop.me;socialTone('water');saveGarden();return true;}
+  if(runIsPaused())return false;
+  var candidates=[];eachCompanion(function(bot){if(bot.state.state!=='packed')candidates.push(bot);});
+  candidates.sort(function(a,b){return Math.abs(a.state.x-P.x)-Math.abs(b.state.x-P.x);});
+  for(var i=0;i<candidates.length;i++)if(candidates[i].requestRefill(P.x)){
+    candidates[i].refiller=coop?(coopActor?coopActor.id:coop.me):null;socialTone('water');saveGarden();return true;
+  }
   return false;
 }
 function updateCompanion(dt){
-  var bot=ensureCompanion();if(!bot)return;
-  if(task&&task.companionRefill&&!task.fired)return;
-  bot.tick(dt,{paused:runIsPaused(),tier:rogueRun.perks.robot||0,player:coop&&bot.state.refill>0&&coop.refiller&&coop.members[coop.refiller]&&!coop.members[coop.refiller].left&&coop.refiller!==coop.me?coop.members[coop.refiller].avatar:P,plants:gardenPlots,
-    ground:surfaceY,wet:waterAt,safeX:function(x){return dryX(x+(waterAt(x)?(x<P.x?-6:6):0));},transport:!!(climb||warp||P.st==='float')});
+  if(coopGuest())return;
+  eachCompanion(function(bot,m){
+    var owner=m?coopMemberAvatar(m):P,refiller=coop&&bot.state.refill>0&&bot.refiller&&coop.members[bot.refiller];
+    var person=refiller&&!refiller.left?coopMemberAvatar(refiller):owner;
+    bot.tick(dt,{paused:runIsPaused(),tier:Math.max(0,((m?m.perks:rogueRun.perks).robot||1)-1),player:owner,refiller:person,plants:gardenPlots,
+      ground:surfaceY,wet:waterAt,safeX:function(x){return dryX(x+(waterAt(x)?(x<owner.x?-6:6):0));},transport:owner.st==='float'||owner.st==='climb'||(!m||m.id===coop.me)&&!!(climb||warp)});
+  });
 }
 function drawCompanion(){
-  var bot=ensureCompanion();if(bot)window.MaxCompanion.draw(ctx,bot.state,bot.state.x-camX,surfaceY(bot.state.x)-camY);
+  eachCompanion(function(bot){window.MaxCompanion.draw(ctx,bot.state,bot.state.x-camX,surfaceY(bot.state.x)-camY);});
+}
+function classProtection(plant){
+  var protection=0;
+  function guard(avatar,classId){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=kit.radius&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,kit.protection);}
+  if(coop)coopMembers().forEach(function(m){guard(coopMemberAvatar(m),m.classId);});else guard(P,rogueRun.classId);
+  return 1-protection;
+}
+function herbalistCare(plant,amount){
+  if(ownClass().id!=='herbalist')return;
+  gardenPlots.forEach(function(q){if(q!==plant&&!q.dead&&Math.abs(q.x-plant.x)<=ownClass().radius){q.health=clamp01(q.health+amount);q.pulse=Math.max(q.pulse,.45);}});
 }
 function recordGardenPlant(p){
   rogueRun.plantedThisWorld=true;
@@ -2638,8 +2668,13 @@ function finalizeRogueRun(won){
   if(won&&runElapsed>0&&(!rogueMeta.bestTime||runElapsed<rogueMeta.bestTime))rogueMeta.bestTime=Math.round(runElapsed*100)/100;
   rogueMeta.petals=(rogueMeta.petals|0)+Math.max(1,Math.floor(gardenWave/2)+Math.floor((gardenStats.harvested||0)/3)+(won?5:0));
   try{localStorage.setItem('max-fuglesprenger-meta-v1',JSON.stringify(rogueMeta));}catch(e){}
+  if(window.MaxRunRecords){
+    var saved=window.MaxRunRecords.save({id:rogueRun.recordId,ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:won,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed});
+    rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
+  }
 }
-function resetRogueRun(reason){
+function resetRogueRun(reason,selection){
+  selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin);
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
@@ -2647,12 +2682,16 @@ function resetRogueRun(reason){
   gardenWave=0;gardenRaidT=12;gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;krekSpawnT=7;
   runElapsed=0;runFinishT=0;runWon=false;raidLostStart=0;gardenBossSpawned=false;
   gardenStats={harvested:0,lost:0,defended:0};
-  companion=null;blastScore=0;
+  companion=null;blastScore=0;if(window.MaxNativeArt)window.MaxNativeArt.reset();
   worldMind={trust:.18,still:0,noise:0,gifts:0,lastSave:0,seen:{},discoveries:0,rep:{crow:.18,tit:.14,bug:.05,ant:.08},biome:{},lastBiome:'',combo:0};
   bloomPatches.length=0;gifts.length=0;signals.length=0;sanctuaries.length=0;waterBlessings.length=0;
   crows.length=0;smallFauna.length=0;
   var keepWorld=1; // Each attempt begins with the same garden and base abilities.
-  rogueRun={garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxBuilds.empty()};
+  rogueRun={classId:classId,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
+  var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
+  rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
+  rogueRun.recordId=window.MaxRunRecords?window.MaxRunRecords.uuid():null;
+  P.classId=classId;P.skin=skin;
   if(perkMenu)perkMenu.style.display='none';
   if(window.MaxRunResults)window.MaxRunResults.hide();
   selectedPerk=null;resultAtlasReady=false;clearRunInput();task=null;bombs.length=0;
@@ -2686,17 +2725,21 @@ function updateRunCompetition(dt){
 function showRunResult(){
   if(perkMenu)perkMenu.style.display='none';
   if(!window.MaxRunResults)return;
-  window.MaxRunResults.show({won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,bestWorld:rogueMeta.bestWorld|0,bestPlants:rogueMeta.bestPlants|0,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN');},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
+  window.MaxRunResults.show({recordId:rogueRun.recordId,won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN');},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
   resultAtlasReady=resultAssetsReady();
 }
+function openGardenRecords(){
+  if(!window.MaxRunResults)return false;
+  return window.MaxRunResults.showRecords({drawPlant:drawResultPlant,drawScene:drawResultScene});
+}
 function drawResultPlant(canvas,p){
-  var old=ctx,oldH=IH,oldA=ANCHOR;
+  var old=ctx,oldH=IH,oldA=ANCHOR,oldWind=worldWeather.wind;
   try{
-    ctx=canvas.getContext('2d');IH=canvas.height;ANCHOR=52;
+    ctx=canvas.getContext('2d');IH=canvas.height;ANCHOR=52;worldWeather.wind=0;
     ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.fillStyle='#39412d';ctx.fillRect(3,66,canvas.width-6,1);
-    drawGrowingFigmaPlant(Object.assign({health:1,hit:0,pulse:0,moisture:1},p,{stalk:false}),Math.floor(canvas.width/2),65,0,58);
-  }finally{ctx=old;IH=oldH;ANCHOR=oldA;}
+    drawGrowingFigmaPlant(Object.assign({health:1,hit:0,pulse:0,moisture:1},p),Math.floor(canvas.width/2),65,0,58);
+  }finally{ctx=old;IH=oldH;ANCHOR=oldA;worldWeather.wind=oldWind;}
 }
 function resultAssetsReady(){return plantAtlasReady&&sheetReady&&ready(soilImg)&&Object.keys(IMG).every(function(k){return ready(IMG[k]);});}
 // Native sprite layers keep their pixel grid; only the menu palette changes.
@@ -2801,7 +2844,7 @@ function drawResultScene(canvas,bouquet){
     }
     if(bouquet&&bouquet.width)ctx.drawImage(bouquet,cx-48,gy-91);
     if(sheetReady)ctx.drawImage(sheet,0,0,CELL,CELL,cx-44,gy-31,CELL,CELL);
-    if(companion&&window.MaxCompanion)window.MaxCompanion.draw(ctx,{tier:Math.min(2,rogueRun.perks.robot||0),state:'idle',face:-1,clock:0,water:companion.state.water},cx+40,gy);
+    if(companion&&window.MaxCompanion)window.MaxCompanion.draw(ctx,{tier:Math.max(0,Math.min(2,(rogueRun.perks.robot||1)-1)),state:'idle',face:-1,clock:0,water:companion.state.water},cx+40,gy);
   }finally{ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;}
 }
 function perkMax(id){return window.MaxBuilds.max(id);}
@@ -2981,7 +3024,8 @@ function waterGardenPlot(p){
     if(p.dead||gardenPlots.indexOf(p)<0)return;
     var was=p.moisture,perfect=was<.24;
     beginGardenCare(p);
-    p.moisture=1;p.health=clamp01(p.health+(perfect?.20:.12)*(1+ownTraits().dew*.08));p.pulse=perfect?1.7:1.15;
+    p.moisture=1;p.health=clamp01(p.health+(perfect?.20:.12)*ownClass().care*(1+ownTraits().dew*.08));p.pulse=perfect?1.7:1.15;
+    herbalistCare(p,.045);
     p.growth+=Math.max(0,1-was)*.055;
     finishGardenCare(p);
     for(var j=0;j<gardenPlots.length;j++){
@@ -2995,8 +3039,9 @@ function waterGardenPlotTick(p,dt){
   if(!p||p.dead)return;
   var perk=rogueRun.perks.water||0,was=p.moisture;
   beginGardenCare(p);
-  p.moisture=clamp01(p.moisture+dt*(.72+.12*perk)*(1+ownTraits().dew*.08));
-  p.health=clamp01(p.health+dt*(.045+.008*perk)*(1+ownTraits().dew*.08));
+  p.moisture=clamp01(p.moisture+dt*(.72+.12*perk)*ownClass().care*(1+ownTraits().dew*.08));
+  p.health=clamp01(p.health+dt*(.045+.008*perk)*ownClass().care*(1+ownTraits().dew*.08));
+  herbalistCare(p,dt*.016);
   p.growth+=Math.max(0,p.moisture-was)*.055;
   finishGardenCare(p);
   p.pulse=Math.max(p.pulse,.34);
@@ -3013,7 +3058,7 @@ function harvestGardenPlot(p){
   spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');
   p.pulse=1.2;p.moisture=Math.max(0,p.moisture-.12);
   if(rogueRun.perks.bloom)gardenPlots.forEach(function(q){if(!q.dead&&Math.abs(q.x-p.x)<52){q.health=clamp01(q.health+.16);q.moisture=clamp01(q.moisture+.12);q.pulse=1.5;}});
-  if(rogueRun.perks.recycle&&companion)companion.state.water=Math.min([1,1.6,2.4][Math.min(2,companion.state.tier||0)],companion.state.water+.45);
+  if(rogueRun.perks.recycle){var bot=ensureCompanion();if(bot)bot.state.water=Math.min(window.MaxCompanion.tiers[bot.state.tier].capacity,bot.state.water+.45);}
   socialTone('gift');saveGarden();return true;
 }
 function gardenNeighborCount(p,r){
@@ -3363,11 +3408,12 @@ function warpCover(){
 }
 function enterLevel(n){
   if(coopGuest()||!Number.isInteger(n)||n<1||n>RUN_STAGES||rogueRun.ended)return;
+  clearRunInput();
   var carried=0,i;
   for(i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead)carried++;
   gardenPlots.forEach(recordGardenPlant);
   gardenPlots.length=0;floatKrek.length=0;bombs.length=0;
-  for(i=seedPickups.length-1;i>=0;i--)if(!seedPickups[i].id)seedPickups.splice(i,1);
+  seedPickups.length=0;
   gardenSeeds=Math.min(99,gardenSeeds+2+Math.min(6,carried));
   gardenWave=0;gardenRaidT=9;gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;
   krekSpawnT=12;gardenBossSpawned=false;raidLostStart=gardenStats.lost||0;
@@ -3378,8 +3424,8 @@ function enterLevel(n){
   var x=levelOriginX(n);
   P.x=x;P.y=surfaceY(x)-Math.round(IH*.40)-36;P.vx=0;P.vy=0;P.grounded=false;P.airJumpUsed=false;P.coyote=0;P.face=1;P.wet=false;
   P.st='float';setAnim('hang');
-  if(companion)companion.relocate(P.x);
-  if(coop&&coop.host)coopMembers().forEach(function(m){var sx=x+(m.slot-1)*12;m.avatar=Object.assign(coopAvatar(),{x:sx,y:surfaceY(sx)-80,st:'float',grounded:false});m.last=performance.now();m.draw=null;m.dodge=null;});
+  if(coop&&coop.host)coopMembers().forEach(function(m){var sx=x+(m.slot-1)*12;m.avatar=Object.assign(coopAvatar(),{classId:m.classId,skin:m.skin,x:sx,y:surfaceY(sx)-80,st:'float',grounded:false});m.last=performance.now();m.draw=null;m.dodge=null;});
+  eachCompanion(function(bot,m){bot.relocate(m?coopMemberAvatar(m).x:P.x);});
   initRunStage();
   started=false;                                           // the camera cuts while the clouds cover the screen
 
@@ -3579,13 +3625,14 @@ function makeKrek(side,elite){
 }
 function staggerKrek(k,time){if(k.boss)return;k.flee=Math.max(k.flee||0,time);k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.bite=.35;}
 function biteGarden(k,p,pressure){
-  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(1+pressure*.05)*Math.pow(.78,(rogueRun.perks.shield||0));
+  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(1+pressure*.05)*Math.pow(.78,(rogueRun.perks.shield||0))*classProtection(p);
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
   socialTone('call');if(p.health<=.01){p.dead=8;k.target=null;}
 }
 function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=Math.hypot(k.x-wx,k.y-wy);if(d<bd){bd=d;best=k;}}return best;}
 function burstKrek(k){
+  if(window.MaxNativeArt)window.MaxNativeArt.enemyDefeated(k,tSec);
   if(k.boss){rogueRun.bossDefeated=true;winRogueRun();return;}
   if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen);
   gardenStats.defended=(gardenStats.defended||0)+1;
@@ -3641,6 +3688,7 @@ function gardenBirdGuards(dt){
   }
 }
 function drawKrek(t){
+  if(window.MaxNativeArt)window.MaxNativeArt.drawDefeated(ctx,t,camX,camY);
   for(var i=0;i<floatKrek.length;i++){
     var k=floatKrek[i],sx=Math.round(k.x-camX),sy=Math.round(k.y-camY),wing=((t*(k.kind===2?17:12)+k.ph)|0)&1;
     if(sx<-24||sx>IW+24||sy<-24||sy>IH+24)continue;
@@ -4273,7 +4321,7 @@ function explode(x, y, wet, build) {
     var gp=gardenPlots[i],gd=Math.hypot(gp.x-x,(surfaceY(gp.x)-8)-y);
     if(gd<BR+13&&!gp.dead){
       if(wet||intercepted){gp.moisture=clamp01(gp.moisture+(wet?.55:.18));gp.health=clamp01(gp.health+.035);gp.pulse=1;}
-      else{gp.health=clamp01(gp.health-.075);gp.moisture=Math.max(0,gp.moisture-.035);gp.hit=1;}
+      else{gp.health=clamp01(gp.health-.075*classProtection(gp));gp.moisture=Math.max(0,gp.moisture-.035);gp.hit=1;}
     }
   }
   scatterFrom(x);
@@ -4291,7 +4339,7 @@ function explode(x, y, wet, build) {
   else if (Math.abs(surfaceY(x) - y) < 16) { scorches.push({ x: x, w: 8 + Math.random() * 4, life: 35, seed: Math.random() * 50 }); if (scorches.length > 12) scorches.shift(); }
   if (P.dodgeT<=0 && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
     var away = Math.abs(P.x - x) < 0.5 ? -P.face : (P.x > x ? 1 : -1);
-    P.vx = away * 95; P.vy = -118; P.grounded = false; P.coyote = 0; P.land = 0;
+    P.vx = away * 95 * ownClass().knockback; P.vy = -118 * ownClass().knockback; P.grounded = false; P.coyote = 0; P.land = 0;
     task = null; P.st = 'free'; P.lampBlock = true; setAnim('rise');
   }
   if (n||pestN) {
@@ -4778,8 +4826,9 @@ function drawPlayer() {
     ctx.fillRect(px - (sw >> 1), gy, sw, 1);
     if (sw > 3) ctx.fillRect(px - (sw >> 1) + 1, gy + 1, sw - 2, 1);
   }
-  var a = ANIM[P.anim], img = a.sh === 2 ? sheet2 : sheet;
-  if (a.sh === 2 ? !sheet2Ready : !sheetReady) return;
+  var a = ANIM[P.anim], native = window.MaxNativeArt && window.MaxNativeArt.playerImage(P.skin, a.sh === 2 ? 'interaction' : 'main');
+  var img = native || (a.sh === 2 ? sheet2 : sheet);
+  if (!native && (a.sh === 2 ? !sheet2Ready : !sheetReady)) return;
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
@@ -4890,7 +4939,7 @@ function frame(now) {
   }
   if(!runIsPaused())updateHazardContact();
   }
-  if(rogueRun.ended&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
+  if((rogueRun.ended||(window.MaxRunResults&&window.MaxRunResults.isOpen()))&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
 
   if (!paused && P.grounded && Math.abs(P.vx) > (P.wet ? 5 : 20)) {
     stepAcc += Math.abs(P.vx) * dt;
@@ -4991,7 +5040,8 @@ function attachGameMenu(){
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},
-    beginRun:function(){coop=null;resetRogueRun('NEW RUN');},
+    openGardenRecords:openGardenRecords,
+    beginRun:function(selection){coop=null;resetRogueRun('NEW RUN',selection);},
     clearInput:clearRunInput,exitRun:function(){if(runActive&&!rogueRun.ended)finalizeRogueRun(false);stopCoop();if(window.MaxRunResults)window.MaxRunResults.hide();},
     beginCoop:beginCoop,stopCoop:stopCoop,coopRoster:coopRoster,coopState:coopState,coopInput:coopInput,coopDepart:coopDepart
   });
