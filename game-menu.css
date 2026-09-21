@@ -160,7 +160,7 @@
   .max-menu legend{margin-bottom:8px}
   .max-menu .max-role-choice{min-height:48px;padding:10px 12px;gap:6px}
   .max-menu .max-skin-choice{min-height:68px;padding-bottom:8px;gap:4px}
-  .max-skin-choice .max-skin-preview{height:44px}.max-skin-choice .max-skin-preview img{margin-top:-16px}
+  .max-skin-choice .max-skin-preview{width:32px;height:32px}.max-skin-choice .max-skin-preview img{width:256px;height:256px;margin-top:0}
   .max-menu .max-play-actions>button{min-height:46px}
 }
 @media(max-height:360px) and (min-aspect-ratio:4/3){
@@ -178,8 +178,7 @@
   .max-role-grid{gap:6px}
   .max-menu .max-role-choice{min-height:44px;padding:6px 10px;gap:4px}
   .max-role-ability{font-size:9px;line-height:1.1}
-  .max-menu .max-skin-choice{min-height:56px;padding-bottom:6px}
-  .max-skin-choice .max-skin-preview{height:30px}.max-skin-choice .max-skin-preview img{margin-top:-20px}
+  .max-menu .max-skin-choice{min-height:58px;padding-bottom:6px}
   .max-menu .max-play-actions>button{min-height:44px;padding-top:10px;padding-bottom:10px}
 }
 @media(prefers-reduced-motion:no-preference){.max-menu-card{animation:max-menu-in .2s ease-out}@keyframes max-menu-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}}
