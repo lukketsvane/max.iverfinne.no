@@ -1,0 +1,35 @@
+name: Native pixel asset validation
+on:
+  push:
+    branches: ['codex/native-pixel-assets']
+  pull_request:
+    paths: ['assets/**', 'scripts/*asset*', 'tests/*asset*', '.github/workflows/native-assets.yml']
+permissions:
+  contents: read
+jobs:
+  native-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - name: Build native sheets when the exporter is present
+        run: |
+          if test -f scripts/build-native-assets.cjs; then node scripts/build-native-assets.cjs; fi
+      - name: Archive the exact game source and exported assets for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-pixel-assets-review
+          path: |
+            index.html
+            run-results.js
+            run-results.css
+            package.json
+            vercel.json
+            README.md
+            scripts/
+            tests/
+            assets/
+          retention-days: 7
