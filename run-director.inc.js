@@ -4,19 +4,19 @@ var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId
 var pickupNotice=null,hazardHits={},stageWeather=null;
 var MAX_ACTIVE_ENEMIES=24;
 var COMBAT_PROFILES={
-  terraces:{kinds:[0,2,0,3,2,5,1,4,6],volley:false},
-  canopy:{kinds:[2,3,2,4,0,6,2,1,5],volley:true},
-  crossing:{kinds:[1,4,2,4,3,0,5,2,6],volley:true},
-  ruins:{kinds:[5,0,4,1,5,6,2,0,3],volley:false},
-  switchbacks:{kinds:[3,2,6,4,5,2,1,0],volley:true},
-  crown:{kinds:[5,4,6,2,5,4,0,1,3],volley:true}
+  terraces:{kinds:[0,8,2,0,8,3,2,5,1,4,6],volley:false},
+  canopy:{kinds:[2,3,8,2,4,0,6,8,2,1,5],volley:true},
+  crossing:{kinds:[1,8,4,2,4,3,8,0,5,2,6],volley:true},
+  ruins:{kinds:[5,8,0,4,1,8,5,6,2,0,3],volley:false},
+  switchbacks:{kinds:[3,8,2,6,4,8,5,2,1,0],volley:true},
+  crown:{kinds:[5,4,8,6,2,5,4,8,0,1,3],volley:true}
 };
 function stageCombatProfile(){
   var layout=typeof stageLayout==='function'?stageLayout():null;
   var kind=layout&&(layout.kind||layout.theme)||['terraces','canopy','crossing','ruins','switchbacks'][(worldLevel()-1)%5];
   return COMBAT_PROFILES[kind]||COMBAT_PROFILES.terraces;
 }
-function enemyUnlocked(kind){return kind<3||Math.max(worldLevel(),1+Math.floor(Math.max(0,runElapsed)/75))>={3:2,4:3,5:4,6:6}[kind];}
+function enemyUnlocked(kind){return kind===8||kind<3||Math.max(worldLevel(),1+Math.floor(Math.max(0,runElapsed)/75))>={3:2,4:3,5:4,6:6}[kind];}
 function waveEnemyKind(index){
   var first={2:3,3:4,4:5,6:6}[worldLevel()];
   if(index===2&&first!=null)return first;
@@ -108,6 +108,7 @@ function spawnEncounterGuard(e){
   if(e.type==='rain'&&worldLevel()>=3&&i===0)kind=4;
   var k=makeKrek(side,false,kind);safeEnemyPosition(k,e.x+side*(78+i*11),encounterFloor(e)-24);
   k.eventId=e.id;k.eventX=e.x;k.eventY=encounterFloor(e);
+  if(isRat(k)){k.ratGrounded=false;k.ratPlatform='';k.vy=0;}
   floatKrek.push(k);e.guardIndex=i+1;e.guardsRemaining--;return true;
 }
 function interactEncounter(){
@@ -170,7 +171,7 @@ function enemyKind(){
   return choices[(Math.random()*choices.length)|0];
 }
 function damagePest(k,amount,x,build){
-  if(!k||k.hp<=0)return false;
+  if(coopGuest()||!k||k.hp<=0)return false;
   var frontal=k.kind===5&&!k.flee&&(x-k.x)*k.face>=-1;
   var factor=frontal?.25:1;
   if(k.boss&&k.exposed>0)factor*=2;
@@ -178,7 +179,7 @@ function damagePest(k,amount,x,build){
   // Moon Moth's restorative channel is a deliberate interrupt opportunity.
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;k.windup=0;k.exposed=1.4;k.cool=2.2;}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
-  if(!k.boss&&!frontal&&(k.divePhase===1||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
+  if(!k.boss&&!frontal&&(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
   if(k.hp<=0){var i=floatKrek.indexOf(k);if(i>=0)floatKrek.splice(i,1);burstKrek(k);return true;}
   return false;
 }
@@ -278,6 +279,7 @@ function updatePestDive(k,dt){
   return true;
 }
 function updateEnemyRole(k,dt){
+  if(isRat(k)){updateRat(k,dt);return true;}
   if(k.boss){if(k.finalBoss===false)updateStageBoss(k,dt);else updateHollowCrown(k,dt);return true;}
   if(updatePestDive(k,dt))return true;
   if(k.kind===3){
@@ -460,6 +462,7 @@ function drawRunExploration(t){
 function drawRunHazards(t){
   runHazards.forEach(function(h){
     var x=Math.round(h.x-camX),y=Math.round(h.y-camY);if(x<-h.r||x>IW+h.r)return;
+    if(drawRatHazard(h,x,y))return;
     ctx.fillStyle=h.tell>0?'#d5ad63':'#d9c7a1';ctx.globalAlpha=h.tell>0?.55:Math.min(1,h.life*3);
     ctx.fillRect(x-h.r,y-2,h.r*2,1);ctx.fillRect(x-h.r,y-5,1,3);ctx.fillRect(x+h.r-1,y-5,1,3);
     if(h.tell>0){
@@ -474,6 +477,7 @@ function drawRunHazards(t){
 }
 function drawRoleEnemy(k,x,y,t){
   var native=window.MaxNativeArt&&window.MaxNativeArt.drawEnemy(ctx,k,x,y,t);
+  if(isRat(k)){drawRat(k,x,y,t,!!native);return true;}
   if(k.boss){
     var color=k.exposed>0?'#89c5cd':k.windup>0?'#dbad63':'#888a72';
     if(!native){

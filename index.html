@@ -3702,20 +3702,23 @@ function pickKrekTarget(k){
   var best=null,score=-Infinity;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead||p.health<=0)continue;var d=Math.abs(p.x-k.x);if(d>650&&!k.raid&&!k.boss&&!k.eventId&&!k.patrol)continue;var s=p.growth*2+p.health-d/900+(p.growth>=1?.7:0);if(s>score){score=s;best=p;}}return best;
 }
 function makeKrek(side,elite,kind){
+  if(kind==null)kind=enemyKind();
+  if(kind===RAT_KIND)return makeRat(side,elite);
   var targets=gardenPlots.filter(function(p){return !p.dead;}),center=targets.length?targets[(Math.random()*targets.length)|0].x:P.x;
-  var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22;if(kind==null)kind=enemyKind();
+  var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22;
   var w=worldLevel(),pressure=raidPressure(),hp=1+(w>=4?1:0)+(w>=9?1:0)+(w>=14?1:0)+(kind===1||kind===5?1:0)+(elite?2:0);
   return safeEnemyPosition({x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.3,windup:0,attackTarget:null,think:0,flee:0,lampCooldown:0,hp:hp,maxHp:hp,flash:0,kind:kind,elite:!!elite,queen:false,raid:false,pressure:pressure},x,y);
 }
-function staggerKrek(k,time){if(k.boss)return;if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.bite=.35;}
+function staggerKrek(k,time){if(k.boss)return;if(isRat(k)){cancelRatAttack(k);ratState(k,'hurt');}if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.bite=.35;}
 function biteGarden(k,p,pressure){
-  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*runDamageScale()*Math.pow(.78,(rogueRun.perks.shield||0))*classProtection(p);
+  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.78,(rogueRun.perks.shield||0))*classProtection(p);
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
   socialTone('call');if(p.health<=.01){p.dead=8;k.target=null;}
 }
-function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=Math.hypot(k.x-wx,k.y-wy);if(d<bd){bd=d;best=k;}}return best;}
+function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=enemyDistance(k,wx,wy);if(d<bd){bd=d;best=k;}}return best;}
 function burstKrek(k){
+  if(isRat(k))cancelRatAttack(k);
   if(window.MaxNativeArt)window.MaxNativeArt.enemyDefeated(k,tSec);
   if(k.divePhase)cancelPestDive(k);
   if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
@@ -3726,6 +3729,7 @@ function burstKrek(k){
   if(bonus){spawnLooseSeeds(k.x,k.y,bonus);nudgeGardenHint((k&&k.elite?'ELITE DEFEATED':'PEST DEFEATED')+' · SEED DROP');}
   grantRogueXP(k&&k.queen?7:(k&&k.elite?3:1));gardenAction(k&&k.queen?520:(k&&k.elite?180:55),k&&k.queen?65:(k&&k.elite?30:10),k&&k.queen?'DRONNING':(k&&k.elite?'STORKREK':'FORSVAR'));
   setTimeout(updateGardenHud,0);
+  if(isRat(k)){puff(k.x,k.y+RAT_FOOT,5,.35);saveGarden();return;}
   var pal=['#202221','#4c5340','#757b59','#b4b58a','#d8d4a2'];for(var i=0;i<14;i++){var a=Math.random()*Math.PI*2,sp=18+Math.random()*38;feathers.push({x:k.x,y:k.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-10,c:pal[i%pal.length],life:2+Math.random()*2,ph:Math.random()*6.28,big:false});}booms.push({x:k.x,y:k.y,t:0,poof:true,big:false});
   saveGarden();
 }
@@ -3742,7 +3746,7 @@ function updateKrek(dt){
   for(var i=floatKrek.length-1;i>=0;i--){
     var k=floatKrek[i],pressure=raidPressure();k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);k.lampCooldown=Math.max(0,(k.lampCooldown||0)-dt);k.hitStaggerCooldown=Math.max(0,(k.hitStaggerCooldown||0)-dt);
     if(k.burn>0){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate/runDurabilityScale();if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
-    if(k.flee>0&&!k.boss){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
+    if(k.flee>0&&!k.boss&&!isRat(k)){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
     var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
     if(lamp){k.lampCooldown=7;staggerKrek(k,.85);k.fleeFromX=lamp.p.x;continue;}
     if(updateEnemyRole(k,dt))continue;
@@ -4275,7 +4279,7 @@ function bombHitsBird(x, y) {
   var hit = false;
   if(sporeAt(x,y,6))return true;
   forEachBird(function (k, o, cx, cy) { if (!hit && Math.hypot(cx - x, cy - y) < (k === 'crow' ? 7 : (k === 'tit' ? 6 : 11))) hit = true; });
-  if(!hit)for(var i=0;i<floatKrek.length;i++)if(Math.hypot(floatKrek[i].x-x,floatKrek[i].y-y)<7){hit=true;break;}
+  if(!hit)for(var i=0;i<floatKrek.length;i++)if(enemyDistance(floatKrek[i],x,y)<(isRat(floatKrek[i])?2:7)){hit=true;break;}
   return hit;
 }
 function curiousCrows(b) {                                 // a crow can't resist having a look
@@ -4400,7 +4404,7 @@ function explode(x, y, wet, build) {
   var pestN=0;
   for(i=floatKrek.length-1;i>=0;i--){
     o=floatKrek[i];
-    if(Math.hypot(o.x-x,o.y-y)<BR+7){
+    if(enemyDistance(o,x,y)<BR+(isRat(o)?0:7)){
       if(damagePest(o,1+(build.emberStacks||0)*.12,x,build)&&!o.scout){pestN++;if(build.chain&&chainSeeds.length<3)chainSeeds.push({x:o.x,y:o.y});}
     }
   }
@@ -4977,6 +4981,7 @@ function drawVignette() {
 
 /* MAX_COOP_GAME */
 /* MAX_RUN_DIRECTOR */
+/* MAX_RAT_ENEMIES */
 
 /* ---------------------------------------------------------------- loop */
 var last = 0, tSec = 0, stepAcc = 0;
@@ -5027,7 +5032,7 @@ function frame(now) {
   }else{
     bombCool=Math.max(0,bombCool-dt);
     bombs.forEach(function(b){if(b.st==='fly'){b.x+=b.vx*dt;b.y+=b.vy*dt;b.vy+=BOMB_G*dt;}});
-    floatKrek.forEach(function(k){k.x+=(k.vx||0)*dt;k.y+=(k.vy||0)*dt;});
+    floatKrek.forEach(function(k){if(isRat(k)){predictRat(k,dt);return;}k.x+=(k.vx||0)*dt;k.y+=(k.vy||0)*dt;});
     updateFeathers(dt);
   }
   if(!runIsPaused())updateHazardContact();

@@ -3,6 +3,7 @@ import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 // Presentation only: atlas animation never changes an attack, collision or heal.
 const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon']);
 const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
+const RATS = Object.freeze(['common', 'black', 'albino', 'plague']);
 const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bellkeeper', 'moon-moth': '15-moon-moth' });
 
 export function createNativeArt() {
@@ -14,8 +15,8 @@ export function createNativeArt() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
   function milestone(enemy) { return !!enemy.boss && Object.hasOwn(MILESTONES, enemy.bossId); }
-  function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : ENEMIES[enemy.kind]; }
-  function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : 5; }
+  function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
+  function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function clockFor(enemy, time) {
     // `ph` is already a stable per-enemy seed in host snapshots. A WeakMap alone
     // would restart guest animations whenever a fresh snapshot replaces objects.
@@ -33,6 +34,16 @@ export function createNativeArt() {
   }
   function pose(enemy, time) {
     const clock = clockFor(enemy, time);
+    if (!enemy.boss && enemy.kind === 8) {
+      const allowed = ['idle', 'walk', 'run', 'jump', 'windup', 'attack', 'recover', 'hurt'];
+      let name = enemy.hp <= 0 ? 'death' : enemy.flee > 0 ? 'hurt' : allowed.includes(enemy.ratState) ? enemy.ratState : 'idle';
+      if (name !== clock.name) { clock.name = name; clock.since = time; }
+      clock.last = time;
+      const progress = name === 'windup' ? 1 - (enemy.windup || 0) / (enemy.tell || .6) :
+        name === 'attack' ? 1 - (enemy.attackT || 0) / (enemy.attackDuration || .22) :
+        name === 'jump' ? Math.max(0, Math.min(1, ((enemy.vy || 0) + 152) / 304)) : undefined;
+      return { name, seconds: Number.isFinite(enemy.ratStateT) ? Math.max(0, enemy.ratStateT) : Math.max(0, time - clock.since), progress };
+    }
     if (clock.windup > 0 && !(enemy.windup > 0) && !(enemy.flee > 0) &&
         ((enemy.bite || 0) > clock.bite + .05 || enemy.stolen && !clock.stolen)) clock.releasedAt = time;
     if (enemy.boss && clock.exposed > 0 && !(enemy.exposed > 0)) clock.recoveredAt = time;
@@ -89,6 +100,7 @@ export function createNativeArt() {
     if (loading) return loading;
     const files = SKINS.slice(1).map(id => [id, `assets/max-skins-v1/${id}/atlas.json`])
       .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
+      .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]));
     loading = Promise.allSettled(files.map(async ([id, url]) => {
       const atlas = await loadAtlas(url);

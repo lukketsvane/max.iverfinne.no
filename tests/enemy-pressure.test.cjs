@@ -19,7 +19,7 @@ function count(g, kind) { return g.floatKrek.filter(k => k.kind === kind && k.hp
 
 test('specialists arrive earlier in reproducible formations, with every unlocked role represented', () => {
   const g = fresh();
-  for (const [stage, expected] of [[1, [0, 1, 2]], [2, [0, 1, 2, 3]], [3, [0, 1, 2, 3, 4]], [4, [0, 1, 2, 3, 4, 5]], [6, [0, 1, 2, 3, 4, 5, 6]]]) {
+  for (const [stage, expected] of [[1, [0, 1, 2, 8]], [2, [0, 1, 2, 3, 8]], [3, [0, 1, 2, 3, 4, 8]], [4, [0, 1, 2, 3, 4, 5, 8]], [6, [0, 1, 2, 3, 4, 5, 6, 8]]]) {
     g.rogueRun.world = stage;
     for (let wave = 1; wave <= 3; wave++) {
       g.gardenWave = wave;

@@ -12,13 +12,13 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb');
+ const newModes=layouts.map(world=>'layout'+world).concat(Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
  group('Plant traversal',[['plant-climb','Moss · Growing plant climb']]);
  group('Platform routes',layouts.map(world=>['layout'+world,'Garden '+world+' · Layout']));
- group('Bosses and encounters',[...Object.entries(bosses),['boss','Hollow Crown · Garden 20'],['mixed','Mixed encounter · Garden 16']]);
+ group('Bosses and encounters',[...Object.entries(bosses),['boss','Hollow Crown · Garden 20'],['mixed','Mixed encounter · Garden 16'],['rats','Rat pack · Four variants']]);
  group('Original fixtures',[...modeLabels.entries()].filter(([mode])=>!newModes.includes(mode)&&mode!=='boss'));
  const requestedStage=Number.parseInt(params.get('stage'),10),platformStage=Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):6;
  const requestedMode=params.get('mode'),reviewMode=requestedMode==='platforms'?'layout'+platformStage:requestedMode==='pressure'?'pressure10':requestedMode;
@@ -31,13 +31,13 @@
  function show(mode){
   current=mode;chooser.value=mode;const serial=++fixtureSerial;
   status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');
-  const custom=newModes.includes(mode)||mode==='boss',layout=mode.startsWith('layout'),milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb';
+  const custom=newModes.includes(mode)||mode==='boss',layout=mode.startsWith('layout'),milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
   const world=layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
   classChooser.disabled=!custom;
-  help.textContent=pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Moss can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diving pest, seed thief, spore caster, shield beetle and healing moth. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
+  help.textContent=rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Moss can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diving pest, seed thief, spore caster, shield beetle and healing moth. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   // Install storage before the first external script, so the game, result
@@ -103,6 +103,12 @@
         var stageBoss=${finalBoss?'makeHollowCrown()':'makeStageBoss('+world+')'};stageBoss.cool=.8;floatKrek=[stageBoss];
         rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;
         runEncounters=[];runLoot=[];runHazards=[];
+      }
+      if(${rats}){
+        ['common','black','albino','plague'].forEach(function(variant,i){
+          var side=i%2?1:-1,k=makeRat(side,false,variant);k.x=P.x+side*(58+Math.floor(i/2)*34);k.y=ratFloor(k.x)-RAT_FOOT;k.face=-side;k.bite=.5+i*.12;floatKrek.push(k);
+        });
+        runEncounters=[];runHazards=[];runLoot=[];
       }
       if(${mixed}){
         [0,2,3,4,5,6].forEach(function(kind,i){

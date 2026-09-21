@@ -48,13 +48,13 @@ function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage'
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
   const { art, status, requests, events } = await nativeArt('/moss/interaction.png');
-  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 11);
+  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 15);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
   assert.match(art.playerImage('ember', 'main').src, /ember\/main.png$/);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
-  assert.equal((await art.load()).loaded.length, 11); assert.equal(requests.length, 12);
+  assert.equal((await art.load()).loaded.length, 15); assert.equal(requests.length, 16);
   assert.equal(events.length, 1); assert.equal(events[0].type, 'max-native-art-ready');
 });
 
@@ -147,4 +147,49 @@ test('the actual player renderer uses each selected sheet while retaining origin
   assert.match(lastSprite(calls)[1].src, /moon\/interaction.png$/);
   assert.ok(calls.some(call => call[0] === 'scale' && call[1] === -1));
   sandbox.P.skin = 'original'; sandbox.drawPlayer(); assert.equal(lastSprite(calls)[1].id, 'original-interaction');
+});
+
+test('four rat variants load and draw every state on the native grid with fixed foot registration', async () => {
+  const { art, requests } = await nativeArt(), { ctx, calls } = context();
+  assert.equal(requests.filter(url => url.includes('rat-enemies-v1')).length, 4);
+  for (const variant of ['common', 'black', 'albino', 'plague']) {
+    for (const state of ['idle', 'walk', 'run', 'jump', 'windup', 'attack', 'recover', 'hurt']) {
+      for (const face of [-1, 1]) {
+        calls.length = 0;
+        const k = enemy({kind:8,ratVariant:variant,ratState:state,ratStateT:.12,face,tell:.6,windup:state==='windup'?.3:0,attackT:.11,attackDuration:.22});
+        const before=JSON.stringify(k),result=art.drawEnemy(ctx,k,50.25,70.2,200);
+        assert.equal(result.clip,state);
+        const call=lastSprite(calls);
+        assert.match(call[1].src,new RegExp('rat-enemies-v1/'+variant+'/sprites\\.png$'));
+        assert.deepEqual(call.slice(4,6),[48,32]);assert.deepEqual(call.slice(-4),[-28,-28,48,32]);
+        assert.deepEqual(calls.filter(c=>c[0]==='translate')[0],['translate',50,78]);
+        if(face<0)assert.deepEqual(calls.filter(c=>c[0]==='translate')[1],['translate',1,0]);
+        assert.equal(JSON.stringify(k),before,'rendering does not trigger bites or move rats');
+      }
+    }
+  }
+});
+
+test('rat tell and attack poses follow host timers rather than global time, and a failed variant keeps fallback isolated', async () => {
+  const { art }=await nativeArt(),{ctx,calls}=context();
+  const k=enemy({kind:8,ratVariant:'common',ratState:'windup',tell:.6,windup:.6,ratStateT:0});
+  art.drawEnemy(ctx,k,0,0,2000);const early=lastSprite(calls).slice(2,4);
+  art.drawEnemy(ctx,{...k,windup:.001},0,0,2000);assert.notDeepEqual(lastSprite(calls).slice(2,4),early);
+  const attack={...k,ratState:'attack',windup:0,attackT:.22,attackDuration:.22};
+  art.drawEnemy(ctx,attack,0,0,2000);const begin=lastSprite(calls).slice(2,4);
+  art.drawEnemy(ctx,{...attack,attackT:.001},0,0,2000);assert.notDeepEqual(lastSprite(calls).slice(2,4),begin);
+  const broken=await nativeArt('/rat-enemies-v1/plague/sprites.png');
+  assert.deepEqual([...broken.status.failed],['rat-plague']);
+  assert.equal(broken.art.drawEnemy(ctx,enemy({kind:8,ratVariant:'plague'}),0,0,1),false);
+  assert.equal(broken.art.drawEnemy(ctx,enemy({kind:8,ratVariant:'black'}),0,0,1).clip,'idle');
+  assert.equal(broken.art.drawEnemy(ctx,enemy({kind:8,ratVariant:'__proto__'}),0,0,1).clip,'idle');
+});
+
+test('rat corpses use a one-shot with an empty terminal frame and are removed without affecting gameplay', async () => {
+  const {art}=await nativeArt(),{ctx,calls}=context();
+  const k=enemy({kind:8,ratVariant:'common',hp:0}),before=JSON.stringify(k);
+  art.enemyDefeated(k,10);art.drawDefeated(ctx,10.05,0,0);
+  assert.match(lastSprite(calls)[1].src,/rat-enemies-v1\/common\/sprites\.png$/);
+  calls.length=0;art.drawDefeated(ctx,10.8,0,0);assert.equal(calls.length,0);
+  assert.equal(JSON.stringify(k),before);art.enemyDefeated(k,11);art.reset();calls.length=0;art.drawDefeated(ctx,11.1,0,0);assert.equal(calls.length,0);
 });
