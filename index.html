@@ -2633,7 +2633,7 @@ function drawMenuScene(canvas){
     drawTiled(IMG.mtn,.10,my,true,MTN_BASE);
     drawTiled(IMG.forest,.35,Math.max(gy,108+Math.round(IH*.46)),false,FOREST_BASE);
     drawClouds(Math.round(IH*.82),0);
-    ctx.fillStyle='rgba(5,20,49,.62)';ctx.fillRect(0,Math.round(IH*.20),IW,IH);
+    ctx.fillStyle='rgba(5,20,49,.62)';ctx.fillRect(0,0,IW,IH);
     var moonX=Math.round(IW*.84),moonY=Math.round(IH*.22);
     disc(moonX,moonY,11,'rgba(157,178,232,.04)');disc(moonX,moonY,7,'rgba(157,178,232,.06)');
     disc(moonX,moonY,6,'#dedfd4');disc(moonX-2,moonY+1,2,'#b9bdca');rect(moonX+2,moonY-3,2,2,'#b9bdca');

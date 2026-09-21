@@ -46,7 +46,7 @@ function home() {
   for (const [label, action, icon] of [['Play', close, 'play'], ['Garden', garden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
     const b = button('', action, 'max-home-button max-icon-' + icon);
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
-    pixelText(b, label, icon === 'play' ? 4 : 2, 2); nav.append(b);
+    pixelText(b, label, icon === 'play' ? 4 : 2, icon === 'play' ? 2 : 1); nav.append(b);
   }
   card.append(title, nav);
   queueMicrotask(() => { if (opened && screen === 'home') title.focus({ preventScroll: true }); });
