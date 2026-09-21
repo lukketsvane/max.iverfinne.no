@@ -69,8 +69,8 @@ test('twenty stages contain three finite encounters each and only the final boss
   g.enterLevel(21);assert.equal(g.rogueRun.world,20);
 });
 test('enemy roles unlock by stage and thieves visibly wind up, steal, and return their seed when defeated',()=>{
-  const {game:g}=fresh();assert.ok(Array.from({length:80},()=>g.enemyKind()).every(k=>k<=2));
-  g.rogueRun.world=10;const kinds=new Set(Array.from({length:500},()=>g.enemyKind()));assert.equal(kinds.size,7);
+  const {game:g}=fresh();assert.ok(Array.from({length:80},()=>g.enemyKind()).every(k=>[0,1,2,8].includes(k)));
+  g.rogueRun.world=10;const kinds=new Set(Array.from({length:500},()=>g.enemyKind()));assert.deepEqual([...kinds].sort(),[0,1,2,3,4,5,6,8]);
   g.rogueRun.world=2;g.seedPickups=[{id:'test',x:0,y:g.surfaceY(0)-2,amount:2}];
   const k=Object.assign(g.makeKrek(1),{kind:3,x:0,y:g.surfaceY(0)-4,vx:0,vy:0});g.floatKrek=[k];
   g.updateEnemyRole(k,.01);assert.ok(k.windup>.6);assert.equal(g.seedPickups.length,1);

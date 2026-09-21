@@ -175,7 +175,11 @@ function coopState(s){
   runEncounters=Array.isArray(s.encounters)?s.encounters.slice(0,4).map(coopPlain):[];
   runHazards=Array.isArray(s.hazards)?s.hazards.slice(0,32).map(coopPlain):[];
   stageWeather=s.stageWeather?coopPlain(s.stageWeather):null;rogueRun.bossDefeated=!!s.bossDefeated;
-  floatKrek=s.pests.map(function(k){var out=coopPlain(k);out.target=gardenPlots.find(function(p){return p.id===k.targetId;});return out;});
+  // A removed rat produces one local corpse animation, never duplicate rewards.
+  if(previousWorld===s.world&&!s.ended&&window.MaxNativeArt){
+    floatKrek.forEach(function(k){if(isRat(k)&&!s.pests.some(function(q){return isRat(q)&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
+  }
+  floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});return out;});
   bombs=s.bombs.map(coopPlain);crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
   worldWeather=coopPlain(s.weather||{});gardenStats=coopPlain(s.stats||{});gardenSeeds=s.seeds;gardenScore=s.score;gardenWave=s.wave;runElapsed=s.elapsed;tSec=s.time;
   if(Array.isArray(s.effects)&&s.effects.length<=30){

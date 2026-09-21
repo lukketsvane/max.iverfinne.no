@@ -5,7 +5,8 @@ const vm = require('node:vm');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
   .replace('/* MAX_COOP_GAME */', fs.readFileSync(path.join(__dirname, '../coop-game.inc.js'), 'utf8'))
-  .replace('/* MAX_RUN_DIRECTOR */', fs.readFileSync(path.join(__dirname, '../run-director.inc.js'), 'utf8'));
+  .replace('/* MAX_RUN_DIRECTOR */', fs.readFileSync(path.join(__dirname, '../run-director.inc.js'), 'utf8'))
+  .replace('/* MAX_RAT_ENEMIES */', fs.readFileSync(path.join(__dirname, '../rat-enemies.inc.js'), 'utf8'));
 const stateNames = [
   'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
@@ -28,6 +29,7 @@ const functionNames = [
   'stageLayout', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
   'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
   'runTimeThreat', 'runDurabilityScale', 'runDamageScale', 'runRaidLimit', 'runRaidInterval', 'runPatrolLimit', 'runPatrolInterval',
+  'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
