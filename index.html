@@ -345,7 +345,7 @@ stage.addEventListener('pointerdown', function (e) {
   try { stage.setPointerCapture(e.pointerId); } catch (err) {}
   var w = screenToWorld(e.clientX,e.clientY);
   touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,ax:e.clientX,gx:e.clientX,gy:e.clientY,travelX:0,
-    wx:w.x,wy:w.y,t0:performance.now(),j:false,low:false,dragged:false};
+    wx:w.x,wy:w.y,t0:performance.now(),j:false,jumped:false,jumpY:e.clientY,low:false,dragged:false};
   if(moveId===null)moveId=e.pointerId;
   e.preventDefault();
 }, {passive:false});
@@ -356,10 +356,16 @@ stage.addEventListener('pointermove', function(e){
   t.ax=Math.max(t.x-76,Math.min(t.x+76,t.ax));
   var dx=t.x-t.gx,dy=t.y-t.gy;
   if(Math.abs(dx)>12||Math.abs(dy)>12)t.dragged=true;
-  if(!t.j&&dy<-24&&-dy>Math.abs(dx)*1.2){
-    t.j=true;t.low=false;doJump(false);
+  // Return the thumb down, then stroke up again to air-jump without releasing
+  // horizontal steering. Jitter/continued ascent never rearms the same stroke.
+  if(t.j){
+    t.jumpY=Math.min(t.jumpY,t.y);
+    if(t.y-t.jumpY>=18){t.j=false;t.gx=t.x;t.gy=t.y;dx=dy=0;}
   }
-  if(!t.j&&dy>26&&dy>Math.abs(dx)*1.2){
+  if(!t.j&&dy<-24&&-dy>Math.abs(dx)*1.2){
+    t.j=true;t.jumped=true;t.jumpY=t.y;t.low=false;doJump(false);
+  }
+  if(!t.jumped&&dy>26&&dy>Math.abs(dx)*1.2){
     if(!t.low){t.low=true;gardenPress=true;}
   }else if(t.low&&Math.abs(dx)>18&&Math.abs(dx)>Math.abs(dy)){t.low=false;t.ax=t.x-(dx<0?-18:18);}
   // Recognise a new vertical stroke after running, independent of old travel.
@@ -370,14 +376,15 @@ stage.addEventListener('pointermove', function(e){
 function endPointer(e){
   var t=touches[e.pointerId];if(!t)return;
   var flickX=e.clientX-t.x0,flickY=e.clientY-t.y0;
-  if(e.type==='pointerup'&&!runIsPaused()&&moveId===e.pointerId&&!t.j&&!t.low&&t.dragged&&
+  if(e.type==='pointerup'&&!runIsPaused()&&moveId===e.pointerId&&!t.jumped&&!t.low&&t.dragged&&
      performance.now()-t.t0<=180&&Math.abs(flickX)>=44&&Math.abs(flickX)>Math.abs(flickY)*2&&Math.abs(flickX)>=t.travelX*.8){
     requestDodge(flickX<0?-1:1);
   }
   // Cancellation (iOS app switch, browser gesture, lost capture) is never a tap.
-  if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.j&&!t.low&&performance.now()-t.t0<240){
-    var pest=krekAt(t.wx,t.wy,14),bird=birdAt(t.wx,t.wy);
-    if(pest)throwBomb({kind:'krek',o:pest});
+  if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&performance.now()-t.t0<240){
+    var pest=krekAt(t.wx,t.wy,14),bird=birdAt(t.wx,t.wy),spore=sporeAt(t.wx,t.wy,12);
+    if(spore)throwBomb(sporeAim(spore));
+    else if(pest)throwBomb({kind:'krek',o:pest});
     else if(bird)throwBomb(bird);
     else if(companionAt(t.wx,t.wy))refillCompanion();
     else if(P.st==='climb')climbBoost();
@@ -4079,7 +4086,7 @@ function lob(x0, y0, tx, ty, vx, vy) {
 }
 function throwBomb(target) {                               // a bird {kind, o} or a spot {x, y}
   if (runIsPaused() || climb || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 3) return false;
-  if(coopGuest()){var aim=target.o||target;if(!coop.network.action('throw',{x:aim.x,y:aim.y}))return false;}
+  if(coopGuest()){var aim=target.o||target;if(!coop.network.action('throw',{x:aim.x,y:aim.y,spore:Number.isSafeInteger(aim.spore)?aim.spore:0}))return false;}
   bombCool = 0.38*Math.pow(.88,rogueRun.perks.cadence||0); task = null;
   var tx = target.o ? target.o.x : target.x;
   if (Math.abs(tx - P.x) > 1) P.face = tx > P.x ? 1 : -1;
@@ -4102,6 +4109,9 @@ function launchBomb() {
 }
 function throwAuto() {                                     // B: nearest garden threat first, then bird
   var best = null, bd = 1e9;
+  var threat=null,urgency=Infinity;
+  runHazards.forEach(function(h){if(h.type!=='spore'||h.tell<=0)return;var point=hazardPosition(h),d=Math.hypot(point.x-P.x,point.y-(P.y-12));if(d<110&&h.tell<urgency){threat=h;urgency=h.tell;}});
+  if(threat)return throwBomb(sporeAim(threat));
   for(var pi=0;pi<floatKrek.length;pi++){var kk=floatKrek[pi],pdx=kk.x-P.x,pup=P.y-kk.y;if(Math.abs(pdx)>190||pup>130||pup<-40)continue;var pd=Math.abs(pdx)+Math.abs(pup)*.35+(pdx*P.face<0?80:0);if(pd<bd){bd=pd;best={kind:'krek',o:kk};}}
   if(best)return throwBomb(best);
   forEachBird(function (k, o, cx, cy) {
@@ -4117,6 +4127,7 @@ function throwAuto() {                                     // B: nearest garden 
 
 function bombHitsBird(x, y) {
   var hit = false;
+  if(sporeAt(x,y,6))return true;
   forEachBird(function (k, o, cx, cy) { if (!hit && Math.hypot(cx - x, cy - y) < (k === 'crow' ? 7 : (k === 'tit' ? 6 : 11))) hit = true; });
   if(!hit)for(var i=0;i<floatKrek.length;i++)if(Math.hypot(floatKrek[i].x-x,floatKrek[i].y-y)<7){hit=true;break;}
   return hit;
@@ -4217,7 +4228,8 @@ function explode(x, y, wet, build) {
   build=build||Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers});
   var chainSeeds=[];
   var BR = BLAST_R + (build.blast||0)*5;
-  runHazards=runHazards.filter(function(h){return h.type!=='spore'||Math.hypot(h.x-x,h.y-6-y)>BR+h.r;});
+  var intercepted=false;
+  runHazards=runHazards.filter(function(h){if(h.type!=='spore'||h.tell<=0)return true;var q=hazardPosition(h);if(Math.hypot(q.x-x,q.y-y)>BR+5)return true;intercepted=true;return false;});
   booms.push({ id:++coopFxId,x: x, y: y, t: 0, seed: Math.random() * 97, wet: wet });
   shake = Math.min(3, shake + 2.2);
   sfx('boom', Math.abs(x - P.x));
@@ -4255,7 +4267,7 @@ function explode(x, y, wet, build) {
   for(i=0;i<gardenPlots.length;i++){
     var gp=gardenPlots[i],gd=Math.hypot(gp.x-x,(surfaceY(gp.x)-8)-y);
     if(gd<BR+13&&!gp.dead){
-      if(wet){gp.moisture=clamp01(gp.moisture+.55);gp.health=clamp01(gp.health+.035);gp.pulse=1;}
+      if(wet||intercepted){gp.moisture=clamp01(gp.moisture+(wet?.55:.18));gp.health=clamp01(gp.health+.035);gp.pulse=1;}
       else{gp.health=clamp01(gp.health-.075);gp.moisture=Math.max(0,gp.moisture-.035);gp.hit=1;}
     }
   }

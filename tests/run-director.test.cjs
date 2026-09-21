@@ -94,7 +94,7 @@ test('spore casters warn before impact, bombs clear spores, and hazards respect 
   const caster=Object.assign(g.makeKrek(1),{kind:4,x:34,y:g.surfaceY(0)-24,vx:0,vy:0,bite:0});g.floatKrek=[caster];
   for(let i=0;i<100;i++)g.updateKrek(.01);
   assert.equal(g.runHazards.length,1);assert.equal(p.health,1);assert.ok(g.runHazards[0].tell>0);
-  g.explode(0,g.surfaceY(0)-5,true);assert.equal(g.runHazards.length,0);
+  const point=g.hazardPosition(g.runHazards[0]);g.explode(point.x,point.y,true);assert.equal(g.runHazards.length,0);
   g.addRunHazard('root',g.P.x,12,.1,1);g.updateRunHazards(.1);assert.equal(p.health,1);g.updateRunHazards(.01);assert.ok(p.health<1);
   g.P.dodgeT=.1;const vy=g.P.vy;g.updateHazardContact();assert.equal(g.P.vy,vy);
   g.P.dodgeT=0;g.updateHazardContact();assert.equal(g.P.vy,vy,'the same strike cannot hit after a successful dodge');
@@ -128,4 +128,39 @@ test('Hollow Crown warns, exposes itself after attacking, summons at phase thres
   boss.hp=boss.maxHp*.6;g.updateHollowCrown(boss,.01);assert.equal(boss.phase,2);assert.equal(g.floatKrek.length,3);
   boss.hp=boss.maxHp*.3;g.updateHollowCrown(boss,.01);assert.equal(boss.phase,3);assert.equal(g.floatKrek.length,6);
   g.damagePest(boss,1000,boss.x);assert.equal(g.runWon,true);assert.equal(g.rogueRun.choice,null);
+});
+test('one steering thumb can perform two distinct upward strokes without lifting or accidentally tending',()=>{
+  const h=fresh(),g=h.game;collect(g,'feathers',3);g.gardenSeeds=4;
+  h.pointer('pointerdown',120,400);h.advance(250);h.pointer('pointermove',360,400);
+  h.pointer('pointermove',362,365);steps(g,.12);assert.equal(g.P.airJumpUsed,false);assert.equal(g.readInput().axis,1);
+  h.pointer('pointermove',362,350);assert.equal(g.jumpBuf,0,'continuing upward is still the first stroke');
+  h.pointer('pointermove',364,361);assert.equal(g.jumpBuf,0,'small thumb jitter cannot rearm jumping');
+  h.pointer('pointermove',365,377);assert.equal(g.gardenPress,false);assert.equal(g.swipeDown,false);
+  h.pointer('pointermove',365,339);steps(g,.01);assert.equal(g.P.airJumpUsed,true);assert.ok(g.P.vy<-140);assert.equal(g.readInput().axis,1);
+  h.pointer('pointermove',368,380);h.pointer('pointerup',368,380);
+  assert.equal(g.dodgeBuf,0,'a returned jumping thumb cannot become a flick dodge');assert.equal(g.gardenPlots.length,0);
+});
+test('tapping an incoming spore fires immediately without steering Max or targeting the plant',()=>{
+  const h=fresh(),g=h.game;const p=plot({x:24});g.gardenPlots=[p];
+  g.addRunHazard('spore',24,15,1.1,1,58,g.surfaceY(24)-24);
+  const point=g.hazardPosition(g.runHazards[0]),x=(point.x-g.camX)*960/g.IW,y=(point.y-g.camY)*540/g.IH,before=g.P.x;
+  h.pointer('pointerdown',x,y);h.advance(60);h.pointer('pointerup',x,y);
+  assert.equal(g.bombs.length,1);assert.equal(g.P.x,before);assert.equal(g.readInput().axis,0);assert.equal(g.task,null);
+  assert.notEqual(g.bombs[0].vx,0);
+});
+test('aimed bombs intercept moving spores at 30, 60 and 120 Hz and turn them into plant care',()=>{
+  for(const hz of [30,60,120]){
+    const {game:g}=fresh();const p=plot({x:24,health:.6,moisture:.2});g.gardenPlots=[p];
+    g.addRunHazard('spore',24,15,1.1,1,58,g.surfaceY(24)-24);
+    assert.ok(g.throwAuto());
+    for(let i=0;i<hz&&g.runHazards.length;i++){g.updateRunHazards(1/hz);g.updateBombs(1/hz);}
+    assert.equal(g.runHazards.length,0,`${hz} Hz interception`);assert.ok(p.health>.6,`${hz} Hz healing`);assert.ok(p.moisture>.2);
+  }
+});
+test('spore interception never cancels an unrelated root strike or an already landed hazard',()=>{
+  const {game:g}=fresh();g.addRunHazard('root',0,12,1,1);g.addRunHazard('spore',0,12,1,1);
+  const root=g.runHazards[0],spore=g.runHazards[1],point=g.hazardPosition(spore);
+  g.explode(point.x,point.y,false);assert.equal(g.runHazards.length,1);assert.equal(g.runHazards[0],root);
+  g.addRunHazard('spore',0,12,.01,1);g.updateRunHazards(.02);g.explode(0,g.surfaceY(0),false);
+  assert.equal(g.runHazards.length,2);
 });

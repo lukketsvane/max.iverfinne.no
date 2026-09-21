@@ -97,3 +97,13 @@ test('defeating the final boss delivers a single shared victory to all four play
   host.damagePest(boss,10000,boss.x);sync();sync();
   games.forEach(h=>{assert.equal(h.game.runWon,true);assert.equal(h.game.rogueMeta.wins,1);assert.equal(h.game.rogueRun.choice,null);});
 });
+test('a guest can intercept a spore despite an older snapshot; the host alone awards the watering burst',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+  const p=plot({x:24,moisture:.2,health:.6});host.gardenPlots=[p];
+  host.addRunHazard('spore',24,15,1.2,1,58,host.surfaceY(24)-24);sync();
+  guest.throwAuto();assert.ok(games[1].pending[0].spore>0);
+  host.updateRunHazards(.2);send(1,games[1].pending);
+  for(let i=0;i<120&&host.runHazards.length;i++){host.updateRunHazards(1/120);host.updateBombs(1/120);}
+  assert.equal(host.runHazards.length,0);assert.ok(p.moisture>.2);assert.ok(p.health>.6);
+  sync();assert.equal(guest.runHazards.length,0);assert.equal(guest.gardenPlots[0].moisture,p.moisture);
+});

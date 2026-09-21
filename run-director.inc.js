@@ -117,6 +117,23 @@ function addRunHazard(type,x,r,tell,power,sourceX,sourceY){
   if(runHazards.length>=32)return;
   runHazards.push({id:++hazardId,type:type,x:x,y:surfaceY(x),r:r,tell:tell,total:tell,life:.45,hit:false,power:power||1,sx:sourceX==null?x:sourceX,sy:sourceY==null?surfaceY(x)-40:sourceY});
 }
+function hazardPosition(h,ahead){
+  var p=clamp01(1-Math.max(0,h.tell-(ahead||0))/h.total);
+  return {x:h.sx+(h.x-h.sx)*p,y:h.sy+(h.y-h.sy)*p-Math.sin(p*Math.PI)*22};
+}
+function sporeAt(x,y,range){
+  var found=null,best=range;
+  runHazards.forEach(function(h){if(h.type!=='spore'||h.tell<=0)return;var q=hazardPosition(h),d=Math.hypot(q.x-x,q.y-y);if(d<best){found=h;best=d;}});
+  return found;
+}
+function sporeAim(h){
+  var target=hazardPosition(h);
+  for(var i=0;i<3;i++){
+    var time=Math.max(.36,Math.min(1,.3+Math.hypot(target.x-(P.x+P.face*10),target.y-(P.y-12))/240));
+    target=hazardPosition(h,time);
+  }
+  target.spore=h.id;return target;
+}
 function updateRunHazards(dt){
   for(var i=runHazards.length-1;i>=0;i--){
     var h=runHazards[i];
@@ -219,6 +236,7 @@ function updateHollowCrown(k,dt){
   }
   k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
   if(k.windup>0){
+    k.vx=k.vy=0;
     k.windup=Math.max(0,k.windup-dt);
     if(k.windup===0){k.exposed=1.8;k.cool=3.8-(k.phase-1)*.35;}
     return;
@@ -226,6 +244,7 @@ function updateHollowCrown(k,dt){
   k.cool-=dt;
   var target=pickKrekTarget(k),anchor=target?target.x:P.x;
   if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-42:42),surfaceY(anchor)-26,dt,12);
+  else k.vx=k.vy=0;
   if(k.cool>0)return;
   k.attack++;k.tell=1.4;k.windup=k.tell;
   var count=k.phase,pattern=k.attack%3;
@@ -279,7 +298,7 @@ function drawRunHazards(t){
     ctx.fillStyle=h.tell>0?'#d5ad63':'#d9c7a1';ctx.globalAlpha=h.tell>0?.55:Math.min(1,h.life*3);
     ctx.fillRect(x-h.r,y-2,h.r*2,1);ctx.fillRect(x-h.r,y-5,1,3);ctx.fillRect(x+h.r-1,y-5,1,3);
     if(h.tell>0){
-      var p=1-h.tell/h.total,sx=Math.round(h.sx+(h.x-h.sx)*p-camX),sy=Math.round(h.sy+(h.y-h.sy)*p-Math.sin(p*Math.PI)*22-camY);
+      var point=hazardPosition(h),sx=Math.round(point.x-camX),sy=Math.round(point.y-camY);
       if(h.type==='spore'){ctx.fillRect(sx-2,sy-2,4,4);ctx.fillStyle='#a693bd';ctx.fillRect(sx,sy,2,2);}
       else for(var n=-1;n<=1;n++)ctx.fillRect(x+n*6,y-4,1,2);
     }else for(var n=-1;n<=1;n++){ctx.fillRect(x+n*5,y-16+(n?4:0),2,14-(n?4:0));}
@@ -333,8 +352,9 @@ function drawPickupNotice(dt){
   ctx.save();ctx.globalAlpha=Math.min(1,pickupNotice.life*2);
   var text=pickupNotice.text.toUpperCase(),tw=text.length*6-1,left=Math.round(x-tw/2);
   if(runPixelFont.complete&&runPixelFont.naturalWidth){
-    ctx.fillStyle='rgba(12,20,22,.85)';ctx.fillRect(left-3,y-8,tw+6,11);
+    ctx.fillStyle='rgba(12,20,22,.85)';ctx.fillRect(left-3,y-8,tw+6,15);
     for(var i=0;i<text.length;i++){var n=text.charCodeAt(i)-32;ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,left+i*6,y-7,5,7);}
+    for(var dot=0;dot<3;dot++){ctx.fillStyle=dot<pickupNotice.count?'#ddd79c':'#48554e';ctx.fillRect(x-5+dot*4,y+3,2,2);}
   }else drawRunItem(pickupNotice.type,x,y-4,true);
   ctx.restore();
 }
