@@ -31,22 +31,16 @@ test('only an offered mutation can be selected', () => {
   assert.equal(game.rogueRun.perks[selected], 1);
 });
 
-test('selecting a mutation previews it and confirmation spends the choice', () => {
-  const { game, elements } = loadGame();
-  game.grantRogueXP(4);
-  const choice = game.rogueRun.choice;
-  const menu = elements.get('perkMenu');
-  const card = menu.querySelector('[aria-pressed]');
-  const confirm = menu.querySelectorAll('button').at(-1);
-  assert.equal(confirm.disabled, true);
-  card.listeners.click[0]();
-  assert.equal(card.getAttribute('aria-pressed'), 'true');
-  assert.equal(confirm.disabled, false);
-  assert.equal(game.rogueRun.choice, choice);
-  assert.equal(game.rogueRun.perks[choice[0].id], 0);
-  confirm.listeners.click[0]();
-  assert.equal(game.rogueRun.perks[choice[0].id], 1);
-  assert.equal(game.rogueRun.choice, null);
+test('one tap selects an upgrade while movement input remains held', () => {
+  const h = loadGame(), {game, elements} = h;
+  h.key('keydown', 'ArrowRight'); game.grantRogueXP(4);
+  const id = game.rogueRun.choice[0].id, menu = elements.get('perkMenu');
+  assert.equal(menu.getAttribute('role'), 'group');
+  assert.equal(menu.querySelectorAll('button').length, 3);
+  assert.equal(game.readInput().axis, 1);
+  menu.querySelector('button').listeners.click[0]();
+  assert.equal(game.rogueRun.perks[id], 1); assert.equal(game.rogueRun.choice, null);
+  assert.equal(game.readInput().axis, 1);
 });
 
 test('rank-five mutations leave the pool; a final available rank remains selectable', () => {
@@ -62,41 +56,23 @@ test('rank-five mutations leave the pool; a final available rank remains selecta
   assert.ok(!game.rogueRun.choice, 'fully upgraded runs must not get an empty blocking choice');
 });
 
-test('a saved mutation choice is rendered again on reload', () => {
-  const session = loadGame();
-  session.game.grantRogueXP(100);
-  const expected = Array.from(session.game.rogueRun.choice, p => p.id);
-  session.game.saveGarden();
-  const resumed = session.reload();
-  assert.deepEqual(Array.from(resumed.game.rogueRun.choice, p => p.id), expected);
-  const menu = resumed.elements.get('perkMenu');
-  assert.equal(menu.style.display, 'grid');
-  assert.equal(menu.querySelectorAll('[aria-pressed]').length, expected.length);
-  let choices = 0;
-  while (resumed.game.rogueRun.choice && choices < 20) {
-    resumed.game.chooseRoguePerk(resumed.game.rogueRun.choice[0].id);
-    choices++;
-  }
-  assert.equal(choices, 6, 'reloading must preserve all queued rewards');
+test('reload starts a fresh run with no queued upgrades or saved crops', () => {
+  const h = loadGame(), g = h.game;
+  g.grantRogueXP(100); g.gardenPlots = [plot()]; g.saveGarden();
+  const fresh = h.reload().game;
+  assert.equal(fresh.rogueRun.choice, null); assert.equal(fresh.rogueRun.level, 1);
+  assert.equal(fresh.gardenPlots.length, 0); assert.equal(fresh.runElapsed, 0);
+  assert.equal(h.storage.has('max-fuglesprenger-rogue-v6'), false);
 });
 
-test('simulation and competition time stay paused while choosing a mutation', () => {
-  const session = loadGame();
-  const { game } = session;
-  game.gardenPlots = [plot(), plot({ x: 20 })];
-  game.gardenRaidActive = true;
-  game.gardenRaidGrace = 5;
-  game.gardenRaidSpawn = 1;
-  game.grantRogueXP(4);
-  const before = JSON.stringify({
-    plants: game.gardenPlots, time: game.runElapsed,
-    grace: game.gardenRaidGrace, spawn: game.gardenRaidSpawn, x: game.P.x, y: game.P.y,
-  });
-  for (let i = 0; i < 10; i++) session.tick(50);
-  assert.equal(JSON.stringify({
-    plants: game.gardenPlots, time: game.runElapsed,
-    grace: game.gardenRaidGrace, spawn: game.gardenRaidSpawn, x: game.P.x, y: game.P.y,
-  }), before);
+test('plants, raids and run time keep moving while an upgrade is available', () => {
+  const h = loadGame(), g = h.game;
+  g.gardenPlots = [plot(), plot({x:20})]; g.saveGarden();
+  g.gardenRaidActive = true; g.gardenRaidGrace = 5; g.grantRogueXP(4);
+  const age = g.gardenPlots[0].age;
+  for (let i=0;i<10;i++) h.tick(50);
+  assert.ok(g.rogueRun.choice); assert.ok(g.gardenPlots[0].age > age);
+  assert.ok(g.gardenRaidGrace < 5); assert.ok(g.runElapsed > 0);
 });
 
 test('a loss finalizes once and waits for an explicit retry', () => {
@@ -120,7 +96,7 @@ test('a loss finalizes once and waits for an explicit retry', () => {
   assert.equal(game.gardenScore, 321);
   assert.equal(game.gardenPlots[0].dead, 6);
   const resumed = session.reload();
-  assert.equal(resumed.game.rogueRun.ended, true);
+  assert.equal(resumed.game.rogueRun.ended, false);
   assert.equal(resumed.game.rogueMeta.runs, 1);
   game.resetRogueRun('NY RUNDE');
   assert.equal(game.rogueRun.ended, false);
@@ -128,33 +104,14 @@ test('a loss finalizes once and waits for an explicit retry', () => {
   assert.equal(game.rogueMeta.runs, 1);
 });
 
-test('saving during a raid preserves remaining enemies, countdown and dead plants', () => {
-  const session = loadGame();
-  const { game } = session;
-  game.gardenWave = 4;
-  game.gardenRaidActive = true;
-  game.gardenRaidT = 8.5;
-  game.gardenRaidGrace = 1.25;
-  game.gardenRaidSpawn = .21;
-  game.raidLostStart = 2;
-  game.gardenBossSpawned = true;
-  game.gardenPlots = [plot({ dead: 5.5, health: 0, lastHarvestGrowth: 1.35 }), plot({ x: 20 })];
-  game.floatKrek = [{ x: 35, y: -30, vx: -3, vy: 0, face: -1, ph: .8, target: game.gardenPlots[1], bite: .5, think: .3, flee: 0, hp: 3, flash: 0, kind: 1, elite: true, queen: false, raid: true }];
-  game.saveGarden();
-  const restored = session.reload().game;
-  assert.equal(restored.gardenRaidActive, true);
-  assert.equal(restored.gardenRaidT, 8.5);
-  assert.equal(restored.gardenRaidGrace, 1.25);
-  assert.equal(restored.gardenRaidSpawn, .21);
-  assert.equal(restored.raidLostStart, 2);
-  assert.equal(restored.gardenBossSpawned, true);
-  assert.equal(restored.floatKrek.length, 1);
-  assert.equal(restored.floatKrek[0].hp, 3);
-  assert.equal(restored.floatKrek[0].raid, true);
-  assert.ok(!restored.floatKrek[0].target || restored.gardenPlots.includes(restored.floatKrek[0].target),
-    'restored pests must target a live garden object, not a detached JSON copy');
-  assert.equal(restored.gardenPlots[0].dead, 5.5);
-  assert.equal(restored.gardenPlots[0].lastHarvestGrowth, 1.35);
+test('legacy checkpoint storage is ignored; login and finished records stay intact', () => {
+  const old = {version:7,time:99,seeds:12,wave:5,position:{x:950},plots:[plot()],rogue:{world:4,perks:{robot:2},choice:[{id:'robot'}],garden:[plot()]}};
+  const h = loadGame({'max-fuglesprenger-rogue-v6':JSON.stringify(old),'max-night-garden-x':'950','max-player-session-v1':'remember-me','max-fuglesprenger-meta-v1':JSON.stringify({runs:8,bestWorld:4,bestPlants:12})});
+  const g=h.game;
+  assert.equal(g.P.x,0); assert.equal(g.gardenWave,0); assert.equal(g.gardenPlots.length,0);
+  assert.equal(g.rogueRun.world,1); assert.equal(g.rogueRun.perks.robot,0);
+  assert.equal(g.rogueMeta.runs,8); assert.equal(h.storage.get('max-player-session-v1'),'remember-me');
+  g.saveGarden(); assert.equal(h.storage.get('max-fuglesprenger-rogue-v6'),JSON.stringify(old));
 });
 
 test('repeated taps on a watered healthy plant cannot farm score, power or instant growth', () => {
@@ -179,7 +136,7 @@ test('holding water on a full healthy plant cannot farm score or power', () => {
   assert.equal(game.gardenFeverT, 0);
 });
 
-test('harvesting requires new growth, including after reload', () => {
+test('harvesting requires new growth within the run', () => {
   const session = loadGame();
   const { game } = session;
   const p = plot();
@@ -189,8 +146,8 @@ test('harvesting requires new growth, including after reload', () => {
   session.advance(10000);
   game.harvestGardenPlot(p);
   assert.equal(game.gardenStats.harvested, 1);
-  const resumed = session.reload();
-  const grown = resumed.game.gardenPlots[0];
+  const resumed = session;
+  const grown = p;
   resumed.game.harvestGardenPlot(grown);
   assert.equal(resumed.game.gardenStats.harvested, 1);
   grown.growth = 1.35;
@@ -209,7 +166,7 @@ test('past-run petals do not improve collectible rarity in the next run', () => 
   assert.deepEqual(drops(), newPlayer);
 });
 
-test('the result garden keeps every plant through death, world changes and reload', () => {
+test('the result garden keeps every plant through death and world changes; only records survive reload', () => {
   const session = loadGame();
   const { game } = session;
   const first = plot({ kind: 3, growth: 1.2 });
@@ -229,7 +186,8 @@ test('the result garden keeps every plant through death, world changes and reloa
   game.endRogueRun();
   assert.equal(game.rogueMeta.bestPlants, 2);
   const resumed = session.reload().game;
-  assert.deepEqual(Array.from(resumed.rogueRun.garden, p => p.kind), [3, 7]);
+  assert.deepEqual(Array.from(game.rogueRun.garden, p => p.kind), [3, 7]);
+  assert.equal(resumed.rogueRun.garden.length, 0);
   resumed.resetRogueRun('NY RUNDE');
   assert.equal(resumed.rogueRun.world, 1);
   assert.equal(resumed.rogueRun.garden.length, 0);
@@ -238,7 +196,7 @@ test('the result garden keeps every plant through death, world changes and reloa
   assert.ok(Object.values(resumed.rogueRun.perks).every(rank => rank === 0));
 });
 
-test('a seed pickup opening a choice stops the remaining systems in that same frame', () => {
+test('a seed pickup offering an upgrade does not interrupt the current frame', () => {
   const session = loadGame();
   const { game } = session;
   game.gardenPlots = [plot(), plot({ x: 20 })];
@@ -254,11 +212,11 @@ test('a seed pickup opening a choice stops the remaining systems in that same fr
   session.tick(50);
   assert.ok(game.rogueRun.choice, 'the nearby seed must open the earned choice');
   assert.equal(game.gardenSeeds, 1);
-  assert.equal(JSON.stringify(game.gardenPlots), plantsBefore);
-  assert.equal(JSON.stringify(game.floatKrek), enemiesBefore);
-  assert.equal(game.gardenRaidGrace, 2);
-  assert.equal(game.gardenRaidSpawn, 1);
-  assert.equal(game.runElapsed, 0);
+  assert.notEqual(JSON.stringify(game.gardenPlots), plantsBefore);
+  assert.notEqual(JSON.stringify(game.floatKrek), enemiesBefore);
+  assert.ok(game.gardenRaidGrace < 2);
+  assert.ok(game.gardenRaidSpawn < 1);
+  assert.ok(game.runElapsed > 0);
 });
 
 test('a hidden page pauses growth, raid countdown and competition time', () => {
@@ -307,7 +265,7 @@ test('quick kills do not replenish a raid, and its warning gives time to react',
   assert.equal(encounter(true), encounter(false));
 });
 
-test('reload preserves the remaining raid budget and its original pressure', () => {
+test('an active raid keeps its original pressure and fixed budget as time advances', () => {
   const session = loadGame();
   const { game } = session;
   game.gardenPlots = [plot(), plot({ x: 20 })];
@@ -319,7 +277,7 @@ test('reload preserves the remaining raid budget and its original pressure', () 
   const total = game.rogueRun.raidTotal;
   const remaining = game.rogueRun.raidRemaining;
   game.saveGarden();
-  const restored = session.reload().game;
+  const restored = game;
   assert.equal(restored.rogueRun.raidRemaining, remaining);
   assert.equal(restored.rogueRun.raidTotal, total);
   restored.rogueRun.worldElapsed = 9999;

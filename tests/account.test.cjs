@@ -8,8 +8,8 @@ function memory(values = {}) {
   return { data, getItem: k => data.get(k) ?? null, setItem: (k, v) => data.set(k, String(v)), removeItem: k => data.delete(k) };
 }
 async function checkpoint() {
-  const game = loadGame(); game.game.saveGarden();
-  const storage = memory(Object.fromEntries(game.storage));
+  // Legacy cloud format stays validated, but the current game no longer loads it.
+  const storage = memory({'max-fuglesprenger-meta-v1':'{}','max-fuglesprenger-rogue-v6':JSON.stringify({version:7,time:0,position:{x:20},plots:[],rogue:{world:2,perks:{},garden:[],choice:null}})});
   return { storage, snapshot: (await modulePromise).captureSnapshot(storage) };
 }
 
@@ -35,7 +35,7 @@ test('cloud checkpoints contain game data and exclude authentication tokens', as
   assert.throws(() => validateSnapshot(bad));
 });
 
-test('loading a cloud game backs up local data, keeps the session, and survives an actual game reload', async () => {
+test('legacy import preserves its backup and login but cannot resume a run', async () => {
   const { snapshot } = await checkpoint();
   const storage = memory({ 'max-fuglesprenger-rogue-v6': 'old run', 'max-player-session-v1': 'session' });
   const { restoreSnapshot, BACKUP_KEY } = await modulePromise;
@@ -74,20 +74,17 @@ test('stale saves require a fresh revision and cannot cross accounts', async () 
   await assert.rejects(read, /The account has changed/); assert.equal(pending.row, null);
 });
 
-test('manual pause freezes raids, crops and run time; resume does not catch up elapsed time', () => {
-  const h = loadGame(); const g = h.game; const p = plot();
-  g.gardenPlots.push(p); g.recordGardenPlant(p); g.gardenRaidT = 9; g.runElapsed = 12;
-  g.setMenuPaused(true);
-  const growth = p.growth; h.tick(60000);
-  assert.equal(g.runElapsed, 12); assert.equal(g.gardenRaidT, 9); assert.equal(p.growth, growth);
-  g.setMenuPaused(false); h.tick(16);
-  assert.ok(g.runElapsed > 12 && g.runElapsed < 12.1);
+test('an active run cannot be paused through the menu bridge', () => {
+  const h=loadGame(), g=h.game;g.resetRogueRun();
+  g.gardenPlots=[plot(),plot({x:20})];g.saveGarden();g.gardenRaidT=9;
+  g.setMenuPaused(true);h.tick(50);
+  assert.equal(g.menuPaused,false);assert.ok(g.gardenRaidT<9);assert.ok(g.runElapsed>0);
 });
 
-test('pagehide cannot overwrite a checkpoint imported immediately before reload', () => {
-  const h = loadGame(); h.game.saveGarden();
-  h.storage.set('max-fuglesprenger-rogue-v6', 'imported run');
-  h.game.restoringCheckpoint = true;
-  assert.equal(h.game.saveGarden(), false);
-  assert.equal(h.storage.get('max-fuglesprenger-rogue-v6'), 'imported run');
+test('the running game writes no resumable snapshot or position', () => {
+  const h=loadGame(), g=h.game, before=JSON.stringify([...h.storage]);
+  g.gardenPlots=[plot()];g.gardenSeeds=12;g.gardenWave=4;g.saveGarden();
+  assert.equal(JSON.stringify([...h.storage]),before);
+  g.endRogueRun();assert.equal(h.storage.has('max-fuglesprenger-meta-v1'),true);
+  assert.equal(h.storage.has('max-fuglesprenger-rogue-v6'),false);
 });

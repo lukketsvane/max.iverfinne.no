@@ -33,22 +33,24 @@ test('pause and transport stop watering and refilling; refill requires Max to re
   env.player.vx = 10; advance(bot, env, 3); assert.equal(bot.state.water, .2);
   env.player.vx = 0; advance(bot, env, 2); assert.equal(bot.state.water, tiers[0].capacity);
 });
-test('robot upgrades cap at two, save and reload keep water, and a fresh run starts small', () => {
+test('robot upgrades cap at two, travel retains water, and reload starts small', () => {
   const h = loadGame(), g = h.game;
   g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot');
   g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot');
   g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot');
   assert.equal(g.rogueRun.perks.robot, 2);
   g.companion.state.water = .123; g.saveGarden();
-  const again = h.reload().game; assert.equal(again.companion.state.water, .123); assert.equal(again.companion.state.tier, 2);
+  const again = g; assert.equal(again.companion.state.water, .123);
   again.enterLevel(2); assert.equal(again.companion.state.water, .123);
   again.resetRogueRun('test'); again.ensureCompanion();
   assert.equal(again.companion.state.tier, 0); assert.equal(again.companion.state.water, 1);
+  const fresh=h.reload().game; assert.equal(fresh.companion.state.tier,0); assert.equal(fresh.companion.state.water,1);
 });
 test('drawing a result scene cannot change the live camera or viewport, even on a failed draw', () => {
   const { game: g } = loadGame();
   const before = [g.IW, g.IH, g.ANCHOR, g.camX, g.camY, g.P.x, g.P.y];
   const canvas = { width: 150, height: 324, getContext() { return { fillRect() { throw Error('canvas failure'); } }; } };
   assert.throws(() => g.drawResultScene(canvas, null), /canvas failure/);
+  assert.throws(() => g.drawMenuScene(canvas), /canvas failure/);
   assert.deepEqual([g.IW, g.IH, g.ANCHOR, g.camX, g.camY, g.P.x, g.P.y], before);
 });

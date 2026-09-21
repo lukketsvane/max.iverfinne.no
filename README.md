@@ -1,4 +1,4 @@
-# MAX FUGLESPRENGER
+# MAX · NIGHT GARDEN
 
 A pixel garden roguelite for phones. Collect seeds, grow and protect a garden,
 then climb a beanstalk to the next world. Your result is the garden you grew.
@@ -11,24 +11,27 @@ example with `python -m http.server 8765 --directory dist`. Open
 pinned Supabase client. No server process or CDN script is required in production.
 
 - `index.html`: game, original embedded artwork and simulation.
-- `run-results.js` / `run-results.css`: full-screen native bouquets from every saved plant, with paged bundles and local records.
-- `game-menu.mjs` / `game-menu.css`: main menu, pause, controls and account UI.
-- `player-account.mjs`: username mapping, checkpoint validation and cloud slot.
+- `run-results.js` / `run-results.css`: full-screen native bouquets from every plant grown during the run, with paged bundles and local records.
+- `game-menu.mjs` / `game-menu.css`: main menu, controls and account UI.
+- `player-account.mjs`: username mapping and legacy cloud-format utilities.
 - `npm test`: game regressions plus account/restore and real Postgres RLS tests
   through PGlite. Supabase hosting and email configuration are not simulated by
   these tests; verify hosted sign-up and sign-in separately before release.
 
 ## Play
 
-On a phone, hold open ground to walk and swipe up to jump. Long-press the ground
-to plant a collected seed. Hold a plant to water it; tap a ripe plant to harvest
-when it has regrown. Tap pests to throw a bomb. Tap a tall beanstalk to climb.
+On a phone, drag left or right from anywhere to walk or run, and swipe up to
+jump. Drag down to tend a plant within reach, harvest ripe seeds, or plant on
+empty soil. A nearby beanstalk can be climbed the same way. Taps and stationary
+holds never queue plant actions or walk to targets. Tap pests to defend.
+Tap the robot nearby to refill. Moving cancels a hand action immediately.
 
-Keyboard: arrows or WASD to move/jump/crouch, Shift to run, E to interact, B to
-throw, L for the lantern, R to refill your robot. At an upgrade, inspect an icon and confirm the choice.
-Escape or the pause icon opens the menu. Simulation pauses in the menu, while
-choosing, while hidden, and on the result screen. Returning from the background
-waits in the menu so a raid cannot resume before the player is ready.
+Keyboard: Left / Right (or A / D) to move, Up (or W) to jump, Down / Space to
+tend the garden, Shift to run, B to defend, L for the lantern and R to refill.
+There is no in-run menu or pause button. Upgrade offers are three live icons:
+tap one or use keys 1–3 while the run continues. Reloading always starts a fresh
+attempt; no local or cloud checkpoint is written or loaded. The browser may
+suspend a background page, but this creates no resumable saved run.
 
 ## Accounts and Supabase
 
@@ -40,12 +43,10 @@ refreshable sessions. The frontend never stores the password, and does not use
 IP addresses as identity. The reserved identifier is an implementation detail,
 not a player contact address. There is no email-based password recovery.
 
-Guest progress remains in browser storage. Clearing site data removes guest
-progress and the remembered login. Accounts use a separate private cloud slot:
-the player explicitly chooses Save or Load, and loading backs up the previous
-local state under `max-cloud-restore-backup-v1`. Signing in/out does not replace
-the device's garden. Saves use a revision check to catch simultaneous writes
-from two devices. These are player-authored saves, not trusted leaderboard data.
+Only finished-run personal bests, sound preferences and remembered login persist.
+There are no save/load controls. Old cloud data and its protected database schema
+are left intact, but the current frontend never reads or writes that slot.
+Personal records are local, not verified global leaderboard entries.
 
 Project: `zuezxsuqkvrzypjhbbqq`.
 
@@ -63,7 +64,7 @@ One-time hosted setup:
    `supabase/public-config.json`. Only `sb_publishable_…` keys are accepted by
    the build. **Never put a secret/service-role key in frontend config.**
 6. Rebuild. Verify username signup returns a session immediately; sign out,
-   sign in, refresh, save, and load on a second device. No email should be sent.
+   sign in and refresh. Login stays remembered; the run starts fresh. No email is sent.
 
 Without a publishable key the menu honestly presents guest mode. The checked-in
 public config points to the project above. On 21 September 2026, both SQL
@@ -87,12 +88,10 @@ have no table/function access. The save RPC is SECURITY INVOKER, checks the
 expected account and revision, and cannot bypass RLS. The database rejects
 oversized or malformed envelopes; the client validates game data before restore.
 
-The playing field keeps its original art and has no persistent text HUD.
-Mutation cards remain icons, with temporary effect text and a confirmation button.
-Every new attempt starts in world one with no crops or mutations. Animal affinity
-remains persistent; this is a local personal-best game, not a verified leaderboard.
+The playing field has no persistent text HUD. Upgrades reset between runs, as do
+crops, seeds, robot upgrades and wildlife relationships.
 
-## Balance and saves
+## Balance and runs
 
 Watering rewards meaningful hydration; watering a full plant cannot generate
 points or artificial growth. A harvest needs 0.35 new growth since the previous
@@ -101,14 +100,12 @@ different play styles, and surplus XP retains every earned choice.
 
 Each raid has a fixed enemy budget. Faster defence clears it sooner. Time in the
 current world adds bounded pressure every 90 active seconds: up to three extra
-enemies, 18% movement and 15% damage. Upgrades and background time do not advance
-pressure. An approaching wave gives three brief edge flashes and chimes.
+enemies, 18% movement and 15% damage. Time continues during upgrade choices; browser background suspension does not
+advance pressure. An approaching wave gives three brief edge flashes and chimes.
 
-The save schema is version 7 under the existing v6 storage key. It preserves raid
-enemies and their plant targets, countdowns, dead plants, harvest checkpoints,
-pending upgrades, loose seeds and the full run's plant gallery across worlds.
-Old v6 saves load; an incomplete legacy wave is replayed because that format did
-not save its enemies. The result waits for an explicit new-run action.
+Every attempt starts at world one. The run keeps its full bouquet across worlds
+in memory and displays it on death. Only completed personal-best statistics are
+stored, once per finished attempt. Old v6/v7 checkpoints are ignored.
 
 ## Deployment audit (21 September 2026)
 
@@ -140,16 +137,15 @@ equality between main and the public site.
 Every new run starts with the small watering companion. It follows Max, approaches
 reachable thirsty plants, and transfers water from a finite tank up to 78%
 moisture. It gives no care-score, XP, healing or instant growth. Tap the robot or
-press R to approach it, then stay nearby and still for the two-second refill.
+press R while nearby, then stay still for the two-second refill.
 Ponds and steep ground block its walking route. It packs away during climbing
 and world travel and rejoins after leaving the visible garden.
 
 The `robot` run upgrade has two ranks and competes with the normal upgrade
 choices. Small / upgraded / large tanks hold 1 / 1.6 / 2.4 units, with watering
 rates of 0.10 / 0.13 / 0.16 moisture per second. Both upgrades reset on a new run.
-Position, remaining water and refill progress persist in the existing v7 save;
-old saves receive the same small companion. Local and account saves share this
-state. All player-facing text is English.
+Water remains consistent during world travel within the current attempt. Reload
+or retry creates the small robot with a fresh tank. All UI text is English.
 
 Artwork is imported without resampling: the 32×32 starter from
 `fix/native-sprite-contract` at `31805b7`, the supplied 48×40 robot developer pack,
@@ -167,5 +163,12 @@ player result. Garden Records shows personal bests on this device.
 
 `/review.html` offers portrait/landscape result fixtures, empty and 53-plant
 runs, and all three companion tiers. Its game copy replaces storage with an
-in-memory map and omits the account menu; sample runs never replace player saves.
+in-memory map and uses a disconnected guest menu; sample runs never replace player saves.
 The production game exports no debug API.
+
+The main menu uses native game sprites in a separate night scene with Play,
+Garden, Settings and Credits. Sound is a device preference; help and account
+controls appear only when opened. Gameplay has no persistent text HUD. The
+control suite exercises touch cancellation, relative dragging, quick downward
+swipes, keyboard actions and cancellation when movement resumes. Physical iOS
+PWA testing is still needed to assess thumb feel and device-specific browser behavior.

@@ -9,11 +9,11 @@ const stateNames = [
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
-  'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'restoringCheckpoint',
+  'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
 ];
 const functionNames = [
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
-  'updateCompanion', 'ensureCompanion', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
+  'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'drawMenuScene', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'surfaceY', 'updateGarden', 'updateGardenFun', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
 ];
@@ -78,7 +78,7 @@ function loadGame(saved = {}) {
     addEventListener() {},
   };
   let now = 10000;
-  const timers = [];
+  const timers = [], listeners = {};
   const sandbox = {
     document, localStorage, console,
     Image: class { constructor() { this.complete = false; this.naturalWidth = 0; } },
@@ -88,13 +88,15 @@ function loadGame(saved = {}) {
     requestAnimationFrame() {}, cancelAnimationFrame() {},
     getComputedStyle() { return { paddingTop: '0px' }; },
     innerWidth: 960, innerHeight: 540, devicePixelRatio: 1,
-    addEventListener() {},
+    addEventListener(name, fn) { (listeners[name] ||= []).push(fn); },
   };
   sandbox.window = sandbox;
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {
     game: sandbox.game, document, elements, storage, timers,
+    key(type, key, repeat = false) { for (const fn of listeners[type] || []) fn({ type, key, repeat, preventDefault() {} }); },
+    pointer(type, x, y, pointerId = 1) { for (const fn of elements.get('stage').listeners[type] || []) fn({ type, clientX: x, clientY: y, pointerId, pointerType: 'touch', preventDefault() {} }); },
     advance(ms) { now += ms; },
     reload() { return loadGame(Object.fromEntries(storage)); },
     tick(ms = 16) { now += ms; sandbox.game.frame(now); },

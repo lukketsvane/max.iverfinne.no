@@ -45,3 +45,5 @@
  .run-results-actions button{min-height:44px;padding:8px 16px;width:230px}
  .run-results-collection{inset:8px max(24px,calc((100% - 630px)/2)) 112px}
 }
+.run-results-actions button{clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px)}
+@media(orientation:portrait){.run-results-header{top:max(11%,env(safe-area-inset-top))}.run-results-actions button{width:min(320px,80vw)}.run-results-footer{padding-bottom:max(11vh,env(safe-area-inset-bottom))}}
