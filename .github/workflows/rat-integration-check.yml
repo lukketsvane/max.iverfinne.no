@@ -1,75 +1,33 @@
-name: Rat integration verification
+name: Rat browser acceptance
 on:
   push:
     branches: [gameplay/rat-enemies]
     paths:
-      - scripts/rat-integration.parts/**
+      - scripts/check-rat-browser.mjs
       - .github/workflows/rat-integration-check.yml
 permissions:
-  contents: write
-concurrency:
-  group: rat-integration-materialize
-  cancel-in-progress: false
+  contents: read
 jobs:
-  verify:
-    if: github.ref == 'refs/heads/gameplay/rat-enemies'
+  browser:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Apply verified rat integration patch
-        run: |
-          set -euo pipefail
-          test "$GITHUB_REF" = 'refs/heads/gameplay/rat-enemies'
-          python3 - <<'PY'
-          import base64,gzip,hashlib,pathlib
-          root=pathlib.Path('scripts/rat-integration.parts')
-          files=sorted(root.iterdir())
-          assert [p.name for p in files]==[f'{n:02d}' for n in range(11)]
-          data=gzip.decompress(base64.b64decode(''.join(p.read_text() for p in files),validate=True))
-          assert hashlib.sha256(data).hexdigest()=='bdb6b625b76c593a58fa39958326fcc53462ceceb357883b6627a47dab1824a1'
-          pathlib.Path('/tmp/rat-implementation.patch').write_bytes(data)
-          PY
-          git apply --check /tmp/rat-implementation.patch
-          git apply /tmp/rat-implementation.patch
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('tests/native-art.test.cjs');s=p.read_text()
-          old="assert.deepEqual(calls.filter(c=>c[0]==='translate').at(-1),['translate',50,78]);"
-          new="assert.deepEqual(calls.filter(c=>c[0]==='translate')[0],['translate',50,78]);\n        if(face<0)assert.deepEqual(calls.filter(c=>c[0]==='translate')[1],['translate',1,0]);"
-          assert s.count(old)==1
-          p.write_text(s.replace(old,new))
-          PY
-          python3 scripts/build-rat-assets.py
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Full game tests
-        run: set -o pipefail; npm test | tee /tmp/rat-tests.log
+      - run: npm test
       - run: npm run build
-      - name: Commit tested implementation to feature branch only
-        run: |
-          set -euo pipefail
-          test "$GITHUB_REF" = 'refs/heads/gameplay/rat-enemies'
-          git config user.name 'MAX integration'
-          git config user.email '41840333+lukketsvane@users.noreply.github.com'
-          git add assets/rat-enemies-v1 index.html rat-enemies.inc.js run-director.inc.js native-art.mjs coop-game.inc.js review.html scripts/build-static.cjs scripts/build-rat-assets.py tests/game-harness.cjs tests/native-art.test.cjs tests/rat-enemies.test.cjs tests/rat-assets.test.cjs tests/enemy-pressure.test.cjs tests/run-director.test.cjs
-          git commit -m 'Implement four native ground-rat enemies with combat, platform AI and co-op'
-          git push origin HEAD:refs/heads/gameplay/rat-enemies
-      - name: Export verified source and build
-        if: always()
-        run: |
-          git archive --format=tar.gz HEAD -o game-source.tar.gz
-          if test -d dist; then tar -czf game-build.tar.gz -C dist .; fi
-          cp /tmp/rat-tests.log rat-tests.log 2>/dev/null || true
+      - run: npm install --no-save --package-lock=false playwright
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/check-rat-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: rat-integration-verified
-          path: |
-            game-source.tar.gz
-            game-build.tar.gz
-            rat-tests.log
-          retention-days: 2
+          name: rat-browser-evidence
+          path: rat-browser-evidence
+          retention-days: 7
