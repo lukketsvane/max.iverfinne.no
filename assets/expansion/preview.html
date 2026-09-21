@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Native sprite inspection</title>
+<style>
+body{background:#151a1b;color:#e9e6d6;font:14px monospace;margin:20px}select,button{font:inherit;margin:4px;padding:8px}canvas,img{image-rendering:pixelated}canvas{display:block;margin-top:12px;border:1px solid #48513d}#sheet{max-width:none}small{display:block;margin:12px 0}
+</style>
+<h1>Native PNG inspection</h1>
+<select id="asset" aria-label="Sheet"></select><select id="clip" aria-label="Clip"></select>
+<select id="zoom" aria-label="Integer zoom"><option>1</option><option>2</option><option selected>4</option><option>8</option></select>
+<button id="mirror">Mirror</button><button id="pause">Pause</button><button id="step">Next frame</button>
+<canvas id="view" width="160" height="120"></canvas><small id="info"></small><img id="sheet" alt="Native PNG sheet">
+<script src="sprites.js"></script>
+<script>
+(async()=>{
+ const $=id=>document.getElementById(id),p=await MaxExpansionSprites.load('./'),ctx=$('view').getContext('2d');
+ let face=1,playing=true,time=0,last=0,state=0;
+ for(const name of Object.keys(p.manifest.sheets))$('asset').add(new Option(name,name));
+ function reset(){time=0;state=0;}
+ function select(){const s=p.manifest.sheets[$('asset').value];$('clip').replaceChildren();for(const name of Object.keys(s.clips))$('clip').add(new Option(name,name));$('sheet').src=s.file;reset();}
+ $('asset').onchange=select;$('clip').onchange=reset;$('mirror').onclick=()=>face*=-1;
+ $('pause').onclick=()=>{playing=!playing;};
+ $('step').onclick=()=>{playing=false;const a=p.manifest.sheets[$('asset').value].clips[$('clip').value];if(a.fps)time+=1/a.fps+.00001;else state=(state+1)%a.frames.length;};select();
+ function frame(now){if(playing&&last)time+=(now-last)/1000;last=now;ctx.clearRect(0,0,160,120);ctx.fillStyle='#1d2324';ctx.fillRect(0,0,160,120);ctx.fillStyle='#657150';ctx.fillRect(0,100,160,1);
+ const name=$('asset').value,clip=$('clip').value;let f;
+ if(name==='watering_robot')f=p.drawRobot(ctx,clip,time,80,100,{},face);
+ else if(name==='plant_thief_drone')f=p.drawDrone(ctx,clip,time,80,35,{},face,clip==='carry_flight'?5:null);
+ else f=p.draw(ctx,name,clip,time,80,100,{},face,state);
+ const z=Number($('zoom').value);$('view').style.width=160*z+'px';$('view').style.height=120*z+'px';$('info').textContent=name+' / '+clip+' / frame '+f.index+' / '+z+'x display (art stays 1x)';requestAnimationFrame(frame);
+ }requestAnimationFrame(frame);
+})().catch(e=>{document.getElementById('info').textContent=e.message;console.error(e);});
+</script>
