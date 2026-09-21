@@ -1,0 +1,47 @@
+name: Verify live MAX FUGLESPRENGER
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-live.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify canonical source
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 6 --retry-delay 2 -D /tmp/headers https://max.iverfinne.no/ -o /tmp/page
+          grep -qi '^x-max-source: github:lukketsvane/max.iverfinne.no@main' /tmp/headers
+          grep -q '<title>MAX FUGLESPRENGER</title>' /tmp/page
+          grep -q '#gameTitle,#blastHud,#gardenHud,#gardenHint,#roundHud{display:none!important}' /tmp/page
+          echo "LIVE_CANONICAL_OK"
+      - name: Install browser
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@latest
+          npx playwright install --with-deps chromium
+      - name: iPhone 16e smoke test
+        run: |
+          cat > verify.cjs <<'JS'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:3});
+            const page=await context.newPage(), errors=[];
+            page.on('pageerror',e=>errors.push('PAGE '+e.message));
+            page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
+            const res=await page.goto('https://max.iverfinne.no/',{waitUntil:'domcontentloaded',timeout:120000});
+            if(!res||res.status()!==200)throw new Error('HTTP '+(res&&res.status()));
+            await page.waitForTimeout(1800);
+            if((await page.title())!=='MAX FUGLESPRENGER')throw new Error('wrong title');
+            const hidden=await page.evaluate(()=>['gameTitle','blastHud','gardenHud','gardenHint','roundHud'].every(id=>getComputedStyle(document.getElementById(id)).display==='none'));
+            if(!hidden)throw new Error('persistent text HUD visible');
+            await page.keyboard.down('ArrowRight');await page.waitForTimeout(600);await page.keyboard.up('ArrowRight');
+            await page.keyboard.press('ArrowUp');await page.waitForTimeout(650);
+            if(errors.length)throw new Error(errors.join('\n'));
+            console.log('IPHONE_SMOKE_OK');
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node verify.cjs
