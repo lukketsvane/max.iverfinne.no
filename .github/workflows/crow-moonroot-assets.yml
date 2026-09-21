@@ -1,0 +1,42 @@
+name: Crow and Moonroot native export
+on:
+  push:
+    branches: [assets/crow-moonroot-native-v1]
+    paths:
+      - 'assets/boss-crow-moonroot-v1/source/*.b64'
+      - 'assets/boss-crow-moonroot-v1/export.py'
+      - 'assets/boss-crow-moonroot-v1/test.mjs'
+      - '.github/workflows/crow-moonroot-assets.yml'
+permissions:
+  contents: read
+jobs:
+  export-native-pngs:
+    if: github.ref == 'refs/heads/assets/crow-moonroot-native-v1'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: assets/crow-moonroot-native-v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Export isolated PNGs and verify current native adapter
+        run: |
+          python3 assets/boss-crow-moonroot-v1/export.py
+          node --test assets/boss-crow-moonroot-v1/test.mjs
+      - name: Commit only generated art on this review branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/boss-crow-moonroot-v1
+          if ! git diff --cached --quiet; then
+            git commit -m 'Export selected raven and moonroot: 95 isolated native PNG frames'
+            git push origin HEAD:assets/crow-moonroot-native-v1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raven-moonroot-native-pngs
+          path: assets/boss-crow-moonroot-v1/
+          retention-days: 14
