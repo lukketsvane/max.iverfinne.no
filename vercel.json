@@ -1,5 +1,9 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
+  "alias": [
+    "max.iverfinne.no"
+  ],
   "headers": [
     {
       "source": "/(.*)",
