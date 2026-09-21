@@ -120,7 +120,7 @@ Character selection presents a larger native costume preview and selected
 class description beside a compact class grid. Each class shows its signature
 ability, while four separate appearance swatches keep costume choice independent
 of class. Phone layouts put the preview above the controls and respect safe
-areas. The visual review page includes desktop, phone, small-phone and short
+areas. The visual review page includes desktop, phone, small-phone and two short
 landscape viewports for checking the actual menu without changing player saves.
 
 Dismissing in-run Settings restores keyboard focus to its trigger and leaves
