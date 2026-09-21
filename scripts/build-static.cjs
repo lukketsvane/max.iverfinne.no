@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -23,6 +23,7 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
 for (const file of files) copyFileSync(join(root, file), join(output, file));
+require('./build-companion.cjs')(output);
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu.js'),
   bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],

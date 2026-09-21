@@ -10,7 +10,7 @@ const ID_DOMAIN = 'players.max.invalid';
 export function normalizeUsername(value) {
   const name = String(value).trim().toLowerCase();
   if (!/^[a-z0-9][a-z0-9_-]{2,23}$/.test(name)) {
-    throw new Error('Bruk 3–24 teikn: a–z, tal, bindestrek eller understrek. Start med ein bokstav eller eit tal.');
+    throw new Error('Use 3–24 characters: a–z, numbers, hyphens or underscores. Start with a letter or number.');
   }
   return name;
 }
@@ -18,7 +18,7 @@ export function normalizeUsername(value) {
 export function credentials(username, password) {
   const name = normalizeUsername(username);
   if (typeof password !== 'string' || password.length < 8 || password.length > 128) {
-    throw new Error('Passordet må ha 8–128 teikn.');
+    throw new Error('Your password must contain 8–128 characters.');
   }
   // Supabase Auth owns password hashing, sessions and rate limits. This reserved,
   // non-deliverable identifier is internal; the player never supplies an email.
@@ -27,7 +27,7 @@ export function credentials(username, password) {
 
 export function playerName(user) {
   const email = user?.email || '';
-  return email.endsWith(`@${ID_DOMAIN}`) ? email.split('@')[0] : 'Spelar';
+  return email.endsWith(`@${ID_DOMAIN}`) ? email.split('@')[0] : 'Player';
 }
 
 function object(value) { return value && typeof value === 'object' && !Array.isArray(value); }
@@ -40,7 +40,7 @@ function finiteTree(value, depth = 0) {
 }
 
 export function validateSnapshot(snapshot) {
-  const fail = () => { throw new Error('Det lagra spelet har eit format me ikkje kan opne.'); };
+  const fail = () => { throw new Error('This saved game has a format we cannot open.'); };
   if (!object(snapshot) || snapshot.version !== 1 || !object(snapshot.values) || !finiteTree(snapshot)) fail();
   if (new TextEncoder().encode(JSON.stringify(snapshot)).length > 262144) fail();
   if (Object.keys(snapshot.values).some(k => !SAVE_KEYS.includes(k))) fail();
@@ -93,32 +93,32 @@ export function restoreSnapshot(storage, snapshot) {
     for (const [key, value] of Object.entries(before)) {
       try { if (value === null) storage.removeItem(key); else storage.setItem(key, value); } catch {}
     }
-    throw new Error('Nettlesaren kunne ikkje lagre spelet. Den førre lagringa er teken vare på.');
+    throw new Error('The browser could not save the game. Your previous save has been kept.');
   }
 }
 
 export function snapshotSummary(snapshot) {
   const run = JSON.parse(validateSnapshot(snapshot).values[RUN_KEY]);
-  return `Verd ${run.rogue.world} · ${run.rogue.garden.length} plantar · ${Math.floor(run.time / 60)} min`;
+  return `World ${run.rogue.world} · ${run.rogue.garden.length} plants · ${Math.floor(run.time / 60)} min`;
 }
 
 export function accountError(error) {
   const code = error?.code;
-  if (['invalid_credentials', 'user_not_found'].includes(code)) return 'Brukarnamnet eller passordet er feil.';
-  if (code === 'user_already_exists') return 'Brukarnamnet er teke. Prøv eit anna, eller logg inn.';
-  if (code === 'weak_password') return 'Vel eit sterkare passord med minst 8 teikn.';
-  if (['over_request_rate_limit', 'over_email_send_rate_limit'].includes(code) || error?.status === 429) return 'For mange forsøk. Vent litt og prøv igjen.';
-  if (['PT409', '40001', '23505'].includes(code)) return 'Ei anna eining har lagra sidan sist. Hent lagringsstatusen på nytt før du vel kva du vil behalde.';
-  if (code === 'email_not_confirmed' || code === 'confirmation_enabled') return 'Innlogginga er ikkje ferdig konfigurert enno. Du kan spele som gjest.';
-  if (['PGRST205', 'PGRST202', '42P01'].includes(code)) return 'Kontolagring er ikkje klar enno. Spelet ligg framleis på denne eininga.';
-  if (error?.name === 'AuthRetryableFetchError' || error instanceof TypeError) return 'Fekk ikkje kontakt. Sjekk nettet og prøv igjen.';
-  return 'Det gjekk ikkje denne gongen. Prøv igjen; spelet ditt ligg på denne eininga.';
+  if (['invalid_credentials', 'user_not_found'].includes(code)) return 'The username or password is incorrect.';
+  if (code === 'user_already_exists') return 'That username is taken. Try another, or sign in.';
+  if (code === 'weak_password') return 'Choose a stronger password with at least 8 characters.';
+  if (['over_request_rate_limit', 'over_email_send_rate_limit'].includes(code) || error?.status === 429) return 'Too many attempts. Wait a moment and try again.';
+  if (['PT409', '40001', '23505'].includes(code)) return 'Another device has saved since your last check. Refresh the save status before choosing what to keep.';
+  if (code === 'email_not_confirmed' || code === 'confirmation_enabled') return 'Sign-in is not ready yet. You can still play as a guest.';
+  if (['PGRST205', 'PGRST202', '42P01'].includes(code)) return 'Cloud saves are not ready yet. Your game is still on this device.';
+  if (error?.name === 'AuthRetryableFetchError' || error instanceof TypeError) return 'Could not connect. Check your connection and try again.';
+  return 'That did not work. Try again; your game is still on this device.';
 }
 
 export class CloudSlot {
   constructor(client, userId) { this.client = client; this.userId = userId; this.revision = null; this.row = null; this.active = true; }
   invalidate() { this.active = false; this.row = null; this.revision = null; }
-  check() { if (!this.active) throw new Error('Kontoen er endra. Opne kontoen på nytt.'); }
+  check() { if (!this.active) throw new Error('The account has changed. Open Account again.'); }
   async read() {
     this.check();
     const { data, error } = await this.client.from('max_game_saves').select('snapshot, revision, updated_at').eq('user_id', this.userId).maybeSingle();
@@ -132,7 +132,7 @@ export class CloudSlot {
   async save(snapshot) {
     this.check();
     validateSnapshot(snapshot);
-    if (this.revision === null) throw new Error('Hent lagringsstatusen først.');
+    if (this.revision === null) throw new Error('Refresh the save status first.');
     const { data, error } = await this.client.rpc('save_max_game', {
       p_user_id: this.userId, p_snapshot: snapshot, p_expected_revision: this.revision,
     });

@@ -58,31 +58,31 @@ async function menu() {
 test('menu offers guest play, keyboard pause, and signup using only username and password', async () => {
   const m = await menu();
   try {
-    assert.deepEqual(m.pauses, [true]); m.click('Ut i hagen'); assert.equal(m.pauses.at(-1), false);
+    assert.deepEqual(m.pauses, [true]); m.click('Start growing'); assert.equal(m.pauses.at(-1), false);
     m.w.dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     assert.equal(m.pauses.at(-1), true);
-    m.click('Logg inn / lag konto'); m.click('Ny spelar? Lag konto');
+    m.click('Sign in / create account'); m.click('New player? Create account');
     assert.equal(m.w.document.querySelectorAll('input').length, 2);
     assert.equal(m.w.document.querySelector('input[type="email"]'), null);
     await m.submit();
     assert.equal(m.sent.email, 'garden_max@players.max.invalid');
-    assert.match(m.w.document.body.textContent, /Hei, garden_max/);
+    assert.match(m.w.document.body.textContent, /Hello, garden_max/);
     assert.equal(m.w.document.querySelector('input[type="password"]'), null);
     assert.equal(m.saves, 0, 'signing in must not automatically upload a device garden');
-    m.click('Lagre hagen på kontoen'); await m.settle();
-    assert.equal(m.saves, 1); assert.match(m.w.document.body.textContent, /Hagen er lagra/);
-    m.click('Lagre hagen på kontoen'); assert.match(m.w.document.body.textContent, /Erstatte kontolagringa/);
-    m.click('Avbryt'); assert.equal(m.saves, 1);
-    m.click('Logg ut'); await m.settle(); assert.match(m.w.document.body.textContent, /Konto er valfritt/);
+    m.click('Save garden to account'); await m.settle();
+    assert.equal(m.saves, 1); assert.match(m.w.document.body.textContent, /Your garden is saved/);
+    m.click('Save garden to account'); assert.match(m.w.document.body.textContent, /Replace the cloud save/);
+    m.click('Cancel'); assert.equal(m.saves, 1);
+    m.click('Sign out'); await m.settle(); assert.match(m.w.document.body.textContent, /An account is optional/);
   } finally { m.dom.window.close(); }
 });
 
 test('a wrong password clears the password field and keeps guest play available', async () => {
   const m = await menu();
   try {
-    m.click('Logg inn / lag konto'); m.failAuth({ code: 'invalid_credentials' }); await m.submit();
-    assert.match(m.w.document.body.textContent, /Brukarnamnet eller passordet er feil/);
+    m.click('Sign in / create account'); m.failAuth({ code: 'invalid_credentials' }); await m.submit();
+    assert.match(m.w.document.body.textContent, /The username or password is incorrect/);
     assert.equal(m.w.document.querySelector('input[name="password"]').value, '');
-    m.click('Tilbake'); m.click('Ut i hagen'); assert.equal(m.pauses.at(-1), false);
+    m.click('Back'); m.click('Start growing'); assert.equal(m.pauses.at(-1), false);
   } finally { m.dom.window.close(); }
 });

@@ -1,0 +1,623 @@
+{
+  "format": "max-native-pixel-assets-v1",
+  "pixelScale": 1,
+  "cell": {
+    "w": 80,
+    "h": 48
+  },
+  "anchor": {
+    "x": 40,
+    "y": 44
+  },
+  "directions": [
+    "left",
+    "right"
+  ],
+  "alpha": "binary 0 or 255",
+  "sampling": "nearest",
+  "palette": {
+    "ink": "#0c141a",
+    "tire": "#171d26",
+    "rubber": "#262936",
+    "rim": "#404959",
+    "steel_shadow": "#4c5067",
+    "steel_mid": "#72778c",
+    "steel": "#9698a5",
+    "steel_light": "#bbc0c3",
+    "shine": "#dde0cd",
+    "glass_dark": "#213b55",
+    "glass": "#31596e",
+    "water_dark": "#356294",
+    "water": "#5485b7",
+    "water_light": "#82b8cc",
+    "drop_light": "#b0d8de",
+    "soil": "#261e18",
+    "pot_shadow": "#3b2d21",
+    "pot": "#665345",
+    "leaf_dark": "#142722",
+    "leaf_mid": "#274628",
+    "leaf": "#3b5a2e",
+    "leaf_light": "#54755a",
+    "leaf_tip": "#8f9c57",
+    "led_dark": "#225453",
+    "led": "#509987",
+    "led_light": "#a3d8af",
+    "amber_dark": "#723c30",
+    "amber": "#c47b3b",
+    "amber_light": "#e6bd73",
+    "flower_dark": "#354897",
+    "flower": "#416dd0",
+    "flower_light": "#85ace1"
+  },
+  "animations": {
+    "idle": {
+      "row": 0,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "waterEffectsIncluded": false
+    },
+    "drive": {
+      "row": 1,
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "waterEffectsIncluded": false
+    },
+    "deploy": {
+      "row": 2,
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "waterEffectsIncluded": false
+    },
+    "water": {
+      "row": 3,
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "waterEffectsIncluded": true
+    },
+    "retract": {
+      "row": 4,
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "waterEffectsIncluded": false
+    },
+    "refill": {
+      "row": 5,
+      "frames": 8,
+      "fps": 6,
+      "loop": false,
+      "waterEffectsIncluded": false
+    }
+  },
+  "atlases": {
+    "left": {
+      "image": "atlases/rover_left_640x288.png",
+      "metadata": "atlases/rover_left.json",
+      "cols": 8,
+      "rows": 6
+    },
+    "right": {
+      "image": "atlases/rover_right_640x288.png",
+      "metadata": "atlases/rover_right.json",
+      "cols": 8,
+      "rows": 6
+    }
+  },
+  "sprites": {
+    "rover_idle_left": {
+      "image": "sprites/rover_idle_left.png",
+      "w": 45,
+      "h": 31,
+      "sourceBounds": {
+        "x": 11,
+        "y": 13,
+        "w": 45,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 29,
+        "y": 31
+      }
+    },
+    "rover_drive_left": {
+      "image": "sprites/rover_drive_left.png",
+      "w": 33,
+      "h": 31,
+      "sourceBounds": {
+        "x": 23,
+        "y": 13,
+        "w": 33,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 17,
+        "y": 31
+      }
+    },
+    "rover_water_left": {
+      "image": "sprites/rover_water_left.png",
+      "w": 51,
+      "h": 31,
+      "sourceBounds": {
+        "x": 5,
+        "y": 13,
+        "w": 51,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 35,
+        "y": 31
+      }
+    },
+    "rover_empty_left": {
+      "image": "sprites/rover_empty_left.png",
+      "w": 45,
+      "h": 31,
+      "sourceBounds": {
+        "x": 11,
+        "y": 13,
+        "w": 45,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 29,
+        "y": 31
+      }
+    },
+    "rover_sleep_left": {
+      "image": "sprites/rover_sleep_left.png",
+      "w": 33,
+      "h": 31,
+      "sourceBounds": {
+        "x": 23,
+        "y": 13,
+        "w": 33,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 17,
+        "y": 31
+      }
+    },
+    "rover_idle_right": {
+      "image": "sprites/rover_idle_right.png",
+      "w": 45,
+      "h": 31,
+      "sourceBounds": {
+        "x": 24,
+        "y": 13,
+        "w": 45,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 16,
+        "y": 31
+      }
+    },
+    "rover_drive_right": {
+      "image": "sprites/rover_drive_right.png",
+      "w": 33,
+      "h": 31,
+      "sourceBounds": {
+        "x": 24,
+        "y": 13,
+        "w": 33,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 16,
+        "y": 31
+      }
+    },
+    "rover_water_right": {
+      "image": "sprites/rover_water_right.png",
+      "w": 51,
+      "h": 31,
+      "sourceBounds": {
+        "x": 24,
+        "y": 13,
+        "w": 51,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 16,
+        "y": 31
+      }
+    },
+    "rover_empty_right": {
+      "image": "sprites/rover_empty_right.png",
+      "w": 45,
+      "h": 31,
+      "sourceBounds": {
+        "x": 24,
+        "y": 13,
+        "w": 45,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 16,
+        "y": 31
+      }
+    },
+    "rover_sleep_right": {
+      "image": "sprites/rover_sleep_right.png",
+      "w": 33,
+      "h": 31,
+      "sourceBounds": {
+        "x": 24,
+        "y": 13,
+        "w": 33,
+        "h": 31
+      },
+      "description": "Rover only; no background or water particles.",
+      "anchor": {
+        "x": 16,
+        "y": 31
+      }
+    },
+    "water_splash": {
+      "image": "sprites/water_splash.png",
+      "w": 7,
+      "h": 5,
+      "sourceBounds": {
+        "x": 5,
+        "y": 2,
+        "w": 7,
+        "h": 5
+      },
+      "description": "Individual ground impact particle.",
+      "anchor": {
+        "x": 3,
+        "y": 5
+      }
+    },
+    "water_tank": {
+      "image": "sprites/water_tank.png",
+      "w": 14,
+      "h": 12,
+      "sourceBounds": {
+        "x": 0,
+        "y": 0,
+        "w": 14,
+        "h": 12
+      },
+      "description": "Water reservoir, separately movable.",
+      "anchor": {
+        "x": 7,
+        "y": 12
+      }
+    },
+    "refill_station": {
+      "image": "sprites/refill_station.png",
+      "w": 27,
+      "h": 36,
+      "sourceBounds": {
+        "x": 1,
+        "y": 3,
+        "w": 27,
+        "h": 36
+      },
+      "description": "Refill point. Taller than the chassis, on the same native pixel scale.",
+      "anchor": {
+        "x": 15,
+        "y": 36
+      }
+    },
+    "charging_dock": {
+      "image": "sprites/charging_dock.png",
+      "w": 40,
+      "h": 16,
+      "sourceBounds": {
+        "x": 0,
+        "y": 3,
+        "w": 40,
+        "h": 16
+      },
+      "description": "Low charging platform for the watering rover.",
+      "anchor": {
+        "x": 20,
+        "y": 16
+      }
+    },
+    "watering_can_pickup": {
+      "image": "sprites/watering_can_pickup.png",
+      "w": 15,
+      "h": 11,
+      "sourceBounds": {
+        "x": 0,
+        "y": 3,
+        "w": 15,
+        "h": 11
+      },
+      "description": "Small inventory/world pickup.",
+      "anchor": {
+        "x": 8,
+        "y": 11
+      }
+    },
+    "seed_pod": {
+      "image": "sprites/seed_pod.png",
+      "w": 8,
+      "h": 9,
+      "sourceBounds": {
+        "x": 2,
+        "y": 2,
+        "w": 8,
+        "h": 9
+      },
+      "description": "Tiny seed pickup.",
+      "anchor": {
+        "x": 4,
+        "y": 9
+      }
+    },
+    "seedling_stage_1": {
+      "image": "sprites/seedling_stage_1.png",
+      "w": 9,
+      "h": 10,
+      "sourceBounds": {
+        "x": 4,
+        "y": 9,
+        "w": 9,
+        "h": 10
+      },
+      "description": "New native-size growth-stage asset.",
+      "anchor": {
+        "x": 4,
+        "y": 10
+      }
+    },
+    "seedling_stage_2": {
+      "image": "sprites/seedling_stage_2.png",
+      "w": 11,
+      "h": 16,
+      "sourceBounds": {
+        "x": 3,
+        "y": 3,
+        "w": 11,
+        "h": 16
+      },
+      "description": "New native-size growth-stage asset.",
+      "anchor": {
+        "x": 5,
+        "y": 16
+      }
+    },
+    "seedling_stage_3": {
+      "image": "sprites/seedling_stage_3.png",
+      "w": 14,
+      "h": 16,
+      "sourceBounds": {
+        "x": 1,
+        "y": 3,
+        "w": 14,
+        "h": 16
+      },
+      "description": "New native-size growth-stage asset.",
+      "anchor": {
+        "x": 7,
+        "y": 16
+      }
+    },
+    "wet_soil_patch": {
+      "image": "sprites/wet_soil_patch.png",
+      "w": 20,
+      "h": 4,
+      "sourceBounds": {
+        "x": 0,
+        "y": 1,
+        "w": 20,
+        "h": 4
+      },
+      "description": "Small ground overlay, not an opaque terrain rectangle.",
+      "anchor": {
+        "x": 10,
+        "y": 2
+      }
+    }
+  },
+  "provenance": {
+    "roverReference": "43CABEA0-EFEB-4411-9E1C-85BD426A9ED1(2).jpeg",
+    "botanicalPaletteReference": "IMG_3027(2).png",
+    "method": "Manual source masks, native-size nearest-neighbour sampling, palette reduction, pixel-grid cleanup and layered raster animation. No generative-image pass.",
+    "engineIntegration": "Not installed in or tested against the game repository."
+  },
+  "effects": {
+    "water_spray_left": {
+      "image": "atlases/water_spray_left.png",
+      "cell": {
+        "w": 80,
+        "h": 48
+      },
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "anchor": {
+        "x": 40,
+        "y": 44
+      }
+    },
+    "water_spray_right": {
+      "image": "atlases/water_spray_right.png",
+      "cell": {
+        "w": 80,
+        "h": 48
+      },
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "anchor": {
+        "x": 40,
+        "y": 44
+      }
+    },
+    "water_splash_16x8": {
+      "image": "atlases/water_splash_16x8.png",
+      "cell": {
+        "w": 16,
+        "h": 8
+      },
+      "frames": 8,
+      "fps": 16,
+      "loop": false,
+      "anchor": {
+        "x": 8,
+        "y": 7
+      }
+    },
+    "water_drop_4x6": {
+      "image": "atlases/water_drop_4x6.png",
+      "cell": {
+        "w": 4,
+        "h": 6
+      },
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "anchor": {
+        "x": 1,
+        "y": 5
+      }
+    },
+    "tank_fill_14x12": {
+      "image": "atlases/tank_fill_14x12.png",
+      "cell": {
+        "w": 14,
+        "h": 12
+      },
+      "frames": 8,
+      "fps": 6,
+      "loop": false,
+      "anchor": {
+        "x": 7,
+        "y": 12
+      }
+    },
+    "wheel_rotation_9x9": {
+      "image": "atlases/wheel_rotation_9x9.png",
+      "cell": {
+        "w": 9,
+        "h": 9
+      },
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "anchor": {
+        "x": 4,
+        "y": 9
+      }
+    },
+    "arm_deploy_40x28": {
+      "image": "atlases/arm_deploy_40x28.png",
+      "cell": {
+        "w": 40,
+        "h": 28
+      },
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "anchor": {
+        "x": 27,
+        "y": 19
+      }
+    },
+    "refill_station_32x40": {
+      "image": "atlases/refill_station_32x40.png",
+      "cell": {
+        "w": 32,
+        "h": 40
+      },
+      "frames": 8,
+      "fps": 6,
+      "loop": true,
+      "anchor": {
+        "x": 16,
+        "y": 39
+      }
+    },
+    "seedling_growth_16x20": {
+      "image": "atlases/seedling_growth_16x20.png",
+      "cell": {
+        "w": 16,
+        "h": 20
+      },
+      "frames": 3,
+      "fps": 1,
+      "loop": false,
+      "anchor": {
+        "x": 8,
+        "y": 19
+      }
+    }
+  },
+  "ui": {
+    "image": "atlases/ui_icons_128x16.png",
+    "cell": {
+      "w": 16,
+      "h": 16
+    },
+    "icons": {
+      "water": {
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "seed": {
+        "x": 16,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "rover": {
+        "x": 32,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "repair": {
+        "x": 48,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "charge": {
+        "x": 64,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "garden": {
+        "x": 80,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "play": {
+        "x": 96,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      },
+      "pause": {
+        "x": 112,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      }
+    }
+  }
+}

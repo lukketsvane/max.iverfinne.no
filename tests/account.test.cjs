@@ -66,12 +66,12 @@ test('stale saves require a fresh revision and cannot cross accounts', async () 
   const slot = new CloudSlot(client, 'alice'); slot.revision = 2;
   await assert.rejects(slot.save(snapshot), { code: 'PT409' });
   assert.equal(sent.args.p_user_id, 'alice'); assert.equal(sent.args.p_expected_revision, 2); assert.equal(slot.revision, null);
-  await assert.rejects(slot.save(snapshot), /Hent lagringsstatusen/);
+  await assert.rejects(slot.save(snapshot), /Refresh the save status/);
   let finish;
   const pendingClient = { from: () => ({ select: () => ({ eq: () => ({ maybeSingle: () => new Promise(resolve => { finish = resolve; }) }) }) }) };
   const pending = new CloudSlot(pendingClient, 'alice');
   const read = pending.read(); pending.invalidate(); finish({ data: { snapshot, revision: 1 } });
-  await assert.rejects(read, /Kontoen er endra/); assert.equal(pending.row, null);
+  await assert.rejects(read, /The account has changed/); assert.equal(pending.row, null);
 });
 
 test('manual pause freezes raids, crops and run time; resume does not catch up elapsed time', () => {

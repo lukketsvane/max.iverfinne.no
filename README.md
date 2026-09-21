@@ -11,7 +11,7 @@ example with `python -m http.server 8765 --directory dist`. Open
 pinned Supabase client. No server process or CDN script is required in production.
 
 - `index.html`: game, original embedded artwork and simulation.
-- `run-results.js` / `run-results.css`: paged result garden using the game's plant atlas.
+- `run-results.js` / `run-results.css`: full-screen native bouquets from every saved plant, with paged bundles and local records.
 - `game-menu.mjs` / `game-menu.css`: main menu, pause, controls and account UI.
 - `player-account.mjs`: username mapping, checkpoint validation and cloud slot.
 - `npm test`: game regressions plus account/restore and real Postgres RLS tests
@@ -25,7 +25,7 @@ to plant a collected seed. Hold a plant to water it; tap a ripe plant to harvest
 when it has regrown. Tap pests to throw a bomb. Tap a tall beanstalk to climb.
 
 Keyboard: arrows or WASD to move/jump/crouch, Shift to run, E to interact, B to
-throw, L for the lantern. At an upgrade, inspect an icon and confirm the choice.
+throw, L for the lantern, R to refill your robot. At an upgrade, inspect an icon and confirm the choice.
 Escape or the pause icon opens the menu. Simulation pauses in the menu, while
 choosing, while hidden, and on the result screen. Returning from the background
 waits in the menu so a raid cannot resume before the player is ready.
@@ -133,3 +133,39 @@ At the connection check it was still attached to the TV project. Do not deploy
 this game over the unrelated project or change the TV site's deployment to preview it.
 The legacy live workflow is only a smoke check; it does not prove byte-for-byte
 equality between main and the public site.
+
+
+## Companion and result artwork
+
+Every new run starts with the small watering companion. It follows Max, approaches
+reachable thirsty plants, and transfers water from a finite tank up to 78%
+moisture. It gives no care-score, XP, healing or instant growth. Tap the robot or
+press R to approach it, then stay nearby and still for the two-second refill.
+Ponds and steep ground block its walking route. It packs away during climbing
+and world travel and rejoins after leaving the visible garden.
+
+The `robot` run upgrade has two ranks and competes with the normal upgrade
+choices. Small / upgraded / large tanks hold 1 / 1.6 / 2.4 units, with watering
+rates of 0.10 / 0.13 / 0.16 moisture per second. Both upgrades reset on a new run.
+Position, remaining water and refill progress persist in the existing v7 save;
+old saves receive the same small companion. Local and account saves share this
+state. All player-facing text is English.
+
+Artwork is imported without resampling: the 32×32 starter from
+`fix/native-sprite-contract` at `31805b7`, the supplied 48×40 robot developer pack,
+and the supplied 80×48 watering rover. Cell dimensions include transparent
+padding; the visible robots are 20–22, 29 and 31 pixels tall. Each tier uses its
+own documented anchor and animation timing. The small rover uses the supplied
+separate spray; larger watering frames already contain it.
+
+The incoming `assets/results-native/` pack at `205aae9` supplies the bouquet
+compositor and 5×7 font. The live result uses `rogueRun.garden`, the original
+plant drawing callback and the original landscape/Max sprites. Each bundle
+contains up to 24 records; previous/next controls retain every plant in longer
+runs. Static example bouquets and sample leaderboard names are never used as a
+player result. Garden Records shows personal bests on this device.
+
+`/review.html` offers portrait/landscape result fixtures, empty and 53-plant
+runs, and all three companion tiers. Its game copy replaces storage with an
+in-memory map and omits the account menu; sample runs never replace player saves.
+The production game exports no debug API.
