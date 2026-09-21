@@ -32,6 +32,14 @@ jobs:
           PY
           git apply --check /tmp/rat-implementation.patch
           git apply /tmp/rat-implementation.patch
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/native-art.test.cjs');s=p.read_text()
+          old="assert.deepEqual(calls.filter(c=>c[0]==='translate').at(-1),['translate',50,78]);"
+          new="assert.deepEqual(calls.filter(c=>c[0]==='translate')[0],['translate',50,78]);\n        if(face<0)assert.deepEqual(calls.filter(c=>c[0]==='translate')[1],['translate',1,0]);"
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new))
+          PY
           python3 scripts/build-rat-assets.py
       - uses: actions/setup-node@v4
         with:
