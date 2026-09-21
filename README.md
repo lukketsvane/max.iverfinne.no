@@ -11,3 +11,5 @@ Canonical production source for **max.iverfinne.no**.
 - Production domain: `max.iverfinne.no`.
 
 The old copy inside `tv.iverfinne.no` is retained only as an emergency fallback while the production hostname is transitioned fully to the dedicated Vercel project.
+
+Production branch: `main`.
