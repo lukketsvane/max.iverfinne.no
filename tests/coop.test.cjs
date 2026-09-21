@@ -107,3 +107,33 @@ test('a guest can intercept a spore despite an older snapshot; the host alone aw
   assert.equal(host.runHazards.length,0);assert.ok(p.moisture>.2);assert.ok(p.health>.6);
   sync();assert.equal(guest.runHazards.length,0);assert.equal(guest.gardenPlots[0].moisture,p.moisture);
 });
+test('simultaneous guest shrine choices commit one shared trial and reward each teammate once',()=>{
+  const {games,sync,send}=team(),host=games[0].game;
+  host.rogueRun.next=1e9;host.gardenSeeds=9;host.runLoot=[];
+  const [first,second]=host.runEncounters;
+  [first,second].forEach((e,i)=>{
+    const guest=games[i+1].game;Object.assign(guest.P,{x:e.x,y:host.surfaceY(e.x),grounded:true,wet:false,st:'free'});
+    host.coop.members[ids[i+1]].avatar=guest.coopAvatar();
+  });
+  sync();games[1].game.interactEncounter();games[2].game.interactEncounter();
+  send(1,games[1].pending);const guards=host.floatKrek.length;send(2,games[2].pending);send(1,games[1].pending);sync();
+  assert.equal(first.active,true);assert.equal(second.active,false);assert.equal(second.locked,true);
+  assert.equal(host.gardenSeeds,9-first.cost);assert.equal(host.floatKrek.length,guards);
+  games.forEach(h=>assert.equal(h.game.runEncounters[1].locked,true));
+  for(const k of [...host.floatKrek])host.damagePest(k,10000,k.x);
+  host.updateEncounters(first.duration+.01);host.updateEncounters(30);sync();
+  assert.equal(host.runLoot.length,4);assert.deepEqual(host.runLoot.map(q=>q.owner).sort(),ids);
+  assert.ok(host.runLoot.every(q=>q.type==='feathers'));
+});
+test('guests can tend at an active shrine and water a locked exit stalk without starting travel',()=>{
+  for(const world of [1,20]){
+    const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+    host.rogueRun.world=world;guest.rogueRun.world=world;host.rogueRun.next=1e9;
+    const e=host.runEncounters[0];e.x=guest.P.x;e.active=true;
+    const p=plot({x:guest.P.x,stalk:true,growth:4,moisture:.2,health:.6});host.gardenPlots=[p];sync();
+    assert.equal(guest.crouchGardenAction(),true);assert.equal(games[1].pending[0].type,'grow');
+    const x=guest.P.x;send(1,games[1].pending);sync();
+    assert.equal(p.moisture,1);assert.ok(p.health>.6);assert.equal(host.rogueRun.world,world);assert.equal(guest.P.x,x);
+    assert.equal(guest.climb,null);assert.equal(host.floatKrek.length,0);
+  }
+});

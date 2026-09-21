@@ -3870,7 +3870,7 @@ function crouchGardenAction() {
   if(coopGuest()){
     if(!P.grounded||P.wet||task||P.st!=='free')return false;
     if(interactEncounter())return true;
-    var nearStalk=stalkAt(P.x,P.y-4,9);if(nearStalk)return requestClimb(nearStalk);
+    var nearStalk=stalkAt(P.x,P.y-4,9);if(nearStalk&&requestClimb(nearStalk))return true;
     if(!coop.network.action('grow'))return false;
     var nearby=nearestGardenPlot(P.x,18);
     if(sheet2Ready)embody(nearby?'water':'sow',P.x,function(){});return true;
@@ -3878,7 +3878,7 @@ function crouchGardenAction() {
   if (!P.grounded || P.wet || task || P.st !== 'free') return false;
   if(interactEncounter())return true;
 
-  var stalk=stalkAt(P.x,P.y-4,9);if(stalk&&!coopActor)return requestClimb(stalk);
+  var stalk=stalkAt(P.x,P.y-4,9);if(stalk&&!coopActor&&requestClimb(stalk))return true;
   var p=nearestGardenPlot(P.x,18);
   if (p && !p.dead) {
     var previous=typeof p.lastHarvestGrowth==='number'?p.lastHarvestGrowth:.65;

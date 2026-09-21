@@ -111,6 +111,43 @@ test('shrines require in-reach downward interaction, consume seeds once, and wai
   resolve(g);g.updateEncounters(.1);assert.equal(e.done,true);
   const loot=g.runLoot.length;g.interactEncounter();g.updateEncounters(30);assert.equal(g.runLoot.length,loot);
 });
+test('each stage offers two dry routes and a third ember or dew can be earned by stage five',()=>{
+  for(const type of ['rain','cache']){
+    const {game:g}=fresh();g.rogueRun.next=1e9;let earned=0;
+    for(let stage=1;stage<=20;stage++){
+      if(stage>1)g.enterLevel(stage);
+      const options=g.runEncounters;
+      assert.equal(options.length,2);assert.notEqual(options[0].type,options[1].type);
+      assert.notEqual(options[0].id,options[1].id);assert.ok(Math.abs(options[0].x-options[1].x)>100);
+      options.forEach(e=>{assert.equal(!!g.waterAt(e.x),false);assert.equal(e.locked,false);});
+      const e=stage<=5&&options.find(q=>q.type===type);if(!e)continue;
+      Object.assign(g.P,{x:e.x,y:g.surfaceY(e.x),st:'free',grounded:true,wet:false});g.gardenSeeds=9;
+      assert.equal(g.interactEncounter(),true);
+      for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
+      g.updateEncounters(e.duration+.01);g.updateRunLoot();earned++;
+      assert.equal(g.rogueRun.traits[type==='rain'?'dew':'embers'],earned);
+    }
+    assert.ok(earned>=3,'a specialised milestone is reachable before the middle of the run');
+  }
+});
+test('choosing one shrine closes the other without doubling cost, enemies or rewards',()=>{
+  const {game:g}=fresh();g.rogueRun.next=1e9;g.runLoot=[];
+  const [first,second]=g.runEncounters;
+  Object.assign(g.P,{x:second.x,y:g.surfaceY(second.x),grounded:true,wet:false,st:'free'});
+  g.gardenSeeds=second.cost-1;g.interactEncounter();
+  assert.ok(g.runEncounters.every(e=>!e.active&&!e.locked),'insufficient seeds leave both routes open');
+  g.gardenSeeds=9;const beforeX=g.P.x;assert.equal(g.interactEncounter(),true);
+  const guards=g.floatKrek.length;assert.equal(g.P.x,beforeX);assert.equal(g.runIsPaused(),false);
+  assert.equal(g.gardenSeeds,9-second.cost);assert.equal(first.locked,true);assert.equal(first.active,false);
+  g.P.x=first.x;assert.equal(g.interactEncounter(),false);assert.equal(g.gardenSeeds,9-second.cost);assert.equal(g.floatKrek.length,guards);
+  g.updateEncounters(20);assert.equal(second.progress,0,'travel away stops trial progress');
+  g.updateRunCompetition(20);assert.equal(g.runElapsed,20,'exploration still increases pressure');
+  g.P.x=second.x;g.updateEncounters(second.duration);assert.equal(second.done,false,'guards must also be defeated');
+  for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
+  g.updateEncounters(.01);assert.equal(second.done,true);assert.equal(g.runLoot.length,1);assert.equal(g.runLoot[0].type,'dew');
+  const drops=g.seedPickups.length;g.updateEncounters(30);g.interactEncounter();
+  assert.equal(g.runLoot.length,1);assert.equal(g.seedPickups.length,drops);
+});
 test('three ember and dew pickups unlock burning blasts and a watering dodge without changing controls',()=>{
   const {game:g}=fresh();collect(g,'embers',3);collect(g,'dew',3);
   const p=plot({x:0,health:.6,moisture:.2});g.gardenPlots=[p];

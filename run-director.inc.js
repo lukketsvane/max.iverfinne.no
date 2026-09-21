@@ -44,19 +44,23 @@ function initRunStage(){
   // Each teammate has one feather to find. Leaving it behind is a time tradeoff.
   var players=runPlayers();
   players.forEach(function(a,i){var x=dryX(origin+side*(112+i*15));dropRunItem('feathers',x,surfaceY(x)-20,a.member&&a.member.id);});
-  var type=['nest','rain','cache'][(w-1)%3],x=dryX(origin-side*126);
-  runEncounters.push({id:w,x:x,type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,progress:0,duration:type==='nest'?10:14});
+  // Two routes, one trial: choosing a reward spends time, not another menu.
+  for(var i=0;i<2;i++){
+    var type=['nest','rain','cache'][(w-1+i)%3],x=dryX(origin+side*(i?1:-1)*126);
+    runEncounters.push({id:w*2+i,x:x,type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='nest'?10:14});
+  }
   stageWeather={type:w%3===0?'seedfall':w%3===1?'bloom':'drought',at:36+(w%4)*4,life:0,started:false};
   rogueRun.bossDefeated=false;
 }
-function encounterAt(x){return runEncounters.find(function(e){return !e.done&&Math.abs(e.x-x)<14;});}
+function encounterAt(x){return runEncounters.find(function(e){return !e.done&&!e.locked&&Math.abs(e.x-x)<14;});}
 function interactEncounter(){
   if(!P.grounded||P.wet||runIsPaused())return false;
   var e=encounterAt(P.x);if(!e)return false;
-  if(coopGuest())return coop.network.action('encounter');
   if(e.active)return false;
+  if(coopGuest())return coop.network.action('encounter');
   if(gardenSeeds<e.cost){puff(e.x,surfaceY(e.x)-8,3,.3);return true;}
   gardenSeeds-=e.cost;e.active=true;
+  runEncounters.forEach(function(other){if(other!==e)other.locked=true;});
   var count=2+Math.min(3,Math.floor(worldLevel()/5))+coopSize();
   for(var i=0;i<count;i++){
     var k=makeKrek(i%2?1:-1,false);k.x=e.x+(i%2?1:-1)*(62+i*9);k.y=surfaceY(k.x)-22;
@@ -68,6 +72,7 @@ function interactEncounter(){
   socialTone('call');return true;
 }
 function completeEncounter(e){
+  if(!e.active||e.done||e.locked)return;
   e.active=false;e.done=true;var type={nest:'feathers',rain:'dew',cache:'embers'}[e.type];
   runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*12;dropRunItem(type,x,surfaceY(x)-13,a.member&&a.member.id);});
   if(e.type==='rain')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
@@ -269,13 +274,13 @@ function drawRunItem(type,x,y,bright){
 function drawRunExploration(t){
   runEncounters.forEach(function(e){
     var x=Math.round(e.x-camX),y=Math.round(surfaceY(e.x)-camY);if(x<-20||x>IW+20)return;
-    ctx.fillStyle='#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
-    ctx.fillStyle=e.done?'#465346':'#657668';ctx.fillRect(x-7,y-16,14,2);ctx.fillRect(x-6,y-13,2,7);ctx.fillRect(x+4,y-13,2,7);
-    if(!e.done)drawRunItem({nest:'feathers',rain:'dew',cache:'embers'}[e.type],x,y-9,false);
+    ctx.fillStyle=e.locked?'#202827':'#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
+    ctx.fillStyle=e.locked?'#344039':e.done?'#465346':'#657668';ctx.fillRect(x-7,y-16,14,2);ctx.fillRect(x-6,y-13,2,7);ctx.fillRect(x+4,y-13,2,7);
+    if(!e.done&&!e.locked)drawRunItem({nest:'feathers',rain:'dew',cache:'embers'}[e.type],x,y-9,false);
     if(e.active){
       ctx.fillStyle='#d1c67f';ctx.fillRect(x-9,y-20,Math.round(18*e.progress/e.duration),1);
       ctx.globalAlpha=.18;ctx.fillRect(x-78,y-1,156,1);ctx.globalAlpha=1;
-    }else if(!e.done&&Math.abs(P.x-e.x)<28){
+    }else if(!e.done&&!e.locked&&Math.abs(P.x-e.x)<28){
       ctx.fillStyle=gardenSeeds>=e.cost?'#e0d291':'#797b6d';
       for(var c=0;c<e.cost;c++)ctx.fillRect(x-e.cost*2+c*4,y-22,2,2);
       ctx.fillRect(x,y-29,1,3);ctx.fillRect(x-2,y-27,1,1);ctx.fillRect(x+2,y-27,1,1);ctx.fillRect(x-1,y-26,3,1);

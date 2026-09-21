@@ -31,11 +31,18 @@ adds another jump, and returning the thumb does not plant or tend accidentally.
 
 ## Optional trials and passing events
 
-Down in reach of a shrine starts its trial, with no movement automation or pause.
+Two shrines sit on opposite routes in each stage. Their native pickup icons show
+the rewards: feather/dew, dew/ember, then ember/feather, repeating through the run.
+The group can activate one trial per stage; the other shrine goes dark. A failed
+attempt to pay does not lock either choice. This gives builds an earlier route
+to their third item without doubling the available trial rewards.
+
+Down in reach starts the chosen trial, with no movement automation or pause.
 Small seed dots show the cost. Stay within the marked area for 10–14 seconds
 and defeat its guards. Leaving the area stops trial progress but not the world
-clock. Shrines activate and reward once per stage; tending remains available
-while the trial runs.
+clock. Rewards are granted once per stage; tending remains available while the
+trial runs. A tall plant can still be tended before its exit opens, including
+during the final boss fight.
 
 | Shrine | Cost | Reward |
 | --- | --- | --- |
