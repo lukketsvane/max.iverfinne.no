@@ -1,7 +1,7 @@
 /* Run-only exploration, enemy roles and the twentieth garden's final boss.
    Included in the game closure. Nothing here writes a resumable run. */
 var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId=0;
-var pickupNotice=null,hazardHits={},stageWeather=null;
+var pickupNotice=null,hazardHits={},stageWeather=null,enemySpawnIndex=0;
 var runPixelFont=new Image();runPixelFont.src='assets/results-native/sprites/font-5x7.png';
 function emptyTraits(){return {feathers:0,embers:0,dew:0};}
 function cleanTraits(value){
@@ -39,11 +39,15 @@ function updateRunLoot(){
   }
 }
 function initRunStage(){
-  runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
+  runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;enemySpawnIndex=0;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
-  // Each teammate has one feather to find. Leaving it behind is a time tradeoff.
+  // Each teammate has one feather at the top of a real jump route.
   var players=runPlayers();
-  players.forEach(function(a,i){var x=dryX(origin+side*(112+i*15));dropRunItem('feathers',x,surfaceY(x)-20,a.member&&a.member.id);});
+  var layout=runLayout(),route=layout.routes.find(function(r){return r.side===side;}),perch=layout.platforms.find(function(p){return p.id===route.reward.platformId;});
+  players.forEach(function(a,i){var x=route.reward.x+(i-(players.length-1)/2)*3;dropRunItem('feathers',x,perch.y-12,a.member&&a.member.id);});
+  var alternate=layout.routes.find(function(r){return r.side!==side;}),seedPerch=layout.platforms.find(function(p){return p.id===alternate.reward.platformId;}),seedId='route:'+w;
+  seedPickups=seedPickups.filter(function(q){return !q.routeReward;});
+  if(!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:alternate.reward.x,y:seedPerch.y-6,amount:2,fall:false,ph:w});
   // Two routes, one trial: choosing a reward spends time, not another menu.
   for(var i=0;i<2;i++){
     var type=['nest','rain','cache'][(w-1+i)%3],x=dryX(origin+side*(i?1:-1)*126);
@@ -54,7 +58,7 @@ function initRunStage(){
 }
 function encounterAt(x){return runEncounters.find(function(e){return !e.done&&!e.locked&&Math.abs(e.x-x)<14;});}
 function interactEncounter(){
-  if(!P.grounded||P.wet||runIsPaused())return false;
+  if(!playerOnSoil()||runIsPaused())return false;
   var e=encounterAt(P.x);if(!e)return false;
   if(e.active)return false;
   if(coopGuest())return coopAction('encounter');
@@ -65,8 +69,8 @@ function interactEncounter(){
   for(var i=0;i<count;i++){
     var k=makeKrek(i%2?1:-1,false);k.x=e.x+(i%2?1:-1)*(62+i*9);k.y=surfaceY(k.x)-22;
     k.eventId=e.id;k.eventX=e.x;
-    if(e.type==='cache'&&worldLevel()>=7&&i===0)k.kind=5;
-    if(e.type==='rain'&&worldLevel()>=4&&i===0)k.kind=4;
+    if(e.type==='cache'&&worldLevel()>=5&&i===0)k.kind=5;
+    if(e.type==='rain'&&worldLevel()>=3&&i===0&&enemyRoleAvailable(4))k.kind=4;
     floatKrek.push(k);
   }
   socialTone('call');return true;
@@ -100,12 +104,48 @@ function updateStageWeather(dt){
 }
 function runDamageScale(){return 1+raidPressure()*.065;}
 function raidBudget(active){
-  return Math.min(28,3+gardenWave+Math.floor((worldLevel()-1)/4)+Math.min(2,Math.floor(active/4))+Math.floor(raidPressure()/2)+Math.max(0,coopSize()-1)*2);
+  // This is assigned once at the encounter's start. Kills, healing and elapsed
+  // time can never replenish it, even when the simultaneous limit is full.
+  return Math.min(32,5+gardenWave+Math.floor((worldLevel()-1)/3)+Math.min(3,Math.floor(active/3))+Math.floor(raidPressure()/3)+Math.max(0,coopSize()-1)*3);
 }
-function enemyKind(){
-  var choices=[0,0,1,2],w=worldLevel();
-  if(w>=2)choices.push(3);if(w>=4)choices.push(4);if(w>=7)choices.push(5);if(w>=10)choices.push(6);
-  return choices[(Math.random()*choices.length)|0];
+function raidConcurrentLimit(){
+  return Math.min(14,5+Math.floor((worldLevel()-1)/4)+(gardenWave===FINAL_WAVE?1:0)+Math.max(0,coopSize()-1));
+}
+function raidSpawnDelay(spawnIndex){
+  // A short breath after each group of four keeps the denser waves readable.
+  var base=Math.max(.45,.96-(worldLevel()-1)*.015-Math.min(.20,raidPressure()*.012)-(gardenWave-1)*.04-Math.max(0,coopSize()-1)*.045);
+  return base+(spawnIndex%4===3?.28:0);
+}
+var RAID_FORMATIONS=[
+  [2,0,3,1,4,0,5,2,6,1],
+  [3,2,0,4,1,2,6,5,0,1],
+  [1,5,2,0,3,1,4,2,6,0],
+  [4,0,2,3,5,1,0,6,2,1],
+  [2,3,1,5,0,4,2,1,6,0],
+  [0,6,2,4,1,3,5,0,2,1]
+];
+function raidProfileIndex(profile){
+  var value=profile;
+  if(value==null&&window.MaxPlatforms)value=window.MaxPlatforms.profileFor(worldLevel()).index;
+  return imod(typeof value==='number'?value:worldLevel()-1,RAID_FORMATIONS.length);
+}
+function raidSpawnSide(spawnIndex){
+  var pairs=[[-1,1,-1,1],[1,1,-1,-1],[-1,-1,1,1],[1,-1,-1,1],[-1,1,1,-1],[1,-1,1,-1]];
+  return pairs[raidProfileIndex()][imod(spawnIndex+gardenWave-1,4)];
+}
+function enemyRoleAvailable(kind){
+  // Trial guards and ambient pests share the same support allowance as raids.
+  if(kind!==4&&kind!==6)return true;
+  var limit=kind===6?(coopSize()>=3?2:1):(worldLevel()<7?1:2)+(coopSize()>=3?1:0),count=0;
+  for(var i=0;i<floatKrek.length;i++)if(floatKrek[i].kind===kind&&floatKrek[i].hp>0&&!floatKrek[i].boss)count++;
+  return count<limit;
+}
+function enemyKind(spawnIndex,profile){
+  var w=worldLevel(),n=spawnIndex==null?enemySpawnIndex++:Math.max(0,spawnIndex|0);
+  var formation=RAID_FORMATIONS[raidProfileIndex(profile)],slot=imod(n+(gardenWave-1)*3+Math.floor((w-1)/6)*2,formation.length);
+  var kind=formation[slot],unlocks=[1,1,1,2,3,5,7];
+  if(w<unlocks[kind]||!enemyRoleAvailable(kind))kind=imod(n+w+gardenWave,3);
+  return kind;
 }
 function damagePest(k,amount,x,build){
   if(!k||k.hp<=0)return false;
@@ -171,7 +211,7 @@ function updateRunDirector(dt){
 }
 function dewDodge(){
   if(ownTraits().dew<3||coopGuest())return;
-  gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(P.x-p.x)<32){p.moisture=clamp01(p.moisture+.16);p.health=clamp01(p.health+.035);p.pulse=1;}});
+  gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(P.x-p.x)<32&&Math.abs(P.y-surfaceY(p.x))<24){p.moisture=clamp01(p.moisture+.16);p.health=clamp01(p.health+.035);p.pulse=1;}});
   for(var i=0;i<8;i++)parts.push({x:P.x+(Math.random()-.5)*36,y:P.y-6,vx:0,vy:12,l:.4,m:.4,c:'130,202,214'});
 }
 function moveEnemyTo(k,x,y,dt,speed){
@@ -201,7 +241,8 @@ function updateEnemyRole(k,dt){
   }
   if(k.kind===6){
     var friend=null,fd=110;
-    floatKrek.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(q!==k&&!q.boss&&q.hp>0&&q.hp<q.maxHp&&d<fd){friend=q;fd=d;}});
+    // Several co-op moths may support attackers, but never sustain each other.
+    floatKrek.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(q!==k&&!q.boss&&q.kind!==6&&q.hp>0&&q.hp<q.maxHp&&d<fd){friend=q;fd=d;}});
     k.healing=false;
     if(friend){
       k.healX=friend.x;k.healY=friend.y;

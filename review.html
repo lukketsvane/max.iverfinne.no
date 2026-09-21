@@ -1,16 +1,17 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAX · visual review</title>
 <style>body{margin:20px;background:#111;color:#eee;font:14px monospace}nav{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}button{padding:12px;background:#253026;color:#eee;border:1px solid #889279}iframe{display:block;border:1px solid #444;max-width:100%;background:#111}p{max-width:70em;line-height:1.6}</style>
 <h1>MAX · visual review</h1><p>Isolated fixtures using the actual game renderer. These sample gardens do not read or change your saves.</p>
-<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button><button id="rotate">Portrait / landscape</button></nav><p id="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
+<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="platforms">Platform routes</button><button data-mode="pressure">Late pressure</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button><button id="rotate">Portrait / landscape</button></nav><p id="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
 <script>
 (async function(){
  const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
  const params=new URLSearchParams(location.search);
+ const platformStage=Math.max(1,Math.min(20,Number.parseInt(params.get('stage'),10)||6));
  let current=[...document.querySelectorAll('[data-mode]')].some(b=>b.dataset.mode===params.get('mode'))?params.get('mode'):'results';
  if(params.has('portrait')){frame.width='390';frame.height='844';}
  function show(mode){
   current=mode;status.textContent='Fixture: '+mode;
-  const gameplay=['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
+  const gameplay=['controls','combat','feathers','trial','enemies','boss','platforms','pressure','native-skins','native-enemies','native-crown'].includes(mode);
   const count=mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   // Install storage before the first external script, so the game, result
@@ -36,6 +37,16 @@
     if(${mode==='combat'}){gardenPlots.forEach(function(p,i){p.moisture=.8;var k=makeKrek(1,false);k.x=p.x+8;k.y=surfaceY(p.x)-18;k.vx=k.vy=0;k.kind=i;k.target=p;k.bite=.4;floatKrek.push(k);});}
 
     if(${gameplay}){P.grounded=true;P.st='free';runLoot=[];runHazards=[];runEncounters=[];gardenPlots.forEach(function(p){p.health=1;p.moisture=.85;});}
+    if(${mode==='platforms'||mode==='pressure'}){
+      rogueRun.world=${mode==='pressure'?14:platformStage};var origin=levelOriginX(worldLevel());
+      rogueRun.classId='bulwark';rogueRun.perks=window.MaxClasses.perks('bulwark');companion=null;
+      P.x=origin;P.y=surfaceY(P.x);P.vx=P.vy=0;started=false;
+      gardenPlots.forEach(function(p,i){p.x=dryX(origin+(i?30:-18));p.health=1;p.moisture=.85;});
+      rogueRun.garden=[];gardenPlots.forEach(recordGardenPlant);runElapsed=(worldLevel()-1)*45;initRunStage();
+      var route=runLayout().routes.find(function(r){return r.side===1;});
+      P.x=route.entry.x;P.y=surfaceY(P.x);
+      if(${mode==='pressure'}){P.x=origin;P.y=surfaceY(P.x);gardenWave=1;gardenRaidT=0;rogueRun.traits={feathers:3,embers:3,dew:3};}
+    }
     if(${mode==='feathers'}){rogueRun.traits.feathers=2;dropRunItem('feathers',24,surfaceY(24)-20);}
     if(${mode==='trial'}){runEncounters=[{id:1,x:-38,type:'rain',cost:2,active:false,done:false,locked:false,progress:0,duration:14},{id:2,x:38,type:'cache',cost:3,active:false,done:false,locked:false,progress:0,duration:14}];gardenSeeds=5;}
     if(${mode==='enemies'}){rogueRun.world=10;for(var q=0;q<4;q++){var k=makeKrek(1);k.kind=q+3;k.x=15+q*27;k.y=surfaceY(k.x)-20;k.vx=k.vy=0;floatKrek.push(k);}}

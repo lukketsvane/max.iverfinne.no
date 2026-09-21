@@ -38,7 +38,8 @@ function coopWithMember(m,fn){
   if(!coopActor)coop.members[coop.me].avatar=coopAvatar();
   try{
     P=Object.assign({},oldP,m.avatar,{st:'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,throwPose:0});
-    P.grounded=Math.abs(P.y-surfaceY(P.x))<4&&!waterAt(P.x);P.wet=!!waterAt(P.x);
+    var water=waterAt(P.x);
+    P.grounded=!!P.grounded&&platformSupportY(P.x,P.y)!==null;P.wet=!!(water&&P.y>water.level+1);
     rogueRun.classId=m.classId;rogueRun.perks=m.perks;rogueRun.traits=m.traits;task=null;holdWater=null;climb=null;warp=null;bombCool=Math.max(0,(m.cool-performance.now())/1000);coopActor=m;
     return fn();
   }finally{m.cool=performance.now()+Math.max(0,bombCool)*1000;P=oldP;rogueRun.classId=oldClass;rogueRun.perks=oldPerks;rogueRun.traits=oldTraits;task=oldTask;holdWater=oldWater;bombCool=oldCool;coopActor=oldActor;climb=oldClimb;warp=oldWarp;}
@@ -51,7 +52,10 @@ function coopInput(id,packet){
   if(a){a.classId=m.classId;a.skin=m.skin;}
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
-    if(!coop.choosing&&Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){m.avatar=a;accepted=true;}
+    if(!coop.choosing&&Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
+      var water=waterAt(a.x);a.wet=!!(water&&a.y>water.level+1);a.grounded=a.grounded&&platformSupportY(a.x,a.y)!==null;
+      m.avatar=a;accepted=true;
+    }
     m.last=now;
   }
   if(!Array.isArray(packet.actions)||packet.actions.length>16)return;
@@ -63,6 +67,7 @@ function coopInput(id,packet){
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
     if(runIsPaused()||!a||a.world!==worldLevel())return;
     if(action.type==='travel'){
+      if(!m.avatar.grounded||m.avatar.wet||Math.abs(m.avatar.y-surfaceY(m.avatar.x))>4)return;
       var plant=stalkAt(m.avatar.x,m.avatar.y,9);
       if(plant&&rogueRun.clearedWorld===worldLevel())enterLevel(worldLevel()+1);
       return;
@@ -78,9 +83,11 @@ function coopInput(id,packet){
       }
       else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
         var x=action.x==null?P.x:action.x,y=action.y==null?P.y:action.y,dir=action.direction==null?P.face:action.direction;
-        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36||Math.abs(y-surfaceY(x))>4||waterAt(x))return;
+        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36)return;
+        var support=platformSupportY(x,y),water=waterAt(x);
+        if(support===null||water&&y>water.level+1)return;
         m.dodgeUntil=now+dodgeRecovery()*1000;
-        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:y,progress:0,expires:now+(DODGE_TIME+.12)*1000};
+        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:support,progress:0,expires:now+(DODGE_TIME+.12)*1000};
         P.dodgeDir=dir;dewDodge();
       }
     });
@@ -90,15 +97,29 @@ function coopInput(id,packet){
 }
 function coopDodgeContact(m,now){
   var d=m.dodge,a=m.avatar;if(!d)return;
-  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||Math.abs(a.y-surfaceY(a.x))>4){m.dodge=null;return;}
+  var water=waterAt(a.x);
+  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||water&&a.y>water.level+1||platformSupportY(a.x,a.y)===null){m.dodge=null;return;}
   var distance=(a.x-d.origin)*d.dir,maxDistance=DODGE_SPEED*DODGE_TIME+2;
   if(distance<d.progress-2){m.dodge=null;return;}
-  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir,y=surfaceY(x);
+  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir;
+  var steps=Math.max(1,Math.ceil(Math.abs(x-d.x))),points=[{x:d.x,y:d.y}],blocked=false;
+  for(var i=1;i<=steps;i++){
+    var nextX=d.x+(x-d.x)*i/steps,previous=points[points.length-1],nextY=platformSupportY(nextX,previous.y),pond=waterAt(nextX);
+    // A later packet can be grounded on a different ledge. Never sweep the gap
+    // between them, or project an elevated roll down onto the soil below it.
+    if(nextY===null||pond&&nextY>pond.level+1){blocked=true;break;}
+    points.push({x:nextX,y:nextY});
+  }
+  var end=points[points.length-1];
+  if(!blocked&&distance<=maxDistance&&Math.abs(end.y-a.y)>4){m.dodge=null;return;}
   // Input arrives less often than physics ticks. Sweep the accepted segment,
-  // bounded to one roll, so a guest cannot skip through an enemy between packets.
-  coopWithMember(m,function(){P.dodgeId=d.id;P.dodgeDir=d.dir;dodgeSweep(d.x,d.y,x,y);});
-  d.x=x;d.y=y;d.progress=progress;
-  if(progress>=maxDistance||a.dodging===false)m.dodge=null;
+  // bounded to one roll and continuous footing, including a supported edge.
+  coopWithMember(m,function(){
+    P.dodgeId=d.id;P.dodgeDir=d.dir;
+    for(var i=1;i<points.length;i++)dodgeSweep(points[i-1].x,points[i-1].y,points[i].x,points[i].y);
+  });
+  d.x=end.x;d.y=end.y;d.progress=Math.max(d.progress,(end.x-d.origin)*d.dir);
+  if(blocked||progress>=maxDistance||a.dodging===false)m.dodge=null;
 }
 function coopOffer(){
   if(!coop||!coop.host||coop.choosing)return;
