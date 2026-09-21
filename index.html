@@ -3,6 +3,7 @@
 <script src="assets/results-native/code/max-bouquet.js"></script>
 <script src="run-results.js"></script>
 <script src="companion.js"></script>
+<script src="build-paths.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
 <style>
@@ -56,6 +57,13 @@
   #perkMenu button{min-height:48px;border-radius:6px}
   #perkMenu button:focus-visible{outline:2px solid #e7d997;outline-offset:3px}
   @media(max-height:430px){#perkMenu{left:auto;right:max(12px,env(safe-area-inset-right));transform:none;width:180px}.perkIcon{width:29px;height:29px}}
+
+#perkMenu{width:min(450px,calc(100vw - 24px));gap:8px}
+#perkMenu button{aspect-ratio:auto;min-height:128px;grid-template-rows:38px auto 1fr;padding:9px 5px 14px;gap:5px}
+#perkMenu strong{font:11px/1.2 monospace;color:#e9ead5}
+#perkMenu small{font:10px/1.25 monospace;color:#abb6b1;max-width:120px}
+#perkMenu .perk-wait{grid-column:1/-1;justify-self:center;font:12px monospace;color:#e9ead5;background:#071019e8;padding:12px 18px;border:1px solid #535d62;border-radius:5px}
+@media(max-height:430px){#perkMenu{width:330px}#perkMenu button{min-height:112px}}
 </style>
 <div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="gameTitle"></div><div id="blastHud"></div><div id="gardenHud"></div><div id="gardenHint"></div><div id="roundHud"></div><div id="perkMenu" aria-live="polite"></div>
@@ -434,10 +442,11 @@ var DODGE_TIME = .16, DODGE_SPEED = 156, DODGE_COOLDOWN = .85;
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
   if(P.dodgeCool>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
-  P.dodgeT=DODGE_TIME;P.dodgeCool=DODGE_COOLDOWN;P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
+  P.dodgeT=DODGE_TIME;P.dodgeCool=DODGE_COOLDOWN*Math.pow(.83,rogueRun.perks.dash||0);P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
   setAnim('run');puff(P.x,P.y,4,.3);sfx('swish',0);
+  if(coopGuest())coop.network.action('dodge');
   return true;
 }
 function dodgeContact(dt) {
@@ -445,8 +454,8 @@ function dodgeContact(dt) {
   if(P.dodgeDust<=0){P.dodgeDust=.035;stepDust();}
   for(var i=0;i<floatKrek.length;i++){
     var k=floatKrek[i];
-    if(k.lastDodge!==P.dodgeId&&Math.hypot(k.x-P.x,k.y-(P.y-12))<18){
-      k.lastDodge=P.dodgeId;staggerKrek(k,.5);k.vx=P.dodgeDir*65;k.vy=-15;k.flash=.6;
+    if(k.lastDodge!==((coopActor?coopActor.slot:0)+':'+P.dodgeId)&&Math.hypot(k.x-P.x,k.y-(P.y-12))<18){
+      k.lastDodge=(coopActor?coopActor.slot:0)+':'+P.dodgeId;staggerKrek(k,.5);k.vx=P.dodgeDir*65;k.vy=-15;k.flash=.6;
     }
   }
 }
@@ -2541,7 +2550,7 @@ var WILD_PLANTS=false, seedPickups=[], seedCollected={}, seedSpawnClock=0, seedS
 var FINAL_WAVE=12,runElapsed=0,runFinishT=0,runWon=false,raidLostStart=0,gardenBossSpawned=false;
 var rogueMeta={runs:0,wins:0,bestWave:0,bestScore:0,bestTime:0,petals:0};
 var selectedPerk=null, resultAtlasReady=false, menuPaused=false, runActive=false, companion=null;
-var rogueRun={garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,perks:{robot:0,growth:0,water:0,yield:0,shield:0,magnet:0,blast:0,regen:0,slow:0,luck:0}};
+var rogueRun={garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,perks:window.MaxBuilds.empty()};
 try{
   var rm=JSON.parse(localStorage.getItem('max-fuglesprenger-meta-v1')||'null');if(rm)rogueMeta=Object.assign(rogueMeta,rm);
 }catch(e){}
@@ -2556,14 +2565,15 @@ function companionAt(x,y){
   return companion&&companion.state.state!=='packed'&&Math.abs(x-companion.state.x)<18&&Math.abs(y-(surfaceY(companion.state.x)-12))<17;
 }
 function refillCompanion(){
+  if(coopGuest())return coop.network.action('refill');
   var bot=ensureCompanion();if(!bot||runIsPaused())return false;
-  if(bot.requestRefill(P.x)){socialTone('water');saveGarden();return true;}
+  if(bot.requestRefill(P.x)){if(coop)coop.refiller=coopActor?coopActor.id:coop.me;socialTone('water');saveGarden();return true;}
   return false;
 }
 function updateCompanion(dt){
   var bot=ensureCompanion();if(!bot)return;
   if(task&&task.companionRefill&&!task.fired)return;
-  bot.tick(dt,{paused:runIsPaused(),tier:rogueRun.perks.robot||0,player:P,plants:gardenPlots,
+  bot.tick(dt,{paused:runIsPaused(),tier:rogueRun.perks.robot||0,player:coop&&bot.state.refill>0&&coop.refiller&&coop.members[coop.refiller]&&!coop.members[coop.refiller].left&&coop.refiller!==coop.me?coop.members[coop.refiller].avatar:P,plants:gardenPlots,
     ground:surfaceY,wet:waterAt,safeX:function(x){return dryX(x+(waterAt(x)?(x<P.x?-6:6):0));},transport:!!(climb||warp||P.st==='float')});
 }
 function drawCompanion(){
@@ -2581,7 +2591,7 @@ function clearRunInput(){
   if(P){P.dodgeT=0;P.throwPose=0;}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
-function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&(rogueRun.ended||rogueRun.choice)));}
+function runIsPaused(){return !!(menuPaused||document.hidden||(coop&&coop.choosing)||(rogueRun&&(rogueRun.ended||rogueRun.choice)));}
 function setMenuPaused(paused){
   if(paused&&runActive&&!rogueRun.ended)return;
   menuPaused=!!paused;clearRunInput();
@@ -2625,7 +2635,7 @@ function resetRogueRun(reason){
   bloomPatches.length=0;gifts.length=0;signals.length=0;sanctuaries.length=0;waterBlessings.length=0;
   crows.length=0;smallFauna.length=0;
   var keepWorld=1; // Each attempt begins with the same garden and base abilities.
-  rogueRun={garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,perks:{robot:0,growth:0,water:0,yield:0,shield:0,magnet:0,blast:0,regen:0,slow:0,luck:0}};
+  rogueRun={garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,perks:window.MaxBuilds.empty()};
   if(perkMenu)perkMenu.style.display='none';
   if(window.MaxRunResults)window.MaxRunResults.hide();
   selectedPerk=null;resultAtlasReady=false;clearRunInput();task=null;bombs.length=0;
@@ -2656,7 +2666,7 @@ function updateRunCompetition(dt){
 function showRunResult(){
   if(perkMenu)perkMenu.style.display='none';
   if(!window.MaxRunResults)return;
-  window.MaxRunResults.show({won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,bestWorld:rogueMeta.bestWorld|0,bestPlants:rogueMeta.bestPlants|0,onRetry:function(){resetRogueRun('NEW RUN');},onMenu:function(){if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
+  window.MaxRunResults.show({won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,bestWorld:rogueMeta.bestWorld|0,bestPlants:rogueMeta.bestPlants|0,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN');},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
   resultAtlasReady=resultAssetsReady();
 }
 function drawResultPlant(canvas,p){
@@ -2774,27 +2784,9 @@ function drawResultScene(canvas,bouquet){
     if(companion&&window.MaxCompanion)window.MaxCompanion.draw(ctx,{tier:Math.min(2,rogueRun.perks.robot||0),state:'idle',face:-1,clock:0,water:companion.state.water},cx+40,gy);
   }finally{ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;}
 }
-function perkMax(id){return id==='robot'?2:5;}
-var ROGUE_PERKS=[
-  {id:'robot',name:'GARDEN COMPANION',desc:'Bigger robot, tank and watering range'},
-  {id:'growth',name:'QUICK ROOTS',desc:'+35% growth per level'},
-  {id:'water',name:'DEEP SOIL',desc:'30% slower water loss per level'},
-  {id:'yield',name:'SEED RAIN',desc:'+1 seed per harvest'},
-  {id:'shield',name:'THORNS',desc:'Pests deal less damage'},
-  {id:'magnet',name:'SEED SENSE',desc:'Seeds drift towards Max'},
-  {id:'blast',name:'BIGGER BLAST',desc:'Larger blast radius'},
-  {id:'regen',name:'SAP',desc:'Plants slowly recover health'},
-  {id:'slow',name:'STICKY POLLEN',desc:'Pests fly more slowly'},
-  {id:'luck',name:'GOLDEN SEEDS',desc:'More rare seeds and boss drops'}
-];
-function perkChoices(){
-  // One offer from each play style, with capped ranks and no duplicate cards.
-  var groups=[['growth','water','robot','yield'],['shield','regen','slow'],['magnet','blast','luck']],out=[];
-  var base=rogueRun.level+gardenWave+worldLevel();
-  groups.forEach(function(ids,g){for(var j=0;j<ids.length;j++){var id=ids[imod(base+g+j,ids.length)];if((rogueRun.perks[id]||0)<perkMax(id)){out.push(ROGUE_PERKS.find(function(p){return p.id===id;}));break;}}});
-  ROGUE_PERKS.forEach(function(p){if(out.length<3&&(rogueRun.perks[p.id]||0)<perkMax(p.id)&&out.indexOf(p)<0)out.push(p);});
-  return out;
-}
+function perkMax(id){return window.MaxBuilds.max(id);}
+var ROGUE_PERKS=window.MaxBuilds.perks;
+function perkChoices(perks,salt){return window.MaxBuilds.choices(perks||rogueRun.perks,rogueRun.level,(salt||0)+gardenWave+worldLevel());}
 
 function perkSVG(id){
   var open='<svg class="perkIcon" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">';
@@ -2823,29 +2815,31 @@ function renderRogueChoice(){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
     bt.setAttribute('aria-label',p.name+', level '+lvl+'. '+p.desc+'. Key '+(index+1));
-    bt.innerHTML=perkSVG(p.id)+perkDots(lvl,perkMax(p.id));
+    bt.innerHTML=perkSVG(p.id)+'<strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
   });
   perkMenu.style.display='grid';
 }
 function offerRogueChoice(){
+  if(coop){coopOffer();return;}
   if(rogueRun.choice||rogueRun.ended)return;
   var choices=perkChoices();if(!choices.length)return;
   clearRunInput();rogueRun.choice=choices;renderRogueChoice();saveGarden();
   var first=perkMenu&&perkMenu.querySelector('button');if(first&&first.focus)first.focus({preventScroll:true});
 }
 function chooseRoguePerk(id){
+  if(coop){if(coop.host)coopChoose(coop.me,id,coop.round);else if(rogueRun.choice&&rogueRun.choice.some(function(p){return p.id===id;}))coop.network.action('boon',{boon:id,round:coop.round});return;}
   if(rogueRun.ended||!rogueRun.choice||!rogueRun.choice.some(function(p){return p.id===id;})||(rogueRun.perks[id]||0)>=perkMax(id))return;
   rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();clearRunInput();
   if(perkMenu)perkMenu.style.display='none';
   socialTone('gift');grantRogueXP(0);saveGarden();updateGardenHud();
 }
 function grantRogueXP(n){
-  if(rogueRun.ended)return;
+  if(rogueRun.ended||coopGuest())return;
   rogueRun.xp+=Math.max(0,+n||0);
   // Keep surplus XP until its previous choice is resolved; never lose rewards.
-  if(!rogueRun.choice&&rogueRun.xp>=rogueRun.next&&perkChoices().length){
+  if(!rogueRun.choice&&!(coop&&coop.choosing)&&rogueRun.xp>=rogueRun.next&&(coop?coopMembers().some(function(m){return perkChoices(m.perks,m.slot).length;}):perkChoices().length)){
     rogueRun.xp-=rogueRun.next;rogueRun.level++;rogueRun.next=Math.round(rogueRun.next*1.35+2);offerRogueChoice();
   }
 }
@@ -2879,14 +2873,16 @@ function collectSeed(q){
 }
 function updateSeedPickups(dt){
   seedSpawnClock-=dt;seedStreakT=Math.max(0,seedStreakT-dt);if(seedStreakT<=0)seedStreak=0;
-  if(seedSpawnClock<=0){seedSpawnClock=.6;ensureSeedPickups();}
+  if(seedSpawnClock<=0){seedSpawnClock=.6;ensureSeedPickups();if(coop&&coop.host)coopMembers().forEach(function(m){if(m.id!==coop.me)coopWithMember(m,ensureSeedPickups);});}
   var magnet=10+(rogueRun.perks.magnet||0)*12;
   for(var i=seedPickups.length-1;i>=0;i--){
-    var q=seedPickups[i];
+    var q=seedPickups[i],collector=P,collectorPerks=rogueRun.perks;
+    if(coop&&coop.host)coopMembers().forEach(function(m){if(m.id!==coop.me&&Math.hypot(m.avatar.x-q.x,m.avatar.y-6-q.y)<Math.hypot(collector.x-q.x,collector.y-6-q.y)){collector=m.avatar;collectorPerks=m.perks;}});
+    magnet=10+(collectorPerks.magnet||0)*12;
     if(q.fall){q.vy+=58*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.94,dt*60);var g=surfaceY(q.x)-2;if(q.y>=g){q.y=g;q.vy=0;q.vx=0;q.fall=false;}}
-    if(magnet>10&&Math.abs(q.x-P.x)<magnet){q.x+=(P.x-q.x)*Math.min(1,dt*(2+(rogueRun.perks.magnet||0)*1.2));q.y+=(P.y-6-q.y)*Math.min(1,dt*2.2);}
-    if(Math.abs(q.x-P.x)<(q.sky?12:7)&&Math.abs(q.y-(P.y-6))<(q.sky?24:18)){collectSeed(q);continue;}
-    if(!q.id&&Math.abs(q.x-P.x)>IW*2.2)seedPickups.splice(i,1);
+    if(magnet>10&&Math.abs(q.x-collector.x)<magnet){q.x+=(collector.x-q.x)*Math.min(1,dt*(2+(collectorPerks.magnet||0)*1.2));q.y+=(collector.y-6-q.y)*Math.min(1,dt*2.2);}
+    if(Math.abs(q.x-collector.x)<(q.sky?12:7)&&Math.abs(q.y-(collector.y-6))<(q.sky?24:18)){collectSeed(q);continue;}
+    if(!q.id&&Math.abs(q.x-collector.x)>IW*2.2)seedPickups.splice(i,1);
   }
 }
 function drawSeedPickups(t){
@@ -2996,6 +2992,8 @@ function harvestGardenPlot(p){
   gardenStats.harvested=(gardenStats.harvested||0)+1;grantRogueXP(1);
   spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');
   p.pulse=1.2;p.moisture=Math.max(0,p.moisture-.12);
+  if(rogueRun.perks.bloom)gardenPlots.forEach(function(q){if(!q.dead&&Math.abs(q.x-p.x)<52){q.health=clamp01(q.health+.16);q.moisture=clamp01(q.moisture+.12);q.pulse=1.5;}});
+  if(rogueRun.perks.recycle&&companion)companion.state.water=Math.min([1,1.6,2.4][Math.min(2,companion.state.tier||0)],companion.state.water+.45);
   socialTone('gift');saveGarden();return true;
 }
 function gardenNeighborCount(p,r){
@@ -3262,6 +3260,11 @@ function stalkAt(wx,wy,maxD){
   return best;
 }
 function requestClimb(p){
+  if(coop){
+    if(!p||!p.stalk||p.dead||Math.abs(P.x-p.x)>=9||!P.grounded||P.wet||rogueRun.clearedWorld!==worldLevel())return false;
+    if(coopGuest())return coop.network.action('travel');
+    enterLevel(worldLevel()+1);return true;
+  }
   if(!p||!p.stalk||p.dead||warp)return false;
   if(P.st==='climb'||P.st==='float')return true;
   if(Math.abs(P.x-p.x)<9&&P.grounded&&!P.wet)return beginClimb(p);
@@ -3337,6 +3340,7 @@ function warpCover(){
   if(t<.8)return t/.8;if(t<2.2)return 1;return Math.max(0,1-(t-2.2));
 }
 function enterLevel(n){
+  if(coopGuest())return;
   var carried=0,i;
   for(i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead)carried++;
   gardenPlots.forEach(recordGardenPlant);
@@ -3353,6 +3357,7 @@ function enterLevel(n){
   P.x=x;P.y=surfaceY(x)-Math.round(IH*.40)-36;P.vx=0;P.vy=0;P.grounded=false;P.coyote=0;P.face=1;P.wet=false;
   P.st='float';setAnim('hang');
   if(companion)companion.relocate(P.x);
+  if(coop&&coop.host)coopMembers().forEach(function(m){var sx=x+(m.slot-1)*12;m.avatar=Object.assign(coopAvatar(),{x:sx,y:surfaceY(sx)-80,st:'float',grounded:false});m.last=performance.now();m.draw=null;});
   started=false;                                           // the camera cuts while the clouds cover the screen
 
   saveGarden();updateGardenHud();
@@ -3496,7 +3501,7 @@ function updateGardenFun(dt){
     if(gardenRaidT<=0){
       gardenWave++;gardenRaidActive=true;roundLastSecond=-1;
       rogueRun.raidThreat=raidPressure();
-      rogueRun.raidTotal=Math.min(18,2+gardenWave+Math.floor(active/3)+Math.floor(gardenWave/4)+Math.min(4,worldLevel()-1)+rogueRun.raidThreat);
+      rogueRun.raidTotal=Math.min(30,2+gardenWave+Math.floor(active/3)+Math.floor(gardenWave/4)+Math.min(4,worldLevel()-1)+rogueRun.raidThreat+Math.max(0,coopSize()-1)*3);
       rogueRun.raidRemaining=rogueRun.raidTotal;
       gardenRaidGrace=.8;gardenRaidSpawn=0;
       gardenBossSpawned=false;raidLostStart=gardenStats.lost||0;
@@ -3510,10 +3515,10 @@ function updateGardenFun(dt){
   // Old saves may have an encounter in flight, before budgets were stored.
   if(typeof rogueRun.raidRemaining!=='number'){
     rogueRun.raidThreat=raidPressure();
-    rogueRun.raidTotal=Math.min(18,2+gardenWave+Math.floor(active/3)+Math.floor(gardenWave/4)+Math.min(4,worldLevel()-1)+rogueRun.raidThreat);
+    rogueRun.raidTotal=Math.min(30,2+gardenWave+Math.floor(active/3)+Math.floor(gardenWave/4)+Math.min(4,worldLevel()-1)+rogueRun.raidThreat+Math.max(0,coopSize()-1)*3);
     rogueRun.raidRemaining=Math.max(0,rogueRun.raidTotal-raidAlive);
   }
-  var concurrent=Math.min(8,3+Math.ceil(gardenWave/3));
+  var concurrent=Math.min(12,3+Math.ceil(gardenWave/3)+Math.max(0,coopSize()-1));
 
   if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent){
     var bossWave=(gardenWave%4===0),elite=bossWave&&!gardenBossSpawned;
@@ -3820,6 +3825,7 @@ for (var k2 in ANIM2) { ANIM2[k2].sh = 2; ANIM[k2] = ANIM2[k2]; }
 /* Hands work only within reach. No input ever steers toward a task. */
 var task = null;
 function embody(kind,x,fn){
+  if(coopActor){if(!P.grounded||P.wet||Math.abs(x-P.x)>18)return false;fn();return true;}
   if(!P.grounded||P.wet||Math.abs(x-P.x)>18)return false;
   if(P.st==='task')return true;
   if(!sheet2Ready){fn();return true;}
@@ -3838,9 +3844,16 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
+  if(coopGuest()){
+    if(!P.grounded||P.wet||task||P.st!=='free')return false;
+    var nearStalk=stalkAt(P.x,P.y-4,9);if(nearStalk)return requestClimb(nearStalk);
+    if(!coop.network.action('grow'))return false;
+    var nearby=nearestGardenPlot(P.x,18);
+    if(sheet2Ready)embody(nearby?'water':'sow',P.x,function(){});return true;
+  }
   if (!P.grounded || P.wet || task || P.st !== 'free') return false;
 
-  var stalk=stalkAt(P.x,P.y-4,9);if(stalk)return requestClimb(stalk);
+  var stalk=stalkAt(P.x,P.y-4,9);if(stalk&&!coopActor)return requestClimb(stalk);
   var p=nearestGardenPlot(P.x,18);
   if (p && !p.dead) {
     var previous=typeof p.lastHarvestGrowth==='number'?p.lastHarvestGrowth:.65;
@@ -4046,8 +4059,9 @@ function lob(x0, y0, tx, ty, vx, vy) {
   return { vx: (tx - x0) / T, vy: (ty - y0 - 0.5 * BOMB_G * T * T) / T };
 }
 function throwBomb(target) {                               // a bird {kind, o} or a spot {x, y}
-  if (runIsPaused() || climb || warp || P.st==='float' || bombCool > 0 || bombs.length >= 3) return false;
-  bombCool = 0.38; task = null;
+  if (runIsPaused() || climb || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 3) return false;
+  if(coopGuest()){var aim=target.o||target;if(!coop.network.action('throw',{x:aim.x,y:aim.y}))return false;}
+  bombCool = 0.38*Math.pow(.88,rogueRun.perks.cadence||0); task = null;
   var tx = target.o ? target.o.x : target.x;
   if (Math.abs(tx - P.x) > 1) P.face = tx > P.x ? 1 : -1;
   P.aim = target;
@@ -4064,7 +4078,7 @@ function launchBomb() {
     if (birdAlive(t)) { vx = t.o.vx || 0; vy = t.o.vy || 0; }
   } else { tx = t.x; ty = t.y; }
   var v = lob(x0, y0, tx, ty, vx, vy);
-  bombs.push({ x: x0, y: y0, vx: v.vx, vy: v.vy, st: 'fly', fuse: 1.3, t: 0, hop: 0, spin: 0 });
+  bombs.push({ owner:coop?(coopActor?coopActor.id:coop.me):'',perks:Object.assign({},rogueRun.perks),x: x0, y: y0, vx: v.vx, vy: v.vy, st: 'fly', fuse: 1.3, t: 0, hop: 0, spin: 0 });
   sfx('swish', 0);
 }
 function throwAuto() {                                     // B: nearest garden threat first, then bird
@@ -4110,7 +4124,7 @@ function stepBombs(dt) {
     b.t += dt; b.fuse -= dt;
     if (b.st === 'fly') {
       b.vy += BOMB_G * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.spin += dt * 16;
-      if (b.t > 0.06 && bombHitsBird(b.x, b.y)) { explode(b.x, b.y, false); bombs.splice(i, 1); continue; }
+      if (b.t > 0.06 && bombHitsBird(b.x, b.y)) { explode(b.x, b.y, false,b.perks); bombs.splice(i, 1); continue; }
       w = waterAt(b.x);
       if (w && b.y >= w.level) { b.st = 'water'; b.y = w.level; b.vx *= 0.25; b.vy = 0; ripple(b.x, w.level, 'splash'); }
       else {
@@ -4131,7 +4145,7 @@ function stepBombs(dt) {
       if (w) b.y = w.level - 1 + Math.sin(b.t * 5) * 0.6;
     }
     if (Math.random() < dt * 34) sparks.push({ x: b.x + 2, y: b.y - 6, vx: (Math.random() - 0.5) * 12, vy: -6 - Math.random() * 12, l: 0.1 + Math.random() * 0.15 });
-    if (b.fuse <= 0) { explode(b.x, b.y - 2, b.st === 'water'); bombs.splice(i, 1); }
+    if (b.fuse <= 0) { explode(b.x, b.y - 2, b.st === 'water',b.perks); bombs.splice(i, 1); }
   }
 }
 
@@ -4179,9 +4193,11 @@ function scatterFrom(x) {                                  // everyone who heard
   }
 }
 
-function explode(x, y, wet) {
-  var BR = BLAST_R + (rogueRun.perks.blast||0)*5;
-  booms.push({ x: x, y: y, t: 0, seed: Math.random() * 97, wet: wet });
+function explode(x, y, wet, build) {
+  build=build||rogueRun.perks;
+  var chainSeeds=[];
+  var BR = BLAST_R + (build.blast||0)*5;
+  booms.push({ id:++coopFxId,x: x, y: y, t: 0, seed: Math.random() * 97, wet: wet });
   shake = Math.min(3, shake + 2.2);
   sfx('boom', Math.abs(x - P.x));
   var n = 0, i, o, k;
@@ -4210,9 +4226,16 @@ function explode(x, y, wet) {
         o.hp--;o.flash=1;staggerKrek(o,.42);
         for(var eh=0;eh<5;eh++)sparks.push({x:o.x,y:o.y,vx:(Math.random()-.5)*35,vy:-12-Math.random()*25,l:.22+Math.random()*.2});
         nudgeGardenHint('ELITE · '+o.hp+' HITS LEFT');
-      }else{floatKrek.splice(i,1);burstKrek(o);pestN++;}
+      }else{floatKrek.splice(i,1);burstKrek(o);pestN++;if(build.chain&&chainSeeds.length<3)chainSeeds.push({x:o.x,y:o.y});}
     }
   }
+  chainSeeds.forEach(function(seed){
+    for(var ci=floatKrek.length-1;ci>=0;ci--){var enemy=floatKrek[ci];if(Math.hypot(enemy.x-seed.x,enemy.y-seed.y)>24)continue;
+      enemy.hp=(enemy.hp||1)-1;enemy.flash=1;staggerKrek(enemy,.4);
+      if(enemy.hp<=0){floatKrek.splice(ci,1);burstKrek(enemy);pestN++;}
+    }
+    booms.push({x:seed.x,y:seed.y,t:0,poof:true,big:false});
+  });
   for(i=0;i<gardenPlots.length;i++){
     var gp=gardenPlots[i],gd=Math.hypot(gp.x-x,(surfaceY(gp.x)-8)-y);
     if(gd<BR+13&&!gp.dead){
@@ -4777,6 +4800,8 @@ function drawVignette() {
   ctx.fillStyle = vig; ctx.fillRect(0, 0, IW, IH);
 }
 
+/* MAX_COOP_GAME */
+
 /* ---------------------------------------------------------------- loop */
 var last = 0, tSec = 0, stepAcc = 0;
 
@@ -4785,6 +4810,7 @@ function frame(now) {
   last = now;
   if (dt > 0.05) dt = 0.05;
   if (dt < 0) dt = 0;
+  coopFrame();
   var paused=runIsPaused();
   if(!paused){
   tSec += dt;
@@ -4793,6 +4819,8 @@ function frame(now) {
   if(!runIsPaused())updatePlayer(dt, inp);
   if(!runIsPaused())updateWarp(dt);
   if(!runIsPaused())updateParts(dt);
+  if(!coopGuest()){
+  var ownBuild=rogueRun.perks;if(coop)rogueRun.perks=coopTeamPerks();
   if(!runIsPaused())updateCrows(dt);
   if(!runIsPaused())updateSmallFauna(dt);
   if(!runIsPaused())updateFlock(dt);
@@ -4817,6 +4845,13 @@ function frame(now) {
   if(!runIsPaused())updateBombs(dt);
   if(!runIsPaused())updateFeathers(dt);
   if(!runIsPaused())refillBirds(dt);
+  if(coop)rogueRun.perks=coop.members[coop.me].perks;
+  }else{
+    bombCool=Math.max(0,bombCool-dt);
+    bombs.forEach(function(b){if(b.st==='fly'){b.x+=b.vx*dt;b.y+=b.vy*dt;b.vy+=BOMB_G*dt;}});
+    floatKrek.forEach(function(k){k.x+=(k.vx||0)*dt;k.y+=(k.vy||0)*dt;});
+    updateFeathers(dt);
+  }
   }
   if(rogueRun.ended&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
 
@@ -4825,7 +4860,7 @@ function frame(now) {
     if (stepAcc > 10.2) { stepAcc = 0; if (P.wet) ripple(P.x, waterAt(P.x).level, 'ring'); else if (Math.random() < 0.7) stepDust(); }
   } else stepAcc = 0;
 
-  var look = P.face * Math.min(26, Math.abs(P.vx) * 0.30);
+  var look = Math.max(-26,Math.min(26,P.vx*.30));
   var tx = P.x - IW * 0.5 + look, ty = P.y - climbAnchor();
   if (!started) { camX = tx; camY = ty; started = true; }
   camX += (tx - camX) * (1 - Math.pow(0.0026, dt));
@@ -4884,7 +4919,7 @@ function frame(now) {
   drawKrek(tSec);
   drawBirdBlasts();
   drawCompanion();
-  drawPlayer();
+  drawPlayer();drawCoopPlayers(dt);
   drawClimbSky(tSec);
   drawBombs(tSec);
   drawFeathers();
@@ -4916,7 +4951,9 @@ function attachGameMenu(){
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},
-    beginRun:function(){resetRogueRun('NEW RUN');}
+    beginRun:function(){coop=null;resetRogueRun('NEW RUN');},
+    clearInput:clearRunInput,exitRun:function(){if(runActive&&!rogueRun.ended)finalizeRogueRun(false);stopCoop();if(window.MaxRunResults)window.MaxRunResults.hide();},
+    beginCoop:beginCoop,stopCoop:stopCoop,coopRoster:coopRoster,coopState:coopState,coopInput:coopInput,coopDepart:coopDepart
   });
 }
 window.addEventListener('max-menu-ready',attachGameMenu);

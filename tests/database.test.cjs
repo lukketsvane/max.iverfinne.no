@@ -12,8 +12,11 @@ test('real Postgres migration isolates accounts and rejects conflicting saves', 
   try {
     await db.exec(`
       create role anon; create role authenticated;
-      create schema auth; create table auth.users(id uuid primary key);
-      insert into auth.users values ('${alice}'), ('${bob}');
+      create schema auth; create table auth.users(id uuid primary key, email text);
+      create schema realtime; create table realtime.messages(extension text);
+      alter table realtime.messages enable row level security;
+      create function realtime.topic() returns text language sql stable as $$ select current_setting('realtime.topic', true) $$;
+      insert into auth.users(id) values ('${alice}'), ('${bob}');
       create function auth.uid() returns uuid language sql stable as
       $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
       grant usage on schema auth to authenticated, anon;

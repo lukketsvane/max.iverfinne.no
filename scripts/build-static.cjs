@@ -1,12 +1,12 @@
 'use strict';
 
-const { copyFileSync, mkdirSync, rmSync, existsSync, readFileSync } = require('node:fs');
+const { copyFileSync, mkdirSync, rmSync, existsSync, readFileSync, writeFileSync } = require('node:fs');
 const { join } = require('node:path');
 const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'review.html'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -23,6 +23,7 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
 for (const file of files) copyFileSync(join(root, file), join(output, file));
+writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8').replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8')));
 require('./build-companion.cjs')(output);
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu.js'),

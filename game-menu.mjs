@@ -1,6 +1,7 @@
 import { pixelText } from './pixel-text.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
+import { CoopSession } from './coop-session.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
 const client = config.publishableKey ? createClient(config.url, config.publishableKey, {
@@ -10,6 +11,8 @@ let game, overlay, card, user = null, busy = false, opened = false, screen = 'ho
 let sessionReady = !client;
 let status, scenery;
 let sceneFrame = 0, sceneStarted = 0;
+let session = null, loginDestination = null, lobbyVersion = '';
+let liveSettings = false, settingsButton;
 
 function el(tag, text, className) {
   const n = document.createElement(tag);
@@ -31,7 +34,7 @@ function page(name, title) {
   status = el('p', '', 'max-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   queueMicrotask(() => { if (opened) h.focus({ preventScroll: true }); });
 }
-function back() { card.append(button('Back', home, 'subtle')); }
+function back() { card.append(button('Back', liveSettings ? dismissSettings : home, 'subtle')); }
 function home() {
   page('home', 'MAX');
   card.replaceChildren();
@@ -43,7 +46,7 @@ function home() {
     settings: '<path d="M7 0h2v16H7zM3 3h4v3H3zM9 7h4v3H9zM4 11h3v3H4z"/>',
     credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
   };
-  for (const [label, action, icon] of [['Play', close, 'play'], ['Garden', garden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
+  for (const [label, action, icon] of [['Play', play, 'play'], ['Garden', garden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
     const b = button('', action, 'max-home-button max-icon-' + icon);
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
     pixelText(b, label, icon === 'play' ? 4 : 2, icon === 'play' ? 2 : 1); nav.append(b);
@@ -57,13 +60,91 @@ function garden() {
   card.append(el('p', records.runs ? 'Best: world ' + records.world + ' · ' + records.plants + ' plants' : 'Your first garden awaits.'), button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
   back();
 }
+function play() {
+  page('play', 'Play');
+  card.append(button('Solo', close, 'primary'), button('Together', together)); back();
+}
+function together() {
+  if (!sessionReady) { page('together', 'Connecting…'); back(); return; }
+  if (!client) { close(); return; }
+  if (!user) { loginDestination = together; login(); return; }
+  page('together', 'Play together');
+  card.append(button('Host garden', () => enterRoom(), 'primary'));
+  const form = el('form'); const label = el('label', 'Room code');
+  const code = el('input'); Object.assign(code, { name: 'code', required: true, minLength: 10, maxLength: 10, autocomplete: 'off', autocapitalize: 'characters', spellcheck: false });
+  label.append(code); const join = el('button', 'Join garden'); join.type = 'submit';
+  form.append(label, join); form.addEventListener('submit', e => { e.preventDefault(); enterRoom(code.value); });
+  card.append(form, status); back();
+}
+async function enterRoom(code) {
+  if (busy || session) return;
+  busy = true; message('Connecting…');
+  const candidate = new CoopSession(client, user, {
+    room: room => { game.coopRoster?.(room); if (opened && session === candidate) lobby(room); },
+    start: network => {
+      opened = false; overlay.hidden = true; cancelAnimationFrame(sceneFrame);
+      settingsButton.hidden = false;
+      game.beginCoop(network); game.pause(false);
+    },
+    state: state => game.coopState(state),
+    input: (id, packet) => game.coopInput(id, packet),
+    depart: id => game.coopDepart(id),
+    error: reason => {
+      game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
+      game.pause(true); play(); card.append(status); message(reason, true); refreshScenery();
+    },
+  });
+  session = candidate;
+  try { await candidate.enter(code); lobbyVersion = ''; lobby(candidate.room); }
+  catch (error) { if (session === candidate) session = null; message(error.message, true); }
+  finally { busy = false; }
+}
+function lobby(room) {
+  const version = JSON.stringify([room.code, room.members, room.state]);
+  if (screen === 'lobby' && lobbyVersion === version) return;
+  lobbyVersion = version; page('lobby', 'Garden ' + room.members.length + ' / 4');
+  const invite = el('p', room.code, 'max-room-code'); invite.setAttribute('aria-label', 'Room code ' + room.code); card.append(invite);
+  for (const member of room.members) {
+    const row = el('p', member.name + (member.ready ? ' ✓' : ' …'), 'max-room-player');
+    row.dataset.slot = member.slot; card.append(row);
+  }
+  const me = room.members.find(p => p.id === user.id);
+  if (room.host === user.id) {
+    const start = button('Start', () => roomAction(() => session.start()), 'primary');
+    start.disabled = room.state !== 'lobby' || !room.members.every(p => p.ready); card.append(start);
+  } else card.append(button(me?.ready ? 'Ready ✓' : 'Ready', () => roomAction(() => session.ready(!me?.ready)), 'primary'));
+  card.append(status, button('Leave', async () => {
+    const old = session; session = null; await old?.leave(); together();
+  }, 'subtle'));
+}
+async function roomAction(action) {
+  if (busy) return; busy = true;
+  try { await action(); } catch (error) { message(error.message, true); }
+  finally { busy = false; }
+}
 function settings() {
   page('settings', 'Settings');
   const enabled = game.soundEnabled?.() !== false;
   const sound = button('Sound ' + (enabled ? 'on' : 'off'), () => { game.setSoundEnabled?.(!enabled); settings(); });
   sound.setAttribute('aria-pressed', String(enabled));
   card.append(sound, button('Controls', help));
+  if (liveSettings) card.append(button('Exit to main menu', exitToMenu, 'subtle'));
   back();
+}
+function openSettings() {
+  if (opened || game.canOpenMenu?.() !== false) return;
+  liveSettings = true; opened = true; overlay.dataset.live = 'true'; overlay.hidden = false;
+  game.clearInput?.(); settings();
+}
+function dismissSettings() {
+  liveSettings = false; opened = false; overlay.hidden = true; delete overlay.dataset.live;
+  game.clearInput?.();
+}
+async function exitToMenu() {
+  const old = session; session = null;
+  game.exitRun?.(); if (old) void old.leave();
+  liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
+  opened = true; game.pause(true); home(); refreshScenery();
 }
 function help() {
   page('help', 'Controls');
@@ -121,7 +202,7 @@ function login(create = false) {
       if (error) throw error;
       if (!data.session) throw { code: 'confirmation_enabled' };
       setUser(data.session.user);
-      account();
+      const next = loginDestination; loginDestination = null; if (next) next(); else account();
     } catch (error) { message(accountError(error), true); }
     finally { busy = false; submit.disabled = false; }
   });
@@ -147,10 +228,12 @@ function account() {
 }
 function open() {
   if (opened || !game || game.canOpenMenu?.() === false) return;
-  opened = true; game.pause(true); overlay.hidden = false; home(); refreshScenery();
+  opened = true; liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true; game.pause(true); overlay.hidden = false; home(); refreshScenery();
 }
 function close() {
+  if (session) { void session.leave(); session = null; }
   opened = false; cancelAnimationFrame(sceneFrame); overlay.hidden = true; game.beginRun(); game.pause(false);
+  settingsButton.hidden = false;
 }
 function attach(bridge) {
   if (game) return;
@@ -159,9 +242,13 @@ function attach(bridge) {
   scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
   card = el('div', undefined, 'max-menu-card'); overlay.append(scenery, card);
   window.addEventListener('resize', refreshScenery);
+  settingsButton = button('', openSettings, 'max-live-settings'); settingsButton.hidden = true;
+  settingsButton.setAttribute('aria-label', 'Settings');
+  settingsButton.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges"><path d="M7 0h2v16H7zM3 3h4v3H3zM9 7h4v3H9zM4 11h3v3H4z"/></svg>';
+  document.body.append(settingsButton);
   overlay.addEventListener('keydown', event => {
     event.stopPropagation();
-    if (event.key === 'Escape') { event.preventDefault(); if (!busy) screen !== 'home' && home(); }
+    if (event.key === 'Escape') { event.preventDefault(); if (liveSettings) dismissSettings(); else if (!busy && !session) screen !== 'home' && home(); }
     if (event.key !== 'Tab') return;
     const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled)')].filter(n => n.getClientRects().length);
     if (!controls.length) return;
@@ -171,9 +258,18 @@ function attach(bridge) {
   });
   overlay.addEventListener('keyup', e => e.stopPropagation());
   document.body.append(overlay);
+  window.addEventListener('keydown', event => { if (event.key === 'Escape' && !opened) openSettings(); });
   open();
 }
-window.MaxGameMenu = { attach, open };
+function replay() {
+  const old = session; session = null; if (old) void old.leave(); game.stopCoop?.();
+  liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
+  opened = true; overlay.hidden = false; game.pause(true); play(); refreshScenery();
+}
+window.MaxGameMenu = { attach, open, replay };
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && session?.playing) session.fail(session.host ? 'Host left the garden.' : 'You left the garden.');
+});
 window.dispatchEvent(new Event('max-menu-ready'));
 if (client) {
   client.auth.onAuthStateChange((_event, session) => {

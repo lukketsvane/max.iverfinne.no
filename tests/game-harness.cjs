@@ -3,16 +3,17 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+const source = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace('/* MAX_COOP_GAME */', fs.readFileSync(path.join(__dirname, '../coop-game.inc.js'), 'utf8'));
 const stateNames = [
   'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
   'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
-  'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT',
+  'coop', 'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT',
 ];
 const functionNames = [
+  'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'drawMenuScene', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
   'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
@@ -93,6 +94,7 @@ function loadGame(saved = {}) {
     addEventListener(name, fn) { (listeners[name] ||= []).push(fn); },
   };
   sandbox.window = sandbox;
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'build-paths.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {
