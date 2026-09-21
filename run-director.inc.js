@@ -57,7 +57,7 @@ function interactEncounter(){
   if(!P.grounded||P.wet||runIsPaused())return false;
   var e=encounterAt(P.x);if(!e)return false;
   if(e.active)return false;
-  if(coopGuest())return coop.network.action('encounter');
+  if(coopGuest())return coopAction('encounter');
   if(gardenSeeds<e.cost){puff(e.x,surfaceY(e.x)-8,3,.3);return true;}
   gardenSeeds-=e.cost;e.active=true;
   runEncounters.forEach(function(other){if(other!==e)other.locked=true;});

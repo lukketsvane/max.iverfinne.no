@@ -74,3 +74,16 @@ Its health lights sit on the crown itself.
 Enemy graphics currently use native pixel primitives. The graphics lead's
 separate handoff is tracked in GitHub issue #10: 16×16 enemy cells, 32×32 boss
 cells, amber windup / cyan exposure. Keep the existing player scale and controls.
+
+## Co-op timing
+
+Guest rolls move locally. The host checks the segment between accepted movement
+updates, limited to one roll's distance and a short allowance for packet timing.
+Each teammate can interrupt a given pest once per roll, even when multiple
+players overlap. Jumping, input cancellation, a boon choice or stage travel
+closes that window.
+
+Actions carry the stage where they were issued. After travel, the host
+acknowledges and discards older queued actions, so a delayed throw or planting
+gesture cannot unexpectedly fire in the new garden. Legacy packets without a
+stage remain accepted for clients that were already open before this update.

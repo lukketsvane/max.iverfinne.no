@@ -1,13 +1,14 @@
 /* Included inside the game closure at build time. No public debug/state API. */
 var coop=null,coopApplying=false,coopActor=null,coopFxId=0;
 function coopGuest(){return !!(coop&&!coop.host);}
+function coopAction(type,data){return !!(coopGuest()&&coop.network.action(type,Object.assign({},data,{world:worldLevel()})));}
 function coopMembers(){return coop?Object.values(coop.members).filter(function(m){return !m.left;}):[];}
 function coopSize(){return coop?coopMembers().length:1;}
-function coopAvatar(){return {world:worldLevel(),x:P.x,y:P.y,vx:P.vx,vy:P.vy,face:P.face,anim:P.anim,frame:P.frame,st:P.st,grounded:P.grounded,wet:!!P.wet,lampLit:P.lampLit};}
+function coopAvatar(){return {world:worldLevel(),x:P.x,y:P.y,vx:P.vx,vy:P.vy,face:P.face,anim:P.anim,frame:P.frame,st:P.st,grounded:P.grounded,wet:!!P.wet,dodging:P.dodgeT>0,lampLit:P.lampLit};}
 function coopCleanAvatar(a){
   if(!a||!['x','y','vx','vy','world'].every(function(k){return Number.isFinite(a[k])&&Math.abs(a[k])<1e7;})||!Object.hasOwn(ANIM,a.anim))return null;
   if(Math.abs(a.vx)>180||Math.abs(a.vy)>500)return null;
-  return {world:a.world|0,x:a.x,y:a.y,vx:a.vx,vy:a.vy,face:a.face<0?-1:1,anim:a.anim,frame:Math.max(0,Math.min(15,a.frame|0)),st:['free','float','climb','task','watering','squat','lamp','rest','toCrouch','toStand','lampUp','lampDn','toSit','unsit'].indexOf(a.st)>=0?a.st:'free',grounded:!!a.grounded,wet:!!a.wet,lampLit:Math.max(0,Math.min(1,+a.lampLit||0))};
+  return {world:a.world|0,x:a.x,y:a.y,vx:a.vx,vy:a.vy,face:a.face<0?-1:1,anim:a.anim,frame:Math.max(0,Math.min(15,a.frame|0)),st:['free','float','climb','task','watering','squat','lamp','rest','toCrouch','toStand','lampUp','lampDn','toSit','unsit'].indexOf(a.st)>=0?a.st:'free',grounded:!!a.grounded,wet:!!a.wet,dodging:typeof a.dodging==='boolean'?a.dodging:undefined,lampLit:Math.max(0,Math.min(1,+a.lampLit||0))};
 }
 function beginCoop(network){
   coop=null;resetRogueRun('NEW RUN');
@@ -28,7 +29,7 @@ function coopRoster(room){
 }
 function coopDepart(id){
   if(!coop||!coop.host||id===coop.me||!coop.members[id])return;
-  coop.members[id].left=true;coop.members[id].choices=[];coopResolveChoices();
+  coop.members[id].left=true;coop.members[id].choices=[];coop.members[id].dodge=null;coopResolveChoices();
 }
 function coopWithMember(m,fn){
   var oldP=P,oldPerks=rogueRun.perks,oldTraits=rogueRun.traits,oldTask=task,oldWater=holdWater,oldCool=bombCool,oldActor=coopActor,oldClimb=climb,oldWarp=warp;
@@ -41,15 +42,18 @@ function coopWithMember(m,fn){
 }
 function coopInput(id,packet){
   if(!coop||!coop.host)return;var m=coop.members[id];if(!m||m.left)return;
-  var a=coopCleanAvatar(packet.avatar),now=performance.now();
+  var a=coopCleanAvatar(packet.avatar),now=performance.now(),accepted=false;
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
-    if(!coop.choosing&&Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){m.avatar=a;}
+    if(!coop.choosing&&Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){m.avatar=a;accepted=true;}
     m.last=now;
   }
   if(!Array.isArray(packet.actions)||packet.actions.length>16)return;
   packet.actions.forEach(function(action){
     if(!action||action.id!==m.ack+1)return;m.ack=action.id;
+    // Acknowledging an old action removes it from the retry queue without
+    // planting, throwing or travelling again in the newly entered garden.
+    if(action.world!=null&&action.world!==worldLevel())return;
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
     if(runIsPaused()||!a||a.world!==worldLevel())return;
     if(action.type==='travel'){
@@ -67,15 +71,33 @@ function coopInput(id,packet){
         throwBomb(spore?sporeAim(spore):{x:action.x,y:action.y});
       }
       else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
-        m.dodgeUntil=now+850*Math.pow(.83,m.perks.dash||0);P.dodgeDir=P.face;dodgeContact(0);dewDodge();
+        var x=action.x==null?P.x:action.x,y=action.y==null?P.y:action.y,dir=action.direction==null?P.face:action.direction;
+        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36||Math.abs(y-surfaceY(x))>4||waterAt(x))return;
+        m.dodgeUntil=now+DODGE_COOLDOWN*1000*Math.pow(.83,m.perks.dash||0);
+        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:y,progress:0,expires:now+(DODGE_TIME+.12)*1000};
+        P.dodgeDir=dir;dewDodge();
       }
     });
   });
+  if(runIsPaused())m.dodge=null;
+  else if(accepted)coopDodgeContact(m,now);
+}
+function coopDodgeContact(m,now){
+  var d=m.dodge,a=m.avatar;if(!d)return;
+  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||Math.abs(a.y-surfaceY(a.x))>4){m.dodge=null;return;}
+  var distance=(a.x-d.origin)*d.dir,maxDistance=DODGE_SPEED*DODGE_TIME+2;
+  if(distance<d.progress-2){m.dodge=null;return;}
+  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir,y=surfaceY(x);
+  // Input arrives less often than physics ticks. Sweep the accepted segment,
+  // bounded to one roll, so a guest cannot skip through an enemy between packets.
+  coopWithMember(m,function(){P.dodgeId=d.id;P.dodgeDir=d.dir;dodgeSweep(d.x,d.y,x,y);});
+  d.x=x;d.y=y;d.progress=progress;
+  if(progress>=maxDistance||a.dodging===false)m.dodge=null;
 }
 function coopOffer(){
   if(!coop||!coop.host||coop.choosing)return;
   coop.round++;coop.choosing=true;clearRunInput();
-  coopMembers().forEach(function(m){m.choices=perkChoices(m.perks,m.slot).map(function(p){return p.id;});});
+  coopMembers().forEach(function(m){m.dodge=null;m.choices=perkChoices(m.perks,m.slot).map(function(p){return p.id;});});
   coopShowChoices();coopResolveChoices();
 }
 function coopChoose(id,boon,round){
