@@ -31,8 +31,10 @@ try{
       window.__ratDraws=[];
       const original=CanvasRenderingContext2D.prototype.drawImage;
       CanvasRenderingContext2D.prototype.drawImage=function(...args){
-        if(String(args[0]?.src).includes('/rat-enemies-v1/')&&window.__ratDraws.length<3000)
-          window.__ratDraws.push({src:args[0].src,args:args.slice(1),smooth:this.imageSmoothingEnabled});
+        // Measure sprite draws onto the real game canvas. Atlas-sized offscreen
+        // flash-cache construction uses drawImage(image,0,0), not sprite cells.
+        if(this.canvas.id==='c'&&String(args[0]?.src).includes('/rat-enemies-v1/')&&window.__ratDraws.length<3000)
+          window.__ratDraws.push({src:args[0].src,args:args.slice(1),smooth:this.imageSmoothingEnabled,transform:Array.from(this.getTransform().toFloat64Array())});
         return original.apply(this,args);
       };
     });
@@ -45,19 +47,22 @@ try{
     await page.waitForTimeout(650);
     await page.locator('iframe').screenshot({path:out+'/rats-'+name+'.png'});
     const start=JSON.parse(await page.locator('#status').getAttribute('data-state'));
-    await frame.locator('canvas').first().click({position:{x:100,y:100}});
-    await page.keyboard.down('b');await page.waitForTimeout(3500);await page.keyboard.up('b');
+    await frame.locator('#c').click({position:{x:100,y:100}});
+    for(let shot=0;shot<8;shot++){await page.keyboard.press('b');await page.waitForTimeout(500);}
     const after=JSON.parse(await page.locator('#status').getAttribute('data-state'));
     const draws=await frame.evaluate(()=>window.__ratDraws);
+    const variants=[...new Set(draws.map(d=>d.src.split('/').at(-2)))].sort();
+    const result={viewport:name,nativeStatus:status,variants,draws:draws.length,start,after,errors,failed};
+    results.push(result);
+    await writeFile(out+'/draws-'+name+'.json',JSON.stringify(draws,null,2)+'\n');
+    await page.locator('iframe').screenshot({path:out+'/rats-'+name+'-combat.png'});
     assert.ok(draws.length>0,'actual game renderer draws rats');
     assert.ok(draws.every(d=>d.smooth===false),'no filtering blur');
-    assert.ok(draws.every(d=>d.args[2]===48&&d.args[3]===32&&d.args[6]===48&&d.args[7]===32),'native 1:1 source/destination rectangles');
-    const variants=[...new Set(draws.map(d=>d.src.split('/').at(-2)))].sort();
+    assert.ok(draws.every(d=>d.args.length===8&&d.args[2]===48&&d.args[3]===32&&d.args[6]===48&&d.args[7]===32),'native 1:1 source/destination rectangles');
+    assert.ok(draws.every(d=>Math.abs(d.transform[0])===1&&d.transform[5]===1),'no individual sprite enlargement');
     assert.deepEqual(variants,['albino','black','common','plague']);
     assert.ok(after.elapsed>start.elapsed,'game continues during combat');
-    await page.locator('iframe').screenshot({path:out+'/rats-'+name+'-combat.png'});
     assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
-    results.push({viewport:name,nativeStatus:status,variants,draws:draws.length,start,after,errors,failed});
     await page.close();
   }
   console.log(JSON.stringify(results,null,2));
