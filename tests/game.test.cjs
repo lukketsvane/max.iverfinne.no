@@ -12,7 +12,7 @@ test('XP earned across several levels offers every earned upgrade', () => {
   }
   assert.equal(choices, 6);
   assert.equal(game.rogueRun.level, 7);
-  assert.equal(game.rogueRun.xp, 0);
+  assert.equal(game.rogueRun.xp, 22, 'the gentler run curve retains every surplus point');
   assert.equal(Object.values(game.rogueRun.perks).reduce((a, b) => a + b, 0), 6);
 });
 
@@ -67,6 +67,7 @@ test('reload starts a fresh run with no queued upgrades or saved crops', () => {
 
 test('only the boon choice suspends plants, raids and run time', () => {
   const h = loadGame(), g = h.game;
+  g.resetRogueRun();
   g.gardenPlots = [plot(), plot({x:20})]; g.saveGarden();
   g.gardenRaidActive = true; g.gardenRaidGrace = 5; g.grantRogueXP(4);
   const age = g.gardenPlots[0].age;
@@ -224,6 +225,7 @@ test('a seed pickup offering a boon suspends the rest of that frame', () => {
 test('a hidden page pauses growth, raid countdown and competition time', () => {
   const session = loadGame();
   const { game } = session;
+  game.resetRogueRun();
   game.gardenPlots = [plot(), plot({ x: 20 })];
   game.saveGarden();
   game.gardenRaidT = 8;
@@ -267,11 +269,11 @@ test('quick kills do not replenish a raid, and its warning gives time to react',
   assert.equal(encounter(true), encounter(false));
 });
 
-test('an active raid keeps its original pressure and fixed budget as time advances', () => {
+test('time strengthens an active raid without adding to its finite enemy budget', () => {
   const session = loadGame();
   const { game } = session;
   game.gardenPlots = [plot(), plot({ x: 20 })];
-  game.gardenWave = 3;
+  game.gardenWave = 2;
   game.gardenRaidT = 0;
   game.updateGardenFun(.1);
   game.updateGardenFun(1);
@@ -282,14 +284,14 @@ test('an active raid keeps its original pressure and fixed budget as time advanc
   const restored = game;
   assert.equal(restored.rogueRun.raidRemaining, remaining);
   assert.equal(restored.rogueRun.raidTotal, total);
-  restored.rogueRun.worldElapsed = 9999;
-  assert.equal(restored.raidPressure(), 3, 'overall time pressure is bounded');
+  restored.runElapsed = 420;
+  assert.equal(restored.raidPressure(), 2, 'pressure follows the entire attempt');
   const spawned = new Set(restored.floatKrek);
   for (let i = 0; i < 100 && restored.gardenRaidActive; i++) {
     restored.floatKrek.length = 0;
     restored.updateGardenFun(.1);
     for (const enemy of restored.floatKrek) {
-      assert.equal(enemy.pressure, 0, 'an active raid keeps the pressure it began with');
+      assert.equal(enemy.pressure, 2, 'new enemies reflect the continuously advancing clock');
       spawned.add(enemy);
     }
   }

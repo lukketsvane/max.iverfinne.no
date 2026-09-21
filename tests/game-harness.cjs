@@ -3,7 +3,9 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const source = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace('/* MAX_COOP_GAME */', fs.readFileSync(path.join(__dirname, '../coop-game.inc.js'), 'utf8'));
+const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
+  .replace('/* MAX_COOP_GAME */', fs.readFileSync(path.join(__dirname, '../coop-game.inc.js'), 'utf8'))
+  .replace('/* MAX_RUN_DIRECTOR */', fs.readFileSync(path.join(__dirname, '../run-director.inc.js'), 'utf8'));
 const stateNames = [
   'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
@@ -11,6 +13,7 @@ const stateNames = [
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
   'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
   'coop', 'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT',
+  'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES',
 ];
 const functionNames = [
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
@@ -19,6 +22,7 @@ const functionNames = [
   'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'surfaceY', 'updateGarden', 'updateGardenFun', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
+  'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +

@@ -23,9 +23,11 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
 for (const file of files) copyFileSync(join(root, file), join(output, file));
-writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8').replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8')));
-cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
+writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8')
+  .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
+  .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8')));
 require('./build-companion.cjs')(output);
+cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu.js'),
   bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],
