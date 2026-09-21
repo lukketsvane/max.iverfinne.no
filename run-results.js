@@ -3,7 +3,7 @@
 
   var PAGE_SIZE = 12;
   var panel, title, subtitle, outcome, gallery, empty, previous, next, pageLabel;
-  var record, recordText, retry, details, run, page = 0, previousFocus;
+  var record, recordText, retry, menuButton, details, run, page = 0, previousFocus;
   var visiblePlants = [];
 
   function element(tag, className, text) {
@@ -77,7 +77,10 @@
       if (typeof onRetry === 'function') onRetry();
     });
 
-    card.append(header, gallery, empty, pagination, details, record, retry);
+    menuButton = element('button', 'run-results-page', 'Meny');
+    menuButton.type = 'button';
+    menuButton.addEventListener('click', function () { if (run && typeof run.onMenu === 'function') run.onMenu(); });
+    card.append(header, gallery, empty, pagination, details, record, retry, menuButton);
     panel.appendChild(card);
     panel.addEventListener('keydown', function (event) {
       // The game also listens for keys. Keep result-screen input in the dialog.
@@ -154,7 +157,8 @@
     run = {
       plants: Array.isArray(options.plants) ? options.plants.slice() : [],
       drawPlant: options.drawPlant,
-      onRetry: options.onRetry
+      onRetry: options.onRetry,
+      onMenu: options.onMenu
     };
     page = 0;
     if (panel.hidden) previousFocus = document.activeElement;
@@ -170,6 +174,7 @@
     record.open = false;
     recordText.textContent = 'Flest plantar: ' + bestPlants + ' · Lengst: verd ' + Math.max(1, bestWorld);
     retry.disabled = false;
+    menuButton.hidden = typeof run.onMenu !== 'function';
     panel.hidden = false;
     panel.scrollTop = 0;
     renderPage();

@@ -5,13 +5,18 @@ then climb a beanstalk to the next world. Your result is the garden you grew.
 
 ## Run locally
 
-Serve this directory with any static server, for example `python -m http.server 8765`.
-Open `http://localhost:8765`. There is no runtime dependency. For deployment,
-`npm run build` copies the three game files into `dist/` without changing them.
+Use Node 22 or newer. Run `npm ci && npm run build`, then serve `dist/`, for
+example with `python -m http.server 8765 --directory dist`. Open
+`http://localhost:8765`. The game stays static; esbuild bundles the menu and the
+pinned Supabase client. No server process or CDN script is required in production.
 
 - `index.html`: game, original embedded artwork and simulation.
 - `run-results.js` / `run-results.css`: paged result garden using the game's plant atlas.
-- `npm test`: dependency-free Node regression tests against the actual game script.
+- `game-menu.mjs` / `game-menu.css`: main menu, pause, controls and account UI.
+- `player-account.mjs`: username mapping, checkpoint validation and cloud slot.
+- `npm test`: game regressions plus account/restore and real Postgres RLS tests
+  through PGlite. Supabase hosting and email configuration are not simulated by
+  these tests; verify hosted sign-up and sign-in separately before release.
 
 ## Play
 
@@ -21,7 +26,54 @@ when it has regrown. Tap pests to throw a bomb. Tap a tall beanstalk to climb.
 
 Keyboard: arrows or WASD to move/jump/crouch, Shift to run, E to interact, B to
 throw, L for the lantern. At an upgrade, inspect an icon and confirm the choice.
-Simulation pauses while choosing, while hidden, and on the result screen.
+Escape or the pause icon opens the menu. Simulation pauses in the menu, while
+choosing, while hidden, and on the result screen. Returning from the background
+waits in the menu so a raid cannot resume before the player is ready.
+
+## Accounts and Supabase
+
+Players use a username and password, with **no email and no confirmation**.
+Usernames are case-insensitive, 3–24 ASCII letters/digits/`_`/`-`, starting with
+a letter or digit. Internally, `max` maps to `max@players.max.invalid`; `.invalid`
+is intentionally non-deliverable. Supabase Auth hashes passwords and manages
+refreshable sessions. The frontend never stores the password, and does not use
+IP addresses as identity. The reserved identifier is an implementation detail,
+not a player contact address. There is no email-based password recovery.
+
+Guest progress remains in browser storage. Clearing site data removes guest
+progress and the remembered login. Accounts use a separate private cloud slot:
+the player explicitly chooses Save or Load, and loading backs up the previous
+local state under `max-cloud-restore-backup-v1`. Signing in/out does not replace
+the device's garden. Saves use a revision check to catch simultaneous writes
+from two devices. These are player-authored saves, not trusted leaderboard data.
+
+Project: `zuezxsuqkvrzypjhbbqq`.
+
+One-time hosted setup:
+
+1. `npx supabase login`
+2. `npx supabase link --project-ref zuezxsuqkvrzypjhbbqq`
+3. Apply the checked-in `player_cloud_saves` migration with `npx supabase db push`.
+4. In this project's Auth settings, enable password signups, disable **Confirm
+   email**, and set the minimum password length to 8. The local `config.toml`
+   already matches. Do not push the full local config onto an existing hosted
+   project; it also contains local development URLs and unrelated defaults.
+5. Set `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_PUBLISHABLE_KEY` in Vercel, or
+   commit these two public values as `url` and `publishableKey` in
+   `supabase/public-config.json`. Only `sb_publishable_…` keys are accepted by
+   the build. **Never put a secret/service-role key in frontend config.**
+6. Rebuild. Verify username signup returns a session immediately; sign out,
+   sign in, refresh, save, and load on a second device. No email should be sent.
+
+Without a publishable key the menu honestly presents guest mode. `supabase init`
+has been run; hosted link, auth settings and migration application still need
+an authenticated project connection. Supabase CLI login is separate from a
+ChatGPT plugin connection.
+
+RLS restricts every exposed row to `auth.uid() = user_id`. Anonymous clients
+have no table/function access. The save RPC is SECURITY INVOKER, checks the
+expected account and revision, and cannot bypass RLS. The database rejects
+oversized or malformed envelopes; the client validates game data before restore.
 
 The playing field keeps its original art and has no persistent text HUD.
 Mutation cards remain icons, with temporary effect text and a confirmation button.
@@ -60,7 +112,7 @@ does not establish that the domain will serve the new commit.
 
 The repository has since been connected to the **max.iverfinne.no** Vercel project
 (`prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`). Its old Next.js preset is overridden by
-`vercel.json`: Other framework, no dependency install, and a static `dist/` build.
+`vercel.json`: Other framework, `npm ci`, and a static `dist/` build.
 The legacy hard-coded alias is removed; domain assignment belongs in that
 project's Vercel settings. Preview branches can now deploy independently.
 

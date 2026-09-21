@@ -1,6 +1,8 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX FUGLESPRENGER"><title>MAX FUGLESPRENGER</title>
 <link rel="stylesheet" href="run-results.css">
 <script src="run-results.js"></script>
+<link rel="stylesheet" href="game-menu.css">
+<script src="game-menu.js" defer></script>
 <style>
   html, body { height: 100%; margin: 0; background: #000; overflow: hidden; }
   :root { padding: 0 !important; }
@@ -2543,7 +2545,7 @@ try{
   }
 }catch(e){}
 var rogueMeta={runs:0,wins:0,bestWave:0,bestScore:0,bestTime:0,petals:0};
-var selectedPerk=null, resultAtlasReady=false;
+var selectedPerk=null, resultAtlasReady=false, menuPaused=false, restoringCheckpoint=false;
 var rogueRun={garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,perks:{growth:0,water:0,yield:0,shield:0,magnet:0,blast:0,regen:0,slow:0,luck:0}};
 try{
   var rm=JSON.parse(localStorage.getItem('max-fuglesprenger-meta-v1')||'null');if(rm)rogueMeta=Object.assign(rogueMeta,rm);
@@ -2581,15 +2583,22 @@ function clearRunInput(){
   heldL=heldR=heldRun=heldUp=heldDown=lampKey=swipeDown=false;touches={};moveId=null;holdWater=null;jumpBuf=0;lampToggle=false;
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
-function runIsPaused(){return !!(document.hidden||(rogueRun&&(rogueRun.choice||rogueRun.ended)));}
+function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&(rogueRun.choice||rogueRun.ended)));}
+function setMenuPaused(paused){
+  menuPaused=!!paused;clearRunInput();
+  if(paused)saveGarden();
+  else{last=performance.now();if(rogueRun.ended)showRunResult();else if(rogueRun.choice)renderRogueChoice();}
+}
 function saveGarden(){
+  if(restoringCheckpoint)return false;
   try{
     gardenPlots.forEach(recordGardenPlant);
     var raid={active:gardenRaidActive,wait:gardenRaidT,grace:gardenRaidGrace,spawn:gardenRaidSpawn,boss:gardenBossSpawned,lost:raidLostStart,ambient:krekSpawnT,enemies:floatKrek.map(function(k){var q=Object.assign({},k);q.targetIndex=gardenPlots.indexOf(k.target);delete q.target;return q;})};
     localStorage.setItem('max-fuglesprenger-rogue-v6',JSON.stringify({version:7,seeds:gardenSeeds,stats:gardenStats,score:gardenScore,wave:gardenWave,power:gardenPower,fever:gardenFeverT,time:runElapsed,rogue:rogueRun,raid:raid,pickups:seedPickups,position:{x:P.x},seedCollected:seedCollected,plots:gardenPlots.map(function(p){return{x:Math.round(p.x*10)/10,kind:p.kind,growth:p.growth,moisture:p.moisture,health:p.health,age:p.age,seed:p.seed,seedMark:p.seedMark|0,stalk:p.stalk?1:0,skySeeds:p.skySeeds|0,id:p.id,dead:p.dead,lastHarvestGrowth:p.lastHarvestGrowth,carePending:p.carePending};})}));
     localStorage.setItem('max-night-garden-x',String(Math.round(P.x*10)/10));
     localStorage.setItem('max-fuglesprenger-meta-v1',JSON.stringify(rogueMeta));
-  }catch(e){}
+    return true;
+  }catch(e){return false;}
 }
 function finalizeRogueRun(won){
   if(rogueRun.finalized)return;
@@ -2644,7 +2653,7 @@ function updateRunCompetition(dt){
 function showRunResult(){
   if(perkMenu)perkMenu.style.display='none';
   if(!window.MaxRunResults)return;
-  window.MaxRunResults.show({won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,bestWorld:rogueMeta.bestWorld|0,bestPlants:rogueMeta.bestPlants|0,onRetry:function(){resetRogueRun('NY RUNDE');},drawPlant:drawResultPlant});
+  window.MaxRunResults.show({won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,bestWorld:rogueMeta.bestWorld|0,bestPlants:rogueMeta.bestPlants|0,onRetry:function(){resetRogueRun('NY RUNDE');},onMenu:function(){if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant});
   resultAtlasReady=plantAtlasReady;
 }
 function drawResultPlant(canvas,p){
@@ -4789,6 +4798,17 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
+function attachGameMenu(){
+  if(!window.MaxGameMenu)return;
+  window.MaxGameMenu.attach({
+    pause:setMenuPaused,
+    summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
+    newRun:function(){resetRogueRun('NY RUNDE');},
+    checkpoint:function(){saveWorldMind();return saveGarden();},
+    prepareReload:function(){restoringCheckpoint=true;menuPaused=true;clearRunInput();}
+  });
+}
+window.addEventListener('max-menu-ready',attachGameMenu);
 function start(saved) {
   if(gs&&gs.position&&isFinite(gs.position.x))saved={x:+gs.position.x};
   if (!saved || typeof saved.x !== 'number') {
@@ -4804,6 +4824,7 @@ function start(saved) {
     if(rogueRun.choice.length)renderRogueChoice();else{rogueRun.choice=null;offerRogueChoice();}
   }
   updateGardenHud();
+  attachGameMenu();
   last = performance.now();
   // saveGarden owns position and combat state together; do not split checkpoints.
   requestAnimationFrame(frame);
