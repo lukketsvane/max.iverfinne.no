@@ -1,0 +1,34 @@
+{
+  "ok": true,
+  "sourcePoses": 32,
+  "uniquePoses": 32,
+  "clips": 8,
+  "sheetSize": [
+    512,
+    64
+  ],
+  "cell": [
+    64,
+    64
+  ],
+  "anchor": [
+    32,
+    32
+  ],
+  "sourcePixelStep": 5,
+  "alpha": [
+    0,
+    255
+  ],
+  "opaquePaletteColors": 20,
+  "layerReassembly": "pixel-identical",
+  "nativeTrimReassembly": "pixel-identical",
+  "sha256": {
+    "idle.png": "c8bf3445565364d43706b7a45c0ef6e87a60d66117c696d50e53fe5bdce91e9b",
+    "move.png": "d765e110d7dc401f243d5d417c484d79fbe60f27362b441ec310dd023603b630",
+    "theft.png": "8ba45fb24fc239d0e98794c89b5894e85e133aa1782c723f9037a661be5ac509",
+    "damage.png": "5306cb7c7b3bb83836c97e64ebe2147fb66cfc311dc81993b660edcd0c9f93f0",
+    "theft-airframe.png": "5506d727fb362ca60a8f9df77997a4d1d85e412f2be0739dc712c1558ac5e381",
+    "theft-payload-fx.png": "9d49b1e7449fa652bd537e78312f77d55b84f3b3081a8959218f33dfe2de6d47"
+  }
+}
