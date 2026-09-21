@@ -61,7 +61,11 @@ function coopInput(id,packet){
       if(action.type==='grow')crouchGardenAction();
       else if(action.type==='encounter')interactEncounter();
       else if(action.type==='refill')refillCompanion();
-      else if(action.type==='throw'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<300)throwBomb({x:action.x,y:action.y});
+      else if(action.type==='throw'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<300){
+        var spore=runHazards.find(function(h){return h.id===action.spore&&h.type==='spore'&&h.tell>0&&Math.abs(h.x-P.x)<300;});
+        // Aim at the current host trajectory, rather than a guest's old frame.
+        throwBomb(spore?sporeAim(spore):{x:action.x,y:action.y});
+      }
       else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
         m.dodgeUntil=now+850*Math.pow(.83,m.perks.dash||0);P.dodgeDir=P.face;dodgeContact(0);dewDodge();
       }

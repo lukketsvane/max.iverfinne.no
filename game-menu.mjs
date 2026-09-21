@@ -152,10 +152,10 @@ function help() {
   page('help', 'Controls');
   const rows = [
     ['MOVE', 'Drag left / right.'],
-    ['JUMP', 'Swipe up. Three swan feathers unlock a second jump.'],
+    ['JUMP', 'Swipe up. Three feathers: return your thumb down, then swipe up again for a second jump.'],
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
-    ['DEFEND', 'Tap a pest.'],
+    ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
     ['ROBOT', 'Tap your robot nearby to refill.'],
     ['EXPLORE', 'Down at a shrine starts an optional trial. Time strengthens enemies. Reach stage 20 and defeat the Hollow Crown.'],
     ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · R refill · 1–3 upgrade'],

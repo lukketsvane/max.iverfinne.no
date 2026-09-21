@@ -24,7 +24,10 @@ Each Max owns their collected items. Garden seeds and boon XP are shared. Each
 stage has one explorable feather per player, and shrine rewards are reserved
 for each participating player. Swan feather clouds can also leave one pickup.
 New runs clear all item and boon stacks. Pickups show a short world-space
-message; there is no permanent inventory HUD.
+message and three small milestone pips; there is no permanent inventory HUD.
+On touch, return a jumping thumb down and make a fresh upward stroke to use the
+second jump while maintaining steering. A continued stroke or jitter never
+adds another jump, and returning the thumb does not plant or tend accidentally.
 
 ## Optional trials and passing events
 
@@ -49,7 +52,7 @@ The small particles and scenery carry these cues without a text overlay.
 | First garden | Enemy | Interaction |
 | --- | --- | --- |
 | 2 | Seed thief | Telegraphs a theft, then escapes. Defeating it returns stolen seeds. |
-| 4 | Spore caster | Lobs a delayed ground strike. A bomb clears the spore. |
+| 4 | Spore caster | Lobs a delayed ground strike. Tap the moving spore to intercept it with a bomb; the cleared attack waters nearby plants. |
 | 7 | Shield beetle | Its front shell blocks most damage. Dodge through or hit from behind. |
 | 10 | Healing moth | A visible channel heals wounded allies. Interrupt it or prioritise the moth. |
 | 20 | Hollow Crown | Three phases; root strikes and spores, then a cyan vulnerability window. |
@@ -57,7 +60,9 @@ The small particles and scenery carry these cues without a text overlay.
 The Crown summons a finite group at two-thirds and one-third health. Its strikes
 give 1.4 seconds of warning; exposed hits deal double damage. It cannot be
 frightened off-screen or permanently staggered. Root strikes can be jumped or
-dodged; spores can be cleared. Its health lights sit on the crown itself.
+dodged; spores can be cleared in flight. Keyboard B prioritises a nearby incoming
+spore. Root strikes remain active, so interception cannot replace all dodging.
+Its health lights sit on the crown itself.
 
 Enemy graphics currently use native pixel primitives. The graphics lead's
 separate handoff is tracked in GitHub issue #10: 16×16 enemy cells, 32×32 boss
