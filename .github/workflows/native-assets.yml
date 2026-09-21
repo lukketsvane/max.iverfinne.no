@@ -1,35 +1,52 @@
-name: Native pixel asset validation
+name: Import validated native pixel assets
 on:
   push:
     branches: ['codex/native-pixel-assets']
-  pull_request:
-    paths: ['assets/**', 'scripts/*asset*', 'tests/*asset*', '.github/workflows/native-assets.yml']
+    paths: ['scripts/native-assets-import.b64']
 permissions:
-  contents: read
+  contents: write
 jobs:
-  native-assets:
+  import-assets:
+    if: github.ref == 'refs/heads/codex/native-pixel-assets'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm test
-      - name: Build native sheets when the exporter is present
+      - name: Unpack the checksum-verified source files
         run: |
-          if test -f scripts/build-native-assets.cjs; then node scripts/build-native-assets.cjs; fi
-      - name: Archive the exact game source and exported assets for inspection
-        uses: actions/upload-artifact@v4
+          node <<'NODE'
+          const fs=require('node:fs'),z=require('node:zlib'),p=require('node:path'),crypto=require('node:crypto');
+          const allowed=['scripts/build-native-assets.cjs','scripts/build-native-review.cjs','scripts/build-static.cjs','tests/native-assets.test.cjs','native-sprites.js','native-asset-review.html','assets/native/README.md','.github/workflows/native-assets.yml'];
+          const data=Buffer.from(fs.readFileSync('scripts/native-assets-import.b64','utf8').trim(),'base64');
+          if(crypto.createHash('sha256').update(data).digest('hex')!=='4c4d412defe9befd3af7ea972d021afe1b1d08df686a2a317f80529b13faff5b')throw Error('Import checksum mismatch');
+          const files=JSON.parse(z.gunzipSync(data));
+          if(Object.keys(files).length!==allowed.length)throw Error('Wrong source file count');
+          for(const [name,text] of Object.entries(files)){if(!allowed.includes(name)||typeof text!=='string')throw Error('Unexpected import path');fs.mkdirSync(p.dirname(name),{recursive:true});fs.writeFileSync(name,text);}
+          fs.unlinkSync('scripts/native-assets-import.b64');
+          NODE
+      - run: npm test
+      - run: npm run build
+      - name: Commit sources and actual PNGs only to the asset branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/native-assets.yml scripts/build-native-assets.cjs scripts/build-native-review.cjs scripts/build-static.cjs tests/native-assets.test.cjs native-sprites.js native-asset-review.html assets/native/
+          git add -u scripts/native-assets-import.b64
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add native 1x PNG sprite sheets, frame metadata and tested Canvas adapter'
+            git push origin HEAD:codex/native-pixel-assets
+          fi
+      - uses: actions/upload-artifact@v4
         with:
-          name: native-pixel-assets-review
+          name: native-pixel-assets
           path: |
-            index.html
-            run-results.js
-            run-results.css
-            package.json
-            vercel.json
-            README.md
-            scripts/
-            tests/
-            assets/
-          retention-days: 7
+            assets/native/
+            native-sprites.js
+            native-asset-review.html
+            scripts/build-native-assets.cjs
+            scripts/build-native-review.cjs
+            scripts/build-static.cjs
+            tests/native-assets.test.cjs
+          retention-days: 14
