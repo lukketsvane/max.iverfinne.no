@@ -1,5 +1,12 @@
 # Developer-agent handoff
 
+## Graphics lead and soundtrack
+
+Read [the shared graphics direction](docs/graphics-direction.md) before changing
+visuals or audio. Coordinate in [issue #10](https://github.com/lukketsvane/max.iverfinne.no/issues/10).
+Preserve the native atlas/pixel scale and approved run-bouquet requirements below.
+The direction note records soundtrack implementation status.
+
 ## Pending watering-robot art review
 
 Before selecting or integrating a watering robot, read
