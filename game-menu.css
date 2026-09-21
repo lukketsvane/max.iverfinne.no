@@ -50,3 +50,13 @@
 @media(orientation:landscape){.max-menu h1{left:27%;top:12%}.max-menu h1 .pixel-label{width:210px!important}.max-home-nav{left:27%;top:37%;gap:10px}}
 @media(max-height:540px) and (orientation:landscape){.max-menu h1{top:9%}.max-menu h1 .pixel-label{width:150px!important}.max-home-nav{top:31%;gap:8px}.max-menu .max-home-button{min-height:42px;padding:10px 16px}.max-menu .max-icon-play{min-height:50px}.max-menu-card{padding:20px}}
 @media(max-width:430px) and (orientation:portrait){.max-menu h1 .pixel-label{width:130px!important}.max-home-nav{width:204px;top:36%;gap:10px}.max-menu .max-home-button{width:180px;min-height:46px}.max-menu .max-icon-play{width:204px;min-height:58px}}
+/* Reference composition: open sky, a left bellflower and quiet floating buttons. */
+.max-menu h1{top:max(9%,env(safe-area-inset-top))}
+.max-menu h1 .pixel-label{width:clamp(112px,30vw,204px)!important}
+.max-home-nav{left:52%;top:40%;width:174px;gap:8px}
+.max-menu .max-home-button{width:156px;min-height:44px;gap:17px;padding:10px 14px;border-color:#77817a80;background:#071019e8;box-shadow:inset 0 0 0 1px #b8ceca08,0 3px 8px #0002}
+.max-menu .max-icon-play{width:174px;min-height:52px}
+.max-menu .max-home-button svg{width:16px;height:16px}
+.max-menu .max-icon-play svg{width:23px;height:23px}
+@media(orientation:landscape){.max-menu h1{left:28%;top:13%}.max-home-nav{left:28%;top:37%}}
+@media(max-height:540px) and (orientation:landscape){.max-menu h1{top:8%}.max-menu h1 .pixel-label{width:126px!important}.max-home-nav{top:29%;gap:5px}.max-menu .max-home-button{min-height:40px;padding:8px 14px}.max-menu .max-icon-play{min-height:46px}}

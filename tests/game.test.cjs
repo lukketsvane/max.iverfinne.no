@@ -31,16 +31,16 @@ test('only an offered mutation can be selected', () => {
   assert.equal(game.rogueRun.perks[selected], 1);
 });
 
-test('one tap selects an upgrade while movement input remains held', () => {
+test('a boon clears held input, pauses the run, and one tap resumes it', () => {
   const h = loadGame(), {game, elements} = h;
   h.key('keydown', 'ArrowRight'); game.grantRogueXP(4);
   const id = game.rogueRun.choice[0].id, menu = elements.get('perkMenu');
-  assert.equal(menu.getAttribute('role'), 'group');
+  assert.equal(menu.getAttribute('role'), 'dialog');
   assert.equal(menu.querySelectorAll('button').length, 3);
-  assert.equal(game.readInput().axis, 1);
+  assert.equal(game.readInput().axis, 0);
   menu.querySelector('button').listeners.click[0]();
   assert.equal(game.rogueRun.perks[id], 1); assert.equal(game.rogueRun.choice, null);
-  assert.equal(game.readInput().axis, 1);
+  assert.equal(game.readInput().axis, 0);
 });
 
 test('rank-five mutations leave the pool; a final available rank remains selectable', () => {
@@ -65,14 +65,16 @@ test('reload starts a fresh run with no queued upgrades or saved crops', () => {
   assert.equal(h.storage.has('max-fuglesprenger-rogue-v6'), false);
 });
 
-test('plants, raids and run time keep moving while an upgrade is available', () => {
+test('only the boon choice suspends plants, raids and run time', () => {
   const h = loadGame(), g = h.game;
   g.gardenPlots = [plot(), plot({x:20})]; g.saveGarden();
   g.gardenRaidActive = true; g.gardenRaidGrace = 5; g.grantRogueXP(4);
   const age = g.gardenPlots[0].age;
   for (let i=0;i<10;i++) h.tick(50);
-  assert.ok(g.rogueRun.choice); assert.ok(g.gardenPlots[0].age > age);
-  assert.ok(g.gardenRaidGrace < 5); assert.ok(g.runElapsed > 0);
+  assert.ok(g.rogueRun.choice); assert.equal(g.gardenPlots[0].age, age);
+  assert.equal(g.gardenRaidGrace, 5); assert.equal(g.runElapsed, 0);
+  h.key('keydown', '1'); assert.equal(g.rogueRun.choice, null);
+  h.tick(50); assert.ok(g.gardenPlots[0].age > age); assert.ok(g.runElapsed > 0);
 });
 
 test('a loss finalizes once and waits for an explicit retry', () => {
@@ -196,7 +198,7 @@ test('the result garden keeps every plant through death and world changes; only 
   assert.ok(Object.values(resumed.rogueRun.perks).every(rank => rank === 0));
 });
 
-test('a seed pickup offering an upgrade does not interrupt the current frame', () => {
+test('a seed pickup offering a boon suspends the rest of that frame', () => {
   const session = loadGame();
   const { game } = session;
   game.gardenPlots = [plot(), plot({ x: 20 })];
@@ -212,11 +214,11 @@ test('a seed pickup offering an upgrade does not interrupt the current frame', (
   session.tick(50);
   assert.ok(game.rogueRun.choice, 'the nearby seed must open the earned choice');
   assert.equal(game.gardenSeeds, 1);
-  assert.notEqual(JSON.stringify(game.gardenPlots), plantsBefore);
-  assert.notEqual(JSON.stringify(game.floatKrek), enemiesBefore);
-  assert.ok(game.gardenRaidGrace < 2);
-  assert.ok(game.gardenRaidSpawn < 1);
-  assert.ok(game.runElapsed > 0);
+  assert.equal(JSON.stringify(game.gardenPlots), plantsBefore);
+  assert.equal(JSON.stringify(game.floatKrek), enemiesBefore);
+  assert.equal(game.gardenRaidGrace, 2);
+  assert.equal(game.gardenRaidSpawn, 1);
+  assert.equal(game.runElapsed, 0);
 });
 
 test('a hidden page pauses growth, raid countdown and competition time', () => {
