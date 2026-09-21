@@ -1,0 +1,2733 @@
+{
+  "schema": "max-native-atlas/v1",
+  "id": "hollow-crown",
+  "kind": "boss",
+  "cell": [
+    32,
+    32
+  ],
+  "anchor": [
+    16,
+    31
+  ],
+  "facing": "right",
+  "palette": [
+    "#10171c",
+    "#1d2b34",
+    "#2b4645",
+    "#3d5146",
+    "#536448",
+    "#605047",
+    "#82725b",
+    "#b5b190",
+    "#795526",
+    "#ab7833",
+    "#d4a64e",
+    "#f1cd79",
+    "#4b8e92",
+    "#77bbb9"
+  ],
+  "sheets": {
+    "sprites": {
+      "image": "sprites.png",
+      "size": [
+        256,
+        512
+      ]
+    }
+  },
+  "frames": [
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        8,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        8,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        8,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        9,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        8,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        6,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        11,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        11,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        11,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        11,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        10,
+        24,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        11,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        9,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        9,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        9,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        9,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        6,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        1,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        6,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        3,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        1,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        2,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        2,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        8,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        7,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        7,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        7,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        288,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        6,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        320,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        5,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        352,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        1,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        6,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        1,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        2,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        2,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        384,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        2,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        416,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        6,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        448,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        28,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        5,
+        27,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        7,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        9,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        14,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        3,
+        19,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        22,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        12,
+        24,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        480,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": null
+    }
+  ],
+  "animations": {
+    "phase1/idle": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "phase1/windup": {
+      "frames": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "fps": 5.714285714285714,
+      "loop": false
+    },
+    "phase1/attack": {
+      "frames": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "phase1/recover": {
+      "frames": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "phase1/vulnerable": {
+      "frames": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "phase1/hurt": {
+      "frames": [
+        24
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "phase2/idle": {
+      "frames": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "phase2/windup": {
+      "frames": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "fps": 5.714285714285714,
+      "loop": false
+    },
+    "phase2/attack": {
+      "frames": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "phase2/recover": {
+      "frames": [
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "phase2/vulnerable": {
+      "frames": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "phase2/hurt": {
+      "frames": [
+        64
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "phase3/idle": {
+      "frames": [
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "phase3/windup": {
+      "frames": [
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ],
+      "fps": 5.714285714285714,
+      "loop": false
+    },
+    "phase3/attack": {
+      "frames": [
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "phase3/recover": {
+      "frames": [
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "phase3/vulnerable": {
+      "frames": [
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "phase3/hurt": {
+      "frames": [
+        104
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "death": {
+      "frames": [
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127
+      ],
+      "fps": 8,
+      "loop": false
+    }
+  },
+  "signals": {
+    "windup": "amber",
+    "vulnerable": "cyan"
+  },
+  "phases": [
+    {
+      "phase": 1,
+      "healthAbove": 0.6666666666666666
+    },
+    {
+      "phase": 2,
+      "healthAbove": 0.3333333333333333
+    },
+    {
+      "phase": 3,
+      "healthAbove": 0
+    }
+  ]
+}

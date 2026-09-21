@@ -1,0 +1,26 @@
+{
+  "schema": "max-native-pack/v1",
+  "id": "enemies-v1",
+  "assets": [
+    {
+      "id": "seed-thief",
+      "manifest": "seed-thief/atlas.json"
+    },
+    {
+      "id": "spore-caster",
+      "manifest": "spore-caster/atlas.json"
+    },
+    {
+      "id": "shield-beetle",
+      "manifest": "shield-beetle/atlas.json"
+    },
+    {
+      "id": "healing-moth",
+      "manifest": "healing-moth/atlas.json"
+    },
+    {
+      "id": "hollow-crown",
+      "manifest": "hollow-crown/atlas.json"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "processing": "Nearest-neighbour reduction; build-native-art.py performs alpha threshold, fixed-palette quantisation and pose registration.",
+  "sources": [
+    {
+      "id": "moss",
+      "tool": "image_gen",
+      "masterFilename": "exec-ea0e8222-b73c-4ad4-9bba-bbaed9b681f2.png",
+      "masterSha256": "9788fdc22b325361a26e447f0f62f006b74daf47b1ef70b8c2ee78d1427a4f08",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "nativeSourceSize": [
+        256,
+        512
+      ],
+      "prompt": "Use case: precise-object-edit. Asset: production pixel-art character animation atlas for the existing MAX game. Edit the reference sheet into ONE cosmetic skin called MOSS. Reference is 8 columns x 16 rows: top 8 rows are main movements, bottom 8 rows interactions. Output exactly 1024x2048, 128x128 cells, no padding, no labels, no grid lines, genuine transparent background. Each cell represents a native 32x32 tile enlarged exactly 4x with nearest-neighbour: all drawn pixels are hard 4x4 squares. Preserve EVERY reference pose, frame placement, props, hand positions, facial identity and original human slim proportions (~11x24 native pixels standing). No chibi, no new pose arrangement. Same ground anchor at native (16,31) in every cell; airborne/crouching/sitting poses retain reference offsets. Change only clothing: very dark moss green short coat, olive pointed hood with black forelock and face still exposed, a tiny tan diagonal satchel and dark charcoal trousers. Keep skin warm pale beige, black hair, dull cream highlights. Add only a one-native-pixel hood tip and 2x3-pixel satchel silhouette. Sparse 12-colour palette, flat pixel clusters, binary alpha. Exactly the same Moss outfit in ALL 128 cells including watering, digging, sowing, lamp and sitting rows. Do not increase body size. All individual sprites stay inside their original cells. Remove the original stray coloured compression specks. No backdrop, ground, scenery, shadows, gradients or glow."
+    },
+    {
+      "id": "tide",
+      "tool": "image_gen",
+      "masterFilename": "exec-7ba1bce8-2b1b-485d-aeb7-5b5961fc7842.png",
+      "masterSha256": "cc0137fb537980377660d543503d42f75382ddf165cc6a947642f9cb33f1b6d4",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "nativeSourceSize": [
+        256,
+        512
+      ],
+      "prompt": "Use case: precise-object-edit. Production cosmetic skin animation atlas for MAX. Edit the supplied reference, preserving ALL 128 individual poses and their exact positions: 8 columns x 16 rows (main movement sheet top 8 rows, interaction sheet bottom 8). Output exact 1:2 aspect ratio, ideally 1024x2048, transparent background, no labels/grid/padding. All native pixel squares are 4x4 at output, representing a 256x512 native sheet, each tile 32x32. Native anchor (16,31). Preserve original slim ~11x24-pixel standing human, same pale face, black hair, limbs, hands, props and foot/airborne offsets. No chibi or anatomical redesign. Change only the costume, consistent in ALL frames including crouch, dig, sow, watering can, pick, lantern and sit. Sparse 12-colour palette, hard square pixel clusters, binary alpha, no blur/gradients/scenery/ground/shadows/stray coloured pixels. Keep within each cell. TIDE: short muted deep-blue teal raincoat, little rounded teal knit cap, a short pale-cyan collar flap at the back, charcoal trousers. Face and black forelock exposed. Distinguishing outline is rounded cap and squared coat hem; only 1\u20132 native pixels extra. Colours #101820 #173641 #285765 #4d8190 #90b4b0 plus original skin and hair. Same Max, not a new character."
+    },
+    {
+      "id": "ember",
+      "tool": "image_gen",
+      "masterFilename": "exec-4a72862d-dad2-4bb1-8bdb-4174c2fc4952.png",
+      "masterSha256": "7e8e87c1255587f373f6cb9bec0491fe18c781449730a417fa397c02c62b8eec",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "nativeSourceSize": [
+        256,
+        512
+      ],
+      "prompt": "Use case: precise-object-edit. Production cosmetic skin animation atlas for MAX. Edit the supplied reference, preserving ALL 128 individual poses and their exact positions: 8 columns x 16 rows (main movement sheet top 8 rows, interaction sheet bottom 8). Output exact 1:2 aspect ratio, ideally 1024x2048, transparent background, no labels/grid/padding. All native pixel squares are 4x4 at output, representing a 256x512 native sheet, each tile 32x32. Native anchor (16,31). Preserve original slim ~11x24-pixel standing human, same pale face, black hair, limbs, hands, props and foot/airborne offsets. No chibi or anatomical redesign. Change only the costume, consistent in ALL frames including crouch, dig, sow, watering can, pick, lantern and sit. Sparse 12-colour palette, hard square pixel clusters, binary alpha, no blur/gradients/scenery/ground/shadows/stray coloured pixels. Keep within each cell. EMBER: short dark rust-red jacket, small warm cream headband over original black hair, tiny one-pixel red ribbon tail behind head, charcoal trousers, muted ochre cuffs. Face exposed. Distinguishing outline is tiny headband tail and close-fitting short jacket. Colours #181619 #382426 #663d35 #a56649 #d4b78c plus original skin/hair. Keep colour accents readable without bright saturated red."
+    },
+    {
+      "id": "moon",
+      "tool": "image_gen",
+      "masterFilename": "exec-80570ea8-13e7-4c4c-8a99-633aa34ae67e.png",
+      "masterSha256": "d022c7b4e9b9f03cafda63be6f3a441cdee5fea3db054115029eb8c048153135",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "nativeSourceSize": [
+        256,
+        512
+      ],
+      "prompt": "Use case: precise-object-edit. Production cosmetic skin animation atlas for MAX. Edit the supplied reference, preserving ALL 128 individual poses and their exact positions: 8 columns x 16 rows (main movement sheet top 8 rows, interaction sheet bottom 8). Output exact 1:2 aspect ratio, ideally 1024x2048, transparent background, no labels/grid/padding. All native pixel squares are 4x4 at output, representing a 256x512 native sheet, each tile 32x32. Native anchor (16,31). Preserve original slim ~11x24-pixel standing human, same pale face, black hair, limbs, hands, props and foot/airborne offsets. No chibi or anatomical redesign. Change only the costume, consistent in ALL frames including crouch, dig, sow, watering can, pick, lantern and sit. Sparse 12-colour palette, hard square pixel clusters, binary alpha, no blur/gradients/scenery/ground/shadows/stray coloured pixels. Keep within each cell. MOON: short muted violet shoulder cape with one stepped pointed corner behind shoulder, black forelock visible under a very small flat charcoal cap with a one-pixel forward brim, charcoal trousers, pale lavender collar. Face exposed. Distinguishing outline is cap brim and asymmetrical short shoulder cape, no huge cloak. Colours #171823 #29283d #45405d #6d607e #b2a6b5 plus original skin/hair."
+    }
+  ]
+}

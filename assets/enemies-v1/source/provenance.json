@@ -1,0 +1,81 @@
+{
+  "processing": "Nearest-neighbour reduction; build-native-art.py performs alpha threshold, fixed-palette quantisation and pose registration.",
+  "sources": [
+    {
+      "id": "seed-thief",
+      "tool": "image_gen",
+      "masterFilename": "exec-033a441a-cbfc-4fdd-8643-7698650e7035.png",
+      "masterSha256": "92177466d1a4cfa6e187e1f713b58b465816b2e53d4182ed3edbf996dc10b377",
+      "masterSize": [
+        1254,
+        1254
+      ],
+      "nativeSourceSize": [
+        128,
+        128
+      ],
+      "prompt": "Use case: stylized-concept. Deliver a production sprite sheet, not a concept illustration. MAX is a tiny side-view pixel-art night-garden game: organic silhouettes, near-black/blue-black outlines, muted moss and teal palette, small warm accent pixels. EXACT 8 columns x 8 rows, 64 sprites, equally spaced cell boundaries, canvas 1024x1024, no margins, no text, no grid lines, genuine transparent background. EACH cell is a native 16x16 pixel tile magnified exactly 8x: hard square 8x8 colour blocks, at most 12 colours, NO smaller details, NO antialiasing, NO gradients/glow/ground/shadow. Body is only 7\u201312 native pixels across/high, visibly much smaller than a 24px-tall player. Same centre x=8, foot/hover baseline y=15 per tile. Facing RIGHT. Nothing crosses a cell boundary. Each row shows 8 sequential temporal frames of ONE consistent creature; columns are frames, not separate characters. Row 0 idle/breath; row 1 movement cycle; row 2 anticipation/wind-up (amber signal grows); row 3 attack and clear release; row 4 recovery; row 5 hurt/stagger; row 6 non-gory death collapse/dissolve (last frame empty); row 7 special behaviour specified below. Retain recognisable silhouette in every row. Creature: a tiny hunched, swift seed-stealing garden weevil with a pointed forward snout, two thin antennae, long rear legs, dark teal shell and a small tan seed sack on its back. Black outline #111819, dark teal #1d3b38, moss #415540, muted ochre #ae8950, pale seed #d4bd78. Its silhouette is a low triangular head plus round sack, not a bird. Attack is a forward snatch with snout and forelegs, no weapons. Movement is a quick 8-frame scuttle. Row 7 is running while clutching one clearly visible pale round seed in its forelegs; do not draw numbers or text."
+    },
+    {
+      "id": "spore-caster",
+      "tool": "image_gen",
+      "masterFilename": "exec-32581483-7138-4922-b066-cb3e4570b3df.png",
+      "masterSha256": "f08bdbdd806da05c889174339d76eb45a243a624ae834b6ffaa5fa594fbeb359",
+      "masterSize": [
+        1254,
+        1254
+      ],
+      "nativeSourceSize": [
+        128,
+        128
+      ],
+      "prompt": "Use case: stylized-concept. Deliver a production sprite sheet, not a concept illustration. MAX is a tiny side-view pixel-art night-garden game: organic silhouettes, near-black/blue-black outlines, muted moss and teal palette, small warm accent pixels. EXACT 8 columns x 8 rows, 64 sprites, equally spaced cell boundaries, canvas 1024x1024, no margins, no text, no grid lines, genuine transparent background. EACH cell is a native 16x16 pixel tile magnified exactly 8x: hard square 8x8 colour blocks, at most 12 colours, NO smaller details, NO antialiasing, NO gradients/glow/ground/shadow. Body is only 7\u201312 native pixels across/high, visibly much smaller than a 24px-tall player. Same centre x=8, foot/hover baseline y=15 per tile. Facing RIGHT. Nothing crosses a cell boundary. Each row shows 8 sequential temporal frames of ONE consistent creature; columns are frames, not separate characters. Row 0 idle/breath; row 1 movement cycle; row 2 anticipation/wind-up (amber signal grows); row 3 attack and clear release; row 4 recovery; row 5 hurt/stagger; row 6 non-gory death collapse/dissolve (last frame empty); row 7 special behaviour specified below. Retain recognisable silhouette in every row. Creature: a tiny walking mushroom creature, a broad asymmetrical purple umbrella cap with pale lavender spots, a thin two-legged moss stalk body beneath, eyes are only two dark pixels. Palette black-blue #161a26, dark plum #35283d, violet #665071, dusty lavender #a38b9c, moss #485844, amber #d6af55. It has the silhouette of a low wide mushroom cap atop two short legs, not a human. Wind-up contracts the cap then lifts it with a small amber spot. Attack expels a SHORT puff of 2\u20133 tiny spore pixels forward inside the cell; do not paint a huge projectile. Row 7 is a slow spore-release channel, cap pulsing and two drifting dots within tile."
+    },
+    {
+      "id": "shield-beetle",
+      "tool": "image_gen",
+      "masterFilename": "exec-67aa57b9-8b9a-479a-b17e-7c8959a4a34d.png",
+      "masterSha256": "1b24eca5c8c4623b54eeb58620415a546d9baf350c9c1b5b555086ecccef1018",
+      "masterSize": [
+        1254,
+        1254
+      ],
+      "nativeSourceSize": [
+        128,
+        128
+      ],
+      "prompt": "Use case: stylized-concept. Deliver a production sprite sheet, not a concept illustration. MAX is a tiny side-view pixel-art night-garden game: organic silhouettes, near-black/blue-black outlines, muted moss and teal palette, small warm accent pixels. EXACT 8 columns x 8 rows, 64 sprites, equally spaced cell boundaries, canvas 1024x1024, no margins, no text, no grid lines, genuine transparent background. EACH cell is a native 16x16 pixel tile magnified exactly 8x: hard square 8x8 colour blocks, at most 12 colours, NO smaller details, NO antialiasing, NO gradients/glow/ground/shadow. Body is only 7\u201312 native pixels across/high, visibly much smaller than a 24px-tall player. Same centre x=8, foot/hover baseline y=15 per tile. Facing RIGHT. Nothing crosses a cell boundary. Each row shows 8 sequential temporal frames of ONE consistent creature; columns are frames, not separate characters. Row 0 idle/breath; row 1 movement cycle; row 2 anticipation/wind-up (amber signal grows); row 3 attack and clear release; row 4 recovery; row 5 hurt/stagger; row 6 non-gory death collapse/dissolve (last frame empty); row 7 special behaviour specified below. Retain recognisable silhouette in every row. Creature: a tiny heavy shield beetle with a very high angular dark-olive shell like a folded leaf, low head poking to the right, four short articulated legs, and one pale olive seam on the shield. Colours ink #121a1b, slate green #29382f, moss #4f5c3e, olive #858457, pale cream #c0b789, amber #d9aa4b. Distinct compact dome silhouette, no humanoid armour. Wind-up braces low and flashes a small amber seam, attack is a short head-first shove. Row 7 GUARD is planting feet and turning shell forward, exposed head retreats behind shield, a clear closed vs open shell motion. No detached shields or swords."
+    },
+    {
+      "id": "healing-moth",
+      "tool": "image_gen",
+      "masterFilename": "exec-47110640-0ecb-4f33-b9cf-454a43e66433.png",
+      "masterSha256": "478fc65e9ad1bd4257871abbeb1ada821e2077d6fa2f4ccc2dcd40f236c4403d",
+      "masterSize": [
+        1254,
+        1254
+      ],
+      "nativeSourceSize": [
+        128,
+        128
+      ],
+      "prompt": "Use case: stylized-concept. Deliver a production sprite sheet, not a concept illustration. MAX is a tiny side-view pixel-art night-garden game: organic silhouettes, near-black/blue-black outlines, muted moss and teal palette, small warm accent pixels. EXACT 8 columns x 8 rows, 64 sprites, equally spaced cell boundaries, canvas 1024x1024, no margins, no text, no grid lines, genuine transparent background. EACH cell is a native 16x16 pixel tile magnified exactly 8x: hard square 8x8 colour blocks, at most 12 colours, NO smaller details, NO antialiasing, NO gradients/glow/ground/shadow. Body is only 7\u201312 native pixels across/high, visibly much smaller than a 24px-tall player. Same centre x=8, foot/hover baseline y=15 per tile. Facing RIGHT. Nothing crosses a cell boundary. Each row shows 8 sequential temporal frames of ONE consistent creature; columns are frames, not separate characters. Row 0 idle/breath; row 1 movement cycle; row 2 anticipation/wind-up (amber signal grows); row 3 attack and clear release; row 4 recovery; row 5 hurt/stagger; row 6 non-gory death collapse/dissolve (last frame empty); row 7 special behaviour specified below. Retain recognisable silhouette in every row. Creature: a tiny soft pale-sage moth with very large two-part triangular wings, a tiny dark teal body, two short antennae. Two pale cyan dots on wings and a restrained warm cream rim, no bright white glow. Palette ink #172222, teal #294745, sage #68867a, pale sage #a6b5a0, cream #d4cfaa, cyan #79b7b0, amber #d9aa4b. Wings form a wide diamond when open and a thin upright teardrop when closed. Idle/move rows are different readable flap cycles. Wind-up folds wings inward and shows amber core, attack is a gentle forward dart. Row 7 HEAL has wings held up and releasing exactly 1\u20133 pale-cyan square pollen pixels downward within the cell; no circle aura, hearts, crosses, text or magic gradients."
+    },
+    {
+      "id": "hollow-crown",
+      "tool": "image_gen",
+      "masterFilename": "exec-f38b458b-ae42-4693-b84b-70b22c05b9c6.png",
+      "masterSha256": "36fbc031414e8b9a737c42833e8d05fdbc105b6a3261b7ffd0f5088518b64ca5",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "nativeSourceSize": [
+        256,
+        512
+      ],
+      "prompt": "Use case: stylized-concept. Production low-resolution pixel-art final boss sprite sheet for MAX, matching a subdued organic side-view night-garden game. ONE boss, HOLLOW CROWN: an ancient hollow dark-teal woody trunk with a black open centre, a broken asymmetric moss crown of five short branches on top, root-claw legs underneath, a tiny internal light. No human skull, armour, jewels or giant landscape. Body native 24x28 inside a 32x32 cell, foot anchor (16,31). Sharp blocky contours and at most 14 muted colours: ink #10171c, blue-black #1d2b34, teal #2b4645, moss #536448, bark #605047, muted cream #b5b190. AMBER #d4a64e is strictly attack wind-up; CYAN #77bbb9 is strictly exposed/vulnerable inner core. Exact 8 columns by 16 rows (128 animation frames), aspect 1:2, requested canvas1024x2048. Each cell128x128 is native32x32 enlarged4x; all pixels hard4x4 blocks, binary alpha transparent background, no labels/text/gridlines/margins/glow/gradients/shadows/scenery. Same foot anchor and stable body scale in EVERY frame, facing slightly RIGHT, full body contained within each cell. Rows 0\u20134 PHASE1: [idle, amber windup, root-swipe attack, recover, cyan vulnerable]; columns 0\u20137 eight temporal frames of each row. Rows 5\u20139 PHASE2 repeat same five states with crown split open slightly and two longer root arms; core stays dark except vulnerable/amber windup. Rows10\u201314 PHASE3 repeat five states with crown opened into three broken prongs and hollow trunk spread wider, retaining same identity and scale. Row15 death: eight frames crown folds inward, roots collapse, trunk breaks into a few dark pixels, final frame empty. Vulnerable rows expose a BLACK hollow ring around a cyan 2\u20133 pixel core, not an all-cyan body. Windup coils roots and amber core visibly builds, attacks have a readable single-frame extension. No motion blur, no random different monsters.",
+      "processing": "Connected-component extraction at alpha>=128, registered by crown centre, 0.30 nearest-neighbour scale, extended reaches fitted to 32px cell; final death fragments separately cropped. See crown-packing.json."
+    }
+  ]
+}
