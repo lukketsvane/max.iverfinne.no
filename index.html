@@ -121,7 +121,7 @@ function resize() {
   ANCHOR = Math.round(IH * (IH > IW ? 0.673 : 0.70));
 }
 window.addEventListener('resize', resize);
-window.addEventListener('orientationchange', function () { setTimeout(resize, 150); });
+window.addEventListener('orientationchange', function () { clearRunInput(); setTimeout(resize, 150); });
 
 /* ---------------------------------------------------------------- noise */
 function h1(n) { var s = Math.sin(n * 127.1) * 43758.5453; return s - Math.floor(s); }
@@ -230,9 +230,11 @@ var FLOWER = {
 /* ---------------------------------------------------------------- input */
 var heldL = false, heldR = false, heldRun = false, heldUp = false;
 var jumpBuf = 0, jumpVariable = true;
+var dodgeBuf = 0, dodgeDirection = 0;
 var touches = {}, moveId = null;
 
 function doJump(variable) { jumpBuf = 0.14; jumpVariable = variable; }
+function requestDodge(direction) { dodgeBuf = .12; dodgeDirection = direction || readInput().axis || P.face; }
 
 window.addEventListener('keydown', function (e) {
   var k = e.key;
@@ -247,6 +249,7 @@ window.addEventListener('keydown', function (e) {
   else if (k === ' ') { heldSpace = true; if (!e.repeat) gardenPress = true; }
   else if (k === 'l' || k === 'L') { if (!lampKey) lampToggle = true; lampKey = true; }
   else if (k === 'b' || k === 'B') { if (!e.repeat) throwAuto(); }
+  else if (k === 'x' || k === 'X') { if (!e.repeat) requestDodge(); }
   else return;
   unlockAudio();
   e.preventDefault();
@@ -333,27 +336,36 @@ stage.addEventListener('pointerdown', function (e) {
   unlockAudio();
   try { stage.setPointerCapture(e.pointerId); } catch (err) {}
   var w = screenToWorld(e.clientX,e.clientY);
-  touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,
+  touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,ax:e.clientX,gx:e.clientX,gy:e.clientY,travelX:0,
     wx:w.x,wy:w.y,t0:performance.now(),j:false,low:false,dragged:false};
   if(moveId===null)moveId=e.pointerId;
   e.preventDefault();
 }, {passive:false});
 stage.addEventListener('pointermove', function(e){
   var t=touches[e.pointerId];if(!t)return;
-  t.x=e.clientX;t.y=e.clientY;
-  var dx=t.x-t.x0,dy=t.y-t.y0;
+  t.travelX+=Math.abs(e.clientX-t.x);t.x=e.clientX;t.y=e.clientY;
+  // A floating origin lets the thumb reverse without crossing its entire drag.
+  t.ax=Math.max(t.x-76,Math.min(t.x+76,t.ax));
+  var dx=t.x-t.gx,dy=t.y-t.gy;
   if(Math.abs(dx)>12||Math.abs(dy)>12)t.dragged=true;
   if(!t.j&&dy<-24&&-dy>Math.abs(dx)*1.2){
     t.j=true;t.low=false;doJump(false);
   }
   if(!t.j&&dy>26&&dy>Math.abs(dx)*1.2){
     if(!t.low){t.low=true;gardenPress=true;}
-  }else if(t.low&&Math.abs(dx)>Math.abs(dy)){t.low=false;}
+  }else if(t.low&&Math.abs(dx)>18&&Math.abs(dx)>Math.abs(dy)){t.low=false;t.ax=t.x-(dx<0?-18:18);}
+  // Recognise a new vertical stroke after running, independent of old travel.
+  if(Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy)*1.2){t.gx=t.x;t.gy=t.y;}
   swipeDown=Object.keys(touches).some(function(id){return touches[id].low;});
   e.preventDefault();
 }, {passive:false});
 function endPointer(e){
   var t=touches[e.pointerId];if(!t)return;
+  var flickX=e.clientX-t.x0,flickY=e.clientY-t.y0;
+  if(e.type==='pointerup'&&!runIsPaused()&&moveId===e.pointerId&&!t.j&&!t.low&&t.dragged&&
+     performance.now()-t.t0<=180&&Math.abs(flickX)>=44&&Math.abs(flickX)>Math.abs(flickY)*2&&Math.abs(flickX)>=t.travelX*.8){
+    requestDodge(flickX<0?-1:1);
+  }
   // Cancellation (iOS app switch, browser gesture, lost capture) is never a tap.
   if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.j&&!t.low&&performance.now()-t.t0<240){
     var pest=krekAt(t.wx,t.wy,14),bird=birdAt(t.wx,t.wy);
@@ -365,14 +377,14 @@ function endPointer(e){
   delete touches[e.pointerId];
   if(moveId===e.pointerId){moveId=null;for(var id in touches){moveId=+id;break;}}
   swipeDown=Object.keys(touches).some(function(id){return touches[id].low;});
-  if(e.type!=='pointerup')gardenPress=false;
+  if(e.type!=='pointerup'){gardenPress=false;jumpBuf=0;dodgeBuf=0;}
 }
 stage.addEventListener('pointerup',endPointer);
 stage.addEventListener('pointercancel',endPointer);
 stage.addEventListener('lostpointercapture',endPointer);
 stage.addEventListener('contextmenu',function(e){e.preventDefault();});
 
-var WALK_V = 38, RUN_V = 80;
+var WALK_V = 48, RUN_V = 88;
 
 function readInput() {
   var axis = 0, top = WALK_V;
@@ -382,7 +394,7 @@ function readInput() {
   else if (moveId !== null) {
     var t = touches[moveId];
     if(t&&!t.low){
-      var dx=t.x-t.x0,mag=Math.abs(dx);
+      var dx=t.x-t.ax,mag=Math.abs(dx);
       if(mag>12){
         axis=dx<0?-1:1;
         var speed=Math.min(1,(mag-12)/64);
@@ -398,7 +410,8 @@ var P = {
   x: 0, y: 0, vx: 0, vy: 0, face: 1, grounded: true, coyote: 0,
   anim: 'idle', frame: 0, clock: 0, done: false,
   land: 0, idleT: 0, fidget: null, held: false,
-  st: 'free', still: 0, squatT: 0, lampLit: 0, lampBlock: false, crouchGardenLatch: false
+  st: 'free', still: 0, squatT: 0, lampLit: 0, lampBlock: false, crouchGardenLatch: false,
+  dodgeT: 0, dodgeCool: 0, dodgeDir: 1, dodgeId: 0, dodgeDust: 0, throwPose: 0
 };
 P.y = surfaceY(0);
 
@@ -416,29 +429,62 @@ var ANIM = {
 };
 function setAnim(n) { if (P.anim !== n) { P.anim = n; P.frame = 0; P.clock = 0; P.done = false; } }
 
-var GRAV = 430, JUMP_V = -154, ACC = 250, FRIC = 320;
+var GRAV = 430, JUMP_V = -154, ACC = 720, BRAKE = 980, FRIC = 1100;
+var DODGE_TIME = .16, DODGE_SPEED = 156, DODGE_COOLDOWN = .85;
+function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
+function startDodge() {
+  if(P.dodgeCool>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
+  P.dodgeT=DODGE_TIME;P.dodgeCool=DODGE_COOLDOWN;P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
+  P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;
+  task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
+  setAnim('run');puff(P.x,P.y,4,.3);sfx('swish',0);
+  return true;
+}
+function dodgeContact(dt) {
+  P.dodgeDust-=dt;
+  if(P.dodgeDust<=0){P.dodgeDust=.035;stepDust();}
+  for(var i=0;i<floatKrek.length;i++){
+    var k=floatKrek[i];
+    if(k.lastDodge!==P.dodgeId&&Math.hypot(k.x-P.x,k.y-(P.y-12))<18){
+      k.lastDodge=P.dodgeId;staggerKrek(k,.5);k.vx=P.dodgeDir*65;k.vy=-15;k.flash=.6;
+    }
+  }
+}
+
+// Small physics steps keep jump arcs, braking and short dodges consistent at
+// 30, 60 and 120 Hz, without updating the scenery more than once per frame.
+function updatePlayer(dt, inp) {
+  var steps=Math.max(1,Math.ceil(dt*120-1e-7)),step=dt/steps;
+  for(var i=0;i<steps&&!runIsPaused();i++){
+    P.dodgeCool=Math.max(0,P.dodgeCool-step);
+    if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
+    updateHands(step,taskSteer(inp));
+    if(P.st==='climb')updateClimb(step,inp);
+    else physics(step,(P.st==='free'||P.st==='float')?inp:{axis:0,top:inp.top});
+    if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
+    P.throwPose=Math.max(0,P.throwPose-step);
+    animate(step);
+  }
+}
 
 function physics(dt, inp) {
   var wp0 = waterAt(P.x); P.wet = !!(wp0 && P.y > wp0.level + 1);
-  if (inp.axis !== 0) {
+  if(P.wet)P.dodgeT=0;
+  if(P.dodgeT>0){P.face=P.dodgeDir;P.vx=P.dodgeDir*DODGE_SPEED;}
+  else if (inp.axis !== 0) {
     P.face = inp.axis;
-    P.vx += inp.axis * ACC * dt;
     var topW = inp.top * (P.wet ? 0.5 : 1) * (P.st === 'float' ? 0.55 : 1);
-    if (Math.abs(P.vx) > topW) P.vx = inp.axis * topW;
+    P.vx=approach(P.vx,inp.axis*topW,(P.vx*inp.axis<0?BRAKE:ACC)*dt);
   } else {
-    var f = FRIC * dt;
-    if (Math.abs(P.vx) <= f) P.vx = 0; else P.vx -= (P.vx > 0 ? 1 : -1) * f;
+    P.vx=approach(P.vx,0,FRIC*dt);
   }
 
   if (jumpBuf > 0) jumpBuf -= dt;
   if (P.coyote > 0) P.coyote -= dt;
 
   if (jumpBuf > 0 && P.st === 'float') jumpBuf = 0;
-  if (jumpBuf > 0 && (P.grounded || P.coyote > 0) && P.st === 'free') {
-    var sk = stalkAt(P.x, P.y - 4, 9);
-    if (sk && beginClimb(sk)) { jumpBuf = 0; return; }
-  }
   if (jumpBuf > 0 && (P.grounded || P.coyote > 0)) {
+    P.dodgeT=0;
     P.vy = JUMP_V; P.grounded = false; P.coyote = 0; jumpBuf = 0;
     P.held = jumpVariable; P.land = 0;
     setAnim('rise'); if (P.wet) ripple(P.x, wp0.level, 'splash'); else puff(P.x, P.y, 5, 0.45);
@@ -453,7 +499,7 @@ function physics(dt, inp) {
   P.y += P.vy * dt;
 
   var g = surfaceY(P.x);
-  if (P.y >= g) {
+  if (P.y >= g || (P.grounded && P.vy>=0 && g-P.y<=3)) {
     if (!P.grounded) {
       if (P.st === 'float') landFloat();
       var imp = P.vy;
@@ -469,6 +515,7 @@ function physics(dt, inp) {
 function animate(dt) {
   var spd = Math.abs(P.vx);
   if (P.st !== 'free') { P.idleT = 0; P.fidget = null; }
+  else if(P.dodgeT>0){setAnim('run');P.idleT=0;P.fidget=null;}
   else if (!P.grounded) {
     P.idleT = 0; P.fidget = null; P.land = 0;
     setAnim(P.vy < -18 ? 'rise' : 'fall');
@@ -477,6 +524,7 @@ function animate(dt) {
     if (spd > 10) P.land = 0;
   } else if (spd > 54) { setAnim('run'); P.idleT = 0; P.fidget = null; }
   else if (spd > 3) { setAnim('walk'); P.idleT = 0; P.fidget = null; }
+  else if(P.throwPose>0&&sheet2Ready){setAnim('toss');P.idleT=0;P.fidget=null;}
   else {
     P.idleT += dt;
     if (P.fidget) { if (P.done) { P.fidget = null; P.idleT = 0; setAnim('idle'); } }
@@ -2529,7 +2577,8 @@ function recordGardenPlant(p){
   found.growth=Math.max(found.growth,p.growth);found.stalk=found.stalk||!!p.stalk;
 }
 function clearRunInput(){
-  heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;touches={};moveId=null;holdWater=null;jumpBuf=0;lampToggle=false;
+  heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
+  if(P){P.dodgeT=0;P.throwPose=0;}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
 function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
@@ -2580,7 +2629,7 @@ function resetRogueRun(reason){
   if(perkMenu)perkMenu.style.display='none';
   if(window.MaxRunResults)window.MaxRunResults.hide();
   selectedPerk=null;resultAtlasReady=false;clearRunInput();task=null;bombs.length=0;
-  climb=null;climbGoal=null;warp=null;P.st='free';P.lampLit=0;setAnim('idle');
+  climb=null;climbGoal=null;warp=null;P.st='free';P.lampLit=0;P.dodgeCool=0;bombCool=0;setAnim('idle');
   P.x=levelOriginX(keepWorld);P.y=surfaceY(P.x);P.vx=P.vy=0;started=false;
 
   updateGardenHud();saveGarden();
@@ -3468,7 +3517,14 @@ function makeKrek(side,elite){
   var x=P.x+side*(IW*.68+30+Math.random()*60),y=surfaceY(x)-28-Math.random()*22,kind=(Math.random()*3)|0;
   var pressure=gardenRaidActive?Math.max(0,Math.min(3,rogueRun.raidThreat||0)):raidPressure();
   var hp=elite?(gardenWave>=FINAL_WAVE?12:3+Math.floor(gardenWave/8)+Math.floor((worldLevel()-1)/2)):1+(gardenWave>=9&&Math.random()<.22?1:0);
-  return{x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.8+Math.random(),think:0,flee:0,hp:hp,flash:0,kind:kind,elite:!!elite,queen:!!(elite&&gardenWave>=FINAL_WAVE),raid:false,pressure:pressure};
+  return{x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.3,windup:0,attackTarget:null,think:0,flee:0,hp:hp,flash:0,kind:kind,elite:!!elite,queen:!!(elite&&gardenWave>=FINAL_WAVE),raid:false,pressure:pressure};
+}
+function staggerKrek(k,time){k.flee=Math.max(k.flee||0,time);k.target=null;k.windup=0;k.attackTarget=null;k.bite=.35;}
+function biteGarden(k,p,pressure){
+  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(1+pressure*.05)*Math.pow(.78,(rogueRun.perks.shield||0));
+  p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
+  for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
+  socialTone('call');if(p.health<=.01){p.dead=8;k.target=null;}
 }
 function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=Math.hypot(k.x-wx,k.y-wy);if(d<bd){bd=d;best=k;}}return best;}
 function burstKrek(k){
@@ -3488,15 +3544,22 @@ function updateKrek(dt){
   if(ambientAllowed&&active&&krekSpawnT<=0&&floatKrek.length<Math.min(5,1+Math.ceil(active/2))){floatKrek.push(makeKrek(Math.random()<.5?-1:1));krekSpawnT=Math.max(6,8+Math.random()*10-Math.min(4,active*.45)-Math.min(3,(worldLevel()-1)*.6)-raidPressure()*.6);updateGardenHud();}
   if(!active&&floatKrek.length===0)krekSpawnT=Math.min(krekSpawnT,4);
   for(var i=floatKrek.length-1;i>=0;i--){
-    var k=floatKrek[i],pressure=Math.max(0,Math.min(3,k.pressure||0));k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;
-    if(k.flee>0){k.flee-=dt;var dir=k.x<P.x?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
-    if(P.lampLit>.45&&Math.hypot(k.x-P.x,k.y-(P.y-12))<42){k.flee=2.8;k.target=null;continue;}
-    if(!k.target||gardenPlots.indexOf(k.target)<0||k.target.dead)k.target=pickKrekTarget(k);
+    var k=floatKrek[i],pressure=Math.max(0,Math.min(3,k.pressure||0));k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);
+    if(k.flee>0){k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<P.x?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
+    if(P.lampLit>.45&&Math.hypot(k.x-P.x,k.y-(P.y-12))<42){staggerKrek(k,2.8);continue;}
+    if(!k.target||gardenPlots.indexOf(k.target)<0||k.target.dead){k.windup=0;k.attackTarget=null;k.target=pickKrekTarget(k);}
     if(!k.target){k.vx+=(k.face*7-k.vx)*dt;k.x+=k.vx*dt;k.y+=Math.sin(tSec*1.8+k.ph)*4*dt;if(Math.abs(k.x-P.x)>IW*1.2)floatKrek.splice(i,1);continue;}
     var p=k.target,tx=p.x,ty=surfaceY(p.x)-10-Math.min(8,p.growth*8),dx=tx-k.x,dy=ty-k.y,d=Math.hypot(dx,dy);
     k.face=dx>=0?1:-1;
-    if(d>7){var sp=((k.kind===1?11:(k.kind===2?19:14))+Math.min(10,d*.05))*(1+Math.min(.8,(gardenWave+(worldLevel()-1)*2)*.035))*(1+pressure*.06)*Math.pow(.86,(rogueRun.perks.slow||0));if(k.elite)sp*=.78;k.vx+=(dx/d*sp-k.vx)*dt*(k.kind===2?3:2.4);k.vy+=(dy/d*sp-k.vy)*dt*(k.kind===2?3:2.4);k.x+=k.vx*dt;k.y+=k.vy*dt;k.bite=Math.max(.20,k.bite-dt*.25);}
-    else{k.vx*=Math.pow(.25,dt);k.vy*=Math.pow(.25,dt);k.y=ty+Math.sin(tSec*(k.kind===2?7:5)+k.ph)*1.3;k.bite-=dt;if(k.bite<=0){k.bite=(k.kind===2?.45:(k.kind===1?.9:.65))+Math.random()*.45;var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(1+pressure*.05)*Math.pow(.78,(rogueRun.perks.shield||0));p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});socialTone('call');nudgeGardenHint('PEST ATTACK · TAP THE PEST TO BLAST IT');if(p.health<=.01){p.dead=8;k.target=null;}}}
+    if(k.windup>0&&(d>11||k.attackTarget!==p)){k.windup=0;k.attackTarget=null;k.bite=.25;}
+    if(d>7&&!k.windup){var sp=((k.kind===1?11:(k.kind===2?19:14))+Math.min(10,d*.05))*(1+Math.min(.8,(gardenWave+(worldLevel()-1)*2)*.035))*(1+pressure*.06)*Math.pow(.86,(rogueRun.perks.slow||0));if(k.elite)sp*=.78;k.vx+=(dx/d*sp-k.vx)*dt*(k.kind===2?3:2.4);k.vy+=(dy/d*sp-k.vy)*dt*(k.kind===2?3:2.4);k.x+=k.vx*dt;k.y+=k.vy*dt;}
+    else{
+      k.vx=0;k.vy=0;k.y=ty+Math.sin(tSec*(k.kind===2?7:5)+k.ph)*1.3;
+      if(k.windup>0){
+        k.windup=Math.max(0,k.windup-dt);
+        if(k.windup===0){biteGarden(k,p,pressure);k.attackTarget=null;k.bite=k.kind===2?.65:(k.kind===1?1.1:.8);}
+      }else if(k.bite<=0){k.tell=k.kind===2?.42:(k.kind===1?.58:.5);k.windup=k.tell;k.attackTarget=p;}
+    }
   }
 }
 
@@ -3538,6 +3601,8 @@ function drawKrek(t){
       ctx.fillStyle='#0e0d0e';ctx.fillRect(sx-2,sy+1,5,1);
     }
     if(k.target&&Math.abs(k.x-k.target.x)<9){ctx.fillStyle='#d7d0a3';ctx.fillRect(sx-1,sy+3,1,1);ctx.fillRect(sx+1,sy+3,1,1);}
+    // A contracting amber cue marks the bite's timing in the world, without HUD.
+    if(k.windup>0){var gap=6+Math.ceil(3*k.windup/k.tell);ctx.fillStyle=k.windup<.16?'#fff1bb':'#e4b15d';ctx.fillRect(sx-gap,sy-3,2,3);ctx.fillRect(sx+gap-1,sy-3,2,3);ctx.fillRect(sx,sy-gap-2,1,2);}
     if(k.elite){
       ctx.globalCompositeOperation='lighter';disc(sx,sy,k.queen?13:8,'rgba(210,160,90,'+(.025+.02*Math.sin(t*5+k.ph)).toFixed(3)+')');ctx.globalCompositeOperation='source-over';
       ctx.fillStyle=k.queen?'#f1d068':'#e3b85e';ctx.fillRect(sx-3,sy-7,1,2);ctx.fillRect(sx,sy-8,1,2);ctx.fillRect(sx+3,sy-7,1,2);
@@ -3773,6 +3838,7 @@ function poseExit() {                                      // leave a held pose 
 
 function updateHands(dt, inp) {
   if (P.st === 'climb' || P.st === 'float') { task = null; return; }
+  if(P.dodgeT>0&&jumpBuf<=0){gardenPress=false;return;}
   var move = inp.axis !== 0, low = heldDown || heldSpace || swipeDown || gardenPress;
   gardenPress=false;
   if (!low) P.crouchGardenLatch = false;
@@ -3793,7 +3859,7 @@ function updateHands(dt, inp) {
     P.vx=0;P.face=holdWater.p.x>=P.x?1:-1;if(P.anim!=='waterHold')setAnim('waterHold');
     waterGardenPlotTick(holdWater.p,dt);return;
   }
-  if (move) { P.still = 0; P.lampBlock = false; }
+  if (move) { P.still = 0; P.lampBlock = false; P.st='free'; P.throwPose=0; }
 
   switch (P.st) {
   case 'free':
@@ -3810,11 +3876,6 @@ function updateHands(dt, inp) {
       P.still += dt;
       if (P.still > 7 && !P.lampBlock) { P.st = 'lampUp'; setAnim('lampUp'); }
     } else P.still = 0;
-    break;
-
-  case 'toss':
-    if (!P.thrown && P.frame >= ANIM.toss.hit) { P.thrown = true; launchBomb(); }
-    if (P.done) P.st = 'free';
     break;
 
   case 'task':
@@ -3955,13 +4016,15 @@ function lob(x0, y0, tx, ty, vx, vy) {
   return { vx: (tx - x0) / T, vy: (ty - y0 - 0.5 * BOMB_G * T * T) / T };
 }
 function throwBomb(target) {                               // a bird {kind, o} or a spot {x, y}
-  if (bombCool > 0 || bombs.length >= 3) return false;
+  if (runIsPaused() || climb || warp || P.st==='float' || bombCool > 0 || bombs.length >= 3) return false;
   bombCool = 0.38; task = null;
   var tx = target.o ? target.o.x : target.x;
   if (Math.abs(tx - P.x) > 1) P.face = tx > P.x ? 1 : -1;
   P.aim = target;
-  if (P.grounded && !P.wet && sheet2Ready) { P.st = 'toss'; setAnim('toss'); P.thrown = false; }
-  else launchBomb();
+  P.st='free';holdWater=null;P.still=0;
+  // Release on input. The optional standing pose never owns movement or jumping.
+  launchBomb();P.throwPose=.28;
+  if(P.grounded&&!P.wet&&sheet2Ready&&Math.abs(P.vx)<3&&!readInput().axis){setAnim('toss');P.frame=ANIM.toss.hit;}
   return true;
 }
 function launchBomb() {
@@ -4007,6 +4070,10 @@ function curiousCrows(b) {                                 // a crow can't resis
   }
 }
 function updateBombs(dt) {
+  var steps=Math.max(1,Math.ceil(dt*120-1e-7));
+  for(var step=0;step<steps;step++)stepBombs(dt/steps);
+}
+function stepBombs(dt) {
   if (bombCool > 0) bombCool -= dt;
   for (var i = bombs.length - 1; i >= 0; i--) {
     var b = bombs[i], w;
@@ -4110,7 +4177,7 @@ function explode(x, y, wet) {
     o=floatKrek[i];
     if(Math.hypot(o.x-x,o.y-y)<BR+7){
       if((o.hp||1)>1){
-        o.hp--;o.flash=1;o.flee=.42;o.target=null;
+        o.hp--;o.flash=1;staggerKrek(o,.42);
         for(var eh=0;eh<5;eh++)sparks.push({x:o.x,y:o.y,vx:(Math.random()-.5)*35,vy:-12-Math.random()*25,l:.22+Math.random()*.2});
         nudgeGardenHint('ELITE · '+o.hp+' HITS LEFT');
       }else{floatKrek.splice(i,1);burstKrek(o);pestN++;}
@@ -4136,7 +4203,7 @@ function explode(x, y, wet) {
   var wl = waterAt(x);
   if (wet && wl) { ripple(x, wl.level, 'splash'); ripple(x - 9, wl.level, 'ring'); ripple(x + 9, wl.level, 'ring'); }
   else if (Math.abs(surfaceY(x) - y) < 16) { scorches.push({ x: x, w: 8 + Math.random() * 4, life: 35, seed: Math.random() * 50 }); if (scorches.length > 12) scorches.shift(); }
-  if (P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // too close: a slapstick hop backwards
+  if (P.dodgeT<=0 && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
     var away = Math.abs(P.x - x) < 0.5 ? -P.face : (P.x > x ? 1 : -1);
     P.vx = away * 95; P.vy = -118; P.grounded = false; P.coyote = 0; P.land = 0;
     task = null; P.st = 'free'; P.lampBlock = true; setAnim('rise');
@@ -4692,14 +4759,9 @@ function frame(now) {
   if(!paused){
   tSec += dt;
 
-  var inp = taskSteer(readInput());
-  if(!runIsPaused())updateHands(dt, inp);
-  if(!runIsPaused()){
-    if(P.st==='climb')updateClimb(dt,inp);
-    else physics(dt,(P.st==='free'||P.st==='float')?inp:{axis:0,top:inp.top});
-  }
+  var inp = readInput();
+  if(!runIsPaused())updatePlayer(dt, inp);
   if(!runIsPaused())updateWarp(dt);
-  if(!runIsPaused())animate(dt);
   if(!runIsPaused())updateParts(dt);
   if(!runIsPaused())updateCrows(dt);
   if(!runIsPaused())updateSmallFauna(dt);
