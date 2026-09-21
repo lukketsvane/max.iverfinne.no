@@ -195,7 +195,7 @@ for the completed handoffs, automated checks, deployed browser evidence and
 remaining manual coverage.
 The [harder-gardens verification](docs/verification/2026-09-21-harder-gardens.md)
 records the subsequent time escalation, exclusive class abilities, platform
-routes, native canvas evidence and the provider's deployment-quota blocker.
+routes, native canvas evidence and the verified production deployment.
 
 The hosted bouquet migration is
 `20260921204258_bouquet_leaderboard.sql`. It creates public read access to

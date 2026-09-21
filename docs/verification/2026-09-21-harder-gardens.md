@@ -15,22 +15,24 @@ moth healing are retained. Its earlier capped pressure design is superseded by
 the requested unbounded time curve. The unused parallel platform engine is
 removed while its unique regression coverage is adapted to the shared engine.
 
-**Publication is blocked by Vercel's daily deployment quota.** At
-2026-09-21 21:42:58 UTC, Vercel reported `api-deployments-free-per-day`, more than
-100 deployments, and requested a retry after 24 hours. The
-[provider's PR comment](https://github.com/lukketsvane/max.iverfinne.no/pull/21#issuecomment-5767931734)
-records that failure. The last confirmed ready production deployment was
-`dpl_8ERcz7TFGi7q8ZsELRVn4gJCFzm9`, from commit
-`b1d7c4411e3f08b8c2c797e1335c0b49da547e32`.
-These changes must not be called live until a newer production deployment is
-ready and the custom domain has been verified.
+**Live at [max.iverfinne.no](https://max.iverfinne.no/).** PR #21 was merged as
+`f3c95e17320010b7202067aeae2e95ce0c9b1358`. Vercel production deployment
+`dpl_3NQhDKGDgkDzwGEwwjWatPX3dg6A` is READY, with the custom domain assigned
+and no alias error. Its Git tree is exactly the tested
+`b7eeb2d921a4db7cbf3beb1acea7719dff9ce8f9` tree.
 
-A conservative retry checkpoint is **2026-09-22 around 21:43 UTC**; the exact
-rolling quota reset is not verified. There is no confirmed automatic retry.
-Vercel documents the Hobby limit as 100 deployments per 86,400 seconds in its
-[rate limits](https://vercel.com/docs/limits#rate-limits). A prebuilt deployment
-still creates a deployment and cannot bypass this limit. Billing and hosting
-configuration were not changed.
+The public site was reloaded after deployment. Play opened all four classes,
+including Moss, and selecting Moss displayed its growing-plant climbing
+ability. The [production class-selection screenshot](max-production-class-selection.jpg)
+records the live menu. Physical iPhone playtesting and a fresh hosted four-player
+session remain outside these checks.
+
+Vercel initially rejected a preview at 2026-09-21 21:42:58 UTC with
+`api-deployments-free-per-day`. The
+[earlier provider comment](https://github.com/lukketsvane/max.iverfinne.no/pull/21#issuecomment-5767931734)
+records that checkpoint. The final preview and production deployments later
+succeeded through the normal connected Git workflow. The blocker is resolved;
+billing and hosting configuration were not changed.
 
 ## Time alone becomes overwhelming
 
@@ -176,10 +178,9 @@ from 130 × 282 to 390 × 846. Capture state and source hashes are recorded in
 | [Mossback encounter](max-native-mossback-encounter.png) | The native garden 5 boss during phase-one attack windup, beside Herbalist and living plants. |
 
 These are game-canvas renders, **not browser screenshots**. They verify drawing
-and representative simulation states. New-release browser DOM layout,
-compositing, sound, networking and physical iPhone input remain unverified while
-publication is blocked. The earlier release's deployed browser evidence does
-not establish those properties for this candidate.
+and representative simulation states. The production menu and new class description were also checked in the browser
+after publication, as recorded above. These captures do not establish full
+physical iPhone input, sound, or hosted multiplayer behavior.
 
 `review.html` uses the actual built game with isolated in-memory storage. Its
 selectors cover all six route families, bosses at 5/10/15/20, a mixed encounter,
