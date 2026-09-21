@@ -2,6 +2,7 @@
    Included in the game closure. Nothing here writes a resumable run. */
 var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId=0;
 var pickupNotice=null,hazardHits={},stageWeather=null;
+var runPixelFont=new Image();runPixelFont.src='assets/results-native/sprites/font-5x7.png';
 function emptyTraits(){return {feathers:0,embers:0,dew:0};}
 function cleanTraits(value){
   var out=emptyTraits();Object.keys(out).forEach(function(key){out[key]=Math.max(0,Math.min(99,(value&&value[key])|0));});return out;
@@ -329,8 +330,11 @@ function drawPickupNotice(dt){
   if(!runIsPaused())pickupNotice.life-=dt;
   if(pickupNotice.life<=0){pickupNotice=null;return;}
   var x=Math.round(P.x-camX),y=Math.round(P.y-camY)-40;
-  ctx.save();ctx.globalAlpha=Math.min(1,pickupNotice.life*2);ctx.textAlign='center';ctx.font='6px monospace';
-  var text=pickupNotice.text,tw=Math.ceil(ctx.measureText(text).width);
-  ctx.fillStyle='rgba(12,20,22,.85)';ctx.fillRect(x-tw/2-4,y-8,tw+8,11);
-  ctx.fillStyle='#e1e4cf';ctx.fillText(text,x,y);ctx.restore();
+  ctx.save();ctx.globalAlpha=Math.min(1,pickupNotice.life*2);
+  var text=pickupNotice.text.toUpperCase(),tw=text.length*6-1,left=Math.round(x-tw/2);
+  if(runPixelFont.complete&&runPixelFont.naturalWidth){
+    ctx.fillStyle='rgba(12,20,22,.85)';ctx.fillRect(left-3,y-8,tw+6,11);
+    for(var i=0;i<text.length;i++){var n=text.charCodeAt(i)-32;ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,left+i*6,y-7,5,7);}
+  }else drawRunItem(pickupNotice.type,x,y-4,true);
+  ctx.restore();
 }

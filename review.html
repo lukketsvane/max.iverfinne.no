@@ -26,7 +26,7 @@
     if(${mode==='feathers'}){rogueRun.traits.feathers=2;dropRunItem('feathers',24,surfaceY(24)-20);}
     if(${mode==='trial'}){runEncounters=[{id:1,x:38,type:'nest',cost:1,active:false,done:false,progress:0,duration:10}];gardenSeeds=5;}
     if(${mode==='enemies'}){rogueRun.world=10;for(var q=0;q<4;q++){var k=makeKrek(1);k.kind=q+3;k.x=15+q*27;k.y=surfaceY(k.x)-20;k.vx=k.vy=0;floatKrek.push(k);}}
-    if(${mode==='boss'}){rogueRun.world=20;gardenWave=3;gardenRaidActive=true;rogueRun.raidRemaining=0;gardenRaidGrace=0;var crown=makeHollowCrown();crown.cool=.5;floatKrek=[crown];rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;}
+    if(${mode==='boss'}){P.x=24;P.y=surfaceY(24);started=false;rogueRun.world=20;gardenWave=3;gardenRaidActive=true;rogueRun.raidRemaining=0;gardenRaidGrace=0;var crown=makeHollowCrown();crown.cool=.5;floatKrek=[crown];rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;}
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
   `;
   let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">')
