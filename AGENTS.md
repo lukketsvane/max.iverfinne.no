@@ -7,17 +7,20 @@ visuals or audio. Coordinate in [issue #10](https://github.com/lukketsvane/max.i
 Preserve the native atlas/pixel scale and approved run-bouquet requirements below.
 The direction note records soundtrack implementation status.
 
-## Pending watering-robot art review
+## Integrated watering-robot artwork
 
-Before selecting or integrating a watering robot, read
-[the candidate handoff](docs/asset-review/watering-robot/README.md).
-The user explicitly wants comparison with the other supplied robot assets;
-this candidate is optional, not approved, and may be replaced by a better fit.
+The supplied candidates were compared and selected for the three-tier runtime.
+Before changing the companion artwork, read
+[the selection and rationale](docs/asset-review/watering-robot/selection.md)
+and [the original candidate handoff](docs/asset-review/watering-robot/README.md).
+The game uses the native 32×32 starter, supplied 48×40 upgrade and supplied
+80×48 rover, with each tier's original pixels, anchors and animation timing.
 
 The review folder contains real PNG/JSON sheets and an atlas inspection page.
-It is not imported into gameplay or the production build. Evaluate against the
-current game, not the earlier generated concept backgrounds. Record the chosen
-candidate and why it fits before integrating it.
+The selected runtime assets are integrated separately; the review folder remains
+a comparison reference. Evaluate any replacement against the current game,
+not the earlier generated concept backgrounds, and update the selection note
+with its rationale.
 
 Preserve concurrent work on main, including the menu, accounts, saves, original
 artwork and result/bouquet assets. Do not merge draft PR #5 wholesale: its build

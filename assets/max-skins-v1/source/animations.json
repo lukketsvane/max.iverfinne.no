@@ -1,0 +1,352 @@
+{
+  "idle": {
+    "sheet": "main",
+    "row": 0,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 6.5,
+    "loop": true
+  },
+  "walk": {
+    "sheet": "main",
+    "row": 1,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 9,
+    "loop": true
+  },
+  "run": {
+    "sheet": "main",
+    "row": 2,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "fps": 14,
+    "loop": true
+  },
+  "look": {
+    "sheet": "main",
+    "row": 3,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 5,
+    "loop": false
+  },
+  "rise": {
+    "sheet": "main",
+    "row": 4,
+    "f": [
+      1,
+      2,
+      3
+    ],
+    "fps": 9,
+    "loop": false
+  },
+  "fall": {
+    "sheet": "main",
+    "row": 4,
+    "f": [
+      4,
+      5
+    ],
+    "fps": 5,
+    "loop": false
+  },
+  "land": {
+    "sheet": "main",
+    "row": 5,
+    "f": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "fps": 17,
+    "loop": false
+  },
+  "stretch": {
+    "sheet": "main",
+    "row": 7,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 7,
+    "loop": false
+  },
+  "climb": {
+    "sheet": "main",
+    "row": 4,
+    "f": [
+      2,
+      3,
+      4,
+      3
+    ],
+    "fps": 7,
+    "loop": true
+  },
+  "hang": {
+    "sheet": "main",
+    "row": 4,
+    "f": [
+      4,
+      5
+    ],
+    "fps": 2.2,
+    "loop": true
+  },
+  "crouch": {
+    "sheet": "interaction",
+    "row": 0,
+    "f": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "fps": 13,
+    "loop": false
+  },
+  "stand": {
+    "sheet": "interaction",
+    "row": 0,
+    "f": [
+      3,
+      2,
+      1,
+      0
+    ],
+    "fps": 15,
+    "loop": false
+  },
+  "squat": {
+    "sheet": "interaction",
+    "row": 0,
+    "f": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 4.5,
+    "loop": true
+  },
+  "dig": {
+    "sheet": "interaction",
+    "row": 1,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 11,
+    "loop": false,
+    "hit": 3
+  },
+  "sow": {
+    "sheet": "interaction",
+    "row": 2,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 8,
+    "loop": false,
+    "hit": 6
+  },
+  "water": {
+    "sheet": "interaction",
+    "row": 3,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 8,
+    "loop": false,
+    "hit": 7,
+    "pour": [
+      2,
+      7
+    ]
+  },
+  "waterHold": {
+    "sheet": "interaction",
+    "row": 3,
+    "f": [
+      2,
+      3,
+      4,
+      5,
+      4,
+      5
+    ],
+    "fps": 8,
+    "loop": true,
+    "pour": [
+      0,
+      5
+    ]
+  },
+  "pick": {
+    "sheet": "interaction",
+    "row": 4,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 10,
+    "loop": false,
+    "hit": 3
+  },
+  "toss": {
+    "sheet": "interaction",
+    "row": 2,
+    "f": [
+      0,
+      1,
+      2,
+      2,
+      1
+    ],
+    "fps": 18,
+    "loop": false,
+    "hit": 2
+  },
+  "lampUp": {
+    "sheet": "interaction",
+    "row": 6,
+    "f": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "fps": 10,
+    "loop": false
+  },
+  "lampHold": {
+    "sheet": "interaction",
+    "row": 6,
+    "f": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "fps": 3.5,
+    "loop": true
+  },
+  "lampDn": {
+    "sheet": "interaction",
+    "row": 6,
+    "f": [
+      3,
+      2,
+      1,
+      0
+    ],
+    "fps": 13,
+    "loop": false
+  },
+  "sit": {
+    "sheet": "interaction",
+    "row": 7,
+    "f": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "fps": 7,
+    "loop": false
+  },
+  "rest": {
+    "sheet": "interaction",
+    "row": 7,
+    "f": [
+      6,
+      7
+    ],
+    "fps": 1.4,
+    "loop": true
+  },
+  "unsit": {
+    "sheet": "interaction",
+    "row": 7,
+    "f": [
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "fps": 10,
+    "loop": false
+  }
+}

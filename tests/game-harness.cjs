@@ -24,6 +24,7 @@ const functionNames = [
   'frame', 'surfaceY', 'updateGarden', 'updateGardenFun', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
   'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
   'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
+  'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +
@@ -100,6 +101,7 @@ function loadGame(saved = {}) {
   };
   sandbox.window = sandbox;
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'build-paths.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'max-classes.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {

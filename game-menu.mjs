@@ -3,6 +3,8 @@ import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
+import { CLASS_IDS, SKIN_IDS, readLoadout, writeLoadout } from './player-loadout.mjs';
+import { createLeaderboard } from './garden-leaderboard.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
 const client = config.publishableKey ? createClient(config.url, config.publishableKey, {
@@ -14,6 +16,7 @@ let status, scenery;
 let sceneFrame = 0, sceneStarted = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
+let selected = readLoadout(window.localStorage);
 
 function el(tag, text, className) {
   const n = document.createElement(tag);
@@ -26,12 +29,14 @@ function button(text, action, className) {
 }
 function message(text, error = false) {
   if (!status) return;
-  status.textContent = text; status.dataset.error = String(error);
+  status.textContent = text; status.dataset.error = String(error); status.hidden = false;
 }
 function page(name, title) {
   screen = name; overlay.dataset.screen = name; card.replaceChildren();
   card.append(el('p', 'MAX / THE WILD GARDEN', 'max-menu-kicker'));
-  const h = el('h2', title); h.id = 'max-menu-title'; h.tabIndex = -1; card.append(h);
+  const h = el('h2');
+  if (['play', 'together', 'lobby'].includes(name)) pixelText(h, title, 2, 0); else h.textContent = title;
+  h.id = 'max-menu-title'; h.tabIndex = -1; card.append(h);
   status = el('p', '', 'max-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   queueMicrotask(() => { if (opened) h.focus({ preventScroll: true }); });
 }
@@ -58,24 +63,77 @@ function home() {
 function garden() {
   page('garden', 'Your garden');
   const records = game.records?.() || { runs: 0, world: 0, plants: 0 };
-  card.append(el('p', records.runs ? 'Best: world ' + records.world + ' · ' + records.plants + ' plants' : 'Your first garden awaits.'), button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
+  card.append(el('p', records.runs ? 'Best: world ' + records.world + ' · ' + records.plants + ' plants' : 'Your first garden awaits.'));
+  if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords(), 'primary'));
+  card.append(button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
   back();
 }
+function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
+function skinName(id) { return id.charAt(0).toUpperCase() + id.slice(1); }
+function skinPreview(id) {
+  const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');
+  const image = el('img'); image.src = 'assets/max-skins-v1/' + id + '/main.png'; image.alt = ''; image.draggable = false;
+  frame.append(image); return frame;
+}
+function chooseMax() {
+  const roles = el('fieldset', undefined, 'max-role-picker');
+  roles.append(pixelText(el('legend'), 'Class', 2, 0));
+  const grid = el('div', undefined, 'max-role-grid');
+  for (const id of CLASS_IDS) {
+    const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
+    pixelText(choice, classInfo(id).name, 2, 0); grid.append(choice);
+  }
+  roles.append(grid, el('p', '', 'max-class-detail'));
+  const skins = el('fieldset', undefined, 'max-skin-picker');
+  skins.append(pixelText(el('legend'), 'Appearance', 2, 0));
+  const swatches = el('div', undefined, 'max-skin-grid');
+  for (const id of SKIN_IDS) {
+    const choice = button('', () => selectMax({ skinId: id }), 'max-skin-choice'); choice.dataset.skinId = id;
+    choice.append(skinPreview(id)); pixelText(choice, skinName(id), 1, 0); swatches.append(choice);
+  }
+  skins.append(swatches); card.append(roles, skins);
+  updateSelection();
+}
+function selectMax(change) { selected = { ...selected, ...change }; writeLoadout(window.localStorage, selected); updateSelection(); }
+function updateSelection() {
+  for (const option of card.querySelectorAll('[data-class-id]')) option.setAttribute('aria-pressed', String(option.dataset.classId === selected.classId));
+  for (const option of card.querySelectorAll('[data-skin-id]')) option.setAttribute('aria-pressed', String(option.dataset.skinId === selected.skinId));
+  const description = card.querySelector('.max-class-detail');
+  if (description) description.textContent = classInfo(selected.classId).desc;
+}
+function selectionSummary() {
+  const summary = el('div', undefined, 'max-selection-summary');
+  summary.append(skinPreview(selected.skinId), el('p', classInfo(selected.classId).name + ' · ' + skinName(selected.skinId)));
+  card.append(summary);
+}
 function play() {
-  page('play', 'Play');
-  card.append(button('Solo', close, 'primary'), button('Together', together)); back();
+  page('play', 'Your Max');
+  chooseMax();
+  const actions = el('div', undefined, 'max-play-actions');
+  actions.append(pixelText(button('', close, 'primary'), 'Solo', 2, 0), pixelText(button('', together), 'Together', 2, 0));
+  card.append(actions, status); updatePlayReady(); back();
+}
+function updatePlayReady() {
+  if (screen !== 'play') return;
+  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady;
+  status.hidden = sessionReady;
+  if (!sessionReady) message('Restoring account…');
 }
 function together() {
   if (!sessionReady) { page('together', 'Connecting…'); back(); return; }
-  if (!client) { close(); return; }
+  if (!client) {
+    page('together', 'Play together');
+    card.append(el('p', 'Together is unavailable right now.'), button('Solo', close, 'primary'), button('Change Max', play, 'subtle')); return;
+  }
   if (!user) { loginDestination = together; login(); return; }
   page('together', 'Play together');
+  selectionSummary();
   card.append(button('Host garden', () => enterRoom(), 'primary'));
   const form = el('form'); const label = el('label', 'Room code');
   const code = el('input'); Object.assign(code, { name: 'code', required: true, minLength: 10, maxLength: 10, autocomplete: 'off', autocapitalize: 'characters', spellcheck: false });
   label.append(code); const join = el('button', 'Join garden'); join.type = 'submit';
   form.append(label, join); form.addEventListener('submit', e => { e.preventDefault(); enterRoom(code.value); });
-  card.append(form, status); back();
+  card.append(form, status, button('Change Max', play, 'subtle'));
 }
 async function enterRoom(code) {
   if (busy || session) return;
@@ -95,32 +153,42 @@ async function enterRoom(code) {
       liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
       game.pause(true); play(); card.append(status); message(reason, true); refreshScenery();
     },
-  });
+  }, selected);
   session = candidate;
   try { await candidate.enter(code); lobbyVersion = ''; lobby(candidate.room); }
   catch (error) { if (session === candidate) session = null; message(error.message, true); }
   finally { busy = false; }
 }
 function lobby(room) {
-  const version = JSON.stringify([room.code, room.members, room.state]);
+  const version = JSON.stringify([room.code, room.members, room.state, session?.canReady, session?.canStart]);
   if (screen === 'lobby' && lobbyVersion === version) return;
   lobbyVersion = version; page('lobby', 'Garden ' + room.members.length + ' / 4');
   const invite = el('p', room.code, 'max-room-code'); invite.setAttribute('aria-label', 'Room code ' + room.code); card.append(invite);
   for (const member of room.members) {
-    const row = el('p', member.name + (member.ready ? ' ✓' : ' …'), 'max-room-player');
-    row.dataset.slot = member.slot; card.append(row);
+    const row = el('div', undefined, 'max-room-player');
+    row.dataset.slot = member.slot;
+    if (member.skinId) row.append(skinPreview(member.skinId));
+    const copy = el('div', undefined, 'max-room-player-copy');
+    copy.append(el('strong', member.name + (member.id === user.id ? ' · You' : '')),
+      el('span', member.selectionReady ? classInfo(member.classId).name + ' · ' + skinName(member.skinId) : 'Receiving selection…'),
+      el('span', member.ready && member.selectionReady ? 'Ready' : 'Waiting', 'max-room-ready'));
+    row.append(copy); card.append(row);
   }
   const me = room.members.find(p => p.id === user.id);
   if (room.host === user.id) {
-    const start = button('Start', () => roomAction(() => session.start()), 'primary');
-    start.disabled = room.state !== 'lobby' || !room.members.every(p => p.ready); card.append(start);
-  } else card.append(button(me?.ready ? 'Ready ✓' : 'Ready', () => roomAction(() => session.ready(!me?.ready)), 'primary'));
+    const start = button('Start', () => roomAction(() => session.start(), 'Gathering your team…'), 'primary');
+    start.disabled = !session.canStart; card.append(start);
+  } else {
+    const ready = button(me?.ready ? 'Ready ✓' : 'Ready', () => roomAction(() => session.ready(!me?.ready)), 'primary');
+    ready.disabled = !session.canReady; card.append(ready);
+  }
   card.append(status, button('Leave', async () => {
     const old = session; session = null; await old?.leave(); together();
   }, 'subtle'));
 }
-async function roomAction(action) {
+async function roomAction(action, pending = '') {
   if (busy) return; busy = true;
+  if (pending) message(pending);
   try { await action(); } catch (error) { message(error.message, true); }
   finally { busy = false; }
 }
@@ -231,17 +299,23 @@ function account() {
   back();
 }
 function open() {
-  if (opened || !game || game.canOpenMenu?.() === false) return;
+  // Results can finish above live Settings. Returning to the menu must replace
+  // that overlay once the run has ended, even though a menu is already open.
+  if ((opened && !liveSettings) || !game || game.canOpenMenu?.() === false) return;
   opened = true; liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true; game.pause(true); overlay.hidden = false; home(); refreshScenery();
 }
 function close() {
+  // Run ownership is captured at beginRun. Wait for a remembered account (or
+  // the confirmed absence of one) before letting a new run start.
+  if (!sessionReady) { updatePlayReady(); return; }
   if (session) { void session.leave(); session = null; }
-  opened = false; cancelAnimationFrame(sceneFrame); overlay.hidden = true; game.beginRun(); game.pause(false);
+  opened = false; cancelAnimationFrame(sceneFrame); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId }); game.pause(false);
   settingsButton.hidden = false;
 }
 function attach(bridge) {
   if (game) return;
   game = bridge;
+  window.MaxGardenLeaderboard = createLeaderboard(client, () => user ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
   window.MaxSoundtrack = createSoundtrack({ enabled: game.soundEnabled?.() !== false });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
   scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
@@ -277,10 +351,16 @@ document.addEventListener('visibilitychange', () => {
 });
 window.dispatchEvent(new Event('max-menu-ready'));
 if (client) {
-  client.auth.onAuthStateChange((_event, session) => {
-    const changed = !sessionReady || session?.user?.id !== user?.id;
-    setUser(session?.user || null); sessionReady = true;
+  client.auth.onAuthStateChange((_event, authSession) => {
+    const changed = !sessionReady || authSession?.user?.id !== user?.id;
+    setUser(authSession?.user || null); sessionReady = true;
     // Never await Supabase calls from its auth callback (the SDK holds a lock).
-    if (changed) setTimeout(() => { if (opened) { if (screen === 'home') home(); else if (screen === 'account' || screen === 'login') account(); } }, 0);
+    if (changed) setTimeout(() => {
+      if (!opened) return;
+      if (screen === 'play') updatePlayReady();
+      else if (screen === 'home') home();
+      else if (screen === 'together' && !session) together();
+      else if (screen === 'account' || screen === 'login') account();
+    }, 0);
   });
 }

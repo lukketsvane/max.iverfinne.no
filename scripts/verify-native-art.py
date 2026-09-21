@@ -1,0 +1,87 @@
+"""Validate exported sprites against the real game animation and pixel contracts."""
+from pathlib import Path
+import base64, io, json, re, subprocess, importlib.util
+import numpy as np
+from PIL import Image
+
+ROOT=Path(__file__).resolve().parents[1]
+source=(ROOT/'index.html').read_text()
+
+def game_animations():
+ code=[]
+ for name in ['ANIM','ANIM2']:
+  match=re.search(r'var\s+'+name+r'\s*=\s*(\{.*?\n\});',source,re.S)
+  assert match, f'Missing original {name}'
+  code.append(f'const {name} = {match[1]};')
+ code.append('console.log(JSON.stringify(Object.fromEntries([...Object.entries(ANIM).map(([k,v])=>[k,{...v,sheet:"main"}]), ...Object.entries(ANIM2).map(([k,v])=>[k,{...v,sheet:"interaction"}])])));')
+ return json.loads(subprocess.check_output(['node','-e','\n'.join(code)],text=True))
+
+def original_sheets():
+ result={}
+ for name,key in [('SHEET_SRC','main'),('SHEET2_SRC','interaction')]:
+  match=re.search(name+r'\s*=\s*[\'\"]data:image/png;base64,([^\'\"]+)',source)
+  assert match, f'Missing original {name}'
+  result[key]=Image.open(io.BytesIO(base64.b64decode(match[1]))).convert('RGBA')
+ return result
+
+def main():
+ originals=game_animations()
+ sheets=original_sheets()
+ spec=importlib.util.spec_from_file_location('compiler',ROOT/'scripts/build-native-art.py')
+ compiler=importlib.util.module_from_spec(spec);spec.loader.exec_module(compiler)
+ expected=json.loads((ROOT/'assets/max-skins-v1/source/animations.json').read_text())
+ for name,a in originals.items():
+  assert {k:v for k,v in a.items() if k!='sh'} == expected[name], f'Original animation changed: {name}'
+ assert originals.keys()==expected.keys()
+ count=0;clip_count=0;png_bytes=0
+ for path in sorted((ROOT/'assets').glob('*-v1/*/atlas.json')):
+  d=json.loads(path.read_text());ident=d['id'];w,h=d['cell'];ax,ay=d['anchor']
+  assert d['schema']=='max-native-atlas/v1' and 0<=ax<w and 0<=ay<h
+  images={};palette={tuple(bytes.fromhex(c[1:])) for c in d['palette']}
+  for key,sheet in d['sheets'].items():
+   p=path.parent/sheet['image'];im=Image.open(p).convert('RGBA');a=np.array(im)
+   assert list(im.size)==sheet['size'] and im.width%w==0 and im.height%h==0
+   assert set(np.unique(a[:,:,3]))<={0,255}, f'Nonbinary alpha: {ident}'
+   colours={tuple(p[:3]) for p in a.reshape(-1,4) if p[3]}
+   assert colours<=palette, f'Off-palette pixels: {ident}'
+   assert np.all(a[a[:,:,3]==0,:3]==0), f'Hidden RGB: {ident}'
+   images[key]=im;png_bytes+=p.stat().st_size
+  for f in d['frames']:
+   x,y,fw,fh=f['rect'];im=images[f['sheet']]
+   assert (fw,fh)==(w,h) and x%w==0 and y%h==0
+   assert x>=0 and y>=0 and x+fw<=im.width and y+fh<=im.height
+   assert f['anchor']==d['anchor']
+   box=im.crop((x,y,x+fw,y+fh)).getbbox()
+   assert (list(box) if box else None)==f['opaqueBounds']
+  for name,clip in d['animations'].items():
+   assert clip['fps']>0 and type(clip['loop']) is bool and clip['frames']
+   for index in clip['frames']:assert 0<=index<len(d['frames'])
+   for key in ['hit','pour']:
+    if key in clip:
+     for value in (clip[key] if isinstance(clip[key],list) else [clip[key]]):assert 0<=value<len(clip['frames'])
+   if name!='death':
+    assert all(d['frames'][i]['opaqueBounds'] for i in clip['frames']), f'Empty {ident}/{name}'
+  if d['kind']=='player-skin':
+   assert (w,h,ax,ay)==(32,32,16,31) and len(d['frames'])==128
+   assert d['animations'].keys()==expected.keys()
+   for name,original in expected.items():
+    a=d['animations'][name];offset=0 if original['sheet']=='main' else 64
+    assert a['frames']==[offset+original['row']*8+i for i in original['f']]
+    for key in ['fps','loop','hit','pour']:assert a.get(key)==original.get(key)
+   for f in d['frames']:
+    x,y,fw,fh=f['rect'];box=(x,y,x+fw,y+fh)
+    old=compiler.components(np.array(sheets[f['sheet']].crop(box))[:,:,3]>=128)
+    new=compiler.components(np.array(images[f['sheet']].crop(box))[:,:,3]>=128)
+    if old and new:assert compiler.bbox(old[0])[3]==compiler.bbox(new[0])[3], f'Foot mismatch: {ident}/{f["sheet"]}/{x}/{y}'
+  else:
+   assert (w,h)==((32,32) if d['kind']=='boss' else (16,16))
+   death=d['animations']['death'];assert not death['loop'] and not d['frames'][death['frames'][-1]]['opaqueBounds']
+   if d['kind']=='boss':
+    for phase in range(1,4):
+     for state in ['idle','windup','attack','recover','vulnerable','hurt']:assert f'phase{phase}/{state}' in d['animations']
+   else:
+    for state in ['idle','move','windup','attack','recover','hurt','death']:assert state in d['animations']
+  count+=len(d['frames']);clip_count+=len(d['animations'])
+ print(f'PASS: {count} cells, {clip_count} clips; binary alpha, fixed palettes, bounds, anchors, original gameplay markers. {png_bytes:,} bytes of runtime PNGs.')
+
+if __name__=='__main__':main()

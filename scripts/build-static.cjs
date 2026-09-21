@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'review.html'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -28,6 +28,21 @@ writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'),
   .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8')));
 require('./build-companion.cjs')(output);
 cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
+for (const [pack, ids, sheets] of [
+  ['max-skins-v1', ['moss', 'tide', 'ember', 'moon'], ['atlas.json', 'main.png', 'interaction.png']],
+  ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown'], ['atlas.json', 'sprites.png']],
+]) {
+  for (const id of ids) {
+    const directory = join(output, 'assets', pack, id);
+    mkdirSync(directory, { recursive: true });
+    for (const file of sheets) copyFileSync(join(root, 'assets', pack, id, file), join(directory, file));
+  }
+  copyFileSync(join(root, 'assets', pack, 'manifest.json'), join(output, 'assets', pack, 'manifest.json'));
+}
+buildSync({
+  entryPoints: [join(root, 'native-art.mjs')], outfile: join(output, 'native-art.js'),
+  bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],
+});
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu.js'),
   bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],

@@ -72,3 +72,25 @@
 .max-menu[data-live="true"]{background:rgba(3,8,14,.18);backdrop-filter:none}
 .max-menu[data-live="true"] .max-menu-scene{display:none}
 .max-menu[data-live="true"] .max-menu-kicker{display:none}
+/* Before the run: independent role and appearance choices on the native grid. */
+.max-menu[data-screen="play"] .max-menu-card{width:min(100%,376px);padding:24px}
+.max-menu fieldset{min-width:0;margin:0 0 18px;padding:0;border:0}
+.max-menu legend{padding:0;margin:0 0 10px;color:#d8dfcd;font-size:11px}
+.max-role-grid,.max-play-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.max-menu .max-role-choice{margin:0;min-height:44px;padding:10px 6px;border-radius:0;background:#101e2a;border-color:#687876}
+.max-menu .max-role-choice[aria-pressed="true"],.max-menu .max-skin-choice[aria-pressed="true"]{border-color:#e8d893;box-shadow:inset 0 0 0 1px #e8d893;background:#20312c;color:#f4e4ac}
+.max-menu .max-class-detail{min-height:52px;margin:10px 0 0;font-size:11px;line-height:1.5;color:#c7d1c7}
+.max-skin-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.max-menu .max-skin-choice{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;margin:0;padding:4px 0 8px;border-radius:0;border-color:#536b71;background:#0b1824;min-height:86px;overflow:hidden}
+.max-skin-preview{display:block;width:64px;height:64px;flex:none;overflow:hidden;pointer-events:none;image-rendering:pixelated}
+.max-skin-preview img{display:block;width:512px;height:512px;max-width:none;image-rendering:pixelated}
+.max-menu .max-play-actions>button{margin:0;min-height:46px;border-radius:0}
+.max-menu .max-selection-summary{display:flex;align-items:center;gap:10px;margin:0 0 16px}
+.max-menu .max-selection-summary p{margin:0;color:#dde0c9}
+.max-menu .max-room-player{display:flex;align-items:center;gap:6px;min-height:68px;padding:0 0 0 8px;margin:0 0 10px;font-size:11px}
+.max-room-player-copy{min-width:0;display:flex;flex-direction:column;gap:3px;line-height:1.4}
+.max-room-player-copy strong{color:#e6e6cf;overflow-wrap:anywhere}
+.max-room-player-copy>span{color:#bbcccb}
+.max-room-player-copy .max-room-ready{font-size:10px;color:#cbd6a7}
+@media(max-width:360px){.max-menu[data-screen="play"]{padding-left:14px;padding-right:14px}.max-menu[data-screen="play"] .max-menu-card{padding:18px}.max-menu .max-class-detail{min-height:66px}}
+@media(max-height:540px) and (orientation:landscape){.max-menu[data-screen="play"] .max-menu-card{width:min(100%,500px);padding:18px}.max-menu[data-screen="play"] .max-menu-kicker{display:none}.max-menu[data-screen="play"] h2{margin:0 0 12px}.max-menu fieldset{margin-bottom:12px}.max-menu .max-class-detail{min-height:34px}.max-menu .max-skin-choice{min-height:68px}.max-skin-choice .max-skin-preview{height:48px}.max-skin-choice .max-skin-preview img{margin-top:-16px}}

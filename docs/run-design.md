@@ -12,6 +12,40 @@ new encounters also use it for health and their fixed spawn budget. Fast kills
 never extend an encounter. A later balance pass should use actual completion
 times and failure points, especially in four-player runs.
 
+## Starting classes
+
+Choose a class and an independent cosmetic skin before Play. Duplicate classes
+are allowed in co-op. The class lasts for that attempt; it never restricts the
+Cultivator, Warden or Vanguard boon paths. The garden carries the health model:
+Bulwark protects plants and Herbalist heals plants, without adding a Max health
+bar or another action button.
+
+| Class | Starting difference |
+| --- | --- |
+| Mech | Starts with the supplied watering rover, at its smallest native tier. |
+| Runner | 25% faster movement, 20% stronger acceleration, higher jumps and 20% shorter dodge recovery. Feathers still improve jumps and unlock the second jump. |
+| Bulwark | 15% slower movement; grounded, dry footing protects nearby plants from 30% of damage. Its dodge shoves and interrupts pests 50% more strongly, and it takes 45% less knockback. |
+| Herbalist | 40% stronger active watering and healing. Tending also heals living neighbouring plants. It does not heal by standing idle. |
+
+Bulwark's protection reaches 48 native pixels, with a 24-pixel vertical limit.
+Several guards do not multiply the reduction. It covers bites, landed hazards
+and plant damage from explosions, and combines with the team's Thorns boon.
+Herbalist's healing splash reaches 34 native pixels. It adds 0.045 health on a
+watering action, or 0.016 health per second while holding water, with no extra
+score reward. Runner's jump launch speed is 15% greater, giving roughly 32%
+more jump height before feather bonuses.
+
+Companion rank 1 unlocks the basic rover; ranks 2 and 3 unlock the two larger
+supplied robots. Mech begins at rank 1 and every other class begins at rank 0.
+Rain engine requires rank 3 and a Seed rain boon. Every rover has its own finite
+water tank, follows its owner and uses that owner's Companion ranks. A teammate
+can refill it by standing nearby for two seconds. Rovers do not award passive
+XP, heal plants or create instant growth. Their water survives garden travel.
+
+A retry retains the selected class and skin but resets all acquired items,
+boons, cooldowns and rover water to that class's starting kit. Completed garden
+records can be viewed later; an unfinished attempt cannot be resumed.
+
 ## Stackable pickups
 
 | Pickup | Each stack | Three stacks |
@@ -71,9 +105,10 @@ dodged; spores can be cleared in flight. Keyboard B prioritises a nearby incomin
 spore. Root strikes remain active, so interception cannot replace all dodging.
 Its health lights sit on the crown itself.
 
-Enemy graphics currently use native pixel primitives. The graphics lead's
-separate handoff is tracked in GitHub issue #10: 16×16 enemy cells, 32×32 boss
-cells, amber windup / cyan exposure. Keep the existing player scale and controls.
+Enemy graphics use the supplied native atlas: 16×16 enemy cells and 32×32 boss
+cells, with amber windup and cyan exposure. Defeat animations are visual only
+and do not postpone damage, rewards or victory. Keep the existing player scale
+and controls.
 
 ## Co-op timing
 
@@ -87,3 +122,13 @@ Actions carry the stage where they were issued. After travel, the host
 acknowledges and discards older queued actions, so a delayed throw or planting
 gesture cannot unexpectedly fire in the new garden. Legacy packets without a
 stage remain accepted for clients that were already open before this update.
+
+Class and skin selections are acknowledged through authenticated lobby channels
+before the host can start. The host fixes each member's kit for the attempt;
+later avatar input cannot change it. Snapshots carry each member's class, skin,
+items and owned rover. Only the host changes garden health and rover water.
+
+Successful garden travel clears held and queued local input as well as seeds
+left in the previous, unreachable garden. This prevents accidental actions on
+arrival and leaves snapshot space for seeds in the new garden. Classes, skins,
+earned boons, run items and each rover's remaining water continue with the team.
