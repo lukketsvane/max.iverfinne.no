@@ -16,3 +16,10 @@ Preserve concurrent work on main, including the menu, accounts, saves, original
 artwork and result/bouquet assets. Do not merge draft PR #5 wholesale: its build
 changes and game snapshot predate the newer main work. Its source remains a
 reference for selectively adapting the candidate or its render fixture.
+
+## Approved run-bouquet screen
+
+Before further game-over or leaderboard work, read
+[the user's approved bouquet reference and requirements](docs/asset-review/bouquet/README.md).
+The bouquet must represent the player's actual saved run, using the game's native
+plant art and growth data. The note also contains the requested preview names.
