@@ -137,3 +137,69 @@ test('guests can tend at an active shrine and water a locked exit stalk without 
     assert.equal(guest.climb,null);assert.equal(host.floatKrek.length,0);
   }
 });
+test('guest rolls open a beetle encountered later in the roll at 30, 60 and 120 Hz with sparse input packets',()=>{
+  for(const hz of [30,60,120]){
+    const {games,send}=team(),host=games[0].game,guest=games[1].game,start=guest.P.x;
+    const k=Object.assign(host.makeKrek(1),{kind:5,x:start+39,y:host.surfaceY(start)-12,hp:4,maxHp:4,windup:.3});host.floatKrek=[k];
+    guest.requestDodge(1);let sent=-1;
+    for(let tick=0;tick<=Math.ceil(hz*.22);tick++){
+      games[0].advance(1000/hz);games[1].advance(1000/hz);guest.updatePlayer(1/hz,{axis:0,top:48});
+      if(tick===0||tick/hz-sent>=1/15){send(1,games[1].pending);sent=tick/hz;}
+    }
+    send(1,games[1].pending);
+    assert.ok(k.flee>0,`${hz} Hz: the host must see contact during the roll`);
+    assert.equal(k.windup,0);assert.equal(k.hp,4,'a roll interrupts without dealing damage');
+    const tag=k.lastDodge;k.flee=.1;send(1,games[1].pending);
+    assert.equal(k.flee,.1);assert.equal(k.lastDodge,tag,'repeated packets cannot retrigger contact');
+  }
+});
+test('overlapping players each stagger once; alternating their packets cannot refresh the same roll',()=>{
+  const {games,send}=team(),host=games[0].game;
+  const k=Object.assign(host.makeKrek(1),{x:20,y:host.surfaceY(20)-12,hp:4,maxHp:4});host.floatKrek=[k];
+  for(const i of [1,2]){games[i].game.requestDodge(1);games[i].game.updatePlayer(1/120,{axis:0,top:48});send(i,games[i].pending);}
+  const tag=k.lastDodge;k.flee=.1;
+  send(1,games[1].pending);send(2,games[2].pending);
+  assert.equal(k.flee,.1);assert.equal(k.lastDodge,tag);assert.equal(Object.keys(k.dodgeHits).length,2);
+});
+test('remote roll contact is bounded to one dodge and expires before later walking can stagger',()=>{
+  for(const expired of [false,true]){
+    const {games,send}=team(),host=games[0].game,guest=games[1].game,start=guest.P.x;
+    const k=Object.assign(host.makeKrek(1),{x:start+(expired?39:55),y:host.surfaceY(start)-12,hp:4,maxHp:4});host.floatKrek=[k];
+    guest.requestDodge(1);guest.updatePlayer(1/120,{axis:0,top:48});send(1,games[1].pending);
+    games[0].advance(expired?500:180);
+    guest.P.x=start+42;guest.P.y=host.surfaceY(guest.P.x);send(1,games[1].pending);
+    assert.equal(k.flee,0);assert.equal(k.hp,4);assert.equal(host.coop.members[ids[1]].dodge,null);
+  }
+});
+test('a forged roll origin and extra dodge actions during recovery cannot extend guest reach',()=>{
+  const {games,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  const origin={x:guest.P.x,y:guest.P.y,direction:1,world:1,type:'dodge'};
+  send(1,[{...origin,id:1,x:9999}]);assert.equal(member.dodge,undefined);assert.equal(member.dodgeUntil,0);
+  guest.requestDodge(1);guest.updatePlayer(1/120,{axis:0,top:48});
+  send(1,[{...origin,id:2}]);const roll=member.dodge;assert.ok(roll);const recovery=member.dodgeUntil;
+  games[0].advance(70);send(1,[{...origin,id:3}]);
+  assert.equal(member.dodge,roll);assert.equal(member.dodge.id,2);assert.equal(member.dodgeUntil,recovery);
+});
+test('jumping, input cancellation, choosing a boon and changing stages cancel the remote roll window',()=>{
+  for(const cancel of ['jump','input','boon','stage']){
+    const {games,send}=team(),host=games[0].game,guest=games[1].game;
+    guest.requestDodge(1);guest.updatePlayer(1/120,{axis:0,top:48});send(1,games[1].pending);
+    const member=host.coop.members[ids[1]];assert.ok(member.dodge);
+    if(cancel==='jump'){guest.P.grounded=false;guest.P.y-=25;games[0].advance(66);send(1,games[1].pending);}
+    else if(cancel==='input'){guest.clearRunInput();games[0].advance(66);send(1,games[1].pending);}
+    else if(cancel==='boon')host.grantRogueXP(4);
+    else host.enterLevel(2);
+    assert.equal(member.dodge,null);
+  }
+});
+test('delayed actions are acknowledged and discarded after travel while new-stage input still works',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+  host.gardenSeeds=4;sync();guest.crouchGardenAction();guest.throwBomb({x:guest.P.x+30,y:guest.P.y-14});
+  assert.ok(games[1].pending.every(a=>a.world===1));
+  host.enterLevel(2);sync();const seeds=host.gardenSeeds;
+  Object.assign(guest.P,{y:host.surfaceY(guest.P.x),grounded:true,wet:false,st:'free'});games[0].advance(1000);
+  send(1,games[1].pending);
+  assert.equal(host.coop.members[ids[1]].ack,2);assert.equal(host.gardenPlots.length,0);assert.equal(host.bombs.length,0);assert.equal(host.gardenSeeds,seeds);
+  guest.crouchGardenAction();assert.equal(games[1].pending[2].world,2);send(1,games[1].pending);send(1,games[1].pending);
+  assert.equal(host.gardenPlots.length,1);assert.equal(host.gardenSeeds,seeds-1);assert.equal(host.coop.members[ids[1]].ack,3);
+});
