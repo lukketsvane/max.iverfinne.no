@@ -157,7 +157,7 @@ function help() {
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
     ['ROBOT', 'Tap your robot nearby to refill.'],
-    ['EXPLORE', 'Down at a shrine starts an optional trial. Time strengthens enemies. Reach stage 20 and defeat the Hollow Crown.'],
+    ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
     ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · R refill · 1–3 upgrade'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }

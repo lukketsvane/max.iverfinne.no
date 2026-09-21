@@ -49,6 +49,17 @@ test('a distant plant cannot pull Max toward it; empty soil is planted within re
   assert.equal(g.requestClimb(plot({ x: 90, stalk: true })), false);
   g.task = null; assert.equal(g.waterGardenPlot(g.gardenPlots[0]), false); assert.equal(g.task, null);
 });
+test('Down, Space and drag down keep tending tall plants before the exit opens and during the final boss',()=>{
+  for(const world of [1,20])for(const input of ['ArrowDown',' ','drag']){
+    const h=setup(),g=h.game;g.rogueRun.world=world;
+    Object.assign(g.gardenPlots[0],{x:0,stalk:true,growth:4,moisture:.2,health:.6});
+    if(input==='drag'){h.pointer('pointerdown',800,100);h.pointer('pointermove',802,142);h.pointer('pointerup',802,142);}
+    else h.key('keydown',input);
+    step(g);step(g);
+    assert.equal(g.climb,null);assert.equal(g.task.kind,'water');assert.equal(g.task.stand,0);assert.equal(g.P.x,0);
+    h.key('keydown','ArrowRight');step(g);assert.equal(g.task,null,'steering still interrupts care immediately');
+  }
+});
 test('iOS cancellation, lost capture and focus loss clear input without triggering actions', () => {
   for (const cancel of ['pointercancel', 'lostpointercapture', 'blur']) {
     const h = setup(), g = h.game;
