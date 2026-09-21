@@ -227,7 +227,8 @@ test('a guest must climb to a raised trial, and host validation uses that guestâ
 test('guest rolls interrupt enemies on elevated platforms at 30, 60 and 120 Hz',()=>{
   for(const hz of [30,60,120]){
     const {games,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
-    const ledge=host.stageLayout().platforms.find(p=>p.w>=40&&host.surfaceY(p.x+p.w/2)-p.y>30);
+    const ledge={id:'roll-fixture',x:24,w:64,y:Math.round(host.surfaceY(56))-48};
+    games.forEach(h=>{h.game.stageLayout().platforms=[{...ledge}];});
     Object.assign(guest.P,{x:ledge.x+5,y:ledge.y,vx:0,vy:0,platform:ledge.id,grounded:true,wet:false,st:'free'});
     member.avatar=guest.coopAvatar();
     const k=Object.assign(host.makeKrek(1),{kind:5,x:guest.P.x+18,y:ledge.y-12,hp:4,maxHp:4,windup:.3});host.floatKrek=[k];

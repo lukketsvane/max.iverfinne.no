@@ -68,7 +68,7 @@ function garden() {
   card.append(button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
   back();
 }
-function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
+function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id === 'runner' ? 'Moss' : id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function skinName(id) { return id.charAt(0).toUpperCase() + id.slice(1); }
 function skinPreview(id) {
   const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');
@@ -81,6 +81,7 @@ function chooseMax() {
   const grid = el('div', undefined, 'max-role-grid');
   for (const id of CLASS_IDS) {
     const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
+    choice.setAttribute('aria-label', classInfo(id).name + ' class');
     pixelText(choice, classInfo(id).name, 2, 0); grid.append(choice);
   }
   roles.append(grid, el('p', '', 'max-class-detail'));
@@ -89,6 +90,7 @@ function chooseMax() {
   const swatches = el('div', undefined, 'max-skin-grid');
   for (const id of SKIN_IDS) {
     const choice = button('', () => selectMax({ skinId: id }), 'max-skin-choice'); choice.dataset.skinId = id;
+    choice.setAttribute('aria-label', skinName(id) + ' appearance');
     choice.append(skinPreview(id)); pixelText(choice, skinName(id), 1, 0); swatches.append(choice);
   }
   skins.append(swatches); card.append(roles, skins);
@@ -224,7 +226,8 @@ function help() {
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['ROBOT', 'Tap your robot nearby to refill.'],
+    ['MOSS', 'Climb any plant and jump between plants as they grow. Every class can use a cleared exit stalk.'],
+    ['MECH', 'Only Mech owns watering robots. Any nearby teammate can tap a Mech robot to refill it.'],
     ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
     ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · R refill · 1–3 upgrade'],
   ];

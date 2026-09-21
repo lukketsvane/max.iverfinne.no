@@ -61,3 +61,19 @@ test('refilling pauses when the gardener jumps or stands on a ledge above the ro
   Object.assign(env.player,{y:-5,grounded:false});advance(bot,env,3);assert.equal(bot.state.water,.2);
   Object.assign(env.player,{y:0,grounded:true});advance(bot,env,2);assert.equal(bot.state.water,1);
 });
+test('a low shelf cannot start or continue a solo refill above the actual soil', () => {
+  const { game: g } = loadGame(), bot = g.ensureCompanion();
+  const x = g.P.x, soil = g.surfaceY(x), top = soil - 16;
+  g.stageLayout().platforms = [{ id: 'low-shelf', x: x - 20, w: 40, y: top }];
+  Object.assign(bot.state, { x, water: .2 });
+  Object.assign(g.P, { y: top, grounded: true, wet: false, vx: 0 });
+  assert.equal(g.refillCompanion(), false); assert.equal(bot.state.refill, 0);
+  g.P.y = soil; assert.equal(g.refillCompanion(), true);
+  g.updateCompanion(.05); const remaining = bot.state.refill;
+  g.P.y = top;
+  for (let i = 0; i < 60; i++) g.updateCompanion(.05);
+  assert.equal(bot.state.refill, remaining); assert.equal(bot.state.water, .2);
+  g.P.y = soil;
+  for (let i = 0; i < 40; i++) g.updateCompanion(.05);
+  assert.equal(bot.state.refill, 0); assert.equal(bot.state.water, 1);
+});

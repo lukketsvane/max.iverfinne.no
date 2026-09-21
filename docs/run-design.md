@@ -2,25 +2,56 @@
 
 An attempt ends at the Hollow Crown in garden 20. Each garden has three finite
 raids. Clearing them grows an exit stalk; Down / Space / drag down at its base
-advances the group. A naturally tall plant cannot skip a locked exit. Gardens
+commits to advancing the group. A naturally tall plant cannot skip a locked exit. Gardens
 5, 10 and 15 have their own boss in the third raid; only defeating the final
 Hollow Crown wins immediately. There is no garden 21 or resumable saved run.
 
 Time begins when Solo or the co-op run starts, before planting, and carries
 through every garden and transition. Boon choices freeze it; in-run Settings
-does not. Pressure is `seconds / 150 + (garden - 1) × 0.14`. It increases movement
-and damage smoothly; new encounters also use it for health and their fixed
-spawn budget. Raids alternate approach sides and use the current layout's enemy
-mix, with more simultaneous attackers in later gardens and larger teams. Fast
-kills never extend an encounter. A later balance pass should use actual
-completion times and failure points, especially in four-player runs.
+does not. Ordinary Moss climbing remains active combat. The brief explicit exit
+animation commits to upward travel: Down cannot reverse it and jumping cannot
+cancel it, preventing a protected camping loop. Travel never resets the clock.
+
+Movement and encounter pressure use `seconds / 150 + (garden - 1) × 0.14`.
+Time also applies superlinear resistance and damage to enemies already alive:
+
+```text
+threat = (1 + seconds / 180)^1.7
+durability = 1 + 0.65 × (threat - 1)
+damage = (1 + (garden - 1) × 0.14 × 0.065) × (1 + 0.45 × (threat - 1))
+```
+
+Direct hits and ember burn are divided by durability. This preserves existing
+damage and boss phases; it does not refill enemy HP. Neither damage nor
+durability has a time ceiling. Ordinary damage stagger develops a refractory
+period, so rapid bombs cannot permanently stun late enemies. Deliberate dodge,
+lantern, marked-dive and healing-channel counters remain available.
+
+| Elapsed time in garden 1, solo | Effective durability | Damage | Cleared-garden patrol cap | First-wave concurrency | First-wave budget |
+| --- | --- | --- | --- | --- | --- |
+| 0 minutes | 1× | 1× | 4 | 5 | 7 |
+| 5 minutes | 3.79× | 2.93× | 10 | 10 | 13 |
+| 10 minutes | 8.21× | 5.99× | 17 | 15 | 20 |
+| 20 minutes | 21.09× | 14.91× | 24 | 24 | 33 |
+
+Raids alternate sides and mix roles by layout, stage, wave and elapsed time.
+Each wave has a finite budget, capped at 36; fast kills never extend that wave.
+Clearing it does not create a safe waiting room. Mixed patrols continue after
+all three waves, with a spawn interval falling from seven seconds initially to
+about 0.57 seconds at ten minutes and 0.24 seconds at twenty. Waiting before
+planting accumulates reward-free predators that immediately attack a new
+seedling. All enemy sources share a 24-active limit; hazards cap at 32. Larger
+teams raise encounter density within those limits. Human completion times and
+failure points remain useful for subsequent tuning, especially in four-player runs.
 
 ## Platform routes
 
 The twenty gardens use six layout themes. Terraces, canopy, crossings, ruins
 and switchbacks repeat with different widths and route rhythms; garden 20 uses
 the Crown layout. `stage-layout.js` creates two elevated routes per garden from
-the same deterministic geometry for host and guests.
+the same deterministic geometry for host and guests. Selected hops have gaps
+that require jumping, and later versions narrow their shelves while keeping
+the core route reachable without upgrades.
 
 Ledges have one-way collision. Jump through from below and land while falling;
 landing resets the available air jump. Walking beyond a lip releases support
@@ -30,23 +61,26 @@ remain in use, with no separate platform action.
 
 The core routes reach shrine trials and feather pickups with every class's
 starting jump. Higher optional perches reward improved mobility. From garden 3,
-one bonus perch offers a reserved ember or dew pickup for each player. Planting
+one bonus perch offers a reserved ember or dew pickup for each player. The
+opposite core route also offers a once-only two-seed planting reserve. Magnet
+reach is radial, so it cannot pull a high reward down from outside its radius.
+Planting
 and tending remain on ground soil, while trials can be activated on their
 actual ledges. Exploring above the garden costs time spent away from its crops.
 
-## Starting classes
+## Classes and their special abilities
 
 Choose a class and an independent cosmetic skin before starting Solo or
 Together. Duplicate classes are allowed in co-op. The class lasts for that
-attempt; it never restricts the
-Cultivator, Warden or Vanguard boon paths. The garden carries the health model:
+attempt. Cultivator, Warden and Vanguard upgrades remain shared except for the
+Mech-only Companion and Rain engine choices. The garden carries the health model:
 Bulwark protects plants and Herbalist heals plants, without adding a Max health
 bar or another action button.
 
-| Class | Starting difference |
+| Class | Signature ability and starting kit |
 | --- | --- |
-| Mech | Starts with the supplied watering rover, at its smallest native tier. |
-| Runner | 25% faster movement, 20% stronger acceleration, higher jumps and 20% shorter dodge recovery. Feathers still improve jumps and unlock the second jump. |
+| Mech | Exclusive robot ownership, starting with the supplied watering rover at its smallest native tier. |
+| Moss | Exclusive living-plant climbing and plant-to-plant jumps, including immature plants. Also has 25% faster movement, 20% stronger acceleration, higher jumps and 20% shorter dodge recovery. |
 | Bulwark | 15% slower movement; grounded, dry footing protects nearby plants from 30% of damage. Its dodge shoves and interrupts pests 50% more strongly, and it takes 45% less knockback. |
 | Herbalist | 40% stronger active watering and healing. Tending also heals living neighbouring plants. It does not heal by standing idle. |
 
@@ -55,11 +89,25 @@ Several guards do not multiply the reduction. It covers bites, landed hazards
 and plant damage from explosions, and combines with the team's Thorns boon.
 Herbalist's healing splash reaches 34 native pixels. It adds 0.045 health on a
 watering action, or 0.016 health per second while holding water, with no extra
-score reward. Runner's jump launch speed is 15% greater, giving roughly 32%
+score reward. Moss's jump launch speed is 15% greater, giving roughly 32%
 more jump height before feather bonuses.
 
-Companion rank 1 unlocks the basic rover; ranks 2 and 3 unlock the two larger
-supplied robots. Mech begins at rank 1 and every other class begins at rank 0.
+Moss uses Up or an upward swipe beside a living plant to attach. Another Up
+leaps in the steering direction; contacting another stem in the air catches it.
+Down descends. The climb stops at the plant's actual current tip and extends as
+it grows. The physical height cap is 128 native pixels on every viewport, so
+host and guest validate the same geometry. Dead or missing plants release the
+climber, while shared snapshots rebind a living attachment by plant ID. Hazards
+can knock Moss off. Ordinary traversal never creates sky seeds or triggers
+travel; explicit Down at a cleared exit commits to departure for any class.
+
+Moss retains the canonical `runner` class ID for existing selections; `moss`
+is an accepted alias. Costume and class remain independent. A Moss appearance
+on another class does not grant climbing.
+
+Only Mech can own a rover, beginning at Companion rank 1. Ranks 2 and 3 unlock
+the two larger supplied robots. Other classes cannot receive a rover from
+boons, old perks, offered choices or incoming snapshots.
 Rain engine requires rank 3 and a Seed rain boon. Every rover has its own finite
 water tank, follows its owner and uses that owner's Companion ranks. A teammate
 can refill it by standing nearby for two seconds. Rovers do not award passive
@@ -118,12 +166,16 @@ The small particles and scenery carry these cues without a text overlay.
 
 ## Enemy roles
 
-| First garden | Enemy | Interaction |
+| First garden without waiting | Enemy | Interaction |
 | --- | --- | --- |
 | 2 | Seed thief | Telegraphs a theft, then escapes. Defeating it returns stolen seeds. |
 | 3 | Spore caster | Lobs a delayed strike. Tap the moving spore to intercept it with a bomb; the cleared attack waters nearby plants. |
 | 4 | Shield beetle | Its front shell blocks most damage. Dodge through or hit from behind. |
 | 6 | Healing moth | A visible channel heals wounded allies. Interrupt it or prioritise the moth. |
+
+Elapsed time unlocks specialists even when remaining in garden 1. Later patrols
+mix all seven ordinary enemy roles; the initial garden is not a permanent
+low-tier encounter.
 
 Fast pests gain marked dive attacks from garden 2; scouts can use them earlier.
 The dive aims at a player's height, including a platform, and can be interrupted.
@@ -164,6 +216,8 @@ updates, limited to one roll's distance and a short allowance for packet timing.
 Each teammate can interrupt a given pest once per roll, even when multiple
 players overlap. Jumping, input cancellation, a boon choice or stage travel
 closes that window.
+The host samples continuous footing along a roll, so a delayed packet cannot
+sweep through a gap or project an elevated attack onto the soil below it.
 
 Actions carry the stage where they were issued. After travel, the host
 acknowledges and discards older queued actions, so a delayed throw or planting
@@ -174,6 +228,9 @@ Class and skin selections are acknowledged through authenticated lobby channels
 before the host can start. The host fixes each member's kit for the attempt;
 later avatar input cannot change it. Snapshots carry each member's class, skin,
 items and owned rover. Only the host changes garden health and rover water.
+The host rejects non-Moss climbing avatars and checks living-stem reach. Both
+host boon processing and snapshot restoration reject robot perks and rovers
+for a non-Mech member. Another teammate may still refill Mech's robot.
 
 The host validates a teammate's platform footing at the stage's actual ledge
 height. Dodges and shrine interactions use that support; elevated growth

@@ -34,6 +34,11 @@
     stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
     var kind = theme(stage), shape = shapes[kind], variant = Math.floor((stage - 1) / 5);
     var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] };
+    function groundMinimum(center, width) {
+      var floor = Infinity, left = Math.round(center) - Math.floor(width / 2);
+      for (var x = left; x <= left + width; x++) floor = Math.min(floor, ground(x));
+      return floor;
+    }
     function make(id, center, y, width, side, optional) {
       center = Math.round(center); y = Math.round(y); width = Math.round(width);
       var p = { id: id, x: center - Math.floor(width / 2), y: y, w: width, depth: kind === 'crossing' ? 8 : 5 + ((stage + id.length) % 3), route: side, style: shape.style, optional: !!optional, floor: Math.round(ground(center)) };
@@ -44,24 +49,31 @@
       var path = [], previous = null;
       shape.x.forEach(function (offset, i) {
         // Different stages and opposite routes keep distinct width/gap rhythms.
-        var center = origin + side * (offset + (i ? ((i + variant + routeIndex) % 3 - 1) * 2 : 0));
+        var center = origin + side * offset;
         var width = shape.width[i] + ((variant + i + routeIndex) % 2) * 2;
+        width = i ? Math.max(18, width - 6 - variant * 4) : Math.max(32, width - variant * 2);
         var y;
         if (!previous) {
-          var floor = Math.min(ground(center - width / 2), ground(center), ground(center + width / 2));
+          var floor = groundMinimum(center, width);
           y = Math.floor(floor) - shape.rise[i];
           // A first ledge over a pond remains within one jump from the bank.
           if (wet && wet(center)) y = Math.min(y, Math.floor(ground(origin)) - 15);
         } else {
           var previousX=previous.x+previous.w/2;
-          center=Math.max(previousX-34,Math.min(previousX+34,center));
+          var direction=side*Math.sign(offset-shape.x[i-1]),separated=i%3!==0;
+          var gap=7+Math.floor((stage-1)*7/19),distance=separated?(previous.w+width)/2+gap:Math.min(34,Math.abs(offset-shape.x[i-1]));
+          center=previousX+direction*distance;
           y = previous.y - shape.rise[i];
-          // Avoid burying a ledge in a rising hillside without introducing an
-          // impossible taller step: fold that part of the route back instead.
-          var clearance=Math.floor(Math.min(ground(center-width/2),ground(center),ground(center+width/2)))-6;
+          // Selected hops have genuine air between the foot spans. Narrower
+          // late shelves and larger gaps add precision without extra jump power.
+          var clearance=Math.floor(groundMinimum(center,width))-6;
+          if (y > clearance && previous.y-clearance>19) {
+            center=previousX-direction*distance;
+            clearance=Math.floor(groundMinimum(center,width))-6;
+          }
           if (y > clearance) {
             if(previous.y-clearance<=19)y=clearance;
-            else {center=previousX+side*(i%2?-12:12);y=previous.y-16;}
+            else {center=previousX;width=Math.min(width,previous.w);y=previous.y-16;}
           }
         }
         previous = make(stage + ':' + routeIndex + ':' + i, center, y, width, side, false); path.push(previous);
@@ -69,7 +81,7 @@
       // Late terraces gain a taller end; other silhouettes retain their distinct
       // arches, returning branches, columns and alternating ascent.
       if (kind === 'terraces' && variant) for (var extra = 0; extra < variant; extra++) {
-        previous = make(stage + ':' + routeIndex + ':v' + extra, previous.x + previous.w / 2 + side * (extra % 2 ? -24 : 26), previous.y - 17, 34, side, false); path.push(previous);
+        previous = make(stage + ':' + routeIndex + ':v' + extra, previous.x + previous.w / 2 + side * (extra % 2 ? -30 : 32), previous.y - 17, Math.max(18,34-variant*4), side, false); path.push(previous);
       }
       var summit = path.reduce(function (a, b) { return b.y < a.y ? b : a; });
       var first = path[0], startX = first.x + first.w / 2;
@@ -88,7 +100,7 @@
       layout.routes.push({ id: routeIndex, side: side, start: start, platformIds: path.map(function (p) { return p.id; }) });
       layout.rewards.push(anchor(summit, side));
       layout.trials.push(anchor(path[Math.floor(path.length / 2)], side));
-      // These visibly separated perches reward an improved jump or Runner's
+      // These visibly separated perches reward an improved jump or Moss's
       // mobility; neither core trial nor its feather requires this shortcut.
       var bonus = make(stage + ':' + routeIndex + ':bonus', summit.x + summit.w / 2 + side * 26, summit.y - 32, 28, side, true);
       layout.bonuses.push(anchor(bonus, side));

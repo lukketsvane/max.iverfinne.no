@@ -24,7 +24,10 @@ pinned Supabase client. No server process or CDN script is required in productio
 
 On a phone, drag left or right from anywhere to walk or run, and swipe up to
 jump. Drag down to tend a plant within reach, harvest ripe seeds, or plant on
-empty soil. A nearby beanstalk can be climbed the same way. Taps and stationary
+empty soil. Down at a cleared garden's exit stalk commits to the next garden.
+Moss can swipe up beside any living plant to climb it, swipe up again to leap
+toward another stem, and drag down to descend. Plants can still be growing;
+Moss climbs only as high as the current stem. Taps and stationary
 holds never queue plant actions or walk to targets. Tap pests to defend.
 Tap the robot nearby to refill. Moving cancels a hand action immediately.
 
@@ -39,8 +42,12 @@ to refill. Settings and Exit are available during play and leave the world
 running. Only boon choices pause an active run; in co-op everyone chooses
 before the team resumes. Tap a boon or use keys 1–3.
 
-Choose Mech, Runner, Bulwark or Herbalist before Solo or Together. Classes
-provide different starting abilities and remain open to every boon path. Moss,
+Choose Mech, Moss, Bulwark or Herbalist before Solo or Together. Each has one
+signature ability: Mech owns watering robots, Moss climbs living plants,
+Bulwark guards nearby plants and Herbalist actively heals neighbouring plants.
+Only Mech can obtain Companion or Rain engine upgrades; only Moss can climb
+ordinary plants and jump between them. All classes can use an unlocked exit.
+The remaining boon paths are shared. Moss,
 Tide, Ember and Moon are independent costumes with the original animation
 timings and anchors. Together supports a private room of 1–4 signed-in players;
 the host starts after each player's class, costume and readiness are confirmed.
@@ -59,7 +66,8 @@ refreshable sessions. The frontend never stores the password, and does not use
 IP addresses as identity. The reserved identifier is an implementation detail,
 not a player contact address. There is no email-based password recovery.
 
-Only finished garden records, sound preferences and remembered login persist.
+Finished garden records, sound preferences, class and costume selections, and
+remembered login persist.
 There are no save/load controls. Old cloud data and its protected database schema
 are left intact, but the current frontend never reads or writes that slot.
 Garden records are saved on the device. A signed-in player can choose to publish
@@ -99,11 +107,12 @@ existing project and before running db push**:
 npx supabase migration repair 20260921160631 20260921163937 --status applied --linked
 ```
 
-For a new empty project, apply both migration files normally instead. Do not
+For a new empty project, apply all checked-in migrations normally instead. Do not
 mark migrations applied on a database that has not actually received them.
 
-RLS restricts every exposed row to `auth.uid() = user_id`. Anonymous clients
-have no table/function access. The save RPC is SECURITY INVOKER, checks the
+For the legacy private cloud-save storage, RLS restricts every row to
+`auth.uid() = user_id` and anonymous clients have no table/function access.
+The save RPC is SECURITY INVOKER, checks the
 expected account and revision, and cannot bypass RLS. The database rejects
 oversized or malformed envelopes; the client validates game data before restore.
 
@@ -119,20 +128,34 @@ different play styles, and surplus XP retains every earned choice.
 
 The twenty gardens use six route themes: terraces, canopy, crossings, ruins,
 switchbacks and the final Crown layout. The five recurring themes vary their
-platform widths and route rhythms as the run advances. Two elevated routes
+platform widths and route rhythms as the run advances, including real gaps
+that require jumping and narrower later shelves. Two elevated routes
 offer exploration away from the garden; extra pickups on higher perches make
-mobility upgrades useful without replacing the main route.
+mobility upgrades useful without replacing the main route. The opposite route
+also holds a two-seed reward for the shared planting reserve.
 
 Raids send closely spaced mixed groups from alternating sides. Enemy mixes
 depend on the layout and wave, and later gardens support more simultaneous
 attackers. Each raid still has a finite budget: faster defence clears it sooner.
-Pressure increases continuously with active run time and garden number, carrying
-across travel. It increases enemy movement and damage, and affects the health
-and budget of later encounters. Boon choices freeze this clock; Settings does
-not. An approaching wave gives three brief edge flashes and chimes.
+The global attempt clock increases pressure even while staying in the same
+garden. Existing enemies become tougher and hit harder, wave budgets and
+concurrency rise, and patrols arrive faster. Clearing all three waves still
+leaves a dangerous garden: mixed patrols continue indefinitely. Waiting without
+planting accumulates reward-free predators that attack a new seedling at once.
+Damage and durability keep growing without a time ceiling; active populations
+remain bounded at 24 enemies and 32 hazards. Travel preserves the clock. Boon
+choices freeze it; Settings and ordinary Moss climbing do not. An approaching
+wave gives three brief edge flashes and chimes.
+
+In garden 1, enemy durability rises from 1× initially to 3.79× at five minutes,
+8.21× at ten and 21.09× at twenty. Damage rises to 2.93×, 5.99× and 14.91× at
+those times. These multipliers apply to enemies already alive without restoring
+their health. Moving quickly through the run matters even after a strong build.
 
 Specialists enter early: seed thieves in garden 2, spore casters in 3, shield
-beetles in 4 and healing moths in 6. Marked dive attacks threaten players as they
+beetles in 4 and healing moths in 6. Elapsed time also unlocks these roles in an
+earlier garden, so camping in garden 1 cannot preserve its starting enemy mix.
+Marked dive attacks threaten players as they
 move through the routes. Later spore volleys can target players above the ground
 as well as crops, so higher ground does not remove every threat.
 
@@ -170,6 +193,9 @@ domain before calling a release live.
 See the [21 September release verification](docs/verification/2026-09-21-release.md)
 for the completed handoffs, automated checks, deployed browser evidence and
 remaining manual coverage.
+The [harder-gardens verification](docs/verification/2026-09-21-harder-gardens.md)
+records the subsequent time escalation, exclusive class abilities, platform
+routes, native canvas evidence and the provider's deployment-quota blocker.
 
 The hosted bouquet migration is
 `20260921204258_bouquet_leaderboard.sql`. It creates public read access to
@@ -185,21 +211,22 @@ already-installed schemas again.
 
 ## Companion and result artwork
 
-Mech starts with the small watering companion; other classes can unlock one
-with their first Companion boon. It follows its owner, approaches
+Only Mech can own a watering companion. Mech starts with the small robot and
+can upgrade it twice through Companion boons. It follows its owner, approaches
 reachable thirsty plants, and transfers water from a finite tank up to 78%
 moisture. It gives no care-score, XP, healing or instant growth. Tap the robot or
 press R while nearby, then stay still for the two-second refill.
 Ponds and steep ground block its walking route. It packs away during climbing
 and world travel and rejoins after leaving the visible garden.
 
-The `robot` run upgrade unlocks the companion and then has two further upgrades,
+Mech starts at Companion rank 1. Companion boons raise it to ranks 2 and 3,
 competing with normal boon choices. Small / upgraded / large tanks hold
 1 / 1.6 / 2.4 units, with watering
 rates of 0.10 / 0.13 / 0.16 moisture per second. Both upgrades reset on a new run.
 Water remains consistent during world travel within the current attempt. Reload
 or retry clears companion upgrades: Mech starts with the small robot and a fresh
-tank; other classes begin without a robot until they choose a Companion boon.
+tank; other classes never receive a robot. Co-op validates this ownership in
+boon choices and restored snapshots, including older or stale class data.
 All UI text is English.
 
 Artwork is imported without resampling: the 32×32 starter from
@@ -224,6 +251,9 @@ fixtures are `native-skins`, `native-enemies` and `native-crown`; choose one wit
 `?mode=native-skins&portrait=1`, or use the review page buttons. Its game copy
 replaces storage with an in-memory map and uses a disconnected guest menu;
 sample runs never replace player saves.
+The `plant-climb` scene exercises Moss on immature plants; `pressure0`,
+`pressure5`, `pressure10` and `pressure20` run the real encounter director in the
+same cleared garden at those elapsed times. The clock continues in these scenes.
 The production game exports no debug API.
 
 The main menu uses native game sprites in a separate night scene with Play,

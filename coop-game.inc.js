@@ -33,13 +33,14 @@ function coopDepart(id){
   if(!coop||!coop.host||id===coop.me||!coop.members[id])return;
   coop.members[id].left=true;coop.members[id].choices=[];coop.members[id].dodge=null;coopResolveChoices();
 }
+function coopSupportY(x,y){var support=playerSupportY(x,y);return Math.abs(y-support)<=4?support:null;}
 function coopWithMember(m,fn){
   var oldP=P,oldClass=rogueRun.classId,oldPerks=rogueRun.perks,oldTraits=rogueRun.traits,oldTask=task,oldWater=holdWater,oldCool=bombCool,oldActor=coopActor,oldClimb=climb,oldWarp=warp;
   if(!coopActor)coop.members[coop.me].avatar=coopAvatar();
   try{
     P=Object.assign({},oldP,m.avatar,{st:'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,throwPose:0});
     P.platform=playerSupportId(P.x,P.y);P.wet=playerWetAt(P.x,P.y);
-    P.grounded=Math.abs(P.y-playerSupportY(P.x,P.y))<4&&!P.wet;
+    P.grounded=!!P.grounded&&coopSupportY(P.x,P.y)!==null&&!P.wet;
     rogueRun.classId=m.classId;rogueRun.perks=m.perks;rogueRun.traits=m.traits;task=null;holdWater=null;climb=null;warp=null;bombCool=Math.max(0,(m.cool-performance.now())/1000);coopActor=m;
     return fn();
   }finally{m.cool=performance.now()+Math.max(0,bombCool)*1000;P=oldP;rogueRun.classId=oldClass;rogueRun.perks=oldPerks;rogueRun.traits=oldTraits;task=oldTask;holdWater=oldWater;bombCool=oldCool;coopActor=oldActor;climb=oldClimb;warp=oldWarp;}
@@ -50,9 +51,13 @@ function coopInput(id,packet){
   // The authenticated lobby selection is fixed for the whole run. Inputs carry
   // presentation data for compatibility, but cannot change an actor's kit.
   if(a){a.classId=m.classId;a.skin=m.skin;}
+  if(a&&a.st==='climb'&&(!window.MaxClasses.canClimb(m.classId)||!plantClimbAt(a.x,a.y,10)))a=null;
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
-    if(!coop.choosing&&Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){m.avatar=a;accepted=true;}
+    if(!coop.choosing&&Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
+      a.wet=playerWetAt(a.x,a.y);a.grounded=a.grounded&&coopSupportY(a.x,a.y)!==null&&!a.wet;
+      m.avatar=a;accepted=true;
+    }
     m.last=now;
   }
   if(!Array.isArray(packet.actions)||packet.actions.length>16)return;
@@ -64,8 +69,10 @@ function coopInput(id,packet){
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
     if(runIsPaused()||!a||a.world!==worldLevel())return;
     if(action.type==='travel'){
-      var plant=stalkAt(m.avatar.x,m.avatar.y,9);
-      if(plant&&rogueRun.clearedWorld===worldLevel())enterLevel(worldLevel()+1);
+      var actor=m.avatar,plant=stalkAt(actor.x,actor.y,9);
+      var soil=actor.grounded&&!actor.wet&&!playerWetAt(actor.x,actor.y)&&Math.abs(actor.y-surfaceY(actor.x))<4;
+      var attached=window.MaxClasses.canClimb(m.classId)&&actor.st==='climb'&&plantClimbAt(actor.x,actor.y,10)===plant;
+      if(plant&&(soil||attached)&&rogueRun.clearedWorld===worldLevel())enterLevel(worldLevel()+1);
       return;
     }
     coopWithMember(m,function(){
@@ -79,9 +86,10 @@ function coopInput(id,packet){
       }
       else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
         var x=action.x==null?P.x:action.x,y=action.y==null?P.y:action.y,dir=action.direction==null?P.face:action.direction;
-        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36||Math.abs(y-playerSupportY(x,y))>4||playerWetAt(x,y))return;
+        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36)return;
+        var support=coopSupportY(x,y);if(support===null||playerWetAt(x,y))return;
         m.dodgeUntil=now+dodgeRecovery()*1000;
-        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:y,progress:0,expires:now+(DODGE_TIME+.12)*1000};
+        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:support,progress:0,expires:now+(DODGE_TIME+.12)*1000};
         P.dodgeDir=dir;dewDodge();
       }
     });
@@ -91,25 +99,38 @@ function coopInput(id,packet){
 }
 function coopDodgeContact(m,now){
   var d=m.dodge,a=m.avatar;if(!d)return;
-  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||playerWetAt(a.x,a.y)||Math.abs(a.y-playerSupportY(a.x,a.y))>4){m.dodge=null;return;}
+  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||playerWetAt(a.x,a.y)||coopSupportY(a.x,a.y)===null){m.dodge=null;return;}
   var distance=(a.x-d.origin)*d.dir,maxDistance=DODGE_SPEED*DODGE_TIME+2;
   if(distance<d.progress-2){m.dodge=null;return;}
-  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir,y=playerSupportY(x,a.y);
+  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir;
+  var steps=Math.max(1,Math.ceil(Math.abs(x-d.x))),points=[{x:d.x,y:d.y}],blocked=false;
+  for(var i=1;i<=steps;i++){
+    var nextX=d.x+(x-d.x)*i/steps,previous=points[points.length-1],nextY=coopSupportY(nextX,previous.y);
+    // A later packet may land on another ledge. Keep every part of this roll
+    // on continuous footing, without sweeping a gap or the soil below it.
+    if(nextY===null||playerWetAt(nextX,nextY)){blocked=true;break;}
+    points.push({x:nextX,y:nextY});
+  }
+  var end=points[points.length-1];
+  if(!blocked&&distance<=maxDistance&&Math.abs(end.y-a.y)>4){m.dodge=null;return;}
   // Input arrives less often than physics ticks. Sweep the accepted segment,
-  // bounded to one roll, so a guest cannot skip through an enemy between packets.
-  coopWithMember(m,function(){P.dodgeId=d.id;P.dodgeDir=d.dir;dodgeSweep(d.x,d.y,x,y);});
-  d.x=x;d.y=y;d.progress=progress;
-  if(progress>=maxDistance||a.dodging===false)m.dodge=null;
+  // bounded to one roll and continuous footing, including a supported edge.
+  coopWithMember(m,function(){
+    P.dodgeId=d.id;P.dodgeDir=d.dir;
+    for(var i=1;i<points.length;i++)dodgeSweep(points[i-1].x,points[i-1].y,points[i].x,points[i].y);
+  });
+  d.x=end.x;d.y=end.y;d.progress=Math.max(d.progress,(end.x-d.origin)*d.dir);
+  if(blocked||progress>=maxDistance||a.dodging===false)m.dodge=null;
 }
 function coopOffer(){
   if(!coop||!coop.host||coop.choosing)return;
   coop.round++;coop.choosing=true;clearRunInput();
-  coopMembers().forEach(function(m){m.dodge=null;m.choices=perkChoices(m.perks,m.slot).map(function(p){return p.id;});});
+  coopMembers().forEach(function(m){m.dodge=null;m.choices=perkChoices(m.perks,m.slot,m.classId).map(function(p){return p.id;});});
   coopShowChoices();coopResolveChoices();
 }
 function coopChoose(id,boon,round){
   if(!coop||!coop.host||!coop.choosing||round!==coop.round)return;
-  var m=coop.members[id];if(!m||m.left||m.choices.indexOf(boon)<0)return;
+  var m=coop.members[id];if(!m||m.left||m.choices.indexOf(boon)<0||!window.MaxBuilds.available(m.perks,boon,m.classId))return;
   m.perks[boon]=Math.min(perkMax(boon),(m.perks[boon]||0)+1);m.choices=[];
   coopResolveChoices();coopShowChoices();
 }
@@ -167,7 +188,7 @@ function coopState(s){
     if(!coop.members[q.id])coop.members[q.id]={id:q.id,slot:q.slot,ack:0,last:performance.now(),left:false};
     var m=coop.members[q.id],a=coopCleanAvatar(q.avatar);if(!a)return;ids.push(q.id);
     m.classId=window.MaxClasses.clean(q.classId||a.classId);m.skin=window.MaxClasses.skin(q.skin||a.skin);a.classId=m.classId;a.skin=m.skin;
-    m.perks=window.MaxBuilds.clean(q.perks);m.choices=Array.isArray(q.choices)?q.choices.filter(function(id){return ROGUE_PERKS.some(function(p){return p.id===id;});}).slice(0,3):[];
+    m.perks=window.MaxClasses.cleanPerks(q.perks,m.classId);m.choices=Array.isArray(q.choices)?q.choices.filter(function(id){return window.MaxBuilds.available(m.perks,id,m.classId);}).slice(0,3):[];
     var traits=cleanTraits(q.traits);
     if(q.id===coop.me)Object.keys(traits).forEach(function(type){if(traits[type]>(m.traits&&m.traits[type]||0))traitNotice(type,traits[type]);});
     m.traits=traits;
@@ -177,7 +198,7 @@ function coopState(s){
   Object.keys(coop.members).forEach(function(id){coop.members[id].left=ids.indexOf(id)<0;});
   if(window.MaxCompanion){
     var robots=Array.isArray(s.robots)?s.robots.slice(0,4):(s.robot?[Object.assign({owner:coop.network.room.host},s.robot)]:[]);
-    coopMembers().forEach(function(m){var state=robots.find(function(r){return r&&r.owner===m.id;});if(!state||!m.perks.robot){m.companion=null;return;}
+    coopMembers().forEach(function(m){var state=robots.find(function(r){return r&&r.owner===m.id;});if(!state||!m.perks.robot||!window.MaxClasses.canHaveRobot(m.classId)){m.companion=null;return;}
       if(!m.companion)m.companion=window.MaxCompanion.create(state,m.avatar.x,Math.max(0,m.perks.robot-1));Object.assign(m.companion.state,coopPlain(state));
     });
     companion=coop.members[coop.me].companion||null;

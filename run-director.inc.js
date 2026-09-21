@@ -16,7 +16,7 @@ function stageCombatProfile(){
   var kind=layout&&(layout.kind||layout.theme)||['terraces','canopy','crossing','ruins','switchbacks'][(worldLevel()-1)%5];
   return COMBAT_PROFILES[kind]||COMBAT_PROFILES.terraces;
 }
-function enemyUnlocked(kind){return kind<3||worldLevel()>={3:2,4:3,5:4,6:6}[kind];}
+function enemyUnlocked(kind){return kind<3||Math.max(worldLevel(),1+Math.floor(Math.max(0,runElapsed)/75))>={3:2,4:3,5:4,6:6}[kind];}
 function waveEnemyKind(index){
   var first={2:3,3:4,4:5,6:6}[worldLevel()];
   if(index===2&&first!=null)return first;
@@ -83,6 +83,10 @@ function initRunStage(){
     var route=layout&&layout.rewards&&layout.rewards[i%layout.rewards.length],x=route?route.x+(i>1?6:0):dryX(origin+side*(112+i*15));
     dropRunItem('feathers',x,route?route.y-12:surfaceY(x)-20,a.member&&a.member.id);
   });
+  // The opposite elevated route earns a small shared planting reserve.
+  var seedRoute=layout&&layout.rewards&&layout.rewards[layout.rewards.length-1],seedId='route:'+w;
+  seedPickups=seedPickups.filter(function(q){return !q.routeReward;});
+  if(seedRoute&&!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:seedRoute.x,y:seedRoute.y-6,amount:2,fall:false,ph:w});
   if(w>=3&&layout&&layout.bonuses&&layout.bonuses.length){
     var bonus=layout.bonuses[(w-1)%layout.bonuses.length];
     players.forEach(function(a,i){dropRunItem(w%2?'embers':'dew',bonus.x+(i-(players.length-1)/2)*4,bonus.y-12,a.member&&a.member.id);});
@@ -147,9 +151,18 @@ function updateStageWeather(dt){
     if(w.type==='drought'){p.moisture=Math.max(0,p.moisture-dt*.009);}
   });
 }
-function runDamageScale(){return 1+raidPressure()*.065;}
+// The global attempt clock powers every living enemy, including one spawned
+// several minutes ago. Resistance preserves its damage history: time never
+// heals hp or resets a boss phase, and travelling cannot reset the multiplier.
+function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)/180,1.7);}
+function runDurabilityScale(){return 1+.65*(runTimeThreat()-1);}
+function runDamageScale(){return (1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
+function runRaidLimit(){return Math.min(MAX_ACTIVE_ENEMIES,5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0)+Math.floor(Math.max(0,runElapsed)/60));}
+function runRaidInterval(){return Math.max(.12,(.85-(gardenWave-1)*.045)/(1+Math.max(0,runElapsed)/180));}
+function runPatrolLimit(active,cleared){return Math.min(MAX_ACTIVE_ENEMIES,(active?(cleared?4:2+Math.ceil(active/2)):1+coopSize())+Math.floor(Math.max(0,runElapsed)/45)+Math.max(0,coopSize()-1));}
+function runPatrolInterval(){return Math.max(.18,7/Math.pow(1+Math.max(0,runElapsed)/120,1.4));}
 function raidBudget(active){
-  var base=5+gardenWave*2+Math.floor((worldLevel()-1)/3)+Math.min(3,Math.floor(active/3))+Math.floor(raidPressure()/2.2);
+  var base=5+gardenWave*2+Math.floor((worldLevel()-1)/3)+Math.min(3,Math.floor(active/3))+Math.floor(Math.max(0,runElapsed)/45);
   return Math.min(36,Math.ceil(base*(1+Math.max(0,coopSize()-1)*.42)));
 }
 function enemyKind(){
@@ -161,11 +174,11 @@ function damagePest(k,amount,x,build){
   var frontal=k.kind===5&&!k.flee&&(x-k.x)*k.face>=-1;
   var factor=frontal?.25:1;
   if(k.boss&&k.exposed>0)factor*=2;
-  k.hp-=amount*factor;k.flash=1;
+  k.hp-=amount*factor/runDurabilityScale();k.flash=1;
   // Moon Moth's restorative channel is a deliberate interrupt opportunity.
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;k.windup=0;k.exposed=1.4;k.cool=2.2;}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
-  if(!k.boss&&!frontal)staggerKrek(k,.42);
+  if(!k.boss&&!frontal&&(k.divePhase===1||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
   if(k.hp<=0){var i=floatKrek.indexOf(k);if(i>=0)floatKrek.splice(i,1);burstKrek(k);return true;}
   return false;
 }
@@ -209,11 +222,11 @@ function updateRunHazards(dt){
 }
 function updateHazardContact(){
   for(var i=0;i<runHazards.length;i++){
-    var h=runHazards[i];if(h.tell>0||hazardHits[h.id]||P.st==='float'||P.st==='climb')continue;
+    var h=runHazards[i];if(h.tell>0||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
     if(Math.abs(P.x-h.x)<h.r&&Math.abs(P.y-h.y)<20){
       hazardHits[h.id]=true;
       if(P.dodgeT>0)continue;
-      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;task=null;holdWater=null;P.st='free';setAnim('rise');
+      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
@@ -237,7 +250,7 @@ function cancelPestDive(k){
   k.diveHazard=0;k.divePhase=0;k.diveT=0;k.diveCool=2.8;
 }
 function updatePestDive(k,dt){
-  if(k.kind!==2||worldLevel()<2&&!k.scout)return false;
+  if(k.kind!==2||worldLevel()<2&&runElapsed<75&&!k.scout)return false;
   k.diveCool=Math.max(0,(k.diveCool||0)-dt);
   if(k.divePhase===1){
     if(k.windup<=0){cancelPestDive(k);return false;}
@@ -256,7 +269,7 @@ function updatePestDive(k,dt){
   if(k.diveCool>0)return false;
   var target=null,near=125;
   runPlayers().forEach(function(a){var d=Math.hypot(a.p.x-k.x,a.p.y-12-k.y);
-    if(a.p.st!=='float'&&a.p.st!=='climb'&&d<near&&d>30){target=a.p;near=d;}
+    if(a.p.st!=='float'&&!(a.p===P&&climb&&climb.exit)&&d<near&&d>30){target=a.p;near=d;}
   });
   if(!target)return false;
   var warning=addRunHazard('gust',target.x,12,1.21,0,k.x,k.y,target.y);
@@ -286,7 +299,8 @@ function updateEnemyRole(k,dt){
   }
   if(k.kind===6){
     var friend=null,fd=110;
-    floatKrek.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(q!==k&&!q.boss&&q.hp>0&&q.hp<q.maxHp&&d<fd){friend=q;fd=d;}});
+    // Support moths help attackers without forming a mutual healing loop.
+    floatKrek.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(q!==k&&!q.boss&&q.kind!==6&&q.hp>0&&q.hp<q.maxHp&&d<fd){friend=q;fd=d;}});
     k.healing=false;
     if(friend){
       k.healX=friend.x;k.healY=friend.y;

@@ -56,7 +56,7 @@ plants. Never substitute the preview names or example bouquets for player data.
 
 ## Native co-op art integration
 
-Four cosmetic Max skins are integrated independently of Mech, Runner, Bulwark
+Four cosmetic Max skins are integrated independently of Mech, Moss, Bulwark
 and Herbalist class choice: Moss (hood/satchel), Tide (rain hood/collar), Ember
 (headband/ribbon), and Moon (cape/cap). Original Max remains the rendering fallback. The
 current costumes supply the class selection; they do not change class powers.

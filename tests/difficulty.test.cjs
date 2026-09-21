@@ -85,11 +85,11 @@ test('lanterns offer a short reprieve but cannot hold a pest indefinitely, inclu
 });
 
 test('unplanted scouting starts after a grace period, stays bounded and grants no seed, XP or score farming',()=>{
-  const {game:g}=fresh();g.krekSpawnT=0;g.rogueRun.worldElapsed=21;g.updateKrek(.01);assert.equal(g.floatKrek.length,0);
-  g.rogueRun.worldElapsed=22;g.updateKrek(.01);assert.equal(g.floatKrek.length,1);assert.equal(g.floatKrek[0].scout,true);
+  const {game:g}=fresh();g.krekSpawnT=0;g.runElapsed=21;g.updateKrek(.01);assert.equal(g.floatKrek.length,0);
+  g.runElapsed=22;g.updateKrek(.01);assert.equal(g.floatKrek.length,1);assert.equal(g.floatKrek[0].scout,true);
   for(let i=0;i<60;i++){g.krekSpawnT=0;g.updateKrek(.01);}assert.equal(g.floatKrek.length,2);
   const before={xp:g.rogueRun.xp,seeds:g.seedPickups.length,defended:g.gardenStats.defended,score:g.gardenScore,blast:g.blastScore,power:g.gardenPower};
-  for(const k of [...g.floatKrek])g.explode(k.x,k.y,true);
+  for(const k of [...g.floatKrek]){g.explode(k.x,k.y,true);g.explode(k.x,k.y,true);}
   assert.equal(g.floatKrek.length,0);assert.deepEqual({xp:g.rogueRun.xp,seeds:g.seedPickups.length,defended:g.gardenStats.defended,score:g.gardenScore,blast:g.blastScore,power:g.gardenPower},before);
   assert.equal(g.rogueRun.ended,false);assert.equal(g.gardenWave,0);
 });

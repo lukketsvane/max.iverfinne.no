@@ -1,0 +1,341 @@
+{
+  "renderer": "Current game frame in Node VM with @napi-rs/canvas. DOM and local asset fetch adapters replace browser services; no browser automation or generated imagery.",
+  "capturedAt": "2026-09-21T22:14:45.119Z",
+  "sourceHash": "83e7f9280b4b75a3352d36695ff6bed9109c24a8c6ba834638d8d60198e41fbf",
+  "nativeAdapterHash": "61e4cccf0644d097effd8e35f8e521c5e60a08b57a4fbc3d0aaead497006f888",
+  "sourceHashes": {
+    "index.html": "83e7f9280b4b75a3352d36695ff6bed9109c24a8c6ba834638d8d60198e41fbf",
+    "stage-layout.js": "8cc29c02a4b7c34afa510c6e751b82c7e1ff4025866dc19ef1f5b2f1482cd9df",
+    "run-director.inc.js": "daf824dcff8c0ba3b06908554769dba69a7cce9f4a8ebd6886c3acbad86bb8f6",
+    "coop-game.inc.js": "bd28fa9af9e7b8863a3420a1daf1357607e8da96c54ebc998bad69917fb83e40",
+    "companion.js": "42c9c559fd1cacdf41f54c6ed97cdc3e3a25d1816e7ac3a2081401fb33e9939f",
+    "dist/native-art.js": "61e4cccf0644d097effd8e35f8e521c5e60a08b57a4fbc3d0aaead497006f888",
+    "review.html": "798e9c959a763875622329b417613abd0f860d09fc64ce2ef054b202cf085593",
+    "tests/game-harness.cjs": "4f0d4b1ce020c2dd8771006ebee3cc3a77759e135868d0ca232d3ad6861fa6a7"
+  },
+  "reports": [
+    {
+      "file": "max-native-moss-growing-climb.png",
+      "mode": "plant-climb",
+      "description": "Moss class with the independent Moss cosmetic climbing a real growing plant before the garden is cleared; three immature nonstalk plants.",
+      "canvas": [
+        130,
+        282
+      ],
+      "exported": [
+        390,
+        846
+      ],
+      "nearestNeighbourScale": 3,
+      "nearestNeighbourVerified": true,
+      "state": {
+        "world": 1,
+        "classId": "runner",
+        "skinId": "moss",
+        "ended": false,
+        "position": [
+          1,
+          -10.438201178496996
+        ],
+        "motion": "climb",
+        "grounded": false,
+        "platformId": null,
+        "runElapsed": 0.4999999999999816,
+        "pressure": 0.003333333333333211,
+        "enemies": 0,
+        "plants": [
+          {
+            "id": 1,
+            "kind": 3,
+            "growth": 0.6685966041855994,
+            "stalk": false,
+            "health": 1
+          },
+          {
+            "id": 2,
+            "kind": 6,
+            "growth": 0.4200534810111994,
+            "stalk": false,
+            "health": 1
+          },
+          {
+            "id": 3,
+            "kind": 3,
+            "growth": 0.9185966041855994,
+            "stalk": false,
+            "health": 1
+          }
+        ],
+        "bossIds": []
+      },
+      "art": {
+        "decodedImages": 37,
+        "nativeLoaded": [
+          "moss",
+          "tide",
+          "ember",
+          "moon",
+          "seed-thief",
+          "spore-caster",
+          "shield-beetle",
+          "healing-moth",
+          "hollow-crown",
+          "mossback",
+          "bellkeeper",
+          "moon-moth"
+        ],
+        "failed": [],
+        "jsonRequests": [
+          "dist/assets/max-skins-v1/moss/atlas.json",
+          "dist/assets/max-skins-v1/tide/atlas.json",
+          "dist/assets/max-skins-v1/ember/atlas.json",
+          "dist/assets/max-skins-v1/moon/atlas.json",
+          "dist/assets/enemies-v1/seed-thief/atlas.json",
+          "dist/assets/enemies-v1/spore-caster/atlas.json",
+          "dist/assets/enemies-v1/shield-beetle/atlas.json",
+          "dist/assets/enemies-v1/healing-moth/atlas.json",
+          "dist/assets/enemies-v1/hollow-crown/atlas.json",
+          "dist/assets/boss-milestones-v1/native/05-mossback.json",
+          "dist/assets/boss-milestones-v1/native/10-bellkeeper.json",
+          "dist/assets/boss-milestones-v1/native/15-moon-moth.json",
+          "dist/assets/companion/animations.json"
+        ]
+      }
+    },
+    {
+      "file": "max-native-raised-ruins-route.png",
+      "mode": "layout4",
+      "description": "Bulwark grounded on a real Garden 4 raised platform beside the elevated trial; native platform collision runs normally.",
+      "canvas": [
+        130,
+        282
+      ],
+      "exported": [
+        390,
+        846
+      ],
+      "nearestNeighbourScale": 3,
+      "nearestNeighbourVerified": true,
+      "state": {
+        "world": 4,
+        "classId": "bulwark",
+        "skinId": "original",
+        "ended": false,
+        "position": [
+          618523,
+          -90
+        ],
+        "motion": "free",
+        "grounded": true,
+        "platformId": "4:1:4",
+        "runElapsed": 1.3333333333332864,
+        "pressure": 0.4288888888888886,
+        "enemies": 0,
+        "plants": [],
+        "bossIds": []
+      },
+      "art": {
+        "decodedImages": 37,
+        "nativeLoaded": [
+          "moss",
+          "tide",
+          "ember",
+          "moon",
+          "seed-thief",
+          "spore-caster",
+          "shield-beetle",
+          "healing-moth",
+          "hollow-crown",
+          "mossback",
+          "bellkeeper",
+          "moon-moth"
+        ],
+        "failed": [],
+        "jsonRequests": [
+          "dist/assets/max-skins-v1/moss/atlas.json",
+          "dist/assets/max-skins-v1/tide/atlas.json",
+          "dist/assets/max-skins-v1/ember/atlas.json",
+          "dist/assets/max-skins-v1/moon/atlas.json",
+          "dist/assets/enemies-v1/seed-thief/atlas.json",
+          "dist/assets/enemies-v1/spore-caster/atlas.json",
+          "dist/assets/enemies-v1/shield-beetle/atlas.json",
+          "dist/assets/enemies-v1/healing-moth/atlas.json",
+          "dist/assets/enemies-v1/hollow-crown/atlas.json",
+          "dist/assets/boss-milestones-v1/native/05-mossback.json",
+          "dist/assets/boss-milestones-v1/native/10-bellkeeper.json",
+          "dist/assets/boss-milestones-v1/native/15-moon-moth.json",
+          "dist/assets/companion/animations.json"
+        ]
+      }
+    },
+    {
+      "file": "max-native-garden-one-ten-minutes.png",
+      "mode": "pressure10",
+      "description": "The same cleared Garden 1 at ten minutes, populated by the actual time-dependent patrol director; normal combat and care.",
+      "canvas": [
+        130,
+        282
+      ],
+      "exported": [
+        390,
+        846
+      ],
+      "nearestNeighbourScale": 3,
+      "nearestNeighbourVerified": true,
+      "state": {
+        "world": 1,
+        "classId": "mech",
+        "skinId": "original",
+        "ended": false,
+        "position": [
+          5.483333333333369,
+          -7.87446828887996
+        ],
+        "motion": "free",
+        "grounded": false,
+        "platformId": null,
+        "runElapsed": 602.1666666666647,
+        "pressure": 4.014444444444432,
+        "enemies": 17,
+        "plants": [
+          {
+            "id": 1,
+            "kind": 3,
+            "growth": 1.4165829881599963,
+            "stalk": false,
+            "health": 1
+          },
+          {
+            "id": 2,
+            "kind": 6,
+            "growth": 1.4346011545599957,
+            "stalk": false,
+            "health": 1
+          }
+        ],
+        "bossIds": []
+      },
+      "art": {
+        "decodedImages": 37,
+        "nativeLoaded": [
+          "moss",
+          "tide",
+          "ember",
+          "moon",
+          "seed-thief",
+          "spore-caster",
+          "shield-beetle",
+          "healing-moth",
+          "hollow-crown",
+          "mossback",
+          "bellkeeper",
+          "moon-moth"
+        ],
+        "failed": [],
+        "jsonRequests": [
+          "dist/assets/max-skins-v1/moss/atlas.json",
+          "dist/assets/max-skins-v1/tide/atlas.json",
+          "dist/assets/max-skins-v1/ember/atlas.json",
+          "dist/assets/max-skins-v1/moon/atlas.json",
+          "dist/assets/enemies-v1/seed-thief/atlas.json",
+          "dist/assets/enemies-v1/spore-caster/atlas.json",
+          "dist/assets/enemies-v1/shield-beetle/atlas.json",
+          "dist/assets/enemies-v1/healing-moth/atlas.json",
+          "dist/assets/enemies-v1/hollow-crown/atlas.json",
+          "dist/assets/boss-milestones-v1/native/05-mossback.json",
+          "dist/assets/boss-milestones-v1/native/10-bellkeeper.json",
+          "dist/assets/boss-milestones-v1/native/15-moon-moth.json",
+          "dist/assets/companion/animations.json"
+        ]
+      }
+    },
+    {
+      "file": "max-native-mossback-encounter.png",
+      "mode": "boss5",
+      "description": "Garden 5 Mossback using its native boss atlas and actual attack timers, with Herbalist and nearby plants.",
+      "canvas": [
+        130,
+        282
+      ],
+      "exported": [
+        390,
+        846
+      ],
+      "nearestNeighbourScale": 3,
+      "nearestNeighbourVerified": true,
+      "state": {
+        "world": 5,
+        "classId": "herbalist",
+        "skinId": "original",
+        "ended": false,
+        "position": [
+          823830,
+          0.6505880313251673
+        ],
+        "motion": "free",
+        "grounded": true,
+        "platformId": null,
+        "runElapsed": 1.8333333333332713,
+        "pressure": 0.5722222222222219,
+        "enemies": 1,
+        "plants": [
+          {
+            "id": 1,
+            "kind": 3,
+            "growth": 1.3917516797866654,
+            "stalk": false,
+            "health": 1
+          },
+          {
+            "id": 2,
+            "kind": 6,
+            "growth": 1.3917516797866654,
+            "stalk": false,
+            "health": 1
+          }
+        ],
+        "bossIds": [
+          {
+            "id": "mossback",
+            "phase": 1,
+            "windup": 0.28333333333336885,
+            "exposed": 0
+          }
+        ]
+      },
+      "art": {
+        "decodedImages": 37,
+        "nativeLoaded": [
+          "moss",
+          "tide",
+          "ember",
+          "moon",
+          "seed-thief",
+          "spore-caster",
+          "shield-beetle",
+          "healing-moth",
+          "hollow-crown",
+          "mossback",
+          "bellkeeper",
+          "moon-moth"
+        ],
+        "failed": [],
+        "jsonRequests": [
+          "dist/assets/max-skins-v1/moss/atlas.json",
+          "dist/assets/max-skins-v1/tide/atlas.json",
+          "dist/assets/max-skins-v1/ember/atlas.json",
+          "dist/assets/max-skins-v1/moon/atlas.json",
+          "dist/assets/enemies-v1/seed-thief/atlas.json",
+          "dist/assets/enemies-v1/spore-caster/atlas.json",
+          "dist/assets/enemies-v1/shield-beetle/atlas.json",
+          "dist/assets/enemies-v1/healing-moth/atlas.json",
+          "dist/assets/enemies-v1/hollow-crown/atlas.json",
+          "dist/assets/boss-milestones-v1/native/05-mossback.json",
+          "dist/assets/boss-milestones-v1/native/10-bellkeeper.json",
+          "dist/assets/boss-milestones-v1/native/15-moon-moth.json",
+          "dist/assets/companion/animations.json"
+        ]
+      }
+    }
+  ]
+}

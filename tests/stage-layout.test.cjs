@@ -27,7 +27,7 @@ test('twenty deterministic stage layouts have distinct routes, visible first ste
     for (const route of layout.routes) {
       const platforms = route.platformIds.map(id => layout.platforms.find(p => p.id === id));
       assert.ok(Math.abs(platforms[0].x + platforms[0].w / 2 - layout.origin) < 70, 'first shelf appears near the starting screen');
-      platforms.forEach(p => { assert.ok([p.x, p.y, p.w].every(Number.isInteger)); assert.ok(p.w >= 28); });
+      platforms.forEach(p => { assert.ok([p.x, p.y, p.w].every(Number.isInteger)); assert.ok(p.w >= 18); });
       for (let i = 1; i < platforms.length; i++) assert.ok(platforms[i - 1].y - platforms[i].y <= 19, 'core routes never require upgraded jumps');
     }
     for (const reward of layout.rewards) assert.ok(reward.y <= -40, 'exploration now leads above ground');
@@ -38,15 +38,15 @@ test('twenty deterministic stage layouts have distinct routes, visible first ste
 
 function launch(g, target, hz = 60) {
   const start = { ...g.P };
-  // Players can release Up to shorten a jump; Runner need not overshoot a
+  // Players can release Up to shorten a jump; Moss need not overshoot a
   // neighbouring shelf simply because its full jump can reach the one above.
   for (const releaseAt of [.08, .14, .18, .24, Infinity]) {
     Object.assign(g.P, start, { vx: 0, vy: 0, wet: false, st: 'free' });
     g.doJump(true); g.heldUp = true;
     for (let tick = 0; tick < hz * 1.4; tick++) {
       if (tick / hz >= releaseAt) g.heldUp = false;
-      const center = target.x + target.w / 2, distance = center - g.P.x;
-      g.updatePlayer(1 / hz, { axis: Math.abs(distance) > 1 ? Math.sign(distance) : 0, top: 88 });
+      const landingX = Math.max(target.x + 3,Math.min(target.x + target.w - 3,start.x)), distance = landingX - g.P.x;
+      g.updatePlayer(1 / hz, { axis: Math.abs(distance) > 1 ? Math.sign(distance) : 0, top: 48 });
       if (g.P.grounded && g.P.platform === target.id) { g.heldUp = false; return true; }
       if (tick > 8 && g.P.grounded) break;
     }
@@ -55,8 +55,8 @@ function launch(g, target, hz = 60) {
   return false;
 }
 
-test('every core shelf is reachable by all four unupgraded classes on the actual twenty gardens', () => {
-  for (let stage = 1; stage <= 20; stage++) {
+test('all four unupgraded classes can walk and jump every core hop across twenty gardens at 30, 60 and 120 Hz', () => {
+  for (const hz of [30,60,120]) for (let stage = 1; stage <= 20; stage++) {
     const { game: g } = loadGame(); g.resetRogueRun('test'); if (stage > 1) g.enterLevel(stage);
     const origin = g.P.x, layout = layouts.create(stage, origin, g.surfaceY, g.waterAt);
     for (const classId of ['mech', 'runner', 'bulwark', 'herbalist']) {
@@ -65,9 +65,10 @@ test('every core shelf is reachable by all four unupgraded classes on the actual
         let previous = null;
         for (const id of route.platformIds) {
           const target = layout.platforms.find(p => p.id === id);
-          const start = previous ? { x: previous.x + previous.w / 2, y: previous.y } : route.start;
+          const direction = previous ? Math.sign(target.x + target.w / 2 - previous.x - previous.w / 2) : 0;
+          const start = previous ? { x: direction > 0 ? previous.x + previous.w - 3 : previous.x + 3, y: previous.y } : route.start;
           Object.assign(g.P, { ...start, grounded: true, platform: previous?.id || null, coyote: .1, airJumpUsed: false });
-          assert.equal(launch(g, target), true, `${classId}: garden ${stage} ${layout.theme}, ${previous?.id || 'soil'} → ${id}`);
+          assert.equal(launch(g, target,hz), true, `${hz} Hz ${classId}: garden ${stage} ${layout.theme}, ${previous?.id || 'soil'} → ${id}`);
           previous = target;
         }
       }
