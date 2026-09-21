@@ -55,7 +55,7 @@
         }
         if (s.refill > 0) {
           var refiller = env.refiller || env.player;
-          if (Math.abs(refiller.x - s.x) <= 32 && Math.abs(refiller.vx) < 5 && !env.wet(s.x)) {
+          if (env.refillerOnSoil !== false && Math.abs(refiller.x - s.x) <= 32 && Math.abs(refiller.vx) < 5 && !env.wet(s.x)) {
             pose('refill'); s.refill = Math.max(0, s.refill - dt);
             if (!s.refill) { s.water = TIERS[s.tier].capacity; pose('idle'); }
           } else pose('empty');

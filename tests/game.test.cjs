@@ -251,10 +251,14 @@ test('quick kills do not replenish a raid, and its warning gives time to react',
     game.updateGardenFun(.5);
     assert.equal(game.floatKrek.length, 0, 'no enemy may spawn during the initial warning');
     const spawned = new Set();
-    for (let i = 0; i < 100 && game.gardenRaidActive; i++) {
+    for (let i = 0; i < 250 && game.gardenRaidActive; i++) {
       game.updateGardenFun(.1);
       for (const enemy of game.floatKrek) spawned.add(enemy);
       if (killImmediately) game.floatKrek.length = 0;
+      else if(game.floatKrek.length===game.raidConcurrentLimit()&&game.rogueRun.raidRemaining>0){
+        assert.equal(game.rogueRun.raidTotal,total,'waiting at the live cap never expands the encounter');
+        game.floatKrek.shift();
+      }
     }
     assert.equal(game.rogueRun.raidRemaining, 0);
     assert.equal(spawned.size, total);
@@ -285,13 +289,13 @@ test('time strengthens an active raid without adding to its finite enemy budget'
   assert.equal(restored.rogueRun.raidRemaining, remaining);
   assert.equal(restored.rogueRun.raidTotal, total);
   restored.runElapsed = 420;
-  assert.equal(restored.raidPressure(), 2, 'pressure follows the entire attempt');
+  assert.equal(restored.raidPressure(), 2.8, 'pressure follows the faster whole-attempt curve');
   const spawned = new Set(restored.floatKrek);
   for (let i = 0; i < 100 && restored.gardenRaidActive; i++) {
     restored.floatKrek.length = 0;
     restored.updateGardenFun(.1);
     for (const enemy of restored.floatKrek) {
-      assert.equal(enemy.pressure, 2, 'new enemies reflect the continuously advancing clock');
+      assert.equal(enemy.pressure, 2.8, 'new enemies reflect the continuously advancing clock');
       spawned.add(enemy);
     }
   }

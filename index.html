@@ -5,6 +5,7 @@
 <script src="companion.js"></script>
 <script src="build-paths.js"></script>
 <script src="max-classes.js"></script>
+<script src="run-platforms.js"></script>
 <script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
@@ -214,6 +215,37 @@ function surfAt(sx) {
   var i = (sx | 0) + 5;
   if (i < 0 || i >= IW + 10) return surfaceY(Math.round(camX) + sx);
   return surf[i];
+}
+
+// Platforms are a separate collision layer. Plants, ponds and rovers keep
+// their original soil surface, and every co-op client builds the same routes.
+var stageLayout = null;
+function runLayout() {
+  var stage = worldLevel();
+  if (!stageLayout || stageLayout.stage !== stage) stageLayout = window.MaxPlatforms.build(stage, levelOriginX(stage), surfaceY);
+  return stageLayout;
+}
+function platformSupportY(x,y,tolerance) {
+  var limit=tolerance==null?4:tolerance;
+  var platform=window.MaxPlatforms.findSupport(runLayout().platforms,x,y,limit);
+  if(platform)return platform.y;
+  var soil=surfaceY(x);return Math.abs(y-soil)<=limit?soil:null;
+}
+function playerOnSoil() { return P.grounded&&!P.wet&&Math.abs(P.y-surfaceY(P.x))<=4; }
+function drawRunPlatforms() {
+  if(!runActive||rogueRun.ended)return;
+  runLayout().platforms.forEach(function(p){
+    var x=Math.round(p.x-camX),y=Math.round(p.y-camY),w=p.width;
+    if(x+w<-3||x>IW+3||y>IH+10||y<-16)return;
+    var branch=p.kind==='branch';
+    ctx.fillStyle=branch?'#202c31':'#263640';ctx.fillRect(x+1,y+1,w-2,4);
+    ctx.fillStyle=branch?'#405049':'#45616b';ctx.fillRect(x,y,w,2);
+    ctx.fillStyle='#829b82';ctx.fillRect(x+2,y,w-4,1);
+    ctx.fillStyle=branch?'#34433d':'#344951';ctx.fillRect(x+3,y+5,w-6,2);
+    // A few roots underneath distinguish solid ledges from background flora.
+    ctx.fillStyle='#344b43';
+    for(var j=5;j<w-3;j+=7){ctx.fillRect(x+j,y+6,1,3+(j%3));ctx.fillRect(x+j-1,y+8,1,1);}
+  });
 }
 
 /* ---------------------------------------------------------------- palette */
@@ -526,21 +558,29 @@ function physics(dt, inp) {
   P.vy += GRAV * dt;
   if (P.vy > 340) P.vy = 340;
   if (P.st === 'float' && P.vy > 30) P.vy = 30;
+  var previousX=P.x,previousY=P.y;
   P.x += P.vx * dt;
   P.y += P.vy * dt;
 
   var g = surfaceY(P.x);
+  if(P.st!=='float'&&P.vy>=0){
+    var platforms=runLayout().platforms;
+    var ledge=window.MaxPlatforms.findLanding(platforms,previousX,previousY,P.x,P.y);
+    if(!ledge&&P.grounded)ledge=window.MaxPlatforms.findSupport(platforms,P.x,previousY,2);
+    if(ledge&&ledge.y<g)g=ledge.y;
+  }
   if (P.y >= g || (P.grounded && P.vy>=0 && g-P.y<=3)) {
     if (!P.grounded) {
       if (P.st === 'float') landFloat();
       var imp = P.vy;
       P.land = imp > 160 ? 0.30 : 0.15;
-      setAnim('land'); var wl = waterAt(P.x); if (wl) ripple(P.x, wl.level, 'splash'); else puff(P.x, g, imp > 160 ? 9 : 4, 0.5);
+      setAnim('land'); var wl = waterAt(P.x); if (wl&&g>wl.level+1) ripple(P.x, wl.level, 'splash'); else puff(P.x, g, imp > 160 ? 9 : 4, 0.5);
     }
     P.grounded = true; P.airJumpUsed=false; P.y = g; P.vy = 0; P.coyote = 0.1;
   } else if (P.grounded) {
     P.grounded = false; P.coyote = 0.1;
   }
+  if(!P.grounded)P.dodgeT=0;
 }
 
 function animate(dt) {
@@ -2595,6 +2635,7 @@ function companionAt(x,y){
   var found=false;eachCompanion(function(bot){if(bot.state.state!=='packed'&&Math.abs(x-bot.state.x)<18&&Math.abs(y-(surfaceY(bot.state.x)-12))<17)found=true;});return found;
 }
 function refillCompanion(){
+  if(!playerOnSoil())return false;
   if(coopGuest())return coopAction('refill');
   if(runIsPaused())return false;
   var candidates=[];eachCompanion(function(bot){if(bot.state.state!=='packed')candidates.push(bot);});
@@ -2609,7 +2650,7 @@ function updateCompanion(dt){
   eachCompanion(function(bot,m){
     var owner=m?coopMemberAvatar(m):P,refiller=coop&&bot.state.refill>0&&bot.refiller&&coop.members[bot.refiller];
     var person=refiller&&!refiller.left?coopMemberAvatar(refiller):owner;
-    bot.tick(dt,{paused:runIsPaused(),tier:Math.max(0,((m?m.perks:rogueRun.perks).robot||1)-1),player:owner,refiller:person,plants:gardenPlots,
+    bot.tick(dt,{paused:runIsPaused(),tier:Math.max(0,((m?m.perks:rogueRun.perks).robot||1)-1),player:owner,refiller:person,refillerOnSoil:person.grounded&&!person.wet&&Math.abs(person.y-surfaceY(person.x))<=4,plants:gardenPlots,
       ground:surfaceY,wet:waterAt,safeX:function(x){return dryX(x+(waterAt(x)?(x<owner.x?-6:6):0));},transport:owner.st==='float'||owner.st==='climb'||(!m||m.id===coop.me)&&!!(climb||warp)});
   });
 }
@@ -2943,7 +2984,7 @@ function updateSeedPickups(dt){
     if(coop&&coop.host)coopMembers().forEach(function(m){if(m.id!==coop.me&&Math.hypot(m.avatar.x-q.x,m.avatar.y-6-q.y)<Math.hypot(collector.x-q.x,collector.y-6-q.y)){collector=m.avatar;collectorPerks=m.perks;}});
     magnet=10+(collectorPerks.magnet||0)*12;
     if(q.fall){q.vy+=58*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.94,dt*60);var g=surfaceY(q.x)-2;if(q.y>=g){q.y=g;q.vy=0;q.vx=0;q.fall=false;}}
-    if(magnet>10&&Math.abs(q.x-collector.x)<magnet){q.x+=(collector.x-q.x)*Math.min(1,dt*(2+(collectorPerks.magnet||0)*1.2));q.y+=(collector.y-6-q.y)*Math.min(1,dt*2.2);}
+    if(magnet>10&&Math.hypot(q.x-collector.x,q.y-(collector.y-6))<magnet){q.x+=(collector.x-q.x)*Math.min(1,dt*(2+(collectorPerks.magnet||0)*1.2));q.y+=(collector.y-6-q.y)*Math.min(1,dt*2.2);}
     if(Math.abs(q.x-collector.x)<(q.sky?12:7)&&Math.abs(q.y-(collector.y-6))<(q.sky?24:18)){collectSeed(q);continue;}
     if(!q.id&&Math.abs(q.x-collector.x)>IW*2.2)seedPickups.splice(i,1);
   }
@@ -3328,13 +3369,13 @@ function stalkAt(wx,wy,maxD){
 function requestClimb(p){
   if(rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES)return false;
   if(coop){
-    if(!p||!p.stalk||p.dead||Math.abs(P.x-p.x)>=9||!P.grounded||P.wet||rogueRun.clearedWorld!==worldLevel())return false;
+    if(!p||!p.stalk||p.dead||Math.abs(P.x-p.x)>=9||!playerOnSoil()||rogueRun.clearedWorld!==worldLevel())return false;
     if(coopGuest())return coopAction('travel');
     enterLevel(worldLevel()+1);return true;
   }
   if(!p||!p.stalk||p.dead||warp)return false;
   if(P.st==='climb'||P.st==='float')return true;
-  if(Math.abs(P.x-p.x)<9&&P.grounded&&!P.wet)return beginClimb(p);
+  if(Math.abs(P.x-p.x)<9&&playerOnSoil())return beginClimb(p);
   return false;
 }
 function tapStalk(wx,wy){var sk=stalkAt(wx,wy,10);if(!sk)return false;requestClimb(sk);return true;}
@@ -3540,7 +3581,7 @@ function drawWorldBanner(t){
   ctx.globalAlpha=1;
 }
 function raidPressure(){
-  return Math.max(0,runElapsed)/210+(worldLevel()-1)*.14;
+  return Math.max(0,runElapsed)/150+(worldLevel()-1)*.22;
 }
 function updateGardenFun(dt){
   if(runIsPaused()||climb||warp||P.st==='float')return;
@@ -3587,14 +3628,15 @@ function updateGardenFun(dt){
     rogueRun.raidTotal=raidBudget(active);
     rogueRun.raidRemaining=Math.max(0,rogueRun.raidTotal-raidAlive);
   }
-  var concurrent=Math.min(12,3+Math.ceil(gardenWave/3)+Math.max(0,coopSize()-1));
+  var concurrent=raidConcurrentLimit();
 
   if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent){
     var bossWave=gardenWave===FINAL_WAVE,elite=bossWave&&!gardenBossSpawned;
-    var k=elite&&worldLevel()===RUN_STAGES?makeHollowCrown():makeKrek(Math.random()<.5?-1:1,elite);k.raid=true;floatKrek.push(k);
+    var spawnIndex=rogueRun.raidTotal-rogueRun.raidRemaining;
+    var k=elite&&worldLevel()===RUN_STAGES?makeHollowCrown():makeKrek(raidSpawnSide(spawnIndex),elite,spawnIndex);k.raid=true;floatKrek.push(k);
     rogueRun.raidRemaining--;raidAlive++;
     if(elite)gardenBossSpawned=true;
-    gardenRaidSpawn=Math.max(.45,1.15-raidPressure()*.035);
+    gardenRaidSpawn=raidSpawnDelay(spawnIndex);
   }
 
   if(gardenRaidGrace<=0&&rogueRun.raidRemaining===0&&raidAlive===0){
@@ -3617,9 +3659,9 @@ function updateGardenFun(dt){
 function pickKrekTarget(k){
   var best=null,score=-1;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead||p.health<=0)continue;var d=Math.abs(p.x-k.x);if(d>650)continue;var s=p.growth*2+p.health-d/900+(p.growth>=1?.7:0);if(s>score){score=s;best=p;}}return best;
 }
-function makeKrek(side,elite){
+function makeKrek(side,elite,spawnIndex){
   var targets=gardenPlots.filter(function(p){return !p.dead;}),center=targets.length?targets[(Math.random()*targets.length)|0].x:P.x;
-  var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22,kind=enemyKind();
+  var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22,kind=enemyKind(spawnIndex);
   var pressure=raidPressure(),hp=1+Math.floor((worldLevel()-1)/7)+Math.floor(pressure/7)+(elite?2:0);
   return{x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.3,windup:0,attackTarget:null,think:0,flee:0,hp:hp,maxHp:hp,flash:0,kind:kind,elite:!!elite,queen:false,raid:false,pressure:pressure};
 }
@@ -3901,8 +3943,8 @@ for (var k2 in ANIM2) { ANIM2[k2].sh = 2; ANIM[k2] = ANIM2[k2]; }
 /* Hands work only within reach. No input ever steers toward a task. */
 var task = null;
 function embody(kind,x,fn){
-  if(coopActor){if(!P.grounded||P.wet||Math.abs(x-P.x)>18)return false;fn();return true;}
-  if(!P.grounded||P.wet||Math.abs(x-P.x)>18)return false;
+  if(!playerOnSoil()||Math.abs(x-P.x)>18)return false;
+  if(coopActor){fn();return true;}
   if(P.st==='task')return true;
   if(!sheet2Ready){fn();return true;}
   var dir=Math.abs(x-P.x)<3?P.face:(x>P.x?1:-1);
@@ -3920,6 +3962,7 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
+  if(!playerOnSoil())return false;
   if(coopGuest()){
     if(!P.grounded||P.wet||task||P.st!=='free')return false;
     if(interactEncounter())return true;
@@ -3976,7 +4019,7 @@ function updateHands(dt, inp) {
   }
   if (!P.grounded || P.wet) { if (P.st !== 'free') P.st = 'free'; task = null; holdWater=null; return; }
   if(P.st==='watering'){
-    if(!holdWater||!holdWater.p||holdWater.p.dead||move){P.st='free';setAnim('idle');return;}
+    if(!playerOnSoil()||!holdWater||!holdWater.p||holdWater.p.dead||move){P.st='free';setAnim('idle');holdWater=null;return;}
     P.vx=0;P.face=holdWater.p.x>=P.x?1:-1;if(P.anim!=='waterHold')setAnim('waterHold');
     waterGardenPlotTick(holdWater.p,dt);return;
   }
@@ -4993,6 +5036,7 @@ function frame(now) {
   drawSeedPickups(tSec);
   drawRunExploration(tSec);
   drawGardenPlots(tSec);
+  drawRunPlatforms();
   drawAnts();
   drawLowFlora(tSec, false);
   drawLights(tSec);

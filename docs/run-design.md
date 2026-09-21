@@ -7,10 +7,55 @@ Defeating the final boss wins immediately. There is no garden 21 or saved run.
 
 Time begins with Play, before planting, and carries through every garden and
 transition. Boon choices freeze it; in-run Settings does not. Pressure is
-`seconds / 210 + (garden - 1) × 0.14`. It increases movement and damage smoothly;
+`seconds / 150 + (garden - 1) × 0.22`. It increases movement and damage smoothly;
 new encounters also use it for health and their fixed spawn budget. Fast kills
 never extend an encounter. A later balance pass should use actual completion
 times and failure points, especially in four-player runs.
+
+## Platform routes and level variety
+
+Each garden has two deterministic routes of real one-way platforms: jump up
+through their undersides and land on top while descending. The soil remains a
+separate surface for plants, ponds and rovers. The arrival area stays clear.
+Six physical profiles repeat with harder dimensions through the twenty gardens:
+stone terraces, forked boughs, root switchbacks, stone spires, broken bridges and
+high canopies. They change direction, platform width, gaps and vertical spacing.
+
+There are 8–12 platforms per garden. Later versions narrow to 14 native pixels,
+add hops and widen gaps up to 14 pixels. An ascent never exceeds 20 pixels.
+Every route is reachable by a walking Bulwark with no feathers; Runner and earned
+jump upgrades give more freedom to cross or skip sections. Falling returns Max
+to the existing garden below. Leaving an edge retains the normal coyote jump.
+
+One route holds each player's reserved feather; the opposite route holds one
+shared two-seed pickup. Reward perches sit at least 48 pixels above the soil.
+These are optional time-versus-reward detours while the garden remains under
+attack. Each new garden clears the previous route's uncollected seeds.
+
+Platforms use integer pixels and the existing night-garden palette. Each co-op
+client generates the same geometry without extra snapshot fields. Remote dodge
+sweeps require continuous footing and stop at an unsupported gap. Gardening,
+shrine activation, ground-rover refills and exit travel require dry soil footing.
+
+## Denser encounters
+
+With two active plants, the first garden's waves contain 6, 7 and 8 enemies
+(previously 4, 5 and 6). A wave fixes its budget when it starts: later gardens,
+more elapsed pressure and additional teammates increase it, up to 32 planned
+spawns. Quick kills and waiting never add more enemies to the same wave.
+
+The simultaneous raid limit starts at 5 enemies in solo, rises to 6 for that
+garden's final wave, and reaches 9–10 late in the run. Four players can face up
+to 13 simultaneous raiders. Shrine guards and the Crown's finite phase summons
+are separate encounters. Six mixed formations follow the platform profile and
+rotate by wave, approaching from both sides. Spawn intervals shorten with
+pressure, with a short gap after every fourth reinforcement.
+
+Caster and healer allowances count all living ordinary enemies, including
+ambient pests and shrine guards. Solo/duo runs allow one healer; larger groups
+allow two. Casters allow one before garden 7, then two, plus one for groups of
+three or four. Healing moths cannot heal each other or the boss. Attack warnings
+and the final Crown's three phases retain their existing timings.
 
 ## Starting classes
 
@@ -93,9 +138,9 @@ The small particles and scenery carry these cues without a text overlay.
 | First garden | Enemy | Interaction |
 | --- | --- | --- |
 | 2 | Seed thief | Telegraphs a theft, then escapes. Defeating it returns stolen seeds. |
-| 4 | Spore caster | Lobs a delayed ground strike. Tap the moving spore to intercept it with a bomb; the cleared attack waters nearby plants. |
-| 7 | Shield beetle | Its front shell blocks most damage. Dodge through or hit from behind. |
-| 10 | Healing moth | A visible channel heals wounded allies. Interrupt it or prioritise the moth. |
+| 3 | Spore caster | Lobs a delayed ground strike. Tap the moving spore to intercept it with a bomb; the cleared attack waters nearby plants. |
+| 5 | Shield beetle | Its front shell blocks most damage. Dodge through or hit from behind. |
+| 7 | Healing moth | A visible channel heals wounded allies. Interrupt it or prioritise the moth. |
 | 20 | Hollow Crown | Three phases; root strikes and spores, then a cyan vulnerability window. |
 
 The Crown summons a finite group at two-thirds and one-third health. Its strikes
