@@ -136,6 +136,10 @@ The connected Vercel project is **max.iverfinne.no**
 `main` is the production branch. Verify the deployment's commit and the custom
 domain before calling a release live.
 
+See the [21 September release verification](docs/verification/2026-09-21-release.md)
+for the completed handoffs, automated checks, deployed browser evidence and
+remaining manual coverage.
+
 The hosted bouquet migration is
 `20260921204258_bouquet_leaderboard.sql`. It creates public read access to
 published personal bests, a private immutable submission receipt, and the
