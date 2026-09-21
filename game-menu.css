@@ -8,6 +8,7 @@
 .max-menu-kicker{margin:0 0 7px;font-size:10px;letter-spacing:.24em;color:#afbd91}
 .max-menu h1{font-size:64px;font-weight:900;line-height:1;letter-spacing:-.07em;margin:0 0 12px;color:#ece0ad;text-shadow:3px 3px 0 #4c5936}
 .max-menu h2{font-size:22px;line-height:1.25;margin:10px 0 16px;letter-spacing:-.04em}
+.max-menu h1:focus,.max-menu h2:focus{outline:none}
 .max-menu p{font-size:12px;line-height:1.7;color:#bbc4b0;margin:0 0 20px}
 .max-menu button{width:100%;min-height:46px;padding:12px 14px;background:#1d2d22;border:1px solid #5b6a49;border-radius:3px;color:#ece8cf;font:inherit;font-size:12px;cursor:pointer;touch-action:manipulation}
 .max-menu button+button{margin-top:9px}

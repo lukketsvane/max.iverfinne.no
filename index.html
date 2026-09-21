@@ -2586,7 +2586,11 @@ function clearRunInput(){
 function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&(rogueRun.choice||rogueRun.ended)));}
 function setMenuPaused(paused){
   menuPaused=!!paused;clearRunInput();
-  if(paused)saveGarden();
+  if(paused){
+    saveGarden();
+    if(perkMenu)perkMenu.style.display='none';
+    if(window.MaxRunResults)window.MaxRunResults.hide();
+  }
   else{last=performance.now();if(rogueRun.ended)showRunResult();else if(rogueRun.choice)renderRogueChoice();}
 }
 function saveGarden(){
