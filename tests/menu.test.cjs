@@ -46,7 +46,8 @@ async function menu(savedLoadout, { delayInitialSession = false } = {}) {
   const settle = () => new Promise(resolve => setTimeout(resolve, 15));
   await settle();
   function click(text) {
-    const b = [...w.document.querySelectorAll('button')].find(n => n.textContent === text);
+    const buttons = [...w.document.querySelectorAll('button')];
+    const b = buttons.find(n => n.getAttribute('aria-label') === text + ' class') || buttons.find(n => n.textContent === text);
     assert.ok(b, `button ${text}`); assert.equal(b.disabled, false); b.click();
   }
   async function submit() {
@@ -154,7 +155,7 @@ test('Moss class keeps the runner identity and stays independent of the Moss app
     try {
       m.click('Play');
       const role = m.w.document.querySelector('[data-class-id="runner"]');
-      assert.equal(role.textContent, 'Moss'); assert.equal(role.getAttribute('aria-label'), 'Moss class');
+      assert.equal(role.getAttribute('aria-label'), 'Moss class');
       assert.equal(role.getAttribute('aria-pressed'), 'true');
       assert.equal(m.w.document.querySelector('[data-skin-id="moss"]').getAttribute('aria-label'), 'Moss appearance');
       assert.equal(m.w.document.querySelector('[data-skin-id="moon"]').getAttribute('aria-pressed'), 'true');
@@ -220,5 +221,33 @@ test('results return from live Settings to the home menu when a solo run ends', 
     m.click('Play'); m.click('Solo');
     assert.equal(overlay.hidden, true, 'a new run remains reachable without reloading');
     assert.equal(m.pauses.at(-1), false);
+  } finally { m.dom.window.close(); }
+});
+
+test('dismissing live Settings returns keyboard focus to its trigger without pausing or restarting the run', async () => {
+  const m = await menu();
+  try {
+    // JSDOM has no audio device; the real key gesture still reaches the menu.
+    m.w.HTMLMediaElement.prototype.play = async () => {};
+    m.click('Play'); m.click('Solo');
+    const trigger = m.w.document.querySelector('.max-live-settings');
+    const overlay = m.w.document.querySelector('.max-menu'), run = m.begun;
+    for (const dismissal of ['Escape', 'Back']) {
+      trigger.focus(); trigger.click(); await m.settle();
+      assert.equal(overlay.hidden, false); assert.equal(overlay.dataset.live, 'true');
+      const sound = [...overlay.querySelectorAll('button')].find(button => button.textContent === 'Sound on');
+      sound.focus(); assert.equal(m.w.document.activeElement, sound);
+      if (dismissal === 'Escape') {
+        const event = new m.w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+        sound.dispatchEvent(event);
+        assert.equal(event.defaultPrevented, true);
+      } else m.click('Back');
+      await m.settle();
+      assert.equal(overlay.hidden, true, 'Escape must not bubble out and reopen Settings');
+      assert.equal(m.w.document.activeElement, trigger, 'focus must return to a visible control');
+      assert.equal(trigger.hidden, false);
+      assert.deepEqual(m.pauses, [true, false], 'opening and dismissing Settings never pauses the active run');
+      assert.equal(m.begun, run, 'dismissal must preserve the existing run');
+    }
   } finally { m.dom.window.close(); }
 });

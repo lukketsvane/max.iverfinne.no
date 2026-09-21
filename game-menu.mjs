@@ -33,19 +33,23 @@ function message(text, error = false) {
 }
 function page(name, title) {
   screen = name; overlay.dataset.screen = name; card.replaceChildren();
-  card.append(el('p', 'MAX / THE WILD GARDEN', 'max-menu-kicker'));
-  const h = el('h2');
-  if (['play', 'together', 'lobby'].includes(name)) pixelText(h, title, 2, 0); else h.textContent = title;
-  h.id = 'max-menu-title'; h.tabIndex = -1; card.append(h);
+  const header = el('header', undefined, 'max-menu-header');
+  header.append(el('p', 'THE WILD GARDEN', 'max-menu-kicker'));
+  const h = name === 'account' ? el('h2', title) : pixelText(el('h2'), title, 2, 0);
+  h.id = 'max-menu-title'; h.tabIndex = -1; header.append(h); card.append(header);
   status = el('p', '', 'max-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   queueMicrotask(() => { if (opened) h.focus({ preventScroll: true }); });
 }
-function back() { card.append(button('Back', liveSettings ? dismissSettings : home, 'subtle')); }
+function back() { card.append(button('Back', liveSettings ? dismissSettings : home, 'subtle max-back')); }
 function home() {
   page('home', 'MAX');
   card.replaceChildren();
+  const content = el('div', undefined, 'max-home-content');
+  const brand = el('header', undefined, 'max-home-brand');
   const title = pixelText(el('h1'), 'MAX', 12, 2); title.id = 'max-menu-title'; title.tabIndex = -1;
+  brand.append(title, pixelText(el('p', undefined, 'max-home-subtitle'), 'THE WILD GARDEN', 2, 1));
   const nav = el('nav', undefined, 'max-home-nav'); nav.setAttribute('aria-label', 'Main menu');
+  const links = el('div', undefined, 'max-home-links');
   const icons = {
     play: '<path d="M7 0h2v4H7zM7 12h2v4H7zM0 7h4v2H0zM12 7h4v2h-4zM2 2h3v3H2zM11 2h3v3h-3zM2 11h3v3H2zM11 11h3v3h-3zM5 5h6v6H5z"/>',
     garden: '<path d="M7 1h2v4h2v3h2v6h-2v2H5v-2H3V8h2V5h2z"/>',
@@ -53,11 +57,14 @@ function home() {
     credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
   };
   for (const [label, action, icon] of [['Play', play, 'play'], ['Garden', garden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
-    const b = button('', action, 'max-home-button max-icon-' + icon);
+    const b = button('', action, 'max-home-button max-icon-' + icon + (icon === 'play' ? ' primary' : ''));
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
-    pixelText(b, label, icon === 'play' ? 4 : 2, icon === 'play' ? 2 : 1); nav.append(b);
+    pixelText(b, label, icon === 'play' ? 3 : 2, 1);
+    if (icon === 'settings' || icon === 'credits') links.append(b); else nav.append(b);
   }
-  card.append(title, nav);
+  nav.append(links); content.append(brand, nav);
+  content.append(el('p', 'GROW · EXPLORE · SURVIVE', 'max-home-note'));
+  card.append(content);
   queueMicrotask(() => { if (opened && screen === 'home') title.focus({ preventScroll: true }); });
 }
 function garden() {
@@ -76,22 +83,30 @@ function skinPreview(id) {
   frame.append(image); return frame;
 }
 function chooseMax() {
+  const hero = el('div', undefined, 'max-character-hero');
+  const stage = el('div', undefined, 'max-character-stage'); stage.append(skinPreview(selected.skinId));
+  const intro = el('div', undefined, 'max-character-intro');
+  intro.append(el('p', '', 'max-character-name'), el('p', '', 'max-class-detail'));
+  hero.append(stage, intro); card.append(hero);
   const roles = el('fieldset', undefined, 'max-role-picker');
-  roles.append(pixelText(el('legend'), 'Class', 2, 0));
+  roles.append(el('legend', '01 / CLASS'));
   const grid = el('div', undefined, 'max-role-grid');
+  const abilities = { mech: 'Robots', runner: 'Climbing', bulwark: 'Guard', herbalist: 'Healing' };
   for (const id of CLASS_IDS) {
     const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
     choice.setAttribute('aria-label', classInfo(id).name + ' class');
-    pixelText(choice, classInfo(id).name, 2, 0); grid.append(choice);
+    pixelText(choice, classInfo(id).name, 2, 0);
+    const ability = el('span', abilities[id], 'max-role-ability'); ability.setAttribute('aria-hidden', 'true'); choice.append(ability);
+    grid.append(choice);
   }
-  roles.append(grid, el('p', '', 'max-class-detail'));
+  roles.append(grid);
   const skins = el('fieldset', undefined, 'max-skin-picker');
-  skins.append(pixelText(el('legend'), 'Appearance', 2, 0));
+  skins.append(el('legend', '02 / APPEARANCE'));
   const swatches = el('div', undefined, 'max-skin-grid');
   for (const id of SKIN_IDS) {
     const choice = button('', () => selectMax({ skinId: id }), 'max-skin-choice'); choice.dataset.skinId = id;
     choice.setAttribute('aria-label', skinName(id) + ' appearance');
-    choice.append(skinPreview(id)); pixelText(choice, skinName(id), 1, 0); swatches.append(choice);
+    choice.append(skinPreview(id)); pixelText(choice, skinName(id), 2, 0); swatches.append(choice);
   }
   skins.append(swatches); card.append(roles, skins);
   updateSelection();
@@ -102,6 +117,10 @@ function updateSelection() {
   for (const option of card.querySelectorAll('[data-skin-id]')) option.setAttribute('aria-pressed', String(option.dataset.skinId === selected.skinId));
   const description = card.querySelector('.max-class-detail');
   if (description) description.textContent = classInfo(selected.classId).desc;
+  const name = card.querySelector('.max-character-name');
+  if (name) { name.replaceChildren(); pixelText(name, classInfo(selected.classId).name, 3, 0); }
+  const heroImage = card.querySelector('.max-character-stage img');
+  if (heroImage) heroImage.src = 'assets/max-skins-v1/' + selected.skinId + '/main.png';
 }
 function selectionSummary() {
   const summary = el('div', undefined, 'max-selection-summary');
@@ -211,6 +230,7 @@ function openSettings() {
 function dismissSettings() {
   liveSettings = false; opened = false; overlay.hidden = true; delete overlay.dataset.live;
   game.clearInput?.();
+  settingsButton.focus({ preventScroll: true });
 }
 async function exitToMenu() {
   const old = session; session = null;

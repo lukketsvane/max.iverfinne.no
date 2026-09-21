@@ -108,3 +108,22 @@ specials and death cleanup.
 `review.html` provides isolated `native-skins`, `native-enemies` and
 `native-crown` fixtures using the actual game renderer, including portrait mode.
 Future scenery layers must contain no baked text/buttons.
+
+## Main menu composition
+
+The home screen uses the native MAX wordmark above one primary Play action,
+with Garden below and quieter Settings/Credits links. The blue night garden
+remains visible around the title. Bitmap labels use integer scales, including
+short landscape screens; the primary action keeps pale text on deep green.
+
+Character selection presents a larger native costume preview and selected
+class description beside a compact class grid. Each class shows its signature
+ability, while four separate appearance swatches keep costume choice independent
+of class. Phone layouts put the preview above the controls and respect safe
+areas. The visual review page includes desktop, phone, small-phone and two short
+landscape viewports for checking the actual menu without changing player saves.
+
+Dismissing in-run Settings restores keyboard focus to its trigger and leaves
+the active run advancing. Menu navigation, account restoration, independent
+class/costume selection and co-op handshakes remain covered by the existing
+behavioral suites.
