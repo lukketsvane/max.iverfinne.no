@@ -199,23 +199,25 @@ test('the result garden keeps every plant through death and world changes; only 
   assert.deepEqual({...resumed.rogueRun.perks},require('../max-classes.js').perks('mech'));
 });
 
-test('a seed pickup offering a boon suspends the rest of that frame', () => {
+test('a ripe harvest offering a boon suspends the rest of that frame', () => {
   const session = loadGame();
   const { game } = session;
-  game.gardenPlots = [plot(), plot({ x: 20 })];
+  game.gardenPlots = [plot({moisture:.9}), plot({ x: 20 })];
   game.gardenRaidActive = true;
   game.gardenRaidGrace = 2;
   game.gardenRaidSpawn = 1;
-  game.floatKrek = [{ x: 90, y: -30, vx: -3, vy: 0, face: -1, ph: 0, target: game.gardenPlots[0], bite: .5, think: .3, flee: 0, hp: 1, flash: 0, kind: 1, raid: true }];
+  game.floatKrek = [{ x: 90, y: -30, vx: -3, vy: 0, face: -1, ph: 0, target: game.gardenPlots[1], bite: .5, think: .3, flee: 0, hp: 1, flash: 0, kind: 1, raid: true }];
   game.rogueRun.xp = game.rogueRun.next - 1;
-  game.seedPickups = [{ x: game.P.x, y: game.P.y - 6, amount: 1, fall: false, ph: 0 }];
+  game.gardenPress = true;
   game.saveGarden();
-  const plantsBefore = JSON.stringify(game.gardenPlots);
+  const neighbourBefore = JSON.stringify(game.gardenPlots[1]);
   const enemiesBefore = JSON.stringify(game.floatKrek);
   session.tick(50);
-  assert.ok(game.rogueRun.choice, 'the nearby seed must open the earned choice');
-  assert.equal(game.gardenSeeds, 1);
-  assert.equal(JSON.stringify(game.gardenPlots), plantsBefore);
+  assert.ok(game.rogueRun.choice, 'the ripe harvest must open the earned choice');
+  assert.equal(game.gardenStats.harvested, 1);
+  assert.equal(game.gardenPlots[0].lastHarvestGrowth, 1);
+  assert.equal(game.gardenPlots[0].age, 0);
+  assert.equal(JSON.stringify(game.gardenPlots[1]), neighbourBefore);
   assert.equal(JSON.stringify(game.floatKrek), enemiesBefore);
   assert.equal(game.gardenRaidGrace, 2);
   assert.equal(game.gardenRaidSpawn, 1);
@@ -255,6 +257,7 @@ test('quick kills do not replenish a raid, and its warning gives time to react',
       game.updateGardenFun(.1);
       for (const enemy of game.floatKrek) spawned.add(enemy);
       if (killImmediately) game.floatKrek.length = 0;
+      else if(i>50&&game.rogueRun.raidRemaining>0)game.floatKrek.splice(0,1);
     }
     assert.equal(game.rogueRun.raidRemaining, 0);
     assert.equal(spawned.size, total);
@@ -285,13 +288,13 @@ test('time strengthens an active raid without adding to its finite enemy budget'
   assert.equal(restored.rogueRun.raidRemaining, remaining);
   assert.equal(restored.rogueRun.raidTotal, total);
   restored.runElapsed = 420;
-  assert.equal(restored.raidPressure(), 2, 'pressure follows the entire attempt');
+  assert.equal(restored.raidPressure(), 2.8, 'pressure follows the entire attempt');
   const spawned = new Set(restored.floatKrek);
   for (let i = 0; i < 100 && restored.gardenRaidActive; i++) {
     restored.floatKrek.length = 0;
     restored.updateGardenFun(.1);
     for (const enemy of restored.floatKrek) {
-      assert.equal(enemy.pressure, 2, 'new enemies reflect the continuously advancing clock');
+      assert.equal(enemy.pressure, 2.8, 'new enemies reflect the continuously advancing clock');
       spawned.add(enemy);
     }
   }

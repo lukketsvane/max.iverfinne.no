@@ -54,3 +54,10 @@ test('drawing a result scene cannot change the live camera or viewport, even on 
   assert.throws(() => g.drawMenuScene(canvas), /canvas failure/);
   assert.deepEqual([g.IW, g.IH, g.ANCHOR, g.camX, g.camY, g.P.x, g.P.y], before);
 });
+test('refilling pauses when the gardener jumps or stands on a ledge above the rover', () => {
+  const bot=create({x:0,water:.2},0,0),env=environment();
+  Object.assign(env.player,{y:0,grounded:true});assert.equal(bot.requestRefill(0),true);
+  Object.assign(env.player,{y:-40,grounded:true});advance(bot,env,3);assert.equal(bot.state.water,.2);
+  Object.assign(env.player,{y:-5,grounded:false});advance(bot,env,3);assert.equal(bot.state.water,.2);
+  Object.assign(env.player,{y:0,grounded:true});advance(bot,env,2);assert.equal(bot.state.water,1);
+});

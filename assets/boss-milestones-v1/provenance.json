@@ -1,0 +1,5284 @@
+{
+  "generation": "Built-in image_gen",
+  "assets": [
+    {
+      "id": "mossback",
+      "level": 5,
+      "sourceFile": "source/05-mossback-source.png",
+      "sourceSha256": "b0b6e15e14917464d122932a16527d411cf7751781bcc9378a3278eb66b6be57",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "nativeFile": "native/05-mossback.png",
+      "nativeSha256": "fea4f1a4054c6a7104159917e31505bf3b6bc9c3fb7c9606d2603864e891414a",
+      "nativeSize": [
+        256,
+        256
+      ],
+      "baseNearestNeighborScale": 0.2218370883882149,
+      "paletteColors": 14,
+      "processing": "ImageMagick alpha-component extraction, nearest-neighbour native conversion, constrained palette, binary alpha and fixed 32px packing. Extended reach poses fitted within 30px; last death frame empty.",
+      "sourceFrameMapping": [
+        {
+          "frame": 0,
+          "sourceRow": 0,
+          "sourcePose": 0,
+          "sourceBounds": [
+            18,
+            68,
+            141,
+            142
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 1,
+          "sourceRow": 0,
+          "sourcePose": 1,
+          "sourceBounds": [
+            181,
+            71,
+            296,
+            142
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            26,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 2,
+          "sourceRow": 0,
+          "sourcePose": 2,
+          "sourceBounds": [
+            331,
+            70,
+            454,
+            142
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 3,
+          "sourceRow": 0,
+          "sourcePose": 3,
+          "sourceBounds": [
+            488,
+            72,
+            610,
+            142
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 4,
+          "sourceRow": 0,
+          "sourcePose": 4,
+          "sourceBounds": [
+            648,
+            68,
+            768,
+            142
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 5,
+          "sourceRow": 0,
+          "sourcePose": 5,
+          "sourceBounds": [
+            808,
+            68,
+            924,
+            142
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            26,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 6,
+          "sourceRow": 0,
+          "sourcePose": 6,
+          "sourceBounds": [
+            962,
+            70,
+            1082,
+            142
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 7,
+          "sourceRow": 0,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1123,
+            72,
+            1237,
+            142
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            25,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 8,
+          "sourceRow": 1,
+          "sourcePose": 0,
+          "sourceBounds": [
+            18,
+            68,
+            140,
+            143
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            27,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 9,
+          "sourceRow": 1,
+          "sourcePose": 1,
+          "sourceBounds": [
+            179,
+            68,
+            294,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            26,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 10,
+          "sourceRow": 1,
+          "sourcePose": 2,
+          "sourceBounds": [
+            332,
+            65,
+            458,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            28,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 11,
+          "sourceRow": 1,
+          "sourcePose": 3,
+          "sourceBounds": [
+            489,
+            68,
+            614,
+            144
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            28,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 12,
+          "sourceRow": 1,
+          "sourcePose": 4,
+          "sourceBounds": [
+            653,
+            68,
+            768,
+            144
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            26,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 13,
+          "sourceRow": 1,
+          "sourcePose": 5,
+          "sourceBounds": [
+            810,
+            66,
+            926,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            26,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 14,
+          "sourceRow": 1,
+          "sourcePose": 6,
+          "sourceBounds": [
+            961,
+            65,
+            1087,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            28,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 15,
+          "sourceRow": 1,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1117,
+            68,
+            1238,
+            142
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 16,
+          "sourceRow": 2,
+          "sourcePose": 0,
+          "sourceBounds": [
+            22,
+            70,
+            142,
+            138
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            27,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 17,
+          "sourceRow": 2,
+          "sourcePose": 1,
+          "sourceBounds": [
+            174,
+            69,
+            304,
+            138
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            29,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 18,
+          "sourceRow": 2,
+          "sourcePose": 2,
+          "sourceBounds": [
+            331,
+            70,
+            464,
+            138
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 19,
+          "sourceRow": 2,
+          "sourcePose": 3,
+          "sourceBounds": [
+            487,
+            70,
+            620,
+            138
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            30,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 20,
+          "sourceRow": 2,
+          "sourcePose": 4,
+          "sourceBounds": [
+            644,
+            70,
+            777,
+            138
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            30,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 21,
+          "sourceRow": 2,
+          "sourcePose": 5,
+          "sourceBounds": [
+            802,
+            70,
+            935,
+            138
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            30,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 22,
+          "sourceRow": 2,
+          "sourcePose": 6,
+          "sourceBounds": [
+            958,
+            70,
+            1089,
+            138
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            29,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 23,
+          "sourceRow": 2,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1114,
+            74,
+            1245,
+            138
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            29,
+            14
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 24,
+          "sourceRow": 3,
+          "sourcePose": 0,
+          "sourceBounds": [
+            21,
+            66,
+            145,
+            142
+          ],
+          "componentIds": [
+            11
+          ],
+          "sampleSize": [
+            28,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 25,
+          "sourceRow": 3,
+          "sourcePose": 1,
+          "sourceBounds": [
+            175,
+            69,
+            314,
+            142
+          ],
+          "componentIds": [
+            13
+          ],
+          "sampleSize": [
+            30,
+            16
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 26,
+          "sourceRow": 3,
+          "sourcePose": 2,
+          "sourceBounds": [
+            338,
+            60,
+            498,
+            141
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            30,
+            18
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 27,
+          "sourceRow": 3,
+          "sourcePose": 3,
+          "sourceBounds": [
+            488,
+            54,
+            671,
+            141
+          ],
+          "componentIds": [
+            3,
+            12
+          ],
+          "sampleSize": [
+            30,
+            19
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 28,
+          "sourceRow": 3,
+          "sourcePose": 4,
+          "sourceBounds": [
+            679,
+            60,
+            839,
+            141
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            30,
+            18
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 29,
+          "sourceRow": 3,
+          "sourcePose": 5,
+          "sourceBounds": [
+            843,
+            57,
+            932,
+            142
+          ],
+          "componentIds": [
+            9,
+            4
+          ],
+          "sampleSize": [
+            20,
+            19
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 30,
+          "sourceRow": 3,
+          "sourcePose": 6,
+          "sourceBounds": [
+            959,
+            35,
+            1089,
+            142
+          ],
+          "componentIds": [
+            1,
+            2
+          ],
+          "sampleSize": [
+            29,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 31,
+          "sourceRow": 3,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1123,
+            62,
+            1241,
+            142
+          ],
+          "componentIds": [
+            10
+          ],
+          "sampleSize": [
+            26,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 32,
+          "sourceRow": 4,
+          "sourcePose": 0,
+          "sourceBounds": [
+            18,
+            68,
+            145,
+            142
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            28,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 33,
+          "sourceRow": 4,
+          "sourcePose": 1,
+          "sourceBounds": [
+            184,
+            63,
+            303,
+            142
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            26,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 34,
+          "sourceRow": 4,
+          "sourcePose": 2,
+          "sourceBounds": [
+            338,
+            63,
+            458,
+            142
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            27,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 35,
+          "sourceRow": 4,
+          "sourcePose": 3,
+          "sourceBounds": [
+            489,
+            71,
+            612,
+            142
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 36,
+          "sourceRow": 4,
+          "sourcePose": 4,
+          "sourceBounds": [
+            648,
+            71,
+            769,
+            142
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            27,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 37,
+          "sourceRow": 4,
+          "sourcePose": 5,
+          "sourceBounds": [
+            808,
+            72,
+            926,
+            142
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            26,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 38,
+          "sourceRow": 4,
+          "sourcePose": 6,
+          "sourceBounds": [
+            963,
+            71,
+            1082,
+            142
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            26,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 39,
+          "sourceRow": 4,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1118,
+            73,
+            1239,
+            142
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            27,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 40,
+          "sourceRow": 5,
+          "sourcePose": 1,
+          "sourceBounds": [
+            171,
+            63,
+            305,
+            142
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            30,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 41,
+          "sourceRow": 5,
+          "sourcePose": 2,
+          "sourceBounds": [
+            326,
+            57,
+            467,
+            142
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            19
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 42,
+          "sourceRow": 5,
+          "sourcePose": 3,
+          "sourceBounds": [
+            488,
+            43,
+            624,
+            142
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            30,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 43,
+          "sourceRow": 5,
+          "sourcePose": 4,
+          "sourceBounds": [
+            641,
+            51,
+            774,
+            142
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            30,
+            20
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 44,
+          "sourceRow": 5,
+          "sourcePose": 5,
+          "sourceBounds": [
+            801,
+            65,
+            936,
+            142
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            30,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 45,
+          "sourceRow": 5,
+          "sourcePose": 4,
+          "sourceBounds": [
+            641,
+            51,
+            774,
+            142
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            30,
+            20
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 46,
+          "sourceRow": 5,
+          "sourcePose": 3,
+          "sourceBounds": [
+            488,
+            43,
+            624,
+            142
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            30,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 47,
+          "sourceRow": 5,
+          "sourcePose": 2,
+          "sourceBounds": [
+            326,
+            57,
+            467,
+            142
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            19
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 48,
+          "sourceRow": 6,
+          "sourcePose": 0,
+          "sourceBounds": [
+            18,
+            45,
+            125,
+            142
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            24,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 49,
+          "sourceRow": 6,
+          "sourcePose": 1,
+          "sourceBounds": [
+            174,
+            45,
+            286,
+            142
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            25,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 50,
+          "sourceRow": 6,
+          "sourcePose": 2,
+          "sourceBounds": [
+            332,
+            76,
+            461,
+            142
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            29,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 51,
+          "sourceRow": 6,
+          "sourcePose": 3,
+          "sourceBounds": [
+            489,
+            76,
+            613,
+            142
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            28,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 52,
+          "sourceRow": 6,
+          "sourcePose": 4,
+          "sourceBounds": [
+            644,
+            75,
+            768,
+            142
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            28,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 53,
+          "sourceRow": 6,
+          "sourcePose": 5,
+          "sourceBounds": [
+            804,
+            75,
+            925,
+            142
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            27,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 54,
+          "sourceRow": 6,
+          "sourcePose": 6,
+          "sourceBounds": [
+            961,
+            74,
+            1083,
+            142
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            27,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 55,
+          "sourceRow": 6,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1117,
+            75,
+            1239,
+            142
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            27,
+            15
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 56,
+          "sourceRow": 7,
+          "sourcePose": 0,
+          "sourceBounds": [
+            18,
+            47,
+            144,
+            137
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            28,
+            20
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 57,
+          "sourceRow": 7,
+          "sourcePose": 1,
+          "sourceBounds": [
+            174,
+            62,
+            301,
+            137
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            28,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 58,
+          "sourceRow": 7,
+          "sourcePose": 2,
+          "sourceBounds": [
+            322,
+            75,
+            458,
+            137
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            14
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 59,
+          "sourceRow": 7,
+          "sourcePose": 3,
+          "sourceBounds": [
+            482,
+            79,
+            611,
+            137
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            29,
+            13
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 60,
+          "sourceRow": 7,
+          "sourcePose": 4,
+          "sourceBounds": [
+            644,
+            79,
+            773,
+            137
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            29,
+            13
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 61,
+          "sourceRow": 7,
+          "sourcePose": 5,
+          "sourceBounds": [
+            800,
+            84,
+            936,
+            136
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            30,
+            12
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 62,
+          "sourceRow": 7,
+          "sourcePose": 6,
+          "sourceBounds": [
+            968,
+            97,
+            1087,
+            136
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            26,
+            9
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 63,
+          "sourceRow": 7,
+          "sourcePose": 7,
+          "empty": true
+        }
+      ],
+      "sourceAvailability": "external-user-zip"
+    },
+    {
+      "id": "bellkeeper",
+      "level": 10,
+      "sourceFile": "source/10-bellkeeper-source.png",
+      "sourceSha256": "1c915e70b0622ea3285fd484f6fa4b440d432330a6926c5ae2dd3b2b3faff6d5",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "nativeFile": "native/10-bellkeeper.png",
+      "nativeSha256": "87cfadfe4290a2140ba82372cb9b1f4199039b9c4adcc4e5a525f5330f1216a3",
+      "nativeSize": [
+        256,
+        256
+      ],
+      "baseNearestNeighborScale": 0.21840242669362994,
+      "paletteColors": 16,
+      "processing": "ImageMagick alpha-component extraction, nearest-neighbour native conversion, constrained palette, binary alpha and fixed 32px packing. Extended reach poses fitted within 30px; last death frame empty. Windup frames22 and23 hold native frame21 (source row2 pose5) unchanged to sustain its amber signal until attack release.",
+      "sourceFrameMapping": [
+        {
+          "frame": 0,
+          "sourceRow": 0,
+          "sourcePose": 0,
+          "sourceBounds": [
+            42,
+            21,
+            136,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 1,
+          "sourceRow": 0,
+          "sourcePose": 1,
+          "sourceBounds": [
+            197,
+            20,
+            292,
+            145
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 2,
+          "sourceRow": 0,
+          "sourcePose": 2,
+          "sourceBounds": [
+            354,
+            21,
+            452,
+            145
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 3,
+          "sourceRow": 0,
+          "sourcePose": 3,
+          "sourceBounds": [
+            504,
+            21,
+            607,
+            145
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            22,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 4,
+          "sourceRow": 0,
+          "sourcePose": 4,
+          "sourceBounds": [
+            669,
+            21,
+            763,
+            145
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 5,
+          "sourceRow": 0,
+          "sourcePose": 5,
+          "sourceBounds": [
+            817,
+            21,
+            915,
+            144
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 6,
+          "sourceRow": 0,
+          "sourcePose": 6,
+          "sourceBounds": [
+            982,
+            21,
+            1079,
+            144
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 7,
+          "sourceRow": 0,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1131,
+            21,
+            1234,
+            144
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            22,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 8,
+          "sourceRow": 1,
+          "sourcePose": 0,
+          "sourceBounds": [
+            36,
+            24,
+            137,
+            144
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            22,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 9,
+          "sourceRow": 1,
+          "sourcePose": 1,
+          "sourceBounds": [
+            195,
+            21,
+            294,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            22,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 10,
+          "sourceRow": 1,
+          "sourcePose": 2,
+          "sourceBounds": [
+            347,
+            20,
+            451,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            23,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 11,
+          "sourceRow": 1,
+          "sourcePose": 3,
+          "sourceBounds": [
+            491,
+            24,
+            607,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            25,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 12,
+          "sourceRow": 1,
+          "sourcePose": 4,
+          "sourceBounds": [
+            644,
+            24,
+            769,
+            144
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            27,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 13,
+          "sourceRow": 1,
+          "sourcePose": 5,
+          "sourceBounds": [
+            815,
+            24,
+            927,
+            144
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            24,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 14,
+          "sourceRow": 1,
+          "sourcePose": 6,
+          "sourceBounds": [
+            973,
+            23,
+            1084,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            24,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 15,
+          "sourceRow": 1,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1119,
+            24,
+            1235,
+            144
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            25,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 16,
+          "sourceRow": 2,
+          "sourcePose": 0,
+          "sourceBounds": [
+            32,
+            21,
+            140,
+            144
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            24,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 17,
+          "sourceRow": 2,
+          "sourcePose": 1,
+          "sourceBounds": [
+            191,
+            20,
+            294,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            22,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 18,
+          "sourceRow": 2,
+          "sourcePose": 2,
+          "sourceBounds": [
+            344,
+            21,
+            457,
+            144
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            25,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 19,
+          "sourceRow": 2,
+          "sourcePose": 3,
+          "sourceBounds": [
+            499,
+            5,
+            610,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            24,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 20,
+          "sourceRow": 2,
+          "sourcePose": 4,
+          "sourceBounds": [
+            657,
+            5,
+            780,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            27,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 21,
+          "sourceRow": 2,
+          "sourcePose": 5,
+          "sourceBounds": [
+            812,
+            5,
+            942,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            28,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 22,
+          "sourceRow": 2,
+          "sourcePose": 5,
+          "sourceBounds": [
+            812,
+            5,
+            942,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            28,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell",
+          "heldFromFrame": 21,
+          "note": "Exact native-pixel pose hold: repeats frame21 to retain the strongest amber anticipation until attack release."
+        },
+        {
+          "frame": 23,
+          "sourceRow": 2,
+          "sourcePose": 5,
+          "sourceBounds": [
+            812,
+            5,
+            942,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            28,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell",
+          "heldFromFrame": 21,
+          "note": "Exact native-pixel pose hold: repeats frame21 to retain the strongest amber anticipation until attack release."
+        },
+        {
+          "frame": 24,
+          "sourceRow": 3,
+          "sourcePose": 0,
+          "sourceBounds": [
+            36,
+            22,
+            137,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            22,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 25,
+          "sourceRow": 3,
+          "sourcePose": 1,
+          "sourceBounds": [
+            179,
+            23,
+            308,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            28,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 26,
+          "sourceRow": 3,
+          "sourcePose": 2,
+          "sourceBounds": [
+            337,
+            22,
+            481,
+            144
+          ],
+          "componentIds": [
+            2,
+            12,
+            20
+          ],
+          "sampleSize": [
+            30,
+            27
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 27,
+          "sourceRow": 3,
+          "sourcePose": 3,
+          "sourceBounds": [
+            492,
+            34,
+            627,
+            144
+          ],
+          "componentIds": [
+            7,
+            14
+          ],
+          "sampleSize": [
+            29,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 28,
+          "sourceRow": 3,
+          "sourcePose": 4,
+          "sourceBounds": [
+            652,
+            34,
+            784,
+            144
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            29,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 29,
+          "sourceRow": 3,
+          "sourcePose": 5,
+          "sourceBounds": [
+            805,
+            31,
+            937,
+            144
+          ],
+          "componentIds": [
+            6,
+            24
+          ],
+          "sampleSize": [
+            29,
+            25
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 30,
+          "sourceRow": 3,
+          "sourcePose": 6,
+          "sourceBounds": [
+            946,
+            22,
+            1083,
+            144
+          ],
+          "componentIds": [
+            3,
+            23
+          ],
+          "sampleSize": [
+            30,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 31,
+          "sourceRow": 3,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1133,
+            22,
+            1227,
+            144
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 32,
+          "sourceRow": 4,
+          "sourcePose": 0,
+          "sourceBounds": [
+            38,
+            20,
+            145,
+            144
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            23,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 33,
+          "sourceRow": 4,
+          "sourcePose": 1,
+          "sourceBounds": [
+            190,
+            20,
+            303,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            25,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 34,
+          "sourceRow": 4,
+          "sourcePose": 2,
+          "sourceBounds": [
+            341,
+            20,
+            461,
+            144
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            26,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 35,
+          "sourceRow": 4,
+          "sourcePose": 3,
+          "sourceBounds": [
+            492,
+            20,
+            616,
+            144
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            27,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 36,
+          "sourceRow": 4,
+          "sourcePose": 4,
+          "sourceBounds": [
+            651,
+            16,
+            771,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            26,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 37,
+          "sourceRow": 4,
+          "sourcePose": 5,
+          "sourceBounds": [
+            805,
+            16,
+            926,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            26,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 38,
+          "sourceRow": 4,
+          "sourcePose": 6,
+          "sourceBounds": [
+            969,
+            16,
+            1080,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            24,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 39,
+          "sourceRow": 4,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1129,
+            20,
+            1232,
+            144
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            22,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 40,
+          "sourceRow": 5,
+          "sourcePose": 0,
+          "sourceBounds": [
+            22,
+            16,
+            148,
+            144
+          ],
+          "componentIds": [
+            2,
+            16,
+            14
+          ],
+          "sampleSize": [
+            28,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 41,
+          "sourceRow": 5,
+          "sourcePose": 1,
+          "sourceBounds": [
+            181,
+            19,
+            302,
+            144
+          ],
+          "componentIds": [
+            6,
+            25
+          ],
+          "sampleSize": [
+            26,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 42,
+          "sourceRow": 5,
+          "sourcePose": 2,
+          "sourceBounds": [
+            336,
+            19,
+            458,
+            144
+          ],
+          "componentIds": [
+            7,
+            20
+          ],
+          "sampleSize": [
+            27,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 43,
+          "sourceRow": 5,
+          "sourcePose": 3,
+          "sourceBounds": [
+            495,
+            16,
+            613,
+            144
+          ],
+          "componentIds": [
+            3,
+            9
+          ],
+          "sampleSize": [
+            26,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 44,
+          "sourceRow": 5,
+          "sourcePose": 4,
+          "sourceBounds": [
+            653,
+            16,
+            771,
+            144
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            26,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 45,
+          "sourceRow": 5,
+          "sourcePose": 5,
+          "sourceBounds": [
+            809,
+            16,
+            926,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            26,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 46,
+          "sourceRow": 5,
+          "sourcePose": 6,
+          "sourceBounds": [
+            965,
+            14,
+            1083,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            26,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 47,
+          "sourceRow": 5,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1122,
+            19,
+            1236,
+            144
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            25,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 48,
+          "sourceRow": 6,
+          "sourcePose": 0,
+          "sourceBounds": [
+            40,
+            19,
+            136,
+            144
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            21,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 49,
+          "sourceRow": 6,
+          "sourcePose": 1,
+          "sourceBounds": [
+            179,
+            33,
+            297,
+            145
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            26,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 50,
+          "sourceRow": 6,
+          "sourcePose": 2,
+          "sourceBounds": [
+            336,
+            23,
+            453,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            26,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 51,
+          "sourceRow": 6,
+          "sourcePose": 3,
+          "sourceBounds": [
+            496,
+            33,
+            616,
+            145
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            26,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 52,
+          "sourceRow": 6,
+          "sourcePose": 4,
+          "sourceBounds": [
+            660,
+            33,
+            775,
+            144
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            25,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 53,
+          "sourceRow": 6,
+          "sourcePose": 5,
+          "sourceBounds": [
+            817,
+            32,
+            937,
+            145
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            26,
+            25
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 54,
+          "sourceRow": 6,
+          "sourcePose": 6,
+          "sourceBounds": [
+            972,
+            23,
+            1083,
+            144
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            24,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 55,
+          "sourceRow": 6,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1126,
+            28,
+            1232,
+            145
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            23,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 56,
+          "sourceRow": 7,
+          "sourcePose": 0,
+          "sourceBounds": [
+            32,
+            8,
+            138,
+            142
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            23,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 57,
+          "sourceRow": 7,
+          "sourcePose": 1,
+          "sourceBounds": [
+            186,
+            40,
+            294,
+            142
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            24,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 58,
+          "sourceRow": 7,
+          "sourcePose": 2,
+          "sourceBounds": [
+            343,
+            61,
+            452,
+            142
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            24,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 59,
+          "sourceRow": 7,
+          "sourcePose": 3,
+          "sourceBounds": [
+            503,
+            82,
+            614,
+            142
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            24,
+            13
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 60,
+          "sourceRow": 7,
+          "sourcePose": 4,
+          "sourceBounds": [
+            659,
+            82,
+            795,
+            142
+          ],
+          "componentIds": [
+            8,
+            6,
+            7
+          ],
+          "sampleSize": [
+            30,
+            13
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 61,
+          "sourceRow": 7,
+          "sourcePose": 5,
+          "sourceBounds": [
+            835,
+            97,
+            951,
+            142
+          ],
+          "componentIds": [
+            10
+          ],
+          "sampleSize": [
+            25,
+            10
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 62,
+          "sourceRow": 7,
+          "sourcePose": 6,
+          "sourceBounds": [
+            994,
+            104,
+            1072,
+            142
+          ],
+          "componentIds": [
+            11,
+            13,
+            14
+          ],
+          "sampleSize": [
+            17,
+            8
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 63,
+          "sourceRow": 7,
+          "sourcePose": 7,
+          "empty": true
+        }
+      ],
+      "sourceAvailability": "external-user-zip"
+    },
+    {
+      "id": "moon-moth",
+      "level": 15,
+      "sourceFile": "source/15-moon-moth-source.png",
+      "sourceSha256": "94bb0419e134b8d3e8f3598ea5f9cc4cf61b0e937984da61cb1ffe5cf6f7da60",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "nativeFile": "native/15-moon-moth.png",
+      "nativeSha256": "42bd644d002c50b823371999951b2f63cb561134edd2a1af08520aa45e3775ac",
+      "nativeSize": [
+        256,
+        256
+      ],
+      "baseNearestNeighborScale": 0.2334455667789001,
+      "paletteColors": 16,
+      "processing": "ImageMagick alpha-component extraction, nearest-neighbour native conversion, constrained palette, binary alpha and fixed 32px packing. Extended reach poses fitted within 30px; last death frame empty.",
+      "sourceFrameMapping": [
+        {
+          "frame": 0,
+          "sourceRow": 0,
+          "sourcePose": 0,
+          "sourceBounds": [
+            32,
+            15,
+            144,
+            150
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            26,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 1,
+          "sourceRow": 0,
+          "sourcePose": 1,
+          "sourceBounds": [
+            172,
+            35,
+            299,
+            146
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            30,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 2,
+          "sourceRow": 0,
+          "sourcePose": 2,
+          "sourceBounds": [
+            338,
+            58,
+            460,
+            148
+          ],
+          "componentIds": [
+            9
+          ],
+          "sampleSize": [
+            28,
+            21
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 3,
+          "sourceRow": 0,
+          "sourcePose": 3,
+          "sourceBounds": [
+            488,
+            44,
+            612,
+            149
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            29,
+            25
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 4,
+          "sourceRow": 0,
+          "sourcePose": 4,
+          "sourceBounds": [
+            644,
+            35,
+            771,
+            148
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            30,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 5,
+          "sourceRow": 0,
+          "sourcePose": 5,
+          "sourceBounds": [
+            799,
+            31,
+            926,
+            146
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 6,
+          "sourceRow": 0,
+          "sourcePose": 6,
+          "sourceBounds": [
+            955,
+            36,
+            1084,
+            148
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            30,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 7,
+          "sourceRow": 0,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1113,
+            35,
+            1239,
+            145
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            29,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 8,
+          "sourceRow": 1,
+          "sourcePose": 0,
+          "sourceBounds": [
+            26,
+            27,
+            145,
+            148
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            28,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 9,
+          "sourceRow": 1,
+          "sourcePose": 1,
+          "sourceBounds": [
+            172,
+            32,
+            298,
+            148
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            29,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 10,
+          "sourceRow": 1,
+          "sourcePose": 2,
+          "sourceBounds": [
+            334,
+            50,
+            456,
+            148
+          ],
+          "componentIds": [
+            10
+          ],
+          "sampleSize": [
+            28,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 11,
+          "sourceRow": 1,
+          "sourcePose": 3,
+          "sourceBounds": [
+            484,
+            36,
+            612,
+            147
+          ],
+          "componentIds": [
+            8,
+            13
+          ],
+          "sampleSize": [
+            30,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 12,
+          "sourceRow": 1,
+          "sourcePose": 4,
+          "sourceBounds": [
+            642,
+            23,
+            771,
+            148
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            30,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 13,
+          "sourceRow": 1,
+          "sourcePose": 5,
+          "sourceBounds": [
+            804,
+            28,
+            926,
+            148
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            28,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 14,
+          "sourceRow": 1,
+          "sourcePose": 6,
+          "sourceBounds": [
+            963,
+            25,
+            1083,
+            148
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            28,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 15,
+          "sourceRow": 1,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1110,
+            28,
+            1239,
+            147
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            30,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 16,
+          "sourceRow": 2,
+          "sourcePose": 0,
+          "sourceBounds": [
+            22,
+            16,
+            143,
+            149
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            28,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 17,
+          "sourceRow": 2,
+          "sourcePose": 1,
+          "sourceBounds": [
+            177,
+            16,
+            299,
+            149
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            28,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 18,
+          "sourceRow": 2,
+          "sourcePose": 2,
+          "sourceBounds": [
+            340,
+            21,
+            459,
+            144
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            28,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 19,
+          "sourceRow": 2,
+          "sourcePose": 3,
+          "sourceBounds": [
+            502,
+            16,
+            610,
+            143
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            25,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 20,
+          "sourceRow": 2,
+          "sourcePose": 4,
+          "sourceBounds": [
+            664,
+            13,
+            765,
+            139
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            24,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 21,
+          "sourceRow": 2,
+          "sourcePose": 5,
+          "sourceBounds": [
+            809,
+            34,
+            921,
+            149
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            26,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 22,
+          "sourceRow": 2,
+          "sourcePose": 6,
+          "sourceBounds": [
+            972,
+            59,
+            1083,
+            139
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            26,
+            19
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 23,
+          "sourceRow": 2,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1129,
+            59,
+            1236,
+            138
+          ],
+          "componentIds": [
+            9
+          ],
+          "sampleSize": [
+            25,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 24,
+          "sourceRow": 3,
+          "sourcePose": 0,
+          "sourceBounds": [
+            26,
+            37,
+            144,
+            134
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            28,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 25,
+          "sourceRow": 3,
+          "sourcePose": 1,
+          "sourceBounds": [
+            185,
+            29,
+            343,
+            126
+          ],
+          "componentIds": [
+            5,
+            17,
+            18,
+            25,
+            24
+          ],
+          "sampleSize": [
+            30,
+            23
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 26,
+          "sourceRow": 3,
+          "sourcePose": 2,
+          "sourceBounds": [
+            412,
+            32,
+            486,
+            126
+          ],
+          "componentIds": [
+            10,
+            23,
+            14,
+            12,
+            26,
+            6,
+            22
+          ],
+          "sampleSize": [
+            17,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 27,
+          "sourceRow": 3,
+          "sourcePose": 3,
+          "sourceBounds": [
+            489,
+            15,
+            609,
+            134
+          ],
+          "componentIds": [
+            1,
+            13
+          ],
+          "sampleSize": [
+            28,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 28,
+          "sourceRow": 3,
+          "sourcePose": 4,
+          "sourceBounds": [
+            636,
+            23,
+            773,
+            134
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            26
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 29,
+          "sourceRow": 3,
+          "sourcePose": 5,
+          "sourceBounds": [
+            799,
+            35,
+            930,
+            137
+          ],
+          "componentIds": [
+            7,
+            15
+          ],
+          "sampleSize": [
+            30,
+            24
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 30,
+          "sourceRow": 3,
+          "sourcePose": 6,
+          "sourceBounds": [
+            955,
+            15,
+            1083,
+            144
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            30,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 31,
+          "sourceRow": 3,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1113,
+            24,
+            1239,
+            150
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            29,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 32,
+          "sourceRow": 4,
+          "sourcePose": 0,
+          "sourceBounds": [
+            22,
+            17,
+            142,
+            147
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            28,
+            30
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 33,
+          "sourceRow": 4,
+          "sourcePose": 1,
+          "sourceBounds": [
+            172,
+            49,
+            303,
+            144
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            30,
+            22
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 34,
+          "sourceRow": 4,
+          "sourcePose": 2,
+          "sourceBounds": [
+            330,
+            68,
+            461,
+            150
+          ],
+          "componentIds": [
+            9
+          ],
+          "sampleSize": [
+            30,
+            19
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 35,
+          "sourceRow": 4,
+          "sourcePose": 3,
+          "sourceBounds": [
+            485,
+            63,
+            615,
+            151
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            30,
+            21
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 36,
+          "sourceRow": 4,
+          "sourcePose": 4,
+          "sourceBounds": [
+            644,
+            36,
+            770,
+            150
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            29,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 37,
+          "sourceRow": 4,
+          "sourcePose": 5,
+          "sourceBounds": [
+            803,
+            33,
+            925,
+            150
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            28,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 38,
+          "sourceRow": 4,
+          "sourcePose": 6,
+          "sourceBounds": [
+            962,
+            37,
+            1084,
+            150
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            28,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 39,
+          "sourceRow": 4,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1112,
+            33,
+            1239,
+            151
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            30,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 40,
+          "sourceRow": 5,
+          "sourcePose": 0,
+          "sourceBounds": [
+            26,
+            47,
+            140,
+            146
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            27,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 41,
+          "sourceRow": 5,
+          "sourcePose": 1,
+          "sourceBounds": [
+            185,
+            48,
+            295,
+            146
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            26,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 42,
+          "sourceRow": 5,
+          "sourcePose": 2,
+          "sourceBounds": [
+            343,
+            48,
+            453,
+            146
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            26,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 43,
+          "sourceRow": 5,
+          "sourcePose": 3,
+          "sourceBounds": [
+            499,
+            47,
+            607,
+            146
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            25,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 44,
+          "sourceRow": 5,
+          "sourcePose": 4,
+          "sourceBounds": [
+            656,
+            48,
+            763,
+            149
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            25,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 45,
+          "sourceRow": 5,
+          "sourcePose": 5,
+          "sourceBounds": [
+            812,
+            48,
+            920,
+            149
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            25,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 46,
+          "sourceRow": 5,
+          "sourcePose": 6,
+          "sourceBounds": [
+            969,
+            47,
+            1080,
+            146
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            26,
+            23
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 47,
+          "sourceRow": 5,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1126,
+            47,
+            1235,
+            149
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            25,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 48,
+          "sourceRow": 6,
+          "sourcePose": 0,
+          "sourceBounds": [
+            23,
+            21,
+            144,
+            132
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            28,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 49,
+          "sourceRow": 6,
+          "sourcePose": 1,
+          "sourceBounds": [
+            185,
+            29,
+            302,
+            137
+          ],
+          "componentIds": [
+            7,
+            4,
+            21,
+            18
+          ],
+          "sampleSize": [
+            27,
+            25
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 50,
+          "sourceRow": 6,
+          "sourcePose": 2,
+          "sourceBounds": [
+            347,
+            34,
+            469,
+            151
+          ],
+          "componentIds": [
+            16,
+            19,
+            14,
+            6,
+            12
+          ],
+          "sampleSize": [
+            28,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 51,
+          "sourceRow": 6,
+          "sourcePose": 3,
+          "sourceBounds": [
+            507,
+            41,
+            620,
+            151
+          ],
+          "componentIds": [
+            11,
+            22,
+            23,
+            27,
+            17,
+            9
+          ],
+          "sampleSize": [
+            26,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 52,
+          "sourceRow": 6,
+          "sourcePose": 4,
+          "sourceBounds": [
+            652,
+            26,
+            771,
+            151
+          ],
+          "componentIds": [
+            3,
+            30,
+            29,
+            20,
+            13,
+            25
+          ],
+          "sampleSize": [
+            28,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 53,
+          "sourceRow": 6,
+          "sourcePose": 5,
+          "sourceBounds": [
+            803,
+            22,
+            931,
+            143
+          ],
+          "componentIds": [
+            2,
+            26,
+            28
+          ],
+          "sampleSize": [
+            30,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 54,
+          "sourceRow": 6,
+          "sourcePose": 6,
+          "sourceBounds": [
+            959,
+            35,
+            1083,
+            148
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            29,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 55,
+          "sourceRow": 6,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1113,
+            33,
+            1239,
+            151
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            29,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 56,
+          "sourceRow": 7,
+          "sourcePose": 0,
+          "sourceBounds": [
+            28,
+            8,
+            142,
+            134
+          ],
+          "componentIds": [
+            1,
+            25,
+            18
+          ],
+          "sampleSize": [
+            27,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 57,
+          "sourceRow": 7,
+          "sourcePose": 1,
+          "sourceBounds": [
+            178,
+            24,
+            302,
+            144
+          ],
+          "componentIds": [
+            3,
+            4,
+            2,
+            6
+          ],
+          "sampleSize": [
+            29,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 58,
+          "sourceRow": 7,
+          "sourcePose": 2,
+          "sourceBounds": [
+            342,
+            44,
+            455,
+            140
+          ],
+          "componentIds": [
+            11,
+            20,
+            10,
+            34,
+            19,
+            9,
+            5,
+            12
+          ],
+          "sampleSize": [
+            26,
+            22
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 59,
+          "sourceRow": 7,
+          "sourcePose": 3,
+          "sourceBounds": [
+            501,
+            62,
+            600,
+            137
+          ],
+          "componentIds": [
+            21,
+            32,
+            16,
+            13,
+            23,
+            7,
+            15
+          ],
+          "sampleSize": [
+            23,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 60,
+          "sourceRow": 7,
+          "sourcePose": 4,
+          "sourceBounds": [
+            657,
+            79,
+            758,
+            139
+          ],
+          "componentIds": [
+            17,
+            38,
+            24,
+            29,
+            42,
+            40
+          ],
+          "sampleSize": [
+            24,
+            14
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 61,
+          "sourceRow": 7,
+          "sourcePose": 5,
+          "sourceBounds": [
+            819,
+            89,
+            898,
+            134
+          ],
+          "componentIds": [
+            30,
+            39,
+            28,
+            22
+          ],
+          "sampleSize": [
+            18,
+            11
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 62,
+          "sourceRow": 7,
+          "sourcePose": 6,
+          "sourceBounds": [
+            989,
+            102,
+            1051,
+            137
+          ],
+          "componentIds": [
+            26,
+            27,
+            33
+          ],
+          "sampleSize": [
+            14,
+            8
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 63,
+          "sourceRow": 7,
+          "sourcePose": 7,
+          "empty": true
+        }
+      ],
+      "sourceAvailability": "external-user-zip"
+    },
+    {
+      "id": "hollow-crown",
+      "level": 20,
+      "sourceFile": "source/20-hollow-crown-source.png",
+      "sourceSha256": "008829cb9877d356fc05d355377ecf2bd21674f531aef7b24a7d85b811a996bf",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "nativeFile": "native/20-hollow-crown.png",
+      "nativeSha256": "cf2592bdbd6a0b3ab6bfe1125c147def0a7c6bf8927193cf616c8ed5644d22af",
+      "nativeSize": [
+        256,
+        256
+      ],
+      "baseNearestNeighborScale": 0.21129326047358835,
+      "paletteColors": 13,
+      "processing": "ImageMagick alpha-component extraction, nearest-neighbour native conversion, constrained palette, binary alpha and fixed 32px packing. Extended reach poses fitted within 30px; last death frame empty.",
+      "sourceFrameMapping": [
+        {
+          "frame": 0,
+          "sourceRow": 0,
+          "sourcePose": 0,
+          "sourceBounds": [
+            47,
+            10,
+            140,
+            148
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 1,
+          "sourceRow": 0,
+          "sourcePose": 1,
+          "sourceBounds": [
+            203,
+            11,
+            299,
+            148
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 2,
+          "sourceRow": 0,
+          "sourcePose": 2,
+          "sourceBounds": [
+            361,
+            11,
+            455,
+            148
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 3,
+          "sourceRow": 0,
+          "sourcePose": 3,
+          "sourceBounds": [
+            517,
+            11,
+            610,
+            148
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 4,
+          "sourceRow": 0,
+          "sourcePose": 4,
+          "sourceBounds": [
+            674,
+            10,
+            768,
+            148
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 5,
+          "sourceRow": 0,
+          "sourcePose": 5,
+          "sourceBounds": [
+            830,
+            11,
+            924,
+            148
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 6,
+          "sourceRow": 0,
+          "sourcePose": 6,
+          "sourceBounds": [
+            988,
+            11,
+            1081,
+            148
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 7,
+          "sourceRow": 0,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1144,
+            11,
+            1239,
+            148
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 8,
+          "sourceRow": 1,
+          "sourcePose": 0,
+          "sourceBounds": [
+            43,
+            11,
+            149,
+            146
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            22,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 9,
+          "sourceRow": 1,
+          "sourcePose": 1,
+          "sourceBounds": [
+            198,
+            13,
+            303,
+            146
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 10,
+          "sourceRow": 1,
+          "sourcePose": 2,
+          "sourceBounds": [
+            358,
+            13,
+            458,
+            146
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            21,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 11,
+          "sourceRow": 1,
+          "sourcePose": 3,
+          "sourceBounds": [
+            521,
+            13,
+            610,
+            146
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 12,
+          "sourceRow": 1,
+          "sourcePose": 4,
+          "sourceBounds": [
+            674,
+            12,
+            771,
+            146
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            20,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 13,
+          "sourceRow": 1,
+          "sourcePose": 5,
+          "sourceBounds": [
+            835,
+            12,
+            927,
+            146
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 14,
+          "sourceRow": 1,
+          "sourcePose": 6,
+          "sourceBounds": [
+            988,
+            12,
+            1087,
+            146
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            21,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 15,
+          "sourceRow": 1,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1146,
+            13,
+            1248,
+            146
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 16,
+          "sourceRow": 2,
+          "sourcePose": 0,
+          "sourceBounds": [
+            47,
+            15,
+            141,
+            149
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            20,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 17,
+          "sourceRow": 2,
+          "sourcePose": 1,
+          "sourceBounds": [
+            208,
+            16,
+            295,
+            149
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            18,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 18,
+          "sourceRow": 2,
+          "sourcePose": 2,
+          "sourceBounds": [
+            365,
+            14,
+            455,
+            149
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            19,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 19,
+          "sourceRow": 2,
+          "sourcePose": 3,
+          "sourceBounds": [
+            513,
+            16,
+            619,
+            149
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 20,
+          "sourceRow": 2,
+          "sourcePose": 4,
+          "sourceBounds": [
+            669,
+            17,
+            773,
+            149
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 21,
+          "sourceRow": 2,
+          "sourcePose": 5,
+          "sourceBounds": [
+            827,
+            14,
+            924,
+            149
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 22,
+          "sourceRow": 2,
+          "sourcePose": 6,
+          "sourceBounds": [
+            985,
+            17,
+            1085,
+            149
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            21,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 23,
+          "sourceRow": 2,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1136,
+            16,
+            1238,
+            149
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 24,
+          "sourceRow": 2,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1136,
+            16,
+            1238,
+            149
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 25,
+          "sourceRow": 3,
+          "sourcePose": 0,
+          "sourceBounds": [
+            44,
+            11,
+            168,
+            147
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            26,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 26,
+          "sourceRow": 3,
+          "sourcePose": 1,
+          "sourceBounds": [
+            198,
+            22,
+            331,
+            147
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            28,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 27,
+          "sourceRow": 3,
+          "sourcePose": 2,
+          "sourceBounds": [
+            354,
+            27,
+            525,
+            147
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            30,
+            25
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 28,
+          "sourceRow": 3,
+          "sourcePose": 3,
+          "sourceBounds": [
+            524,
+            35,
+            737,
+            147
+          ],
+          "componentIds": [
+            6,
+            17,
+            8,
+            27
+          ],
+          "sampleSize": [
+            30,
+            24
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 29,
+          "sourceRow": 3,
+          "sourcePose": 4,
+          "sourceBounds": [
+            725,
+            48,
+            939,
+            147
+          ],
+          "componentIds": [
+            9,
+            15,
+            25,
+            26,
+            16,
+            29,
+            11
+          ],
+          "sampleSize": [
+            30,
+            21
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 30,
+          "sourceRow": 3,
+          "sourcePose": 5,
+          "sourceBounds": [
+            939,
+            18,
+            1110,
+            147
+          ],
+          "componentIds": [
+            2,
+            23,
+            31,
+            30,
+            28
+          ],
+          "sampleSize": [
+            30,
+            27
+          ],
+          "horizontalFit": true,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 31,
+          "sourceRow": 3,
+          "sourcePose": 6,
+          "sourceBounds": [
+            1143,
+            18,
+            1240,
+            147
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            20,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 32,
+          "sourceRow": 4,
+          "sourcePose": 0,
+          "sourceBounds": [
+            47,
+            17,
+            137,
+            149
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 33,
+          "sourceRow": 4,
+          "sourcePose": 1,
+          "sourceBounds": [
+            205,
+            15,
+            296,
+            149
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 34,
+          "sourceRow": 4,
+          "sourcePose": 2,
+          "sourceBounds": [
+            366,
+            15,
+            450,
+            149
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            18,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 35,
+          "sourceRow": 4,
+          "sourcePose": 3,
+          "sourceBounds": [
+            521,
+            15,
+            604,
+            149
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            18,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 36,
+          "sourceRow": 4,
+          "sourcePose": 4,
+          "sourceBounds": [
+            684,
+            14,
+            763,
+            149
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            17,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 37,
+          "sourceRow": 4,
+          "sourcePose": 5,
+          "sourceBounds": [
+            836,
+            14,
+            927,
+            149
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            19,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 38,
+          "sourceRow": 4,
+          "sourcePose": 6,
+          "sourceBounds": [
+            992,
+            15,
+            1080,
+            149
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 39,
+          "sourceRow": 4,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1146,
+            14,
+            1235,
+            149
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            19,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 40,
+          "sourceRow": 5,
+          "sourcePose": 0,
+          "sourceBounds": [
+            31,
+            13,
+            158,
+            149
+          ],
+          "componentIds": [
+            2
+          ],
+          "sampleSize": [
+            27,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 41,
+          "sourceRow": 5,
+          "sourcePose": 1,
+          "sourceBounds": [
+            190,
+            17,
+            317,
+            149
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            27,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 42,
+          "sourceRow": 5,
+          "sourcePose": 2,
+          "sourceBounds": [
+            347,
+            18,
+            479,
+            148
+          ],
+          "componentIds": [
+            6
+          ],
+          "sampleSize": [
+            28,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 43,
+          "sourceRow": 5,
+          "sourcePose": 3,
+          "sourceBounds": [
+            502,
+            17,
+            636,
+            149
+          ],
+          "componentIds": [
+            5
+          ],
+          "sampleSize": [
+            28,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 44,
+          "sourceRow": 5,
+          "sourcePose": 4,
+          "sourceBounds": [
+            658,
+            19,
+            791,
+            149
+          ],
+          "componentIds": [
+            7
+          ],
+          "sampleSize": [
+            28,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 45,
+          "sourceRow": 5,
+          "sourcePose": 5,
+          "sourceBounds": [
+            819,
+            20,
+            938,
+            149
+          ],
+          "componentIds": [
+            8
+          ],
+          "sampleSize": [
+            25,
+            27
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 46,
+          "sourceRow": 5,
+          "sourcePose": 6,
+          "sourceBounds": [
+            984,
+            16,
+            1087,
+            149
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 47,
+          "sourceRow": 5,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1143,
+            12,
+            1237,
+            148
+          ],
+          "componentIds": [
+            1
+          ],
+          "sampleSize": [
+            20,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 48,
+          "sourceRow": 6,
+          "sourcePose": 0,
+          "sourceBounds": [
+            44,
+            11,
+            153,
+            148
+          ],
+          "componentIds": [
+            1,
+            9,
+            19,
+            12
+          ],
+          "sampleSize": [
+            23,
+            29
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 49,
+          "sourceRow": 6,
+          "sourcePose": 1,
+          "sourceBounds": [
+            198,
+            14,
+            310,
+            148
+          ],
+          "componentIds": [
+            2,
+            8,
+            16
+          ],
+          "sampleSize": [
+            24,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 50,
+          "sourceRow": 6,
+          "sourcePose": 2,
+          "sourceBounds": [
+            351,
+            26,
+            459,
+            148
+          ],
+          "componentIds": [
+            5,
+            14,
+            26
+          ],
+          "sampleSize": [
+            23,
+            26
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 51,
+          "sourceRow": 6,
+          "sourcePose": 3,
+          "sourceBounds": [
+            514,
+            51,
+            621,
+            148
+          ],
+          "componentIds": [
+            7,
+            27,
+            29,
+            43
+          ],
+          "sampleSize": [
+            23,
+            20
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 52,
+          "sourceRow": 6,
+          "sourcePose": 4,
+          "sourceBounds": [
+            669,
+            69,
+            775,
+            148
+          ],
+          "componentIds": [
+            13,
+            31,
+            48
+          ],
+          "sampleSize": [
+            22,
+            17
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 53,
+          "sourceRow": 6,
+          "sourcePose": 5,
+          "sourceBounds": [
+            823,
+            71,
+            930,
+            148
+          ],
+          "componentIds": [
+            15,
+            44,
+            49
+          ],
+          "sampleSize": [
+            23,
+            16
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 54,
+          "sourceRow": 6,
+          "sourcePose": 6,
+          "sourceBounds": [
+            986,
+            15,
+            1075,
+            148
+          ],
+          "componentIds": [
+            3
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 55,
+          "sourceRow": 6,
+          "sourcePose": 7,
+          "sourceBounds": [
+            1146,
+            15,
+            1237,
+            148
+          ],
+          "componentIds": [
+            4
+          ],
+          "sampleSize": [
+            19,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 56,
+          "sourceRow": 7,
+          "sourcePose": 0,
+          "sourceBounds": [
+            41,
+            13,
+            143,
+            147
+          ],
+          "componentIds": [
+            1,
+            6,
+            4
+          ],
+          "sampleSize": [
+            22,
+            28
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 57,
+          "sourceRow": 7,
+          "sourcePose": 1,
+          "sourceBounds": [
+            191,
+            32,
+            299,
+            147
+          ],
+          "componentIds": [
+            3,
+            7,
+            8
+          ],
+          "sampleSize": [
+            23,
+            24
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 58,
+          "sourceRow": 7,
+          "sourcePose": 2,
+          "sourceBounds": [
+            339,
+            63,
+            465,
+            147
+          ],
+          "componentIds": [
+            9,
+            11,
+            13
+          ],
+          "sampleSize": [
+            27,
+            18
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 59,
+          "sourceRow": 7,
+          "sourcePose": 3,
+          "sourceBounds": [
+            501,
+            100,
+            618,
+            147
+          ],
+          "componentIds": [
+            15,
+            18,
+            22
+          ],
+          "sampleSize": [
+            25,
+            10
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 60,
+          "sourceRow": 7,
+          "sourcePose": 4,
+          "sourceBounds": [
+            658,
+            101,
+            772,
+            147
+          ],
+          "componentIds": [
+            17,
+            25
+          ],
+          "sampleSize": [
+            24,
+            10
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 61,
+          "sourceRow": 7,
+          "sourcePose": 5,
+          "sourceBounds": [
+            820,
+            100,
+            931,
+            147
+          ],
+          "componentIds": [
+            16,
+            23,
+            31
+          ],
+          "sampleSize": [
+            23,
+            10
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 62,
+          "sourceRow": 7,
+          "sourcePose": 6,
+          "sourceBounds": [
+            976,
+            117,
+            1067,
+            147
+          ],
+          "componentIds": [
+            21,
+            30,
+            33,
+            32
+          ],
+          "sampleSize": [
+            19,
+            6
+          ],
+          "horizontalFit": false,
+          "registration": "bottom-centred in fixed 32px cell"
+        },
+        {
+          "frame": 63,
+          "sourceRow": 7,
+          "sourcePose": 7,
+          "empty": true
+        }
+      ],
+      "sourceAvailability": "external-user-zip"
+    }
+  ],
+  "sourceMasters": {
+    "includedInRepository": false,
+    "location": "source/ in the separately supplied user ZIP",
+    "note": "sourceFile fields are external archive references; source masters are intentionally absent from the GitHub asset handoff."
+  }
+}

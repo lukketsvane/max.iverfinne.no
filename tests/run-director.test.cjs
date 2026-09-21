@@ -57,7 +57,7 @@ test('twenty stages contain three finite encounters each and only the final boss
       assert.equal(g.gardenWave,wave);const total=g.rogueRun.raidTotal;let spawned=0;
       for(let tick=0;tick<1000&&g.gardenRaidActive&&!g.rogueRun.ended;tick++){
         g.updateGardenFun(.1);
-        for(const k of [...g.floatKrek]){spawned++;if(k.boss){bosses++;assert.equal(stage,20);assert.equal(wave,3);}g.damagePest(k,10000,k.x-20);}
+        for(const k of [...g.floatKrek]){spawned++;if(k.boss){bosses++;assert.ok([5,10,15,20].includes(stage));assert.equal(wave,3);assert.equal(k.finalBoss,stage===20);}g.damagePest(k,10000,k.x-20);}
         resolve(g);
       }
       if(!g.rogueRun.ended)assert.equal(spawned,total);
@@ -65,7 +65,7 @@ test('twenty stages contain three finite encounters each and only the final boss
     }
     if(stage<20)assert.equal(g.rogueRun.clearedWorld,stage);
   }
-  assert.equal(encounters,60);assert.equal(bosses,1);assert.equal(g.runWon,true);assert.equal(g.rogueMeta.wins,1);
+  assert.equal(encounters,60);assert.equal(bosses,4);assert.equal(g.runWon,true);assert.equal(g.rogueMeta.wins,1);
   g.enterLevel(21);assert.equal(g.rogueRun.world,20);
 });
 test('enemy roles unlock by stage and thieves visibly wind up, steal, and return their seed when defeated',()=>{
@@ -102,7 +102,7 @@ test('spore casters warn before impact, bombs clear spores, and hazards respect 
 test('shrines require in-reach downward interaction, consume seeds once, and wait for the whole trial',()=>{
   const {game:g}=fresh();const e=g.runEncounters[0];g.gardenSeeds=3;
   assert.equal(g.interactEncounter(),false);assert.equal(g.gardenSeeds,3);
-  g.P.x=e.x;g.P.y=g.surfaceY(e.x);g.P.grounded=true;g.P.wet=false;
+  g.P.x=e.x;g.P.y=e.y;g.P.grounded=true;g.P.wet=false;
   assert.equal(g.crouchGardenAction(),true);assert.equal(g.gardenSeeds,2);assert.ok(e.active);const count=g.floatKrek.length;
   g.interactEncounter();assert.equal(g.gardenSeeds,2);assert.equal(g.floatKrek.length,count);
   g.updateEncounters(11);assert.equal(e.done,false,'time alone cannot complete the encounter');
@@ -119,9 +119,9 @@ test('each stage offers two dry routes and a third ember or dew can be earned by
       const options=g.runEncounters;
       assert.equal(options.length,2);assert.notEqual(options[0].type,options[1].type);
       assert.notEqual(options[0].id,options[1].id);assert.ok(Math.abs(options[0].x-options[1].x)>100);
-      options.forEach(e=>{assert.equal(!!g.waterAt(e.x),false);assert.equal(e.locked,false);});
+      options.forEach(e=>{assert.equal(g.playerWetAt(e.x,e.y),false);assert.ok(g.playerSupportId(e.x,e.y));assert.equal(e.locked,false);});
       const e=stage<=5&&options.find(q=>q.type===type);if(!e)continue;
-      Object.assign(g.P,{x:e.x,y:g.surfaceY(e.x),st:'free',grounded:true,wet:false});g.gardenSeeds=9;
+      Object.assign(g.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});g.gardenSeeds=9;
       assert.equal(g.interactEncounter(),true);
       for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
       g.updateEncounters(e.duration+.01);g.updateRunLoot();earned++;
@@ -133,7 +133,7 @@ test('each stage offers two dry routes and a third ember or dew can be earned by
 test('choosing one shrine closes the other without doubling cost, enemies or rewards',()=>{
   const {game:g}=fresh();g.rogueRun.next=1e9;g.runLoot=[];
   const [first,second]=g.runEncounters;
-  Object.assign(g.P,{x:second.x,y:g.surfaceY(second.x),grounded:true,wet:false,st:'free'});
+  Object.assign(g.P,{x:second.x,y:second.y,grounded:true,wet:false,st:'free'});
   g.gardenSeeds=second.cost-1;g.interactEncounter();
   assert.ok(g.runEncounters.every(e=>!e.active&&!e.locked),'insufficient seeds leave both routes open');
   g.gardenSeeds=9;const beforeX=g.P.x;assert.equal(g.interactEncounter(),true);

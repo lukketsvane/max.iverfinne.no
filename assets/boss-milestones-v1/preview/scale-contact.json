@@ -1,0 +1,27 @@
+{
+  "image": "preview/scale-contact-4x.png",
+  "nativeImage": "preview/scale-contact-1x.png",
+  "nativeSize": [
+    390,
+    222
+  ],
+  "scale": 4,
+  "interpolation": "nearest-neighbour",
+  "bossFrameIndices": {
+    "idle": 0,
+    "windup": 21,
+    "vulnerable": 44
+  },
+  "originalMax": {
+    "source": "index.html:SHEET_SRC",
+    "commit": "054382815cdd9ae69c1347a1b74b7d5daa0d926f",
+    "embeddedSheetSha256": "57d3d09d6c8d9a3e3138316e705915f988d492b275de06a373c5437ad343cbd7",
+    "rect": [
+      0,
+      0,
+      32,
+      32
+    ]
+  },
+  "note": "Original Max idle frame is repeated for scale comparison, not shown as attack/vulnerability states."
+}

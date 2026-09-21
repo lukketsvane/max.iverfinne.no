@@ -11,6 +11,8 @@ example with `python -m http.server 8765 --directory dist`. Open
 pinned Supabase client. No server process or CDN script is required in production.
 
 - `index.html`: game, original embedded artwork and simulation.
+- `stage-layout.js`: the twenty gardens' platform routes, landing collision and native scenery.
+- `run-director.inc.js`: mixed raids, exploration rewards, specialist enemies and milestone bosses.
 - `run-results.js` / `run-results.css`: full-screen native bouquets from every plant grown during the run, with paged bundles and local records.
 - `game-menu.mjs` / `game-menu.css`: main menu, controls and account UI.
 - `player-account.mjs`: username mapping and legacy cloud-format utilities.
@@ -25,6 +27,11 @@ jump. Drag down to tend a plant within reach, harvest ripe seeds, or plant on
 empty soil. A nearby beanstalk can be climbed the same way. Taps and stationary
 holds never queue plant actions or walk to targets. Tap pests to defend.
 Tap the robot nearby to refill. Moving cancels a hand action immediately.
+
+Platforms have one-way collision: jump through from below, land on top, and
+jump onward or walk off a ledge. Elevated routes lead to feathers and
+shrine trials; higher optional perches reward improved jumps. Planting and
+tending still require ground soil. No extra movement button is needed.
 
 Keyboard: Left / Right (or A / D) to move, Up (or W) to jump, Down / Space to
 tend the garden, Shift to run, X to dodge, B to defend, L for the lantern and R
@@ -110,17 +117,41 @@ points or artificial growth. A harvest needs 0.35 new growth since the previous
 one. Tall plants keep their height. Mutation ranks stop at five, offers span
 different play styles, and surplus XP retains every earned choice.
 
-Each raid has a fixed enemy budget. Faster defence clears it sooner. Pressure
-increases continuously with active run time and garden number, carrying across
-travel. It increases enemy movement and damage, and affects the health and
-finite budget of later encounters. Boon choices freeze this clock; Settings
-does not. An approaching wave gives three brief edge flashes and chimes.
+The twenty gardens use six route themes: terraces, canopy, crossings, ruins,
+switchbacks and the final Crown layout. The five recurring themes vary their
+platform widths and route rhythms as the run advances. Two elevated routes
+offer exploration away from the garden; extra pickups on higher perches make
+mobility upgrades useful without replacing the main route.
 
-The run ends at the three-phase Hollow Crown in garden 20. Three encounters
-unlock each earlier garden's exit stalk. Optional shrine routes and passing
-weather events offer rewards at the cost of time. Swan feathers, embers and dew
-pearls stack independently per player. See [the run design](docs/run-design.md)
-for exact progression and counterplay.
+Raids send closely spaced mixed groups from alternating sides. Enemy mixes
+depend on the layout and wave, and later gardens support more simultaneous
+attackers. Each raid still has a finite budget: faster defence clears it sooner.
+Pressure increases continuously with active run time and garden number, carrying
+across travel. It increases enemy movement and damage, and affects the health
+and budget of later encounters. Boon choices freeze this clock; Settings does
+not. An approaching wave gives three brief edge flashes and chimes.
+
+Specialists enter early: seed thieves in garden 2, spore casters in 3, shield
+beetles in 4 and healing moths in 6. Marked dive attacks threaten players as they
+move through the routes. Later spore volleys can target players above the ground
+as well as crops, so higher ground does not remove every threat.
+
+Clearing three raids unlocks each earlier garden's exit stalk. The final raid
+in gardens 5, 10 and 15 includes a distinct milestone boss; garden 20 ends the
+run at the Hollow Crown.
+
+| Garden | Boss | Counterplay |
+| --- | --- | --- |
+| 5 | Mossback | Root markers announce a charge; jump clear or take a higher route, then attack during its exposed recovery. |
+| 10 | Bellkeeper | Spore volleys alternate with roots aimed at players; intercept spores and move out of marked strikes. |
+| 15 | Moon Moth | Interrupt its healing channel before it restores an ally, opening a vulnerability window. |
+| 20 | Hollow Crown | Three phases mix roots, spores and summoned guards; use its exposed windows to finish the run. |
+
+Optional shrine routes and passing weather events offer rewards at the cost of
+time. Swan feathers, embers and dew pearls stack independently per player.
+See [the run design](docs/run-design.md) for the broader class, item and co-op
+rules; current layouts and encounter progression are defined in
+`stage-layout.js` and `run-director.inc.js`.
 
 Every attempt starts at world one. The run keeps its full bouquet across worlds
 in memory and displays it when the attempt ends. Each finished attempt stores

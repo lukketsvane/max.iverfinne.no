@@ -5,6 +5,7 @@
 <script src="companion.js"></script>
 <script src="build-paths.js"></script>
 <script src="max-classes.js"></script>
+<script src="stage-layout.js"></script>
 <script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
@@ -206,6 +207,16 @@ function pondsInView(fn) {
 }
 
 function dryX(x) { var w = waterAt(x); return w ? w.cx + (x < w.cx ? -1 : 1) * (w.hw + 2) : x; }
+var activeStageLayout=null;
+function stageLayout(){
+  var level=worldLevel();
+  if(!activeStageLayout||activeStageLayout.stage!==level)activeStageLayout=window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt);
+  return activeStageLayout;
+}
+function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
+function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:surfaceY(x);}
+function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
+function drawPlatforms(){window.MaxStageLayout.draw(ctx,stageLayout(),camX,camY,IW,IH);}
 var surf = new Float32Array(360);
 function buildSurfCache() {
   for (var i = 0; i < IW + 10; i++) surf[i] = surfaceY(Math.round(camX) + i - 5);
@@ -425,6 +436,7 @@ function readInput() {
 /* ---------------------------------------------------------------- player */
 var P = {
   classId: 'mech', skin: 'original',
+  platform: null,
   x: 0, y: 0, vx: 0, vy: 0, face: 1, grounded: true, coyote: 0,
   anim: 'idle', frame: 0, clock: 0, done: false,
   land: 0, idleT: 0, fidget: null, held: false,
@@ -495,7 +507,10 @@ function updatePlayer(dt, inp) {
 }
 
 function physics(dt, inp) {
-  var wp0 = waterAt(P.x); P.wet = !!(wp0 && P.y > wp0.level + 1);
+  var layout=stageLayout(),platform=P.platform&&window.MaxStageLayout.support(layout,P.platform,P.x);
+  if(P.platform&&!platform&&P.grounded){P.grounded=false;P.coyote=.1;P.platform=null;}
+  var oldX=P.x,oldY=P.y;
+  var wp0 = waterAt(P.x); P.wet = playerWetAt(P.x,P.y);
   if(P.wet)P.dodgeT=0;
   if(P.dodgeT>0){P.face=P.dodgeDir;P.vx=P.dodgeDir*DODGE_SPEED;}
   else if (inp.axis !== 0) {
@@ -514,6 +529,7 @@ function physics(dt, inp) {
   var airJump=!groundJump&&ownTraits().feathers>=3&&!P.airJumpUsed&&!P.wet&&P.st!=='float';
   if (jumpBuf > 0 && (groundJump || airJump)) {
     P.dodgeT=0;
+    P.platform=null;
     P.airJumpUsed=!groundJump;
     P.vy = JUMP_V*ownClass().jump*featherJump()*(groundJump?1:.9); P.grounded = false; P.coyote = 0; jumpBuf = 0;
     P.held = jumpVariable; P.land = 0;
@@ -529,17 +545,23 @@ function physics(dt, inp) {
   P.x += P.vx * dt;
   P.y += P.vy * dt;
 
-  var g = surfaceY(P.x);
+  var g = surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
+  if(landing&&landing.y<g){g=landing.y;P.platform=landing.id;}
+  else if(P.platform&&P.grounded){
+    platform=window.MaxStageLayout.support(layout,P.platform,P.x);
+    if(platform)g=platform.y;
+    else{P.platform=null;P.grounded=false;P.coyote=.1;}
+  }
   if (P.y >= g || (P.grounded && P.vy>=0 && g-P.y<=3)) {
     if (!P.grounded) {
       if (P.st === 'float') landFloat();
       var imp = P.vy;
       P.land = imp > 160 ? 0.30 : 0.15;
-      setAnim('land'); var wl = waterAt(P.x); if (wl) ripple(P.x, wl.level, 'splash'); else puff(P.x, g, imp > 160 ? 9 : 4, 0.5);
+      setAnim('land'); var wl = waterAt(P.x); if (wl&&g>wl.level+1) ripple(P.x, wl.level, 'splash'); else puff(P.x, g, imp > 160 ? 9 : 4, 0.5);
     }
     P.grounded = true; P.airJumpUsed=false; P.y = g; P.vy = 0; P.coyote = 0.1;
   } else if (P.grounded) {
-    P.grounded = false; P.coyote = 0.1;
+    P.grounded = false; P.coyote = 0.1;P.platform=null;
   }
 }
 
@@ -2596,10 +2618,10 @@ function companionAt(x,y){
 }
 function refillCompanion(){
   if(coopGuest())return coopAction('refill');
-  if(runIsPaused())return false;
+  if(runIsPaused()||!P.grounded||P.wet)return false;
   var candidates=[];eachCompanion(function(bot){if(bot.state.state!=='packed')candidates.push(bot);});
   candidates.sort(function(a,b){return Math.abs(a.state.x-P.x)-Math.abs(b.state.x-P.x);});
-  for(var i=0;i<candidates.length;i++)if(candidates[i].requestRefill(P.x)){
+  for(var i=0;i<candidates.length;i++)if(Math.abs(P.y-surfaceY(candidates[i].state.x))<18&&candidates[i].requestRefill(P.x)){
     candidates[i].refiller=coop?(coopActor?coopActor.id:coop.me):null;socialTone('water');saveGarden();return true;
   }
   return false;
@@ -2691,7 +2713,7 @@ function resetRogueRun(reason,selection){
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
   rogueRun.recordId=window.MaxRunRecords?window.MaxRunRecords.uuid():null;
-  P.classId=classId;P.skin=skin;
+  P.classId=classId;P.skin=skin;P.platform=null;
   if(perkMenu)perkMenu.style.display='none';
   if(window.MaxRunResults)window.MaxRunResults.hide();
   selectedPerk=null;resultAtlasReady=false;clearRunInput();task=null;bombs.length=0;
@@ -2926,7 +2948,8 @@ function collectSeed(q){
   if(q.id)seedCollected[q.id]=1;
   seedStreak=seedStreakT>0?Math.min(9,seedStreak+1):1;seedStreakT=4.2;
   var base=q.amount||1,bonus=seedStreak>=4?1:0,gain=base+bonus;
-  gardenSeeds=Math.min(99,gardenSeeds+gain);grantRogueXP(1);
+  // Loose seeds fund planting and trials; combat and care earn boon experience.
+  gardenSeeds=Math.min(99,gardenSeeds+gain);
   gardenScore+=6+seedStreak*3;gardenPower=Math.min(100,gardenPower+2+seedStreak*.6);
   var i=seedPickups.indexOf(q);if(i>=0)seedPickups.splice(i,1);
   for(var k=0;k<5+seedStreak;k++)parts.push({x:q.x+(Math.random()-.5)*5,y:q.y-2-Math.random()*4,vx:(Math.random()-.5)*10,vy:-4-Math.random()*9,l:.45,m:.45,c:k&1?'216,197,95':'238,224,160'});
@@ -3315,7 +3338,7 @@ function levelCleared(){
   if(best){best.growth=Math.max(best.growth,G_TOP);makeStalk(best);}
   gardenScore+=1500+w*250;
   for(i=0;i<36;i++)parts.push({x:P.x+(Math.random()-.5)*45,y:P.y-12-Math.random()*45,vx:(Math.random()-.5)*18,vy:-8-Math.random()*18,l:1.2+Math.random()*1.8,m:1.2,c:i&1?'238,222,132':'171,206,135'});
-  spawnLooseSeeds(P.x,P.y-22,4);saveGarden();updateGardenHud();
+  spawnLooseSeeds(P.x,P.y-22,2);saveGarden();updateGardenHud();
 }
 function stalkAt(wx,wy,maxD){
   var best=null,bd=maxD==null?10:maxD;
@@ -3414,7 +3437,7 @@ function enterLevel(n){
   gardenPlots.forEach(recordGardenPlant);
   gardenPlots.length=0;floatKrek.length=0;bombs.length=0;
   seedPickups.length=0;
-  gardenSeeds=Math.min(99,gardenSeeds+2+Math.min(6,carried));
+  gardenSeeds=Math.min(99,gardenSeeds+2+Math.min(2,carried));
   gardenWave=0;gardenRaidT=9;gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;
   krekSpawnT=12;gardenBossSpawned=false;raidLostStart=gardenStats.lost||0;
   rogueRun.plantedThisWorld=false;rogueRun.raidTotal=0;rogueRun.raidRemaining=0;rogueRun.raidThreat=0;
@@ -3422,7 +3445,7 @@ function enterLevel(n){
   gardenScore+=500*n;
   climb=null;climbGoal=null;task=null;holdWater=null;crows.length=0;
   var x=levelOriginX(n);
-  P.x=x;P.y=surfaceY(x)-Math.round(IH*.40)-36;P.vx=0;P.vy=0;P.grounded=false;P.airJumpUsed=false;P.coyote=0;P.face=1;P.wet=false;
+  P.x=x;P.y=surfaceY(x)-Math.round(IH*.40)-36;P.vx=0;P.vy=0;P.grounded=false;P.airJumpUsed=false;P.coyote=0;P.face=1;P.wet=false;P.platform=null;
   P.st='float';setAnim('hang');
   if(coop&&coop.host)coopMembers().forEach(function(m){var sx=x+(m.slot-1)*12;m.avatar=Object.assign(coopAvatar(),{classId:m.classId,skin:m.skin,x:sx,y:surfaceY(sx)-80,st:'float',grounded:false});m.last=performance.now();m.draw=null;m.dodge=null;});
   eachCompanion(function(bot,m){bot.relocate(m?coopMemberAvatar(m).x:P.x);});
@@ -3540,7 +3563,7 @@ function drawWorldBanner(t){
   ctx.globalAlpha=1;
 }
 function raidPressure(){
-  return Math.max(0,runElapsed)/210+(worldLevel()-1)*.14;
+  return Math.max(0,runElapsed)/150+(worldLevel()-1)*.14;
 }
 function updateGardenFun(dt){
   if(runIsPaused()||climb||warp||P.st==='float')return;
@@ -3551,9 +3574,8 @@ function updateGardenFun(dt){
   if(rogueRun.clearedWorld===worldLevel())return;
 
   if(!gardenRaidActive){
-    if(active<2){
-      gardenRaidT=Math.min(gardenRaidT,12);roundLastSecond=-1;
-      if(active===1&&gardenSeeds===0&&seedPickups.length===0)ensureSeedPickups();
+    if(active<1){
+      gardenRaidT=Math.min(gardenRaidT,9);roundLastSecond=-1;
       return;
     }
     gardenRaidT-=dt;
@@ -3587,21 +3609,23 @@ function updateGardenFun(dt){
     rogueRun.raidTotal=raidBudget(active);
     rogueRun.raidRemaining=Math.max(0,rogueRun.raidTotal-raidAlive);
   }
-  var concurrent=Math.min(12,3+Math.ceil(gardenWave/3)+Math.max(0,coopSize()-1));
+  var concurrent=Math.min(12,5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0));
 
-  if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent){
+  if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent&&floatKrek.length<MAX_ACTIVE_ENEMIES){
     var bossWave=gardenWave===FINAL_WAVE,elite=bossWave&&!gardenBossSpawned;
-    var k=elite&&worldLevel()===RUN_STAGES?makeHollowCrown():makeKrek(Math.random()<.5?-1:1,elite);k.raid=true;floatKrek.push(k);
+    var index=rogueRun.raidTotal-rogueRun.raidRemaining,side=(Math.floor(index/2)+worldLevel()+gardenWave)%2?1:-1;
+    var k=elite?(worldLevel()===RUN_STAGES?makeHollowCrown():makeStageBoss(worldLevel())):null;
+    if(!k)k=makeKrek(side,elite,waveEnemyKind(index));k.raid=true;floatKrek.push(k);
     rogueRun.raidRemaining--;raidAlive++;
     if(elite)gardenBossSpawned=true;
-    gardenRaidSpawn=Math.max(.45,1.15-raidPressure()*.035);
+    gardenRaidSpawn=Math.max(.4,.85-raidPressure()*.025-(gardenWave-1)*.045);
   }
 
   if(gardenRaidGrace<=0&&rogueRun.raidRemaining===0&&raidAlive===0){
     gardenRaidActive=false;
     var perfect=(gardenStats.lost||0)===raidLostStart&&!gardenPlots.some(function(p){return p.dead>0;});
     var luck=rogueRun.perks.luck||0;
-    var reward=2+Math.min(5,Math.floor(gardenWave/2))+(perfect?3:0)+(gardenWave%4===0?2:0)+Math.min(2,luck);
+    var reward=1+Math.floor(gardenWave/3)+(perfect?1:0)+Math.min(1,luck);
     if(perfect){for(var pi=0;pi<gardenPlots.length;pi++){if(!gardenPlots[pi].dead){gardenPlots[pi].pulse=1.7;gardenPlots[pi].health=clamp01(gardenPlots[pi].health+.08);}}}
     if(gardenWave%4===0)rogueMeta.petals=(rogueMeta.petals|0)+1;
     spawnLooseSeeds(P.x,P.y-10,reward);
@@ -3609,21 +3633,21 @@ function updateGardenFun(dt){
     var speed=Math.max(0,70-Math.floor(runElapsed/15));
     gardenAction(130+gardenWave*22+(perfect?180:0)+speed,30+(perfect?12:0),perfect?'PERFECT':'CLEAR');
     if(gardenWave>=FINAL_WAVE){levelCleared();return;}
-    gardenRaidT=Math.max(5,8-raidPressure()*.15);
+    gardenRaidT=Math.max(4.5,6.5-raidPressure()*.12);
     if(gardenWave%4===0&&!rogueRun.choice){rogueRun.xp=Math.max(rogueRun.xp,rogueRun.next-1);grantRogueXP(1);}
     saveGarden();updateGardenHud();
   }
 }
 function pickKrekTarget(k){
-  var best=null,score=-1;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead||p.health<=0)continue;var d=Math.abs(p.x-k.x);if(d>650)continue;var s=p.growth*2+p.health-d/900+(p.growth>=1?.7:0);if(s>score){score=s;best=p;}}return best;
+  var best=null,score=-Infinity;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead||p.health<=0)continue;var d=Math.abs(p.x-k.x);if(d>650&&!k.raid&&!k.boss&&!k.eventId)continue;var s=p.growth*2+p.health-d/900+(p.growth>=1?.7:0);if(s>score){score=s;best=p;}}return best;
 }
-function makeKrek(side,elite){
+function makeKrek(side,elite,kind){
   var targets=gardenPlots.filter(function(p){return !p.dead;}),center=targets.length?targets[(Math.random()*targets.length)|0].x:P.x;
-  var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22,kind=enemyKind();
-  var pressure=raidPressure(),hp=1+Math.floor((worldLevel()-1)/7)+Math.floor(pressure/7)+(elite?2:0);
-  return{x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.3,windup:0,attackTarget:null,think:0,flee:0,hp:hp,maxHp:hp,flash:0,kind:kind,elite:!!elite,queen:false,raid:false,pressure:pressure};
+  var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22;if(kind==null)kind=enemyKind();
+  var w=worldLevel(),pressure=raidPressure(),hp=1+(w>=4?1:0)+(w>=9?1:0)+(w>=14?1:0)+(kind===1||kind===5?1:0)+Math.floor(pressure/9)+(elite?2:0);
+  return safeEnemyPosition({x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.3,windup:0,attackTarget:null,think:0,flee:0,lampCooldown:0,hp:hp,maxHp:hp,flash:0,kind:kind,elite:!!elite,queen:false,raid:false,pressure:pressure},x,y);
 }
-function staggerKrek(k,time){if(k.boss)return;k.flee=Math.max(k.flee||0,time);k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.bite=.35;}
+function staggerKrek(k,time){if(k.boss)return;if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.bite=.35;}
 function biteGarden(k,p,pressure){
   var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(1+pressure*.05)*Math.pow(.78,(rogueRun.perks.shield||0))*classProtection(p);
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
@@ -3633,7 +3657,9 @@ function biteGarden(k,p,pressure){
 function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=Math.hypot(k.x-wx,k.y-wy);if(d<bd){bd=d;best=k;}}return best;}
 function burstKrek(k){
   if(window.MaxNativeArt)window.MaxNativeArt.enemyDefeated(k,tSec);
-  if(k.boss){rogueRun.bossDefeated=true;winRogueRun();return;}
+  if(k.divePhase)cancelPestDive(k);
+  if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
+  if(k.scout){puff(k.x,k.y,6,.5);return;}
   if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen);
   gardenStats.defended=(gardenStats.defended||0)+1;
   var bonus=k&&k.queen?7:(k&&k.elite?3:((gardenStats.defended%3)===0?1:0));
@@ -3648,16 +3674,20 @@ function updateKrek(dt){
   var active=0;for(var pi=0;pi<gardenPlots.length;pi++)if(!gardenPlots[pi].dead&&gardenPlots[pi].growth>.16)active++;
   var ambientAllowed=!gardenRaidActive&&gardenRaidT>3&&rogueRun.clearedWorld!==worldLevel();
   if(ambientAllowed)krekSpawnT-=dt;
-  if(ambientAllowed&&active&&krekSpawnT<=0&&floatKrek.length<Math.min(5,1+Math.ceil(active/2))){floatKrek.push(makeKrek(Math.random()<.5?-1:1));krekSpawnT=Math.max(6,8+Math.random()*10-Math.min(4,active*.45)-Math.min(3,(worldLevel()-1)*.6)-raidPressure()*.6);updateGardenHud();}
+  if(ambientAllowed&&active&&krekSpawnT<=0&&floatKrek.length<Math.min(6,2+Math.ceil(active/2))){floatKrek.push(makeKrek(Math.random()<.5?-1:1));krekSpawnT=Math.max(4.5,7+Math.random()*5-Math.min(3,active*.35)-Math.min(2,(worldLevel()-1)*.25)-raidPressure()*.4);updateGardenHud();}
+  if(ambientAllowed&&!active&&rogueRun.worldElapsed>=22&&krekSpawnT<=0&&floatKrek.length<Math.min(4,1+coopSize())){
+    var scout=makeKrek(Math.random()<.5?-1:1,false,2);scout.scout=true;floatKrek.push(scout);krekSpawnT=8;
+  }
   if(!active&&floatKrek.length===0)krekSpawnT=Math.min(krekSpawnT,4);
   for(var i=floatKrek.length-1;i>=0;i--){
-    var k=floatKrek[i],pressure=raidPressure();k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);
+    var k=floatKrek[i],pressure=raidPressure();k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);k.lampCooldown=Math.max(0,(k.lampCooldown||0)-dt);
     if(k.burn>0){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate;if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
-    if(k.flee>0&&!k.boss){k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<P.x?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
-    if(!k.boss&&P.lampLit>.45&&Math.hypot(k.x-P.x,k.y-(P.y-12))<42){staggerKrek(k,2.8);continue;}
+    if(k.flee>0&&!k.boss){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
+    var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
+    if(lamp){k.lampCooldown=7;staggerKrek(k,.85);k.fleeFromX=lamp.p.x;continue;}
     if(updateEnemyRole(k,dt))continue;
     if(!k.target||gardenPlots.indexOf(k.target)<0||k.target.dead){k.windup=0;k.attackTarget=null;k.target=pickKrekTarget(k);}
-    if(!k.target){if(k.eventId){moveEnemyTo(k,k.eventX,surfaceY(k.eventX)-18,dt,14);continue;}k.vx+=(k.face*7-k.vx)*dt;k.x+=k.vx*dt;k.y+=Math.sin(tSec*1.8+k.ph)*4*dt;if(!k.raid&&Math.abs(k.x-P.x)>IW*1.2)floatKrek.splice(i,1);continue;}
+    if(!k.target){if(k.eventId){moveEnemyTo(k,k.eventX,(Number.isFinite(k.eventY)?k.eventY:surfaceY(k.eventX))-18,dt,14);continue;}if(k.scout){var player=runPlayers().reduce(function(a,b){return Math.abs(a.p.x-k.x)<Math.abs(b.p.x-k.x)?a:b;});moveEnemyTo(k,player.p.x+(k.x<player.p.x?-54:54),player.p.y-34,dt,18);continue;}k.vx+=(k.face*7-k.vx)*dt;k.x+=k.vx*dt;k.y+=Math.sin(tSec*1.8+k.ph)*4*dt;if(!k.raid&&Math.abs(k.x-P.x)>IW*1.2)floatKrek.splice(i,1);continue;}
     var p=k.target,tx=p.x,ty=surfaceY(p.x)-10-Math.min(8,p.growth*8),dx=tx-k.x,dy=ty-k.y,d=Math.hypot(dx,dy);
     k.face=dx>=0?1:-1;
     if(k.windup>0&&(d>11||k.attackTarget!==p)){k.windup=0;k.attackTarget=null;k.bite=.25;}
@@ -3901,6 +3931,7 @@ for (var k2 in ANIM2) { ANIM2[k2].sh = 2; ANIM[k2] = ANIM2[k2]; }
 /* Hands work only within reach. No input ever steers toward a task. */
 var task = null;
 function embody(kind,x,fn){
+  if(['dig','sow','water','pick'].indexOf(kind)>=0&&Math.abs(P.y-surfaceY(x))>12)return false;
   if(coopActor){if(!P.grounded||P.wet||Math.abs(x-P.x)>18)return false;fn();return true;}
   if(!P.grounded||P.wet||Math.abs(x-P.x)>18)return false;
   if(P.st==='task')return true;
@@ -3924,6 +3955,7 @@ function crouchGardenAction() {
     if(!P.grounded||P.wet||task||P.st!=='free')return false;
     if(interactEncounter())return true;
     var nearStalk=stalkAt(P.x,P.y-4,9);if(nearStalk&&requestClimb(nearStalk))return true;
+    if(Math.abs(P.y-surfaceY(P.x))>4)return false;
     if(!coopAction('grow'))return false;
     var nearby=nearestGardenPlot(P.x,18);
     if(sheet2Ready)embody(nearby?'water':'sow',P.x,function(){});return true;
@@ -3932,6 +3964,7 @@ function crouchGardenAction() {
   if(interactEncounter())return true;
 
   var stalk=stalkAt(P.x,P.y-4,9);if(stalk&&!coopActor&&requestClimb(stalk))return true;
+  if(Math.abs(P.y-surfaceY(P.x))>4)return false;
   var p=nearestGardenPlot(P.x,18);
   if (p && !p.dead) {
     var previous=typeof p.lastHarvestGrowth==='number'?p.lastHarvestGrowth:.65;
@@ -3976,7 +4009,7 @@ function updateHands(dt, inp) {
   }
   if (!P.grounded || P.wet) { if (P.st !== 'free') P.st = 'free'; task = null; holdWater=null; return; }
   if(P.st==='watering'){
-    if(!holdWater||!holdWater.p||holdWater.p.dead||move){P.st='free';setAnim('idle');return;}
+    if(!holdWater||!holdWater.p||holdWater.p.dead||move||Math.abs(P.y-surfaceY(holdWater.p.x))>12){P.st='free';holdWater=null;setAnim('idle');return;}
     P.vx=0;P.face=holdWater.p.x>=P.x?1:-1;if(P.anim!=='waterHold')setAnim('waterHold');
     waterGardenPlotTick(holdWater.p,dt);return;
   }
@@ -4056,7 +4089,7 @@ function updateHands(dt, inp) {
 function lanternPos() {
   if (P.st === 'rest' || P.st === 'toSit') {
     var gx = P.x + P.face * 8;
-    return { x: gx, y: surfaceY(gx) - 3, ground: true };
+    return { x: gx, y: P.y - 3, ground: true };
   }
   return { x: P.x + (P.face > 0 ? 2 : -3), y: P.y - 17, ground: false };
 }
@@ -4308,12 +4341,12 @@ function explode(x, y, wet, build) {
   for(i=floatKrek.length-1;i>=0;i--){
     o=floatKrek[i];
     if(Math.hypot(o.x-x,o.y-y)<BR+7){
-      if(damagePest(o,1+(build.emberStacks||0)*.12,x,build)){pestN++;if(build.chain&&chainSeeds.length<3)chainSeeds.push({x:o.x,y:o.y});}
+      if(damagePest(o,1+(build.emberStacks||0)*.12,x,build)&&!o.scout){pestN++;if(build.chain&&chainSeeds.length<3)chainSeeds.push({x:o.x,y:o.y});}
     }
   }
   chainSeeds.forEach(function(seed){
     for(var ci=floatKrek.length-1;ci>=0;ci--){var enemy=floatKrek[ci];if(Math.hypot(enemy.x-seed.x,enemy.y-seed.y)>24)continue;
-      if(damagePest(enemy,1,seed.x,build))pestN++;
+      if(damagePest(enemy,1,seed.x,build)&&!enemy.scout)pestN++;
     }
     booms.push({x:seed.x,y:seed.y,t:0,poof:true,big:false});
   });
@@ -4989,6 +5022,7 @@ function frame(now) {
   drawBiomeFlora(tSec);
   drawLandmarks(tSec);
   drawBiomeTransitionMarkers();
+  drawPlatforms();
   drawSmartWorld(tSec);
   drawSeedPickups(tSec);
   drawRunExploration(tSec);

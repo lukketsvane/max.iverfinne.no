@@ -38,7 +38,8 @@ function coopWithMember(m,fn){
   if(!coopActor)coop.members[coop.me].avatar=coopAvatar();
   try{
     P=Object.assign({},oldP,m.avatar,{st:'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,throwPose:0});
-    P.grounded=Math.abs(P.y-surfaceY(P.x))<4&&!waterAt(P.x);P.wet=!!waterAt(P.x);
+    P.platform=playerSupportId(P.x,P.y);P.wet=playerWetAt(P.x,P.y);
+    P.grounded=Math.abs(P.y-playerSupportY(P.x,P.y))<4&&!P.wet;
     rogueRun.classId=m.classId;rogueRun.perks=m.perks;rogueRun.traits=m.traits;task=null;holdWater=null;climb=null;warp=null;bombCool=Math.max(0,(m.cool-performance.now())/1000);coopActor=m;
     return fn();
   }finally{m.cool=performance.now()+Math.max(0,bombCool)*1000;P=oldP;rogueRun.classId=oldClass;rogueRun.perks=oldPerks;rogueRun.traits=oldTraits;task=oldTask;holdWater=oldWater;bombCool=oldCool;coopActor=oldActor;climb=oldClimb;warp=oldWarp;}
@@ -78,7 +79,7 @@ function coopInput(id,packet){
       }
       else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
         var x=action.x==null?P.x:action.x,y=action.y==null?P.y:action.y,dir=action.direction==null?P.face:action.direction;
-        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36||Math.abs(y-surfaceY(x))>4||waterAt(x))return;
+        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36||Math.abs(y-playerSupportY(x,y))>4||playerWetAt(x,y))return;
         m.dodgeUntil=now+dodgeRecovery()*1000;
         m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:y,progress:0,expires:now+(DODGE_TIME+.12)*1000};
         P.dodgeDir=dir;dewDodge();
@@ -90,10 +91,10 @@ function coopInput(id,packet){
 }
 function coopDodgeContact(m,now){
   var d=m.dodge,a=m.avatar;if(!d)return;
-  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||Math.abs(a.y-surfaceY(a.x))>4){m.dodge=null;return;}
+  if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||playerWetAt(a.x,a.y)||Math.abs(a.y-playerSupportY(a.x,a.y))>4){m.dodge=null;return;}
   var distance=(a.x-d.origin)*d.dir,maxDistance=DODGE_SPEED*DODGE_TIME+2;
   if(distance<d.progress-2){m.dodge=null;return;}
-  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir,y=surfaceY(x);
+  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir,y=playerSupportY(x,a.y);
   // Input arrives less often than physics ticks. Sweep the accepted segment,
   // bounded to one roll, so a guest cannot skip through an enemy between packets.
   coopWithMember(m,function(){P.dodgeId=d.id;P.dodgeDir=d.dir;dodgeSweep(d.x,d.y,x,y);});
@@ -183,6 +184,7 @@ function coopState(s){
   }
   if(previousWorld!==s.world){
     task=null;climb=null;warp=null;holdWater=null;clearRunInput();
+    P.platform=null;
     P.x=levelOriginX(s.world)+(coop.members[coop.me].slot-1)*12;P.y=surfaceY(P.x)-80;P.vx=P.vy=0;P.grounded=false;P.airJumpUsed=false;P.st='float';setAnim('hang');started=false;hazardHits={};
   }
   rogueRun.ended=!!s.ended;runWon=!!s.won;coopShowChoices();

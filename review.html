@@ -1,17 +1,34 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAX · visual review</title>
-<style>body{margin:20px;background:#111;color:#eee;font:14px monospace}nav{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}button{padding:12px;background:#253026;color:#eee;border:1px solid #889279}iframe{display:block;border:1px solid #444;max-width:100%;background:#111}p{max-width:70em;line-height:1.6}</style>
-<h1>MAX · visual review</h1><p>Isolated fixtures using the actual game renderer. These sample gardens do not read or change your saves.</p>
-<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button><button id="rotate">Portrait / landscape</button></nav><p id="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:12px;background:#111;color:#eee;font:13px/1.4 monospace}h1{margin:0 0 5px;font-size:18px}p{max-width:70em;line-height:1.5;margin:6px 0 10px}.review-controls{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin:10px 0}.review-controls label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:#c4cfbd}.review-controls label:first-child{flex:1 1 190px;max-width:360px}button,select{min-height:40px;padding:8px;background:#253026;color:#eee;border:1px solid #889279;border-radius:0;font:inherit}select{width:100%}button:focus-visible,select:focus-visible{outline:2px solid #e8e492;outline-offset:2px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}details{margin:8px 0}summary{cursor:pointer;color:#b8cba6}iframe{display:block;border:0;outline:1px solid #444;max-width:100vw;background:#111;margin-left:-12px}#status{font-size:11px;color:#d1ddb9;min-height:30px;margin:8px 0}#fixture-help{font-size:11px;color:#a6b2a0;margin:8px 0;max-width:850px}.intro{font-size:11px;color:#a6b2a0;margin-bottom:8px}@media(max-width:480px){.review-controls{gap:6px}.review-controls label:first-child{max-width:none;flex-basis:calc(100% - 106px)}.review-controls label:nth-child(2){width:100px}.review-controls button{flex:1;min-height:34px;font-size:11px}h1{font-size:16px}}
+</style>
+<h1>MAX · visual review</h1><p class="intro">Actual game renderer and controls. Fixture saves stay in memory.</p>
+<div class="review-controls"><label>Scene<select id="fixture" aria-label="Review scene"></select></label><label>Class<select id="review-class" aria-label="Review class"><option value="mech">Mech</option><option value="runner">Runner</option><option value="bulwark">Bulwark</option><option value="herbalist">Herbalist</option></select></label><button id="restart" type="button">Reset scene</button><button id="rotate" type="button">Portrait / landscape</button></div>
+<details><summary>Original fixtures</summary>
+<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button></nav></details><p id="fixture-help"></p><p id="status" role="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
 <script>
 (async function(){
  const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
- const params=new URLSearchParams(location.search);
- let current=[...document.querySelectorAll('[data-mode]')].some(b=>b.dataset.mode===params.get('mode'))?params.get('mode'):'results';
+ const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
+ const layouts=[1,4,5,8,12,16,20],bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
+ const newModes=layouts.map(world=>'layout'+world).concat(Object.keys(bosses),'mixed');
+ const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
+ function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
+ group('Platform routes',layouts.map(world=>['layout'+world,'Garden '+world+' · Layout']));
+ group('Bosses and encounters',[...Object.entries(bosses),['boss','Hollow Crown · Garden 20'],['mixed','Mixed encounter · Garden 16']]);
+ group('Original fixtures',[...modeLabels.entries()].filter(([mode])=>!newModes.includes(mode)&&mode!=='boss'));
+ let current=modeLabels.has(params.get('mode'))?params.get('mode'):'results',fixtureSerial=0;
+ classChooser.value=['mech','runner','bulwark','herbalist'].includes(params.get('class'))?params.get('class'):'mech';
  if(params.has('portrait')){frame.width='390';frame.height='844';}
  function show(mode){
-  current=mode;status.textContent='Fixture: '+mode;
-  const gameplay=['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
-  const count=mode==='empty'?0:mode==='many'?53:gameplay?2:12;
+  current=mode;chooser.value=mode;const serial=++fixtureSerial;
+  status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');
+  const custom=newModes.includes(mode)||mode==='boss',layout=mode.startsWith('layout'),milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed';
+  const world=layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
+  const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
+  classChooser.disabled=!custom;
+  help.textContent=layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diving pest, seed thief, spore caster, shield beetle and healing moth. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
+  const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   // Install storage before the first external script, so the game, result
   // archive and menu preferences all share the same isolated fixture store.
@@ -26,8 +43,10 @@
       clear:()=>entries.clear()
     };
     Object.defineProperty(window,'localStorage',{value:storage,enumerable:true,configurable:false,writable:false});
+    window.addEventListener('error',function(event){parent.postMessage({type:'max-review-error',serial:${serial},message:event.message||'Fixture failed to load.'},${JSON.stringify(location.origin)});});
   }());`+'<'+'/script>';
   const hook=`
+    /* MAX_REVIEW_FIXTURE_START */
     menuPaused=false;runActive=${gameplay};rogueRun.next=1000000000;rogueRun.ended=false;rogueRun.choice=null;rogueRun.perks.robot=${tier};
     companion=null;P.x=0;P.y=surfaceY(0);P.vx=0;P.face=1;gardenSeeds=3;
     gardenPlots=[];rogueRun.garden=[];
@@ -39,7 +58,6 @@
     if(${mode==='feathers'}){rogueRun.traits.feathers=2;dropRunItem('feathers',24,surfaceY(24)-20);}
     if(${mode==='trial'}){runEncounters=[{id:1,x:-38,type:'rain',cost:2,active:false,done:false,locked:false,progress:0,duration:14},{id:2,x:38,type:'cache',cost:3,active:false,done:false,locked:false,progress:0,duration:14}];gardenSeeds=5;}
     if(${mode==='enemies'}){rogueRun.world=10;for(var q=0;q<4;q++){var k=makeKrek(1);k.kind=q+3;k.x=15+q*27;k.y=surfaceY(k.x)-20;k.vx=k.vy=0;floatKrek.push(k);}}
-    if(${mode==='boss'}){P.x=24;P.y=surfaceY(24);started=false;rogueRun.world=20;gardenWave=3;gardenRaidActive=true;rogueRun.raidRemaining=0;gardenRaidGrace=0;var crown=makeHollowCrown();crown.cool=.5;floatKrek=[crown];rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;}
     if(${mode==='native-skins'}){
       var nativePlayerRenderer=drawPlayer;
       drawPlayer=function(){var actual=P;['original','moss','tide','ember','moon'].forEach(function(skin,i){
@@ -59,13 +77,59 @@
         k.exposed=cycle>=1.4&&cycle<3.2?3.2-cycle:0;k.cool=cycle>=3.2?5.2-cycle:0;k.flash=0;
       });};
     }
+    if(${custom}){
+      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:'original'});
+      if(${world}!==1)enterLevel(${world});
+      P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
+      rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;runActive=true;menuPaused=false;
+      gardenPlots=[];rogueRun.garden=[];floatKrek=[];bombs=[];gardenSeeds=8;gardenRaidT=krekSpawnT=9999;gardenRaidActive=false;
+      if(!${layout}){
+        [-26,26].forEach(function(offset,i){var x=dryX(P.x+offset),p={id:i+1,x:x,kind:i?6:3,seed:79+i*23.7,growth:1.35,stalk:false,health:1,moisture:.85,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
+        rogueRun.nextPlantId=3;
+      }
+      if(${milestone||finalBoss}){
+        gardenWave=3;gardenRaidActive=true;gardenRaidGrace=0;gardenBossSpawned=true;rogueRun.raidRemaining=0;
+        var stageBoss=${finalBoss?'makeHollowCrown()':'makeStageBoss('+world+')'};stageBoss.cool=.8;floatKrek=[stageBoss];
+        rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;
+        runEncounters=[];runLoot=[];runHazards=[];
+      }
+      if(${mixed}){
+        [0,2,3,4,5,6].forEach(function(kind,i){
+          var k=makeKrek(i%2?1:-1,false);k.kind=kind;k.x=P.x+(i%2?1:-1)*(22+Math.floor(i/2)*22);k.y=surfaceY(k.x)-(kind===2?66:22+Math.floor(i/2)*9);k.vx=k.vy=0;k.target=gardenPlots[i%gardenPlots.length];k.bite=.8+i*.15;
+          if(kind===5)k.hp=k.maxHp*.55;floatKrek.push(k);
+        });
+        spawnLooseSeeds(P.x+35,surfaceY(P.x+35)-10,3);runEncounters=[];runHazards=[];
+      }
+      ensureCompanion();clearRunInput();
+    }
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
+    if(${gameplay}){
+      var reviewStateClock=0,reviewFrame=frame;
+      frame=function(now){
+        reviewFrame(now);
+        if(now-reviewStateClock<250)return;reviewStateClock=now;
+        var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
+        parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended},${JSON.stringify(location.origin)});
+      };
+    }
+    /* MAX_REVIEW_FIXTURE_END */
   `;
   let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">'+setup)
    .replace('<script src="game-menu.js" defer><'+'/script>',menu?'<script src="game-menu-review.js" defer><'+'/script>':'')
    .replace(/\}\)\(\);\s*<\/script>/g,hook+'})();<'+'/script>');
   frame.srcdoc=html;
+  if(!gameplay)status.textContent='Fixture: '+modeLabels.get(mode);
  }
+ window.addEventListener('message',event=>{
+  const data=event.data;
+  if(event.source!==frame.contentWindow||event.origin!==location.origin||!data||data.serial!==fixtureSerial)return;
+  if(data.type==='max-review-error'){status.textContent='Fixture error: '+data.message;return;}
+  if(data.type!=='max-review-state')return;
+  status.dataset.state=JSON.stringify(data);
+  status.textContent='Garden '+data.world+(data.theme?' · '+data.theme:'')+' · '+data.classId+' · '+(data.grounded?'grounded':'airborne')+' · '+data.height+' px above ground · x '+data.x+' · pressure '+data.pressure+(data.bossId?' · '+data.bossId+' phase '+data.phase:' · '+data.enemies+' enemies')+(data.ended?' · encounter ended':'');
+ });
+ chooser.onchange=()=>show(chooser.value);classChooser.onchange=()=>show(current);
+ document.getElementById('restart').onclick=()=>show(current);
  document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>show(b.dataset.mode));
  document.getElementById('rotate').onclick=()=>{const portrait=frame.width!=='390';frame.width=portrait?'390':'1000';frame.height=portrait?'844':'650';show(current);};
  show(current);

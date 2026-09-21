@@ -1,21 +1,44 @@
 # The twenty gardens
 
 An attempt ends at the Hollow Crown in garden 20. Each garden has three finite
-encounters. Clearing them grows an exit stalk; Down / Space / drag down at its
-base advances the group. A naturally tall plant cannot skip a locked exit.
-Defeating the final boss wins immediately. There is no garden 21 or saved run.
+raids. Clearing them grows an exit stalk; Down / Space / drag down at its base
+advances the group. A naturally tall plant cannot skip a locked exit. Gardens
+5, 10 and 15 have their own boss in the third raid; only defeating the final
+Hollow Crown wins immediately. There is no garden 21 or resumable saved run.
 
-Time begins with Play, before planting, and carries through every garden and
-transition. Boon choices freeze it; in-run Settings does not. Pressure is
-`seconds / 210 + (garden - 1) × 0.14`. It increases movement and damage smoothly;
-new encounters also use it for health and their fixed spawn budget. Fast kills
-never extend an encounter. A later balance pass should use actual completion
-times and failure points, especially in four-player runs.
+Time begins when Solo or the co-op run starts, before planting, and carries
+through every garden and transition. Boon choices freeze it; in-run Settings
+does not. Pressure is `seconds / 150 + (garden - 1) × 0.14`. It increases movement
+and damage smoothly; new encounters also use it for health and their fixed
+spawn budget. Raids alternate approach sides and use the current layout's enemy
+mix, with more simultaneous attackers in later gardens and larger teams. Fast
+kills never extend an encounter. A later balance pass should use actual
+completion times and failure points, especially in four-player runs.
+
+## Platform routes
+
+The twenty gardens use six layout themes. Terraces, canopy, crossings, ruins
+and switchbacks repeat with different widths and route rhythms; garden 20 uses
+the Crown layout. `stage-layout.js` creates two elevated routes per garden from
+the same deterministic geometry for host and guests.
+
+Ledges have one-way collision. Jump through from below and land while falling;
+landing resets the available air jump. Walking beyond a lip releases support
+and falls back toward another ledge or the soil. A dry platform above a pond
+does not count as standing in water. Existing jump, movement and dodge controls
+remain in use, with no separate platform action.
+
+The core routes reach shrine trials and feather pickups with every class's
+starting jump. Higher optional perches reward improved mobility. From garden 3,
+one bonus perch offers a reserved ember or dew pickup for each player. Planting
+and tending remain on ground soil, while trials can be activated on their
+actual ledges. Exploring above the garden costs time spent away from its crops.
 
 ## Starting classes
 
-Choose a class and an independent cosmetic skin before Play. Duplicate classes
-are allowed in co-op. The class lasts for that attempt; it never restricts the
+Choose a class and an independent cosmetic skin before starting Solo or
+Together. Duplicate classes are allowed in co-op. The class lasts for that
+attempt; it never restricts the
 Cultivator, Warden or Vanguard boon paths. The garden carries the health model:
 Bulwark protects plants and Herbalist heals plants, without adding a Max health
 bar or another action button.
@@ -55,8 +78,11 @@ records can be viewed later; an unfinished attempt cannot be resumed.
 | Dew pearl | +8% care strength | A dodge waters and lightly heals nearby plants |
 
 Each Max owns their collected items. Garden seeds and boon XP are shared. Each
-stage has one explorable feather per player, and shrine rewards are reserved
-for each participating player. Swan feather clouds can also leave one pickup.
+stage has one explorable feather per player on an elevated route, and shrine
+rewards are reserved for each participating player. Swan feather clouds can
+also leave one pickup. Loose seed pickups fund planting and trials; collecting
+them does not award boon XP. Defeating enemies, clearing raids, harvesting,
+plant growth milestones and completing trials award XP.
 New runs clear all item and boon stacks. Pickups show a short world-space
 message and three small milestone pips; there is no permanent inventory HUD.
 On touch, return a jumping thumb down and make a fresh upward stroke to use the
@@ -65,18 +91,20 @@ adds another jump, and returning the thumb does not plant or tend accidentally.
 
 ## Optional trials and passing events
 
-Two shrines sit on opposite routes in each stage. Their native pickup icons show
-the rewards: feather/dew, dew/ember, then ember/feather, repeating through the run.
+Two shrines sit on opposite platform routes in each stage. Their native pickup
+icons show the rewards: feather/dew, dew/ember, then ember/feather, repeating
+through the run.
 The group can activate one trial per stage; the other shrine goes dark. A failed
 attempt to pay does not lock either choice. This gives builds an earlier route
 to their third item without doubling the available trial rewards.
 
 Down in reach starts the chosen trial, with no movement automation or pause.
 Small seed dots show the cost. Stay within the marked area for 10–14 seconds
-and defeat its guards. Leaving the area stops trial progress but not the world
-clock. Rewards are granted once per stage; tending remains available while the
-trial runs. A tall plant can still be tended before its exit opens, including
-during the final boss fight.
+and defeat its guards. Leaving the area horizontally or vertically stops trial
+progress but not the world clock. Guards spawn around the shrine's actual
+height and respect the active-enemy limit. Rewards are granted once per stage;
+ground-level tending remains available while the trial runs. A tall plant can
+still be tended before its exit opens, including during the final boss fight.
 
 | Shrine | Cost | Reward |
 | --- | --- | --- |
@@ -93,14 +121,33 @@ The small particles and scenery carry these cues without a text overlay.
 | First garden | Enemy | Interaction |
 | --- | --- | --- |
 | 2 | Seed thief | Telegraphs a theft, then escapes. Defeating it returns stolen seeds. |
-| 4 | Spore caster | Lobs a delayed ground strike. Tap the moving spore to intercept it with a bomb; the cleared attack waters nearby plants. |
-| 7 | Shield beetle | Its front shell blocks most damage. Dodge through or hit from behind. |
-| 10 | Healing moth | A visible channel heals wounded allies. Interrupt it or prioritise the moth. |
-| 20 | Hollow Crown | Three phases; root strikes and spores, then a cyan vulnerability window. |
+| 3 | Spore caster | Lobs a delayed strike. Tap the moving spore to intercept it with a bomb; the cleared attack waters nearby plants. |
+| 4 | Shield beetle | Its front shell blocks most damage. Dodge through or hit from behind. |
+| 6 | Healing moth | A visible channel heals wounded allies. Interrupt it or prioritise the moth. |
+
+Fast pests gain marked dive attacks from garden 2; scouts can use them earlier.
+The dive aims at a player's height, including a platform, and can be interrupted.
+From garden 8, caster volleys in canopy, crossing, switchback and Crown layouts
+can target an elevated player as well as a plant. Keep moving through the route
+and intercept projectiles rather than treating height as permanent safety.
+
+## Four milestone bosses
+
+| Garden | Boss | Attack and counterplay |
+| --- | --- | --- |
+| 5 | Mossback | Root markers announce a ground charge. Jump clear or take a higher route, then attack its exposed recovery. |
+| 10 | Bellkeeper | Alternates spore patterns with roots targeted at players, including their platform height. Intercept the spores and leave marked strikes. |
+| 15 | Moon Moth | Mixes spores and marked gusts with a channel that restores a wounded ally. Interrupting the channel opens a vulnerability window. |
+| 20 | Hollow Crown | Three phases combine roots, spores and summoned guards; defeat it to win the attempt. |
+
+Each boss gains phases and finite reinforcements as its health drops. The first
+three bosses remain part of their raid: their defeat does not skip surviving
+guards or end the run. Amber windup and cyan exposure communicate when to evade
+and when to attack. Exposed hits deal double damage.
 
 The Crown summons a finite group at two-thirds and one-third health. Its strikes
-give 1.4 seconds of warning; exposed hits deal double damage. It cannot be
-frightened off-screen or permanently staggered. Root strikes can be jumped or
+give 1.4 seconds of warning. It cannot be frightened off-screen or permanently
+staggered. Root strikes can be jumped or
 dodged; spores can be cleared in flight. Keyboard B prioritises a nearby incoming
 spore. Root strikes remain active, so interception cannot replace all dodging.
 Its health lights sit on the crown itself.
@@ -127,6 +174,10 @@ Class and skin selections are acknowledged through authenticated lobby channels
 before the host can start. The host fixes each member's kit for the attempt;
 later avatar input cannot change it. Snapshots carry each member's class, skin,
 items and owned rover. Only the host changes garden health and rover water.
+
+The host validates a teammate's platform footing at the stage's actual ledge
+height. Dodges and shrine interactions use that support; elevated growth
+requests cannot plant in midair or tend soil from an upper route.
 
 Successful garden travel clears held and queued local input as well as seeds
 left in the previous, unreachable garden. This prevents accidental actions on
