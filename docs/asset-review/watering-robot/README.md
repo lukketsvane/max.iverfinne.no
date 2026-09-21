@@ -9,6 +9,9 @@ The GIF-only download was provided separately in the conversation.
 
 ## Review material
 
+- [Concrete PR #5 / PR #6 comparison](COMPARISON.md): two native candidates,
+  different anchors and adapter APIs, with no winner selected. Read this before
+  choosing an asset pack or merging either branch.
 - [Atlas inspection page](index.html): all eight existing animations, both
   directions, integer enlargement and pause. This is an atlas bench, not a
   gameplay screenshot or an autonomous watering simulation.
@@ -62,7 +65,9 @@ its historical default `assets/native/` is not the path staged here.
 The older 45 x 31 / 51 x 31 and 64 x 48 downloadable drafts were independently
 sized and were not validated against the live renderer. Do not treat those
 concept-derived packs, their display enlargements, or this candidate as an
-approved replacement for the original artwork.
+approved replacement for the original artwork. The newer native PR #6 also uses
+64 x 48 cells, but that is transparent padding, not the old concept-export scale;
+see [the comparison](COMPARISON.md) rather than rejecting it by cell size.
 
 ## Verification and limits
 
