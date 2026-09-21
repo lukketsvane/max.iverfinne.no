@@ -92,6 +92,7 @@ async function enterRoom(code) {
     depart: id => game.coopDepart(id),
     error: reason => {
       game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
+      liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
       game.pause(true); play(); card.append(status); message(reason, true); refreshScenery();
     },
   });
@@ -151,11 +152,12 @@ function help() {
   page('help', 'Controls');
   const rows = [
     ['MOVE', 'Drag left / right.'],
-    ['JUMP', 'Swipe up.'],
+    ['JUMP', 'Swipe up. Three swan feathers unlock a second jump.'],
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['DEFEND', 'Tap a pest.'],
     ['ROBOT', 'Tap your robot nearby to refill.'],
+    ['EXPLORE', 'Down at a shrine starts an optional trial. Time strengthens enemies. Reach stage 20 and defeat the Hollow Crown.'],
     ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · R refill · 1–3 upgrade'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }

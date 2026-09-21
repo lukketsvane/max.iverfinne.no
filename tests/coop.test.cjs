@@ -59,3 +59,41 @@ test('specialised paths unlock signature boons and preserve cross-path choices',
   p.chain=1;assert.ok(builds.choices(p,5).every(q=>q.id!=='chain'));
   assert.equal(new Set(offered.map(q=>q.id)).size,offered.length);
 });
+test('four players collect their own run items; feather jumps, shrine rewards and hazards synchronize',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+  const member=host.coop.members[ids[1]];
+  host.runLoot=[];
+  for(let i=0;i<3;i++)host.dropRunItem('feathers',member.avatar.x,member.avatar.y-12,ids[1]);
+  host.updateRunLoot();sync();
+  assert.equal(host.rogueRun.traits.feathers,0);assert.equal(guest.rogueRun.traits.feathers,3);
+  assert.equal(games[2].game.rogueRun.traits.feathers,0);
+  guest.doJump(false);guest.updatePlayer(.12,{axis:0,top:48});guest.doJump(false);guest.updatePlayer(.01,{axis:0,top:48});
+  assert.ok(guest.P.airJumpUsed);assert.ok(guest.P.vy<-140);
+  assert.equal(guest.pickupNotice.text,'Double jump');
+  // Host validates the interaction at the last accepted avatar position.
+  const e=host.runEncounters[0];e.x=member.avatar.x;
+  host.gardenSeeds=4;Object.assign(guest.P,{x:e.x,y:host.surfaceY(e.x),grounded:true,st:'free',wet:false});sync();
+  guest.crouchGardenAction();send(1,games[1].pending);sync();
+  assert.equal(host.gardenSeeds,3);assert.ok(host.runEncounters[0].active);assert.ok(guest.runEncounters[0].active);
+  send(1,games[1].pending);assert.equal(host.gardenSeeds,3);
+  host.addRunHazard('spore',e.x,12,1.4,1);sync();assert.equal(guest.runHazards[0].tell,1.4);
+  host.enterLevel(2);sync();assert.equal(guest.rogueRun.traits.feathers,3);assert.equal(guest.runHazards.length,0);
+});
+test('guest ember damage and dew dodge use that player’s inventory without borrowing the host’s items',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+  const member=host.coop.members[ids[1]];member.traits.embers=3;member.traits.dew=3;sync();
+  const p=plot({x:member.avatar.x,moisture:.2,health:.5});host.gardenPlots=[p];
+  guest.throwBomb({x:guest.P.x+50,y:guest.P.y-15});send(1,games[1].pending);
+  assert.equal(host.bombs.length,1);assert.equal(host.bombs[0].perks.emberStacks,3);assert.equal(host.rogueRun.traits.embers,0);
+  guest.requestDodge(1);guest.updatePlayer(.01,{axis:0,top:48});send(1,games[1].pending);
+  assert.ok(p.moisture>.2);assert.ok(p.health>.5);assert.equal(host.rogueRun.traits.dew,0);
+});
+test('defeating the final boss delivers a single shared victory to all four players',()=>{
+  const {games,sync}=team(),host=games[0].game;
+  host.enterLevel(20);host.P.st='free';host.gardenPlots=[plot({x:host.P.x})];
+  const boss=host.makeHollowCrown();host.floatKrek=[boss];sync();
+  assert.equal(games[1].game.floatKrek[0].boss,true);
+  assert.equal(games[1].game.floatKrek[0].maxHp,boss.maxHp);
+  host.damagePest(boss,10000,boss.x);sync();sync();
+  games.forEach(h=>{assert.equal(h.game.runWon,true);assert.equal(h.game.rogueMeta.wins,1);assert.equal(h.game.rogueRun.choice,null);});
+});

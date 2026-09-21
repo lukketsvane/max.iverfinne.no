@@ -39,7 +39,12 @@ export class CoopSession {
         if (status === 'SUBSCRIBED') { clearTimeout(timer); resolve(); }
         else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
           clearTimeout(timer); reject(new Error('Room connection lost.'));
-          if (this.playing && !this.closed) this.fail('Connection lost.');
+          // Removing a departed guest's channel is expected; the host and the
+          // remaining players keep their run. Only our own transport is fatal.
+          if (this.playing && !this.closed && this.channels.get(suffix) === channel) {
+            if (this.host && suffix !== 'state') this.hooks.depart?.(suffix);
+            else this.fail('Connection lost.');
+          }
         }
       });
     });
