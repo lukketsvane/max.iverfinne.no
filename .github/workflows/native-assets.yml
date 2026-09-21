@@ -2,7 +2,7 @@ name: Native asset contract
 on:
   push:
     branches: [fix/native-sprite-contract]
-    paths: ['.github/workflows/native-assets.yml', 'scripts/native-assets/**', 'assets/native/**', 'tests/native-assets*', 'index.html']
+    paths: ['.github/workflows/native-assets.yml', 'scripts/**', 'assets/native/**', 'tests/native-assets*', 'native-assets.html', 'index.html']
 permissions:
   contents: read
 jobs:
@@ -10,31 +10,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Export original embedded images and source snapshot
+      - name: Test committed files before regeneration
+        run: npm test
+      - name: Install pixel build dependency
+        run: python3 -m pip install Pillow
+      - name: Verify source, reproduce pixels and metadata, export individual frames
         run: |
           python3 - <<'PY'
-          import re, base64, struct, json, pathlib, shutil
+          import json, pathlib, hashlib, runpy
+          from PIL import Image
           root=pathlib.Path('.')
-          out=root/'native-audit'
-          out.mkdir(exist_ok=True)
-          text=(root/'index.html').read_text()
-          records=[]
-          for i,m in enumerate(re.finditer(r'data:image/png;base64,([A-Za-z0-9+/=]+)',text)):
-              raw=base64.b64decode(m.group(1))
-              w,h=struct.unpack('>II',raw[16:24])
-              name='embedded-%02d-%dx%d.png'%(i,w,h)
-              (out/name).write_bytes(raw)
-              records.append({'file':name,'width':w,'height':h,'line':text[:m.start()].count('\n')+1,'context':text[max(0,m.start()-100):m.start()]})
-          (out/'embedded.json').write_text(json.dumps(records,indent=2))
-          for name in ['index.html','run-results.js','run-results.css','package.json','README.md']:
-              shutil.copy2(root/name,out/name)
-          shutil.copytree(root/'tests',out/'tests',dirs_exist_ok=True)
-          print(json.dumps(records,indent=2))
+          base=root/'assets/native'
+          names=['rover','water-fx','props','ui']
+          report=json.loads((base/'validation.json').read_text())
+          assert hashlib.sha256((root/'index.html').read_bytes()).hexdigest()==report['sourceFileSHA256'], 'Original game changed'
+          pixels={n:Image.open(base/(n+'.png')).convert('RGBA').tobytes() for n in names}
+          metadata={n:json.loads((base/(n+'.json')).read_text()) for n in names}
+          runpy.run_path(str(root/'scripts/native-assets/build.py'),run_name='__main__')
+          for n in names:
+              assert pixels[n]==Image.open(base/(n+'.png')).convert('RGBA').tobytes(), 'Pixel mismatch: '+n
+              assert metadata[n]==json.loads((base/(n+'.json')).read_text()), 'Metadata mismatch: '+n
+          print('All four committed atlases reproduced exactly; 80 individual frames exported.')
           PY
-      - name: Game regression tests
-        run: npm test
+      - name: Build static preview
+        run: npm run build
+      - name: Export runnable kit and source
+        run: |
+          mkdir -p native-kit/scripts/native-assets native-kit/tests
+          cp index.html run-results.js run-results.css package.json native-assets.html native-kit/
+          cp -R assets native-kit/
+          cp scripts/native-assets/build.py native-kit/scripts/native-assets/
+          cp scripts/build-static.cjs native-kit/scripts/
+          cp tests/*.cjs native-kit/tests/
       - uses: actions/upload-artifact@v4
         with:
-          name: native-sprite-audit
-          path: native-audit/
-          retention-days: 7
+          name: renderer-matched-native-kit
+          path: native-kit/
+          retention-days: 14

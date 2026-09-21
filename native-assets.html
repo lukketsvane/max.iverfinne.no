@@ -1,0 +1,54 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAX — native sprite test</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0e1e1d;color:#c3cdcd;font:13px/1.5 monospace}header{max-width:1100px;margin:auto;padding:20px 16px 12px}h1{margin:0;font-size:18px;letter-spacing:.07em}p{max-width:76ch;margin:7px 0;color:#9daaa5}.controls{display:flex;flex-wrap:wrap;gap:6px;padding-top:12px}button,select,a{font:inherit;color:inherit}button,select{background:#142722;border:1px solid #405054;padding:8px 10px;border-radius:0;cursor:pointer}button[aria-pressed=true]{border-color:#d9c760;color:#d9c760}main{max-width:1100px;margin:auto;display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:20px;padding:0 16px 20px}iframe{border:1px solid #405054;width:100%;aspect-ratio:9/16;display:block;background:#000}aside{padding:12px 0}.atlas{image-rendering:pixelated;width:100%;max-width:512px;background:#c3cdcd;display:block;margin:12px 0}small{color:#81968d}#status{min-height:22px;color:#d9c760}@media(max-width:720px){main{display:block}iframe{max-width:420px;margin:auto}aside{max-width:512px;margin:auto}header{padding-top:14px}h1{font-size:15px}}
+</style></head><body><header><h1>MAX / NATIVE SPRITE TEST</h1><p>The actual game renderer and embedded original artwork. Only the rover, refill post and spray are new. Test plants are fixtures; the robot does not change gameplay.</p><div class="controls" id="controls"></div><p id="status">Loading original game and native sheets…</p></header><main><iframe id="game" title="Original MAX renderer with native rover" sandbox="allow-scripts allow-same-origin"></iframe><aside><strong>IMPORT SHEET / 1×</strong><p>32 × 32 cells · 48 frames · anchor (16, 31)<br>256 × 192 transparent PNG · 15 source-game colours</p><img class="atlas" src="assets/native/rover.png" alt="Registered rover animation frames"><p>Idle / drive / deploy / water / retract / dry / refill / sleep.</p><p><a href="assets/native/rover.png" download>PNG</a> · <a href="assets/native/rover.json" download>JSON</a> · <a href="assets/native/validation.json">validation</a></p><small>The atlas is enlarged here for inspection. Import its original PNG at 1×, not this page or a screenshot. Facing right uses the same atlas mirrored at draw time. No second, drifting animation set.</small></aside></main>
+<script>
+'use strict';
+const states=['idle','drive','deploy','water','retract','dry','refill','sleep'];
+const controls=document.getElementById('controls'),iframe=document.getElementById('game'),status=document.getElementById('status');
+let selected='water',face=-1;
+function update(){for(const b of controls.querySelectorAll('[data-state]'))b.setAttribute('aria-pressed',String(b.dataset.state===selected));try{const w=iframe.contentWindow;w.nativeState=selected;w.nativeFace=face;w.nativeSince=w.performance.now();}catch(e){}}
+for(const state of states){const b=document.createElement('button');b.textContent=state;b.dataset.state=state;b.setAttribute('aria-pressed',String(state===selected));b.onclick=()=>{selected=state;update();};controls.appendChild(b);}
+const flip=document.createElement('button');flip.textContent='face →';flip.onclick=()=>{face=-face;flip.textContent=face===-1?'face →':'face ←';update();};controls.appendChild(flip);
+window.addEventListener('message',e=>{if(e.source!==iframe.contentWindow)return;if(e.data&&e.data.type==='native-ready'){status.textContent=e.data.text;update();}if(e.data&&e.data.type==='native-error')status.textContent=e.data.text;});
+(async()=>{
+ try{
+ const response=await fetch('index.html');if(!response.ok)throw new Error('Cannot read index.html; serve the repository with a local static server.');
+ let source=await response.text();
+ const needle='  drawPlayer();';if(source.split(needle).length!==2)throw new Error('Renderer hook changed; preview stopped rather than guessing.');
+ const base=new URL('.',document.baseURI).href;
+ const boot=`<base href="${base}"><script>
+ // A private memory store in this iframe: never read or overwrite player saves.
+ const memory=new Map();Object.defineProperty(window,'localStorage',{value:{getItem:k=>memory.has(k)?memory.get(k):null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k),clear:()=>memory.clear()}});
+ window.nativeState='water';window.nativeFace=-1;window.nativeSince=performance.now();
+ <\/script><script src="assets/native/runtime.js"><\/script><script>
+ new MaxNativeSprites().load().then(kit=>{window.nativeKit=kit;parent.postMessage({type:'native-ready',text:'Loaded: original renderer + native PNGs. Memory-only fixture; saves untouched.'},'*');}).catch(e=>parent.postMessage({type:'native-error',text:e.message},'*'));
+ <\/script>`;
+ source=source.replace('<head>','<head>'+boot);
+ const hook=`
+  if(window.nativeKit){
+    var ns=window.nativeState||'water',nf=window.nativeFace||-1;
+    var nt=window.nativeFreezeSeconds==null?(performance.now()-window.nativeSince)/1000:window.nativeFreezeSeconds;
+    var rx=P.x+31+(ns==='drive'?Math.round(Math.sin(nt)*9):0),ry=surfaceY(rx);
+    window.nativeKit.drawProp(ctx,'refill-post_03',Math.round(P.x+54-camX),Math.round(surfaceY(P.x+54)-camY));
+    var posed=window.nativeKit.drawRover(ctx,{x:rx-camX,y:ry-camY,animation:ns,seconds:nt,facing:nf});
+    if(ns==='water')window.nativeKit.drawSpray(ctx,posed.emitter,nt,nf);
+    window.nativeRendered={canvas:[IW,IH],scale:SCALE,player:{x:Math.round(P.x-camX),y:Math.round(P.y-camY)},rover:posed};
+  }
+`;
+ source=source.replace(needle,hook+needle);
+ const fixture=`
+ // These overrides exist in srcdoc only. index.html remains byte-for-byte intact.
+ P.x=0;P.y=surfaceY(0);P.face=1;P.vx=0;P.grounded=true;
+ rogueRun.choice=[];tSec=18;
+ gardenPlots=[[-48,0,1.9,13],[-25,3,1.1,8],[12,0,.18,23],[62,7,1.45,18]].map(q=>({x:q[0],kind:q[1],growth:q[2],seed:q[3],health:1,moisture:.8,pulse:0,hit:0,age:0,dead:0,seedMark:0}));
+ crows=[makeCrow(-17)];smallFauna=[];floatKrek=[];seedPickups=[];
+ window.nativeFixture=true;
+`;
+ const tail='})();\n<\/script>';
+ if(!source.includes(tail))throw new Error('Game closure changed; preview stopped.');
+ source=source.replace(tail,fixture+tail);
+ iframe.srcdoc=source;
+ }catch(e){status.textContent=e.message;}
+})();
+</script></body></html>
