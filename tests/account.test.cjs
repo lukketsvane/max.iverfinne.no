@@ -62,9 +62,9 @@ test('stale saves require a fresh revision and cannot cross accounts', async () 
   const { CloudSlot } = await modulePromise;
   const { snapshot } = await checkpoint();
   let sent;
-  const client = { rpc: async (name, args) => { sent = { name, args }; return { error: { code: '40001' } }; } };
+  const client = { rpc: async (name, args) => { sent = { name, args }; return { error: { code: 'PT409' } }; } };
   const slot = new CloudSlot(client, 'alice'); slot.revision = 2;
-  await assert.rejects(slot.save(snapshot), { code: '40001' });
+  await assert.rejects(slot.save(snapshot), { code: 'PT409' });
   assert.equal(sent.args.p_user_id, 'alice'); assert.equal(sent.args.p_expected_revision, 2); assert.equal(slot.revision, null);
   await assert.rejects(slot.save(snapshot), /Hent lagringsstatusen/);
   let finish;

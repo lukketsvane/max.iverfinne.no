@@ -18,8 +18,8 @@ test('real Postgres migration isolates accounts and rejects conflicting saves', 
       $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
       grant usage on schema auth to authenticated, anon;
     `);
-    const migration = fs.readFileSync(path.join(__dirname, '../supabase/migrations/20260921160631_player_cloud_saves.sql'), 'utf8');
-    await db.exec(migration);
+    const migrationDir = path.join(__dirname, '../supabase/migrations');
+    for (const name of fs.readdirSync(migrationDir).filter(n => n.endsWith('.sql')).sort()) await db.exec(fs.readFileSync(path.join(migrationDir, name), 'utf8'));
     async function as(user) {
       await db.exec('reset role; set role authenticated;');
       await db.query("select set_config('request.jwt.claim.sub', $1, false)", [user]);
@@ -33,9 +33,9 @@ test('real Postgres migration isolates accounts and rejects conflicting saves', 
     await t.test('players create their own slot and stale writes cannot overwrite it', async () => {
       await as(alice);
       assert.equal((await save(alice, snapshot, 0)).rows[0].result.revision, 1);
-      await assert.rejects(save(alice, snapshot, 0), { code: '40001' });
+      await assert.rejects(save(alice, snapshot, 0), { code: 'PT409' });
       assert.equal((await save(alice, snapshot, 1)).rows[0].result.revision, 2);
-      await assert.rejects(save(alice, snapshot, 1), { code: '40001' });
+      await assert.rejects(save(alice, snapshot, 1), { code: 'PT409' });
     });
     await t.test('another player cannot read, overwrite, or reassign the first account', async () => {
       await as(bob);

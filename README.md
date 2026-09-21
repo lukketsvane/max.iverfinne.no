@@ -65,10 +65,22 @@ One-time hosted setup:
 6. Rebuild. Verify username signup returns a session immediately; sign out,
    sign in, refresh, save, and load on a second device. No email should be sent.
 
-Without a publishable key the menu honestly presents guest mode. `supabase init`
-has been run; hosted link, auth settings and migration application still need
-an authenticated project connection. Supabase CLI login is separate from a
-ChatGPT plugin connection.
+Without a publishable key the menu honestly presents guest mode. The checked-in
+public config points to the project above. On 21 September 2026, both SQL
+migrations were applied through the authenticated Supabase SQL Editor, email
+confirmation was disabled, and minimum password length was set to 8.
+
+`supabase init` has been run. CLI authentication/linking is separate from the
+dashboard session and was not completed in the build environment. Because SQL
+was applied through the dashboard, reconcile its history **after linking this
+existing project and before running db push**:
+
+```sh
+npx supabase migration repair 20260921160631 20260921163937 --status applied --linked
+```
+
+For a new empty project, apply both migration files normally instead. Do not
+mark migrations applied on a database that has not actually received them.
 
 RLS restricts every exposed row to `auth.uid() = user_id`. Anonymous clients
 have no table/function access. The save RPC is SECURITY INVOKER, checks the

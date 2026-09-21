@@ -108,7 +108,7 @@ export function accountError(error) {
   if (code === 'user_already_exists') return 'Brukarnamnet er teke. Prøv eit anna, eller logg inn.';
   if (code === 'weak_password') return 'Vel eit sterkare passord med minst 8 teikn.';
   if (['over_request_rate_limit', 'over_email_send_rate_limit'].includes(code) || error?.status === 429) return 'For mange forsøk. Vent litt og prøv igjen.';
-  if (['40001', '23505'].includes(code)) return 'Ei anna eining har lagra sidan sist. Hent lagringsstatusen på nytt før du vel kva du vil behalde.';
+  if (['PT409', '40001', '23505'].includes(code)) return 'Ei anna eining har lagra sidan sist. Hent lagringsstatusen på nytt før du vel kva du vil behalde.';
   if (code === 'email_not_confirmed' || code === 'confirmation_enabled') return 'Innlogginga er ikkje ferdig konfigurert enno. Du kan spele som gjest.';
   if (['PGRST205', 'PGRST202', '42P01'].includes(code)) return 'Kontolagring er ikkje klar enno. Spelet ligg framleis på denne eininga.';
   if (error?.name === 'AuthRetryableFetchError' || error instanceof TypeError) return 'Fekk ikkje kontakt. Sjekk nettet og prøv igjen.';
@@ -137,7 +137,7 @@ export class CloudSlot {
       p_user_id: this.userId, p_snapshot: snapshot, p_expected_revision: this.revision,
     });
     this.check();
-    if (error) { if (['40001', '23505'].includes(error.code)) this.revision = null; throw error; }
+    if (error) { if (['PT409', '40001', '23505'].includes(error.code)) this.revision = null; throw error; }
     this.revision = data.revision;
     this.row = { ...data, snapshot };
     return this.row;
