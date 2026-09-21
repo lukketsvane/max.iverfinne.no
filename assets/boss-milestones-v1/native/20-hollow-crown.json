@@ -1,0 +1,1479 @@
+{
+  "schema": "max-native-atlas/v1",
+  "id": "hollow-crown",
+  "kind": "boss",
+  "level": 20,
+  "status": "native-art-ready-for-integration",
+  "cell": [
+    32,
+    32
+  ],
+  "anchor": [
+    16,
+    31
+  ],
+  "facing": "right",
+  "palette": [
+    "#10171c",
+    "#1d2b34",
+    "#2b4645",
+    "#3d5146",
+    "#4b8e92",
+    "#536448",
+    "#605047",
+    "#77bbb9",
+    "#795526",
+    "#82725b",
+    "#ab7833",
+    "#b5b190",
+    "#d4a64e"
+  ],
+  "sheets": {
+    "sprites": {
+      "image": "20-hollow-crown.png",
+      "size": [
+        256,
+        256
+      ]
+    }
+  },
+  "frames": [
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        3,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        3,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/idle-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        3,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/move-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        3,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        3,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/windup-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        3,
+        3,
+        29,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        7,
+        30,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        1,
+        7,
+        31,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        1,
+        8,
+        31,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        1,
+        11,
+        31,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        1,
+        5,
+        31,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/attack-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        3,
+        24,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        3,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        3,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/recover-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        3,
+        29,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        4,
+        29,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        5,
+        30,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        4,
+        30,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        6,
+        30,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        3,
+        5,
+        28,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        3,
+        26,
+        32
+      ],
+      "image": "../frames/hollow-crown/vulnerable-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        3,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        28,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        6,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        13,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        16,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        16,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/hurt-07.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        5,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-00.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        8,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-01.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        14,
+        29,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-02.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        3,
+        22,
+        28,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-03.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        22,
+        28,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-04.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        22,
+        27,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-05.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        26,
+        25,
+        32
+      ],
+      "image": "../frames/hollow-crown/death-06.png"
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": null,
+      "image": "../frames/hollow-crown/death-07.png"
+    }
+  ],
+  "animations": {
+    "idle": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "move": {
+      "frames": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "windup": {
+      "frames": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "attack": {
+      "frames": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "recover": {
+      "frames": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "vulnerable": {
+      "frames": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "hurt": {
+      "frames": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "death": {
+      "frames": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "fps": 8,
+      "loop": false
+    }
+  },
+  "individualFrames": {
+    "directory": "../frames/hollow-crown/",
+    "pattern": "{state}-{00..07}.png",
+    "cell": [
+      32,
+      32
+    ],
+    "count": 64,
+    "pixelsMatchPackedCells": true
+  },
+  "timing": {
+    "fps": 8,
+    "status": "proposal-only",
+    "note": "All clips declare 8 fps for preview and integration proposals. Gameplay owns tell, exposure and damage timing; these values are not an approved balance change."
+  },
+  "signals": {
+    "windup": "amber",
+    "vulnerable": "cyan",
+    "amberColors": [
+      "#d4a64e",
+      "#f1cd79"
+    ],
+    "cyanColors": [
+      "#4b8e92",
+      "#77bbb9"
+    ]
+  },
+  "validation": {
+    "report": "../validation.json",
+    "scope": "native image geometry, alpha, palette, anchor metadata, row packing, signal colours and byte-equivalent individual RGBA frames"
+  },
+  "registration": {
+    "anchor": [
+      16,
+      31
+    ],
+    "mode": "grounded",
+    "opaqueBottom": 31,
+    "exception": "final transparent death frame"
+  },
+  "existingBossContract": {
+    "frames": 128,
+    "phases": 3,
+    "replaced": false,
+    "note": "64-frame exploration; does not replace the existing three-phase Crown atlas."
+  },
+  "designStatus": "proposed-boss-appearance",
+  "gameplayIntegration": "not-wired"
+}

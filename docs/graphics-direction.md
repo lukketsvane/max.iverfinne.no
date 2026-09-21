@@ -46,18 +46,19 @@ Validation covers gesture start, both-track cycling, mute,
 background/foreground position, blocked playback, missing tracks and disposal.
 Both complete recordings are retained.
 
-## Remaining result work
+## Run results and records
 
-Current main exposes local Garden records, not a global leaderboard. The main
-developer should verify saved stalk/growth appearance and complete run records
-for every leaderboard entry against the approved reference. This graphics pass
-does not replace that data/gameplay integration.
+Completed runs retain their complete plant records on the device, including
+species, seed, attained growth and stalk state. Every bouquet is rendered from
+its own snapshot, and additional bundles keep all plants accessible. The online
+leaderboard accepts explicitly published completed runs and renders their saved
+plants. Never substitute the preview names or example bouquets for player data.
 
 ## Native co-op art integration
 
-Four cosmetic Max skins are integrated independently of Mech, Runner, Bulwark
+Four cosmetic Max skins are integrated independently of Mech, Moss, Bulwark
 and Herbalist class choice: Moss (hood/satchel), Tide (rain hood/collar), Ember
-(headband/ribbon), and Moon (cape/cap). Original Max remains available. The
+(headband/ribbon), and Moon (cape/cap). Original Max remains the rendering fallback. The
 current costumes supply the class selection; they do not change class powers.
 Each skin retains the original 32×32 cells, anchor (16,31), animation rows,
 timings and gameplay event markers. All exported pixels have binary alpha.
@@ -81,11 +82,29 @@ Each failed enemy asset keeps its original primitive renderer. The production
 build copies runtime sheets/JSON only; source masters and contact previews stay
 in the repository.
 
-Validation: `scripts/verify-native-art.py` checks all 896 cells and 152 clips,
+### Milestone guardians
+
+Mossback at garden 5, Bellkeeper at garden 10 and Moon Moth at garden 15 use
+the supplied `assets/boss-milestones-v1/native/` sheets. Each has 64 frames on
+a 256×256 sheet, 32×32 cells, anchor (16,31), and idle/move/windup/attack/recover/
+vulnerable/hurt/death clips. Keep the source pixels unchanged. `bossId` selects
+the appearance; `windup/tell` and `attackT/attackDuration` drive the actual tell
+and attack poses, and `exposed` controls the complete cyan window.
+
+Mossback's lower body uses a foot offset of 8 pixels from its world-space
+body centre; Bellkeeper and Moon Moth use 13. Moon Moth's one-pixel hover
+variation is part of the supplied poses and keeps the same anchor. The new
+64-frame Crown appearance remains a reference: garden 20 retains the existing
+128-frame Crown atlas and all three visual phases.
+
+Validation: `scripts/verify-native-art.py` checks all 1,088 cells and 176 clips,
 including palettes, alpha, bounds, foot registration and original hit/pour
-markers. `tests/native-art.test.cjs` checks loading failure isolation, original
+markers. For the milestone sheets it also compares every packed cell with its
+isolated PNG and checks that amber/cyan signals occur in their intended rows.
+`tests/native-art.test.cjs` checks loading failure isolation, original
 fallback, exact source frames/native scale, co-op animation continuity,
-timer-driven tells, Crown phases/exposure, specials and death cleanup.
+timer-driven tells and attacks, milestone identities, Crown phases/exposure,
+specials and death cleanup.
 `review.html` provides isolated `native-skins`, `native-enemies` and
 `native-crown` fixtures using the actual game renderer, including portrait mode.
 Future scenery layers must contain no baked text/buttons.

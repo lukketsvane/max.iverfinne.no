@@ -13,7 +13,7 @@ function simulate(g, duration, input = idle, hz = 120) {
   for (let n = 0; n < Math.round(duration * hz); n++) g.updatePlayer(1 / hz, input);
 }
 function pest(g, p, kind = 0) {
-  const k = Object.assign(g.makeKrek(1, false), {
+  const k = Object.assign(g.makeKrek(1, false, kind), {
     x: p.x, y: g.surfaceY(p.x) - 18, vx: 0, vy: 0, kind, bite: 0, target: p, pressure: 0,
   });
   g.gardenPlots = [p]; g.floatKrek = [k];

@@ -1,7 +1,43 @@
-/* Run-only exploration, enemy roles and the twentieth garden's final boss.
+/* Run-only exploration, mixed encounters and four milestone bosses.
    Included in the game closure. Nothing here writes a resumable run. */
 var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId=0;
-var pickupNotice=null,hazardHits={},stageWeather=null,enemySpawnIndex=0;
+var pickupNotice=null,hazardHits={},stageWeather=null;
+var MAX_ACTIVE_ENEMIES=24;
+var COMBAT_PROFILES={
+  terraces:{kinds:[0,2,0,3,2,5,1,4,6],volley:false},
+  canopy:{kinds:[2,3,2,4,0,6,2,1,5],volley:true},
+  crossing:{kinds:[1,4,2,4,3,0,5,2,6],volley:true},
+  ruins:{kinds:[5,0,4,1,5,6,2,0,3],volley:false},
+  switchbacks:{kinds:[3,2,6,4,5,2,1,0],volley:true},
+  crown:{kinds:[5,4,6,2,5,4,0,1,3],volley:true}
+};
+function stageCombatProfile(){
+  var layout=typeof stageLayout==='function'?stageLayout():null;
+  var kind=layout&&(layout.kind||layout.theme)||['terraces','canopy','crossing','ruins','switchbacks'][(worldLevel()-1)%5];
+  return COMBAT_PROFILES[kind]||COMBAT_PROFILES.terraces;
+}
+function enemyUnlocked(kind){return kind<3||Math.max(worldLevel(),1+Math.floor(Math.max(0,runElapsed)/75))>={3:2,4:3,5:4,6:6}[kind];}
+function waveEnemyKind(index){
+  var first={2:3,3:4,4:5,6:6}[worldLevel()];
+  if(index===2&&first!=null)return first;
+  var kinds=stageCombatProfile().kinds,kind=kinds[(index+(gardenWave-1)*2)%kinds.length];
+  return enemyUnlocked(kind)?kind:(index+gardenWave)%3;
+}
+function safeEnemyPosition(k,x,y){
+  var chosen=null,best=-1,players=runPlayers();
+  // Opposite approaches stay reachable, but never materialise on a teammate.
+  for(var i=0;i<9;i++){
+    var dx=i?Math.ceil(i/2)*44*(i%2?1:-1):0,cx=x+dx,cy=y+surfaceY(cx)-surfaceY(x),distance=Infinity;
+    players.forEach(function(a){distance=Math.min(distance,Math.hypot(cx-a.p.x,cy-(a.p.y-12)));});
+    if(distance>best){best=distance;chosen={x:cx,y:cy};}
+    if(distance>=72)break;
+  }
+  if(best<72){
+    var left=Math.min.apply(null,players.map(function(a){return a.p.x;}))-80,right=Math.max.apply(null,players.map(function(a){return a.p.x;}))+80;
+    var outside=Math.abs(left-x)<Math.abs(right-x)?left:right;chosen={x:outside,y:y+surfaceY(outside)-surfaceY(x)};
+  }
+  k.x=chosen.x;k.y=chosen.y;return k;
+}
 var runPixelFont=new Image();runPixelFont.src='assets/results-native/sprites/font-5x7.png';
 function emptyTraits(){return {feathers:0,embers:0,dew:0};}
 function cleanTraits(value){
@@ -24,7 +60,7 @@ function awardRunItem(type,member){
   if(!member||member.id===coop.me){rogueRun.traits=traits;traitNotice(type,traits[type]);}
 }
 function runPlayers(){
-  return coop?coopMembers().map(function(m){return {member:m,p:m.id===coop.me?P:m.avatar};}):[{member:null,p:P}];
+  return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m)};}):[{member:null,p:P}];
 }
 function updateRunLoot(){
   if(coopGuest())return;
@@ -39,54 +75,67 @@ function updateRunLoot(){
   }
 }
 function initRunStage(){
-  runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;enemySpawnIndex=0;
+  runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
-  // Each teammate has one feather at the top of a real jump route.
-  var players=runPlayers();
-  var layout=runLayout(),route=layout.routes.find(function(r){return r.side===side;}),perch=layout.platforms.find(function(p){return p.id===route.reward.platformId;});
-  players.forEach(function(a,i){var x=route.reward.x+(i-(players.length-1)/2)*3;dropRunItem('feathers',x,perch.y-12,a.member&&a.member.id);});
-  var alternate=layout.routes.find(function(r){return r.side!==side;}),seedPerch=layout.platforms.find(function(p){return p.id===alternate.reward.platformId;}),seedId='route:'+w;
+  // Each teammate has one feather to find. Leaving it behind is a time tradeoff.
+  var players=runPlayers(),layout=typeof stageLayout==='function'?stageLayout():null;
+  players.forEach(function(a,i){
+    var route=layout&&layout.rewards&&layout.rewards[i%layout.rewards.length],x=route?route.x+(i>1?6:0):dryX(origin+side*(112+i*15));
+    dropRunItem('feathers',x,route?route.y-12:surfaceY(x)-20,a.member&&a.member.id);
+  });
+  // The opposite elevated route earns a small shared planting reserve.
+  var seedRoute=layout&&layout.rewards&&layout.rewards[layout.rewards.length-1],seedId='route:'+w;
   seedPickups=seedPickups.filter(function(q){return !q.routeReward;});
-  if(!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:alternate.reward.x,y:seedPerch.y-6,amount:2,fall:false,ph:w});
+  if(seedRoute&&!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:seedRoute.x,y:seedRoute.y-6,amount:2,fall:false,ph:w});
+  if(w>=3&&layout&&layout.bonuses&&layout.bonuses.length){
+    var bonus=layout.bonuses[(w-1)%layout.bonuses.length];
+    players.forEach(function(a,i){dropRunItem(w%2?'embers':'dew',bonus.x+(i-(players.length-1)/2)*4,bonus.y-12,a.member&&a.member.id);});
+  }
   // Two routes, one trial: choosing a reward spends time, not another menu.
   for(var i=0;i<2;i++){
-    var type=['nest','rain','cache'][(w-1+i)%3],x=dryX(origin+side*(i?1:-1)*126);
-    runEncounters.push({id:w*2+i,x:x,type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='nest'?10:14});
+    var type=['nest','rain','cache'][(w-1+i)%3],route=layout&&layout.trials&&layout.trials[i],x=route?route.x:dryX(origin+side*(i?1:-1)*126);
+    runEncounters.push({id:w*2+i,x:x,y:route?route.y:surfaceY(x),type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='nest'?10:14});
   }
   stageWeather={type:w%3===0?'seedfall':w%3===1?'bloom':'drought',at:36+(w%4)*4,life:0,started:false};
   rogueRun.bossDefeated=false;
 }
-function encounterAt(x){return runEncounters.find(function(e){return !e.done&&!e.locked&&Math.abs(e.x-x)<14;});}
+function encounterFloor(e){return Number.isFinite(e.y)?e.y:surfaceY(e.x);}
+function encounterAt(x){return runEncounters.find(function(e){return !e.done&&!e.locked&&Math.abs(e.x-x)<14&&Math.abs(P.y-encounterFloor(e))<6;});}
+function spawnEncounterGuard(e){
+  if(!e.guardsRemaining||floatKrek.length>=MAX_ACTIVE_ENEMIES)return false;
+  var i=e.guardIndex||0,side=i%2?1:-1,kind=waveEnemyKind(i+1);
+  if(e.type==='cache'&&worldLevel()>=4&&i===0)kind=5;
+  if(e.type==='rain'&&worldLevel()>=3&&i===0)kind=4;
+  var k=makeKrek(side,false,kind);safeEnemyPosition(k,e.x+side*(78+i*11),encounterFloor(e)-24);
+  k.eventId=e.id;k.eventX=e.x;k.eventY=encounterFloor(e);
+  floatKrek.push(k);e.guardIndex=i+1;e.guardsRemaining--;return true;
+}
 function interactEncounter(){
-  if(!playerOnSoil()||runIsPaused())return false;
+  if(!P.grounded||P.wet||runIsPaused())return false;
   var e=encounterAt(P.x);if(!e)return false;
   if(e.active)return false;
   if(coopGuest())return coopAction('encounter');
-  if(gardenSeeds<e.cost){puff(e.x,surfaceY(e.x)-8,3,.3);return true;}
+  if(gardenSeeds<e.cost){puff(e.x,encounterFloor(e)-8,3,.3);return true;}
   gardenSeeds-=e.cost;e.active=true;
   runEncounters.forEach(function(other){if(other!==e)other.locked=true;});
-  var count=2+Math.min(3,Math.floor(worldLevel()/5))+coopSize();
-  for(var i=0;i<count;i++){
-    var k=makeKrek(i%2?1:-1,false);k.x=e.x+(i%2?1:-1)*(62+i*9);k.y=surfaceY(k.x)-22;
-    k.eventId=e.id;k.eventX=e.x;
-    if(e.type==='cache'&&worldLevel()>=5&&i===0)k.kind=5;
-    if(e.type==='rain'&&worldLevel()>=3&&i===0&&enemyRoleAvailable(4))k.kind=4;
-    floatKrek.push(k);
-  }
+  e.guardsRemaining=3+Math.min(3,Math.floor(worldLevel()/5))+coopSize();e.guardIndex=0;e.guardSpawn=.6;
+  while(spawnEncounterGuard(e)){}
   socialTone('call');return true;
 }
 function completeEncounter(e){
   if(!e.active||e.done||e.locked)return;
   e.active=false;e.done=true;var type={nest:'feathers',rain:'dew',cache:'embers'}[e.type];
-  runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*12;dropRunItem(type,x,surfaceY(x)-13,a.member&&a.member.id);});
+  runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*8;dropRunItem(type,x,encounterFloor(e)-13,a.member&&a.member.id);});
   if(e.type==='rain')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
-  spawnLooseSeeds(e.x,surfaceY(e.x)-16,e.cost+2);grantRogueXP(4);socialTone('gift');
+  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost+1);grantRogueXP(4);socialTone('gift');
 }
 function updateEncounters(dt){
   runEncounters.forEach(function(e){
     if(!e.active)return;
-    if(runPlayers().some(function(a){return Math.abs(a.p.x-e.x)<78;}))e.progress=Math.min(e.duration,e.progress+dt);
-    if(e.progress>=e.duration&&!floatKrek.some(function(k){return k.eventId===e.id;}))completeEncounter(e);
+    e.guardSpawn=Math.max(0,(e.guardSpawn||0)-dt);
+    if(e.guardsRemaining>0&&e.guardSpawn<=0&&spawnEncounterGuard(e))e.guardSpawn=.6;
+    if(runPlayers().some(function(a){var height=a.p.y-encounterFloor(e);return Math.abs(a.p.x-e.x)<78&&height>=-28&&height<6;}))e.progress=Math.min(e.duration,e.progress+dt);
+    if(e.progress>=e.duration&&!e.guardsRemaining&&!floatKrek.some(function(k){return k.eventId===e.id;}))completeEncounter(e);
   });
 }
 function updateStageWeather(dt){
@@ -102,65 +151,41 @@ function updateStageWeather(dt){
     if(w.type==='drought'){p.moisture=Math.max(0,p.moisture-dt*.009);}
   });
 }
-function runDamageScale(){return 1+raidPressure()*.065;}
+// The global attempt clock powers every living enemy, including one spawned
+// several minutes ago. Resistance preserves its damage history: time never
+// heals hp or resets a boss phase, and travelling cannot reset the multiplier.
+function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)/180,1.7);}
+function runDurabilityScale(){return 1+.65*(runTimeThreat()-1);}
+function runDamageScale(){return (1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
+function runRaidLimit(){return Math.min(MAX_ACTIVE_ENEMIES,5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0)+Math.floor(Math.max(0,runElapsed)/60));}
+function runRaidInterval(){return Math.max(.12,(.85-(gardenWave-1)*.045)/(1+Math.max(0,runElapsed)/180));}
+function runPatrolLimit(active,cleared){return Math.min(MAX_ACTIVE_ENEMIES,(active?(cleared?4:2+Math.ceil(active/2)):1+coopSize())+Math.floor(Math.max(0,runElapsed)/45)+Math.max(0,coopSize()-1));}
+function runPatrolInterval(){return Math.max(.18,7/Math.pow(1+Math.max(0,runElapsed)/120,1.4));}
 function raidBudget(active){
-  // This is assigned once at the encounter's start. Kills, healing and elapsed
-  // time can never replenish it, even when the simultaneous limit is full.
-  return Math.min(32,5+gardenWave+Math.floor((worldLevel()-1)/3)+Math.min(3,Math.floor(active/3))+Math.floor(raidPressure()/3)+Math.max(0,coopSize()-1)*3);
+  var base=5+gardenWave*2+Math.floor((worldLevel()-1)/3)+Math.min(3,Math.floor(active/3))+Math.floor(Math.max(0,runElapsed)/45);
+  return Math.min(36,Math.ceil(base*(1+Math.max(0,coopSize()-1)*.42)));
 }
-function raidConcurrentLimit(){
-  return Math.min(14,5+Math.floor((worldLevel()-1)/4)+(gardenWave===FINAL_WAVE?1:0)+Math.max(0,coopSize()-1));
-}
-function raidSpawnDelay(spawnIndex){
-  // A short breath after each group of four keeps the denser waves readable.
-  var base=Math.max(.45,.96-(worldLevel()-1)*.015-Math.min(.20,raidPressure()*.012)-(gardenWave-1)*.04-Math.max(0,coopSize()-1)*.045);
-  return base+(spawnIndex%4===3?.28:0);
-}
-var RAID_FORMATIONS=[
-  [2,0,3,1,4,0,5,2,6,1],
-  [3,2,0,4,1,2,6,5,0,1],
-  [1,5,2,0,3,1,4,2,6,0],
-  [4,0,2,3,5,1,0,6,2,1],
-  [2,3,1,5,0,4,2,1,6,0],
-  [0,6,2,4,1,3,5,0,2,1]
-];
-function raidProfileIndex(profile){
-  var value=profile;
-  if(value==null&&window.MaxPlatforms)value=window.MaxPlatforms.profileFor(worldLevel()).index;
-  return imod(typeof value==='number'?value:worldLevel()-1,RAID_FORMATIONS.length);
-}
-function raidSpawnSide(spawnIndex){
-  var pairs=[[-1,1,-1,1],[1,1,-1,-1],[-1,-1,1,1],[1,-1,-1,1],[-1,1,1,-1],[1,-1,1,-1]];
-  return pairs[raidProfileIndex()][imod(spawnIndex+gardenWave-1,4)];
-}
-function enemyRoleAvailable(kind){
-  // Trial guards and ambient pests share the same support allowance as raids.
-  if(kind!==4&&kind!==6)return true;
-  var limit=kind===6?(coopSize()>=3?2:1):(worldLevel()<7?1:2)+(coopSize()>=3?1:0),count=0;
-  for(var i=0;i<floatKrek.length;i++)if(floatKrek[i].kind===kind&&floatKrek[i].hp>0&&!floatKrek[i].boss)count++;
-  return count<limit;
-}
-function enemyKind(spawnIndex,profile){
-  var w=worldLevel(),n=spawnIndex==null?enemySpawnIndex++:Math.max(0,spawnIndex|0);
-  var formation=RAID_FORMATIONS[raidProfileIndex(profile)],slot=imod(n+(gardenWave-1)*3+Math.floor((w-1)/6)*2,formation.length);
-  var kind=formation[slot],unlocks=[1,1,1,2,3,5,7];
-  if(w<unlocks[kind]||!enemyRoleAvailable(kind))kind=imod(n+w+gardenWave,3);
-  return kind;
+function enemyKind(){
+  var choices=stageCombatProfile().kinds.filter(enemyUnlocked);
+  return choices[(Math.random()*choices.length)|0];
 }
 function damagePest(k,amount,x,build){
   if(!k||k.hp<=0)return false;
   var frontal=k.kind===5&&!k.flee&&(x-k.x)*k.face>=-1;
   var factor=frontal?.25:1;
   if(k.boss&&k.exposed>0)factor*=2;
-  k.hp-=amount*factor;k.flash=1;
+  k.hp-=amount*factor/runDurabilityScale();k.flash=1;
+  // Moon Moth's restorative channel is a deliberate interrupt opportunity.
+  if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;k.windup=0;k.exposed=1.4;k.cool=2.2;}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
-  if(!k.boss&&!frontal)staggerKrek(k,.42);
+  if(!k.boss&&!frontal&&(k.divePhase===1||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
   if(k.hp<=0){var i=floatKrek.indexOf(k);if(i>=0)floatKrek.splice(i,1);burstKrek(k);return true;}
   return false;
 }
-function addRunHazard(type,x,r,tell,power,sourceX,sourceY){
+function addRunHazard(type,x,r,tell,power,sourceX,sourceY,targetY){
   if(runHazards.length>=32)return;
-  runHazards.push({id:++hazardId,type:type,x:x,y:surfaceY(x),r:r,tell:tell,total:tell,life:.45,hit:false,power:power||1,sx:sourceX==null?x:sourceX,sy:sourceY==null?surfaceY(x)-40:sourceY});
+  var hazard={id:++hazardId,type:type,x:x,y:targetY==null?surfaceY(x):targetY,r:r,tell:tell,total:tell,life:.45,hit:false,power:power==null?1:power,sx:sourceX==null?x:sourceX,sy:sourceY==null?surfaceY(x)-40:sourceY};
+  runHazards.push(hazard);return hazard;
 }
 function hazardPosition(h,ahead){
   var p=clamp01(1-Math.max(0,h.tell-(ahead||0))/h.total);
@@ -185,7 +210,7 @@ function updateRunHazards(dt){
     if(h.tell>0){h.tell=Math.max(0,h.tell-dt);continue;}
     if(!h.hit){
       h.hit=true;
-      gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-h.x)<h.r){
+      gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*Math.pow(.78,rogueRun.perks.shield||0)*classProtection(p));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
         if(p.health<=.01)p.dead=8;
@@ -197,11 +222,11 @@ function updateRunHazards(dt){
 }
 function updateHazardContact(){
   for(var i=0;i<runHazards.length;i++){
-    var h=runHazards[i];if(h.tell>0||hazardHits[h.id]||P.st==='float'||P.st==='climb')continue;
+    var h=runHazards[i];if(h.tell>0||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
     if(Math.abs(P.x-h.x)<h.r&&Math.abs(P.y-h.y)<20){
       hazardHits[h.id]=true;
       if(P.dodgeT>0)continue;
-      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;task=null;holdWater=null;P.st='free';setAnim('rise');
+      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
@@ -211,7 +236,7 @@ function updateRunDirector(dt){
 }
 function dewDodge(){
   if(ownTraits().dew<3||coopGuest())return;
-  gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(P.x-p.x)<32&&Math.abs(P.y-surfaceY(p.x))<24){p.moisture=clamp01(p.moisture+.16);p.health=clamp01(p.health+.035);p.pulse=1;}});
+  gardenPlots.forEach(function(p){if(!p.dead&&Math.hypot(P.x-p.x,P.y-surfaceY(p.x))<32){p.moisture=clamp01(p.moisture+.16);p.health=clamp01(p.health+.035);p.pulse=1;}});
   for(var i=0;i<8;i++)parts.push({x:P.x+(Math.random()-.5)*36,y:P.y-6,vx:0,vy:12,l:.4,m:.4,c:'130,202,214'});
 }
 function moveEnemyTo(k,x,y,dt,speed){
@@ -220,8 +245,41 @@ function moveEnemyTo(k,x,y,dt,speed){
   var sp=speed*(1+raidPressure()*.035)*Math.pow(.86,rogueRun.perks.slow||0);
   k.vx+=(dx/d*sp-k.vx)*Math.min(1,dt*3);k.vy+=(dy/d*sp-k.vy)*Math.min(1,dt*3);k.x+=k.vx*dt;k.y+=k.vy*dt;return d;
 }
+function cancelPestDive(k){
+  if(k.diveHazard){runHazards=runHazards.filter(function(h){return h.id!==k.diveHazard||h.tell<=0;});}
+  k.diveHazard=0;k.divePhase=0;k.diveT=0;k.diveCool=2.8;
+}
+function updatePestDive(k,dt){
+  if(k.kind!==2||worldLevel()<2&&runElapsed<75&&!k.scout)return false;
+  k.diveCool=Math.max(0,(k.diveCool||0)-dt);
+  if(k.divePhase===1){
+    if(k.windup<=0){cancelPestDive(k);return false;}
+    k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
+    if(!k.windup){
+      k.divePhase=2;k.diveT=k.attackDuration=.36;k.attackT=.36;
+      k.vx=(k.diveX-k.x)/.36;k.vy=(k.diveY-10-k.y)/.36;
+    }
+    return true;
+  }
+  if(k.divePhase===2){
+    var step=Math.min(dt,k.diveT);k.x+=k.vx*step;k.y+=k.vy*step;k.diveT=Math.max(0,k.diveT-dt);k.attackT=k.diveT;
+    if(!k.diveT){k.divePhase=0;k.diveCool=3.8;k.vx*=.2;k.vy=-12;k.bite=.65;}
+    return true;
+  }
+  if(k.diveCool>0)return false;
+  var target=null,near=125;
+  runPlayers().forEach(function(a){var d=Math.hypot(a.p.x-k.x,a.p.y-12-k.y);
+    if(a.p.st!=='float'&&!(a.p===P&&climb&&climb.exit)&&d<near&&d>30){target=a.p;near=d;}
+  });
+  if(!target)return false;
+  var warning=addRunHazard('gust',target.x,12,1.21,0,k.x,k.y,target.y);
+  if(!warning)return false;
+  k.diveX=target.x;k.diveY=target.y;k.diveHazard=warning.id;k.divePhase=1;k.tell=k.windup=.85;k.target=null;k.attackTarget=null;k.vx=k.vy=0;
+  return true;
+}
 function updateEnemyRole(k,dt){
-  if(k.boss){updateHollowCrown(k,dt);return true;}
+  if(k.boss){if(k.finalBoss===false)updateStageBoss(k,dt);else updateHollowCrown(k,dt);return true;}
+  if(updatePestDive(k,dt))return true;
   if(k.kind===3){
     if(k.stolen){
       k.face=k.escape||1;k.vx=k.face*36*(1+raidPressure()*.035);k.x+=k.vx*dt;
@@ -241,7 +299,7 @@ function updateEnemyRole(k,dt){
   }
   if(k.kind===6){
     var friend=null,fd=110;
-    // Several co-op moths may support attackers, but never sustain each other.
+    // Support moths help attackers without forming a mutual healing loop.
     floatKrek.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(q!==k&&!q.boss&&q.kind!==6&&q.hp>0&&q.hp<q.maxHp&&d<fd){friend=q;fd=d;}});
     k.healing=false;
     if(friend){
@@ -260,7 +318,13 @@ function updateEnemyRole(k,dt){
     k.target=target;
     var side=k.x<target.x?-1:1;
     if(moveEnemyTo(k,target.x+side*34,surfaceY(target.x)-24,dt,14)<7){
-      if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(k.windup===0){addRunHazard('spore',target.x,15,1.05,.8,k.x,k.y);k.bite=2.5;}}
+      if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(k.windup===0){
+        addRunHazard('spore',target.x,15,1.15,.8,k.x,k.y);k.volley=(k.volley||0)+1;k.bite=2.25;
+        if(worldLevel()>=8&&stageCombatProfile().volley&&k.volley%2===0){
+          var player=runPlayers().slice().sort(function(a,b){return Math.abs(a.p.x-k.x)-Math.abs(b.p.x-k.x);})[0];
+          if(player&&Math.abs(player.p.x-target.x)>24)addRunHazard('spore',player.p.x,11,1.35,.65,k.x,k.y,player.p.y);
+        }
+      }}
       else if(k.bite<=0){k.tell=.95;k.windup=.95;}
     }else k.windup=0;
     return true;
@@ -269,16 +333,71 @@ function updateEnemyRole(k,dt){
 }
 function makeHollowCrown(){
   var k=makeKrek(1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x;
-  k.x=x+58;k.y=surfaceY(x)-30;k.boss=true;k.queen=true;k.raid=true;k.kind=7;
+  safeEnemyPosition(k,x+80,surfaceY(x)-30);k.boss=true;k.finalBoss=true;k.bossId='hollow-crown';k.queen=true;k.raid=true;k.kind=7;
   k.hp=k.maxHp=38+Math.max(0,coopSize()-1)*24+Math.floor(raidPressure()*1.2);
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;
   return k;
+}
+function makeStageBoss(stage){
+  var w=stage||worldLevel(),id={5:'mossback',10:'bellkeeper',15:'moon-moth'}[w];if(!id)return null;
+  var k=makeKrek(w%2?1:-1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x,offset=id==='mossback'?8:13;
+  safeEnemyPosition(k,x+(w%2?1:-1)*90,surfaceY(x)-offset);
+  k.boss=true;k.finalBoss=false;k.bossId=id;k.queen=false;k.raid=true;k.kind=7;
+  k.hp=k.maxHp=({5:15,10:23,15:31}[w])+Math.max(0,coopSize()-1)*({5:9,10:14,15:19}[w])+Math.floor(raidPressure());
+  k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;k.attackT=0;k.attackDuration=.35;
+  return k;
+}
+function summonBossGuard(k,kind,index){
+  if(floatKrek.length>=MAX_ACTIVE_ENEMIES)return;
+  var side=index%2?1:-1,add=makeKrek(side,false,kind);add.raid=true;
+  safeEnemyPosition(add,k.x+side*76,k.y-10);floatKrek.push(add);
+}
+function updateStageBoss(k,dt){
+  var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
+  if(phase>k.phase){k.phase=phase;for(var add=0;add<2;add++)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,add);}
+  k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
+  if(k.attackT>0){
+    var step=Math.min(dt,k.attackT);k.attackT=Math.max(0,k.attackT-dt);
+    if(k.bossId==='mossback'){k.x+=k.chargeV*step;k.y=surfaceY(k.x)-8;k.vx=k.chargeV;}
+    if(!k.attackT){k.vx=k.vy=0;k.exposed=k.bossId==='mossback'?1.9:1.55;k.cool=3.1-(k.phase-1)*.22;}
+    return;
+  }
+  if(k.windup>0){
+    k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
+    if(!k.windup){
+      if(k.healing){var ally=floatKrek.find(function(q){return q.ph===k.healTarget&&q!==k&&!q.boss;});if(ally)ally.hp=Math.min(ally.maxHp,ally.hp+1.4);k.healing=false;}
+      k.attackDuration=k.bossId==='mossback'?.42:.35;k.attackT=k.attackDuration;
+    }
+    return;
+  }
+  k.cool-=dt;
+  var target=pickKrekTarget(k),anchor=target?target.x:P.x,offset=k.bossId==='mossback'?8:k.bossId==='moon-moth'?40:13;
+  if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-52:52),surfaceY(anchor)-offset,dt,k.bossId==='moon-moth'?24:15);
+  else k.vx=k.vy=0;
+  if(k.cool>0)return;
+  k.attack++;k.tell=k.windup=k.bossId==='mossback'?1.3:1.2;
+  if(k.bossId==='mossback'){
+    var dir=anchor<k.x?-1:1;k.face=dir;k.chargeV=dir*118;
+    // Three distinct root markers leave spaces that a jump or higher route clears.
+    for(var i=0;i<3;i++)addRunHazard('root',k.x+dir*(22+i*23),10,k.tell,.75,k.x,k.y);
+  }else if(k.bossId==='bellkeeper'){
+    addRunHazard('spore',anchor,13,k.tell,.85,k.x,k.y);
+    if(k.attack%2)for(var side=-1;side<=1;side+=2)addRunHazard('spore',anchor+side*34,10,k.tell+.2,.7,k.x,k.y);
+    else runPlayers().forEach(function(a){addRunHazard('root',a.p.x,10,k.tell,.65,k.x,k.y,a.p.y);});
+  }else{
+    var wounded=floatKrek.filter(function(q){return q!==k&&!q.boss&&q.hp<q.maxHp;}).sort(function(a,b){return (b.maxHp-b.hp)-(a.maxHp-a.hp);})[0];
+    if(wounded&&k.attack%2===0){k.healing=true;k.healTarget=wounded.ph;k.healX=wounded.x;k.healY=wounded.y;}
+    else{
+      addRunHazard('spore',anchor,12,k.tell,.85,k.x,k.y);
+      runPlayers().forEach(function(a){addRunHazard('gust',a.p.x,12,k.tell+.15,0,k.x,k.y,a.p.y);});
+    }
+  }
 }
 function updateHollowCrown(k,dt){
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
   if(phase>k.phase){
     k.phase=phase;
-    for(var i=0;i<phase;i++){var add=makeKrek(i%2?1:-1,false);add.x=k.x+(i%2?28:-28);add.y=k.y+12;add.kind=phase===3?5:2;add.raid=true;floatKrek.push(add);}
+    for(var i=0;i<phase;i++)summonBossGuard(k,phase===3?5:2,i);
   }
   k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
   if(k.windup>0){
@@ -314,14 +433,14 @@ function drawRunItem(type,x,y,bright){
 }
 function drawRunExploration(t){
   runEncounters.forEach(function(e){
-    var x=Math.round(e.x-camX),y=Math.round(surfaceY(e.x)-camY);if(x<-20||x>IW+20)return;
+    var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);if(x<-20||x>IW+20)return;
     ctx.fillStyle=e.locked?'#202827':'#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
     ctx.fillStyle=e.locked?'#344039':e.done?'#465346':'#657668';ctx.fillRect(x-7,y-16,14,2);ctx.fillRect(x-6,y-13,2,7);ctx.fillRect(x+4,y-13,2,7);
     if(!e.done&&!e.locked)drawRunItem({nest:'feathers',rain:'dew',cache:'embers'}[e.type],x,y-9,false);
     if(e.active){
       ctx.fillStyle='#d1c67f';ctx.fillRect(x-9,y-20,Math.round(18*e.progress/e.duration),1);
       ctx.globalAlpha=.18;ctx.fillRect(x-78,y-1,156,1);ctx.globalAlpha=1;
-    }else if(!e.done&&!e.locked&&Math.abs(P.x-e.x)<28){
+    }else if(!e.done&&!e.locked&&Math.abs(P.x-e.x)<28&&Math.abs(P.y-encounterFloor(e))<24){
       ctx.fillStyle=gardenSeeds>=e.cost?'#e0d291':'#797b6d';
       for(var c=0;c<e.cost;c++)ctx.fillRect(x-e.cost*2+c*4,y-22,2,2);
       ctx.fillRect(x,y-29,1,3);ctx.fillRect(x-2,y-27,1,1);ctx.fillRect(x+2,y-27,1,1);ctx.fillRect(x-1,y-26,3,1);
@@ -347,6 +466,8 @@ function drawRunHazards(t){
       var point=hazardPosition(h),sx=Math.round(point.x-camX),sy=Math.round(point.y-camY);
       if(h.type==='spore'){ctx.fillRect(sx-2,sy-2,4,4);ctx.fillStyle='#a693bd';ctx.fillRect(sx,sy,2,2);}
       else for(var n=-1;n<=1;n++)ctx.fillRect(x+n*6,y-4,1,2);
+    }else if(h.type==='gust'){
+      ctx.fillStyle='#a9ccd0';for(var n=0;n<3;n++){ctx.fillRect(x-h.r+2+n*3,y-6-n*5,h.r+3,1);ctx.fillRect(x+4+n*2,y-8-n*5,3,1);}
     }else for(var n=-1;n<=1;n++){ctx.fillRect(x+n*5,y-16+(n?4:0),2,14-(n?4:0));}
     ctx.globalAlpha=1;
   });
@@ -366,6 +487,8 @@ function drawRoleEnemy(k,x,y,t){
     // Health is part of the crown: twenty little lights, no screen HUD.
     var lights=Math.ceil(20*Math.max(0,k.hp)/k.maxHp),lightY=native?native.top-3:y-22;
     for(var j=0;j<20;j++){ctx.fillStyle=j<lights?color:'#323d39';ctx.fillRect(x-10+j,lightY,1,1);}
+    if(k.bossId==='moon-moth'&&k.healing){ctx.fillStyle='#ad93bd';ctx.globalAlpha=.6;
+      for(var a=0;a<9;a++){var q=a/9;ctx.fillRect(Math.round(x+(k.healX-k.x)*q),Math.round(y+(k.healY-k.y)*q),1,1);}ctx.globalAlpha=1;}
     return true;
   }
   if(k.kind<3||k.kind>6)return false;

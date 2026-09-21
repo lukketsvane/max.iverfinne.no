@@ -145,3 +145,16 @@ test('guests reject a start that omits or changes their confirmed class instead 
     assert.match(n.errors[0].reason, /selection was not confirmed/);
   } finally { await n.close(); }
 });
+
+test('Moss aliases become the compatible runner ID before lobby selection acknowledgement', async () => {
+  const n = await roomNetwork([{ classId: 'mech', skinId: 'moon' }, { classId: 'moss', skinId: 'ember' }]);
+  const [host, guest] = n.sessions;
+  try {
+    assert.equal(guest.selection.classId, 'runner');
+    await host.enter(); await guest.enter(n.room.code); await host.poll(); await n.settle();
+    assert.equal(guest.canReady, true); assert.equal(host.loadouts.player1.classId, 'runner');
+    assert.equal(host.loadouts.player1.skinId, 'ember');
+    await guest.ready(true); await host.start();
+    assert.deepEqual(n.starts[0].loadouts.player1, { classId: 'runner', skinId: 'ember' });
+  } finally { await n.close(); }
+});

@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'run-platforms.js', 'review.html'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -38,6 +38,13 @@ for (const [pack, ids, sheets] of [
     for (const file of sheets) copyFileSync(join(root, 'assets', pack, id, file), join(directory, file));
   }
   copyFileSync(join(root, 'assets', pack, 'manifest.json'), join(output, 'assets', pack, 'manifest.json'));
+}
+const milestoneDirectory = join(output, 'assets/boss-milestones-v1/native');
+mkdirSync(milestoneDirectory, { recursive: true });
+for (const id of ['05-mossback', '10-bellkeeper', '15-moon-moth']) {
+  for (const extension of ['json', 'png']) {
+    copyFileSync(join(root, 'assets/boss-milestones-v1/native', id + '.' + extension), join(milestoneDirectory, id + '.' + extension));
+  }
 }
 buildSync({
   entryPoints: [join(root, 'native-art.mjs')], outfile: join(output, 'native-art.js'),

@@ -71,7 +71,7 @@ test('four players collect their own run items; feather jumps, shrine rewards an
   assert.ok(guest.P.airJumpUsed);assert.ok(guest.P.vy<-140);
   assert.equal(guest.pickupNotice.text,'Double jump');
   // Host validates the interaction at the last accepted avatar position.
-  const e=host.runEncounters[0];e.x=member.avatar.x;
+  const e=host.runEncounters[0];e.x=member.avatar.x;e.y=host.surfaceY(e.x);
   host.gardenSeeds=4;Object.assign(guest.P,{x:e.x,y:host.surfaceY(e.x),grounded:true,st:'free',wet:false});sync();
   guest.crouchGardenAction();send(1,games[1].pending);sync();
   assert.equal(host.gardenSeeds,3);assert.ok(host.runEncounters[0].active);assert.ok(guest.runEncounters[0].active);
@@ -112,7 +112,7 @@ test('simultaneous guest shrine choices commit one shared trial and reward each 
   host.rogueRun.next=1e9;host.gardenSeeds=9;host.runLoot=[];
   const [first,second]=host.runEncounters;
   [first,second].forEach((e,i)=>{
-    const guest=games[i+1].game;Object.assign(guest.P,{x:e.x,y:host.surfaceY(e.x),grounded:true,wet:false,st:'free'});
+    const guest=games[i+1].game;Object.assign(guest.P,{x:e.x,y:e.y,grounded:true,wet:false,st:'free'});
     host.coop.members[ids[i+1]].avatar=guest.coopAvatar();
   });
   sync();games[1].game.interactEncounter();games[2].game.interactEncounter();
@@ -202,4 +202,41 @@ test('delayed actions are acknowledged and discarded after travel while new-stag
   assert.equal(host.coop.members[ids[1]].ack,2);assert.equal(host.gardenPlots.length,0);assert.equal(host.bombs.length,0);assert.equal(host.gardenSeeds,seeds);
   guest.crouchGardenAction();assert.equal(games[1].pending[2].world,2);send(1,games[1].pending);send(1,games[1].pending);
   assert.equal(host.gardenPlots.length,1);assert.equal(host.gardenSeeds,seeds-1);assert.equal(host.coop.members[ids[1]].ack,3);
+});
+test('a guest must climb to a raised trial, and host validation uses that guest’s platform footing',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  const e=host.runEncounters[0];host.gardenSeeds=9;host.rogueRun.next=1e9;
+  assert.ok(host.surfaceY(e.x)-e.y>20);
+  Object.assign(guest.P,{x:e.x,y:host.surfaceY(e.x),grounded:true,wet:false,st:'free'});
+  member.avatar=guest.coopAvatar();sync();
+  assert.equal(guest.interactEncounter(),false);assert.equal(e.active,false);
+  Object.assign(guest.P,{y:e.y,platform:guest.playerSupportId(e.x,e.y)});member.avatar=guest.coopAvatar();
+  const oldHost=host.P;host.P.platform='host-only-support';
+  host.coopWithMember(member,()=>{
+    assert.equal(host.P.platform,guest.P.platform);assert.equal(host.P.grounded,true);assert.equal(host.P.wet,false);
+  });
+  assert.equal(host.P,oldHost);assert.equal(host.P.platform,'host-only-support');host.P.platform=null;
+  assert.equal(guest.crouchGardenAction(),true);send(1,games[1].pending);sync();
+  assert.equal(e.active,true);assert.equal(guest.runEncounters[0].active,true);assert.equal(host.gardenSeeds,9-e.cost);
+  const count=host.floatKrek.length;send(1,games[1].pending);assert.equal(host.floatKrek.length,count);
+  const geometry=JSON.stringify(host.stageLayout().platforms);games.forEach(h=>assert.equal(JSON.stringify(h.game.stageLayout().platforms),geometry));
+  host.enterLevel(12);sync();games.forEach(h=>{
+    assert.equal(h.game.P.platform,null);assert.equal(JSON.stringify(h.game.stageLayout().platforms),JSON.stringify(host.stageLayout().platforms));
+  });
+});
+test('guest rolls interrupt enemies on elevated platforms at 30, 60 and 120 Hz',()=>{
+  for(const hz of [30,60,120]){
+    const {games,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+    const ledge={id:'roll-fixture',x:24,w:64,y:Math.round(host.surfaceY(56))-48};
+    games.forEach(h=>{h.game.stageLayout().platforms=[{...ledge}];});
+    Object.assign(guest.P,{x:ledge.x+5,y:ledge.y,vx:0,vy:0,platform:ledge.id,grounded:true,wet:false,st:'free'});
+    member.avatar=guest.coopAvatar();
+    const k=Object.assign(host.makeKrek(1),{kind:5,x:guest.P.x+18,y:ledge.y-12,hp:4,maxHp:4,windup:.3});host.floatKrek=[k];
+    guest.requestDodge(1);
+    for(let tick=0;tick<Math.ceil(hz*.08);tick++){
+      games[0].advance(1000/hz);guest.updatePlayer(1/hz,{axis:0,top:48});send(1,games[1].pending);
+    }
+    assert.ok(k.flee>0,`${hz} Hz elevated contact`);assert.equal(k.windup,0);assert.equal(k.hp,4);
+    guest.P.grounded=false;guest.P.y-=12;games[0].advance(60);send(1,games[1].pending);assert.equal(member.dodge,null);
+  }
 });

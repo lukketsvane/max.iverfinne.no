@@ -4,8 +4,9 @@ export const SKIN_IDS = Object.freeze(['moss', 'tide', 'ember', 'moon']);
 export const DEFAULT_LOADOUT = Object.freeze({ classId: 'mech', skinId: 'moss' });
 
 export function validLoadout(value) {
-  if (!value || !CLASS_IDS.includes(value.classId) || !SKIN_IDS.includes(value.skinId)) return null;
-  return { classId: value.classId, skinId: value.skinId };
+  const classId = value?.classId === 'moss' ? 'runner' : value?.classId;
+  if (!CLASS_IDS.includes(classId) || !SKIN_IDS.includes(value?.skinId)) return null;
+  return { classId, skinId: value.skinId };
 }
 export function sameLoadout(a, b) {
   return !!a && !!b && a.classId === b.classId && a.skinId === b.skinId;

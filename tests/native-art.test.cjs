@@ -48,13 +48,13 @@ function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage'
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
   const { art, status, requests, events } = await nativeArt('/moss/interaction.png');
-  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 8);
+  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 11);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
   assert.match(art.playerImage('ember', 'main').src, /ember\/main.png$/);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
-  assert.equal((await art.load()).loaded.length, 8); assert.equal(requests.length, 9);
+  assert.equal((await art.load()).loaded.length, 11); assert.equal(requests.length, 12);
   assert.equal(events.length, 1); assert.equal(events[0].type, 'max-native-art-ready');
 });
 
@@ -93,6 +93,28 @@ test('all boss phases retain amber tells, complete cyan exposure and correctly p
     assert.ok(Number.isInteger(state.top)); assert.ok(state.top < 30);
     assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, exposed: .01 }, 20, 30, phase + .2).clip, `phase${phase}/vulnerable`);
   }
+});
+
+test('milestone bosses use their own native sheets, fixed ground anchors and authoritative tell/charge/exposure timers', async () => {
+  const { art } = await nativeArt(), { ctx, calls } = context();
+  for (const [bossId, file, foot] of [['mossback', '05-mossback', 8], ['bellkeeper', '10-bellkeeper', 13], ['moon-moth', '15-moon-moth', 13]]) {
+    const k = enemy({ boss: true, bossId, windup: 1.2, tell: 1.2 });
+    const before = JSON.stringify(k);
+    assert.equal(art.drawEnemy(ctx, k, 20, 40, 200).clip, 'windup');
+    assert.ok(lastSprite(calls)[1].src.endsWith(`/native/${file}.png`));
+    assert.deepEqual(lastSprite(calls).slice(2, 6), [0, 64, 32, 32]);
+    assert.deepEqual(calls.filter(call => call[0] === 'translate').at(-1), ['translate', 20, 40 + foot]);
+    art.drawEnemy(ctx, { ...k, windup: .6 }, 20, 40, 200.1);
+    assert.equal(lastSprite(calls)[2], 128, 'windup uses real timer progress rather than preview fps');
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, attackT: .3, attackDuration: .6 }, 20, 40, 201).clip, 'attack');
+    assert.deepEqual(lastSprite(calls).slice(2, 6), [128, 96, 32, 32]);
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, attackT: 0, exposed: .01, flash: 1 }, 20, 40, 201.1).clip, 'vulnerable');
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, exposed: 0 }, 20, 40, 201.2).clip, 'recover');
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, exposed: 0, vx: 8 }, 20, 40, 202).clip, 'move');
+    assert.equal(JSON.stringify(k), before, 'art never mutates gameplay timers or coordinates');
+  }
+  art.drawEnemy(ctx, enemy({ boss: true, bossId: 'hollow-crown', phase: 3, exposed: .5 }), 20, 40, 300);
+  assert.match(lastSprite(calls)[1].src, /enemies-v1\/hollow-crown\/sprites\.png$/, 'the final boss retains its original three-phase atlas');
 });
 
 test('role specials and death animation never mutate gameplay or persist through a new run', async () => {

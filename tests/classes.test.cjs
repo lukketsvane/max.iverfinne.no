@@ -29,12 +29,18 @@ function party(classIds = classes.all.map(c => c.id)) {
 
 test('class selection is validated, independent of skin, and retry restores only the selected starting kit', () => {
   assert.deepEqual(classes.all.map(c => c.id), ['mech', 'runner', 'bulwark', 'herbalist']);
+  assert.deepEqual(classes.all.map(c => c.name), ['Mech', 'Moss', 'Bulwark', 'Herbalist']);
+  assert.deepEqual(classes.all.map(c => c.special), ['robots', 'climbing', 'guard', 'healing']);
+  assert.equal(classes.clean('moss'), 'runner'); assert.equal(classes.get('runner').name, 'Moss');
+  assert.equal(classes.canHaveRobot('moss'), false); assert.equal(classes.canHaveRobot('__proto__'), false);
   for (const kit of classes.all) {
+    assert.equal(classes.canHaveRobot(kit.id), kit.id === 'mech'); assert.equal(classes.canClimb(kit.id), kit.id === 'runner');
     const { game: g } = fresh(kit.id, 'moon');
     assert.equal(g.rogueRun.classId, kit.id); assert.equal(g.P.skin, 'moon');
     assert.deepEqual({ ...g.rogueRun.perks }, classes.perks(kit.id));
     g.rogueRun.perks.robot = 3; g.rogueRun.perks.growth = 5; g.rogueRun.traits.dew = 3;
-    g.ensureCompanion().state.water = .07; g.enterLevel(7); g.resetRogueRun();
+    const upgraded = g.ensureCompanion(); if (upgraded) upgraded.state.water = .07;
+    g.enterLevel(7); g.resetRogueRun();
     assert.equal(g.rogueRun.world, 1); assert.equal(g.rogueRun.classId, kit.id); assert.equal(g.P.skin, 'moon');
     assert.deepEqual({ ...g.rogueRun.perks }, classes.perks(kit.id));
     assert.equal(g.rogueRun.traits.dew, 0); assert.equal(g.P.dodgeCool, 0);
@@ -44,7 +50,7 @@ test('class selection is validated, independent of skin, and retry restores only
   assert.equal(g.rogueRun.classId, 'mech'); assert.equal(g.P.skin, 'original');
 });
 
-test('Runner is faster, jumps higher, and recovers its dodge sooner at every supported frame rate', () => {
+test('Moss keeps its agile movement and shorter dodge recovery at every supported frame rate', () => {
   for (const hz of [30, 60, 120]) {
     const states = ['mech', 'runner', 'bulwark'].map(id => {
       const { game: g } = fresh(id); steps(g, .15, right, hz); const speed = g.P.vx;
@@ -81,17 +87,42 @@ test('Herbalist improves active care and heals nearby living plants without chan
   assert.ok(Math.abs(p.health - (.4 + .5 * .045 * 1.4)) < 1e-9); assert.ok(p.moisture > .6);
 });
 
-test('every class can unlock the complete rover and every boon path', () => {
+test('only Mech can upgrade robots while every class retains complete nonempty boon paths', () => {
   for (const kit of classes.all) {
     const { game: g } = fresh(kit.id); assert.equal(!!g.ensureCompanion(), kit.id === 'mech');
-    while (g.rogueRun.perks.robot < 3) { g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot'); g.updateCompanion(.01); }
-    assert.equal(g.ensureCompanion().state.tier, 2);
+    for (let rank = 0; rank < 3; rank++) { g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot'); g.updateCompanion(.01); }
+    assert.equal(g.rogueRun.perks.robot, kit.id === 'mech' ? 3 : 0);
+    if (kit.id === 'mech') assert.equal(g.ensureCompanion().state.tier, 2); else assert.equal(g.ensureCompanion(), null);
     const p = classes.perks(kit.id), reached = new Set();
     for (let level = 1; level <= 100; level++) {
-      const offers = builds.choices(p, level); if (!offers.length) break;
+      const eligible = builds.perks.filter(q => builds.available(p, q, kit.id));
+      const offers = builds.choices(p, level, 0, kit.id);
+      assert.equal(offers.length, Math.min(3, eligible.length), 'each class gets every available slot until its own pool is exhausted');
+      assert.ok(offers.every(q => !q.classId || q.classId === kit.id));
+      if (!offers.length) break;
       const selected = offers[0]; reached.add(selected.path); p[selected.id]++;
     }
-    assert.deepEqual([...reached].sort(), [0, 1, 2]); assert.ok(p.chain && p.recycle && p.bloom);
+    assert.deepEqual([...reached].sort(), [0, 1, 2]); assert.ok(p.chain && p.bloom);
+    assert.equal(p.robot, kit.id === 'mech' ? 3 : 0); assert.equal(p.recycle, kit.id === 'mech' ? 1 : 0);
+    assert.equal(builds.perks.some(q => builds.available(p, q, kit.id)), false);
+  }
+});
+
+test('forged or legacy robot perks cannot create, restore or keep a non-Mech companion', () => {
+  for (const classId of ['runner', 'bulwark', 'herbalist']) {
+    const { game: g } = fresh(classId, 'moss');
+    for (const boon of ['robot', 'recycle']) {
+      g.rogueRun.choice = [{ id: boon }]; g.rogueRun.perks.yield = 1;
+      g.chooseRoguePerk(boon); assert.equal(g.rogueRun.perks[boon], 0);
+      assert.equal(builds.available(g.rogueRun.perks, { id: boon }, classId), false);
+    }
+    g.rogueRun.perks.robot = 3; g.rogueRun.perks.recycle = 1;
+    g.companion = { state: { water: .3 } }; g.rogueRun.companion = { tier: 2, water: .4 };
+    assert.equal(g.ensureCompanion(), null); assert.equal(g.companion, null); assert.equal(g.rogueRun.companion, null);
+    assert.equal(g.rogueRun.perks.robot, 0); assert.equal(g.rogueRun.perks.recycle, 0);
+    const cleaned = classes.cleanPerks({ robot: 3, recycle: 1, growth: 2 }, classId);
+    assert.equal(cleaned.robot, 0); assert.equal(cleaned.recycle, 0); assert.equal(cleaned.growth, 2);
+    g.enterLevel(3); assert.equal(g.ensureCompanion(), null, 'travel cannot respawn a forbidden robot');
   }
 });
 
@@ -101,11 +132,39 @@ test('the host fixes four independent classes and skins, with owned rovers and n
   assert.deepEqual(Array.from(host.coopCapture().robots, r => r.owner), [ids[0]]);
   send(1, { classId: 'herbalist', skin: 'moon' });
   const runner = host.coop.members[ids[1]]; assert.equal(runner.classId, 'runner'); assert.equal(runner.avatar.classId, 'runner'); assert.equal(runner.avatar.skin, 'tide');
-  runner.perks.robot = 1; const bot = host.ensureCompanion(runner); bot.state.water = .23; sync();
-  assert.equal(players[1].game.companion.state.water, .23); assert.equal(players[2].game.companion, null);
+  runner.perks.robot = 1; assert.equal(host.ensureCompanion(runner), null);
+  const bot = host.ensureCompanion(); bot.state.water = .23; sync();
+  assert.equal(players[1].game.companion, null); assert.equal(players[2].game.companion, null);
+  assert.equal(players[1].game.coop.members[ids[0]].companion.state.water, .23);
   host.enterLevel(2); sync();
   players.forEach((p, i) => { assert.equal(p.game.P.classId, classes.all[i].id); assert.equal(p.game.coop.members[ids[i]].avatar.classId, classes.all[i].id); });
-  assert.equal(players[1].game.companion.state.water, .23);
+  assert.equal(players[1].game.coop.members[ids[0]].companion.state.water, .23);
+});
+
+test('co-op boon rounds use each player’s class and reject forged non-Mech robot choices', () => {
+  const { players, sync } = party(), host = players[0].game;
+  const choose = (member, boon) => host.coopInput(member.id, {
+    actions: [{ id: member.ack + 1, type: 'boon', boon, round: host.coop.round }],
+  });
+  host.grantRogueXP(host.rogueRun.next); assert.equal(host.coop.choosing, true);
+  for (const member of Object.values(host.coop.members)) {
+    assert.equal(member.choices.length, 3);
+    assert.ok(member.choices.every(id => builds.available(member.perks, id, member.classId)));
+    if (member.classId === 'mech') continue;
+    assert.ok(member.choices.every(id => id !== 'robot' && id !== 'recycle'));
+    const actual = [...member.choices]; member.choices = ['robot', 'recycle'];
+    choose(member, 'robot'); assert.equal(member.perks.robot, 0);
+    member.perks.robot = 3; member.perks.yield = 1;
+    choose(member, 'recycle'); assert.equal(member.perks.recycle, 0);
+    assert.equal(host.ensureCompanion(member), null); member.choices = actual;
+  }
+  sync();
+  players.forEach((player, i) => {
+    assert.equal(player.game.rogueRun.choice.length, 3);
+    if (i) assert.ok(player.game.rogueRun.choice.every(q => q.id !== 'robot' && q.id !== 'recycle'));
+  });
+  for (const member of Object.values(host.coop.members)) choose(member, member.choices[0]);
+  assert.equal(host.coop.choosing, false, 'all four classes can complete the same boon round');
 });
 
 test('host-authoritative care, guard and dodge use the acting guest’s class, not the host’s', () => {
@@ -135,6 +194,6 @@ test('travel clears queued and held actions plus all unreachable seeds while ret
   g.enterLevel(2);
   assert.equal(g.jumpBuf, 0); assert.equal(g.dodgeBuf, 0); assert.equal(g.gardenPress, false); assert.equal(g.heldDown, false); assert.equal(g.readInput().axis, 0);
   assert.equal(g.seedPickups.length, 1); assert.equal(g.seedPickups[0].id, 'route:2');
-  assert.equal(g.seedPickups[0].routeReward, true, 'only the new garden reward remains');
+  assert.equal(g.seedPickups[0].routeReward, true, 'only the new garden route reward remains');
   assert.equal(g.P.classId, 'runner'); assert.equal(g.P.skin, 'tide');
 });

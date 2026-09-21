@@ -4,11 +4,12 @@ const { loadGame, plot } = require('./game-harness.cjs');
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
 
-function pair() {
+function pair(classIds = ['mech', 'mech']) {
   const room = { id: 'platform-room', host: ids[0], members: ids.map((id, i) => ({ id, slot: i + 1, ready: true })) };
+  const loadouts = Object.fromEntries(ids.map((id, i) => [id, { classId: classIds[i], skinId: 'original' }]));
   const players = ids.map(id => {
     const h = loadGame(), pending = [];
-    h.game.beginCoop({ host: id === ids[0], user: { id }, room,
+    h.game.beginCoop({ host: id === ids[0], user: { id }, room, loadouts,
       action(type, data) { pending.push({ id: pending.length + 1, type, ...data }); return true; },
       tick() {}, fail(reason) { throw Error(reason); } });
     h.game.rogueRun.next = 1e9;
@@ -20,7 +21,7 @@ function pair() {
     Object.assign(guest.game.P, { x, y, vx: 0, vy: 0, grounded: true, wet: false, st: 'free', dodgeT: 0 });
     member.avatar = guest.game.coopAvatar();
   }
-  function platforms(ledges) { players.forEach(h => { h.game.runLayout().platforms = ledges.map(p => ({ kind: 'branch', ...p })); }); }
+  function platforms(ledges) { players.forEach(h => { h.game.stageLayout().platforms = ledges.map((p, i) => ({ id: 'test-' + i, style: 'branch', w: p.width, ...p })); }); }
   function pest(x, y) { return Object.assign(host.game.makeKrek(1), { kind: 5, x, y, hp: 4, maxHp: 4, flee: 0, windup: .3 }); }
   return { host, guest, member, send, place, platforms, pest };
 }
@@ -89,13 +90,24 @@ test('leaving a ledge clears remote roll support even if a packet still claims g
   assert.equal(member.avatar.grounded, false); assert.equal(member.dodge, null);
 });
 
+test('passing close to a ledge while airborne does not grant a guest grounded actions', () => {
+  const { host, guest, member, send, place, platforms } = pair();
+  const top = Math.round(host.game.surfaceY(0)) - 48;
+  platforms([{ x: -20, y: top, width: 100 }]); place(0, top);
+  Object.assign(guest.game.P, { y: top - 2, grounded: false });
+  send([{ id: 1, type: 'dodge', world: 1, x: 0, y: top, direction: 1 }]);
+  assert.equal(member.avatar.grounded, false); assert.equal(member.dodge, undefined);
+  assert.equal(member.dodgeUntil, 0); assert.equal(member.ack, 1);
+});
+
 test('a guest on a ledge cannot tend, activate a ground shrine, refill a rover or use a ground exit', () => {
   const { host, guest, member, send, place, platforms } = pair();
   const g = host.game, x = 12, top = Math.round(g.surfaceY(x)) - 48;
   platforms([{ x: -20, y: top, width: 100 }]); place(x, top);
   const plant = plot({ x, stalk: true, growth: 4, moisture: .2, health: .5 });
   g.gardenPlots = [plant]; g.gardenSeeds = 9; g.rogueRun.clearedWorld = 1;
-  const shrine = g.runEncounters[0]; shrine.x = x;
+  const shrine = g.runEncounters[0]; shrine.x = x; shrine.y = g.surfaceY(x);
+  Object.assign(guest.game.runEncounters[0], { x, y: shrine.y });
   const bot = g.ensureCompanion(); bot.state.x = x; bot.state.water = .2;
   const hostPosition = { x: g.P.x, y: g.P.y };
   send(['grow', 'encounter', 'refill', 'travel'].map((type, i) => ({ id: i + 1, type, world: 1 })));
@@ -131,7 +143,7 @@ test('guest ground actions and travel still work at the actual soil surface', ()
     const { host, guest, member, send, place } = pair();
     const g = host.game, x = 12; place(x, g.surfaceY(x)); g.gardenSeeds = 9;
     const bot = g.ensureCompanion(); bot.state.x = x; bot.state.water = .2;
-    const shrine = g.runEncounters[0]; if (action === 'encounter') shrine.x = x;
+    const shrine = g.runEncounters[0]; if (action === 'encounter') { shrine.x = x; shrine.y = g.surfaceY(x); }
     if (action === 'travel') { g.gardenPlots = [plot({ x, stalk: true, growth: 4 })]; g.rogueRun.clearedWorld = 1; }
     send([{ id: 1, type: action, world: 1 }]);
     assert.equal(member.ack, 1);
@@ -141,4 +153,37 @@ test('guest ground actions and travel still work at the actual soil surface', ()
     if (action === 'travel') assert.equal(g.rogueRun.world, 2);
     assert.equal(guest.game.P.x, x);
   }
+});
+
+test('a guest can activate an elevated encounter while standing on its own platform', () => {
+  const { host, guest, send, place, platforms } = pair();
+  const g = host.game, x = 12, top = Math.round(g.surfaceY(x)) - 48;
+  platforms([{ x: -20, y: top, width: 100 }]); place(x, top);
+  for (const player of [host, guest]) {
+    player.game.gardenSeeds = 9;
+    Object.assign(player.game.runEncounters[0], { x, y: top });
+  }
+  const shrine = g.runEncounters[0];
+  assert.equal(guest.game.interactEncounter(), true); send();
+  assert.equal(shrine.active, true); assert.equal(g.gardenSeeds, 9 - shrine.cost);
+});
+
+test('low shelves cannot start or continue refills, while a Moss teammate can refill a Mech rover from soil', () => {
+  const { host, guest, member, send, place, platforms } = pair(['mech', 'runner']);
+  const g = host.game, x = 12, soil = g.surfaceY(x), top = soil - 16;
+  platforms([{ x: -20, y: top, width: 100 }]); place(x, top);
+  const bot = g.ensureCompanion(); bot.state.x = x; bot.state.water = .2;
+  assert.equal(guest.game.refillCompanion(), false); assert.equal(guest.pending.length, 0);
+  send([{ id: 1, type: 'refill', world: 1 }]);
+  assert.equal(member.ack, 1); assert.equal(bot.state.refill, 0);
+  place(x, soil); send([{ id: 2, type: 'refill', world: 1 }]);
+  assert.equal(bot.state.refill, 2); assert.equal(bot.refiller, ids[1]);
+  for (let i = 0; i < 5; i++) g.updateCompanion(.05);
+  const remaining = bot.state.refill;
+  place(x, top); send([]);
+  for (let i = 0; i < 60; i++) g.updateCompanion(.05);
+  assert.equal(bot.state.refill, remaining); assert.equal(bot.state.water, .2);
+  place(x, soil); send([]);
+  for (let i = 0; i < 40; i++) g.updateCompanion(.05);
+  assert.equal(bot.state.water, 1); assert.equal(g.ensureCompanion(member), null);
 });

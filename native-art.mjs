@@ -3,6 +3,7 @@ import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 // Presentation only: atlas animation never changes an attack, collision or heal.
 const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon']);
 const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
+const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bellkeeper', 'moon-moth': '15-moon-moth' });
 
 export function createNativeArt() {
   const atlases = Object.create(null), flashes = Object.create(null);
@@ -12,15 +13,16 @@ export function createNativeArt() {
   function reset() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
-  function idFor(enemy) { return enemy.boss ? 'hollow-crown' : ENEMIES[enemy.kind]; }
-  function footOffset(enemy) { return enemy.boss ? 13 : 5; }
+  function milestone(enemy) { return !!enemy.boss && Object.hasOwn(MILESTONES, enemy.bossId); }
+  function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : ENEMIES[enemy.kind]; }
+  function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : 5; }
   function clockFor(enemy, time) {
     // `ph` is already a stable per-enemy seed in host snapshots. A WeakMap alone
     // would restart guest animations whenever a fresh snapshot replaces objects.
     const key = Number.isFinite(enemy.ph) ? `${idFor(enemy)}:${enemy.ph}` : null;
     let clock = key ? clocks.get(key) : anonymousClocks.get(enemy);
     if (!clock || time < clock.last - .5) {
-      clock = { name: '', since: time, last: time, windup: 0, bite: 0, flash: 0, exposed: 0, releasedAt: -Infinity, recoveredAt: -Infinity };
+      clock = { name: '', since: time, last: time, windup: 0, bite: 0, flash: 0, exposed: 0, attackT: 0, releasedAt: -Infinity, recoveredAt: -Infinity };
       if (key) clocks.set(key, clock); else anonymousClocks.set(enemy, clock);
     }
     if (time - sweptAt > 5 || clocks.size > 128) {
@@ -34,8 +36,9 @@ export function createNativeArt() {
     if (clock.windup > 0 && !(enemy.windup > 0) && !(enemy.flee > 0) &&
         ((enemy.bite || 0) > clock.bite + .05 || enemy.stolen && !clock.stolen)) clock.releasedAt = time;
     if (enemy.boss && clock.exposed > 0 && !(enemy.exposed > 0)) clock.recoveredAt = time;
+    if (enemy.boss && clock.attackT > 0 && !(enemy.attackT > 0)) clock.recoveredAt = time;
     let name, progress;
-    const phase = 'phase' + Math.max(1, Math.min(3, enemy.phase | 0)) + '/';
+    const phase = enemy.boss && !milestone(enemy) ? 'phase' + Math.max(1, Math.min(3, enemy.phase | 0)) + '/' : '';
     if (enemy.hp <= 0) name = 'death';
     else if (enemy.windup > 0) {
       name = (enemy.boss ? phase : '') + 'windup';
@@ -43,12 +46,15 @@ export function createNativeArt() {
     } else if (enemy.boss && enemy.exposed > 0) {
       // The cyan window must remain visible for the complete gameplay timer.
       name = phase + 'vulnerable';
+    } else if (enemy.boss && enemy.attackT > 0) {
+      name = phase + 'attack';
+      progress = 1 - enemy.attackT / (enemy.attackDuration || .5);
     } else if (enemy.flash > 0) {
       name = (enemy.boss ? phase : '') + 'hurt';
       progress = 1 - Math.min(1, enemy.flash);
     } else if (enemy.boss) {
       const recovery = time - clock.recoveredAt;
-      name = phase + (recovery < .6 ? 'recover' : 'idle');
+      name = phase + (recovery < .6 ? 'recover' : milestone(enemy) && Math.hypot(enemy.vx || 0, enemy.vy || 0) > 2 ? 'move' : 'idle');
       if (recovery < .6) progress = recovery / .6;
     }
     else if (enemy.kind === 3 && enemy.stolen) name = 'carry';
@@ -64,7 +70,7 @@ export function createNativeArt() {
       clock.name = name; clock.since = time;
     }
     clock.last = time; clock.windup = enemy.windup || 0; clock.bite = enemy.bite || 0;
-    clock.flash = enemy.flash || 0; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0;
+    clock.flash = enemy.flash || 0; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0; clock.attackT = enemy.attackT || 0;
     return { name, seconds: Math.max(0, time - clock.since), progress };
   }
   function flashAtlas(atlas) {
@@ -82,7 +88,8 @@ export function createNativeArt() {
   function load() {
     if (loading) return loading;
     const files = SKINS.slice(1).map(id => [id, `assets/max-skins-v1/${id}/atlas.json`])
-      .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]));
+      .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
+      .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]));
     loading = Promise.allSettled(files.map(async ([id, url]) => {
       const atlas = await loadAtlas(url);
       atlases[id] = atlas;

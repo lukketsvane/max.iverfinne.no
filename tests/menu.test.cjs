@@ -113,7 +113,7 @@ test('four class choices and cosmetic skins stay independent through solo start,
     m.click('Herbalist'); m.click('Moon');
     assert.match(m.w.document.querySelector('.max-class-detail').textContent, /40% stronger care/);
     assert.equal(m.w.document.querySelector('[data-class-id="herbalist"]').getAttribute('aria-pressed'), 'true');
-    m.click('Runner');
+    m.click('Moss');
     assert.equal(m.w.document.querySelector('[data-skin-id="moon"]').getAttribute('aria-pressed'), 'true', 'changing role preserves appearance');
     m.click('Ember');
     assert.equal(m.w.document.querySelector('[data-class-id="runner"]').getAttribute('aria-pressed'), 'true', 'changing appearance preserves role');
@@ -146,6 +146,25 @@ test('corrupt saved selection falls back safely while a valid saved selection is
     m.click('Play'); m.click('Solo');
     assert.equal(m.begun.classId, 'mech'); assert.equal(m.begun.skinId, 'moss');
   } finally { m.dom.window.close(); }
+});
+
+test('Moss class keeps the runner identity and stays independent of the Moss appearance', async () => {
+  for (const classId of ['runner', 'moss']) {
+    const m = await menu(JSON.stringify({ classId, skinId: 'moon' }));
+    try {
+      m.click('Play');
+      const role = m.w.document.querySelector('[data-class-id="runner"]');
+      assert.equal(role.textContent, 'Moss'); assert.equal(role.getAttribute('aria-label'), 'Moss class');
+      assert.equal(role.getAttribute('aria-pressed'), 'true');
+      assert.equal(m.w.document.querySelector('[data-skin-id="moss"]').getAttribute('aria-label'), 'Moss appearance');
+      assert.equal(m.w.document.querySelector('[data-skin-id="moon"]').getAttribute('aria-pressed'), 'true');
+      m.click('Mech'); m.w.document.querySelector('[data-skin-id="moss"]').click(); m.click('Solo');
+      assert.equal(m.begun.classId, 'mech'); assert.equal(m.begun.skinId, 'moss', 'a costume never switches the class');
+      m.w.document.querySelector('.max-live-settings').click(); m.click('Controls');
+      assert.match(m.w.document.body.textContent, /Only Mech owns watering robots/);
+      assert.match(m.w.document.body.textContent, /Every class can use a cleared exit stalk/);
+    } finally { m.dom.window.close(); }
+  }
 });
 
 test('Solo waits for remembered account restoration and keeps the selected class and skin for owned runs', async () => {
