@@ -35,7 +35,11 @@ export class CoopSession {
   }
   async enter(code) {
     await this.client.realtime.setAuth();
-    if (code && typeof code === 'object' && code.id) {
+    if (code && typeof code === 'object' && code.global) {
+      const { data, error } = await this.client.rpc('max_coop_global');
+      if (error) throw new Error(error.message || 'Could not join the garden.');
+      this.room = data;
+    } else if (code && typeof code === 'object' && code.id) {
       const { data, error } = await this.client.rpc('max_coop_join', { p_room: code.id });
       if (error) throw new Error(error.message || 'Could not join this run.');
       this.room = data;
@@ -73,17 +77,15 @@ export class CoopSession {
       channel.subscribe(status => {
         if (status === 'SUBSCRIBED') { clearTimeout(timer); resolve(); }
         else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
-          clearTimeout(timer); reject(new Error('Room connection lost.'));
-          if ((this.entered || this.playing) && !this.closed && this.channels.get(suffix) === channel) {
-            if (this.host && suffix !== 'state') {
-              if (this.playing) this.hooks.depart?.(suffix);
-              else {
-                this.channels.delete(suffix); delete this.loadouts[suffix]; delete this.memberTokens[suffix];
-                this.cancelPrepare('A player is reconnecting. Wait for their selection.');
-                void this.client.removeChannel(channel); this.notifyRoom(); this.sendLobby();
-              }
-            } else this.fail('Connection lost.');
+          clearTimeout(timer);
+          const active = this.entered || this.playing;
+          if (!active) { reject(new Error('Room connection lost.')); return; }
+          if (!this.closed && this.channels.get(suffix) === channel) {
+            this.channels.delete(suffix);
+            void this.client.removeChannel(channel);
+            if (!document.hidden) setTimeout(() => { void this.resume(); }, 350);
           }
+          resolve();
         }
       });
     });
@@ -106,16 +108,16 @@ export class CoopSession {
     }) };
     this.hooks.room?.(this.room);
   }
-  async poll() {
+  async poll(force = false) {
     if (this.closed || this.polling) return;
-    if (this.playing && Date.now() - this.lastPoll < 8000) return;
+    if (!force && this.playing && Date.now() - this.lastPoll < 8000) return;
     this.polling = true;
     try {
       const room = await this.rpc('get'); if (this.closed) return;
       this.room = room; this.lastPoll = Date.now();
       await this.syncChannels();
       this.notifyRoom();
-      if (!this.playing) this.sendLobby();
+      this.sendLobby();
     } catch (error) { this.fail(error.message); }
     finally { this.polling = false; }
   }
@@ -166,7 +168,7 @@ export class CoopSession {
   begin() {
     if (this.playing || this.closed) return;
     this.playing = true; this.lastHost = Date.now();
-    this.loadouts = Object.freeze(Object.fromEntries(this.room.members.map(p => [p.id, Object.freeze({ ...this.loadouts[p.id] })])));
+    this.loadouts = Object.fromEntries(this.room.members.map(p => [p.id, { ...(this.loadouts[p.id] || {}) }]));
     this.hooks.start?.(this);
   }
   acceptLobby(lobby) {
@@ -229,13 +231,27 @@ export class CoopSession {
       } else if (packet.sid === this.memberTokens[sender]) this.hooks.input?.(sender, packet);
     }
   }
+  async resume() {
+    if (this.closed || !this.room || this.resuming) return;
+    this.resuming = true; this.lastHost = Date.now();
+    try {
+      await this.client.realtime.setAuth();
+      await this.subscribe('state');
+      if (this.host) await this.syncChannels();
+      else await this.subscribe(this.user.id);
+      await this.poll(true);
+      this.sendLobby();
+    } catch (_) {
+      // Realtime has its own reconnect backoff. Keep membership reserved and retry on the next foreground/poll.
+    } finally { this.resuming = false; }
+  }
   action(type, data = {}) {
     if (!this.playing || this.closed || this.host || this.pending.length >= 16) return false;
     this.pending.push({ id: ++this.actionId, type, ...data }); this.lastSend = 0; return true;
   }
   tick(avatar, capture, now = Date.now()) {
     if (!this.playing || this.closed) return;
-    if (!this.host && now - this.lastHost > 10000) { this.fail('The host disconnected.'); return; }
+    if (!this.host && !document.hidden && now - this.lastHost > 90000) { this.fail('The garden connection expired.'); return; }
     if (this.host && (this.sendingState || now < this.nextStateAt)) return;
     if (now - this.lastSend < (this.host ? 100 : 66)) return;
     this.lastSend = now;
