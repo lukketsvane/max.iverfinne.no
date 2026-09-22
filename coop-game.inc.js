@@ -90,7 +90,7 @@ function coopInput(id,packet){
       var travelActor=(a&&a.world===worldLevel())?a:m.avatar,plant=stalkAt(travelActor.x,travelActor.y,10);
       var above=plant?surfaceY(plant.x)-travelActor.y:-1;
       var reachedTop=!!(plant&&travelActor.st==='climb'&&travelActor.exitClimb&&rogueRun.clearedWorld===worldLevel()&&worldLevel()<RUN_STAGES&&above>=cloudHeight()-10&&above<=cloudHeight()+12);
-      if(reachedTop)enterLevel(worldLevel()+1);
+      if(reachedTop)enterLevel(worldLevel()+1,id);
       return;
     }
     if(action.type==='pickup-item'&&Number.isSafeInteger(action.pickup)){
@@ -190,7 +190,7 @@ function coopCapture(){
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
-    ended:rogueRun.ended,won:runWon,choosing:coop.choosing,round:coop.round,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
+    difficulty:rogueRun.difficulty,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,choosing:coop.choosing,round:coop.round,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
     plants:gardenPlots.map(coopPlain),garden:rogueRun.garden.map(coopPlain),seedsOnGround:seedPickups.slice(0,180).map(coopPlain),
     pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0});}),bombs:bombs.map(coopPlain),
@@ -200,7 +200,7 @@ function coopState(s){
   if(!coop||coop.host||!s||!Number.isInteger(s.world)||s.world<1||s.world>RUN_STAGES||!Array.isArray(s.members)||s.members.length>4)return;
   if(!['plants','garden','seedsOnGround','pests','bombs','birds','fauna'].every(function(k){return Array.isArray(s[k])&&s[k].length<=(k==='garden'?20000:200)&&s[k].every(function(o){return o&&typeof o==='object';});}))return;
   var previousWorld=worldLevel(),wasEnded=rogueRun.ended;
-  rogueRun.world=s.world;rogueRun.clearedWorld=s.cleared;rogueRun.level=s.level;rogueRun.xp=s.xp;rogueRun.next=s.next;rogueRun.difficulty=['easy','medium','hard','insane'].indexOf(s.difficulty)>=0?s.difficulty:(rogueRun.difficulty||'medium');
+  rogueRun.world=s.world;rogueRun.clearedWorld=s.cleared;rogueRun.level=s.level;rogueRun.xp=s.xp;rogueRun.next=s.next;rogueRun.difficulty=['easy','medium','hard','insane'].indexOf(s.difficulty)>=0?s.difficulty:(rogueRun.difficulty||'medium');rogueRun.ascenderId=typeof s.ascender==='string'?s.ascender:'';
   rogueRun.garden=s.garden.map(coopPlain);gardenPlots=s.plants.map(coopPlain);seedPickups=s.seedsOnGround.map(coopPlain);
   runLoot=Array.isArray(s.loot)?s.loot.slice(0,200).map(coopPlain):[];
   runEncounters=Array.isArray(s.encounters)?s.encounters.slice(0,4).map(coopPlain):[];
@@ -239,9 +239,11 @@ function coopState(s){
     companion=coop.members[coop.me].companion||null;
   }
   if(previousWorld!==s.world){
-    task=null;climb=null;warp=null;holdWater=null;clearRunInput();
-    P.platform=null;
-    P.x=levelOriginX(s.world)+(coop.members[coop.me].slot-1)*12;P.y=surfaceY(P.x)-80;P.vx=P.vy=0;P.grounded=false;P.airJumpUsed=false;P.st='float';setAnim('hang');started=false;hazardHits={};
+    task=null;climb=null;warp=null;holdWater=null;clearRunInput();P.platform=null;
+    P.x=levelOriginX(s.world)+(coop.members[coop.me].slot-1)*12;P.vx=P.vy=0;P.airJumpUsed=false;hazardHits={};
+    if(s.ascender===coop.me){P.y=surfaceY(P.x);P.grounded=true;P.st='free';setAnim('idle');worldBanner=4;}
+    else{P.y=surfaceY(P.x)-80;P.grounded=false;P.st='float';setAnim('hang');}
+    started=false;
   }
   rogueRun.ended=!!s.ended;runWon=!!s.won;coopShowChoices();
   if(rogueRun.ended&&!wasEnded){finalizeRogueRun(runWon);clearRunInput();showRunResult();}
