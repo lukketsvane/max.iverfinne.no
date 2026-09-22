@@ -81,6 +81,46 @@ test('guest pickups commit on the host for both run items and seeds',()=>{
   assert.equal(guest.seedPickups.some(q=>q.id==='shared-seed'),false);
 });
 
+test('guest frame proximity automatically claims synced items and seeds',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  host.runLoot=[{id:9901,type:'dew',x:member.avatar.x,y:member.avatar.y-12,owner:ids[1],ph:0}];
+  host.seedPickups=[{id:'frame-seed',x:member.avatar.x,y:member.avatar.y-6,amount:1,fall:false,ph:0}];
+  const before=host.gardenSeeds;sync();
+  games[1].tick(16);
+  assert.deepEqual(games[1].pending.map(a=>a.type).sort(),['pickup-item','pickup-seed']);
+  send(1,games[1].pending);sync();
+  assert.equal(host.coop.members[ids[1]].traits.dew,1);
+  assert.equal(guest.rogueRun.traits.dew,1);
+  assert.equal(host.gardenSeeds,before+1);
+  assert.equal(host.runLoot.length,0);assert.equal(host.seedPickups.length,0);
+});
+
+test('guest defend queues one authoritative bomb without creating a local ghost bomb',()=>{
+  const {games,send,sync}=team(),host=games[0].game,guest=games[1].game;
+  const target=Object.assign(host.makeKrek(1,false,0),{x:guest.P.x+42,y:guest.P.y-14,hp:2,maxHp:2});
+  host.floatKrek=[target];sync();
+  assert.equal(guest.throwAuto(),true);
+  assert.equal(guest.bombs.length,0,'guest prediction must not create an immortal local bomb');
+  assert.equal(games[1].pending.at(-1).type,'throw');
+  send(1,games[1].pending);
+  assert.equal(host.bombs.length,1,'host creates the only authoritative bomb');
+});
+
+test('the player who physically reaches the exit top enters normally while teammates catch up',()=>{
+  const {games,sync}=team(),host=games[0].game;
+  const p=plot({id:77,x:host.P.x,stalk:true,growth:4,health:1,moisture:1});
+  host.gardenPlots=[p];host.rogueRun.clearedWorld=1;
+  Object.assign(host.P,{x:p.x,y:host.surfaceY(p.x),st:'free',grounded:true,wet:false});
+  assert.equal(host.requestClimb(p,true),true);
+  for(let i=0;i<1500&&host.rogueRun.world===1;i++)host.updatePlayer(1/120,{axis:0,top:48});
+  assert.equal(host.rogueRun.world,2);assert.equal(host.P.st,'free');assert.equal(host.P.grounded,true);
+  assert.equal(host.rogueRun.ascenderId,ids[0]);
+  sync();
+  for(let i=1;i<games.length;i++){
+    assert.equal(games[i].game.rogueRun.world,2);
+    assert.equal(games[i].game.P.st,'float','only non-climbers receive catch-up entry');
+  }
+});
 test('world changes carry every player and the actual shared bouquet',()=>{
   const {games,sync}=team(),host=games[0].game;
   host.gardenPlots=[plot({growth:2.3,seed:719})];host.saveGarden();host.enterLevel(2);sync();
