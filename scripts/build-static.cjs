@@ -29,6 +29,8 @@ writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'),
   .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8')));
 require('./build-companion.cjs')(output);
 cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
+cpSync(join(root, 'icons'), join(output, 'icons'), { recursive: true });
+copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
 for (const [pack, ids, sheets] of [
   ['max-skins-v1', ['moss', 'tide', 'ember', 'moon'], ['atlas.json', 'main.png', 'interaction.png']],
   ['rat-enemies-v1', ['common', 'black', 'albino', 'plague'], ['atlas.json', 'sprites.png']],
