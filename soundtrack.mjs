@@ -5,7 +5,7 @@ export const SOUNDTRACK = Object.freeze([
 
 // One streamed element survives menus, retries and track changes. Never decode
 // the entire 25-minute playlist into mobile memory or block starting a run.
-export function createSoundtrack({ enabled = true, host = window } = {}) {
+export function createSoundtrack({ enabled = true, volume = 1, host = window } = {}) {
   const doc = host.document;
   let audio, context, gain, source, started = false, away = false, disposed = false;
   let track = 0, attempt = 0, pending = false;
@@ -24,11 +24,11 @@ export function createSoundtrack({ enabled = true, host = window } = {}) {
     const AC = host.AudioContext || host.webkitAudioContext;
     try {
       if (AC) {
-        context = new AC(); gain = context.createGain(); gain.gain.value = .28;
+        context = new AC(); gain = context.createGain(); gain.gain.value = .28 * volume;
         source = context.createMediaElementSource(audio);
         source.connect(gain); gain.connect(context.destination);
-      } else audio.volume = .28;
-    } catch (_) { quietly(context?.close()); context = null; audio.volume = .28; }
+      } else audio.volume = .28 * volume;
+    } catch (_) { quietly(context?.close()); context = null; audio.volume = .28 * volume; }
   }
   function play() {
     if (!allowed() || failed.size === SOUNDTRACK.length) return;
@@ -82,6 +82,13 @@ export function createSoundtrack({ enabled = true, host = window } = {}) {
   return {
     unlock,
     setEnabled(value) { enabled = !!value; if (enabled) unlock(); else stop(); },
+    setVolume(value) {
+      volume = Math.max(0, Math.min(1, Number(value) || 0));
+      enabled = volume > 0;
+      if (gain) gain.gain.value = .28 * volume;
+      else if (audio) audio.volume = .28 * volume;
+      if (enabled) unlock(); else stop();
+    },
     destroy() {
       disposed = true; stop();
       gestures.forEach(type => doc.removeEventListener(type, unlock, true));
