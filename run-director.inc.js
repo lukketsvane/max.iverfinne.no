@@ -155,16 +155,16 @@ function updateStageWeather(dt){
 // The global attempt clock powers every living enemy, including one spawned
 // several minutes ago. Resistance preserves its damage history: time never
 // heals hp or resets a boss phase, and travelling cannot reset the multiplier.
-function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)*difficultyScale()/180,1.7);}
-function runDurabilityScale(){return 1+.65*(runTimeThreat()-1);}
-function runDamageScale(){return (1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
-function runRaidLimit(){return Math.min(MAX_ACTIVE_ENEMIES,Math.max(3,Math.round((5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0)+Math.floor(Math.max(0,runElapsed)/60))*difficultyScale())));}
-function runRaidInterval(){return Math.max(.12,(.85-(gardenWave-1)*.045)/(difficultyScale()*(1+Math.max(0,runElapsed)/180)));}
-function runPatrolLimit(active,cleared){return Math.min(MAX_ACTIVE_ENEMIES,(active?(cleared?4:2+Math.ceil(active/2)):1+coopSize())+Math.floor(Math.max(0,runElapsed)/45)+Math.max(0,coopSize()-1));}
-function runPatrolInterval(){return Math.max(.18,7/(difficultyScale()*Math.pow(1+Math.max(0,runElapsed)/120,1.4)));}
+function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)*difficultyProfile().pressure/180,1.7);}
+function runDurabilityScale(){var d=difficultyProfile();return d.durability*(1+.65*(runTimeThreat()-1));}
+function runDamageScale(){var d=difficultyProfile();return d.damage*(1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
+function runRaidLimit(){var d=difficultyProfile();return Math.min(MAX_ACTIVE_ENEMIES,Math.max(2,Math.round((5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0)+Math.floor(Math.max(0,runElapsed)/60))*d.density)));}
+function runRaidInterval(){var d=difficultyProfile();return Math.max(.12,(.85-(gardenWave-1)*.045)/(Math.max(.35,d.pressure)*(1+Math.max(0,runElapsed)/180)));}
+function runPatrolLimit(active,cleared){var d=difficultyProfile(),base=(active?(cleared?4:2+Math.ceil(active/2)):1+coopSize())+Math.floor(Math.max(0,runElapsed)/45)+Math.max(0,coopSize()-1);return Math.min(MAX_ACTIVE_ENEMIES,Math.max(1,Math.round(base*d.density)));}
+function runPatrolInterval(){var d=difficultyProfile();return Math.max(.18,7/(Math.max(.35,d.pressure)*Math.pow(1+Math.max(0,runElapsed)/120,1.4)));}
 function raidBudget(active){
   var base=5+gardenWave*2+Math.floor((worldLevel()-1)/3)+Math.min(3,Math.floor(active/3))+Math.floor(Math.max(0,runElapsed)/45);
-  return Math.min(36,Math.ceil(base*(1+Math.max(0,coopSize()-1)*.42)));
+  return Math.min(36,Math.max(3,Math.ceil(base*(1+Math.max(0,coopSize()-1)*.42)*difficultyProfile().budget)));
 }
 function enemyKind(){
   var choices=stageCombatProfile().kinds.filter(enemyUnlocked);
