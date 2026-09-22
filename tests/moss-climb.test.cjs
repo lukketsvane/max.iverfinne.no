@@ -7,10 +7,21 @@ function fresh(classId = 'runner') {
   return h;
 }
 function plant(g, overrides = {}) {
-  const p = plot({ id: g.gardenPlots.length + 1, x: g.P.x, growth: .65, stalk: false, ...overrides });
+  const p = plot({ id: g.gardenPlots.length + 1, x: g.P.x, growth: 1.45, stalk: false, ...overrides });
   g.gardenPlots.push(p); return p;
 }
 function steps(g, seconds, input = idle, hz = 120) { for (let i = 0; i < Math.ceil(seconds * hz); i++) g.updatePlayer(1 / hz, input); }
+
+test('Moss ignores plants below half of their maximum physical height', () => {
+  const { game: g } = fresh(), young = plant(g, { growth: 1.3 });
+  assert.ok(g.plantClimbHeight(young) < 64);
+  assert.equal(g.plantClimbAt(young.x, g.surfaceY(young.x), 10), null);
+  assert.equal(g.requestClimb(young), false);
+  young.growth = 1.45;
+  assert.ok(g.plantClimbHeight(young) >= 64);
+  assert.equal(g.plantClimbAt(young.x, g.surfaceY(young.x), 10), young);
+  assert.equal(g.requestClimb(young), true);
+});
 
 test('only Moss climbs living immature plants while every class can use an explicitly cleared exit', () => {
   for (const classId of ['mech', 'runner', 'bulwark', 'herbalist']) {
@@ -25,11 +36,11 @@ test('only Moss climbs living immature plants while every class can use an expli
 });
 
 test('Moss stops at each plant’s current height, follows new growth and never creates traversal rewards or automatic travel', () => {
-  const { game: g } = fresh(), p = plant(g, { growth: .2 });
+  const { game: g } = fresh(), p = plant(g, { growth: 1.45 });
   const seeds = g.seedPickups.length, xp = g.rogueRun.xp;
   assert.equal(g.requestClimb(p), true); steps(g, 4);
   assert.equal(g.P.y, g.surfaceY(p.x) - g.plantClimbHeight(p)); assert.equal(g.warp, null);
-  const before = g.P.y; p.growth = .9; steps(g, 4); assert.ok(g.P.y < before);
+  const before = g.P.y; p.growth = 2.2; steps(g, 4); assert.ok(g.P.y < before);
   assert.equal(g.P.y, g.surfaceY(p.x) - g.plantClimbHeight(p)); assert.equal(g.seedPickups.length, seeds); assert.equal(g.rogueRun.xp, xp); assert.equal(p.skySeeds, undefined);
   p.stalk = true; g.rogueRun.clearedWorld = 1; steps(g, 9);
   assert.equal(g.climb.exit, false); assert.equal(g.rogueRun.world, 1); assert.equal(g.warp, null); g.startWarp(); assert.equal(g.warp, null);
@@ -37,7 +48,7 @@ test('Moss stops at each plant’s current height, follows new growth and never 
 
 test('Moss jumps between two immature stems at 30, 60 and 120 Hz without returning to soil', () => {
   for (const hz of [30, 60, 120]) {
-    const h = fresh(), g = h.game, first = plant(g), second = plant(g, { x: g.P.x + 28, growth: .5 });
+    const h = fresh(), g = h.game, first = plant(g), second = plant(g, { x: g.P.x + 28, growth: 1.5 });
     assert.equal(g.requestClimb(first), true); steps(g, 2, idle, hz); const start = g.P.y;
     h.key('keydown', 'ArrowRight'); h.key('keydown', 'ArrowUp'); h.key('keyup', 'ArrowUp'); h.key('keyup', 'ArrowRight');
     assert.equal(g.climb, null); assert.equal(g.P.st, 'free'); assert.ok(g.P.vx > 0);
