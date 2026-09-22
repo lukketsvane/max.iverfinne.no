@@ -26,17 +26,18 @@ test('four players share seeds and plants; duplicate actions cannot plant twice'
   const age=guest.gardenPlots[0].age;games[2].tick(50);
   assert.equal(guest.gardenPlots[0].age,age,'guests must not simulate a second garden');
 });
-test('every player receives their own boon; the team resumes only after all choose',()=>{
+test('every player receives their own boon while the shared garden keeps running',()=>{
   const {games,sync,send}=team(),host=games[0].game;
   host.grantRogueXP(4);sync();
-  games.forEach(h=>{assert.equal(h.game.runIsPaused(),true);assert.equal(h.game.rogueRun.choice.length,3);});
+  games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(h.game.rogueRun.choice.length,3);});
+  const before=host.runElapsed;host.updateRunCompetition(1);assert.equal(host.runElapsed,before+1);
   const first=host.rogueRun.choice[0].id;host.chooseRoguePerk(first);
-  assert.equal(host.runIsPaused(),true);assert.equal(host.rogueRun.perks[first],1);
+  assert.equal(host.runIsPaused(),false);assert.equal(host.rogueRun.perks[first],1);
   for(let i=1;i<4;i++){const g=games[i].game;g.chooseRoguePerk(g.rogueRun.choice[i%3].id);send(i,games[i].pending);}
   sync();games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(Object.values(h.game.rogueRun.perks).reduce((a,b)=>a+b,0),2,'one earned boon plus the Mech starting rover');});
   host.grantRogueXP(7);sync();host.chooseRoguePerk(host.rogueRun.choice[0].id);
   for(let i=1;i<4;i++)host.coopDepart(ids[i]);
-  assert.equal(host.runIsPaused(),false,'disconnected players cannot hold a boon open');
+  assert.equal(host.runIsPaused(),false,'disconnected players cannot affect live simulation');
 });
 test('guest movement is immediate; forged positions and distant throws are rejected',()=>{
   const {games,send}=team(),host=games[0].game,guest=games[1];
@@ -180,17 +181,20 @@ test('a forged roll origin and extra dodge actions during recovery cannot extend
   games[0].advance(70);send(1,[{...origin,id:3}]);
   assert.equal(member.dodge,roll);assert.equal(member.dodge.id,2);assert.equal(member.dodgeUntil,recovery);
 });
-test('jumping, input cancellation, choosing a boon and changing stages cancel the remote roll window',()=>{
-  for(const cancel of ['jump','input','boon','stage']){
+test('jumping, input cancellation and changing stages cancel the remote roll window; a live boon overlay does not',()=>{
+  for(const cancel of ['jump','input','stage']){
     const {games,send}=team(),host=games[0].game,guest=games[1].game;
     guest.requestDodge(1);guest.updatePlayer(1/120,{axis:0,top:48});send(1,games[1].pending);
     const member=host.coop.members[ids[1]];assert.ok(member.dodge);
     if(cancel==='jump'){guest.P.grounded=false;guest.P.y-=25;games[0].advance(66);send(1,games[1].pending);}
     else if(cancel==='input'){guest.clearRunInput();games[0].advance(66);send(1,games[1].pending);}
-    else if(cancel==='boon')host.grantRogueXP(4);
     else host.enterLevel(2);
     assert.equal(member.dodge,null);
   }
+  const {games,send}=team(),host=games[0].game,guest=games[1].game;
+  guest.requestDodge(1);guest.updatePlayer(1/120,{axis:0,top:48});send(1,games[1].pending);
+  const member=host.coop.members[ids[1]],roll=member.dodge;assert.ok(roll);
+  host.grantRogueXP(4);assert.equal(member.dodge,roll,'choosing upgrades never interrupts active movement');
 });
 test('delayed actions are acknowledged and discarded after travel while new-stage input still works',()=>{
   const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
