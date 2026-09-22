@@ -61,14 +61,20 @@ test('only a Moss guest can attach to growing stems and its climb survives host 
   assert.equal(host.rogueRun.world,1);assert.equal(moss.rogueRun.world,1);
 });
 
-test('a climbing guest cannot skip a garden and a cleared exit requires valid footing or an attached Moss',()=>{
-  const {players,sync,send}=party(),host=players[0].game,moss=players[1].game;
-  host.gardenPlots=[plot({id:81,x:moss.P.x,growth:2.7,stalk:true})];sync();
-  moss.requestClimb(moss.gardenPlots[0]);moss.updatePlayer(.1,{axis:0,top:48});send(1);
-  send(1,[{id:1,type:'travel',world:1}]);assert.equal(host.rogueRun.world,1);
+test('one player must physically climb a cleared exit to the top before the whole team advances',()=>{
+  const {players,sync,send}=party(),host=players[0].game,moss=players[1].game,tank=players[2].game;
+  host.gardenPlots=[plot({id:81,x:tank.P.x,growth:2.7,stalk:true})];sync();
+  send(1,[{id:1,type:'travel',world:1,top:true}]);assert.equal(host.rogueRun.world,1,'a forged travel action cannot skip an uncleared garden');
   host.rogueRun.clearedWorld=1;sync();
-  const tank=players[2].game;Object.assign(tank.P,{x:moss.P.x,y:moss.P.y,st:'free',grounded:false,anim:'fall'});send(2,[{id:1,type:'travel',world:1}]);
-  assert.equal(host.rogueRun.world,1,'an airborne non-Moss cannot use the stem as an exit');
-  send(1,[{id:2,type:'travel',world:1}]);assert.equal(host.rogueRun.world,2);sync();
+  Object.assign(tank.P,{x:tank.gardenPlots[0].x,y:tank.surfaceY(tank.gardenPlots[0].x),st:'free',grounded:true,wet:false,anim:'idle'});
+  assert.equal(tank.requestClimb(tank.gardenPlots[0],true),true,'a non-Moss teammate may climb the dedicated exit stalk');
+  send(2,[{id:1,type:'travel',world:1,top:true}]);assert.equal(host.rogueRun.world,1,'being at the base is never enough');
+  for(let i=0;i<900&&host.rogueRun.world===1;i++){
+    players[0].advance(1000/60);players[2].advance(1000/60);
+    tank.updatePlayer(1/60,{axis:0,top:48});send(2);
+  }
+  assert.equal(host.rogueRun.world,2,'reaching the physical top advances the authoritative world');
+  sync();
   players.forEach(h=>{assert.equal(h.game.rogueRun.world,2);assert.equal(h.game.climb,null);});
+  assert.equal(moss.rogueRun.world,2,'teammates are brought forward only after somebody reaches the next garden');
 });
