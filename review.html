@@ -129,7 +129,7 @@
       }
       if(${plantClimb}){
         var climbOrigin=P.x;
-        [.65,.4,.9].forEach(function(growth,i){var x=dryX(climbOrigin+4+i*26),p={id:i+1,x:x,kind:i===1?6:3,seed:79+i*23.7,growth:growth,stalk:false,health:1,moisture:.95,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
+        [1.45,.4,.9].forEach(function(growth,i){var x=dryX(climbOrigin+4+i*26),p={id:i+1,x:x,kind:i===1?6:3,seed:79+i*23.7,growth:growth,stalk:false,health:1,moisture:.95,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
         rogueRun.nextPlantId=4;runEncounters=[];runHazards=[];runLoot=[];
         requestClimb(gardenPlots[0]);
       }
