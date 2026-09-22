@@ -48,7 +48,7 @@ test('stale robot perks and owned robot snapshots cannot give Moss or the suppor
 
 test('only a Moss guest can attach to growing stems and its climb survives host snapshots',()=>{
   const {players,sync,send}=party(),host=players[0].game,moss=players[1].game;
-  host.gardenPlots=[plot({id:71,x:moss.P.x,growth:.65}),plot({id:72,x:players[2].game.P.x,growth:.65})];
+  host.gardenPlots=[plot({id:71,x:moss.P.x,growth:1.45}),plot({id:72,x:players[2].game.P.x,growth:1.45})];
   host.ANCHOR=110;moss.ANCHOR=250;sync();
   assert.equal(moss.requestClimb(moss.gardenPlots[0]),true);assert.equal(moss.climb.exit,false);
   moss.updatePlayer(.1,{axis:0,top:48});send(1);
