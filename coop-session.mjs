@@ -110,7 +110,7 @@ export class CoopSession {
   }
   async poll(force = false) {
     if (this.closed || this.polling) return;
-    if (!force && this.playing && Date.now() - this.lastPoll < 8000) return;
+    if (!force && this.playing && Date.now() - this.lastPoll < 2000) return;
     this.polling = true;
     try {
       const room = await this.rpc('get'); if (this.closed) return;
@@ -264,7 +264,7 @@ export class CoopSession {
     if (this.host && (this.sendingState || now < this.nextStateAt)) return;
     if (now - this.lastSend < (this.host ? 100 : 66)) return;
     this.lastSend = now;
-    this.send(this.host ? { lobby: this.lobbyPacket(), state: capture() } : { avatar, actions: this.pending });
+    this.send(this.host ? { lobby: this.lobbyPacket(), state: capture() } : { selection: this.selection, avatar, actions: this.pending });
   }
   send(packet) {
     const channel = this.channels.get(this.host ? 'state' : this.user.id);
