@@ -133,13 +133,14 @@ test('Moss receives the same once-only exit seeds when promoting an existing cli
   assert.equal(climbing.seedPickups.filter(seed => seed.sky).length, expected);
 });
 
-test('one held Down gesture queues one co-op travel intent and a fresh gesture can retry', () => {
-  const { game: g } = fresh(), p = plant(g, { stalk: true }), sent = [];
-  g.rogueRun.clearedWorld = 1; g.requestClimb(p); steps(g, .3);
+test('co-op travel is queued only after the guest physically reaches the top', () => {
+  const { game: g } = fresh('bulwark'), p = plant(g, { stalk: true, growth: 2.7 }), sent = [];
+  g.rogueRun.clearedWorld = 1;
   g.coop = { host: false, network: { action(type, data) { sent.push({ type, ...data }); return true; } } };
-  g.heldDown = true; steps(g, 1);
-  assert.equal(sent.length, 1); assert.equal(sent[0].type, 'travel'); assert.equal(sent[0].world, 1);
-  assert.equal(g.climb.exit, false, 'waiting for host travel never grants transition protection');
-  g.heldDown = false; steps(g, .01); g.heldDown = true; steps(g, .3);
-  assert.equal(sent.length, 2, 'a new deliberate press can retry if host did not travel');
+  assert.equal(g.requestClimb(p, true), true);assert.equal(g.climb.exit, true);
+  steps(g, 1);assert.equal(sent.length,0,'starting or partially climbing the exit cannot advance the garden');
+  steps(g, 8);
+  assert.equal(sent.length,1);assert.equal(sent[0].type,'travel');assert.equal(sent[0].world,1);assert.equal(sent[0].top,true);
+  assert.equal(g.climb.reachedTop,true);assert.equal(g.rogueRun.world,1,'the guest waits at the top for host authority');
+  steps(g,1);assert.equal(sent.length,1,'waiting at the top cannot spam travel actions');
 });
