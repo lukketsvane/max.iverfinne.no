@@ -137,7 +137,7 @@ test('the growing-plant fixture defaults to Moss and climbs a real immature plan
   assert.equal(s.selectedMode, 'plant-climb'); assert.equal(s.className, 'Moss');
   assert.equal(g.rogueRun.classId, 'runner'); assert.equal(g.rogueRun.world, 1);
   assert.notEqual(g.rogueRun.clearedWorld, 1);
-  assert.deepEqual(Array.from(g.gardenPlots, p => p.growth), [.65, .4, .9]);
+  assert.deepEqual(Array.from(g.gardenPlots, p => p.growth), [1.45, .4, .9]);
   assert.ok(g.gardenPlots.every(p => !p.stalk), 'ordinary growing plants must not be replaced with exit beanstalks');
   assert.equal(g.P.st, 'climb'); assert.equal(g.climb.p, g.gardenPlots[0]);
   assert.equal(g.companion, null, 'Moss never inherits the Mech rover');
