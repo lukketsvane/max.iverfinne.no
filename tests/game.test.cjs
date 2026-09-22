@@ -32,7 +32,7 @@ test('only an offered mutation can be selected', () => {
 });
 
 test('a boon is a live overlay and never clears held movement', () => {
-  const h = loadGame(), {game, elements} = h;
+  const h = loadGame(), {game, elements} = h;game.resetRogueRun('test');
   h.key('keydown', 'ArrowRight'); game.grantRogueXP(4);
   const id = game.rogueRun.choice[0].id, menu = elements.get('perkMenu');
   assert.equal(menu.getAttribute('role'), 'region');assert.equal(menu.getAttribute('aria-modal'),'false');
