@@ -4,21 +4,29 @@ var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId
 var pickupNotice=null,hazardHits={},stageWeather=null;
 var MAX_ACTIVE_ENEMIES=24;
 var COMBAT_PROFILES={
-  terraces:{kinds:[0,8,2,0,8,3,2,5,1,4,6],volley:false},
-  canopy:{kinds:[2,3,8,2,4,0,6,8,2,1,5],volley:true},
-  crossing:{kinds:[1,8,4,2,4,3,8,0,5,2,6],volley:true},
-  ruins:{kinds:[5,8,0,4,1,8,5,6,2,0,3],volley:false},
-  switchbacks:{kinds:[3,8,2,6,4,8,5,2,1,0],volley:true},
-  crown:{kinds:[5,4,8,6,2,5,4,8,0,1,3],volley:true}
+  terraces:{kinds:[0,2,0,3,2,5,1,9,4,6,8,10,11],volley:false},
+  canopy:{kinds:[2,3,2,4,0,6,9,2,1,5,8,10,11],volley:true},
+  crossing:{kinds:[1,4,2,4,3,0,5,9,2,6,8,11,10],volley:true},
+  ruins:{kinds:[5,0,4,1,5,6,2,9,0,3,8,10,11],volley:false},
+  switchbacks:{kinds:[3,2,6,4,5,2,9,1,0,8,11,10],volley:true},
+  crown:{kinds:[5,4,6,2,5,9,4,8,10,11,0,1,3],volley:true}
 };
 function stageCombatProfile(){
   var layout=typeof stageLayout==='function'?stageLayout():null;
   var kind=layout&&(layout.kind||layout.theme)||['terraces','canopy','crossing','ruins','switchbacks'][(worldLevel()-1)%5];
   return COMBAT_PROFILES[kind]||COMBAT_PROFILES.terraces;
 }
-function enemyUnlocked(kind){return kind===8||kind<3||Math.max(worldLevel(),1+Math.floor(Math.max(0,runElapsed)/75))>={3:2,4:3,5:4,6:6}[kind];}
+function enemyUnlocked(kind){
+  var stage=worldLevel(),timeStage=1+Math.floor(Math.max(0,runElapsed)/90);
+  if(kind===8){
+    var ratStage=rogueRun.difficulty==='easy'?9:7;
+    return stage>=ratStage||runElapsed>=360;
+  }
+  if(kind<3)return true;
+  return Math.max(stage,timeStage)>={3:2,4:3,5:4,6:6,9:7,10:9,11:11}[kind];
+}
 function waveEnemyKind(index){
-  var first={2:3,3:4,4:5,6:6}[worldLevel()];
+  var first={2:3,3:4,4:5,6:6,7:9,9:10,11:11}[worldLevel()];
   if(index===2&&first!=null)return first;
   var kinds=stageCombatProfile().kinds,kind=kinds[(index+(gardenWave-1)*2)%kinds.length];
   return enemyUnlocked(kind)?kind:(index+gardenWave)%3;
@@ -331,6 +339,55 @@ function updateEnemyRole(k,dt){
     }else k.windup=0;
     return true;
   }
+
+  // Thorn caster: keeps distance and seeds clearly warned root eruptions.
+  if(k.kind===9){
+    var rootTarget=pickKrekTarget(k),rootAnchor=rootTarget?rootTarget.x:P.x;
+    if(k.windup>0){k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);return true;}
+    if(k.bite<=0){
+      k.tell=k.windup=.95;
+      addRunHazard('root',rootAnchor,11,1.05,.48,k.x,k.y,rootTarget?surfaceY(rootTarget.x):P.y);
+      k.bite=2.8;
+      return true;
+    }
+    moveEnemyTo(k,rootAnchor+(k.x<rootAnchor?-1:1)*58,surfaceY(rootAnchor)-30,dt,13);
+    return true;
+  }
+  // Dew leech: drains moisture rather than raw health and restores itself.
+  if(k.kind===10){
+    var driest=null,dry=2;
+    gardenPlots.forEach(function(p){if(!p.dead&&p.health>0&&p.moisture<dry){dry=p.moisture;driest=p;}});
+    if(!driest)return false;
+    var dd=moveEnemyTo(k,driest.x+(k.x<driest.x?-1:1)*28,surfaceY(driest.x)-20,dt,16);
+    k.draining=dd<34;
+    if(k.draining){
+      var drain=dt*.055*runDamageScale();driest.moisture=Math.max(0,driest.moisture-drain);
+      if(driest.moisture<.08)driest.health=clamp01(driest.health-dt*.008*runDamageScale());
+      k.hp=Math.min(k.maxHp,k.hp+dt*.05);k.bite=.3;
+    }
+    return true;
+  }
+  // Rammer: a slow armored pest that telegraphs a straight garden charge.
+  if(k.kind===11){
+    if(k.chargeT>0){
+      var chargeStep=Math.min(dt,k.chargeT);k.x+=k.chargeV*chargeStep;k.y=surfaceY(k.x)-11;k.chargeT=Math.max(0,k.chargeT-dt);
+      if(!k.chargeT){k.vx=0;k.bite=2.4;}return true;
+    }
+    var ramTarget=pickKrekTarget(k);if(!ramTarget)return false;
+    var ramDx=ramTarget.x-k.x,ramD=Math.abs(ramDx);
+    if(k.windup>0){
+      k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
+      if(!k.windup){k.chargeV=(ramDx<0?-1:1)*95;k.chargeT=.46;}
+      return true;
+    }
+    if(ramD<105&&k.bite<=0){
+      k.face=ramDx<0?-1:1;k.tell=k.windup=1.0;
+      addRunHazard('root',ramTarget.x,14,1.0,.72,k.x,k.y,surfaceY(ramTarget.x));
+      return true;
+    }
+    moveEnemyTo(k,ramTarget.x+(ramDx<0?-45:45),surfaceY(ramTarget.x)-11,dt,10);
+    return true;
+  }
   return false;
 }
 function makeHollowCrown(){
@@ -495,9 +552,9 @@ function drawRoleEnemy(k,x,y,t){
       for(var a=0;a<9;a++){var q=a/9;ctx.fillRect(Math.round(x+(k.healX-k.x)*q),Math.round(y+(k.healY-k.y)*q),1,1);}ctx.globalAlpha=1;}
     return true;
   }
-  if(k.kind<3||k.kind>6)return false;
+  if((k.kind<3||k.kind>6)&&k.kind!==9&&k.kind!==10&&k.kind!==11)return false;
   if(!native){
-  var colors={3:'#b9a368',4:'#9983ab',5:'#6b8978',6:'#b9a3cb'};
+  var colors={3:'#b9a368',4:'#9983ab',5:'#6b8978',6:'#b9a3cb',9:'#8fa66e',10:'#6fa6a1',11:'#9a745d'};
   ctx.fillStyle=k.flash?'#e6dfbb':colors[k.kind];
   if(k.kind===3){
     ctx.fillRect(x-4,y-2,7,4);ctx.fillRect(x+3*k.face,y-4,2,3);ctx.fillRect(x-5*k.face,y,2,1);
@@ -509,10 +566,19 @@ function drawRoleEnemy(k,x,y,t){
     ctx.fillRect(x-5,y-5,11,8);ctx.fillStyle='#263733';ctx.fillRect(x-3,y+2,7,3);
     ctx.fillStyle=k.flee?'#c5c794':'#a1b5a2';ctx.fillRect(x+(k.face>0?4:-5),y-5,2,8);
     ctx.fillStyle='#182823';ctx.fillRect(x,y-4,1,5);
-  }else{
+  }else if(k.kind===6){
     var wing=Math.floor(t*10)%2;ctx.fillRect(x-7,y-5+wing,5,5);ctx.fillRect(x+3,y-5+wing,5,5);
     ctx.fillStyle='#55475c';ctx.fillRect(x-5,y-3+wing,2,2);ctx.fillRect(x+4,y-3+wing,2,2);
     ctx.fillStyle='#cfc3b8';ctx.fillRect(x,y-4,2,7);
+  }else if(k.kind===9){
+    ctx.fillRect(x-5,y-4,11,6);ctx.fillStyle='#344a32';ctx.fillRect(x-7,y-1,3,2);ctx.fillRect(x+5,y-1,3,2);
+    ctx.fillStyle='#d5c477';ctx.fillRect(x,y-7,1,3);ctx.fillRect(x-3,y-6,1,2);ctx.fillRect(x+3,y-6,1,2);
+  }else if(k.kind===10){
+    var flap=Math.floor(t*12)%2;ctx.fillRect(x-6,y-4+flap,5,4);ctx.fillRect(x+2,y-4+flap,5,4);
+    ctx.fillStyle='#285b57';ctx.fillRect(x-2,y-5,5,8);ctx.fillStyle='#b8e0d1';ctx.fillRect(x,y-3,1,3);
+  }else{
+    ctx.fillRect(x-7,y-5,14,9);ctx.fillStyle='#4b342b';ctx.fillRect(x-5,y+3,10,3);
+    ctx.fillStyle='#d9c08c';ctx.fillRect(x+k.face*6,y-4,3,2);ctx.fillRect(x+k.face*8,y-5,2,1);
   }
   ctx.fillStyle='#efddb2';ctx.fillRect(x+k.face*2,y-2,1,1);
   }
