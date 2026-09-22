@@ -193,3 +193,9 @@
 .max-playing-run strong{color:#eee9ce;font-size:12px}.max-playing-run span{color:#a9c7aa;font-size:9px;letter-spacing:.08em}
 
 .max-play-one{grid-template-columns:1fr}
+
+
+.max-menu .max-role-choice:disabled{opacity:.34;filter:grayscale(1);cursor:not-allowed}
+.max-menu .max-role-choice:disabled .max-role-ability{color:#71807c}
+.max-difficulty-picker[data-locked="true"]{opacity:.72}
+.max-difficulty-picker[data-locked="true"] .max-difficulty-choice:disabled{opacity:.52;cursor:default}
