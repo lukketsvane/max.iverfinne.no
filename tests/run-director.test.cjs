@@ -37,12 +37,12 @@ test('pickups carry between stages, reset on retry, and never enter persistent s
   g.saveGarden();assert.equal(h.storage.has('max-fuglesprenger-rogue-v6'),false);
   g.resetRogueRun();assert.deepEqual({...g.rogueRun.traits},{feathers:0,embers:0,dew:0});
 });
-test('the clock starts before planting, rises each second across stages, and only boon choices freeze it',()=>{
+test('the clock starts before planting and keeps rising across stages and boon choices',()=>{
   const {game:g}=fresh();assert.equal(g.rogueRun.garden.length,0);
   g.updateRunCompetition(1);const first=g.raidPressure();g.updateRunCompetition(1);assert.ok(g.raidPressure()>first);
   g.setMenuPaused(true);assert.equal(g.runIsPaused(),false);g.updateRunCompetition(9);assert.equal(g.runElapsed,11);
   g.enterLevel(2);assert.equal(g.runElapsed,11);const next=g.raidPressure();g.updateRunCompetition(1);assert.ok(g.raidPressure()>next);
-  g.grantRogueXP(4);g.updateRunCompetition(99);assert.equal(g.runElapsed,12);resolve(g);g.updateRunCompetition(1);assert.equal(g.runElapsed,13);
+  g.grantRogueXP(4);g.updateRunCompetition(99);assert.equal(g.runElapsed,111);resolve(g);g.updateRunCompetition(1);assert.equal(g.runElapsed,112);
   g.runElapsed=3600;const late=g.raidPressure();g.updateRunCompetition(1);assert.ok(g.raidPressure()>late,'late runs keep getting harder');
 });
 test('twenty stages contain three finite encounters each and only the final boss ends in victory',()=>{
