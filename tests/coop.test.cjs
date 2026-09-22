@@ -47,6 +47,40 @@ test('guest movement is immediate; forged positions and distant throws are rejec
   host.coopInput(ids[1],{avatar:{...guest.game.coopAvatar(),x:99999},actions:[{id:1,type:'throw',x:99999,y:0}]});
   assert.equal(host.coop.members[ids[1]].avatar.x,accepted);assert.equal(host.bombs.length,0);
 });
+test('guest bombs use the last accepted avatar when the newest packet is stale',()=>{
+  const {games}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  const target={x:member.avatar.x+48,y:member.avatar.y-15};
+  host.coopInput(ids[1],{
+    avatar:{...guest.coopAvatar(),x:99999},
+    actions:[{id:1,type:'throw',world:1,x:target.x,y:target.y}]
+  });
+  assert.equal(host.coop.members[ids[1]].avatar.x,member.avatar.x);
+  assert.equal(host.bombs.length,1,'a stale movement packet must not eat a legitimate bomb action');
+});
+
+test('guest pickups commit on the host for both run items and seeds',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  host.runLoot=[];
+  host.dropRunItem('dew',member.avatar.x,member.avatar.y-12,ids[1]);
+  sync();
+  guest.updateRunLoot();
+  assert.equal(games[1].pending.at(-1).type,'pickup-item');
+  send(1,games[1].pending);sync();
+  assert.equal(host.coop.members[ids[1]].traits.dew,1);
+  assert.equal(guest.rogueRun.traits.dew,1);
+  assert.equal(host.runLoot.length,0);assert.equal(guest.runLoot.length,0);
+
+  host.seedPickups=[{id:'shared-seed',x:member.avatar.x,y:member.avatar.y-6,amount:1,fall:false,ph:0}];
+  const before=host.gardenSeeds;sync();
+  guest.updateSeedPickups(.01);
+  assert.equal(games[1].pending.at(-1).type,'pickup-seed');
+  send(1,games[1].pending);sync();
+  assert.equal(host.gardenSeeds,before+1);
+  assert.equal(guest.gardenSeeds,before+1);
+  assert.equal(host.seedPickups.some(q=>q.id==='shared-seed'),false);
+  assert.equal(guest.seedPickups.some(q=>q.id==='shared-seed'),false);
+});
+
 test('world changes carry every player and the actual shared bouquet',()=>{
   const {games,sync}=team(),host=games[0].game;
   host.gardenPlots=[plot({growth:2.3,seed:719})];host.saveGarden();host.enterLevel(2);sync();
