@@ -2916,7 +2916,7 @@ function perkDots(n,max){
 function renderRogueChoice(){
   if(!perkMenu||!rogueRun.choice)return;
   perkMenu.innerHTML='';
-  perkMenu.setAttribute('role','region');perkMenu.removeAttribute('aria-modal');perkMenu.setAttribute('aria-label','Choose a boon while play continues');
+  perkMenu.setAttribute('role','region');perkMenu.setAttribute('aria-modal','false');perkMenu.setAttribute('aria-label','Choose a boon while play continues');
   rogueRun.choice.forEach(function(p,index){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
