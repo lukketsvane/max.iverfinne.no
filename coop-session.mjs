@@ -93,7 +93,7 @@ export class CoopSession {
     if (!this.room || this.closed) return;
     this.room = { ...this.room, members: this.room.members.map(p => {
       const choice = this.loadouts[p.id];
-      return { ...p, classId: choice?.classId, skinId: choice?.skinId, selectionReady: !!choice && !!this.memberTokens[p.id] };
+      return { ...p, classId: choice?.classId, skinId: choice?.skinId, difficulty: choice?.difficulty, selectionReady: !!choice && !!this.memberTokens[p.id] };
     }) };
     this.hooks.room?.(this.room);
   }
