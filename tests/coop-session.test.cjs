@@ -95,6 +95,21 @@ test('a returning former host reconnects as a guest with its own input channel',
   assert.equal(s.channels.has('new-host'),false,'guest no longer listens on another player’s input channel');
 });
 
+test('foreground resume rebuilds stale realtime channels after an iOS-style suspension',async()=>{
+  const {CoopSession}=await module();
+  const room={id:'room',host:'host',state:'playing',members:[{id:'host',slot:1,ready:true,name:'host'},{id:'guest',slot:2,ready:true,name:'guest'}]};
+  const net=fakeChannelClient({room,userId:'guest'});
+  const s=new CoopSession(net.client,{id:'guest'}, {}, {classId:'runner',difficulty:'easy'});
+  s.room=JSON.parse(JSON.stringify(room));s.entered=true;s.playing=true;s.loadouts.guest=s.selection;s.memberTokens.guest=s.token;
+  await s.subscribe('state');await s.subscribe('guest');
+  const staleState=net.channels.get('max-coop:room:state'),staleInput=net.channels.get('max-coop:room:guest');
+  await s.resume();
+  assert.notEqual(net.channels.get('max-coop:room:state'),staleState);
+  assert.notEqual(net.channels.get('max-coop:room:guest'),staleInput);
+  assert.ok(net.removed.includes('max-coop:room:state'));assert.ok(net.removed.includes('max-coop:room:guest'));
+  assert.equal(s.closed,false);assert.equal(s.playing,true);
+});
+
 test('character identity owns its appearance while difficulty remains an independent run setting',async()=>{
   const {CoopSession}=await module();
   const room={id:'room',host:'p',state:'playing',members:[{id:'p',slot:1,ready:true,name:'p'}]};
