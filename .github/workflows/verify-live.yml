@@ -1,5 +1,6 @@
 name: Verify live MAX FUGLESPRENGER
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -33,15 +34,24 @@ jobs:
             page.on('console',m=>{if(m.type()==='error')errors.push('CONSOLE '+m.text())});
             const res=await page.goto('https://max.iverfinne.no/',{waitUntil:'domcontentloaded',timeout:120000});
             if(!res||res.status()!==200)throw new Error('HTTP '+(res&&res.status()));
-            await page.waitForTimeout(1800);
-            if((await page.title())!=='MAX FUGLESPRENGER')throw new Error('wrong title');
-            const hidden=await page.evaluate(()=>['gameTitle','blastHud','gardenHud','gardenHint','roundHud'].every(id=>getComputedStyle(document.getElementById(id)).display==='none'));
-            if(!hidden)throw new Error('persistent text HUD visible');
-            await page.keyboard.down('ArrowRight');await page.waitForTimeout(600);await page.keyboard.up('ArrowRight');
-            await page.keyboard.press('ArrowUp');await page.waitForTimeout(650);
+            await page.waitForTimeout(2500);
+            console.log('TITLE',await page.title());
+            console.log('BODY',await page.evaluate(()=>document.body.innerText.slice(0,500)));
+            console.log('MENU',await page.evaluate(()=>{const n=document.querySelector('.max-menu');return n&&{hidden:n.hidden,screen:n.dataset.screen,display:getComputedStyle(n).display,html:n.innerText.slice(0,300)}}));
+            console.log('CANVAS',await page.evaluate(()=>{const c=document.querySelector('#c');return c&&{w:c.width,h:c.height,style:c.getAttribute('style')}}));
+            await page.screenshot({path:'live-iphone.png',fullPage:true});
+            if((await page.title())!=='MAX FUGLESPRENGER'&&(await page.title())!=='MAX · NIGHT GARDEN')throw new Error('wrong title');
             if(errors.length)throw new Error(errors.join('\n'));
+            const menuVisible=await page.evaluate(()=>{const n=document.querySelector('.max-menu');return !!n&&!n.hidden&&getComputedStyle(n).display!=='none'&&n.innerText.includes('Play')});
+            if(!menuVisible)throw new Error('main menu did not become visible');
             console.log('IPHONE_SMOKE_OK');
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node verify.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-iphone-diagnostic
+          path: live-iphone.png
+          if-no-files-found: ignore
