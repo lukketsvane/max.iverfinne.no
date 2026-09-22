@@ -13,7 +13,7 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
@@ -38,7 +38,11 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     realtime: { async setAuth() {}, isConnected: () => true, connect() {} },
     async rpc(name, args) {
       const id = session?.user?.id || 'anon-player';
-      if (name === 'max_coop_global') return { data: roomFor(id), error: null };
+      if (name === 'max_coop_status') return { data: sharedStatus || { active:false, players:0, taken:[], difficulty:null, mine:null }, error: null };
+      if (name === 'max_coop_global') {
+        const room=roomFor(id);room.difficulty=args?.p_difficulty||'medium';room.members[0].classId=args?.p_class_id||'mech';
+        return { data: room, error: null };
+      }
       if (name === 'max_coop') {
         if (args?.p_action === 'leave') return { data: { closed: true }, error: null };
         return { data: roomFor(id), error: null };
@@ -122,6 +126,20 @@ test('Play still starts seamlessly when hosted anonymous Auth is disabled', asyn
     assert.equal(m.w.document.querySelector('input[name="username"]'),null,'automatic device identity never opens the login form');
     assert.ok(m.w.localStorage.getItem('max-auto-player-v1'));
   } finally { m.dom.window.close(); }
+});
+
+test('joiners see occupied characters greyed out and cannot change a running difficulty', async () => {
+  const m=await menu(undefined,{sharedStatus:{active:true,players:1,taken:['mech'],difficulty:'easy',mine:null}});
+  try{
+    m.click('Play');await m.settle();
+    const mech=m.w.document.querySelector('[data-class-id="mech"]');
+    const moss=m.w.document.querySelector('[data-class-id="runner"]');
+    assert.equal(mech.disabled,true);assert.equal(mech.getAttribute('aria-disabled'),'true');
+    assert.equal(moss.disabled,false);assert.equal(moss.getAttribute('aria-pressed'),'true','first free character is selected automatically');
+    for(const button of m.w.document.querySelectorAll('[data-difficulty]'))assert.equal(button.disabled,true);
+    assert.equal(m.w.document.querySelector('[data-difficulty="easy"]').getAttribute('aria-pressed'),'true');
+    assert.match(m.w.document.body.textContent,/DIFFICULTY · EASY · RUNNING/);
+  }finally{m.dom.window.close();}
 });
 
 test('corrupt old preferences fall back to Mech medium and old independent skins are normalized away', async () => {
