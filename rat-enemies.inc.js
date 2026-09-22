@@ -12,9 +12,9 @@ function ratStats(k){return Object.hasOwn(RAT_STATS,k.ratVariant)?RAT_STATS[k.ra
 function ratFloor(x){var water=waterAt(x);return water?Math.min(surfaceY(x),water.level):surfaceY(x);}
 function makeRat(side,elite,variant){
   var choices=['common'];
-  if(worldLevel()>=9||runElapsed>=420)choices.push('black');
-  if(worldLevel()>=12||runElapsed>=540)choices.push('albino');
-  if(worldLevel()>=15||runElapsed>=660)choices.push('plague');
+  if(worldLevel()>=11||runElapsed>=540)choices.push('black');
+  if(worldLevel()>=14||runElapsed>=660)choices.push('albino');
+  if(worldLevel()>=17||runElapsed>=780)choices.push('plague');
   var ph=Math.random()*6.28;
   variant=Object.hasOwn(RAT_STATS,variant)?variant:choices[Math.floor(ph/6.28*choices.length)];
   var plants=gardenPlots.filter(function(p){return !p.dead&&p.health>0;}),center=plants.length?plants[Math.floor(Math.random()*plants.length)].x:P.x;
