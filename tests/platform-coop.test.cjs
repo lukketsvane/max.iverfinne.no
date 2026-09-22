@@ -138,21 +138,23 @@ test('platforms above ponds are dry and forged dry packets below the water are r
   assert.equal(member.avatar.wet, true); assert.equal(member.dodge, null); assert.equal(member.dodgeUntil, cooldown);
 });
 
-test('guest ground actions and travel still work at the actual soil surface', () => {
-  for (const action of ['grow', 'encounter', 'refill', 'travel']) {
+test('guest ground actions still work at soil while travel requires reaching the exit top', () => {
+  for (const action of ['grow', 'encounter', 'refill']) {
     const { host, guest, member, send, place } = pair();
     const g = host.game, x = 12; place(x, g.surfaceY(x)); g.gardenSeeds = 9;
     const bot = g.ensureCompanion(); bot.state.x = x; bot.state.water = .2;
     const shrine = g.runEncounters[0]; if (action === 'encounter') { shrine.x = x; shrine.y = g.surfaceY(x); }
-    if (action === 'travel') { g.gardenPlots = [plot({ x, stalk: true, growth: 4 })]; g.rogueRun.clearedWorld = 1; }
     send([{ id: 1, type: action, world: 1 }]);
     assert.equal(member.ack, 1);
     if (action === 'grow') { assert.equal(g.gardenPlots.length, 1); assert.equal(g.gardenSeeds, 8); }
     if (action === 'encounter') { assert.equal(shrine.active, true); assert.equal(g.gardenSeeds, 9 - shrine.cost); }
     if (action === 'refill') { assert.equal(bot.state.refill, 2); assert.equal(bot.refiller, ids[1]); }
-    if (action === 'travel') assert.equal(g.rogueRun.world, 2);
     assert.equal(guest.game.P.x, x);
   }
+  const {host,member,send,place}=pair(),g=host.game,x=12;
+  place(x,g.surfaceY(x));g.gardenPlots=[plot({x,stalk:true,growth:4})];g.rogueRun.clearedWorld=1;
+  send([{id:1,type:'travel',world:1,top:true}]);
+  assert.equal(member.ack,1);assert.equal(g.rogueRun.world,1,'soil contact alone never progresses the garden');
 });
 
 test('a guest can activate an elevated encounter while standing on its own platform', () => {
