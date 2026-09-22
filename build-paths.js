@@ -7,8 +7,12 @@
     {id:'yield',name:'Seed rain',desc:'+1 seed per harvest',path:0},
     {id:'regen',name:'Sap',desc:'Plants recover health',path:0},
     {id:'bloom',name:'Bloom pulse',desc:'Harvest heals nearby plants',path:0,max:1,needs:{growth:2,regen:1}},
+    {id:'tender',name:'Green thumb',desc:'12% stronger tending each rank',path:0,max:5},
+    {id:'spread',name:'Wide watering',desc:'Water splashes farther to neighbours',path:0,max:4},
     {id:'robot',name:'Companion',desc:'Upgrade your watering robot',path:1,max:3,classId:'mech'},
     {id:'shield',name:'Thorns',desc:'22% less pest damage',path:1},
+    {id:'bark',name:'Barkskin',desc:'8% less plant damage each rank',path:1,max:4},
+    {id:'mulch',name:'Mulch',desc:'Defeated pests heal nearby plants',path:1,max:4},
     {id:'magnet',name:'Seed sense',desc:'Wider seed collection',path:1},
     {id:'luck',name:'Golden seeds',desc:'More rare seeds',path:1},
     {id:'recycle',name:'Rain engine',desc:'Harvest refills your robot',path:1,max:1,classId:'mech',needs:{robot:3,yield:1}},
@@ -16,6 +20,8 @@
     {id:'slow',name:'Sticky pollen',desc:'Pests fly more slowly',path:2},
     {id:'cadence',name:'Quick fuse',desc:'12% faster throws',path:2,max:3},
     {id:'dash',name:'Light step',desc:'17% faster dodge recovery',path:2,max:3},
+    {id:'stride',name:'Long stride',desc:'6% faster movement each rank',path:2,max:5},
+    {id:'spring',name:'Spring step',desc:'6% higher jumps each rank',path:2,max:4},
     {id:'chain',name:'Chain bloom',desc:'Pest kills strike nearby pests',path:2,max:1,needs:{blast:2,cadence:1}}
   ];
   function max(id){var p=perks.find(function(q){return q.id===id;});return p?p.max||5:0;}
