@@ -269,7 +269,7 @@ async function roomAction(action, pending = '') {
   finally { busy = false; }
 }
 function nextVolume(value) {
-  const levels = [1, .65, .3, 0], current = levels.findIndex(v => Math.abs(v - value) < .03);
+  const levels = [1, .75, .5, .25, 0], current = levels.findIndex(v => Math.abs(v - value) < .03);
   return levels[(current < 0 ? 0 : current + 1) % levels.length];
 }
 function volumeLabel(name, value) { return name + ' ' + (value <= .01 ? 'off' : Math.round(value * 100) + '%'); }
