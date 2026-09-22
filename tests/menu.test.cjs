@@ -82,10 +82,10 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   return { w, dom, click, submit, settle, pauses, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
 }
 
-test('home keeps one Play entry plus garden, settings and credits', async () => {
+test('home keeps one Play entry plus login, settings and credits', async () => {
   const m = await menu();
   try {
-    assert.deepEqual([...m.w.document.querySelectorAll('nav button')].map(n => n.textContent), ['Play', 'Garden', 'Settings', 'Credits']);
+    assert.deepEqual([...m.w.document.querySelectorAll('nav button')].map(n => n.textContent), ['Play', 'Login', 'Settings', 'Credits']);
     m.click('Play');
     assert.equal([...m.w.document.querySelectorAll('.max-play-actions button')].map(n => n.textContent).join(','), 'Play');
     assert.doesNotMatch(m.w.document.body.textContent, /Solo|Together|Room code|Host garden/);
@@ -185,7 +185,7 @@ test('Music and Effects volumes are separate and can be muted independently', as
 test('account sign-in remains optional metadata rather than a different gameplay mode', async () => {
   const m = await menu();
   try {
-    m.click('Garden');m.click('Sign in / create account');m.click('New player? Create account');
+    m.click('Login');m.click('New player? Create account');
     assert.equal(m.w.document.querySelectorAll('input').length,2);await m.submit();
     assert.match(m.w.document.body.textContent,/garden_max/i);
     m.click('Back');m.click('Play');
@@ -193,14 +193,19 @@ test('account sign-in remains optional metadata rather than a different gameplay
   } finally { m.dom.window.close(); }
 });
 
-test('the home screen shows how many players are in the shared garden', async () => {
-  const m=await menu(undefined,{restoredUser:{id:'returning-player',email:null},sharedStatus:{active:true,players:3,taken:['mech','runner','bulwark'],difficulty:'medium',mine:null}});
+test('the home screen names who is in the shared garden and offers Login until signed in', async () => {
+  const m=await menu(undefined,{restoredUser:{id:'returning-player',email:'iver@players.max.invalid'},sharedStatus:{active:true,players:2,taken:['mech','runner'],difficulty:'medium',mine:null,members:[{name:'iver',classId:'mech'},{name:'Guest',classId:'runner'}]}});
   try{
     await m.settle();
-    const note=m.w.document.querySelector('.max-home-players');
-    assert.ok(note&&!note.hidden);assert.equal(note.textContent,'3 IN THE GARDEN');
+    const lines=[...m.w.document.querySelectorAll('.max-home-players p')].map(p=>p.textContent);
+    assert.deepEqual(lines,['IN THE GARDEN','iver - Mech','Guest - Moss']);
+    assert.ok(m.w.document.querySelector('.max-home-nav').textContent.includes('Garden'));
   } finally { m.dom.window.close(); }
-  const empty=await menu(undefined,{restoredUser:{id:'returning-player',email:null}});
-  try{ await empty.settle(); assert.equal(empty.w.document.querySelector('.max-home-players').textContent,'GARDEN IS EMPTY'); }
-  finally { empty.dom.window.close(); }
+  const guest=await menu(undefined);
+  try{
+    await guest.settle();
+    assert.deepEqual([...guest.w.document.querySelectorAll('.max-home-players p')].map(p=>p.textContent),['GARDEN IS EMPTY']);
+    const nav=guest.w.document.querySelector('.max-home-nav').textContent;
+    assert.ok(nav.includes('Login')&&!nav.includes('Garden'));
+  } finally { guest.dom.window.close(); }
 });
