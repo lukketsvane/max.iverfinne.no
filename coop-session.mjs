@@ -35,11 +35,15 @@ export class CoopSession {
   }
   async enter(code) {
     await this.client.realtime.setAuth();
-    this.room = await this.rpc(code ? 'join' : 'create', code ? { code: code.trim().toUpperCase() } : {});
+    if (code && typeof code === 'object' && code.id) {
+      const { data, error } = await this.client.rpc('max_coop_join', { p_room: code.id });
+      if (error) throw new Error(error.message || 'Could not join this run.');
+      this.room = data;
+    } else this.room = await this.rpc(code ? 'join' : 'create', code ? { code: code.trim().toUpperCase() } : {});
     try {
       // A reload must prove its current selection again, even if its previous
       // membership was already Ready. No previous loadout is guessed.
-      if (!this.host) this.room = await this.rpc('ready', { ready: false });
+      if (!this.host && this.room.state !== 'playing') this.room = await this.rpc('ready', { ready: false });
       else {
         this.loadouts[this.user.id] = this.selection; this.memberTokens[this.user.id] = this.token; this.acknowledged = true;
       }
@@ -49,6 +53,11 @@ export class CoopSession {
       this.entered = true;
       this.timer = setInterval(() => this.poll(), 2000);
       this.notifyRoom(); this.sendLobby();
+      if (this.room.state === 'playing') {
+        this.acknowledged = true;
+        this.loadouts[this.user.id] = this.selection; this.memberTokens[this.user.id] = this.token;
+        this.begin();
+      }
       return this.room;
     } catch (error) { await this.leave(); throw error; }
   }
@@ -120,7 +129,7 @@ export class CoopSession {
     return { members, loadouts: this.loadouts, tokens: this.memberTokens, challenge: this.preparing?.id || null, launch: this.launchId };
   }
   sendLobby() {
-    if (this.closed || !this.room || this.playing) return;
+    if (this.closed || !this.room) return;
     this.send(this.host ? { lobby: this.lobbyPacket() } : { selection: this.selection });
   }
   cancelPrepare(reason) { if (this.preparing) this.preparing.reject(new Error(reason)); }
@@ -205,7 +214,7 @@ export class CoopSession {
         else { delete this.loadouts[sender]; delete this.memberTokens[sender]; this.cancelPrepare('A player left the garden.'); this.notifyRoom(); }
         return;
       }
-      if (!this.playing) {
+      if (!this.playing || !this.loadouts[sender]) {
         const choice = validLoadout(packet.selection); if (!choice) return;
         const changed = this.memberTokens[sender] !== packet.sid || !sameLoadout(choice, this.loadouts[sender]);
         if (changed) {
@@ -213,6 +222,7 @@ export class CoopSession {
           this.loadouts[sender] = choice; this.memberTokens[sender] = packet.sid;
           this.notifyRoom(); this.sendLobby();
         }
+        if (this.playing) { this.hooks.join?.(sender, choice); return; }
         if (this.preparing && packet.prepared === this.preparing.id && packet.sid === this.preparing.tokens[sender]) {
           this.preparing.confirmed.add(sender); this.preparing.check();
         }
