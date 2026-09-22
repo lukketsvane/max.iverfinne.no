@@ -1,35 +1,20 @@
-# Developer-agent handoff
+# Agent instructions
 
-## Graphics lead and soundtrack
+Read `README.md` and `CLAUDE.md` before editing this repository. They describe the current product contract, multiplayer model, release gate and infrastructure.
 
-Read [the shared graphics direction](docs/graphics-direction.md) before changing
-visuals or audio. Coordinate in [issue #10](https://github.com/lukketsvane/max.iverfinne.no/issues/10).
-Preserve the native atlas/pixel scale and approved run-bouquet requirements below.
-The direction note records soundtrack implementation status.
+Keep `main` authoritative. Do not merge old asset/gameplay branches wholesale into current code; preserved divergent branches contain archival or optional work and must be reviewed selectively.
 
-## Integrated watering-robot artwork
+Before changing runtime artwork, read the relevant `assets/**/README.md` and preserve native 1:1 pixel registration, integer anchors and disabled smoothing.
 
-The supplied candidates were compared and selected for the three-tier runtime.
-Before changing the companion artwork, read
-[the selection and rationale](docs/asset-review/watering-robot/selection.md)
-and [the original candidate handoff](docs/asset-review/watering-robot/README.md).
-The game uses the native 32×32 starter, supplied 48×40 upgrade and supplied
-80×48 rover, with each tier's original pixels, anchors and animation timing.
+Before changing bouquet/results behavior, read `docs/asset-review/bouquet/README.md`. Results must represent the player's actual run and exact plant data.
 
-The review folder contains real PNG/JSON sheets and an atlas inspection page.
-The selected runtime assets are integrated separately; the review folder remains
-a comparison reference. Evaluate any replacement against the current game,
-not the earlier generated concept backgrounds, and update the selection note
-with its rationale.
+Before changing the Mech companion, read `docs/asset-review/watering-robot/selection.md`.
 
-Preserve concurrent work on main, including the menu, accounts, saves, original
-artwork and result/bouquet assets. Do not merge draft PR #5 wholesale: its build
-changes and game snapshot predate the newer main work. Its source remains a
-reference for selectively adapting the candidate or its render fixture.
+For every code change:
 
-## Approved run-bouquet screen
+```sh
+npm test
+npm run build
+```
 
-Before further game-over or leaderboard work, read
-[the user's approved bouquet reference and requirements](docs/asset-review/bouquet/README.md).
-The bouquet must represent the player's actual saved run, using the game's native
-plant art and growth data. The note also contains the requested preview names.
+Do not call a release live until CI is green and the production Vercel deployment SHA is verified.
