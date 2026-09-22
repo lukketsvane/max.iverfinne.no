@@ -76,7 +76,14 @@ function runPlayers(){
   return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m)};}):[{member:null,p:P}];
 }
 function updateRunLoot(){
-  if(coopGuest())return;
+  if(coopGuest()){
+    for(var gi=runLoot.length-1;gi>=0;gi--){
+      var own=runLoot[gi];
+      if(own.owner&&own.owner!==coop.me)continue;
+      if(!own.claiming&&Math.hypot(P.x-own.x,P.y-12-own.y)<18&&coopAction('pickup-item',{pickup:own.id}))own.claiming=true;
+    }
+    return;
+  }
   for(var i=runLoot.length-1;i>=0;i--){
     var item=runLoot[i],nearest=null,dist=14;
     runPlayers().forEach(function(a){
