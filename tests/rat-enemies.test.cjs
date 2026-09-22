@@ -72,9 +72,9 @@ test('death gives rewards once, removes pending attacks, and the last rat allows
  assert.equal(g.gardenStats.defended,defended+1);assert.equal(g.floatKrek.length,0);assert.equal(g.runHazards.filter(h=>h.type==='rat-bite').length,0);
  g.updateGardenFun(.1);assert.equal(g.gardenRaidActive,false);
 });
-test('boon pause freezes rats and a new run removes all live rat state/hazards',()=>{
- const {g,k}=fresh();g.rogueRun.choice=[{id:'growth'}];const before=JSON.stringify(k);step(g,.2);assert.equal(JSON.stringify(k),before);
- g.rogueRun.choice=null;step(g,.1);assert.ok(g.runHazards.length);g.resetRogueRun();assert.equal(g.floatKrek.length,0);assert.equal(g.runHazards.length,0);
+test('rats keep attacking under a boon overlay and a new run removes all live rat state/hazards',()=>{
+ const {g,k}=fresh();g.rogueRun.choice=[{id:'growth'}];const before=JSON.stringify(k);step(g,.2);assert.notEqual(JSON.stringify(k),before);
+ assert.equal(g.runIsPaused(),false);g.rogueRun.choice=null;step(g,.1);assert.ok(g.runHazards.length);g.resetRogueRun();assert.equal(g.floatKrek.length,0);assert.equal(g.runHazards.length,0);
 });
 function party(){
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
