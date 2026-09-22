@@ -85,10 +85,10 @@ test('boss fixtures instantiate distinct live bosses beside plants in their actu
   }
 });
 
-test('the mixed encounter includes live diving, stealing, ranged, shield and healing roles', async () => {
+test('the mixed encounter includes the expanded live specialist roster', async () => {
   const s = await scene('mixed', 'runner'), g = s.game;
   assert.equal(g.rogueRun.world, 16); assert.equal(g.rogueRun.classId, 'runner');
-  assert.deepEqual(Array.from(g.floatKrek, k => k.kind).sort((a, b) => a - b), [0, 2, 3, 4, 5, 6]);
+  assert.deepEqual(Array.from(g.floatKrek, k => k.kind).sort((a, b) => a - b), [0, 2, 3, 4, 5, 6, 9, 10, 11]);
   assert.ok(g.floatKrek.find(k => k.kind === 5).hp < g.floatKrek.find(k => k.kind === 5).maxHp, 'the healer has an injured teammate to protect');
   assert.ok(g.seedPickups.length, 'the thief has collectible seeds to contest');
   const position = g.floatKrek.map(k => [k.x, k.y]);
