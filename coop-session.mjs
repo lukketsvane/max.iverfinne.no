@@ -124,6 +124,12 @@ export class CoopSession {
         }
         await this.subscribe('state');
       }
+      if (!this.host) {
+        await this.subscribe(this.user.id);
+        for (const [id, channel] of [...this.channels]) if (id !== 'state' && id !== this.user.id) {
+          this.channels.delete(id); await this.client.removeChannel(channel);
+        }
+      }
       await this.syncChannels();
       this.notifyRoom();
       this.sendLobby();
