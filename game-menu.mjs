@@ -168,8 +168,9 @@ async function ensurePlayIdentity() {
   const input = credentials(guest.username, guest.password);
   let result = await client.auth.signInWithPassword(input);
   if (result.error) result = await client.auth.signUp(input);
-  if (result.error || !result.data?.user) throw result.error || new Error('Could not create a player session.');
-  setUser(result.data.user); return result.data.user;
+  const guestUser = result.data?.session?.user;
+  if (result.error || !guestUser) throw result.error || new Error('Could not create a player session.');
+  setUser(guestUser); return guestUser;
 }
 async function joinSharedGarden() {
   if (!sessionReady || busy) { updatePlayReady(); return; }
