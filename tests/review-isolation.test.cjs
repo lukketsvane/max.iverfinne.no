@@ -60,7 +60,7 @@ test('review records use a shared memory store without reading or modifying real
   finally { fresh.dom.window.close(); }
 });
 
-test('the disconnected review menu starts with default appearance and keeps preference edits in memory', async () => {
+test('the disconnected review menu keeps character and difficulty edits in isolated memory', async () => {
   const f = await fixture(), { w } = f;
   try {
     assert.ok(f.scripts.some(script => script.getAttribute('src') === 'game-menu-review.js'));
@@ -72,10 +72,11 @@ test('the disconnected review menu starts with default appearance and keeps pref
     const play = [...w.document.querySelectorAll('button')].find(button => button.textContent === 'Play');
     play.click();
     assert.equal(w.document.querySelector('[data-class-id="mech"]').getAttribute('aria-pressed'), 'true');
-    assert.equal(w.document.querySelector('[data-skin-id="moss"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(w.document.querySelector('[data-skin-id]'), null, 'appearance is owned by the character rather than selected separately');
+    assert.equal(w.document.querySelector('[data-difficulty="medium"]').getAttribute('aria-pressed'), 'true');
     w.document.querySelector('[data-class-id="herbalist"]').click();
-    w.document.querySelector('[data-skin-id="tide"]').click();
-    assert.deepEqual(JSON.parse(w.localStorage.getItem('max-loadout-v1')), { classId: 'herbalist', skinId: 'tide' });
+    w.document.querySelector('[data-difficulty="easy"]').click();
+    assert.deepEqual(JSON.parse(w.localStorage.getItem('max-loadout-v1')), { classId: 'herbalist', skinId: 'moon', difficulty: 'easy' });
     assert.equal(f.hostStorage.getItem('max-loadout-v1'), f.hostLoadout);
     assert.equal(f.hostStorage.getItem('max-finished-gardens-v1'), f.hostArchive);
     assert.equal(f.hostAccess, 0);
