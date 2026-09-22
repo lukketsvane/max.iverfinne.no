@@ -29,6 +29,35 @@ def bounds(pixels,w,h):
     y0=min(y for x,y in points);y1=max(y for x,y in points)+1
     return [x0,y0,x1-x0,y1-y0]
 
+MOON_SCALE_NUM=4
+MOON_SCALE_DEN=3
+
+def scale_frame_about_anchor(pixels,w,h,anchor,num=MOON_SCALE_NUM,den=MOON_SCALE_DEN):
+    b=bounds(pixels,w,h);x0,y0,bw,bh=b
+    nw=max(1,(bw*num+den//2)//den);nh=max(1,(bh*num+den//2)//den)
+    ax,ay=anchor
+    relx=ax-x0;rely=ay-y0
+    nrelx=(relx*num+den//2)//den;nrely=(rely*num+den//2)//den
+    px=ax-nrelx;py=ay-nrely
+    out=bytearray(w*h)
+    for dy in range(nh):
+        sy=min(bh-1,(dy*bh)//nh)
+        yy=py+dy
+        if yy<0 or yy>=h:continue
+        for dx in range(nw):
+            sx=min(bw-1,(dx*bw)//nw)
+            xx=px+dx
+            if xx<0 or xx>=w:continue
+            out[yy*w+xx]=pixels[(y0+sy)*w+(x0+sx)]
+    nb=bounds(out,w,h)
+    assert nb[0]>0 and nb[1]>0 and nb[0]+nb[2]<w and nb[1]+nb[3]<h, (b,nb)
+    return bytes(out),nb
+
+def scale_point_about_anchor(point,anchor,num=MOON_SCALE_NUM,den=MOON_SCALE_DEN):
+    if list(point)==[0,0]:return [0,0]
+    ax,ay=anchor;x,y=point
+    return [ax+round((x-ax)*num/den), ay+round((y-ay)*num/den)]
+
 RAVEN_NAMES=([f'idle_{n:02d}' for n in range(4)]+[f'caw_{n:02d}' for n in range(4)]
     +[f'move_{n:02d}' for n in range(6)]+['crouch_00','crouch_01']
     +[f'flight_{n:02d}' for n in range(6)]+['impact_00','impact_01']
@@ -74,6 +103,7 @@ def main():
         master_file.parent.mkdir(parents=True,exist_ok=True);master_file.write_bytes(data)
     master=json.loads(master_file.read_text());palette=master['palette'];manifest={'schema':'max-crow-moonroot/1','nativeScale':1,'palette':palette,'assets':{},'auditedMain':'a24a164f767023e5ee76c44a05c34f4328e2d2a0','runtimeStatus':'art handoff; no gameplay activation'}
     validation={'passed':True,'checks':[],'frames':0,'uniquePixelBuffers':0,'binaryAlpha':True,'hiddenRGBZero':True}
+    rendered={}
     for kind,group in master['groups'].items():
         w,h=group['size'];count=group['count'];data=zlib.decompress(base64.b64decode(group['pixelsZlibBase64'],validate=True))
         assert len(data)==w*h*count
@@ -83,21 +113,37 @@ def main():
         atlas={'schema':'max-native-atlas/1','name':kind,'nativeScale':1,'defaultFacing':1,'sheets':{'main':{'image':kind+'.png','size':[sw,sh],'cell':[w,h],'columns':cols,'rows':rows}},'frames':{},'animations':animations(kind,names)}
         unique=set()
         for i,(name,info) in enumerate(zip(names,group['frames'])):
-            pixels=data[i*w*h:(i+1)*w*h];unique.add(hashlib.sha256(pixels).hexdigest())
-            b=bounds(pixels,w,h);assert b==info['opaqueBounds'];assert b[0]>0 and b[1]>0 and b[0]+b[2]<w and b[1]+b[3]<h
+            pixels=data[i*w*h:(i+1)*w*h]
+            source_b=bounds(pixels,w,h);assert source_b==info['opaqueBounds'];assert source_b[0]>0 and source_b[1]>0 and source_b[0]+source_b[2]<w and source_b[1]+source_b[3]<h
             assert all(isinstance(n,int) for n in info['anchor'])
             assert 0<=info['anchor'][0]<w and 0<=info['anchor'][1]<h
+            if kind=='moonroot':
+                pixels,b=scale_frame_about_anchor(pixels,w,h,info['anchor'])
+            else:b=source_b
+            unique.add(hashlib.sha256(pixels).hexdigest())
             sx=i%cols*w;sy=i//cols*h
             for y in range(h):sheet[(sy+y)*sw+sx:(sy+y)*sw+sx+w]=pixels[y*w:(y+1)*w]
             png(ROOT/'frames'/kind/(name+'.png'),w,h,pixels,palette)
             record={'sheet':'main','rect':[sx,sy,w,h],'anchor':info['anchor'],'opaqueBounds':b,'sourceFrame':info['name'],'source':info['source']}
-            if 'sockets' in info:record['sockets']=info['sockets']
+            if 'sockets' in info:
+                record['sockets']={k:(scale_point_about_anchor(v,info['anchor']) if kind=='moonroot' else v) for k,v in info['sockets'].items()}
             atlas['frames'][name]=record
         for clip in atlas['animations'].values():assert all(n in atlas['frames'] for n in clip['frames'])
         png(ROOT/(kind+'.png'),sw,sh,bytes(sheet),palette);save_json(ROOT/(kind+'.json'),atlas)
-        manifest['assets'][kind]={'atlas':kind+'.json','png':kind+'.png','cell':[w,h],'size':[sw,sh],'frames':count,'uniquePixelBuffers':len(unique),'anchor':group['frames'][0]['anchor'],'firstPoseBounds':group['frames'][0]['opaqueBounds'],'sha256':hashlib.sha256((ROOT/(kind+'.png')).read_bytes()).hexdigest()}
+        manifest['assets'][kind]={'atlas':kind+'.json','png':kind+'.png','cell':[w,h],'size':[sw,sh],'frames':count,'uniquePixelBuffers':len(unique),'anchor':group['frames'][0]['anchor'],'firstPoseBounds':atlas['frames'][names[0]]['opaqueBounds'],'sha256':hashlib.sha256((ROOT/(kind+'.png')).read_bytes()).hexdigest()}
         validation['frames']+=count;validation['uniquePixelBuffers']+=len(unique)
         validation['checks'].append({'asset':kind,'dimensions':[sw,sh],'frameBounds':'pass','emptyBorder':'pass','fixedBodyAnchors':'pass' if kind!='effects' else 'effect-specific','animationReferences':'pass','individualPngs':count})
+        rendered[kind]={'pixels':bytes(sheet),'w':sw,'h':sh,'atlas':atlas}
+    mega_w=384; offsets={'raven':[0,0],'moonroot':[0,192],'effects':[64,384]}; mega_h=504; mega=bytearray(mega_w*mega_h); mega_frames={}
+    for kind,entry in rendered.items():
+        ox,oy=offsets[kind]
+        for y in range(entry['h']): mega[(oy+y)*mega_w+ox:(oy+y)*mega_w+ox+entry['w']]=entry['pixels'][y*entry['w']:(y+1)*entry['w']]
+        for name,f in entry['atlas']['frames'].items():
+            x,y,w,h=f['rect']; mega_frames[f'{kind}/{name}']={'rect':[ox+x,oy+y,w,h],'anchor':f['anchor'],'sourceAtlas':kind,'sourceFrame':name}
+    png(ROOT/'megasheet.png',mega_w,mega_h,bytes(mega),palette)
+    save_json(ROOT/'megasheet.json',{'schema':'max-boss-megasheet/1','image':'megasheet.png','size':[mega_w,mega_h],'nativeScale':1,'groups':{k:{'offset':offsets[k],'atlas':k+'.json'} for k in rendered},'frames':mega_frames})
+    manifest['megasheet']={'png':'megasheet.png','json':'megasheet.json','size':[mega_w,mega_h],'frames':len(mega_frames),'sha256':hashlib.sha256((ROOT/'megasheet.png').read_bytes()).hexdigest()}
+    validation['checks'].append({'asset':'megasheet','dimensions':[mega_w,mega_h],'frames':len(mega_frames),'allFramesIncluded':'pass'})
     save_json(ROOT/'manifest.json',manifest);save_json(ROOT/'validation.json',validation)
     print(json.dumps(validation,indent=2))
 
