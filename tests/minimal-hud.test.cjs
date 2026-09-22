@@ -25,6 +25,7 @@ test('active boon ranks become tiny HUD icons, ten per row, without counting Mec
   assert.equal(boons.filter(x=>x==='bark').length,4);
   assert.equal(boons.length,11);
   const first=g.runHudIconPosition(0),tenth=g.runHudIconPosition(9),eleventh=g.runHudIconPosition(10);
+  assert.equal(first.y,3,'first boon row aligns with the top tally/pause row');
   assert.equal(first.y,tenth.y);
   assert.equal(eleventh.x,first.x);
   assert.equal(eleventh.y,first.y+7);
