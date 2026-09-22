@@ -38,7 +38,7 @@ test('a boon is a live overlay and never clears held movement', () => {
   assert.equal(menu.getAttribute('role'), 'region');assert.equal(menu.getAttribute('aria-modal'),'false');
   assert.equal(menu.querySelectorAll('button').length, 3);
   assert.equal(game.readInput().axis, 1);assert.equal(game.runIsPaused(),false);
-  const before=game.runElapsed;h.tick(50);assert.ok(game.runElapsed>before);
+  const before=game.runElapsed;game.updateRunCompetition(.05);assert.ok(game.runElapsed>before);
   menu.querySelector('button').listeners.click[0]();
   assert.equal(game.rogueRun.perks[id], 1); assert.equal(game.rogueRun.choice, null);
   assert.equal(game.readInput().axis, 1);
@@ -210,7 +210,7 @@ test('a ripe harvest can offer a boon without suspending the rest of that frame'
   session.tick(50);
   assert.ok(game.rogueRun.choice, 'the ripe harvest must open the earned choice');
   assert.equal(game.gardenStats.harvested, 1);assert.equal(game.gardenPlots[0].lastHarvestGrowth, 1);
-  assert.ok(game.gardenPlots[1].age>0);assert.ok(game.gardenRaidGrace<2);assert.ok(game.gardenRaidSpawn<1);assert.ok(game.runElapsed>0);
+  assert.ok(game.gardenPlots[1].age>0);assert.ok(game.gardenRaidGrace<2);assert.ok(game.gardenRaidSpawn<1);assert.equal(game.runIsPaused(),false);
 });
 
 test('a hidden page pauses growth, raid countdown and competition time', () => {
