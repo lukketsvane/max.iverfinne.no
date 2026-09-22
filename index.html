@@ -524,7 +524,7 @@ function physics(dt, inp) {
   if(P.dodgeT>0){P.face=P.dodgeDir;P.vx=P.dodgeDir*DODGE_SPEED;}
   else if (inp.axis !== 0) {
     P.face = inp.axis;
-    var topW = inp.top * ownClass().speed * (P.wet ? 0.5 : 1) * (P.st === 'float' ? 0.55 : 1);
+    var topW = inp.top * ownClass().speed * (1+.06*(rogueRun.perks.stride||0)) * (P.wet ? 0.5 : 1) * (P.st === 'float' ? 0.55 : 1);
     P.vx=approach(P.vx,inp.axis*topW,(P.vx*inp.axis<0?BRAKE:ACC)*ownClass().control*dt);
   } else {
     P.vx=approach(P.vx,0,FRIC*dt);
@@ -540,7 +540,7 @@ function physics(dt, inp) {
     P.dodgeT=0;
     P.platform=null;
     P.airJumpUsed=!groundJump;
-    P.vy = JUMP_V*ownClass().jump*featherJump()*(groundJump?1:.9); P.grounded = false; P.coyote = 0; jumpBuf = 0;
+    P.vy = JUMP_V*ownClass().jump*(1+.06*(rogueRun.perks.spring||0))*featherJump()*(groundJump?1:.9); P.grounded = false; P.coyote = 0; jumpBuf = 0;
     P.held = jumpVariable; P.land = 0;
     setAnim('rise'); if (P.wet) ripple(P.x, wp0.level, 'splash'); else puff(P.x, P.y, 5, 0.45);
     if(airJump){for(var f=0;f<5;f++)feathers.push({x:P.x,y:P.y-4,vx:(f-2)*9,vy:8,c:'#dddcca',life:.5,ph:f});}
@@ -2722,7 +2722,7 @@ function resetRogueRun(reason,selection){
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
   gardenSeeds=0;gardenScore=0;gardenCombo=0;gardenComboT=0;gardenPower=0;gardenFeverT=0;seedStreak=0;seedStreakT=0;
-  gardenWave=0;gardenRaidT=difficulty==='easy'?25:(difficulty==='hard'?10:(difficulty==='insane'?7:12));gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;krekSpawnT=difficulty==='easy'?18:7;
+  gardenWave=0;gardenRaidT=difficulty==='easy'?28:(difficulty==='hard'?10:(difficulty==='insane'?7:12));gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;krekSpawnT=difficulty==='easy'?22:7;
   runElapsed=0;runFinishT=0;runWon=false;raidLostStart=0;gardenBossSpawned=false;
   gardenStats={harvested:0,lost:0,defended:0};
   companion=null;blastScore=0;if(window.MaxNativeArt)window.MaxNativeArt.reset();
@@ -3068,12 +3068,12 @@ function waterGardenPlot(p){
     if(p.dead||gardenPlots.indexOf(p)<0)return;
     var was=p.moisture,perfect=was<.24;
     beginGardenCare(p);
-    p.moisture=1;p.health=clamp01(p.health+(perfect?.20:.12)*ownClass().care*(1+ownTraits().dew*.08));p.pulse=perfect?1.7:1.15;
+    var tend=1+.12*(rogueRun.perks.tender||0);p.moisture=1;p.health=clamp01(p.health+(perfect?.20:.12)*ownClass().care*tend*(1+ownTraits().dew*.08));p.pulse=perfect?1.7:1.15;
     herbalistCare(p,.045);
-    p.growth+=Math.max(0,1-was)*.055;
+    p.growth+=Math.max(0,1-was)*.055*tend;
     finishGardenCare(p);
     for(var j=0;j<gardenPlots.length;j++){
-      var q=gardenPlots[j];if(q!==p&&!q.dead&&Math.abs(q.x-p.x)<27&&q.moisture<.34){q.moisture=clamp01(q.moisture+.30);q.pulse=.55;}
+      var q=gardenPlots[j];if(q!==p&&!q.dead&&Math.abs(q.x-p.x)<27+(rogueRun.perks.spread||0)*8&&q.moisture<.48){q.moisture=clamp01(q.moisture+.30+(rogueRun.perks.spread||0)*.04);q.pulse=.55;}
     }
     for(var i=0;i<7;i++)parts.push({x:p.x+(Math.random()-.5)*9,y:surfaceY(p.x)-6-Math.random()*6,vx:(Math.random()-.5)*5,vy:4+Math.random()*9,l:.42,m:.42,c:'126,174,190'});
     socialTone('water');updateGardenHud();saveGarden();
@@ -3081,10 +3081,10 @@ function waterGardenPlot(p){
 }
 function waterGardenPlotTick(p,dt){
   if(!p||p.dead)return;
-  var perk=rogueRun.perks.water||0,was=p.moisture;
+  var perk=rogueRun.perks.water||0,was=p.moisture,tend=1+.12*(rogueRun.perks.tender||0);
   beginGardenCare(p);
-  p.moisture=clamp01(p.moisture+dt*(.72+.12*perk)*ownClass().care*(1+ownTraits().dew*.08));
-  p.health=clamp01(p.health+dt*(.045+.008*perk)*ownClass().care*(1+ownTraits().dew*.08));
+  p.moisture=clamp01(p.moisture+dt*(.72+.12*perk)*ownClass().care*tend*(1+ownTraits().dew*.08));
+  p.health=clamp01(p.health+dt*(.045+.008*perk)*ownClass().care*tend*(1+ownTraits().dew*.08));
   herbalistCare(p,dt*.016);
   p.growth+=Math.max(0,p.moisture-was)*.055;
   finishGardenCare(p);
@@ -3441,7 +3441,7 @@ function jumpFromPlant(variable){
   P.climbIgnoreId=climb.p.id;P.climbRegrab=.22;
   climb=null;climbGoal=null;if(warp&&!warp.switched)warp=null;
   P.st='free';P.grounded=false;P.platform=null;P.coyote=0;P.face=side;
-  P.vx=side*RUN_V*ownClass().speed;P.vy=JUMP_V*ownClass().jump*featherJump();P.held=!!variable;P.airJumpUsed=false;P.land=0;
+  P.vx=side*RUN_V*ownClass().speed*(1+.06*(rogueRun.perks.stride||0));P.vy=JUMP_V*ownClass().jump*(1+.06*(rogueRun.perks.spring||0))*featherJump();P.held=!!variable;P.airJumpUsed=false;P.land=0;
   jumpBuf=0;gardenPress=false;setAnim('rise');puff(P.x,P.y,4,.3);return true;
 }
 function updateClimb(dt,inp){
@@ -3624,7 +3624,7 @@ function drawWorldBanner(t){
 }
 function difficultyProfile(){
   return {
-    easy:{pressure:.22,damage:.30,durability:.58,budget:.40,density:.45},
+    easy:{pressure:.18,damage:.26,durability:.55,budget:.36,density:.40},
     medium:{pressure:1,damage:1,durability:1,budget:1,density:1},
     hard:{pressure:1.3,damage:1.18,durability:1.16,budget:1.18,density:1.15},
     insane:{pressure:1.75,damage:1.45,durability:1.35,budget:1.45,density:1.35}
@@ -3715,12 +3715,12 @@ function makeKrek(side,elite,kind){
   if(kind===RAT_KIND)return makeRat(side,elite);
   var targets=gardenPlots.filter(function(p){return !p.dead;}),center=targets.length?targets[(Math.random()*targets.length)|0].x:P.x;
   var x=center+side*(100+Math.random()*45),y=surfaceY(x)-28-Math.random()*22;
-  var w=worldLevel(),pressure=raidPressure(),hp=1+(w>=4?1:0)+(w>=9?1:0)+(w>=14?1:0)+(kind===1||kind===5?1:0)+(elite?2:0);
+  var w=worldLevel(),pressure=raidPressure(),hp=1+(w>=4?1:0)+(w>=9?1:0)+(w>=14?1:0)+(kind===1||kind===5?1:0)+(kind===11?2:(kind===9||kind===10?1:0))+(elite?2:0);
   return safeEnemyPosition({x:x,y:y,vx:-side*(7+Math.random()*6),vy:0,face:-side,ph:Math.random()*6.28,target:null,bite:.3,windup:0,attackTarget:null,think:0,flee:0,lampCooldown:0,hp:hp,maxHp:hp,flash:0,kind:kind,elite:!!elite,queen:false,raid:false,pressure:pressure},x,y);
 }
-function staggerKrek(k,time){if(k.boss)return;if(isRat(k)){cancelRatAttack(k);ratState(k,'hurt');}if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.bite=.35;}
+function staggerKrek(k,time){if(k.boss)return;if(isRat(k)){cancelRatAttack(k);ratState(k,'hurt');}if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.draining=false;k.chargeT=0;k.bite=.35;}
 function biteGarden(k,p,pressure){
-  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.78,(rogueRun.perks.shield||0))*classProtection(p);
+  var dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.78,(rogueRun.perks.shield||0))*Math.pow(.92,(rogueRun.perks.bark||0))*classProtection(p);
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
   socialTone('call');if(p.health<=.01){p.dead=8;k.target=null;}
@@ -3733,7 +3733,7 @@ function burstKrek(k){
   if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
   if(k.scout){puff(k.x,k.y,6,.5);return;}
   if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen);
-  gardenStats.defended=(gardenStats.defended||0)+1;
+  gardenStats.defended=(gardenStats.defended||0)+1;var mulch=rogueRun.perks.mulch||0;if(mulch)gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-k.x)<48+mulch*8){p.health=clamp01(p.health+.025*mulch);p.moisture=clamp01(p.moisture+.018*mulch);p.pulse=Math.max(p.pulse,.5);}});
   var bonus=k&&k.queen?7:(k&&k.elite?3:((gardenStats.defended%3)===0?1:0));
   if(bonus){spawnLooseSeeds(k.x,k.y,bonus);nudgeGardenHint((k&&k.elite?'ELITE DEFEATED':'PEST DEFEATED')+' · SEED DROP');}
   grantRogueXP(k&&k.queen?7:(k&&k.elite?3:1));gardenAction(k&&k.queen?520:(k&&k.elite?180:55),k&&k.queen?65:(k&&k.elite?30:10),k&&k.queen?'DRONNING':(k&&k.elite?'STORKREK':'FORSVAR'));
