@@ -19,8 +19,13 @@ function stageCombatProfile(){
 function enemyUnlocked(kind){
   var stage=worldLevel(),timeStage=1+Math.floor(Math.max(0,runElapsed)/90);
   if(kind===8){
-    var ratStage=rogueRun.difficulty==='easy'?9:7;
-    return stage>=ratStage||runElapsed>=360;
+    var ratGate={
+      easy:{stage:10,time:540},
+      medium:{stage:8,time:420},
+      hard:{stage:7,time:360},
+      insane:{stage:6,time:300}
+    }[rogueRun.difficulty]||{stage:8,time:420};
+    return stage>=ratGate.stage||runElapsed>=ratGate.time;
   }
   if(kind<3)return true;
   return Math.max(stage,timeStage)>={3:2,4:3,5:4,6:6,9:7,10:9,11:11}[kind];
