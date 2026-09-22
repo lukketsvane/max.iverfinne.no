@@ -1,0 +1,192 @@
+# Claude handoff — MAX · NIGHT GARDEN
+
+This file is the engineering handoff for the next primary agent. Read `README.md` first, then this file, then the relevant tests before changing behavior.
+
+## Start here
+
+```sh
+npm ci
+npm test
+npm run build
+```
+
+Do not begin by rewriting the architecture. This is a deliberately compact static browser game with a large tested behavior surface.
+
+## Non-negotiable product invariants
+
+1. **One Play flow / one shared garden.** There is no player-facing Solo versus Multiplayer split.
+2. **Maximum four players.** Players can join a running garden.
+3. **One player per character.** Mech, Moss, Bulwark and Herbalist are exclusive slots. Taken characters must be disabled in UI and reserved server-side.
+4. **First player sets difficulty.** Easy/Medium/Hard/Insane is run-wide. Once a shared run exists, joiners inherit the existing difficulty and cannot change it.
+5. **Physical stage progression.** A player must actually climb the cleared exit plant to the top and cross into the next garden. Do not replace this with a ground teleport. Once one player reaches the next stage, teammates may catch up automatically.
+6. **Moss climbing.** Moss can climb ordinary living plants only after they reach at least 50% of maximum physical height. Ordinary climbing cannot skip an uncleared stage.
+7. **Live world during UI.** Settings and boon choices do not pause gameplay.
+8. **Guest parity.** Pickups, bombs/defend, movement and allowed interactions must work for guests as well as the authoritative client.
+9. **PWA continuity.** Brief backgrounding must not mean intentional leave. Rebuild Realtime channels on return; host authority may hand off while a client is suspended.
+10. **No WebKit experimental-flag dependency.** The owner may enable feature flags for testing, but production must not require them.
+11. **Native pixel art only at runtime.** Preserve 1:1 pixels, integer registration, atlas anchors and no smoothing.
+12. **No resumable reload checkpoint.** Reload starts a new local attempt. Finished records can persist; PWA reconnect is a separate realtime behavior.
+
+## Current multiplayer model
+
+Supabase holds one shared live garden. The first player creates/owns the run settings. Later players enter the current run up to four total.
+
+The client obtains `max_coop_status` before joining. It reports the active run, occupied character IDs, run difficulty and the current user's reserved character. The menu greys occupied characters and locks difficulty when the run exists. Database RPCs are the final authority; UI disabling is not the security/concurrency guarantee.
+
+`coop-session.mjs` owns room membership, Realtime channels, authority/reconnect and encoded snapshots. `coop-game.inc.js` owns the mapping between network members and actual game actors/actions.
+
+When changing multiplayer, test race conditions, late join, background/foreground, former-host return, class reservation and run-difficulty inheritance.
+
+## Stage progression
+
+The intended sequence is:
+
+1. Clear the required encounters.
+2. Exit plant becomes the route upward.
+3. A player physically climbs to the top.
+4. That ascender crosses into the next garden.
+5. The host/shared state advances.
+6. Other active players may be moved forward to catch up.
+
+The player who earned the ascent must not be pre-teleported. This behavior was added after ground-level travel felt wrong.
+
+Relevant tests cover physical ascent and co-op catch-up. Keep them when refactoring.
+
+## Characters
+
+- **Mech**: only character with watering robot. Robot boons must not leak to another character through stale snapshots or forged selections.
+- **Moss**: climbing specialist.
+- **Bulwark**: plant protection/tank role.
+- **Herbalist**: care/healing role.
+
+Character appearance and gameplay role are one selection. Do not reintroduce a separate skin/costume picker.
+
+## Difficulty / current balance intent
+
+Easy must actually feel easy. Do not tune every mode upward because late Hard/Insane is survivable.
+
+Easy currently reduces damage, enemy durability, density, wave budget and time-pressure growth and gives a longer opening grace period.
+
+Rats were intentionally moved later and softened. Current entry gates are documented in `README.md`. Rat variants stage in after common rats; do not put plague/armoured rats back into the opening gardens.
+
+The recent expanded specialists are:
+
+- Thorn caster: warned root control.
+- Dew leech: moisture drain + self sustain.
+- Rammer: warned straight charge.
+
+Their attacks need readable counterplay and must not become unavoidable background damage.
+
+## Boons
+
+`build-paths.js` is the canonical boon catalogue. In addition to the older tree, recent upgrades include:
+
+- `tender` — Green Thumb
+- `spread` — Wide Watering
+- `bark` — Barkskin
+- `mulch` — Mulch
+- `stride` — Long Stride
+- `spring` — Spring Step
+
+A boon is not done merely because it appears in the menu. Each must materially affect the live simulation and have a regression test.
+
+Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior.
+
+## Audio
+
+Music and effects are separate. Settings uses discrete steps 75 / 50 / 25 / off.
+
+- `soundtrack.mjs`: streamed music and music gain.
+- gameplay audio contexts: effects gain.
+
+Do not collapse them back into one `soundEnabled` flag.
+
+## Safari / iPhone
+
+The project is iPhone/PWA-first. Recent diagnostics specifically addressed blank-screen investigation and stale smoke-test title assumptions.
+
+If Safari/PWA fails:
+
+1. Reproduce on the current production SHA.
+2. Check page errors and console errors.
+3. Confirm static assets/build output.
+4. Check Supabase/Reatime reconnect separately from rendering.
+5. Use the live verification workflow.
+6. Do **not** ask users to enable experimental WebKit features as the product fix.
+
+## Data and infrastructure
+
+### Vercel
+
+- project: `max.iverfinne.no`
+- project ID: `prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`
+- production branch: `main`
+- build: `npm ci && npm run build`
+- output: `dist/`
+
+Remote Vercel build quotas have been hit during rapid iteration. Do not try to bypass account restrictions. Promotion or authenticated prebuilt deploys are acceptable supported alternatives.
+
+### Supabase
+
+- project ref: `zuezxsuqkvrzypjhbbqq`
+- frontend uses publishable credentials only
+- never expose service-role/secret keys
+
+Important checked-in migrations are listed in `README.md`. Hosted migration history was partly applied manually during the initial build; inspect live state before replaying old migrations.
+
+### Accounts
+
+Account UI is optional metadata. Play should remain low-friction and can establish a device identity. Passwords are never stored by the game client.
+
+## Release gate
+
+Before claiming a change is live:
+
+1. `npm test` passes.
+2. `npm run build` passes.
+3. GitHub Actions on the intended SHA is green.
+4. Vercel reports a READY production deployment for the intended SHA.
+5. The custom domain is checked, not merely the generated deployment URL.
+6. For multiplayer/PWA changes, perform a live reconnect/join smoke check where possible.
+
+At the 22 September 2026 handoff, the gameplay code immediately before documentation cleanup passed **319/319 tests** and the live verification workflow.
+
+## Review fixtures
+
+`review.html` is useful for deterministic visual/gameplay states. It must remain isolated from real player storage and must not create a debug API in production.
+
+Use it for:
+
+- all 20 layouts
+- bosses
+- expanded enemy mix
+- rats
+- Moss plant climbing
+- time-pressure scenes
+- player/robot/native art
+- result bouquets
+
+## Branch and PR hygiene
+
+`main` is the only authoritative development line.
+
+A one-time cleanup job removes only branches whose heads are already ancestors of `main`. Diverged branches are deliberately preserved until their unique commits are reviewed. Do not merge an old branch wholesale into current main.
+
+Asset PRs from early iterations may target old game snapshots. Treat them as source material, not architectural truth. Prefer selectively copying audited native assets into current `main`.
+
+## Files to read before common tasks
+
+- gameplay/balance: `index.html`, `run-director.inc.js`, corresponding tests
+- co-op: `coop-session.mjs`, `coop-transport.mjs`, `coop-game.inc.js`, Supabase migration/RPC tests
+- menu/join flow: `game-menu.mjs`, `player-loadout.mjs`, menu tests
+- Moss/progression: climb code in `index.html`, `tests/moss-climb.test.cjs`, co-op progression tests
+- rats: `rat-enemies.inc.js`, `tests/rat-enemies.test.cjs`
+- art: `native-art.mjs`, relevant `assets/**/README.md`, native-art tests
+- bouquet/results: `run-results.js`, `assets/results-native/`, record/leaderboard tests
+- soundtrack: `soundtrack.mjs`, soundtrack/menu tests
+
+## Working style for the next agent
+
+Prefer small commits that keep CI green. Preserve concurrent changes already on `main`. Search the tests before removing behavior that looks redundant; many odd-looking checks exist because an earlier real bug occurred on mobile, co-op or PWA resume.
+
+When the user says a mechanic feels wrong, fix the actual interaction rather than documenting around it.
