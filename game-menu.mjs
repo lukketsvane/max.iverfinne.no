@@ -24,7 +24,7 @@ let sceneFrame = 0, sceneStarted = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
 let selected = readLoadout(window.localStorage);
-let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null };
+let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
 
 function el(tag, text, className) {
   const n = document.createElement(tag);
@@ -64,7 +64,8 @@ function home() {
     settings: '<path d="M7 0h2v16H7zM3 3h4v3H3zM9 7h4v3H9zM4 11h3v3H4z"/>',
     credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
   };
-  for (const [label, action, icon] of [['Play', play, 'play'], ['Garden', garden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
+  const signedIn = !!user && playerName(user) !== 'Guest';
+  for (const [label, action, icon] of [['Play', play, 'play'], signedIn ? ['Garden', garden, 'garden'] : ['Login', account, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
     const b = button('', action, 'max-home-button max-icon-' + icon + (icon === 'play' ? ' primary' : ''));
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
     pixelText(b, label, icon === 'play' ? 3 : 2, 1);
@@ -79,10 +80,13 @@ function home() {
 let playersTimer = 0;
 function showPlayers(node) {
   clearTimeout(playersTimer);
-  if (!client || !user) return;
+  if (!client) return;
   void refreshSharedStatus().then(s => {
     if (!node.isConnected || screen !== 'home') return;
-    node.textContent = s.active && s.players > 0 ? s.players + ' IN THE GARDEN' : 'GARDEN IS EMPTY';
+    node.replaceChildren();
+    const members = s.active ? s.members : [];
+    node.append(pixelText(el('p', undefined, 'max-home-players-title'), members.length ? 'IN THE GARDEN' : 'GARDEN IS EMPTY', 2, 1));
+    for (const m of members) node.append(pixelText(el('p', undefined, 'max-home-player'), m.name + (m.classId ? ' - ' + classInfo(m.classId).name : ''), 2, 1));
     node.hidden = false;
     playersTimer = setTimeout(() => showPlayers(node), 20000);
   });
@@ -204,6 +208,7 @@ async function refreshSharedStatus() {
       taken: Array.isArray(data.taken) ? data.taken.filter(id => CLASS_IDS.includes(id)) : [],
       difficulty: DIFFICULTY_IDS.includes(data.difficulty) ? data.difficulty : null,
       mine: CLASS_IDS.includes(data.mine) ? data.mine : null,
+      members: Array.isArray(data.members) ? data.members.filter(m => m && typeof m.name === 'string').slice(0, 4).map(m => ({ name: m.name.slice(0, 24), classId: CLASS_IDS.includes(m.classId) ? m.classId : null })) : [],
     };
   } catch {}
   if (screen === 'play') { updateSelection(); updatePlayReady(); }
