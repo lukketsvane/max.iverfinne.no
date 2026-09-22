@@ -79,12 +79,27 @@ function coopInput(id,packet){
     // planting, throwing or travelling again in the newly entered garden.
     if(action.world!=null&&action.world!==worldLevel())return;
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
-    if(runIsPaused()||!a||a.world!==worldLevel())return;
+    var actor=(a&&a.world===worldLevel())?a:m.avatar;
+    if(runIsPaused()||!actor||actor.world!==worldLevel())return;
     if(action.type==='travel'){
       var actor=m.avatar,plant=stalkAt(actor.x,actor.y,9);
       var soil=actor.grounded&&!actor.wet&&!playerWetAt(actor.x,actor.y)&&Math.abs(actor.y-surfaceY(actor.x))<4;
       var attached=window.MaxClasses.canClimb(m.classId)&&actor.st==='climb'&&plantClimbAt(actor.x,actor.y,10)===plant;
       if(plant&&(soil||attached)&&rogueRun.clearedWorld===worldLevel())enterLevel(worldLevel()+1);
+      return;
+    }
+    if(action.type==='pickup-item'&&Number.isSafeInteger(action.pickup)){
+      var item=runLoot.find(function(q){return q.id===action.pickup;});
+      if(item&&(!item.owner||item.owner===m.id)&&Math.hypot(actor.x-item.x,actor.y-12-item.y)<22){
+        awardRunItem(item.type,m);runLoot.splice(runLoot.indexOf(item),1);
+      }
+      return;
+    }
+    if(action.type==='pickup-seed'){
+      var seed=seedPickups.find(function(q){
+        return action.seedId?q.id===action.seedId:Number.isSafeInteger(action.seedUid)&&action.seedUid>0&&q.uid===action.seedUid;
+      });
+      if(seed&&Math.abs(seed.x-actor.x)<14&&Math.abs(seed.y-(actor.y-6))<26)collectSeed(seed);
       return;
     }
     coopWithMember(m,function(){
