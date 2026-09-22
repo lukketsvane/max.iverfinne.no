@@ -2722,7 +2722,7 @@ function resetRogueRun(reason,selection){
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
   gardenSeeds=0;gardenScore=0;gardenCombo=0;gardenComboT=0;gardenPower=0;gardenFeverT=0;seedStreak=0;seedStreakT=0;
-  gardenWave=0;gardenRaidT=12;gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;krekSpawnT=7;
+  gardenWave=0;gardenRaidT=difficulty==='easy'?20:(difficulty==='hard'?10:(difficulty==='insane'?7:12));gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;krekSpawnT=difficulty==='easy'?12:7;
   runElapsed=0;runFinishT=0;runWon=false;raidLostStart=0;gardenBossSpawned=false;
   gardenStats={harvested:0,lost:0,defended:0};
   companion=null;blastScore=0;if(window.MaxNativeArt)window.MaxNativeArt.reset();
@@ -2931,14 +2931,13 @@ function offerRogueChoice(){
   if(coop){coopOffer();return;}
   if(rogueRun.choice||rogueRun.ended)return;
   var choices=perkChoices();if(!choices.length)return;
-  clearRunInput();rogueRun.choice=choices;renderRogueChoice();saveGarden();
-  var first=perkMenu&&perkMenu.querySelector('button');if(first&&first.focus)first.focus({preventScroll:true});
+  rogueRun.choice=choices;renderRogueChoice();saveGarden();
 }
 function chooseRoguePerk(id){
   if(!window.MaxBuilds.available(rogueRun.perks,id,rogueRun.classId))return;
   if(coop){if(coop.host)coopChoose(coop.me,id,coop.round);else if(rogueRun.choice&&rogueRun.choice.some(function(p){return p.id===id;}))coopAction('boon',{boon:id,round:coop.round});return;}
   if(rogueRun.ended||!rogueRun.choice||!rogueRun.choice.some(function(p){return p.id===id;})||(rogueRun.perks[id]||0)>=perkMax(id))return;
-  rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();clearRunInput();
+  rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();
   if(perkMenu)perkMenu.style.display='none';
   socialTone('gift');grantRogueXP(0);saveGarden();updateGardenHud();
 }
