@@ -36,9 +36,19 @@ export class CoopSession {
   async enter(code) {
     await this.client.realtime.setAuth();
     if (code && typeof code === 'object' && code.global) {
-      const { data, error } = await this.client.rpc('max_coop_global');
+      const { data, error } = await this.client.rpc('max_coop_global', {
+        p_class_id: this.selection.classId,
+        p_difficulty: this.selection.difficulty,
+      });
       if (error) throw new Error(error.message || 'Could not join the garden.');
       this.room = data;
+      const me = this.room.members?.find(p => p.id === this.user.id);
+      const canonical = validLoadout({
+        classId: me?.classId || this.selection.classId,
+        difficulty: this.room.difficulty || this.selection.difficulty,
+      });
+      if (!canonical) throw new Error('The server rejected this character.');
+      this.selection = Object.freeze(canonical);
     } else if (code && typeof code === 'object' && code.id) {
       const { data, error } = await this.client.rpc('max_coop_join', { p_room: code.id });
       if (error) throw new Error(error.message || 'Could not join this run.');
@@ -104,7 +114,14 @@ export class CoopSession {
     if (!this.room || this.closed) return;
     this.room = { ...this.room, members: this.room.members.map(p => {
       const choice = this.loadouts[p.id];
-      return { ...p, classId: choice?.classId, skinId: choice?.skinId, difficulty: choice?.difficulty, selectionReady: !!choice && !!this.memberTokens[p.id] };
+      const serverChoice = validLoadout({ classId: p.classId, difficulty: this.room.difficulty || choice?.difficulty });
+      return {
+        ...p,
+        classId: choice?.classId || serverChoice?.classId || p.classId,
+        skinId: choice?.skinId || serverChoice?.skinId,
+        difficulty: this.room.difficulty || choice?.difficulty,
+        selectionReady: !!(choice || serverChoice) && (!!this.memberTokens[p.id] || p.id === this.user.id),
+      };
     }) };
     this.hooks.room?.(this.room);
   }
@@ -142,7 +159,7 @@ export class CoopSession {
     this.notifyRoom(); this.sendLobby();
   }
   lobbyPacket() {
-    const members = this.room.members.map(({ id, slot, ready, name }) => ({ id, slot, ready, name }));
+    const members = this.room.members.map(({ id, slot, ready, name, classId }) => ({ id, slot, ready, name, classId }));
     return { members, loadouts: this.loadouts, tokens: this.memberTokens, challenge: this.preparing?.id || null, launch: this.launchId };
   }
   sendLobby() {
@@ -232,7 +249,14 @@ export class CoopSession {
         return;
       }
       if (!this.playing || !this.loadouts[sender]) {
-        const choice = validLoadout(packet.selection); if (!choice) return;
+        const supplied = validLoadout(packet.selection); if (!supplied) return;
+        const member = this.room.members.find(p => p.id === sender);
+        if (member?.classId && supplied.classId !== member.classId) return;
+        const choice = validLoadout({
+          classId: member?.classId || supplied.classId,
+          difficulty: this.room.difficulty || supplied.difficulty,
+        });
+        if (!choice) return;
         const changed = this.memberTokens[sender] !== packet.sid || !sameLoadout(choice, this.loadouts[sender]);
         if (changed) {
           this.cancelPrepare('A player changed their selection. Wait for them to be ready.');
