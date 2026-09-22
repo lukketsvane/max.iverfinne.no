@@ -76,12 +76,12 @@
         44
       ],
       "firstPoseBounds": [
-        15,
-        16,
-        19,
-        28
+        12,
+        7,
+        25,
+        37
       ],
-      "sha256": "f68a89745d8d96489e448df41712191714263b18633910bf700bb7cdb12b0a1a"
+      "sha256": "a61d242fce1f0e233b3f3fdd6704ebf8002b45f3ed3429e2ec7e6a7bc29c7bd5"
     },
     "effects": {
       "atlas": "effects.json",
@@ -110,5 +110,15 @@
     }
   },
   "auditedMain": "a24a164f767023e5ee76c44a05c34f4328e2d2a0",
-  "runtimeStatus": "art handoff; no gameplay activation"
+  "runtimeStatus": "art handoff; no gameplay activation",
+  "megasheet": {
+    "png": "megasheet.png",
+    "json": "megasheet.json",
+    "size": [
+      384,
+      504
+    ],
+    "frames": 95,
+    "sha256": "5db2187778620c85b28ce5321563aafdf20adebd5b57036a1215a9949444439c"
+  }
 }

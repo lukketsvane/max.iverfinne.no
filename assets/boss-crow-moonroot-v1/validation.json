@@ -36,6 +36,15 @@
       "fixedBodyAnchors": "effect-specific",
       "animationReferences": "pass",
       "individualPngs": 33
+    },
+    {
+      "asset": "megasheet",
+      "dimensions": [
+        384,
+        504
+      ],
+      "frames": 95,
+      "allFramesIncluded": "pass"
     }
   ],
   "frames": 95,
