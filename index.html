@@ -3633,6 +3633,76 @@ function drawWorldBanner(t){
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
   ctx.globalAlpha=1;
 }
+
+var BOON_HUD_BITS={
+  growth:['00100','01110','10101','00100','00100'],
+  water:['00100','01110','11111','11111','01110'],
+  yield:['10101','01110','00100','01010','10001'],
+  regen:['00100','00100','11111','00100','00100'],
+  bloom:['10101','01110','11111','01110','10101'],
+  tender:['00100','01110','00100','01110','10101'],
+  spread:['10101','00100','10101','01010','10101'],
+  robot:['11110','10110','11110','01010','10101'],
+  shield:['11111','10001','10001','01010','00100'],
+  bark:['00100','01110','00100','11111','10101'],
+  mulch:['00000','00100','01110','11111','11111'],
+  magnet:['10001','10001','10001','11011','01110'],
+  luck:['00100','01110','11111','01110','00100'],
+  recycle:['01110','10001','00111','10001','01110'],
+  blast:['10101','00100','11111','00100','10101'],
+  slow:['11111','01110','00100','01110','11111'],
+  cadence:['10000','11000','01111','00110','00010'],
+  dash:['00110','01100','11111','01100','00110'],
+  stride:['11000','01110','00111','00011','11100'],
+  spring:['10101','01010','10101','01010','10101'],
+  chain:['11000','10110','01101','00101','00011']
+};
+function runHudBoons(){
+  var out=[],perks=rogueRun.perks||{},classId=rogueRun.classId;
+  ROGUE_PERKS.forEach(function(p){
+    var count=Math.max(0,perks[p.id]|0);
+    // Mech's first rover belongs to the character, not to an earned boon.
+    if(p.id==='robot'&&classId==='mech')count=Math.max(0,count-1);
+    for(var i=0;i<count;i++)out.push(p.id);
+  });
+  return out;
+}
+function runHudIconPosition(index){
+  return {x:4+(index%10)*7,y:safeTopArt()+12+Math.floor(index/10)*7};
+}
+function tallyGroupWidth(count){return count>=5?9:count>0?(count-1)*2+1:0;}
+function levelTallyLayout(level){
+  var count=Math.max(1,Math.min(RUN_STAGES,level|0)),groups=[],left=count;
+  while(left>0){var n=Math.min(5,left);groups.push({count:n,width:tallyGroupWidth(n)});left-=n;}
+  var width=groups.reduce(function(total,g){return total+g.width;},0)+Math.max(0,groups.length-1)*3;
+  return {count:count,width:width,groups:groups};
+}
+function drawTinyBoon(id,x,y){
+  var bits=BOON_HUD_BITS[id]||BOON_HUD_BITS.luck,p=ROGUE_PERKS.find(function(q){return q.id===id;}),path=p?p.path:0;
+  var colors=['#a6c982','#8eb6b8','#e0ba72'],col=colors[path]||colors[0];
+  ctx.fillStyle='rgba(5,9,10,.58)';ctx.fillRect(x-1,y-1,7,7);
+  ctx.fillStyle=col;
+  for(var row=0;row<5;row++)for(var px=0;px<5;px++)if(bits[row][px]==='1')ctx.fillRect(x+px,y+row,1,1);
+}
+function drawLevelTallies(level){
+  var layout=levelTallyLayout(level),x=Math.floor((IW-layout.width)/2),y=safeTopArt()+3;
+  layout.groups.forEach(function(group){
+    var start=x;
+    ctx.fillStyle='rgba(4,8,10,.68)';
+    for(var i=0;i<Math.min(4,group.count);i++)ctx.fillRect(start+i*2+1,y+1,1,6);
+    if(group.count===5)for(var d=0;d<8;d++)ctx.fillRect(start+d,y+6-Math.floor(d*5/7)+1,1,1);
+    ctx.fillStyle='#ddd7b2';
+    for(i=0;i<Math.min(4,group.count);i++)ctx.fillRect(start+i*2,y,1,6);
+    if(group.count===5)for(d=0;d<8;d++)ctx.fillRect(start+d,y+6-Math.floor(d*5/7),1,1);
+    x+=group.width+3;
+  });
+}
+function drawRunHud(){
+  if(!runActive||rogueRun.ended)return;
+  drawLevelTallies(worldLevel());
+  var boons=runHudBoons();
+  for(var i=0;i<boons.length;i++){var pos=runHudIconPosition(i);drawTinyBoon(boons[i],pos.x,pos.y);}
+}
 function difficultyProfile(){
   return {
     easy:{pressure:.18,damage:.26,durability:.55,budget:.36,density:.40},
@@ -5154,6 +5224,7 @@ function frame(now) {
   drawVignette();
   drawWarp(tSec);
   drawWorldBanner(tSec);
+  drawRunHud();
 
   camX = fx; camY = fy;
   requestAnimationFrame(frame);
