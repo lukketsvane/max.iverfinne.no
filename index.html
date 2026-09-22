@@ -3370,10 +3370,11 @@ function stalkAt(wx,wy,maxD){
 }
 function canPlantClimb(classId){return window.MaxClasses.canClimb?window.MaxClasses.canClimb(classId):classId==='runner';}
 function plantClimbHeight(p){return p.growth<.1?3:Math.max(3,plantHeight(p));}
+function plantClimbReady(p){return !!(p&&p.stalk||p&&!p.dead&&p.health>0&&plantClimbHeight(p)>=128*.5);}
 function plantClimbAt(x,y,range){
   var best=null,distance=range==null?10:range;
   gardenPlots.forEach(function(p){
-    if(p.dead||p.health<=0)return;
+    if(!plantClimbReady(p))return;
     var gy=surfaceY(p.x),height=plantClimbHeight(p);
     if(y>gy+4||y<gy-height-4)return;
     var stem=p.x+plantLean(p,Math.max(0,gy-y),tSec),dx=Math.abs(stem-x);
