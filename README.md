@@ -1,264 +1,229 @@
 # MAX · NIGHT GARDEN
 
-A pixel garden roguelite for phones. Collect seeds, grow and protect a garden,
-then climb a beanstalk to the next world. Your result is the garden you grew.
+A phone-first native-pixel garden roguelite. Grow a garden, defend it, explore twenty vertical stages and physically climb onward. The result of a run is the actual garden you grew.
 
-## Run locally
+**Production:** https://max.iverfinne.no  
+**Production branch:** `main`  
+**Runtime:** static HTML/JS/CSS built with esbuild and deployed on Vercel  
+**Realtime/backend:** Supabase Auth + Realtime + Postgres RPCs
 
-Use Node 22 or newer. Run `npm ci && npm run build`, then serve `dist/`, for
-example with `python -m http.server 8765 --directory dist`. Open
-`http://localhost:8765`. The game stays static; esbuild bundles the menu and the
-pinned Supabase client. No server process or CDN script is required in production.
+## The current game contract
 
-- `index.html`: game, original embedded artwork and simulation.
-- `stage-layout.js`: the twenty gardens' platform routes, landing collision and native scenery.
-- `run-director.inc.js`: mixed raids, exploration rewards, specialist enemies and milestone bosses.
-- `run-results.js` / `run-results.css`: full-screen native bouquets from every plant grown during the run, with paged bundles and local records.
-- `game-menu.mjs` / `game-menu.css`: main menu, controls and account UI.
-- `player-account.mjs`: username mapping and legacy cloud-format utilities.
-- `npm test`: game regressions plus account/restore and real Postgres RLS tests
-  through PGlite. Supabase hosting and email configuration are not simulated by
-  these tests; verify hosted sign-up and sign-in separately before release.
+These are product rules, not suggestions. Preserve them unless the design is explicitly changed.
 
-## Play
+### One shared game
 
-On a phone, drag left or right from anywhere to walk or run, and swipe up to
-jump. Drag down to tend a plant within reach, harvest ripe seeds, or plant on
-empty soil. Down at a cleared garden's exit stalk commits to the next garden.
-Moss can swipe up beside any living plant to climb it, swipe up again to leap
-toward another stem, and drag down to descend. Plants can still be growing;
-Moss climbs only as high as the current stem. Taps and stationary
-holds never queue plant actions or walk to targets. Tap pests to defend.
-Tap the robot nearby to refill. Moving cancels a hand action immediately.
+There is no separate single-player and multiplayer mode. **Play** enters the one shared live garden.
 
-Platforms have one-way collision: jump through from below, land on top, and
-jump onward or walk off a ledge. Elevated routes lead to feathers and
-shrine trials; higher optional perches reward improved jumps. Planting and
-tending still require ground soil. No extra movement button is needed.
+- 1–4 players can be present.
+- Players may join an already-running garden.
+- A brief PWA/background interruption must not count as leaving.
+- If the authoritative player disappears, authority can hand over to another active player.
+- A returning player reconnects to the same shared run when the reserved membership is still valid.
+- Settings and boon selection do **not** pause the world.
+- The app must work with normal current Safari/WebKit behavior. Experimental WebKit feature flags are not a requirement.
 
-Keyboard: Left / Right (or A / D) to move, Up (or W) to jump, Down / Space to
-tend the garden, Shift to run, X to dodge, B to defend, L for the lantern and R
-to refill. Settings and Exit are available during play and leave the world
-running. Only boon choices pause an active run; in co-op everyone chooses
-before the team resumes. Tap a boon or use keys 1–3.
+### Characters are exclusive
 
-Choose Mech, Moss, Bulwark or Herbalist before Solo or Together. Each has one
-signature ability: Mech owns watering robots, Moss climbs living plants,
-Bulwark guards nearby plants and Herbalist actively heals neighbouring plants.
-Only Mech can obtain Companion or Rain engine upgrades; only Moss can climb
-ordinary plants and jump between them. All classes can use an unlocked exit.
-The remaining boon paths are shared. Moss,
-Tide, Ember and Moon are independent costumes with the original animation
-timings and anchors. Together supports a private room of 1–4 signed-in players;
-the host starts after each player's class, costume and readiness are confirmed.
+The four playable characters are also the four gameplay roles. There is no separate skin picker.
 
-Reloading always starts a fresh attempt; no local or cloud checkpoint is
-written or loaded. Finished garden records remain available. The browser may
-suspend a background page, but this creates no resumable saved run.
+| Character | Exclusive ability |
+| --- | --- |
+| Mech | Owns the watering robot and robot upgrades |
+| Moss | Climbs living plants once they are at least half their maximum physical height |
+| Bulwark | Protects nearby plants and resists knockback |
+| Herbalist | Stronger tending and nearby plant healing |
 
-## Accounts and Supabase
+Only one connected player may occupy each character. If Mech is already playing, Mech is disabled/greyed for the next player, and the same rule applies to the other three characters. The database also reserves the character so two clients cannot race into the same role.
 
-Players use a username and password, with **no email and no confirmation**.
-Usernames are case-insensitive, 3–24 ASCII letters/digits/`_`/`-`, starting with
-a letter or digit. Internally, `max` maps to `max@players.max.invalid`; `.invalid`
-is intentionally non-deliverable. Supabase Auth hashes passwords and manages
-refreshable sessions. The frontend never stores the password, and does not use
-IP addresses as identity. The reserved identifier is an implementation detail,
-not a player contact address. There is no email-based password recovery.
+### Difficulty belongs to the run
 
-Finished garden records, sound preferences, class and costume selections, and
-remembered login persist.
-There are no save/load controls. Old cloud data and its protected database schema
-are left intact, but the current frontend never reads or writes that slot.
-Garden records are saved on the device. A signed-in player can choose to publish
-a completed bouquet to the online leaderboard. Each published entry retains its
-complete plant records; it never reads a private checkpoint. Published runs are
-client-reported, rather than server-verified competitive scores.
+Difficulty is **Easy / Medium / Hard / Insane**.
 
-Project: `zuezxsuqkvrzypjhbbqq`.
+Only the first player starting an empty shared garden chooses it. Once a run exists, later players see the running difficulty locked and inherit it. Difficulty is not a per-player preference inside an existing run.
 
-One-time hosted setup:
+Easy is intentionally forgiving. It has much lower enemy damage, durability, density and wave budget, slower pressure growth and a longer opening grace period.
 
-1. `npx supabase login`
-2. `npx supabase link --project-ref zuezxsuqkvrzypjhbbqq`
-3. Apply the checked-in `player_cloud_saves` migration with `npx supabase db push`.
-4. In this project's Auth settings, enable password signups, disable **Confirm
-   email**, and set the minimum password length to 8. The local `config.toml`
-   already matches. Do not push the full local config onto an existing hosted
-   project; it also contains local development URLs and unrelated defaults.
-5. Set `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_PUBLISHABLE_KEY` in Vercel, or
-   commit these two public values as `url` and `publishableKey` in
-   `supabase/public-config.json`. Only `sb_publishable_…` keys are accepted by
-   the build. **Never put a secret/service-role key in frontend config.**
-6. Rebuild. Verify username signup returns a session immediately; sign out,
-   sign in and refresh. Login stays remembered; the run starts fresh. No email is sent.
+### Progression must be physical
 
-Without a publishable key the menu honestly presents guest mode. The checked-in
-public config points to the project above. On 21 September 2026, both SQL
-migrations were applied through the authenticated Supabase SQL Editor, email
-confirmation was disabled, and minimum password length was set to 8.
+Do not replace stage progression with a ground-level teleport.
 
-`supabase init` has been run. CLI authentication/linking is separate from the
-dashboard session and was not completed in the build environment. Because SQL
-was applied through the dashboard, reconcile its history **after linking this
-existing project and before running db push**:
+A player must physically climb the cleared exit plant to its top and reach the next stage. When one player has successfully crossed into the next garden, the remaining teammates may be brought forward so the party can continue together. The player who made the ascent stays the ascender; do not teleport them before they complete the climb.
+
+Moss can also climb ordinary living plants for traversal, but ordinary plant climbing never skips uncleared stages.
+
+### Input and items
+
+- Touch drag left/right: move.
+- Swipe up: jump.
+- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend.
+- Drag down / Space: tend, harvest or plant when in reach.
+- Tap a threat / B: throw/defend.
+- X: dodge.
+- R or tap nearby Mech rover: refill.
+- L: lantern.
+- Shift: run on keyboard.
+
+Pickups and bombs must work for both the authoritative player and guests. Guest actions are validated by the host rather than silently discarded.
+
+## Run structure
+
+There are 20 gardens with six route families: terraces, canopy, crossings, ruins, switchbacks and the final Crown layout. One-way platforms let players jump through from below and land on top. Elevated routes contain exploration rewards and shrine trials.
+
+Each normal garden has three finite raids. The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped even though time pressure keeps increasing.
+
+Milestone bosses:
+
+| Garden | Boss |
+| --- | --- |
+| 5 | Mossback |
+| 10 | Bellkeeper |
+| 15 | Moon Moth |
+| 20 | Hollow Crown |
+
+Later specialist enemies include seed thieves, spore casters, shield beetles, healing moths, thorn casters, dew leeches and rammers.
+
+Rats are deliberately a later threat and were softened after playtesting. Their introduction is difficulty-aware:
+
+- Easy: Garden 10 or roughly 9 minutes of elapsed run time.
+- Medium: Garden 8 or roughly 7 minutes.
+- Hard: Garden 7 or roughly 6 minutes.
+- Insane: Garden 6 or roughly 5 minutes.
+
+Black, albino and plague rat variants unlock later still.
+
+## Boons and run pickups
+
+Boons are a live overlay; the simulation continues underneath them. Current build paths include the original upgrades plus:
+
+- Green Thumb — stronger tending.
+- Wide Watering — reaches more neighbours.
+- Barkskin — further plant damage reduction.
+- Mulch — defeated pests restore nearby plants.
+- Long Stride — faster movement.
+- Spring Step — higher jumps.
+
+Mech-only robot boons remain exclusive to Mech.
+
+Run pickups include feathers, embers and dew. They are collected in-world and belong to the current attempt. A run keeps its full plant archive across all twenty gardens and builds the result bouquet from those exact plants.
+
+## Audio
+
+Music and effects are separate device preferences.
+
+Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack.
+
+The soundtrack player is streamed and survives menus/reconnects without decoding the whole playlist into memory.
+
+## PWA / Safari
+
+The game is designed to work as an iPhone PWA without experimental browser configuration.
+
+Backgrounding may suspend JavaScript because iOS controls process lifetime. The multiplayer layer therefore reserves membership briefly and rebuilds Realtime channels when the app returns. Do not solve PWA issues by requiring Safari/WebKit experimental feature flags.
+
+## Repository map
+
+The project deliberately remains a small static game rather than a framework app.
+
+- `index.html` — main simulation, renderer, controls and embedded original game art.
+- `game-menu.mjs` / `game-menu.css` — menu, character/difficulty selection, settings, accounts and shared-play entry.
+- `coop-session.mjs` — Supabase room/session/reconnect/authority transport.
+- `coop-transport.mjs` — encoded realtime frame transport and limits.
+- `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
+- `stage-layout.js` — deterministic twenty-stage platform geometry.
+- `run-director.inc.js` — raids, time pressure, specialist enemies, hazards and bosses.
+- `rat-enemies.inc.js` — rat behavior and native rat integration.
+- `build-paths.js` — boon definitions and choice rules.
+- `max-classes.js` / `player-loadout.mjs` — character rules and persisted selection.
+- `companion.js` — Mech watering robot.
+- `soundtrack.mjs` — streamed soundtrack and music volume.
+- `native-art.mjs` — native enemy/boss artwork integration.
+- `run-results.js` / `run-results.css` — actual-run bouquet and records.
+- `garden-leaderboard.mjs` — opt-in published run records.
+- `review.html` — isolated visual/gameplay fixtures; never player save state.
+- `scripts/build-static.cjs` — production static build.
+- `tests/` — regression suite.
+- `supabase/migrations/` — checked-in database history.
+
+## Development
+
+Requires Node 22 or newer.
 
 ```sh
-npx supabase migration repair 20260921160631 20260921163937 --status applied --linked
+npm ci
+npm test
+npm run build
 ```
 
-For a new empty project, apply all checked-in migrations normally instead. Do not
-mark migrations applied on a database that has not actually received them.
+Serve the production output locally:
 
-For the legacy private cloud-save storage, RLS restricts every row to
-`auth.uid() = user_id` and anonymous clients have no table/function access.
-The save RPC is SECURITY INVOKER, checks the
-expected account and revision, and cannot bypass RLS. The database rejects
-oversized or malformed envelopes; the client validates game data before restore.
+```sh
+python -m http.server 8765 --directory dist
+```
 
-The playing field has no persistent text HUD. Upgrades reset between runs, as do
-crops, seeds, robot upgrades and wildlife relationships.
+Then open `http://localhost:8765`.
 
-## Balance and runs
+A change is not release-ready unless both `npm test` and `npm run build` pass. The regression suite covers gameplay, co-op transport/session behavior, database rules, native art contracts, mobile controls and review fixtures.
 
-Watering rewards meaningful hydration; watering a full plant cannot generate
-points or artificial growth. A harvest needs 0.35 new growth since the previous
-one. Tall plants keep their height. Mutation ranks stop at five, offers span
-different play styles, and surplus XP retains every earned choice.
+At the handoff on 22 September 2026, the latest verified `main` passed **319/319 tests** and the production smoke workflow.
 
-The twenty gardens use six route themes: terraces, canopy, crossings, ruins,
-switchbacks and the final Crown layout. The five recurring themes vary their
-platform widths and route rhythms as the run advances, including real gaps
-that require jumping and narrower later shelves. Two elevated routes
-offer exploration away from the garden; extra pickups on higher perches make
-mobility upgrades useful without replacing the main route. The opposite route
-also holds a two-seed reward for the shared planting reserve.
+## Supabase
 
-Raids send closely spaced mixed groups from alternating sides. Enemy mixes
-depend on the layout and wave, and later gardens support more simultaneous
-attackers. Each raid still has a finite budget: faster defence clears it sooner.
-The global attempt clock increases pressure even while staying in the same
-garden. Existing enemies become tougher and hit harder, wave budgets and
-concurrency rise, and patrols arrive faster. Clearing all three waves still
-leaves a dangerous garden: mixed patrols continue indefinitely. Waiting without
-planting accumulates reward-free predators that attack a new seedling at once.
-Damage and durability keep growing without a time ceiling; active populations
-remain bounded at 24 enemies and 32 hazards. Travel preserves the clock. Boon
-choices freeze it; Settings and ordinary Moss climbing do not. An approaching
-wave gives three brief edge flashes and chimes.
+Hosted project: `zuezxsuqkvrzypjhbbqq`.
 
-In garden 1, enemy durability rises from 1× initially to 3.79× at five minutes,
-8.21× at ten and 21.09× at twenty. Damage rises to 2.93×, 5.99× and 14.91× at
-those times. These multipliers apply to enemies already alive without restoring
-their health. Moving quickly through the run matters even after a strong build.
+Checked-in migrations:
 
-Specialists enter early: seed thieves in garden 2, spore casters in 3, shield
-beetles in 4 and healing moths in 6. Elapsed time also unlocks these roles in an
-earlier garden, so camping in garden 1 cannot preserve its starting enemy mix.
-Marked dive attacks threaten players as they
-move through the routes. Later spore volleys can target players above the ground
-as well as crops, so higher ground does not remove every threat.
+```text
+20260921160631_player_cloud_saves.sql
+20260921163937_save_conflict_http_status.sql
+20260921180722_coop_rooms.sql
+20260921204258_bouquet_leaderboard.sql
+20260922153500_single_shared_garden.sql
+```
 
-Clearing three raids unlocks each earlier garden's exit stalk. The final raid
-in gardens 5, 10 and 15 includes a distinct milestone boss; garden 20 ends the
-run at the Hollow Crown.
+The room schema has since been evolved in place through the shared-garden RPCs. Before changing hosted SQL, inspect the live project and the migration history rather than blindly replaying old migrations.
 
-| Garden | Boss | Counterplay |
-| --- | --- | --- |
-| 5 | Mossback | Root markers announce a charge; jump clear or take a higher route, then attack during its exposed recovery. |
-| 10 | Bellkeeper | Spore volleys alternate with roots aimed at players; intercept spores and move out of marked strikes. |
-| 15 | Moon Moth | Interrupt its healing channel before it restores an ally, opening a vulnerability window. |
-| 20 | Hollow Crown | Three phases mix roots, spores and summoned guards; use its exposed windows to finish the run. |
+Frontend configuration accepts only the public Supabase URL and publishable key. **Never ship a service-role or secret key to the client.**
 
-Optional shrine routes and passing weather events offer rewards at the cost of
-time. Swan feathers, embers and dew pearls stack independently per player.
-See [the run design](docs/run-design.md) for the broader class, item and co-op
-rules; current layouts and encounter progression are defined in
-`stage-layout.js` and `run-director.inc.js`.
+Accounts are optional metadata, not a separate gameplay mode. The game can establish a device identity for zero-friction Play.
 
-Every attempt starts at world one. The run keeps its full bouquet across worlds
-in memory and displays it when the attempt ends. Each finished attempt stores
-its complete plant records and updates personal-best statistics on this device.
-Completed bouquets remain available after reload and retry. Old v6/v7
-checkpoints are ignored.
+## Deployment
 
-## Deployment and database
+Vercel project: `max.iverfinne.no`  
+Project ID: `prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`
 
-The connected Vercel project is **max.iverfinne.no**
-(`prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`). `vercel.json` selects the Other framework,
-`npm ci`, and the static `dist/` build. Pushes to a branch create a preview;
-`main` is the production branch. Verify the deployment's commit and the custom
-domain before calling a release live.
+`vercel.json` builds static `dist/` with `npm ci` and `npm run build`. `main` is the production branch.
 
-See the [21 September release verification](docs/verification/2026-09-21-release.md)
-for the completed handoffs, automated checks, deployed browser evidence and
-remaining manual coverage.
-The [harder-gardens verification](docs/verification/2026-09-21-harder-gardens.md)
-records the subsequent time escalation, exclusive class abilities, platform
-routes, native canvas evidence and the verified production deployment.
+When Vercel's remote build-rate quota is exhausted, do not try to evade account limits. Prefer an already-built deployment promotion, or a supported prebuilt deployment if authenticated CI/CLI credentials are available.
 
-The hosted bouquet migration is
-`20260921204258_bouquet_leaderboard.sql`. It creates public read access to
-published personal bests, a private immutable submission receipt, and the
-ownership-checked `submit_max_garden` RPC. Direct client writes are denied.
-No private saved game is copied into the leaderboard.
+Before calling a release live, verify:
 
-The earlier room migration was applied under hosted version `20260921182418`.
-The local file retains its original generated version `20260921180722`; reconcile
-that existing migration history before using CLI `db push`. The two earlier
-cloud-save migrations were applied manually as documented above. Do not apply
-already-installed schemas again.
+1. GitHub regression CI is green.
+2. The Vercel production deployment SHA matches the intended `main` commit.
+3. `https://max.iverfinne.no/` returns successfully.
+4. Phone/PWA smoke behavior still works.
 
-## Companion and result artwork
+## Persistence
 
-Only Mech can own a watering companion. Mech starts with the small robot and
-can upgrade it twice through Companion boons. It follows its owner, approaches
-reachable thirsty plants, and transfers water from a finite tank up to 78%
-moisture. It gives no care-score, XP, healing or instant growth. Tap the robot or
-press R while nearby, then stay still for the two-second refill.
-Ponds and steep ground block its walking route. It packs away during climbing
-and world travel and rejoins after leaving the visible garden.
+Active runs are intentionally **not** checkpointed for reload. Finished run records and published bouquets may persist, but a browser reload starts a fresh local attempt.
 
-Mech starts at Companion rank 1. Companion boons raise it to ranks 2 and 3,
-competing with normal boon choices. Small / upgraded / large tanks hold
-1 / 1.6 / 2.4 units, with watering
-rates of 0.10 / 0.13 / 0.16 moisture per second. Both upgrades reset on a new run.
-Water remains consistent during world travel within the current attempt. Reload
-or retry clears companion upgrades: Mech starts with the small robot and a fresh
-tank; other classes never receive a robot. Co-op validates this ownership in
-boon choices and restored snapshots, including older or stale class data.
-All UI text is English.
+Brief PWA backgrounding is different: the app should reconnect to the still-running shared garden rather than treating the player as having intentionally left.
 
-Artwork is imported without resampling: the 32×32 starter from
-`fix/native-sprite-contract` at `31805b7`, the supplied 48×40 robot developer pack,
-and the supplied 80×48 watering rover. Cell dimensions include transparent
-padding; the visible robots are 20–22, 29 and 31 pixels tall. Each tier uses its
-own documented anchor and animation timing. The small rover uses the supplied
-separate spray; larger watering frames already contain it.
+## Pixel-art contract
 
-The `assets/results-native/` pack at `205aae9` supplies the bouquet
-compositor and 5×7 font. The live result uses `rogueRun.garden`, the original
-plant drawing callback and the original landscape/Max sprites. Each bundle
-contains up to 24 records; previous/next controls retain every plant in longer
-runs. Static example bouquets and sample leaderboard names are never used as a
-player result. Garden Records retains completed runs on this device, and the
-online leaderboard renders each published entry from its own saved plants.
+Runtime art is native-resolution pixel art.
 
-`/review.html` offers portrait/landscape result fixtures, empty and 53-plant
-runs, all three companion tiers, all five Max appearances, enemy animation
-states, and the Hollow Crown's three phases and attack tells. The native art
-fixtures are `native-skins`, `native-enemies` and `native-crown`; choose one with
-`?mode=native-skins&portrait=1`, or use the review page buttons. Its game copy
-replaces storage with an in-memory map and uses a disconnected guest menu;
-sample runs never replace player saves.
-The `plant-climb` scene exercises Moss on immature plants; `pressure0`,
-`pressure5`, `pressure10` and `pressure20` run the real encounter director in the
-same cleared garden at those elapsed times. The clock continues in these scenes.
-The production game exports no debug API.
+- Keep integer placement.
+- Keep image smoothing disabled.
+- Do not resize every sprite to fill its atlas cell.
+- Preserve each pack's documented anchor/origin.
+- Atlas transparent padding is not object size.
+- Do not replace existing runtime art with generated presentation-board imagery.
 
-The main menu uses native game sprites in a separate night scene with Play,
-Garden, Settings and Credits. Sound is a device preference; help and account
-controls appear only when opened. Gameplay has no persistent text HUD. The
-control suite exercises touch cancellation, relative dragging, quick downward
-swipes, keyboard actions and cancellation when movement resumes. Physical iOS
-PWA testing is still needed to assess thumb feel and device-specific browser behavior.
+See `assets/` and the relevant pack READMEs before changing sprite registration.
+
+## Handoff
+
+Start with [CLAUDE.md](CLAUDE.md) for the current engineering handoff, invariants, infrastructure notes and remaining branch/archive context. Historical verification documents in `docs/verification/` are evidence, not the current source of truth.
+
+The source of truth for behavior is **current `main` + passing tests + this README**.
