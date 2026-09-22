@@ -13,7 +13,7 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 
-async function menu(savedLoadout, { restoredUser = null } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
@@ -24,9 +24,15 @@ async function menu(savedLoadout, { restoredUser = null } = {}) {
   w.testClient = {
     auth: {
       onAuthStateChange(fn) { listener = fn; queueMicrotask(() => fn('INITIAL_SESSION', session)); },
-      async signInAnonymously() { const user = { id: 'anon-player', email: null, is_anonymous: true }; emit(user); return { data: { user, session }, error: null }; },
+      async signInAnonymously() {
+        if (anonymousDisabled) return { data: {}, error: { code: 'anonymous_provider_disabled' } };
+        const user = { id: 'anon-player', email: null, is_anonymous: true }; emit(user); return { data: { user, session }, error: null };
+      },
       async signUp(input) { const user = { id: 'signed-player', email: input.email }; emit(user); return { data: { user, session }, error: null }; },
-      async signInWithPassword(input) { const user = { id: 'signed-player', email: input.email }; emit(user); return { data: { user, session }, error: null }; },
+      async signInWithPassword(input) {
+        if (anonymousDisabled && input.email.startsWith('autoguest_') && !session) return { data: {}, error: { code: 'invalid_credentials' } };
+        const user = { id: 'signed-player', email: input.email }; emit(user); return { data: { user, session }, error: null };
+      },
       async signOut() { emit(null); return { error: null }; },
     },
     realtime: { async setAuth() {}, isConnected: () => true, connect() {} },
@@ -105,6 +111,16 @@ test('Play silently enters the one shared running garden and carries character p
     assert.deepEqual(JSON.parse(JSON.stringify(m.begun.selection)), { classId:'runner', skinId:'moss', difficulty:'easy' });
     assert.equal(m.begun.host,true);assert.equal(m.begun.room.state,'playing');
     assert.equal(m.w.document.querySelector('.max-menu').hidden,true);
+  } finally { m.dom.window.close(); }
+});
+
+test('Play still starts seamlessly when hosted anonymous Auth is disabled', async () => {
+  const m = await menu(undefined,{anonymousDisabled:true});
+  try {
+    m.click('Play');m.click('Play');await m.settle();
+    assert.equal(m.beginCount,1);assert.equal(m.active,true);
+    assert.equal(m.w.document.querySelector('input[name="username"]'),null,'automatic device identity never opens the login form');
+    assert.ok(m.w.localStorage.getItem('max-auto-player-v1'));
   } finally { m.dom.window.close(); }
 });
 
