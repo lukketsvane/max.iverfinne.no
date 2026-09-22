@@ -31,16 +31,18 @@ test('only an offered mutation can be selected', () => {
   assert.equal(game.rogueRun.perks[selected], 1);
 });
 
-test('a boon clears held input, pauses the run, and one tap resumes it', () => {
+test('a boon is a live overlay and never clears held movement', () => {
   const h = loadGame(), {game, elements} = h;
   h.key('keydown', 'ArrowRight'); game.grantRogueXP(4);
   const id = game.rogueRun.choice[0].id, menu = elements.get('perkMenu');
-  assert.equal(menu.getAttribute('role'), 'dialog');
+  assert.equal(menu.getAttribute('role'), 'region');assert.equal(menu.getAttribute('aria-modal'),'false');
   assert.equal(menu.querySelectorAll('button').length, 3);
-  assert.equal(game.readInput().axis, 0);
+  assert.equal(game.readInput().axis, 1);assert.equal(game.runIsPaused(),false);
+  const before=game.runElapsed;h.tick(50);assert.ok(game.runElapsed>before);
   menu.querySelector('button').listeners.click[0]();
   assert.equal(game.rogueRun.perks[id], 1); assert.equal(game.rogueRun.choice, null);
-  assert.equal(game.readInput().axis, 0);
+  assert.equal(game.readInput().axis, 1);
+  h.key('keyup','ArrowRight');
 });
 
 test('rank-five mutations leave the pool; a final available rank remains selectable', () => {
@@ -65,17 +67,16 @@ test('reload starts a fresh run with no queued upgrades or saved crops', () => {
   assert.equal(h.storage.has('max-fuglesprenger-rogue-v6'), false);
 });
 
-test('only the boon choice suspends plants, raids and run time', () => {
+test('boon choices leave plants, raids and the run clock live', () => {
   const h = loadGame(), g = h.game;
   g.resetRogueRun();
   g.gardenPlots = [plot(), plot({x:20})]; g.saveGarden();
   g.gardenRaidActive = true; g.gardenRaidGrace = 5; g.grantRogueXP(4);
   const age = g.gardenPlots[0].age;
   for (let i=0;i<10;i++) h.tick(50);
-  assert.ok(g.rogueRun.choice); assert.equal(g.gardenPlots[0].age, age);
-  assert.equal(g.gardenRaidGrace, 5); assert.equal(g.runElapsed, 0);
+  assert.ok(g.rogueRun.choice); assert.ok(g.gardenPlots[0].age > age);
+  assert.ok(g.gardenRaidGrace < 5); assert.ok(g.runElapsed > 0);assert.equal(g.runIsPaused(),false);
   h.key('keydown', '1'); assert.equal(g.rogueRun.choice, null);
-  h.tick(50); assert.ok(g.gardenPlots[0].age > age); assert.ok(g.runElapsed > 0);
 });
 
 test('a loss finalizes once and waits for an explicit retry', () => {
@@ -199,29 +200,17 @@ test('the result garden keeps every plant through death and world changes; only 
   assert.deepEqual({...resumed.rogueRun.perks},require('../max-classes.js').perks('mech'));
 });
 
-test('a ripe harvest offering a boon suspends the rest of that frame', () => {
+test('a ripe harvest can offer a boon without suspending the rest of that frame', () => {
   const session = loadGame();
   const { game } = session;
   game.gardenPlots = [plot({moisture:.9}), plot({ x: 20 })];
-  game.gardenRaidActive = true;
-  game.gardenRaidGrace = 2;
-  game.gardenRaidSpawn = 1;
+  game.gardenRaidActive = true;game.gardenRaidGrace = 2;game.gardenRaidSpawn = 1;
   game.floatKrek = [{ x: 90, y: -30, vx: -3, vy: 0, face: -1, ph: 0, target: game.gardenPlots[1], bite: .5, think: .3, flee: 0, hp: 1, flash: 0, kind: 1, raid: true }];
-  game.rogueRun.xp = game.rogueRun.next - 1;
-  game.gardenPress = true;
-  game.saveGarden();
-  const neighbourBefore = JSON.stringify(game.gardenPlots[1]);
-  const enemiesBefore = JSON.stringify(game.floatKrek);
+  game.rogueRun.xp = game.rogueRun.next - 1;game.gardenPress = true;game.saveGarden();
   session.tick(50);
   assert.ok(game.rogueRun.choice, 'the ripe harvest must open the earned choice');
-  assert.equal(game.gardenStats.harvested, 1);
-  assert.equal(game.gardenPlots[0].lastHarvestGrowth, 1);
-  assert.equal(game.gardenPlots[0].age, 0);
-  assert.equal(JSON.stringify(game.gardenPlots[1]), neighbourBefore);
-  assert.equal(JSON.stringify(game.floatKrek), enemiesBefore);
-  assert.equal(game.gardenRaidGrace, 2);
-  assert.equal(game.gardenRaidSpawn, 1);
-  assert.equal(game.runElapsed, 0);
+  assert.equal(game.gardenStats.harvested, 1);assert.equal(game.gardenPlots[0].lastHarvestGrowth, 1);
+  assert.ok(game.gardenPlots[1].age>0);assert.ok(game.gardenRaidGrace<2);assert.ok(game.gardenRaidSpawn<1);assert.ok(game.runElapsed>0);
 });
 
 test('a hidden page pauses growth, raid countdown and competition time', () => {
