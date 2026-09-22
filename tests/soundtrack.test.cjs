@@ -42,7 +42,7 @@ test('gesture starts one streamed player; both complete tracks cycle without rec
 });
 test('music volume changes are independent and zero is a true mute', async () => {
   const m = await setup(true, .75); m.gesture(); await settle(); const a = m.players[0];
-  assert.equal(m.contexts[0].gain.gain.value, .21);
+  assert.ok(Math.abs(m.contexts[0].gain.gain.value - .21) < 1e-12);
   m.sound.setVolume(.5); assert.equal(m.contexts[0].gain.gain.value, .14);
   m.sound.setVolume(0); assert.equal(a.paused, true); assert.equal(m.contexts[0].state, 'suspended');
   m.sound.setVolume(.25); await settle(); assert.equal(m.contexts[0].gain.gain.value, .07); assert.equal(a.paused, false);
