@@ -149,20 +149,35 @@ function play() {
   actions.append(pixelText(button('', joinSharedGarden, 'primary'), 'Play', 3, 0));
   card.append(actions, status); updatePlayReady(); back();
 }
+async function ensurePlayIdentity() {
+  if (user) return user;
+  try {
+    const { data, error } = await client.auth.signInAnonymously();
+    if (!error && data?.user) { setUser(data.user); return data.user; }
+  } catch {}
+  // Hosted anonymous Auth may be disabled. Fall back to a device-local,
+  // non-PII account so Play still has zero sign-in friction.
+  const key = 'max-auto-player-v1';
+  let guest;
+  try { guest = JSON.parse(window.localStorage.getItem(key) || 'null'); } catch {}
+  if (!guest?.username || !guest?.password) {
+    const nonce = (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)).replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 12);
+    guest = { username: 'autoguest_' + nonce, password: (globalThis.crypto?.randomUUID?.() || nonce + nonce) + '-max-player' };
+    window.localStorage.setItem(key, JSON.stringify(guest));
+  }
+  const input = credentials(guest.username, guest.password);
+  let result = await client.auth.signInWithPassword(input);
+  if (result.error) result = await client.auth.signUp(input);
+  if (result.error || !result.data?.user) throw result.error || new Error('Could not create a player session.');
+  setUser(result.data.user); return result.data.user;
+}
 async function joinSharedGarden() {
   if (!sessionReady || busy) { updatePlayReady(); return; }
   if (!client) { close(); return; }
-  if (!user) {
-    busy = true; message('Joining garden…');
-    try {
-      const { data, error } = await client.auth.signInAnonymously();
-      if (error) throw error;
-      setUser(data.user);
-    } catch (_) {
-      busy = false; loginDestination = joinSharedGarden; login(); return;
-    }
-    busy = false;
-  }
+  busy = true; message('Joining garden…');
+  try { await ensurePlayIdentity(); }
+  catch (_) { busy = false; message('Could not join yet. Try Play again.', true); return; }
+  busy = false;
   await enterRoom({ global: true });
 }
 function updatePlayReady() {
