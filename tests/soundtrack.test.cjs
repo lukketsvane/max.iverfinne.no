@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const ready = import('../soundtrack.mjs');
 const settle = () => new Promise(resolve => setImmediate(resolve));
 
-async function setup(enabled = true) {
+async function setup(enabled = true, volume = 1) {
   const { createSoundtrack, SOUNDTRACK } = await ready;
   const host = new EventTarget(), document = new EventTarget();
   document.hidden = false; host.document = document;
@@ -24,7 +24,7 @@ async function setup(enabled = true) {
     suspend() { this.state = 'suspended'; return Promise.resolve(); }
     close() { this.state = 'closed'; return Promise.resolve(); }
   };
-  const sound = createSoundtrack({ host, enabled });
+  const sound = createSoundtrack({ host, enabled, volume });
   const gesture = () => document.dispatchEvent(new Event('pointerup'));
   const visibility = hidden => { document.hidden = hidden; document.dispatchEvent(new Event('visibilitychange')); };
   return { sound, host, document, players, contexts, gesture, visibility, tracks: SOUNDTRACK };
@@ -39,6 +39,14 @@ test('gesture starts one streamed player; both complete tracks cycle without rec
   a.dispatchEvent(new Event('ended')); await settle(); assert.equal(a.src, m.tracks[1].src);
   a.dispatchEvent(new Event('ended')); await settle(); assert.equal(a.src, m.tracks[0].src);
   assert.equal(m.players.length, 1); assert.equal(a.plays, 3); m.sound.destroy();
+});
+test('music volume changes are independent and zero is a true mute', async () => {
+  const m = await setup(true, .75); m.gesture(); await settle(); const a = m.players[0];
+  assert.equal(m.contexts[0].gain.gain.value, .21);
+  m.sound.setVolume(.5); assert.equal(m.contexts[0].gain.gain.value, .14);
+  m.sound.setVolume(0); assert.equal(a.paused, true); assert.equal(m.contexts[0].state, 'suspended');
+  m.sound.setVolume(.25); await settle(); assert.equal(m.contexts[0].gain.gain.value, .07); assert.equal(a.paused, false);
+  m.sound.destroy();
 });
 test('saved mute, background and page lifecycle preserve position and cannot resume muted music', async () => {
   const m = await setup(false); m.gesture(); assert.equal(m.players.length, 0);
