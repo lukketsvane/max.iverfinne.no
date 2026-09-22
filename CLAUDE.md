@@ -170,9 +170,13 @@ Use it for:
 
 `main` is the only authoritative development line.
 
-A one-time cleanup job removes only branches whose heads are already ancestors of `main`. Diverged branches are deliberately preserved until their unique commits are reviewed. Do not merge an old branch wholesale into current main.
+The 22 September cleanup removed 27 merged/superseded working branches and closed obsolete asset PRs #5 and #6. The only intentionally retained non-main branch is:
 
-Asset PRs from early iterations may target old game snapshots. Treat them as source material, not architectural truth. Prefer selectively copying audited native assets into current `main`.
+- `assets/crow-moonroot-native-v1` — unique, unmerged Raven/Moonroot boss artwork, tracked by PR #23.
+
+Do not merge PR #23 wholesale into current main. Its art is future source material and its gameplay assumptions predate the current run. If that artwork is used, integrate the specific audited assets against current boss IDs, anchors and tests.
+
+Old closed PRs and historical verification documents are evidence, not architectural truth.
 
 ## Files to read before common tasks
 
