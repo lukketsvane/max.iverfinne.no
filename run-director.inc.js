@@ -228,10 +228,10 @@ function sporeAim(h){
 function updateRunHazards(dt){
   for(var i=runHazards.length-1;i>=0;i--){
     var h=runHazards[i];
-    if(h.tell>0){h.tell=Math.max(0,h.tell-dt);continue;}
+    if(h.tell>0){h.tell=Math.max(0,h.tell-dt);if(!h.tell)rootAbsorb(h);continue;}
     if(!h.hit){
       h.hit=true;
-      gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
+      if(!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*Math.pow(.78,rogueRun.perks.shield||0)*classProtection(p));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
         if(p.health<=.01)p.dead=8;
@@ -243,11 +243,11 @@ function updateRunHazards(dt){
 }
 function updateHazardContact(){
   for(var i=0;i<runHazards.length;i++){
-    var h=runHazards[i];if(h.tell>0||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
+    var h=runHazards[i];if(h.tell>0||h.absorbed||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
     if(Math.abs(P.x-h.x)<h.r&&Math.abs(P.y-h.y)<20){
       hazardHits[h.id]=true;
-      if(P.dodgeT>0)continue;
-      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
+      if(P.dodgeT>0||P.brace>0)continue;
+      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
@@ -532,7 +532,7 @@ function drawRunHazards(t){
   runHazards.forEach(function(h){
     var x=Math.round(h.x-camX),y=Math.round(h.y-camY);if(x<-h.r||x>IW+h.r)return;
     if(drawRatHazard(h,x,y))return;
-    ctx.fillStyle=h.tell>0?'#d5ad63':'#d9c7a1';ctx.globalAlpha=h.tell>0?.55:Math.min(1,h.life*3);
+    ctx.fillStyle=h.absorbed?'#8eb6b8':h.tell>0?'#d5ad63':'#d9c7a1';ctx.globalAlpha=h.tell>0?.55:Math.min(1,h.life*3);
     ctx.fillRect(x-h.r,y-2,h.r*2,1);ctx.fillRect(x-h.r,y-5,1,3);ctx.fillRect(x+h.r-1,y-5,1,3);
     if(h.tell>0){
       var point=hazardPosition(h),sx=Math.round(point.x-camX),sy=Math.round(point.y-camY);
@@ -540,7 +540,7 @@ function drawRunHazards(t){
       else for(var n=-1;n<=1;n++)ctx.fillRect(x+n*6,y-4,1,2);
     }else if(h.type==='gust'){
       ctx.fillStyle='#a9ccd0';for(var n=0;n<3;n++){ctx.fillRect(x-h.r+2+n*3,y-6-n*5,h.r+3,1);ctx.fillRect(x+4+n*2,y-8-n*5,3,1);}
-    }else for(var n=-1;n<=1;n++){ctx.fillRect(x+n*5,y-16+(n?4:0),2,14-(n?4:0));}
+    }else if(!h.absorbed)for(var n=-1;n<=1;n++){ctx.fillRect(x+n*5,y-16+(n?4:0),2,14-(n?4:0));}
     ctx.globalAlpha=1;
   });
 }

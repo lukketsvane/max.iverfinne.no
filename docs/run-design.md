@@ -10,10 +10,12 @@ A run supports up to four players. Players can join after it has started, and sh
 
 One character slot exists for each role:
 
-- Mech — watering robot.
-- Moss — plant climbing.
-- Bulwark — protection.
-- Herbalist — care/healing.
+- Mech — watering robot. Skill: dispatch the rover to the plant under attack.
+- Moss — plant climbing. Skill: pounce, a landing slam that hits harder from higher.
+- Bulwark — protection. Skill: brace, a wider and stronger guard that swallows warned roots.
+- Herbalist — care/healing. Skill: bloom, a burst of care that revives the plant that fell most recently.
+
+A skill is one tap on Max, or E. It has a cooldown that keeps running through boon choices and travel.
 
 A character can be occupied by only one connected player. Taken characters are disabled in the join UI and reserved by the backend.
 
@@ -49,6 +51,8 @@ Moss can attach to ordinary living plants once they have reached at least 50% of
 - Down descends.
 - Dead or removed plants release the climber.
 - Hazards can knock Moss off.
+- A tap on a pest throws from an ordinary stem and keeps the grip. An exit climb never throws.
+- A tap on Max pounces: a hop from the ground, or a dive from a stem or the air. The slam lands with up to double damage from 96 px or higher and never harms plants.
 - Plant height and attachment geometry must be identical for host and guests.
 
 Moss traversal does not itself unlock or advance a stage.

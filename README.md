@@ -27,12 +27,12 @@ There is no separate single-player and multiplayer mode. **Play** enters the one
 
 The four playable characters are also the four gameplay roles. There is no separate skin picker.
 
-| Character | Exclusive ability |
-| --- | --- |
-| Mech | Owns the watering robot and robot upgrades |
-| Moss | Climbs living plants once they are at least half their maximum physical height |
-| Bulwark | Protects nearby plants and resists knockback |
-| Herbalist | Stronger tending and nearby plant healing |
+| Character | Exclusive ability | Skill (tap Max / E) |
+| --- | --- | --- |
+| Mech | Owns the watering robot and robot upgrades | Dispatch: sends the rover (a quarter tank, 8 s) to the plant under attack; it floods the soil, staggers biters and mends the plant while it pours |
+| Moss | Climbs living plants once they are at least half their maximum physical height | Pounce: a hop, or a dive from a stem, that slams pests on landing, up to double damage from 96 px or higher (6 s) |
+| Bulwark | Protects nearby plants and resists knockback | Brace: 65% guard to 64 px for 3 s, shoves pests, swallows warned roots (1 s each); steering, jumping or leaving the ground ends it (10 s) |
+| Herbalist | Stronger tending and nearby plant healing | Bloom: heals nearby plants by 49% of their missing health, waters them and revives the one plant that fell most recently (12 s) |
 
 Only one connected player may occupy each character. If Mech is already playing, Mech is disabled/greyed for the next player, and the same rule applies to the other three characters. The database also reserves the character so two clients cannot race into the same role.
 
@@ -56,10 +56,11 @@ Moss can also climb ordinary living plants for traversal, but ordinary plant cli
 
 - Touch drag left/right: move.
 - Swipe up: jump.
-- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend.
+- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, and a tap on a pest throws from an ordinary stem.
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.
+- Tap Max / E: class skill. A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a tap on Max throws at a pest near the finger, or boosts a stem climb. A Mech rover too low to dispatch refills when tapped over Max. A brace refuses while you steer, and jumping or grabbing a stem out of a pounce spends its cooldown.
 - R or tap nearby Mech rover: refill.
 - L: lantern.
 - Shift: run on keyboard.
