@@ -72,8 +72,20 @@ function home() {
   }
   nav.append(links); content.append(brand, nav);
   content.append(el('p', 'GROW · EXPLORE · SURVIVE', 'max-home-note'));
+  const players = el('p', '', 'max-home-players'); players.hidden = true; content.append(players); showPlayers(players);
   card.append(content);
   queueMicrotask(() => { if (opened && screen === 'home') title.focus({ preventScroll: true }); });
+}
+let playersTimer = 0;
+function showPlayers(node) {
+  clearTimeout(playersTimer);
+  if (!client || !user) return;
+  void refreshSharedStatus().then(s => {
+    if (!node.isConnected || screen !== 'home') return;
+    node.textContent = s.active && s.players > 0 ? s.players + ' IN THE GARDEN' : 'GARDEN IS EMPTY';
+    node.hidden = false;
+    playersTimer = setTimeout(() => showPlayers(node), 20000);
+  });
 }
 function garden() {
   page('garden', 'Your garden');

@@ -54,6 +54,7 @@
 .max-menu .max-home-links button{min-height:44px;padding:10px 2px;background:transparent;border-color:transparent;gap:0;color:#a7bebb}
 .max-home-links svg{display:none}
 .max-menu .max-home-note{margin:24px 0 0;font-size:9px;letter-spacing:.17em;color:#99aead}
+.max-menu .max-home-players{margin:14px 0 0;font-size:9px;letter-spacing:.17em;color:#cfe3c4}
 
 /* Character selection is a part of the landscape, not a second framed modal. */
 .max-menu[data-screen="play"]::before{background:linear-gradient(90deg,#061220ed,#071523bc 55%,#080f2060),linear-gradient(0deg,#06101bb3,transparent 72%)}

@@ -192,3 +192,15 @@ test('account sign-in remains optional metadata rather than a different gameplay
     assert.equal([...m.w.document.querySelectorAll('.max-play-actions button')].length,1);
   } finally { m.dom.window.close(); }
 });
+
+test('the home screen shows how many players are in the shared garden', async () => {
+  const m=await menu(undefined,{restoredUser:{id:'returning-player',email:null},sharedStatus:{active:true,players:3,taken:['mech','runner','bulwark'],difficulty:'medium',mine:null}});
+  try{
+    await m.settle();
+    const note=m.w.document.querySelector('.max-home-players');
+    assert.ok(note&&!note.hidden);assert.equal(note.textContent,'3 IN THE GARDEN');
+  } finally { m.dom.window.close(); }
+  const empty=await menu(undefined,{restoredUser:{id:'returning-player',email:null}});
+  try{ await empty.settle(); assert.equal(empty.w.document.querySelector('.max-home-players').textContent,'GARDEN IS EMPTY'); }
+  finally { empty.dom.window.close(); }
+});
