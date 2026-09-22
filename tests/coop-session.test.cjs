@@ -110,6 +110,25 @@ test('foreground resume rebuilds stale realtime channels after an iOS-style susp
   assert.equal(s.closed,false);assert.equal(s.playing,true);
 });
 
+test('global join reserves the requested character and inherits the server run difficulty',async()=>{
+  const {CoopSession}=await module();
+  const calls=[];
+  const room={id:'room',host:'host',state:'playing',difficulty:'easy',members:[
+    {id:'host',slot:1,ready:true,name:'host',classId:'mech'},
+    {id:'guest',slot:2,ready:true,name:'guest',classId:'runner'}
+  ]};
+  const net=fakeChannelClient({room,userId:'guest'});
+  const original=net.client.rpc;
+  net.client.rpc=async(name,args)=>{calls.push({name,args});return original(name,args);};
+  const s=new CoopSession(net.client,{id:'guest'}, {}, {classId:'runner',difficulty:'insane'});
+  try{
+    await s.enter({global:true});
+    const join=calls.find(q=>q.name==='max_coop_global');
+    assert.deepEqual(join.args,{p_class_id:'runner',p_difficulty:'insane'});
+    assert.deepEqual(s.selection,{classId:'runner',skinId:'moss',difficulty:'easy'},'existing garden difficulty is authoritative');
+  }finally{await s.leave();}
+});
+
 test('character identity owns its appearance while difficulty remains an independent run setting',async()=>{
   const {CoopSession}=await module();
   const room={id:'room',host:'p',state:'playing',members:[{id:'p',slot:1,ready:true,name:'p'}]};
