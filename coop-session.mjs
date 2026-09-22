@@ -83,7 +83,7 @@ export class CoopSession {
           if (!this.closed && this.channels.get(suffix) === channel) {
             this.channels.delete(suffix);
             void this.client.removeChannel(channel);
-            if (!document.hidden) setTimeout(() => { void this.resume(); }, 350);
+            if (!(typeof document !== 'undefined' && document.hidden)) setTimeout(() => { void this.resume(); }, 350);
           }
           resolve();
         }
@@ -260,7 +260,7 @@ export class CoopSession {
   }
   tick(avatar, capture, now = Date.now()) {
     if (!this.playing || this.closed) return;
-    if (!this.host && !document.hidden && now - this.lastHost > 90000) { this.fail('The garden connection expired.'); return; }
+    if (!this.host && !(typeof document !== 'undefined' && document.hidden) && now - this.lastHost > 90000) { this.fail('The garden connection expired.'); return; }
     if (this.host && (this.sendingState || now < this.nextStateAt)) return;
     if (now - this.lastSend < (this.host ? 100 : 66)) return;
     this.lastSend = now;
