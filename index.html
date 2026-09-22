@@ -2604,7 +2604,7 @@ var gardenPlots=[], gardenSeeds=0, gardenSaveT=0, gardenStats={harvested:0,lost:
 var floatKrek=[], krekSpawnT=7;
 var gardenScore=0,gardenCombo=0,gardenComboT=0,gardenPower=0,gardenFeverT=0;
 var gardenWave=0,gardenRaidT=12,gardenRaidActive=false,gardenRaidSpawn=0,gardenRaidGrace=0,roundLastSecond=-1;
-var WILD_PLANTS=false, seedPickups=[], seedCollected={}, seedSpawnClock=0, seedStreak=0, seedStreakT=0;
+var WILD_PLANTS=false, seedPickups=[], seedCollected={}, seedSpawnClock=0, seedPickupUid=0, seedStreak=0, seedStreakT=0;
 var FINAL_WAVE=3,runElapsed=0,runFinishT=0,runWon=false,raidLostStart=0,gardenBossSpawned=false;
 var rogueMeta={runs:0,wins:0,bestWave:0,bestScore:0,bestTime:0,petals:0};
 var selectedPerk=null, resultAtlasReady=false, menuPaused=false, runActive=false, companion=null;
@@ -2969,7 +2969,7 @@ function ensureSeedPickups(){
   }
 }
 function spawnLooseSeeds(x,y,n){
-  for(var i=0;i<n;i++)seedPickups.push({id:null,x:x+(Math.random()-.5)*6,y:y-6-Math.random()*4,amount:1,fall:true,vx:(Math.random()-.5)*18,vy:-18-Math.random()*15,ph:Math.random()*6.28});
+  for(var i=0;i<n;i++)seedPickups.push({id:null,uid:++seedPickupUid,x:x+(Math.random()-.5)*6,y:y-6-Math.random()*4,amount:1,fall:true,vx:(Math.random()-.5)*18,vy:-18-Math.random()*15,ph:Math.random()*6.28});
 }
 function collectSeed(q){
   if(q.id)seedCollected[q.id]=1;
@@ -2994,7 +2994,12 @@ function updateSeedPickups(dt){
     magnet=10+(collectorPerks.magnet||0)*12;
     if(q.fall){q.vy+=58*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.94,dt*60);var g=surfaceY(q.x)-2;if(q.y>=g){q.y=g;q.vy=0;q.vx=0;q.fall=false;}}
     if(magnet>10&&Math.hypot(q.x-collector.x,q.y-(collector.y-6))<magnet){q.x+=(collector.x-q.x)*Math.min(1,dt*(2+(collectorPerks.magnet||0)*1.2));q.y+=(collector.y-6-q.y)*Math.min(1,dt*2.2);}
-    if(Math.abs(q.x-collector.x)<(q.sky?12:7)&&Math.abs(q.y-(collector.y-6))<(q.sky?24:18)){collectSeed(q);continue;}
+    if(Math.abs(q.x-collector.x)<(q.sky?12:7)&&Math.abs(q.y-(collector.y-6))<(q.sky?24:18)){
+      if(coopGuest()){
+        if(!q.claiming&&coopAction('pickup-seed',{seedId:q.id||'',seedUid:Number.isSafeInteger(q.uid)?q.uid:0}))q.claiming=true;
+      }else collectSeed(q);
+      continue;
+    }
     if(!q.id&&Math.abs(q.x-collector.x)>IW*2.2)seedPickups.splice(i,1);
   }
 }
