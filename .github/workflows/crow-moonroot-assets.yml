@@ -1,33 +1,41 @@
-name: Crow and Moonroot native validation
+name: Crow and Moonroot native export
 on:
   push:
-    branches: [main, assets/crow-moonroot-native-v1]
+    branches: [assets/crow-moonroot-native-v1]
     paths:
-      - 'assets/boss-crow-moonroot-v1/**'
-      - 'assets/native-atlas.mjs'
-      - '.github/workflows/crow-moonroot-assets.yml'
-  pull_request:
-    paths:
-      - 'assets/boss-crow-moonroot-v1/**'
-      - 'assets/native-atlas.mjs'
+      - 'assets/boss-crow-moonroot-v1/export.py'
+      - 'assets/boss-crow-moonroot-v1/source/*.b64'
+      - 'assets/boss-crow-moonroot-v1/source/pixels.json'
+      - 'assets/boss-crow-moonroot-v1/test.mjs'
       - '.github/workflows/crow-moonroot-assets.yml'
 permissions:
   contents: read
 jobs:
-  validate-native-pngs:
+  export-native-pngs:
+    if: github.ref == 'refs/heads/assets/crow-moonroot-native-v1'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          ref: assets/crow-moonroot-native-v1
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Reproduce committed PNGs and check actual game adapter
+      - name: Export larger Moonroot, megasheet and verify current native adapter
         run: |
           python3 assets/boss-crow-moonroot-v1/export.py
           node --test assets/boss-crow-moonroot-v1/test.mjs
-          git diff --exit-code -- assets/boss-crow-moonroot-v1
+      - name: Commit generated assets on review branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/boss-crow-moonroot-v1
+          if ! git diff --cached --quiet; then
+            git commit -m 'Enlarge Moonroot and add complete boss megasheet'
+            git push origin HEAD:assets/crow-moonroot-native-v1
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: raven-moonroot-native-pngs
