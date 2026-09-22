@@ -4,7 +4,11 @@
   "engines": { "node": ">=22" },
   "scripts": {
     "build": "node scripts/build-static.cjs",
-    "test": "node --test tests/*.test.cjs"
+    "test": "node --test tests/*.test.cjs",
+    "figma:check": "node scripts/figma-sync.mjs check",
+    "figma:pull": "node scripts/figma-sync.mjs pull",
+    "figma:manifest": "node scripts/figma-sync.mjs manifest",
+    "figma:drafts": "node scripts/figma-sync.mjs drafts"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.116.0"

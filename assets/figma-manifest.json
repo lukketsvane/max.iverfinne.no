@@ -1,0 +1,173 @@
+{
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "fileName": "max.iverfinne.no max fuglesprenger",
+  "url": "https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF",
+  "pages": { "production": "10:2", "draft": "0:1" },
+  "sourceOfTruth": {
+    "page": "0:1",
+    "section": "52:2",
+    "name": "PRODUCTION ASSETS — CURRENT MAIN — NATIVE 1×",
+    "notes": [
+      "runtime-loaded source sheets · current main 3411e8d · keep at exact source size · no review/unused art",
+      "ACTIVE RUNTIME ONLY · SOURCE OF TRUTH",
+      "Layer names = exact repository paths · every source sheet remains at native dimensions · PNG export preset = 1×"
+    ],
+    "groups": [
+      { "nodeId": "52:5", "group": "players", "name": "01 PLAYERS — production" },
+      { "nodeId": "52:7", "group": "enemies", "name": "02 ENEMIES — production" },
+      { "nodeId": "52:9", "group": "rats", "name": "03 RATS — production" },
+      { "nodeId": "52:11", "group": "bosses", "name": "04 BOSSES — production" },
+      { "nodeId": "52:13", "group": "companion", "name": "05 COMPANION — production" }
+    ]
+  },
+  "rules": {
+    "pixelArt": {
+      "nodeId": "38:4",
+      "title": "RULES",
+      "lines": [
+        "1 game pixel = 1 Figma pixel",
+        "Work only on integer X / Y / W / H",
+        "No rotation · no blur · no fractional scaling",
+        "Use solid pixels or binary transparency",
+        "Zoom in to 1600–6400% instead of enlarging masters",
+        "Export PNG at 1× with transparency",
+        "Keep anchors / sockets on integer coordinates",
+        "Use the 1×1 pixel primitive for drawing"
+      ]
+    },
+    "exportCheck": {
+      "nodeId": "40:47",
+      "title": "EXPORT CHECK — before commit",
+      "lines": [
+        "✓ master frame is the intended native pixel dimensions",
+        "✓ every shape sits on integer coordinates",
+        "✓ no rotations, blur, shadows or fractional scale",
+        "✓ transparent background where required",
+        "✓ anchors / sockets match the game contract",
+        "✓ export PNG at 1× only",
+        "✓ compare beside Max / crow / current enemies before Git"
+      ]
+    },
+    "masterGrids": [
+      { "nodeId": "39:4", "name": "MASTER 16×16 — ICON", "width": 16, "height": 16, "anchor": null },
+      { "nodeId": "39:7", "name": "MASTER 32×32 — ACTOR — anchor 16,31", "width": 32, "height": 32, "anchor": [16, 31] },
+      { "nodeId": "39:10", "name": "MASTER 40×32 — RAT — anchor 20,27", "width": 40, "height": 32, "anchor": [20, 27] },
+      { "nodeId": "39:13", "name": "MASTER 64×48 — ROBOT / DRONE — anchor 32,44", "width": 64, "height": 48, "anchor": [32, 44] },
+      { "nodeId": "39:16", "name": "MASTER 64×64 — FX / HOVER — anchor 32,32", "width": 64, "height": 64, "anchor": [32, 32] },
+      { "nodeId": "39:19", "name": "MASTER 64×96 — PLANT — anchor 32,95", "width": 64, "height": 96, "anchor": [32, 95] },
+      { "nodeId": "39:22", "name": "MASTER 128×128 — BOSS", "width": 128, "height": 128, "anchor": null },
+      { "nodeId": "39:25", "name": "MASTER 192×128 — HUGE BOSS", "width": 192, "height": 128, "anchor": null }
+    ],
+    "palette": {
+      "nodeId": "39:39",
+      "colors": [
+        "#0E111B",
+        "#151926",
+        "#1B1F2E",
+        "#242A3E",
+        "#38475F",
+        "#5E6781",
+        "#B2AF99",
+        "#FFFFFF",
+        "#1E4852",
+        "#315F6A",
+        "#4A868D",
+        "#58B1CC",
+        "#3B77DC",
+        "#5D93D5",
+        "#0E1E1D",
+        "#183427",
+        "#274628",
+        "#3B5A2E",
+        "#54755A",
+        "#80993F",
+        "#A3BF59",
+        "#261E18",
+        "#3B2D21",
+        "#6A5A44",
+        "#7E7347",
+        "#F5D25A",
+        "#D9B350",
+        "#9F469A",
+        "#DBA995"
+      ]
+    }
+  },
+  "production": [
+    { "path": "assets/boss-milestones-v1/native/05-mossback.png", "nodeId": "53:32", "group": "bosses", "width": 256, "height": 256, "sha1": "6b9aea40247bf56064d063aa38093a84eb794e38" },
+    { "path": "assets/boss-milestones-v1/native/10-bellkeeper.png", "nodeId": "53:34", "group": "bosses", "width": 256, "height": 256, "sha1": "f1f599ecb883a6e8ba3edc97571289c881abb851" },
+    { "path": "assets/boss-milestones-v1/native/15-moon-moth.png", "nodeId": "53:36", "group": "bosses", "width": 256, "height": 256, "sha1": "26eddc53b1391836d17f2c501c7ac0306ed666be" },
+    { "path": "assets/companion/large-rover_left_640x288.png", "nodeId": "53:40", "group": "companion", "width": 640, "height": 288, "sha1": "32ec479cbb4411c055a3acad600898c0851bc67e" },
+    { "path": "assets/companion/robot.png", "nodeId": "53:48", "group": "companion", "width": 384, "height": 560, "sha1": "f0d695c258f3eed7fe380e062a00f5a7cda0f429" },
+    { "path": "assets/enemies-v1/healing-moth/sprites.png", "nodeId": "53:22", "group": "enemies", "width": 128, "height": 128, "sha1": "ca327a0e09e3f010993e09c09e5555d2bb5c03df" },
+    { "path": "assets/enemies-v1/hollow-crown/sprites.png", "nodeId": "53:38", "group": "bosses", "width": 256, "height": 512, "sha1": "8f712db561653898f964622751de5003760b8c61" },
+    { "path": "assets/enemies-v1/seed-thief/sprites.png", "nodeId": "53:16", "group": "enemies", "width": 128, "height": 128, "sha1": "942e67c628dc15722b962cebaffc627001895b76" },
+    { "path": "assets/enemies-v1/shield-beetle/sprites.png", "nodeId": "53:20", "group": "enemies", "width": 128, "height": 128, "sha1": "c20590fdd14a43fb8ad8c0d129430bbc39437d6d" },
+    { "path": "assets/enemies-v1/spore-caster/sprites.png", "nodeId": "53:18", "group": "enemies", "width": 128, "height": 128, "sha1": "3116212a78f1875e9e145e8dbbf0939d19c53378" },
+    { "path": "assets/max-skins-v1/ember/interaction.png", "nodeId": "53:7", "group": "players", "width": 256, "height": 256, "sha1": "7e8b77d2987e4016c3cdb363ffedf56a22061920" },
+    { "path": "assets/max-skins-v1/ember/main.png", "nodeId": "53:6", "group": "players", "width": 256, "height": 256, "sha1": "605ec297a37acc78ea92a1ecd52de72c6478d9fb" },
+    { "path": "assets/max-skins-v1/moon/interaction.png", "nodeId": "53:9", "group": "players", "width": 256, "height": 256, "sha1": "5aa3c76cf59ce60bc068e17ad905d5531c1f1389" },
+    { "path": "assets/max-skins-v1/moon/main.png", "nodeId": "53:8", "group": "players", "width": 256, "height": 256, "sha1": "7bec397467ffb6a060f4aa334f806e8773484d20" },
+    { "path": "assets/max-skins-v1/moss/interaction.png", "nodeId": "53:3", "group": "players", "width": 256, "height": 256, "sha1": "a27ba0f93e1c70528f7b8ac9e0c3a2569ddc80e2" },
+    { "path": "assets/max-skins-v1/moss/main.png", "nodeId": "53:2", "group": "players", "width": 256, "height": 256, "sha1": "713440e21d19f81e26b54a914ba5fc488d595435" },
+    { "path": "assets/max-skins-v1/tide/interaction.png", "nodeId": "53:5", "group": "players", "width": 256, "height": 256, "sha1": "b84f4d742a297c4203b7d73974d9b2e2d0182a29" },
+    { "path": "assets/max-skins-v1/tide/main.png", "nodeId": "53:4", "group": "players", "width": 256, "height": 256, "sha1": "efdc93836539fd20d248f60848ed4245ecdbdc70" },
+    { "path": "assets/native/rover.png", "nodeId": "53:42", "group": "companion", "width": 256, "height": 192, "sha1": "bbada6438a39d925b8ed5ee9488faceea4c548c7" },
+    { "path": "assets/native/water-fx.png", "nodeId": "53:44", "group": "companion", "width": 128, "height": 32, "sha1": "d50d1f76571caac8fd3444eba2e0f9a3186d9e16" },
+    { "path": "assets/rat-enemies-v1/albino/sprites.png", "nodeId": "53:28", "group": "rats", "width": 384, "height": 160, "sha1": "a5e6ed4247950405186c99068a7e9b95d5dac4f7" },
+    { "path": "assets/rat-enemies-v1/black/sprites.png", "nodeId": "53:26", "group": "rats", "width": 384, "height": 160, "sha1": "9da1a16ddb1e7eb7b1e72e222b980134361c744e" },
+    { "path": "assets/rat-enemies-v1/common/sprites.png", "nodeId": "53:24", "group": "rats", "width": 384, "height": 160, "sha1": "e39fb5eaa15179d7eba95eb030a097052b5774fe" },
+    { "path": "assets/rat-enemies-v1/plague/sprites.png", "nodeId": "53:30", "group": "rats", "width": 384, "height": 160, "sha1": "691c06d2caa89fc6c22f6a63dc65ea9f746ed9a2" },
+    { "path": "assets/results-native/sprites/font-5x7.png", "nodeId": "53:46", "group": "companion", "width": 96, "height": 32, "sha1": "972d11f3bcb444d13d8b748fd56585bd8f0d53bb" }
+  ],
+  "unused": [
+    { "path": "assets/boss-milestones-v1/native/20-hollow-crown.png", "nodeId": "35:6", "section": "34:11", "width": 256, "height": 256, "sha1": "548b0ac0bf5b6af7a8df1f207b6cc900ea92ed14", "status": "unused" },
+    { "path": "assets/companion/large-rover_right_640x288.png", "nodeId": "35:10", "section": "34:11", "width": 640, "height": 288, "sha1": "bea4c807f8e32c8e22cf431155be98b9ba864bfc", "status": "unused" },
+    { "path": "assets/expansion/garden_stations.png", "nodeId": "35:11", "section": "34:11", "width": 512, "height": 256, "sha1": "6bc90c031339ecd1d160ae8e6ba0fe23f759bc14", "status": "unused" },
+    { "path": "assets/expansion/interaction_fx.png", "nodeId": "35:24", "section": "34:11", "width": 512, "height": 512, "sha1": "0255c0815798504135b959b678cb57621b80f776", "status": "unused" },
+    { "path": "assets/expansion/inventory_items.png", "nodeId": "35:26", "section": "34:11", "width": 128, "height": 32, "sha1": "79d8c9b4fe7d0ed42d6b4213953370a21d5164fa", "status": "unused" },
+    { "path": "assets/expansion/plant_cargo.png", "nodeId": "35:15", "section": "34:11", "width": 256, "height": 512, "sha1": "0c0be88fe9e76832547a2f1fc8e7d3ef626b0d87", "status": "unused" },
+    { "path": "assets/expansion/plant_growth.png", "nodeId": "35:13", "section": "34:11", "width": 512, "height": 768, "sha1": "97dde3e0c962f4f49c1b86bac498aab0ff545592", "status": "unused" },
+    { "path": "assets/expansion/plant_thief_drone.png", "nodeId": "35:17", "section": "34:11", "width": 512, "height": 512, "sha1": "92cfe82f2991eb89734803911fd800625885b064", "status": "unused" },
+    { "path": "assets/expansion/robot_parts.png", "nodeId": "35:21", "section": "34:11", "width": 256, "height": 128, "sha1": "1dafc3a8cc87e9427bd9da7f87a5ddf563a124ef", "status": "unused" },
+    { "path": "assets/expansion/water_fx.png", "nodeId": "35:22", "section": "34:11", "width": 512, "height": 512, "sha1": "bb82473cc5df94ab30d3c5d8f47ea7aaae7f43d9", "status": "unused" },
+    { "path": "assets/expansion/watering_robot.png", "nodeId": "35:14", "section": "34:11", "width": 512, "height": 512, "sha1": "a5fbd4e002a38ce337b6f7b624b5f4a8db2eba91", "status": "unused" },
+    { "path": "assets/results-native/sprites/bouquet-reveal.png", "nodeId": "35:5", "section": "34:11", "width": 768, "height": 96, "sha1": "f477ed731aab7b80ab18e08548d32ec85c0c1ae0", "status": "unused" },
+    { "path": "assets/results-native/sprites/bouquets-static.png", "nodeId": "35:4", "section": "34:11", "width": 384, "height": 192, "sha1": "a0c633e1db2ded6b601b64b0f3bbc8117f07bf1b", "status": "unused" },
+    { "path": "assets/results-native/sprites/bouquets-sway.png", "nodeId": "35:2", "section": "34:11", "width": 768, "height": 384, "sha1": "fafb5ea41ec9e83761bae01796ce16b82f15bd5c", "status": "unused" },
+    { "path": "assets/results-native/sprites/plant-atlas-native.png", "nodeId": "35:9", "section": "34:11", "width": 512, "height": 118, "sha1": "b98bbf5480d0d7ccd2e968c0c4ed28e7521e2d60", "status": "unused" },
+    { "path": "assets/results-native/sprites/plant-parts-trimmed.png", "nodeId": "35:12", "section": "34:11", "width": 256, "height": 128, "sha1": "22444953d1e2b74d57c424aefb8d25913cef970b", "status": "unused" },
+    { "path": "assets/results-native/sprites/plants-growth.png", "nodeId": "35:3", "section": "34:11", "width": 576, "height": 480, "sha1": "c1b32e5f44f02d6e56f4b6853d417878e79e413e", "status": "unused" },
+    { "path": "assets/results-native/sprites/ui-controls.png", "nodeId": "35:25", "section": "34:11", "width": 256, "height": 128, "sha1": "f77ee48f248576387d0b669d6f10289b9e65e751", "status": "unused" },
+    { "path": "assets/results-native/sprites/ui-labels-en.png", "nodeId": "35:23", "section": "34:11", "width": 256, "height": 64, "sha1": "cb7c2f063cb3b82922e1a46a76f6f8a6aaa1e301", "status": "unused" },
+    { "path": "docs/asset-review/raider-drone-v1/damage.png", "nodeId": "35:19", "section": "34:11", "width": 512, "height": 64, "sha1": "47848e0c887101d148019f90bac210ed18d28c61", "status": "unused" },
+    { "path": "docs/asset-review/raider-drone-v1/idle.png", "nodeId": "35:16", "section": "34:11", "width": 512, "height": 64, "sha1": "c6b7af8ee2c166a4926314126aaaf79fa1087548", "status": "unused" },
+    { "path": "docs/asset-review/raider-drone-v1/move.png", "nodeId": "35:20", "section": "34:11", "width": 512, "height": 64, "sha1": "0d1a4aef4f20483bb56d729d706bb61dc2b4c922", "status": "unused" },
+    { "path": "docs/asset-review/raider-drone-v1/theft-airframe.png", "nodeId": "35:7", "section": "34:11", "width": 512, "height": 64, "sha1": "fbe59b1da3ddbef2a3259628dd02d4ba205c8a07", "status": "unused" },
+    { "path": "docs/asset-review/raider-drone-v1/theft-payload-fx.png", "nodeId": "35:8", "section": "34:11", "width": 512, "height": 64, "sha1": "ddf175dc08f8132e6b078a52cf6f32a5d7723fed", "status": "unused" },
+    { "path": "docs/asset-review/raider-drone-v1/theft.png", "nodeId": "35:18", "section": "34:11", "width": 512, "height": 64, "sha1": "a941f8d167c085cd0418fefc60b05b6e8ce69f54", "status": "unused" }
+  ],
+  "reference": [
+    { "nodeId": "9:13", "name": "MAX_USED_ASSETS_MEGASHEET — 2048×2592 — 1×", "section": "10:3", "width": 2048, "height": 2592, "sha1": "332c74a4476ad70b1f2373102c97d882c01f8f2b", "status": "reference" },
+    { "nodeId": "9:14", "name": "01_enemies — 2048×544 — 1×", "section": "10:4", "width": 2048, "height": 544, "sha1": "201bfc9bef5dae31b41c33ef3808c3d3d4932acb", "status": "reference" },
+    { "nodeId": "9:15", "name": "02_rats — 2048×192 — 1×", "section": "10:4", "width": 2048, "height": 192, "sha1": "1d144d0a68a879e8866b91aaf21ecf0d5465f083", "status": "reference" },
+    { "nodeId": "9:16", "name": "03_max_skins — 2048×560 — 1×", "section": "10:4", "width": 2048, "height": 560, "sha1": "8acc302236629665f1b302cc6ff9f4a3d7e8e9be", "status": "reference" },
+    { "nodeId": "9:17", "name": "04_expansion_gameplay — 2048×1328 — 1×", "section": "10:4", "width": 2048, "height": 1328, "sha1": "16cc29ea30b1d303f301fd06fc2628194321eac4", "status": "reference" },
+    { "nodeId": "9:18", "name": "05_results_plants_ui — 2048×656 — 1×", "section": "10:4", "width": 2048, "height": 656, "sha1": "13559742959c682f1dd50061aa418a15ef08dcfa", "status": "reference" },
+    { "nodeId": "9:19", "name": "06_companion_native — 2048×592 — 1×", "section": "10:4", "width": 2048, "height": 592, "sha1": "90537bec4a1fc4367ac148b57554473a1ed0650e", "status": "reference" }
+  ],
+  "draftSections": [
+    { "nodeId": "34:2", "name": "ARCHIVE — OLD USED MEGASHEET", "kind": "archive" },
+    { "nodeId": "34:3", "name": "ARCHIVE — OLD USED CONTACT SHEETS", "kind": "archive" },
+    { "nodeId": "34:11", "name": "UNUSED ASSETS — MEGASHEET — NATIVE 1×", "kind": "unused" },
+    { "nodeId": "38:2", "name": "PIXEL ART WORKBENCH — NATIVE 1×", "kind": "workbench" },
+    { "nodeId": "39:28", "name": "BRAND / LOGO — 104×40 NATIVE @1×", "kind": "draft" },
+    { "nodeId": "40:2", "name": "PWA ICON — 64×64 NATIVE MASTER @1× → 192/512 EXPORT", "kind": "draft" },
+    { "nodeId": "52:2", "name": "PRODUCTION ASSETS — CURRENT MAIN — NATIVE 1×", "kind": "production" },
+    { "nodeId": "62:2", "name": "DRAFT — STORM ROOK RIDGE — PROCESSED NATIVE 1×", "kind": "draft" },
+    { "nodeId": "62:27", "name": "NEW BIOME ASSETS — PROCESSED CANDIDATES — NATIVE 1×", "kind": "draft" },
+    { "nodeId": "62:33", "name": "SOURCE REFERENCES — JPEG — EXACT SOURCE SIZE — DO NOT EXPORT", "kind": "reference" },
+    { "nodeId": "69:2", "name": "DRAFT — FROSTWING HIGHLANDS — PROCESSED NATIVE 1×", "kind": "draft" },
+    { "nodeId": "69:3", "name": "OWL / NIGHT BIRD — PROCESSED NATIVE 1×", "kind": "draft" }
+  ]
+}
