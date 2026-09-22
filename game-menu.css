@@ -191,3 +191,5 @@
 .max-playing-now{display:grid;gap:8px;margin:0 0 18px}
 .max-menu .max-playing-run{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;background:#102a2dcc;border-color:#668e78}
 .max-playing-run strong{color:#eee9ce;font-size:12px}.max-playing-run span{color:#a9c7aa;font-size:9px;letter-spacing:.08em}
+
+.max-play-one{grid-template-columns:1fr}
