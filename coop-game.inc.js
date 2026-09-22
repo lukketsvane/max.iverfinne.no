@@ -157,7 +157,6 @@ function coopShowChoices(){
   rogueRun.perks=m.perks;
   rogueRun.choice=coop.choosing&&m.choices.length?m.choices.map(function(id){return ROGUE_PERKS.find(function(p){return p.id===id;});}).filter(Boolean):null;
   if(rogueRun.choice){renderRogueChoice();}
-  else if(coop.choosing){perkMenu.innerHTML='<span class="perk-wait" role="status">Waiting for your team…</span>';perkMenu.style.display='grid';}
   else {perkMenu.style.display='none';}
 }
 function coopTeamPerks(){
