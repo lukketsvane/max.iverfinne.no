@@ -4,12 +4,12 @@ function coopGuest(){return !!(coop&&!coop.host);}
 function coopAction(type,data){return !!(coopGuest()&&coop.network.action(type,Object.assign({},data,{world:worldLevel()})));}
 function coopMembers(){return coop?Object.values(coop.members).filter(function(m){return !m.left;}):[];}
 function coopSize(){return coop?coopMembers().length:1;}
-function coopAvatar(){return {world:worldLevel(),classId:rogueRun.classId,skin:P.skin,x:P.x,y:P.y,vx:P.vx,vy:P.vy,face:P.face,anim:P.anim,frame:P.frame,st:P.st,grounded:P.grounded,wet:!!P.wet,dodging:P.dodgeT>0,lampLit:P.lampLit};}
+function coopAvatar(){return {world:worldLevel(),classId:rogueRun.classId,skin:P.skin,x:P.x,y:P.y,vx:P.vx,vy:P.vy,face:P.face,anim:P.anim,frame:P.frame,st:P.st,grounded:P.grounded,wet:!!P.wet,dodging:P.dodgeT>0,lampLit:P.lampLit,exitClimb:!!(climb&&climb.exit)};}
 function coopMemberAvatar(m){return (coopActor?m.id===coopActor.id:m.id===coop.me)?P:m.avatar;}
 function coopCleanAvatar(a){
   if(!a||!['x','y','vx','vy','world'].every(function(k){return Number.isFinite(a[k])&&Math.abs(a[k])<1e7;})||!Object.hasOwn(ANIM,a.anim))return null;
   if(Math.abs(a.vx)>180||Math.abs(a.vy)>500)return null;
-  return {world:a.world|0,classId:window.MaxClasses.clean(a.classId),skin:window.MaxClasses.skin(a.skin),x:a.x,y:a.y,vx:a.vx,vy:a.vy,face:a.face<0?-1:1,anim:a.anim,frame:Math.max(0,Math.min(15,a.frame|0)),st:['free','float','climb','task','watering','squat','lamp','rest','toCrouch','toStand','lampUp','lampDn','toSit','unsit'].indexOf(a.st)>=0?a.st:'free',grounded:!!a.grounded,wet:!!a.wet,dodging:typeof a.dodging==='boolean'?a.dodging:undefined,lampLit:Math.max(0,Math.min(1,+a.lampLit||0))};
+  return {world:a.world|0,classId:window.MaxClasses.clean(a.classId),skin:window.MaxClasses.skin(a.skin),x:a.x,y:a.y,vx:a.vx,vy:a.vy,face:a.face<0?-1:1,anim:a.anim,frame:Math.max(0,Math.min(15,a.frame|0)),st:['free','float','climb','task','watering','squat','lamp','rest','toCrouch','toStand','lampUp','lampDn','toSit','unsit'].indexOf(a.st)>=0?a.st:'free',grounded:!!a.grounded,wet:!!a.wet,dodging:typeof a.dodging==='boolean'?a.dodging:undefined,lampLit:Math.max(0,Math.min(1,+a.lampLit||0)),exitClimb:!!a.exitClimb};
 }
 function beginCoop(network){
   var selection=network.loadouts&&network.loadouts[network.user.id]||network.room.members.find(function(m){return m.id===network.user.id;})||{};
@@ -63,7 +63,12 @@ function coopInput(id,packet){
   // The authenticated lobby selection is fixed for the whole run. Inputs carry
   // presentation data for compatibility, but cannot change an actor's kit.
   if(a){a.classId=m.classId;a.skin=m.skin;}
-  if(a&&a.st==='climb'&&(!window.MaxClasses.canClimb(m.classId)||!plantClimbAt(a.x,a.y,10)))a=null;
+  if(a&&a.st==='climb'){
+    var climbPlant=plantClimbAt(a.x,a.y,10),exitPlant=stalkAt(a.x,a.y,10);
+    var exitAbove=exitPlant?surfaceY(exitPlant.x)-a.y:-1;
+    var validExit=!!(a.exitClimb&&exitPlant&&exitPlant.stalk&&rogueRun.clearedWorld===worldLevel()&&worldLevel()<RUN_STAGES&&exitAbove>=0&&exitAbove<=cloudHeight()+12);
+    if(!validExit&&(!window.MaxClasses.canClimb(m.classId)||!climbPlant))a=null;
+  }
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
     if(Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
@@ -82,10 +87,10 @@ function coopInput(id,packet){
     var actor=(a&&a.world===worldLevel())?a:m.avatar;
     if(runIsPaused()||!actor||actor.world!==worldLevel())return;
     if(action.type==='travel'){
-      var actor=m.avatar,plant=stalkAt(actor.x,actor.y,9);
-      var soil=actor.grounded&&!actor.wet&&!playerWetAt(actor.x,actor.y)&&Math.abs(actor.y-surfaceY(actor.x))<4;
-      var attached=window.MaxClasses.canClimb(m.classId)&&actor.st==='climb'&&plantClimbAt(actor.x,actor.y,10)===plant;
-      if(plant&&(soil||attached)&&rogueRun.clearedWorld===worldLevel())enterLevel(worldLevel()+1);
+      var travelActor=(a&&a.world===worldLevel())?a:m.avatar,plant=stalkAt(travelActor.x,travelActor.y,10);
+      var above=plant?surfaceY(plant.x)-travelActor.y:-1;
+      var reachedTop=!!(plant&&travelActor.st==='climb'&&travelActor.exitClimb&&rogueRun.clearedWorld===worldLevel()&&worldLevel()<RUN_STAGES&&above>=cloudHeight()-10&&above<=cloudHeight()+12);
+      if(reachedTop)enterLevel(worldLevel()+1);
       return;
     }
     if(action.type==='pickup-item'&&Number.isSafeInteger(action.pickup)){
