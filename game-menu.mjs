@@ -21,7 +21,7 @@ let game, overlay, card, user = null, busy = false, opened = false, screen = 'ho
 let sessionReady = !client;
 let status, scenery;
 let sceneFrame = 0, sceneStarted = 0;
-let session = null, loginDestination = null, lobbyVersion = '', playingNow = [];
+let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
 let selected = readLoadout(window.localStorage);
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null };
@@ -247,29 +247,6 @@ function updatePlayReady() {
   status.hidden = sessionReady && !noCharacter;
   if (!sessionReady) message('Restoring account…');
   else if (noCharacter) message('Garden full · all four characters are playing', true);
-}
-async function together() {
-  if (!sessionReady) { page('together', 'Connecting…'); back(); return; }
-  if (!client) {
-    page('together', 'Play together');
-    card.append(el('p', 'Together is unavailable right now.'), button('Solo', close, 'primary'), button('Change Max', play, 'subtle')); return;
-  }
-  if (!user) { loginDestination = together; login(); return; }
-  page('together', 'Playing now');
-  selectionSummary();
-  card.append(el('p', 'Join any open run instantly. Up to four players.', 'max-menu-foot'));
-  const list = el('div', undefined, 'max-playing-now'); card.append(list);
-  try {
-    const { data, error } = await client.rpc('max_coop_list');
-    if (error) throw error; playingNow = Array.isArray(data) ? data : [];
-    if (!playingNow.length) list.append(el('p', 'Nobody is playing yet.'));
-    for (const run of playingNow) {
-      const b = button('', () => enterRoom({ id: run.id }), 'max-playing-run');
-      b.append(el('strong', run.host_name + ' · ' + run.players + '/4'), el('span', run.state === 'playing' ? 'PLAYING NOW · JOIN' : 'WAITING · JOIN'));
-      list.append(b);
-    }
-  } catch (error) { list.append(el('p', 'Could not load players right now.')); }
-  card.append(button('Start new run', () => enterRoom(), 'primary'), status, button('Change Max', play, 'subtle'));
 }
 async function enterRoom(code) {
   if (busy || session) return;
