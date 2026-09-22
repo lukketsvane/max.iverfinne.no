@@ -3677,7 +3677,7 @@ function runHudBoons(){
   return out;
 }
 function runHudIconPosition(index){
-  return {x:4+(index%10)*7,y:safeTopArt()+12+Math.floor(index/10)*7};
+  return {x:4+(index%10)*7,y:safeTopArt()+3+Math.floor(index/10)*7};
 }
 function tallyGroupWidth(count){return count>=5?9:count>0?(count-1)*2+1:0;}
 function levelTallyLayout(level){
