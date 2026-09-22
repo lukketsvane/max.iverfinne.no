@@ -24,6 +24,7 @@ let sceneFrame = 0, sceneStarted = 0;
 let session = null, loginDestination = null, lobbyVersion = '', playingNow = [];
 let liveSettings = false, settingsButton;
 let selected = readLoadout(window.localStorage);
+let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null };
 
 function el(tag, text, className) {
   const n = document.createElement(tag);
@@ -128,8 +129,38 @@ function selectMax(change) {
   writeLoadout(window.localStorage, selected); updateSelection();
 }
 function updateSelection() {
-  for (const option of card.querySelectorAll('[data-class-id]')) option.setAttribute('aria-pressed', String(option.dataset.classId === selected.classId));
-  for (const option of card.querySelectorAll('[data-difficulty]')) option.setAttribute('aria-pressed', String(option.dataset.difficulty === selected.difficulty));
+  const taken = new Set(Array.isArray(sharedStatus.taken) ? sharedStatus.taken : []);
+  const mine = sharedStatus.mine || null;
+  const runExists = !!sharedStatus.active && Number(sharedStatus.players || 0) > 0;
+  if (runExists && DIFFICULTY_IDS.includes(sharedStatus.difficulty) && selected.difficulty !== sharedStatus.difficulty) {
+    selected = { ...selected, difficulty: sharedStatus.difficulty };
+    writeLoadout(window.localStorage, selected);
+  }
+  if (taken.has(selected.classId) && selected.classId !== mine) {
+    const free = CLASS_IDS.find(id => !taken.has(id) || id === mine);
+    if (free) {
+      selected = { ...selected, classId: free, skinId: characterSkin(free) };
+      writeLoadout(window.localStorage, selected);
+    }
+  }
+  for (const option of card.querySelectorAll('[data-class-id]')) {
+    const occupied = taken.has(option.dataset.classId) && option.dataset.classId !== mine;
+    option.disabled = occupied;
+    option.setAttribute('aria-disabled', String(occupied));
+    option.setAttribute('aria-pressed', String(option.dataset.classId === selected.classId));
+    option.title = occupied ? 'Already playing' : '';
+  }
+  for (const option of card.querySelectorAll('[data-difficulty]')) {
+    option.disabled = runExists;
+    option.setAttribute('aria-disabled', String(runExists));
+    option.setAttribute('aria-pressed', String(option.dataset.difficulty === selected.difficulty));
+  }
+  const difficultyBox = card.querySelector('.max-difficulty-picker');
+  if (difficultyBox) {
+    difficultyBox.dataset.locked = String(runExists);
+    const legend = difficultyBox.querySelector('legend');
+    if (legend) legend.textContent = runExists ? '02 / DIFFICULTY · ' + String(selected.difficulty).toUpperCase() + ' · RUNNING' : '02 / DIFFICULTY';
+  }
   const description = card.querySelector('.max-class-detail');
   if (description) description.textContent = classInfo(selected.classId).desc;
   const name = card.querySelector('.max-character-name');
@@ -148,6 +179,23 @@ function play() {
   const actions = el('div', undefined, 'max-play-actions max-play-one');
   actions.append(pixelText(button('', joinSharedGarden, 'primary'), 'Play', 3, 0));
   card.append(actions, status); updatePlayReady(); back();
+  void refreshSharedStatus();
+}
+async function refreshSharedStatus() {
+  if (!client) return sharedStatus;
+  try {
+    const { data, error } = await client.rpc('max_coop_status');
+    if (error) throw error;
+    if (data && typeof data === 'object') sharedStatus = {
+      active: !!data.active,
+      players: Math.max(0, Number(data.players) || 0),
+      taken: Array.isArray(data.taken) ? data.taken.filter(id => CLASS_IDS.includes(id)) : [],
+      difficulty: DIFFICULTY_IDS.includes(data.difficulty) ? data.difficulty : null,
+      mine: CLASS_IDS.includes(data.mine) ? data.mine : null,
+    };
+  } catch {}
+  if (screen === 'play') { updateSelection(); updatePlayReady(); }
+  return sharedStatus;
 }
 async function ensurePlayIdentity() {
   if (user) return user;
@@ -176,16 +224,29 @@ async function joinSharedGarden() {
   if (!sessionReady || busy) { updatePlayReady(); return; }
   if (!client) { close(); return; }
   busy = true; message('Joining garden…');
-  try { await ensurePlayIdentity(); }
-  catch (_) { busy = false; message('Could not join yet. Try Play again.', true); return; }
+  try {
+    await ensurePlayIdentity();
+    await refreshSharedStatus();
+    const unavailable = new Set(sharedStatus.taken || []);
+    if (unavailable.has(selected.classId) && selected.classId !== sharedStatus.mine) {
+      const free = CLASS_IDS.find(id => !unavailable.has(id));
+      if (!free) throw new Error('The garden already has all four characters.');
+      selected = { ...selected, classId: free, skinId: characterSkin(free) };
+      writeLoadout(window.localStorage, selected); updateSelection();
+    }
+  }
+  catch (error) { busy = false; message(error.message || 'Could not join yet. Try Play again.', true); return; }
   busy = false;
   await enterRoom({ global: true });
 }
 function updatePlayReady() {
   if (screen !== 'play') return;
-  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady;
-  status.hidden = sessionReady;
+  const taken = new Set(sharedStatus.taken || []);
+  const noCharacter = CLASS_IDS.every(id => taken.has(id) && id !== sharedStatus.mine);
+  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady || noCharacter;
+  status.hidden = sessionReady && !noCharacter;
   if (!sessionReady) message('Restoring account…');
+  else if (noCharacter) message('Garden full · all four characters are playing', true);
 }
 async function together() {
   if (!sessionReady) { page('together', 'Connecting…'); back(); return; }
