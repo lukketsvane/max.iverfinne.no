@@ -2681,7 +2681,7 @@ function clearRunInput(){
   if(P){P.dodgeT=0;P.throwPose=0;}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
-function runIsPaused(){return !!(menuPaused||document.hidden||(coop&&coop.choosing)||(rogueRun&&(rogueRun.ended||rogueRun.choice)));}
+function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
 function setMenuPaused(paused){
   if(paused&&runActive&&!rogueRun.ended)return;
   menuPaused=!!paused;clearRunInput();
@@ -2916,7 +2916,7 @@ function perkDots(n,max){
 function renderRogueChoice(){
   if(!perkMenu||!rogueRun.choice)return;
   perkMenu.innerHTML='';
-  perkMenu.setAttribute('role','dialog');perkMenu.setAttribute('aria-modal','true');perkMenu.setAttribute('aria-label','Choose a boon');
+  perkMenu.setAttribute('role','region');perkMenu.removeAttribute('aria-modal');perkMenu.setAttribute('aria-label','Choose a boon while play continues');
   rogueRun.choice.forEach(function(p,index){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
@@ -3623,7 +3623,15 @@ function drawWorldBanner(t){
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
   ctx.globalAlpha=1;
 }
-function difficultyScale(){return {easy:.72,medium:1,hard:1.35,insane:1.85}[rogueRun.difficulty]||1;}
+function difficultyProfile(){
+  return {
+    easy:{pressure:.38,damage:.48,durability:.72,budget:.52,density:.62},
+    medium:{pressure:1,damage:1,durability:1,budget:1,density:1},
+    hard:{pressure:1.3,damage:1.18,durability:1.16,budget:1.18,density:1.15},
+    insane:{pressure:1.75,damage:1.45,durability:1.35,budget:1.45,density:1.35}
+  }[rogueRun.difficulty]||{pressure:1,damage:1,durability:1,budget:1,density:1};
+}
+function difficultyScale(){return difficultyProfile().pressure;}
 function raidPressure(){
   return (Math.max(0,runElapsed)/150+(worldLevel()-1)*.14)*difficultyScale();
 }
