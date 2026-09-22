@@ -3,7 +3,7 @@ import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
-import { CLASS_IDS, SKIN_IDS, readLoadout, writeLoadout } from './player-loadout.mjs';
+import { CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
@@ -76,7 +76,7 @@ function garden() {
   back();
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id === 'runner' ? 'Moss' : id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
-function skinName(id) { return id.charAt(0).toUpperCase() + id.slice(1); }
+function characterSkin(id) { return CLASS_SKINS[id] || 'moss'; }
 function skinPreview(id) {
   const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');
   const image = el('img'); image.src = 'assets/max-skins-v1/' + id + '/main.png'; image.alt = ''; image.draggable = false;
@@ -84,47 +84,55 @@ function skinPreview(id) {
 }
 function chooseMax() {
   const hero = el('div', undefined, 'max-character-hero');
-  const stage = el('div', undefined, 'max-character-stage'); stage.append(skinPreview(selected.skinId));
+  const stage = el('div', undefined, 'max-character-stage'); stage.append(skinPreview(characterSkin(selected.classId)));
   const intro = el('div', undefined, 'max-character-intro');
   intro.append(el('p', '', 'max-character-name'), el('p', '', 'max-class-detail'));
   hero.append(stage, intro); card.append(hero);
-  const roles = el('fieldset', undefined, 'max-role-picker');
-  roles.append(el('legend', '01 / CLASS'));
+
+  const characters = el('fieldset', undefined, 'max-role-picker');
+  characters.append(el('legend', '01 / CHARACTER'));
   const grid = el('div', undefined, 'max-role-grid');
   const abilities = { mech: 'Robots', runner: 'Climbing', bulwark: 'Guard', herbalist: 'Healing' };
   for (const id of CLASS_IDS) {
     const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
-    choice.setAttribute('aria-label', classInfo(id).name + ' class');
+    choice.setAttribute('aria-label', classInfo(id).name);
+    choice.append(skinPreview(characterSkin(id)));
     pixelText(choice, classInfo(id).name, 2, 0);
     const ability = el('span', abilities[id], 'max-role-ability'); ability.setAttribute('aria-hidden', 'true'); choice.append(ability);
     grid.append(choice);
   }
-  roles.append(grid);
-  const skins = el('fieldset', undefined, 'max-skin-picker');
-  skins.append(el('legend', '02 / APPEARANCE'));
-  const swatches = el('div', undefined, 'max-skin-grid');
-  for (const id of SKIN_IDS) {
-    const choice = button('', () => selectMax({ skinId: id }), 'max-skin-choice'); choice.dataset.skinId = id;
-    choice.setAttribute('aria-label', skinName(id) + ' appearance');
-    choice.append(skinPreview(id)); pixelText(choice, skinName(id), 2, 0); swatches.append(choice);
+  characters.append(grid);
+
+  const difficulty = el('fieldset', undefined, 'max-skin-picker max-difficulty-picker');
+  difficulty.append(el('legend', '02 / DIFFICULTY'));
+  const difficultyGrid = el('div', undefined, 'max-skin-grid max-difficulty-grid');
+  const detail = { easy: 'Gentler', medium: 'Standard', hard: 'Relentless', insane: 'No mercy' };
+  for (const id of DIFFICULTY_IDS) {
+    const choice = button('', () => selectMax({ difficulty: id }), 'max-skin-choice max-difficulty-choice');
+    choice.dataset.difficulty = id; choice.setAttribute('aria-label', id + ' difficulty');
+    pixelText(choice, id, 2, 0); choice.append(el('span', detail[id], 'max-role-ability')); difficultyGrid.append(choice);
   }
-  skins.append(swatches); card.append(roles, skins);
+  difficulty.append(difficultyGrid); card.append(characters, difficulty);
   updateSelection();
 }
-function selectMax(change) { selected = { ...selected, ...change }; writeLoadout(window.localStorage, selected); updateSelection(); }
+function selectMax(change) {
+  selected = { ...selected, ...change };
+  if (change.classId) selected.skinId = characterSkin(change.classId);
+  writeLoadout(window.localStorage, selected); updateSelection();
+}
 function updateSelection() {
   for (const option of card.querySelectorAll('[data-class-id]')) option.setAttribute('aria-pressed', String(option.dataset.classId === selected.classId));
-  for (const option of card.querySelectorAll('[data-skin-id]')) option.setAttribute('aria-pressed', String(option.dataset.skinId === selected.skinId));
+  for (const option of card.querySelectorAll('[data-difficulty]')) option.setAttribute('aria-pressed', String(option.dataset.difficulty === selected.difficulty));
   const description = card.querySelector('.max-class-detail');
   if (description) description.textContent = classInfo(selected.classId).desc;
   const name = card.querySelector('.max-character-name');
   if (name) { name.replaceChildren(); pixelText(name, classInfo(selected.classId).name, 3, 0); }
   const heroImage = card.querySelector('.max-character-stage img');
-  if (heroImage) heroImage.src = 'assets/max-skins-v1/' + selected.skinId + '/main.png';
+  if (heroImage) heroImage.src = 'assets/max-skins-v1/' + characterSkin(selected.classId) + '/main.png';
 }
 function selectionSummary() {
   const summary = el('div', undefined, 'max-selection-summary');
-  summary.append(skinPreview(selected.skinId), el('p', classInfo(selected.classId).name + ' · ' + skinName(selected.skinId)));
+  summary.append(skinPreview(characterSkin(selected.classId)), el('p', classInfo(selected.classId).name + ' · ' + selected.difficulty.toUpperCase()));
   card.append(summary);
 }
 function play() {
@@ -191,7 +199,7 @@ function lobby(room) {
     if (member.skinId) row.append(skinPreview(member.skinId));
     const copy = el('div', undefined, 'max-room-player-copy');
     copy.append(el('strong', member.name + (member.id === user.id ? ' · You' : '')),
-      el('span', member.selectionReady ? classInfo(member.classId).name + ' · ' + skinName(member.skinId) : 'Receiving selection…'),
+      el('span', member.selectionReady ? classInfo(member.classId).name + (member.difficulty ? ' · ' + member.difficulty.toUpperCase() : '') : 'Receiving selection…'),
       el('span', member.ready && member.selectionReady ? 'Ready' : 'Waiting', 'max-room-ready'));
     row.append(copy); card.append(row);
   }
@@ -246,7 +254,7 @@ function help() {
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['MOSS', 'Climb any plant and jump between plants as they grow. Every class can use a cleared exit stalk.'],
+    ['MOSS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
     ['MECH', 'Only Mech owns watering robots. Any nearby teammate can tap a Mech robot to refill it.'],
     ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
     ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · R refill · 1–3 upgrade'],
