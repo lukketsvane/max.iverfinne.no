@@ -2,19 +2,19 @@
    Coordinates match other enemies: x/y are the torso centre, foot is y + 8. */
 var RAT_KIND=8,RAT_FOOT=8;
 var RAT_STATS={
-  common:{speed:32,hp:0,damage:1},
-  black:{speed:46,hp:0,damage:.8},
-  albino:{speed:25,hp:2,damage:1.4},
-  plague:{speed:30,hp:1,damage:.85}
+  common:{speed:27,hp:0,damage:.62},
+  black:{speed:39,hp:0,damage:.55},
+  albino:{speed:23,hp:1,damage:.86},
+  plague:{speed:27,hp:1,damage:.60}
 };
 function isRat(k){return !!k&&!k.boss&&k.kind===RAT_KIND;}
 function ratStats(k){return Object.hasOwn(RAT_STATS,k.ratVariant)?RAT_STATS[k.ratVariant]:RAT_STATS.common;}
 function ratFloor(x){var water=waterAt(x);return water?Math.min(surfaceY(x),water.level):surfaceY(x);}
 function makeRat(side,elite,variant){
   var choices=['common'];
-  if(worldLevel()>=2||runElapsed>=75)choices.push('black');
-  if(worldLevel()>=4||runElapsed>=180)choices.push('albino');
-  if(worldLevel()>=7||runElapsed>=300)choices.push('plague');
+  if(worldLevel()>=9||runElapsed>=420)choices.push('black');
+  if(worldLevel()>=12||runElapsed>=540)choices.push('albino');
+  if(worldLevel()>=15||runElapsed>=660)choices.push('plague');
   var ph=Math.random()*6.28;
   variant=Object.hasOwn(RAT_STATS,variant)?variant:choices[Math.floor(ph/6.28*choices.length)];
   var plants=gardenPlots.filter(function(p){return !p.dead&&p.health>0;}),center=plants.length?plants[Math.floor(Math.random()*plants.length)].x:P.x;
@@ -25,7 +25,7 @@ function makeRat(side,elite,variant){
   var players=runPlayers(),left=Math.min.apply(null,players.map(function(a){return a.p.x;}))-90,right=Math.max.apply(null,players.map(function(a){return a.p.x;}))+90;
   if(players.some(function(a){return Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<72;}))k.x=side<0?left:right;
   k.y=ratFloor(k.x)-RAT_FOOT;
-  k.hp=k.maxHp=2+Math.floor((worldLevel()-1)/6)+ratStats(k).hp+(elite?2:0);
+  k.hp=k.maxHp=1+Math.floor(Math.max(0,worldLevel()-7)/7)+ratStats(k).hp+(elite?2:0);
   return k;
 }
 function ratState(k,name){if(k.ratState!==name){k.ratState=name;k.ratStateT=0;}}
