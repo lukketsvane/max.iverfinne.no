@@ -7,9 +7,16 @@ import { CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } fro
 import { createLeaderboard } from './garden-leaderboard.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
-const client = config.publishableKey ? createClient(config.url, config.publishableKey, {
+let client = null;
+if (config.publishableKey) client = createClient(config.url, config.publishableKey, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, storageKey: 'max-player-session-v1' },
-}) : null;
+  realtime: {
+    worker: true,
+    heartbeatCallback: status => {
+      if (status === 'disconnected' && !document.hidden) client?.realtime.connect();
+    },
+  },
+});
 let game, overlay, card, user = null, busy = false, opened = false, screen = 'home';
 let sessionReady = !client;
 let status, scenery;
@@ -138,9 +145,25 @@ function selectionSummary() {
 function play() {
   page('play', 'Your Max');
   chooseMax();
-  const actions = el('div', undefined, 'max-play-actions');
-  actions.append(pixelText(button('', close, 'primary'), 'Solo', 2, 0), pixelText(button('', together), 'Together', 2, 0));
+  const actions = el('div', undefined, 'max-play-actions max-play-one');
+  actions.append(pixelText(button('', joinSharedGarden, 'primary'), 'Play', 3, 0));
   card.append(actions, status); updatePlayReady(); back();
+}
+async function joinSharedGarden() {
+  if (!sessionReady || busy) { updatePlayReady(); return; }
+  if (!client) { close(); return; }
+  if (!user) {
+    busy = true; message('Joining garden…');
+    try {
+      const { data, error } = await client.auth.signInAnonymously();
+      if (error) throw error;
+      setUser(data.user);
+    } catch (_) {
+      busy = false; loginDestination = joinSharedGarden; login(); return;
+    }
+    busy = false;
+  }
+  await enterRoom({ global: true });
 }
 function updatePlayReady() {
   if (screen !== 'play') return;
@@ -192,7 +215,7 @@ async function enterRoom(code) {
     },
   }, selected);
   session = candidate;
-  try { await candidate.enter(code); lobbyVersion = ''; lobby(candidate.room); }
+  try { await candidate.enter(code); if (!candidate.playing) { lobbyVersion = ''; lobby(candidate.room); } }
   catch (error) { if (session === candidate) session = null; message(error.message, true); }
   finally { busy = false; }
 }
@@ -386,7 +409,9 @@ function replay() {
 }
 window.MaxGameMenu = { attach, open, replay };
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && session?.playing) session.fail(session.host ? 'Host left the garden.' : 'You left the garden.');
+  if (document.hidden) return;
+  if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();
+  if (session?.playing) void session.resume();
 });
 window.dispatchEvent(new Event('max-menu-ready'));
 if (client) {
