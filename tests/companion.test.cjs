@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { create, tiers } = require('../companion.js');
+const { create, tiers, dispatchCost } = require('../companion.js');
 const { loadGame, plot } = require('./game-harness.cjs');
 function environment(plants = []) {
   return { paused: false, tier: 0, player: { x: 0, face: 1, vx: 0 }, plants, ground: () => 0, wet: () => false, safeX: x => x, transport: false };
@@ -76,4 +76,32 @@ test('a low shelf cannot start or continue a solo refill above the actual soil',
   g.P.y = soil;
   for (let i = 0; i < 40; i++) g.updateCompanion(.05);
   assert.equal(bot.state.refill, 0); assert.equal(bot.state.water, 1);
+});
+test('dispatch pours a paid heal, refunds a stuck trip and falls back to passive rules', () => {
+  const arrivals = [], p = plot({ x: 100, moisture: .3, health: .5 }), thirsty = plot({ x: 40, moisture: .1, health: .5 });
+  const env = { ...environment([p, thirsty]), pourHeal: .05, onArrive: q => arrivals.push(q) }, bot = create({ x: -20, water: 1 }, 0, 0);
+  assert.equal(dispatchCost, .25); assert.deepEqual(tiers.map(t => t.dispatch), [120, 140, 160]);
+  assert.equal(bot.dispatch([p], env), p); assert.equal(bot.state.water, .75); assert.equal(bot.state.targetX, 100);
+  advance(bot, env, 1); assert.ok(Math.abs(bot.state.x - 64) < 1e-6, `${bot.state.x}`); assert.equal(thirsty.moisture, .1);
+  advance(bot, env, 1); assert.equal(p.moisture, 1); assert.deepEqual(arrivals, [p]); assert.equal(bot.state.dispatchT, 0);
+  advance(bot, env, 3); assert.ok(Math.abs(p.health - .65) < 1e-6, `${p.health}`); assert.equal(bot.state.pourT, 0); assert.equal(bot.state.water, .75);
+  advance(bot, env, 15); assert.ok(thirsty.moisture > .7 && thirsty.moisture <= .78 + 1e-9, `${thirsty.moisture}`);
+  assert.equal(thirsty.health, .5); assert.ok(Math.abs(p.health - .65) < 1e-6); assert.equal(arrivals.length, 1);
+  const far = plot({ x: 100, moisture: .3 }), stuck = create({ x: -20, water: 1 }, 0, 0), blocked = environment([far]);
+  assert.equal(stuck.dispatch([far], blocked), far); advance(stuck, blocked, .5);
+  blocked.wet = x => x > 40 && x < 50; advance(stuck, blocked, 4);
+  assert.equal(stuck.state.water, 1); assert.equal(stuck.state.dispatchT, 0); assert.equal(far.moisture, .3); assert.ok(stuck.state.x < 40);
+  assert.equal(create({ x: 0, water: .2 }, 0, 0).dispatch([far], blocked), null);
+  const refilling = create({ x: 0, water: .5 }, 0, 0); assert.equal(refilling.requestRefill(0), true); assert.equal(refilling.dispatch([far], environment([far])), null);
+  const packed = create({ x: 0, water: 1 }, 0, 0); packed.tick(.05, { ...environment([far]), transport: true });
+  assert.equal(packed.state.state, 'packed'); assert.equal(packed.dispatch([far], environment([far])), null); assert.equal(packed.state.water, 1);
+});
+test('a host handoff mid-dispatch finds the plant again by its x and keeps the paid pour', () => {
+  const p = plot({ x: 60, moisture: .3, health: .5 }), env = { ...environment([p]), pourHeal: .05 };
+  const handoff = from => { const next = create({}, 0, 0), { target, ...flat } = from.state; Object.assign(next.state, flat); return next; };
+  const first = create({ x: -20, water: 1 }, 0, 0); assert.equal(first.dispatch([p], env), p); advance(first, env, .5);
+  const second = handoff(first); advance(second, env, 1.5);
+  assert.equal(second.state.target, p); assert.equal(p.moisture, 1); assert.ok(second.state.pourT > 0); assert.equal(second.state.water, .75);
+  const health = p.health, third = handoff(second); advance(third, env, 1);
+  assert.ok(Math.abs(p.health - (health + .05)) < 1e-6, `${p.health}`); assert.equal(third.state.water, .75); assert.equal(third.state.target, p);
 });

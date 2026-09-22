@@ -14,7 +14,7 @@ const stateNames = [
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
   'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
   'coop', 'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
-  'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES',
+  'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
 ];
 const functionNames = [
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
@@ -32,6 +32,7 @@ const functionNames = [
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',
   'runHudBoons', 'runHudIconPosition', 'levelTallyLayout', 'drawRunHud',
+  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'drawBooms', 'drawCompanion', 'drawRunHazards',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +

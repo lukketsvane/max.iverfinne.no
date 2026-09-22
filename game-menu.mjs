@@ -346,10 +346,11 @@ function help() {
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
+    ['SKILL', 'Tap Max. Mech sends the rover to the plant under attack. Moss pounces — harder from higher. Bulwark braces until he moves. Herbalist blooms and revives a plant that just fell.'],
     ['MOSS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
     ['MECH', 'Only Mech owns watering robots. Any nearby teammate can tap a Mech robot to refill it.'],
     ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
-    ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · R refill · 1–3 upgrade'],
+    ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · E skill · R refill · 1–3 upgrade'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
   card.append(button('Back', settings, 'subtle'));

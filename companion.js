@@ -1,19 +1,22 @@
-/* The companion uses the same art-pixel coordinates as Max. No passive XP,
- * score, healing or instant growth: it only moves water from its finite tank. */
+/* The companion uses the same art-pixel coordinates as Max. No XP, score,
+ * passive healing or instant growth: it only moves water from its finite tank.
+ * The Mech's dispatch is the one exception: a paid trip that floods one plant
+ * and mends it while it pours. */
 (function (root) {
   'use strict';
   var TIERS = [
-    { capacity: 1, speed: 24, rate: .10, reach: 14, search: 60 },
-    { capacity: 1.6, speed: 29, rate: .13, reach: 18, search: 80 },
-    { capacity: 2.4, speed: 34, rate: .16, reach: 23, search: 100 }
+    { capacity: 1, speed: 24, rate: .10, reach: 14, search: 60, dispatch: 120 },
+    { capacity: 1.6, speed: 29, rate: .13, reach: 18, search: 80, dispatch: 140 },
+    { capacity: 2.4, speed: 34, rate: .16, reach: 23, search: 100, dispatch: 160 }
   ];
+  var DISPATCH_COST = .25;
   function finite(n, fallback) { return typeof n === 'number' && Number.isFinite(n) ? n : fallback; }
   function tier(n) { return Math.max(0, Math.min(2, finite(n, 0) | 0)); }
   function create(saved, x, rank) {
     saved = saved || {}; rank = tier(rank);
     var s = { x: finite(saved.x, x - 20), water: Math.max(0, Math.min(TIERS[rank].capacity, finite(saved.water, 1))),
       face: saved.face === -1 ? -1 : 1, state: 'idle', clock: 0, target: null,
-      refill: Math.max(0, Math.min(2, finite(saved.refill, 0))), tier: rank };
+      refill: Math.max(0, Math.min(2, finite(saved.refill, 0))), tier: rank, dispatchT: 0, pourT: 0, targetX: 0 };
     function pose(name) { if (s.state !== name) { s.state = name; s.clock = 0; } }
     function passable(from, to, env) {
       var steps = Math.max(1, Math.ceil(Math.abs(to - from) / 2)), last = env.ground(from);
@@ -24,31 +27,67 @@
       }
       return true;
     }
-    function move(to, dt, env) {
+    function move(to, dt, env, fast) {
       var dx = to - s.x;
       if (Math.abs(dx) <= 2) return true;
       s.face = dx < 0 ? -1 : 1;
-      var nx = s.x + s.face * Math.min(Math.abs(dx), TIERS[s.tier].speed * dt);
+      var nx = s.x + s.face * Math.min(Math.abs(dx), TIERS[s.tier].speed * (fast || 1) * dt);
       if (passable(s.x, nx, env)) { s.x = nx; pose('drive'); }
       else pose(s.water <= .001 ? 'empty' : 'idle');
       return false;
     }
+    function endDispatch(refund) {
+      if (refund) s.water = Math.min(TIERS[s.tier].capacity, s.water + DISPATCH_COST);
+      s.dispatchT = 0; s.pourT = 0; s.target = null;
+    }
+    function runDispatch(dt, env) {
+      var spec = TIERS[s.tier], p = s.target || (s.target = env.plants.find(function (q) { return !q.dead && q.x === s.targetX; }) || null);
+      if (!p || p.dead || env.plants.indexOf(p) < 0) { endDispatch(s.dispatchT > 0); pose('retract'); return; }
+      if (s.pourT > 0) {
+        var d = Math.min(dt, s.pourT);
+        p.health = Math.min(1, p.health + (env.pourHeal || 0) * d);
+        s.pourT = Math.max(0, s.pourT - dt);
+        if (s.pourT <= 1e-9) { endDispatch(false); pose('retract'); }
+        return;
+      }
+      s.dispatchT -= dt;
+      if (s.dispatchT <= 1e-9) { endDispatch(true); pose('idle'); return; }
+      var dx = p.x - s.x;
+      if (Math.abs(dx) > spec.reach) { move(p.x - (dx < 0 ? -1 : 1) * (spec.reach - 2), dt, env, 3.5); return; }
+      if (!passable(s.x, p.x, env)) { endDispatch(true); pose('idle'); return; }
+      s.face = dx < 0 ? -1 : 1;
+      if (s.state !== 'deploy') { pose('deploy'); return; }
+      if (s.clock < .3) return;
+      s.dispatchT = 0; s.pourT = 3; p.moisture = 1; p.pulse = Math.max(p.pulse || 0, 1.2); pose('water');
+      if (env.onArrive) env.onArrive(p);
+    }
     return {
       state: s,
       snapshot: function () { return { x: s.x, water: s.water, face: s.face, refill: s.refill }; },
-      relocate: function (x) { s.x = x - 20; s.target = null; pose('idle'); },
+      relocate: function (x) { endDispatch(s.dispatchT > 0); s.x = x - 20; s.target = null; pose('idle'); },
       requestRefill: function (playerX) {
         if (Math.abs(playerX - s.x) > 32 || s.water >= TIERS[s.tier].capacity - .001) return false;
-        if (!s.refill) s.refill = 2;
+        endDispatch(s.dispatchT > 0); if (!s.refill) s.refill = 2;
         s.target = null; pose('refill'); return true;
+      },
+      dispatch: function (ranked, env) {
+        if (s.state === 'packed' || s.refill > 0 || s.dispatchT > 0 || s.pourT > 0 || s.water < DISPATCH_COST - 1e-9) return null;
+        var spec = TIERS[s.tier];
+        for (var i = 0; i < ranked.length; i++) {
+          var p = ranked[i];
+          if (!p || p.dead || env.plants.indexOf(p) < 0 || Math.abs(p.x - env.player.x) > spec.dispatch || !passable(s.x, p.x, env)) continue;
+          s.water -= DISPATCH_COST; s.target = p; s.targetX = p.x; s.dispatchT = 4; s.pourT = 0; pose('drive'); return p;
+        }
+        return null;
       },
       tick: function (dt, env) {
         if (env.paused) return;
         dt = Math.max(0, Math.min(.05, finite(dt, 0))); if (!dt) return;
         s.tier = tier(env.tier); s.clock += dt;
-        if (env.transport) { s.target = null; pose('packed'); return; }
+        if (env.transport) { endDispatch(s.dispatchT > 0); s.target = null; pose('packed'); return; }
         // Rejoin only after leaving the visible garden. Never water remotely.
         if (Math.abs(s.x - env.player.x) > 180 || s.state === 'packed') {
+          endDispatch(s.dispatchT > 0);
           var join = env.safeX(env.player.x - env.player.face * (22 + s.tier * 7));
           if (!env.wet(join - 3) && !env.wet(join + 3)) s.x = join;
           s.target = null; pose('idle');
@@ -61,6 +100,7 @@
           } else pose('empty');
           return;
         }
+        if (s.dispatchT > 0 || s.pourT > 0) { runDispatch(dt, env); return; }
         var spec = TIERS[s.tier];
         if (s.state === 'retract' && s.clock < .55) return;
         var target = s.target;
@@ -142,7 +182,7 @@
       ctx.restore();
     }
   }
-  var api = { create: create, tiers: TIERS, draw: draw, loadArt: loadArt, frameFor: frameFor };
+  var api = { create: create, tiers: TIERS, dispatchCost: DISPATCH_COST, draw: draw, loadArt: loadArt, frameFor: frameFor };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.MaxCompanion = api;
 })(typeof window !== 'undefined' ? window : globalThis);

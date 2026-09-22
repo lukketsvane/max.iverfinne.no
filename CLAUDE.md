@@ -54,10 +54,12 @@ Relevant tests cover physical ascent and co-op catch-up. Keep them when refactor
 
 ## Characters
 
-- **Mech**: only character with watering robot. Robot boons must not leak to another character through stale snapshots or forged selections.
-- **Moss**: climbing specialist.
-- **Bulwark**: plant protection/tank role.
-- **Herbalist**: care/healing role.
+- **Mech**: only character with watering robot. Robot boons must not leak to another character through stale snapshots or forged selections. Skill: dispatch the rover to one threatened plant; the pour is the rover's only heal and shelters that plant from friendly blasts.
+- **Moss**: climbing specialist. Skill: pounce; the host clamps the slam to the drop it saw and starts the cooldown at landing.
+- **Bulwark**: plant protection/tank role. Skill: brace; it swallows warned roots only, never spores, gusts or rats, and ends when he moves.
+- **Herbalist**: care/healing role. Skill: bloom; it revives one freshly fallen plant and never the last one, and adds no score.
+
+Skills are one tap on Max or E, never a new pause, sprite or boon. Guests run the local part. The host checks cooldown and position in the `skill` branch of `coopInput`, and `coopClassSkill` runs the guest's own class verb. A guest's brace follows the host's: the snapshot carries what is left of it.
 
 Character appearance and gameplay role are one selection. Do not reintroduce a separate skin/costume picker.
 
