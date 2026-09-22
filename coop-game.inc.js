@@ -25,6 +25,14 @@ function beginCoop(network){
   if(coop.host)initRunStage();
 }
 function stopCoop(){coop=null;runActive=false;rogueRun.ended=true;rogueRun.choice=null;clearRunInput();if(perkMenu)perkMenu.style.display='none';}
+function coopJoin(id,kit){
+  if(!coop||!coop.host||coop.members[id])return false;
+  var roomMember=coop.network.room.members.find(function(m){return m.id===id;});if(!roomMember)return false;
+  var classId=window.MaxClasses.clean(kit.classId),skin=window.MaxClasses.skin(kit.skinId||kit.skin),x=P.x+((roomMember.slot||2)-1)*12;
+  coop.members[id]={id:id,slot:roomMember.slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],ack:0,last:performance.now(),cool:0,dodgeUntil:0,
+    avatar:Object.assign(coopAvatar(),{world:worldLevel(),classId:classId,skin:skin,x:x,y:playerSupportY(x,surfaceY(x)),grounded:true,wet:false}),left:false};
+  return true;
+}
 function coopRoster(room){
   if(!coop||!coop.host)return;
   coopMembers().forEach(function(m){if(!room.members.some(function(p){return p.id===m.id;}))coopDepart(m.id);});
