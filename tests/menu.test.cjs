@@ -17,7 +17,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
-  let listener, session = restoredUser ? { user: restoredUser } : null, begun = null, beginCount = 0, active = false, sound = true;
+  let listener, session = restoredUser ? { user: restoredUser } : null, begun = null, beginCount = 0, active = false, music = .75, effects = .75;
   const channels = new Map(), pauses = [];
   const emit = user => { session = user ? { user } : null; listener?.('SIGNED_IN', session); };
   const roomFor = id => ({ id: 'shared-garden', code: 'SHARED00001', host: id, state: 'playing', members: [{ id, slot: 1, ready: true, name: 'max' }] });
@@ -59,7 +59,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     beginRun() { throw new Error('normal production Play must enter the shared garden'); },
     beginCoop(network) { active = true; beginCount++; begun = { selection: { ...network.selection }, host: network.host, room: { ...network.room } }; },
     coopRoster() {}, coopState() {}, coopInput() {}, coopDepart() {}, coopJoin() {}, stopCoop() { active = false; },
-    exitRun() { active = false; }, clearInput() {}, soundEnabled: () => sound, setSoundEnabled: value => { sound = value; },
+    exitRun() { active = false; }, clearInput() {}, musicVolume: () => music, effectsVolume: () => effects, setMusicVolume: value => { music = value; }, setEffectsVolume: value => { effects = value; },
   };
   w.MaxGameMenu.attach(bridge);
   const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resolve => setTimeout(resolve, 10)); };
@@ -149,6 +149,18 @@ test('live Settings returns to the same shared run without pausing or restarting
     m.click('Back');await m.settle();
     assert.equal(overlay.hidden,true);assert.equal(m.beginCount,1);assert.equal(m.active,true);
     assert.equal(m.w.document.activeElement,trigger);
+  } finally { m.dom.window.close(); }
+});
+
+test('Music and Effects volumes are separate and can be muted independently', async () => {
+  const m = await menu();
+  try {
+    m.click('Settings');
+    assert.match(m.w.document.body.textContent,/Music 75%/);assert.match(m.w.document.body.textContent,/Effects 75%/);
+    m.click('Music volume 75 percent');assert.match(m.w.document.body.textContent,/Music 50%/);assert.match(m.w.document.body.textContent,/Effects 75%/);
+    m.click('Music volume 50 percent');m.click('Music volume 25 percent');
+    assert.match(m.w.document.body.textContent,/Music off/);assert.match(m.w.document.body.textContent,/Effects 75%/);
+    m.click('Effects volume 75 percent');assert.match(m.w.document.body.textContent,/Effects 50%/);assert.match(m.w.document.body.textContent,/Music off/);
   } finally { m.dom.window.close(); }
 });
 
