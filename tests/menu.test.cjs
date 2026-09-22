@@ -65,7 +65,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resolve => setTimeout(resolve, 10)); };
   await settle();
   function click(text) {
-    const buttons = [...w.document.querySelectorAll('button')];
+    const buttons = [...w.document.querySelectorAll('button')].filter(n => !n.hidden && !n.closest('[hidden]'));
     const b = buttons.find(n => n.getAttribute('aria-label') === text) || buttons.find(n => n.textContent === text);
     assert.ok(b, 'button ' + text); assert.equal(b.disabled, false); b.click(); return b;
   }
