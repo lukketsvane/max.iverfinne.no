@@ -16,6 +16,24 @@ function fresh(stage=1,size=1){
 }
 function combat(g,seconds){for(let i=0;i<Math.ceil(seconds*120);i++){g.updateRunHazards(1/120);g.updateKrek(1/120);g.updateHazardContact();}}
 
+
+test('Easy is materially gentler than Medium from the first garden onward',()=>{
+  const easy=loadGame().game;easy.resetRogueRun('test',{difficulty:'easy'});
+  easy.gardenPlots=[plot({x:easy.P.x})];
+  const e={damage:easy.runDamageScale(),durability:easy.runDurabilityScale(),budget:easy.raidBudget(1),limit:easy.runRaidLimit(),patrol:easy.runPatrolInterval(),grace:easy.gardenRaidT};
+  const medium=loadGame().game;medium.resetRogueRun('test',{difficulty:'medium'});
+  medium.gardenPlots=[plot({x:medium.P.x})];
+  const m={damage:medium.runDamageScale(),durability:medium.runDurabilityScale(),budget:medium.raidBudget(1),limit:medium.runRaidLimit(),patrol:medium.runPatrolInterval(),grace:medium.gardenRaidT};
+  assert.ok(e.damage<=m.damage*.5,'Easy damage starts at about half of Medium');
+  assert.ok(e.durability<m.durability,'Easy enemies take fewer hits');
+  assert.ok(e.budget<=Math.ceil(m.budget*.6),'Easy waves contain far fewer enemies');
+  assert.ok(e.limit<m.limit,'Easy keeps fewer enemies active at once');
+  assert.ok(e.patrol>m.patrol*2,'Easy patrols arrive much more slowly');
+  assert.ok(e.grace>=20&&e.grace>m.grace,'Easy gives substantially more time before the first raid');
+  easy.runElapsed=600;medium.runElapsed=600;
+  assert.ok(easy.runTimeThreat()<medium.runTimeThreat(),'Easy time pressure also climbs more slowly');
+});
+
 test('one established plant starts a larger finite wave and each active second raises its pressure',()=>{
   const {game:g}=fresh();g.gardenPlots=[plot({x:g.P.x})];g.gardenRaidT=0;g.updateGardenFun(.01);
   assert.equal(g.gardenRaidActive,true);assert.equal(g.gardenWave,1);assert.equal(g.rogueRun.raidTotal,7);
