@@ -251,13 +251,20 @@ export class CoopSession {
     this.resuming = true; this.lastHost = Date.now();
     try {
       await this.client.realtime.setAuth();
+      // iOS may freeze a PWA without delivering a clean channel close event.
+      // Rebuild every private channel on foreground so stale sockets can never
+      // strand a player in the shared garden.
+      const stale = [...this.channels.values()];
+      this.channels.clear();
+      await Promise.allSettled(stale.map(channel => this.client.removeChannel(channel)));
+      const room = await this.rpc('get'); if (this.closed) return;
+      this.room = room; this.lastPoll = Date.now();
       await this.subscribe('state');
       if (this.host) await this.syncChannels();
       else await this.subscribe(this.user.id);
-      await this.poll(true);
-      this.sendLobby();
+      this.notifyRoom(); this.sendLobby();
     } catch (_) {
-      // Realtime has its own reconnect backoff. Keep membership reserved and retry on the next foreground/poll.
+      // Keep membership reserved. A later foreground event / poll can retry.
     } finally { this.resuming = false; }
   }
   action(type, data = {}) {
