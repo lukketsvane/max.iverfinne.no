@@ -26,8 +26,9 @@ export function credentials(username, password) {
 }
 
 export function playerName(user) {
-  const email = user?.email || '';
-  return email.endsWith(`@${ID_DOMAIN}`) ? email.split('@')[0] : 'Player';
+  const email = user?.email || '', local = email.split('@')[0] || '';
+  if (user?.is_anonymous || local.startsWith('autoguest_')) return 'Guest';
+  return email.endsWith(`@${ID_DOMAIN}`) ? local : 'Player';
 }
 
 function object(value) { return value && typeof value === 'object' && !Array.isArray(value); }
