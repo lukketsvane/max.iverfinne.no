@@ -14,7 +14,7 @@ let game, overlay, card, user = null, busy = false, opened = false, screen = 'ho
 let sessionReady = !client;
 let status, scenery;
 let sceneFrame = 0, sceneStarted = 0;
-let session = null, loginDestination = null, lobbyVersion = '';
+let session = null, loginDestination = null, lobbyVersion = '', playingNow = [];
 let liveSettings = false, settingsButton;
 let selected = readLoadout(window.localStorage);
 
@@ -148,21 +148,28 @@ function updatePlayReady() {
   status.hidden = sessionReady;
   if (!sessionReady) message('Restoring account…');
 }
-function together() {
+async function together() {
   if (!sessionReady) { page('together', 'Connecting…'); back(); return; }
   if (!client) {
     page('together', 'Play together');
     card.append(el('p', 'Together is unavailable right now.'), button('Solo', close, 'primary'), button('Change Max', play, 'subtle')); return;
   }
   if (!user) { loginDestination = together; login(); return; }
-  page('together', 'Play together');
+  page('together', 'Playing now');
   selectionSummary();
-  card.append(button('Host garden', () => enterRoom(), 'primary'));
-  const form = el('form'); const label = el('label', 'Room code');
-  const code = el('input'); Object.assign(code, { name: 'code', required: true, minLength: 10, maxLength: 10, autocomplete: 'off', autocapitalize: 'characters', spellcheck: false });
-  label.append(code); const join = el('button', 'Join garden'); join.type = 'submit';
-  form.append(label, join); form.addEventListener('submit', e => { e.preventDefault(); enterRoom(code.value); });
-  card.append(form, status, button('Change Max', play, 'subtle'));
+  card.append(el('p', 'Join any open run instantly. Up to four players.', 'max-menu-foot'));
+  const list = el('div', undefined, 'max-playing-now'); card.append(list);
+  try {
+    const { data, error } = await client.rpc('max_coop_list');
+    if (error) throw error; playingNow = Array.isArray(data) ? data : [];
+    if (!playingNow.length) list.append(el('p', 'Nobody is playing yet.'));
+    for (const run of playingNow) {
+      const b = button('', () => enterRoom({ id: run.id }), 'max-playing-run');
+      b.append(el('strong', run.host_name + ' · ' + run.players + '/4'), el('span', run.state === 'playing' ? 'PLAYING NOW · JOIN' : 'WAITING · JOIN'));
+      list.append(b);
+    }
+  } catch (error) { list.append(el('p', 'Could not load players right now.')); }
+  card.append(button('Start new run', () => enterRoom(), 'primary'), status, button('Change Max', play, 'subtle'));
 }
 async function enterRoom(code) {
   if (busy || session) return;
@@ -177,6 +184,7 @@ async function enterRoom(code) {
     state: state => game.coopState(state),
     input: (id, packet) => game.coopInput(id, packet),
     depart: id => game.coopDepart(id),
+    join: (id, kit) => game.coopJoin?.(id, kit),
     error: reason => {
       game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
       liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
