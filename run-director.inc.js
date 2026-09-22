@@ -159,7 +159,7 @@ function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)*difficultyProf
 function runDurabilityScale(){var d=difficultyProfile();return d.durability*(1+.65*(runTimeThreat()-1));}
 function runDamageScale(){var d=difficultyProfile();return d.damage*(1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
 function runRaidLimit(){var d=difficultyProfile();return Math.min(MAX_ACTIVE_ENEMIES,Math.max(2,Math.round((5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0)+Math.floor(Math.max(0,runElapsed)/60))*d.density)));}
-function runRaidInterval(){var d=difficultyProfile();return Math.max(.12,(.85-(gardenWave-1)*.045)/(Math.max(.35,d.pressure)*(1+Math.max(0,runElapsed)/180)));}
+function runRaidInterval(){var d=difficultyProfile();return Math.max(.12,(.85-(gardenWave-1)*.045)/(Math.max(.2,d.pressure)*(1+Math.max(0,runElapsed)/180)));}
 function runPatrolLimit(active,cleared){var d=difficultyProfile(),base=(active?(cleared?4:2+Math.ceil(active/2)):1+coopSize())+Math.floor(Math.max(0,runElapsed)/45)+Math.max(0,coopSize()-1);return Math.min(MAX_ACTIVE_ENEMIES,Math.max(1,Math.round(base*d.density)));}
 function runPatrolInterval(){var d=difficultyProfile();return Math.max(.18,7/(Math.max(.35,d.pressure)*Math.pow(1+Math.max(0,runElapsed)/120,1.4)));}
 function raidBudget(active){
