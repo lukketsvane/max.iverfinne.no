@@ -2717,7 +2717,7 @@ function finalizeRogueRun(won){
   }
 }
 function resetRogueRun(reason,selection){
-  selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin);
+  selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
@@ -2730,7 +2730,7 @@ function resetRogueRun(reason,selection){
   bloomPatches.length=0;gifts.length=0;signals.length=0;sanctuaries.length=0;waterBlessings.length=0;
   crows.length=0;smallFauna.length=0;
   var keepWorld=1; // Each attempt begins with the same garden and base abilities.
-  rogueRun={classId:classId,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
+  rogueRun={classId:classId,difficulty:difficulty,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
   rogueRun.recordId=window.MaxRunRecords?window.MaxRunRecords.uuid():null;
@@ -3623,8 +3623,9 @@ function drawWorldBanner(t){
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
   ctx.globalAlpha=1;
 }
+function difficultyScale(){return {easy:.72,medium:1,hard:1.35,insane:1.85}[rogueRun.difficulty]||1;}
 function raidPressure(){
-  return Math.max(0,runElapsed)/150+(worldLevel()-1)*.14;
+  return (Math.max(0,runElapsed)/150+(worldLevel()-1)*.14)*difficultyScale();
 }
 function updateGardenFun(dt){
   if(runIsPaused()||climb&&climb.exit||warp||P.st==='float')return;
