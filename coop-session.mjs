@@ -114,7 +114,16 @@ export class CoopSession {
     this.polling = true;
     try {
       const room = await this.rpc('get'); if (this.closed) return;
+      const previousHost = this.room?.host;
       this.room = room; this.lastPoll = Date.now();
+      if (previousHost && previousHost !== room.host) {
+        const stateChannel = this.channels.get('state');
+        if (stateChannel) {
+          this.channels.delete('state');
+          await this.client.removeChannel(stateChannel);
+        }
+        await this.subscribe('state');
+      }
       await this.syncChannels();
       this.notifyRoom();
       this.sendLobby();
