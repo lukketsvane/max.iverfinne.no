@@ -75,6 +75,26 @@ test('a foreground poll adopts server host handoff and reauthorizes the state ch
   assert.notEqual(net.channels.get('max-coop:room:state'),oldState);assert.ok(s.channels.has('old-host'),'new authority listens for the old host when it returns as a guest');
 });
 
+test('a returning former host reconnects as a guest with its own input channel',async()=>{
+  const {CoopSession}=await module();
+  let room={id:'room',host:'old-host',state:'playing',members:[{id:'old-host',slot:1,ready:true,name:'old'},{id:'new-host',slot:2,ready:true,name:'new'}]};
+  const net=fakeChannelClient({room,userId:'old-host'});
+  net.client.rpc=async(name,args)=>{
+    if(name==='max_coop'&&args?.p_action==='get'){
+      room={...room,host:'new-host'};return {data:JSON.parse(JSON.stringify(room)),error:null};
+    }
+    if(name==='max_coop'&&args?.p_action==='leave')return {data:{closed:false},error:null};
+    return {data:JSON.parse(JSON.stringify(room)),error:null};
+  };
+  const s=new CoopSession(net.client,{id:'old-host'}, {}, {classId:'mech',difficulty:'easy'});
+  s.room=JSON.parse(JSON.stringify(room));s.entered=true;s.playing=true;s.loadouts['old-host']=s.selection;s.memberTokens['old-host']=s.token;
+  await s.subscribe('state');await s.subscribe('new-host');
+  await s.poll(true);
+  assert.equal(s.host,false);assert.equal(s.room.host,'new-host');
+  assert.ok(s.channels.has('old-host'),'former host gets the private input channel it needs as a guest');
+  assert.equal(s.channels.has('new-host'),false,'guest no longer listens on another player’s input channel');
+});
+
 test('character identity owns its appearance while difficulty remains an independent run setting',async()=>{
   const {CoopSession}=await module();
   const room={id:'room',host:'p',state:'playing',members:[{id:'p',slot:1,ready:true,name:'p'}]};
