@@ -124,12 +124,12 @@ test('a cleared stage-one camp eventually loses despite an optimistic stream of 
   assert.equal(outcomes[2].ended,true);assert.ok(outcomes[2].elapsed<30,'twenty-minute pressure is overwhelming even with guaranteed wet impacts and care');
 });
 
-test('travel and live settings keep time-driven danger; only boon selection freezes it',()=>{
+test('travel, live settings and boon selection all keep time-driven danger',()=>{
   const {game:g}=scene(600);g.setMenuPaused(true);g.updateRunCompetition(10);assert.equal(g.runElapsed,610);
   const before=g.makeKrek(1,false,0);before.hp=100;g.damagePest(before,1,before.x);const hit=100-before.hp;
   g.enterLevel(2);assert.equal(g.runElapsed,610);const after=g.makeKrek(1,false,0);after.hp=100;g.damagePest(after,1,after.x);assert.ok(Math.abs((100-after.hp)-hit)<1e-9);
-  g.rogueRun.next=4;g.grantRogueXP(4);g.updateRunCompetition(50);assert.equal(g.runElapsed,610);
-  g.chooseRoguePerk(g.rogueRun.choice[0].id);g.updateRunCompetition(1);assert.equal(g.runElapsed,611);
+  g.rogueRun.next=4;g.grantRogueXP(4);g.updateRunCompetition(50);assert.equal(g.runElapsed,660);
+  g.chooseRoguePerk(g.rogueRun.choice[0].id);g.updateRunCompetition(1);assert.equal(g.runElapsed,661);
 });
 
 test('ordinary Moss climbing leaves the clock, raids, divers and hazard knock-off active',()=>{
