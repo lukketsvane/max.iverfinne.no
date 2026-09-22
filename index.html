@@ -3399,21 +3399,14 @@ function requestClimb(p,exitRequested){
     var onSoil=P.grounded&&!playerWetAt(P.x,P.y)&&Math.abs(P.y-surfaceY(p.x))<=4&&Math.abs(P.x-p.x)<9;
     var onPlant=moss&&P.st==='climb'&&climb&&climb.p===p&&plantClimbAt(P.x,P.y,10)===p;
     if(!onSoil&&!onPlant)return false;
-    if(coop){
-      if(coopGuest()){
-        if(onPlant&&climb.exitRequested)return true;
-        var queued=coopAction('travel');if(queued&&onPlant)climb.exitRequested=true;return queued;
-      }
-      enterLevel(worldLevel()+1);return true;
-    }
-    if(onPlant){climb.exit=true;climb.downArmed=false;climb.boost=0;spawnExitSeeds(p);return true;}
+    if(onPlant){climb.exit=true;climb.downArmed=false;climb.boost=0;climb.reachedTop=false;climb.travelQueued=false;spawnExitSeeds(p);return true;}
     return beginClimb(p,true);
   }
   if(plantClimbAt(P.x,P.y,10)!==p||playerWetAt(P.x,P.y))return false;
   return beginClimb(p,false);
 }
 function tapStalk(wx,wy){var sk=stalkAt(wx,wy,10);return !!(sk&&requestClimb(sk,true));}
-function cloudHeight(){return plantTopH()+Math.round(IH*.42);}
+function cloudHeight(){return plantTopH()+132;} // fixed world-space exit height on every viewport
 function spawnExitSeeds(p){
   if(p.skySeeds)return;                                  // once per committed exit, never for traversal
   p.skySeeds=1;
@@ -3429,7 +3422,7 @@ function beginClimb(p,exitMode){
   else if(!canPlantClimb(rogueRun.classId)||plantClimbAt(P.x,P.y,10)!==p)return false;
   task=null;holdWater=null;climbGoal=null;jumpBuf=0;
   var gy=surfaceY(p.x);
-  climb={p:p,plantId:p.id,exit:!!exitMode,side:P.x<=p.x?-1:1,v:30,t:0,boost:0,gy:gy,ph:0,downArmed:false};
+  climb={p:p,plantId:p.id,exit:!!exitMode,side:P.x<=p.x?-1:1,v:30,t:0,boost:0,gy:gy,ph:0,downArmed:false,reachedTop:false,travelQueued:false};
   P.st='climb';P.grounded=false;P.platform=null;P.vx=0;P.vy=0;P.land=0;P.fidget=null;P.airJumpUsed=false;P.dodgeT=0;
   P.y=Math.min(P.y,gy-1);setAnim('climb');
   if(exitMode)spawnExitSeeds(p);
@@ -3481,7 +3474,16 @@ function updateClimb(dt,inp){
   var ph=Math.floor(c.t*9/(Math.PI*2));
   if(ph!==c.ph){c.ph=ph;if(!down)chime([300+Math.min(500,h*1.2)],0,.018);}
   if(Math.random()<dt*2.5)parts.push({x:P.x+(Math.random()-.5)*8,y:P.y-8-Math.random()*10,vx:(Math.random()-.5)*10,vy:6+Math.random()*10,l:1.1,m:1.1,c:'96,128,78'});
-  if(c.exit&&!warp&&h>cloudHeight()-6)startWarp();
+  if(c.exit&&h>=cloudHeight()-2){
+    P.y=c.gy-cloudHeight();c.v=0;
+    if(!c.reachedTop){
+      c.reachedTop=true;chime([392,523,659,784,1047,1319],.075,.05);
+      if(coopGuest()){
+        c.travelQueued=!!coopAction('travel',{plantId:p.id,top:true});
+      }else enterLevel(worldLevel()+1);
+    }
+    return;
+  }
 }
 function startWarp(){
   if(warp||!climb||!climb.exit||rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES)return;
