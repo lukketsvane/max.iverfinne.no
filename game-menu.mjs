@@ -268,12 +268,19 @@ async function roomAction(action, pending = '') {
   try { await action(); } catch (error) { message(error.message, true); }
   finally { busy = false; }
 }
+function nextVolume(value) {
+  const levels = [1, .65, .3, 0], current = levels.findIndex(v => Math.abs(v - value) < .03);
+  return levels[(current < 0 ? 0 : current + 1) % levels.length];
+}
+function volumeLabel(name, value) { return name + ' ' + (value <= .01 ? 'off' : Math.round(value * 100) + '%'); }
 function settings() {
   page('settings', 'Settings');
-  const enabled = game.soundEnabled?.() !== false;
-  const sound = button('Sound ' + (enabled ? 'on' : 'off'), () => { game.setSoundEnabled?.(!enabled); settings(); });
-  sound.setAttribute('aria-pressed', String(enabled));
-  card.append(sound, button('Controls', help));
+  const music = game.musicVolume?.() ?? 1, effects = game.effectsVolume?.() ?? 1;
+  const musicButton = button(volumeLabel('Music', music), () => { game.setMusicVolume?.(nextVolume(music)); settings(); });
+  const effectsButton = button(volumeLabel('Effects', effects), () => { game.setEffectsVolume?.(nextVolume(effects)); settings(); });
+  musicButton.setAttribute('aria-label', 'Music volume ' + Math.round(music * 100) + ' percent');
+  effectsButton.setAttribute('aria-label', 'Effects volume ' + Math.round(effects * 100) + ' percent');
+  card.append(musicButton, effectsButton, button('Controls', help));
   if (liveSettings) card.append(button('Exit to main menu', exitToMenu, 'subtle'));
   back();
 }
@@ -394,7 +401,7 @@ function attach(bridge) {
   if (game) return;
   game = bridge;
   window.MaxGardenLeaderboard = createLeaderboard(client, () => user ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
-  window.MaxSoundtrack = createSoundtrack({ enabled: game.soundEnabled?.() !== false });
+  window.MaxSoundtrack = createSoundtrack({ enabled: (game.musicVolume?.() ?? 1) > 0, volume: game.musicVolume?.() ?? 1 });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
   scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
   card = el('div', undefined, 'max-menu-card'); overlay.append(scenery, card);
