@@ -1748,15 +1748,15 @@ function setBlastHud(){
   blastHud.style.opacity='.94';
 }
 function blastTone(chain){
-  if(!soundEnabled)return;
+  if(!effectsEnabled)return;
   try{
     var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
     if(!blastTone.ac)blastTone.ac=new AC();var ac=blastTone.ac;if(ac.state==='suspended')ac.resume();
     var now=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
     o.type='square';o.frequency.setValueAtTime(115+chain*18,now);o.frequency.exponentialRampToValueAtTime(44,now+.11);
-    g.gain.setValueAtTime(.055,now);g.gain.exponentialRampToValueAtTime(.0001,now+.13);o.connect(g);g.connect(ac.destination);o.start(now);o.stop(now+.14);
+    g.gain.setValueAtTime(.055*effectsVolume,now);g.gain.exponentialRampToValueAtTime(.0001,now+.13);o.connect(g);g.connect(ac.destination);o.start(now);o.stop(now+.14);
     var o2=ac.createOscillator(),g2=ac.createGain();o2.type='triangle';o2.frequency.setValueAtTime(640+chain*35,now);
-    o2.frequency.exponentialRampToValueAtTime(180,now+.08);g2.gain.setValueAtTime(.025,now);g2.gain.exponentialRampToValueAtTime(.0001,now+.09);
+    o2.frequency.exponentialRampToValueAtTime(180,now+.08);g2.gain.setValueAtTime(.025*effectsVolume,now);g2.gain.exponentialRampToValueAtTime(.0001,now+.09);
     o2.connect(g2);g2.connect(ac.destination);o2.start(now);o2.stop(now+.10);
   }catch(e){}
 }
@@ -2185,7 +2185,7 @@ var worldMind={
 function saveWorldMind(){}
 function playerIsCalm(){return P.grounded&&Math.abs(P.vx)<7&&worldMind.still>.65;}
 function socialTone(kind){
-  if(!soundEnabled)return;
+  if(!effectsEnabled)return;
   try{
     var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
     if(!socialTone.ac)return;var ac=socialTone.ac;if(ac.state==='suspended')ac.resume();
@@ -2193,7 +2193,7 @@ function socialTone(kind){
     o.type=kind==='crow'?'square':'sine';
     var f=kind==='crow'?330:(kind==='water'?610:(kind==='call'?520:(kind==='gift'?880:780)));
     o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(kind==='crow'?210:f*1.28,now+.12);
-    g.gain.setValueAtTime(.032,now);g.gain.exponentialRampToValueAtTime(.0001,now+.17);o.connect(g);g.connect(ac.destination);o.start(now);o.stop(now+.18);
+    g.gain.setValueAtTime(.032*effectsVolume,now);g.gain.exponentialRampToValueAtTime(.0001,now+.17);o.connect(g);g.connect(ac.destination);o.start(now);o.stop(now+.18);
   }catch(e){}
 }
 function nearestOf(list,x,maxD){
@@ -3327,14 +3327,14 @@ function levelOriginX(n){
   return dryX(seg*BIOME_W+150);
 }
 function chime(freqs,gap,vol){
-  if(!soundEnabled)return;
+  if(!effectsEnabled)return;
   try{
     var ac=socialTone.ac;if(!ac)return;if(ac.state==='suspended')ac.resume();
     var now=ac.currentTime;
     for(var i=0;i<freqs.length;i++){
       var o=ac.createOscillator(),g=ac.createGain(),t0=now+i*gap;
       o.type='triangle';o.frequency.setValueAtTime(freqs[i],t0);
-      g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol||.045,t0+.012);g.gain.exponentialRampToValueAtTime(.0001,t0+.30);
+      g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime((vol||.045)*effectsVolume,t0+.012);g.gain.exponentialRampToValueAtTime(.0001,t0+.30);
       o.connect(g);g.connect(ac.destination);o.start(t0);o.stop(t0+.32);
     }
   }catch(e){}
@@ -4184,16 +4184,26 @@ function drawMaxLight(t) {
   ctx.globalCompositeOperation = 'source-over';
 }
 
-var soundEnabled=true;
-try{soundEnabled=localStorage.getItem('max-sound-enabled')!=='0';}catch(e){}
-function setSoundEnabled(value){
-  soundEnabled=!!value;
-  if(window.MaxSoundtrack)window.MaxSoundtrack.setEnabled(soundEnabled);
-  try{localStorage.setItem('max-sound-enabled',soundEnabled?'1':'0');}catch(e){}
-  [socialTone.ac,blastTone.ac].forEach(function(ac){if(ac){if(soundEnabled)ac.resume();else ac.suspend();}});
+var effectsVolume=.72,musicVolume=.72,effectsEnabled=true;
+try{
+  var legacy=localStorage.getItem('max-sound-enabled');
+  var eSaved=localStorage.getItem('max-effects-volume'),mSaved=localStorage.getItem('max-music-volume');
+  if(eSaved!==null)effectsVolume=Math.max(0,Math.min(1,+eSaved||0));else if(legacy==='0')effectsVolume=0;
+  if(mSaved!==null)musicVolume=Math.max(0,Math.min(1,+mSaved||0));else if(legacy==='0')musicVolume=0;
+}catch(e){}
+effectsEnabled=effectsVolume>0;
+function setEffectsVolume(value){
+  effectsVolume=Math.max(0,Math.min(1,Number(value)||0));effectsEnabled=effectsVolume>0;
+  try{localStorage.setItem('max-effects-volume',String(effectsVolume));}catch(e){}
+  [socialTone.ac,blastTone.ac].forEach(function(ac){if(ac){if(effectsEnabled)ac.resume();else ac.suspend();}});
+}
+function setMusicVolume(value){
+  musicVolume=Math.max(0,Math.min(1,Number(value)||0));
+  try{localStorage.setItem('max-music-volume',String(musicVolume));}catch(e){}
+  if(window.MaxSoundtrack){window.MaxSoundtrack.setVolume(musicVolume);window.MaxSoundtrack.setEnabled(musicVolume>0);}
 }
 function unlockAudio() {
-  if(!soundEnabled)return;
+  if(!effectsEnabled)return;
   try {
     var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
     if (!socialTone.ac) socialTone.ac = new AC();
@@ -4575,7 +4585,7 @@ function drawBooms() {
 /* sounds, made on the spot: a noise burst through a closing filter over a
    falling thump; a swish for the throw; a soft poof for the feathers */
 function sfx(kind, dist) {
-  if(!soundEnabled)return;
+  if(!effectsEnabled)return;
   var ac = socialTone.ac; if (!ac) return;
   try {
     if (ac.state === 'suspended') ac.resume();
@@ -4587,7 +4597,7 @@ function sfx(kind, dist) {
     var now = ac.currentTime, src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
     src.buffer = sfx.buf; src.connect(f); f.connect(g); g.connect(ac.destination);
     if (kind === 'boom') {
-      var vol = 0.24 * Math.max(0.2, 1 - dist / 400);
+      var vol = 0.24 * effectsVolume * Math.max(0.2, 1 - dist / 400);
       f.type = 'lowpass'; f.frequency.setValueAtTime(2600, now); f.frequency.exponentialRampToValueAtTime(120, now + 0.9);
       g.gain.setValueAtTime(0.0001, now); g.gain.exponentialRampToValueAtTime(vol, now + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, now + 1.05);
       src.start(now); src.stop(now + 1.1);
@@ -4597,11 +4607,11 @@ function sfx(kind, dist) {
       o.connect(og); og.connect(ac.destination); o.start(now); o.stop(now + 0.55);
     } else if (kind === 'swish') {
       f.type = 'bandpass'; f.Q.value = 1.4; f.frequency.setValueAtTime(1900, now); f.frequency.exponentialRampToValueAtTime(600, now + 0.16);
-      g.gain.setValueAtTime(0.05, now); g.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
+      g.gain.setValueAtTime(0.05*effectsVolume, now); g.gain.exponentialRampToValueAtTime(0.0001, now + 0.17);
       src.start(now, 0.3); src.stop(now + 0.18);
     } else {
       f.type = 'highpass'; f.frequency.value = 1500;
-      g.gain.setValueAtTime(0.0001, now + 0.03); g.gain.exponentialRampToValueAtTime(0.07, now + 0.04); g.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      g.gain.setValueAtTime(0.0001, now + 0.03); g.gain.exponentialRampToValueAtTime(0.07*effectsVolume, now + 0.04); g.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
       src.start(now + 0.03, 0.6); src.stop(now + 0.17);
     }
   } catch (e) {}
@@ -5143,8 +5153,10 @@ function attachGameMenu(){
   window.MaxGameMenu.attach({
     pause:setMenuPaused,
     drawMenuScene:drawMenuScene,
-    soundEnabled:function(){return soundEnabled;},
-    setSoundEnabled:setSoundEnabled,
+    effectsVolume:function(){return effectsVolume;},
+    musicVolume:function(){return musicVolume;},
+    setEffectsVolume:setEffectsVolume,
+    setMusicVolume:setMusicVolume,
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},
