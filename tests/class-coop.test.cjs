@@ -66,9 +66,10 @@ test('one player must physically climb a cleared exit to the top before the whol
   host.gardenPlots=[plot({id:81,x:tank.P.x,growth:2.7,stalk:true})];sync();
   send(1,[{id:1,type:'travel',world:1,top:true}]);assert.equal(host.rogueRun.world,1,'a forged travel action cannot skip an uncleared garden');
   host.rogueRun.clearedWorld=1;sync();
+  Object.assign(moss.P,{x:moss.gardenPlots[0].x,y:moss.surfaceY(moss.gardenPlots[0].x),st:'free',grounded:true,wet:false,anim:'idle'});
+  send(1,[{id:2,type:'travel',world:1,top:true}]);assert.equal(host.rogueRun.world,1,'being at the base is never enough');
   Object.assign(tank.P,{x:tank.gardenPlots[0].x,y:tank.surfaceY(tank.gardenPlots[0].x),st:'free',grounded:true,wet:false,anim:'idle'});
   assert.equal(tank.requestClimb(tank.gardenPlots[0],true),true,'a non-Moss teammate may climb the dedicated exit stalk');
-  send(2,[{id:1,type:'travel',world:1,top:true}]);assert.equal(host.rogueRun.world,1,'being at the base is never enough');
   for(let i=0;i<900&&host.rogueRun.world===1;i++){
     players[0].advance(1000/60);players[2].advance(1000/60);
     tank.updatePlayer(1/60,{axis:0,top:48});send(2);
