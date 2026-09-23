@@ -66,6 +66,17 @@ test('new enemy roles are distinct warned threats rather than reskinned basic pe
   const start=ram.x;for(let i=0;i<120;i++)g.updateEnemyRole(ram,.01);assert.notEqual(ram.x,start,'rammer follows its warned charge');
 });
 
+test('killing a thorn caster during its windup cancels its warned root and no other',()=>{
+  const g=loadGame().game;g.resetRogueRun();g.rogueRun.world=12;g.gardenRaidT=g.krekSpawnT=9999;
+  const plant=plot({x:0}),far=plot({x:200});g.gardenPlots=[plant,far];g.runHazards=[];
+  const other=g.addRunHazard('root',far.x,11,1.05,.48);
+  const thorn=Object.assign(g.makeKrek(1,false,9),{kind:9,x:58,y:g.surfaceY(58)-30,bite:0,windup:0,hp:1,maxHp:1});g.floatKrek=[thorn];
+  g.updateEnemyRole(thorn,.01);assert.ok(thorn.windup>0);assert.equal(g.runHazards.length,2);
+  assert.equal(g.damagePest(thorn,100,thorn.x),true);assert.deepEqual(g.runHazards,[other]);
+  for(let i=0;i<150;i++)g.updateRunHazards(.01);
+  assert.equal(plant.health,1,'the cancelled root never lands');assert.ok(far.health<1,'an unrelated root still lands');
+});
+
 test('new roles enter progressively while rats remain a later threat',()=>{
   const g=loadGame().game;g.resetRogueRun('test',{difficulty:'medium'});g.gardenWave=1;
   const kinds=stage=>{g.rogueRun.world=stage;return new Set(Array.from({length:80},(_,i)=>g.waveEnemyKind(i)));};
