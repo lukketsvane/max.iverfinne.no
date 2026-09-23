@@ -101,10 +101,10 @@ test('a promoted host takes input from teammates whose sessions it never saw and
   const s=new CoopSession(client,{id:'heir'},{join:id=>joins.push(id),input:(_id,p)=>inputs.push(p.actions[0].id),depart:id=>departs.push(id)},{classId:'runner',difficulty:'easy'});
   s.room=JSON.parse(JSON.stringify(room));s.entered=true;s.begin();s.pending=[{id:4,type:'throw'}];
   await s.poll(true);assert.equal(s.host,true);assert.deepEqual(s.pending,[]);
-  const frame=(seq,id)=>({v:1,seq,sid:'late-session-1',selection:{classId:'bulwark',difficulty:'easy'},avatar:{},actions:[{id,type:'throw'}]});
+  const frame=(seq,id)=>({v:1,proto:2,seq,sid:'late-session-1',selection:{classId:'bulwark',difficulty:'easy'},avatar:{},actions:[{id,type:'throw'}]});
   s.receive('late',frame(1,7));s.receive('late',frame(2,8));
   assert.deepEqual(joins,['late']);assert.deepEqual(inputs,[8]);
-  s.receive('late',{v:1,seq:3,sid:'late-session-1',end:true});
+  s.receive('late',{v:1,proto:2,seq:3,sid:'late-session-1',end:true});
   assert.deepEqual(departs,['late']);assert.equal(s.loadouts.late,undefined,'a player who left is not rejoined by the next roster poll');
   await s.leave();
 });
@@ -122,4 +122,44 @@ test('a teammate who rejoins, or returns after the garden moved on, starts where
   host.enterLevel(2);sync();input(away,ids[2]);sync();
   assert.ok(Math.abs(away.P.x-host.P.x)<60,'a player back from the background lands beside the host in the new garden');
   away.P.x+=4;assert.equal(input(away,ids[2]),away.P.x);
+});
+
+test('after a handoff the new host takes a teammate who kept walking while the old host was gone',()=>{
+  const {games,sync,send}=team(),heir=games[1].game,guest=games[2].game;sync();
+  guest.P.x+=100;guest.P.y=guest.surfaceY(guest.P.x);games[1].advance(12000);
+  heir.coopRoster({id:'room',host:ids[1],members:[ids[1],ids[2]].map((id,i)=>({id,slot:i+2,ready:true}))});
+  send(2,[],1);assert.equal(heir.coop.members[ids[2]].avatar.x,guest.P.x);
+  guest.P.x+=400;send(2,[],1);assert.notEqual(heir.coop.members[ids[2]].avatar.x,guest.P.x,'only the first packet after the handoff is trusted');
+});
+
+test('a player who reloads in the same garden is accepted where the new page starts',()=>{
+  const {games}=team(),host=games[0].game,m=host.coop.members[ids[1]];
+  m.avatar.x=host.P.x+400;m.avatar.y=host.surfaceY(m.avatar.x);
+  const back=loadGame();back.game.beginCoop({host:false,user:{id:ids[1]},room:games[1].network.room,action(){return true;},tick(){},fail(reason){throw Error(reason);}});
+  assert.equal(host.coopJoin(ids[1],{classId:m.classId}),true);games[0].advance(100);
+  host.coopInput(ids[1],{avatar:JSON.parse(JSON.stringify(back.game.coopAvatar())),actions:[]});
+  assert.equal(m.avatar.x,back.game.P.x);
+});
+
+test('a player who joins a garden that moved on lands where the host placed them, not at the stage start',()=>{
+  const {games}=team(),host=games[0].game;
+  host.coopDepart(ids[1]);host.enterLevel(2);host.P.x+=300;host.P.y=host.surfaceY(host.P.x);
+  const back=loadGame();back.game.beginCoop({host:false,user:{id:ids[1]},room:games[1].network.room,action(){return true;},tick(){},fail(reason){throw Error(reason);}});
+  assert.equal(host.coopJoin(ids[1],{classId:'mech'}),true);back.game.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
+  assert.equal(back.game.P.x,host.coop.members[ids[1]].avatar.x);assert.ok(Math.abs(back.game.P.x-host.P.x)<60);
+});
+
+test('a teammate back from a timeout never replays an action the host already ran',()=>{
+  const {games,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  guest.throwBomb({x:guest.P.x+40,y:guest.P.y-15});send(1,games[1].pending);assert.equal(member.ack,1);
+  games[0].advance(11000);host.coopFrame();assert.equal(member.left,true);
+  const n=host.bombs.length;send(1,games[1].pending);
+  assert.equal(member.left,false);assert.equal(host.bombs.length,n);
+});
+
+test('Golden Seeds on any teammate adds the raid-clear bonus seed, a team reward at the host',()=>{
+  const clears=luck=>{const {games}=team(),host=games[0].game;host.coop.members[ids[1]].perks.luck=luck;host.seedPickups=[];
+    for(let i=0;i<10;i++){Object.assign(host,{gardenWave:1,gardenRaidActive:true,gardenRaidGrace:0,floatKrek:[]});host.rogueRun.raidRemaining=0;games[0].tick(16);assert.equal(host.gardenRaidActive,false);}
+    return host.seedPickups.length+host.gardenSeeds;};
+  assert.ok(clears(1)-clears(0)>=6,'ten clears carry ten bonus seeds through the class seed rate');
 });
