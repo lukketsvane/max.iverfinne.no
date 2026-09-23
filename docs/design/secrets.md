@@ -51,7 +51,7 @@ About one garden in seven from garden 2 on, and on every meteor night, a star cr
 
 ## Wonders
 
-The host rolls wonders for each garden from the run seed, so every run meets a different set and a co-op team sees the same ones. None appear in the first garden or on a boss night. Every find is written to the found list (`rogueMeta.wonders`); the menu garden shows `n / 25 WONDERS`.
+The host rolls wonders for each garden from the run seed, so every run meets a different set and a co-op team sees the same ones. None appear in the first garden or on a boss night. Every find is written to the found list (`rogueMeta.wonders`); the menu garden shows `n / 26 WONDERS`.
 
 | Kind | Wonders | How |
 | --- | --- | --- |
