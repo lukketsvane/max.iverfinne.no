@@ -91,3 +91,17 @@ test('a guest wishes through the host, once, and the host allows for the round t
   send(); assert.equal(host.seedPickups.length, loose + 3);
   sync(); assert.equal(guest.secretStarLive(), false);
 });
+
+test('a meteor night streaks the sky for everyone and always carries a wishing star', () => {
+  const g = fresh().game;
+  for (let seed = 1, n = 0; n < 40; seed++) for (let w = 2; w <= 20; w++) if (g.secretEventFor(seed, w) === 'meteors') {
+    g.updateSecrets(0); g.secrets.seed = seed; g.rogueRun.world = w; g.secrets.world = 0; g.updateSecrets(0); n++;
+    assert.ok(g.secrets.starAt >= 20 && g.secrets.starAt <= 70, 'the wish comes 20-70 s into the night');
+  }
+  const streaks = (game, seconds) => { let most = 0; for (let t = 0; t < seconds; t += .1) { game.updateSecrets(.1); most = Math.max(most, game.secretMeteors.length); } return most; };
+  const m = fresh().game; garden(m, 'meteors');
+  assert.ok(streaks(m, 1.5) > 0, 'meteors fall within a second and a half'); m.drawSecretSky(1, 200);
+  const calm = fresh().game; garden(calm, 'fog'); assert.equal(streaks(calm, 5), 0);
+  const { host, guest, sync } = pair(); const w = garden(host, 'meteors'); sync(); guest.rogueRun.world = w;
+  assert.ok(streaks(guest, 1.5) > 0, 'guests draw their own streaks');
+});
