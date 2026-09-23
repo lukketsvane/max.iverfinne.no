@@ -16,21 +16,24 @@ function pair() {
     h.game.beginCoop({ host: id === ids[0], user: { id }, room, action(type, data = {}) { pending.push({ id: pending.length + 1, type, ...data }); return true; }, tick() {}, fail(reason) { throw Error(reason); } });
     return { ...h, pending };
   });
-  return { host: games[0].game, guest: games[1].game, sync() { games[1].game.coopState(JSON.parse(JSON.stringify(games[0].game.coopCapture()))); }, send() { games[0].game.coopInput(ids[1], { avatar: JSON.parse(JSON.stringify(games[1].game.coopAvatar())), actions: games[1].pending }); } };
+  return { host: games[0].game, guest: games[1].game, pending: games[1].pending, sync() { games[1].game.coopState(JSON.parse(JSON.stringify(games[0].game.coopCapture()))); }, send() { games[0].game.coopInput(ids[1], { avatar: JSON.parse(JSON.stringify(games[1].game.coopAvatar())), actions: games[1].pending }); } };
 }
 
 test('special events are rare, seeded per garden and never in the first garden', () => {
-  const g = fresh().game, count = {};
+  const g = fresh().game, count = {}, band = { snow: [0, 0], other: [0, 0] };
   for (let seed = 1; seed <= 4000; seed++) for (let w = 1; w <= 20; w++) {
     const e = g.secretEventFor(seed, w);
+    if (w > 1) { const b = band[w >= 11 && w <= 15 ? 'snow' : 'other']; b[0]++; if (e) b[1]++; }
     assert.equal(e, g.secretEventFor(seed, w), 'the same seed and garden always roll the same night');
     if (w === 1) assert.equal(e, '');
     if (e === 'aurora') assert.ok(w >= 11 && w <= 15, 'the aurora only lights the snow gardens');
     if (e === 'fog') assert.ok(w % 5, 'no fog over a milestone boss');
     count[e] = (count[e] || 0) + 1;
   }
-  const nights = 4000 * 19, special = nights - count[''];
-  assert.ok(special / nights > .12 && special / nights < .3, 'roughly one garden in five has a special night');
+  const rate = b => b[1] / b[0], all = (band.snow[1] + band.other[1]) / (band.snow[0] + band.other[0]);
+  assert.ok(rate(band.other) > .16 && rate(band.other) < .2, String(rate(band.other)));
+  assert.ok(rate(band.snow) > .25 && rate(band.snow) < .35, 'a snow garden gets the aurora instead of the other nights');
+  assert.ok(all > .18 && all < .24, 'about one garden in five has a special night');
   for (const e of ['moon', 'meteors', 'fog', 'aurora', 'chorus']) assert.ok(count[e] > 0, e);
 });
 
@@ -80,12 +83,15 @@ test('a shooting star grants one wish to a quick tap, and nothing to a slow or w
 });
 
 test('a guest wishes through the host, once, and the host allows for the round trip', () => {
-  const { host, guest, sync, send } = pair();
+  const { host, guest, pending, sync, send } = pair();
   starGarden(host, false); sync(); guest.rogueRun.world = host.rogueRun.world;
+  const stale = JSON.parse(JSON.stringify(host.coopCapture()));
   assert.ok(guest.secretStarLive(), 'the guest sees the same star');
   const q = guest.secretStarPos(), loose = host.seedPickups.length;
   assert.equal(guest.grantWish(guest.P), false, 'a guest cannot grant its own wish');
   assert.equal(guest.catchWish(guest.camX + q.x, guest.camY + q.y), true);
+  guest.coopState(stale); assert.equal(guest.secretStarLive(), false, 'a snapshot sent before the wish arrived keeps the star caught');
+  assert.equal(guest.catchWish(guest.camX + q.x, guest.camY + q.y), false); assert.equal(pending.filter(a => a.type === 'wish').length, 1);
   host.updateSecrets(2.5); send();
   assert.equal(host.seedPickups.length, loose + 3, 'the host still honours a wish that left in time');
   send(); assert.equal(host.seedPickups.length, loose + 3);
@@ -126,6 +132,15 @@ test('about one snow garden in three hangs an aurora over the mountains', () => 
   assert.equal(g.secretEvent(), 'aurora'); g.drawSecretSky(3, 220); g.drawSecretBanner(8);
 });
 
+test('the arrival banner names the night beside the garden number', () => {
+  const g = fresh().game, drawn = [], w = garden(g, 'aurora'), glyphs = () => drawn.filter(d => d[0] === g.BOSS_FONT);
+  g.BOSS_FONT = { complete: true, naturalWidth: 96 }; g.worldBanner = 2; g.ctx.drawImage = (img, sx, sy, sw, sh, dx) => drawn.push([img, dx]);
+  g.drawWorldBanner(0);
+  assert.equal(glyphs().length, 'AURORA'.length);
+  assert.ok(Math.min(...glyphs().map(d => d[1])) > 16 + String(w).length * 4, 'right of the digits');
+  drawn.length = 0; g.secrets.event = ''; g.drawWorldBanner(0); assert.equal(glyphs().length, 0, 'an ordinary night adds no word');
+});
+
 test('a dawn chorus gathers nine blue tits; an ordinary night keeps the usual few', () => {
   const tits = g => g.smallFauna.filter(a => a.kind === 'tit').length;
   const g = fresh().game; garden(g, 'chorus');
@@ -160,7 +175,7 @@ test('standing still for three seconds on a garden\'s secret spot wakes a firefl
   assert.equal(g.secrets.spotFound, 0, 'walking resets the wait');
   standAt(g.P, g, x + 30); g.updateSecrets(4); assert.equal(g.secrets.spotFound, 0, 'only the spot itself');
   standAt(g.P, g, x + 4); g.updateSecrets(1.5); g.updateSecrets(1.6);
-  assert.ok(g.secrets.spotFound > 0); assert.equal(g.seedPickups.length, loose + 2); g.drawSecretGround(3);
+  assert.ok(g.secrets.spotFound > 0); assert.equal(g.seedPickups.length, loose + 2, 'a Mech team gets both: secret finds skip the seed rate'); g.drawSecretGround(3);
   g.updateSecrets(5); assert.equal(g.seedPickups.length, loose + 2, 'once per garden');
   g.rogueRun.world = 2; g.updateSecrets(0); assert.equal(g.secrets.spotFound, 0); assert.notEqual(g.secrets.spotX, x);
   const { host, guest, sync } = pair(); host.updateSecrets(0);
@@ -241,11 +256,12 @@ test('the player renderer draws the tinted sheet for your own Max only', () => {
 });
 
 test('the garden view writes its secret line only when all twenty plants are found', () => {
-  const g = fresh().game, pen = { drawImage() {} };
+  const g = fresh().game; let glyphs = 0; const pen = { drawImage(img) { if (img === g.BOSS_FONT) glyphs++; } };
+  g.BOSS_FONT = { complete: true, naturalWidth: 96 };
   const all = g.plantCollection().map(p => ({ ...p, found: true }));
   assert.equal(all.length, 20);
-  assert.equal(g.drawGardenSecret(pen, all, 320, 400, 1, false), true);
+  assert.equal(g.drawGardenSecret(pen, all, 320, 400, 1, false), true); assert.equal(glyphs, 'GOODNIGHT, GARDEN'.length);
   assert.equal(g.drawGardenSecret(pen, all.map((p, i) => ({ ...p, found: i !== 13 })), 320, 400, 1, false), false, 'nineteen is not enough');
   assert.equal(g.drawGardenSecret(pen, all, 320, 400, 1, true), false, 'a locked view keeps it hidden');
-  assert.equal(g.drawGardenSecret(pen, g.plantCollection(), 320, 400, 1, false), false, 'a new player sees nothing');
+  assert.equal(g.drawGardenSecret(pen, g.plantCollection(), 320, 400, 1, false), false, 'a new player sees nothing'); assert.equal(glyphs, 17);
 });
