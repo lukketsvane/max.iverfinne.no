@@ -36,6 +36,16 @@ test('twenty deterministic stage layouts have distinct routes, visible first ste
   assert.equal(kinds.size, 6); assert.equal(signatures.size, 20, 'later visits vary the route geometry');
 });
 
+test('every attempt rolls a 32-bit run seed that keys the cached garden', () => {
+  const { game: g } = loadGame(); g.resetRogueRun('test');
+  const seed = g.rogueRun.seed;
+  assert.ok(Number.isInteger(seed) && seed >= 0 && seed < 2 ** 32);
+  assert.equal(g.stageLayout().seed, seed);
+  g.rogueRun.seed = (seed + 1) >>> 0; assert.equal(g.stageLayout().seed, g.rogueRun.seed, 'a new seed rebuilds the cached garden');
+  g.resetRogueRun('test'); assert.notEqual(g.rogueRun.seed, seed);
+  assert.equal(layouts.create(3, 0, () => 0, () => false).seed, undefined, 'no seed keeps the authored garden');
+});
+
 function launch(g, target, hz = 60) {
   const start = { ...g.P };
   // Players can release Up to shorten a jump; Moss need not overshoot a

@@ -215,7 +215,7 @@ function dryX(x) { var w = waterAt(x); return w ? w.cx + (x < w.cx ? -1 : 1) * (
 var activeStageLayout=null;
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level)activeStageLayout=window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
@@ -3030,7 +3030,7 @@ function resetRogueRun(reason,selection){
   bloomPatches.length=0;gifts.length=0;signals.length=0;sanctuaries.length=0;waterBlessings.length=0;
   crows.length=0;smallFauna.length=0;
   var keepWorld=1; // Each attempt begins with the same garden and base abilities.
-  rogueRun={classId:classId,difficulty:difficulty,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
+  rogueRun={classId:classId,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
   rogueRun.recordId=window.MaxRunRecords?window.MaxRunRecords.uuid():null;
