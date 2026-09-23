@@ -62,6 +62,15 @@ function drawSecretSky(t,hy){
     ctx.globalCompositeOperation='lighter';disc(q.x,q.y,3,'rgba(246,232,190,0.25)');ctx.globalCompositeOperation='source-over';
     ctx.fillStyle='#fffbe8';ctx.fillRect(q.x-1,q.y,3,1);ctx.fillRect(q.x,q.y-1,1,3);
   }
+  if(secretEvent()==='aurora'){
+    ctx.globalCompositeOperation='lighter';
+    for(var sx=0;sx<IW;sx+=2){
+      var u=(sx+camX*.05)*.018,top=Math.max(safeTopArt()+4,hy-178+Math.round(Math.sin(u+t*.25)*10+Math.sin(u*2.3-t*.4)*5)),a=.05+.035*Math.sin(u*3.1+t*.8);
+      ctx.fillStyle='rgba(90,230,170,'+a.toFixed(3)+')';ctx.fillRect(sx,top,2,18+Math.round(8*Math.sin(u*1.7+t*.6)));
+      ctx.fillStyle='rgba(150,110,230,'+(a*.6).toFixed(3)+')';ctx.fillRect(sx,top-6,2,6);
+    }
+    ctx.globalCompositeOperation='source-over';
+  }
   if(secretEvent()!=='moon')return;
   var span=IW+900,mx=(IW*.72-camX*.012)%span,my=Math.max(12,hy-196);if(mx<-60)mx+=span;
   disc(mx,my,20,'rgba(223,230,234,0.035)');disc(mx,my,13,'rgba(223,230,234,0.05)');disc(mx,my,8,'#eef1ea');
