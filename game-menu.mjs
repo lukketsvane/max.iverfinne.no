@@ -19,9 +19,8 @@ if (config.publishableKey) client = createClient(config.url, config.publishableK
 });
 let game, overlay, card, user = null, busy = false, opened = false, screen = 'home';
 let sessionReady = !client;
-let status, scenery;
-let garden = null, gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
-let sceneFrame = 0, sceneStarted = 0;
+let status;
+let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
 let selected = readLoadout(window.localStorage);
@@ -113,112 +112,124 @@ const PLANT_NOTES = [
   ['Gold bud', 'Teal leaves and bright gold buds. The bees find it before anyone else.'],
   ['Moonbell', 'A soft blue flower that opens after dusk. Fireflies gather around its stem and it thrives by calm water.'],
 ];
-function gardenSize() {
-  const w = window.innerWidth, h = window.innerHeight, dpr = window.devicePixelRatio || 1;
-  const scale = Math.max(2, Math.round(Math.min(w, h) * dpr / 192));
-  return { w: Math.ceil(w * dpr / scale), h: Math.ceil(h * dpr / scale), px: scale / dpr };
+
+const scene = { scroll: 0, vel: 0, target: null, max: 0, drag: null, t0: 0, last: 0, drawn: 0, raf: 0, focus: -1, dim: 0, info: null, kinds: [], on: false };
+let inGarden = false;
+function sceneSize() {
+  const dpr = window.devicePixelRatio || 1, dw = Math.round(window.innerWidth * dpr), dh = Math.round(window.innerHeight * dpr);
+  const scale = Math.max(2, Math.round(Math.min(dw, dh) / 150));
+  return { w: Math.ceil(dw / scale), h: Math.ceil(dh / scale), px: scale / dpr };
 }
-function enterGarden() {
-  if (!opened || screen !== 'home' || garden || !game.drawGardenScene) return;
-  const kinds = game.plantCollection?.() || [], found = kinds.filter(k => k.found).length, now = performance.now();
-  gardenCount.replaceChildren(); pixelText(gardenCount, found + ' / ' + kinds.length + ' FOUND', 2, 1);
-  garden = { scroll: 0, vel: 0, target: null, max: 0, drag: null, t0: now, last: now, raf: 0, focus: -1, dim: 0, info: null, kinds };
-  overlay.dataset.view = 'garden'; card.inert = true; gardenHud.inert = false;
-  let seen = false; try { seen = localStorage.getItem('max-garden-pinch-hint') === '1'; localStorage.setItem('max-garden-pinch-hint', '1'); } catch {}
-  gardenHint.hidden = seen; gardenHint.classList.remove('gone');
-  if (!seen) setTimeout(() => gardenHint.classList.add('gone'), 3200);
-  gardenFrame(now);
-  gardenTitle.focus({ preventScroll: true });
+function startScene() {
+  if (!game?.drawGardenScene || !opened || liveSettings) return;
+  game.setCovered?.(true);
+  if (scene.on) return;
+  scene.on = true; scene.last = scene.drawn = 0; if (!scene.t0) scene.t0 = performance.now();
+  scene.kinds = game.plantCollection?.() || [];
+  scene.raf = requestAnimationFrame(sceneFrame);
 }
-function exitGarden() {
-  if (!garden) return;
-  unfocusPlant(); cancelAnimationFrame(garden.raf); garden = null; pinch = null;
-  delete overlay.dataset.view; card.inert = false; gardenHud.inert = true;
-  queueMicrotask(() => { if (opened && screen === 'home') document.getElementById('max-menu-title')?.focus({ preventScroll: true }); });
-}
-function focusPlant(i) {
-  const g = garden, info = g?.info; if (!info || i < 0 || i >= info.count) return;
-  const k = g.kinds[i] || { kind: i, found: false, times: 0 }, note = PLANT_NOTES[k.kind] || ['No ' + (k.kind + 1), ''], size = gardenSize();
-  g.focus = i; g.vel = 0; g.target = info.x0 + i * info.spacing - Math.round(gardenCanvas.width * .3);
-  gardenCanvas.style.transformOrigin = Math.round(gardenCanvas.width * .3 * size.px) + 'px ' + Math.round((info.ground - 20) * size.px) + 'px';
-  gardenCanvas.style.transform = 'scale(1.7)';
-  gardenNote.replaceChildren();
-  gardenNote.append(pixelText(el('h3'), k.found ? note[0].toUpperCase() : '???', 3, 1), el('hr'), el('p', k.found ? note[1] : 'Grow one to full size to learn its name.'), el('hr'));
-  if (k.found) gardenNote.append(pixelText(el('p', undefined, 'max-garden-times'), 'FOUND ' + k.times + (k.times === 1 ? ' TIME' : ' TIMES'), 2, 1));
-  overlay.dataset.focus = 'plant';
-}
-function unfocusPlant() {
-  if (!garden || garden.focus < 0) return;
-  garden.focus = -1; gardenCanvas.style.transform = ''; delete overlay.dataset.focus;
-}
-function gardenTap(x, y) {
-  const g = garden, info = g?.info; if (!info) return;
-  if (g.focus >= 0) { unfocusPlant(); return; }
-  const size = gardenSize(), nx = x / size.px, ny = y / size.px, wx = nx + g.scroll, i = Math.round((wx - info.x0) / info.spacing);
-  if (i >= 0 && i < info.count && Math.abs(wx - (info.x0 + i * info.spacing)) < info.spacing * .45 && ny > info.ground - 76 && ny < info.ground + 10) focusPlant(i);
-}
-function gardenStep(dir) {
-  if (!garden) return;
-  if (garden.focus >= 0) { focusPlant(Math.max(0, Math.min((garden.info?.count || 1) - 1, garden.focus + dir))); return; }
-  const page = Math.max(game.gallerySpacing || 40, Math.round(gardenCanvas.width * .75));
-  garden.vel = 0; garden.target = Math.max(0, Math.min(garden.max, (garden.target ?? garden.scroll) + dir * page));
-}
-function gardenFrame(now) {
-  const g = garden; if (!g) return;
-  const dt = Math.min(.05, (now - g.last) / 1000), size = gardenSize(); g.last = now;
+function stopScene() { scene.on = false; cancelAnimationFrame(scene.raf); game?.setCovered?.(false); }
+function sceneFrame(now) {
+  if (!scene.on) return;
+  scene.raf = requestAnimationFrame(sceneFrame);
+  if (!inGarden && scene.drawn && now - scene.drawn < 40) return;
+  const g = scene, dt = g.last ? Math.min(.05, (now - g.last) / 1000) : 0, size = sceneSize(); g.last = g.drawn = now;
   if (gardenCanvas.width !== size.w || gardenCanvas.height !== size.h) { gardenCanvas.width = size.w; gardenCanvas.height = size.h; }
   if (!g.drag) {
-    if (g.target !== null) { g.scroll += (g.target - g.scroll) * Math.min(1, dt * 9); if (Math.abs(g.target - g.scroll) < .5) { g.scroll = g.target; g.target = null; } }
+    if (g.target !== null) { g.scroll += (g.target - g.scroll) * Math.min(1, dt * 6); if (Math.abs(g.target - g.scroll) < .5) { g.scroll = g.target; g.target = null; } }
     else { g.scroll += g.vel * dt; g.vel *= Math.pow(.03, dt); if (Math.abs(g.vel) < 3) g.vel = 0; }
-    if (g.focus < 0 && g.scroll < 0) { g.scroll -= g.scroll * Math.min(1, dt * 12); g.vel = 0; }
-    else if (g.focus < 0 && g.scroll > g.max) { g.scroll += (g.max - g.scroll) * Math.min(1, dt * 12); g.vel = 0; }
+    if (g.focus < 0 && g.scroll < 0) { g.scroll -= g.scroll * Math.min(1, dt * 10); g.vel = 0; }
+    else if (g.focus < 0 && g.scroll > g.max) { g.scroll += (g.max - g.scroll) * Math.min(1, dt * 10); g.vel = 0; }
   }
-  g.dim += ((g.focus >= 0 ? 1 : 0) - g.dim) * Math.min(1, dt * 5);
+  g.dim += ((g.focus >= 0 ? 1 : 0) - g.dim) * Math.min(1, dt * 4);
   const info = game.drawGardenScene(gardenCanvas, { scroll: g.scroll, t: (now - g.t0) / 1000, focus: g.focus, dim: g.dim });
   if (info) { g.max = info.max; if (info.ready) g.info = info; }
   const prev = g.scroll <= 2, next = g.scroll >= g.max - 2;
   if (gardenPrev.hidden !== prev) gardenPrev.hidden = prev;
   if (gardenNext.hidden !== next) gardenNext.hidden = next;
-  if (!document.hidden) g.raf = requestAnimationFrame(gardenFrame);
+}
+function enterGarden() {
+  if (!opened || screen !== 'home' || inGarden || !game.drawGardenScene) return;
+  scene.kinds = game.plantCollection?.() || [];
+  const found = scene.kinds.filter(k => k.found).length;
+  gardenCount.replaceChildren(); pixelText(gardenCount, found + ' / ' + scene.kinds.length + ' FOUND', 2, 1);
+  inGarden = true; overlay.dataset.view = 'garden'; card.inert = true; gardenHud.inert = false;
+  let seen = false; try { seen = localStorage.getItem('max-garden-pinch-hint') === '1'; localStorage.setItem('max-garden-pinch-hint', '1'); } catch {}
+  gardenHint.hidden = seen; gardenHint.classList.remove('gone');
+  if (!seen) setTimeout(() => gardenHint.classList.add('gone'), 3600);
+  startScene();
+  gardenTitle.focus({ preventScroll: true });
+}
+function exitGarden() {
+  if (!inGarden) return;
+  unfocusPlant(); inGarden = false; pinch = null; scene.drag = null;
+  delete overlay.dataset.view; card.inert = false; gardenHud.inert = true;
+  queueMicrotask(() => { if (opened && screen === 'home') document.getElementById('max-menu-title')?.focus({ preventScroll: true }); });
+}
+function focusPlant(i) {
+  const g = scene, info = g.info; if (!inGarden || !info || i < 0 || i >= info.count) return;
+  const k = g.kinds[i] || { kind: i, found: false }, note = PLANT_NOTES[k.kind] || ['No ' + (k.kind + 1), ''], size = sceneSize();
+  g.focus = i; g.vel = 0; g.target = info.x0 + i * info.spacing - Math.round(gardenCanvas.width * .3);
+  gardenCanvas.style.transformOrigin = Math.round(gardenCanvas.width * .3 * size.px) + 'px ' + Math.round((info.ground - 24) * size.px) + 'px';
+  gardenCanvas.style.transform = 'scale(2)';
+  gardenNote.replaceChildren();
+  gardenNote.append(pixelText(el('h3'), k.found ? note[0].toUpperCase() : '???', 3, 1), el('hr'), el('p', k.found ? note[1] : 'Grow one to full size to learn its name.'));
+  overlay.dataset.focus = 'plant';
+}
+function unfocusPlant() {
+  if (scene.focus < 0) return;
+  scene.focus = -1; gardenCanvas.style.transform = ''; delete overlay.dataset.focus;
+}
+function gardenTap(x, y) {
+  const g = scene, info = g.info; if (!inGarden || !info) return;
+  if (g.focus >= 0) { unfocusPlant(); return; }
+  const size = sceneSize(), nx = x / size.px, ny = y / size.px, wx = nx + g.scroll, i = Math.round((wx - info.x0) / info.spacing);
+  if (i >= 0 && i < info.count && Math.abs(wx - (info.x0 + i * info.spacing)) < info.spacing * .45 && ny > info.ground - 76 && ny < info.ground + 10) focusPlant(i);
+}
+function gardenStep(dir) {
+  if (!inGarden) return;
+  if (scene.focus >= 0) { focusPlant(Math.max(0, Math.min((scene.info?.count || 1) - 1, scene.focus + dir))); return; }
+  const page = Math.max(game.gallerySpacing || 40, Math.round(gardenCanvas.width * .75));
+  scene.vel = 0; scene.target = Math.max(0, Math.min(scene.max, (scene.target ?? scene.scroll) + dir * page));
 }
 function touchDistance(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1; }
 function gardenGestures() {
   gardenCanvas.addEventListener('pointerdown', e => {
-    if (!garden || pinch) return;
-    garden.drag = { id: e.pointerId, last: e.clientX, t: performance.now(), v: 0, x0: e.clientX, y0: e.clientY, t0: performance.now(), moved: false }; garden.vel = 0;
+    if (!inGarden || pinch) return;
+    const now = performance.now();
+    scene.drag = { id: e.pointerId, last: e.clientX, t: now, v: 0, x0: e.clientX, y0: e.clientY, t0: now, moved: false }; scene.vel = 0;
     gardenCanvas.setPointerCapture?.(e.pointerId);
   });
   gardenCanvas.addEventListener('pointermove', e => {
-    const d = garden?.drag; if (!d || d.id !== e.pointerId) return;
-    if (!d.moved) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 8) return; d.moved = true; d.last = e.clientX; d.t = performance.now(); garden.target = null; unfocusPlant(); return; }
-    const now = performance.now(), dx = (e.clientX - d.last) / gardenSize().px, out = garden.scroll < 0 || garden.scroll > garden.max;
-    garden.scroll -= dx * (out ? .35 : 1);
+    const d = scene.drag; if (!d || d.id !== e.pointerId) return;
+    if (!d.moved) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 8) return; d.moved = true; d.last = e.clientX; d.t = performance.now(); scene.target = null; unfocusPlant(); return; }
+    const now = performance.now(), dx = (e.clientX - d.last) / sceneSize().px, out = scene.scroll < 0 || scene.scroll > scene.max;
+    scene.scroll -= dx * (out ? .35 : 1);
     d.v = d.v * .6 + (-dx / Math.max(.008, (now - d.t) / 1000)) * .4; d.last = e.clientX; d.t = now;
   });
   const release = e => {
-    const d = garden?.drag; if (!d || d.id !== e.pointerId) return;
-    garden.drag = null;
+    const d = scene.drag; if (!d || d.id !== e.pointerId) return;
+    scene.drag = null;
     if (!d.moved) { if (e.type === 'pointerup' && performance.now() - d.t0 < 450) gardenTap(e.clientX, e.clientY); return; }
-    garden.vel = performance.now() - d.t < 90 ? d.v : 0;
+    scene.vel = performance.now() - d.t < 90 ? d.v : 0;
   };
   gardenCanvas.addEventListener('pointerup', release); gardenCanvas.addEventListener('pointercancel', release);
   overlay.addEventListener('touchstart', e => {
-    if (e.touches.length !== 2 || !opened || (!garden && screen !== 'home')) return;
-    pinch = { d: touchDistance(e.touches) }; if (garden) garden.drag = null;
+    if (e.touches.length !== 2 || !opened || liveSettings || (!inGarden && screen !== 'home')) return;
+    pinch = { d: touchDistance(e.touches) }; scene.drag = null;
   }, { passive: true });
   overlay.addEventListener('touchmove', e => {
     if (!pinch || e.touches.length !== 2) return;
-    e.preventDefault();
     const r = touchDistance(e.touches) / pinch.d;
-    if (!garden && r > 1.22) { pinch = null; enterGarden(); } else if (garden && r < .82) { pinch = null; if (garden.focus >= 0) unfocusPlant(); else exitGarden(); }
-  }, { passive: false });
+    if (!inGarden && r > 1.22) { pinch = null; enterGarden(); } else if (inGarden && r < .82) { pinch = null; if (scene.focus >= 0) unfocusPlant(); else exitGarden(); }
+  }, { passive: true });
   overlay.addEventListener('touchend', e => { if (e.touches.length < 2) pinch = null; });
   overlay.addEventListener('wheel', e => {
-    if (garden) {
+    if (inGarden) {
       e.preventDefault();
-      if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; exitGarden(); } return; }
-      garden.target = null; garden.vel = 0;
-      garden.scroll = Math.max(-12, Math.min(garden.max + 12, garden.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / gardenSize().px));
+      if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; if (scene.focus >= 0) unfocusPlant(); else exitGarden(); } return; }
+      scene.target = null; scene.vel = 0;
+      scene.scroll = Math.max(-12, Math.min(scene.max + 12, scene.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / sceneSize().px));
     } else if (e.ctrlKey && opened && screen === 'home') {
       e.preventDefault(); wheelPinch = Math.min(0, wheelPinch + e.deltaY); if (wheelPinch < -40) { wheelPinch = 0; enterGarden(); }
     }
@@ -396,7 +407,7 @@ async function enterRoom(code) {
   const candidate = new CoopSession(client, user, {
     room: room => { game.coopRoster?.(room); if (opened && !candidate.playing && session === candidate) lobby(room); },
     start: network => {
-      opened = false; overlay.hidden = true; cancelAnimationFrame(sceneFrame);
+      opened = false; overlay.hidden = true; exitGarden(); stopScene();
       settingsButton.hidden = false;
       game.beginCoop(network); game.pause(false);
     },
@@ -407,7 +418,7 @@ async function enterRoom(code) {
     error: reason => {
       game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
       liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
-      game.pause(true); play(); card.append(status); message(reason, true); refreshScenery();
+      game.pause(true); play(); card.append(status); message(reason, true); startScene();
     },
   }, selected);
   session = candidate;
@@ -482,7 +493,7 @@ async function exitToMenu() {
   const old = session; session = null;
   game.exitRun?.(); if (old) void old.leave();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
-  opened = true; game.pause(true); home(); refreshScenery();
+  opened = true; game.pause(true); home(); startScene();
 }
 function help() {
   page('help', 'Controls');
@@ -506,19 +517,6 @@ function credits() {
   card.append(el('p', 'A little night garden.'), el('p', 'Original pixel art, plants and companions from the MAX collection.'));
   for (const track of SOUNDTRACK) card.append(el('p', track.title + ' · ' + track.artist));
   back();
-}
-function drawScenery(now) {
-  if (!opened) return;
-  const w = window.innerWidth, h = window.innerHeight, dpr = window.devicePixelRatio || 1;
-  const scale = Math.max(2, Math.round(Math.min(w, h) * dpr / 192));
-  scenery.width = Math.ceil(w * dpr / scale); scenery.height = Math.ceil(h * dpr / scale);
-  const ready = game.drawMenuScene?.(scenery);
-  // Redraw while the original atlases load; no perpetual animation on a paused phone.
-  if (!ready && now - sceneStarted < 10000) sceneFrame = requestAnimationFrame(drawScenery);
-}
-function refreshScenery() {
-  cancelAnimationFrame(sceneFrame); sceneStarted = performance.now();
-  if (opened && game.drawMenuScene) drawScenery(sceneStarted);
 }
 function login(create = false) {
   if (user) { account(); return; }
@@ -572,14 +570,14 @@ function open() {
   // Results can finish above live Settings. Returning to the menu must replace
   // that overlay once the run has ended, even though a menu is already open.
   if ((opened && !liveSettings) || !game || game.canOpenMenu?.() === false) return;
-  opened = true; liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true; game.pause(true); overlay.hidden = false; home(); refreshScenery();
+  opened = true; liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true; game.pause(true); overlay.hidden = false; home(); startScene();
 }
 function close() {
   // Run ownership is captured at beginRun. Wait for a remembered account (or
   // the confirmed absence of one) before letting a new run start.
   if (!sessionReady) { updatePlayReady(); return; }
   if (session) { void session.leave(); session = null; }
-  opened = false; cancelAnimationFrame(sceneFrame); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId }); game.pause(false);
+  opened = false; exitGarden(); stopScene(); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId }); game.pause(false);
   settingsButton.hidden = false;
 }
 function attach(bridge) {
@@ -588,7 +586,6 @@ function attach(bridge) {
   window.MaxGardenLeaderboard = createLeaderboard(client, () => user && playerName(user) !== 'Guest' ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
   window.MaxSoundtrack = createSoundtrack({ enabled: (game.musicVolume?.() ?? 1) > 0, volume: game.musicVolume?.() ?? 1 });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
-  scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
   card = el('div', undefined, 'max-menu-card');
   gardenCanvas = el('canvas', undefined, 'max-garden-scene'); gardenCanvas.setAttribute('aria-hidden', 'true');
   gardenHud = el('div', undefined, 'max-garden-hud'); gardenHud.inert = true;
@@ -601,17 +598,16 @@ function attach(bridge) {
   gardenHint = el('p', undefined, 'max-garden-hint'); pixelText(gardenHint, 'PINCH TO RETURN', 2, 1);
   gardenNote = el('div', undefined, 'max-garden-note'); gardenNote.setAttribute('aria-live', 'polite');
   gardenHud.append(gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, gardenNote);
-  overlay.append(scenery, gardenCanvas, card, gardenHud);
+  overlay.append(gardenCanvas, card, gardenHud);
   gardenGestures();
-  window.addEventListener('resize', refreshScenery);
   settingsButton = button('', openSettings, 'max-live-settings'); settingsButton.hidden = true;
   settingsButton.setAttribute('aria-label', 'Settings');
   settingsButton.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges"><path d="M7 0h2v16H7zM3 3h4v3H3zM9 7h4v3H9zM4 11h3v3H4z"/></svg>';
   document.body.append(settingsButton);
   overlay.addEventListener('keydown', event => {
     event.stopPropagation();
-    if (garden) {
-      if (event.key === 'Escape') { event.preventDefault(); if (garden.focus >= 0) unfocusPlant(); else exitGarden(); }
+    if (inGarden) {
+      if (event.key === 'Escape') { event.preventDefault(); if (scene.focus >= 0) unfocusPlant(); else exitGarden(); }
       else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); gardenStep(event.key === 'ArrowRight' ? 1 : -1); }
       return;
     }
@@ -631,11 +627,10 @@ function attach(bridge) {
 function replay() {
   const old = session; session = null; if (old) void old.leave(); game.stopCoop?.();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
-  opened = true; overlay.hidden = false; game.pause(true); play(); refreshScenery();
+  opened = true; overlay.hidden = false; game.pause(true); play(); startScene();
 }
 window.MaxGameMenu = { attach, open, replay };
 document.addEventListener('visibilitychange', () => {
-  if (garden && !document.hidden) { cancelAnimationFrame(garden.raf); garden.last = performance.now(); gardenFrame(garden.last); }
   if (document.hidden) return;
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();
   if (session?.playing) void session.resume();
