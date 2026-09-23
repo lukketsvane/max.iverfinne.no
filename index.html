@@ -46,20 +46,20 @@
   #perkMenu button::after{
     content:"";position:absolute;inset:6px;border:1px solid rgba(255,255,255,.035);border-radius:8px;pointer-events:none
   }
-  .perkIcon{width:39px;height:39px;display:block;image-rendering:pixelated;filter:drop-shadow(0 2px 0 #000)}
+  .perkIcon{width:36px;height:36px;display:block;image-rendering:pixelated;filter:drop-shadow(0 2px 0 #000)}
   .perkDots{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:3px;height:3px}
   .perkDots i{display:block;width:3px;height:3px;background:rgba(228,232,198,.25)}
   .perkDots i.on{background:rgba(235,238,190,.95)}
   @media (max-width:430px){
     #perkMenu{width:min(246px,calc(100vw - 28px));gap:8px}
     #perkMenu button{border-radius:11px}
-    .perkIcon{width:35px;height:35px}
+    .perkIcon{width:27px;height:27px}
   }
 
   #perkMenu{width:min(216px,calc(100vw - 32px));gap:10px}
   #perkMenu button{min-height:48px;border-radius:6px}
   #perkMenu button:focus-visible{outline:2px solid #e7d997;outline-offset:3px}
-  @media(max-height:430px){#perkMenu{left:auto;right:max(12px,env(safe-area-inset-right));transform:none;width:180px}.perkIcon{width:29px;height:29px}}
+  @media(max-height:430px){#perkMenu{left:auto;right:max(12px,env(safe-area-inset-right));transform:none;width:180px}.perkIcon{width:27px;height:27px}}
 
 #perkMenu{width:min(450px,calc(100vw - 24px));gap:8px}
 #perkMenu button{aspect-ratio:auto;min-height:128px;grid-template-rows:38px auto 1fr;padding:9px 5px 14px;gap:5px}
@@ -2556,7 +2556,7 @@ function drawWeather(t){
   var type=q.type,seg=biomeAt(P.x).seg,base=q.seed+seg*13.7,i,x,y;
   if(type==='rain'){
     ctx.globalAlpha=.16+.25*I;ctx.fillStyle='#9ab0b7';
-    for(i=0;i<34;i++){x=imod(Math.round(i*31+h1(base+i)*137+t*(18+I*28)),IW+12)-6;y=imod(Math.round(i*19+h1(base-i)*83+t*(58+I*42)),IH+14)-7;ctx.fillRect(x,y,1,3+(i%3));}
+    for(i=0;i<34;i++){x=imod(Math.round(i*31+h1(base+i)*137+t*(18+I*28)),IW+12)-6;y=imod(Math.round(i*19+h1(base-i)*83+t*(120+I*80)),IH+48)-24;ctx.fillRect(x,y,1,12+(i%4)*4);}
     ctx.globalAlpha=1;
   }else if(type==='mist'){
     ctx.globalAlpha=.045+.10*I;ctx.fillStyle='#c3cdcd';
@@ -3112,25 +3112,13 @@ function perkMax(id){return window.MaxBuilds.max(id);}
 var ROGUE_PERKS=window.MaxBuilds.perks;
 function perkChoices(perks,salt,classId){return window.MaxBuilds.choices(perks||rogueRun.perks,rogueRun.level,(salt||0)+gardenWave+worldLevel(),classId||rogueRun.classId);}
 
-function perkSVG(id){
-  var open='<svg class="perkIcon" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">';
-  var close='</svg>',c='#e7e8c9',d='#78826d',a='#9fb58c',w='#86b8c7',y='#d7bf69';
-  if(id==='robot')return open+'<rect x="6" y="14" width="19" height="10" fill="'+d+'"/><rect x="8" y="6" width="8" height="13" fill="'+w+'"/><rect x="6" y="24" width="6" height="4" fill="'+c+'"/><rect x="21" y="24" width="6" height="4" fill="'+c+'"/><path d="M23 15V8h5v11" fill="none" stroke="'+a+'" stroke-width="3"/>'+close;
-  if(id==='growth')return open+'<rect x="15" y="14" width="2" height="13" fill="'+d+'"/><rect x="9" y="12" width="7" height="3" fill="'+a+'"/><rect x="7" y="9" width="7" height="3" fill="'+a+'"/><rect x="17" y="7" width="7" height="3" fill="'+c+'"/><rect x="19" y="10" width="6" height="3" fill="'+a+'"/><rect x="12" y="26" width="9" height="2" fill="'+d+'"/>'+close;
-  if(id==='water')return open+'<rect x="15" y="5" width="3" height="4" fill="'+w+'"/><rect x="12" y="9" width="9" height="5" fill="'+w+'"/><rect x="9" y="14" width="15" height="8" fill="'+w+'"/><rect x="12" y="22" width="9" height="4" fill="'+w+'"/><rect x="14" y="12" width="3" height="3" fill="'+c+'"/>'+close;
-  if(id==='yield')return open+'<rect x="14" y="4" width="4" height="8" fill="'+d+'"/><rect x="9" y="11" width="5" height="8" fill="'+y+'"/><rect x="18" y="10" width="5" height="9" fill="'+y+'"/><rect x="13" y="18" width="6" height="9" fill="'+y+'"/><rect x="8" y="23" width="4" height="4" fill="'+c+'"/><rect x="21" y="22" width="4" height="4" fill="'+c+'"/>'+close;
-  if(id==='shield')return open+'<rect x="8" y="6" width="16" height="4" fill="'+c+'"/><rect x="7" y="10" width="18" height="8" fill="'+d+'"/><rect x="9" y="18" width="14" height="5" fill="'+d+'"/><rect x="12" y="23" width="8" height="4" fill="'+a+'"/><rect x="5" y="11" width="3" height="3" fill="'+c+'"/><rect x="24" y="12" width="3" height="3" fill="'+c+'"/>'+close;
-  if(id==='magnet')return open+'<rect x="7" y="7" width="5" height="15" fill="'+c+'"/><rect x="20" y="7" width="5" height="15" fill="'+c+'"/><rect x="10" y="20" width="12" height="6" fill="'+d+'"/><rect x="12" y="16" width="8" height="6" fill="#000"/><rect x="7" y="5" width="5" height="4" fill="'+w+'"/><rect x="20" y="5" width="5" height="4" fill="'+w+'"/>'+close;
-  if(id==='regen')return open+'<rect x="15" y="4" width="2" height="23" fill="'+d+'"/><rect x="9" y="9" width="6" height="4" fill="'+a+'"/><rect x="17" y="14" width="7" height="4" fill="'+a+'"/><rect x="10" y="20" width="6" height="4" fill="'+c+'"/><rect x="14" y="6" width="4" height="4" fill="'+y+'"/>'+close;
-  if(id==='slow')return open+'<rect x="6" y="15" width="20" height="3" fill="'+d+'"/><rect x="9" y="10" width="4" height="4" fill="'+a+'"/><rect x="19" y="9" width="4" height="4" fill="'+a+'"/><rect x="13" y="20" width="6" height="4" fill="'+c+'"/><rect x="15" y="5" width="2" height="5" fill="'+w+'"/>'+close;
-  if(id==='luck')return open+'<rect x="14" y="4" width="4" height="5" fill="'+y+'"/><rect x="10" y="9" width="12" height="11" fill="'+y+'"/><rect x="13" y="20" width="6" height="7" fill="'+d+'"/><rect x="7" y="13" width="3" height="3" fill="'+c+'"/><rect x="22" y="13" width="3" height="3" fill="'+c+'"/>'+close;
-  if(id==='tender')return open+'<rect x="14" y="5" width="3" height="20" fill="'+d+'"/><rect x="7" y="12" width="8" height="4" fill="'+a+'"/><rect x="18" y="9" width="7" height="4" fill="'+a+'"/><rect x="6" y="20" width="6" height="5" fill="'+c+'"/><rect x="20" y="18" width="6" height="5" fill="'+c+'"/>'+close;
-  if(id==='spread')return open+'<rect x="15" y="5" width="2" height="8" fill="'+w+'"/><rect x="8" y="11" width="3" height="8" fill="'+w+'"/><rect x="21" y="11" width="3" height="8" fill="'+w+'"/><rect x="4" y="21" width="6" height="3" fill="'+a+'"/><rect x="13" y="22" width="6" height="3" fill="'+a+'"/><rect x="22" y="21" width="6" height="3" fill="'+a+'"/>'+close;
-  if(id==='bark')return open+'<rect x="10" y="5" width="12" height="22" fill="'+d+'"/><rect x="13" y="7" width="2" height="18" fill="'+a+'"/><rect x="18" y="8" width="2" height="15" fill="'+a+'"/><rect x="7" y="9" width="3" height="4" fill="'+c+'"/><rect x="22" y="16" width="3" height="4" fill="'+c+'"/>'+close;
-  if(id==='mulch')return open+'<rect x="6" y="23" width="20" height="4" fill="'+d+'"/><rect x="8" y="18" width="8" height="5" fill="'+a+'"/><rect x="16" y="15" width="9" height="8" fill="'+a+'"/><rect x="11" y="11" width="5" height="5" fill="'+c+'"/><rect x="20" y="9" width="4" height="6" fill="'+c+'"/>'+close;
-  if(id==='stride')return open+'<rect x="8" y="17" width="11" height="6" fill="'+c+'"/><rect x="13" y="10" width="6" height="8" fill="'+c+'"/><rect x="18" y="21" width="8" height="4" fill="'+d+'"/><path d="M5 9h8M3 13h9" stroke="'+w+'" stroke-width="2"/>'+close;
-  if(id==='spring')return open+'<path d="M8 23h16M10 20l12-4-12-4 12-4" fill="none" stroke="'+c+'" stroke-width="3"/><path d="M16 4v7M12 7l4-4 4 4" fill="none" stroke="'+y+'" stroke-width="2"/>'+close;
-  return open+'<rect x="14" y="3" width="4" height="7" fill="'+y+'"/><rect x="14" y="22" width="4" height="7" fill="'+y+'"/><rect x="3" y="14" width="7" height="4" fill="'+y+'"/><rect x="22" y="14" width="7" height="4" fill="'+y+'"/><rect x="8" y="8" width="5" height="5" fill="'+c+'"/><rect x="19" y="8" width="5" height="5" fill="'+c+'"/><rect x="8" y="19" width="5" height="5" fill="'+c+'"/><rect x="19" y="19" width="5" height="5" fill="'+c+'"/><rect x="12" y="12" width="8" height="8" fill="'+y+'"/>'+close;
+var BOON_COLORS=['#a6c982','#8eb6b8','#e0ba72'],BOON_ART={},boonInked={};
+ROGUE_PERKS.forEach(function(p){BOON_ART[p.id]=loadImg('assets/boon-symbols-v1/'+p.id+'.png');});
+function boonInk(id){
+  var im=BOON_ART[id],p=ROGUE_PERKS.find(function(q){return q.id===id;});
+  if(!im||!p||!ready(im))return null;
+  if(!boonInked[id]){var c=document.createElement('canvas');c.width=c.height=9;var g=c.getContext('2d');g.drawImage(im,0,0);g.globalCompositeOperation='source-in';g.fillStyle=BOON_COLORS[p.path]||BOON_COLORS[0];g.fillRect(0,0,9,9);boonInked[id]=c;}
+  return boonInked[id];
 }
 function perkDots(n,max){
   var out='<span class="perkDots" aria-hidden="true">';
@@ -3145,7 +3133,8 @@ function renderRogueChoice(){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
     bt.setAttribute('aria-label',p.name+', level '+lvl+'. '+p.desc+'. Key '+(index+1));
-    bt.innerHTML=perkSVG(p.id)+'<strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
+    bt.innerHTML='<canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas><strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
+    var icon=bt.querySelector('canvas'),ink=boonInk(p.id);if(icon&&ink)icon.getContext('2d').drawImage(ink,0,0);
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
   });
@@ -3327,6 +3316,7 @@ function harvestGardenPlot(p){
   if(p.growth-previous<.35-1e-8)return true;
   p.lastHarvestGrowth=p.growth;
   var gain=1+(p.health>.86?1:0)+(rogueRun.perks.yield||0);
+  if(Math.random()<.2*(rogueRun.perks.bounty||0)){gain*=2;chime([659,880,1047],.05,.04);}
   gardenStats.harvested=(gardenStats.harvested||0)+1;grantRogueXP(1);
   spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');
   p.pulse=1.2;p.moisture=Math.max(0,p.moisture-.12);
@@ -3354,6 +3344,7 @@ function updateGarden(dt){
     var rain=(typeof worldWeather!=='undefined'&&worldWeather.type==='rain')?worldWeather.intensity:0;
     var dryRate=.012*(biomeAt(p.x).id==='wetland'?.72:1)*Math.pow(.70,(rogueRun.perks.water||0));
     p.moisture=clamp01(p.moisture-dt*dryRate+dt*rain*.055);
+    if(rogueRun.perks.dew&&p.moisture<.35)p.moisture=clamp01(p.moisture+dt*.006*rogueRun.perks.dew);
     if(rain>.28&&Math.random()<dt*.55)p.pulse=Math.max(p.pulse,.18);
     if(p.moisture>.14&&p.health>.12){
       var wet=.18+.82*p.moisture,boost=gardenFeverT>0?2.25:1,syn=gardenSynergy(p);
@@ -3371,7 +3362,7 @@ function updateGarden(dt){
       spawnLooseSeeds(p.x,surfaceY(p.x)-Math.min(28,6+p.growth*2),1+(rogueRun.perks.yield||0));
       p.pulse=1.4;grantRogueXP(1);socialTone('gift');
     }
-    if(p.health<=.01){p.dead=8;p.hit=1;}
+    if(p.health<=.01&&plantFalls(p))p.hit=1;
   }
   gardenComboT=Math.max(0,gardenComboT-dt);if(gardenComboT<=0)gardenCombo=0;
   gardenFeverT=Math.max(0,gardenFeverT-dt);
@@ -3861,29 +3852,6 @@ function drawWorldBanner(t){
   ctx.globalAlpha=1;
 }
 
-var BOON_HUD_BITS={
-  growth:['00100','01110','10101','00100','00100'],
-  water:['00100','01110','11111','11111','01110'],
-  yield:['10101','01110','00100','01010','10001'],
-  regen:['00100','00100','11111','00100','00100'],
-  bloom:['10101','01110','11111','01110','10101'],
-  tender:['00100','01110','00100','01110','10101'],
-  spread:['10101','00100','10101','01010','10101'],
-  robot:['11110','10110','11110','01010','10101'],
-  shield:['11111','10001','10001','01010','00100'],
-  bark:['00100','01110','00100','11111','10101'],
-  mulch:['00000','00100','01110','11111','11111'],
-  magnet:['10001','10001','10001','11011','01110'],
-  luck:['00100','01110','11111','01110','00100'],
-  recycle:['01110','10001','00111','10001','01110'],
-  blast:['10101','00100','11111','00100','10101'],
-  slow:['11111','01110','00100','01110','11111'],
-  cadence:['10000','11000','01111','00110','00010'],
-  dash:['00110','01100','11111','01100','00110'],
-  stride:['11000','01110','00111','00011','11100'],
-  spring:['10101','01010','10101','01010','10101'],
-  chain:['11000','10110','01101','00101','00011']
-};
 function runHudBoons(){
   var out=[],perks=rogueRun.perks||{},classId=rogueRun.classId;
   ROGUE_PERKS.forEach(function(p){
@@ -3895,7 +3863,7 @@ function runHudBoons(){
   return out;
 }
 function runHudIconPosition(index){
-  return {x:4+(index%8)*10,y:safeTopArt()+3+Math.floor(index/8)*8};
+  return {x:4+(index%8)*11,y:safeTopArt()+3+Math.floor(index/8)*11};
 }
 function tallyGroupWidth(count){return count>=5?9:count>0?(count-1)*2+1:0;}
 function levelTallyLayout(level){
@@ -3905,12 +3873,10 @@ function levelTallyLayout(level){
   return {count:count,width:width,groups:groups};
 }
 function drawTinyBoon(id,x,y,count){
-  var bits=BOON_HUD_BITS[id]||BOON_HUD_BITS.luck,p=ROGUE_PERKS.find(function(q){return q.id===id;}),path=p?p.path:0;
-  var colors=['#a6c982','#8eb6b8','#e0ba72'],col=colors[path]||colors[0],stacks=Math.min(5,count|0);
-  ctx.fillStyle='rgba(5,9,10,.58)';ctx.fillRect(x-1,y-1,stacks>1?9:7,7);
-  ctx.fillStyle=col;
-  for(var row=0;row<5;row++)for(var px=0;px<5;px++)if(bits[row][px]==='1')ctx.fillRect(x+px,y+row,1,1);
-  if(stacks>1){ctx.fillStyle='#ece8dc';for(var s=0;s<stacks;s++)ctx.fillRect(x+6,y+4-s,1,1);}
+  var ink=boonInk(id),stacks=Math.min(5,count|0);
+  ctx.fillStyle='rgba(5,9,10,.58)';ctx.fillRect(x-1,y-1,11,11);
+  if(ink)ctx.drawImage(ink,x,y);
+  if(stacks>1){ctx.fillStyle='#ece8dc';for(var s=0;s<stacks;s++)ctx.fillRect(x+9,y+8-s*2,1,1);}
 }
 function drawLevelTallies(level){
   var layout=levelTallyLayout(level),x=Math.floor((IW-layout.width)/2),y=safeTopArt()+3;
@@ -4033,7 +3999,16 @@ function biteGarden(k,p,pressure){
   if(prot<1)p.guard=.35;
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
-  socialTone('call');if(p.health<=.01){p.dead=8;k.target=null;}
+  var thorn=rogueRun.perks.bramble||0;if(thorn){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.3*thorn);}
+  socialTone('call');if(p.health<=.01&&plantFalls(p))k.target=null;
+}
+function plantFalls(p){
+  if(rogueRun.perks.evergreen&&rogueRun.evergreenWorld!==worldLevel()){
+    rogueRun.evergreenWorld=worldLevel();p.health=.35;p.pulse=1.7;p.guard=1;chime([392,523,784],.07,.05);
+    for(var i=0;i<18;i++)parts.push({x:p.x+(Math.random()-.5)*10,y:surfaceY(p.x)-Math.random()*20,vx:(Math.random()-.5)*16,vy:-10-Math.random()*16,l:.9,m:.9,c:'122,196,106'});
+    return false;
+  }
+  p.dead=8;return true;
 }
 function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=enemyDistance(k,wx,wy);if(d<bd){bd=d;best=k;}}return best;}
 function burstKrek(k){
@@ -4064,6 +4039,7 @@ function updateKrek(dt){
   if(!active&&floatKrek.length===0)krekSpawnT=Math.min(krekSpawnT,4);
   for(var i=floatKrek.length-1;i>=0;i--){
     var k=floatKrek[i],pressure=raidPressure();k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);k.lampCooldown=Math.max(0,(k.lampCooldown||0)-dt);k.hitStaggerCooldown=Math.max(0,(k.hitStaggerCooldown||0)-dt);
+    if(k.glue>0)k.glue-=dt;
     if(k.burn>0){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate/runDurabilityScale();if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
     if(k.flee>0&&!k.boss&&!isRat(k)){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
     var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
@@ -4074,7 +4050,7 @@ function updateKrek(dt){
     var p=k.target,tx=p.x,ty=surfaceY(p.x)-10-Math.min(8,p.growth*8),dx=tx-k.x,dy=ty-k.y,d=Math.hypot(dx,dy);
     k.face=dx>=0?1:-1;
     if(k.windup>0&&(d>11||k.attackTarget!==p)){k.windup=0;k.attackTarget=null;k.bite=.25;}
-    if(d>7&&!k.windup){var sp=((k.kind===1?11:(k.kind===2?19:14))+Math.min(10,d*.05))*(1+Math.min(.8,(gardenWave+(worldLevel()-1)*2)*.035))*(1+pressure*.06)*Math.pow(.86,(rogueRun.perks.slow||0));if(k.elite)sp*=.78;k.vx+=(dx/d*sp-k.vx)*dt*(k.kind===2?3:2.4);k.vy+=(dy/d*sp-k.vy)*dt*(k.kind===2?3:2.4);k.x+=k.vx*dt;k.y+=k.vy*dt;}
+    if(d>7&&!k.windup){var sp=((k.kind===1?11:(k.kind===2?19:14))+Math.min(10,d*.05))*(1+Math.min(.8,(gardenWave+(worldLevel()-1)*2)*.035))*(1+pressure*.06)*Math.pow(.86,(rogueRun.perks.slow||0))*(k.glue>0?.2:1);if(k.elite)sp*=.78;k.vx+=(dx/d*sp-k.vx)*dt*(k.kind===2?3:2.4);k.vy+=(dy/d*sp-k.vy)*dt*(k.kind===2?3:2.4);k.x+=k.vx*dt;k.y+=k.vy*dt;}
     else{
       k.vx=0;k.vy=0;k.y=ty+Math.sin(tSec*(k.kind===2?7:5)+k.ph)*1.3;
       if(k.windup>0){
@@ -4127,6 +4103,7 @@ function drawKrek(t){
   for(var i=0;i<floatKrek.length;i++){
     var k=floatKrek[i],sx=Math.round(k.x-camX),sy=Math.round(k.y-camY),wing=((t*(k.kind===2?17:12)+k.ph)|0)&1;
     if(sx<-24||sx>IW+24||sy<-24||sy>IH+24)continue;
+    if(k.glue>0){ctx.fillStyle='#d7a94a';ctx.fillRect(sx-3,sy+5,7,1);ctx.fillRect(sx-2,sy+6,1,2);ctx.fillRect(sx+2,sy+6,1,1);}
     if(drawRoleEnemy(k,sx,sy,t))continue;
     if(!drawBirdPest(k,sx,sy,t)){
     ctx.globalAlpha=.34;ctx.fillStyle=k.kind===1?'#8d8a72':'#9a9b70';
@@ -4759,11 +4736,13 @@ function explode(x, y, wet, build) {
       burst(k, o.x, o.y - 8, o.vx, o.vy); if (o.pond) o.pond.gone = tSec + 70; swans.splice(i, 1); n++;
     }
   }
-  var pestN=0;
+  var pestN=0,wild=Math.random()<.12*(build.wild||0),hit=(1+(build.emberStacks||0)*.12)*(wild?3:1);
+  if(wild){shake=Math.min(3,shake+2);chime([880,1175,1568],.03,.05);for(i=0;i<16;i++)parts.push({x:x,y:y-4,vx:(Math.random()-.5)*70,vy:(Math.random()-.5)*70,l:.5,m:.5,c:'245,210,90'});}
   for(i=floatKrek.length-1;i>=0;i--){
     o=floatKrek[i];
     if(enemyDistance(o,x,y)<BR+(isRat(o)?0:7)){
-      if(damagePest(o,1+(build.emberStacks||0)*.12,x,build)&&!o.scout){pestN++;if(build.chain&&chainSeeds.length<3)chainSeeds.push({x:o.x,y:o.y});}
+      if(build.glue&&!o.boss)o.glue=Math.max(o.glue||0,.5*build.glue);
+      if(damagePest(o,hit,x,build)&&!o.scout){pestN++;if(build.chain&&chainSeeds.length<3)chainSeeds.push({x:o.x,y:o.y});}
     }
   }
   chainSeeds.forEach(function(seed){
