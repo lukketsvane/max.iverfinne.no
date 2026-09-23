@@ -12,8 +12,9 @@ function padded() {
 
 test('a standard controller (8BitDo in X-input mode) moves, runs, jumps and dodges Max', () => {
   const { g, state, press } = padded();
-  state.axes[0] = .9; g.pollPads(); assert.equal(g.heldR, true); assert.equal(g.heldL, false);
-  state.axes[0] = 0; g.pollPads(); assert.equal(g.heldR, false);
+  state.axes[0] = .95; g.pollPads(); assert.equal(g.readInput().axis, 1); assert.equal(g.readInput().top, 88, 'full tilt runs');
+  state.axes[0] = .6; g.pollPads(); assert.ok(g.readInput().top < 60, 'a gentle push walks');
+  state.axes[0] = 0; g.pollPads(); assert.equal(g.readInput().axis, 0);
   press(14); assert.equal(g.heldL, true); press(14, false); assert.equal(g.heldL, false);
   press(5); assert.equal(g.heldRun, true); press(5, false); assert.equal(g.heldRun, false);
   g.jumpBuf = 0; press(0); assert.ok(g.jumpBuf > 0); assert.equal(g.heldUp, true);

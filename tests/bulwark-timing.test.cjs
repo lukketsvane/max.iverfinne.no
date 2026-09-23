@@ -11,7 +11,7 @@ test('Bulwark throws slow, heavy bombs; other classes keep the quick throw', () 
   for (const [id, factor] of [['bulwark', 1.7], ['runner', 1], ['mech', 1]]) {
     const g = fresh(id); g.gardenPlots = [plot({ id: 1, x: g.P.x + 40 })];
     assert.equal(g.throwBomb({ x: g.P.x + 30, y: g.P.y - 10 }), true);
-    assert.ok(Math.abs(g.bombCool - .38 * factor) < 1e-9, `${id} ${g.bombCool}`);
+    assert.ok(Math.abs(g.bombCool - .75 * factor) < 1e-9, `${id} ${g.bombCool}`);
     assert.equal(g.throwBomb({ x: g.P.x + 30, y: g.P.y - 10 }), false, 'mashing during the cooldown throws nothing');
   }
 });

@@ -525,7 +525,10 @@ function help() {
     ['MOSS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
     ['MECH', 'Only Mech owns watering robots. Any nearby teammate can tap a Mech robot to refill it.'],
     ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
-    ['KEYBOARD', '← → move · Shift run · ↑ jump · ↓ / Space grow · B defend · X dodge · E skill · R refill · 1–3 upgrade'],
+    ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J or B to aim with the move keys, release to throw · K / X dodge · E skill · R refill · L lamp · 1–3 upgrade · Esc menu'],
+    ['MOUSE', 'Click to throw where you point. Hold to charge a wider, harder bomb, release to throw. Right click dodges toward the pointer. Middle click uses the skill.'],
+    ['CONTROLLER', 'Stick moves; push it all the way to run. A jump · B dodge · hold X or ZR to aim with the right stick (or the left on a single Joy-Con) and release to throw · Y grow · LB skill · LT lamp · RB run · − refill · + menu. When a boon is offered, flick the right stick to a card and press A.'],
+    ['THROWS', 'Every throw needs a moment to reload, shown as a bar over Max. A charged throw reloads longer. Two bombs in the air at most.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
   card.append(button('Back', settings, 'subtle'));
