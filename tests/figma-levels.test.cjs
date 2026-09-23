@@ -140,6 +140,7 @@ test('generator gardens survive the trip through Figma instances within one pixe
     const seeded = layouts.create(stage, origin, w.ground, w.wet, seed), built = levels.build(garden, stage, origin, w.ground, w.wet, seed), ledges = built.platforms.filter(p => !p.solid);
     assert.equal(ledges.length, seeded.platforms.length, label);
     assert.deepEqual(built.platforms.filter(p => p.solid).map(p => [p.x, p.y, p.w, p.h, p.style]), [[origin + 460, Math.floor(w.ground(origin)) - 6, 30, 20, 'branch']], `${label} block`);
+    assert.ok(layouts.inRock(built, origin + 475, Math.floor(w.ground(origin))), `${label} block is solid rock`);
     for (const p of seeded.platforms) assert.ok(ledges.some(q => Math.abs(q.x - p.x) <= 1 && Math.abs(q.y - p.y) <= 1 && Math.abs(q.w - p.w) <= 1 && q.style === p.style), `${label} keeps ledge ${p.id}`);
     for (const key of ['rewards', 'trials', 'bonuses']) assert.deepEqual(spots(built[key]), spots(seeded[key]), `${label} ${key}`);
     const tier = new Map(seeded.nodes.map(n => [`${n.x},${n.y}`, n.tier]));
