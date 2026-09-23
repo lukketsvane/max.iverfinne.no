@@ -195,3 +195,22 @@ test('an owl hoots only between three and four on the device clock', () => {
   assert.equal(owl(new Date(2026, 8, 23, 4, 0)), 0);
   assert.equal(owl(new Date(2026, 8, 23, 15, 3)), 0);
 });
+
+test('Christmas, Halloween, sankthans and 17 May decorate the garden and change nothing', () => {
+  const g = fresh().game;
+  assert.deepEqual([[11, 24], [11, 26], [11, 27], [9, 31], [9, 30], [5, 23], [4, 17], [4, 18], [0, 1]].map(([m, d]) => g.secretDay(new Date(2026, m, d, 12))),
+    ['christmas', 'christmas', '', 'halloween', '', 'sankthans', 'may17', '', '']);
+  const drawn = at => {
+    const h = fresh(), game = h.game; game.secretClock = () => at; game.rogueRun.seed = 3;
+    game.gardenPlots = [plot({ id: 1, x: game.P.x - 20, growth: 1 }), plot({ id: 2, x: game.P.x + 20, growth: 1 }), plot({ id: 3, x: game.P.x + 40, growth: 1 }), plot({ id: 4, x: game.P.x + 60, growth: .1 })];
+    const before = JSON.stringify([game.gardenSeeds, game.rogueRun.xp, game.seedPickups, game.gardenPlots, game.floatKrek.length]);
+    game.updateSecrets(.1); const n = game.drawSecretDay(2); game.drawSecretGround(2); game.drawSecretAir(2);
+    assert.equal(JSON.stringify([game.gardenSeeds, game.rogueRun.xp, game.seedPickups, game.gardenPlots, game.floatKrek.length]), before, 'decorations never touch the run');
+    return n;
+  };
+  assert.equal(drawn(new Date(2026, 11, 24, 20)), 1, 'one star on the tallest plant');
+  assert.equal(drawn(new Date(2026, 9, 31, 20)), 2, 'two lanterns at the landing');
+  assert.equal(drawn(new Date(2026, 5, 23, 22)), 1, 'one bonfire');
+  assert.equal(drawn(new Date(2026, 4, 17, 10)), 3, 'a flag on every grown plant');
+  assert.equal(drawn(new Date(2026, 2, 3, 10)), 0);
+});
