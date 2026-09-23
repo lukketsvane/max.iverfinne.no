@@ -1938,8 +1938,15 @@ function removeBirdObject(kind,obj){
     }
   }
 }
+var swanHarm={w:0,n:0};
+function swanThanks(w){
+  if(!swans.length||(swanHarm.w===w&&swanHarm.n))return false;
+  swans.slice(0,3).forEach(function(sw){spawnLooseSeeds(sw.x,sw.y-10,2,true);});
+  socialTone('gift');gardenAction(200,10,'SWAN GIFT');return true;
+}
 function blastBird(kind,obj,chain){
   var x=obj.x,y=obj.y-(kind==='crow'?5:(kind==='tit'?7:8));
+  if(kind==='swan'||kind==='cyg'||kind==='black'){if(swanHarm.w!==worldLevel())swanHarm={w:worldLevel(),n:0};swanHarm.n++;}
   spawnBirdBlast(kind,x,y,chain);scoreBird(kind,chain);removeBirdObject(kind,obj);
   chainBirds(x,y,chain+1);
 }
@@ -3747,7 +3754,7 @@ function levelCleared(){
   if(best){best.growth=Math.max(best.growth,G_TOP);makeStalk(best);}
   gardenScore+=1500+w*250;
   for(i=0;i<36;i++)parts.push({x:P.x+(Math.random()-.5)*45,y:P.y-12-Math.random()*45,vx:(Math.random()-.5)*18,vy:-8-Math.random()*18,l:1.2+Math.random()*1.8,m:1.2,c:i&1?'238,222,132':'171,206,135'});
-  spawnLooseSeeds(P.x,P.y-22,2);saveGarden();updateGardenHud();
+  spawnLooseSeeds(P.x,P.y-22,2);swanThanks(w);saveGarden();updateGardenHud();
 }
 function stalkAt(wx,wy,maxD){
   var best=null,bd=maxD==null?10:maxD;
