@@ -4,7 +4,7 @@
   var perks=[
     {id:'growth',name:'Quick roots',desc:'35% faster growth',path:0},
     {id:'water',name:'Deep soil',desc:'30% less water loss',path:0},
-    {id:'yield',name:'Seed rain',desc:'+1 seed per harvest',path:0},
+    {id:'yield',name:'Seed rain',desc:'More seeds per harvest',path:0},
     {id:'regen',name:'Sap',desc:'Plants recover health',path:0},
     {id:'bloom',name:'Bloom pulse',desc:'Harvest heals nearby plants',path:0,max:1,needs:{growth:2,regen:1}},
     {id:'tender',name:'Green thumb',desc:'12% stronger tending each rank',path:0,max:5},

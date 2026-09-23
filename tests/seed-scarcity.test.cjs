@@ -27,3 +27,11 @@ test('world seed spots thin out by class, but the first spot of a garden is alwa
     assert.ok(g.seedBucketSpawn(0));
   }
 });
+
+test('exit sky seeds scale by class over the slots the stalk has', () => {
+  for (const [id, anchor, want] of [['mech', 120, 20], ['herbalist', 120, 35], ['mech', 213, 28], ['herbalist', 213, 49]]) {
+    const g = fresh(id); g.ANCHOR = anchor; let got = 0;
+    for (let i = 0; i < 10; i++) { g.seedPickups = []; g.spawnExitSeeds({ x: 0 }); got += g.seedPickups.length; }
+    assert.equal(got, want, `${id} at anchor ${anchor}`);
+  }
+});
