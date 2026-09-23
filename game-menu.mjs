@@ -55,6 +55,7 @@ function home() {
   const content = el('div', undefined, 'max-home-content');
   const brand = el('header', undefined, 'max-home-brand');
   const title = pixelText(el('h1'), 'MAX', 12, 2); title.id = 'max-menu-title'; title.tabIndex = -1;
+  title.addEventListener('click', () => window.dispatchEvent(new Event('max-logo-tap')));
   brand.append(title, pixelText(el('p', undefined, 'max-home-subtitle'), 'THE WILD GARDEN', 2, 1));
   const nav = el('nav', undefined, 'max-home-nav'); nav.setAttribute('aria-label', 'Main menu');
   const links = el('div', undefined, 'max-home-links');

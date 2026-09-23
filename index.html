@@ -406,6 +406,7 @@ function endPointer(e){
      performance.now()-t.t0<=180&&Math.abs(flickX)>=44&&Math.abs(flickX)>Math.abs(flickY)*2&&Math.abs(flickX)>=t.travelX*.8){
     requestDodge(flickX<0?-1:1);
   }
+  if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&catchWish(t.wx,t.wy))t.dragged=true;
   // Cancellation (iOS app switch, browser gesture, lost capture) is never a tap.
   if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&performance.now()-t.t0<240){
     var pest=krekAt(t.wx,t.wy,t.onMax?6:14)||(t.onMax?floatKrek.find(function(k){return k.boss&&enemyDistance(k,t.wx,t.wy)<14;}):null),bird=t.onMax?null:birdAt(t.wx,t.wy),spore=sporeAt(t.wx,t.wy,12),held;
@@ -1704,7 +1705,7 @@ function spawnFlyers() {
                    grey: h1(l.b * 11 + i) > 0.5, x: l.x, y: 0, face: 1 });
     }
   });
-  while (fireflies.length < 5) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
+  while (fireflies.length < (secretEvent() === 'moon' ? 10 : 5)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
     ph: Math.random() * 6.28, sp: 0.2 + Math.random() * 0.3, f: (Math.random() * 7) | 0, clock: 0 });
   for (var i = fireflies.length - 1; i >= 0; i--) if (Math.abs(fireflies[i].x - P.x) > IW * 1.2) fireflies.splice(i, 1);
   // dragonflies over the ponds in view
@@ -2660,7 +2661,7 @@ function biomePop(){
 }
 function rebalanceEcology(dt){
   ecoClock-=dt;if(ecoClock>0)return;ecoClock=2.5;
-  var want=biomePop(),i,nc=crows.length,nt=0,nb=0;
+  var want=secretPop(biomePop()),i,nc=crows.length,nt=0,nb=0;
   for(i=0;i<smallFauna.length;i++){if(smallFauna[i].kind==='tit')nt++;else nb++;}
   if(nc<want.crow)crows.push(makeCrow(P.x+(Math.random()<.5?-1:1)*(IW*.55+Math.random()*IW*.35)));
   else if(nc>want.crow){for(i=crows.length-1;i>=0;i--)if(Math.abs(crows[i].x-P.x)>IW*.45){crows.splice(i,1);break;}}
@@ -3136,6 +3137,7 @@ function drawGardenScene(canvas,v){
   g.globalAlpha=.55+.45*Math.sin(t*1.7);galleryTile(g,L.fireflies,G-30+bob,sc,.7,W);
   g.globalAlpha=.55+.45*Math.sin(t*1.3+2);galleryTile(g,L.fireflies,G-36-bob,sc+97,.8,W);
   g.globalAlpha=1;
+  drawGardenSecret(g,plants,W,G,t,v.locked);
   if(!galleryBuf||galleryBuf.width!==W||galleryBuf.height!==M){galleryBuf=document.createElement('canvas');galleryBuf.width=W;galleryBuf.height=M;}
   var bg=galleryBuf.getContext('2d');bg.clearRect(0,0,W,M);bg.drawImage(canvas,0,0,W,M,0,0,W,M);
   g.fillStyle='#011d49';g.fillRect(0,M,W,H-M);
@@ -3415,6 +3417,7 @@ function harvestGardenPlot(p){
   if(Math.random()<.2*(rogueRun.perks.bounty||0)){gain*=2;chime([659,880,1047],.05,.04);}
   gardenStats.harvested=(gardenStats.harvested||0)+1;grantRogueXP(1);
   spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');
+  goldHarvest(p);
   p.pulse=1.2;p.moisture=Math.max(0,p.moisture-.12);
   if(rogueRun.perks.bloom)gardenPlots.forEach(function(q){if(!q.dead&&Math.abs(q.x-p.x)<52){q.health=clamp01(q.health+.16);q.moisture=clamp01(q.moisture+.12);q.pulse=1.5;}});
   if(rogueRun.perks.recycle){var T=window.MaxCompanion.tiers,dry=null;ensureCrew().forEach(function(b){var s=b.state;if(!dry||s.water/T[s.tier].capacity<dry.water/T[dry.tier].capacity)dry=s;});if(dry)dry.water=Math.min(T[dry.tier].capacity,dry.water+.45);}
@@ -3982,6 +3985,7 @@ function drawWorldBanner(t){
   ctx.globalAlpha=a*.9;
   drawLeafIcon(6,y,'#8aa276','#2f4426');
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
+  drawSecretBanner(y);
   ctx.globalAlpha=1;
 }
 
@@ -5455,6 +5459,7 @@ function drawPlayer() {
   var a = ANIM[P.anim], native = window.MaxNativeArt && window.MaxNativeArt.playerImage(P.skin, a.sh === 2 ? 'interaction' : 'main');
   var img = native || (a.sh === 2 ? sheet2 : sheet);
   if (!native && (a.sh === 2 ? !sheet2Ready : !sheetReady)) return;
+  if (secretTint && P === secretOwnP) img = secretSkin(img);
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
@@ -5511,6 +5516,7 @@ function drawVignette() {
 /* MAX_COOP_GAME */
 /* MAX_RUN_DIRECTOR */
 /* MAX_RAT_ENEMIES */
+/* MAX_SECRETS */
 
 /* ---------------------------------------------------------------- loop */
 var last = 0, tSec = 0, stepAcc = 0;
@@ -5568,6 +5574,7 @@ function frame(now) {
   }
   if(!runIsPaused())updateHazardContact();
   if(!runIsPaused())listenRun();
+  if(!runIsPaused())updateSecrets(dt);
   }
   if((rogueRun.ended||(window.MaxRunResults&&window.MaxRunResults.isOpen()))&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
 
@@ -5597,6 +5604,7 @@ function frame(now) {
   drawSky(tSec, hy);
   drawBiomeSkyBands(hy);
   drawMoon(hy);
+  drawSecretSky(tSec, hy);
   var backdrop = gardenBackdrop(), far = backdrop && ready(backdrop.far) ? backdrop.far : IMG.mtn, mid = backdrop && ready(backdrop.mid) ? backdrop.mid : IMG.forest;
   drawTiled(far, 0.10, hy + bdrop, true, MTN_BASE);
   drawFlock();
@@ -5625,6 +5633,7 @@ function frame(now) {
   drawSeedPickups(tSec);
   drawRunExploration(tSec);
   drawGardenPlots(tSec);
+  drawSecretGround(tSec);
   drawClassAuras();
   drawAnts();
   drawLowFlora(tSec, false);
@@ -5638,6 +5647,7 @@ function frame(now) {
   drawSwans();
   drawKrek(tSec);
   drawRunHazards(tSec);
+  drawSecretAir(tSec);
   drawBirdBlasts();
   drawCompanion();
   drawPlayer();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
