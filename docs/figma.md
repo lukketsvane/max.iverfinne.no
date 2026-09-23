@@ -109,6 +109,7 @@ CI never talks to Figma; `npm test` is offline.
 | `npm run figma:pull` | Downloads DRIFT / NEW-IN-FIGMA / MISSING-IN-REPO layers, validates them, writes the PNGs and their manifest entries; records MANIFEST-STALE entries. `-- --dry-run` writes nothing; `-- --allow-resize` allows a new size. |
 | `npm run figma:manifest` | Regenerates the whole manifest: production, unused, reference, rules, draft index. Refuses to write while a production layer breaks a rule or differs from its repo file. |
 | `npm run figma:drafts` | Lists draft sections and their candidates with sizes, flagging off-grid nodes, labels that disagree with the size, and cells that do not tile. Read-only. |
+| `npm run figma:levels` | Exports the live garden frames of the levels page into `levels-data.js` and prints a reach report (`docs/design/figma-levels.md`). |
 
 Figma caps MCP tool calls per day; once spent it answers "Rate limit exceeded, please try again tomorrow". Image downloads are not tool calls, and any other Figma MCP use during the day spends from the same budget. Every run prints the tool calls it spent.
 

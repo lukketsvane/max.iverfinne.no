@@ -133,6 +133,7 @@ The project deliberately remains a small static game rather than a framework app
 - `coop-transport.mjs` — encoded realtime frame transport and limits.
 - `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
 - `stage-layout.js` — seeded platform geometry: generated gardens 1–19 with reach guarantees, the authored Crown and the authored fallback.
+- `levels.js` / `levels-data.js` — gardens designed in Figma, which replace the generated ones when their frame is live. `levels-data.js` is written by `npm run figma:levels` (see `docs/design/figma-levels.md`).
 - `run-director.inc.js` — raids, time pressure, specialist enemies, hazards and bosses.
 - `rat-enemies.inc.js` — rat behavior and native rat integration.
 - `secrets.inc.js` — rare seeded nights, hidden finds, date decorations and easter eggs (see `docs/design/secrets.md`).
@@ -146,6 +147,7 @@ The project deliberately remains a small static game rather than a framework app
 - `garden-leaderboard.mjs` — opt-in published run records.
 - `review.html` — isolated visual/gameplay fixtures; never player save state.
 - `scripts/build-static.cjs` — production static build.
+- `scripts/figma-sync.mjs` / `scripts/figma-levels.mjs` — Figma art sync (`docs/figma.md`) and the garden export (`docs/design/figma-levels.md`), sharing the Dev Mode MCP client in `scripts/figma-mcp.mjs`.
 - `tests/` — regression suite.
 - `supabase/migrations/` — checked-in database history.
 
