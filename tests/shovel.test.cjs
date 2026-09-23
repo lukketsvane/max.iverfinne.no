@@ -16,7 +16,7 @@ test('a Bulwark finds the old shovel lying in a garden and picks it up', () => {
 });
 
 test('with the shovel the class skill digs in, Max tunnels under the soil, finds buried seeds and erupts into the pests above', () => {
-  const g = bulwark(); g.rogueRun.shovel = true; g.floatKrek = [];
+  const g = bulwark(); g.rogueRun.shovel = true; g.floatKrek = []; g.wonders.b2 = 0;
   const b = g.wonders.b1, side = [-1, 1].find(d => { for (let x = 0; x <= 24; x++) if (g.waterAt(b + d * x)) return false; return true; }) || -1; ground(g, b + side * 20);
   assert.equal(g.canBurrow(), true); assert.equal(g.useClassSkill(), true); assert.equal(g.P.st, 'burrow');
   assert.ok(g.P.y > g.surfaceY(g.P.x) + 8, 'Max is under the soil');
