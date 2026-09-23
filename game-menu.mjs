@@ -596,6 +596,7 @@ function close() {
 function attach(bridge) {
   if (game) return;
   game = bridge;
+  window.MaxRunStats = run => { if (client) void client.from('max_run_stats').insert({ run }).then(() => {}, () => {}); };
   window.MaxGardenLeaderboard = createLeaderboard(client, () => user && playerName(user) !== 'Guest' ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
   window.MaxSoundtrack = createSoundtrack({ enabled: (game.musicVolume?.() ?? 1) > 0, volume: game.musicVolume?.() ?? 1 });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');

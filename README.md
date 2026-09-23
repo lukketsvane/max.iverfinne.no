@@ -183,6 +183,8 @@ Checked-in migrations:
 20260921180722_coop_rooms.sql
 20260921204258_bouquet_leaderboard.sql
 20260922153500_single_shared_garden.sql
+20260923110000_twenty_plant_kinds.sql
+20260923120000_run_stats.sql
 ```
 
 The room schema has since been evolved in place through the shared-garden RPCs. Before changing hosted SQL, inspect the live project and the migration history rather than blindly replaying old migrations.
