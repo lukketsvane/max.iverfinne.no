@@ -87,6 +87,7 @@ function updateRunLoot(){
   }
 }
 function initRunStage(){
+  if(worldLevel()>1)runCheckpoint();
   runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
   // Each teammate has one feather to find. Leaving it behind is a time tradeoff.

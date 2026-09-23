@@ -3060,10 +3060,21 @@ function finalizeRogueRun(won){
   if(won&&runElapsed>0&&(!rogueMeta.bestTime||runElapsed<rogueMeta.bestTime))rogueMeta.bestTime=Math.round(runElapsed*100)/100;
   rogueMeta.petals=(rogueMeta.petals|0)+Math.max(1,Math.floor(gardenWave/2)+Math.floor((gardenStats.harvested||0)/3)+(won?5:0));
   try{localStorage.setItem('max-fuglesprenger-meta-v1',JSON.stringify(rogueMeta));}catch(e){}
+  if(window.MaxRunStats)try{window.MaxRunStats(runStats(won));}catch(e){}
   if(window.MaxRunRecords){
     var saved=window.MaxRunRecords.save({id:rogueRun.recordId,ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:won,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed});
     rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
   }
+}
+function runCheckpoint(){
+  var t=rogueRun.timeline||(rogueRun.timeline=[]);if(t.length>=40)return;
+  t.push({w:worldLevel(),t:Math.round(runElapsed),level:rogueRun.level|0,seeds:gardenSeeds|0,plants:gardenPlots.filter(function(p){return !p.dead;}).length,lost:gardenStats.lost|0,harvested:gardenStats.harvested|0,wave:gardenWave|0});
+}
+function runStats(won){
+  runCheckpoint();
+  return {v:1,run:rogueRun.recordId||'',classId:rogueRun.classId,difficulty:rogueRun.difficulty,won:!!won,world:worldLevel(),seconds:Math.round(runElapsed),level:rogueRun.level|0,
+    score:gardenScore|0,wave:gardenWave|0,team:coop?coopSize():1,plants:rogueRun.garden.length,lost:gardenStats.lost|0,harvested:gardenStats.harvested|0,
+    boons:Object.assign({},rogueRun.perks),traits:Object.assign({},rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,timeline:rogueRun.timeline.slice(0,41)};
 }
 function resetRogueRun(reason,selection){
   selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');

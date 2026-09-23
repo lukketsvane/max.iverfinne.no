@@ -35,7 +35,7 @@ function markWonder(id){
 }
 function wonderLog(){var m=rogueMeta.wonders||{};return Object.keys(WONDERS).map(function(id){return {id:id,name:WONDERS[id],found:(m[id]|0)>0};});}
 function foundWonder(id,x,y,seeds,levels){
-  wonders.last=id;wonders.fc++;markWonder(id);
+  wonders.last=id;wonders.fc++;markWonder(id);(rogueRun.found||(rogueRun.found=[])).push(id);
   if(seeds)spawnLooseSeeds(x,y-10,seeds,true);
   for(var i=0;i<(levels|0);i++)grantRogueLevel();
   gardenAction(250,12,WONDERS[id].toUpperCase());chime([784,988,1319,1568],.07,.04);
