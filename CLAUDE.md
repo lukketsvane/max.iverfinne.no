@@ -94,6 +94,13 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - Easy keeps its 28 s opening in every garden (`openingRaidT`).
 - Enemy heals (healing moth, dew leech, Moon Moth channel) go through `healPest`, which divides by `runDurabilityScale()` exactly as `damagePest` does, so a heal is worth the same number of hits at every point of the clock.
 
+## Seeded gardens
+
+- `resetRogueRun` rolls `rogueRun.seed`. `coopCapture` sends it and `coopState` applies it before anything reads the layout. Never seed from `room.id`: the shared garden reuses the room.
+- `MaxStageLayout.create(stage, origin, ground, wet, seed)` generates gardens 1–19 and caches by stage and seed. Without a seed it returns the authored shape, which is also the fallback and the Crown.
+- The generator never calls `Math.random`. Every required ledge must stay reachable by a walking Bulwark (`tests/seeded-gardens.test.cjs`), and `tests/seeded-physics-*.test.cjs` jumps every hop of 20 seeds with all four classes. Change a reach rule only together with those tests.
+- `layout.nodes` holds each platform's capability tier (C0–C3) for loot placement.
+
 ## Boons
 
 `build-paths.js` is the canonical boon catalogue. In addition to the older tree, recent upgrades include:

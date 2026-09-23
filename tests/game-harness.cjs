@@ -18,6 +18,7 @@ const stateNames = [
   'coop', 'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
   'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
+  'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
   'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',

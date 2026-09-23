@@ -69,7 +69,7 @@ Pickups and bombs must work for both the authoritative player and guests. Guest 
 
 ## Run structure
 
-There are 20 gardens with six route families: terraces, canopy, crossings, ruins, switchbacks and the final Crown layout. One-way platforms let players jump through from below and land on top. Elevated routes contain exploration rewards and shrine trials.
+There are 20 gardens with six route families: terraces, canopy, crossings, ruins, switchbacks and the final Crown layout. Every run rolls a seed and grows gardens 1–19 from it, so no two runs climb the same ledges; the Crown stays authored. One-way platforms let players jump through from below and land on top. Elevated routes contain exploration rewards and shrine trials.
 
 Each normal garden has three finite raids. The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped even though time pressure keeps increasing.
 
@@ -132,7 +132,7 @@ The project deliberately remains a small static game rather than a framework app
 - `coop-session.mjs` — Supabase room/session/reconnect/authority transport.
 - `coop-transport.mjs` — encoded realtime frame transport and limits.
 - `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
-- `stage-layout.js` — deterministic twenty-stage platform geometry.
+- `stage-layout.js` — seeded platform geometry: generated gardens 1–19 with reach guarantees, the authored Crown and the authored fallback.
 - `run-director.inc.js` — raids, time pressure, specialist enemies, hazards and bosses.
 - `rat-enemies.inc.js` — rat behavior and native rat integration.
 - `secrets.inc.js` — rare seeded nights, hidden finds, date decorations and easter eggs (see `docs/design/secrets.md`).
