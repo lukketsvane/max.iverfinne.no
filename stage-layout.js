@@ -30,6 +30,7 @@
     });
     return best;
   }
+  function anchor(p, side) { return { x: p.x + Math.floor(p.w / 2), y: p.y, platformId: p.id, side: side }; }
   function authored(stage, origin, ground, wet) {
     stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
     var kind = theme(stage), shape = shapes[kind], variant = Math.floor((stage - 1) / 5);
@@ -44,7 +45,6 @@
       var p = { id: id, x: center - Math.floor(width / 2), y: y, w: width, depth: kind === 'crossing' ? 8 : 5 + ((stage + id.length) % 3), route: side, style: shape.style, optional: !!optional, floor: Math.round(ground(center)) };
       layout.platforms.push(p); return p;
     }
-    function anchor(p, side) { return { x: p.x + Math.floor(p.w / 2), y: p.y, platformId: p.id, side: side }; }
     [-1, 1].forEach(function (side, routeIndex) {
       var path = [], previous = null;
       shape.x.forEach(function (offset, i) {
@@ -107,10 +107,193 @@
     });
     return layout;
   }
-  function create(stage, origin, ground, wet, seed) {
-    var layout = authored(stage, origin, ground, wet);
-    if (seed != null) layout.seed = seed >>> 0;
+  var MOVE = { grav: 430, jump: 154, acc: 720, walk: 48, run: 88, heavy: .85, margin: 3 };
+  function arc(v, vx, air) {
+    var table = [], x = 0, y = 0, vy = -v, u = 0, dt = 1 / 120;
+    for (var k = 0; k < 900 && y < 140; k++) {
+      if (air && vy >= 0) { vy = -air; air = 0; }
+      var x0 = x, y0 = y; u = Math.min(vx, u + MOVE.acc * dt); vy += MOVE.grav * dt; x += u * dt; y += vy * dt;
+      if (vy > 0 && !air) for (var r = Math.ceil(-y); r <= Math.floor(-y0); r++) if (table[r + 140] == null) table[r + 140] = x0 + (x - x0) * (-r - y0) / (y - y0);
+    }
+    return table;
+  }
+  var feather = MOVE.jump * Math.sqrt(1 + .3 / 1.135), heavyRun = MOVE.run * MOVE.heavy;
+  var PROFILES = [arc(MOVE.jump, MOVE.walk * MOVE.heavy), arc(MOVE.jump, heavyRun), arc(MOVE.jump * 1.12, heavyRun), arc(feather, heavyRun, feather * .9)];
+  function reach(tier, rise) { var d = PROFILES[tier][Math.max(0, Math.ceil(rise) + 140)]; return d == null ? -1 : d; }
+  function limit(rise) { return Math.min(28, Math.floor(reach(0, rise) - MOVE.margin)); }
+  function jumpable(tier, rise, d) { return (tier > 0 || rise <= 19) && d <= reach(tier, rise) - MOVE.margin; }
+  function gapOf(a, b) { return Math.max(b.x - a.x - a.w, a.x - b.x - b.w); }
+  function hopable(tier, a, b) { var rise = a.y - b.y; return !(rise < 0 && b.x >= a.x - 2 && b.x + b.w <= a.x + a.w + 2) && jumpable(tier, rise, Math.max(0, gapOf(a, b))); }
+  function soilOf(layout, ground, wet) {
+    var soil = {};
+    layout.platforms.forEach(function (p) { var list = soil[p.id] = []; if (p.floor - p.y < 70) for (var x = p.x - 48; x <= p.x + p.w + 48; x += 2) if (!wet || !wet(x)) list.push([ground(x) - p.y, Math.max(0, p.x - FOOT - x, x - p.x - p.w - FOOT)]); });
+    return soil;
+  }
+  function reachable(layout, tier, ground, wet, soil) {
+    soil = soil || soilOf(layout, ground, wet);
+    var seen = {}, queue = layout.platforms.filter(function (p) { return soil[p.id].some(function (s) { return jumpable(tier, s[0], s[1]); }); });
+    queue.forEach(function (p) { seen[p.id] = true; });
+    while (queue.length) { var a = queue.pop(); layout.platforms.forEach(function (b) { if (!seen[b.id] && hopable(tier, a, b)) { seen[b.id] = true; queue.push(b); } }); }
+    return seen;
+  }
+  function tiers(layout, ground, wet) {
+    var soil = soilOf(layout, ground, wet), sets = [0, 1, 2, 3].map(function (t) { return reachable(layout, t, ground, wet, soil); });
+    return layout.platforms.map(function (p) { var t = 0; while (t < 3 && !sets[t][p.id]) t++; return { x: p.x + Math.floor(p.w / 2), y: p.y, platformId: p.id, tier: t }; });
+  }
+  var THEMES = {
+    terraces: { h: [90, 120], gap: [7, 13], w: [26, 40], branch: .35, turn: .15, graphs: [[['step', 'step', 'rest'], ['step', 'hop', 'step', 'rest']], [['step', 'step', 'fork', 'step'], ['step', 'rest', 'step', 'hop']], [['step', 'stack', 'rest'], ['step', 'step', 'stack', 'rest']]] },
+    canopy: { h: [110, 150], gap: [8, 14], w: [20, 34], branch: .5, turn: .35, tall: true, graphs: [[['step', 'switch', 'rest', 'stack'], ['step', 'stack', 'rest', 'switch']], [['step', 'step', 'fork', 'switch'], ['step', 'hop', 'fork', 'rest']], [['step', 'step', 'arch', 'rest'], ['step', 'switch', 'rest', 'step']]] },
+    crossing: { h: [80, 110], gap: [10, 18], w: [22, 36], branch: .3, turn: .1, graphs: [[['step', 'step', 'bridge', 'rest'], ['step', 'step', 'hop', 'rest']], [['step', 'step', 'hop', 'pond', 'rest'], ['step', 'step', 'bridge', 'step']], [['step', 'step', 'pond', 'rest', 'hop'], ['step', 'pond', 'step', 'hop', 'rest']]] },
+    ruins: { h: [100, 140], gap: [8, 14], w: [18, 30], branch: .4, turn: .25, graphs: [[['step', 'step', 'wall', 'rest'], ['step', 'wall', 'rest', 'narrow']], [['step', 'step', 'narrow', 'rest', 'drop'], ['step', 'step', 'rest', 'wall']], [['step', 'drop', 'pond', 'rest', 'wall'], ['step', 'wall', 'rest', 'step']]] },
+    switchbacks: { h: [120, 160], gap: [7, 12], w: [22, 30], branch: .25, turn: .2, graphs: [[['step', 'switch', 'rest'], ['step', 'switch', 'rest', 'switch']], [['step', 'stack', 'switch', 'rest'], ['step', 'switch', 'stack', 'rest']], [['step', 'switch', 'switch', 'rest'], ['step', 'rest', 'switch']]] }
+  };
+  var CHUNKS = {
+    step: [[0, 'n', 16, 'n']], hop: [[0, 'w', 8, 'n']], rest: [[0, 'n', 12, 'r']], pond: [[0, 'p', 10, 'n']],
+    switch: [[1, 'n', 16, 'n'], [1, 'n', 16, 'n']], stack: [[0, 's', 17, 'n'], [1, 's', 17, 'n']],
+    arch: [[0, 'n', 15, 'n'], [0, 'n', 3, 'n'], [0, 'n', -9, 'r']], drop: [[0, 'n', -10, 'n'], [0, 'n', 16, 'n'], [0, 'n', 16, 'n']],
+    narrow: [[0, 't', 9, 'x'], [0, 't', 9, 'x'], [0, 't', 9, 'x']], bridge: [[0, 'w', 2, 'n'], [0, 'w', 0, 'n'], [0, 'w', 1, 'n']],
+    fork: [[0, 'n', 14, 'r', 'fork']], wall: [[0, 'n', 18, 'x', 'alcove']]
+  };
+  function hash(a, b) { var h = Math.imul((a >>> 0) ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul((b | 0) + 0x632be5ab, 0xc2b2ae35); h = Math.imul(h ^ h >>> 15, 0x2c1b3c6d); return (h ^ h >>> 13) >>> 0; }
+  function mulberry(a) { return function () { a = a + 0x6d2b79f5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function floorUnder(ground, x, w) { var f = Infinity; for (var i = x; i <= x + w; i++) f = Math.min(f, ground(i)); return f; }
+  function clear(p, ground) { return floorUnder(ground, p.x, p.w) - p.y >= 6; }
+  function bounds(p, origin) { var d = p.route * (p.x + p.w / 2 - origin) - p.w / 2; return d >= 30 && d + p.w <= 330; }
+  function lure(p, q) { var rise = p.y - q.y; return rise >= 7 && rise <= 25 && gapOf(p, q) <= 23; }
+  function clash(p, q) { return p !== q && p.x < q.x + q.w + 4 && q.x < p.x + p.w + 4 && Math.abs(p.y - q.y) < 14; }
+  function blocks(c, a, b) {
+    if (c === a || c === b || c.y >= b.y || c.y < b.y - Math.max(12, 20 - a.y + b.y)) return false;
+    var from = a.w ? (b.x + b.w / 2 < a.x + a.w / 2 ? a.x + 3 : a.x + a.w - 3) : a.x, to = Math.max(b.x + 3, Math.min(b.x + b.w - 3, from));
+    return c.x <= Math.max(from, to) + 3 && c.x + c.w >= Math.min(from, to) - 3;
+  }
+  function pathOf(layout, route) { return route.platformIds.map(function (id) { return layout.platforms.find(function (p) { return p.id === id; }); }); }
+  function hopsOf(layout) {
+    var hops = [];
+    layout.routes.forEach(function (route) { var path = pathOf(layout, route); hops.push([{ x: route.start.x, y: route.start.y, w: 0 }, path[0]]); for (var i = 1; i < path.length; i++) hops.push([path[i - 1], path[i]]); });
+    return hops;
+  }
+  function build(stage, origin, ground, wet, seed, k, high) {
+    var kind = theme(stage), t = THEMES[kind], rand = mulberry(hash(seed, k + 1)), shrink = Math.floor((stage - 1) / 2), wmin = stage < 6 ? 22 : 18;
+    var spread = t.gap[0] + (t.gap[1] - t.gap[0]) * (stage - 1) / 18, graph = t.graphs[(seed + k) % 3], swap = rand() < .5 ? 1 : 0, base = Math.floor(ground(origin)), extras = [];
+    var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] };
+    function band(lo, hi) { return lo + rand() * (hi - lo); }
+    function place(id, x, y, w, side, optional) { x = Math.round(x); w = Math.round(w); return { id: id, x: x, y: Math.round(y), w: w, depth: kind === 'crossing' ? 8 : 5 + ((stage + id.length) % 3), route: side, style: shapes[kind].style, optional: optional, floor: Math.round(ground(x + Math.floor(w / 2))) }; }
+    var ok = [-1, 1].every(function (side, r) {
+      var pattern = graph[r ^ swap], target = t.tall ? (r ^ swap ? band(t.h[1] - 12, t.h[1]) : band(t.h[0], t.h[0] + 12)) : band(t.h[0], t.h[1]), heading = side, since = 0, every = 2 + Math.floor(rand() * 3), hard = 0, n = 0, opt = 0;
+      var w0 = Math.round(band(36, 44)), c0 = origin + side * Math.round(band(52, 62)), y0 = Math.floor(floorUnder(ground, c0 - Math.floor(w0 / 2), w0)) - Math.round(band(14, 18));
+      if (wet && wet(c0)) y0 = Math.min(y0, base - 15);
+      var x0 = c0 - Math.floor(w0 / 2), start = { x: x0 + w0 / 2, y: ground(x0 + w0 / 2) };
+      for (var launchX = x0 + 2; launchX <= x0 + w0 - 2; launchX += 2) if ((!wet || !wet(launchX)) && ground(launchX) < start.y) start = { x: launchX, y: ground(launchX) };
+      if (wet && wet(start.x)) { for (var step = 0; step < 80 && wet(start.x); step++) start.x -= side * 2; start.y = ground(start.x); }
+      var prev = place(stage + ':' + r + ':0', x0, Math.max(y0, Math.ceil(start.y) - 19), w0, side, false), path = [prev], mine = [[{ x: start.x, y: start.y, w: 0 }, prev]];
+      if (!clear(prev, ground) || !jumpable(0, start.y - prev.y, Math.max(0, prev.x - FOOT - start.x, start.x - prev.x - prev.w - FOOT))) return false;
+      layout.platforms.push(prev);
+      function sound(q) { return clear(q, ground) && bounds(q, origin) && layout.platforms.every(function (p) { return !clash(p, q) && !blocks(p, prev, q); }) && mine.every(function (h) { return !blocks(q, h[0], h[1]); }) && path.slice(0, Math.min(3, path.length - 1)).every(function (p) { return !lure(p, q); }); }
+      function extra(cell, q) {
+        var w = Math.max(wmin, Math.round(band(t.w[0], t.w[1])) - shrink), d = Math.round(spread), b;
+        if (cell === 'alcove') return extras.push(place(stage + ':' + r + ':o' + (++opt), heading > 0 ? q.x + q.w - 6 : q.x - 18, q.y + 18, 24, side, true));
+        extras.push(b = place(stage + ':' + r + ':o' + (++opt), heading < 0 ? q.x + q.w + d : q.x - d - w, q.y - Math.round(band(14, 18)), w, side, true));
+        if (rand() < .5) extras.push(place(stage + ':' + r + ':o' + (++opt), heading < 0 ? b.x + b.w + d : b.x - d - w, b.y - 12, w, side, true));
+      }
+      function hop(spec) {
+        var early = path.length < 4, g = spec[1], rise = Math.min(19, spec[2] + Math.round(band(-2, 2))), wk = since + 1 >= every ? 'r' : spec[3];
+        if (early && rise < 10) rise = 12 + Math.round(rand() * 4);
+        if (early && g !== 's') g = 'n';
+        if (g === 's' && rise < 14) g = 'n';
+        var w = wk === 'r' ? Math.round(band(36, 42)) : Math.max(wmin, (wk === 'x' ? t.w[0] + Math.round(rand() * 3) : Math.round(band(t.w[0], t.w[1]))) - shrink);
+        var want = g === 's' ? -Math.round(band(8, Math.min(prev.w, w) - 6)) : g === 't' ? 7 + Math.round(rand()) : Math.round(spread + (g === 'w' ? band(3, 6) : band(-2, 2)));
+        if (spec[0] && !early) heading = -heading;
+        for (var tries = 0; tries < 4; tries++) {
+          if (tries) heading = -heading;
+          if (early && tries % 2) continue;
+          var y = prev.y - (tries > 1 ? Math.max(rise, 14) : rise), d = want, x = 0;
+          for (var pass = 0; pass < 2; pass++) {
+            var lim = limit(prev.y - y);
+            if (g !== 's') d = Math.max(7, Math.min(d, hard >= 2 ? Math.floor(.8 * lim) : lim));
+            if (g === 'p' && wet) for (var dd = d - 2; dd <= lim; dd++) if (wet(prev.x + prev.w / 2 + heading * ((prev.w + w) / 2 + dd))) { d = dd; break; }
+            x = heading > 0 ? prev.x + prev.w + d : prev.x - d - w;
+            y = Math.min(y, Math.floor(floorUnder(ground, x, w)) - 6);
+          }
+          var q = place(stage + ':' + r + ':' + path.length, x, y, w, side, false);
+          if (prev.y - y > 19 || d > limit(prev.y - y) || !sound(q)) continue;
+          hard = d > .8 * limit(prev.y - y) ? hard + 1 : 0;
+          since = w >= 36 ? 0 : since + 1; if (!since) every = 2 + Math.floor(rand() * 3);
+          layout.platforms.push(q); mine.push([prev, q]); path.push(prev = q);
+          if (!early && rand() < (spec[4] ? t.branch : t.branch / 3)) extra(spec[4] || 'fork', q);
+          return true;
+        }
+        return false;
+      }
+      while (path.length < 5 || base - prev.y < target && path.length < 14) {
+        if (path.length > 3 && rand() < t.turn) heading = -heading;
+        if (!CHUNKS[pattern[n++ % pattern.length]].every(hop)) return false;
+      }
+      var summit = path.reduce(function (a, b) { return b.y < a.y ? b : a; });
+      layout.routes.push({ id: r, side: side, start: start, platformIds: path.map(function (p) { return p.id; }) });
+      layout.rewards.push(anchor(summit, side)); layout.trials.push(anchor(path[Math.floor(path.length / 2)], side));
+      return true;
+    });
+    if (!ok) return null;
+    var kept = layout.platforms.slice(), hops = hopsOf(layout), low = layout.routes.reduce(function (list, route) { return list.concat(pathOf(layout, route).slice(0, 3)); }, []), far = high ? (layout.rewards[0].y <= layout.rewards[1].y ? 0 : 1) : -1;
+    function above(p, tier, from) { return hopable(tier + 1, from, p) && kept.every(function (q) { return !hopable(tier, q, p); }); }
+    function fits(p) { return clear(p, ground) && bounds(p, origin) && kept.every(function (q) { return !clash(p, q); }) && hops.every(function (h) { return !blocks(p, h[0], h[1]); }) && low.every(function (q) { return !lure(q, p); }); }
+    extras.forEach(function (p) { if (fits(p)) kept.push(p); });
+    layout.routes.forEach(function (route, r) {
+      var s = kept.find(function (p) { return p.id === layout.rewards[r].platformId; }), cx = s.x + s.w / 2, bw = Math.round(band(24, 30)), side = route.side;
+      [side, -side].some(function (dir) { var b = place(stage + ':' + r + ':bonus', cx + dir * (r === far ? 50 : 26) - bw / 2, s.y - 32, bw, side, true); if (!fits(b) || !above(b, 1, s)) return false; kept.push(b); layout.bonuses.push(anchor(b, side)); return true; });
+      var h = place(stage + ':' + r + ':high', cx - side * 28 - 11, s.y - 48, 22, side, true);
+      if (r === far && fits(h) && above(h, 2, s)) kept.push(h);
+    });
+    layout.platforms = kept;
     return layout;
+  }
+  function valid(layout, ground, wet) {
+    var ps = layout.platforms, wmin = layout.stage < 6 ? 22 : 18, base = Math.floor(ground(layout.origin)), hops = hopsOf(layout);
+    return ps.every(function (p, i) { return clear(p, ground) && bounds(p, layout.origin) && ps.every(function (q, j) { return j <= i || !clash(p, q); }); }) &&
+      hops.every(function (h) { return ps.every(function (c) { return !blocks(c, h[0], h[1]); }); }) &&
+      layout.routes.every(function (route) {
+        var path = pathOf(layout, route), first = path[0], s = route.start, gaps = 0, since = 0, hard = 0;
+        if (path.length < 5 || first.w < 36 || Math.abs(first.x + first.w / 2 - layout.origin) >= 70 || base - Math.min.apply(null, path.map(function (p) { return p.y; })) < 40) return false;
+        if (wet && wet(s.x) || !jumpable(0, s.y - first.y, Math.max(0, first.x - FOOT - s.x, s.x - first.x - first.w - FOOT))) return false;
+        return path.every(function (p, i) {
+          if (p.w < wmin) return false;
+          if (!i) return true;
+          var a = path[i - 1], rise = a.y - p.y, g = gapOf(a, p), lim = limit(rise);
+          if (rise > 19 || g > lim || rise < 14 && g < 4) return false;
+          if (g > 6) gaps++;
+          hard = g > .8 * lim ? hard + 1 : 0; since = p.w >= 36 ? 0 : since + 1;
+          return hard <= 2 && since <= 3;
+        }) && gaps >= 3;
+      });
+  }
+  function signature(layout, ground) {
+    var base = Math.floor(ground(layout.origin)), h = layout.routes.map(function (route) { return base - Math.min.apply(null, pathOf(layout, route).map(function (p) { return p.y; })); }), n = layout.routes.map(function (route) { return route.platformIds.length; });
+    return [Math.round(Math.max(h[0], h[1]) / 20), Math.round((n[0] + n[1]) / 3), Math.round(Math.abs(h[0] - h[1]) / 20), Math.abs(h[0] - h[1]) / 30 + Math.abs(n[0] - n[1]) / 4];
+  }
+  function critic(layout, ground, before, high) {
+    var sig = signature(layout, ground), rat = 0, top = layout.platforms.some(function (p) { return /high$/.test(p.id); }), hops = hopsOf(layout).filter(function (h) { return h[0].w; });
+    hops.forEach(function (h) { var rise = h[0].y - h[1].y; if (rise >= 7 && gapOf(h[0], h[1]) <= 20) rat++; });
+    var air = Math.min.apply(null, layout.platforms.map(function (p) { return Math.abs(p.x + p.w / 2 - layout.origin) - p.w / 2; }));
+    return Math.min(2, sig[3]) + (before ? [0, 1, 2].filter(function (i) { return sig[i] !== before[i]; }).length / 2 : 0) + layout.bonuses.length / 2 + (high === top ? 1 : 0) + Math.min(1, air / 48) + rat / hops.length;
+  }
+  function create(stage, origin, ground, wet, seed) {
+    if (seed == null) return authored(stage, origin, ground, wet);
+    seed = seed >>> 0; stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
+    var memo = new Map(), pools = new Map(), raw = ground, pond = wet;
+    ground = function (x) { var y = memo.get(x); if (y === undefined) memo.set(x, y = raw(x)); return y; };
+    wet = pond && function (x) { var w = pools.get(x); if (w === undefined) pools.set(x, w = pond(x) || null); return w; };
+    var key = hash(seed, stage), high = stage >= 4 && mulberry(key)() < .35, flat = function () { return 0; }, best = null, score = -Infinity;
+    var before = stage > 1 && stage < 20 && build(stage - 1, 0, flat, null, hash(seed, stage - 1), 0, false);
+    before = before && signature(before, flat);
+    for (var k = 0; k < 6 && stage < 20; k++) {
+      var candidate = build(stage, origin, ground, wet, key, k, high);
+      if (!candidate || !valid(candidate, ground, wet)) continue;
+      var value = critic(candidate, ground, before, high);
+      if (value > score) { best = candidate; score = value; }
+    }
+    best = best || authored(stage, origin, ground, wet);
+    best.nodes = tiers(best, ground, wet); best.seed = seed;
+    return best;
   }
   function draw(ctx, layout, camX, camY, width, height) {
     var colors = { body: '#1e2933', shadow: '#111b29', light: '#465d64', lip: '#75938e', moss: '#405743', root: '#2b342d', line: '#36423a' };
@@ -139,7 +322,7 @@
       if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(p.w / 2), y - 3, 1, 1); }
     });
   }
-  var api = { create: create, theme: theme, landing: landing, support: support, at: at, draw: draw, foot: FOOT };
+  var api = { create: create, theme: theme, landing: landing, support: support, at: at, draw: draw, foot: FOOT, move: MOVE, reach: reach, reachable: reachable };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxStageLayout = api;
 })(typeof window === 'object' ? window : globalThis);
