@@ -560,7 +560,8 @@ function updatePlayer(dt, inp) {
     if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
     if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
     updateHands(step,taskSteer(inp));
-    if(P.st==='climb')updateClimb(step,inp);
+    if(P.st==='burrow')updateBurrow(step,inp);
+    else if(P.st==='climb')updateClimb(step,inp);
     else physics(step,(P.st==='free'||P.st==='float')?inp:{axis:0,top:inp.top});
     if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
     P.throwPose=Math.max(0,P.throwPose-step);
@@ -2826,8 +2827,8 @@ function classProtection(plant){
 function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
 function useClassSkill(){
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
-  if(P.skillCool<=0&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
-    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?bulwarkBrace():kit.skill==='bloom'?bloomSkill():false;
+  if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
+    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
   return ok;
 }

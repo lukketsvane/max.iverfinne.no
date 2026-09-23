@@ -1,6 +1,6 @@
 var WONDERS={lights:'Firefly order',plates:'Twin plates',perch:'High lantern',crack:'Cracked stone',rune:'Rune plot',dig:'Buried relic',stars:'Three stars',bells:'Bell stones',echo:'Echo stone',well:'Moon well',crown:'Crown relic',clover:'Four-leaf clover',
   trader:'Trader rover',fledgling:'Lost fledgling',bee:'Hurt bee',ghost:'Rival gardener',beetle:'Sleeping beetle',statue:'Riddle statue',flock:'Storm flock',robot:'Broken robot',
-  grove:'Secret garden',vault:'Seed vault',meadow:'Moonlit meadow',cavern:'Root cavern',rush:'Boss-rush door'};
+  shovel:'Old shovel',grove:'Secret garden',vault:'Seed vault',meadow:'Moonlit meadow',cavern:'Root cavern',rush:'Boss-rush door'};
 var WONDER_PUZZLES=['lights','plates','perch','crack','rune','dig','stars','bells','echo'],WONDER_MEETS=['trader','fledgling','bee','ghost','beetle','statue','flock','robot'],WONDER_LEVELS=['grove','vault','meadow','cavern','rush'];
 var wonders={world:0,seed:0,t:0,fc:0,last:'',next:'',special:''},wonderRun=null,wonderLand=[],wonderHold={};
 var WONDER_INK={s:'#3d4552',S:'#5b6472',m:'#4f6b3a',M:'#6f8a4a',b:'#cfc6a8',k:'#1c1a22',y:'#d9c27a',w:'#5a4632',g:'#34472e',G:'#4d6640',e:'#d8b24a',r:'#8a8f98',R:'#555a63',v:'#6d7690'};
@@ -14,6 +14,7 @@ var WONDER_ART={
   beetle:['...gggg...','.gGGGGgg..','gGGgggGGgk','gggggggggk','.k.k..k.k.'],statue:['.sss.','sbskS','.sSs.','.sSs.','sssss'],
   robot:['.rrr.','rkRkr','rRRRr','R.r.R','k...k'],gate:['..sss..','.sSkSs.','sSkkkSs','sSkkkSs','sSkkkSs','sSkkkSs','sSkkkSs','sssssss'],
   ghost:['.vv.','vvvv','.vv.','vvvv','v..v','v..v'],flag:['yyy','y..','y..','s..','s..','s..'],nest:['w.w.w','.www.'],
+  shovel:['...w','..w.','.w..','SS..','SS..'],cache:['wwww','wyyw','wwww'],
   seed:['m'],drop:['.v.','vvv','.v.'],sprout:['M.M','.m.','.m.'],bar:['bbb']
 };
 function wonderDraw(name,x,y,f){
@@ -63,7 +64,8 @@ function rollWonders(){
     var pool=WONDER_LEVELS.filter(function(id){return id!=='rush'||w%5===2||w%5===3;});
     wonders.gate=pool[Math.floor(wonderRoll(15)*pool.length)];wonders.gx=gp.x;wonders.gy=gp.y;
   }
-  wonders.rush=0;wonders.spt=0;
+  wonders.rush=0;wonders.spt=0;wonders.bc=0;wonders.b1=wonderGround(80,200);wonders.b2=wonderGround(82,200);
+  wonders.sh=!rogueRun.shovel&&!coop&&ownClass().id==='bulwark'&&w>=2&&!boss&&(wonderRoll(84)<.35||w===12)?wonderGround(85,120):0;
   if(wonders.special)startSpecial(wonders.special);
 }
 function startSpecial(id){
@@ -81,6 +83,7 @@ function updateWonders(dt){
   if(wonders.world!==worldLevel())rollWonders();
   wonders.t+=dt;var sy=wonders.pzy;wonders.hop=0;runPlayers().forEach(function(a,i){var on=Math.abs(a.p.x-wonders.pzx)<6&&Math.abs(a.p.y-sy)<4;if(on&&wonderLand[i])wonders.hop=1;wonderLand[i]=a.p.y<sy-10?true:on?false:wonderLand[i];});
   updatePuzzle(dt);updateMeeting(dt);updateSpecial(dt);
+  if(wonders.sh&&!rogueRun.shovel&&ownClass().id==='bulwark'&&Math.abs(P.x-wonders.sh)<8&&Math.abs(P.y-surfaceY(wonders.sh))<6){rogueRun.shovel=true;foundWonder('shovel',P.x,P.y,0,0);wonders.sh=0;}
   if(wonders.gate&&!wonders.next){
     wonderHold.gate=wonderStill(wonders.gx,wonders.gy,7)?(wonderHold.gate||0)+dt:0;
     if(wonderHold.gate>=1.5){wonders.next=wonders.gate;wonders.gt=wonders.t;chime([392,523,659,784],.12,.05);gardenAction(150,8,'A DOOR OPENS');}
@@ -196,6 +199,7 @@ function wonderSync(s){
   wonders=next;wonderRun=rogueRun;
 }
 function drawWonders(t){
+  drawTunnels();
   if(wonders.world!==worldLevel())return;
   var z=wonders.pz,x=wonders.pzx,y=wonders.pzy,done=!!wonders.pzd,blink=(t*2|0)&1;
   if(z==='lights'){var order=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]][wonders.pzo],show=Math.floor(t%6/1.2);[-26,0,26].forEach(function(o,i){var lit=done||order.indexOf(i)<wonders.pzs||(show<3&&order[show]===i);wonderDraw(lit?'lit':'stone',x+o,surfaceY(x+o));});}
@@ -223,6 +227,37 @@ function drawWonders(t){
     if(e==='flock'&&wonders.t-wonders.ena<4)for(var b=0;b<7;b++){var bx=P.x-120+b*14+(wonders.t-wonders.ena)*70,by=surfaceY(P.x)-90-(b%3)*6;ctx.fillStyle='#1c1a22';ctx.fillRect(Math.round(bx-camX),Math.round(by-camY),1,1);ctx.fillRect(Math.round(bx-camX)-1,Math.round(by-camY)-1,1,1);ctx.fillRect(Math.round(bx-camX)+1,Math.round(by-camY)-1,1,1);}
   }
   if(wonders.gate&&!wonders.next){var near=Math.abs(P.x-wonders.gx)<60;if(near||blink)wonderDraw('gate',wonders.gx,wonders.gy);}
+}
+var tunnels={w:0,s:[]};
+function canBurrow(){return !!(rogueRun.shovel&&!coop&&P.st==='free'&&P.grounded&&!P.wet&&!P.platform&&!climb&&!warp&&Math.abs(P.y-surfaceY(P.x))<=4&&!waterAt(P.x)&&!parryable(P.x,P.y)&&!floatKrek.some(function(k){return k.hp>0&&Math.abs(k.x-P.x)<40&&Math.abs(k.y-P.y)<40;}));}
+function startBurrow(){
+  P.st='burrow';P.vx=P.vy=0;P.y=surfaceY(P.x)+12;P.brace=0;burrowCarve();setAnim('idle');chime([131,98],.08,.05);
+  for(var i=0;i<14;i++)parts.push({x:P.x+(Math.random()-.5)*10,y:surfaceY(P.x)-1,vx:(Math.random()-.5)*50,vy:-20-Math.random()*40,l:.6,m:.6,c:'90,70,50'});
+  return true;
+}
+function burrowCarve(){
+  if(tunnels.w!==worldLevel())tunnels={w:worldLevel(),s:[]};
+  var x=Math.round(P.x),last=tunnels.s[tunnels.s.length-1];
+  if(last&&x>=last[0]-3&&x<=last[1]+3){last[0]=Math.min(last[0],x-5);last[1]=Math.max(last[1],x+5);}else if(tunnels.s.length<40)tunnels.s.push([x-5,x+5]);
+}
+function updateBurrow(dt,inp){
+  P.vx=(inp.axis||0)*WALK_V*.8;var nx=P.x+P.vx*dt;if(!waterAt(nx))P.x=nx;else P.vx=0;
+  if(P.vx)P.face=P.vx>0?1:-1;P.y=surfaceY(P.x)+12;P.vy=0;P.grounded=true;P.platform=null;burrowCarve();
+  var a=P.vx?'run':'idle';if(P.anim!==a)setAnim(a);
+  [wonders.b1,wonders.b2].forEach(function(bx,i){if(bx&&!(wonders.bc&1<<i)&&Math.abs(P.x-bx)<5){wonders.bc|=1<<i;spawnLooseSeeds(bx,surfaceY(bx)-8,3,true);chime([659,784,988],.06,.035);}});
+  if(jumpBuf>0){jumpBuf=0;burrowErupt();}
+}
+function burrowErupt(){
+  P.st='free';P.y=surfaceY(P.x);P.vy=JUMP_V*1.15;P.grounded=false;setAnim('rise');
+  floatKrek.forEach(function(k){if(k.hp>0&&Math.abs(k.x-P.x)<28&&k.y>P.y-60)damagePest(k,2,P.x);});
+  for(var i=0;i<20;i++)parts.push({x:P.x+(Math.random()-.5)*12,y:P.y-2,vx:(Math.random()-.5)*60,vy:-30-Math.random()*50,l:.7,m:.7,c:'90,70,50'});
+  shake=Math.min(3,shake+1.5);chime([196,262],.05,.06);
+}
+function drawTunnels(){
+  if(tunnels.w===worldLevel())tunnels.s.forEach(function(s){for(var x=s[0];x<=s[1];x++){var sx=Math.round(x-camX);if(sx<-1||sx>IW)continue;ctx.fillStyle='#16110d';ctx.fillRect(sx,Math.round(surfaceY(x)+3-camY),1,11);}});
+  if(wonders.world!==worldLevel())return;
+  if(P.st==='burrow'||tunnels.w===worldLevel())[wonders.b1,wonders.b2].forEach(function(bx,i){if(bx&&!(wonders.bc&1<<i)&&(P.st==='burrow'&&Math.abs(P.x-bx)<50))wonderDraw('cache',bx,surfaceY(bx)+12);});
+  if(wonders.sh&&!rogueRun.shovel)wonderDraw('shovel',wonders.sh,surfaceY(wonders.sh)+1);
 }
 function drawWonderAir(){
   if(wonders.world!==worldLevel()||wonders.special!=='cavern')return;
