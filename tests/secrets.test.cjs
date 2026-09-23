@@ -167,3 +167,24 @@ test('standing still for three seconds on a garden\'s secret spot wakes a firefl
   standAt(host.coop.members[ids[1]].avatar, host, host.secrets.spotX); host.P.x += 50; host.updateSecrets(1.6); host.updateSecrets(1.6);
   assert.ok(host.secrets.spotFound > 0, 'a guest can find it too'); sync(); assert.equal(guest.secrets.spotFound, host.secrets.spotFound);
 });
+
+function hogGarden() {
+  const g = fresh().game, { seed, w } = seedFor(g, (s, w) => g.secretHash(s, w * 64 + 5) < .3);
+  g.rogueRun.seed = seed; g.rogueRun.world = w; g.P.x = g.levelOriginX(w) + 1000; g.updateSecrets(0); return g;
+}
+function wait(g, seconds, water) { for (let t = 0; t < seconds; t += .5) { if (water) g.gardenPlots.forEach(p => { p.moisture = .9; }); g.updateSecrets(.5); } }
+test('a hedgehog settles under a grown plant and leaves two seeds if that plant stays watered', () => {
+  const g = hogGarden(), at = g.secrets.hogAt;
+  assert.ok(at >= 30 && at <= 70);
+  g.gardenPlots = [plot({ id: 5, x: g.P.x - 200, growth: .3, moisture: .9 })]; wait(g, at + 2, true);
+  assert.equal(g.secrets.hogId, 0, 'it waits for a plant grown enough to hide under');
+  g.gardenPlots[0].growth = 1; wait(g, 1, true);
+  assert.equal(g.secrets.hogId, 5); g.drawSecretGround(1);
+  const loose = g.seedPickups.length; wait(g, 21, true);
+  assert.equal(g.secrets.hogGift, 1); assert.equal(g.seedPickups.length, loose + 2); g.drawSecretGround(2);
+  wait(g, 30, true); assert.equal(g.seedPickups.length, loose + 2, 'one visit per garden');
+  const dry = hogGarden(); dry.gardenPlots = [plot({ id: 7, x: dry.P.x - 200, growth: 1, moisture: .9 })];
+  wait(dry, dry.secrets.hogAt + 1, true); assert.equal(dry.secrets.hogId, 7);
+  const before = dry.seedPickups.length; dry.gardenPlots[0].moisture = .2; wait(dry, 25, false);
+  assert.equal(dry.secrets.hogGift, 0, 'a dry plant sends it away with nothing'); assert.equal(dry.seedPickups.length, before);
+});
