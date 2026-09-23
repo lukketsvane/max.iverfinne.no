@@ -659,6 +659,8 @@ function physics(dt, inp) {
   if (P.st === 'float' && P.vy > 30) P.vy = 30;
   P.x += P.vx * dt;
   P.y += P.vy * dt;
+  var rock=window.MaxStageLayout.solid(layout,oldX,oldY,P.x,P.y);
+  if(rock){P.x=rock.x;P.y=rock.y;if(rock.wall)P.vx=0;if(rock.ceil&&P.vy<0)P.vy=0;}
 
   var g = surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
   if(landing&&landing.y<g){g=landing.y;P.platform=landing.id;}
@@ -4953,6 +4955,7 @@ function stepBombs(dt) {
       if (w && b.y >= w.level) { b.st = 'water'; b.y = w.level; b.vx *= 0.25; b.vy = 0; ripple(b.x, w.level, 'splash'); }
       else {
         var g = surfaceY(b.x) - 2;
+        if (b.t > 0.03 && window.MaxStageLayout.inRock(stageLayout(), b.x, b.y)) { explode(b.x, b.y, false, b.perks); bombs.splice(i, 1); continue; }
         if (b.y >= g) {
           b.y = g;
           if (b.hop < 2 && b.vy > 50) { b.vy = -b.vy * 0.3; b.vx *= 0.5; b.hop++; puff(b.x, g + 2, 2, 0.3); }

@@ -30,6 +30,21 @@
     });
     return best;
   }
+  function solid(layout, x0, y0, x1, y1) {
+    var hit = null;
+    (layout.platforms || []).forEach(function (p) {
+      if (!p.solid || x1 + 4 <= p.x || x1 - 4 >= p.x + p.w || y1 <= p.y + 1 || y1 - 18 >= p.y + p.h) return;
+      var r = hit || { x: x1, y: y1 };
+      if (y0 - 18 >= p.y + p.h - 1e-6) { r.y = p.y + p.h + 18; r.ceil = true; }
+      else if (x0 + 4 <= p.x + 1e-6) { r.x = p.x - 4; r.wall = true; }
+      else if (x0 - 4 >= p.x + p.w - 1e-6) { r.x = p.x + p.w + 4; r.wall = true; }
+      else if (y0 <= p.y + 1) { r.y = p.y; r.top = p.id; }
+      else { r.x = x1 < p.x + p.w / 2 ? p.x - 4 : p.x + p.w + 4; r.wall = true; }
+      x1 = r.x; y1 = r.y; hit = r;
+    });
+    return hit;
+  }
+  function inRock(layout, x, y) { return (layout.platforms || []).some(function (p) { return p.solid && x > p.x && x < p.x + p.w && y > p.y && y < p.y + p.h; }); }
   function anchor(p, side) { return { x: p.x + Math.floor(p.w / 2), y: p.y, platformId: p.id, side: side }; }
   function authored(stage, origin, ground, wet) {
     stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
@@ -300,6 +315,20 @@
     var cx = Math.round(camX), cy = Math.round(camY);
     layout.platforms.forEach(function (p, index) {
       var x = p.x - cx, y = p.y - cy;
+      if (p.solid) {
+        if (x + p.w < -4 || x > width + 4 || y > height + 4 || y + p.h < -4) return;
+        var woodb = p.style === 'branch' || p.style === 'root';
+        ctx.fillStyle = woodb ? colors.root : colors.body; ctx.fillRect(x, y, p.w, p.h);
+        ctx.fillStyle = colors.shadow; ctx.fillRect(x, y + p.h - 2, p.w, 2); ctx.fillRect(x + p.w - 2, y + 2, 2, p.h - 2);
+        ctx.fillStyle = woodb ? colors.line : colors.light; ctx.fillRect(x, y + 1, p.w, 1); ctx.fillRect(x, y + 1, 1, p.h - 3);
+        for (var ty = 5; ty < p.h - 3; ty += 6) for (var tx = 3 + (ty % 12 ? 3 : 0); tx < p.w - 4; tx += 9) {
+          var hh = ((p.x + tx) * 73856093 ^ (p.y + ty) * 19349663) >>> 0;
+          ctx.fillStyle = hh % 3 ? colors.shadow : colors.line; ctx.fillRect(x + tx + hh % 4, y + ty, p.style === 'ruin' ? 5 : 2, 1);
+        }
+        ctx.fillStyle = colors.lip; ctx.fillRect(x, y, p.w, 1);
+        ctx.fillStyle = colors.moss; for (var km = 2; km < p.w - 3; km += 5) { ctx.fillRect(x + km, y - 1, 3, 1); if ((km + index) % 4 === 0) ctx.fillRect(x + km + 1, y + 1, 1, 2 + (km % 3)); }
+        return;
+      }
       if (x + p.w < -4 || x > width + 4 || y > height + 8 || y + p.depth < -12) return;
       var woody = p.style === 'branch' || p.style === 'root';
       ctx.fillStyle = colors.shadow; ctx.fillRect(x + 3, y + 3, p.w - 6, p.depth + 2);
@@ -322,7 +351,7 @@
       if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(p.w / 2), y - 3, 1, 1); }
     });
   }
-  var api = { create: create, theme: theme, landing: landing, support: support, at: at, draw: draw, foot: FOOT, move: MOVE, reach: reach, reachable: reachable };
+  var api = { solid: solid, inRock: inRock, create: create, theme: theme, landing: landing, support: support, at: at, draw: draw, foot: FOOT, move: MOVE, reach: reach, reachable: reachable };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxStageLayout = api;
 })(typeof window === 'object' ? window : globalThis);
