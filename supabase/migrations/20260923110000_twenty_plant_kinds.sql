@@ -13,7 +13,7 @@ begin
        or jsonb_typeof(p->'growth') is distinct from 'number'
        or jsonb_typeof(p->'stalk') is distinct from 'boolean' then return false; end if;
     if (p->>'id')::numeric <> trunc((p->>'id')::numeric) or (p->>'id')::numeric not between 1 and 9007199254740991
-       or (p->>'kind')::numeric <> trunc((p->>'kind')::numeric) or (p->>'kind')::numeric not between 0 and 19
+       or (p->>'kind')::numeric <> trunc((p->>'kind')::numeric) or (p->>'kind')::numeric not between 0 and 24
        or abs((p->>'seed')::numeric) > 1000000000000
        or (p->>'growth')::numeric not between 0 and 1000000 then return false; end if;
   end loop;

@@ -112,7 +112,7 @@ test('global bouquets preserve entire runs while publication enforces account ow
     await t.test('malformed plants and impossible completion states are rejected without replacing anything', async () => {
       await as(bob);
       for (const value of [null, {}, [], [...plants(1), ...plants(1)], [{ ...plants(1)[0], growth: -1 }],
-        [{ ...plants(1)[0], kind: 20 }], [{ ...plants(1)[0], stalk: 1 }], [{ ...plants(1)[0], id: 1.2 }],
+        [{ ...plants(1)[0], kind: 25 }], [{ ...plants(1)[0], stalk: 1 }], [{ ...plants(1)[0], id: 1.2 }],
         [{ ...plants(1)[0], appearance: 'x'.repeat(4194304) }]]) {
         await assert.rejects(submit(bob, value, secondId), { code: '23514' });
       }

@@ -4,10 +4,10 @@ const fs = require('node:fs'), path = require('node:path');
 const { loadGame, plot } = require('./game-harness.cjs');
 const root = path.join(__dirname, '..');
 
-test('ten hand-drawn plants join the garden as kinds 9-18, each assembled from its own part files', () => {
+test('fifteen hand-drawn plants join the garden as kinds 9-23, each assembled from its own part files', () => {
   const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
-  assert.equal(g.GARDEN_FIG_FORMS.length, 20);
-  assert.equal(g.SPRITE_PLANTS.length, 11);
+  assert.equal(g.GARDEN_FIG_FORMS.length, 25);
+  assert.equal(g.SPRITE_PLANTS.length, 16);
   for (const d of g.SPRITE_PLANTS) {
     const types = new Set(d.parts.map(q => q[0]));
     assert.ok(types.has('root') && types.has('stem') && (types.has('bloom') || d.name === 'cloudberry'), d.name + ' has roots, stem slices and blooms');
@@ -29,5 +29,5 @@ test('the garden view lays every plant kind along one scrollable soil strip', ()
   const canvas = { width: 188, height: 406, getContext: () => new Proxy({}, { get: () => () => {} }) };
   const info = g.drawGardenScene(canvas, { scroll: 0, t: 0 });
   assert.equal(info.ready, false, 'nothing is drawn before the layers load');
-  assert.equal(info.max, 30 * 2 + 19 * 46 - 188, 'nineteen plants, one per spacing, scroll to the last');
+  assert.equal(info.max, 30 * 2 + 24 * 46 - 188, 'twenty-four spacings, scroll to the last plant');
 });

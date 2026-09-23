@@ -7,7 +7,8 @@ function ground(g, x) { g.P.x = x; g.P.y = g.surfaceY(x); g.P.vx = g.P.vy = 0; g
 
 test('a Bulwark finds the old shovel lying in a garden and picks it up', () => {
   let g = null;
-  for (let seed = 1; seed < 200 && !g; seed++) { const t = bulwark(); t.rogueRun.seed = seed; t.wonders.world = 0; t.updateWonders(0); if (t.wonders.sh) g = t; }
+  const t = bulwark();
+  for (let seed = 1; seed < 200 && !g; seed++) { t.rogueRun.seed = seed; t.wonderRun = null; t.updateWonders(0); if (t.wonders.sh) g = t; }
   assert.ok(g, 'some run lays a shovel');
   ground(g, g.wonders.sh); g.updateWonders(.1);
   assert.equal(g.rogueRun.shovel, true); assert.equal(g.wonders.sh, 0); assert.equal(g.rogueMeta.wonders.shovel, 1);

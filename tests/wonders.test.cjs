@@ -13,8 +13,9 @@ const found = (g, id) => (g.rogueMeta.wonders || {})[id] | 0;
 test('every run rolls its own wonders: seeded, repeatable, none in the first garden or on a boss night', () => {
   const seen = { pz: new Set(), en: new Set(), gate: new Set() }, a = [], b = [];
   let ultra = 0, gardens = 0;
+  const g = fresh(), roll = (seed, w) => { g.rogueRun.seed = seed; g.rogueRun.world = w; g.wonderRun = null; g.updateWonders(0); return g.wonders; };
   for (let seed = 1; seed <= 600; seed++) for (const w of [1, 2, 3, 4, 5, 7, 12, 18]) {
-    const g = fresh(seed, w), s = g.wonders;
+    const s = roll(seed, w);
     if (w === 1 || w % 5 === 0) { assert.equal(s.pz, ''); assert.equal(s.en, ''); assert.equal(s.gate, ''); continue; }
     gardens++; if (['well', 'crown', 'clover'].includes(s.pz)) ultra++;
     seen.pz.add(s.pz); seen.en.add(s.en); seen.gate.add(s.gate);
@@ -26,7 +27,7 @@ test('every run rolls its own wonders: seeded, repeatable, none in the first gar
   for (const id of ['grove', 'vault', 'meadow', 'cavern', 'rush']) assert.ok(seen.gate.has(id), id);
   assert.ok(ultra / gardens > .02 && ultra / gardens < .07, String(ultra / gardens));
   assert.notDeepEqual(a, b, 'two runs meet different wonders');
-  const again = [2, 3, 4, 7, 12, 18].map(w => { const s = fresh(11, w).wonders; return [s.pz, s.en, s.gate, s.pzx]; });
+  const again = [2, 3, 4, 7, 12, 18].map(w => { const s = roll(11, w); return [s.pz, s.en, s.gate, s.pzx]; });
   assert.deepEqual(again, a, 'the same seed meets the same wonders');
 });
 

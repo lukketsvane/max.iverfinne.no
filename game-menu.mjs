@@ -113,6 +113,11 @@ const PLANT_NOTES = [
   ['Gold bud', 'Teal leaves and bright gold buds. The bees find it before anyone else.'],
   ['Moonbell', 'A soft blue flower that opens after dusk. Fireflies gather around its stem and it thrives by calm water.'],
   ['Cloudberry', 'A low mountain berry. Each berry swells from a white bud to glowing amber.'],
+  ['Alder Cone', 'A slim alder shoot. Red leaves turn first, and small cones ripen along the stem.'],
+  ['Nightberry', 'Red leaves, white flowers, and berries that darken from red to black overnight.'],
+  ['Dusk Bell', 'Violet bells hang from arching stalks and open only after the sun is down.'],
+  ['Reindeer Moss', 'A pale lichen tower. It grows slowly, and it heals whatever grows beside it.'],
+  ['Ink Fan', 'Dark fan leaves with pale veins, and hard red berries that prick a biting pest.'],
 ];
 const FEATURE_TEXT = {
   water: 'Keeps its neighbours watered.', grow: 'Its neighbours grow faster.', chill: 'Pests near it slow down.',
