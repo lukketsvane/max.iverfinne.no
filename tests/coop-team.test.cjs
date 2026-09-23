@@ -108,3 +108,18 @@ test('a promoted host takes input from teammates whose sessions it never saw and
   assert.deepEqual(departs,['late']);assert.equal(s.loadouts.late,undefined,'a player who left is not rejoined by the next roster poll');
   await s.leave();
 });
+
+test('a teammate who rejoins, or returns after the garden moved on, starts where the host placed them',()=>{
+  const {games,sync,send}=team(),host=games[0].game;
+  host.P.x+=300;host.P.y=host.surfaceY(host.P.x);host.coopDepart(ids[1]);sync();
+  const back=loadGame(),pending=[];
+  back.game.beginCoop({host:false,user:{id:ids[1]},room:games[1].network.room,action(type,data={}){pending.push({id:pending.length+1,type,...data});return true;},tick(){},fail(reason){throw Error(reason);}});
+  assert.equal(host.coopJoin(ids[1],{classId:'mech'}),true);back.game.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
+  const input=(h,id)=>{games[0].advance(100);host.coopInput(id,{avatar:JSON.parse(JSON.stringify(h.coopAvatar())),actions:[]});return host.coop.members[id].avatar.x;};
+  back.game.P.x+=4;assert.equal(input(back.game,ids[1]),back.game.P.x,'a rejoined player is not stranded at the stage start');
+  const away=games[2].game,member=host.coop.members[ids[2]];
+  games[0].advance(11000);host.coopFrame();assert.equal(member.left,true);
+  host.enterLevel(2);sync();input(away,ids[2]);sync();
+  assert.ok(Math.abs(away.P.x-host.P.x)<60,'a player back from the background lands beside the host in the new garden');
+  away.P.x+=4;assert.equal(input(away,ids[2]),away.P.x);
+});
