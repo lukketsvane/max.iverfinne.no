@@ -1,0 +1,21 @@
+{
+  "schema": "max-rats/1",
+  "kind": 8,
+  "variants": {
+    "common": "common/atlas.json",
+    "black": "black/atlas.json",
+    "albino": "albino/atlas.json",
+    "plague": "plague/atlas.json"
+  },
+  "sourcePoses": 38,
+  "isolatedFrames": 156,
+  "cell": [
+    48,
+    32
+  ],
+  "anchor": [
+    28,
+    28
+  ],
+  "footOffset": 8
+}
