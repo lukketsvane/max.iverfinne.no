@@ -9,7 +9,7 @@ const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
   .replace('/* MAX_RAT_ENEMIES */', fs.readFileSync(path.join(__dirname, '../rat-enemies.inc.js'), 'utf8'));
 const stateNames = [
   'bossSeen', 'parts',
-  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'gardenStats',
+  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedDust', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
