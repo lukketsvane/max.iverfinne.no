@@ -151,6 +151,16 @@ test('Moon Moth healing can be interrupted and milestone reinforcements respect 
   boss.hp=boss.maxHp*.6;g.updateEnemyRole(boss,.01);assert.equal(g.floatKrek.length,24);assert.equal(boss.phase,2);
   for(let i=0;i<100;i++)g.updateEnemyRole(boss,.01);assert.equal(g.floatKrek.length,24,'the same phase cannot summon repeatedly');
 });
+test('an own blast costs a plant three quarters of a bite on every difficulty, so it stays under an Easy bite',()=>{
+  const losses=['easy','medium','hard','insane'].map(difficulty=>{
+    const {game:g}=fresh();g.rogueRun.difficulty=difficulty;
+    const a=plot({x:g.P.x+60}),b=plot({x:g.P.x+140});g.gardenPlots=[a,b];g.floatKrek=[];
+    g.explode(a.x,g.surfaceY(a.x)-8,false);g.biteGarden({kind:0,queen:false,elite:false},b,0);
+    return [1-a.health,1-b.health];
+  });
+  losses.forEach(([blast,bite])=>assert.ok(Math.abs(blast/bite-.75)<1e-9,`${blast} vs ${bite}`));
+  assert.ok(losses[0][0]<losses[0][1]&&losses[0][0]>0);
+});
 test('enemy heals shrink with durability, so heal-to-damage ratios hold at every point of the clock',()=>{
   const ratios=[['medium',0],['medium',600],['insane',1200],['easy',300]].map(([difficulty,seconds])=>{
     const {game:g}=fresh(15);g.rogueRun.difficulty=difficulty;g.runElapsed=seconds;g.gardenPlots=[plot({x:g.P.x,moisture:.45})];
