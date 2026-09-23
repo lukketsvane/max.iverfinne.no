@@ -35,14 +35,24 @@ test('biome layers are native pixels: binary alpha and no more than 16 colours',
   }
 });
 
-test('basic pests draw as the biome bird only in Frostwing and Ember gardens; bosses and role enemies never do', () => {
+test('every basic pest draws as a bird: garden, Frostwing and Ember sets per pest kind; bosses never do', () => {
   const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
-  for (const im of [g.gardenBackdrop(11).bird, g.gardenBackdrop(16).bird]) { im.complete = true; im.naturalWidth = 80; }
-  const pest = { kind: 0, x: g.P.x, y: g.P.y - 20, ph: 1, vx: -10 };
-  g.rogueRun.world = 3; assert.equal(g.drawBirdPest(pest, 10, 10, 1), false);
-  g.rogueRun.world = 12; assert.equal(g.drawBirdPest(pest, 10, 10, 1), true);
-  g.rogueRun.world = 17; assert.equal(g.drawBirdPest({ ...pest, windup: .4, tell: .95 }, 10, 10, 1), true);
+  const src = (w, kind) => { g.rogueRun.world = w; return g.pestBird({ kind }).im.src.split('/').pop(); };
+  assert.deepEqual([0, 1, 2].map(k => src(3, k)), ['ember-crow.png', 'ash-plover.png', 'snow-finch.png']);
+  assert.deepEqual([0, 1, 2].map(k => src(12, k)), ['snow-finch.png', 'ptarmigan.png', 'snow-finch.png']);
+  assert.deepEqual([0, 1, 2].map(k => src(17, k)), ['ember-crow.png', 'ash-plover.png', 'ember-crow.png']);
+  for (const name of ['crow', 'finch', 'plover', 'ptarmigan']) { g.PEST_BIRDS[name].im.complete = true; g.PEST_BIRDS[name].im.naturalWidth = 80; }
+  g.rogueRun.world = 3;
+  const pest = { kind: 1, x: g.P.x, y: g.P.y - 20, ph: 1, vx: -10 };
+  assert.equal(g.drawBirdPest(pest, 10, 10, 1), true);
+  assert.equal(g.drawBirdPest({ ...pest, windup: .4, tell: .95 }, 10, 10, 1), true);
   assert.equal(g.drawBirdPest({ ...pest, boss: true }, 10, 10, 1), false);
-  assert.match(g.gardenBackdrop(12).bird.src, /snow-finch\.png$/);
-  assert.match(g.gardenBackdrop(18).bird.src, /ember-crow\.png$/);
+});
+
+test('garden tits draw as the songbird sheet: standing, hopping and flying rows', () => {
+  const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
+  assert.match(g.SONGBIRD.src, /songbird\.png$/);
+  assert.equal(g.drawSongbird({ st: 'ground', row: 0, frame: 3, face: 1 }, 20, 40), false, 'nothing drawn before the sheet loads');
+  g.SONGBIRD.complete = true; g.SONGBIRD.naturalWidth = 80;
+  for (const st of ['ground', 'takeoff', 'fly', 'descend']) assert.equal(g.drawSongbird({ st, row: 1, frame: 7, face: -1 }, 20, 40), true);
 });
