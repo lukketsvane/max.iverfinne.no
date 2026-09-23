@@ -109,7 +109,7 @@ Boon selection is a live overlay. Never restore the old pause/wait-for-team beha
 Music and effects are separate. Settings uses discrete steps 75 / 50 / 25 / off.
 
 - `soundtrack.mjs`: streamed music and music gain.
-- gameplay audio contexts: effects gain.
+- `effectsAudio()`: the one effects context and effects gain. It resumes on focus, pageshow, visibility and the next touch, including the iOS `interrupted` state, and a closed context is rebuilt on the next touch.
 
 Do not collapse them back into one `soundEnabled` flag.
 

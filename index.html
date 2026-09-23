@@ -1852,8 +1852,7 @@ function setBlastHud(){
 function blastTone(chain){
   if(!effectsEnabled)return;
   try{
-    var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-    if(!blastTone.ac)blastTone.ac=new AC();var ac=blastTone.ac;if(ac.state==='suspended')ac.resume();
+    var ac=effectsAudio();if(!ac)return;
     var now=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
     o.type='square';o.frequency.setValueAtTime(115+chain*18,now);o.frequency.exponentialRampToValueAtTime(44,now+.11);
     g.gain.setValueAtTime(.055*effectsVolume,now);g.gain.exponentialRampToValueAtTime(.0001,now+.13);o.connect(g);g.connect(ac.destination);o.start(now);o.stop(now+.14);
@@ -2289,8 +2288,7 @@ function playerIsCalm(){return P.grounded&&Math.abs(P.vx)<7&&worldMind.still>.65
 function socialTone(kind){
   if(!effectsEnabled)return;
   try{
-    var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-    if(!socialTone.ac)return;var ac=socialTone.ac;if(ac.state==='suspended')ac.resume();
+    var ac=effectsAudio();if(!ac)return;
     var o=ac.createOscillator(),g=ac.createGain(),now=ac.currentTime;
     o.type=kind==='crow'?'square':'sine';
     var f=kind==='crow'?330:(kind==='water'?610:(kind==='call'?520:(kind==='gift'?880:780)));
@@ -3683,7 +3681,7 @@ function levelOriginX(n){
 function chime(freqs,gap,vol){
   if(!effectsEnabled)return;
   try{
-    var ac=socialTone.ac;if(!ac)return;if(ac.state==='suspended')ac.resume();
+    var ac=effectsAudio();if(!ac)return;
     var now=ac.currentTime;
     for(var i=0;i<freqs.length;i++){
       var o=ac.createOscillator(),g=ac.createGain(),t0=now+i*gap;
@@ -4651,7 +4649,7 @@ effectsEnabled=effectsVolume>0;
 function setEffectsVolume(value){
   effectsVolume=Math.max(0,Math.min(1,Number(value)||0));effectsEnabled=effectsVolume>0;
   try{localStorage.setItem('max-effects-volume',String(effectsVolume));}catch(e){}
-  [socialTone.ac,blastTone.ac].forEach(function(ac){if(ac){if(effectsEnabled)ac.resume();else ac.suspend();}});
+  if(effectsEnabled)unlockAudio();else if(socialTone.ac&&socialTone.ac.state==='running')socialTone.ac.suspend();
 }
 function setMusicVolume(value){
   musicVolume=Math.max(0,Math.min(1,Number(value)||0));
@@ -4662,10 +4660,13 @@ function unlockAudio() {
   if(!effectsEnabled)return;
   try {
     var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-    if (!socialTone.ac) socialTone.ac = new AC();
-    if (socialTone.ac.state === 'suspended') socialTone.ac.resume();
+    if (!socialTone.ac || socialTone.ac.state === 'closed') { socialTone.ac = new AC(); sfx.buf = null; }
+    effectsAudio();
   } catch (e) {}
 }
+function effectsAudio(){var ac=socialTone.ac;if(!effectsEnabled||!ac||ac.state==='closed')return null;if(ac.state!=='running')try{Promise.resolve(ac.resume()).catch(function(){});}catch(e){}return ac;}
+function wakeEffects(){if(!document.hidden&&socialTone.ac)unlockAudio();}
+document.addEventListener('visibilitychange',wakeEffects);window.addEventListener('pageshow',wakeEffects);window.addEventListener('focus',wakeEffects);
 
 
 /* ---------------------------------------------------------------- MAX · NIGHT GARDEN
@@ -5054,9 +5055,8 @@ function drawBooms() {
    falling thump; a swish for the throw; a soft poof for the feathers */
 function sfx(kind, dist) {
   if(!effectsEnabled)return;
-  var ac = socialTone.ac; if (!ac) return;
+  var ac = effectsAudio(); if (!ac) return;
   try {
-    if (ac.state === 'suspended') ac.resume();
     if (!sfx.buf) {
       var len = (ac.sampleRate * 1.2) | 0, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
       for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
