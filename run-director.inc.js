@@ -404,7 +404,7 @@ function updateEnemyRole(k,dt){
 function makeHollowCrown(){
   var k=makeKrek(1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x;
   safeEnemyPosition(k,x+80,surfaceY(x)-30);k.boss=true;k.finalBoss=true;k.bossId='hollow-crown';k.queen=true;k.raid=true;k.kind=7;
-  k.hp=k.maxHp=38+Math.max(0,coopSize()-1)*24+Math.floor(raidPressure()*1.2);
+  k.hp=k.maxHp=95+Math.max(0,coopSize()-1)*55+Math.floor(raidPressure()*3);
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;
   return k;
 }
@@ -413,7 +413,7 @@ function makeStageBoss(stage){
   var k=makeKrek(w%2?1:-1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x,offset=id==='mossback'?8:13;
   safeEnemyPosition(k,x+(w%2?1:-1)*90,surfaceY(x)-offset);
   k.boss=true;k.finalBoss=false;k.bossId=id;k.queen=false;k.raid=true;k.kind=7;
-  k.hp=k.maxHp=({5:15,10:23,15:31}[w])+Math.max(0,coopSize()-1)*({5:9,10:14,15:19}[w])+Math.floor(raidPressure());
+  k.hp=k.maxHp=({5:38,10:56,15:76}[w])+Math.max(0,coopSize()-1)*({5:20,10:30,15:40}[w])+Math.floor(raidPressure()*2);
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;k.attackT=0;k.attackDuration=.35;
   return k;
 }
@@ -424,12 +424,13 @@ function summonBossGuard(k,kind,index){
 }
 function updateStageBoss(k,dt){
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
-  if(phase>k.phase){k.phase=phase;for(var add=0;add<2;add++)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,add);}
+  if(phase>k.phase){k.phase=phase;for(var add=0;add<3;add++)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,add);}
+  k.life=(k.life||0)+dt;var rage=k.life>60?.6:1;
   k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
   if(k.attackT>0){
     var step=Math.min(dt,k.attackT);k.attackT=Math.max(0,k.attackT-dt);
     if(k.bossId==='mossback'){k.x+=k.chargeV*step;k.y=surfaceY(k.x)-8;k.vx=k.chargeV;}
-    if(!k.attackT){k.vx=k.vy=0;k.exposed=k.bossId==='mossback'?1.9:1.55;k.cool=3.1-(k.phase-1)*.22;}
+    if(!k.attackT){k.vx=k.vy=0;k.exposed=k.bossId==='mossback'?1.2:1;k.cool=(2.2-(k.phase-1)*.35)*rage;}
     return;
   }
   if(k.windup>0){
@@ -445,7 +446,8 @@ function updateStageBoss(k,dt){
   if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-52:52),surfaceY(anchor)-offset,dt,k.bossId==='moon-moth'?24:15);
   else k.vx=k.vy=0;
   if(k.cool>0)return;
-  k.attack++;k.tell=k.windup=k.bossId==='mossback'?1.3:1.2;
+  k.attack++;k.tell=k.windup=k.bossId==='mossback'?1:.95;
+  if(k.attack%4===0)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,k.attack);
   if(k.bossId==='mossback'){
     var dir=anchor<k.x?-1:1;k.face=dir;k.chargeV=dir*118;
     // Three distinct root markers leave spaces that a jump or higher route clears.
@@ -467,13 +469,14 @@ function updateHollowCrown(k,dt){
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
   if(phase>k.phase){
     k.phase=phase;
-    for(var i=0;i<phase;i++)summonBossGuard(k,phase===3?5:2,i);
+    for(var i=0;i<=phase;i++)summonBossGuard(k,phase===3?5:2,i);
   }
+  k.life=(k.life||0)+dt;var rage=k.life>60?.6:1;
   k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
   if(k.windup>0){
     k.vx=k.vy=0;
     k.windup=Math.max(0,k.windup-dt);
-    if(k.windup===0){k.exposed=1.8;k.cool=3.8-(k.phase-1)*.35;}
+    if(k.windup===0){k.exposed=1.2;k.cool=(2.6-(k.phase-1)*.4)*rage;}
     return;
   }
   k.cool-=dt;
@@ -481,7 +484,8 @@ function updateHollowCrown(k,dt){
   if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-42:42),surfaceY(anchor)-26,dt,12);
   else k.vx=k.vy=0;
   if(k.cool>0)return;
-  k.attack++;k.tell=1.4;k.windup=k.tell;
+  k.attack++;k.tell=1.15;k.windup=k.tell;
+  if(k.attack%4===0)summonBossGuard(k,5,k.attack);
   var count=k.phase,pattern=k.attack%3;
   if(pattern===0){
     var ordered=gardenPlots.filter(function(p){return !p.dead;}).slice().sort(function(a,b){return Math.abs(a.x-k.x)-Math.abs(b.x-k.x);});

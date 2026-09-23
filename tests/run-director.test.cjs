@@ -158,12 +158,12 @@ test('three ember and dew pickups unlock burning blasts and a watering dodge wit
 test('Hollow Crown warns, exposes itself after attacking, summons at phase thresholds and cannot be frightened away',()=>{
   const {game:g}=fresh();g.rogueRun.world=20;g.gardenPlots=[plot(),plot({x:30})];
   const boss=g.makeHollowCrown();g.floatKrek=[boss];boss.cool=0;
-  g.updateHollowCrown(boss,.01);assert.equal(boss.windup,1.4);assert.equal(g.runHazards.length,3);
-  g.staggerKrek(boss,10);assert.equal(boss.flee,0);assert.equal(boss.windup,1.4);
+  g.updateHollowCrown(boss,.01);assert.equal(boss.windup,1.15);assert.equal(g.runHazards.length,3);
+  g.staggerKrek(boss,10);assert.equal(boss.flee,0);assert.equal(boss.windup,1.15);
   const hp=boss.hp;g.damagePest(boss,1,boss.x);assert.equal(boss.hp,hp-1);
   g.updateHollowCrown(boss,1.5);assert.ok(boss.exposed>0);g.damagePest(boss,1,boss.x);assert.equal(boss.hp,hp-3);
-  boss.hp=boss.maxHp*.6;g.updateHollowCrown(boss,.01);assert.equal(boss.phase,2);assert.equal(g.floatKrek.length,3);
-  boss.hp=boss.maxHp*.3;g.updateHollowCrown(boss,.01);assert.equal(boss.phase,3);assert.equal(g.floatKrek.length,6);
+  boss.hp=boss.maxHp*.6;g.updateHollowCrown(boss,.01);assert.equal(boss.phase,2);assert.equal(g.floatKrek.length,4);
+  boss.hp=boss.maxHp*.3;g.updateHollowCrown(boss,.01);assert.equal(boss.phase,3);assert.equal(g.floatKrek.length,8);
   g.damagePest(boss,1000,boss.x);assert.equal(g.runWon,true);assert.equal(g.rogueRun.choice,null);
 });
 test('one steering thumb can perform two distinct upward strokes without lifting or accidentally tending',()=>{

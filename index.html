@@ -2985,6 +2985,13 @@ function drawBossWord(str,cx,y,s){
   var x0=Math.round(cx-(str.length*6-1)*s/2);
   for(var i=0;i<str.length;i++){var n=Math.max(0,Math.min(63,str.charCodeAt(i)-32));ctx.drawImage(BOSS_FONT,n%16*6,Math.floor(n/16)*8,5,7,x0+i*6*s,y,5*s,7*s);}
 }
+var safeBottomPx=null;
+function bossBarY(){
+  if(safeBottomPx==null)try{var d=document.createElement('div');d.style.cssText='position:fixed;bottom:0;left:0;width:0;height:0;padding-bottom:env(safe-area-inset-bottom);visibility:hidden;pointer-events:none';document.body.appendChild(d);safeBottomPx=parseFloat(getComputedStyle(d).paddingBottom)||0;document.body.removeChild(d);}catch(e){safeBottomPx=0;}
+  var r=cv.getBoundingClientRect(),limit=window.innerHeight-(safeBottomPx||0);
+  if(perkMenu&&perkMenu.style.display==='grid'&&perkMenu.getBoundingClientRect){var m=perkMenu.getBoundingClientRect();if(m.height)limit=Math.min(limit,m.top-4);}
+  return r.height>0?Math.min(IH-14,Math.floor((limit-r.top)*IH/r.height)-8):IH-14;
+}
 function drawBossBar(dt){
   var k=runActive&&!rogueRun.ended?liveBoss():null;
   if(!k){
@@ -2998,7 +3005,7 @@ function drawBossBar(dt){
   bossSeen.x=k.x;bossSeen.y=k.y;
   var f=Math.max(0,Math.min(1,k.hp/k.maxHp)),name=BOSS_NAMES[k.bossId]||'BOSS';
   bossSeen.t=Math.max(0,bossSeen.t-dt);bossSeen.ghost=Math.max(f,bossSeen.ghost-dt*.4);
-  var w=Math.min(IW-16,140),x=Math.round((IW-w)/2),y=IH-14;
+  var w=Math.min(IW-16,140),x=Math.round((IW-w)/2),y=bossBarY();
   ctx.fillStyle='rgba(4,8,10,.8)';ctx.fillRect(x-1,y-1,w+2,5);
   ctx.fillStyle='#8c2f22';ctx.fillRect(x,y,Math.round(w*bossSeen.ghost),3);
   ctx.fillStyle=k.flash>0?'#ece8dc':k.exposed>0?'#89c5cd':'#e0b54f';ctx.fillRect(x,y,Math.round(w*f),3);
