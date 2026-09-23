@@ -42,13 +42,13 @@ test('one established plant starts a larger finite wave and each active second r
   g.runElapsed=1e7;assert.equal(g.raidBudget(1000),36,'a long run still has a finite per-wave budget');
 });
 
-test('specialists appear in early deterministic mixed waves and repeated stage themes retain different compositions',()=>{
+test('specialists appear from garden six in deterministic mixed waves and repeated stage themes retain different compositions',()=>{
   const {game:g}=fresh();
-  for(const [stage,role] of [[2,3],[3,4],[4,5],[6,6]]){
+  for(const [stage,role] of [[6,3],[7,4],[8,5],[9,6]]){
     g.enterLevel(stage);g.gardenWave=1;assert.equal(g.waveEnemyKind(2),role,`garden ${stage} introduces role ${role}`);
   }
   const signatures=[];
-  for(const stage of [6,7,8,9,10]){
+  for(const stage of [11,12,13,14,15]){
     g.enterLevel(stage);g.gardenWave=1;
     const kinds=Array.from({length:12},(_,i)=>g.waveEnemyKind(i));
     assert.ok(new Set(kinds).size>=6);signatures.push(kinds.join(','));

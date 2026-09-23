@@ -111,7 +111,14 @@ const PLANT_NOTES = [
   ['Blue poppy', 'Deep blue poppies on a tall dark stem. Rare, and hard to keep alive.'],
   ['Gold bud', 'Teal leaves and bright gold buds. The bees find it before anyone else.'],
   ['Moonbell', 'A soft blue flower that opens after dusk. Fireflies gather around its stem and it thrives by calm water.'],
+  ['Cloudberry', 'A low mountain berry. Each berry swells from a white bud to glowing amber.'],
 ];
+const FEATURE_TEXT = {
+  water: 'Keeps its neighbours watered.', grow: 'Its neighbours grow faster.', chill: 'Pests near it slow down.',
+  shelter: 'Its neighbours take less damage.', thorns: 'Pests that bite it get pricked.', heal: 'Its neighbours slowly heal.',
+  bind: 'Pests that bite it get stuck.', seeds: 'Gives an extra seed at harvest.', berries: 'Ripe berries drop and burst on pests.',
+};
+const RARITY = ['COMMON', 'UNCOMMON', 'RARE', 'SPECIAL'];
 
 const scene = { scroll: 0, vel: 0, target: null, max: 0, drag: null, t0: 0, last: 0, drawn: 0, raf: 0, focus: -1, dim: 0, info: null, kinds: [], on: false };
 let inGarden = false;
@@ -173,7 +180,8 @@ function focusPlant(i) {
   gardenCanvas.style.transformOrigin = Math.round(gardenCanvas.width * .3 * size.px) + 'px ' + Math.round((info.ground - 24) * size.px) + 'px';
   gardenCanvas.style.transform = 'scale(2)';
   gardenNote.replaceChildren();
-  gardenNote.append(pixelText(el('h3'), k.found ? note[0].toUpperCase() : '???', 3, 1), el('hr'), el('p', k.found ? note[1] : 'Grow one to full size to learn its name.'));
+  gardenNote.append(pixelText(el('h3'), k.found ? note[0].toUpperCase() : '???', 3, 1), pixelText(el('p', undefined, 'max-garden-rarity'), RARITY[(k.tier || 1) - 1] || '', 2, 1), el('hr'), el('p', k.found ? note[1] : 'Grow one to full size to learn its name.'));
+  if (k.found && FEATURE_TEXT[k.feature]) gardenNote.append(el('hr'), el('p', FEATURE_TEXT[k.feature], 'max-garden-feature'));
   overlay.dataset.focus = 'plant';
 }
 function unfocusPlant() {

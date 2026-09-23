@@ -228,3 +228,5 @@
 .max-menu .max-garden-note p{margin:0;font-size:13px;line-height:1.55;color:#e4e0c8}
 .max-menu[data-focus="plant"] .max-garden-arrow,.max-menu[data-focus="plant"] .max-garden-hint{opacity:0;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.max-garden-scene,.max-home-brand,.max-home-nav{transition:opacity .3s ease!important;transform:none!important}}
+.max-menu .max-garden-note .max-garden-rarity{margin:-4px 0 0;opacity:.55}
+.max-menu .max-garden-note .max-garden-feature{color:#e8cf7a}

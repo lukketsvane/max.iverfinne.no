@@ -12,11 +12,11 @@ function step(g,seconds,hz=120){for(let i=0;i<Math.round(seconds*hz);i++){g.upda
 test('rats stay out of the early run and unlock later according to difficulty',()=>{
  const {g}=fresh();assert.equal(g.makeKrek(1,false,8).kind,8);
  g.resetRogueRun('test',{difficulty:'medium'});
- for(let level=1;level<8;level++){g.rogueRun.world=level;g.gardenWave=1;const kinds=Array.from({length:48},(_,i)=>g.waveEnemyKind(i));assert.ok(!kinds.includes(8),'medium garden '+level+' stays rat-free');}
- g.rogueRun.world=8;assert.ok(Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'medium rats begin at garden 8');
+ for(let level=1;level<10;level++){g.rogueRun.world=level;g.gardenWave=1;const kinds=Array.from({length:48},(_,i)=>g.waveEnemyKind(i));assert.ok(!kinds.includes(8),'medium garden '+level+' stays rat-free');}
+ g.rogueRun.world=10;assert.ok(Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'medium rats begin at garden 10');
  g.resetRogueRun('test',{difficulty:'easy'});
- for(let level=1;level<10;level++){g.rogueRun.world=level;g.gardenWave=1;assert.ok(!Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'easy garden '+level+' stays rat-free');}
- g.rogueRun.world=10;assert.ok(Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'easy rats begin at garden 10');
+ for(let level=1;level<12;level++){g.rogueRun.world=level;g.gardenWave=1;assert.ok(!Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'easy garden '+level+' stays rat-free');}
+ g.rogueRun.world=12;assert.ok(Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'easy rats begin at garden 12');
 });
 test('four rat roles have distinct speed/damage/durability and invalid variants are safe',()=>{
  const {g}=fresh();const common=g.makeRat(1,false,'common'),fast=g.makeRat(1,false,'black'),brute=g.makeRat(1,false,'albino'),plague=g.makeRat(1,false,'plague');
