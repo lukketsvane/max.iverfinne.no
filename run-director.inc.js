@@ -201,6 +201,7 @@ function damagePest(k,amount,x,build){
   if(k.hp<=0){var i=floatKrek.indexOf(k);if(i>=0)floatKrek.splice(i,1);burstKrek(k);return true;}
   return false;
 }
+function healPest(k,amount){if(k)k.hp=Math.min(k.maxHp,k.hp+amount/runDurabilityScale());}
 function addRunHazard(type,x,r,tell,power,sourceX,sourceY,targetY){
   if(runHazards.length>=32)return;
   var hazard={id:++hazardId,type:type,x:x,y:targetY==null?surfaceY(x):targetY,r:r,tell:tell,total:tell,life:.45,hit:false,power:power==null?1:power,sx:sourceX==null?x:sourceX,sy:sourceY==null?surfaceY(x)-40:sourceY};
@@ -326,7 +327,7 @@ function updateEnemyRole(k,dt){
       k.healX=friend.x;k.healY=friend.y;
       if(moveEnemyTo(k,friend.x-k.face*20,friend.y-10,dt,17)<34){
         if(k.windup<=0){k.windup=.9;k.tell=.9;}
-        else {k.windup-=dt;if(k.windup<=0){friend.hp=Math.min(friend.maxHp,friend.hp+.55);friend.flash=.3;k.bite=.9;}}
+        else {k.windup-=dt;if(k.windup<=0){healPest(friend,.55);friend.flash=.3;k.bite=.9;}}
         if(k.bite>0)k.windup=0;
         k.healing=true;
       }
@@ -373,7 +374,7 @@ function updateEnemyRole(k,dt){
     if(k.draining){
       var drain=dt*.055*runDamageScale();driest.moisture=Math.max(0,driest.moisture-drain);
       if(driest.moisture<.08)driest.health=clamp01(driest.health-dt*.008*runDamageScale());
-      k.hp=Math.min(k.maxHp,k.hp+dt*.05);k.bite=.3;
+      healPest(k,dt*.05);k.bite=.3;
     }
     return true;
   }
@@ -434,7 +435,7 @@ function updateStageBoss(k,dt){
   if(k.windup>0){
     k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
     if(!k.windup){
-      if(k.healing){var ally=floatKrek.find(function(q){return q.ph===k.healTarget&&q!==k&&!q.boss;});if(ally)ally.hp=Math.min(ally.maxHp,ally.hp+1.4);k.healing=false;}
+      if(k.healing){healPest(floatKrek.find(function(q){return q.ph===k.healTarget&&q!==k&&!q.boss;}),1.4);k.healing=false;}
       k.attackDuration=k.bossId==='mossback'?.42:.35;k.attackT=k.attackDuration;
     }
     return;
