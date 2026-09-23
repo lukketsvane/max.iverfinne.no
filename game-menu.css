@@ -199,8 +199,35 @@
 .max-menu .max-role-choice:disabled .max-role-ability{color:#71807c}
 .max-difficulty-picker[data-locked="true"]{opacity:.72}
 .max-difficulty-picker[data-locked="true"] .max-difficulty-choice:disabled{opacity:.52;cursor:default}
-.max-menu .max-collection{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-.max-menu .max-collection-cell{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
-.max-menu .max-collection-cell canvas{width:64px;height:72px;image-rendering:pixelated}
-.max-menu .max-collection-cell.locked figcaption{opacity:.5}
-.max-menu .max-collection-count{margin:4px 0 0;display:flex;justify-content:center}
+.max-garden-scene{position:fixed;inset:0;z-index:-1;width:100%;height:100%;image-rendering:pixelated;opacity:0;transform:scale(1.08);transform-origin:50% 60%;transition:opacity .6s ease,transform 1s cubic-bezier(.22,.7,.2,1),transform-origin 0s;pointer-events:none;touch-action:none}
+.max-menu[data-view="garden"]{overflow:hidden}
+.max-menu[data-view="garden"] .max-garden-scene{opacity:1;transform:none;pointer-events:auto}
+.max-menu::before,.max-menu .max-menu-scene{transition:opacity .6s ease,transform 1.1s cubic-bezier(.16,.8,.24,1)}
+.max-menu[data-view="garden"]::before{opacity:0}
+.max-menu[data-view="garden"] .max-menu-scene{opacity:0;transform:scale(1.06)}
+.max-home-brand,.max-home-nav,.max-menu .max-home-note,.max-menu .max-home-players{transition:transform .55s cubic-bezier(.5,0,.2,1),opacity .4s ease}
+.max-menu[data-view="garden"] .max-menu-card{pointer-events:none}
+.max-menu[data-view="garden"] .max-home-brand{transform:translateY(-80px);opacity:0}
+.max-menu[data-view="garden"] .max-home-nav{transform:translateY(110px);opacity:0}
+.max-menu[data-view="garden"] .max-home-note,.max-menu[data-view="garden"] .max-home-players{opacity:0}
+.max-garden-hud{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .3s ease}
+.max-menu[data-view="garden"] .max-garden-hud{opacity:1;transition:opacity .5s ease .4s}
+.max-menu[data-view="garden"] .max-garden-hud>*{pointer-events:auto}
+.max-menu .max-garden-title{position:absolute;left:max(22px,env(safe-area-inset-left));top:max(28px,calc(env(safe-area-inset-top) + 16px));width:auto;min-height:0;margin:0;padding:8px 0;background:none;border:0;box-shadow:none}
+.max-menu .max-garden-count{position:absolute;right:max(22px,env(safe-area-inset-right));top:max(36px,calc(env(safe-area-inset-top) + 24px));margin:0}
+.max-menu .max-garden-arrow{position:absolute;top:calc(40% - 24px);width:40px;height:48px;min-height:0;margin:0;padding:12px 10px;background:none;border:0;box-shadow:none;color:var(--ink);opacity:.85}
+.max-menu .max-garden-prev{left:max(2px,env(safe-area-inset-left))}
+.max-menu .max-garden-next{right:max(2px,env(safe-area-inset-right))}
+.max-menu .max-garden-arrow svg{width:100%;height:100%;fill:currentColor}
+.max-menu .max-garden-arrow[hidden],.max-menu .max-garden-hint[hidden]{display:none}
+.max-menu .max-garden-hint{position:absolute;left:0;right:0;bottom:max(28px,calc(env(safe-area-inset-bottom) + 16px));margin:0;display:flex;justify-content:center;opacity:.6;transition:opacity 1.2s ease;pointer-events:none}
+.max-menu .max-garden-hint.gone{opacity:0}
+@media (prefers-reduced-motion:reduce){.max-garden-scene,.max-menu .max-menu-scene,.max-home-brand,.max-home-nav{transition:opacity .3s ease!important;transform:none!important}}
+@media(max-width:480px){.max-menu .max-garden-count{left:max(22px,env(safe-area-inset-left));right:auto;top:max(70px,calc(env(safe-area-inset-top) + 58px));opacity:.7}}
+.max-menu .max-garden-note{position:absolute;left:52%;right:max(20px,env(safe-area-inset-right));top:26%;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .5s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.max-menu[data-focus="plant"] .max-garden-note{opacity:1;transform:none;transition-delay:.45s}
+.max-menu .max-garden-note h3{margin:0 0 10px}
+.max-menu .max-garden-note hr{border:0;border-top:1px solid #eee9ce40;margin:10px 0}
+.max-menu .max-garden-note p{margin:0;font-size:13px;line-height:1.55;color:#e4e0c8}
+.max-menu .max-garden-note .max-garden-times{opacity:.55}
+.max-menu[data-focus="plant"] .max-garden-arrow,.max-menu[data-focus="plant"] .max-garden-hint{opacity:0;pointer-events:none}

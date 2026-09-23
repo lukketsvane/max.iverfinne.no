@@ -33,6 +33,7 @@ cpSync(join(root, 'icons'), join(output, 'icons'), { recursive: true });
 cpSync(join(root, 'assets/biomes-v1'), join(output, 'assets/biomes-v1'), { recursive: true });
 cpSync(join(root, 'assets/boon-symbols-v1'), join(output, 'assets/boon-symbols-v1'), { recursive: true });
 cpSync(join(root, 'assets/plants-v1'), join(output, 'assets/plants-v1'), { recursive: true });
+cpSync(join(root, 'assets/garden-view-v1'), join(output, 'assets/garden-view-v1'), { recursive: true });
 copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
 for (const [pack, ids, sheets] of [
   ['max-skins-v1', ['moss', 'tide', 'ember', 'moon'], ['atlas.json', 'main.png', 'interaction.png']],

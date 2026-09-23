@@ -127,7 +127,7 @@ Backgrounding may suspend JavaScript because iOS controls process lifetime. The 
 The project deliberately remains a small static game rather than a framework app.
 
 - `index.html` — main simulation, renderer, controls and embedded original game art.
-- `game-menu.mjs` / `game-menu.css` — menu, character/difficulty selection, settings, accounts and shared-play entry.
+- `game-menu.mjs` / `game-menu.css` — menu, character/difficulty selection, settings, accounts, shared-play entry and the garden view (pinch out on the menu, scroll the found plants, tap one for its note, pinch in to return).
 - `coop-session.mjs` — Supabase room/session/reconnect/authority transport.
 - `coop-transport.mjs` — encoded realtime frame transport and limits.
 - `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
