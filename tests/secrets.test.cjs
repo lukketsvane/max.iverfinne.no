@@ -125,3 +125,15 @@ test('about one snow garden in three hangs an aurora over the mountains', () => 
   const w = garden(g, 'aurora'); assert.ok(g.gardenBackdrop(w), 'it is a snow garden');
   assert.equal(g.secretEvent(), 'aurora'); g.drawSecretSky(3, 220); g.drawSecretBanner(8);
 });
+
+test('a dawn chorus gathers nine blue tits; an ordinary night keeps the usual few', () => {
+  const tits = g => g.smallFauna.filter(a => a.kind === 'tit').length;
+  const g = fresh().game; garden(g, 'chorus');
+  assert.deepEqual(g.secretPop({ crow: 3, tit: 4, bug: 3 }), { crow: 3, tit: 9, bug: 3 });
+  for (let i = 0; i < 12; i++) g.rebalanceEcology(3);
+  assert.equal(tits(g), 9); g.drawSecretSky(4, 220);
+  const plain = fresh().game; garden(plain, 'moon');
+  assert.deepEqual(plain.secretPop({ crow: 3, tit: 4, bug: 3 }), { crow: 3, tit: 4, bug: 3 });
+  for (let i = 0; i < 12; i++) plain.rebalanceEcology(3);
+  assert.ok(tits(plain) <= 4);
+});
