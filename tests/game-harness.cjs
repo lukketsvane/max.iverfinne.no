@@ -37,7 +37,7 @@ const functionNames = [
   'runHudBoons', 'runHudIconPosition', 'drawTinyBoon', 'levelTallyLayout', 'drawRunHud',
   'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
   'secretHash', 'secretEventFor', 'secretEvent', 'updateSecrets', 'drawSecretBanner', 'drawSecretSky', 'drawSecretGround', 'drawSecretAir',
-  'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog',
+  'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog', 'secretDay', 'drawSecretDay',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +

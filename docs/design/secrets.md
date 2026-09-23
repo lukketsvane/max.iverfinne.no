@@ -30,3 +30,12 @@ About one garden in eight (every meteor night), a star crosses the upper sky bet
 | Secret spot | One patch of ground per garden, 70-200 px from where the team arrives, twinkles faintly every few seconds. Stand still on it for 3 s. | A swirl of fireflies and two seeds, once per garden. |
 | Hedgehog | In about three gardens in ten, 30-70 s in, a hedgehog settles under a grown plant for 20 s. Keep that plant at 30% water or more. | Two seeds when it trundles off. A dry or fallen plant sends it away with nothing. |
 | Owl | Play between 03:00 and 03:59 on the device clock. | A soft hoot-hoo and two amber eyes in the dark, about once a minute. Local to each player. |
+
+## Device-date decorations (local, never balance)
+
+| Date | Decoration |
+| --- | --- |
+| 24-26 December | Gentle snowfall and a twinkling star on the exit plant, or on the tallest plant before the garden is cleared. |
+| 31 October | Two jack-o'-lanterns (the existing pumpkin art) flank the landing spot. |
+| 23 June | A sankthans bonfire with rising sparks beside the landing spot. |
+| 17 May | A tiny Norwegian flag on every grown garden plant, up to twelve. |
