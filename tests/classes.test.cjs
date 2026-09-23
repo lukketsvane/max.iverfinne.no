@@ -148,9 +148,9 @@ test('the host fixes four independent classes and skins, with owned rovers and n
 test('co-op boon rounds use each player’s class and reject forged non-Mech robot choices', () => {
   const { players, sync } = party(), host = players[0].game;
   const choose = (member, boon) => host.coopInput(member.id, {
-    actions: [{ id: member.ack + 1, type: 'boon', boon, round: host.coop.round }],
+    actions: [{ id: member.ack + 1, type: 'boon', boon, round: member.round }],
   });
-  host.grantRogueXP(host.rogueRun.next); assert.equal(host.coop.choosing, true);
+  host.grantRogueXP(host.rogueRun.next);
   for (const member of Object.values(host.coop.members)) {
     assert.equal(member.choices.length, 3);
     assert.ok(member.choices.every(id => builds.available(member.perks, id, member.classId)));
@@ -168,7 +168,7 @@ test('co-op boon rounds use each player’s class and reject forged non-Mech rob
     if (i) assert.ok(player.game.rogueRun.choice.every(q => q.id !== 'robot' && q.id !== 'recycle'));
   });
   for (const member of Object.values(host.coop.members)) choose(member, member.choices[0]);
-  assert.equal(host.coop.choosing, false, 'all four classes can complete the same boon round');
+  assert.ok(Object.values(host.coop.members).every(m => !m.choices.length), 'all four classes can complete the same boon round');
 });
 
 test('host-authoritative care, guard and dodge use the acting guest’s class, not the host’s', () => {

@@ -24,9 +24,9 @@ test('co-op offers respect each class and reject a forged non-Mech robot choice'
     if(i)assert.ok(h.game.rogueRun.choice.every(p=>!['robot','recycle'].includes(p.id)));
   });
   const moss=host.coop.members[ids[1]],allowed=moss.choices[0];moss.choices=['robot'];
-  send(1,[{id:1,type:'boon',world:1,round:host.coop.round,boon:'robot'}]);
+  send(1,[{id:1,type:'boon',world:1,round:moss.round,boon:'robot'}]);
   assert.equal(moss.perks.robot,0);assert.equal(host.ensureCompanion(moss),null);
-  moss.choices=[allowed];send(1,[{id:2,type:'boon',world:1,round:host.coop.round,boon:allowed}]);
+  moss.choices=[allowed];send(1,[{id:2,type:'boon',world:1,round:moss.round,boon:allowed}]);
   assert.equal(moss.perks[allowed],1);
 });
 

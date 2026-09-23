@@ -102,7 +102,7 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 
 A boon is not done merely because it appears in the menu. Each must materially affect the live simulation and have a regression test.
 
-Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior.
+Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior. In co-op every team level adds one pick to each player's own queue (`owed`); a player works through it alone and nobody waits for anyone's pick.
 
 ### Co-op boon owners
 

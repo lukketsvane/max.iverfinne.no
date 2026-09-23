@@ -1,6 +1,6 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const {loadGame}=require('./game-harness.cjs');
+const {loadGame,plot}=require('./game-harness.cjs');
 const ids=[1,2,3,4].map(i=>`${i}`.repeat(8)+'-'+`${i}`.repeat(4)+'-4'+`${i}`.repeat(3)+'-8'+`${i}`.repeat(3)+'-'+`${i}`.repeat(12));
 function team(){
   const room={id:'room',host:ids[0],members:ids.map((id,i)=>({id,slot:i+1,ready:true}))};
@@ -36,4 +36,26 @@ test('seed spots near the host roll with the host’s Golden seeds, not a teamma
   let b=10;while(!(roll(b,0)===1&&roll(b,5)===2))b++;
   host.P.x=b*126+60;host.P.y=host.surfaceY(host.P.x);far.perks.luck=5;far.avatar.x=host.P.x+5000;host.seedPickups=[];games[0].tick(16);
   assert.equal(host.seedPickups.find(q=>q.b===b).amount,1);
+});
+
+test('a teammate who has not picked never holds back anyone else’s next boon',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+  host.grantRogueXP(host.rogueRun.next);sync();
+  games.forEach(h=>assert.equal(h.game.rogueRun.choice.length,3));
+  host.chooseRoguePerk(host.rogueRun.choice[0].id);
+  host.grantRogueXP(host.rogueRun.next);sync();
+  assert.equal(host.rogueRun.level,3);assert.equal(host.rogueRun.choice.length,3,'the host’s next boon arrives while teammates still choose');
+  const first=guest.rogueRun.choice[0].id;guest.chooseRoguePerk(first);send(1,games[1].pending);sync();
+  assert.equal(host.coop.members[ids[1]].perks[first],1);
+  assert.equal(guest.rogueRun.choice.length,3,'a second earned boon waits in that player’s own queue');
+  assert.equal(host.runIsPaused(),false);
+});
+
+test('a boon earned in the middle of a teammate’s harvest never lends them the host’s build',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game,x=host.coop.members[ids[1]].avatar.x;
+  host.rogueRun.perks.bloom=1;host.rogueRun.xp=host.rogueRun.next-1;
+  const near=plot({x:x+20,health:.5,moisture:.5});host.gardenPlots=[plot({x,growth:2,moisture:.8,lastHarvestGrowth:0}),near];sync();
+  guest.crouchGardenAction();send(1,games[1].pending);
+  assert.equal(host.rogueRun.level,2,'fixture: the harvest levels the team');
+  assert.equal(near.health,.5,'the guest has no Bloom pulse');
 });

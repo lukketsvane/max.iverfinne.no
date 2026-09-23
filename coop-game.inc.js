@@ -14,7 +14,7 @@ function coopCleanAvatar(a){
 function beginCoop(network){
   var selection=network.loadouts&&network.loadouts[network.user.id]||network.room.members.find(function(m){return m.id===network.user.id;})||{};
   var hostSelection=network.loadouts&&network.loadouts[network.room.host]||selection;coop=null;resetRogueRun('NEW RUN',{classId:window.MaxClasses.clean(selection.classId||selection.class_id),skinId:window.MaxClasses.skin(selection.skinId||selection.skin_id||selection.skin),difficulty:hostSelection.difficulty||'medium'});companion=null;
-  coop={network:network,host:network.host,me:network.user.id,members:{},choosing:false,round:0,ui:'',world:1};
+  coop={network:network,host:network.host,me:network.user.id,members:{},ui:'',world:1};
   network.room.members.forEach(function(m){
     var x=levelOriginX(1)+(m.slot-1)*12,kit=network.loadouts&&network.loadouts[m.id]||m,classId=window.MaxClasses.clean(kit.classId||kit.class_id),skin=window.MaxClasses.skin(kit.skinId||kit.skin_id||kit.skin);
     coop.members[m.id]={id:m.id,slot:m.slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],ack:0,last:performance.now(),cool:0,dodgeUntil:0,skillUntil:0,braceUntil:0,braceX:0,airTop:null,landAt:0,
@@ -36,14 +36,14 @@ function coopJoin(id,kit){
 function coopRoster(room){
   if(!coop)return;
   var wasHost=coop.host;coop.host=room.host===coop.me;coop.network.room=room;
-  if(coop.host&&!wasHost){rogueRun.choice=null;if(perkMenu&&coop.choosing)coopShowChoices();}
+  if(coop.host&&!wasHost){Object.values(coop.members).forEach(coopNextChoice);coop.ui='';coopShowChoices();}
   if(!coop.host)return;
   room.members.forEach(function(p){if(!coop.members[p.id]&&coop.network.loadouts&&coop.network.loadouts[p.id])coopJoin(p.id,coop.network.loadouts[p.id]);});
   coopMembers().forEach(function(m){if(!room.members.some(function(p){return p.id===m.id;}))coopDepart(m.id);});
 }
 function coopDepart(id){
   if(!coop||!coop.host||id===coop.me||!coop.members[id])return;
-  coop.members[id].left=true;coop.members[id].choices=[];coop.members[id].dodge=null;coopResolveChoices();
+  coop.members[id].left=true;coop.members[id].choices=[];coop.members[id].dodge=null;
 }
 function coopSupportY(x,y){var support=playerSupportY(x,y);return Math.abs(y-support)<=4?support:null;}
 function coopWithMember(m,fn){
@@ -162,29 +162,29 @@ function coopDodgeContact(m,now){
   if(blocked||progress>=maxDistance||a.dodging===false)m.dodge=null;
 }
 function coopOffer(){
-  if(!coop||!coop.host||coop.choosing)return;
-  coop.round++;coop.choosing=true;
-  coopMembers().forEach(function(m){m.choices=perkChoices(m.perks,m.slot,m.classId).map(function(p){return p.id;});});
-  coopShowChoices();coopResolveChoices();
+  if(!coop||!coop.host)return;
+  Object.values(coop.members).forEach(function(m){m.owed=(m.owed|0)+1;coopNextChoice(m);});
+  coopShowChoices();
+}
+function coopNextChoice(m){
+  if(m.choices.length||!m.owed)return;
+  m.choices=perkChoices(m.perks,m.slot*100+(m.round|0),m.classId).map(function(p){return p.id;});
+  if(m.choices.length)m.round=(m.round|0)+1;else m.owed=0;
 }
 function coopChoose(id,boon,round){
-  if(!coop||!coop.host||!coop.choosing||round!==coop.round)return;
-  var m=coop.members[id];if(!m||m.left||m.choices.indexOf(boon)<0||!window.MaxBuilds.available(m.perks,boon,m.classId))return;
-  m.perks[boon]=Math.min(perkMax(boon),(m.perks[boon]||0)+1);m.choices=[];
-  coopResolveChoices();coopShowChoices();
-}
-function coopResolveChoices(){
-  if(!coop||!coop.host||!coop.choosing||coopMembers().some(function(m){return m.choices.length;}))return;
-  coop.choosing=false;rogueRun.choice=null;coopShowChoices();grantRogueXP(0);
+  var m=coop&&coop.host&&coop.members[id];
+  if(!m||m.left||round!==m.round||m.choices.indexOf(boon)<0||!window.MaxBuilds.available(m.perks,boon,m.classId))return;
+  m.perks[boon]=Math.min(perkMax(boon),(m.perks[boon]||0)+1);m.choices=[];m.owed=Math.max(0,m.owed-1);
+  coopNextChoice(m);coopShowChoices();
 }
 function coopShowChoices(){
   if(!coop)return;var m=coop.members[coop.me];if(!m)return;
-  rogueRun.classId=m.classId;P.classId=m.classId;P.skin=m.skin;rogueRun.perks=m.perks;rogueRun.traits=m.traits;
-  var key=coop.round+':'+coop.choosing+':'+m.choices.join(',');if(coop.ui===key)return;coop.ui=key;
+  var key=m.round+':'+m.choices.join(','),keep=rogueRun.perks;if(coop.ui===key)return;coop.ui=key;
   rogueRun.perks=m.perks;
-  rogueRun.choice=coop.choosing&&m.choices.length?m.choices.map(function(id){return ROGUE_PERKS.find(function(p){return p.id===id;});}).filter(Boolean):null;
+  rogueRun.choice=m.choices.length?m.choices.map(function(id){return ROGUE_PERKS.find(function(p){return p.id===id;});}).filter(Boolean):null;
   if(rogueRun.choice){renderRogueChoice();}
   else {perkMenu.style.display='none';}
+  rogueRun.perks=keep;
 }
 function plantPerks(p){if(!coop)return rogueRun.perks;var m=Object.hasOwn(coop.members,p.carer||'')&&coop.members[p.carer];return m&&!m.left?m.perks:COOP_NO_PERKS;}
 function coopTeamPerks(){
@@ -194,11 +194,11 @@ function coopPlain(o){
   var out={};Object.keys(o).forEach(function(k){var v=o[k];if(k==='__proto__'||k==='constructor'||k==='prototype')return;if(typeof v==='number'&&Number.isFinite(v)||typeof v==='boolean'||typeof v==='string'&&v.length<80)out[k]=v;});return out;
 }
 function coopCapture(){
-  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,perks:m.perks,traits:m.traits,choices:m.choices,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000)};}),acks={},robots=[];
+  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000)};}),acks={},robots=[];
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
-    difficulty:rogueRun.difficulty,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,choosing:coop.choosing,round:coop.round,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
+    difficulty:rogueRun.difficulty,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
     plants:gardenPlots.map(coopPlain),garden:rogueRun.garden.map(coopPlain),seedsOnGround:seedPickups.slice(0,180).map(coopPlain),collected:Object.keys(seedCollected),dust:seedDust,
     pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0});}),bombs:bombs.map(coopPlain),
@@ -226,14 +226,13 @@ function coopState(s){
   if(Array.isArray(s.effects)&&s.effects.length<=30){
     s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.abs(e.x-P.x);if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else sfx('boom',d);}});booms=s.effects.map(coopPlain);
   }
-  coop.choosing=!!s.choosing;coop.round=s.round;
   var ids=[];
   s.members.forEach(function(q){
     if(typeof q.id!=='string'||!/^[0-9a-f-]{36}$/.test(q.id)||q.slot<1||q.slot>4)return;
     if(!coop.members[q.id])coop.members[q.id]={id:q.id,slot:q.slot,ack:0,last:performance.now(),left:false};
     var m=coop.members[q.id],a=coopCleanAvatar(q.avatar);if(!a)return;ids.push(q.id);
     m.classId=window.MaxClasses.clean(q.classId||a.classId);m.skin=window.MaxClasses.skin(q.skin||a.skin);a.classId=m.classId;a.skin=m.skin;
-    m.perks=window.MaxClasses.cleanPerks(q.perks,m.classId);m.choices=Array.isArray(q.choices)?q.choices.filter(function(id){return window.MaxBuilds.available(m.perks,id,m.classId);}).slice(0,3):[];
+    m.perks=window.MaxClasses.cleanPerks(q.perks,m.classId);m.choices=Array.isArray(q.choices)?q.choices.filter(function(id){return window.MaxBuilds.available(m.perks,id,m.classId);}).slice(0,3):[];m.owed=Math.max(0,q.owed|0);m.round=q.round|0;
     var traits=cleanTraits(q.traits);
     if(q.id===coop.me)Object.keys(traits).forEach(function(type){if(traits[type]>(m.traits&&m.traits[type]||0))traitNotice(type,traits[type]);});
     m.traits=traits;
@@ -259,6 +258,7 @@ function coopState(s){
     else{P.y=surfaceY(P.x)-80;P.grounded=false;P.st='float';setAnim('hang');}
     started=false;
   }
+  var mine=coop.members[coop.me];rogueRun.classId=P.classId=mine.classId;P.skin=mine.skin;rogueRun.perks=mine.perks;rogueRun.traits=mine.traits;
   rogueRun.ended=!!s.ended;runWon=!!s.won;coopShowChoices();
   if(rogueRun.ended&&!wasEnded){finalizeRogueRun(runWon);clearRunInput();showRunResult();}
 }
