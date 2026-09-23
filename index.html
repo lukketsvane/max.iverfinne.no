@@ -2784,6 +2784,7 @@ function classProtection(plant){
   if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P));
   return 1-protection;
 }
+function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
 function useClassSkill(){
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if(P.skillCool<=0&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
@@ -4138,7 +4139,7 @@ function makeKrek(side,elite,kind){
 }
 function staggerKrek(k,time){if(k.boss)return;if(isRat(k)){cancelRatAttack(k);ratState(k,'hurt');}if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.draining=false;k.chargeT=0;k.bite=.35;}
 function biteGarden(k,p,pressure){
-  var prot=classProtection(p),dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.78,(rogueRun.perks.shield||0))*Math.pow(.92,(rogueRun.perks.bark||0))*prot*Math.pow(.85,auraAt(p.x,'shelter'));
+  var prot=classProtection(p),dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*plantProtection(p,true);
   if(prot<1)p.guard=.35;
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
@@ -4906,7 +4907,7 @@ function explode(x, y, wet, build) {
     var gp=gardenPlots[i],gd=Math.hypot(gp.x-x,(surfaceY(gp.x)-8)-y);
     if(gd<BR+13&&!gp.dead){
       if(wet||intercepted){gp.moisture=clamp01(gp.moisture+(wet?.55:.18));gp.health=clamp01(gp.health+.035);gp.pulse=1;}
-      else if(!roverShelters(gp)){gp.health=clamp01(gp.health-.075*difficultyProfile().damage*classProtection(gp));gp.moisture=Math.max(0,gp.moisture-.035);gp.hit=1;}
+      else if(!roverShelters(gp)){gp.health=clamp01(gp.health-.075*difficultyProfile().damage*plantProtection(gp,false));gp.moisture=Math.max(0,gp.moisture-.035);gp.hit=1;}
     }
   }
   scatterFrom(x);

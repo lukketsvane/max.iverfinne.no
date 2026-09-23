@@ -231,7 +231,7 @@ function updateRunHazards(dt){
     if(!h.hit){
       h.hit=true;
       if(!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
-        p.health=clamp01(p.health-.12*h.power*runDamageScale()*Math.pow(.78,rogueRun.perks.shield||0)*classProtection(p));
+        p.health=clamp01(p.health-.12*h.power*runDamageScale()*plantProtection(p,false));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
         if(p.health<=.01)plantFalls(p);
       }});
@@ -372,8 +372,8 @@ function updateEnemyRole(k,dt){
     var dd=moveEnemyTo(k,driest.x+(k.x<driest.x?-1:1)*28,surfaceY(driest.x)-20,dt,16);
     k.draining=dd<34;
     if(k.draining){
-      var drain=dt*.055*runDamageScale();driest.moisture=Math.max(0,driest.moisture-drain);
-      if(driest.moisture<.08)driest.health=clamp01(driest.health-dt*.008*runDamageScale());
+      var drain=dt*runDamageScale()*plantProtection(driest,false);driest.moisture=Math.max(0,driest.moisture-drain*.055);
+      if(driest.moisture<.08)driest.health=clamp01(driest.health-drain*.008);
       healPest(k,dt*.05);k.bite=.3;
     }
     return true;

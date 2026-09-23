@@ -30,14 +30,35 @@ test('Green thumb and Wide watering materially improve live plant care',()=>{
 });
 
 test('Barkskin and Mulch make a garden measurably more resilient',()=>{
-  const plain=loadGame().game;plain.resetRogueRun();const a=plot({x:0,health:1});plain.gardenPlots=[a];plain.biteGarden({kind:0,queen:false,elite:false},a,0);
+  const plain=loadGame().game;plain.resetRogueRun();const a=plot({x:0,health:1});plain.gardenPlots=[a];plain.explode(0,plain.surfaceY(0)-8,false);
   const hit=1-a.health;
-  const warded=loadGame().game;warded.resetRogueRun();warded.rogueRun.perks.bark=4;const b=plot({x:0,health:1});warded.gardenPlots=[b];warded.biteGarden({kind:0,queen:false,elite:false},b,0);
+  const warded=loadGame().game;warded.resetRogueRun();warded.rogueRun.perks.bark=4;const b=plot({x:0,health:1});warded.gardenPlots=[b];warded.explode(0,warded.surfaceY(0)-8,false);
   assert.ok(1-b.health<hit);
   b.health=.45;b.moisture=.25;warded.rogueRun.perks.mulch=3;
   const pest=Object.assign(warded.makeKrek(1,false,0),{x:5,y:warded.surfaceY(5)-18,hp:1,maxHp:1});warded.floatKrek=[pest];
   warded.damagePest(pest,100,pest.x-20);
   assert.ok(b.health>.45);assert.ok(b.moisture>.25);
+});
+
+test('one protection rule: Thorns takes bites, Barkskin takes roots, spores, blasts and drain, and a guard takes everything',()=>{
+  const hurt=(perks,kind,guard)=>{
+    const g=loadGame().game;g.resetRogueRun();Object.assign(g.rogueRun.perks,perks);g.gardenRaidT=g.krekSpawnT=9999;
+    const p=plot({x:g.P.x+60,moisture:.05});g.gardenPlots=[p];g.floatKrek=[];g.runHazards=[];
+    if(guard){g.rogueRun.classId='bulwark';Object.assign(g.P,{x:p.x-10,y:g.surfaceY(p.x-10),grounded:true,wet:false});}
+    if(kind==='bite')g.biteGarden({kind:0,queen:false,elite:false},p,0);
+    if(kind==='root'||kind==='spore'){g.addRunHazard(kind,p.x,11,.01,1);g.updateRunHazards(.02);g.updateRunHazards(.02);}
+    if(kind==='blast')g.explode(p.x,g.surfaceY(p.x)-8,false);
+    if(kind==='drain'){const leech=Object.assign(g.makeKrek(1,false,10),{kind:10,x:p.x+22,y:g.surfaceY(p.x+22)-20,bite:0});g.floatKrek=[leech];g.updateEnemyRole(leech,.5);}
+    return 1-p.health;
+  };
+  for(const kind of ['bite','root','spore','blast','drain']){
+    const plain=hurt({},kind),thorns=hurt({shield:2},kind),bark=hurt({bark:2},kind),guarded=hurt({},kind,true);
+    assert.ok(plain>0,kind);
+    const [cut,kept]=kind==='bite'?[thorns,bark]:[bark,thorns];
+    assert.ok(Math.abs(cut/plain-.78*.78)<1e-9,`${kind}: ${cut} vs ${plain}`);
+    assert.equal(kept,plain,`${kind} ignores the other boon`);
+    assert.ok(Math.abs(guarded/plain-.7)<1e-9,`${kind}: a Bulwark guard covers it`);
+  }
 });
 
 test('Long stride and Spring step change traversal without changing controls',()=>{
