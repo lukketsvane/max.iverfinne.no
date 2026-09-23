@@ -318,3 +318,14 @@ test('guest rolls interrupt enemies on elevated platforms at 30, 60 and 120 Hz',
     guest.P.grounded=false;guest.P.y-=12;games[0].advance(60);send(1,games[1].pending);assert.equal(member.dodge,null);
   }
 });
+
+test('sky seeds can be claimed by a guest, and a new host does not regrow spots the old host collected',()=>{
+  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
+  host.updateSeedPickups(1);const b0=host.seedPickups.find(q=>q.id==='b0');if(b0)host.collectSeed(b0);assert.equal(host.seedPickups.some(q=>q.id==='b0'),false);
+  host.seedPickups=[];host.spawnExitSeeds({x:member.avatar.x});Object.assign(host.seedPickups[0],{x:member.avatar.x,y:member.avatar.y-6});
+  const before=host.gardenSeeds;sync();guest.updateSeedPickups(.01);send(1,games[1].pending);
+  assert.equal(host.gardenSeeds,before+1);
+  sync();guest.coopRoster({id:'room',host:ids[1],members:ids.slice(1).map((id,i)=>({id,slot:i+2,ready:true}))});
+  guest.P.x=0;guest.updateSeedPickups(1);
+  assert.equal(guest.seedPickups.some(q=>q.id==='b0'),false);
+});

@@ -116,7 +116,7 @@ const PLANT_NOTES = [
 const FEATURE_TEXT = {
   water: 'Keeps its neighbours watered.', grow: 'Its neighbours grow faster.', chill: 'Pests near it slow down.',
   shelter: 'Its neighbours take less damage.', thorns: 'Pests that bite it get pricked.', heal: 'Its neighbours slowly heal.',
-  bind: 'Pests that bite it get stuck.', seeds: 'Gives an extra seed at harvest.', berries: 'Ripe berries drop and burst on pests.',
+  bind: 'Pests that bite it get stuck.', seeds: 'Gives more seeds at harvest.', berries: 'Ripe berries drop and burst on pests.',
 };
 const RARITY = ['COMMON', 'UNCOMMON', 'RARE', 'SPECIAL'];
 
