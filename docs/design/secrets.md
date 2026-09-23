@@ -13,3 +13,7 @@ Rules:
 | Night | Word | What happens |
 | --- | --- | --- |
 | Full moon | MOON | A brighter moon, twice the fireflies, moths circle Max's lit lamp, garden plants glow faintly. Decoration only. |
+
+## Shooting star
+
+About one garden in eight (every meteor night), a star crosses the upper sky between 20 and 70 s into the garden. A tap on it within 2.2 s grants one wish for the team: three seeds at the tapper's feet, or one free boon card (seeded, half and half). A tap on the star throws nothing. A guest's tap is a `wish` action; the host allows 0.8 s for the round trip.

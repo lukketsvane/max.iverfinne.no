@@ -406,6 +406,7 @@ function endPointer(e){
      performance.now()-t.t0<=180&&Math.abs(flickX)>=44&&Math.abs(flickX)>Math.abs(flickY)*2&&Math.abs(flickX)>=t.travelX*.8){
     requestDodge(flickX<0?-1:1);
   }
+  if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&catchWish(t.wx,t.wy))t.dragged=true;
   // Cancellation (iOS app switch, browser gesture, lost capture) is never a tap.
   if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&performance.now()-t.t0<240){
     var pest=krekAt(t.wx,t.wy,t.onMax?6:14)||(t.onMax?floatKrek.find(function(k){return k.boss&&enemyDistance(k,t.wx,t.wy)<14;}):null),bird=t.onMax?null:birdAt(t.wx,t.wy),spore=sporeAt(t.wx,t.wy,12);
