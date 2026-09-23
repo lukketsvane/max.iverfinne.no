@@ -100,6 +100,7 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - `MaxStageLayout.create(stage, origin, ground, wet, seed)` generates gardens 1–19 and caches by stage and seed. Without a seed it returns the authored shape, which is also the fallback and the Crown.
 - The generator never calls `Math.random`. Every required ledge must stay reachable by a walking Bulwark (`tests/seeded-gardens.test.cjs`), and `tests/seeded-physics-*.test.cjs` jumps every hop of 20 seeds with all four classes. Change a reach rule only together with those tests.
 - `layout.nodes` holds each platform's capability tier (C0–C3) for loot placement.
+- A garden drawn in Figma replaces the generated one when its frame carries a `designed` instance: `stageLayout()` asks `MaxLevels.layout` (`levels.js`, data in `levels-data.js` from `npm run figma:levels`) before `MaxStageLayout.create`. A designed layout adds `designed`, `frame`, `spots` (puzzle, door, dig, secret, start; not read yet) and `decor`. Its routes and tiers come from the stage-layout reach rules. See `docs/design/figma-levels.md`.
 
 ## Boons
 

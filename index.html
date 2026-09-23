@@ -8,6 +8,8 @@
 <script src="stage-layout.js"></script>
 <script src="levels-v1/moonlit-ruins.js"></script>
 <script src="levels-v1/ashen-glass-furnace.js"></script>
+<script src="levels-data.js"></script>
+<script src="levels.js"></script>
 <script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
@@ -242,7 +244,7 @@ function pictureLava(){
 }
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=pictureLayout(level)||window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=pictureLayout(level)||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
