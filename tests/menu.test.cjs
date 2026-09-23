@@ -13,7 +13,7 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
@@ -65,6 +65,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     coopRoster() {}, coopState() {}, coopInput() {}, coopDepart() {}, coopJoin() {}, stopCoop() { active = false; },
     exitRun() { active = false; }, clearInput() {}, musicVolume: () => music, effectsVolume: () => effects, setMusicVolume: value => { music = value; }, setEffectsVolume: value => { effects = value; },
   };
+  if (scenes) Object.assign(bridge, { setCovered() {}, plantCollection: () => [{ kind: 0, found: true, seed: 7 }], drawGardenScene: (canvas, view) => { scenes.push(view); return { ready: true, max: 0 }; } });
   w.MaxGameMenu.attach(bridge);
   const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resolve => setTimeout(resolve, 10)); };
   await settle();
@@ -191,6 +192,16 @@ test('account sign-in remains optional metadata rather than a different gameplay
     m.click('Back');m.click('Play');
     assert.equal([...m.w.document.querySelectorAll('.max-play-actions button')].length,1);
   } finally { m.dom.window.close(); }
+});
+
+test('signed out, the menu garden shows every plant greyed out; signed in, the ones found', async () => {
+  for (const [restoredUser, locked] of [[null, true], [{ id: 'returning-player', email: 'iver@players.max.invalid' }, false]]) {
+    const scenes = [], m = await menu(undefined, { restoredUser, scenes });
+    try {
+      await m.settle(); await new Promise(resolve => setTimeout(resolve, 120));
+      assert.ok(scenes.length > 0, 'the garden draws behind the menu'); assert.equal(scenes.at(-1).locked, locked);
+    } finally { m.dom.window.close(); }
+  }
 });
 
 test('the home screen names who is in the shared garden and offers Login until signed in', async () => {

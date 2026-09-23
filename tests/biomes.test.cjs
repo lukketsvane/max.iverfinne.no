@@ -49,10 +49,12 @@ test('every basic pest draws as a bird: garden, Frostwing and Ember sets per pes
   assert.equal(g.drawBirdPest({ ...pest, boss: true }, 10, 10, 1), false);
 });
 
-test('garden tits draw as the songbird sheet: standing, hopping and flying rows', () => {
+test('garden tits are blue tits; only the Frostwing snow gardens draw them as the icy songbird', () => {
   const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
   assert.match(g.SONGBIRD.src, /songbird\.png$/);
+  g.rogueRun.world = 12;
   assert.equal(g.drawSongbird({ st: 'ground', row: 0, frame: 3, face: 1 }, 20, 40), false, 'nothing drawn before the sheet loads');
   g.SONGBIRD.complete = true; g.SONGBIRD.naturalWidth = 80;
   for (const st of ['ground', 'takeoff', 'fly', 'descend']) assert.equal(g.drawSongbird({ st, row: 1, frame: 7, face: -1 }, 20, 40), true);
+  for (const world of [1, 5, 10, 16, 20]) { g.rogueRun.world = world; assert.equal(g.drawSongbird({ st: 'ground', row: 0, frame: 3, face: 1 }, 20, 40), false, `garden ${world} draws the blue tit`); }
 });
