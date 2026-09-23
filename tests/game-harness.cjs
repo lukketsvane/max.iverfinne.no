@@ -15,7 +15,7 @@ const stateNames = [
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
   'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'soloCrew', 'IW', 'IH', 'SCALE', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
-  'mouse', 'queuedThrow', 'padAx', 'bombCoolMax', 'charge', 'tunnels', 'swans', 'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
+  'activeStageLayout', 'mouse', 'queuedThrow', 'padAx', 'bombCoolMax', 'charge', 'tunnels', 'swans', 'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
   'wonders', 'wonderRun', 'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
