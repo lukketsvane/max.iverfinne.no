@@ -6,6 +6,8 @@
 <script src="build-paths.js"></script>
 <script src="max-classes.js"></script>
 <script src="stage-layout.js"></script>
+<script src="levels-data.js"></script>
+<script src="levels.js"></script>
 <script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
@@ -222,7 +224,7 @@ function dryX(x) { var w = waterAt(x); return w ? w.cx + (x < w.cx ? -1 : 1) * (
 var activeStageLayout=null;
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
