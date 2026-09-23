@@ -13,28 +13,26 @@ test('garden stage is rendered as compact tally groups centered around a bounded
   }
 });
 
-test('active boon ranks become tiny HUD icons, ten per row, without counting Mech’s starter rover',()=>{
+test('each active boon is one tiny HUD icon with its rank as stacks, eight per row, without counting Mech’s starter rover',()=>{
   const g=loadGame().game;g.resetRogueRun('test',{classId:'mech'});
-  assert.deepEqual(Array.from(g.runHudBoons()),[]);
+  assert.deepEqual(JSON.parse(JSON.stringify(g.runHudBoons())),[]);
   g.rogueRun.perks.robot=3; // two earned Companion ranks beyond the starter rover
   g.rogueRun.perks.growth=5;
   g.rogueRun.perks.bark=4;
-  const boons=Array.from(g.runHudBoons());
-  assert.equal(boons.filter(x=>x==='robot').length,2);
-  assert.equal(boons.filter(x=>x==='growth').length,5);
-  assert.equal(boons.filter(x=>x==='bark').length,4);
-  assert.equal(boons.length,11);
-  const first=g.runHudIconPosition(0),tenth=g.runHudIconPosition(9),eleventh=g.runHudIconPosition(10);
+  const boons=JSON.parse(JSON.stringify(g.runHudBoons()));
+  assert.deepEqual(boons,[{id:'growth',count:5},{id:'robot',count:2},{id:'bark',count:4}]);
+  const first=g.runHudIconPosition(0),eighth=g.runHudIconPosition(7),ninth=g.runHudIconPosition(8);
   assert.equal(first.y,3,'first boon row aligns with the top tally/pause row');
-  assert.equal(first.y,tenth.y);
-  assert.equal(eleventh.x,first.x);
-  assert.equal(eleventh.y,first.y+7);
-  assert.ok(tenth.x>first.x);
+  assert.equal(first.y,eighth.y);
+  assert.equal(ninth.x,first.x);
+  assert.ok(ninth.y>first.y);
+  assert.ok(eighth.x-first.x>=7*9,'room for the stack dots beside each icon');
+  g.drawTinyBoon('growth',first.x,first.y,5);
 });
 
-test('non-Mech characters show every collected boon rank and never inherit the rover baseline',()=>{
+test('non-Mech characters show every collected boon once with its rank and never inherit the rover baseline',()=>{
   const g=loadGame().game;g.resetRogueRun('test',{classId:'runner'});
   g.rogueRun.perks.stride=3;g.rogueRun.perks.spring=2;g.rogueRun.perks.tender=1;
-  assert.deepEqual(Array.from(g.runHudBoons()),['tender','stride','stride','stride','spring','spring']);
+  assert.deepEqual(JSON.parse(JSON.stringify(g.runHudBoons())),[{id:'tender',count:1},{id:'stride',count:3},{id:'spring',count:2}]);
   assert.equal(g.rogueRun.perks.robot,0);
 });
