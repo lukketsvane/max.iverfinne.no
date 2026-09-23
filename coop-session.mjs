@@ -140,6 +140,7 @@ export class CoopSession {
           await this.client.removeChannel(stateChannel);
         }
         await this.subscribe('state');
+        if (this.host) this.pending = [];
       }
       if (!this.host) {
         await this.subscribe(this.user.id);
@@ -244,11 +245,12 @@ export class CoopSession {
     } else if (this.host && sender !== 'state' && this.room.members.some(p => p.id === sender)) {
       if (packet.end) {
         if (packet.sid !== this.memberTokens[sender]) return;
+        delete this.loadouts[sender]; delete this.memberTokens[sender];
         if (this.playing) this.hooks.depart?.(sender);
-        else { delete this.loadouts[sender]; delete this.memberTokens[sender]; this.cancelPrepare('A player left the garden.'); this.notifyRoom(); }
+        else { this.cancelPrepare('A player left the garden.'); this.notifyRoom(); }
         return;
       }
-      if (!this.playing || !this.loadouts[sender]) {
+      if (!this.playing || !this.loadouts[sender] || packet.sid !== this.memberTokens[sender]) {
         const supplied = validLoadout(packet.selection); if (!supplied) return;
         const member = this.room.members.find(p => p.id === sender);
         if (member?.classId && supplied.classId !== member.classId) return;
@@ -267,7 +269,7 @@ export class CoopSession {
         if (this.preparing && packet.prepared === this.preparing.id && packet.sid === this.preparing.tokens[sender]) {
           this.preparing.confirmed.add(sender); this.preparing.check();
         }
-      } else if (packet.sid === this.memberTokens[sender]) this.hooks.input?.(sender, packet);
+      } else this.hooks.input?.(sender, packet);
     }
   }
   async resume() {
@@ -283,6 +285,7 @@ export class CoopSession {
       await Promise.allSettled(stale.map(channel => this.client.removeChannel(channel)));
       const room = await this.rpc('get'); if (this.closed) return;
       this.room = room; this.lastPoll = Date.now();
+      if (this.host) this.pending = [];
       await this.subscribe('state');
       if (this.host) await this.syncChannels();
       else await this.subscribe(this.user.id);
