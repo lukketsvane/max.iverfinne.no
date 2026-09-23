@@ -30,7 +30,7 @@
     });
     return best;
   }
-  function create(stage, origin, ground, wet) {
+  function authored(stage, origin, ground, wet) {
     stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
     var kind = theme(stage), shape = shapes[kind], variant = Math.floor((stage - 1) / 5);
     var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] };
@@ -105,6 +105,11 @@
       var bonus = make(stage + ':' + routeIndex + ':bonus', summit.x + summit.w / 2 + side * 26, summit.y - 32, 28, side, true);
       layout.bonuses.push(anchor(bonus, side));
     });
+    return layout;
+  }
+  function create(stage, origin, ground, wet, seed) {
+    var layout = authored(stage, origin, ground, wet);
+    if (seed != null) layout.seed = seed >>> 0;
     return layout;
   }
   function draw(ctx, layout, camX, camY, width, height) {
