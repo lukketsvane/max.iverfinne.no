@@ -255,13 +255,13 @@ test('the player renderer draws the tinted sheet for your own Max only', () => {
   assert.deepEqual(drawn, ['tinted', 'sheet', 'sheet']);
 });
 
-test('the garden view writes its secret line only when all twenty plants are found', () => {
+test('the garden view writes its secret line only when all twenty-five plants are found', () => {
   const g = fresh().game; let glyphs = 0; const pen = { drawImage(img) { if (img === g.BOSS_FONT) glyphs++; } };
   g.BOSS_FONT = { complete: true, naturalWidth: 96 };
   const all = g.plantCollection().map(p => ({ ...p, found: true }));
-  assert.equal(all.length, 20);
+  assert.equal(all.length, 25);
   assert.equal(g.drawGardenSecret(pen, all, 320, 400, 1, false), true); assert.equal(glyphs, 'GOODNIGHT, GARDEN'.length);
-  assert.equal(g.drawGardenSecret(pen, all.map((p, i) => ({ ...p, found: i !== 13 })), 320, 400, 1, false), false, 'nineteen is not enough');
+  assert.equal(g.drawGardenSecret(pen, all.map((p, i) => ({ ...p, found: i !== 13 })), 320, 400, 1, false), false, 'one short is not enough');
   assert.equal(g.drawGardenSecret(pen, all, 320, 400, 1, true), false, 'a locked view keeps it hidden');
   assert.equal(g.drawGardenSecret(pen, g.plantCollection(), 320, 400, 1, false), false, 'a new player sees nothing'); assert.equal(glyphs, 17);
 });

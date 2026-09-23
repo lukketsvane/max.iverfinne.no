@@ -5,9 +5,9 @@ const { loadGame, plot } = require('./game-harness.cjs');
 function game(world = 1) { const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' }); g.gardenRaidT = g.krekSpawnT = 9999; g.rogueRun.world = world; return g; }
 const mature = (kind, x = 30) => plot({ id: 90 + kind, x, kind, growth: 1.5, moisture: 1, health: 1 });
 
-test('every one of the twenty plant kinds has a feature and a rarity tier', () => {
+test('every one of the twenty-five plant kinds has a feature and a rarity tier', () => {
   const g = game();
-  assert.equal(g.PLANT_FEATURES.length, 20); assert.equal(g.PLANT_TIER.length, 20);
+  assert.equal(g.PLANT_FEATURES.length, 25); assert.equal(g.PLANT_TIER.length, 25);
   assert.ok(g.PLANT_FEATURES.every(Boolean)); assert.ok(g.PLANT_TIER.every(t => t >= 1 && t <= 4));
   assert.equal(g.PLANT_FEATURES[19], 'berries');
 });
