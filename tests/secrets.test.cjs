@@ -117,3 +117,11 @@ test('fog hides the ground and keeps the garden damp, and only on a fog night', 
   guest.gardenPlots = [plot({ id: 1, moisture: .05 })]; guest.updateSecrets(.1);
   assert.equal(guest.gardenPlots[0].moisture, .05, 'the host owns the plants');
 });
+
+test('about one snow garden in three hangs an aurora over the mountains', () => {
+  const g = fresh().game; let lit = 0;
+  for (let seed = 1; seed <= 2000; seed++) for (let w = 11; w <= 15; w++) if (g.secretEventFor(seed, w) === 'aurora') lit++;
+  assert.ok(lit / 10000 > .25 && lit / 10000 < .35, String(lit));
+  const w = garden(g, 'aurora'); assert.ok(g.gardenBackdrop(w), 'it is a snow garden');
+  assert.equal(g.secretEvent(), 'aurora'); g.drawSecretSky(3, 220); g.drawSecretBanner(8);
+});

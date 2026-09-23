@@ -15,6 +15,7 @@ Rules:
 | Full moon | MOON | A brighter moon, twice the fireflies, moths circle Max's lit lamp, garden plants glow faintly. Decoration only. |
 | Meteor shower | METEORS | Streaks cross the upper sky all night, and the night always carries a wishing star. |
 | Fog | FOG | Low drifting banks hide pests near the ground; the damp keeps every garden plant at 30% water or more. Never in a milestone-boss garden. |
+| Aurora | AURORA | Green and violet curtains ripple above the mountains. Only in the snow gardens 11-15, about one in three. Decoration only. |
 
 ## Shooting star
 
