@@ -20,7 +20,6 @@ const INLINE = {
   '496e112679878162adc9f6290ecc81eee4b927a6': 'index.html forest 540×108',
   '4ed39e2a579ebb529fca0aae2c045b67d394b0c6': 'index.html clouds 540×119',
   '374d81e834887109e7f6ea248ed9ac7e17a233be': 'index.html ground 12×12',
-  '79925ac7378b4edd931fd61511be77f485f7d130': 'index.html PLANT_ATLAS_SRC 512×118',
   '9563d7249d7593887f955a0e51ba00a838c2c05b': 'index.html NPC_ATLAS_SRC 768×256',
   '5a4fa80c82d3f4ce97cd34d2f601a810af374b69': 'index.html CROW_SRC 160×128',
   '41598fe2272f79ce591e6b201284fdb81d77eebc': 'index.html CROW_MINI_SRC 84×12',
