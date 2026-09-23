@@ -124,7 +124,7 @@ function goldHarvest(p){if(!plantGold(p))return false;spawnLooseSeeds(p.x,surfac
 function secretDay(d){var m=d.getMonth()+1,n=d.getDate();return m===12&&n>=24&&n<=26?'christmas':m===10&&n===31?'halloween':m===6&&n===23?'sankthans':m===5&&n===17?'may17':'';}
 var SECRET_FLAG=['RWBWRRR','WWBWWWW','BBBBBBB','WWBWWWW','RWBWRRR'],SECRET_FLAG_INK={R:'#ba2a36',W:'#f2eee4',B:'#1f3f8a'};
 function drawSecretDay(t){
-  var day=secretToday,n=0,o=levelOriginX(worldLevel());
+  var day=secretToday,n=0;if(!day)return 0;var o=levelOriginX(worldLevel());
   if(day==='may17')gardenPlots.forEach(function(p){
     if(p.dead||p.growth<.3||n>=12)return;n++;
     var sx=Math.round(p.x-camX),top=Math.round(surfaceY(p.x)-plantHeight(p)-camY)-2,wave=((t*3+p.id)|0)&1;
