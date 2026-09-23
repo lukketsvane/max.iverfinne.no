@@ -64,7 +64,7 @@ function home() {
     settings: '<path d="M7 0h2v16H7zM3 3h4v3H3zM9 7h4v3H9zM4 11h3v3H4z"/>',
     credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
   };
-  const signedIn = !!user && playerName(user) !== 'Guest';
+  const signedIn = signedInUser();
   for (const [label, action, icon] of [['Play', play, 'play'], signedIn ? ['Garden', enterGarden, 'garden'] : ['Login', account, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
     const b = button('', action, 'max-home-button max-icon-' + icon + (icon === 'play' ? ' primary' : ''));
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
@@ -92,8 +92,8 @@ function showPlayers(node) {
   });
 }
 const PLANT_NOTES = [
+  ['Skybell', 'A pale cousin of the bluestar. Its moon-white bells turn slowly to face the moon.'],
   ['Bluestar', 'Blue stars climb a green stem one by one. Water it early and it keeps flowering all night.'],
-  ['Skybell', 'A taller cousin of the bluestar. Its bells turn slowly to face the moon.'],
   ['Duskbell', 'Olive stems hung with blue bells. It only rings when the wind comes off the water.'],
   ['Starwort', 'Tiny white flowers scattered like a second sky. Crows leave it alone.'],
   ['Nightrose', 'Magenta roses on a dark, twisting stem. Its thorns keep pests honest.'],
@@ -122,6 +122,8 @@ const RARITY = ['COMMON', 'UNCOMMON', 'RARE', 'SPECIAL'];
 
 const scene = { scroll: 0, vel: 0, target: null, max: 0, drag: null, t0: 0, last: 0, drawn: 0, raf: 0, focus: -1, dim: 0, info: null, kinds: [], on: false };
 let inGarden = false;
+function signedInUser() { return !!user && playerName(user) !== 'Guest'; }
+function plantKinds() { const kinds = game?.plantCollection?.() || []; return signedInUser() ? kinds : kinds.map(k => ({ ...k, found: false })); }
 function sceneSize() {
   const dpr = window.devicePixelRatio || 1, dw = Math.round(window.innerWidth * dpr), dh = Math.round(window.innerHeight * dpr);
   const scale = Math.max(2, Math.round(Math.min(dw, dh) / 150));
@@ -132,7 +134,7 @@ function startScene() {
   game.setCovered?.(true);
   if (scene.on) return;
   scene.on = true; scene.last = scene.drawn = 0; if (!scene.t0) scene.t0 = performance.now();
-  scene.kinds = game.plantCollection?.() || [];
+  scene.kinds = plantKinds();
   scene.raf = requestAnimationFrame(sceneFrame);
 }
 function stopScene() { scene.on = false; cancelAnimationFrame(scene.raf); game?.setCovered?.(false); }
@@ -149,7 +151,7 @@ function sceneFrame(now) {
     else if (g.focus < 0 && g.scroll > g.max) { g.scroll += (g.max - g.scroll) * Math.min(1, dt * 10); g.vel = 0; }
   }
   g.dim += ((g.focus >= 0 ? 1 : 0) - g.dim) * Math.min(1, dt * 4);
-  const info = game.drawGardenScene(gardenCanvas, { scroll: g.scroll, t: (now - g.t0) / 1000, focus: g.focus, dim: g.dim });
+  const info = game.drawGardenScene(gardenCanvas, { scroll: g.scroll, t: (now - g.t0) / 1000, focus: g.focus, dim: g.dim, locked: !signedInUser() });
   if (info) { g.max = info.max; if (info.ready) g.info = info; }
   const prev = g.scroll <= 2, next = g.scroll >= g.max - 2;
   if (gardenPrev.hidden !== prev) gardenPrev.hidden = prev;
@@ -157,7 +159,7 @@ function sceneFrame(now) {
 }
 function enterGarden() {
   if (!opened || screen !== 'home' || inGarden || !game.drawGardenScene) return;
-  scene.kinds = game.plantCollection?.() || [];
+  scene.kinds = plantKinds();
   const found = scene.kinds.filter(k => k.found).length;
   gardenCount.replaceChildren(); pixelText(gardenCount, found + ' / ' + scene.kinds.length + ' FOUND', 2, 1);
   inGarden = true; overlay.dataset.view = 'garden'; card.inert = true; gardenHud.inert = false;

@@ -662,6 +662,7 @@ for (var fi = 0; fi < 26; fi++) flies.push({
 
 /* ---------------------------------------------------------------- Figma garden assets + small fauna */
 var PA = {"fam":[{"s":[[37,78,35,7],[433,78,35,7],[469,78,35,7],[1,86,35,7],[37,86,35,7],[73,86,35,7],[109,86,35,7],[145,86,35,7],[181,86,35,7],[73,78,35,7],[109,78,35,7],[145,78,35,7],[181,78,35,7],[217,78,35,7],[253,78,35,7],[289,78,35,7],[325,78,35,7],[361,78,35,7],[397,78,35,7]],"f":[[211,70,35,7],[247,70,35,7],[283,70,35,7],[319,70,35,7],[355,70,35,7],[391,70,35,7],[427,70,35,7],[463,70,35,7],[1,78,35,7]]},{"s":[[323,62,41,7],[365,62,41,7],[407,62,41,7],[449,62,41,7],[1,70,41,7],[43,70,41,7],[85,70,41,7],[127,70,41,7],[169,70,41,7],[448,41,41,9],[359,52,41,8]],"f":[[275,52,41,8],[217,29,41,10],[317,52,41,8]]},{"s":[[1,62,45,7],[47,62,45,7],[93,62,45,7],[139,62,45,7],[185,62,45,7],[231,62,45,7],[277,62,45,7]],"f":[[417,52,45,7],[463,52,45,7]]},{"s":[[186,41,29,10],[216,41,29,10],[246,41,29,10],[276,41,29,10],[306,41,29,10],[336,41,29,10],[366,41,29,10],[396,41,29,10]],"f":[[126,41,29,10],[156,41,29,10]]},{"s":[[281,1,39,12],[321,1,39,12],[361,1,39,12],[121,1,39,13],[401,1,39,12]],"f":[[161,1,39,12],[201,1,39,12],[241,1,39,12]]},{"s":[[441,1,41,11],[1,29,41,11],[301,29,41,10],[43,29,41,11],[343,29,41,10],[85,52,41,9],[127,52,41,9],[385,29,41,10],[169,52,41,9],[43,52,41,9]],"f":[[1,52,41,9],[259,29,41,10]]},{"s":[[235,52,19,9],[211,52,23,9],[426,41,21,10],[255,52,19,9],[205,110,21,7],[401,52,15,8],[181,110,23,7]],"f":[[427,29,41,10],[469,29,41,10],[1,41,41,10],[43,41,41,10],[85,41,40,10]]},{"s":[[151,29,21,11],[173,29,21,11],[195,29,21,11]],"f":[[85,29,21,11],[107,29,21,11],[129,29,21,11]]}],"roots":[[217,86,35,7],[433,86,35,7],[469,86,35,7],[1,94,35,7],[37,94,35,7],[73,94,35,7],[109,94,35,7],[145,94,35,7],[181,94,35,7],[253,86,35,7],[289,86,35,7],[325,86,35,7],[361,86,35,7],[397,86,35,7]],"seeds":[[217,94,35,7],[109,102,35,7],[433,102,35,7],[469,102,35,7],[1,110,35,7],[37,110,35,7],[73,110,35,7],[109,110,35,7],[145,110,35,7],[253,94,35,7],[289,94,35,7],[325,94,35,7],[361,94,35,7],[397,94,35,7],[433,94,35,7],[469,94,35,7],[1,102,35,7],[37,102,35,7],[73,102,35,7],[145,102,35,7],[181,102,35,7],[217,102,35,7],[253,102,35,7],[289,102,35,7],[325,102,35,7],[361,102,35,7],[397,102,35,7]],"pumpkin":[[1,1,29,27],[31,1,29,27],[61,1,29,27],[91,1,29,27]]};
+PA.fam.push({s:PA.fam[0].s.map(function(r){return r.slice();}),f:PA.fam[0].f.map(function(r){return r.slice();})});
 var plantAtlasReady = false;
 (function () {
   var waiting = 0;
@@ -828,7 +829,7 @@ function updateSmallFauna(dt) {
 }
 var SONGBIRD = loadImg("assets/biomes-v1/songbird.png");
 function drawSongbird(a, sx, sy) {
-  if (!ready(SONGBIRD)) return false;
+  if (gardenBackdrop() !== BIOME_BG.frost || !ready(SONGBIRD)) return false;
   var row = a.st === 'ground' ? (a.row === 0 ? 0 : 1) : 2, f = (a.frame | 0) % 5;
   ctx.save();
   if (a.face < 0) { ctx.translate(sx * 2, 0); ctx.scale(-1, 1); }
@@ -3124,12 +3125,12 @@ function drawGardenScene(canvas,v){
   galleryTile(g,L.soil,soilTop,sc,1,W);
   for(i=0;i<plants.length;i++){
     var px=GALLERY_X0+i*GALLERY_SP-sc;if(px<-40||px>W+40)continue;
-    var im=galleryPlant(plants[i].kind,plants[i].seed,plants[i].found);if(im)g.drawImage(im,px-36,G-96);
+    var im=galleryPlant(plants[i].kind,plants[i].seed,plants[i].found&&!v.locked);if(im)g.drawImage(im,px-36,G-96);
   }
   var dim=v.dim||0,focus=v.focus|0;
   if(dim>.01&&focus>=0&&focus<plants.length){
     g.fillStyle='rgba(3,7,18,'+(.55*dim).toFixed(3)+')';g.fillRect(0,0,W,M);
-    var fp=galleryPlant(plants[focus].kind,plants[focus].seed,plants[focus].found);if(fp)g.drawImage(fp,GALLERY_X0+focus*GALLERY_SP-sc-36,G-96);
+    var fp=galleryPlant(plants[focus].kind,plants[focus].seed,plants[focus].found&&!v.locked);if(fp)g.drawImage(fp,GALLERY_X0+focus*GALLERY_SP-sc-36,G-96);
   }
   var bob=Math.round(Math.sin(t*.6)*2);
   g.globalAlpha=.55+.45*Math.sin(t*1.7);galleryTile(g,L.fireflies,G-30+bob,sc,.7,W);
@@ -3331,7 +3332,7 @@ function nearestGardenPlot(x,maxD){
   var best=null,bd=maxD==null?999:maxD;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead)continue;var d=Math.abs(p.x-x);if(d<bd){bd=d;best=p;}}return best;
 }
 var GARDEN_FIG_FORMS=[
-  {fi:0,off:0},{fi:0,off:7},{fi:1,off:1},{fi:2,off:2},{fi:3,off:3},
+  {fi:8,off:0},{fi:0,off:7},{fi:1,off:1},{fi:2,off:2},{fi:3,off:3},
   {fi:4,off:4},{fi:5,off:5},{fi:6,off:6},{fi:7,off:7},
 {fi:0,off:0,sprite:0},{fi:1,off:1,sprite:1},{fi:2,off:2,sprite:2},{fi:3,off:3,sprite:3},{fi:4,off:4,sprite:4},{fi:5,off:5,sprite:5},{fi:6,off:6,sprite:6},{fi:7,off:7,sprite:7},{fi:0,off:8,sprite:8},{fi:1,off:9,sprite:9},{fi:0,off:10,sprite:10}
 ];
@@ -3472,7 +3473,7 @@ function gardenFigForm(p){return GARDEN_FIG_FORMS[imod(p.kind|0,GARDEN_FIG_FORMS
 var PLANT_STEM=[
   ['#062128','#294321','#3b5a2e'],['#1b171d','#242a17','#2f3718'],['#0e1e1d','#183427','#274628'],
   ['#0e1e1d','#262938','#38475f'],['#142722','#405054','#5e6781'],['#171b0f','#2e361c','#585633'],
-  ['#0a2628','#1e4852','#315f6a'],['#261e18','#3b2d21','#504e2a']
+  ['#0a2628','#1e4852','#315f6a'],['#261e18','#3b2d21','#504e2a'],['#0b1830','#28465a','#3e6a78']
 ];
 var G_TOP=2.7, PLANT_MATURE_H=46;
 function plantTopH(){return Math.max(72,ANCHOR+10);}          // ground to just past the top edge

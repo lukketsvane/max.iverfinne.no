@@ -14,9 +14,9 @@ test('every one of the twenty plant kinds has a feature and a rarity tier', () =
 
 test('grown plants water, grow and heal their neighbours; seedlings do nothing yet', () => {
   const run = (kind, grown, set) => { const g = game(); const a = plot({ id: 1, x: 0, kind: 3, ...set }); g.gardenPlots = [a]; if (kind != null) g.gardenPlots.push(plot({ id: 2, x: 30, kind, growth: grown, moisture: 1, health: 1 })); for (let i = 0; i < 30; i++) g.updateGarden(.2); return a; };
-  assert.ok(run(0, 1.5, { moisture: .5 }).moisture > run(null, 0, { moisture: .5 }).moisture, 'Bluestar waters');
+  assert.ok(run(0, 1.5, { moisture: .5 }).moisture > run(null, 0, { moisture: .5 }).moisture, 'Skybell waters');
   assert.equal(run(0, .5, { moisture: .5 }).moisture, run(null, 0, { moisture: .5 }).moisture, 'only grown plants help');
-  assert.ok(run(1, 1.5, { growth: .3, moisture: .8 }).growth > run(null, 0, { growth: .3, moisture: .8 }).growth, 'Skybell speeds growth');
+  assert.ok(run(1, 1.5, { growth: .3, moisture: .8 }).growth > run(null, 0, { growth: .3, moisture: .8 }).growth, 'Bluestar speeds growth');
   assert.ok(run(5, 1.5, { health: .5, moisture: .3 }).health > run(null, 0, { health: .5, moisture: .3 }).health, 'Silverleaf heals');
 });
 
