@@ -105,3 +105,15 @@ test('a meteor night streaks the sky for everyone and always carries a wishing s
   const { host, guest, sync } = pair(); const w = garden(host, 'meteors'); sync(); guest.rogueRun.world = w;
   assert.ok(streaks(guest, 1.5) > 0, 'guests draw their own streaks');
 });
+
+test('fog hides the ground and keeps the garden damp, and only on a fog night', () => {
+  const g = fresh().game; garden(g, 'fog');
+  g.gardenPlots = [plot({ id: 1, moisture: .05 }), plot({ id: 2, moisture: .8 }), plot({ id: 3, moisture: .05, dead: 1 })];
+  g.updateSecrets(.1); g.drawSecretAir(1);
+  assert.deepEqual(g.gardenPlots.map(p => p.moisture), [.3, .8, .05]);
+  const clear = fresh().game; garden(clear, 'moon'); clear.gardenPlots = [plot({ id: 1, moisture: .05 })]; clear.updateSecrets(.1);
+  assert.equal(clear.gardenPlots[0].moisture, .05);
+  const { host, guest, sync } = pair(); const w = garden(host, 'fog'); sync(); guest.rogueRun.world = w;
+  guest.gardenPlots = [plot({ id: 1, moisture: .05 })]; guest.updateSecrets(.1);
+  assert.equal(guest.gardenPlots[0].moisture, .05, 'the host owns the plants');
+});
