@@ -13,6 +13,12 @@ function secretSkin(img){
   g.globalAlpha=1;g.globalCompositeOperation='destination-in';g.drawImage(img,0,0);
   secretSkins.push([img,c]);return c;
 }
+function drawGardenSecret(g,plants,W,G,t,locked){
+  if(locked||!plants.length||!plants.every(function(p){return p.found;}))return false;
+  var str='GOODNIGHT, GARDEN',x0=Math.round(W/2-(str.length*6-1)/2),y=Math.round(G*.24);
+  if(ready(BOSS_FONT)){g.globalAlpha=.5+.3*Math.sin(t*.9);for(var i=0;i<str.length;i++){var n=str.charCodeAt(i)-32;g.drawImage(BOSS_FONT,n%16*6,Math.floor(n/16)*8,5,7,x0+i*6,y,5,7);}g.globalAlpha=1;}
+  return true;
+}
 function secretHash(seed,n){var h=Math.imul((seed|0)^Math.imul(n|0,0x9e3779b1),0x85ebca6b);h^=h>>>13;h=Math.imul(h,0xc2b2ae35);h^=h>>>16;return (h>>>0)/4294967296;}
 function secretEventFor(seed,w){
   var r=secretHash(seed,w);if(w<2)return '';

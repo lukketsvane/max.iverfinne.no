@@ -45,3 +45,4 @@ About one garden in eight (every meteor night), a star crosses the upper sky bet
 | Egg | How | What |
 | --- | --- | --- |
 | Moonlit Max | Tap the MAX title seven times, each within 1.5 s of the last. | A rising chime and a lavender tint on your own Max for the session. Seven more taps take it off. The menu sends a \`max-logo-tap\` window event; other players see Max as usual. |
+| Goodnight | Find all 20 plants. | The garden view (pinch out on the menu) writes GOODNIGHT, GARDEN softly across its sky, and in the water below. |

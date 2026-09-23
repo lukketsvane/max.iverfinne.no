@@ -3137,6 +3137,7 @@ function drawGardenScene(canvas,v){
   g.globalAlpha=.55+.45*Math.sin(t*1.7);galleryTile(g,L.fireflies,G-30+bob,sc,.7,W);
   g.globalAlpha=.55+.45*Math.sin(t*1.3+2);galleryTile(g,L.fireflies,G-36-bob,sc+97,.8,W);
   g.globalAlpha=1;
+  drawGardenSecret(g,plants,W,G,t,v.locked);
   if(!galleryBuf||galleryBuf.width!==W||galleryBuf.height!==M){galleryBuf=document.createElement('canvas');galleryBuf.width=W;galleryBuf.height=M;}
   var bg=galleryBuf.getContext('2d');bg.clearRect(0,0,W,M);bg.drawImage(canvas,0,0,W,M,0,0,W,M);
   g.fillStyle='#011d49';g.fillRect(0,M,W,H-M);
