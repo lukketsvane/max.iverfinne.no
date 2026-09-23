@@ -27,3 +27,4 @@ About one garden in eight (every meteor night), a star crosses the upper sky bet
 | Secret | How to find it | What it gives |
 | --- | --- | --- |
 | Golden plant | About one garden plant in 300 grows golden, seeded by the run and the plant's id, and sparkles. | Each harvest drops two extra seeds and rings a chime. |
+| Secret spot | One patch of ground per garden, 70-200 px from where the team arrives, twinkles faintly every few seconds. Stand still on it for 3 s. | A swirl of fireflies and two seeds, once per garden. |
