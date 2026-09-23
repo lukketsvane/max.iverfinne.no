@@ -66,3 +66,43 @@ test('a guest hears its own seed pickup and rover refill', () => {
   let from = ac.nodes.length; g.updateSeedPickups(.016); assert.deepEqual(sent, ['pickup-seed']); assert.ok(ac.nodes.length > from);
   from = ac.nodes.length; assert.equal(g.refillCompanion(), true); assert.deepEqual(sent, ['pickup-seed', 'refill']); assert.ok(ac.nodes.length > from);
 });
+
+const tuneOf = played => played.filter(n => n.kind === 'osc').map(o => o.frequency.points[0]);
+const plays = (g, played, cue) => { const t = tuneOf(played); return g.RUN_CUES[cue][0].every(f => t.includes(f)); };
+
+test('a pick that opens a banked level sounds both the boon and the new offer', () => {
+  const { g, contexts } = run(); g.grantRogueXP(g.rogueRun.next); g.grantRogueXP(g.rogueRun.next * 2);
+  const played = heard(g, contexts, () => g.chooseRoguePerk(g.rogueRun.choice[0].id));
+  assert.ok(g.rogueRun.choice, 'the banked level is offered at once');
+  assert.ok(plays(g, played, 'boon') && plays(g, played, 'level'));
+});
+
+test('a bomb on a plot crunches, and softer from further away', () => {
+  const peak = far => {
+    const { g, contexts } = run(), p = g.gardenPlots[0]; p.x = g.P.x + far;
+    const played = heard(g, contexts, () => g.explode(p.x, g.surfaceY(p.x) - 8));
+    assert.ok(p.hit > 0 && played.some(n => n.kind === 'noise'), 'friendly fire crunches');
+    return Math.max(...played.filter(n => n.kind === 'gain').flatMap(n => n.gain.points));
+  };
+  assert.ok(peak(200) < peak(20));
+});
+
+test('a guest phone hears the host garden: bites, offers, and its own last pick into a banked level', () => {
+  const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
+  const room = { id: 'audio-qa', host: ids[0], members: ids.map((id, i) => ({ id, slot: i + 1, ready: true })) };
+  const loadouts = Object.fromEntries(ids.map(id => [id, { classId: 'mech', skinId: 'moss' }]));
+  const [host, guest] = ids.map(id => {
+    const h = loadGame(), pending = [], contexts = fakeAudio(h);
+    h.game.beginCoop({ room, loadouts, user: { id }, host: id === ids[0], action(type, data) { pending.push({ id: pending.length + 1, type, ...data }); return true; }, tick() {}, fail(reason) { throw Error(reason); } });
+    h.game.setEffectsVolume(.75); h.game.unlockAudio(); return { g: h.game, pending, contexts };
+  });
+  const sync = () => guest.g.coopState(JSON.parse(JSON.stringify(host.g.coopCapture())));
+  const hear = act => { sync(); guest.g.listenRun(); const ac = guest.contexts[0], from = ac.nodes.length; act(); sync(); guest.g.listenRun(); return ac.nodes.slice(from); };
+  host.g.gardenRaidT = host.g.krekSpawnT = 9999; host.g.gardenPlots = [plot({ id: 1, x: host.g.P.x + 20 })];
+  assert.ok(hear(() => host.g.biteGarden(host.g.makeKrek(1, false, 0), host.g.gardenPlots[0])).some(n => n.kind === 'noise'), 'the bite crunches on the guest');
+  assert.ok(plays(guest.g, hear(() => host.g.grantRogueXP(host.g.rogueRun.next)), 'level'), 'the offer chimes on the guest');
+  host.g.grantRogueXP(host.g.rogueRun.next * 2); host.g.chooseRoguePerk(host.g.rogueRun.choice[0].id);
+  const played = hear(() => { guest.g.chooseRoguePerk(guest.g.rogueRun.choice[0].id); host.g.coopInput(ids[1], { avatar: JSON.parse(JSON.stringify(guest.g.coopAvatar())), actions: guest.pending.splice(0) }); });
+  assert.ok(guest.g.rogueRun.choice, 'the banked level reaches the guest');
+  assert.ok(plays(guest.g, played, 'boon') && plays(guest.g, played, 'level'));
+});
