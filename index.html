@@ -2945,6 +2945,13 @@ function openGardenRecords(){
   if(!window.MaxRunResults)return false;
   return window.MaxRunResults.showRecords({drawPlant:drawResultPlant,drawScene:drawResultScene});
 }
+function plantCollection(){
+  var seen={},add=function(list){(list||[]).forEach(function(p){if(p&&(p.growth||0)>=1&&!(p.kind in seen))seen[p.kind]=p.seed||7;});};
+  if(window.MaxRunRecords)window.MaxRunRecords.getAll().forEach(function(r){add(r.plants);});
+  add(rogueRun.garden);
+  var out=[];for(var k=0;k<GARDEN_FIG_FORMS.length;k++)out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7});
+  return out;
+}
 function drawResultPlant(canvas,p){
   var old=ctx,oldH=IH,oldA=ANCHOR,oldWind=worldWeather.wind;
   try{
@@ -5460,6 +5467,7 @@ function attachGameMenu(){
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},
+    plantCollection:plantCollection,drawPlant:drawResultPlant,
     openGardenRecords:openGardenRecords,
     beginRun:function(selection){coop=null;resetRogueRun('NEW RUN',selection);},
     clearInput:clearRunInput,exitRun:function(){if(runActive&&!rogueRun.ended)finalizeRogueRun(false);stopCoop();if(window.MaxRunResults)window.MaxRunResults.hide();},

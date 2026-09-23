@@ -188,6 +188,7 @@ test('unavailable or stale online responses keep real saved gardens usable', asy
     s.button('Leaderboard').click(); s.button('Saved gardens').click();
     resolve([{ id: 'stale', plants: plants(10) }]); await settle();
     assert.equal(w.document.querySelectorAll('.run-results-entry').length, 1);
-    assert.match(w.document.querySelector('.run-results-entry-copy').textContent, /Run 1/);
+    assert.match(w.document.querySelector('.run-results-entry-copy').textContent, /plants/);
+    assert.doesNotMatch(w.document.querySelector('.run-results-entry-copy').textContent, /Run \d/);
   } finally { s.close(); }
 });
