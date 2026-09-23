@@ -10,7 +10,7 @@ function validatePlants(plants) {
   const ids = new Set();
   for (const plant of plants) {
     if (!plant || !Number.isSafeInteger(plant.id) || plant.id < 1 || ids.has(plant.id) ||
-        !Number.isInteger(plant.kind) || plant.kind < 0 || plant.kind > 8 ||
+        !Number.isInteger(plant.kind) || plant.kind < 0 || plant.kind > 19 ||
         !Number.isFinite(plant.seed) || Math.abs(plant.seed) > 1e12 ||
         !Number.isFinite(plant.growth) || plant.growth < 0 || plant.growth > 1e6 ||
         typeof plant.stalk !== 'boolean') throw new Error('This bouquet contains an invalid plant record.');

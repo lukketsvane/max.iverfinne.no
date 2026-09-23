@@ -77,3 +77,13 @@ test('missing backend and network errors are reported without pretending a globa
   const waiting = createLeaderboard({ rpc() { throw new Error('must not send'); } }, identity, () => false);
   await assert.rejects(waiting.submit(run()), /Sign in/);
 });
+
+test('a bouquet with every plant kind the game grows can be published', async () => {
+  const { createLeaderboard } = await import('../garden-leaderboard.mjs');
+  const kinds = require('./game-harness.cjs').loadGame().game.plantCollection().length;
+  const plants = Array.from({ length: 124 }, (_, i) => ({ id: i + 1, kind: i % kinds, seed: i * 7.9, growth: 1 + i / 9, stalk: i % 5 === 0 }));
+  const client = { rpc: async () => ({ data: { ...row(), plants }, error: null }) };
+  const result = await createLeaderboard(client, () => ({ id: owner })).submit({ ...run(), plants });
+  assert.equal(result.plants.length, 124);
+  await assert.rejects(createLeaderboard(client, () => ({ id: owner })).submit({ ...run(), plants: [{ ...plants[0], kind: kinds }] }), /invalid plant record/);
+});
