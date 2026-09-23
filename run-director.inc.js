@@ -234,7 +234,7 @@ function updateRunHazards(dt){
       if(!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*Math.pow(.78,rogueRun.perks.shield||0)*classProtection(p));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
-        if(p.health<=.01)p.dead=8;
+        if(p.health<=.01)plantFalls(p);
       }});
       puff(h.x,h.y-4,6,.5);
     }

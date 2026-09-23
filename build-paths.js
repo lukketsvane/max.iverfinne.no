@@ -22,7 +22,13 @@
     {id:'dash',name:'Light step',desc:'17% faster dodge recovery',path:2,max:3},
     {id:'stride',name:'Long stride',desc:'6% faster movement each rank',path:2,max:5},
     {id:'spring',name:'Spring step',desc:'6% higher jumps each rank',path:2,max:4},
-    {id:'chain',name:'Chain bloom',desc:'Pest kills strike nearby pests',path:2,max:1,needs:{blast:2,cadence:1}}
+    {id:'chain',name:'Chain bloom',desc:'Pest kills strike nearby pests',path:2,max:1,needs:{blast:2,cadence:1}},
+    {id:'dew',name:'Morning dew',desc:'Dry plants refill with dew',path:0,max:3},
+    {id:'bounty',name:'Bumper crop',desc:'20% chance per rank of a double harvest',path:0,max:3},
+    {id:'bramble',name:'Bramble',desc:'Pests that bite a plant are cut by thorns',path:1,max:3},
+    {id:'evergreen',name:'Evergreen',desc:'Once per garden a dying plant lives on',path:1,max:1,needs:{shield:1,bark:1}},
+    {id:'wild',name:'Wild spark',desc:'12% chance per rank of a triple blast',path:2,max:3},
+    {id:'glue',name:'Sap burst',desc:'Blasts glue pests in place',path:2,max:3}
   ];
   function max(id){var p=perks.find(function(q){return q.id===id;});return p?p.max||5:0;}
   function empty(){var p={};perks.forEach(function(q){p[q.id]=0;});return p;}

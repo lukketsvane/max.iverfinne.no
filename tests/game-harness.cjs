@@ -33,7 +33,7 @@ const functionNames = [
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',
   'runHudBoons', 'runHudIconPosition', 'drawTinyBoon', 'levelTallyLayout', 'drawRunHud',
-  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
+  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'plantFalls', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +
