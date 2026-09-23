@@ -29,11 +29,11 @@ function coopMember(id,slot,kit,avatar){
 function coopJoin(id,kit){
   if(!coop||!coop.host)return false;
   var roomMember=coop.network.room.members.find(function(m){return m.id===id;}),m=coop.members[id];if(!roomMember)return false;
-  if(m&&m.classId===window.MaxClasses.clean(kit.classId)){m.left=false;m.last=performance.now();m.ack=null;m.dodge=null;coopNextChoice(m);return true;}
-  var x=P.x+((roomMember.slot||2)-1)*12;
-  coop.members[id]=coopMember(id,roomMember.slot,kit,{x:x,y:playerSupportY(x,surfaceY(x)),grounded:true,wet:false});
-  return true;
+  if(!m||m.classId!==window.MaxClasses.clean(kit.classId)){m=coop.members[id]=Object.assign(coopMember(id,roomMember.slot,kit,{}),{place:m?m.place|0:0});coopPlace(m);}
+  else if(m.avatar.world!==worldLevel())coopPlace(m);
+  m.left=false;m.last=performance.now();m.ack=null;m.dodge=null;coopNextChoice(m);return true;
 }
+function coopPlace(m){var x=P.x+((m.slot||2)-1)*12;m.avatar=Object.assign(coopAvatar(),{classId:m.classId,skin:m.skin,x:x,y:playerSupportY(x,surfaceY(x)),st:'free',grounded:true,wet:false});m.place=(m.place|0)+1;}
 function coopRoster(room){
   if(!coop)return;
   var wasHost=coop.host;coop.host=room.host===coop.me;coop.network.room=room;
@@ -201,7 +201,7 @@ function coopPlain(o){
   var out={};Object.keys(o).forEach(function(k){var v=o[k];if(k==='__proto__'||k==='constructor'||k==='prototype')return;if(typeof v==='number'&&Number.isFinite(v)||typeof v==='boolean'||typeof v==='string'&&v.length<80)out[k]=v;});return out;
 }
 function coopCapture(){
-  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000)};}),acks={},robots=[];
+  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000)};}),acks={},robots=[];
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
@@ -243,7 +243,8 @@ function coopState(s){
     var traits=cleanTraits(q.traits);
     if(q.id===coop.me)Object.keys(traits).forEach(function(type){if(traits[type]>(m.traits&&m.traits[type]||0))traitNotice(type,traits[type]);});
     m.traits=traits;
-    if(q.id!==coop.me)m.avatar=a;
+    if(q.id!==coop.me){m.avatar=a;m.place=q.place|0;}
+    else if((q.place|0)!==(m.place|0)){m.place=q.place|0;task=climb=warp=holdWater=null;Object.assign(P,{x:a.x,y:a.y,vx:0,vy:0,st:'free',grounded:a.grounded,platform:null});setAnim('idle');}
     else if(P.brace>0&&q.braceTag===P.braceTag)P.brace=Math.min(P.brace,Math.max(0,+q.braceLeft||0));
   });
   if(ids.indexOf(coop.me)<0)return;
