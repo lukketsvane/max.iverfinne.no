@@ -21,3 +21,9 @@ Rules:
 ## Shooting star
 
 About one garden in eight (every meteor night), a star crosses the upper sky between 20 and 70 s into the garden. A tap on it within 2.2 s grants one wish for the team: three seeds at the tapper's feet, or one free boon card (seeded, half and half). A tap on the star throws nothing. A guest's tap is a `wish` action; the host allows 0.8 s for the round trip.
+
+## Hidden things
+
+| Secret | How to find it | What it gives |
+| --- | --- | --- |
+| Golden plant | About one garden plant in 300 grows golden, seeded by the run and the plant's id, and sparkles. | Each harvest drops two extra seeds and rings a chime. |
