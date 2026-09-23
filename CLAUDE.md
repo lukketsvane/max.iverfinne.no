@@ -104,6 +104,16 @@ A boon is not done merely because it appears in the menu. Each must materially a
 
 Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior.
 
+### Co-op boon owners
+
+A boon belongs to the player who picked it. The host applies each effect with its owner's ranks, never one player's upgrade for the whole world:
+
+- The acting player: movement, throws, tending, harvesting, pickups and the seed spots around them (Long Stride, Spring Step, Light Step, Quick Fuse, Green Thumb, Wide Watering, Seed Rain, Bumper Crop, Bloom Pulse, Rain Engine, Seed Sense, Golden Seeds).
+- The bomb's thrower: Big Blast, Wild Spark, Sap Burst, Chain Bloom and embers ride on the bomb. Rover boons ride on the Mech's own crew.
+- The plant's carer, whoever planted it or last watered it (`plantPerks(p)`): Quick Roots, Deep Soil, Morning Dew, Sap and the seeds a plant sheds. A carer who left takes their boons along.
+- The team's best rank (`coopTeamPerks`) only where the effect is global: Sticky Pollen, because pests belong to nobody.
+- Thorns, Barkskin, Bramble, Evergreen and Mulch still read the team's best rank inside the protection code; they move to `plantPerks(p)` with the protection rework.
+
 ## Audio
 
 Music and effects are separate. Settings uses discrete steps 75 / 50 / 25 / off.

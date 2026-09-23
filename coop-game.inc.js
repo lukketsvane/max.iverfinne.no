@@ -1,5 +1,5 @@
 /* Included inside the game closure at build time. No public debug/state API. */
-var coop=null,coopApplying=false,coopActor=null,coopFxId=0;
+var coop=null,coopApplying=false,coopActor=null,coopFxId=0,COOP_NO_PERKS=window.MaxBuilds.empty();
 function coopGuest(){return !!(coop&&!coop.host);}
 function coopAction(type,data){return !!(coopGuest()&&coop.network.action(type,Object.assign({},data,{world:worldLevel()})));}
 function coopMembers(){return coop?Object.values(coop.members).filter(function(m){return !m.left;}):[];}
@@ -186,6 +186,7 @@ function coopShowChoices(){
   if(rogueRun.choice){renderRogueChoice();}
   else {perkMenu.style.display='none';}
 }
+function plantPerks(p){if(!coop)return rogueRun.perks;var m=Object.hasOwn(coop.members,p.carer||'')&&coop.members[p.carer];return m&&!m.left?m.perks:COOP_NO_PERKS;}
 function coopTeamPerks(){
   var p=window.MaxBuilds.empty();coopMembers().forEach(function(m){Object.keys(p).forEach(function(id){p[id]=Math.max(p[id],m.perks[id]||0);});});return p;
 }
