@@ -95,6 +95,8 @@
     }
   },
   "production": [
+    { "path": "assets/biomes-v1/ember-crow.png", "nodeId": "102:29", "group": "biomes", "width": 80, "height": 48, "sha1": "6af28d099cf0665f9fa8caca5a9993bbddeb4626" },
+    { "path": "assets/biomes-v1/snow-finch.png", "nodeId": "102:30", "group": "biomes", "width": 80, "height": 48, "sha1": "4210d78af875564d594bc67b2aee0170a1be4a60" },
     { "path": "assets/biomes-v1/ember-far.png", "nodeId": "102:26", "group": "biomes", "width": 249, "height": 19, "sha1": "c5775fb3b2566f1590321b8c4f73ef7ba8511bda" },
     { "path": "assets/biomes-v1/ember-mid.png", "nodeId": "102:25", "group": "biomes", "width": 249, "height": 22, "sha1": "400e76ae602166cd908eac29decdd17a007bf985" },
     { "path": "assets/biomes-v1/frost-far.png", "nodeId": "102:28", "group": "biomes", "width": 147, "height": 14, "sha1": "fe8601d176d1b9675549cc236230c4ac3b34ee1a" },
