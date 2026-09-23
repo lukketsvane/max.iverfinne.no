@@ -2822,6 +2822,19 @@ function drawSkillPip(){
   else if(P.skillCool>0||P.pounce){var w=Math.round(5*(1-P.skillCool/kit.skillCd));ctx.fillStyle='rgba(236,232,220,.5)';if(w>0)ctx.fillRect(x,y,w,1);}
   else{ctx.fillStyle='#ece8dc';ctx.fillRect(x,y,5,1);}
 }
+var EXIT_ARROW=['..#..','.###.','#####','..#..','..#..'];
+function exitStalk(){if(rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES)return null;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.stalk&&!p.dead&&p.health>0)return p;}return null;}
+function drawArrow(x,y,dir,col){ctx.fillStyle=col;for(var r=0;r<5;r++)for(var c=0;c<5;c++){var on=dir==='up'?EXIT_ARROW[r][c]:dir==='left'?EXIT_ARROW[c][4-r]:EXIT_ARROW[4-c][r];if(on==='#')ctx.fillRect(x+c,y+r,1,1);}}
+function drawExitCue(t){
+  if(!runActive||rogueRun.ended||(climb&&climb.exit))return;
+  var p=exitStalk();if(!p)return;
+  var sx=Math.round(p.x-camX),gy=Math.round(surfaceY(p.x)-camY),bob=Math.round(Math.sin(t*5)*1.5),col=Math.sin(t*7)>-.3?'#f5d25a':'#d9b350';
+  if(sx<4)drawArrow(3,Math.round(IH*.45)+bob,'left',col);
+  else if(sx>IW-5)drawArrow(IW-8,Math.round(IH*.45)+bob,'right',col);
+  else drawArrow(sx-2,gy-34+bob,'up',col);
+  var here=P.grounded&&!playerWetAt(P.x,P.y)&&Math.abs(P.y-surfaceY(p.x))<=4&&Math.abs(P.x-p.x)<9;
+  if(here&&Math.sin(t*9)>-.2)drawArrow(Math.round(P.x-camX)-2,Math.round(P.y-camY)-36+bob,'up','#ece8dc');
+}
 function herbalistCare(plant,amount){
   if(ownClass().id!=='herbalist')return;
   gardenPlots.forEach(function(q){if(q!==plant&&!q.dead&&Math.abs(q.x-plant.x)<=ownClass().radius){q.health=clamp01(q.health+amount);q.pulse=Math.max(q.pulse,.45);}});
@@ -5397,7 +5410,7 @@ function frame(now) {
   drawRunHazards(tSec);
   drawBirdBlasts();
   drawCompanion();
-  drawPlayer();drawSkillPip();drawCoopPlayers(dt);
+  drawPlayer();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
   drawPickupNotice(dt);
   drawClimbSky(tSec);
   drawBombs(tSec);
