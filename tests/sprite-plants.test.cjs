@@ -28,5 +28,5 @@ test('the garden view lays every plant kind along one scrollable soil strip', ()
   const canvas = { width: 188, height: 406, getContext: () => new Proxy({}, { get: () => () => {} }) };
   const info = g.drawGardenScene(canvas, { scroll: 0, t: 0 });
   assert.equal(info.ready, false, 'nothing is drawn before the layers load');
-  assert.equal(info.max, 34 * 2 + 18 * 52 - 188, 'nineteen plants, one per spacing, scroll to the last');
+  assert.equal(info.max, 30 * 2 + 18 * 46 - 188, 'nineteen plants, one per spacing, scroll to the last');
 });

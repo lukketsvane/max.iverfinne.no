@@ -51,7 +51,6 @@ test('drawing a result scene cannot change the live camera or viewport, even on 
   const before = [g.IW, g.IH, g.ANCHOR, g.camX, g.camY, g.P.x, g.P.y];
   const canvas = { width: 150, height: 324, getContext() { return { fillRect() { throw Error('canvas failure'); } }; } };
   assert.throws(() => g.drawResultScene(canvas, null), /canvas failure/);
-  assert.throws(() => g.drawMenuScene(canvas), /canvas failure/);
   assert.deepEqual([g.IW, g.IH, g.ANCHOR, g.camX, g.camY, g.P.x, g.P.y], before);
 });
 test('refilling pauses when the gardener jumps or stands on a ledge above the rover', () => {

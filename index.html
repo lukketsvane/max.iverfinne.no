@@ -3005,15 +3005,15 @@ function openGardenRecords(){
   return window.MaxRunResults.showRecords({drawPlant:drawResultPlant,drawScene:drawResultScene});
 }
 function plantCollection(){
-  var seen={},times={},add=function(list){(list||[]).forEach(function(p){if(!p||(p.growth||0)<1)return;times[p.kind]=(times[p.kind]||0)+1;if(!(p.kind in seen))seen[p.kind]=p.seed||7;});};
+  var seen={},add=function(list){(list||[]).forEach(function(p){if(p&&(p.growth||0)>=1&&!(p.kind in seen))seen[p.kind]=p.seed||7;});};
   if(window.MaxRunRecords)window.MaxRunRecords.getAll().forEach(function(r){add(r.plants);});
   add(rogueRun.garden);
-  var out=[];for(var k=0;k<GARDEN_FIG_FORMS.length;k++)out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7,times:times[k]||0});
+  var out=[];for(var k=0;k<GARDEN_FIG_FORMS.length;k++)out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7});
   return out;
 }
 var GARDEN_VIEW_LAYERS=['sky','far-mountains','mist','mid-mountains','forest','soil','fireflies','water'],GARDEN_VIEW={},galleryPlants={};
 GARDEN_VIEW_LAYERS.forEach(function(k){GARDEN_VIEW[k]=loadImg('assets/garden-view-v1/'+k+'.png');});
-var GALLERY_SP=52,GALLERY_X0=34;
+var GALLERY_SP=46,GALLERY_X0=30,galleryBuf=null,worldCovered=false;
 function galleryPlant(kind,seed,found){
   var key=kind+':'+(found?1:0),form=GARDEN_FIG_FORMS[kind];
   if(galleryPlants[key])return galleryPlants[key];
@@ -3038,18 +3038,18 @@ function galleryTile(g,im,y,scroll,f,W){
 function drawGardenScene(canvas,v){
   var L=GARDEN_VIEW,plants=plantCollection(),W=canvas.width,H=canvas.height,max=Math.max(0,GALLERY_X0*2+(plants.length-1)*GALLERY_SP-W);
   if(!GARDEN_VIEW_LAYERS.every(function(k){return ready(L[k]);}))return {ready:false,max:max};
-  var g=canvas.getContext('2d'),t=v.t||0,sc=Math.round(v.scroll||0),G=Math.round(H*(H>W*1.2?.68:.7)),soilTop=G-4,M=soilTop+L.soil.height;
+  var g=canvas.getContext('2d'),t=v.t||0,sc=Math.round(v.scroll||0),G=Math.round(H*(H>W*1.2?.68:.7)),soilTop=G-3,M=soilTop+L.soil.height-2,i;
   g.imageSmoothingEnabled=false;g.globalAlpha=1;
   g.fillStyle='#050c1c';g.fillRect(0,0,W,M);
-  for(var i=0;i<W*G/260;i++){
-    var sx=imod(Math.round(h1(i*7.31)*W*3-sc*.02),W),sy=Math.round(h1(i*3.17+1.3)*(G-70)),tw=Math.sin(t*(1+h1(i)*2)+i);
+  for(i=0;i<W*G/200;i++){
+    var sx=imod(Math.round(h1(i*7.31)*W*3-sc*.02),W),sy=Math.round(h1(i*3.17+1.3)*(G-60)),tw=Math.sin(t*(1+h1(i)*2)+i);
     g.fillStyle=tw>.6?'#c9d6f5':h1(i*1.9)>.6?'#8aa0d8':'#3b4a78';g.fillRect(sx,sy,1,1);
   }
-  galleryTile(g,L.sky,G-176,sc+Math.round((L.sky.width-W)/.03),.03,W);
-  galleryTile(g,L['far-mountains'],G-86,sc,.12,W);
-  galleryTile(g,L.mist,G-70,sc,.2,W);
-  galleryTile(g,L['mid-mountains'],G-78,sc,.3,W);
-  galleryTile(g,L.forest,G-46,sc,.5,W);
+  galleryTile(g,L.sky,G-100,sc+Math.round((L.sky.width-W)/.03),.03,W);
+  galleryTile(g,L['far-mountains'],G-64,sc,.12,W);
+  galleryTile(g,L.mist,G-52,sc,.2,W);
+  galleryTile(g,L['mid-mountains'],G-50,sc,.3,W);
+  galleryTile(g,L.forest,G-29,sc,.5,W);
   g.fillStyle='#1c1a22';g.fillRect(0,G,W,M-G);
   galleryTile(g,L.soil,soilTop,sc,1,W);
   for(i=0;i<plants.length;i++){
@@ -3062,14 +3062,16 @@ function drawGardenScene(canvas,v){
     var fp=galleryPlant(plants[focus].kind,plants[focus].seed,plants[focus].found);if(fp)g.drawImage(fp,GALLERY_X0+focus*GALLERY_SP-sc-36,G-96);
   }
   var bob=Math.round(Math.sin(t*.6)*2);
-  g.globalAlpha=.55+.45*Math.sin(t*1.7);galleryTile(g,L.fireflies,G-44+bob,sc,.7,W);
-  g.globalAlpha=.55+.45*Math.sin(t*1.3+2);galleryTile(g,L.fireflies,G-52-bob,sc+97,.8,W);
+  g.globalAlpha=.55+.45*Math.sin(t*1.7);galleryTile(g,L.fireflies,G-30+bob,sc,.7,W);
+  g.globalAlpha=.55+.45*Math.sin(t*1.3+2);galleryTile(g,L.fireflies,G-36-bob,sc+97,.8,W);
   g.globalAlpha=1;
+  if(!galleryBuf||galleryBuf.width!==W||galleryBuf.height!==M){galleryBuf=document.createElement('canvas');galleryBuf.width=W;galleryBuf.height=M;}
+  var bg=galleryBuf.getContext('2d');bg.clearRect(0,0,W,M);bg.drawImage(canvas,0,0,W,M,0,0,W,M);
   g.fillStyle='#011d49';g.fillRect(0,M,W,H-M);
-  for(var y=M;y<H;y++){
-    var src=2*M-y-1;if(src<0)break;
+  for(var y=M;y<H;y+=2){
+    var src=2*M-y-2;if(src<0)break;
     g.globalAlpha=Math.max(.08,.34-(y-M)/(H-M)*.22);
-    g.drawImage(canvas,0,src,W,1,Math.round(Math.sin(t*1.6+y*.45)*(1+(y-M)/50)),y,W,1);
+    g.drawImage(galleryBuf,0,src,W,2,Math.round(Math.sin(t*1.6+y*.45)*(1+(y-M)/50)),y,W,2);
   }
   for(var k=0,wy=M-2;wy<H;wy+=L.water.height,k++){
     g.globalAlpha=Math.max(.12,.7-k*.18);
@@ -3089,87 +3091,6 @@ function drawResultPlant(canvas,p){
   }finally{ctx=old;IH=oldH;ANCHOR=oldA;worldWeather.wind=oldWind;}
 }
 function resultAssetsReady(){return plantAtlasReady&&sheetReady&&ready(soilImg)&&Object.keys(IMG).every(function(k){return ready(IMG[k]);});}
-// Native sprite layers keep their pixel grid; only the menu palette changes.
-var menuNightCache=new WeakMap();
-function menuNightLayer(im,palette){
-  if(!ready(im))return im;
-  var variants=menuNightCache.get(im);if(!variants){variants={};menuNightCache.set(im,variants);}
-  var key=palette.join(',');if(variants[key])return variants[key];
-  var layer=document.createElement('canvas');layer.width=im.naturalWidth;layer.height=im.naturalHeight;
-  var c=layer.getContext('2d');c.imageSmoothingEnabled=false;c.drawImage(im,0,0);
-  var pixels=c.getImageData(0,0,layer.width,layer.height),data=pixels.data;
-  for(var i=0;i<data.length;i+=4){
-    if(!data[i+3])continue;
-    var lum=data[i]*.25+data[i+1]*.55+data[i+2]*.20;
-    var color=palette[Math.min(palette.length-1,Math.floor(lum/256*palette.length))];
-    data[i]=color[0];data[i+1]=color[1];data[i+2]=color[2];
-  }
-  c.putImageData(pixels,0,0);layer.complete=true;layer.naturalWidth=layer.width;layer.naturalHeight=layer.height;
-  variants[key]=layer;return layer;
-}
-function drawMenuScene(canvas){
-  var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY,sky:SKY};
-  try{
-    ctx=canvas.getContext('2d');if(!ctx)return false;
-    IW=canvas.width;IH=canvas.height;ctx.imageSmoothingEnabled=false;
-    var portrait=IH>IW,gy=Math.round(IH*.80),pool=Math.round(IH*.86),stemX=Math.round(IW*(portrait?.23:.77));
-    camX=180;camY=0;ANCHOR=gy;SKY='#080e20';drawSky(0,gy);
-    for(var star=0;star<55;star++){
-      var sx=Math.round(h1(star*9.71+4)*IW),sy=Math.round(h1(star*7.12+1)*IH*.65);
-      rect(sx,sy,1,1,star%7?'#465678':'#c9d2dd');
-      if(star%13===0){rect(sx-1,sy,3,1,'#8194b9');rect(sx,sy-1,1,3,'#8194b9');rect(sx,sy,1,1,'#e8edeb');}
-    }
-    var far=menuNightLayer(IMG.mtn,[[15,23,52],[22,32,73],[28,40,88],[35,49,99],[46,62,113],[60,76,126]]);
-    drawTiled(far,.10,Math.max(159+Math.round(IH*.16),Math.round(IH*.55)),true,'#1b2a4d');
-    var mid=menuNightLayer(IMG.mtn,[[14,25,44],[23,40,59],[31,50,69],[42,64,82],[55,78,98],[69,91,111]]);
-    camX=510;drawTiled(mid,.35,Math.max(159+Math.round(IH*.33),Math.round(IH*.74)),true,'#203549');
-    var trees=menuNightLayer(IMG.forest,[[10,21,33],[15,30,42],[22,40,51],[29,49,59],[35,57,68],[43,65,75]]);
-    drawTiled(trees,.35,Math.max(108+Math.round(IH*.52),gy),false,'#142532');
-    var clouds=menuNightLayer(IMG.clouds,[[28,40,65],[42,56,82],[55,71,98],[72,89,112],[89,105,127],[108,124,144]]);
-    if(ready(clouds)){ctx.globalAlpha=.30;ctx.drawImage(clouds,-45,Math.round(IH*.28));ctx.globalAlpha=.18;ctx.drawImage(clouds,Math.round(IW*.40),Math.round(IH*.49));ctx.globalAlpha=1;}
-    var moonX=Math.round(IW*.82),moonY=Math.round(IH*.215);
-    disc(moonX,moonY,15,'rgba(139,165,222,.025)');disc(moonX,moonY,11,'rgba(139,165,222,.045)');
-    disc(moonX,moonY,7,'#dfe3dd');disc(moonX-2,moonY+2,3,'#b6bdc9');disc(moonX+2,moonY-3,2,'#c0c6cf');rect(moonX-4,moonY-2,2,2,'#aab4c5');
-    ctx.fillStyle='#121c28';ctx.fillRect(0,gy,IW,IH-gy);
-    if(ready(soilImg))for(var root=6;root<IW;root+=29)rootSystem(0,root,gy,root*.73,2);
-    if(gardenReady){
-      for(var x=-8,k=0;x<IW+12;x+=11+Math.round(h1(k*3.7)*14),k++){
-        var rocks=GM.rock[k%GM.rock.length];gRect(rocks,x,gy+1-rocks[3],!!(k%2));
-        var bush=GM.bush[k%GM.bush.length];gRect(bush,x+7,gy-bush[3],false);
-        if(k%2===0)gPlant(GM.tall_blue[0],x-3,gy,0,!!(k%3));
-        if(k%3===1)gPlant(GM.posy[k%GM.posy.length],x+6,gy,0,false);
-      }
-      // Layer original mossy stone and vine cells into a small standing cairn.
-      var stoneX=Math.round(IW*(portrait?.78:.65));
-      for(var row=0;row<3;row++)gRect(GM.rock[3],stoneX-9,gy-17-row*10,false);
-      gPlant(GM.vine[2],stoneX-6,gy-12,0,false);gPlant(GM.vine[5],stoneX+5,gy-9,0,true);
-      if(ready(crowImg))drawCrowCell(crowImg,CR_STAND,stoneX+2,gy-38,-1);
-    }
-    drawGrowingFigmaPlant({kind:0,seed:79,growth:3,health:1,hit:0,pulse:0,moisture:1,stalk:false},stemX,gy,0,Math.round(IH*(portrait?.59:.68)));
-    drawGrowingFigmaPlant({kind:6,seed:32,growth:1.1,health:1,hit:0,pulse:0,moisture:1,stalk:false},stemX+23,gy,0,31);
-    var maxX=Math.round(IW*(portrait?.38:.58));
-    if(sheetReady)ctx.drawImage(sheet,0,0,CELL,CELL,maxX-16,gy-31,CELL,CELL);
-    if(ready(crowImg))drawCrowCell(crowImg,CR_STAND,Math.round(IW*.08),gy-14,1);
-    if(plantAtlasReady){
-      var logoX=Math.round(IW*(portrait?.50:.28)),logoY=Math.round(IH*(portrait?.167:.26));
-      for(var n=-4;n<=4;n++)rect(logoX+n*4,logoY+Math.abs(n%3),5,1,'#315647');
-      figmaSeg(PA.fam[0].f[0],logoX,logoY+5,false);figmaSeg(PA.fam[0].f[0],logoX+18,logoY,false);
-    }
-    for(var f=0;f<15;f++){
-      var fx=Math.round(IW*(.06+h1(f*9.13)*.88)),fy=Math.round(gy-7-h1(f*12.1)*IH*.27);
-      disc(fx,fy,5,'rgba(199,217,100,.028)');disc(fx,fy,3,'rgba(199,217,100,.07)');rect(fx,fy,1,2,'#d8de7a');
-    }
-    ctx.fillStyle='#091329';ctx.fillRect(0,pool,IW,IH-pool);
-    for(var y=pool+1;y<IH;y++){
-      var src=gy-1-(y-pool),shift=(y%7<2?2:0)-(y%13<3?1:0);
-      if(src<0)break;ctx.globalAlpha=.46;ctx.drawImage(canvas,0,src,IW,1,shift,y,IW,1);
-    }
-    ctx.globalAlpha=1;
-    for(var r=0;r<35;r++)rect(Math.round(h1(r*7.31)*IW),pool+2+(r*7)%(IH-pool),3+r%8,1,r%3?'#1b2d4c':'#344866');
-    if(gardenReady)for(var island=0;island<3;island++){var ir=GM.rock[island?1:0];gRect(ir,Math.round(IW*(island===0?.06:island===1?.76:.91)),pool+9+(island%2)*19,false);}
-    return resultAssetsReady()&&gardenReady&&ready(crowImg);
-  }finally{ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;SKY=old.sky;}
-}
 function drawResultScene(canvas,bouquet){
   var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY};
   try{
@@ -5451,6 +5372,7 @@ function frame(now) {
   if (dt > 0.05) dt = 0.05;
   if (dt < 0) dt = 0;
   coopFrame();
+  if(worldCovered){requestAnimationFrame(frame);return;}
   var paused=runIsPaused();
   if(!paused){
   tSec += dt;
@@ -5595,7 +5517,7 @@ function attachGameMenu(){
   if(!window.MaxGameMenu)return;
   window.MaxGameMenu.attach({
     pause:setMenuPaused,
-    drawMenuScene:drawMenuScene,
+    setCovered:function(v){worldCovered=!!v;},
     effectsVolume:function(){return effectsVolume;},
     musicVolume:function(){return musicVolume;},
     setEffectsVolume:setEffectsVolume,
