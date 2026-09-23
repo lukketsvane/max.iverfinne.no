@@ -15,13 +15,13 @@ const stateNames = [
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
   'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'soloCrew', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
-  'coop', 'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
+  'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
   'wonders', 'wonderRun', 'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
+  'pollPads', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
