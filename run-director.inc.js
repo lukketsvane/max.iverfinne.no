@@ -17,21 +17,13 @@ function stageCombatProfile(){
   return COMBAT_PROFILES[kind]||COMBAT_PROFILES.terraces;
 }
 function enemyUnlocked(kind){
-  var stage=worldLevel(),timeStage=1+Math.floor(Math.max(0,runElapsed)/90);
-  if(kind===8){
-    var ratGate={
-      easy:{stage:10,time:540},
-      medium:{stage:8,time:420},
-      hard:{stage:7,time:360},
-      insane:{stage:6,time:300}
-    }[rogueRun.difficulty]||{stage:8,time:420};
-    return stage>=ratGate.stage||runElapsed>=ratGate.time;
-  }
+  var stage=worldLevel();
+  if(kind===8)return stage>=({easy:12,medium:10,hard:9,insane:8}[rogueRun.difficulty]||10);
   if(kind<3)return true;
-  return Math.max(stage,timeStage)>={3:2,4:3,5:4,6:6,9:7,10:9,11:11}[kind];
+  return stage>={3:6,4:7,5:8,6:9,9:11,10:13,11:16}[kind];
 }
 function waveEnemyKind(index){
-  var first={2:3,3:4,4:5,6:6,7:9,9:10,11:11}[worldLevel()];
+  var first={6:3,7:4,8:5,9:6,11:9,13:10,16:11}[worldLevel()];
   if(index===2&&first!=null)return first;
   var kinds=stageCombatProfile().kinds,kind=kinds[(index+(gardenWave-1)*2)%kinds.length];
   return enemyUnlocked(kind)?kind:(index+gardenWave)%3;
@@ -124,8 +116,8 @@ function encounterAt(x){return runEncounters.find(function(e){return !e.done&&!e
 function spawnEncounterGuard(e){
   if(!e.guardsRemaining||floatKrek.length>=MAX_ACTIVE_ENEMIES)return false;
   var i=e.guardIndex||0,side=i%2?1:-1,kind=waveEnemyKind(i+1);
-  if(e.type==='cache'&&worldLevel()>=4&&i===0)kind=5;
-  if(e.type==='rain'&&worldLevel()>=3&&i===0)kind=4;
+  if(e.type==='cache'&&enemyUnlocked(5)&&i===0)kind=5;
+  if(e.type==='rain'&&enemyUnlocked(4)&&i===0)kind=4;
   var k=makeKrek(side,false,kind);safeEnemyPosition(k,e.x+side*(78+i*11),encounterFloor(e)-24);
   k.eventId=e.id;k.eventX=e.x;k.eventY=encounterFloor(e);
   if(isRat(k)){k.ratGrounded=false;k.ratPlatform='';k.vy=0;}

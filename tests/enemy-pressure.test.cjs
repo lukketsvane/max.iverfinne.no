@@ -17,9 +17,9 @@ function fresh(players = 1) {
 
 function count(g, kind) { return g.floatKrek.filter(k => k.kind === kind && k.hp > 0).length; }
 
-test('specialists arrive earlier in reproducible formations, with every unlocked role represented', () => {
+test('specialists arrive one garden at a time from garden six in reproducible formations, with every unlocked role represented', () => {
   const g = fresh();
-  for (const [stage, expected] of [[1, [0, 1, 2]], [2, [0, 1, 2, 3]], [3, [0, 1, 2, 3, 4]], [4, [0, 1, 2, 3, 4, 5]], [6, [0, 1, 2, 3, 4, 5, 6]]]) {
+  for (const [stage, expected] of [[1, [0, 1, 2]], [5, [0, 1, 2]], [6, [0, 1, 2, 3]], [7, [0, 1, 2, 3, 4]], [8, [0, 1, 2, 3, 4, 5]], [9, [0, 1, 2, 3, 4, 5, 6]]]) {
     g.rogueRun.world = stage;
     for (let wave = 1; wave <= 3; wave++) {
       g.gardenWave = wave;
@@ -115,7 +115,7 @@ test('patrols, queued trial guards and raids share the same active cap in solo a
     g.gardenPlots=[plot({x:g.P.x})];g.gardenRaidT=9;
     for(let i=0;i<30;i++){g.krekSpawnT=0;g.updateKrek(.001);}
     assert.equal(g.floatKrek.length,24);assert.ok(g.floatKrek.every(k=>k.patrol));
-    assert.ok(count(g,4)>0);assert.ok(count(g,6)>0,'late patrols retain dangerous mixed support');
+    assert.ok(count(g,4)>0);assert.ok(count(g,3)>0,'late patrols retain dangerous mixed support');
     const rain = g.runEncounters.find(e => e.type === 'rain');
     Object.assign(g.P, { x: rain.x, y: rain.y, grounded: true, wet: false, st: 'free' });
     g.gardenSeeds = 20;

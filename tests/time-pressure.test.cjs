@@ -40,7 +40,7 @@ test('clearing all three waves opens travel but continues denser and faster patr
     const {game:g}=scene(seconds);densities.push(fillPatrol(g));
     assert.ok(g.floatKrek.every(k=>k.patrol&&!k.raid));
     g.updateGardenFun(.01);assert.equal(g.gardenWave,3);assert.equal(g.rogueRun.clearedWorld,1);assert.equal(g.rogueRun.ended,false);
-    if(seconds>=600)assert.ok(new Set(g.floatKrek.map(k=>k.kind)).size>=6,'time alone introduces the full mixed roster on stage one');
+    assert.ok(g.floatKrek.every(k=>k.kind<3),'stage one keeps to small birds however long it runs');
   }
   assert.deepEqual(densities,[4,10,17,24]);
   // Each fill loop ends with a blocked attempt; measure the director's actual
