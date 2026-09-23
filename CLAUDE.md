@@ -69,6 +69,8 @@ Easy must actually feel easy. Do not tune every mode upward because late Hard/In
 
 Easy currently reduces damage, enemy durability, density, wave budget and time-pressure growth and gives a longer opening grace period.
 
+Friendly fire scales with the difficulty's damage factor but not with the clock: a dry blast costs a plant three quarters of an opening bite on every difficulty.
+
 Rats were intentionally moved later and softened. Current entry gates are documented in `README.md`. Rat variants stage in after common rats; do not put plague/armoured rats back into the opening gardens.
 
 The recent expanded specialists are:
