@@ -3,7 +3,7 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame}=require('./game-harness.cjs');
 
-test('garden stage is rendered as compact tally groups centered around a bounded 1–20 count',()=>{
+test('garden stage is rendered as compact tally groups right-aligned beside the boons, a bounded 1–20 count',()=>{
   const g=loadGame().game;
   for(const [level,count,groups] of [[1,1,[1]],[5,5,[5]],[6,6,[5,1]],[10,10,[5,5]],[17,17,[5,5,5,2]],[20,20,[5,5,5,5]],[99,20,[5,5,5,5]]]){
     const layout=g.levelTallyLayout(level);

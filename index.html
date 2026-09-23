@@ -4064,7 +4064,7 @@ function drawTinyBoon(id,x,y,count){
   if(stacks>1){ctx.fillStyle='#ece8dc';for(var s=0;s<stacks;s++)ctx.fillRect(x+9,y+8-s*2,1,1);}
 }
 function drawLevelTallies(level){
-  var layout=levelTallyLayout(level),x=Math.floor((IW-layout.width)/2),y=safeTopArt()+3;
+  var layout=levelTallyLayout(level),x=IW-layout.width-4,y=safeTopArt()+3;
   layout.groups.forEach(function(group){
     var start=x;
     ctx.fillStyle='rgba(4,8,10,.68)';

@@ -98,7 +98,7 @@
 .max-room-player-copy strong{color:#e6e6cf;overflow-wrap:anywhere}.max-room-player-copy>span{color:#bbcccb}.max-room-player-copy .max-room-ready{font-size:10px;color:#cbd6a7}
 
 /* Live settings never replace or freeze the active world. */
-.max-live-settings{position:fixed;z-index:42;right:max(4px,env(safe-area-inset-right));top:max(4px,env(safe-area-inset-top));width:44px;height:44px;border:0;padding:14px;background:none;opacity:.6;touch-action:manipulation;color:#d8dfcd;cursor:pointer}
+.max-live-settings{position:fixed;z-index:42;left:max(4px,env(safe-area-inset-left));bottom:max(4px,env(safe-area-inset-bottom));width:44px;height:44px;border:0;padding:14px;background:none;opacity:.6;touch-action:manipulation;color:#d8dfcd;cursor:pointer}
 .max-live-settings svg{width:16px;height:16px;fill:currentColor}.max-live-settings:hover,.max-live-settings:focus-visible{opacity:1}
 .max-menu[data-live="true"]{background:#03080e2e}
 .max-menu[data-live="true"]::before,.max-menu[data-live="true"] .max-garden-scene{display:none}
