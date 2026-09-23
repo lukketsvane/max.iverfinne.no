@@ -89,6 +89,7 @@ function coopInput(id,packet){
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
     var actor=(a&&a.world===worldLevel())?a:m.avatar;
     if(runIsPaused()||!actor||actor.world!==worldLevel())return;
+    if(action.type==='wish'){grantWish(actor,.8);return;}
     if(action.type==='travel'){
       var travelActor=(a&&a.world===worldLevel())?a:m.avatar,plant=stalkAt(travelActor.x,travelActor.y,10);
       var above=plant?surfaceY(plant.x)-travelActor.y:-1;

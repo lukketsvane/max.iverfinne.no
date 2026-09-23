@@ -57,3 +57,37 @@ test('a full moon doubles the fireflies and nothing else changes', () => {
   g.drawSecretSky(1, 200); g.drawSecretGround(1); g.drawSecretAir(1); g.drawSecretBanner(10);
   assert.equal(g.gardenSeeds, seeds); assert.equal(g.rogueRun.xp, xp);
 });
+
+function starGarden(g, boon) {
+  const { seed, w } = seedFor(g, (s, w) => g.secretHash(s, w * 64 + 1) < .12 && g.secretEventFor(s, w) !== 'meteors' && (g.secretHash(s, w * 64 + 3) < .5) === boon);
+  g.rogueRun.seed = seed; g.rogueRun.world = w; g.updateSecrets(0);
+  g.updateSecrets(g.secrets.starAt - g.secrets.t); assert.ok(g.secretStarLive(), 'the star crosses the sky at its seeded moment');
+}
+test('a shooting star grants one wish to a quick tap, and nothing to a slow or wide one', () => {
+  const h = fresh(), g = h.game;
+  starGarden(g, false);
+  const q = g.secretStarPos(), sx = 960 / g.IW, sy = 540 / g.IH;
+  assert.equal(g.catchWish(g.camX + q.x + 40, g.camY + q.y), false, 'a tap beside the star is only a tap');
+  const loose = g.seedPickups.length;
+  h.pointer('pointerdown', q.x * sx, q.y * sy); h.pointer('pointerup', q.x * sx, q.y * sy);
+  assert.equal(g.seedPickups.length, loose + 3, 'the wish falls as three seeds'); assert.equal(g.bombs.length, 0, 'catching the star throws nothing');
+  assert.equal(g.secretStarLive(), false); assert.equal(g.catchWish(g.camX + q.x, g.camY + q.y), false, 'one wish per star');
+  const late = fresh().game; starGarden(late, true); late.updateSecrets(2.3);
+  assert.equal(late.secretStarLive(), false, 'after two seconds the star is gone');
+  const boon = fresh().game; starGarden(boon, true); const level = boon.rogueRun.level, p = boon.secretStarPos();
+  assert.equal(boon.catchWish(boon.camX + p.x, boon.camY + p.y), true);
+  assert.equal(boon.rogueRun.level, level + 1, 'or as a free boon card'); assert.ok(boon.rogueRun.choice.length);
+});
+
+test('a guest wishes through the host, once, and the host allows for the round trip', () => {
+  const { host, guest, sync, send } = pair();
+  starGarden(host, false); sync(); guest.rogueRun.world = host.rogueRun.world;
+  assert.ok(guest.secretStarLive(), 'the guest sees the same star');
+  const q = guest.secretStarPos(), loose = host.seedPickups.length;
+  assert.equal(guest.grantWish(guest.P), false, 'a guest cannot grant its own wish');
+  assert.equal(guest.catchWish(guest.camX + q.x, guest.camY + q.y), true);
+  host.updateSecrets(2.5); send();
+  assert.equal(host.seedPickups.length, loose + 3, 'the host still honours a wish that left in time');
+  send(); assert.equal(host.seedPickups.length, loose + 3);
+  sync(); assert.equal(guest.secretStarLive(), false);
+});

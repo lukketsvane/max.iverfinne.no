@@ -10,7 +10,11 @@ function secretSeedFor(run){
   if(Number.isFinite(run.seed))return run.seed|0;
   var s=String(run.recordId||Date.now()),h=0x811c9dc5;for(var i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return h|0;
 }
-function rollSecrets(){var w=worldLevel();secrets.world=w;secrets.event=secretEventFor(secrets.seed,w);secrets.t=0;}
+function rollSecrets(){
+  var w=worldLevel(),r=function(n){return secretHash(secrets.seed,w*64+n);};
+  secrets.world=w;secrets.event=secretEventFor(secrets.seed,w);secrets.t=0;
+  secrets.starAt=w>1&&(secrets.event==='meteors'||r(1)<.12)?20+Math.round(r(2)*50):0;secrets.star=0;secrets.wished=0;
+}
 function secretEvent(){return secrets.world===worldLevel()?secrets.event:'';}
 function updateSecrets(dt){
   if(!runActive||rogueRun.ended)return;
@@ -18,13 +22,37 @@ function updateSecrets(dt){
   if(coopGuest())return;
   if(secretRun!==rogueRun){secretRun=rogueRun;secrets.seed=secretSeedFor(rogueRun);secrets.world=0;}
   if(secrets.world!==worldLevel())rollSecrets();
+  if(secrets.starAt&&!secrets.star&&secrets.t>=secrets.starAt)secrets.star=secrets.t;
+}
+function secretStarLive(slack){return secrets.star>0&&!secrets.wished&&secrets.world===worldLevel()&&secrets.t-secrets.star<2.2+(slack||0);}
+function secretStarPos(){var k=clamp01((secrets.t-secrets.star)/2.2),v=secretHash(secrets.seed,secrets.world*64+4);return {x:Math.round(IW*(.92-.1*v-.5*k)),y:Math.round(safeTopArt()+16+IH*(.04+.03*v+.14*k))};}
+function grantWish(a,slack){
+  if(coopGuest()||!secretStarLive(slack))return false;
+  secrets.wished=secrets.t;
+  if(secretHash(secrets.seed,secrets.world*64+3)<.5)grantRogueLevel();else spawnLooseSeeds(a.x,a.y-24,3,true);
+  chime([1047,1319,1568,2093],.06,.04);return true;
+}
+function catchWish(wx,wy){
+  if(!secretStarLive())return false;
+  var q=secretStarPos();if(Math.hypot(wx-camX-q.x,wy-camY-q.y)>18)return false;
+  for(var i=0;i<10;i++)parts.push({x:wx,y:wy,vx:(Math.random()-.5)*30,vy:(Math.random()-.5)*30,l:.8,m:.8,c:'246,232,160'});
+  if(!coopGuest())return grantWish(P);
+  if(coopAction('wish')){secrets.wished=secrets.t;chime([1047,1319,1568,2093],.06,.04);}
+  return true;
 }
 function secretSync(s){
   var next=coopPlain(s);next.event=Object.hasOwn(SECRET_WORDS,next.event)?next.event:'';
+  if(next.wished&&!secrets.wished&&next.world===secrets.world)chime([1047,1319,1568,2093],.06,.04);
   secrets=next;secretRun=rogueRun;
 }
 function drawSecretBanner(y){var e=secretEvent(),w=SECRET_WORDS[e];if(w)drawBossWord(w,20+String(worldLevel()).length*8+(w.length*6-1)/2,y+2,1);}
 function drawSecretSky(t,hy){
+  if(secretStarLive()){
+    var q=secretStarPos();
+    for(var i=9;i>0;i--){ctx.fillStyle='rgba(246,232,190,'+(.55-i*.055).toFixed(3)+')';ctx.fillRect(q.x+i*2,q.y-Math.round(i*.56),2,1);}
+    ctx.globalCompositeOperation='lighter';disc(q.x,q.y,3,'rgba(246,232,190,0.25)');ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='#fffbe8';ctx.fillRect(q.x-1,q.y,3,1);ctx.fillRect(q.x,q.y-1,1,3);
+  }
   if(secretEvent()!=='moon')return;
   var span=IW+900,mx=(IW*.72-camX*.012)%span,my=Math.max(12,hy-196);if(mx<-60)mx+=span;
   disc(mx,my,20,'rgba(223,230,234,0.035)');disc(mx,my,13,'rgba(223,230,234,0.05)');disc(mx,my,8,'#eef1ea');
