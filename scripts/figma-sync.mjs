@@ -4,13 +4,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { inflateSync } from 'node:zlib';
+import { FIGMA, FigmaError, all, connect, download, metadata, tool, toolCalls, unxml } from './figma-mcp.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SERVER = process.env.FIGMA_MCP_URL || 'http://127.0.0.1:3845/mcp';
-const FIGMA = {
-  fileKey: 'TC0PHGMTCMR6im4hb3CSbF', fileName: 'max.iverfinne.no max fuglesprenger',
-  url: 'https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF', pages: { production: '10:2', draft: '0:1' },
-};
 const SOURCE = '52:2', RULES = { pixelArt: '38:4', exportCheck: '40:47' }, GRIDS = '39:2', PALETTE = '39:39';
 const PULLABLE = ['DRIFT', 'NEW-IN-FIGMA', 'MISSING-IN-REPO', 'MANIFEST-STALE'];
 const GENERATED = [[/^assets\/(max-skins-v1|enemies-v1)\//, 'scripts/build-native-art.py'], [/^assets\/rat-enemies-v1\//, 'scripts/build-rat-assets.py']];
@@ -25,16 +21,7 @@ const HINTS = {
   REJECTED: 'breaks a rule (see the lines above) → fix it; nothing is pulled until it passes',
 };
 const MANIFEST = 'assets/figma-manifest.json';
-const OFFLINE = `Cannot reach the Figma Dev Mode MCP server at ${SERVER}.
-  1. Open the Figma desktop app (the browser version has no local server).
-  2. Open ${FIGMA.url} and keep it as the active tab.
-  3. Switch to Dev Mode with Shift+D.
-  4. Enable the desktop MCP server (Dev Mode inspect panel → MCP server, or Figma menu → Preferences → Enable Dev Mode MCP Server).
-Then run the command again.`;
-const SLOW = `Figma did not answer within 60 s. Keep ${FIGMA.url} as the active tab in the Figma desktop app and run the command again.`;
 
-class FigmaError extends Error {}
-const failed = e => { throw new FigmaError(e?.name === 'TimeoutError' ? SLOW : OFFLINE); };
 const sha1 = bytes => createHash('sha1').update(bytes).digest('hex');
 const safePath = p => /^assets\/(?:[\w.-]+\/)*[\w.-]+\.png$/.test(p) && !p.split('/').some(s => s === '.' || s === '..');
 
@@ -106,55 +93,6 @@ export function artProblems(file, bytes) {
   return out;
 }
 
-let session, seq = 0;
-async function rpc(method, params, notify) {
-  const headers = { 'content-type': 'application/json', accept: 'application/json, text/event-stream' };
-  if (session) headers['mcp-session-id'] = session;
-  const body = JSON.stringify({ jsonrpc: '2.0', method, params, ...(notify ? {} : { id: ++seq }) });
-  const res = await fetch(SERVER, { method: 'POST', headers, body, signal: AbortSignal.timeout(60000) }).catch(failed);
-  session = res.headers.get('mcp-session-id') || session;
-  const text = await res.text().catch(failed);
-  if (notify) return;
-  if (!res.ok) throw new FigmaError(`Figma MCP server answered ${res.status}: ${text.slice(0, 200)}`);
-  const data = text.split('\n').filter(l => l.startsWith('data:')).pop();
-  const message = JSON.parse(data ? data.slice(5) : text);
-  if (message.error) throw new FigmaError(`Figma MCP ${method}: ${message.error.message}`);
-  return message.result;
-}
-async function connect() {
-  await rpc('initialize', { protocolVersion: '2025-03-26', capabilities: {}, clientInfo: { name: 'max-figma-sync', version: '1' } });
-  await rpc('notifications/initialized', {}, true);
-}
-let calls = 0;
-async function tool(name, nodeId) {
-  calls++;
-  const extra = name === 'get_design_context' ? { excludeScreenshot: true } : {};
-  const r = await rpc('tools/call', { name, arguments: { nodeId, clientLanguages: 'javascript', clientFrameworks: 'unknown', ...extra } });
-  const text = r.content.filter(c => c.type === 'text').map(c => c.text);
-  if (r.isError && /rate limit/i.test(text.join(' '))) throw new FigmaError(`Figma: ${text.join(' ')}\nThe Dev Mode MCP server caps tool calls per day; image downloads are not tool calls. Try again tomorrow.`);
-  if (r.isError) throw new FigmaError(`${text.join(' ')}\nOpen ${FIGMA.url} in the Figma desktop app and keep it as the active tab.`);
-  return text;
-}
-async function download(hash) {
-  const res = await fetch(new URL(`/assets/${hash}.png`, SERVER), { signal: AbortSignal.timeout(60000) }).catch(failed);
-  if (!res.ok) throw new FigmaError(`Figma could not serve image ${hash} (${res.status})`);
-  return Buffer.from(await res.arrayBuffer().catch(failed));
-}
-
-const unxml = s => s.replace(/&(lt|gt|quot|apos|amp|#(\d+));/g, (m, e, n) => n ? String.fromCharCode(+n) : { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' }[e]);
-function tree(xml) {
-  const top = { children: [] }, stack = [top];
-  for (const [, close, type, attrs, self] of xml.matchAll(/<(\/?)([a-z-]+)([^>]*?)(\/?)>/g)) {
-    if (close) { stack.pop(); continue; }
-    const a = Object.fromEntries([...attrs.matchAll(/([\w-]+)="([^"]*)"/g)].map(m => [m[1], unxml(m[2])]));
-    const node = { id: a.id, type, name: a.name, x: +a.x, y: +a.y, width: +a.width, height: +a.height, children: [], parent: stack.at(-1) };
-    stack.at(-1).children.push(node);
-    if (!self) stack.push(node);
-  }
-  if (!top.children[0]) throw new FigmaError('Figma returned no node metadata');
-  return top.children[0];
-}
-const metadata = async id => tree((await tool('get_metadata', id)).find(t => t.trimStart().startsWith('<')) || '');
 function imageMap(code) {
   const urls = new Map([...code.matchAll(/const (\w+) = "https?:\/\/[^"]+\/assets\/([0-9a-f]{40})\.\w+"/g)].map(m => [m[1], m[2]]));
   const found = new Map(), stack = [];
@@ -174,7 +112,6 @@ async function hashes(nodes, scopes, doubt) {
     async n => out.set(n.nodeId, [...new Set([...imageMap(await context(n.nodeId)).values()].flat())]));
   return out;
 }
-function* all(node) { for (const c of node.children) { yield c; yield* all(c); } }
 const topLevel = n => { while (n.parent.parent?.id) n = n.parent; return n; };
 const byNode = (a, b) => { const [p, q] = [a.nodeId ?? a.id, b.nodeId ?? b.id].map(s => s.split(':').map(Number)); return p[0] - q[0] || p[1] - q[1]; };
 const byPath = (a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0;
@@ -396,5 +333,5 @@ async function main([command = 'check', ...options]) {
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   main(process.argv.slice(2)).then(code => { process.exitCode = code; },
     e => { console.error(e instanceof FigmaError ? e.message : e); process.exitCode = 2; })
-    .finally(() => calls && console.log(`${calls} Figma tool call(s)`));
+    .finally(() => toolCalls() && console.log(`${toolCalls()} Figma tool call(s)`));
 }
