@@ -1,4 +1,4 @@
-var secrets={world:0,seed:0,event:'',t:0},secretRun=null,secretClock=function(){return new Date();},secretOwnP=P,secretMeteors=[],secretMeteorT=0,secretChirpT=2,secretStill=0;
+var secrets={world:0,seed:0,event:'',t:0},secretRun=null,secretClock=function(){return new Date();},secretOwnP=P,secretMeteors=[],secretMeteorT=0,secretChirpT=2,secretStill=0,secretClockT=0,secretOwlHour=false,secretOwlT=8,secretOwlEyes=0;
 var SECRET_WORDS={moon:'MOON',meteors:'METEORS',fog:'FOG',aurora:'AURORA',chorus:'CHORUS'};
 function secretHash(seed,n){var h=Math.imul((seed|0)^Math.imul(n|0,0x9e3779b1),0x85ebca6b);h^=h>>>13;h=Math.imul(h,0xc2b2ae35);h^=h>>>16;return (h>>>0)/4294967296;}
 function secretEventFor(seed,w){
@@ -42,6 +42,9 @@ function updateSecrets(dt){
   if(secretEvent()==='fog')gardenPlots.forEach(function(p){if(!p.dead&&p.moisture<.3)p.moisture=.3;});
 }
 function updateSecretLocal(dt){
+  if((secretClockT-=dt)<=0){secretClockT=5;secretOwlHour=secretClock().getHours()===3;}
+  if(secretOwlHour&&(secretOwlT-=dt)<=0){secretOwlT=60+Math.random()*40;secretOwlEyes=1.6;chime([349,294,294],.3,.03);}
+  secretOwlEyes=Math.max(0,secretOwlEyes-dt);
   if(secretEvent()==='meteors'&&(secretMeteorT-=dt)<=0){secretMeteorT=.3+Math.random()*1.1;secretMeteors.push({x:IW*(.25+Math.random()*.9),y:safeTopArt()+Math.random()*IH*.22,l:.7,m:.7,v:70+Math.random()*50});}
   if(secretEvent()==='chorus'&&(secretChirpT-=dt)<=0){secretChirpT=secrets.t<30?1.4+Math.random()*2.2:10+Math.random()*10;chime([2349+Math.round(Math.random()*300),2794,2637],.07,.012);}
   for(var i=secretMeteors.length-1;i>=0;i--)if((secretMeteors[i].l-=dt)<=0)secretMeteors.splice(i,1);
@@ -134,6 +137,7 @@ function drawSecretGround(t){
   });
 }
 function drawSecretAir(t){
+  if(secretOwlEyes>.2&&(secretOwlEyes<1.35||secretOwlEyes>1.45)){var ex=Math.round(IW*.14),ey=Math.round(IH*.34);ctx.fillStyle='rgba(240,190,80,'+Math.min(1,secretOwlEyes).toFixed(2)+')';ctx.fillRect(ex,ey,1,1);ctx.fillRect(ex+3,ey,1,1);}
   if(secretEvent()==='fog'){
     ctx.fillStyle='rgba(150,162,172,0.06)';ctx.fillRect(0,0,IW,IH);
     for(var k=0;k<3;k++)for(var sx=-4;sx<IW+4;sx+=4){
