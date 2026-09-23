@@ -15,6 +15,7 @@ function rollSecrets(){
   secrets.world=w;secrets.event=secretEventFor(secrets.seed,w);secrets.t=0;
   secrets.starAt=w>1&&(secrets.event==='meteors'||r(1)<.12)?20+Math.round(r(2)*50):0;secrets.star=0;secrets.wished=0;
   secrets.spotX=Math.round(dryX(levelOriginX(w)+(r(3)<.5?-1:1)*(70+r(4)*130)));secrets.spotFound=0;secretStill=0;
+  secrets.hogAt=r(5)<.3?30+Math.round(r(6)*40):0;secrets.hogId=0;secrets.hogX=0;secrets.hogT=0;secrets.hogOut=0;secrets.hogGift=0;
 }
 function secretEvent(){return secrets.world===worldLevel()?secrets.event:'';}
 function updateSecrets(dt){
@@ -28,6 +29,15 @@ function updateSecrets(dt){
     var gy=surfaceY(secrets.spotX),still=runPlayers().some(function(a){return Math.abs(a.p.x-secrets.spotX)<10&&a.p.grounded&&Math.abs(a.p.vx)<1&&Math.abs(a.p.y-gy)<8;});
     secretStill=still?secretStill+dt:0;
     if(secretStill>=3){secrets.spotFound=secrets.t;spawnLooseSeeds(secrets.spotX,gy-10,2,true);chime([784,988,1175,1568],.07,.035);}
+  }
+  if(secrets.hogAt&&!secrets.hogId&&secrets.t>=secrets.hogAt){
+    var ok=gardenPlots.filter(function(p){return !p.dead&&p.growth>=.6&&p.moisture>=.3;}),pick=ok[Math.floor(secretHash(secrets.seed,secrets.world*64+7)*ok.length)];
+    if(pick){secrets.hogId=pick.id;secrets.hogX=pick.x+6;secrets.hogT=20;}
+  }
+  if(secrets.hogT>0){
+    var hp=gardenPlots.find(function(p){return p.id===secrets.hogId;});
+    if(!hp||hp.dead||hp.moisture<.3){secrets.hogT=0;secrets.hogOut=secrets.t;}
+    else if((secrets.hogT-=dt)<=0){secrets.hogT=0;secrets.hogOut=secrets.t;secrets.hogGift=1;spawnLooseSeeds(secrets.hogX,surfaceY(secrets.hogX)-4,2,true);socialTone('gift');}
   }
   if(secretEvent()==='fog')gardenPlots.forEach(function(p){if(!p.dead&&p.moisture<.3)p.moisture=.3;});
 }
@@ -57,6 +67,7 @@ function secretSync(s){
   var next=coopPlain(s);next.event=Object.hasOwn(SECRET_WORDS,next.event)?next.event:'';
   if(next.wished&&!secrets.wished&&next.world===secrets.world)chime([1047,1319,1568,2093],.06,.04);
   if(next.spotFound&&!secrets.spotFound&&next.world===secrets.world)chime([784,988,1175,1568],.07,.035);
+  if(next.hogGift&&!secrets.hogGift&&next.world===secrets.world)socialTone('gift');
   secrets=next;secretRun=rogueRun;
 }
 function drawSecretBanner(y){var e=secretEvent(),w=SECRET_WORDS[e];if(w)drawBossWord(w,20+String(worldLevel()).length*8+(w.length*6-1)/2,y+2,1);}
@@ -88,8 +99,18 @@ function drawSecretSky(t,hy){
 }
 function plantGold(p){return !!(p&&p.id&&secretHash(secrets.seed,p.id*977+13)<1/300);}
 function goldHarvest(p){if(!plantGold(p))return false;spawnLooseSeeds(p.x,surfaceY(p.x)-2,2,true);chime([1319,1568,2093],.05,.035);return true;}
+function drawHedgehog(x,y,f,t){
+  var px=function(dx,dy,w,col){ctx.fillStyle=col;ctx.fillRect(f<0?x+dx:x-dx-w+1,y+dy,w,1);},nose=(t*2.5|0)&1;
+  px(-3,-4,6,'#5a4632');px(-4,-3,8,'#6d5539');px(-4,-2,8,'#6d5539');
+  px(-2,-4,1,'#8a7050');px(1,-4,1,'#8a7050');px(-3,-3,1,'#8a7050');px(0,-3,1,'#8a7050');px(3,-3,1,'#8a7050');
+  px(-6,-2,2,'#c9a57a');px(-7,-2-nose,1,'#1a1410');px(-5,-3,1,'#1a1410');px(-3,-1,1,'#3a2c20');px(2,-1,1,'#3a2c20');
+}
 function drawSecretGround(t){
   var moon=secretEvent()==='moon';
+  if(secrets.world===worldLevel()&&secrets.hogId){
+    var away=secrets.hogT>0?0:secrets.t-secrets.hogOut,hx=secrets.hogX+away*14;
+    if(away<3){ctx.globalAlpha=1-away/3;drawHedgehog(Math.round(hx-camX),Math.round(surfaceY(hx)-camY),away>0?1:-1,t);ctx.globalAlpha=1;}
+  }
   if(secrets.world===worldLevel()&&secrets.spotX){
     var spx=Math.round(secrets.spotX-camX),spy=Math.round(surfaceY(secrets.spotX)-camY),age=secrets.t-secrets.spotFound,ph=(secrets.t+secrets.world*1.7)%5;
     if(!secrets.spotFound&&ph<.4){ctx.fillStyle='rgba(226,236,170,'+(1-ph/.4).toFixed(2)+')';ctx.fillRect(spx,spy-3-Math.round(ph*8),1,1);}
