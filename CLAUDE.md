@@ -37,6 +37,8 @@ The client obtains `max_coop_status` before joining. It reports the active run, 
 
 When changing multiplayer, test race conditions, late join, background/foreground, former-host return, class reservation and run-difficulty inheritance.
 
+When authority moves (`coopPromote`), the new host drops members the room no longer lists, restarts every teammate's input clock, rebases each teammate's acks on their next packet and jumps its id counters (effects, loose seeds, loot, hazards, plants) past anything the old host could have issued. A new session id from a room member is a rejoin. A teammate the host timed out after 10 s without input is only hidden, and comes back with the same build; one who left or dropped out of the room is removed.
+
 ## Stage progression
 
 The intended sequence is:

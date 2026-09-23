@@ -5653,7 +5653,7 @@ function attachGameMenu(){
     openGardenRecords:openGardenRecords,
     beginRun:function(selection){coop=null;resetRogueRun('NEW RUN',selection);},
     clearInput:clearRunInput,exitRun:function(){if(runActive&&!rogueRun.ended)finalizeRogueRun(false);stopCoop();if(window.MaxRunResults)window.MaxRunResults.hide();},
-    beginCoop:beginCoop,stopCoop:stopCoop,coopRoster:coopRoster,coopState:coopState,coopInput:coopInput,coopDepart:coopDepart
+    beginCoop:beginCoop,stopCoop:stopCoop,coopRoster:coopRoster,coopState:coopState,coopInput:coopInput,coopDepart:coopDepart,coopJoin:coopJoin
   });
 }
 window.addEventListener('max-menu-ready',attachGameMenu);
