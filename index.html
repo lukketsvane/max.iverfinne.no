@@ -4159,6 +4159,7 @@ function burstKrek(k){
   if(isRat(k))cancelRatAttack(k);
   if(window.MaxNativeArt)window.MaxNativeArt.enemyDefeated(k,tSec);
   if(k.divePhase)cancelPestDive(k);
+  if(k.rootHazard)runHazards=runHazards.filter(function(h){return h.id!==k.rootHazard||h.tell<=0;});
   if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
   if(k.scout){puff(k.x,k.y,6,.5);return;}
   if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen,true);

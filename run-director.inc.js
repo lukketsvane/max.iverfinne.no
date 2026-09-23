@@ -357,7 +357,7 @@ function updateEnemyRole(k,dt){
     if(k.windup>0){k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);return true;}
     if(k.bite<=0){
       k.tell=k.windup=.95;
-      addRunHazard('root',rootAnchor,11,1.05,.48,k.x,k.y,rootTarget?surfaceY(rootTarget.x):P.y);
+      var root=addRunHazard('root',rootAnchor,11,1.05,.48,k.x,k.y,rootTarget?surfaceY(rootTarget.x):P.y);k.rootHazard=root?root.id:0;
       k.bite=2.8;
       return true;
     }

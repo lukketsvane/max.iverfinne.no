@@ -75,7 +75,7 @@ Rats were intentionally moved later and softened. Current entry gates are docume
 
 The recent expanded specialists are:
 
-- Thorn caster: warned root control.
+- Thorn caster: warned root control; killing it before the root lands cancels the root.
 - Dew leech: moisture drain + self sustain.
 - Rammer: warned straight charge.
 
