@@ -214,3 +214,28 @@ test('Christmas, Halloween, sankthans and 17 May decorate the garden and change 
   assert.equal(drawn(new Date(2026, 4, 17, 10)), 3, 'a flag on every grown plant');
   assert.equal(drawn(new Date(2026, 2, 3, 10)), 0);
 });
+
+test('seven quick taps on the MAX title tint your own Max for the session', () => {
+  const h = fresh(), g = h.game, tap = () => h.key('max-logo-tap');
+  for (let i = 0; i < 6; i++) tap(); assert.equal(g.secretTint, false);
+  h.advance(2000); tap(); assert.equal(g.secretTint, false, 'a slow tap starts the count again');
+  for (let i = 0; i < 6; i++) { h.advance(300); tap(); } assert.equal(g.secretTint, true);
+  const sheet = { naturalWidth: 64, naturalHeight: 32 }, skin = g.secretSkin(sheet);
+  assert.notEqual(skin, sheet); assert.equal(g.secretSkin(sheet), skin, 'each sheet is tinted once');
+  g.resetRogueRun('again', {}); assert.equal(g.secretTint, true, 'the tint lasts the session');
+  for (let i = 0; i < 7; i++) tap(); assert.equal(g.secretTint, false, 'seven more take it off');
+});
+
+test('the player renderer draws the tinted sheet for your own Max only', () => {
+  const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const source = html.match(/function drawPlayer\(\) \{[\s\S]*?(?=\nfunction drawParts)/)[0], drawn = [];
+  const own = { x: 20, y: 40, face: 1, anim: 'idle', frame: 0, st: 'free' }, tinted = { id: 'tinted' };
+  const sandbox = { window: {}, camX: 0, camY: 0, CELL: 32, ANIM: { idle: { row: 0, f: [0] } }, sheet: { id: 'sheet' }, sheetReady: true, surfaceY: () => 40, waterAt: () => null, drawCanopy() {},
+    ctx: { fillRect() {}, save() {}, restore() {}, translate() {}, scale() {}, drawImage(img) { drawn.push(img.id); } },
+    P: own, secretOwnP: own, secretTint: true, secretSkin: () => tinted };
+  vm.runInNewContext(source, sandbox); sandbox.drawPlayer();
+  sandbox.P = { ...own }; sandbox.drawPlayer();
+  sandbox.P = own; sandbox.secretTint = false; sandbox.drawPlayer();
+  assert.deepEqual(drawn, ['tinted', 'sheet', 'sheet']);
+});

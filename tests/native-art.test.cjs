@@ -138,7 +138,7 @@ test('the actual player renderer uses each selected sheet while retaining origin
     P: { x: 20, y: 40, face: 1, skin: 'moss', anim: 'idle', frame: 1, st: 'free' },
     ANIM: { idle: { row: 0, f: [0, 1] }, water: { sh: 2, row: 3, f: [0, 1] } },
     sheet: { id: 'original-main' }, sheet2: { id: 'original-interaction' }, sheetReady: true, sheet2Ready: true,
-    surfaceY: () => 40, waterAt: () => null, drawCanopy() {},
+    surfaceY: () => 40, waterAt: () => null, drawCanopy() {}, secretTint: false,
   };
   vm.runInNewContext(drawPlayer, sandbox); sandbox.drawPlayer();
   assert.match(lastSprite(calls)[1].src, /moss\/main.png$/);

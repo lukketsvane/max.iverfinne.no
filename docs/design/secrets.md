@@ -39,3 +39,9 @@ About one garden in eight (every meteor night), a star crosses the upper sky bet
 | 31 October | Two jack-o'-lanterns (the existing pumpkin art) flank the landing spot. |
 | 23 June | A sankthans bonfire with rising sparks beside the landing spot. |
 | 17 May | A tiny Norwegian flag on every grown garden plant, up to twelve. |
+
+## Easter eggs
+
+| Egg | How | What |
+| --- | --- | --- |
+| Moonlit Max | Tap the MAX title seven times, each within 1.5 s of the last. | A rising chime and a lavender tint on your own Max for the session. Seven more taps take it off. The menu sends a \`max-logo-tap\` window event; other players see Max as usual. |

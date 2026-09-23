@@ -1,5 +1,18 @@
-var secrets={world:0,seed:0,event:'',t:0},secretRun=null,secretClock=function(){return new Date();},secretOwnP=P,secretMeteors=[],secretMeteorT=0,secretChirpT=2,secretStill=0,secretClockT=0,secretOwlHour=false,secretOwlT=8,secretOwlEyes=0,secretToday='';
+var secrets={world:0,seed:0,event:'',t:0},secretRun=null,secretClock=function(){return new Date();},secretOwnP=P,secretMeteors=[],secretMeteorT=0,secretChirpT=2,secretStill=0,secretClockT=0,secretOwlHour=false,secretOwlT=8,secretOwlEyes=0,secretToday='',secretTint=false,secretTaps=0,secretTapAt=-1e9,secretSkins=[];
 var SECRET_WORDS={moon:'MOON',meteors:'METEORS',fog:'FOG',aurora:'AURORA',chorus:'CHORUS'};
+function secretLogoTap(){
+  var now=performance.now();secretTaps=now-secretTapAt<1500?secretTaps+1:1;secretTapAt=now;
+  if(secretTaps<7)return false;
+  secretTaps=0;secretTint=!secretTint;unlockAudio();chime(secretTint?[523,659,784,1047,1319,1568,2093]:[2093,1568,1319,1047],.05,.04);return true;
+}
+window.addEventListener('max-logo-tap',secretLogoTap);
+function secretSkin(img){
+  for(var i=0;i<secretSkins.length;i++)if(secretSkins[i][0]===img)return secretSkins[i][1];
+  var c=document.createElement('canvas'),w=c.width=img.naturalWidth||img.width,h=c.height=img.naturalHeight||img.height,g=c.getContext('2d');
+  g.imageSmoothingEnabled=false;g.drawImage(img,0,0);g.globalCompositeOperation='color';g.globalAlpha=.7;g.fillStyle='#b69ce8';g.fillRect(0,0,w,h);
+  g.globalAlpha=1;g.globalCompositeOperation='destination-in';g.drawImage(img,0,0);
+  secretSkins.push([img,c]);return c;
+}
 function secretHash(seed,n){var h=Math.imul((seed|0)^Math.imul(n|0,0x9e3779b1),0x85ebca6b);h^=h>>>13;h=Math.imul(h,0xc2b2ae35);h^=h>>>16;return (h>>>0)/4294967296;}
 function secretEventFor(seed,w){
   var r=secretHash(seed,w);if(w<2)return '';
