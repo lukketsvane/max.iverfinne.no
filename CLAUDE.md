@@ -103,6 +103,8 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - `stride` — Long Stride
 - `spring` — Spring Step
 
+Plant protection is one rule, `plantProtection(plant, bite)`, and every kind of plant damage goes through it: bites, roots, spores, boss strikes, your own blasts and dew-leech drain. Thorns (`shield`) takes 22% per rank off bites only; Barkskin (`bark`) takes 22% per rank off everything that is not a bite. A Bulwark guard and a mature shelter plant reduce every kind.
+
 A boon is not done merely because it appears in the menu. Each must materially affect the live simulation and have a regression test.
 
 Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior.

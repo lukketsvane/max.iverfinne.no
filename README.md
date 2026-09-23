@@ -99,7 +99,8 @@ Boons are a live overlay; the simulation continues underneath them. Current buil
 
 - Green Thumb — stronger tending.
 - Wide Watering — reaches more neighbours.
-- Barkskin — further plant damage reduction.
+- Thorns — plants take less bite damage.
+- Barkskin — plants take less damage from roots, spores, blasts and drain.
 - Mulch — defeated pests restore nearby plants.
 - Long Stride — faster movement.
 - Spring Step — higher jumps.
