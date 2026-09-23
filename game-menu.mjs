@@ -20,6 +20,7 @@ if (config.publishableKey) client = createClient(config.url, config.publishableK
 let game, overlay, card, user = null, busy = false, opened = false, screen = 'home';
 let sessionReady = !client;
 let status, scenery;
+let garden = null, gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let sceneFrame = 0, sceneStarted = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
@@ -65,7 +66,7 @@ function home() {
     credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
   };
   const signedIn = !!user && playerName(user) !== 'Guest';
-  for (const [label, action, icon] of [['Play', play, 'play'], signedIn ? ['Garden', garden, 'garden'] : ['Login', account, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
+  for (const [label, action, icon] of [['Play', play, 'play'], signedIn ? ['Garden', enterGarden, 'garden'] : ['Login', account, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
     const b = button('', action, 'max-home-button max-icon-' + icon + (icon === 'play' ? ' primary' : ''));
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
     pixelText(b, label, icon === 'play' ? 3 : 2, 1);
@@ -91,23 +92,137 @@ function showPlayers(node) {
     playersTimer = setTimeout(() => showPlayers(node), 20000);
   });
 }
-function garden() {
-  page('garden', 'Your garden');
-  const kinds = game.plantCollection?.() || [], found = kinds.filter(k => k.found).length;
-  card.append(pixelText(el('p', undefined, 'max-collection-count'), found + ' / ' + kinds.length + ' PLANTS FOUND', 2, 1));
-  const grid = el('div', undefined, 'max-collection');
-  for (const k of kinds) {
-    const cell = el('figure', undefined, 'max-collection-cell' + (k.found ? '' : ' locked'));
-    const c = el('canvas'); c.width = 64; c.height = 72; c.setAttribute('aria-hidden', 'true');
-    game.drawPlant?.(c, { id: 1, kind: k.kind, seed: k.seed, growth: 2.4, stalk: false });
-    if (!k.found) { const x = c.getContext('2d'); if (x) { x.globalCompositeOperation = 'source-in'; x.fillStyle = '#1c2630'; x.fillRect(0, 0, c.width, c.height); } }
-    cell.append(c, pixelText(el('figcaption'), k.found ? 'NO ' + (k.kind + 1) : '???', 1, 1));
-    grid.append(cell);
+const PLANT_NOTES = [
+  ['Bluestar', 'Blue stars climb a green stem one by one. Water it early and it keeps flowering all night.'],
+  ['Skybell', 'A taller cousin of the bluestar. Its bells turn slowly to face the moon.'],
+  ['Duskbell', 'Olive stems hung with blue bells. It only rings when the wind comes off the water.'],
+  ['Starwort', 'Tiny white flowers scattered like a second sky. Crows leave it alone.'],
+  ['Nightrose', 'Magenta roses on a dark, twisting stem. Its thorns keep pests honest.'],
+  ['Silverleaf', 'Arching silver leaves hung with golden bells. It glows faintly after rain.'],
+  ['Curlvine', 'A curling vine studded with green stars. It climbs anything that stands still.'],
+  ['Frostplume', 'Feathery cyan fronds that shimmer like frost, even on a warm night.'],
+  ['Goldpuff', 'Round yellow puffs on a crooked stem. Every puff is a hundred seeds.'],
+  ['Moon lily', 'A white lily that opens only in moonlight. Its pollen drifts off like sparks.'],
+  ['Sunpuff', 'Clouds of yellow blossom on a mossy trunk. It keeps the warmth of the day.'],
+  ['Frost fern', 'Icy blue fronds with cream buds. It grows best where the first snow falls.'],
+  ['Jade vine', 'A crooked vine hung with jade stars, each one a little brighter than the last.'],
+  ['Star grass', 'Silver blades bent under golden stars. It hums when fireflies land on it.'],
+  ['Rose curl', 'A thin stem that curls into tendrils, crowned with pink roses.'],
+  ['Snow bush', 'A dense green bush dusted with white blossom, like snow that never melts.'],
+  ['Blue poppy', 'Deep blue poppies on a tall dark stem. Rare, and hard to keep alive.'],
+  ['Gold bud', 'Teal leaves and bright gold buds. The bees find it before anyone else.'],
+  ['Moonbell', 'A soft blue flower that opens after dusk. Fireflies gather around its stem and it thrives by calm water.'],
+];
+function gardenSize() {
+  const w = window.innerWidth, h = window.innerHeight, dpr = window.devicePixelRatio || 1;
+  const scale = Math.max(2, Math.round(Math.min(w, h) * dpr / 192));
+  return { w: Math.ceil(w * dpr / scale), h: Math.ceil(h * dpr / scale), px: scale / dpr };
+}
+function enterGarden() {
+  if (!opened || screen !== 'home' || garden || !game.drawGardenScene) return;
+  const kinds = game.plantCollection?.() || [], found = kinds.filter(k => k.found).length, now = performance.now();
+  gardenCount.replaceChildren(); pixelText(gardenCount, found + ' / ' + kinds.length + ' FOUND', 2, 1);
+  garden = { scroll: 0, vel: 0, target: null, max: 0, drag: null, t0: now, last: now, raf: 0, focus: -1, dim: 0, info: null, kinds };
+  overlay.dataset.view = 'garden'; card.inert = true; gardenHud.inert = false;
+  let seen = false; try { seen = localStorage.getItem('max-garden-pinch-hint') === '1'; localStorage.setItem('max-garden-pinch-hint', '1'); } catch {}
+  gardenHint.hidden = seen; gardenHint.classList.remove('gone');
+  if (!seen) setTimeout(() => gardenHint.classList.add('gone'), 3200);
+  gardenFrame(now);
+  gardenTitle.focus({ preventScroll: true });
+}
+function exitGarden() {
+  if (!garden) return;
+  unfocusPlant(); cancelAnimationFrame(garden.raf); garden = null; pinch = null;
+  delete overlay.dataset.view; card.inert = false; gardenHud.inert = true;
+  queueMicrotask(() => { if (opened && screen === 'home') document.getElementById('max-menu-title')?.focus({ preventScroll: true }); });
+}
+function focusPlant(i) {
+  const g = garden, info = g?.info; if (!info || i < 0 || i >= info.count) return;
+  const k = g.kinds[i] || { kind: i, found: false, times: 0 }, note = PLANT_NOTES[k.kind] || ['No ' + (k.kind + 1), ''], size = gardenSize();
+  g.focus = i; g.vel = 0; g.target = info.x0 + i * info.spacing - Math.round(gardenCanvas.width * .3);
+  gardenCanvas.style.transformOrigin = Math.round(gardenCanvas.width * .3 * size.px) + 'px ' + Math.round((info.ground - 20) * size.px) + 'px';
+  gardenCanvas.style.transform = 'scale(1.7)';
+  gardenNote.replaceChildren();
+  gardenNote.append(pixelText(el('h3'), k.found ? note[0].toUpperCase() : '???', 3, 1), el('hr'), el('p', k.found ? note[1] : 'Grow one to full size to learn its name.'), el('hr'));
+  if (k.found) gardenNote.append(pixelText(el('p', undefined, 'max-garden-times'), 'FOUND ' + k.times + (k.times === 1 ? ' TIME' : ' TIMES'), 2, 1));
+  overlay.dataset.focus = 'plant';
+}
+function unfocusPlant() {
+  if (!garden || garden.focus < 0) return;
+  garden.focus = -1; gardenCanvas.style.transform = ''; delete overlay.dataset.focus;
+}
+function gardenTap(x, y) {
+  const g = garden, info = g?.info; if (!info) return;
+  if (g.focus >= 0) { unfocusPlant(); return; }
+  const size = gardenSize(), nx = x / size.px, ny = y / size.px, wx = nx + g.scroll, i = Math.round((wx - info.x0) / info.spacing);
+  if (i >= 0 && i < info.count && Math.abs(wx - (info.x0 + i * info.spacing)) < info.spacing * .45 && ny > info.ground - 76 && ny < info.ground + 10) focusPlant(i);
+}
+function gardenStep(dir) {
+  if (!garden) return;
+  if (garden.focus >= 0) { focusPlant(Math.max(0, Math.min((garden.info?.count || 1) - 1, garden.focus + dir))); return; }
+  const page = Math.max(game.gallerySpacing || 40, Math.round(gardenCanvas.width * .75));
+  garden.vel = 0; garden.target = Math.max(0, Math.min(garden.max, (garden.target ?? garden.scroll) + dir * page));
+}
+function gardenFrame(now) {
+  const g = garden; if (!g) return;
+  const dt = Math.min(.05, (now - g.last) / 1000), size = gardenSize(); g.last = now;
+  if (gardenCanvas.width !== size.w || gardenCanvas.height !== size.h) { gardenCanvas.width = size.w; gardenCanvas.height = size.h; }
+  if (!g.drag) {
+    if (g.target !== null) { g.scroll += (g.target - g.scroll) * Math.min(1, dt * 9); if (Math.abs(g.target - g.scroll) < .5) { g.scroll = g.target; g.target = null; } }
+    else { g.scroll += g.vel * dt; g.vel *= Math.pow(.03, dt); if (Math.abs(g.vel) < 3) g.vel = 0; }
+    if (g.focus < 0 && g.scroll < 0) { g.scroll -= g.scroll * Math.min(1, dt * 12); g.vel = 0; }
+    else if (g.focus < 0 && g.scroll > g.max) { g.scroll += (g.max - g.scroll) * Math.min(1, dt * 12); g.vel = 0; }
   }
-  card.append(grid);
-  if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords(), 'primary'));
-  card.append(button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
-  back();
+  g.dim += ((g.focus >= 0 ? 1 : 0) - g.dim) * Math.min(1, dt * 5);
+  const info = game.drawGardenScene(gardenCanvas, { scroll: g.scroll, t: (now - g.t0) / 1000, focus: g.focus, dim: g.dim });
+  if (info) { g.max = info.max; if (info.ready) g.info = info; }
+  const prev = g.scroll <= 2, next = g.scroll >= g.max - 2;
+  if (gardenPrev.hidden !== prev) gardenPrev.hidden = prev;
+  if (gardenNext.hidden !== next) gardenNext.hidden = next;
+  if (!document.hidden) g.raf = requestAnimationFrame(gardenFrame);
+}
+function touchDistance(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1; }
+function gardenGestures() {
+  gardenCanvas.addEventListener('pointerdown', e => {
+    if (!garden || pinch) return;
+    garden.drag = { id: e.pointerId, last: e.clientX, t: performance.now(), v: 0, x0: e.clientX, y0: e.clientY, t0: performance.now(), moved: false }; garden.vel = 0;
+    gardenCanvas.setPointerCapture?.(e.pointerId);
+  });
+  gardenCanvas.addEventListener('pointermove', e => {
+    const d = garden?.drag; if (!d || d.id !== e.pointerId) return;
+    if (!d.moved) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 8) return; d.moved = true; d.last = e.clientX; d.t = performance.now(); garden.target = null; unfocusPlant(); return; }
+    const now = performance.now(), dx = (e.clientX - d.last) / gardenSize().px, out = garden.scroll < 0 || garden.scroll > garden.max;
+    garden.scroll -= dx * (out ? .35 : 1);
+    d.v = d.v * .6 + (-dx / Math.max(.008, (now - d.t) / 1000)) * .4; d.last = e.clientX; d.t = now;
+  });
+  const release = e => {
+    const d = garden?.drag; if (!d || d.id !== e.pointerId) return;
+    garden.drag = null;
+    if (!d.moved) { if (e.type === 'pointerup' && performance.now() - d.t0 < 450) gardenTap(e.clientX, e.clientY); return; }
+    garden.vel = performance.now() - d.t < 90 ? d.v : 0;
+  };
+  gardenCanvas.addEventListener('pointerup', release); gardenCanvas.addEventListener('pointercancel', release);
+  overlay.addEventListener('touchstart', e => {
+    if (e.touches.length !== 2 || !opened || (!garden && screen !== 'home')) return;
+    pinch = { d: touchDistance(e.touches) }; if (garden) garden.drag = null;
+  }, { passive: true });
+  overlay.addEventListener('touchmove', e => {
+    if (!pinch || e.touches.length !== 2) return;
+    e.preventDefault();
+    const r = touchDistance(e.touches) / pinch.d;
+    if (!garden && r > 1.22) { pinch = null; enterGarden(); } else if (garden && r < .82) { pinch = null; if (garden.focus >= 0) unfocusPlant(); else exitGarden(); }
+  }, { passive: false });
+  overlay.addEventListener('touchend', e => { if (e.touches.length < 2) pinch = null; });
+  overlay.addEventListener('wheel', e => {
+    if (garden) {
+      e.preventDefault();
+      if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; exitGarden(); } return; }
+      garden.target = null; garden.vel = 0;
+      garden.scroll = Math.max(-12, Math.min(garden.max + 12, garden.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / gardenSize().px));
+    } else if (e.ctrlKey && opened && screen === 'home') {
+      e.preventDefault(); wheelPinch = Math.min(0, wheelPinch + e.deltaY); if (wheelPinch < -40) { wheelPinch = 0; enterGarden(); }
+    }
+  }, { passive: false });
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id === 'runner' ? 'Moss' : id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return CLASS_SKINS[id] || 'moss'; }
@@ -346,6 +461,10 @@ function settings() {
   musicButton.setAttribute('aria-label', 'Music volume ' + Math.round(music * 100) + ' percent');
   effectsButton.setAttribute('aria-label', 'Effects volume ' + Math.round(effects * 100) + ' percent');
   card.append(musicButton, effectsButton, button('Controls', help));
+  if (!liveSettings && user && playerName(user) !== 'Guest') {
+    if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords()));
+    card.append(button(playerName(user) + ' · Account', account));
+  }
   if (liveSettings) card.append(button('Exit to main menu', exitToMenu, 'subtle'));
   back();
 }
@@ -470,7 +589,20 @@ function attach(bridge) {
   window.MaxSoundtrack = createSoundtrack({ enabled: (game.musicVolume?.() ?? 1) > 0, volume: game.musicVolume?.() ?? 1 });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
   scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');
-  card = el('div', undefined, 'max-menu-card'); overlay.append(scenery, card);
+  card = el('div', undefined, 'max-menu-card');
+  gardenCanvas = el('canvas', undefined, 'max-garden-scene'); gardenCanvas.setAttribute('aria-hidden', 'true');
+  gardenHud = el('div', undefined, 'max-garden-hud'); gardenHud.inert = true;
+  gardenTitle = button('', exitGarden, 'max-garden-title'); gardenTitle.setAttribute('aria-label', 'Your garden. Back to the menu');
+  pixelText(gardenTitle, 'YOUR GARDEN', 2, 1);
+  gardenCount = el('p', undefined, 'max-garden-count'); gardenCount.setAttribute('aria-live', 'polite');
+  const chevron = d => '<svg viewBox="0 0 8 12" aria-hidden="true" shape-rendering="crispEdges"><path d="' + d + '"/></svg>';
+  gardenPrev = button('', () => gardenStep(-1), 'max-garden-arrow max-garden-prev'); gardenPrev.setAttribute('aria-label', 'Earlier plants'); gardenPrev.innerHTML = chevron('M5 0h3v2H5zM3 2h3v2H3zM1 4h3v4H1zM3 8h3v2H3zM5 10h3v2H5z');
+  gardenNext = button('', () => gardenStep(1), 'max-garden-arrow max-garden-next'); gardenNext.setAttribute('aria-label', 'More plants'); gardenNext.innerHTML = chevron('M0 0h3v2H0zM2 2h3v2H2zM4 4h3v4H4zM2 8h3v2H2zM0 10h3v2H0z');
+  gardenHint = el('p', undefined, 'max-garden-hint'); pixelText(gardenHint, 'PINCH TO RETURN', 2, 1);
+  gardenNote = el('div', undefined, 'max-garden-note'); gardenNote.setAttribute('aria-live', 'polite');
+  gardenHud.append(gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, gardenNote);
+  overlay.append(scenery, gardenCanvas, card, gardenHud);
+  gardenGestures();
   window.addEventListener('resize', refreshScenery);
   settingsButton = button('', openSettings, 'max-live-settings'); settingsButton.hidden = true;
   settingsButton.setAttribute('aria-label', 'Settings');
@@ -478,6 +610,11 @@ function attach(bridge) {
   document.body.append(settingsButton);
   overlay.addEventListener('keydown', event => {
     event.stopPropagation();
+    if (garden) {
+      if (event.key === 'Escape') { event.preventDefault(); if (garden.focus >= 0) unfocusPlant(); else exitGarden(); }
+      else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); gardenStep(event.key === 'ArrowRight' ? 1 : -1); }
+      return;
+    }
     if (event.key === 'Escape') { event.preventDefault(); if (liveSettings) dismissSettings(); else if (!busy && !session) screen !== 'home' && home(); }
     if (event.key !== 'Tab') return;
     const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled)')].filter(n => n.getClientRects().length);
@@ -498,6 +635,7 @@ function replay() {
 }
 window.MaxGameMenu = { attach, open, replay };
 document.addEventListener('visibilitychange', () => {
+  if (garden && !document.hidden) { cancelAnimationFrame(garden.raf); garden.last = performance.now(); gardenFrame(garden.last); }
   if (document.hidden) return;
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();
   if (session?.playing) void session.resume();

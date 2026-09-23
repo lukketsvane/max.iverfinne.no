@@ -22,3 +22,11 @@ test('ten hand-drawn plants join the garden as kinds 9-18, each assembled from i
   assert.ok([...kinds].some(k => k >= 9), 'the new kinds grow in the garden');
   for (let k = 9; k < 19; k++) for (const growth of [0, .5, 1.2, 2.4]) g.drawGrowingFigmaPlant(plot({ kind: k, growth, x: 0 }), 40, 60, 1, 58);
 });
+
+test('the garden view lays every plant kind along one scrollable soil strip', () => {
+  const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
+  const canvas = { width: 188, height: 406, getContext: () => new Proxy({}, { get: () => () => {} }) };
+  const info = g.drawGardenScene(canvas, { scroll: 0, t: 0 });
+  assert.equal(info.ready, false, 'nothing is drawn before the layers load');
+  assert.equal(info.max, 34 * 2 + 18 * 52 - 188, 'nineteen plants, one per spacing, scroll to the last');
+});
