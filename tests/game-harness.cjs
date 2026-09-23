@@ -13,14 +13,14 @@ const stateNames = [
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
-  'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
+  'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'soloCrew', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
   'coop', 'heldUp', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
 ];
 const functionNames = [
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
-  'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
+  'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
   'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'gardenBackdrop', 'surfaceY', 'updateGarden', 'updateGardenFun', 'updateSeedPickups', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',

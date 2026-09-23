@@ -252,7 +252,7 @@ test('a Mech guest dispatches its own rover through the host; other classes’ f
   assert.ok(players[1].game.companion);
   assert.equal(players[1].game.useClassSkill(), true); assert.equal(players[1].game.P.skillCool, 8);
   send(1);
-  assert.equal(bot.state.target, A); assert.equal(bot.state.water, .75); assert.equal(host.companion, null); assert.equal(host.rogueRun.classId, 'runner');
+  assert.equal(bot.state.target, A); assert.equal(bot.state.water, .35); assert.equal(host.companion, null); assert.equal(host.rogueRun.classId, 'runner');
   const tank = host.coop.members[ids[2]];
   host.coopInput(ids[2], { actions: [{ id: tank.ack + 1, type: 'skill', world: 1, x: tank.avatar.x, y: tank.avatar.y }] });
   assert.equal(tank.ack, 1);

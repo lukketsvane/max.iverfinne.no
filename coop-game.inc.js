@@ -240,9 +240,12 @@ function coopState(s){
   if(ids.indexOf(coop.me)<0)return;
   Object.keys(coop.members).forEach(function(id){coop.members[id].left=ids.indexOf(id)<0;});
   if(window.MaxCompanion){
-    var robots=Array.isArray(s.robots)?s.robots.slice(0,4):(s.robot?[Object.assign({owner:coop.network.room.host},s.robot)]:[]);
-    coopMembers().forEach(function(m){var state=robots.find(function(r){return r&&r.owner===m.id;});if(!state||!m.perks.robot||!window.MaxClasses.canHaveRobot(m.classId)){m.companion=null;return;}
-      if(!m.companion)m.companion=window.MaxCompanion.create(state,m.avatar.x,Math.max(0,m.perks.robot-1));Object.assign(m.companion.state,coopPlain(state));
+    var robots=Array.isArray(s.robots)?s.robots.slice(0,16):(s.robot?[Object.assign({owner:coop.network.room.host},s.robot)]:[]);
+    coopMembers().forEach(function(m){
+      var mine=robots.filter(function(r){return r&&r.owner===m.id;}).slice(0,4);
+      if(!mine.length||!m.perks.robot||!window.MaxClasses.canHaveRobot(m.classId)){m.companion=null;m.crew=[];return;}
+      m.crew=mine.map(function(state,i){var bot=m.crew&&m.crew[i]&&m.crew[i].state.kind===state.kind?m.crew[i]:window.MaxCompanion.create(state,m.avatar.x,Math.max(0,m.perks.robot-1),state.kind);Object.assign(bot.state,coopPlain(state),{slot:i});return bot;});
+      m.companion=m.crew[0];
     });
     companion=coop.members[coop.me].companion||null;
   }

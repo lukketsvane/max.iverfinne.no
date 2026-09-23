@@ -9,7 +9,7 @@ function steps(g,seconds,input=idle){for(let i=0;i<Math.round(seconds*120);i++)g
 test('the expanded boon pool adds six fully ranked upgrades across all three paths',()=>{
   const ids=builds.perks.map(p=>p.id);
   for(const id of ['tender','spread','bark','mulch','stride','spring'])assert.ok(ids.includes(id),id+' is in the boon pool');
-  assert.equal(builds.perks.length,27);
+  assert.equal(builds.perks.length,29);
   assert.deepEqual(builds.perks.filter(p=>['tender','spread'].includes(p.id)).map(p=>p.path),[0,0]);
   assert.deepEqual(builds.perks.filter(p=>['bark','mulch'].includes(p.id)).map(p=>p.path),[1,1]);
   assert.deepEqual(builds.perks.filter(p=>['stride','spring'].includes(p.id)).map(p=>p.path),[2,2]);
