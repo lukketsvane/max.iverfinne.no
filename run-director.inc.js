@@ -393,7 +393,7 @@ function updateEnemyRole(k,dt){
     }
     if(ramD<105&&k.bite<=0){
       k.face=ramDx<0?-1:1;k.tell=k.windup=1.0;
-      addRunHazard('root',ramTarget.x,14,1.0,.72,k.x,k.y,surfaceY(ramTarget.x));
+      var ram=addRunHazard('root',ramTarget.x,14,1.0,.72,k.x,k.y,surfaceY(ramTarget.x));k.rootHazard=ram?ram.id:0;
       return true;
     }
     moveEnemyTo(k,ramTarget.x+(ramDx<0?-45:45),surfaceY(ramTarget.x)-11,dt,10);
