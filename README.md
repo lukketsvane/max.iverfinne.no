@@ -56,7 +56,7 @@ Moss can also climb ordinary living plants for traversal, but ordinary plant cli
 
 - Touch drag left/right: move.
 - Swipe up: jump.
-- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, and a tap on a pest throws from an ordinary stem.
+- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, a tap on the held stem climbs faster, and any other tap throws from an ordinary stem.
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.

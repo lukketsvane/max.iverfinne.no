@@ -73,6 +73,17 @@ test('keyboard Up and two deliberate upward touch strokes attach and leap throug
   assert.equal(g.climb, null); assert.equal(g.P.st, 'free'); assert.ok(g.P.vy < -140); assert.equal(g.gardenPress, false);
 });
 
+test('a Moss tap near a stem climbs it, boosts a climb with room left, and otherwise throws at the tap', () => {
+  const h = fresh(), g = h.game, a = plant(g), b = plant(g, { x: g.P.x + 40 }), low = plant(g, { x: g.P.x + 80, growth: 1.3 }), gy = g.surfaceY(a.x);
+  const tap = (wx, wy) => { const x = (wx - g.camX) * 960 / g.IW, y = (wy - g.camY) * 540 / g.IH; h.pointer('pointerdown', x, y); h.advance(50); h.pointer('pointerup', x, y); };
+  tap(low.x, g.surfaceY(low.x) - 20); assert.equal(g.climb, null); assert.equal(g.bombs.length, 1, 'a stem too short to climb takes the throw');
+  g.bombs = []; g.bombCool = 0; tap(a.x + 3, gy - 30); assert.equal(g.climb.p, a); assert.equal(g.bombs.length, 0);
+  steps(g, .1); tap(a.x, gy - 58); assert.ok(g.climb.boost > 0); assert.equal(g.bombs.length, 0);
+  steps(g, 4); assert.equal(g.P.y, gy - g.plantClimbHeight(a));
+  tap(a.x, gy - 20); assert.equal(g.bombs.length, 1, 'the top of a stem has nothing left to boost'); assert.equal(g.climb.p, a);
+  g.bombCool = 0; tap(b.x, g.surfaceY(b.x) - 20); assert.equal(g.bombs.length, 2); assert.equal(g.climb.p, a); assert.equal(g.P.st, 'climb');
+});
+
 test('Down slides on growing plants and explicitly exits a cleared stalk, but stage twenty cannot be skipped', () => {
   const h = fresh(), g = h.game, p = plant(g); g.requestClimb(p); steps(g, 2);
   h.key('keydown', 'ArrowDown'); steps(g, 1.5); assert.equal(g.climb, null); assert.equal(g.P.grounded, true); assert.equal(g.rogueRun.world, 1);
