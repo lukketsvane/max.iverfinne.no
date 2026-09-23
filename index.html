@@ -408,7 +408,7 @@ function endPointer(e){
   }
   // Cancellation (iOS app switch, browser gesture, lost capture) is never a tap.
   if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&performance.now()-t.t0<240){
-    var pest=krekAt(t.wx,t.wy,t.onMax?6:14)||(t.onMax?floatKrek.find(function(k){return k.boss&&enemyDistance(k,t.wx,t.wy)<14;}):null),bird=t.onMax?null:birdAt(t.wx,t.wy),spore=sporeAt(t.wx,t.wy,12);
+    var pest=krekAt(t.wx,t.wy,t.onMax?6:14)||(t.onMax?floatKrek.find(function(k){return k.boss&&enemyDistance(k,t.wx,t.wy)<14;}):null),bird=t.onMax?null:birdAt(t.wx,t.wy),spore=sporeAt(t.wx,t.wy,12),held;
     if(climb&&climb.exit)climbBoost();
     else if(spore)throwBomb(sporeAim(spore));
     else if(pest)throwBomb({kind:'krek',o:pest});
@@ -419,7 +419,7 @@ function endPointer(e){
       else if(P.st==='climb'&&P.skillCool>0)climbBoost();
       else if(!useClassSkill()&&P.st==='climb')climbBoost();}
     else if(companionAt(t.wx,t.wy))refillCompanion();
-    else if(P.st==='climb'&&climb&&plantClimbAt(t.wx,t.wy,12)===climb.p&&P.y>climb.gy-plantClimbHeight(climb.p)+.5)climbBoost();
+    else if(P.st==='climb'&&climb&&(held=plantClimbAt(t.wx,t.wy,12))&&(held===climb.p||held.id&&held.id===climb.plantId)){if(P.y>climb.gy-plantClimbHeight(held)+.5)climbBoost();}
     else if(canPlantClimb(rogueRun.classId)){var vine=plantClimbAt(t.wx,t.wy,12);if(!(vine&&requestClimb(vine)))throwBomb({x:t.wx,y:t.wy});}
     else throwBomb({x:t.wx,y:t.wy});
   }
@@ -5114,14 +5114,14 @@ function runCue(kind,dist){
   var c=RUN_CUES[kind];if(c)chime(c[0],c[1],c[2]);
 }
 function listenRun(){
-  var b=heard,now={run:rogueRun,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:!!rogueRun.choice,hit:{}},hurt=null;
+  var b=heard,now={run:rogueRun,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:rogueRun.choice||null,hit:{}},hurt=null;
   gardenPlots.forEach(function(p){now.hit[p.id]=p.hit||0;if(p.dead)now.fall++;else if(b&&p.hit>(b.hit[p.id]||0)+.2&&(!hurt||Math.abs(p.x-P.x)<Math.abs(hurt.x-P.x)))hurt=p;});
   runEncounters.forEach(function(e){if(e.done)now.done++;else if(e.active)now.trial++;});
   heard=now;
   if(!b||b.run!==now.run||b.world!==now.world||Math.abs(now.t-b.t)>1)return;
   if(hurt)runCue('hurt',Math.abs(hurt.x-P.x));
-  ['fall','lost','raid','clear','trial','done','level'].forEach(function(k){if(now[k]>b[k])runCue(k);});
-  if(b.level>now.level)runCue('boon');
+  ['fall','lost','raid','clear','trial','done'].forEach(function(k){if(now[k]>b[k])runCue(k);});
+  if(now.level!==b.level){if(b.level)runCue('boon');if(now.level)runCue('level');}
 }
 
 /* ---------------------------------------------------------------- camera */

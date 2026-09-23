@@ -78,10 +78,10 @@ test('a Moss tap near a stem climbs it, boosts a climb with room left, and other
   const tap = (wx, wy) => { const x = (wx - g.camX) * 960 / g.IW, y = (wy - g.camY) * 540 / g.IH; h.pointer('pointerdown', x, y); h.advance(50); h.pointer('pointerup', x, y); };
   tap(low.x, g.surfaceY(low.x) - 20); assert.equal(g.climb, null); assert.equal(g.bombs.length, 1, 'a stem too short to climb takes the throw');
   g.bombs = []; g.bombCool = 0; tap(a.x + 3, gy - 30); assert.equal(g.climb.p, a); assert.equal(g.bombs.length, 0);
-  steps(g, .1); tap(a.x, gy - 58); assert.ok(g.climb.boost > 0); assert.equal(g.bombs.length, 0);
+  steps(g, .1); g.gardenPlots = g.gardenPlots.map(p => ({ ...p })); tap(a.x, gy - 58); assert.ok(g.climb.boost > 0, 'a guest snapshot between frames keeps the held stem'); assert.equal(g.bombs.length, 0);
   steps(g, 4); assert.equal(g.P.y, gy - g.plantClimbHeight(a));
-  tap(a.x, gy - 20); assert.equal(g.bombs.length, 1, 'the top of a stem has nothing left to boost'); assert.equal(g.climb.p, a);
-  g.bombCool = 0; tap(b.x, g.surfaceY(b.x) - 20); assert.equal(g.bombs.length, 2); assert.equal(g.climb.p, a); assert.equal(g.P.st, 'climb');
+  tap(a.x, gy - 20); assert.equal(g.bombs.length, 0, 'the top of the held stem never throws at its own plant'); assert.equal(g.climb.plantId, a.id);
+  tap(b.x, g.surfaceY(b.x) - 20); assert.equal(g.bombs.length, 1); assert.equal(g.climb.plantId, a.id); assert.equal(g.P.st, 'climb');
 });
 
 test('Down slides on growing plants and explicitly exits a cleared stalk, but stage twenty cannot be skipped', () => {

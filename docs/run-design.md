@@ -51,7 +51,7 @@ Moss can attach to ordinary living plants once they have reached at least 50% of
 - Down descends.
 - Dead or removed plants release the climber.
 - Hazards can knock Moss off.
-- A tap on the held stem climbs faster while there is stem above; any other tap throws from an ordinary stem and keeps the grip. An exit climb never throws.
+- A tap on the held stem climbs faster while there is stem above and never throws; any other tap throws from an ordinary stem and keeps the grip. An exit climb never throws.
 - A tap on Max pounces: a hop from the ground, or a dive from a stem or the air. The slam lands with up to double damage from 96 px or higher and never harms plants.
 - Plant height and attachment geometry must be identical for host and guests.
 
