@@ -7,16 +7,18 @@ Rules:
 - A garden's night is rolled once, by the host, from `rogueRun.seed` (or a hash of the run's record id and start time) and the garden number. Guests receive it in `coopCapture().secrets` and never roll their own.
 - The banner that shows the garden number on arrival adds one word for a special night.
 - Balance effects are small, and device-date decorations have none.
+- Secret rewards are exact gifts: the spot, hedgehog, wish and golden-plant seeds skip the class seed rate, like returned seeds, so a Mech or Bulwark team still gets what the find promises.
+- Everything is drawn in native pixels from the muted night palette: no additive glow and no gradients.
 
 ## Special nights (about one garden in five, never garden 1)
 
 | Night | Word | What happens |
 | --- | --- | --- |
-| Full moon | MOON | A brighter moon, twice the fireflies, moths circle Max's lit lamp, garden plants glow faintly. Decoration only. |
+| Full moon | MOON | A brighter moon, twice the fireflies, moths circle Max's lit lamp. Decoration only. |
 | Meteor shower | METEORS | Streaks cross the upper sky all night, and the night always carries a wishing star. |
 | Fog | FOG | Low drifting banks hide pests near the ground; the damp keeps every garden plant at 30% water or more. Never in a milestone-boss garden. |
 | Aurora | AURORA | Green and violet curtains ripple above the mountains. Only in the snow gardens 11-15, about one in three. Decoration only. |
-| Dawn chorus | CHORUS | Up to nine blue tits gather and sing, often for the first 30 s and now and then after; the horizon warms. Decoration only. |
+| Dawn chorus | CHORUS | Up to nine blue tits gather and sing, often for the first 30 s and now and then after. Decoration only. |
 
 ## Shooting star
 
