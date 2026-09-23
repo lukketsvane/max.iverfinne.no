@@ -151,6 +151,21 @@ test('Moon Moth healing can be interrupted and milestone reinforcements respect 
   boss.hp=boss.maxHp*.6;g.updateEnemyRole(boss,.01);assert.equal(g.floatKrek.length,24);assert.equal(boss.phase,2);
   for(let i=0;i<100;i++)g.updateEnemyRole(boss,.01);assert.equal(g.floatKrek.length,24,'the same phase cannot summon repeatedly');
 });
+test('enemy heals shrink with durability, so heal-to-damage ratios hold at every point of the clock',()=>{
+  const ratios=[['medium',0],['medium',600],['insane',1200],['easy',300]].map(([difficulty,seconds])=>{
+    const {game:g}=fresh(15);g.rogueRun.difficulty=difficulty;g.runElapsed=seconds;g.gardenPlots=[plot({x:g.P.x,moisture:.45})];
+    const hit=Object.assign(g.makeKrek(1,false,0),{kind:0,hp:50,maxHp:100});g.damagePest(hit,1,hit.x);const unit=50-hit.hp;
+    const boss=g.makeStageBoss(15),guard=Object.assign(g.makeKrek(1,false,5),{hp:50,maxHp:100});g.floatKrek=[boss,guard];boss.attack=1;boss.cool=0;
+    g.updateKrek(.01);assert.equal(boss.healing,true);for(let i=0;i<200&&boss.healing;i++)g.updateEnemyRole(boss,.01);
+    const ally=Object.assign(g.makeKrek(1,false,1),{kind:1,x:g.P.x,y:g.P.y-12,hp:50,maxHp:100}),moth=Object.assign(g.makeKrek(1,false,6),{kind:6,x:g.P.x-10,y:g.P.y-22,face:1,bite:0,windup:0});
+    g.floatKrek=[ally,moth];for(let i=0;i<95;i++)g.updateEnemyRole(moth,.01);
+    const leech=Object.assign(g.makeKrek(1,false,10),{kind:10,x:g.P.x+22,y:g.surfaceY(g.P.x+22)-20,hp:50,maxHp:100,bite:0});g.floatKrek=[leech];
+    for(let i=0;i<20;i++)g.updateEnemyRole(leech,.05);
+    return [guard,ally,leech].map(k=>(k.hp-50)/unit);
+  });
+  assert.ok(ratios[0].every(r=>r>0),`${ratios[0]}`);
+  for(const r of ratios.slice(1))r.forEach((v,i)=>assert.ok(Math.abs(v-ratios[0][i])<1e-9,`${r} vs ${ratios[0]}`));
+});
 
 test('raised trials require their platform height, queue blocked guards, and place all rewards on actual routes',()=>{
   const {game:g}=fresh(3),e=g.runEncounters[0],layout=g.stageLayout();g.gardenSeeds=9;
