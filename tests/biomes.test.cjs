@@ -34,3 +34,15 @@ test('biome layers are native pixels: binary alpha and no more than 16 colours',
     assert.ok(colours.size <= 16, name + ' colours ' + colours.size);
   }
 });
+
+test('basic pests draw as the biome bird only in Frostwing and Ember gardens; bosses and role enemies never do', () => {
+  const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
+  for (const im of [g.gardenBackdrop(11).bird, g.gardenBackdrop(16).bird]) { im.complete = true; im.naturalWidth = 80; }
+  const pest = { kind: 0, x: g.P.x, y: g.P.y - 20, ph: 1, vx: -10 };
+  g.rogueRun.world = 3; assert.equal(g.drawBirdPest(pest, 10, 10, 1), false);
+  g.rogueRun.world = 12; assert.equal(g.drawBirdPest(pest, 10, 10, 1), true);
+  g.rogueRun.world = 17; assert.equal(g.drawBirdPest({ ...pest, windup: .4, tell: .95 }, 10, 10, 1), true);
+  assert.equal(g.drawBirdPest({ ...pest, boss: true }, 10, 10, 1), false);
+  assert.match(g.gardenBackdrop(12).bird.src, /snow-finch\.png$/);
+  assert.match(g.gardenBackdrop(18).bird.src, /ember-crow\.png$/);
+});
