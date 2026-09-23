@@ -53,7 +53,7 @@
 .max-menu .max-home-links button{min-height:44px;padding:10px 2px;background:transparent;border-color:transparent;gap:0;color:#a7bebb}
 .max-home-links svg{display:none}
 .max-menu .max-home-note{margin:24px 0 0;font-size:9px;letter-spacing:.17em;color:#99aead}
-.max-menu .max-home-players{margin:18px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.max-menu .max-home-players{position:fixed;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 22px));margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
 .max-menu .max-home-players p{margin:0}
 .max-menu .max-home-players-title{opacity:.6}
 
