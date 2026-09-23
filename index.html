@@ -3046,12 +3046,12 @@ function resetRogueRun(reason,selection){
 }
 function endRogueRun(){
   if(rogueRun.ended)return;
-  if(coop)coop.choosing=false;
+  if(coop)Object.values(coop.members).forEach(function(m){m.choices=[];m.owed=0;});
   rogueRun.ended=true;rogueRun.won=false;rogueRun.choice=null;runWon=false;runFinishT=0;clearRunInput();finalizeRogueRun(false);saveGarden();showRunResult();
 }
 function winRogueRun(){
   if(rogueRun.ended)return;
-  if(coop)coop.choosing=false;
+  if(coop)Object.values(coop.members).forEach(function(m){m.choices=[];m.owed=0;});
   var alive=0,mature=0,health=0;
   for(var i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead){alive++;health+=gardenPlots[i].health;if(gardenPlots[i].growth>=1)mature++;}
   var speedBonus=Math.max(0,900-Math.floor(runElapsed*2));
@@ -3226,7 +3226,7 @@ function offerRogueChoice(){
 }
 function chooseRoguePerk(id){
   if(!window.MaxBuilds.available(rogueRun.perks,id,rogueRun.classId))return;
-  if(coop){if(coop.host)coopChoose(coop.me,id,coop.round);else if(rogueRun.choice&&rogueRun.choice.some(function(p){return p.id===id;}))coopAction('boon',{boon:id,round:coop.round});return;}
+  if(coop){var round=coop.members[coop.me].round;if(coop.host)coopChoose(coop.me,id,round);else if(rogueRun.choice&&rogueRun.choice.some(function(p){return p.id===id;}))coopAction('boon',{boon:id,round:round});return;}
   if(rogueRun.ended||!rogueRun.choice||!rogueRun.choice.some(function(p){return p.id===id;})||(rogueRun.perks[id]||0)>=perkMax(id))return;
   rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();
   if(perkMenu)perkMenu.style.display='none';
@@ -3239,7 +3239,7 @@ function grantRogueXP(n){
   if(rogueRun.ended||coopGuest())return;
   rogueRun.xp+=Math.max(0,+n||0);
   // Keep surplus XP until its previous choice is resolved; never lose rewards.
-  if(!rogueRun.choice&&!(coop&&coop.choosing)&&rogueRun.xp>=rogueRun.next&&(coop?coopMembers().some(function(m){return perkChoices(m.perks,m.slot,m.classId).length;}):perkChoices().length)){
+  if((coop||!rogueRun.choice)&&rogueRun.xp>=rogueRun.next&&(coop?coopMembers().some(function(m){return perkChoices(m.perks,m.slot,m.classId).length;}):perkChoices().length)){
     rogueRun.xp-=rogueRun.next;rogueRun.level++;rogueRun.next=Math.min(45,Math.round(rogueRun.next*1.18+2));offerRogueChoice();
   }
 }
