@@ -86,3 +86,25 @@ test('the mouse throws exactly where you click, and holding the button charges a
   assert.equal(aim.x > g.P.x, true);
   fire('pointerdown', 100, 300, 2); assert.ok(g.dodgeBuf > 0, 'right click dodges');
 });
+
+test('a locked mouse keeps its own cursor from movement, draws a crosshair and loses its charge when freed', () => {
+  const { h, g } = padded(); h.window.navigator = {};
+  const stage = h.elements.get('stage'), fire = (type, extra) => { for (const fn of stage.listeners[type] || []) fn({ type, clientX: 0, clientY: 0, pointerId: 9, pointerType: 'mouse', button: 0, preventDefault() {}, ...extra }); };
+  fire('pointermove', { clientX: 400, clientY: 200 }); assert.equal(g.mouse.x, 400);
+  g.mouse.locked = true; g.mouse.was = true;
+  fire('pointermove', { movementX: 25, movementY: -10 }); assert.equal(g.mouse.x, 425); assert.equal(g.mouse.y, 190);
+  assert.equal(g.drawMouseReticle(), true, 'the crosshair shows where the bomb goes');
+  fire('pointerdown', {}); assert.ok(g.charge && g.charge.src === 'mouse');
+  g.mouse.locked = false; h.emit('pointerlockchange'); assert.equal(g.charge, null, 'freeing the mouse drops a half-made throw');
+});
+
+test('a teammate out of view gets an arrow at the screen edge, and none while they are on screen', () => {
+  const ids = [1, 2].map(i => `${i}`.repeat(8) + '-' + `${i}`.repeat(4) + '-4' + `${i}`.repeat(3) + '-8' + `${i}`.repeat(3) + '-' + `${i}`.repeat(12));
+  const room = { id: 'room', host: ids[0], members: ids.map((id, i) => ({ id, slot: i + 1, ready: true })) };
+  const g = loadGame().game;
+  g.beginCoop({ host: true, user: { id: ids[0] }, room, action() { return true; }, tick() {}, fail(reason) { throw Error(reason); } });
+  const m = g.coop.members[ids[1]]; g.camX = g.P.x - g.IW / 2; g.camY = g.P.y - g.IH * .7;
+  m.avatar = { ...(m.avatar || {}), x: g.P.x + 900, y: g.P.y, world: g.rogueRun.world || 1 }; m.draw = null;
+  assert.equal(g.drawTeamArrows(), 1);
+  m.avatar.x = g.P.x + 10; assert.equal(g.drawTeamArrows(), 0);
+});
