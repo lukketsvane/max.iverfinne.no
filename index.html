@@ -508,7 +508,8 @@ function dodgeSweep(x0,y0,x1,y1){
     var k=floatKrek[i],along=length?clamp01(((k.x-x0)*dx+(k.y-(y0-12))*dy)/length):0;
     if((!k.dodgeHits||k.dodgeHits[actor]!==P.dodgeId)&&Math.hypot(k.x-(x0+dx*along),k.y-(y0-12+dy*along))<18){
       if(!k.dodgeHits)k.dodgeHits={};k.dodgeHits[actor]=P.dodgeId;
-      k.lastDodge=actor+':'+P.dodgeId;staggerKrek(k,.5*ownClass().stagger);k.vx=P.dodgeDir*65*ownClass().stagger;k.vy=-15;k.flash=.6;
+      if(!(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.startle>0)))continue;
+      k.lastDodge=actor+':'+P.dodgeId;staggerKrek(k,.5*ownClass().stagger);k.vx=P.dodgeDir*65*ownClass().stagger;k.vy=-15;k.flash=.6;k.startle=4;
     }
   }
 }

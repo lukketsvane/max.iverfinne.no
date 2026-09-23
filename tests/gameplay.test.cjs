@@ -113,6 +113,18 @@ test('dodge interrupts a bite once without dealing damage, and avoids blast knoc
   g.explode(g.P.x, g.P.y - 10, false); assert.equal(g.P.vy, vy); assert.equal(g.P.grounded, true);
   g.P.dodgeT = 0; g.explode(g.P.x, g.P.y - 10, false); assert.equal(g.P.vy, -118);
 });
+test('a dodge staggers a pest once per startle, so dodge spam cannot hold its bites off', () => {
+  const { game: g } = setup(); const p = plot({ x: 8 }); const k = pest(g, p);
+  const roll = () => {
+    Object.assign(g.P, { x: 0, dodgeCool: 0, dodgeT: 0 });
+    Object.assign(k, { x: p.x, y: g.surfaceY(p.x) - 18, flee: 0, windup: .5, attackTarget: p, target: p });
+    g.requestDodge(1); g.updatePlayer(1 / 120, idle);
+  };
+  roll(); assert.equal(k.windup, 0); assert.ok(k.flee > 0); assert.equal(k.startle, 4);
+  roll(); assert.equal(k.windup, .5); assert.equal(k.flee, 0);
+  k.healing = true; roll(); assert.ok(k.flee > 0, 'a committed heal is still interrupted');
+  k.startle = 0; roll(); assert.ok(k.flee > 0);
+});
 test('every pest telegraphs before damage and recovers before its next attack', () => {
   for (const kind of [0, 1, 2]) {
     const { game: g } = setup(); const p = plot(); const k = pest(g, p, kind);
