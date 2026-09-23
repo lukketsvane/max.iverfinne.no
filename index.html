@@ -3046,12 +3046,12 @@ function resetRogueRun(reason,selection){
 }
 function endRogueRun(){
   if(rogueRun.ended)return;
-  if(coop)coop.choosing=false;
+  if(coop)Object.values(coop.members).forEach(function(m){m.choices=[];m.owed=0;});
   rogueRun.ended=true;rogueRun.won=false;rogueRun.choice=null;runWon=false;runFinishT=0;clearRunInput();finalizeRogueRun(false);saveGarden();showRunResult();
 }
 function winRogueRun(){
   if(rogueRun.ended)return;
-  if(coop)coop.choosing=false;
+  if(coop)Object.values(coop.members).forEach(function(m){m.choices=[];m.owed=0;});
   var alive=0,mature=0,health=0;
   for(var i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead){alive++;health+=gardenPlots[i].health;if(gardenPlots[i].growth>=1)mature++;}
   var speedBonus=Math.max(0,900-Math.floor(runElapsed*2));
@@ -3226,7 +3226,7 @@ function offerRogueChoice(){
 }
 function chooseRoguePerk(id){
   if(!window.MaxBuilds.available(rogueRun.perks,id,rogueRun.classId))return;
-  if(coop){if(coop.host)coopChoose(coop.me,id,coop.round);else if(rogueRun.choice&&rogueRun.choice.some(function(p){return p.id===id;}))coopAction('boon',{boon:id,round:coop.round});return;}
+  if(coop){var round=coop.members[coop.me].round;if(coop.host)coopChoose(coop.me,id,round);else if(rogueRun.choice&&rogueRun.choice.some(function(p){return p.id===id;}))coopAction('boon',{boon:id,round:round});return;}
   if(rogueRun.ended||!rogueRun.choice||!rogueRun.choice.some(function(p){return p.id===id;})||(rogueRun.perks[id]||0)>=perkMax(id))return;
   rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();
   if(perkMenu)perkMenu.style.display='none';
@@ -3239,7 +3239,7 @@ function grantRogueXP(n){
   if(rogueRun.ended||coopGuest())return;
   rogueRun.xp+=Math.max(0,+n||0);
   // Keep surplus XP until its previous choice is resolved; never lose rewards.
-  if(!rogueRun.choice&&!(coop&&coop.choosing)&&rogueRun.xp>=rogueRun.next&&(coop?coopMembers().some(function(m){return perkChoices(m.perks,m.slot,m.classId).length;}):perkChoices().length)){
+  if((coop||!rogueRun.choice)&&rogueRun.xp>=rogueRun.next&&(coop?coopMembers().some(function(m){return perkChoices(m.perks,m.slot,m.classId).length;}):perkChoices().length)){
     rogueRun.xp-=rogueRun.next;rogueRun.level++;rogueRun.next=Math.min(45,Math.round(rogueRun.next*1.18+2));offerRogueChoice();
   }
 }
@@ -3279,7 +3279,7 @@ function collectSeed(q){
 }
 function updateSeedPickups(dt){
   seedSpawnClock-=dt;seedStreakT=Math.max(0,seedStreakT-dt);if(seedStreakT<=0)seedStreak=0;
-  if(seedSpawnClock<=0){seedSpawnClock=.6;if(!coopGuest()){ensureSeedPickups();if(coop&&coop.host)coopMembers().forEach(function(m){if(m.id!==coop.me)coopWithMember(m,ensureSeedPickups);});}}
+  if(seedSpawnClock<=0){seedSpawnClock=.6;if(coop&&coop.host)coopMembers().forEach(function(m){coopWithMember(m,ensureSeedPickups);});else if(!coop)ensureSeedPickups();}
   var magnet=10+(rogueRun.perks.magnet||0)*12;
   for(var i=seedPickups.length-1;i>=0;i--){
     var q=seedPickups[i],collector=P,collectorPerks=rogueRun.perks;
@@ -3358,7 +3358,7 @@ function plantGardenSeed(x){
   return embody('sow',x,function(){
     if(gardenSeeds<=0||nearestGardenPlot(x,12))return;
     gardenSeeds--;
-    gardenPlots.push({x:x,kind:gardenKindFor(x),growth:0,moisture:.26,health:1,pulse:1,hit:0,age:0,dead:0,seed:Math.random()*999,seedMark:0});
+    gardenPlots.push({x:x,kind:gardenKindFor(x),growth:0,moisture:.26,health:1,pulse:1,hit:0,age:0,dead:0,seed:Math.random()*999,seedMark:0,carer:skillOwner()});
     recordGardenPlant(gardenPlots[gardenPlots.length-1]);
     gardenAction(8,7,'PLANTED');
     if(gardenPlots.length>30)gardenPlots.shift();
@@ -3380,7 +3380,7 @@ function waterGardenPlot(p){
   if(!p||p.dead)return true;
   return embody('water',p.x,function(){
     if(p.dead||gardenPlots.indexOf(p)<0)return;
-    var was=p.moisture,perfect=was<.24;
+    var was=p.moisture,perfect=was<.24;p.carer=skillOwner();
     beginGardenCare(p);
     var tend=1+.12*(rogueRun.perks.tender||0),care=ownClass().care;p.moisture=Math.min(1,was+care);p.health=clamp01(p.health+(perfect?.20:.12)*care*tend*(1+ownTraits().dew*.08));p.pulse=perfect?1.7:1.15;
     herbalistCare(p,.045);
@@ -3395,7 +3395,7 @@ function waterGardenPlot(p){
 }
 function waterGardenPlotTick(p,dt){
   if(!p||p.dead)return;
-  var perk=rogueRun.perks.water||0,was=p.moisture,tend=1+.12*(rogueRun.perks.tender||0);
+  var perk=rogueRun.perks.water||0,was=p.moisture,tend=1+.12*(rogueRun.perks.tender||0);p.carer=skillOwner();
   beginGardenCare(p);
   p.moisture=clamp01(p.moisture+dt*(.72+.12*perk)*ownClass().care*tend*(1+ownTraits().dew*.08));
   p.health=clamp01(p.health+dt*(.045+.008*perk)*ownClass().care*tend*(1+ownTraits().dew*.08));
@@ -3428,7 +3428,7 @@ function gardenSynergy(p){
   return Math.min(.34,n*.085);
 }
 function gardenGrowthRate(p){
-  var id=biomeAt(p.x).id,b=.032*(1+.35*(rogueRun.perks.growth||0))*(1+.12*auraAt(p.x,'grow'));
+  var id=biomeAt(p.x).id,b=.032*(1+.35*(plantPerks(p).growth||0))*(1+.12*auraAt(p.x,'grow'));
   if(id==='meadow'||id==='grove')b*=1.12;else if(id==='frost')b*=.70;else if(id==='ember')b*=.82;
   return b;
 }
@@ -3437,17 +3437,17 @@ function updateGarden(dt){
   for(i=gardenPlots.length-1;i>=0;i--){
     p=gardenPlots[i];recordGardenPlant(p);p.age+=dt;p.pulse=Math.max(0,p.pulse-dt*1.5);p.hit=Math.max(0,p.hit-dt*2.5);if(p.guard)p.guard=Math.max(0,p.guard-dt*1.5);
     if(p.dead){p.dead-=dt;if(p.dead<=0){gardenPlots.splice(i,1);gardenStats.lost=(gardenStats.lost||0)+1;updateGardenHud();}continue;}
-    var rain=(typeof worldWeather!=='undefined'&&worldWeather.type==='rain')?worldWeather.intensity:0;
-    var dryRate=.012*(biomeAt(p.x).id==='wetland'?.72:1)*Math.pow(.70,(rogueRun.perks.water||0))*Math.pow(.8,auraAt(p.x,'water'));
+    var own=plantPerks(p),rain=(typeof worldWeather!=='undefined'&&worldWeather.type==='rain')?worldWeather.intensity:0;
+    var dryRate=.012*(biomeAt(p.x).id==='wetland'?.72:1)*Math.pow(.70,(own.water||0))*Math.pow(.8,auraAt(p.x,'water'));
     p.moisture=clamp01(p.moisture-dt*dryRate+dt*rain*.055);
-    if(rogueRun.perks.dew&&p.moisture<.35)p.moisture=clamp01(p.moisture+dt*.006*rogueRun.perks.dew);
+    if(own.dew&&p.moisture<.35)p.moisture=clamp01(p.moisture+dt*.006*own.dew);
     if(rain>.28&&Math.random()<dt*.55)p.pulse=Math.max(p.pulse,.18);
     if(p.moisture>.14&&p.health>.12){
       var wet=.18+.82*p.moisture,boost=gardenFeverT>0?2.25:1,syn=gardenSynergy(p);
       p.growth+=dt*gardenGrowthRate(p)*wet*p.health*boost*(1+syn);
       if(syn>.08)p.health=clamp01(p.health+dt*syn*.010);
     }
-    if(p.moisture>.48)p.health=clamp01(p.health+dt*(.010+.005*(rogueRun.perks.regen||0)));else if(p.moisture<.025)p.health=clamp01(p.health-dt*.0035);
+    if(p.moisture>.48)p.health=clamp01(p.health+dt*(.010+.005*(own.regen||0)));else if(p.moisture<.025)p.health=clamp01(p.health-dt*.0035);
     var mend=auraAt(p.x,'heal');if(mend&&!p.dead)p.health=clamp01(p.health+dt*.006*mend);
     if(PLANT_FEATURES[p.kind|0]==='berries')updateBerries(p,dt);
 
@@ -3457,7 +3457,7 @@ function updateGarden(dt){
     var mark=Math.floor(p.growth/1.25);
     if(mark>=(p.seedMark||0)+1){
       p.seedMark=mark;
-      spawnLooseSeeds(p.x,surfaceY(p.x)-Math.min(28,6+p.growth*2),1+(rogueRun.perks.yield||0));
+      spawnLooseSeeds(p.x,surfaceY(p.x)-Math.min(28,6+p.growth*2),1+(own.yield||0));
       p.pulse=1.4;grantRogueXP(1);socialTone('gift');
     }
     if(p.health<=.01&&plantFalls(p))p.hit=1;
@@ -5680,7 +5680,7 @@ function attachGameMenu(){
     openGardenRecords:openGardenRecords,
     beginRun:function(selection){coop=null;resetRogueRun('NEW RUN',selection);},
     clearInput:clearRunInput,exitRun:function(){if(runActive&&!rogueRun.ended)finalizeRogueRun(false);stopCoop();if(window.MaxRunResults)window.MaxRunResults.hide();},
-    beginCoop:beginCoop,stopCoop:stopCoop,coopRoster:coopRoster,coopState:coopState,coopInput:coopInput,coopDepart:coopDepart
+    beginCoop:beginCoop,stopCoop:stopCoop,coopRoster:coopRoster,coopState:coopState,coopInput:coopInput,coopDepart:coopDepart,coopJoin:coopJoin
   });
 }
 window.addEventListener('max-menu-ready',attachGameMenu);
