@@ -20,7 +20,7 @@ Rules:
 
 ## Shooting star
 
-About one garden in eight (every meteor night), a star crosses the upper sky between 20 and 70 s into the garden. A tap on it within 2.2 s grants one wish for the team: three seeds at the tapper's feet, or one free boon card (seeded, half and half). A tap on the star throws nothing. A guest's tap is a `wish` action; the host allows 0.8 s for the round trip.
+About one garden in seven from garden 2 on, and on every meteor night, a star crosses the upper sky between 20 and 70 s into the garden. A tap on it within 2.2 s grants one wish for the team: three seeds at the tapper's feet, or one free boon card (seeded, half and half). A tap on the star throws nothing. A guest's tap is a `wish` action; the host allows 0.8 s for the round trip.
 
 ## Hidden things
 
@@ -44,5 +44,5 @@ About one garden in eight (every meteor night), a star crosses the upper sky bet
 
 | Egg | How | What |
 | --- | --- | --- |
-| Moonlit Max | Tap the MAX title seven times, each within 1.5 s of the last. | A rising chime and a lavender tint on your own Max for the session. Seven more taps take it off. The menu sends a \`max-logo-tap\` window event; other players see Max as usual. |
+| Moonlit Max | Tap the MAX title seven times, each within 1.5 s of the last. | A rising chime and a lavender tint on your own Max for the session. Seven more taps take it off. The menu sends a `max-logo-tap` window event; other players see Max as usual. |
 | Goodnight | Find all 20 plants. | The garden view (pinch out on the menu) writes GOODNIGHT, GARDEN softly across its sky, and in the water below. |
