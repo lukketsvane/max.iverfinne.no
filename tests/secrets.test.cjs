@@ -188,3 +188,10 @@ test('a hedgehog settles under a grown plant and leaves two seeds if that plant 
   const before = dry.seedPickups.length; dry.gardenPlots[0].moisture = .2; wait(dry, 25, false);
   assert.equal(dry.secrets.hogGift, 0, 'a dry plant sends it away with nothing'); assert.equal(dry.seedPickups.length, before);
 });
+
+test('an owl hoots only between three and four on the device clock', () => {
+  const owl = at => { const g = fresh().game; g.secretClock = () => at; let eyes = 0; for (let t = 0; t < 12; t += .5) { g.updateSecrets(.5); eyes = Math.max(eyes, g.secretOwlEyes); } g.drawSecretAir(1); return eyes; };
+  assert.ok(owl(new Date(2026, 8, 23, 3, 30)) > 0, 'a hoot within the first ten seconds of the hour');
+  assert.equal(owl(new Date(2026, 8, 23, 4, 0)), 0);
+  assert.equal(owl(new Date(2026, 8, 23, 15, 3)), 0);
+});

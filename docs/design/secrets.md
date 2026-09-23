@@ -29,3 +29,4 @@ About one garden in eight (every meteor night), a star crosses the upper sky bet
 | Golden plant | About one garden plant in 300 grows golden, seeded by the run and the plant's id, and sparkles. | Each harvest drops two extra seeds and rings a chime. |
 | Secret spot | One patch of ground per garden, 70-200 px from where the team arrives, twinkles faintly every few seconds. Stand still on it for 3 s. | A swirl of fireflies and two seeds, once per garden. |
 | Hedgehog | In about three gardens in ten, 30-70 s in, a hedgehog settles under a grown plant for 20 s. Keep that plant at 30% water or more. | Two seeds when it trundles off. A dry or fallen plant sends it away with nothing. |
+| Owl | Play between 03:00 and 03:59 on the device clock. | A soft hoot-hoo and two amber eyes in the dark, about once a minute. Local to each player. |
