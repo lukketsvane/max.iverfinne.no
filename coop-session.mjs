@@ -3,6 +3,7 @@ import { encodeFrame, CoopFrameReceiver, COOP_TRANSPORT_LIMITS } from './coop-tr
 
 // One authoritative garden. Private topics bind selections and input to the
 // authenticated sender. A fresh round trip locks every choice before Start.
+const COOP_PROTOCOL = 2;
 const token = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 const validToken = value => typeof value === 'string' && /^[a-zA-Z0-9-]{8,80}$/.test(value);
 const memberList = members => Array.isArray(members) && members.length > 0 && members.length <= 4 &&
@@ -228,6 +229,7 @@ export class CoopSession {
     // Guest input retains its per-session sequence so a reload starts at one.
     if (sender === 'state') packet = this.frameReceiver.receiveFragment(sender, packet);
     if (this.closed || !packet || packet.v !== 1 || !Number.isSafeInteger(packet.seq) || !validToken(packet.sid)) return;
+    if (packet.proto !== COOP_PROTOCOL) { if (sender === 'state' && !this.host) this.fail('MAX was updated. Reload to rejoin the garden.'); return; }
     const stream = sender + ':' + packet.sid;
     if (packet.seq <= (this.received.get(stream) || 0)) return;
     if (JSON.stringify(packet).length > (sender === 'state' ? COOP_TRANSPORT_LIMITS.MAX_FRAME_BYTES : COOP_TRANSPORT_LIMITS.MAX_INPUT_BYTES)) return;
@@ -310,7 +312,7 @@ export class CoopSession {
     const channel = this.channels.get(this.host ? 'state' : this.user.id);
     if (!channel || this.closed) return;
     let frames;
-    try { frames = encodeFrame({ ...packet, v: 1, sid: this.token, seq: ++this.sequence }); }
+    try { frames = encodeFrame({ ...packet, v: 1, proto: COOP_PROTOCOL, sid: this.token, seq: ++this.sequence }); }
     catch (error) { this.fail(error.message || 'This garden could not be sent.'); return; }
     const emit = payload => { void channel.send({ type: 'broadcast', event: 'frame', payload }).catch(() => {}); };
     if (frames.length === 1) { emit(frames[0]); return; }

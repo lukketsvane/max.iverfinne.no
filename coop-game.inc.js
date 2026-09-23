@@ -31,7 +31,7 @@ function coopJoin(id,kit){
   var roomMember=coop.network.room.members.find(function(m){return m.id===id;}),m=coop.members[id];if(!roomMember)return false;
   if(!m||m.classId!==window.MaxClasses.clean(kit.classId)){m=coop.members[id]=Object.assign(coopMember(id,roomMember.slot,kit,{}),{place:m?m.place|0:0});coopPlace(m);}
   else if(m.avatar.world!==worldLevel())coopPlace(m);
-  m.left=false;m.last=performance.now();m.ack=null;m.dodge=null;coopNextChoice(m);return true;
+  m.left=false;m.last=performance.now();if(kit!==m){m.ack=null;m.trust=true;}m.dodge=null;coopNextChoice(m);return true;
 }
 function coopPlace(m){var x=P.x+((m.slot||2)-1)*12;m.avatar=Object.assign(coopAvatar(),{classId:m.classId,skin:m.skin,x:x,y:playerSupportY(x,surfaceY(x)),st:'free',grounded:true,wet:false});m.place=(m.place|0)+1;}
 function coopRoster(room){
@@ -47,7 +47,7 @@ function coopPromote(){
   coopFxId=Math.max(coopFxId,top(booms,'id'))+1000;seedPickupUid=Math.max(seedPickupUid,top(seedPickups,'uid'))+1000;
   runDropId=Math.max(runDropId,top(runLoot,'id'))+1000;hazardId=Math.max(hazardId,top(runHazards,'id'))+1000;
   rogueRun.nextPlantId=Math.max(rogueRun.nextPlantId,top(rogueRun.garden,'id'),top(gardenPlots,'id'))+1000;
-  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;m.dodge=null;coopNextChoice(m);});
+  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;m.dodge=null;m.trust=true;coopNextChoice(m);});
   coop.ui='';coopShowChoices();
 }
 function coopDepart(id){if(coop&&coop.host&&id!==coop.me)delete coop.members[id];}
@@ -77,9 +77,9 @@ function coopInput(id,packet){
   }
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
-    if(Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
+    if(m.trust||Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
       a.wet=playerWetAt(a.x,a.y);a.grounded=a.grounded&&coopSupportY(a.x,a.y)!==null&&!a.wet;
-      m.avatar=a;accepted=true;
+      m.avatar=a;m.trust=false;accepted=true;
       if(!a.grounded||a.st==='climb'){m.airTop=m.airTop==null?a.y:Math.min(m.airTop,a.y);m.landAt=0;}
       else{if(!m.landAt)m.landAt=now;if(now-m.landAt>800)m.airTop=null;}
       if(m.braceUntil&&(!a.bracing||!a.grounded||a.wet||Math.abs(a.x-m.braceX)>6))m.braceUntil=0;
@@ -233,7 +233,7 @@ function coopState(s){
   if(Array.isArray(s.effects)&&s.effects.length<=30){
     s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.abs(e.x-P.x);if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else sfx('boom',d);}});booms=s.effects.map(coopPlain);
   }
-  var ids=[];
+  var ids=[],placed=null;
   s.members.forEach(function(q){
     if(typeof q.id!=='string'||!/^[0-9a-f-]{36}$/.test(q.id)||q.slot<1||q.slot>4)return;
     if(!coop.members[q.id])coop.members[q.id]=coopMember(q.id,q.slot,q,{});
@@ -244,7 +244,7 @@ function coopState(s){
     if(q.id===coop.me)Object.keys(traits).forEach(function(type){if(traits[type]>(m.traits&&m.traits[type]||0))traitNotice(type,traits[type]);});
     m.traits=traits;
     if(q.id!==coop.me){m.avatar=a;m.place=q.place|0;}
-    else if((q.place|0)!==(m.place|0)){m.place=q.place|0;task=climb=warp=holdWater=null;Object.assign(P,{x:a.x,y:a.y,vx:0,vy:0,st:'free',grounded:a.grounded,platform:null});setAnim('idle');}
+    else if((q.place|0)!==(m.place|0)){m.place=q.place|0;placed=a;}
     else if(P.brace>0&&q.braceTag===P.braceTag)P.brace=Math.min(P.brace,Math.max(0,+q.braceLeft||0));
   });
   if(ids.indexOf(coop.me)<0)return;
@@ -266,6 +266,7 @@ function coopState(s){
     else{P.y=surfaceY(P.x)-80;P.grounded=false;P.st='float';setAnim('hang');}
     started=false;
   }
+  if(placed){task=climb=warp=holdWater=null;Object.assign(P,{x:placed.x,y:placed.y,vx:0,vy:0,st:'free',grounded:placed.grounded,platform:null});setAnim('idle');}
   var mine=coop.members[coop.me];rogueRun.classId=P.classId=mine.classId;P.skin=mine.skin;rogueRun.perks=mine.perks;rogueRun.traits=mine.traits;
   rogueRun.ended=!!s.ended;runWon=!!s.won;coopShowChoices();
   if(rogueRun.ended&&!wasEnded){finalizeRogueRun(runWon);clearRunInput();showRunResult();}

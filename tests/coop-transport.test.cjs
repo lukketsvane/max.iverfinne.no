@@ -282,3 +282,15 @@ test('ordinary six-hundred-plant sessions retain ten snapshots per second, and l
     assert.equal(received.length, 1);
   } finally { await host.leave(); await guest.leave(); }
 });
+
+test('a guest refuses a host on another co-op protocol instead of waiting on boons that never resolve', async () => {
+  const { CoopSession } = await import('../coop-session.mjs');
+  const { host, guest, sent, received, errors } = sessions(CoopSession);
+  try {
+    host.tick({}, () => snapshot(1, 10).state); guest.receive('state', sent[0].payload);
+    assert.equal(sent[0].payload.proto, 2); assert.equal(received.length, 1);
+    host.receive('guest', { v: 1, seq: 1, sid: 'old-guest-build', actions: [] }); assert.equal(host.closed, false);
+    guest.receive('state', { v: 1, seq: 99, sid: 'old-host-build', state: snapshot(2, 10).state });
+    assert.equal(received.length, 1); assert.deepEqual(errors, ['MAX was updated. Reload to rejoin the garden.']); assert.equal(guest.closed, true);
+  } finally { await host.leave(); await guest.leave(); }
+});
