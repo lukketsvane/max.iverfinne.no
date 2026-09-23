@@ -187,5 +187,5 @@ test('low shelves cannot start or continue refills, while a Moss teammate can re
   assert.equal(bot.state.refill, remaining); assert.equal(bot.state.water, .2);
   place(x, soil); send([]);
   for (let i = 0; i < 40; i++) g.updateCompanion(.05);
-  assert.equal(bot.state.water, 1); assert.equal(g.ensureCompanion(member), null);
+  assert.equal(bot.state.water, .6); assert.equal(g.ensureCompanion(member), null);
 });

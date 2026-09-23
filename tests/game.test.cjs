@@ -119,14 +119,18 @@ test('legacy checkpoint storage is ignored; login and finished records stay inta
 });
 
 test('repeated taps on a watered healthy plant cannot farm score, power or instant growth', () => {
-  const { game } = loadGame();
-  const p = plot();
-  game.gardenPlots = [p];
-  game.waterGardenPlot(p);
-  const earned = { score: game.gardenScore, power: game.gardenPower, growth: p.growth };
-  assert.ok(earned.score > 0, 'watering a thirsty plant should remain rewarding');
-  for (let i = 0; i < 30; i++) game.waterGardenPlot(p);
-  assert.deepEqual({ score: game.gardenScore, power: game.gardenPower, growth: p.growth }, earned);
+  for (const [classId, taps] of [['runner', 1], ['mech', 2]]) {
+    const { game } = loadGame(); game.resetRogueRun('test', { classId });
+    const p = plot();
+    game.gardenPlots = [p];
+    for (let i = 0; i < taps; i++) game.waterGardenPlot(p);
+    assert.equal(p.moisture, 1, classId + ' fills a plant in ' + taps + ' taps');
+    const earned = { score: game.gardenScore, power: game.gardenPower, growth: p.growth };
+    assert.ok(earned.score > 0, 'watering a thirsty plant should remain rewarding');
+    assert.ok(Math.abs(p.growth - 1 - .8 * .055) < 1e-9, 'growth follows the water given, not the number of taps');
+    for (let i = 0; i < 30; i++) game.waterGardenPlot(p);
+    assert.deepEqual({ score: game.gardenScore, power: game.gardenPower, growth: p.growth }, earned);
+  }
 });
 
 test('holding water on a full healthy plant cannot farm score or power', () => {

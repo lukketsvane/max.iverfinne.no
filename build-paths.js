@@ -9,7 +9,7 @@
     {id:'bloom',name:'Bloom pulse',desc:'Harvest heals nearby plants',path:0,max:1,needs:{growth:2,regen:1}},
     {id:'tender',name:'Green thumb',desc:'12% stronger tending each rank',path:0,max:5},
     {id:'spread',name:'Wide watering',desc:'Water splashes farther to neighbours',path:0,max:4},
-    {id:'robot',name:'Companion',desc:'Upgrade your watering robot',path:1,max:3,classId:'mech'},
+    {id:'robot',name:'Companion',desc:'A bigger, faster watering robot',path:1,max:4,classId:'mech'},
     {id:'shield',name:'Thorns',desc:'22% less pest damage',path:1},
     {id:'bark',name:'Barkskin',desc:'8% less plant damage each rank',path:1,max:4},
     {id:'mulch',name:'Mulch',desc:'Defeated pests heal nearby plants',path:1,max:4},
@@ -28,7 +28,9 @@
     {id:'bramble',name:'Bramble',desc:'Pests that bite a plant are cut by thorns',path:1,max:3},
     {id:'evergreen',name:'Evergreen',desc:'Once per garden a dying plant lives on',path:1,max:1,needs:{shield:1,bark:1}},
     {id:'wild',name:'Wild spark',desc:'12% chance per rank of a triple blast',path:2,max:3},
-    {id:'glue',name:'Sap burst',desc:'Blasts glue pests in place',path:2,max:3}
+    {id:'glue',name:'Sap burst',desc:'Blasts glue pests in place',path:2,max:3},
+    {id:'fleet',name:'Robot crew',desc:'One more watering robot',path:1,max:2,classId:'mech',needs:{robot:2}},
+    {id:'sentry',name:'Guard bot',desc:'A robot that zaps pests off plants; ranks zap harder',path:1,max:3,classId:'mech',needs:{robot:2}}
   ];
   function max(id){var p=perks.find(function(q){return q.id===id;});return p?p.max||5:0;}
   function empty(){var p={};perks.forEach(function(q){p[q.id]=0;});return p;}

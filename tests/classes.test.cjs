@@ -44,7 +44,7 @@ test('class selection is validated, independent of skin, and retry restores only
     assert.equal(g.rogueRun.world, 1); assert.equal(g.rogueRun.classId, kit.id); assert.equal(g.P.skin, 'moon');
     assert.deepEqual({ ...g.rogueRun.perks }, classes.perks(kit.id));
     assert.equal(g.rogueRun.traits.dew, 0); assert.equal(g.P.dodgeCool, 0);
-    const bot = g.ensureCompanion(); assert.equal(!!bot, kit.id === 'mech'); if (bot) assert.equal(bot.state.water, 1);
+    const bot = g.ensureCompanion(); assert.equal(!!bot, kit.id === 'mech'); if (bot) assert.deepEqual([bot.state.tier, bot.state.water], [0, .6]);
   }
   const { game: g } = fresh('__proto__', 'not-a-skin');
   assert.equal(g.rogueRun.classId, 'mech'); assert.equal(g.P.skin, 'original');
@@ -75,7 +75,7 @@ test('Bulwark protects plants while standing nearby and resists shoves; protecti
 });
 
 test('Herbalist improves active care and heals nearby living plants without changing score rewards', () => {
-  const outcomes = ['mech', 'herbalist'].map(id => {
+  const outcomes = ['runner', 'herbalist'].map(id => {
     const { game: g } = fresh(id), p = plot({ health: .4, moisture: .1 }), near = plot({ x: 20, health: .4 }), far = plot({ x: 60, health: .4 }), dead = plot({ x: 25, health: 0, dead: 8 });
     g.gardenPlots = [p, near, far, dead]; g.waterGardenPlot(p);
     assert.equal(far.health, .4); assert.equal(dead.health, 0);
@@ -83,6 +83,10 @@ test('Herbalist improves active care and heals nearby living plants without chan
   });
   assert.ok(Math.abs(outcomes[1].primary - .68) < 1e-9); assert.ok(Math.abs(outcomes[0].primary - .60) < 1e-9);
   assert.equal(outcomes[0].neighbour, .4); assert.equal(outcomes[1].neighbour, .445); assert.equal(outcomes[0].score, outcomes[1].score);
+  for (const id of ['mech', 'bulwark']) {
+    const { game: g } = fresh(id), p = plot({ health: .4, moisture: .1 }); g.gardenPlots = [p]; g.waterGardenPlot(p);
+    assert.ok(Math.abs(p.moisture - .55) < 1e-9 && Math.abs(p.health - .49) < 1e-9, `${id} hands fill and heal less than half as much`);
+  }
   const { game: g } = fresh('herbalist'), p = plot({ health: .4, moisture: .1 }); g.gardenPlots = [p]; g.waterGardenPlotTick(p, .5);
   assert.ok(Math.abs(p.health - (.4 + .5 * .045 * 1.4)) < 1e-9); assert.ok(p.moisture > .6);
 });
@@ -90,11 +94,11 @@ test('Herbalist improves active care and heals nearby living plants without chan
 test('only Mech can upgrade robots while every class retains complete nonempty boon paths', () => {
   for (const kit of classes.all) {
     const { game: g } = fresh(kit.id); assert.equal(!!g.ensureCompanion(), kit.id === 'mech');
-    for (let rank = 0; rank < 3; rank++) { g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot'); g.updateCompanion(.01); }
-    assert.equal(g.rogueRun.perks.robot, kit.id === 'mech' ? 3 : 0);
-    if (kit.id === 'mech') assert.equal(g.ensureCompanion().state.tier, 2); else assert.equal(g.ensureCompanion(), null);
+    for (let rank = 0; rank < 4; rank++) { g.rogueRun.choice = [{ id: 'robot' }]; g.chooseRoguePerk('robot'); g.updateCompanion(.01); }
+    assert.equal(g.rogueRun.perks.robot, kit.id === 'mech' ? 4 : 0);
+    if (kit.id === 'mech') assert.equal(g.ensureCompanion().state.tier, 3); else assert.equal(g.ensureCompanion(), null);
     const p = classes.perks(kit.id), reached = new Set();
-    for (let level = 1; level <= 100; level++) {
+    for (let level = 1; level <= 120; level++) {
       const eligible = builds.perks.filter(q => builds.available(p, q, kit.id));
       const offers = builds.choices(p, level, 0, kit.id);
       assert.equal(offers.length, Math.min(3, eligible.length), 'each class gets every available slot until its own pool is exhausted');
@@ -103,7 +107,7 @@ test('only Mech can upgrade robots while every class retains complete nonempty b
       const selected = offers[0]; reached.add(selected.path); p[selected.id]++;
     }
     assert.deepEqual([...reached].sort(), [0, 1, 2]); assert.ok(p.chain && p.bloom);
-    assert.equal(p.robot, kit.id === 'mech' ? 3 : 0); assert.equal(p.recycle, kit.id === 'mech' ? 1 : 0);
+    assert.deepEqual([p.robot, p.recycle, p.fleet, p.sentry], kit.id === 'mech' ? [4, 1, 2, 3] : [0, 0, 0, 0]);
     assert.equal(builds.perks.some(q => builds.available(p, q, kit.id)), false);
   }
 });
@@ -184,7 +188,7 @@ test('a teammate can refill another class’s finite rover while the owner is mo
   bot.state.x = g.P.x - 10; bot.state.water = .2; owner.avatar.vx = 40;
   assert.equal(g.refillCompanion(), true);
   for (let i = 0; i < 42; i++) g.updateCompanion(.05);
-  assert.equal(bot.state.water, 1); assert.equal(g.companion, null, 'a helper does not gain ownership or a free rover');
+  assert.equal(bot.state.water, .6); assert.equal(g.companion, null, 'a helper does not gain ownership or a free rover');
 });
 
 test('travel clears queued and held actions plus all unreachable seeds while retaining class and skin', () => {

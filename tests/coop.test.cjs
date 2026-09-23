@@ -208,7 +208,7 @@ test('guests can tend at an active shrine and water a locked exit stalk without 
     const p=plot({x:guest.P.x,stalk:true,growth:4,moisture:.2,health:.6});host.gardenPlots=[p];sync();
     assert.equal(guest.crouchGardenAction(),true);assert.equal(games[1].pending[0].type,'grow');
     const x=guest.P.x;send(1,games[1].pending);sync();
-    assert.equal(p.moisture,1);assert.ok(p.health>.6);assert.equal(host.rogueRun.world,world);assert.equal(guest.P.x,x);
+    assert.ok(p.moisture>.6);assert.ok(p.health>.6);assert.equal(host.rogueRun.world,world);assert.equal(guest.P.x,x);
     assert.equal(guest.climb,null);assert.equal(host.floatKrek.length,0);
   }
 });
