@@ -10,19 +10,26 @@ test('Sap heals a watered plant faster than water alone',()=>{
   assert.ok(sap-plain>.14,`sap ${sap} vs ${plain}`);
 });
 
-test('Bloom pulse heals and waters the neighbours of a harvested plant, and only those',()=>{
-  const after=bloom=>{const g=withPerks({bloom}),ripe=plot({x:0,growth:1}),near=plot({x:30,health:.5,moisture:.2}),far=plot({x:90,health:.5,moisture:.2});g.gardenPlots=[ripe,near,far];assert.equal(g.harvestGardenPlot(ripe),true);return[near.health,near.moisture,far.health,far.moisture];};
+test('Bloom pulse heals and waters the harvested plant and its neighbours within 52 px',()=>{
+  const after=bloom=>{const g=withPerks({bloom}),ripe=plot({x:0,growth:1,health:.5,moisture:.2}),near=plot({x:30,health:.5,moisture:.2}),far=plot({x:90,health:.5,moisture:.2});g.gardenPlots=[ripe,near,far];g.harvestGardenPlot(ripe);assert.equal(g.gardenStats.harvested,1);return[near.health,near.moisture,far.health,far.moisture,ripe.health,ripe.moisture];};
   const plain=after(0),bloom=after(1);
-  assert.ok(bloom[0]-plain[0]>.15&&bloom[1]-plain[1]>.1,`bloom ${bloom} vs ${plain}`);
-  assert.deepEqual(bloom.slice(2),plain.slice(2));
+  assert.ok(bloom[0]-plain[0]>.15&&bloom[1]-plain[1]>.1&&bloom[4]-plain[4]>.15&&bloom[5]-plain[5]>.1,`bloom ${bloom} vs ${plain}`);
+  assert.deepEqual(bloom.slice(2,4),plain.slice(2,4));
 });
 
-test('Golden seeds make more seed spots rare and add a seed to a cleared raid',()=>{
+test('Golden seeds make more seed spots rare and add one raw seed, scaled by the seed rate, to a cleared raid',()=>{
   const spots=luck=>{const g=withPerks({luck});let n=0;for(let b=1;b<4000;b++){const q=g.seedBucketSpawn(b);if(q)n+=q.amount;}return n;};
   const plain=spots(0),golden=spots(5);
   assert.ok(golden>plain*1.15,`golden ${golden} vs ${plain}`);
-  const clear=luck=>{const g=withPerks({luck});g.gardenPlots=[plot({x:0}),plot({x:40})];Object.assign(g,{floatKrek:[],seedPickups:[],gardenWave:1,gardenRaidActive:true,gardenRaidGrace:0});g.rogueRun.raidRemaining=0;g.updateGardenFun(1/60);assert.equal(g.gardenRaidActive,false);return g.seedPickups.length;};
-  assert.ok(clear(1)>clear(0),`raid ${clear(1)} vs ${clear(0)}`);
+  const clear=luck=>{const g=withPerks({luck});g.gardenPlots=[plot({x:0}),plot({x:40})];Object.assign(g,{floatKrek:[],seedPickups:[],seedDust:0,gardenWave:1,gardenRaidActive:true,gardenRaidGrace:0});g.rogueRun.raidRemaining=0;g.updateGardenFun(1/60);assert.equal(g.gardenRaidActive,false);return g.seedPickups.length+g.seedDust;};
+  const a=clear(0),b=clear(1);
+  assert.ok(Math.abs(b-a-.4)<1e-9,`raid ${b} vs ${a}`);
+});
+
+test('Thorns cuts the damage a pest bite does to a plant',()=>{
+  const bitten=shield=>{const g=withPerks({shield}),p=plot({x:0,health:1});g.gardenPlots=[p];g.biteGarden(g.makeKrek(1,false,0),p,0);return 1-p.health;};
+  const plain=bitten(0),thorns=bitten(1);
+  assert.ok(plain>0&&Math.abs(thorns/plain-.78)<1e-9,`thorns ${thorns} vs ${plain}`);
 });
 
 test('Sticky pollen slows a pest flying at a plant',()=>{
