@@ -93,6 +93,15 @@ test('home keeps one Play entry plus login, settings and credits', async () => {
   } finally { m.dom.window.close(); }
 });
 
+test('taps on the MAX title reach the game as logo taps', async () => {
+  const m = await menu();
+  try {
+    let taps = 0; m.w.addEventListener('max-logo-tap', () => taps++);
+    const title = m.w.document.querySelector('h1'); for (let i = 0; i < 7; i++) title.click();
+    assert.equal(title.textContent.replace(/\s/g, ''), 'MAX'); assert.equal(taps, 7);
+  } finally { m.dom.window.close(); }
+});
+
 test('character owns appearance and difficulty is the only separate run choice', async () => {
   const m = await menu();
   try {

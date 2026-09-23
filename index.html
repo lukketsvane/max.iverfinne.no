@@ -5432,6 +5432,7 @@ function drawPlayer() {
   var a = ANIM[P.anim], native = window.MaxNativeArt && window.MaxNativeArt.playerImage(P.skin, a.sh === 2 ? 'interaction' : 'main');
   var img = native || (a.sh === 2 ? sheet2 : sheet);
   if (!native && (a.sh === 2 ? !sheet2Ready : !sheetReady)) return;
+  if (secretTint && P === secretOwnP) img = secretSkin(img);
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
