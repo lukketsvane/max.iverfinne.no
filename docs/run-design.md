@@ -29,6 +29,10 @@ Each normal garden has three finite raids. Time pressure continues to rise throu
 
 The six route families are terraces, canopy, crossings, ruins, switchbacks and the final Crown layout. Platforms are one-way: jump through from below and land while descending.
 
+Every attempt rolls a 32-bit run seed (`rogueRun.seed`). Co-op guests take the host's seed from the snapshot before they read a garden, so everyone climbs the same ledges. Gardens 1–19 are generated from it in `stage-layout.js`: each family keeps its identity and fills one of three route graphs from authored chunks (step, hop, switchback, arch, drop-climb, fork, narrow run, rest ledge, pond hop, wall and alcove, stacked shelf, bridge) with random widths, gaps, turns and optional side ledges. Six candidates are built per garden, any that breaks a reach rule is discarded, and critics pick the most varied survivor. If none survives, the garden falls back to its authored shape. The Crown stays authored, and without a seed `create` still returns the authored gardens.
+
+The required path (both routes, their summits and trials) must be reachable by the slowest profile, an unupgraded Bulwark walking: rise at most 19 px, gap at most its reach minus 3 px (never over 28), shelves at least 18 px wide (22 before Garden 6) and 6 px clear of the soil, at least three real gaps per route, a 36 px rest ledge every 2–4 jumps, no more than two hard jumps in a row, and no ledge that catches a jump meant for the next one. The first three hops keep climbing outward, so rats can follow a player up. `layout.nodes` records the lowest capability that reaches each platform: C0 walking, C1 running, C2 Moss or Spring step 2, C3 the air jump. Summit perches are C2, and about a third of gardens from Garden 4 hide a C3 perch above a summit.
+
 Two elevated routes give reasons to leave the plants temporarily: feathers, optional pickups and shrine trials. Exploration is a time tradeoff because garden danger continues while players move through the route.
 
 ## Physical progression

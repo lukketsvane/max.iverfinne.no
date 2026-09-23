@@ -2,6 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const layouts = require('../stage-layout.js');
 const { loadGame } = require('./game-harness.cjs');
+const { walkRoutes } = require('./platform-sweep.cjs');
 
 function ledge(id, x, y, w) { return { id, x, y, w }; }
 
@@ -46,49 +47,16 @@ test('every attempt rolls a 32-bit run seed that keys the cached garden', () => 
   assert.equal(layouts.create(3, 0, () => 0, () => false).seed, undefined, 'no seed keeps the authored garden');
 });
 
-function launch(g, target, hz = 60) {
-  const start = { ...g.P };
-  // Players can release Up to shorten a jump; Moss need not overshoot a
-  // neighbouring shelf simply because its full jump can reach the one above.
-  for (const releaseAt of [.08, .14, .18, .24, Infinity]) {
-    Object.assign(g.P, start, { vx: 0, vy: 0, wet: false, st: 'free' });
-    g.doJump(true); g.heldUp = true;
-    for (let tick = 0; tick < hz * 1.4; tick++) {
-      if (tick / hz >= releaseAt) g.heldUp = false;
-      const landingX = Math.max(target.x + 3,Math.min(target.x + target.w - 3,start.x)), distance = landingX - g.P.x;
-      g.updatePlayer(1 / hz, { axis: Math.abs(distance) > 1 ? Math.sign(distance) : 0, top: 48 });
-      if (g.P.grounded && g.P.platform === target.id) { g.heldUp = false; return true; }
-      if (tick > 8 && g.P.grounded) break;
-    }
-  }
-  g.heldUp = false;
-  return false;
-}
-
 test('all four unupgraded classes can walk and jump every core hop across twenty gardens at 30, 60 and 120 Hz', () => {
   for (const hz of [30,60,120]) for (let stage = 1; stage <= 20; stage++) {
-    const { game: g } = loadGame(); g.resetRogueRun('test'); if (stage > 1) g.enterLevel(stage);
-    const origin = g.P.x, layout = layouts.create(stage, origin, g.surfaceY, g.waterAt);
-    for (const classId of ['mech', 'runner', 'bulwark', 'herbalist']) {
-      g.rogueRun.classId = classId; g.P.classId = classId; g.rogueRun.traits = { feathers: 0, dew: 0, embers: 0 };
-      for (const route of layout.routes) {
-        let previous = null;
-        for (const id of route.platformIds) {
-          const target = layout.platforms.find(p => p.id === id);
-          const direction = previous ? Math.sign(target.x + target.w / 2 - previous.x - previous.w / 2) : 0;
-          const start = previous ? { x: direction > 0 ? previous.x + previous.w - 3 : previous.x + 3, y: previous.y } : route.start;
-          Object.assign(g.P, { ...start, grounded: true, platform: previous?.id || null, coyote: .1, airJumpUsed: false });
-          assert.equal(launch(g, target,hz), true, `${hz} Hz ${classId}: garden ${stage} ${layout.theme}, ${previous?.id || 'soil'} → ${id}`);
-          previous = target;
-        }
-      }
-    }
+    const { game: g } = loadGame(); g.resetRogueRun('test'); g.rogueRun.seed = undefined; if (stage > 1) g.enterLevel(stage);
+    walkRoutes(g, layouts.create(stage, g.P.x, g.surfaceY, g.waterAt), hz, 'authored');
   }
 });
 
 test('platform landing is stable at 30, 60 and 120 Hz, resets air jumps and falls safely back to soil', () => {
   for (const hz of [30, 60, 120]) {
-    const { game: g } = loadGame(); g.resetRogueRun('test');
+    const { game: g } = loadGame(); g.resetRogueRun('test'); g.rogueRun.seed = undefined;
     const layout = layouts.create(1, 0, g.surfaceY, g.waterAt), platform = layout.platforms.find(p => p.id === layout.routes[1].platformIds[0]);
     Object.assign(g.P, { x: platform.x + platform.w / 2, y: platform.y - 80, vy: 300, grounded: false, platform: null, st: 'free', airJumpUsed: true });
     for (let i = 0; i < hz && !g.P.grounded; i++) g.updatePlayer(1 / hz, { axis: 0, top: 48 });
