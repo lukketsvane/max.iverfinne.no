@@ -26,3 +26,12 @@ test('the keyboard keeps working next to a connected controller', () => {
   const { g } = padded();
   g.heldR = true; g.pollPads(); assert.equal(g.heldR, true, 'an idle stick never releases a held key');
 });
+
+test('a desktop with a mouse sees a taller, wider garden; a phone keeps its chunky framing', () => {
+  const { loadGame } = require('./game-harness.cjs');
+  const h = loadGame(), g = h.game;
+  Object.assign(h.window, { innerWidth: 1440, innerHeight: 900, devicePixelRatio: 1, matchMedia: q => ({ matches: q.includes('pointer:fine') }) });
+  g.resize(); assert.equal(g.SCALE, 4); assert.ok(g.IH >= 220 && g.IW >= 350, g.IW + 'x' + g.IH);
+  Object.assign(h.window, { innerWidth: 390, innerHeight: 844, devicePixelRatio: 3, matchMedia: () => ({ matches: false }) });
+  g.resize(); assert.equal(g.SCALE, 8); assert.ok(g.IW < 150);
+});

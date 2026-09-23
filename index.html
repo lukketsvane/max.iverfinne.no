@@ -123,7 +123,8 @@ function resize() {
   var dpr = window.devicePixelRatio || 1;
   var vw = window.innerWidth, vh = window.innerHeight;
   var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr);
-  SCALE = Math.max(2, Math.round(Math.min(dw, dh) / 150));
+  var desk = !!(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches);
+  SCALE = Math.max(2, Math.round(Math.min(dw, dh) / (desk ? 220 : 150)));
   IW = Math.ceil(dw / SCALE); IH = Math.ceil(dh / SCALE);
   if (cv.width !== IW) cv.width = IW;
   if (cv.height !== IH) cv.height = IH;
