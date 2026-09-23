@@ -31,6 +31,7 @@ writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'),
 require('./build-companion.cjs')(output);
 cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
 cpSync(join(root, 'icons'), join(output, 'icons'), { recursive: true });
+for (const d of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, d))) cpSync(join(root, d), join(output, d), { recursive: true });
 cpSync(join(root, 'assets/biomes-v1'), join(output, 'assets/biomes-v1'), { recursive: true });
 cpSync(join(root, 'assets/boon-symbols-v1'), join(output, 'assets/boon-symbols-v1'), { recursive: true });
 cpSync(join(root, 'assets/plants-v1'), join(output, 'assets/plants-v1'), { recursive: true });

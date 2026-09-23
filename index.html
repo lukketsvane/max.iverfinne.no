@@ -6,6 +6,8 @@
 <script src="build-paths.js"></script>
 <script src="max-classes.js"></script>
 <script src="stage-layout.js"></script>
+<script src="levels-v1/moonlit-ruins.js"></script>
+<script src="levels-v1/ashen-glass-furnace.js"></script>
 <script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
@@ -220,15 +222,33 @@ function pondsInView(fn) {
 
 function dryX(x) { var w = waterAt(x); return w ? w.cx + (x < w.cx ? -1 : 1) * (w.hw + 2) : x; }
 var activeStageLayout=null;
+var PICTURE_ART={};
+function pictureLayout(level){
+  var d=window.MaxPictureLevels&&window.MaxPictureLevels[level];if(!d)return null;
+  var o=levelOriginX(level),ax=Math.round(o+40),ay=Math.floor(surfaceY(ax+d.entry.x))-d.entry.y,L={stage:level,seed:rogueRun.seed,origin:o,theme:'picture',kind:'picture',picture:d.id,platforms:[],routes:[],rewards:[],trials:[],bonuses:[],spots:{},nodes:[],hazards:[]};
+  L.art={img:PICTURE_ART[d.art]||(PICTURE_ART[d.art]=loadImg(d.art)),x:ax,y:ay,w:d.w,h:d.h};
+  d.blocks.forEach(function(b,i){L.platforms.push({id:'r'+i,x:ax+b[0],y:ay+b[1],w:b[2],h:b[3],depth:6,route:1,style:'stone',solid:true});});
+  L.platforms.push({id:'base',x:ax,y:ay+d.h-2,w:d.w,h:90,depth:6,route:1,style:'stone',solid:true,draw:true});
+  (d.ledges||[]).forEach(function(b,i){L.platforms.push({id:'l'+i,x:ax+b[0],y:ay+b[1],w:b[2],depth:4,route:1,style:'branch'});});
+  (d.hazards||[]).forEach(function(h){L.hazards.push({type:h[0],x:ax+h[1],y:ay+h[2],w:h[3],h:h[4]});});
+  var seed=null;(d.markers||[]).forEach(function(m){var a={x:ax+m[1],y:ay+m[2],side:1};if(m[0]==='reward')L.rewards.push(a);else if(m[0]==='seed')seed=a;else if(m[0]==='trial')L.trials.push(a);else if(m[0]==='bonus')L.bonuses.push(a);else L.spots[m[0]]=a;});
+  if(seed)L.rewards.push(seed);
+  return L;
+}
+function pictureLava(){
+  var L=stageLayout();if(!L.hazards||!L.hazards.length)return false;
+  for(var i=0;i<L.hazards.length;i++){var h=L.hazards[i];if(P.x>h.x&&P.x<h.x+h.w&&P.y>h.y&&P.y-12<h.y+h.h){P.vy=-190;P.vx=(P.x<h.x+h.w/2?-1:1)*70;P.grounded=false;P.platform=null;shake=Math.min(3,shake+1.2);chime([220,165],.05,.04);return true;}}
+  return false;
+}
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=pictureLayout(level)||window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
 function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:surfaceY(x);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
-function drawPlatforms(){window.MaxStageLayout.draw(ctx,stageLayout(),camX,camY,IW,IH);}
+function drawPlatforms(){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH);}
 var surf = new Float32Array(360);
 function buildSurfCache() {
   for (var i = 0; i < IW + 10; i++) surf[i] = surfaceY(Math.round(camX) + i - 5);
@@ -660,6 +680,7 @@ function physics(dt, inp) {
   P.x += P.vx * dt;
   P.y += P.vy * dt;
   var rock=window.MaxStageLayout.solid(layout,oldX,oldY,P.x,P.y);
+  if(layout.hazards&&layout.hazards.length)pictureLava();
   if(rock){P.x=rock.x;P.y=rock.y;if(rock.wall)P.vx=0;if(rock.ceil&&P.vy<0)P.vy=0;}
 
   var g = surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;

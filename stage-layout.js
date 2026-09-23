@@ -36,6 +36,7 @@
       if (!p.solid || x1 + 4 <= p.x || x1 - 4 >= p.x + p.w || y1 <= p.y + 1 || y1 - 18 >= p.y + p.h) return;
       var r = hit || { x: x1, y: y1 };
       if (y0 - 18 >= p.y + p.h - 1e-6) { r.y = p.y + p.h + 18; r.ceil = true; }
+      else if (y0 >= p.y - 1e-6 && y0 - p.y <= 6 && y1 - p.y <= 7) { r.y = p.y; r.top = p.id; r.step = true; }
       else if (x0 + 4 <= p.x + 1e-6) { r.x = p.x - 4; r.wall = true; }
       else if (x0 - 4 >= p.x + p.w - 1e-6) { r.x = p.x + p.w + 4; r.wall = true; }
       else if (y0 <= p.y + 1) { r.y = p.y; r.top = p.id; }
@@ -316,6 +317,7 @@
     layout.platforms.forEach(function (p, index) {
       var x = p.x - cx, y = p.y - cy;
       if (p.solid) {
+        if (layout.art && !p.draw) return;
         if (x + p.w < -4 || x > width + 4 || y > height + 4 || y + p.h < -4) return;
         var woodb = p.style === 'branch' || p.style === 'root';
         ctx.fillStyle = woodb ? colors.root : colors.body; ctx.fillRect(x, y, p.w, p.h);
