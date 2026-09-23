@@ -61,7 +61,7 @@ export function validateSnapshot(snapshot) {
       !Number.isFinite(run.time) || run.time < 0 || !Number.isFinite(run.rogue.world) || run.rogue.world < 1 ||
       !object(run.position) || !Number.isFinite(run.position.x)) fail();
   for (const p of [...run.plots, ...run.rogue.garden]) {
-    if (!object(p) || !Number.isFinite(p.kind) || p.kind < 0 || p.kind > 8 || !Number.isFinite(p.growth)) fail();
+    if (!object(p) || !Number.isFinite(p.kind) || p.kind < 0 || p.kind > 19 || !Number.isFinite(p.growth)) fail();
   }
   if (run.rogue.choice !== null && !Array.isArray(run.rogue.choice)) fail();
   if (Array.isArray(run.rogue.choice) && run.rogue.choice.some(p => !object(p) || typeof p.id !== 'string')) fail();

@@ -33,6 +33,9 @@ test('cloud checkpoints contain game data and exclude authentication tokens', as
   const run = JSON.parse(bad.values['max-fuglesprenger-rogue-v6']); run.rogue.choice = [null];
   bad.values['max-fuglesprenger-rogue-v6'] = JSON.stringify(run);
   assert.throws(() => validateSnapshot(bad));
+  const late = structuredClone(snapshot), lateRun = JSON.parse(late.values['max-fuglesprenger-rogue-v6']);
+  lateRun.rogue.garden = [{ id: 1, kind: 19, seed: 3, growth: 2, stalk: false }]; late.values['max-fuglesprenger-rogue-v6'] = JSON.stringify(lateRun);
+  assert.doesNotThrow(() => validateSnapshot(late));
 });
 
 test('legacy import preserves its backup and login but cannot resume a run', async () => {

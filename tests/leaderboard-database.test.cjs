@@ -11,7 +11,7 @@ const runId = '33333333-3333-4333-8333-333333333333';
 const secondId = '44444444-4444-4444-8444-444444444444';
 const thirdId = '55555555-5555-4555-8555-555555555555';
 const plants = n => Array.from({ length: n }, (_, i) => ({
-  id: i + 1, kind: i % 9, seed: 12 + i * .25, growth: 1 + i * .1,
+  id: i + 1, kind: i % 20, seed: 12 + i * .25, growth: 1 + i * .1,
   stalk: i % 7 === 0, appearance: { branches: [i, i + 3], phase: i / 11 },
 }));
 
@@ -32,6 +32,7 @@ test('global bouquets preserve entire runs while publication enforces account ow
     const migration = fs.readdirSync(migrationDir).find(name => name.endsWith('_bouquet_leaderboard.sql'));
     assert.ok(migration, 'the reviewed bouquet migration is present');
     await db.exec(fs.readFileSync(path.join(migrationDir, migration), 'utf8'));
+    await db.exec(fs.readFileSync(path.join(migrationDir, '20260923110000_twenty_plant_kinds.sql'), 'utf8'));
     async function as(id) {
       await db.exec('reset role; set role authenticated;');
       // Deliberately misleading JWT claims must not supply names/authorization.
@@ -111,7 +112,7 @@ test('global bouquets preserve entire runs while publication enforces account ow
     await t.test('malformed plants and impossible completion states are rejected without replacing anything', async () => {
       await as(bob);
       for (const value of [null, {}, [], [...plants(1), ...plants(1)], [{ ...plants(1)[0], growth: -1 }],
-        [{ ...plants(1)[0], kind: 10 }], [{ ...plants(1)[0], stalk: 1 }], [{ ...plants(1)[0], id: 1.2 }],
+        [{ ...plants(1)[0], kind: 20 }], [{ ...plants(1)[0], stalk: 1 }], [{ ...plants(1)[0], id: 1.2 }],
         [{ ...plants(1)[0], appearance: 'x'.repeat(4194304) }]]) {
         await assert.rejects(submit(bob, value, secondId), { code: '23514' });
       }
