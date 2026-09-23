@@ -18,6 +18,7 @@ const stateNames = [
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
 ];
 const functionNames = [
+  'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
@@ -93,10 +94,10 @@ function loadGame(saved = {}) {
     hidden: false, body: element(),
     getElementById(id) { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); },
     createElement: element,
-    addEventListener() {},
+    addEventListener(name, fn) { (docListeners[name] ||= []).push(fn); },
   };
   let now = 10000;
-  const timers = [], listeners = {};
+  const timers = [], listeners = {}, docListeners = {};
   const sandbox = {
     document, localStorage, console,
     Image: class { constructor() { this.complete = false; this.naturalWidth = 0; } },
@@ -115,8 +116,9 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {
-    game: sandbox.game, document, elements, storage, timers,
+    game: sandbox.game, document, elements, storage, timers, window: sandbox,
     key(type, key, repeat = false) { for (const fn of listeners[type] || []) fn({ type, key, repeat, preventDefault() {} }); },
+    emit(type) { for (const fn of [...(listeners[type] || []), ...(docListeners[type] || [])]) fn({ type, preventDefault() {} }); },
     pointer(type, x, y, pointerId = 1) { for (const fn of elements.get('stage').listeners[type] || []) fn({ type, clientX: x, clientY: y, pointerId, pointerType: 'touch', preventDefault() {} }); },
     advance(ms) { now += ms; },
     reload() { return loadGame(Object.fromEntries(storage)); },
@@ -132,4 +134,21 @@ function plot(overrides = {}) {
   };
 }
 
-module.exports = { loadGame, plot };
+function fakeAudio(h) {
+  const contexts = [], param = () => ({ value: 0, points: [], setValueAtTime(v) { this.points.push(v); }, exponentialRampToValueAtTime(v) { this.points.push(v); } });
+  h.window.AudioContext = class {
+    constructor() { Object.assign(this, { state: 'suspended', currentTime: 0, sampleRate: 8000, destination: {}, nodes: [] }); contexts.push(this); }
+    resume() { if (this.state !== 'closed') this.state = 'running'; return Promise.resolve(); }
+    suspend() { this.state = 'suspended'; return Promise.resolve(); }
+    close() { this.state = 'closed'; return Promise.resolve(); }
+    node(kind, parts) { const n = { kind, connect() {}, start() {}, stop() {}, ...parts }; this.nodes.push(n); return n; }
+    createOscillator() { return this.node('osc', { type: 'sine', frequency: param() }); }
+    createGain() { return this.node('gain', { gain: param() }); }
+    createBiquadFilter() { return this.node('filter', { Q: param(), frequency: param() }); }
+    createBufferSource() { return this.node('noise', {}); }
+    createBuffer(channels, length) { return { getChannelData: () => new Float32Array(length) }; }
+  };
+  return contexts;
+}
+
+module.exports = { loadGame, plot, fakeAudio };

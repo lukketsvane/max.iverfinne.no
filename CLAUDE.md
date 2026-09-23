@@ -114,7 +114,8 @@ Boon selection is a live overlay. Never restore the old pause/wait-for-team beha
 Music and effects are separate. Settings uses discrete steps 75 / 50 / 25 / off.
 
 - `soundtrack.mjs`: streamed music and music gain.
-- gameplay audio contexts: effects gain.
+- `effectsAudio()`: the one effects context and effects gain. It resumes on focus, pageshow, visibility and the next touch, including the iOS `interrupted` state, and a closed context is rebuilt on the next touch.
+- `listenRun()` hears garden events from state every frame (a crunch when a plant is hurt, then fall, lost, raid, clear, boon offer and pick, trial start and done), so guests hear what the host simulates. Do not put those cues back at the event sites.
 
 Do not collapse them back into one `soundEnabled` flag.
 
