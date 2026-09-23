@@ -23,6 +23,7 @@
  const requestedStage=Number.parseInt(params.get('stage'),10),platformStage=Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):6;
  const requestedMode=params.get('mode'),reviewMode=requestedMode==='platforms'?'layout'+platformStage:requestedMode==='pressure'?'pressure10':requestedMode;
  const requestedClass=params.get('class')==='moss'?'runner':params.get('class');
+ const requestedSeed=Number.parseInt(params.get('seed'),10),reviewSeed=params.has('authored')?'undefined':Number.isFinite(requestedSeed)?requestedSeed>>>0:1;
  let current=modeLabels.has(reviewMode)?reviewMode:'results',fixtureSerial=0;
  classChooser.value=['mech','runner','bulwark','herbalist'].includes(requestedClass)?requestedClass:current==='plant-climb'?'runner':'mech';
  const viewport=document.getElementById('viewport'),viewports={desktop:[1000,650],phone:[390,844],small:[320,568],landscape:[844,390],compact:[568,320]};
@@ -89,7 +90,7 @@
       });};
     }
     if(${custom}){
-      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:'original'});
+      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:'original'});rogueRun.seed=${reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
       rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;runActive=true;menuPaused=false;

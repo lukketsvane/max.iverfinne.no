@@ -32,6 +32,14 @@ async function scene(mode, classId, params = {}) {
   return { ...mod.exports.loadGame(), selectedMode: modeValue, className, layoutModes };
 }
 
+test('review gardens pin the run seed from the link, or drop it for the authored layout', async () => {
+  for (const [params, expected] of [[{}, 1], [{ seed: '7' }, 7], [{ seed: 'x' }, 1], [{ authored: '' }, undefined]]) {
+    const s = await scene('platforms', 'bulwark', { stage: '3', ...params });
+    assert.equal(s.game.rogueRun.seed, expected);
+    assert.equal(s.game.stageLayout().seed, expected);
+  }
+});
+
 test('legacy platform review links select their clamped live stage and offer every garden layout', async () => {
   for (const [stage, expected] of [[undefined, 6], ['7', 7], ['-9', 1], ['0', 1], ['99', 20], ['invalid', 6]]) {
     const s = await scene('platforms', 'bulwark', stage === undefined ? {} : { stage });
