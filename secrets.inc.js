@@ -79,11 +79,23 @@ function drawSecretSky(t,hy){
   disc(mx,my,20,'rgba(223,230,234,0.035)');disc(mx,my,13,'rgba(223,230,234,0.05)');disc(mx,my,8,'#eef1ea');
   ctx.fillStyle='rgba(170,178,184,0.4)';ctx.fillRect((mx-3)|0,(my-2)|0,2,1);
 }
+function plantGold(p){return !!(p&&p.id&&secretHash(secrets.seed,p.id*977+13)<1/300);}
+function goldHarvest(p){if(!plantGold(p))return false;spawnLooseSeeds(p.x,surfaceY(p.x)-2,2,true);chime([1319,1568,2093],.05,.035);return true;}
 function drawSecretGround(t){
-  if(secretEvent()!=='moon')return;
-  ctx.globalCompositeOperation='lighter';
-  gardenPlots.forEach(function(p,i){if(!p.dead&&p.growth>.2)disc(Math.round(p.x-camX),Math.round(surfaceY(p.x)-camY)-4,7,'rgba(150,190,230,'+(.035+.02*Math.sin(t*1.3+i)).toFixed(3)+')');});
-  ctx.globalCompositeOperation='source-over';
+  var moon=secretEvent()==='moon';
+  gardenPlots.forEach(function(p,i){
+    if(p.dead)return;
+    var sx=Math.round(p.x-camX),gy=Math.round(surfaceY(p.x)-camY),gold=plantGold(p);
+    if(!moon&&!gold)return;
+    ctx.globalCompositeOperation='lighter';
+    if(moon&&p.growth>.2)disc(sx,gy-4,7,'rgba(150,190,230,'+(.035+.02*Math.sin(t*1.3+i)).toFixed(3)+')');
+    if(gold)disc(sx,gy-3,5,'rgba(240,200,90,0.09)');
+    ctx.globalCompositeOperation='source-over';
+    if(gold)for(var k=0;k<3;k++){
+      var ph=t*1.7+k*2.1,a=Math.sin(ph),n=Math.floor(ph/6.283)+k*13+p.id;if(a<.3)continue;
+      ctx.fillStyle='rgba(255,226,120,'+a.toFixed(2)+')';ctx.fillRect(sx-5+Math.round(h1(n)*10),gy-Math.round(plantHeight(p)*h1(n*3.7)),1,1);
+    }
+  });
 }
 function drawSecretAir(t){
   if(secretEvent()==='fog'){

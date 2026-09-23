@@ -3416,6 +3416,7 @@ function harvestGardenPlot(p){
   if(Math.random()<.2*(rogueRun.perks.bounty||0)){gain*=2;chime([659,880,1047],.05,.04);}
   gardenStats.harvested=(gardenStats.harvested||0)+1;grantRogueXP(1);
   spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');
+  goldHarvest(p);
   p.pulse=1.2;p.moisture=Math.max(0,p.moisture-.12);
   if(rogueRun.perks.bloom)gardenPlots.forEach(function(q){if(!q.dead&&Math.abs(q.x-p.x)<52){q.health=clamp01(q.health+.16);q.moisture=clamp01(q.moisture+.12);q.pulse=1.5;}});
   if(rogueRun.perks.recycle){var T=window.MaxCompanion.tiers,dry=null;ensureCrew().forEach(function(b){var s=b.state;if(!dry||s.water/T[s.tier].capacity<dry.water/T[dry.tier].capacity)dry=s;});if(dry)dry.water=Math.min(T[dry.tier].capacity,dry.water+.45);}

@@ -137,3 +137,15 @@ test('a dawn chorus gathers nine blue tits; an ordinary night keeps the usual fe
   for (let i = 0; i < 12; i++) plain.rebalanceEcology(3);
   assert.ok(tits(plain) <= 4);
 });
+
+test('about one plant in 300 grows golden, sparkles, and pays two extra seeds per harvest', () => {
+  const g = fresh().game; g.rogueRun.seed = 4242; g.updateSecrets(0);
+  const golden = []; for (let id = 1; id <= 60000; id++) if (g.plantGold({ id })) golden.push(id);
+  assert.ok(golden.length > 60000 / 450 && golden.length < 60000 / 200, String(golden.length));
+  const other = fresh().game; other.rogueRun.seed = 4243; other.updateSecrets(0);
+  assert.ok(golden.filter(id => other.plantGold({ id })).length < golden.length / 4, 'another run grows other golden plants');
+  const harvest = id => { const h = fresh().game; h.rogueRun.seed = 4242; h.updateSecrets(0); const p = plot({ id, x: h.P.x, growth: 1 }); h.gardenPlots = [p]; const n = h.seedPickups.length; h.harvestGardenPlot(p); h.gardenPlots = [p]; h.drawSecretGround(2); return h.seedPickups.length - n; };
+  const plain = golden[0] + 1;
+  assert.equal(harvest(golden[0]), harvest(plain) + 2);
+  assert.equal(g.goldHarvest(plot({ id: plain })), false);
+});
