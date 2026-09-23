@@ -149,3 +149,21 @@ test('about one plant in 300 grows golden, sparkles, and pays two extra seeds pe
   assert.equal(harvest(golden[0]), harvest(plain) + 2);
   assert.equal(g.goldHarvest(plot({ id: plain })), false);
 });
+
+function standAt(p, g, x) { Object.assign(p, { x, y: g.surfaceY(x), vx: 0, grounded: true }); }
+test('standing still for three seconds on a garden\'s secret spot wakes a firefly swirl and two seeds', () => {
+  const g = fresh().game; g.rogueRun.seed = 99; g.updateSecrets(0);
+  const x = g.secrets.spotX, origin = g.levelOriginX(1);
+  assert.ok(Math.abs(x - origin) >= 60 && Math.abs(x - origin) <= 210, 'away from where the team lands');
+  const loose = g.seedPickups.length;
+  standAt(g.P, g, x); g.updateSecrets(2); g.P.vx = 40; g.updateSecrets(.1); g.P.vx = 0; g.updateSecrets(2);
+  assert.equal(g.secrets.spotFound, 0, 'walking resets the wait');
+  standAt(g.P, g, x + 30); g.updateSecrets(4); assert.equal(g.secrets.spotFound, 0, 'only the spot itself');
+  standAt(g.P, g, x + 4); g.updateSecrets(1.5); g.updateSecrets(1.6);
+  assert.ok(g.secrets.spotFound > 0); assert.equal(g.seedPickups.length, loose + 2); g.drawSecretGround(3);
+  g.updateSecrets(5); assert.equal(g.seedPickups.length, loose + 2, 'once per garden');
+  g.rogueRun.world = 2; g.updateSecrets(0); assert.equal(g.secrets.spotFound, 0); assert.notEqual(g.secrets.spotX, x);
+  const { host, guest, sync } = pair(); host.updateSecrets(0);
+  standAt(host.coop.members[ids[1]].avatar, host, host.secrets.spotX); host.P.x += 50; host.updateSecrets(1.6); host.updateSecrets(1.6);
+  assert.ok(host.secrets.spotFound > 0, 'a guest can find it too'); sync(); assert.equal(guest.secrets.spotFound, host.secrets.spotFound);
+});
