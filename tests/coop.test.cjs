@@ -228,10 +228,12 @@ test('guest rolls open a beetle encountered later in the roll at 30, 60 and 120 
     assert.equal(k.flee,.1);assert.equal(k.lastDodge,tag,'repeated packets cannot retrigger contact');
   }
 });
-test('overlapping players each stagger once; alternating their packets cannot refresh the same roll',()=>{
+test('overlapping players share one startle; alternating their packets cannot refresh the same roll',()=>{
   const {games,send}=team(),host=games[0].game;
   const k=Object.assign(host.makeKrek(1),{x:20,y:host.surfaceY(20)-12,hp:4,maxHp:4});host.floatKrek=[k];
-  for(const i of [1,2]){games[i].game.requestDodge(1);games[i].game.updatePlayer(1/120,{axis:0,top:48});send(i,games[i].pending);}
+  const roll=i=>{games[i].game.requestDodge(1);games[i].game.updatePlayer(1/120,{axis:0,top:48});send(i,games[i].pending);};
+  roll(1);assert.ok(k.flee>0,'the first roll staggers');assert.equal(k.startle,4);
+  k.flee=0;roll(2);assert.equal(k.flee,0,'the shared startle absorbs the second roll');assert.equal(Object.keys(k.dodgeHits).length,2);
   const tag=k.lastDodge;k.flee=.1;
   send(1,games[1].pending);send(2,games[2].pending);
   assert.equal(k.flee,.1);assert.equal(k.lastDodge,tag);assert.equal(Object.keys(k.dodgeHits).length,2);
