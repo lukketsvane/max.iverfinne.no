@@ -302,6 +302,13 @@ test('a guest must climb to a raised trial, and host validation uses that guestâ
     assert.equal(h.game.P.platform,null);assert.equal(JSON.stringify(h.game.stageLayout().platforms),JSON.stringify(host.stageLayout().platforms));
   });
 });
+test('guests adopt the host run seed before reading the garden, so every client climbs the same ledges',()=>{
+  const {games,sync}=team(),host=games[0].game;
+  games.slice(1).forEach((h,i)=>{h.game.rogueRun.seed=(host.rogueRun.seed+i+1)>>>0;h.game.stageLayout();});
+  sync();games.forEach(h=>{assert.equal(h.game.rogueRun.seed,host.rogueRun.seed);assert.equal(JSON.stringify(h.game.stageLayout()),JSON.stringify(host.stageLayout()));});
+  host.enterLevel(7);sync();games.forEach(h=>assert.equal(JSON.stringify(h.game.stageLayout()),JSON.stringify(host.stageLayout())));
+  const state=JSON.parse(JSON.stringify(host.coopCapture()));state.seed='x';games[1].game.coopState(state);assert.equal(games[1].game.rogueRun.seed,host.rogueRun.seed);
+});
 test('guest rolls interrupt enemies on elevated platforms at 30, 60 and 120 Hz',()=>{
   for(const hz of [30,60,120]){
     const {games,send}=team(),host=games[0].game,guest=games[1].game,member=host.coop.members[ids[1]];
