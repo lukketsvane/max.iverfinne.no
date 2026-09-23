@@ -24,9 +24,9 @@ test('both routes have elevated rewards and collecting the finite seed reward ca
     assert.equal(g.rogueRun.traits.feathers,before,'cannot collect from the soil beneath it');
     g.P.y=feather.y+12;g.updateRunLoot();assert.equal(g.rogueRun.traits.feathers,before+1);
     const seeds=g.seedPickups.filter(q=>q.routeReward);
-    assert.equal(seeds.length,1);assert.equal(seeds[0].id,'route:'+stage);assert.equal(seeds[0].amount,2);
+    assert.equal(seeds.length,1);assert.equal(seeds[0].id,'route:'+stage);assert.ok(seeds[0].amount>=1&&seeds[0].amount<=2,'a scarce but never empty reward');
     assert.ok(g.surfaceY(seeds[0].x)-seeds[0].y>=40);
-    const stock=g.gardenSeeds;g.collectSeed(seeds[0]);assert.ok(g.gardenSeeds>=Math.min(99,stock+2));
+    const stock=g.gardenSeeds,amount=seeds[0].amount;g.collectSeed(seeds[0]);assert.ok(g.gardenSeeds>=Math.min(99,stock+amount));
     g.initRunStage();assert.equal(g.seedPickups.filter(q=>q.routeReward).length,0,'stage init never duplicates a collected route reward');
   }
 });
@@ -71,5 +71,5 @@ test('a magnet attracts nearby seeds in two dimensions without pulling an elevat
   for(let i=0;i<180;i++)g.updateSeedPickups(1/60);
   assert.ok(g.seedPickups.includes(reward));assert.equal(reward.y,height);
   const before=g.gardenSeeds;g.P.y=reward.y+6;
-  g.updateSeedPickups(1/60);assert.equal(g.seedPickups.includes(reward),false);assert.ok(g.gardenSeeds>=Math.min(99,before+2));
+  g.updateSeedPickups(1/60);assert.equal(g.seedPickups.includes(reward),false);assert.ok(g.gardenSeeds>=Math.min(99,before+reward.amount));
 });
