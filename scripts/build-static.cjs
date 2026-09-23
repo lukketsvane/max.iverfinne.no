@@ -27,7 +27,7 @@ writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'),
   .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
   .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8'))
   .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8'))
-  .replace('/* MAX_SECRETS */', readFileSync(join(root, 'secrets.inc.js'), 'utf8')));
+  .replace('/* MAX_SECRETS */', readFileSync(join(root, 'secrets.inc.js'), 'utf8')).replace('/* MAX_WONDERS */', readFileSync(join(root, 'wonders.inc.js'), 'utf8')));
 require('./build-companion.cjs')(output);
 cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
 cpSync(join(root, 'icons'), join(output, 'icons'), { recursive: true });

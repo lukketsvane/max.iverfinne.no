@@ -163,6 +163,8 @@ function enterGarden() {
   scene.kinds = plantKinds();
   const found = scene.kinds.filter(k => k.found).length;
   gardenCount.replaceChildren(); pixelText(gardenCount, found + ' / ' + scene.kinds.length + ' FOUND', 2, 1);
+  const wonders = game.wonderLog?.() || [];
+  if (wonders.length) { gardenCount.append(el('br')); pixelText(gardenCount, wonders.filter(w => w.found).length + ' / ' + wonders.length + ' WONDERS', 2, 1); }
   inGarden = true; overlay.dataset.view = 'garden'; card.inert = true; gardenHud.inert = false;
   let seen = false; try { seen = localStorage.getItem('max-garden-pinch-hint') === '1'; localStorage.setItem('max-garden-pinch-hint', '1'); } catch {}
   gardenHint.hidden = seen; gardenHint.classList.remove('gone');

@@ -48,3 +48,14 @@ About one garden in seven from garden 2 on, and on every meteor night, a star cr
 | --- | --- | --- |
 | Moonlit Max | Tap the MAX title seven times, each within 1.5 s of the last. | A rising chime and a lavender tint on your own Max for the session. Seven more taps take it off. The menu sends a `max-logo-tap` window event; other players see Max as usual. |
 | Goodnight | Find all 20 plants. | The garden view (pinch out on the menu) writes GOODNIGHT, GARDEN softly across its sky, and in the water below. |
+
+## Wonders
+
+The host rolls wonders for each garden from the run seed, so every run meets a different set and a co-op team sees the same ones. None appear in the first garden or on a boss night. Every find is written to the found list (`rogueMeta.wonders`); the menu garden shows `n / 25 WONDERS`.
+
+| Kind | Wonders | How |
+| --- | --- | --- |
+| Puzzles (70% of gardens) | Firefly order, Twin plates, High lantern, Cracked stone, Rune plot, Buried relic, Three stars, Bell stones, Echo stone | Stand on the stones in the order they blink; step on one plate, then the other within 4 s; stand 2 s at the lantern on the highest ledge; bomb the crack; grow a plant on the rune; stand still 3 s on the mound; stand at the tablet and tap its three stars within 10 s; bomb all three bells within 12 s; land three jumps on the drum stone within 5 s of each other. |
+| Ultra-rare | Moon well (1 in 50), Crown relic (1 in 80), Four-leaf clover (1 in 120) | Stand at the well 3 s, dig the crown 4 s, or tap the clover. They pay levels. |
+| Chance encounters (45%) | Trader rover, Lost fledgling, Hurt bee, Rival gardener, Sleeping beetle, Riddle statue, Storm flock, Broken robot | Stand by the rover with 3 seeds to trade them for a level; walk the fledgling to its nest; tend the bee 2 s so it lifts nearby plants; beat the ghost to its flag; sneak (walk, never run or bomb) to the mound behind the beetle, or it wakes with two elites; answer the statue by bombing, planting or standing still as its glyph shows; the flock drops seeds; stand 3 s to fix the robot and it waters every plant. |
+| Special gardens (20% of gardens 2-18) | Secret garden, Seed vault, Moonlit meadow, Root cavern, Boss-rush door | A door hides on a high ledge. Stand in it 1.5 s and the next garden becomes that level for one garden: seeds on every ledge and plants that stay moist; free guarded caches and loot on every ledge; a moon night with a new shooting star after every wish; darkness around Max, roots striking plants every 10 s and dew on every ledge; or the next milestone boss at once, worth two levels. The boss door only opens two or three gardens before a boss. |

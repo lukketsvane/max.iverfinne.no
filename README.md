@@ -136,6 +136,7 @@ The project deliberately remains a small static game rather than a framework app
 - `run-director.inc.js` — raids, time pressure, specialist enemies, hazards and bosses.
 - `rat-enemies.inc.js` — rat behavior and native rat integration.
 - `secrets.inc.js` — rare seeded nights, hidden finds, date decorations and easter eggs (see `docs/design/secrets.md`).
+- `wonders.inc.js` — per-run puzzles, chance encounters and hidden doors to special gardens, with a found list (see `docs/design/secrets.md`).
 - `build-paths.js` — boon definitions and choice rules.
 - `max-classes.js` / `player-loadout.mjs` — character rules and persisted selection.
 - `companion.js` — Mech watering robot.
