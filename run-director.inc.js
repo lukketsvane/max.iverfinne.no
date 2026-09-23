@@ -140,7 +140,7 @@ function completeEncounter(e){
   e.active=false;e.done=true;var type={nest:'feathers',rain:'dew',cache:'embers'}[e.type];
   runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*8;dropRunItem(type,x,encounterFloor(e)-13,a.member&&a.member.id);});
   if(e.type==='rain')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
-  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(4);socialTone('gift');
+  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(runReward(4));socialTone('gift');
 }
 function updateEncounters(dt){
   runEncounters.forEach(function(e){
@@ -170,6 +170,12 @@ function updateStageWeather(dt){
 function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)*difficultyProfile().pressure/180,1.7);}
 function runDurabilityScale(){var d=difficultyProfile();return d.durability*(1+.65*(runTimeThreat()-1));}
 function runDamageScale(){var d=difficultyProfile();return d.damage*(1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
+// Risk of Rain rules for the team's side of the clock. Every level adds a fifth of
+// base damage to every hit the team lands, and kill rewards grow with the same
+// clock that toughens the pests, so levels keep coming while kills get slower.
+function runPlayerPower(){return 1+.2*Math.max(0,(rogueRun.level|0)-1);}
+function runRewardScale(){return Math.sqrt(1+.65*(runTimeThreat()-1));}
+function runReward(base){return Math.max(1,Math.round(base*runRewardScale()));}
 function runRaidLimit(){var d=difficultyProfile();return Math.min(MAX_ACTIVE_ENEMIES,Math.max(2,Math.round((5+Math.floor((worldLevel()-1)/5)+Math.max(0,coopSize()-1)+(gardenWave===FINAL_WAVE?1:0)+Math.floor(Math.max(0,runElapsed)/60))*d.density)));}
 function runRaidInterval(){var d=difficultyProfile();return Math.max(.12,(.85-(gardenWave-1)*.045)/(Math.max(.2,d.pressure)*(1+Math.max(0,runElapsed)/180)));}
 function runPatrolLimit(active,cleared){var d=difficultyProfile(),base=(active?(cleared?4:2+Math.ceil(active/2)):1+coopSize())+Math.floor(Math.max(0,runElapsed)/45)+Math.max(0,coopSize()-1);return Math.min(MAX_ACTIVE_ENEMIES,Math.max(1,Math.round(base*d.density)));}
@@ -187,7 +193,7 @@ function damagePest(k,amount,x,build){
   var frontal=k.kind===5&&!k.flee&&(x-k.x)*k.face>=-1;
   var factor=frontal?.25:1;
   if(k.boss&&k.exposed>0)factor*=2;
-  k.hp-=amount*factor/runDurabilityScale();k.flash=1;
+  k.hp-=amount*factor*runPlayerPower()/runDurabilityScale();k.flash=1;
   // Moon Moth's restorative channel is a deliberate interrupt opportunity.
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;k.windup=0;k.exposed=1.4;k.cool=2.2;}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
