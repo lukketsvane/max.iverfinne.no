@@ -292,6 +292,18 @@ function drawCoopPlayers(dt){
   });
   P=original;coopMarker(P,coop.members[coop.me].slot,true);
 }
+function drawRoster(){
+  if(!coop)return 0;
+  var list=coopMembers().slice().sort(function(a,b){return a.slot-b.slot;}),r=cv.getBoundingClientRect(),k=r.height>0?IH/r.height:0,room=coop.network&&coop.network.room&&coop.network.room.members||[];
+  if(safeBottomPx==null)bossBarY();
+  var y=k?Math.floor((window.innerHeight-(safeBottomPx||0)-54-r.top)*k):IH-30;
+  list.forEach(function(m,i){
+    var info=room.find(function(q){return q.id===m.id;}),name=String(info&&info.name||'P'+m.slot).toUpperCase().slice(0,10),yy=y-(list.length-1-i)*9;
+    ctx.fillStyle=['#e3ce80','#87bccf','#b79bcb','#a4bf87'][m.slot-1]||'#e3ce80';ctx.fillRect(4,yy+2,3,3);if(m.id===coop.me)ctx.fillRect(4,yy+6,3,1);
+    drawBossWord(name,10+(name.length*6-1)/2,yy,1);
+  });
+  return list.length;
+}
 function drawTeamArrows(){
   if(!coop)return 0;var top=safeTopArt()+16,edge=5,n=0;
   coopMembers().forEach(function(m){
