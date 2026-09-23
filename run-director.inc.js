@@ -557,9 +557,6 @@ function drawRoleEnemy(k,x,y,t){
     ctx.fillRect(x-8,y-12,17,2);ctx.fillRect(x-4,y-5,2,2);ctx.fillRect(x+3,y-5,2,2);
     ctx.fillStyle='#131c1b';ctx.fillRect(x-3,y,7,7);
     }
-    // Health is part of the crown: twenty little lights, no screen HUD.
-    var lights=Math.ceil(20*Math.max(0,k.hp)/k.maxHp),lightY=native?native.top-3:y-22;
-    for(var j=0;j<20;j++){ctx.fillStyle=j<lights?color:'#323d39';ctx.fillRect(x-10+j,lightY,1,1);}
     if(k.bossId==='moon-moth'&&k.healing){ctx.fillStyle='#ad93bd';ctx.globalAlpha=.6;
       for(var a=0;a<9;a++){var q=a/9;ctx.fillRect(Math.round(x+(k.healX-k.x)*q),Math.round(y+(k.healY-k.y)*q),1,1);}ctx.globalAlpha=1;}
     return true;
