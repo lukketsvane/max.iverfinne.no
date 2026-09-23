@@ -98,7 +98,7 @@ function initRunStage(){
   // The opposite elevated route earns a small shared planting reserve.
   var seedRoute=layout&&layout.rewards&&layout.rewards[layout.rewards.length-1],seedId='route:'+w;
   seedPickups=seedPickups.filter(function(q){return !q.routeReward;});
-  if(seedRoute&&!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:seedRoute.x,y:seedRoute.y-6,amount:2,fall:false,ph:w});
+  if(seedRoute&&!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:seedRoute.x,y:seedRoute.y-6,amount:Math.max(1,seedCount(2)),fall:false,ph:w});
   if(w>=3&&layout&&layout.bonuses&&layout.bonuses.length){
     var bonus=layout.bonuses[(w-1)%layout.bonuses.length];
     players.forEach(function(a,i){dropRunItem(w%2?'embers':'dew',bonus.x+(i-(players.length-1)/2)*4,bonus.y-12,a.member&&a.member.id);});
@@ -140,7 +140,7 @@ function completeEncounter(e){
   e.active=false;e.done=true;var type={nest:'feathers',rain:'dew',cache:'embers'}[e.type];
   runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*8;dropRunItem(type,x,encounterFloor(e)-13,a.member&&a.member.id);});
   if(e.type==='rain')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
-  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost+1);grantRogueXP(4);socialTone('gift');
+  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(4);socialTone('gift');
 }
 function updateEncounters(dt){
   runEncounters.forEach(function(e){

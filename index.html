@@ -351,7 +351,7 @@ function pickGift(g) {
     var k = gifts.indexOf(g); if (k < 0) return;
     gifts.splice(k, 1); worldMind.gifts++; worldMind.trust = clamp01(worldMind.trust + .075);
     worldMind.rep.crow = clamp01((worldMind.rep.crow || 0) + .035);
-    gardenSeeds = Math.min(99, gardenSeeds + 1); updateGardenHud(); saveGarden();
+    gardenSeeds = Math.min(99, gardenSeeds + seedCount(1)); updateGardenHud(); saveGarden();
     saveWorldMind(); socialTone('gift'); puff(g.x, g.y, 8, .7);
   });
 }
@@ -2701,7 +2701,7 @@ function ecosystemLinks(dt){
    water, then becomes harvestable and returns more seeds. The floating pests
    notice the healthiest plants, drift over and bite them. Max can shoo one
    with a long press or throw the same cartoon bombs at them with a tap. */
-var gardenPlots=[], gardenSeeds=0, gardenSaveT=0, gardenStats={harvested:0,lost:0,defended:0};
+var gardenPlots=[], gardenSeeds=0, seedDust=0, gardenSaveT=0, gardenStats={harvested:0,lost:0,defended:0};
 var floatKrek=[], krekSpawnT=7;
 var gardenScore=0,gardenCombo=0,gardenComboT=0,gardenPower=0,gardenFeverT=0;
 var gardenWave=0,gardenRaidT=12,gardenRaidActive=false,gardenRaidSpawn=0,gardenRaidGrace=0,roundLastSecond=-1;
@@ -3020,7 +3020,7 @@ function resetRogueRun(reason,selection){
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
-  gardenSeeds=0;gardenScore=0;gardenCombo=0;gardenComboT=0;gardenPower=0;gardenFeverT=0;seedStreak=0;seedStreakT=0;
+  gardenSeeds=0;seedDust=0;gardenScore=0;gardenCombo=0;gardenComboT=0;gardenPower=0;gardenFeverT=0;seedStreak=0;seedStreakT=0;
   gardenWave=0;gardenRaidT=difficulty==='easy'?28:(difficulty==='hard'?10:(difficulty==='insane'?7:12));gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;krekSpawnT=difficulty==='easy'?22:7;
   runElapsed=0;runFinishT=0;runWon=false;raidLostStart=0;gardenBossSpawned=false;
   gardenStats={harvested:0,lost:0,defended:0};
@@ -3240,6 +3240,7 @@ function grantRogueXP(n){
   }
 }
 function seedBucketSpawn(b){
+  if(b!==0&&h1(b*2.71+9)>=seedRate())return null;
   if(seedCollected['b'+b])return null;if(b!==0&&h1(b*12.77+6.1)<.38)return null;
   var x=b*126+24+h1(b*4.61+3)*78;if(b===0)x=42;x=dryX(x);
   var luck=Math.min(.34,gardenWave*.004+(rogueRun.perks.luck||0)*.055),rare=h1(b*8.3+2)>(.78-luck);
@@ -3252,7 +3253,11 @@ function ensureSeedPickups(){
     if(!found){var q=seedBucketSpawn(b);if(q)seedPickups.push(q);}
   }
 }
-function spawnLooseSeeds(x,y,n){
+// Seeds are scarce. A team with a gardener (Herbalist or Moss) finds them at its rate; the remainder carries over.
+function seedRate(){var rate=ownClass().seeds;if(coop&&coop.members)coopMembers().forEach(function(m){rate=Math.max(rate,window.MaxClasses.get(m.classId).seeds);});return rate;}
+function seedCount(n){seedDust+=n*seedRate();var whole=Math.floor(seedDust+1e-9);seedDust=Math.max(0,seedDust-whole);return whole;}
+function spawnLooseSeeds(x,y,n,exact){
+  if(!exact)n=seedCount(n);
   for(var i=0;i<n;i++)seedPickups.push({id:null,uid:++seedPickupUid,x:x+(Math.random()-.5)*6,y:y-6-Math.random()*4,amount:1,fall:true,vx:(Math.random()-.5)*18,vy:-18-Math.random()*15,ph:Math.random()*6.28});
 }
 function collectSeed(q){
@@ -3741,8 +3746,8 @@ function cloudHeight(){return plantTopH()+132;} // fixed world-space exit height
 function spawnExitSeeds(p){
   if(p.skySeeds)return;                                  // once per committed exit, never for traversal
   p.skySeeds=1;
-  var gy=surfaceY(p.x),top=plantTopH(),chh=cloudHeight();
-  for(var h=Math.round(top*.42),k=0;h<chh-18&&k<9;h+=38,k++){
+  var gy=surfaceY(p.x),top=plantTopH(),chh=cloudHeight(),n=seedCount(9);
+  for(var h=Math.round(top*.42),k=0;h<chh-18&&k<n;h+=38,k++){
     var sd=(k&1)?1:-1;
     seedPickups.push({id:null,x:p.x+sd*6,y:gy-h,amount:1,fall:false,vx:0,vy:0,ph:k*1.3,sky:true});
   }
@@ -3840,7 +3845,7 @@ function enterLevel(n,ascenderId){
   gardenPlots.forEach(recordGardenPlant);
   gardenPlots.length=0;floatKrek.length=0;bombs.length=0;
   seedPickups.length=0;
-  gardenSeeds=Math.min(99,gardenSeeds+2+Math.min(2,carried));
+  gardenSeeds=Math.min(99,gardenSeeds+seedCount(2+Math.min(2,carried)));
   gardenWave=0;gardenRaidT=9;gardenRaidActive=false;gardenRaidSpawn=0;gardenRaidGrace=0;roundLastSecond=-1;
   krekSpawnT=12;gardenBossSpawned=false;raidLostStart=gardenStats.lost||0;
   rogueRun.plantedThisWorld=false;rogueRun.raidTotal=0;rogueRun.raidRemaining=0;rogueRun.raidThreat=0;
@@ -4148,7 +4153,7 @@ function burstKrek(k){
   if(k.divePhase)cancelPestDive(k);
   if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
   if(k.scout){puff(k.x,k.y,6,.5);return;}
-  if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen);
+  if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen,true);
   gardenStats.defended=(gardenStats.defended||0)+1;var mulch=rogueRun.perks.mulch||0;if(mulch)gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-k.x)<48+mulch*8){p.health=clamp01(p.health+.025*mulch);p.moisture=clamp01(p.moisture+.018*mulch);p.pulse=Math.max(p.pulse,.5);}});
   var bonus=k&&k.queen?7:(k&&k.elite?3:((gardenStats.defended%3)===0?1:0));
   if(bonus){spawnLooseSeeds(k.x,k.y,bonus);nudgeGardenHint((k&&k.elite?'ELITE DEFEATED':'PEST DEFEATED')+' · SEED DROP');}
