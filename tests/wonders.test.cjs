@@ -104,9 +104,9 @@ test('a hidden door turns the next garden into a special level', () => {
   }
 });
 
-test('the found list names all twenty-five wonders and survives into the menu', () => {
+test('the found list names all twenty-six wonders and survives into the menu', () => {
   const g = fresh(); const log = g.wonderLog();
-  assert.equal(log.length, 25); assert.equal(log.filter(w => w.found).length, 0);
+  assert.equal(log.length, 26); assert.equal(log.filter(w => w.found).length, 0);
   g.markWonder('clover'); assert.deepEqual([...g.wonderLog().filter(w => w.found).map(w => w.id)], ['clover']);
   assert.equal(g.rogueMeta.wonders.clover, 1);
 });
