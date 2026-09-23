@@ -419,7 +419,7 @@ function endPointer(e){
       else if(P.st==='climb'&&P.skillCool>0)climbBoost();
       else if(!useClassSkill()&&P.st==='climb')climbBoost();}
     else if(companionAt(t.wx,t.wy))refillCompanion();
-    else if(P.st==='climb')climbBoost();
+    else if(P.st==='climb'&&climb&&plantClimbAt(t.wx,t.wy,12)===climb.p&&P.y>climb.gy-plantClimbHeight(climb.p)+.5)climbBoost();
     else if(canPlantClimb(rogueRun.classId)){var vine=plantClimbAt(t.wx,t.wy,12);if(!(vine&&requestClimb(vine)))throwBomb({x:t.wx,y:t.wy});}
     else throwBomb({x:t.wx,y:t.wy});
   }
