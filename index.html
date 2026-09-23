@@ -2741,7 +2741,7 @@ function companionAt(x,y,low){
 }
 function refillCompanion(){
   if(!P.grounded||P.wet||playerWetAt(P.x,P.y)||Math.abs(P.y-surfaceY(P.x))>4)return false;
-  if(coopGuest())return coopAction('refill');
+  if(coopGuest()){if(!coopAction('refill'))return false;socialTone('water');return true;}
   if(runIsPaused())return false;
   var candidates=[];eachCompanion(function(bot){if(bot.state.state!=='packed')candidates.push(bot);});
   candidates.sort(function(a,b){return Math.abs(a.state.x-P.x)-Math.abs(b.state.x-P.x);});
@@ -3228,7 +3228,7 @@ function chooseRoguePerk(id){
   if(rogueRun.ended||!rogueRun.choice||!rogueRun.choice.some(function(p){return p.id===id;})||(rogueRun.perks[id]||0)>=perkMax(id))return;
   rogueRun.perks[id]=(rogueRun.perks[id]||0)+1;rogueRun.choice=null;selectedPerk=null;last=performance.now();
   if(perkMenu)perkMenu.style.display='none';
-  socialTone('gift');grantRogueXP(0);saveGarden();updateGardenHud();
+  grantRogueXP(0);saveGarden();updateGardenHud();
 }
 // A cleared garden or a fallen milestone boss always pays one boon, like Risk of
 // Rain's teleporter item. A full level of XP waits behind any open choice.
@@ -3287,7 +3287,7 @@ function updateSeedPickups(dt){
     if(magnet>10&&Math.hypot(q.x-collector.x,q.y-(collector.y-6))<magnet){q.x+=(collector.x-q.x)*Math.min(1,dt*(2+(collectorPerks.magnet||0)*1.2));q.y+=(collector.y-6-q.y)*Math.min(1,dt*2.2);}
     if(Math.abs(q.x-collector.x)<(q.sky?12:7)&&Math.abs(q.y-(collector.y-6))<(q.sky?24:18)){
       if(coopGuest()){
-        if(!q.claiming&&coopAction('pickup-seed',{seedId:q.id||'',seedUid:Number.isSafeInteger(q.uid)?q.uid:0}))q.claiming=true;
+        if(!q.claiming&&coopAction('pickup-seed',{seedId:q.id||'',seedUid:Number.isSafeInteger(q.uid)?q.uid:0})){q.claiming=true;socialTone('gift');}
       }else collectSeed(q);
       continue;
     }
@@ -4072,7 +4072,7 @@ function updateGardenFun(dt){
       rogueRun.raidRemaining=rogueRun.raidTotal;
       gardenRaidGrace=.8;gardenRaidSpawn=0;
       gardenBossSpawned=false;raidLostStart=gardenStats.lost||0;
-      socialTone('call');updateGardenHud();saveGarden();
+      updateGardenHud();saveGarden();
     }
     return;
   }
@@ -4141,7 +4141,7 @@ function biteGarden(k,p,pressure){
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
   var thorn=rogueRun.perks.bramble||0;if(thorn){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.3*thorn);}
   if(plantMature(p)){var own=plantFeature(p);if(own==='thorns'){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.4);}else if(own==='bind'&&!k.boss)k.glue=Math.max(k.glue||0,1.2);}
-  socialTone('call');if(p.health<=.01&&plantFalls(p))k.target=null;
+  if(p.health<=.01&&plantFalls(p))k.target=null;
 }
 function plantFalls(p){
   if(rogueRun.perks.evergreen&&rogueRun.evergreenWorld!==worldLevel()){
@@ -5084,6 +5084,13 @@ function sfx(kind, dist) {
       src.start(now,0.1);src.stop(now+0.2);
       var o2=ac.createOscillator(),og2=ac.createGain();o2.type='triangle';o2.frequency.setValueAtTime(240,now);o2.frequency.exponentialRampToValueAtTime(110,now+0.12);
       og2.gain.setValueAtTime(tv*.8,now);og2.gain.exponentialRampToValueAtTime(0.0001,now+0.14);o2.connect(og2);og2.connect(ac.destination);o2.start(now);o2.stop(now+0.15);
+    } else if (kind === 'crunch') {
+      var bv=0.07*effectsVolume*Math.max(0.2,1-(dist||0)/400);
+      f.type='bandpass';f.Q.value=1.8;f.frequency.setValueAtTime(1300,now);f.frequency.exponentialRampToValueAtTime(380,now+0.07);
+      g.gain.setValueAtTime(0.0001,now);g.gain.exponentialRampToValueAtTime(bv,now+0.004);g.gain.exponentialRampToValueAtTime(0.0001,now+0.09);
+      src.start(now,0.45);src.stop(now+0.1);
+      var o3=ac.createOscillator(),og3=ac.createGain();o3.type='square';o3.frequency.setValueAtTime(260,now);o3.frequency.exponentialRampToValueAtTime(130,now+0.08);
+      og3.gain.setValueAtTime(bv*.25,now);og3.gain.exponentialRampToValueAtTime(0.0001,now+0.09);o3.connect(og3);og3.connect(ac.destination);o3.start(now);o3.stop(now+0.1);
     } else {
       f.type = 'highpass'; f.frequency.value = 1500;
       g.gain.setValueAtTime(0.0001, now + 0.03); g.gain.exponentialRampToValueAtTime(0.07*effectsVolume, now + 0.04); g.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
@@ -5099,6 +5106,22 @@ function skillCue(kind,dist){
   else if(kind==='parry'){sfx('thud',dist);chime([587,880,1175],.03,.05);}
   else if(kind==='absorb'){sfx('thud',dist);chime([392,494,587],.04,.035);}
   else if(kind==='bloom'||kind==='revive'){chime([523,659,784,1047],.045,.05);if(kind==='revive')chime([784,1175],.1,.06);}
+}
+var RUN_CUES={fall:[[466,392,311],.09,.05],lost:[[311,262],.16,.035],raid:[[440,330,440],.09,.045],clear:[[262,392,523,784],.09,.045],level:[[587,740,880,1175],.05,.04],boon:[[1175,1568],.06,.045],trial:[[294,440],.08,.04],done:[[659,880,1319],.06,.05]},heard=null;
+function runCue(kind,dist){
+  if(kind==='hurt')return sfx('crunch',dist);
+  if(kind==='raid'||kind==='trial')sfx('thud',0);
+  var c=RUN_CUES[kind];if(c)chime(c[0],c[1],c[2]);
+}
+function listenRun(){
+  var b=heard,now={run:rogueRun,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:!!rogueRun.choice,hit:{}},hurt=null;
+  gardenPlots.forEach(function(p){now.hit[p.id]=p.hit||0;if(p.dead)now.fall++;else if(b&&p.hit>(b.hit[p.id]||0)+.2&&(!hurt||Math.abs(p.x-P.x)<Math.abs(hurt.x-P.x)))hurt=p;});
+  runEncounters.forEach(function(e){if(e.done)now.done++;else if(e.active)now.trial++;});
+  heard=now;
+  if(!b||b.run!==now.run||b.world!==now.world||Math.abs(now.t-b.t)>1)return;
+  if(hurt)runCue('hurt',Math.abs(hurt.x-P.x));
+  ['fall','lost','raid','clear','trial','done','level'].forEach(function(k){if(now[k]>b[k])runCue(k);});
+  if(b.level>now.level)runCue('boon');
 }
 
 /* ---------------------------------------------------------------- camera */
@@ -5541,6 +5564,7 @@ function frame(now) {
     updateFeathers(dt);
   }
   if(!runIsPaused())updateHazardContact();
+  if(!runIsPaused())listenRun();
   }
   if((rogueRun.ended||(window.MaxRunResults&&window.MaxRunResults.isOpen()))&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
 
