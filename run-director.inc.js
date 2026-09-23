@@ -133,14 +133,14 @@ function interactEncounter(){
   runEncounters.forEach(function(other){if(other!==e)other.locked=true;});
   e.guardsRemaining=3+Math.min(3,Math.floor(worldLevel()/5))+coopSize();e.guardIndex=0;e.guardSpawn=.6;
   while(spawnEncounterGuard(e)){}
-  socialTone('call');return true;
+  return true;
 }
 function completeEncounter(e){
   if(!e.active||e.done||e.locked)return;
   e.active=false;e.done=true;var type={nest:'feathers',rain:'dew',cache:'embers'}[e.type];
   runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*8;dropRunItem(type,x,encounterFloor(e)-13,a.member&&a.member.id);});
   if(e.type==='rain')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
-  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(runReward(4));socialTone('gift');
+  spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(runReward(4));
 }
 function updateEncounters(dt){
   runEncounters.forEach(function(e){

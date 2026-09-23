@@ -56,7 +56,7 @@ Moss can also climb ordinary living plants for traversal, but ordinary plant cli
 
 - Touch drag left/right: move.
 - Swipe up: jump.
-- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, and a tap on a pest throws from an ordinary stem.
+- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, a tap on the held stem climbs faster and never throws, and any other tap throws from an ordinary stem.
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.
@@ -113,7 +113,7 @@ Run pickups include feathers, embers and dew. They are collected in-world and be
 
 Music and effects are separate device preferences.
 
-Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack.
+Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack. Effects come back after an iPhone interruption (a call, Siri, the app switcher) as soon as the page returns or the next touch lands. A hurt plant crunches; falls, raids, cleared gardens, boon offers and picks and trials each have their own short cue on every player's phone.
 
 The soundtrack player is streamed and survives menus/reconnects without decoding the whole playlist into memory.
 
