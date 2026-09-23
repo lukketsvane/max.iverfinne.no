@@ -58,7 +58,7 @@
 
   #perkMenu{width:min(216px,calc(100vw - 32px));gap:10px}
   #perkMenu button{min-height:48px;border-radius:6px}
-  #perkMenu button:focus-visible{outline:2px solid #e7d997;outline-offset:3px}
+  #perkMenu button:focus-visible,#perkMenu button.padFocus{outline:2px solid #e7d997;outline-offset:3px}
   @media(max-height:430px){#perkMenu{left:auto;right:max(12px,env(safe-area-inset-right));transform:none;width:180px}.perkIcon{width:27px;height:27px}}
 
 #perkMenu{width:min(450px,calc(100vw - 24px));gap:8px}
@@ -299,6 +299,38 @@ window.addEventListener('keyup', function (e) {
   else if (k === ' ') heldSpace = false;
   else if (k === 'l' || k === 'L') lampKey = false;
 });
+var pad={b:[]},padFocusEl=null;
+function padButtons(){return [].slice.call(document.querySelectorAll('button,a[href]')).filter(function(b){return !b.disabled&&b.offsetParent!==null&&!b.closest('[hidden],[inert]');});}
+function padMove(step,list){
+  list=list||padButtons();if(!list.length)return;
+  var i=list.indexOf(document.activeElement);i=i<0?(step>0?0:list.length-1):(i+step+list.length)%list.length;
+  if(padFocusEl)padFocusEl.classList.remove('padFocus');padFocusEl=list[i];padFocusEl.focus();padFocusEl.classList.add('padFocus');
+}
+function padEscape(){window.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));}
+function pollPads(){
+  var all=typeof navigator!=='undefined'&&navigator.getGamepads?[].slice.call(navigator.getGamepads()).filter(Boolean):[],gp=all[0];if(!gp)return;
+  var b=gp.buttons.map(function(x){return !!(x&&(x.pressed||x.value>.5));}),ax=gp.axes[0]||0,ay=gp.axes[1]||0,was=pad.b;
+  var L=b[14]||ax<-.4,R=b[15]||ax>.4,U=b[12]||ay<-.6,D=b[13]||ay>.6,hit=function(i){return b[i]&&!was[i];};
+  if(runIsPaused()||!runActive){
+    if((D&&!pad.D)||(R&&!pad.R))padMove(1);
+    if((U&&!pad.U)||(L&&!pad.L))padMove(-1);
+    if(hit(0)&&document.activeElement&&document.activeElement.click)document.activeElement.click();
+    if(hit(1)||hit(9))padEscape();
+  }else{
+    var choice=rogueRun.choice&&perkMenu?[].slice.call(perkMenu.querySelectorAll('button')):null;
+    if(choice&&choice.length&&U&&!pad.U)padMove(1,choice);
+    if(hit(0)&&choice&&choice.indexOf(document.activeElement)>=0)document.activeElement.click();
+    else if(hit(0))doJump(true);
+    if(L!==!!pad.L)heldL=L;if(R!==!!pad.R)heldR=R;
+    if(b[0]!==!!was[0])heldUp=b[0];
+    if(D!==!!pad.D){heldDown=D;if(D)gardenPress=true;}
+    if(b[3]!==!!was[3]){heldSpace=b[3];if(b[3])gardenPress=true;}
+    var run=b[5]||b[7];if(run!==!!pad.run)heldRun=run;pad.run=run;
+    if(hit(1))requestDodge();if(hit(2))throwAuto();if(hit(4))useClassSkill();if(hit(6))lampToggle=true;if(hit(8))refillCompanion();if(hit(9))padEscape();
+    if(b.some(Boolean))unlockAudio();
+  }
+  pad.b=b;pad.L=L;pad.R=R;pad.U=U;pad.D=D;
+}
 window.addEventListener('blur', clearRunInput);
 document.addEventListener('visibilitychange',function(){clearRunInput();last=performance.now();});
 
@@ -5528,6 +5560,7 @@ function frame(now) {
   var clockDt=Math.max(0,dt);
   last = now;
   if (dt > 0.05) dt = 0.05;
+  pollPads();
   if (dt < 0) dt = 0;
   coopFrame();
   if(worldCovered){requestAnimationFrame(frame);return;}
