@@ -197,6 +197,7 @@ function coopCapture(){
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
+    secrets:coopPlain(secrets),
     difficulty:rogueRun.difficulty,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,choosing:coop.choosing,round:coop.round,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
     plants:gardenPlots.map(coopPlain),garden:rogueRun.garden.map(coopPlain),seedsOnGround:seedPickups.slice(0,180).map(coopPlain),collected:Object.keys(seedCollected),dust:seedDust,
@@ -215,6 +216,7 @@ function coopState(s){
   runEncounters=Array.isArray(s.encounters)?s.encounters.slice(0,4).map(coopPlain):[];
   runHazards=Array.isArray(s.hazards)?s.hazards.slice(0,32).map(coopPlain):[];
   stageWeather=s.stageWeather?coopPlain(s.stageWeather):null;rogueRun.bossDefeated=!!s.bossDefeated;
+  if(s.secrets&&typeof s.secrets==='object')secretSync(s.secrets);
   // A removed rat produces one local corpse animation, never duplicate rewards.
   if(previousWorld===s.world&&!s.ended&&window.MaxNativeArt){
     floatKrek.forEach(function(k){if(isRat(k)&&!s.pests.some(function(q){return isRat(q)&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});

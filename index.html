@@ -1703,7 +1703,7 @@ function spawnFlyers() {
                    grey: h1(l.b * 11 + i) > 0.5, x: l.x, y: 0, face: 1 });
     }
   });
-  while (fireflies.length < 5) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
+  while (fireflies.length < (secretEvent() === 'moon' ? 10 : 5)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
     ph: Math.random() * 6.28, sp: 0.2 + Math.random() * 0.3, f: (Math.random() * 7) | 0, clock: 0 });
   for (var i = fireflies.length - 1; i >= 0; i--) if (Math.abs(fireflies[i].x - P.x) > IW * 1.2) fireflies.splice(i, 1);
   // dragonflies over the ponds in view
@@ -3982,6 +3982,7 @@ function drawWorldBanner(t){
   ctx.globalAlpha=a*.9;
   drawLeafIcon(6,y,'#8aa276','#2f4426');
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
+  drawSecretBanner(y);
   ctx.globalAlpha=1;
 }
 
@@ -5485,6 +5486,7 @@ function drawVignette() {
 /* MAX_COOP_GAME */
 /* MAX_RUN_DIRECTOR */
 /* MAX_RAT_ENEMIES */
+/* MAX_SECRETS */
 
 /* ---------------------------------------------------------------- loop */
 var last = 0, tSec = 0, stepAcc = 0;
@@ -5541,6 +5543,7 @@ function frame(now) {
     updateFeathers(dt);
   }
   if(!runIsPaused())updateHazardContact();
+  if(!runIsPaused())updateSecrets(dt);
   }
   if((rogueRun.ended||(window.MaxRunResults&&window.MaxRunResults.isOpen()))&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
 
@@ -5570,6 +5573,7 @@ function frame(now) {
   drawSky(tSec, hy);
   drawBiomeSkyBands(hy);
   drawMoon(hy);
+  drawSecretSky(tSec, hy);
   var backdrop = gardenBackdrop(), far = backdrop && ready(backdrop.far) ? backdrop.far : IMG.mtn, mid = backdrop && ready(backdrop.mid) ? backdrop.mid : IMG.forest;
   drawTiled(far, 0.10, hy + bdrop, true, MTN_BASE);
   drawFlock();
@@ -5598,6 +5602,7 @@ function frame(now) {
   drawSeedPickups(tSec);
   drawRunExploration(tSec);
   drawGardenPlots(tSec);
+  drawSecretGround(tSec);
   drawClassAuras();
   drawAnts();
   drawLowFlora(tSec, false);
@@ -5611,6 +5616,7 @@ function frame(now) {
   drawSwans();
   drawKrek(tSec);
   drawRunHazards(tSec);
+  drawSecretAir(tSec);
   drawBirdBlasts();
   drawCompanion();
   drawPlayer();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
