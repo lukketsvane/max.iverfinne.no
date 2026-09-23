@@ -93,8 +93,18 @@ function showPlayers(node) {
 }
 function garden() {
   page('garden', 'Your garden');
-  const records = game.records?.() || { runs: 0, world: 0, plants: 0 };
-  card.append(el('p', records.runs ? 'Best: world ' + records.world + ' · ' + records.plants + ' plants' : 'Your first garden awaits.'));
+  const kinds = game.plantCollection?.() || [], found = kinds.filter(k => k.found).length;
+  card.append(pixelText(el('p', undefined, 'max-collection-count'), found + ' / ' + kinds.length + ' PLANTS FOUND', 2, 1));
+  const grid = el('div', undefined, 'max-collection');
+  for (const k of kinds) {
+    const cell = el('figure', undefined, 'max-collection-cell' + (k.found ? '' : ' locked'));
+    const c = el('canvas'); c.width = 64; c.height = 72; c.setAttribute('aria-hidden', 'true');
+    game.drawPlant?.(c, { id: 1, kind: k.kind, seed: k.seed, growth: 2.4, stalk: false });
+    if (!k.found) { const x = c.getContext('2d'); if (x) { x.globalCompositeOperation = 'source-in'; x.fillStyle = '#1c2630'; x.fillRect(0, 0, c.width, c.height); } }
+    cell.append(c, pixelText(el('figcaption'), k.found ? 'NO ' + (k.kind + 1) : '???', 1, 1));
+    grid.append(cell);
+  }
+  card.append(grid);
   if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords(), 'primary'));
   card.append(button(user ? playerName(user) + ' · Account' : 'Sign in / create account', account));
   back();
@@ -456,7 +466,7 @@ function close() {
 function attach(bridge) {
   if (game) return;
   game = bridge;
-  window.MaxGardenLeaderboard = createLeaderboard(client, () => user ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
+  window.MaxGardenLeaderboard = createLeaderboard(client, () => user && playerName(user) !== 'Guest' ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
   window.MaxSoundtrack = createSoundtrack({ enabled: (game.musicVolume?.() ?? 1) > 0, volume: game.musicVolume?.() ?? 1 });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
   scenery = el('canvas', undefined, 'max-menu-scene'); scenery.setAttribute('aria-hidden', 'true');

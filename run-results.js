@@ -231,11 +231,12 @@
     (remote ? records : records.slice(start, end)).forEach(function (record) {
       var item = el('li', 'run-results-entry'); item.dataset.runId = record.id;
       var identity = window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.identity();
-      var name = remote ? record.name + (identity && identity.id === record.ownerId ? ' · YOU' : '') : 'Run ' + record.number;
-      var open = el('button', 'run-results-open'); open.type = 'button'; open.setAttribute('aria-label', 'View ' + name + ': ' + summary(record));
+      var name = remote ? record.name + (identity && identity.id === record.ownerId ? ' · YOU' : '') : record.won ? 'Garden grown' : '';
+      var open = el('button', 'run-results-open'); open.type = 'button'; open.setAttribute('aria-label', 'View ' + (name ? name + ': ' : '') + summary(record));
       var c = el('canvas', 'run-results-thumbnail'); c.width = 96; c.height = 96; c.setAttribute('aria-hidden', 'true');
       var text = el('span', 'run-results-entry-copy');
-      text.append(el('strong', '', name + (record.won ? ' · Garden grown' : '')), el('span', '', summary(record)));
+      text.append(el('strong', '', remote ? name + (record.won ? ' · Garden grown' : '') : name || summary(record)));
+      if (remote || name) text.append(el('span', '', summary(record)));
       var date = new Date(record.finishedAt); if (Number.isFinite(date.getTime())) text.appendChild(el('time', '', date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })));
       if (record.plants.length > PAGE_SIZE) text.appendChild(el('span', 'run-results-bundle-count', Math.ceil(record.plants.length / PAGE_SIZE) + ' bouquets · view every plant'));
       open.append(c, text); open.addEventListener('click', function () { showSaved(record); }); item.appendChild(open); recordsList.appendChild(item);
@@ -297,7 +298,7 @@
   function showBouquet(saved) {
     recordsView.hidden = true; header.hidden = false; footer.hidden = false; collection.hidden = true;
     panel.classList.remove('show-collection'); panel.setAttribute('aria-labelledby', 'runResultsTitle');
-    setLabel(title, saved ? run.number ? 'RUN ' + run.number : 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
+    setLabel(title, saved ? 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
     var identity = window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.identity();
     setLabel(subtitle, run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
     inspectButton.setAttribute('aria-expanded', 'false'); retry.disabled = false; retry.hidden = typeof callbacks.onRetry !== 'function';

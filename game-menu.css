@@ -199,3 +199,8 @@
 .max-menu .max-role-choice:disabled .max-role-ability{color:#71807c}
 .max-difficulty-picker[data-locked="true"]{opacity:.72}
 .max-difficulty-picker[data-locked="true"] .max-difficulty-choice:disabled{opacity:.52;cursor:default}
+.max-menu .max-collection{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.max-menu .max-collection-cell{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.max-menu .max-collection-cell canvas{width:64px;height:72px;image-rendering:pixelated}
+.max-menu .max-collection-cell.locked figcaption{opacity:.5}
+.max-menu .max-collection-count{margin:4px 0 0;display:flex;justify-content:center}
