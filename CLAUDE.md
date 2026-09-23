@@ -37,6 +37,8 @@ The client obtains `max_coop_status` before joining. It reports the active run, 
 
 When changing multiplayer, test race conditions, late join, background/foreground, former-host return, class reservation and run-difficulty inheritance.
 
+When authority moves (`coopPromote`), the new host drops members the room no longer lists, restarts every teammate's input clock, rebases each teammate's acks on their next packet and jumps its id counters (effects, loose seeds, loot, hazards, plants) past anything the old host could have issued. A new session id from a room member is a rejoin. A teammate the host timed out after 10 s without input is only hidden, and comes back with the same build; one who left or dropped out of the room is removed. A player who joins, rejoins, or returns after the garden moved on is placed beside the host (`coopPlace`), and the snapshot's `place` counter moves that guest there.
+
 ## Stage progression
 
 The intended sequence is:
@@ -107,7 +109,17 @@ Plant protection is one rule, `plantProtection(plant, bite)`, and every kind of 
 
 A boon is not done merely because it appears in the menu. Each must materially affect the live simulation and have a regression test.
 
-Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior.
+Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior. In co-op every team level adds one pick to each player's own queue (`owed`); a player works through it alone and nobody waits for anyone's pick.
+
+### Co-op boon owners
+
+A boon belongs to the player who picked it. The host applies each effect with its owner's ranks, never one player's upgrade for the whole world:
+
+- The acting player: movement, throws, tending, harvesting, pickups and the seed spots around them (Long Stride, Spring Step, Light Step, Quick Fuse, Green Thumb, Wide Watering, Seed Rain, Bumper Crop, Bloom Pulse, Rain Engine, Seed Sense, Golden Seeds).
+- The bomb's thrower: Big Blast, Wild Spark, Sap Burst, Chain Bloom and embers ride on the bomb. Rover boons ride on the Mech's own crew.
+- The plant's carer, whoever planted it or last watered it (`plantPerks(p)`): Quick Roots, Deep Soil, Morning Dew, Sap and the seeds a plant sheds. A carer who left takes their boons along.
+- The team's best rank (`coopTeamPerks`) only where the effect is global: Sticky Pollen, because pests belong to nobody, and Golden Seeds' bonus seed on a raid clear, a team reward that spawns at the host.
+- Thorns, Barkskin, Bramble, Evergreen and Mulch still read the team's best rank inside the protection code; they move to `plantPerks(p)` with the protection rework.
 
 ## Audio
 
