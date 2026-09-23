@@ -12,7 +12,8 @@
 <style>
   html, body { height: 100%; margin: 0; background: #000; overflow: hidden; }
   :root { padding: 0 !important; }
-  @media (hover:hover) and (pointer:fine){#stage{cursor:crosshair}}
+  @media (hover:hover) and (pointer:fine){#stage{cursor:none}.perkKey{display:block!important}}
+  .perkKey{display:none;position:absolute;left:7px;top:5px;font:9px/1 ui-monospace,monospace;color:rgba(228,232,198,.5);font-style:normal}
   #stage {
     position: fixed; inset: 0; overflow: hidden; background: #000;
     touch-action: none; overscroll-behavior: none;
@@ -410,8 +411,12 @@ stage.addEventListener('pointerdown', function (e) {
   if(runIsPaused() || (e.pointerType==='mouse' && e.button!==0)) return;
   unlockAudio();
   try { stage.setPointerCapture(e.pointerId); } catch (err) {}
-  var w = screenToWorld(e.clientX,e.clientY);
-  if(e.pointerType==='mouse'&&mouseAim(w)){e.preventDefault();return;}
+  var w = e.pointerType==='mouse'?mouseAt(e):screenToWorld(e.clientX,e.clientY);
+  if(e.pointerType==='mouse'){
+    if(mouse.locked&&document.elementFromPoint){var el=document.elementFromPoint(mouse.x,mouse.y),btn=el&&el.closest&&el.closest('button');if(btn&&!stage.contains(btn)){btn.click();if(!btn.closest('#perkMenu')&&document.exitPointerLock)document.exitPointerLock();e.preventDefault();return;}}
+    else lockMouse();
+    if(mouseAim(w)){e.preventDefault();return;}
+  }
   touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,ax:e.clientX,gx:e.clientX,gy:e.clientY,travelX:0,
     wx:w.x,wy:w.y,onMax:touchKind(w.x,w.y)==='max',t0:performance.now(),j:false,jumped:false,jumpY:e.clientY,low:false,dragged:false};
   if(moveId===null)moveId=e.pointerId;
@@ -475,8 +480,30 @@ stage.addEventListener('pointerup',endPointer);
 stage.addEventListener('pointercancel',endPointer);
 stage.addEventListener('lostpointercapture',endPointer);
 stage.addEventListener('contextmenu',function(e){e.preventDefault();});
-stage.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button===0||runIsPaused())return;var w=screenToWorld(e.clientX,e.clientY);if(e.button===2)requestDodge(w.x<P.x?-1:1);else if(e.button===1)useClassSkill();unlockAudio();e.preventDefault();});
-stage.addEventListener('pointermove',function(e){if(e.pointerType==='mouse'&&charge&&charge.src==='mouse'){var w=screenToWorld(e.clientX,e.clientY);charge.mx=w.x;charge.my=w.y;}});
+stage.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button===0||runIsPaused())return;var w=mouse.seen?screenToWorld(mouse.x,mouse.y):screenToWorld(e.clientX,e.clientY);if(e.button===2)requestDodge(w.x<P.x?-1:1);else if(e.button===1)useClassSkill();unlockAudio();e.preventDefault();});
+var mouse={x:0,y:0,t:-1e9,seen:false,locked:false,was:false};
+function mouseAt(e){
+  if(mouse.locked){mouse.x=Math.max(0,Math.min(window.innerWidth-1,mouse.x+(e.movementX||0)));mouse.y=Math.max(0,Math.min(window.innerHeight-1,mouse.y+(e.movementY||0)));}
+  else{mouse.x=e.clientX;mouse.y=e.clientY;}
+  mouse.seen=true;mouse.t=performance.now();return screenToWorld(mouse.x,mouse.y);
+}
+function lockMouse(){if(!mouse.locked&&stage.requestPointerLock&&runActive&&!rogueRun.ended&&!runIsPaused())try{var p=stage.requestPointerLock();if(p&&p.catch)p.catch(function(){});}catch(err){}}
+document.addEventListener('pointerlockchange',function(){
+  mouse.locked=document.pointerLockElement===stage;
+  if(!mouse.locked&&mouse.was){if(charge&&charge.src==='mouse')charge=null;if(runActive&&!rogueRun.ended&&typeof KeyboardEvent!=='undefined')window.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));}
+  mouse.was=mouse.locked;
+});
+function hoverDom(){if(!mouse.locked||!document.elementFromPoint)return;var el=document.elementFromPoint(mouse.x,mouse.y),btn=el&&el.closest&&el.closest('#perkMenu button');if(btn!==padFocusEl){if(padFocusEl)padFocusEl.classList.remove('padFocus');padFocusEl=btn||null;if(btn)btn.classList.add('padFocus');}}
+stage.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;var w=mouseAt(e);hoverDom();if(charge&&charge.src==='mouse'){charge.mx=w.x;charge.my=w.y;}});
+function drawMouseReticle(){
+  if(mouse.locked&&(!runActive||rogueRun.ended||runIsPaused())&&document.exitPointerLock)document.exitPointerLock();
+  if(!mouse.seen||!runActive||rogueRun.ended||runIsPaused()||performance.now()-mouse.t>8000&&!(charge&&charge.src==='mouse'))return false;
+  var w=screenToWorld(mouse.x,mouse.y),rx=Math.round(w.x-camX),ry=Math.round(w.y-camY);
+  if(!charge){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
+  ctx.fillStyle='rgba(4,8,10,.85)';ctx.fillRect(rx-4,ry-1,9,3);ctx.fillRect(rx-1,ry-4,3,9);
+  ctx.fillStyle=bombCool>0?'#6d7690':'#f2df91';ctx.fillRect(rx-3,ry,3,1);ctx.fillRect(rx+1,ry,3,1);ctx.fillRect(rx,ry-3,1,3);ctx.fillRect(rx,ry+1,1,3);
+  return true;
+}
 window.addEventListener('pointerup',function(e){if(e.pointerType==='mouse'&&e.button===0&&charge&&charge.src==='mouse')chargeRelease();});
 function mouseAim(w){
   if(catchWish(w.x,w.y)||wonderTap(w.x,w.y))return true;
@@ -3291,7 +3318,7 @@ function renderRogueChoice(){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
     bt.setAttribute('aria-label',p.name+', level '+lvl+'. '+p.desc+'. Key '+(index+1));
-    bt.innerHTML='<canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas><strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
+    bt.innerHTML='<i class="perkKey" aria-hidden="true">'+(index+1)+'</i><canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas><strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
     var icon=bt.querySelector('canvas'),ink=boonInk(p.id);if(icon&&ink)icon.getContext('2d').drawImage(ink,0,0);
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
@@ -5781,7 +5808,7 @@ function frame(now) {
   drawWonderAir();
   drawBirdBlasts();
   drawCompanion();
-  drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
+  drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawTeamArrows();drawMouseReticle();
   drawPickupNotice(dt);
   drawClimbSky(tSec);
   drawBombs(tSec);

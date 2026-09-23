@@ -292,6 +292,21 @@ function drawCoopPlayers(dt){
   });
   P=original;coopMarker(P,coop.members[coop.me].slot,true);
 }
+function drawTeamArrows(){
+  if(!coop)return 0;var top=safeTopArt()+16,edge=5,n=0;
+  coopMembers().forEach(function(m){
+    if(m.id===coop.me||!m.avatar||m.avatar.world!==worldLevel())return;
+    var a=m.draw||m.avatar,sx=a.x-camX,sy=a.y-12-camY;
+    if(sx>=0&&sx<IW&&sy>=top-12&&sy<IH)return;
+    var cx=IW/2,cy=(top+IH)/2,dx=sx-cx,dy=sy-cy,k=Math.min(Math.abs((IW/2-edge)/(dx||1e-6)),Math.abs(((IH-top)/2-edge)/(dy||1e-6)));
+    var tx=cx+dx*k,ty=cy+dy*k,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;n++;
+    for(var pass=0;pass<2;pass++){
+      ctx.fillStyle=pass?['#e3ce80','#87bccf','#b79bcb','#a4bf87'][m.slot-1]||'#e3ce80':'rgba(4,8,10,.8)';
+      for(var i=0;i<5;i++)for(var j=-Math.floor(i*.8);j<=Math.floor(i*.8);j++){var px=Math.round(tx-ux*i-uy*j),py=Math.round(ty-uy*i+ux*j);if(pass)ctx.fillRect(px,py,1,1);else ctx.fillRect(px-1,py-1,3,3);}
+    }
+  });
+  return n;
+}
 function coopMarker(p,slot,own){
   var x=Math.round(p.x-camX),y=Math.round(p.y-camY)-29;
   ctx.fillStyle=['#e3ce80','#87bccf','#b79bcb','#a4bf87'][slot-1]||'#e3ce80';
