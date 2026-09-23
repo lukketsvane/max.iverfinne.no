@@ -3512,17 +3512,20 @@ function drawRipePods(p,sx,gy,t,g){
     }
   }
 }
+// A young sprite plant is the top of the grown one, risen out of the soil a whole stem piece at a time,
+// so its tip is always the real tip. Flowers open from the top down as it matures.
 function drawSpritePlant(p,d,sx,gy,t,flip){
   if(!d.ready)return;
-  var reveal=Math.round(d.top*clamp01(plantHeight(p)/PLANT_MATURE_H)),open=p.growth>=.9;
+  var stems=d.stems||(d.stems=d.parts.filter(function(q){return q[0]==='stem';}).sort(function(a,b){return a[3]-b[3];}));
+  var n=Math.max(1,Math.min(stems.length,Math.round(stems.length*clamp01(plantHeight(p)/PLANT_MATURE_H)))),cut=stems[n-1],drop=-cut[3]-cut[5];
   for(var i=0;i<d.parts.length;i++){
     var q=d.parts[i],w=q[4],h=q[5],bottom=-q[3]-h,root=q[0]==='root';
-    var vis=root?h:q[0]==='bloom'?(open&&bottom<reveal?h:0):Math.max(0,Math.min(h,reveal-bottom));
-    if(!vis)continue;
-    var lean=root?0:plantLean(p,Math.max(0,bottom+(h>>1)),t),x=flip?sx-q[2]-w+lean:sx+q[2]+lean,y=gy+q[3]+h-vis;
+    if(!root&&bottom<drop-1e-9)continue;
+    if(q[0]==='bloom'&&p.growth<.95-.25*(bottom+h/2)/d.top)continue;
+    var lean=root?0:plantLean(p,bottom-drop+(h>>1),t),x=flip?sx-q[2]-w+lean:sx+q[2]+lean,y=gy+q[3]+(root?0:drop);
     if(root)ctx.globalAlpha=.76;
-    if(flip){ctx.save();ctx.translate(x+w,y);ctx.scale(-1,1);ctx.drawImage(q.img,0,h-vis,w,vis,0,0,w,vis);ctx.restore();}
-    else ctx.drawImage(q.img,0,h-vis,w,vis,x,y,w,vis);
+    if(flip){ctx.save();ctx.translate(x+w,y);ctx.scale(-1,1);ctx.drawImage(q.img,0,0);ctx.restore();}
+    else ctx.drawImage(q.img,x,y);
     ctx.globalAlpha=1;
   }
   if(d.name==='cloudberry'){
