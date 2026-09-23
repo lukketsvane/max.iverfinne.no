@@ -98,6 +98,16 @@ test('killing a thorn caster during its windup cancels its warned root and no ot
   assert.equal(plant.health,1,'the cancelled root never lands');assert.ok(far.health<1,'an unrelated root still lands');
 });
 
+test('killing a rammer during its windup cancels its warned root',()=>{
+  const g=loadGame().game;g.resetRogueRun();g.rogueRun.world=16;g.gardenRaidT=g.krekSpawnT=9999;
+  const plant=plot({x:0});g.gardenPlots=[plant];g.runHazards=[];
+  const ram=Object.assign(g.makeKrek(-1,false,11),{kind:11,x:-65,y:g.surfaceY(-65)-11,bite:0,windup:0,chargeT:0,hp:1,maxHp:1});g.floatKrek=[ram];
+  g.updateEnemyRole(ram,.01);assert.ok(ram.windup>0);assert.equal(g.runHazards.length,1);
+  assert.equal(g.damagePest(ram,100,ram.x),true);assert.deepEqual(g.runHazards,[]);
+  for(let i=0;i<150;i++)g.updateRunHazards(.01);
+  assert.equal(plant.health,1,'the cancelled root never lands');
+});
+
 test('new roles enter progressively while rats remain a later threat',()=>{
   const g=loadGame().game;g.resetRogueRun('test',{difficulty:'medium'});g.gardenWave=1;
   const kinds=stage=>{g.rogueRun.world=stage;return new Set(Array.from({length:80},(_,i)=>g.waveEnemyKind(i)));};
