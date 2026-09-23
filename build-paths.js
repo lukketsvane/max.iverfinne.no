@@ -40,18 +40,31 @@
     var id=typeof q==='string'?q:q&&q.id;q=perks.find(function(option){return option.id===id;});
     return !!q&&allowed(q,classId)&&(p[q.id]||0)<max(q.id)&&Object.keys(q.needs||{}).every(function(key){return (p[key]||0)>=q.needs[key];});
   }
+  function hash(text){var h=2166136261;for(var i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+  function roller(seed){return function(){seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+  // Risk of Rain item rolls: every offer is a fresh weighted draw, so no path can
+  // lock the menu. A capstone the build has just unlocked always shows up, class
+  // boons are a little more common for their own class, and the three picks span
+  // at least two paths whenever the pool allows it. The roll is seeded, so the
+  // host and every guest see the same offer.
   function choices(p,level,salt,classId){
-    p=clean(p,classId);var score=paths.map(function(_,i){return perks.filter(function(q){return q.path===i;}).reduce(function(n,q){return n+p[q.id];},0);});
-    var lead=score.indexOf(Math.max.apply(null,score)),out=[],base=Math.abs((level||1)+(salt||0));
-    function take(path){
-      var pool=perks.filter(function(q){return q.path===path&&available(p,q,classId)&&out.indexOf(q)<0;});
-      if(!pool.length)return;
-      var signature=pool.find(function(q){return q.needs;});
-      out.push(signature||pool[base%pool.length]);
+    p=clean(p,classId);
+    var pool=perks.filter(function(q){return available(p,q,classId);}),out=[];
+    if(!pool.length)return out;
+    var roll=roller(hash([level|0,salt|0,classId||'mech'].join(':')));
+    function weight(q){return (q.classId?1.6:1)*(q.needs?.6:1);}
+    function draw(list){
+      var total=list.reduce(function(n,q){return n+weight(q);},0),r=roll()*total;
+      for(var i=0;i<list.length;i++){r-=weight(list[i]);if(r<0)return list[i];}
+      return list[list.length-1];
     }
-    if(score[lead]>=2){take(lead);take(lead);take((lead+1+base%2)%3);}
-    else {take(0);take(1);take(2);}
-    perks.forEach(function(q){if(out.length<3&&available(p,q,classId)&&out.indexOf(q)<0)out.push(q);});
+    var fresh=pool.filter(function(q){return q.needs&&!p[q.id];});
+    if(fresh.length)out.push(fresh[Math.floor(roll()*fresh.length)]);
+    while(out.length<3){
+      var left=pool.filter(function(q){return out.indexOf(q)<0;});if(!left.length)break;
+      if(out.length===2&&out[0].path===out[1].path){var other=left.filter(function(q){return q.path!==out[0].path;});if(other.length)left=other;}
+      out.push(draw(left));
+    }
     return out;
   }
   var api={perks:perks,paths:paths,max:max,empty:empty,clean:clean,choices:choices,available:available};

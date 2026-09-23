@@ -130,7 +130,7 @@ test('world changes carry every player and the actual shared bouquet',()=>{
 test('specialised paths unlock signature boons and preserve cross-path choices',()=>{
   const p=builds.empty();for(let level=1;level<10;level++)assert.ok(builds.choices(p,level).every(q=>!q.needs));
   p.blast=2;p.cadence=1;let offered=builds.choices(p,4);
-  assert.ok(offered.some(q=>q.id==='chain'));assert.equal(offered.filter(q=>q.path===2).length,2);assert.ok(offered.some(q=>q.path!==2));
+  assert.ok(offered.some(q=>q.id==='chain'));assert.ok(new Set(offered.map(q=>q.path)).size>=2,'a leading path never takes the whole offer');
   p.chain=1;assert.ok(builds.choices(p,5).every(q=>q.id!=='chain'));
   assert.equal(new Set(offered.map(q=>q.id)).size,offered.length);
 });

@@ -79,6 +79,16 @@ The recent expanded specialists are:
 
 Their attacks need readable counterplay and must not become unavoidable background damage.
 
+## Run power (Risk of Rain rules)
+
+The enemy clock stays superlinear and unbounded; the team answers it the way Risk of Rain does.
+
+- Every level adds a fifth of base damage to every hit the team lands (`runPlayerPower`), bombs, skills and burns alike.
+- Kill, raid and shrine XP scale with `runRewardScale()`, the square root of the clock's toughness factor, so levels keep coming while kills slow down. Harvest and seed-shed XP stay flat so the Cultivator snowball does not grow.
+- Every cleared garden and every milestone boss grants one guaranteed boon (`grantRogueLevel`), which waits behind any open choice. Milestone bosses also drop seven seeds.
+- Boon offers are a seeded weighted roll (`MaxBuilds.choices`): a freshly unlocked capstone always shows, class boons weigh 1.6x for their class, and an offer always spans at least two paths.
+- Easy keeps its 28 s opening in every garden (`openingRaidT`).
+
 ## Boons
 
 `build-paths.js` is the canonical boon catalogue. In addition to the older tree, recent upgrades include:
