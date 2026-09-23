@@ -112,7 +112,7 @@ Run pickups include feathers, embers and dew. They are collected in-world and be
 
 Music and effects are separate device preferences.
 
-Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack.
+Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack. Effects come back after an iPhone interruption (a call, Siri, the app switcher) as soon as the page returns or the next touch lands.
 
 The soundtrack player is streamed and survives menus/reconnects without decoding the whole playlist into memory.
 
