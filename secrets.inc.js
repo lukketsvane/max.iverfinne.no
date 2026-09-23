@@ -23,6 +23,7 @@ function updateSecrets(dt){
   if(secretRun!==rogueRun){secretRun=rogueRun;secrets.seed=secretSeedFor(rogueRun);secrets.world=0;}
   if(secrets.world!==worldLevel())rollSecrets();
   if(secrets.starAt&&!secrets.star&&secrets.t>=secrets.starAt)secrets.star=secrets.t;
+  if(secretEvent()==='fog')gardenPlots.forEach(function(p){if(!p.dead&&p.moisture<.3)p.moisture=.3;});
 }
 function updateSecretLocal(dt){
   if(secretEvent()==='meteors'&&(secretMeteorT-=dt)<=0){secretMeteorT=.3+Math.random()*1.1;secretMeteors.push({x:IW*(.25+Math.random()*.9),y:safeTopArt()+Math.random()*IH*.22,l:.7,m:.7,v:70+Math.random()*50});}
@@ -73,6 +74,13 @@ function drawSecretGround(t){
   ctx.globalCompositeOperation='source-over';
 }
 function drawSecretAir(t){
+  if(secretEvent()==='fog'){
+    ctx.fillStyle='rgba(150,162,172,0.06)';ctx.fillRect(0,0,IW,IH);
+    for(var k=0;k<3;k++)for(var sx=-4;sx<IW+4;sx+=4){
+      var n=Math.sin((sx+camX)*.021+t*(.3+k*.13)+k*2)+Math.sin((sx+camX)*.047-t*.2);
+      ctx.fillStyle='rgba(176,188,196,'+(.08+.035*n).toFixed(3)+')';ctx.fillRect(sx,Math.round(surfAt(sx)-camY)-10-k*9-Math.round(n*2),4,8+k*2);
+    }
+  }
   if(secretEvent()!=='moon'||P.lampLit<.3||!gardenReady)return;
   var L=lanternPos();
   for(var i=0;i<3;i++){
