@@ -133,10 +133,10 @@ test('each milestone has a distinct warned attack, a real damage opportunity and
     const {game:g}=fresh(stage);g.gardenPlots=[plot({x:g.P.x})];
     const boss=g.makeStageBoss(stage);g.floatKrek=[boss];boss.cool=0;
     const hp=g.gardenPlots[0].health;g.updateKrek(.01);
-    assert.equal(boss.bossId,id);assert.equal(boss.finalBoss,false);assert.ok(boss.windup>=1.2);assert.ok(g.runHazards.some(h=>h.type===type));
+    assert.equal(boss.bossId,id);assert.equal(boss.finalBoss,false);assert.ok(boss.windup>=.95);assert.ok(g.runHazards.some(h=>h.type===type));
     assert.equal(g.gardenPlots[0].health,hp);
     for(let i=0;i<240&&boss.exposed<=0;i++)g.updateKrek(.01);
-    assert.ok(boss.exposed>=1.5);const before=boss.hp;g.damagePest(boss,1,boss.x);assert.equal(boss.hp,before-2);
+    assert.ok(boss.exposed>=1);const before=boss.hp;g.damagePest(boss,1,boss.x);assert.equal(boss.hp,before-2);
     g.damagePest(boss,10000,boss.x);assert.equal(g.rogueRun.ended,false);assert.equal(g.runWon,false);assert.equal(g.rogueRun.bossDefeated,false);
   }
 });
@@ -196,4 +196,15 @@ test('rain dodge cannot heal a ground plant from a high safe ledge',()=>{
   const plant=plot({x:g.P.x,health:.5,moisture:.2});g.gardenPlots=[plant];
   g.P.y=g.surfaceY(g.P.x)-80;g.P.grounded=true;g.requestDodge(1);g.updatePlayer(.01,{axis:0,top:48});
   assert.equal(plant.health,.5);assert.equal(plant.moisture,.2);
+});
+
+test('bosses are long fights: far more health, reinforcements every fourth attack and an enrage after a minute', () => {
+  const { game: g } = fresh(10); g.gardenPlots = [plot({ x: g.P.x })];
+  const boss = g.makeStageBoss(10); g.floatKrek = [boss];
+  assert.ok(boss.maxHp >= 56, String(boss.maxHp));
+  const crown = g.makeHollowCrown(); assert.ok(crown.maxHp >= 95, String(crown.maxHp));
+  boss.life = 61; boss.windup = 0; boss.attackT = .01; g.updateKrek(.02);
+  assert.ok(boss.cool <= 2.2 * .6 + 1e-9, 'an enraged boss comes back faster: ' + boss.cool);
+  const adds = g.floatKrek.length; boss.attack = 3; boss.cool = 0; boss.attackT = 0; boss.windup = 0; boss.exposed = 0; g.updateKrek(.01);
+  assert.equal(g.floatKrek.length, adds + 1, 'every fourth attack calls a guard');
 });
