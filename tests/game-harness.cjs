@@ -21,7 +21,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
+  'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',

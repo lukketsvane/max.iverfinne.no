@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
 <style>
-  html, body { height: 100%; margin: 0; background: #000; overflow: hidden; }
+  html, body { height: 100%; margin: 0; background: #000; overflow: hidden; position: fixed; inset: 0; overscroll-behavior: none; }
   :root { padding: 0 !important; }
   @media (hover:hover) and (pointer:fine){#stage{cursor:none}.perkKey{display:block!important}}
   .perkKey{display:none;position:absolute;left:7px;top:5px;font:9px/1 ui-monospace,monospace;color:rgba(228,232,198,.5);font-style:normal}
@@ -121,9 +121,11 @@ var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
    held upright that is the same chunky 8x the garden was tuned at, and a
    landscape phone, a tablet or a desktop now frame Max the same way instead
    of cropping him off the bottom of a fixed 540x312 frame. */
+var lastVW = 0, lastVH = 0;
 function resize() {
   var dpr = window.devicePixelRatio || 1;
   var vw = window.innerWidth, vh = window.innerHeight;
+  lastVW = vw; lastVH = vh;
   var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr);
   var desk = !!(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches);
   SCALE = Math.max(2, Math.round(Math.min(dw, dh) / (desk ? 220 : 150)));
@@ -140,6 +142,8 @@ function resize() {
   ANCHOR = Math.round(IH * (IH > IW ? 0.673 : 0.70));
 }
 window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('pageshow', function () { setTimeout(resize, 60); });
 window.addEventListener('orientationchange', function () { clearRunInput(); setTimeout(resize, 150); });
 
 /* ---------------------------------------------------------------- noise */
@@ -4116,7 +4120,6 @@ function levelTallyLayout(level){
 }
 function drawTinyBoon(id,x,y,count){
   var ink=boonInk(id),stacks=Math.min(5,count|0);
-  ctx.fillStyle='rgba(5,9,10,.58)';ctx.fillRect(x-1,y-1,11,11);
   if(ink)ctx.drawImage(ink,x,y);
   if(stacks>1){ctx.fillStyle='#ece8dc';for(var s=0;s<stacks;s++)ctx.fillRect(x+9,y+8-s*2,1,1);}
 }
@@ -4138,6 +4141,7 @@ function drawRunHud(){
   drawLevelTallies(worldLevel());
   var boons=runHudBoons();
   for(var i=0;i<boons.length;i++){var pos=runHudIconPosition(i);drawTinyBoon(boons[i].id,pos.x,pos.y,boons[i].count);}
+  drawRoster();
 }
 function difficultyProfile(){
   return {
@@ -5680,6 +5684,8 @@ function frame(now) {
   last = now;
   if (dt > 0.05) dt = 0.05;
   pollPads();
+  if (window.innerWidth !== lastVW || window.innerHeight !== lastVH) resize();
+  if ((window.scrollY || window.scrollX) && window.scrollTo) window.scrollTo(0, 0);
   if (dt < 0) dt = 0;
   coopFrame();
   if(worldCovered){requestAnimationFrame(frame);return;}

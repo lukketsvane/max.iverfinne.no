@@ -108,3 +108,19 @@ test('a teammate out of view gets an arrow at the screen edge, and none while th
   assert.equal(g.drawTeamArrows(), 1);
   m.avatar.x = g.P.x + 10; assert.equal(g.drawTeamArrows(), 0);
 });
+
+test('co-op lists every player in the bottom-left corner; a solo run lists nobody', () => {
+  const ids = [1, 2].map(i => `${i}`.repeat(8) + '-' + `${i}`.repeat(4) + '-4' + `${i}`.repeat(3) + '-8' + `${i}`.repeat(3) + '-' + `${i}`.repeat(12));
+  const room = { id: 'room', host: ids[0], members: ids.map((id, i) => ({ id, slot: i + 1, ready: true, name: i ? 'max' : 'iver' })) };
+  const solo = loadGame().game; solo.resetRogueRun('test', { classId: 'mech' }); assert.equal(solo.drawRoster(), 0);
+  const g = loadGame().game;
+  g.beginCoop({ host: true, user: { id: ids[0] }, room, action() { return true; }, tick() {}, fail(reason) { throw Error(reason); } });
+  assert.equal(g.drawRoster(), 2);
+});
+
+test('the game re-fits the screen whenever the window size changes, even without a resize event', () => {
+  const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'mech' });
+  h.tick(16); const before = g.IH;
+  h.window.innerHeight = 700; h.tick(16);
+  assert.notEqual(g.IH, before, 'a changed window height is noticed on the next frame');
+});
