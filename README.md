@@ -75,7 +75,7 @@ Routes now look like their family: mossy cobble for terraces and crossings, ashl
 
 There are 20 gardens with six route families: terraces, canopy, crossings, ruins, switchbacks and the final Crown layout. Every run rolls a seed and grows gardens 1–19 from it, so no two runs climb the same ledges; the Crown stays authored. One-way platforms let players jump through from below and land on top. Elevated routes contain exploration rewards and shrine trials.
 
-Garden 1 is the **Railway Ruins**, a painted level traced from the owner's scene: walk in through the culvert under the tram terrace, cross the court past the pool and the crates, and climb the vine off the rail bridge or the lift tower to its roof beam. The other gardens are generated from the run's seed or drawn in Figma.
+Garden 1 is the **Railway Ruins**, built at Max's scale from the owner's railway scene and kit sheets: a mill with its wheel and a wooden pier to the west, the station, viaduct and lift tower in the middle, and stone ruins and mossy floating islands to the east. Climb the vine off the viaduct or the lift tower to its roof beam. The other gardens are generated from the run's seed or drawn in Figma.
 
 Each normal garden has three finite raids. The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped even though time pressure keeps increasing.
 
