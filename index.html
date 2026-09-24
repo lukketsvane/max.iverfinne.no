@@ -5086,7 +5086,7 @@ function launchBomb() {
     if (birdAlive(t)) { vx = t.o.vx || 0; vy = t.o.vy || 0; }
   } else { tx = t.x; ty = t.y; }
   var v = lob(x0, y0, tx, ty, vx, vy);
-  bombs.push({ owner:coop?(coopActor?coopActor.id:coop.me):'',perks:Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers,counter:ownClass().skill==='brace',charge:P.aimPower||0,high:highGround(P)}),x: x0, y: y0, vx: v.vx, vy: v.vy, st: 'fly', fuse: 1.3, t: 0, hop: 0, spin: 0 });
+  bombs.push({ sligo:ownClass().skill==='tun',owner:coop?(coopActor?coopActor.id:coop.me):'',perks:Object.assign({},rogueRun.perks,{sligo:ownClass().skill==='tun',emberStacks:ownTraits().embers,counter:ownClass().skill==='brace',charge:P.aimPower||0,high:highGround(P)}),x: x0, y: y0, vx: v.vx, vy: v.vy, st: 'fly', fuse: 1.3, t: 0, hop: 0, spin: 0 });
   sfx('swish', 0);
 }
 // High ground: a bomb thrown from 20 px or more above the soil hits harder, up to
@@ -5184,12 +5184,12 @@ function stepBombs(dt) {
     b.t += dt; b.fuse -= dt;
     if (b.st === 'fly') {
       b.vy += BOMB_G * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.spin += dt * 16;
-      if (b.t > 0.06 && bombHitsBird(b.x, b.y)) { explode(b.x, b.y, false,b.perks); bombs.splice(i, 1); continue; }
+      if (b.t > 0.06 && bombHitsBird(b.x, b.y)) { explode(b.x, b.y, false,b.perks||(b.sligo?{sligo:true}:undefined)); bombs.splice(i, 1); continue; }
       w = waterAt(b.x);
       if (w && b.y >= w.level) { b.st = 'water'; b.y = w.level; b.vx *= 0.25; b.vy = 0; ripple(b.x, w.level, 'splash'); }
       else {
         var g = surfaceY(b.x) - 2;
-        if (b.t > 0.03 && window.MaxStageLayout.inRock(stageLayout(), b.x, b.y)) { explode(b.x, b.y, false, b.perks); bombs.splice(i, 1); continue; }
+        if (b.t > 0.03 && window.MaxStageLayout.inRock(stageLayout(), b.x, b.y)) { explode(b.x, b.y, false, b.perks||(b.sligo?{sligo:true}:undefined)); bombs.splice(i, 1); continue; }
         if (b.y >= g) {
           b.y = g;
           if (b.hop < 2 && b.vy > 50) { b.vy = -b.vy * 0.3; b.vx *= 0.5; b.hop++; puff(b.x, g + 2, 2, 0.3); }
@@ -5205,8 +5205,8 @@ function stepBombs(dt) {
       w = waterAt(b.x); b.vx *= Math.exp(-2 * dt); b.x += b.vx * dt;
       if (w) b.y = w.level - 1 + Math.sin(b.t * 5) * 0.6;
     }
-    if (Math.random() < dt * 34) sparks.push({ x: b.x + 2, y: b.y - 6, vx: (Math.random() - 0.5) * 12, vy: -6 - Math.random() * 12, l: 0.1 + Math.random() * 0.15 });
-    if (b.fuse <= 0) { explode(b.x, b.y - 2, b.st === 'water',b.perks); bombs.splice(i, 1); }
+    if (!b.sligo && Math.random() < dt * 34) sparks.push({ x: b.x + 2, y: b.y - 6, vx: (Math.random() - 0.5) * 12, vy: -6 - Math.random() * 12, l: 0.1 + Math.random() * 0.15 });
+    if (b.fuse <= 0) { explode(b.x, b.y - 2, b.st === 'water',b.perks||(b.sligo?{sligo:true}:undefined)); bombs.splice(i, 1); }
   }
 }
 
@@ -5262,7 +5262,7 @@ function explode(x, y, wet, build) {
   var BR = BLAST_R + (build.blast||0)*5 + Math.round((build.charge||0)*8);
   var intercepted=false;
   runHazards=runHazards.filter(function(h){if(h.type!=='spore'||h.tell<=0)return true;var q=hazardPosition(h);if(Math.hypot(q.x-x,q.y-y)>BR+5)return true;intercepted=true;return false;});
-  booms.push({ id:++coopFxId,x: x, y: y, t: 0, seed: Math.random() * 97, wet: wet });
+  booms.push({ id:++coopFxId,x: x, y: y, t: 0, seed: Math.random() * 97, wet: wet, sligo:!!build.sligo });
   shake = Math.min(3, shake + 2.2);
   sfx('boom', Math.abs(x - P.x));
   var n = 0, i, o, k;
@@ -5316,12 +5316,12 @@ function explode(x, y, wet, build) {
   for (i = 0; i < 14; i++) {                               // clods of earth, or a column of water
     var a = -Math.PI * (0.1 + Math.random() * 0.8), sp = 50 + Math.random() * 90;
     feathers.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, heavy: true, ph: 0,
-      c: wet ? (Math.random() < 0.5 ? '#9fc6d8' : '#dfeef3') : (Math.random() < 0.6 ? '#3b3128' : '#56473a'), life: wet ? 1.2 : 2.2 });
+      c: build.sligo ? (Math.random()<.5?'#8f263a':'#dc7470') : wet ? (Math.random() < 0.5 ? '#9fc6d8' : '#dfeef3') : (Math.random() < 0.6 ? '#3b3128' : '#56473a'), life: wet ? 1.2 : 2.2 });
   }
-  for (i = 0; i < 10; i++) sparks.push({ x: x + (Math.random() - 0.5) * 8, y: y - 2, vx: (Math.random() - 0.5) * 50, vy: -20 - Math.random() * 40, l: 0.3 + Math.random() * 0.3 });
+  for (i = 0; i < (build.sligo ? 0 : 10); i++) sparks.push({ x: x + (Math.random() - 0.5) * 8, y: y - 2, vx: (Math.random() - 0.5) * 50, vy: -20 - Math.random() * 40, l: 0.3 + Math.random() * 0.3 });
   var wl = waterAt(x);
   if (wet && wl) { ripple(x, wl.level, 'splash'); ripple(x - 9, wl.level, 'ring'); ripple(x + 9, wl.level, 'ring'); }
-  else if (Math.abs(surfaceY(x) - y) < 16) { scorches.push({ x: x, w: 8 + Math.random() * 4, life: 35, seed: Math.random() * 50 }); if (scorches.length > 12) scorches.shift(); }
+  else if (!build.sligo && Math.abs(surfaceY(x) - y) < 16) { scorches.push({ x: x, w: 8 + Math.random() * 4, life: 35, seed: Math.random() * 50 }); if (scorches.length > 12) scorches.shift(); }
   if (P.dodgeT<=0 && !(P.brace>0) && !(P.tun>0) && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
     var away = Math.abs(P.x - x) < 0.5 ? -P.face : (P.x > x ? 1 : -1);
     P.vx = away * 95 * ownClass().knockback; P.vy = -118 * ownClass().knockback; P.grounded = false; P.coyote = 0; P.land = 0; P.hurt = 2;
@@ -5383,6 +5383,11 @@ function drawScorches() {
 function drawBombs(t) {
   for (var i = 0; i < bombs.length; i++) {
     var b = bombs[i], sx = Math.round(b.x - camX), sy = Math.round(b.y - camY);
+    if(b.sligo){
+      var part=SLIGO_FX.parts[Math.floor(b.t*9)%SLIGO_FX.parts.length];
+      if(!sligoFxFrame(part,sx,sy+4)){rect(sx-2,sy-3,5,5,'#8f263a');rect(sx-1,sy-3,2,2,'#dc7470');}
+      continue;
+    }
     var body = (b.fuse < 0.4 && ((t * 18) | 0) & 1) ? '#5a1c16' : '#141318';
     rect(sx - 1, sy - 4, 3, 1, body); rect(sx - 2, sy - 3, 5, 3, body); rect(sx - 1, sy, 3, 1, body);
     var q = (((b.spin | 0) % 4) + 4) % 4;
@@ -5408,6 +5413,12 @@ function drawFeathers() {
 function drawBooms() {
   for (var i = 0; i < booms.length; i++) {
     var b = booms[i], t = b.t, sx = Math.round(b.x - camX), sy = Math.round(b.y - camY), j;
+    if(b.sligo){
+      if(t<.4&&!sligoFxFrame(SLIGO_FX.burst[Math.min(3,Math.floor(t*10))],sx,sy+12)){
+        for(j=0;j<12;j++){var ba=j*Math.PI/6;rect(sx+Math.round(Math.cos(ba)*t*65),sy+Math.round(Math.sin(ba)*t*45),2,2,'#ac3447');}
+      }
+      continue;
+    }
     if (b.poof) {                                          // where the bird was: a soft white poof
       if (t < 0.3) disc(sx, sy - Math.round(t * 8), Math.round((b.big ? 5 : 3) + t * 14), 'rgba(232,232,226,' + (0.55 * (1 - t / 0.3)).toFixed(2) + ')');
       continue;
@@ -5858,12 +5869,25 @@ var TRAIL_BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
 var sligoTrail={x:new Int32Array(TRAIL_CAP),y:new Int32Array(TRAIL_CAP),t:new Float64Array(TRAIL_CAP),shape:new Uint8Array(TRAIL_CAP),seen:new Int16Array(TRAIL_CAP),next:0,size:0,clock:0,world:0,seed:0};
 // Sligo's specials (assets/max-skins-v1/sligo/specials.png, scripts/build-sligo-specials.py): the blood
 // sac it curls up in for a tun, and the splat when the sac bursts. Loaded the first time a Sligo needs it.
-var SLIGO_FX={img:null,cell:40,ax:20,ay:39,sac:[0,1,2,3],burst:[4,5,6,7]},sligoBursts=[];
+var SLIGO_FX={img:null,cell:40,ax:20,ay:39,sac:[0,1,2,3],burst:[4,5,6,7],throw:[8,9,10,11],lash:[12,13,14,15,16,17,18,19],hurt:[20,21,22],float:[23,24,25,26,38,39],sleep:[27,28],parts:[29,30],roll:[31,32,33,34,35,36,37]},sligoBursts=[];
 function sligoFx(){return SLIGO_FX.img||(SLIGO_FX.img=loadImg('assets/max-skins-v1/sligo/specials.png'));}
 function sligoFxFrame(f,x,y){var F=SLIGO_FX,im=sligoFx();if(!ready(im))return false;ctx.drawImage(im,f*F.cell,0,F.cell,F.cell,Math.round(x)-F.ax,Math.round(y)-F.ay,F.cell,F.cell);return true;}
 function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,salt:salt||0};}
 var trailSelf=trailTracker(0);
 function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
+// Cosmetic poses follow the existing animation clock: hit/pour markers remain authoritative.
+function drawSligoAction(a,x,y){
+  var clip=null,step=a.frame||0;
+  if(a.dodgeT>0||a.dodging){clip=SLIGO_FX.roll;step=a.dodgeT>0?Math.min(6,Math.max(0,Math.floor((1-a.dodgeT/DODGE_TIME)*7))):(a.frame||0)%7;}
+  else if(a.anim==='toss'){clip=SLIGO_FX.throw;step=[0,1,2,3,0][Math.min(4,step)];}
+  else if(a.hurt>0){clip=SLIGO_FX.hurt;step=Math.min(2,Math.floor((2-Math.min(2,a.hurt))*8));}
+  else if(a.st==='float'){clip=SLIGO_FX.float;step=Math.floor(tSec*8)%clip.length;}
+  else if(a.anim==='dig'||a.anim==='water'||a.anim==='waterHold'||a.anim==='pick'){clip=SLIGO_FX.lash;step=step%clip.length;}
+  else if(a.anim==='rest'){clip=SLIGO_FX.sleep;step=Math.floor(tSec*2)%2;}
+  if(!clip||!ready(sligoFx()))return false;
+  ctx.save();ctx.translate(Math.round(x),Math.round(y));if(a.face<0)ctx.scale(-1,1);
+  sligoFxFrame(clip[step],0,0);ctx.restore();return true;
+}
 function trailMark(x,y,shape){var T=sligoTrail,i=T.next;T.x[i]=x;T.y[i]=y;T.t[i]=T.clock;T.shape[i]=shape;T.next=(i+1)%TRAIL_CAP;if(T.size<TRAIL_CAP)T.size++;}
 // The ledge (or rock top) under a foot within 4 px, as MaxStageLayout.at finds it, without allocating.
 function trailLedge(x,y){var L=stageLayout().platforms||[],best=null,d=4;for(var i=0;i<L.length;i++){var p=L[i],e=Math.abs(p.y-y);if(e<=d&&x>=p.x-3&&x<=p.x+p.w+3){best=p;d=e;}}return best;}
@@ -5949,6 +5973,7 @@ function drawPlayer() {
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
+    if(P.skin==='sligo'&&drawSligoAction(P,px,py))return;
     if (P.face < 0) {
       ctx.save(); ctx.translate(dx + CELL, dy); ctx.scale(-1, 1);
       ctx.drawImage(img, fr * CELL, a.row * CELL, CELL, CELL, 0, 0, CELL, CELL);

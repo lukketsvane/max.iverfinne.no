@@ -48,7 +48,7 @@ test('Sligo is the hidden fifth character: average stats, no climbing or rover, 
   for (const stat of ['speed', 'jump', 'control', 'dodgeRecovery', 'stagger', 'care', 'knockback']) assert.equal(kit[stat], 1, stat);
   assert.deepEqual([kit.protection, kit.radius, kit.robot], [0, 0, 0]);
   assert.equal(classes.canClimb('sligo'), false); assert.equal(classes.canHaveRobot('sligo'), false);
-  assert.match(kit.desc, /tardigrade/); assert.match(kit.desc, /tun/);
+  assert.match(kit.desc, /forgotten, defiled zygote/); assert.match(kit.desc, /JP and IE/); assert.match(kit.desc, /tun/);
   const { game: g } = fresh(); assert.equal(g.rogueRun.classId, 'sligo'); assert.equal(g.P.skin, 'sligo'); assert.equal(g.ensureCompanion(), null);
 });
 
@@ -331,4 +331,49 @@ test('a tun curls Sligo up inside its blood sac, and the sac bursts in a splat w
     calls.length = 0; g.drawSligoTrail();
     assert.equal(calls.filter(c => c.fx).length, 0, 'the burst is over in 0.4 s'); assert.equal(g.sligoBursts.length, 0);
   } finally { g.ctx = old; }
+});
+
+test('Sligo throws body parts and blood effects; other characters keep bombs and combat damage', () => {
+  for (const classId of ['sligo', 'mech']) {
+    const { game: g } = fresh(classId);
+    g.P.aim = { x: g.P.x + 70, y: g.P.y - 10 };
+    g.launchBomb(); const b = g.bombs[0];
+    assert.equal(b.sligo, classId === 'sligo'); assert.equal(b.perks.sligo, b.sligo);
+    const x = g.P.x + 100, y = g.P.y - 20;
+    const pest = { x, y, vx: 0, vy: 0, hp: 900, maxHp: 900, kind: 0, flash: 0, face: 1, windup: 0 };
+    g.floatKrek = [pest]; g.explode(x, y, false, b.perks);
+    assert.ok(pest.hp < 900); assert.equal(g.booms.find(e => e.sligo === b.sligo).sligo, b.sligo);
+    if (b.sligo) assert.ok(g.feathers.filter(f => f.heavy).every(f => ['#8f263a', '#dc7470'].includes(f.c)));
+  }
+  const damage = sligo => { const { game: g } = fresh(); const x=g.P.x+100,y=g.P.y-20;
+    const p={x,y,vx:0,vy:0,hp:900,maxHp:900,kind:0,flash:0,face:1,windup:0};g.floatKrek=[p];g.explode(x,y,false,{sligo,blast:2,high:1});return 900-p.hp; };
+  assert.equal(damage(true), damage(false), 'art does not change damage or upgrades');
+});
+
+test('guest Sligo projectile and blood splash survive the host snapshot', () => {
+  const p=party(['mech','sligo','bulwark','herbalist']),host=p.players[0].game,guest=p.players[1].game,viewer=p.players[2].game;
+  p.sync();
+  guest.throwBomb({x:guest.P.x+60,y:guest.P.y-12});p.send(1);
+  assert.equal(host.bombs.length,1);assert.equal(host.bombs[0].sligo,true);
+  p.sync();assert.equal(viewer.bombs[0].sligo,true,'identity is scalar and survives coopPlain');
+  const b=host.bombs[0];host.explode(b.x,b.y,false,b.perks);p.sync();
+  assert.ok(viewer.booms.some(e=>e.sligo));
+});
+
+test('special action clips and detached parts render from exact cells with mirrored facing', () => {
+  const {game:g}=fresh();const fx=g.sligoFx();fx.complete=true;fx.naturalWidth=1600;fx.naturalHeight=40;
+  const frames=[],mirrors=[];g.ctx={save(){},restore(){},translate(){},scale(x){mirrors.push(x);},drawImage(im,sx,sy,w,h,dx,dy){frames.push(sx/40);assert.equal(w,40);assert.equal(h,40);assert.ok(Number.isInteger(dx)&&Number.isInteger(dy));},fillRect(){}};
+  for(const [anim,st,hurt,clip] of [['toss','free',0,'throw'],['dig','task',0,'lash'],['idle','float',0,'float'],['rest','rest',0,'sleep'],['idle','free',1,'hurt']]){
+    assert.equal(g.drawSligoAction({anim,st,hurt,face:-1,frame:0},10,30),true);
+    assert.ok(g.SLIGO_FX[clip].includes(frames.at(-1)));
+  }
+  assert.equal(mirrors.length,5);
+  for(const state of [{dodgeT:.16},{dodgeT:.08},{dodging:true,frame:4}]){
+    assert.equal(g.drawSligoAction({...state,anim:'run',face:1},10,30),true);
+    assert.ok(g.SLIGO_FX.roll.includes(frames.at(-1)));
+  }
+  g.P.aim={x:g.P.x+60,y:g.P.y};g.launchBomb();g.drawBombs(0);
+  assert.ok(g.SLIGO_FX.parts.includes(frames.at(-1)));
+  g.explode(g.P.x+100,g.P.y-20,false,{sligo:true});g.drawBooms();
+  assert.ok(g.SLIGO_FX.burst.includes(frames.at(-1)));
 });
