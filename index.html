@@ -3485,10 +3485,37 @@ function updateSeedPickups(dt){
     if(!q.id&&Math.abs(q.x-collector.x)>IW*2.2)seedPickups.splice(i,1);
   }
 }
+// Spots a level's designer marked (garden 1's painting and Figma gardens; generated
+// gardens have none). A secret cache shows itself only within 34 px of Max, and
+// cracked soil is dug open by any blast within reach: the host digs, guests see it
+// through the collected list and the seeds on the ground.
+function levelSpots(L,key){var v=L&&L.spots&&L.spots[key];return !v?[]:Array.isArray(v)?v:[v];}
+function digSpots(){var L=stageLayout(),w=worldLevel();return levelSpots(L,'dig').map(function(s,i){var id='dig:'+w+':'+i;return {id:id,x:s.x,y:s.y,dug:!!seedCollected[id]};});}
+function digSeeds(d){return {id:d.id+':s',placeCache:true,x:d.x,y:d.y-8,amount:Math.max(1,seedCount(2)),fall:false,ph:d.x};}
+function digBlast(x,y){
+  if(coopGuest()||!runActive)return 0;var n=0;
+  digSpots().forEach(function(d){
+    if(d.dug||Math.abs(x-d.x)>18||Math.abs(y-(d.y-4))>22)return;
+    seedCollected[d.id]=1;n++;seedPickups.push(digSeeds(d));
+    for(var k=0;k<14;k++)parts.push({x:d.x+(Math.random()-.5)*8,y:d.y-2,vx:(Math.random()-.5)*60,vy:-30-Math.random()*50,l:.6,m:.6,c:k&1?'96,74,52':'150,120,80'});
+    chime([330,440,660],.05,.05);nudgeGardenHint('DUG UP · SEEDS');
+  });
+  return n;
+}
+function pickupShown(q){return !q.hidden||Math.hypot(q.x-P.x,q.y-(P.y-8))<34;}
+function drawSpots(t){
+  digSpots().forEach(function(d){
+    var x=Math.round(d.x-camX),y=Math.round(d.y-camY);if(x<-12||x>IW+12||y<-12||y>IH+12)return;
+    if(d.dug){ctx.fillStyle='#120d0a';ctx.fillRect(x-4,y-1,9,2);ctx.fillRect(x-3,y+1,7,1);ctx.fillStyle='#5a4632';ctx.fillRect(x-6,y-2,2,1);ctx.fillRect(x+5,y-2,2,1);ctx.fillRect(x-5,y-3,1,1);return;}
+    ctx.fillStyle='#1a120c';ctx.fillRect(x-4,y-1,3,1);ctx.fillRect(x-1,y-2,1,2);ctx.fillRect(x,y-1,3,1);ctx.fillRect(x+3,y-2,2,1);ctx.fillRect(x-2,y,1,1);
+    var g=Math.sin(t*1.7+d.x)>.93;if(g){ctx.fillStyle='#e8d890';ctx.fillRect(x+1,y-3,1,1);}
+  });
+}
 function drawSeedPickups(t){
   for(var i=0;i<seedPickups.length;i++){
     var q=seedPickups[i],sx=Math.round(q.x-camX),sy=Math.round(q.y-camY+Math.sin(t*2.4+q.ph)*1.5);
-    if(sx<-12||sx>IW+12||sy<-12||sy>IH+12)continue;
+    if(sx<-12||sx>IW+12||sy<-12||sy>IH+12||!pickupShown(q))continue;
+    if(q.hidden){ctx.fillStyle='#fff4c0';ctx.fillRect(sx+(Math.sin(t*6+q.ph)>0?-5:5),sy-5,1,1);}
     var pulse=.5+.5*Math.sin(t*4.2+q.ph);
     ctx.globalCompositeOperation='lighter';disc(sx,sy,5+Math.round(pulse*2),'rgba(225,203,98,'+(.045+.035*pulse)+')');ctx.globalCompositeOperation='source-over';
     ctx.globalAlpha=.28+.22*pulse;ctx.strokeStyle='#dbc86a';ctx.strokeRect(sx-4,sy-4,8,8);ctx.globalAlpha=1;
@@ -5102,7 +5129,7 @@ function scatterFrom(x) {                                  // everyone who heard
 }
 
 function explode(x, y, wet, build) {
-  wonderBlast(x,y);
+  wonderBlast(x,y);digBlast(x,y);
   build=build||Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers});
   var chainSeeds=[];
   var BR = BLAST_R + (build.blast||0)*5 + Math.round((build.charge||0)*8);
@@ -5877,7 +5904,7 @@ function frame(now) {
   drawBiomeTransitionMarkers();
   drawPlatforms(tSec);
   drawSmartWorld(tSec);
-  drawSeedPickups(tSec);
+  drawSpots(tSec);drawSeedPickups(tSec);
   drawRunExploration(tSec);
   drawGardenPlots(tSec);
   drawSecretGround(tSec);
