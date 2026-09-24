@@ -55,7 +55,7 @@ async function runtime() {
       if (/\.(m?js|css|html)$/.test(file)) code.set(file, fs.readFileSync(path.join(out, file), 'utf8'));
     }
   } finally { fs.rmSync(out, { recursive: true, force: true }); }
-  const literal = String.raw`'[^'\n]*'|"[^"\n]*"`, part = String.raw`${literal}|[\w$.]+(?:\([^()\n]*\))?`;
+  const literal = String.raw`'[^'\n]*'|"[^"\n]*"`, part = String.raw`${literal}|[\w$.]+(?:\([^()\n]*\)|\[[^[\]\n]*\])*`;
   const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   for (const [file, text] of code) {
     for (const [p] of text.matchAll(/assets\/[\w./-]+\.png/g)) loaded.add(p);

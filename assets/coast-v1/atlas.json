@@ -1,0 +1,59 @@
+{
+ "palette": [
+  "#000000",
+  "#060f26",
+  "#061129",
+  "#06122a",
+  "#071129",
+  "#07122a",
+  "#07132c",
+  "#08142e",
+  "#09132b",
+  "#0a152f",
+  "#0a1734",
+  "#0d0f25",
+  "#0e1027",
+  "#0e112a",
+  "#0e1b3c",
+  "#10132f",
+  "#111c35",
+  "#141738",
+  "#15213c",
+  "#152249",
+  "#191c45",
+  "#192641",
+  "#1e2b47",
+  "#222f4a",
+  "#25324d",
+  "#263350",
+  "#272a66",
+  "#2a3753",
+  "#324060",
+  "#3b4b81",
+  "#5b69b1",
+  "#ae00ae"
+ ],
+ "order": [
+  "mountains",
+  "sea",
+  "ruins"
+ ],
+ "sheets": {
+  "mountains": {
+   "image": "mountains.png",
+   "width": 836,
+   "height": 180
+  },
+  "sea": {
+   "image": "sea.png",
+   "width": 836,
+   "height": 180
+  },
+  "ruins": {
+   "image": "ruins.png",
+   "width": 418,
+   "height": 180
+  }
+ },
+ "source": "docs/asset-review/coast-layers-v1 (the owner's layers), 1/4; scripts/build-coast-layers.py"
+}
