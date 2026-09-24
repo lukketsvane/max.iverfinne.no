@@ -73,3 +73,27 @@ test('garden 2, the Sunken Sanctuary, has its secret cache and its cracked soil 
   const d = g.digSpots()[0]; assert.ok(d && !d.dug);
   g.digBlast(d.x, d.y - 4); assert.ok(g.seedPickups.some(p => p.id === 'dig:2:0:s'));
 });
+
+test('a hand-made garden always sets a puzzle on its puzzle spot, one that works off the soil', () => {
+  for (const w of [1, 2]) for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    const g = loadGame({ __pictures: true }).game;
+    g.resetRogueRun('test', { classId: 'mech' }); if (w > 1) g.enterLevel(w); g.activeStageLayout = null; g.runActive = true;
+    g.wonders.seed = seed; g.rollWonders();
+    const spot = g.levelSpots(g.stageLayout(), 'puzzle')[0], label = `garden ${w} seed ${seed}`;
+    assert.ok(['crack', 'echo', 'stars', 'well', 'crown', 'clover'].includes(g.wonders.pz), label + ': ' + g.wonders.pz);
+    assert.equal(g.wonders.pzx, Math.round(spot.x)); assert.equal(g.wonders.pzy, Math.round(spot.y));
+    const door = g.levelSpots(g.stageLayout(), 'door')[0];
+    if (w === 2 && !g.wonders.special) { assert.ok(g.wonders.gate, label + ' has a gate at its door'); assert.equal(g.wonders.gx, door.x); assert.equal(g.wonders.gy, door.y); }
+    if (w === 1) assert.equal(g.wonders.gate, '', 'garden 1 keeps its door shut');
+  }
+});
+
+test('generated gardens still roll their puzzle by chance, off any designer spot', () => {
+  let none = 0, some = 0;
+  for (const seed of [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]) {
+    const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech' }); g.rogueRun.seed = seed; g.enterLevel(4); g.activeStageLayout = null;
+    g.wonders.seed = seed * 7919; g.rollWonders();
+    if (g.wonders.pz) some++; else none++;
+  }
+  assert.ok(some > 0 && none > 0, `puzzles ${some}, none ${none}`);
+});

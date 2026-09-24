@@ -168,7 +168,7 @@ test('enemy heals shrink with durability, so heal-to-damage ratios hold at every
     const boss=g.makeStageBoss(15),guard=Object.assign(g.makeKrek(1,false,5),{hp:50,maxHp:100});g.floatKrek=[boss,guard];boss.attack=1;boss.cool=0;
     g.updateKrek(.01);assert.equal(boss.healing,true);for(let i=0;i<200&&boss.healing;i++)g.updateEnemyRole(boss,.01);
     const ally=Object.assign(g.makeKrek(1,false,1),{kind:1,x:g.P.x,y:g.P.y-12,hp:50,maxHp:100}),moth=Object.assign(g.makeKrek(1,false,6),{kind:6,x:g.P.x-10,y:g.P.y-22,face:1,bite:0,windup:0});
-    g.floatKrek=[ally,moth];for(let i=0;i<95;i++)g.updateEnemyRole(moth,.01);
+    g.floatKrek=[ally,moth];for(let i=0;i<150&&ally.hp===50;i++)g.updateEnemyRole(moth,.01);
     const leech=Object.assign(g.makeKrek(1,false,10),{kind:10,x:g.P.x+22,y:g.surfaceY(g.P.x+22)-20,hp:50,maxHp:100,bite:0});g.floatKrek=[leech];
     for(let i=0;i<20;i++)g.updateEnemyRole(leech,.05);
     return [guard,ally,leech].map(k=>(k.hp-50)/unit);

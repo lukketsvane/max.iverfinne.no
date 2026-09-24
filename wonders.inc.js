@@ -1,6 +1,7 @@
 var WONDERS={lights:'Firefly order',plates:'Twin plates',perch:'High lantern',crack:'Cracked stone',rune:'Rune plot',dig:'Buried relic',stars:'Three stars',bells:'Bell stones',echo:'Echo stone',well:'Moon well',crown:'Crown relic',clover:'Four-leaf clover',
   trader:'Trader rover',fledgling:'Lost fledgling',bee:'Hurt bee',ghost:'Rival gardener',beetle:'Sleeping beetle',statue:'Riddle statue',flock:'Storm flock',robot:'Broken robot',
   shovel:'Old shovel',grove:'Secret garden',vault:'Seed vault',meadow:'Moonlit meadow',cavern:'Root cavern',rush:'Boss-rush door'};
+var SPOT_PUZZLES=['crack','echo','stars'],SPOT_UNFIT=['lights','plates','perch','rune','dig','bells'];
 var WONDER_PUZZLES=['lights','plates','perch','crack','rune','dig','stars','bells','echo'],WONDER_MEETS=['trader','fledgling','bee','ghost','beetle','statue','flock','robot'],WONDER_LEVELS=['grove','vault','meadow','cavern','rush'];
 var wonders={world:0,seed:0,t:0,fc:0,last:'',next:'',special:''},wonderRun=null,wonderLand=[],wonderHold={};
 var WONDER_INK={s:'#3d4552',S:'#5b6472',m:'#4f6b3a',M:'#6f8a4a',b:'#cfc6a8',k:'#1c1a22',y:'#d9c27a',w:'#5a4632',g:'#34472e',G:'#4d6640',e:'#d8b24a',r:'#8a8f98',R:'#555a63',v:'#6d7690'};
@@ -50,17 +51,23 @@ function rollWonders(){
     if(ultra<1/50)wonders.pz='well';else if(ultra<1/50+1/80)wonders.pz='crown';else if(ultra<1/50+1/80+1/120)wonders.pz='clover';
     else if(wonderRoll(2)<.7)wonders.pz=WONDER_PUZZLES[Math.floor(wonderRoll(3)*WONDER_PUZZLES.length)];
   }
+  // A hand-made garden's puzzle spot always holds a puzzle, and only one that works
+  // wherever the spot stands (a painted floor may be far above the soil).
+  var L=stageLayout(),spot=levelSpots(L,'puzzle')[0],door=levelSpots(L,'door')[0];
+  if(spot&&!boss&&(!wonders.pz||SPOT_UNFIT.indexOf(wonders.pz)>=0))wonders.pz=SPOT_PUZZLES[Math.floor(wonderRoll(3)*SPOT_PUZZLES.length)];
   var perch=wonderPerch(0);
   wonders.pzx=wonderGround(4);wonders.pzy=surfaceY(wonders.pzx);
   if(wonders.pz==='perch'){if(perch){wonders.pzx=perch.x;wonders.pzy=perch.y;}else wonders.pz='dig';}
+  if(spot&&wonders.pz){wonders.pzx=Math.round(spot.x);wonders.pzy=Math.round(spot.y);}
   wonders.pzo=Math.floor(wonderRoll(6)*6);wonders.pzq=['bomb','plant','still'][Math.floor(wonderRoll(7)*3)];
   wonders.en='';wonders.ens=0;wonders.ent=0;wonders.end=0;
   if(w>1&&!boss&&wonderRoll(8)<.45)wonders.en=WONDER_MEETS[Math.floor(wonderRoll(9)*WONDER_MEETS.length)];
   wonders.enx=wonderGround(10,190);if(Math.abs(wonders.enx-wonders.pzx)<60)wonders.enx=Math.round(dryX(wonders.pzx+(wonders.enx<wonders.pzx?-70:70)));
   wonders.eny=surfaceY(wonders.enx);wonders.enh=wonders.enx;wonders.ena=20+Math.round(wonderRoll(11)*40);
   wonders.enf=Math.round(dryX(wonders.enx+(wonderRoll(12)<.5?-1:1)*170));wonders.enq=['bomb','plant','still'][Math.floor(wonderRoll(13)*3)];
-  wonders.gate='';wonders.gt=0;var gp=wonderPerch(1)||perch;
-  if(gp&&w>=2&&w<=18&&!boss&&!wonders.special&&wonderRoll(14)<.2){
+  wonders.gate='';wonders.gt=0;var gp=door||wonderPerch(1)||perch;
+  // A designer's door always opens onto a secret garden; elsewhere one garden in five has a gate.
+  if(gp&&w>=2&&w<=18&&!boss&&!wonders.special&&(door||wonderRoll(14)<.2)){
     var pool=WONDER_LEVELS.filter(function(id){return id!=='rush'||w%5===2||w%5===3;});
     wonders.gate=pool[Math.floor(wonderRoll(15)*pool.length)];wonders.gx=gp.x;wonders.gy=gp.y;
   }
@@ -120,7 +127,8 @@ function updatePuzzle(dt){
 function wonderStarPos(i){return {x:Math.round(IW*(.18+.64*wonderRoll(30+i))),y:Math.round(safeTopArt()+14+IH*.16*wonderRoll(40+i))};}
 function wonderTapIndex(wx,wy){
   var sx=wx-camX,sy=wy-camY;
-  if(wonders.pz==='stars'&&!wonders.pzd&&wonders.pzt>0)for(var i=0;i<3;i++){var q=wonderStarPos(i);if(!(wonders.pzs&1<<i)&&Math.hypot(sx-q.x,sy-q.y)<14)return i;}
+  // The nearest untapped star takes the tap: two stars can land within reach of one finger.
+  if(wonders.pz==='stars'&&!wonders.pzd&&wonders.pzt>0){var best=-1,bd=14;for(var i=0;i<3;i++){var q=wonderStarPos(i),d=Math.hypot(sx-q.x,sy-q.y);if(!(wonders.pzs&1<<i)&&d<bd){best=i;bd=d;}}if(best>=0)return best;}
   if(wonders.pz==='clover'&&!wonders.pzd&&Math.hypot(wx-wonders.pzx,wy-wonders.pzy+2)<10)return 9;
   return -1;
 }
