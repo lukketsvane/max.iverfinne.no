@@ -3,7 +3,7 @@
 The owner's Max Level Studio export (docs/asset-review/sligo-specials-v1/level.json) carries a
 305x297 sheet of Sligo specials (the object named 0856438B-...): poses, a cord lash, a thrown blood
 clot, tendrils, fading ghosts, and on its last row two lying poses, four blood sacs with Sligo curled
-inside and four blood splats. The tun uses the sacs; the burst when a tun ends uses the splats.
+inside and four blood splats. The tun uses the sacs; throws and tun release use the splats. The action clips and detached parts are mapped below.
 
 Every frame is found by its connected shape, brought to Sligo's own height (the idle frame of the
 sheet against the idle frame of assets/max-skins-v1/sligo/main.png) with a premultiplied box filter
@@ -11,7 +11,7 @@ and hard alpha at half, and all frames share one palette of at most 16 colours. 
 40x40 cell with its bottom row on row 39, centred on x 20, like the skins' feet (the splash is taller than a skin cell).
 
     python3 scripts/build-sligo-specials.py
-      -> assets/max-skins-v1/sligo/specials.png (8 cells in a row), specials.json
+      -> assets/max-skins-v1/sligo/specials.png (31 cells in a row), specials.json
 """
 import base64
 import io
@@ -29,7 +29,14 @@ OUT = ROOT / 'assets/max-skins-v1/sligo'
 CELL = 40                       # the splash is taller than a skin cell
 SHEET = '0856438B'
 # (clip, the sheet's last-row items it takes, in order)
-CLIPS = [('sac', [2, 3, 4, 5]), ('burst', [6, 7, 8, 9])]
+CLIPS = [
+    ('sac', 7, [2, 3, 4, 5]), ('burst', 7, [6, 7, 8, 9]),
+    ('throw', 4, [0, 1, 2, 3]), ('lash', 3, list(range(8))),
+    ('hurt', 6, [0, 1, 2]), ('float', 5, [2, 3, 4, 5]),
+    ('sleep', 7, [0, 1]),
+]
+# Detached clot and cord tip from the owner's painting, at the same scale as the body.
+PARTS = [(21, 158, 29, 169), (294, 116, 305, 136)]
 
 
 def sheet():
@@ -92,28 +99,50 @@ def main():
     idle = rows[0][0]
     ours = np.array(Image.open(SKIN).convert('RGBA'))[:32, :32, 3] > 0   # the skin's first idle cell
     scale = height(ours) / height(solid[idle[1]:idle[3], idle[0]:idle[2]])
-    last = rows[-1]
     frames, clips = [], {}
-    for clip, picks in CLIPS:
+    for clip, row, picks in CLIPS:
         clips[clip] = []
         for i in picks:
             clips[clip].append(len(frames))
-            frames.append(native(a, last[i], scale))
+            frames.append(native(a, rows[row][i], scale))
+    clips['parts'] = []
+    for box in PARTS:
+        clips['parts'].append(len(frames))
+        frames.append(native(a, box, scale))
     strip = np.zeros((CELL, CELL * len(frames), 4), np.uint8)
     for k, f in enumerate(frames):
         h, w = f.shape[:2]
         assert h <= CELL - 1 and w <= CELL - 2, ('frame too big for its cell', k, w, h)
         x, y = k * CELL + CELL // 2 - w // 2, CELL - h
+        # Register action poses by the eye, not the reach of a moving cord.
+        # Eye sits two pixels right of the body anchor in a right-facing pose.
+        if 8 <= k <= 26:
+            eye = (f[..., 0] < 105) & (f[..., 1] < 65) & (f[..., 2] < 65) & (f[..., 3] > 0)
+            if eye.any():
+                ex = int(round(np.nonzero(eye)[1].mean()))
+                x = k * CELL + CELL // 2 + 2 - ex
+                assert x >= k * CELL + 1 and x + w <= (k + 1) * CELL - 1, ('action overflow', k)
         strip[y:y + h, x:x + w] = f
     q = Image.fromarray(strip[..., :3]).quantize(16, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
     rgb = np.array(q.convert('RGB'))
     out = np.dstack([rgb, strip[..., 3]]).astype(np.uint8)
     out[out[..., 3] == 0] = 0
-    Image.fromarray(out, 'RGBA').save(OUT / 'specials.png', optimize=True)
+    result = Image.fromarray(out, 'RGBA')
+    result.save(OUT / 'specials.png', optimize=True)
+    # Review only: exact integer enlargement of the runtime cells, one clip per row.
+    from PIL import ImageDraw
+    review = Image.new('RGBA', (360, len(clips) * 54), '#202c33')
+    draw = ImageDraw.Draw(review)
+    for row, (clip, indexes) in enumerate(clips.items()):
+        draw.text((4, row * 54), clip.upper(), fill='#ebbec5')
+        for col, index in enumerate(indexes):
+            review.alpha_composite(result.crop((index * CELL, 0, (index + 1) * CELL, CELL)), (col * 44, row * 54 + 12))
+    review.resize((1080, review.height * 3), Image.Resampling.NEAREST).save(ROOT / 'docs/asset-review/sligo-specials-v1/contact-3x.png')
     (OUT / 'specials.json').write_text(json.dumps({
         'schema': 'max-sligo-specials/v1', 'image': 'specials.png', 'cell': [CELL, CELL], 'anchor': [CELL // 2, CELL - 1],
         'clips': clips, 'scale': round(scale, 4),
-        'source': 'docs/asset-review/sligo-specials-v1/level.json (object ' + SHEET + '), last row; scripts/build-sligo-specials.py',
+        'source': 'docs/asset-review/sligo-specials-v1/level.json (object ' + SHEET + '); scripts/build-sligo-specials.py',
+        'sourceClips': CLIPS, 'sourceParts': PARTS,
     }, indent=1) + '\n')
     print('specials.png', out.shape[1], 'x', out.shape[0], 'frames', len(frames), 'scale', round(scale, 3),
           'rows found', [len(r) for r in rows])

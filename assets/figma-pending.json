@@ -276,10 +276,10 @@
   },
   {
    "path": "assets/max-skins-v1/sligo/specials.png",
-   "sha1": "cb4305f4f42b872edcd0964a4003b1ebc6c78395",
-   "width": 320,
+   "sha1": "fcf5c79460331671a773f9452da32d854ba9b8af",
+   "width": 1240,
    "height": 40,
-   "note": "Sligo's specials: the tun's blood sac and its burst, from the owner's specials sheet; scripts/build-sligo-specials.py"
+   "note": "Sligo sac, burst, throw, lash, hurt, float, sleep and detached body parts; scripts/build-sligo-specials.py. Figma check unavailable: desktop MCP not reachable."
   }
  ]
 }
