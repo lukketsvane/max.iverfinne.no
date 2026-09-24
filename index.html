@@ -3893,6 +3893,7 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
   if(!plantAtlasReady)return;
   var form=gardenFigForm(p),fam=PA.fam[form.fi],g=Math.max(0,p.growth),flip=((p.kind+(p.seed|0))&1)!==0;
   if(g<.10){
+    if(SLIGO_KINDS.indexOf(p.kind)>=0){drawSligoSeed(sx,gy);return;}
     var sr=PA.seeds[imod((p.kind*3+(p.seed|0)),PA.seeds.length)];
     drawSeedAsset(sr,sx,gy-2);return;
   }
@@ -5876,7 +5877,29 @@ function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,
 var trailSelf=trailTracker(0);
 function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
 // Cosmetic poses follow the existing animation clock: hit/pour markers remain authoritative.
+// The owner's larger tissue forms keep their true size inside fixed 64px cells.
+var SLIGO_MUT={img:null,crawl:[0,11],throw:[11,8],tend:[19,14],float:[33,22],fall:[55,16],rise:[71,9]};
+function sligoMutations(){return SLIGO_MUT.img||(SLIGO_MUT.img=loadImg('assets/max-skins-v1/sligo/mutations.png'));}
+function drawSligoSeed(x,y){
+  // A fresh Sligo planting is a red clot, including while the sprite is loading.
+  if(sligoFxFrame(SLIGO_FX.parts[0],Math.round(x),Math.round(y+2)))return;
+  rect(Math.round(x)-2,Math.round(y)-1,5,3,'#8f263a');
+  rect(Math.round(x)-1,Math.round(y)-2,3,2,'#dc7470');
+}
+function drawSligoMutation(a,x,y){
+  if(a.dodgeT>0||a.dodging||a.hurt>0)return false;
+  var name=a.anim==='toss'?'throw':a.st==='float'?'float':a.anim==='rise'?'rise':a.anim==='fall'?'fall':a.anim==='run'?'crawl':(a.anim==='water'||a.anim==='waterHold'||a.anim==='pick')?'tend':null;
+  if(!name)return false;
+  var im=sligoMutations();if(!ready(im))return false;
+  var clip=SLIGO_MUT[name],step=Math.floor(tSec*(name==='float'?9:12))%clip[1];
+  // Throw progress follows the existing five-step action, including its release marker.
+  if(name==='throw')step=Math.min(clip[1]-1,Math.floor((a.frame||0)*clip[1]/5));
+  var f=clip[0]+step;
+  ctx.save();ctx.translate(Math.round(x),Math.round(y));if(a.face<0)ctx.scale(-1,1);
+  ctx.drawImage(im,(f%8)*64,Math.floor(f/8)*64,64,64,-32,-63,64,64);ctx.restore();return true;
+}
 function drawSligoAction(a,x,y){
+  if(drawSligoMutation(a,x,y))return true;
   var clip=null,step=a.frame||0;
   if(a.dodgeT>0||a.dodging){clip=SLIGO_FX.roll;step=a.dodgeT>0?Math.min(6,Math.max(0,Math.floor((1-a.dodgeT/DODGE_TIME)*7))):(a.frame||0)%7;}
   else if(a.anim==='toss'){clip=SLIGO_FX.throw;step=[0,1,2,3,0][Math.min(4,step)];}
