@@ -12,6 +12,9 @@ const bytes = p => fs.readFileSync(path.join(root, p));
 const sha1 = b => crypto.createHash('sha1').update(b).digest('hex');
 const nodeId = /^\d+:\d+$/, hash = /^[0-9a-f]{40}$/;
 const production = manifest.production.map(e => e.path);
+// Runtime art waiting for its Figma layer (docs/figma.md, "Waiting for Figma"): pinned by SHA-1.
+const waiting = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-pending.json'), 'utf8'));
+const pending = waiting.files.map(e => e.path);
 const INLINE = {
   '72e3fc3321c2e319a5968864faff791180606eef': 'index.html SHEET_SRC 256×256',
   '2d862b5b525c09223b38a2b20d47146c3d58a3e5': 'index.html SHEET2_SRC 256×256',
@@ -118,10 +121,26 @@ test('every production entry is a posix path inside assets/ whose PNG equals the
   }
 });
 
+test('art waiting for Figma is pinned byte for byte, follows the pixel rules, is loaded by the runtime and is not also a production layer', async () => {
+  const { artProblems } = await sync, { loaded } = await found();
+  assert.ok(waiting.reason.length > 20, 'the list says why it exists');
+  assert.equal(new Set(pending).size, pending.length);
+  for (const e of waiting.files) {
+    assert.deepEqual(Object.keys(e), ['path', 'sha1', 'width', 'height', 'note']);
+    assert.match(e.path, /^assets\/[\w./-]+\.png$/); assert.match(e.sha1, hash); assert.ok(e.note, e.path);
+    assert.ok(!production.includes(e.path), `${e.path} is a production layer now: remove it from assets/figma-pending.json`);
+    const png = bytes(e.path);
+    assert.equal(sha1(png), e.sha1, `${e.path} changed: update its pin in assets/figma-pending.json`);
+    assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [e.width, e.height], e.path);
+    assert.deepEqual(artProblems(e.path, png), [], e.path);
+    assert.ok(loaded.includes(e.path), `${e.path} is not loaded by the runtime: drop it from the list`);
+  }
+});
+
 test('every PNG file the runtime loads or the build ships is known to Figma, so new runtime art cannot bypass it', async t => {
   const { loaded, shipped } = await found(), unused = manifest.unused.map(e => e.path);
   assert.ok(loaded.length >= 20);
-  assert.deepEqual(loaded.filter(p => !production.includes(p)), [], 'runtime art without a Figma production layer (docs/figma.md)');
+  assert.deepEqual(loaded.filter(p => !production.includes(p) && !pending.includes(p)), [], 'runtime art without a Figma production layer (docs/figma.md)');
   assert.deepEqual(shipped.filter(p => !production.includes(p) && !unused.includes(p)), [], 'shipped PNG unknown to Figma (docs/figma.md)');
   const idle = production.filter(p => !loaded.includes(p));
   if (idle.length) t.diagnostic(`Figma production layers the runtime does not load: ${idle.join(', ')}`);
