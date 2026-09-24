@@ -295,17 +295,36 @@ function drawCoopPlayers(dt){
   });
   P=original;coopMarker(P,coop.members[coop.me].slot,true);
 }
+// The roster writes at 2/5 of an art pixel per font pixel, which the art canvas cannot hold, so it lives in a
+// small overlay inside the stage at device resolution: one canvas per player (colour dot, underline for you,
+// the name in the 5x7 font at 1:1), scaled up whole with pixelated rendering and redrawn only when it changes.
+var rosterBox=null,rosterKey='',rosterShown=false;
+function hideRoster(){if(rosterBox&&rosterBox.style.display!=='none')rosterBox.style.display='none';rosterKey='';}
 function drawRoster(){
   if(!coop)return 0;
-  var list=coopMembers().slice().sort(function(a,b){return a.slot-b.slot;}),r=cv.getBoundingClientRect(),k=r.height>0?IH/r.height:0,room=coop.network&&coop.network.room&&coop.network.room.members||[];
-  if(safeBottomPx==null)bossBarY();
-  var y=k?Math.floor((window.innerHeight-(safeBottomPx||0)-54-r.top)*k):IH-30;
-  list.forEach(function(m,i){
-    var info=room.find(function(q){return q.id===m.id;}),name=String(info&&info.name||'P'+m.slot).toUpperCase().slice(0,10),yy=y-(list.length-1-i)*9;
-    ctx.fillStyle=['#e3ce80','#87bccf','#b79bcb','#a4bf87'][m.slot-1]||'#e3ce80';ctx.fillRect(4,yy+2,3,3);if(m.id===coop.me)ctx.fillRect(4,yy+6,3,1);
-    drawBossWord(name,10+(name.length*6-1)/2,yy,1);
-  });
+  var list=coopMembers().slice().sort(function(a,b){return a.slot-b.slot;}),room=coop.network&&coop.network.room&&coop.network.room.members||[];
+  var rows=list.map(function(m){var info=room.find(function(q){return q.id===m.id;});return {name:String(info&&info.name||'P'+m.slot).toUpperCase().slice(0,10),ink:['#e3ce80','#87bccf','#b79bcb','#a4bf87'][m.slot-1]||'#e3ce80',me:m.id===coop.me};});
+  rosterShown=true;
+  try{rosterOverlay(rows);}catch(e){}
   return list.length;
+}
+function rosterOverlay(rows){
+  if(!ready(BOSS_FONT))return;
+  var dpr=window.devicePixelRatio||1,f=Math.max(1,Math.round(SCALE*2/5)),r=cv.getBoundingClientRect();
+  if(safeBottomPx==null)bossBarY();
+  var key=f+'|'+dpr+'|'+Math.round(r.left)+'|'+(safeBottomPx||0)+'|'+rows.map(function(q){return q.name+q.ink+(q.me?1:0);}).join(',');
+  if(!rosterBox){rosterBox=document.createElement('div');rosterBox.setAttribute('aria-hidden','true');(stage||document.body).appendChild(rosterBox);}
+  rosterBox.style.display='flex';
+  if(key===rosterKey)return;rosterKey=key;
+  rosterBox.style.cssText='position:absolute;display:flex;flex-direction:column;align-items:flex-start;pointer-events:none;left:'+Math.round(r.left+4*r.width/Math.max(1,IW))+'px;bottom:'+((safeBottomPx||0)+48)+'px;gap:'+(2*f/dpr)+'px';
+  rosterBox.replaceChildren();
+  rows.forEach(function(q){
+    var c=document.createElement('canvas'),w=6+q.name.length*6-1,g;c.width=w;c.height=7;
+    c.style.cssText='display:block;image-rendering:pixelated;width:'+(w*f/dpr)+'px;height:'+(7*f/dpr)+'px';
+    g=c.getContext('2d');g.imageSmoothingEnabled=false;g.fillStyle=q.ink;g.fillRect(0,2,3,3);if(q.me)g.fillRect(0,6,3,1);
+    for(var i=0;i<q.name.length;i++){var n=Math.max(0,Math.min(63,q.name.charCodeAt(i)-32));g.drawImage(BOSS_FONT,n%16*6,Math.floor(n/16)*8,5,7,6+i*6,0,5,7);}
+    rosterBox.appendChild(c);
+  });
 }
 function drawTeamArrows(){
   if(!coop)return 0;var top=safeTopArt()+16,edge=5,n=0;
