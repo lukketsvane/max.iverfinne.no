@@ -22,7 +22,7 @@
 .max-menu button.subtle{background:transparent;border-color:transparent;box-shadow:none;color:#b0c2c0}
 .max-menu button.subtle:hover:not(:disabled){color:#fff1b9;background:#a6c0b009}
 .max-menu button:disabled{opacity:.42;cursor:default}
-.max-menu button:focus-visible,.max-menu button.padFocus,.max-menu input:focus-visible,.max-live-settings:focus-visible{outline:2px solid #f2df91;outline-offset:4px}
+.max-menu button:focus-visible,.max-menu button.padFocus,.max-menu input:focus-visible,.max-menu input.padFocus,.max-menu select.padFocus,.max-live-settings:focus-visible{outline:2px solid #f2df91;outline-offset:4px}
 .max-menu input{display:block;width:100%;min-height:48px;margin-top:8px;padding:12px;border:1px solid #75949270;border-radius:0;background:#07101d;color:var(--ink);font:inherit;font-size:16px}
 .max-menu label{display:block;margin-bottom:18px;color:#c1cebf;font-size:11px}
 .max-menu .max-menu-foot{border-top:1px solid var(--line);margin:24px 0 0;padding-top:16px;font-size:10px;color:#8da6aa}
