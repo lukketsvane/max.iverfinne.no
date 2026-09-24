@@ -64,11 +64,11 @@ test('generated gardens have no designer spots, so nothing changes there', () =>
   assert.equal(g.digSpots().length, 0); assert.equal(g.levelSpots(g.stageLayout(), 'secret').length, 0);
 });
 
-test('the Sunken Sanctuary, built for a bonus realm, has its secret cache and its cracked soil too', () => {
+test('garden 2, the Railway Ruins, has its secret cache and its cracked soil too', () => {
   const g = loadGame({ __pictures: true }).game;
-  g.resetRogueRun('test', { classId: 'mech' }); g.enterLevel(2); g.activeStageLayout = g.pictureLayout(2); g.runActive = true; g.initRunStage();
+  g.resetRogueRun('test', { classId: 'mech' }); g.enterLevel(2); g.activeStageLayout = null; g.runActive = true; g.initRunStage();
   const L = g.stageLayout();
-  assert.equal(L.picture, 'sunken-sanctuary');
+  assert.equal(L.picture, 'railway-ruins');
   assert.ok(g.seedPickups.some(p => p.id === 'secret:2:0' && p.hidden));
   const d = g.digSpots()[0]; assert.ok(d && !d.dug);
   g.digBlast(d.x, d.y - 4); assert.ok(g.seedPickups.some(p => p.id === 'dig:2:0:s'));

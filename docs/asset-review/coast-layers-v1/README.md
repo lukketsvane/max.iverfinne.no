@@ -1,4 +1,4 @@
-# Coast backdrop — behind garden 1
+# Coast backdrop — behind the Railway Ruins
 
 The owner's three backdrop layers for the mill-and-railway scene (1672×941, transparent, generated pixel art):
 
@@ -22,5 +22,5 @@ Output: `assets/coast-v1/mountains.png`, `sea.png`, `ruins.png`, `atlas.json`.
 
 The layers are built but the game does not load them yet. Every PNG the runtime loads must be a Figma production layer with the same bytes (`tests/figma-assets.test.cjs`, `docs/figma.md`). Figma's image upload host is blocked in this environment, so the three files still have to be put in Figma. Once they are production layers:
 
-1. Draw them behind garden 1 over the night sky, stars and moon, in place of the night forest.
+1. Draw them behind the Railway Ruins (garden 2), or wherever the climb out of the silo first meets the open sky, over the night sky, stars and moon, in place of the night forest.
 2. Record them in `assets/figma-manifest.json`.

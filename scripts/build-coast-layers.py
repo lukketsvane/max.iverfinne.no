@@ -1,4 +1,4 @@
-"""Build the coast backdrop behind garden 1 from the owner's three layers.
+"""Build the coast backdrop behind the Railway Ruins from the owner's three layers.
 
 The layers (docs/asset-review/coast-layers-v1: far mountains, the sea with its
 clouds, lighthouses and rocks, and misty ruins standing in the water) are

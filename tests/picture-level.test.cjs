@@ -7,11 +7,11 @@ const { explorePicture } = require('./picture-sweep.cjs');
 // Where the railway scene sits in the art and the soil row (scripts/build-railway-ruins.py SX, SY, GROUND).
 const RAIL = { sx: 300, sy: 32, soil: 200 };
 function ruins(classId = 'mech') {
-  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 1; g.activeStageLayout = null; g.floatKrek = [];
+  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 2; g.activeStageLayout = null; g.floatKrek = [];
   return { g, L: g.stageLayout() };
 }
 
-test("garden 1 is the Railway Ruins at Max's scale: art, rock, hidden ledges, markers, flat soil", () => {
+test("garden 2 is the Railway Ruins at Max's scale: art, rock, hidden ledges, markers, flat soil", () => {
   const { g, L } = ruins();
   assert.equal(L.picture, 'railway-ruins');
   assert.ok(L.art && L.art.w >= 1000 && L.art.w <= 1200 && L.art.h === 224, 'about as wide as the gardens that follow');
@@ -38,9 +38,48 @@ test('a walking Bulwark reaches every marker of the Railway Ruins, crosses it bo
   assert.ok(r.across, 'he crosses from either side to the other');
 });
 
+function vault(classId = 'mech') {
+  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 1; g.activeStageLayout = null; g.floatKrek = [];
+  return { g, L: g.stageLayout() };
+}
+
+test('garden 1 is the Seed Vault at the bottom of the silo: native art, hidden floors, markers, flat soil', async () => {
+  const { g, L } = vault();
+  assert.equal(L.picture, 'seed-vault');
+  assert.ok(L.art && L.art.w === 557 && L.art.h === 314);
+  const ledges = L.platforms.filter(p => !p.solid);
+  assert.ok(ledges.length >= 20 && ledges.every(p => p.art), 'the art draws its own floors, bridge and ladders');
+  assert.equal(L.rewards.length, 3, 'two rewards and the seed on the pedestal'); assert.equal(L.trials.length, 2); assert.equal(L.bonuses.length, 2);
+  assert.ok(L.spots.door && L.spots.dig && L.spots.secret && L.spots.puzzle);
+  for (let x = L.art.x; x <= L.art.x + L.art.w; x += 16) assert.equal(g.surfaceY(x), L.art.y + 253, 'the lowest floor is the soil');
+  const { artProblems } = await import(pathToFileURL(path.join(__dirname, '..', 'scripts/figma-sync.mjs')).href);
+  assert.deepEqual(artProblems('assets/levels-v1/seed-vault.png', fs.readFileSync(path.join(__dirname, '..', 'assets/levels-v1/seed-vault.png'))), []);
+});
+
+test('a walking Bulwark reaches every marker of the Seed Vault, crosses it both ways and is never stranded', () => {
+  const { g, L } = vault('bulwark'), r = explorePicture(g, L);
+  assert.ok(r.complete);
+  assert.deepEqual(r.marks.filter(m => !m.reached), []);
+  assert.deepEqual(r.traps.slice(0, 3), []);
+  assert.ok(r.across);
+});
+
+test('every class climbs the vault: both left ladders to the keepers\' floor, the ice bridge, and both right ladders to the top deck', () => {
+  for (const classId of ['mech', 'runner', 'bulwark', 'herbalist']) {
+    const { g, L } = vault(classId), climb = (x, ys) => { for (const y of ys) { if (g.P.y - L.art.y <= y + 1) continue; assert.equal(hop(g, L, x, y, 2) || g.P.y - L.art.y <= y + 1, true, `${classId}: ${x},${y}`); } };
+    stand(g, L, 82, 253); climb(82, [238, 221, 204, 187]); stand(g, L, 129, 187); climb(129, [174, 157, 140, 123]);
+    assert.ok(Math.abs(g.P.y - (L.art.y + 123)) < 2, `${classId}: on the keepers' floor`);
+    stand(g, L, 180, 187); assert.equal(hop(g, L, 210, 171), true, `${classId}: onto the bridge block`);
+    stand(g, L, 461, 253); climb(461, [248, 231, 214, 197]); stand(g, L, 443, 197); climb(443, [181, 164, 147]);
+    assert.ok(Math.abs(g.P.y - (L.art.y + 147)) < 2, `${classId}: on the upper right floor`);
+    stand(g, L, 546, 147); climb(546, [129, 112, 95, 78]);
+    assert.ok(Math.abs(g.P.y - (L.art.y + 78)) < 2, `${classId}: on the top deck`);
+  }
+});
+
 function sanctuary(classId = 'mech') {
-  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 2; g.floatKrek = [];
-  return { g, L: g.activeStageLayout = g.pictureLayout(2) };
+  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 21; g.floatKrek = [];
+  return { g, L: g.activeStageLayout = g.pictureLayout(21) };
 }
 
 // Jump from where Max stands toward a floor at art coordinates (tx, ty), steering
@@ -110,12 +149,13 @@ test('every class climbs the vine to the viaduct, the lift tower to its roof bea
   }
 });
 
-test('garden 1 is the only picture in the garden sequence: garden 2 is generated again', () => {
+test('the run starts in the Seed Vault and climbs to the Railway Ruins; garden 3 is generated and the Sanctuary waits outside', () => {
   const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId: 'mech' });
-  g.rogueRun.world = 1; g.activeStageLayout = null; assert.equal(g.stageLayout().picture, 'railway-ruins');
-  g.rogueRun.world = 2; g.activeStageLayout = null;
+  g.rogueRun.world = 1; g.activeStageLayout = null; assert.equal(g.stageLayout().picture, 'seed-vault');
+  g.rogueRun.world = 2; g.activeStageLayout = null; assert.equal(g.stageLayout().picture, 'railway-ruins');
+  g.rogueRun.world = 3; g.activeStageLayout = null;
   const L = g.stageLayout();
   assert.equal(L.picture, undefined); assert.equal(L.art, undefined);
-  assert.ok(L.platforms.some(p => p.id !== 'base'), 'garden 2 has its own ledges');
-  assert.equal(g.pictureLayout(2).picture, 'sunken-sanctuary', 'the Sanctuary still builds for the bonus realms');
+  assert.ok(L.platforms.some(p => p.id !== 'base'), 'garden 3 has its own ledges');
+  assert.equal(g.pictureLayout(21).picture, 'sunken-sanctuary', 'the Sanctuary still builds for the bonus realms');
 });

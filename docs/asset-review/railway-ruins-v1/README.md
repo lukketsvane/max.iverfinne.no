@@ -1,6 +1,6 @@
-# Railway Ruins — garden 1
+# Railway Ruins — garden 2
 
-The owner's railway scene and kit sheets, built into garden 1 at Max's scale.
+The owner's railway scene and kit sheets, built into garden 2 at Max's scale.
 
 ## Sources
 
@@ -8,7 +8,9 @@ The owner's railway scene and kit sheets, built into garden 1 at Max's scale.
 - `kits/machinery.png`, `kits/bridges.png`, `kits/mossy.png`, `kits/stone.png`: the owner's kit sheets (1536×1024, transparent): the mill wheel and machinery, wooden piers and ladders, mossy floating islands, stone pillars, lintels, stairs, arches and rubble.
 - `kits/mill-scene/`: the owner's Pixel Mill cut of a mill scene (`atlas.png`, `atlas.json`). Its colour-keyed background removal punched holes in dark stone, so only its planters, lanterns, lamp post, vines and crates are used.
 
-The Pixel Mill packs of the machinery, the stone ruins and a mossy-ruins sheet are the same art at 1/4. The build cuts the sheets itself instead, from their clean alpha.
+- `kits/mossy-ruins/`: the owner's Pixel Mill cut of a mossy-ruins sheet. The same colour key removed its dark stone. The build fills each piece's enclosed holes again with that colour mixed with the piece's darkest tones, and uses its arch blocks, stair slopes, ledges, pillars, slabs and water.
+
+The Pixel Mill packs of the machinery and the stone ruins are the same art as the sheets at 1/4. The build cuts those sheets itself instead, from their clean alpha.
 
 ## Scale
 
