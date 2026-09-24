@@ -261,7 +261,8 @@ test('Sligo stays off the character screen until its name is typed into Login, w
     assert.deepEqual(m.signIns, [], 'the name is a spell, never a sign-in');
     m.click('Back'); m.click('Play');
     assert.deepEqual(m.classIds(), [...OPEN, 'sligo']); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '5');
-    assert.match(m.w.document.querySelector('[data-class-id="sligo"]').textContent, /^Sligo/);
+    const sligoCard = m.w.document.querySelector('[data-class-id="sligo"]');
+    assert.equal(sligoCard.getAttribute('aria-label'), 'Sligo'); assert.equal(sligoCard.textContent, '', 'the card shows the character alone');
     m.click('Sligo');
     const header = m.w.document.querySelector('.max-character-name');
     assert.equal(header.textContent, 'Max Sligo Neverdahl'); assert.equal(header.dataset.long, 'true');
