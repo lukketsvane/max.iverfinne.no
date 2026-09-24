@@ -1,0 +1,193 @@
+{
+ "w": 1080,
+ "h": 224,
+ "ground": 200,
+ "scene": {
+  "x": 300,
+  "y": 32,
+  "w": 384,
+  "h": 192
+ },
+ "pieces": [
+  {
+   "piece": "machinery/wheel",
+   "x": 70,
+   "y": 119,
+   "w": 110,
+   "h": 111,
+   "role": "back",
+   "flip": false
+  },
+  {
+   "piece": "stone/pillar-tall",
+   "x": 286,
+   "y": 73,
+   "w": 28,
+   "h": 127,
+   "role": "back",
+   "flip": false
+  },
+  {
+   "piece": "stone/arch-large",
+   "x": 700,
+   "y": 149,
+   "w": 71,
+   "h": 51,
+   "role": "back",
+   "flip": false
+  },
+  {
+   "piece": "machinery/crank",
+   "x": 200,
+   "y": 163,
+   "w": 23,
+   "h": 27,
+   "role": "decor",
+   "flip": false
+  },
+  {
+   "piece": "stone/rubble-mid",
+   "x": 4,
+   "y": 175,
+   "w": 83,
+   "h": 27,
+   "role": "decor",
+   "flip": false
+  },
+  {
+   "piece": "stone/stairs-up",
+   "x": 96,
+   "y": 159,
+   "w": 62,
+   "h": 41,
+   "role": "stair",
+   "flip": false
+  },
+  {
+   "piece": "bridges/short-bridge",
+   "x": 22,
+   "y": 158,
+   "w": 90,
+   "h": 24,
+   "role": "deck",
+   "flip": false
+  },
+  {
+   "piece": "bridges/long-pier",
+   "x": 152,
+   "y": 128,
+   "w": 172,
+   "h": 89,
+   "role": "deck",
+   "flip": false
+  },
+  {
+   "piece": "mill/lamp-post",
+   "x": 170,
+   "y": 151,
+   "w": 19,
+   "h": 49,
+   "role": "decor",
+   "flip": false
+  },
+  {
+   "piece": "mill/planter-mixed",
+   "x": 250,
+   "y": 116,
+   "w": 19,
+   "h": 22,
+   "role": "decor",
+   "flip": false
+  },
+  {
+   "piece": "stone/pillar-mid",
+   "x": 772,
+   "y": 106,
+   "w": 30,
+   "h": 94,
+   "role": "tops",
+   "flip": false
+  },
+  {
+   "piece": "stone/lintel-mid",
+   "x": 700,
+   "y": 146,
+   "w": 95,
+   "h": 18,
+   "role": "deck",
+   "flip": false
+  },
+  {
+   "piece": "stone/pillar-short",
+   "x": 812,
+   "y": 140,
+   "w": 36,
+   "h": 60,
+   "role": "tops",
+   "flip": false
+  },
+  {
+   "piece": "stone/stairs-down",
+   "x": 846,
+   "y": 159,
+   "w": 59,
+   "h": 41,
+   "role": "stair",
+   "flip": true
+  },
+  {
+   "piece": "bridges/tall-ladder",
+   "x": 900,
+   "y": 101,
+   "w": 18,
+   "h": 99,
+   "role": "ladder",
+   "flip": false
+  },
+  {
+   "piece": "mossy/ring-island",
+   "x": 866,
+   "y": 62,
+   "w": 170,
+   "h": 85,
+   "role": "tops",
+   "flip": false
+  },
+  {
+   "piece": "mill/lantern",
+   "x": 930,
+   "y": 110,
+   "w": 8,
+   "h": 16,
+   "role": "decor",
+   "flip": false
+  },
+  {
+   "piece": "mossy/long-slope",
+   "x": 836,
+   "y": 122,
+   "w": 227,
+   "h": 57,
+   "role": "tops",
+   "flip": true
+  },
+  {
+   "piece": "stone/rubble-large",
+   "x": 968,
+   "y": 168,
+   "w": 111,
+   "h": 36,
+   "role": "decor",
+   "flip": false
+  },
+  {
+   "piece": "mill/planter-wide",
+   "x": 1030,
+   "y": 176,
+   "w": 41,
+   "h": 24,
+   "role": "decor",
+   "flip": false
+  }
+ ]
+}
