@@ -10,7 +10,7 @@ The vault's keepers and doors are drawn smaller than the Railway Ruins' people a
 
 ## Build
 
-`scripts/build-seed-vault.py` uses the scene whole and opaque, because it is its own cave.
+`scripts/build-seed-vault.py` uses the scene whole. It clears only the near-black cave the vault is painted in (darker than 16 in every channel, flood-filled from the edges, along with any specks the cut leaves standing alone), so the garden's cavern shows round the vault and the game's soil below it, and no black box stands in the garden.
 
 Collision is the floors it shows, all one-way so Max can jump up through them:
 
