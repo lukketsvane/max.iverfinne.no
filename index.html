@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX · NIGHT GARDEN"><link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png"><link rel="manifest" href="/manifest.webmanifest"><title>MAX · NIGHT GARDEN</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX FUGLESPRENGER"><link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png"><link rel="manifest" href="/manifest.webmanifest"><title>MAX FUGLESPRENGER</title>
 <link rel="stylesheet" href="run-results.css">
 <script src="assets/results-native/code/max-bouquet.js"></script>
 <script src="run-results.js"></script>
@@ -6,6 +6,7 @@
 <script src="build-paths.js"></script>
 <script src="max-classes.js"></script>
 <script src="stage-layout.js"></script>
+<script src="garden-places.js"></script>
 <script src="levels-v1/moonlit-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
 <script src="levels-v1/ashen-glass-furnace.js"></script>
@@ -74,6 +75,14 @@
 #perkMenu small{font:10px/1.25 monospace;color:#abb6b1;max-width:120px}
 #perkMenu .perk-wait{grid-column:1/-1;justify-self:center;font:12px monospace;color:#e9ead5;background:#071019e8;padding:12px 18px;border:1px solid #535d62;border-radius:5px}
 @media(max-height:430px){#perkMenu{width:330px}#perkMenu button{min-height:112px}}
+/* iPhone 16e gameplay UI: icon-only boon dock, no text HUD. */
+#perkMenu{width:min(238px,calc(100vw - 28px));gap:8px;bottom:max(8px,calc(env(safe-area-inset-bottom) + 5px))}
+#perkMenu button{aspect-ratio:1/1;min-height:0;padding:0;grid-template-rows:1fr;border-radius:9px;background:rgba(5,8,8,.62)}
+#perkMenu strong,#perkMenu small,#perkMenu .perkKey{display:none!important}
+#perkMenu .perkIcon{width:31px;height:31px}
+#perkMenu .perkDots{bottom:5px}
+#perkMenu .perk-wait{display:none!important}
+@media(max-height:430px){#perkMenu{left:50%;right:auto;transform:translateX(-50%);width:min(220px,calc(100vw - 28px))}#perkMenu button{min-height:0}}
 </style>
 <div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="gameTitle"></div><div id="blastHud"></div><div id="gardenHud"></div><div id="gardenHint"></div><div id="roundHud"></div><div id="perkMenu" aria-live="polite"></div>
@@ -255,13 +264,41 @@ function pictureLava(){
 }
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=pictureLayout(level)||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=pictureLayout(level)||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
 function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:surfaceY(x);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
-function drawPlatforms(){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH);}
+function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);}
+/* Garden places (garden-places.js): every garden has one landmark of its own.
+   Finding it, and the false walls inside it, are each player's own view. Its
+   caches are ordinary seed pickups: the host owns them, guests claim them. */
+var placeView={layout:null,found:false,banner:0,veils:[]};
+function placeTaken(i){return !!seedCollected['cache:'+worldLevel()+':'+i];}
+function placeBodies(){var list=[P];if(coop)coopMembers().forEach(function(m){if(m.id!==coop.me&&m.avatar)list.push(m.avatar);});return list;}
+function updatePlace(dt){
+  var L=stageLayout(),p=L.place,inside={};
+  if(placeView.layout!==L)placeView={layout:L,found:false,banner:0,veils:[]};
+  if(!p)return;
+  placeView.banner=Math.max(0,placeView.banner-dt);
+  if(!placeView.found&&runActive&&!rogueRun.ended&&window.MaxPlaces.inside(L,P.x,P.y-9)){placeView.found=true;placeView.banner=3.4;chime([523,659,784,1047],.09,.035);}
+  placeBodies().forEach(function(b){var g=window.MaxPlaces.veilAt(L,b.x,b.y);if(g>=0)inside[g]=true;});
+  for(var i=0;i<p.groups;i++){
+    var v=placeView.veils[i]||(placeView.veils[i]={a:1,open:false});
+    if(inside[i]&&!v.open){v.open=true;chime([392,523,784],.08,.035);}
+    v.a+=((inside[i]?.16:v.open?.8:1)-v.a)*Math.min(1,dt*7);
+  }
+}
+function placeVeil(i){var v=placeView.layout===stageLayout()&&placeView.veils[i];return v?v.a:1;}
+function drawPlaceVeils(){window.MaxPlaces.drawFront(ctx,stageLayout(),camX,camY,IW,IH,placeVeil);}
+function drawPlaceBanner(){
+  var p=stageLayout().place;if(!p||placeView.banner<=0||warp)return;
+  var word=p.name.toUpperCase(),w=word.length*6+7,y=safeTopArt()+20;
+  ctx.globalAlpha=Math.max(0,Math.min(1,placeView.banner/.7,(3.4-placeView.banner)/.35));
+  ctx.fillStyle='rgba(12,20,22,.82)';ctx.fillRect(Math.round(IW/2-w/2),y-3,w,13);
+  drawBossWord(word,IW/2,y,1);ctx.globalAlpha=1;
+}
 var surf = new Float32Array(360);
 function buildSurfCache() {
   for (var i = 0; i < IW + 10; i++) surf[i] = surfaceY(Math.round(camX) + i - 5);
@@ -3358,7 +3395,7 @@ function renderRogueChoice(){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
     bt.setAttribute('aria-label',p.name+', level '+lvl+'. '+p.desc+'. Key '+(index+1));
-    bt.innerHTML='<i class="perkKey" aria-hidden="true">'+(index+1)+'</i><canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas><strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
+    bt.innerHTML='<canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas>'+perkDots(lvl,perkMax(p.id));
     var icon=bt.querySelector('canvas'),ink=boonInk(p.id);if(icon&&ink)icon.getContext('2d').drawImage(ink,0,0);
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
@@ -3395,7 +3432,9 @@ function seedBucketSpawn(b){
   if(seedCollected['b'+b])return null;if(b!==0&&h1(b*12.77+6.1)<.38)return null;
   var x=b*126+24+h1(b*4.61+3)*78;if(b===0)x=42;x=dryX(x);
   var luck=Math.min(.34,gardenWave*.004+(rogueRun.perks.luck||0)*.055),rare=h1(b*8.3+2)>(.78-luck);
-  return{id:'b'+b,b:b,x:x,y:surfaceY(x)-5,amount:1+(rare?1:0),fall:false,ph:h1(b*9.1)*6.28};
+  var y=surfaceY(x)-5,L=stageLayout();for(var k=0;k<16&&window.MaxStageLayout.inRock(L,x,y);k++)y-=6;
+  if(window.MaxStageLayout.inRock(L,x,y))return null;
+  return{id:'b'+b,b:b,x:x,y:y,amount:1+(rare?1:0),fall:false,ph:h1(b*9.1)*6.28};
 }
 function ensureSeedPickups(){
   var B=126,b0=Math.floor((P.x-IW*.9)/B),b1=Math.floor((P.x+IW*.9)/B);
@@ -4655,7 +4694,7 @@ function crouchGardenAction() {
   // Otherwise crouching plants one collected seed right in front of Max.
   if (gardenSeeds > 0) {
     var x = dryX(P.x + P.face * 6);
-    if (!waterAt(x) && !nearestGardenPlot(x, 12)) {
+    if (!waterAt(x) && !nearestGardenPlot(x, 12) && !window.MaxStageLayout.inRock(stageLayout(), x, surfaceY(x) - 3)) {
       plantGardenSeed(x);
       return true;
     }
@@ -5774,6 +5813,7 @@ function frame(now) {
   if(!runIsPaused())listenRun();
   if(!runIsPaused())updateSecrets(dt);
   if(!runIsPaused())updateWonders(dt);
+  if(!runIsPaused())updatePlace(dt);
   }
   if((rogueRun.ended||(window.MaxRunResults&&window.MaxRunResults.isOpen()))&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
 
@@ -5827,7 +5867,7 @@ function frame(now) {
   drawBiomeFlora(tSec);
   drawLandmarks(tSec);
   drawBiomeTransitionMarkers();
-  drawPlatforms();
+  drawPlatforms(tSec);
   drawSmartWorld(tSec);
   drawSeedPickups(tSec);
   drawRunExploration(tSec);
@@ -5851,7 +5891,7 @@ function frame(now) {
   drawWonderAir();
   drawBirdBlasts();
   drawCompanion();
-  drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawTeamArrows();drawMouseReticle();
+  drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();drawTeamArrows();drawMouseReticle();
   drawPickupNotice(dt);
   drawClimbSky(tSec);
   drawBombs(tSec);
@@ -5868,7 +5908,7 @@ function frame(now) {
   drawBooms();
   drawVignette();
   drawWarp(tSec);
-  drawWorldBanner(tSec);drawBossBar(dt);
+  drawWorldBanner(tSec);drawPlaceBanner();drawBossBar(dt);
   drawRunHud();
 
   camX = fx; camY = fy;

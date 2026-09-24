@@ -1,4 +1,4 @@
-# Claude handoff — MAX · NIGHT GARDEN
+# Claude handoff — MAX FUGLESPRENGER
 
 This file is the engineering handoff for the next primary agent. Read `README.md` first, then this file, then the relevant tests before changing behavior.
 
@@ -102,6 +102,14 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - `layout.nodes` holds each platform's capability tier (C0–C3) for loot placement.
 - A picture level comes before both. `pictureLayout()` reads `window.MaxPictureLevels[garden]` from `levels-v1/*.js`: one painted art rectangle, 3 px rock blocks traced from it, one-way ledges the art already draws (`art: true`, never drawn again), markers and an `entry` that sits on the soil. Under the art the soil runs level at the entry height (`surfaceY` reads the layout's `ground`; `terrainY` is the rolling terrain). Garden 1 is the Moonlit Ruins, garden 2 the Sunken Sanctuary (`scripts/build-sunken-sanctuary.py`, from the concept sheet in `docs/asset-review/sunken-sanctuary-v1/`). `tests/picture-level.test.cjs` walks every class through them.
 - A garden drawn in Figma replaces the generated one when its frame carries a `designed` instance: `stageLayout()` asks `MaxLevels.layout` (`levels.js`, data in `levels-data.js` from `npm run figma:levels`) before `MaxStageLayout.create`. A designed layout adds `designed`, `frame`, `spots` (puzzle, door, dig, secret, start; not read yet) and `decor`. Its routes and tiers come from the stage-layout reach rules. See `docs/design/figma-levels.md`.
+
+## Garden places
+
+- `garden-places.js` holds one designed place per garden, drawn as rows of 6 px cells: `#` rock, `=` one-way ledge, `%` false wall, `$` cache, `_` back wall, `|` pillar, `!v*tm` decor. The bottom row stands on a flat footing; ramps step down to the soil.
+- `stageLayout()` furnishes generated gardens only (`MaxPlaces.furnish`); Figma gardens and picture levels stay as drawn. Place platforms carry `place: true`; the route generator's platforms, routes and nodes are untouched.
+- The seed picks the side (mirrored on the left) and the footing: dry, clear of every route ledge by 12 px with ramps, no soil more than two cells above a door.
+- Caches are seed pickups `cache:<garden>:<i>` (host-owned, claimed by guests like any seed). Discovery banners and false-wall fades are each player's own view.
+- `tests/place-sweep.cjs` explores every place with the real physics as a walking, unupgraded Bulwark: both caches reached, no spot that strands Max, crossable both ways. Every ledge needs a walk-off end with headroom (there is no drop-through), every entrance is at least two cells wide, and a jump needs about seven cells of air above its take-off.
 
 ## Boons
 
