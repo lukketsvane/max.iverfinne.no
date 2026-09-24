@@ -8,6 +8,7 @@
 <script src="stage-layout.js"></script>
 <script src="garden-places.js"></script>
 <script src="levels-v1/moonlit-ruins.js"></script>
+<script src="levels-v1/sunken-sanctuary.js"></script>
 <script src="levels-v1/ashen-glass-furnace.js"></script>
 <script src="levels-data.js"></script>
 <script src="levels.js"></script>
@@ -218,7 +219,17 @@ function pondNear(x) {
   return null;
 }
 function waterAt(x) { var p = pondNear(x); return (p && Math.abs(x - p.cx) < p.hw) ? p : null; }
+// A picture level holds the soil under its art at its own ground line, eased
+// back to the rolling terrain over 24 px beyond each edge.
 function surfaceY(x) {
+  var pg = activeStageLayout && activeStageLayout.ground;
+  if (pg && x > pg.x0 - 24 && x < pg.x1 + 24) {
+    var t = x < pg.x0 ? (pg.x0 - x) / 24 : x > pg.x1 ? (x - pg.x1) / 24 : 0;
+    return t ? pg.y * (1 - t) + terrainY(x) * t : pg.y;
+  }
+  return terrainY(x);
+}
+function terrainY(x) {
   var y = baseSurfaceY(x), p = pondNear(x);
   if (!p) return y;
   var d = Math.abs(x - p.cx);
@@ -236,11 +247,11 @@ var activeStageLayout=null;
 var PICTURE_ART={};
 function pictureLayout(level){
   var d=window.MaxPictureLevels&&window.MaxPictureLevels[level];if(!d)return null;
-  var o=levelOriginX(level),ax=Math.round(o+40),ay=Math.floor(surfaceY(ax+d.entry.x))-d.entry.y,L={stage:level,seed:rogueRun.seed,origin:o,theme:'picture',kind:'picture',picture:d.id,platforms:[],routes:[],rewards:[],trials:[],bonuses:[],spots:{},nodes:[],hazards:[]};
+  var o=levelOriginX(level),ax=Math.round(o+40),ay=Math.floor(terrainY(ax+d.entry.x))-d.entry.y,L={stage:level,seed:rogueRun.seed,origin:o,theme:'picture',kind:'picture',picture:d.id,ground:{x0:ax,x1:ax+d.w,y:ay+d.entry.y},platforms:[],routes:[],rewards:[],trials:[],bonuses:[],spots:{},nodes:[],hazards:[]};
   L.art={img:PICTURE_ART[d.art]||(PICTURE_ART[d.art]=loadImg(d.art)),x:ax,y:ay,w:d.w,h:d.h};
   d.blocks.forEach(function(b,i){L.platforms.push({id:'r'+i,x:ax+b[0],y:ay+b[1],w:b[2],h:b[3],depth:6,route:1,style:'stone',solid:true});});
-  L.platforms.push({id:'base',x:ax,y:ay+d.h-2,w:d.w,h:90,depth:6,route:1,style:'stone',solid:true,draw:true});
-  (d.ledges||[]).forEach(function(b,i){L.platforms.push({id:'l'+i,x:ax+b[0],y:ay+b[1],w:b[2],depth:4,route:1,style:'branch'});});
+  L.platforms.push({id:'base',x:ax,y:ay+d.h-2,w:d.w,h:90,depth:6,route:1,style:'stone',solid:true,draw:d.h-d.entry.y<=12}); // a deep picture paints its own rock below the soil line
+  (d.ledges||[]).forEach(function(b,i){L.platforms.push({id:'l'+i,x:ax+b[0],y:ay+b[1],w:b[2],depth:4,route:1,style:'branch',art:true});});
   (d.hazards||[]).forEach(function(h){L.hazards.push({type:h[0],x:ax+h[1],y:ay+h[2],w:h[3],h:h[4]});});
   var seed=null;(d.markers||[]).forEach(function(m){var a={x:ax+m[1],y:ay+m[2],side:1};if(m[0]==='reward')L.rewards.push(a);else if(m[0]==='seed')seed=a;else if(m[0]==='trial')L.trials.push(a);else if(m[0]==='bonus')L.bonuses.push(a);else L.spots[m[0]]=a;});
   if(seed)L.rewards.push(seed);
