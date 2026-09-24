@@ -1,0 +1,235 @@
+{
+  "frames": {
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-001": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-001.png",
+      "frame": {
+        "x": 8,
+        "y": 8,
+        "w": 389,
+        "h": 157
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 385,
+        "h": 153
+      },
+      "sourceRect": {
+        "x": 19,
+        "y": 9,
+        "w": 385,
+        "h": 153
+      },
+      "sourceSize": {
+        "w": 389,
+        "h": 157
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-002": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-002.png",
+      "frame": {
+        "x": 8,
+        "y": 173,
+        "w": 31,
+        "h": 92
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 27,
+        "h": 88
+      },
+      "sourceRect": {
+        "x": 29,
+        "y": 135,
+        "w": 27,
+        "h": 88
+      },
+      "sourceSize": {
+        "w": 31,
+        "h": 92
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-003": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-003.png",
+      "frame": {
+        "x": 47,
+        "y": 173,
+        "w": 53,
+        "h": 64
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 49,
+        "h": 60
+      },
+      "sourceRect": {
+        "x": 76,
+        "y": 163,
+        "w": 49,
+        "h": 60
+      },
+      "sourceSize": {
+        "w": 53,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-004": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-004.png",
+      "frame": {
+        "x": 108,
+        "y": 173,
+        "w": 35,
+        "h": 48
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 31,
+        "h": 44
+      },
+      "sourceRect": {
+        "x": 144,
+        "y": 179,
+        "w": 31,
+        "h": 44
+      },
+      "sourceSize": {
+        "w": 35,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-005": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-005.png",
+      "frame": {
+        "x": 151,
+        "y": 173,
+        "w": 32,
+        "h": 37
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 28,
+        "h": 33
+      },
+      "sourceRect": {
+        "x": 195,
+        "y": 190,
+        "w": 28,
+        "h": 33
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-006": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-006.png",
+      "frame": {
+        "x": 191,
+        "y": 173,
+        "w": 46,
+        "h": 37
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 42,
+        "h": 33
+      },
+      "sourceRect": {
+        "x": 249,
+        "y": 190,
+        "w": 42,
+        "h": 33
+      },
+      "sourceSize": {
+        "w": 46,
+        "h": 37
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "71968A9A-FDEA-44CD-8EC7-CABD025B18BA-007": {
+      "file": "assets/71968A9A-FDEA-44CD-8EC7-CABD025B18BA-007.png",
+      "frame": {
+        "x": 245,
+        "y": 173,
+        "w": 78,
+        "h": 28
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 74,
+        "h": 24
+      },
+      "sourceRect": {
+        "x": 310,
+        "y": 199,
+        "w": 74,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 78,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    }
+  },
+  "meta": {
+    "app": "Pixel Mill",
+    "image": "atlas.png",
+    "size": {
+      "w": 405,
+      "h": 273
+    },
+    "scale": 1,
+    "source": "71968A9A-FDEA-44CD-8EC7-CABD025B18BA.png",
+    "originalSize": {
+      "width": 1672,
+      "height": 941
+    },
+    "processedSize": {
+      "width": 418,
+      "height": 235
+    },
+    "settings": {
+      "remove": false,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "tolerance": 18,
+      "mode": "all",
+      "width": 418,
+      "height": 235,
+      "palette": 0,
+      "minArea": 3,
+      "connectivity": 8,
+      "bridge": 1
+    },
+    "padding": 2
+  }
+}

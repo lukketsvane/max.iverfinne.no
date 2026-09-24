@@ -19,9 +19,8 @@ from the Railway Ruins' kit. The lowest floor is the garden's soil.
     python3 scripts/build-seed-vault.py [--preview out.png [--reach reach.json]]
       -> assets/levels-v1/seed-vault.png, levels-v1/seed-vault.js
 
-Needs Pillow, numpy and scipy (and scripts/build-railway-ruins.py for the kit).
+Needs Pillow, numpy and scipy (and scripts/kitlib.py for the kit ladder).
 """
-import importlib.util
 import json
 import sys
 from pathlib import Path
@@ -37,9 +36,8 @@ GARDEN = 1
 W, H = 557, 314
 GROUND = 253                    # the lowest floor is the garden's soil
 
-rail = importlib.util.spec_from_file_location('rail', ROOT / 'scripts/build-railway-ruins.py')
-RAIL = importlib.util.module_from_spec(rail)
-rail.loader.exec_module(RAIL)
+sys.path.insert(0, str(ROOT / 'scripts'))
+import kitlib  # noqa: E402
 
 
 def rungs(x, w, top, bottom):
@@ -75,7 +73,7 @@ MARKERS = [
 def build():
     src = Image.open(SOURCE).convert('RGB')
     art = np.dstack([np.array(src.resize((W, H), Image.BOX)), np.full((H, W), 255)]).astype(np.uint8)
-    ladder = RAIL.cut_kits()[LADDER[0]]
+    ladder = kitlib.pieces()[LADDER[0]]
     h, w = ladder.shape[:2]
     x, y = LADDER[1], LADDER[2]
     m = ladder[..., 3] > 0

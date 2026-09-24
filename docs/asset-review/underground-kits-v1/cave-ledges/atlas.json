@@ -1,0 +1,207 @@
+{
+  "frames": {
+    "0648E0BA-D2B3-44CE-8561-37FF71050920-001": {
+      "file": "assets/0648E0BA-D2B3-44CE-8561-37FF71050920-001.png",
+      "frame": {
+        "x": 8,
+        "y": 8,
+        "w": 312,
+        "h": 76
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 308,
+        "h": 72
+      },
+      "sourceRect": {
+        "x": 9,
+        "y": 32,
+        "w": 308,
+        "h": 72
+      },
+      "sourceSize": {
+        "w": 312,
+        "h": 76
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "0648E0BA-D2B3-44CE-8561-37FF71050920-002": {
+      "file": "assets/0648E0BA-D2B3-44CE-8561-37FF71050920-002.png",
+      "frame": {
+        "x": 8,
+        "y": 92,
+        "w": 208,
+        "h": 55
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 204,
+        "h": 51
+      },
+      "sourceRect": {
+        "x": 12,
+        "y": 117,
+        "w": 204,
+        "h": 51
+      },
+      "sourceSize": {
+        "w": 208,
+        "h": 55
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "0648E0BA-D2B3-44CE-8561-37FF71050920-003": {
+      "file": "assets/0648E0BA-D2B3-44CE-8561-37FF71050920-003.png",
+      "frame": {
+        "x": 224,
+        "y": 92,
+        "w": 96,
+        "h": 51
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 92,
+        "h": 47
+      },
+      "sourceRect": {
+        "x": 231,
+        "y": 118,
+        "w": 92,
+        "h": 47
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 51
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "0648E0BA-D2B3-44CE-8561-37FF71050920-004": {
+      "file": "assets/0648E0BA-D2B3-44CE-8561-37FF71050920-004.png",
+      "frame": {
+        "x": 8,
+        "y": 155,
+        "w": 29,
+        "h": 66
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 25,
+        "h": 62
+      },
+      "sourceRect": {
+        "x": 387,
+        "y": 163,
+        "w": 25,
+        "h": 62
+      },
+      "sourceSize": {
+        "w": 29,
+        "h": 66
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "0648E0BA-D2B3-44CE-8561-37FF71050920-005": {
+      "file": "assets/0648E0BA-D2B3-44CE-8561-37FF71050920-005.png",
+      "frame": {
+        "x": 45,
+        "y": 155,
+        "w": 176,
+        "h": 43
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 172,
+        "h": 39
+      },
+      "sourceRect": {
+        "x": 11,
+        "y": 187,
+        "w": 172,
+        "h": 39
+      },
+      "sourceSize": {
+        "w": 176,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "0648E0BA-D2B3-44CE-8561-37FF71050920-006": {
+      "file": "assets/0648E0BA-D2B3-44CE-8561-37FF71050920-006.png",
+      "frame": {
+        "x": 8,
+        "y": 229,
+        "w": 182,
+        "h": 52
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 178,
+        "h": 48
+      },
+      "sourceRect": {
+        "x": 195,
+        "y": 176,
+        "w": 178,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 182,
+        "h": 52
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    }
+  },
+  "meta": {
+    "app": "Pixel Mill",
+    "image": "atlas.png",
+    "size": {
+      "w": 328,
+      "h": 289
+    },
+    "scale": 1,
+    "source": "0648E0BA-D2B3-44CE-8561-37FF71050920.png",
+    "originalSize": {
+      "width": 1672,
+      "height": 941
+    },
+    "processedSize": {
+      "width": 418,
+      "height": 235
+    },
+    "settings": {
+      "remove": false,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "tolerance": 18,
+      "mode": "all",
+      "width": 418,
+      "height": 235,
+      "palette": 0,
+      "minArea": 3,
+      "connectivity": 8,
+      "bridge": 1
+    },
+    "padding": 2
+  }
+}
