@@ -1,0 +1,21 @@
+{
+ "schema": "max-sligo-evolution/v1",
+ "image": "brood.png",
+ "cell": [
+  40,
+  40
+ ],
+ "anchor": [
+  20,
+  39
+ ],
+ "rows": [
+  "bud",
+  "chain",
+  "stand",
+  "mass"
+ ],
+ "frames": 16,
+ "scale": 0.1739,
+ "source": "docs/asset-review/sligo-evolution-v1/brood-sheet.png; scripts/build-sligo-evolution.py"
+}
