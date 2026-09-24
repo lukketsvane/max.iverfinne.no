@@ -100,7 +100,7 @@ test('the run lays each cache as a seed pickup, once, and a collected cache stay
   const { game, L } = run(6), p = L.place;
   const caches = game.seedPickups.filter(q => /^cache:6:/.test(q.id));
   assert.equal(caches.length, p.caches.length);
-  caches.forEach((q, i) => { assert.equal(q.x, p.caches[i].x); assert.equal(q.y, p.caches[i].y - 6); assert.ok(q.amount >= 1 && q.routeReward); });
+  caches.forEach((q, i) => { assert.equal(q.x, p.caches[i].x); assert.equal(q.y, p.caches[i].y - 6); assert.ok(q.amount >= 1 && q.placeCache && !q.routeReward); });
   const before = game.gardenSeeds;
   game.collectSeed(caches[0]);
   assert.ok(game.gardenSeeds > before && game.placeTaken(0) && !game.placeTaken(1));
