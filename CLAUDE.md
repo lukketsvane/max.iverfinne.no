@@ -66,6 +66,8 @@ Skills are one tap on Max or E, never a new pause, sprite or boon. Guests run th
 
 Character appearance and gameplay role are one selection. Do not reintroduce a separate skin/costume picker.
 
+Sligo, the hidden character, has two umbilical plants of its own: kind 25, the cord (`PA.fam` 9, `assets/plants-v1/sligo-cord/`), and kind 26, the cap (`PA.fam` 10, `sligo-cap/`). Both are built by `scripts/build-sligo-plants.py` from the owner's paintings in `docs/asset-review/sligo-plants-v1/`. Each family has its own blooms (`b`) and roots (`r`), and `SLIGO_PLANTS` keeps both kinds away from ordinary seeds (`gardenKindFor`) and out of the garden collection (`tests/sligo-plants.test.cjs`).
+
 ## Difficulty / current balance intent
 
 Easy must actually feel easy. Do not tune every mode upward because late Hard/Insane is survivable.

@@ -904,6 +904,9 @@ for (var fi = 0; fi < 26; fi++) flies.push({
 /* ---------------------------------------------------------------- Figma garden assets + small fauna */
 var PA = {"fam":[{"s":[[37,78,35,7],[433,78,35,7],[469,78,35,7],[1,86,35,7],[37,86,35,7],[73,86,35,7],[109,86,35,7],[145,86,35,7],[181,86,35,7],[73,78,35,7],[109,78,35,7],[145,78,35,7],[181,78,35,7],[217,78,35,7],[253,78,35,7],[289,78,35,7],[325,78,35,7],[361,78,35,7],[397,78,35,7]],"f":[[211,70,35,7],[247,70,35,7],[283,70,35,7],[319,70,35,7],[355,70,35,7],[391,70,35,7],[427,70,35,7],[463,70,35,7],[1,78,35,7]]},{"s":[[323,62,41,7],[365,62,41,7],[407,62,41,7],[449,62,41,7],[1,70,41,7],[43,70,41,7],[85,70,41,7],[127,70,41,7],[169,70,41,7],[448,41,41,9],[359,52,41,8]],"f":[[275,52,41,8],[217,29,41,10],[317,52,41,8]]},{"s":[[1,62,45,7],[47,62,45,7],[93,62,45,7],[139,62,45,7],[185,62,45,7],[231,62,45,7],[277,62,45,7]],"f":[[417,52,45,7],[463,52,45,7]]},{"s":[[186,41,29,10],[216,41,29,10],[246,41,29,10],[276,41,29,10],[306,41,29,10],[336,41,29,10],[366,41,29,10],[396,41,29,10]],"f":[[126,41,29,10],[156,41,29,10]]},{"s":[[281,1,39,12],[321,1,39,12],[361,1,39,12],[121,1,39,13],[401,1,39,12]],"f":[[161,1,39,12],[201,1,39,12],[241,1,39,12]]},{"s":[[441,1,41,11],[1,29,41,11],[301,29,41,10],[43,29,41,11],[343,29,41,10],[85,52,41,9],[127,52,41,9],[385,29,41,10],[169,52,41,9],[43,52,41,9]],"f":[[1,52,41,9],[259,29,41,10]]},{"s":[[235,52,19,9],[211,52,23,9],[426,41,21,10],[255,52,19,9],[205,110,21,7],[401,52,15,8],[181,110,23,7]],"f":[[427,29,41,10],[469,29,41,10],[1,41,41,10],[43,41,41,10],[85,41,40,10]]},{"s":[[151,29,21,11],[173,29,21,11],[195,29,21,11]],"f":[[85,29,21,11],[107,29,21,11],[129,29,21,11]]}],"roots":[[217,86,35,7],[433,86,35,7],[469,86,35,7],[1,94,35,7],[37,94,35,7],[73,94,35,7],[109,94,35,7],[145,94,35,7],[181,94,35,7],[253,86,35,7],[289,86,35,7],[325,86,35,7],[361,86,35,7],[397,86,35,7]],"seeds":[[217,94,35,7],[109,102,35,7],[433,102,35,7],[469,102,35,7],[1,110,35,7],[37,110,35,7],[73,110,35,7],[109,110,35,7],[145,110,35,7],[253,94,35,7],[289,94,35,7],[325,94,35,7],[361,94,35,7],[397,94,35,7],[433,94,35,7],[469,94,35,7],[1,102,35,7],[37,102,35,7],[73,102,35,7],[145,102,35,7],[181,102,35,7],[217,102,35,7],[253,102,35,7],[289,102,35,7],[325,102,35,7],[361,102,35,7],[397,102,35,7]],"pumpkin":[[1,1,29,27],[31,1,29,27],[61,1,29,27],[91,1,29,27]]};
 PA.fam.push({s:PA.fam[0].s.map(function(r){return r.slice();}),f:PA.fam[0].f.map(function(r){return r.slice();})});
+// Sligo's umbilical plants, families 9 and 10 (kinds 25 and 26): their own folder (dir), blooms (b) that are not
+// their heads and roots (r) of their own. Every piece is [0, 0, width, height]; scripts/build-sligo-plants.py prints this line.
+PA.fam.push({"dir":"sligo-cord","s":[[0,0,7,8],[0,0,7,9],[0,0,7,8],[0,0,7,9],[0,0,7,9],[0,0,7,8]],"f":[[0,0,21,25],[0,0,17,21],[0,0,17,19]],"b":[[0,0,15,15],[0,0,9,8],[0,0,10,13],[0,0,7,8],[0,0,11,8]],"r":[[0,0,17,12],[0,0,17,12],[0,0,17,12]]},{"dir":"sligo-cap","s":[[0,0,17,12],[0,0,17,10],[0,0,19,15],[0,0,21,16],[0,0,17,9],[0,0,23,21]],"f":[[0,0,33,17],[0,0,31,16],[0,0,31,17]],"b":[[0,0,7,7],[0,0,7,7],[0,0,7,7],[0,0,8,7]],"r":[[0,0,19,11],[0,0,17,11],[0,0,23,11]]});
 var plantAtlasReady = false;
 (function () {
   var waiting = 0;
@@ -915,7 +918,12 @@ var plantAtlasReady = false;
       r.img.onload = function () { if (--waiting === 0) plantAtlasReady = true; };
     });
   }
-  PA.fam.forEach(function (f, i) { parts(f.s, 'plant-' + (i + 1), 'stem'); parts(f.f, 'plant-' + (i + 1), 'flower'); });
+  PA.fam.forEach(function (f, i) {
+    var dir = f.dir || 'plant-' + (i + 1);
+    parts(f.s, dir, 'stem'); parts(f.f, dir, 'flower');
+    if (f.b) parts(f.b, dir, 'bloom');
+    if (f.r) parts(f.r, dir, 'root');
+  });
   parts(PA.roots, 'roots', 'root'); parts(PA.seeds, 'seeds', 'seed'); parts(PA.pumpkin, 'pumpkin', 'pumpkin');
 })();
 var SPRITE_PLANTS=[{"name":"moon-lily","top":64,"parts":[["root",1,-11,0,22,8],["stem",1,-13,-8,28,8],["stem",2,-11,-16,26,8],["stem",3,-14,-24,23,8],["stem",4,-14,-32,30,8],["stem",5,-1,-40,16,8],["stem",6,-2,-48,14,8],["stem",7,-12,-56,25,8],["stem",8,-8,-64,20,8],["bloom",1,-7,-16,4,5],["bloom",2,5,-27,4,5],["bloom",3,-11,-59,23,11],["bloom",4,1,-62,2,2]]},{"name":"sunpuff","top":47,"parts":[["root",1,-9,0,17,6],["stem",1,-9,-8,16,8],["stem",2,-15,-16,29,8],["stem",3,-15,-24,29,8],["stem",4,-12,-32,24,8],["stem",5,-11,-40,22,8],["stem",6,-7,-47,15,7],["bloom",1,-7,-9,3,5],["bloom",2,-13,-19,7,7],["bloom",3,2,-23,10,8],["bloom",4,-11,-34,9,8],["bloom",5,7,-33,5,3],["bloom",6,-6,-45,12,10]]},{"name":"frost-fern","top":63,"parts":[["root",1,-9,0,19,9],["stem",1,-17,-8,19,8],["stem",2,-17,-16,36,8],["stem",3,-17,-24,32,8],["stem",4,-14,-32,31,8],["stem",5,-19,-40,34,8],["stem",6,-17,-48,33,8],["stem",7,-5,-56,11,8],["stem",8,-4,-63,7,7],["bloom",1,1,-1,4,1],["bloom",2,-4,-13,3,2],["bloom",3,0,-23,2,2],["bloom",4,-3,-32,3,3]]},{"name":"jade-vine","top":64,"parts":[["root",1,-8,0,17,7],["stem",1,-10,-8,18,8],["stem",2,-6,-16,21,8],["stem",3,-5,-24,14,8],["stem",4,-9,-32,26,8],["stem",5,-5,-40,21,8],["stem",6,-10,-48,19,8],["stem",7,2,-56,6,8],["stem",8,2,-64,9,8],["bloom",1,-11,-11,6,8],["bloom",2,4,-22,6,7],["bloom",3,-10,-30,6,8],["bloom",4,5,-41,6,8],["bloom",5,5,-62,7,8]]},{"name":"star-grass","top":64,"parts":[["root",1,-9,0,20,8],["stem",1,-3,-8,18,8],["stem",2,-15,-16,30,8],["stem",3,-15,-24,34,8],["stem",4,-18,-32,36,8],["stem",5,-11,-40,29,8],["stem",6,-13,-48,28,8],["stem",7,-14,-56,17,8],["stem",8,1,-64,13,8],["bloom",1,0,-20,1,4],["bloom",2,17,-22,3,4],["bloom",3,13,-23,3,3],["bloom",4,-17,-28,6,7],["bloom",5,16,-36,3,4],["bloom",6,9,-39,7,4],["bloom",7,-14,-44,3,3],["bloom",8,-10,-46,2,2],["bloom",9,-15,-48,3,3],["bloom",10,9,-56,3,3],["bloom",11,7,-58,2,2],["bloom",12,12,-58,2,2],["bloom",13,13,-61,3,4]]},{"name":"rose-curl","top":65,"parts":[["root",1,-6,0,14,7],["stem",1,-1,-8,9,7],["stem",2,-6,-16,17,8],["stem",3,-10,-24,20,8],["stem",4,-11,-32,19,8],["stem",5,-4,-40,12,8],["stem",6,-6,-48,16,8],["stem",7,-4,-56,11,8],["stem",8,-4,-61,10,5],["bloom",1,-1,-2,3,2],["bloom",2,-10,-19,6,7],["bloom",3,6,-31,6,7],["bloom",4,-3,-28,2,2],["bloom",5,7,-35,2,2],["bloom",6,-7,-40,5,6],["bloom",7,-6,-53,3,4],["bloom",8,1,-65,7,6]]},{"name":"snow-bush","top":60,"parts":[["root",1,-9,0,17,9],["stem",1,-18,-8,39,8],["stem",2,-19,-16,38,8],["stem",3,-22,-24,40,8],["stem",4,-18,-32,36,8],["stem",5,-12,-40,28,8],["stem",6,-9,-48,23,8],["stem",7,-7,-56,14,8],["stem",8,-5,-58,4,2],["bloom",1,-14,-12,4,5],["bloom",2,-7,-12,4,4],["bloom",3,13,-16,10,7],["bloom",4,2,-19,7,3],["bloom",5,-11,-24,4,6],["bloom",6,-16,-26,4,5],["bloom",7,-19,-28,4,4],["bloom",8,14,-31,5,6],["bloom",9,-5,-32,3,4],["bloom",10,11,-32,2,4],["bloom",11,7,-32,3,3],["bloom",12,-10,-42,2,4],["bloom",13,-7,-40,2,2],["bloom",14,-14,-43,3,4],["bloom",15,11,-42,5,3],["bloom",16,3,-43,2,2],["bloom",17,6,-47,3,5],["bloom",18,-5,-45,4,3],["bloom",19,-8,-53,4,4],["bloom",20,4,-55,2,3],["bloom",21,1,-56,2,2],["bloom",22,-4,-60,4,5]]},{"name":"blue-poppy","top":60,"parts":[["root",1,-10,0,19,12],["stem",1,-12,-8,14,8],["stem",2,-10,-16,21,8],["stem",3,-12,-24,20,8],["stem",4,-10,-32,20,8],["stem",5,-9,-40,18,8],["stem",6,-9,-48,12,8],["stem",7,-2,-56,8,8],["bloom",1,2,-44,9,9],["bloom",2,-13,-49,9,9],["bloom",3,-6,-60,12,10]]},{"name":"gold-bud","top":55,"parts":[["root",1,-10,0,21,6],["stem",1,-7,-8,19,8],["stem",2,-16,-16,34,8],["stem",3,-16,-24,35,8],["stem",4,-8,-32,18,8],["stem",5,-9,-40,17,8],["stem",6,-8,-48,16,8],["stem",7,-5,-55,10,7],["bloom",1,-3,-2,3,2],["bloom",2,1,-2,3,2],["bloom",3,15,-17,3,2],["bloom",4,11,-20,2,3],["bloom",5,-10,-19,2,2],["bloom",6,14,-21,2,3],["bloom",7,-15,-22,3,3],["bloom",8,-7,-41,3,3],["bloom",9,-4,-49,2,2],["bloom",10,2,-50,2,2],["bloom",11,-1,-54,3,5]]},{"name":"bluebell","top":63,"parts":[["root",1,-7,0,15,8],["stem",1,-11,-8,21,8],["stem",2,-10,-16,21,8],["stem",3,-11,-24,21,8],["stem",4,-9,-32,17,8],["stem",5,-8,-40,21,8],["stem",6,-10,-48,20,8],["stem",7,-9,-56,15,8],["stem",8,0,-63,8,7],["bloom",1,4,-11,7,7],["bloom",2,2,-13,2,2],["bloom",3,-14,-23,7,7],["bloom",4,4,-19,3,2],["bloom",5,6,-25,2,2],["bloom",6,9,-37,6,8],["bloom",7,0,-42,5,5],["bloom",8,-11,-41,4,4],["bloom",9,5,-58,7,7]]},{"name":"cloudberry","top":60,"parts":[["root",1,-8,0,17,17],["stem",1,-11,-8,17,8],["stem",2,-10,-16,15,8],["stem",3,-4,-24,7,8],["stem",4,-20,-32,34,8],["stem",5,-21,-40,34,8],["stem",6,-15,-48,25,8],["stem",7,-14,-56,24,8],["stem",8,-5,-60,4,4]]},{"name":"alder-cone","top":49,"parts":[["root",1,-8,0,12,12],["stem",1,-14,-8,21,8],["stem",2,-13,-16,19,8],["stem",3,-10,-24,16,8],["stem",4,-13,-32,17,8],["stem",5,-12,-40,17,8],["stem",6,-10,-48,13,8],["stem",7,-4,-49,1,1],["bloom",1,-2,-4,6,4],["bloom",2,-14,-8,4,4],["bloom",3,0,-14,5,5],["bloom",4,-12,-24,7,5],["bloom",5,-3,-30,4,5],["bloom",6,-8,-36,3,5],["bloom",7,-1,-37,6,4],["bloom",8,-9,-43,3,2],["bloom",9,-4,-44,1,3]]},{"name":"nightberry","top":56,"parts":[["root",1,-8,0,15,11],["stem",1,-7,-8,15,8],["stem",2,-9,-16,18,8],["stem",3,-10,-24,17,8],["stem",4,-8,-32,16,8],["stem",5,-7,-40,18,8],["stem",6,-6,-48,12,8],["stem",7,-2,-56,8,8],["bloom",1,0,-4,7,4],["bloom",2,-4,-5,3,4],["bloom",3,-5,-9,7,4],["bloom",4,-8,-12,5,4],["bloom",5,-5,-14,3,2],["bloom",6,4,-15,5,3],["bloom",7,1,-19,3,3],["bloom",8,-8,-21,7,4],["bloom",9,2,-24,4,3],["bloom",10,-10,-27,7,5],["bloom",11,-7,-30,3,3],["bloom",12,2,-30,8,5],["bloom",13,-5,-36,8,5],["bloom",14,5,-40,3,3],["bloom",15,-2,-41,3,3],["bloom",16,-9,-46,9,8],["bloom",17,6,-48,2,3],["bloom",18,-6,-54,7,5],["bloom",19,1,-55,5,5]]},{"name":"dusk-bell","top":62,"parts":[["root",1,-6,0,12,15],["stem",1,-6,-8,12,8],["stem",2,-7,-16,17,8],["stem",3,-6,-24,15,8],["stem",4,-6,-32,14,8],["stem",5,-6,-40,15,8],["stem",6,-5,-48,13,8],["stem",7,-3,-56,9,8],["stem",8,-4,-62,9,6],["bloom",1,5,-11,6,7],["bloom",2,-7,-16,3,3],["bloom",3,7,-28,2,5],["bloom",4,-8,-35,6,8],["bloom",5,4,-46,6,6],["bloom",6,-5,-51,2,5]]},{"name":"reindeer-moss","top":65,"parts":[["root",1,-6,0,14,13],["stem",1,-3,-8,11,8],["stem",2,-8,-16,19,8],["stem",3,-10,-24,21,8],["stem",4,-10,-32,25,8],["stem",5,-8,-40,21,8],["stem",6,-2,-48,15,8],["stem",7,-8,-56,18,8],["stem",8,-7,-64,16,8],["stem",9,3,-65,2,1],["bloom",1,-10,-13,12,13],["bloom",2,4,-14,9,9],["bloom",3,-11,-29,12,12],["bloom",4,3,-30,12,8],["bloom",5,-8,-39,8,8],["bloom",6,9,-43,3,3],["bloom",7,5,-48,6,5]]},{"name":"ink-fan","top":49,"parts":[["root",1,-7,0,11,10],["stem",1,-11,-8,20,8],["stem",2,-13,-16,20,8],["stem",3,-8,-24,19,8],["stem",4,-14,-32,22,8],["stem",5,-12,-40,20,8],["stem",6,-10,-48,16,8],["bloom",1,3,-14,4,3],["bloom",2,-12,-15,5,4],["bloom",3,-9,-23,2,2],["bloom",4,-8,-31,3,3],["bloom",5,3,-33,5,3],["bloom",6,-1,-40,5,3],["bloom",7,-6,-43,3,3],["bloom",8,-3,-49,2,2]]}];
@@ -926,9 +934,12 @@ SPRITE_PLANTS.forEach(function (d) {
     q.img.onload = function () { if (--waiting === 0) d.ready = true; };
   });
 });
-var PLANT_FEATURES=['water','grow','chill','shelter','thorns','heal','bind','chill','seeds','heal','grow','chill','bind','seeds','thorns','shelter','seeds','grow','water','berries','shelter','berries','chill','heal','thorns'];
-var PLANT_TIER=[1,1,1,1,2,2,2,2,1,3,2,2,3,2,2,3,3,1,1,4,2,2,3,3,4];
-var PLANT_HOME=['g','gf','g','gf','ge','gf','ge','f','ge','f','e','f','e','f','g','f','g','e','g','fe','g','gf','f','f','e'];
+var PLANT_FEATURES=['water','grow','chill','shelter','thorns','heal','bind','chill','seeds','heal','grow','chill','bind','seeds','thorns','shelter','seeds','grow','water','berries','shelter','berries','chill','heal','thorns','heal','bind'];
+var PLANT_TIER=[1,1,1,1,2,2,2,2,1,3,2,2,3,2,2,3,3,1,1,4,2,2,3,3,4,1,2];
+var PLANT_HOME=['g','gf','g','gf','ge','gf','ge','f','ge','f','e','f','e','f','g','f','g','e','g','fe','g','gf','f','f','e','gfe','gfe'];
+// Sligo's umbilical plants: the cord (25) and the cap (26). No ordinary seed grows them (gardenKindFor) and the garden
+// collection leaves them out: they are Sligo's.
+var SLIGO_KINDS=[25,26];
 var CLOUDBERRY={berries:[],bursts:[],anchors:[[-10,-46],[11,-35],[-10,-24]]};
 for(var cbi=1;cbi<=6;cbi++)CLOUDBERRY.berries.push(loadImg('assets/plants-v1/cloudberry/berry-0'+cbi+'.png'));
 for(cbi=1;cbi<=4;cbi++)CLOUDBERRY.bursts.push(loadImg('assets/plants-v1/cloudberry/burst-0'+cbi+'.png'));
@@ -1751,7 +1762,11 @@ var FAM_CYCLE = [
   { s: [2, 3],       f: [1, 2] },         // plant_5 arches: 5 / 3
   { s: [4, 6],       f: [1, 1] },         // plant_6: 10 / 2
   { s: [3, 4],       f: [2, 3] },         // plant_7 starbursts: 7 / 5
-  { s: [1, 2],       f: [1, 2] }          // plant_8 twig + puff: 3 / 3
+  { s: [1, 2],       f: [1, 2] },         // plant_8 twig + puff: 3 / 3
+  // the garden-only families: the wild flora (FIG_SLOTS) never deals them
+  { s: [6, 3, 8, 2], f: [2, 3, 2, 2] },   // plant_9, plant_1's pieces recoloured: 19 / 9
+  { s: [3, 3],       f: [1, 2] },         // sligo-cord boxes and coils: 6 / 3
+  { s: [3, 3],       f: [1, 2] }          // sligo-cap cord and caps: 6 / 3
 ];
 var FIG_BW = 24, FIG_SLOTS = [0, 0, 1, 2, 3, 4, 5, 6, 7];
 function famPieces(fi, k) {
@@ -3654,11 +3669,11 @@ function nearestGardenPlot(x,maxD){
 var GARDEN_FIG_FORMS=[
   {fi:8,off:0},{fi:0,off:7},{fi:1,off:1},{fi:2,off:2},{fi:3,off:3},
   {fi:4,off:4},{fi:5,off:5},{fi:6,off:6},{fi:7,off:7},
-{fi:0,off:0,sprite:0},{fi:1,off:1,sprite:1},{fi:2,off:2,sprite:2},{fi:3,off:3,sprite:3},{fi:4,off:4,sprite:4},{fi:5,off:5,sprite:5},{fi:6,off:6,sprite:6},{fi:7,off:7,sprite:7},{fi:0,off:8,sprite:8},{fi:1,off:9,sprite:9},{fi:0,off:10,sprite:10},{fi:2,off:11,sprite:11},{fi:6,off:12,sprite:12},{fi:1,off:13,sprite:13},{fi:4,off:14,sprite:14},{fi:7,off:15,sprite:15}
+{fi:0,off:0,sprite:0},{fi:1,off:1,sprite:1},{fi:2,off:2,sprite:2},{fi:3,off:3,sprite:3},{fi:4,off:4,sprite:4},{fi:5,off:5,sprite:5},{fi:6,off:6,sprite:6},{fi:7,off:7,sprite:7},{fi:0,off:8,sprite:8},{fi:1,off:9,sprite:9},{fi:0,off:10,sprite:10},{fi:2,off:11,sprite:11},{fi:6,off:12,sprite:12},{fi:1,off:13,sprite:13},{fi:4,off:14,sprite:14},{fi:7,off:15,sprite:15},
+  {fi:9,off:0},{fi:10,off:0}
 ];
 function plantTierWeights(w){return w<=5?[1,0,0,0]:w<=10?[.72,.24,.04,0]:w<=15?[.5,.33,.15,.02]:[.42,.3,.2,.08];}
 // Sligo grows nothing but its two umbilical cords, and nobody else ever grows them.
-var SLIGO_KINDS=[25,26];
 function gardenKindFor(x){
   var q=biomeAt(x),w=worldLevel(),home=w>=16?'e':w>=11?'f':'g',tiers=plantTierWeights(w),pool=[],total=0;
   for(var k=0;k<GARDEN_FIG_FORMS.length;k++){
@@ -3802,7 +3817,8 @@ function gardenFigForm(p){return GARDEN_FIG_FORMS[imod(p.kind|0,GARDEN_FIG_FORMS
 var PLANT_STEM=[
   ['#062128','#294321','#3b5a2e'],['#1b171d','#242a17','#2f3718'],['#0e1e1d','#183427','#274628'],
   ['#0e1e1d','#262938','#38475f'],['#142722','#405054','#5e6781'],['#171b0f','#2e361c','#585633'],
-  ['#0a2628','#1e4852','#315f6a'],['#261e18','#3b2d21','#504e2a'],['#0b1830','#28465a','#3e6a78']
+  ['#0a2628','#1e4852','#315f6a'],['#261e18','#3b2d21','#504e2a'],['#0b1830','#28465a','#3e6a78'],
+  ['#8f3634','#dc7470','#f29f9b'],['#740d1b','#d03946','#fc947c']   // Sligo's cord and cap, from their paintings
 ];
 var G_TOP=2.7, PLANT_MATURE_H=46;
 function plantTopH(){return Math.max(72,ANCHOR+10);}          // ground to just past the top edge
@@ -3881,10 +3897,10 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     drawSeedAsset(sr,sx,gy-2);return;
   }
   if(form.sprite!=null&&!p.stalk){drawSpritePlant(p,SPRITE_PLANTS[form.sprite],sx,gy,t,flip);drawRipePods(p,sx,gy,t,g);return;}
-  var rr=PA.roots[imod(p.kind*2+(p.seed|0),PA.roots.length)];
+  var roots=fam.r||PA.roots,rr=roots[imod(p.kind*2+(p.seed|0),roots.length)];   // a family with roots of its own keeps to them
   drawRootAsset(rr,sx,gy,flip);
   var stalk=!!p.stalk,H=Math.min(plantHeight(p),maxHeight||Infinity),topY=stalk?Math.min(gy-H,-4):gy-H,cols=PLANT_STEM[form.fi];
-  var head=(!stalk&&fam.f.length&&g>.5)?fam.f[imod(Math.floor(g*2)+form.off,fam.f.length)]:null;
+  var head=(!stalk&&fam.f.length&&g>.5)?fam.f[imod(Math.floor(g*2)+form.off,fam.f.length)]:null,blooms=fam.b||fam.f;   // blooms are the heads unless the family has its own
 
   // 1. the stem: one unbroken line from the soil to the top
   var runs=stemRuns(p,sx,gy,topY,t);
@@ -3914,8 +3930,8 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     var mid=gy-(yb-r[3]*.5),lx=sx+plantLean(p,mid,t),fl=flip?!(j&1):!!(j&1);
     if(top<=IH+4&&yb>=-4){
       figmaSeg(r,lx,yb,fl);
-      if(stalk&&fam.f.length&&j%5===3){
-        var bl=fam.f[imod(j+form.off,fam.f.length)],bs=(j&2)?1:-1;
+      if(stalk&&blooms.length&&j%5===3){
+        var bl=blooms[imod(j+form.off,blooms.length)],bs=(j&2)?1:-1;
         figmaSeg(bl,lx+bs*6,yb-2,bs<0);
       }
     }
@@ -3927,10 +3943,10 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
   else if(!stalk){ctx.fillStyle=cols[2];ctx.fillRect(sx+plantLean(p,H,t),topY-1,2,2);}
 
   // 4. ripe plants fill out with more blooms along the lower stem
-  if(!stalk&&g>1.05&&fam.f.length&&stemY.length){
+  if(!stalk&&g>1.05&&blooms.length&&stemY.length){
     var fullness=Math.min(6,1+Math.floor((g-1)*2.2)),span=Math.max(1,Math.floor(stemY.length*.8));
     for(var k=0;k<fullness;k++){
-      var idx=Math.min(stemY.length-1,Math.floor((k+.5)/fullness*span)),br=fam.f[imod(k+form.off+(p.seed|0),fam.f.length)];
+      var idx=Math.min(stemY.length-1,Math.floor((k+.5)/fullness*span)),br=blooms[imod(k+form.off+(p.seed|0),blooms.length)];
       var side=(k&1)?1:-1,by=Math.round(stemY[idx]),bx=sx+plantLean(p,gy-by,t)+side*(5+(k%3)*2);
       figmaSeg(br,bx,by,side<0);
     }
