@@ -1,0 +1,291 @@
+{
+  "frames": {
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-001": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-001.png",
+      "frame": {
+        "x": 8,
+        "y": 8,
+        "w": 259,
+        "h": 120
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 255,
+        "h": 116
+      },
+      "sourceRect": {
+        "x": 17,
+        "y": 14,
+        "w": 255,
+        "h": 116
+      },
+      "sourceSize": {
+        "w": 259,
+        "h": 120
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-002": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-002.png",
+      "frame": {
+        "x": 8,
+        "y": 136,
+        "w": 127,
+        "h": 120
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 123,
+        "h": 116
+      },
+      "sourceRect": {
+        "x": 280,
+        "y": 14,
+        "w": 123,
+        "h": 116
+      },
+      "sourceSize": {
+        "w": 127,
+        "h": 120
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-003": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-003.png",
+      "frame": {
+        "x": 143,
+        "y": 136,
+        "w": 22,
+        "h": 78
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 18,
+        "h": 74
+      },
+      "sourceRect": {
+        "x": 25,
+        "y": 145,
+        "w": 18,
+        "h": 74
+      },
+      "sourceSize": {
+        "w": 22,
+        "h": 78
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-004": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-004.png",
+      "frame": {
+        "x": 8,
+        "y": 264,
+        "w": 215,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 211,
+        "h": 18
+      },
+      "sourceRect": {
+        "x": 57,
+        "y": 156,
+        "w": 211,
+        "h": 18
+      },
+      "sourceSize": {
+        "w": 215,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-005": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-005.png",
+      "frame": {
+        "x": 8,
+        "y": 294,
+        "w": 87,
+        "h": 22
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 83,
+        "h": 18
+      },
+      "sourceRect": {
+        "x": 279,
+        "y": 156,
+        "w": 83,
+        "h": 18
+      },
+      "sourceSize": {
+        "w": 87,
+        "h": 22
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-006": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-006.png",
+      "frame": {
+        "x": 103,
+        "y": 294,
+        "w": 27,
+        "h": 26
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 23,
+        "h": 22
+      },
+      "sourceRect": {
+        "x": 372,
+        "y": 156,
+        "w": 23,
+        "h": 22
+      },
+      "sourceSize": {
+        "w": 27,
+        "h": 26
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-007": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-007.png",
+      "frame": {
+        "x": 138,
+        "y": 294,
+        "w": 34,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 30,
+        "h": 26
+      },
+      "sourceRect": {
+        "x": 144,
+        "y": 192,
+        "w": 30,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-008": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-008.png",
+      "frame": {
+        "x": 180,
+        "y": 294,
+        "w": 34,
+        "h": 31
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 30,
+        "h": 27
+      },
+      "sourceRect": {
+        "x": 190,
+        "y": 191,
+        "w": 30,
+        "h": 27
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 31
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    },
+    "4EE95E63-B1ED-4CE2-8F77-81F920176D37-009": {
+      "file": "assets/4EE95E63-B1ED-4CE2-8F77-81F920176D37-009.png",
+      "frame": {
+        "x": 8,
+        "y": 333,
+        "w": 76,
+        "h": 30
+      },
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 2,
+        "w": 72,
+        "h": 26
+      },
+      "sourceRect": {
+        "x": 257,
+        "y": 194,
+        "w": 72,
+        "h": 26
+      },
+      "sourceSize": {
+        "w": 76,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "padding": 2
+    }
+  },
+  "meta": {
+    "app": "Pixel Mill",
+    "image": "atlas.png",
+    "size": {
+      "w": 275,
+      "h": 371
+    },
+    "scale": 1,
+    "source": "4EE95E63-B1ED-4CE2-8F77-81F920176D37.png",
+    "originalSize": {
+      "width": 1672,
+      "height": 941
+    },
+    "processedSize": {
+      "width": 418,
+      "height": 235
+    },
+    "settings": {
+      "remove": false,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "tolerance": 18,
+      "mode": "all",
+      "width": 418,
+      "height": 235,
+      "palette": 0,
+      "minArea": 3,
+      "connectivity": 8,
+      "bridge": 1
+    },
+    "padding": 2
+  }
+}

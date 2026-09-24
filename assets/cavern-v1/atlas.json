@@ -1,0 +1,91 @@
+{
+ "palette": [
+  "#010204",
+  "#020205",
+  "#020307",
+  "#030308",
+  "#030408",
+  "#030409",
+  "#030509",
+  "#040409",
+  "#040508",
+  "#040509",
+  "#04050a",
+  "#050509",
+  "#050e20",
+  "#06070e",
+  "#060711",
+  "#060d1d",
+  "#060e20",
+  "#060e21",
+  "#060f21",
+  "#070810",
+  "#070f21",
+  "#071023",
+  "#080a17",
+  "#081023",
+  "#081226",
+  "#0a0b16",
+  "#0a0c16",
+  "#0a1329",
+  "#0b0d19",
+  "#0b0f1b",
+  "#0c0e19",
+  "#0c152e",
+  "#0d0f1c",
+  "#0d101d",
+  "#0d121f",
+  "#0e111e",
+  "#0f111e",
+  "#0f121f",
+  "#0f1522",
+  "#0f1934",
+  "#101321",
+  "#111321",
+  "#111724",
+  "#131927",
+  "#16192c",
+  "#16192d",
+  "#161b29",
+  "#181d2b",
+  "#1a202e",
+  "#1f2533",
+  "#283359",
+  "#474d70"
+ ],
+ "order": [
+  "far",
+  "ceiling",
+  "horizon",
+  "lake",
+  "ruins"
+ ],
+ "sheets": {
+  "far": {
+   "image": "far.png",
+   "width": 836,
+   "height": 180
+  },
+  "ceiling": {
+   "image": "ceiling.png",
+   "width": 836,
+   "height": 180
+  },
+  "horizon": {
+   "image": "horizon.png",
+   "width": 836,
+   "height": 180
+  },
+  "lake": {
+   "image": "lake.png",
+   "width": 836,
+   "height": 180
+  },
+  "ruins": {
+   "image": "ruins.png",
+   "width": 418,
+   "height": 180
+  }
+ },
+ "source": "docs/asset-review/cavern-layers-v1 and coast-layers-v1 (the owner's layers), 1/4; scripts/build-cavern-layers.py"
+}

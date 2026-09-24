@@ -25,6 +25,23 @@ Figma names each stored image by the SHA-1 of its bytes, so the manifest records
 
 Not covered yet: the 16 images inlined as `data:image/png` URIs in `index.html` (terrain sheets, backgrounds, plant and NPC atlases, crow, swan, garden, ants, soil). They predate the Figma file and are pinned by hash in `tests/figma-assets.test.cjs`, so a new or changed inline image fails the test. New art goes into `assets/` and 52:2, never into a data URI; moving the pinned ones into 52:2 is open work.
 
+## Waiting for Figma
+
+`assets/figma-pending.json` lists runtime art that is not yet in Figma, pinned by SHA-1. The art was built from the owner's uploads while the agent environment could not reach Figma's image upload host (`mcp.figma.com`).
+
+`tests/figma-assets.test.cjs` lets the runtime load these files. It checks that each one:
+
+- matches its pin byte for byte;
+- follows the pixel rules;
+- is loaded by the runtime;
+- is not also a production layer.
+
+To finish an entry:
+
+1. Put the PNG in the production section.
+2. Run `npm run figma:manifest`.
+3. Remove the entry from the list. The test fails while a path is in both.
+
 ## Map
 
 Draft page `0:1`:

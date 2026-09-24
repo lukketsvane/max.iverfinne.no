@@ -146,6 +146,22 @@ function drawNightLayers(from, to, top, bdrop) {
     }
   }
 }
+/* The cavern (assets/cavern-v1): the owner's far cave, a stalactite ceiling,
+   ruins on a far shore, a black lake and misty ruins in the water, behind the
+   underground gardens 1-10, the climb out of the silo. It stands in for the
+   sky, the moon, the birds and the clouds; each layer repeats at its own
+   parallax rate. Until it loads the old sky stands in. */
+var CAVERN_LAYERS = [['far', 0.02, 0], ['ceiling', 0.03, 0], ['horizon', 0.05, 1], ['lake', 0.07, 0.9], ['ruins', 0.12, 0.7]], CAVERN_BG = {}, CAVERN_TOP = '#05070e';
+CAVERN_LAYERS.forEach(function (l) { CAVERN_BG[l[0]] = loadImg('assets/cavern-v1/' + l[0] + '.png'); });
+function cavernGarden(world) { world = world || worldLevel(); return world >= 1 && world <= 10; }
+function cavernBackdrop(world) { return cavernGarden(world) && CAVERN_LAYERS.every(function (l) { return ready(CAVERN_BG[l[0]]); }); }
+function drawCavernLayers(from, to, top, bdrop) {
+  if (!from) { ctx.fillStyle = CAVERN_TOP; ctx.fillRect(0, 0, IW, IH); }
+  for (var n = from; n < to; n++) {
+    var l = CAVERN_LAYERS[n], im = CAVERN_BG[l[0]], w = im.naturalWidth, y = top + Math.round(bdrop * l[2]), off = Math.round(camX * l[1]);
+    for (var i = Math.floor(off / w); i * w - off < IW; i++) ctx.drawImage(im, i * w - off, y);
+  }
+}
 function drawSanctuarySky(top) {
   ctx.fillStyle = SANCTUARY_TOP; ctx.fillRect(0, 0, IW, IH);
   if (top > 0) {
@@ -5930,18 +5946,19 @@ function frame(now) {
   var mh = ready(IMG.mtn) ? IMG.mtn.naturalHeight : 159;
   var bdrop = Math.max(0, Math.round(Math.min(60, IH * 0.15)) - (hy - mh));
   applyBiomePalette(P.x);
-  var sanctuary = sanctuaryBackdrop(), night = !sanctuary && nightBackdrop(), stop = hy - 140;
-  if (night) drawNightLayers(0, 3, stop, bdrop); else if (sanctuary) drawSanctuarySky(stop); else drawSky(tSec, hy);
+  var cavern = cavernBackdrop(), sanctuary = !cavern && sanctuaryBackdrop(), night = !cavern && !sanctuary && nightBackdrop(), stop = hy - 140;
+  if (cavern) drawCavernLayers(0, 3, stop, bdrop); else if (night) drawNightLayers(0, 3, stop, bdrop); else if (sanctuary) drawSanctuarySky(stop); else drawSky(tSec, hy);
   drawBiomeSkyBands(hy);
-  if (!sanctuary && !night) drawMoon(hy);
-  drawSecretSky(tSec, hy);
+  if (!sanctuary && !night && !cavern) drawMoon(hy);
+  if (!cavern) drawSecretSky(tSec, hy);
   var backdrop = gardenBackdrop(), far = backdrop && ready(backdrop.far) ? backdrop.far : IMG.mtn, mid = backdrop && ready(backdrop.mid) ? backdrop.mid : IMG.forest;
-  if (night) drawNightLayers(3, 7, stop, bdrop);
+  if (cavern) drawCavernLayers(3, 4, stop, bdrop);
+  else if (night) drawNightLayers(3, 7, stop, bdrop);
   else if (sanctuary) { drawSanctuaryLayer('band', stop + bdrop); drawSanctuaryLayer('mountains', stop + bdrop); drawSanctuaryLayer('ruins', stop + Math.round(bdrop * 0.7)); }
   else drawTiled(far, 0.10, hy + bdrop, true, MTN_BASE);
-  drawFlock();
-  drawSwanSky();
-  if (night) drawNightLayers(7, 10, stop, bdrop);
+  if (!cavern) { drawFlock(); drawSwanSky(); }
+  if (cavern) drawCavernLayers(4, 5, stop, bdrop);
+  else if (night) drawNightLayers(7, 10, stop, bdrop);
   else if (sanctuary) drawSanctuaryLayer('forest', stop + Math.round(bdrop * 0.55));
   else {
     drawTiled(mid, 0.35, hy + Math.round(bdrop * 0.55), mid !== IMG.forest, FOREST_BASE);

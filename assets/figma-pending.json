@@ -1,0 +1,40 @@
+{
+ "reason": "Runtime art built from the owner's uploads while Figma's image upload host (mcp.figma.com) is blocked in the agent environment. Each file is pinned by SHA-1; put it in the production section and run npm run figma:manifest, then remove it here.",
+ "files": [
+  {
+   "path": "assets/cavern-v1/ceiling.png",
+   "sha1": "f3d5f25eaa5f680edec8852278e2d399a3a59fca",
+   "width": 836,
+   "height": 180,
+   "note": "cavern backdrop behind the underground gardens (1-10); scripts/build-cavern-layers.py"
+  },
+  {
+   "path": "assets/cavern-v1/far.png",
+   "sha1": "ac428272886079de8396edd33cb21e5678f55281",
+   "width": 836,
+   "height": 180,
+   "note": "cavern backdrop behind the underground gardens (1-10); scripts/build-cavern-layers.py"
+  },
+  {
+   "path": "assets/cavern-v1/horizon.png",
+   "sha1": "bbd911253d37e34e0bab10ba265df0619fe264c9",
+   "width": 836,
+   "height": 180,
+   "note": "cavern backdrop behind the underground gardens (1-10); scripts/build-cavern-layers.py"
+  },
+  {
+   "path": "assets/cavern-v1/lake.png",
+   "sha1": "ac1f03e2af2dbacc582de9c5582abd2f01a7f20a",
+   "width": 836,
+   "height": 180,
+   "note": "cavern backdrop behind the underground gardens (1-10); scripts/build-cavern-layers.py"
+  },
+  {
+   "path": "assets/cavern-v1/ruins.png",
+   "sha1": "a1761f9853812bd450b4b6c0a1f0f2520b0dae61",
+   "width": 418,
+   "height": 180,
+   "note": "cavern backdrop behind the underground gardens (1-10); scripts/build-cavern-layers.py"
+  }
+ ]
+}

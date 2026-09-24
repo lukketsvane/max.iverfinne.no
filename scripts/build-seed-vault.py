@@ -8,7 +8,8 @@ floors. The run starts here, in the dark and the wet, and climbs out.
 Its people and doors are drawn a little smaller than the railway's, so it is
 brought to native pixels at 1/3 (557x314) rather than 1/4: Max, about 22 px
 tall, stands a head above the vault's keepers and fits its doors. The scene is
-used whole and opaque; it is its own cave.
+used whole; only the near-black cave it is painted in is cleared, so the
+garden's cavern and soil show round it.
 
 Collision is the floors it shows, all one-way so Max can jump up through them:
 the upper and middle floors on the left, the stone blocks and the ice bridge,
@@ -19,15 +20,15 @@ from the Railway Ruins' kit. The lowest floor is the garden's soil.
     python3 scripts/build-seed-vault.py [--preview out.png [--reach reach.json]]
       -> assets/levels-v1/seed-vault.png, levels-v1/seed-vault.js
 
-Needs Pillow, numpy and scipy (and scripts/build-railway-ruins.py for the kit).
+Needs Pillow, numpy and scipy (and scripts/kitlib.py for the kit ladder).
 """
-import importlib.util
 import json
 import sys
 from pathlib import Path
 
 import numpy as np
 from PIL import Image
+from scipy import ndimage
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / 'docs/asset-review/seed-vault-v1/source.png'
@@ -36,10 +37,11 @@ DATA = 'levels-v1/seed-vault.js'
 GARDEN = 1
 W, H = 557, 314
 GROUND = 253                    # the lowest floor is the garden's soil
+FRAME = 16                      # the painted cave around the vault: darker than this, reached from an edge
+SPECK = 24                      # opaque bits smaller than this left alone by the cut go too
 
-rail = importlib.util.spec_from_file_location('rail', ROOT / 'scripts/build-railway-ruins.py')
-RAIL = importlib.util.module_from_spec(rail)
-rail.loader.exec_module(RAIL)
+sys.path.insert(0, str(ROOT / 'scripts'))
+import kitlib  # noqa: E402
 
 
 def rungs(x, w, top, bottom):
@@ -75,11 +77,26 @@ MARKERS = [
 def build():
     src = Image.open(SOURCE).convert('RGB')
     art = np.dstack([np.array(src.resize((W, H), Image.BOX)), np.full((H, W), 255)]).astype(np.uint8)
-    ladder = RAIL.cut_kits()[LADDER[0]]
+    ladder = kitlib.pieces()[LADDER[0]]
     h, w = ladder.shape[:2]
     x, y = LADDER[1], LADDER[2]
     m = ladder[..., 3] > 0
     art[y:y + h, x:x + w][m] = ladder[m]
+    return cut_frame(art)
+
+
+def cut_frame(art):
+    """Clear the near-black cave the scene is painted in, flood-filled from its edges,
+    so the vault stands in the garden's own cavern and soil instead of a black box.
+    Specks the cut leaves standing alone go with it."""
+    dark = art[..., :3].max(2) < FRAME
+    lab, _ = ndimage.label(dark)
+    edge = np.setdiff1d(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]), [0])
+    cut = np.isin(lab, edge)
+    lab, n = ndimage.label(~cut, structure=np.ones((3, 3)))
+    sizes = ndimage.sum(np.ones_like(lab), lab, range(1, n + 1))
+    cut |= np.isin(lab, [i for i, s in enumerate(sizes, 1) if s < SPECK])
+    art[cut] = 0
     return art
 
 
