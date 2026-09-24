@@ -357,6 +357,13 @@
       }
       if (layout.art && p.art) return; // the picture already draws its bridges and rungs
       if (x + w < -12 || x > width + 12 || y > height + 30 || y + 30 < 0) return;
+      // frost and ember gardens keep their own snow and ember ledges (MaxPlaces.ledgeArt)
+      var biome = root.MaxPlaces && root.MaxPlaces.biome && root.MaxPlaces.biome(layout.stage), art = biome && root.MaxPlaces.ledgeArt && root.MaxPlaces.ledgeArt(p, layout.stage);
+      if (art) {
+        ctx.drawImage(art.canvas, x + art.dx, y + art.dy);
+        if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(w / 2), y - 3, 1, 1); }
+        return;
+      }
       var kind = p.style === 'branch' || p.style === 'root' ? 'wood' : p.style === 'ruin' ? 'ruin' : 'stone';
       row(kind, x, y - (kind === 'stone' ? 2 : 1), w);
       if (kind === 'stone' && w >= 28 && hash % 3 === 0) { var g = flora[(hash >>> 2) % 3], G = P[g]; blit(g, x + 3 + (hash >>> 4) % Math.max(1, w - G[2] - 6), y - G[3] + 2); }
@@ -387,6 +394,12 @@
       }
       if (layout.art && p.art) return; // the picture already draws its bridges and rungs
       if (x + p.w < -4 || x > width + 4 || y > height + 8 || y + p.depth < -12) return;
+      var art = root.MaxPlaces && root.MaxPlaces.ledgeArt && root.MaxPlaces.ledgeArt(p, layout.stage);
+      if (art) {
+        ctx.drawImage(art.canvas, x + art.dx, y + art.dy);
+        if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(p.w / 2), y - 3, 1, 1); }
+        return;
+      }
       var woody = p.style === 'branch' || p.style === 'root';
       ctx.fillStyle = colors.shadow; ctx.fillRect(x + 3, y + 3, p.w - 6, p.depth + 2);
       ctx.fillStyle = woody ? colors.root : colors.body; ctx.fillRect(x, y + 1, p.w, 3); ctx.fillRect(x + 2, y + 3, p.w - 4, p.depth - 2);
