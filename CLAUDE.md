@@ -109,6 +109,8 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - The seed picks the side (mirrored on the left) and the footing: dry, clear of every route ledge by 12 px with ramps, no soil more than two cells above a door.
 - Caches are seed pickups `cache:<garden>:<i>` (host-owned, claimed by guests like any seed). Discovery banners and false-wall fades are each player's own view.
 - `tests/place-sweep.cjs` explores every place with the real physics as a walking, unupgraded Bulwark: both caches reached, no spot that strands Max, crossable both ways. Every ledge needs a walk-off end with headroom (there is no drop-through), every entrance is at least two cells wide, and a jump needs about seven cells of air above its take-off.
+- **Bounce blooms** (`MaxPlaces.bloomAt`, `layout.blooms`): up to one per route side, on dry flat soil clear of the place, straight under a route ledge 26–44 px up. A jump from a bloom or a drop onto it launches 212 px/s (52 px apex) for every class, through the one-way ledge and onto it; walking across does nothing, down held lands normally, a pounce slams instead. They are a shortcut, never the only way up. `tests/bounce-blooms.test.cjs`.
+- **Ledge materials** (`MaxPlaces.ledgePixels` / `ledgeArt`): route ledges are baked with the place shader by style (cobble, ashlar with pillar stubs, leafy branch, root with strands); the top row stays the walking surface. Gardens 11–15 wear snow and 16–19 ember moss on ledges and places (`MaxPlaces.biome`). `tests/ledge-art.test.cjs`.
 
 ## Boons
 
