@@ -25,7 +25,8 @@
       { "nodeId": "145:2", "group": "garden-view", "name": "11 GARDEN VIEW — production" },
       { "nodeId": "148:2", "group": "cloudberry", "name": "12 CLOUDBERRY — production" },
       { "nodeId": "340:2", "group": "tiles", "name": "13 TILES — production" },
-      { "nodeId": "342:2", "group": "backdrop", "name": "14 BACKDROP — production" }
+      { "nodeId": "342:2", "group": "backdrop", "name": "14 BACKDROP — production" },
+      { "nodeId": "346:2", "group": "night", "name": "15 NIGHT — production" }
     ]
   },
   "rules": {
@@ -175,6 +176,16 @@
     { "path": "assets/max-skins-v1/tide/main.png", "nodeId": "53:4", "group": "players", "width": 256, "height": 256, "sha1": "efdc93836539fd20d248f60848ed4245ecdbdc70" },
     { "path": "assets/native/rover.png", "nodeId": "53:42", "group": "companion", "width": 256, "height": 192, "sha1": "bbada6438a39d925b8ed5ee9488faceea4c548c7" },
     { "path": "assets/native/water-fx.png", "nodeId": "53:44", "group": "companion", "width": 128, "height": 32, "sha1": "d50d1f76571caac8fd3444eba2e0f9a3186d9e16" },
+    { "path": "assets/night-v1/01-sky.png", "nodeId": "346:3", "group": "night", "width": 256, "height": 180, "sha1": "6e496e4acfd9a22c2f5dbeefd58b095c22b23723" },
+    { "path": "assets/night-v1/02-stars.png", "nodeId": "346:4", "group": "night", "width": 640, "height": 180, "sha1": "814555958834c9c56718ed1a1c8c4b0debd48089" },
+    { "path": "assets/night-v1/03-moon.png", "nodeId": "346:5", "group": "night", "width": 640, "height": 180, "sha1": "0d19eb8598a827df340f8a3b72313f624fc85cec" },
+    { "path": "assets/night-v1/04-clouds.png", "nodeId": "346:6", "group": "night", "width": 640, "height": 180, "sha1": "c961a9a92f905fb7d36df3452f7e78b4f0ae9620" },
+    { "path": "assets/night-v1/05-mountains-far.png", "nodeId": "347:2", "group": "night", "width": 640, "height": 180, "sha1": "5038f1bab60392b48c942c717622f64f2118081c" },
+    { "path": "assets/night-v1/06-mountains-mid.png", "nodeId": "348:2", "group": "night", "width": 640, "height": 180, "sha1": "a6e014c2fb0c3fcfe0d5f608016e76e0c6431405" },
+    { "path": "assets/night-v1/07-ruins.png", "nodeId": "347:3", "group": "night", "width": 640, "height": 180, "sha1": "ea1e5ebc5300bc41fedcc91d21c243e057f56cd9" },
+    { "path": "assets/night-v1/08-forest.png", "nodeId": "356:7", "group": "night", "width": 640, "height": 180, "sha1": "42074efac94c59eb23617fd1c1767014c946af14" },
+    { "path": "assets/night-v1/09-trees.png", "nodeId": "359:9", "group": "night", "width": 604, "height": 180, "sha1": "db5db89d8945d716a11e833722e25faa582fff54" },
+    { "path": "assets/night-v1/10-terrain.png", "nodeId": "351:2", "group": "night", "width": 591, "height": 180, "sha1": "be1f8602ac8c13ec0936c765112dd114a704f261" },
     { "path": "assets/plants-v1/alder-cone/bloom-01.png", "nodeId": "211:3", "group": "plant-sprites", "width": 6, "height": 4, "sha1": "bc38bfd80158dfc041620e9c29fa8ab6b9fbbc7b" },
     { "path": "assets/plants-v1/alder-cone/bloom-02.png", "nodeId": "211:4", "group": "plant-sprites", "width": 4, "height": 4, "sha1": "49416e1fe9037af691eb9cdabdbbc13d6dadef96" },
     { "path": "assets/plants-v1/alder-cone/bloom-03.png", "nodeId": "211:5", "group": "plant-sprites", "width": 5, "height": 5, "sha1": "02bfa088e1fb7393dae9dd0ef246bbf7f63574cc" },
