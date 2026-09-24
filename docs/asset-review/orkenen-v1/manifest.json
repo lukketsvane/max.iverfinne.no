@@ -1,0 +1,3035 @@
+{
+ "source": "source.jpg",
+ "mask": "clown-mask.webp",
+ "sheet": [
+  {
+   "key": "01_terrain_tiles",
+   "title": "Terrain tiles",
+   "panel": [
+    877,
+    61,
+    1160,
+    275
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-01.png",
+     "x": 889,
+     "y": 94,
+     "w": 67,
+     "h": 59,
+     "figma": "269:249"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-02.png",
+     "x": 971,
+     "y": 94,
+     "w": 40,
+     "h": 58,
+     "figma": "269:250"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-03.png",
+     "x": 1026,
+     "y": 94,
+     "w": 68,
+     "h": 58,
+     "figma": "269:251"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-04.png",
+     "x": 1109,
+     "y": 114,
+     "w": 37,
+     "h": 38,
+     "figma": "269:252"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-05.png",
+     "x": 890,
+     "y": 166,
+     "w": 24,
+     "h": 55,
+     "figma": "269:253"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-06.png",
+     "x": 930,
+     "y": 166,
+     "w": 40,
+     "h": 56,
+     "figma": "269:254"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-07.png",
+     "x": 985,
+     "y": 166,
+     "w": 39,
+     "h": 56,
+     "figma": "269:255"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-08.png",
+     "x": 1040,
+     "y": 167,
+     "w": 25,
+     "h": 54,
+     "figma": "269:256"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-09.png",
+     "x": 1081,
+     "y": 167,
+     "w": 13,
+     "h": 54,
+     "figma": "269:257"
+    },
+    {
+     "name": "part=10",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-10.png",
+     "x": 1109,
+     "y": 166,
+     "w": 37,
+     "h": 28,
+     "figma": "269:258"
+    },
+    {
+     "name": "part=11",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-11.png",
+     "x": 889,
+     "y": 235,
+     "w": 81,
+     "h": 27,
+     "figma": "269:259"
+    },
+    {
+     "name": "part=12",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-12.png",
+     "x": 985,
+     "y": 236,
+     "w": 26,
+     "h": 26,
+     "figma": "269:260"
+    },
+    {
+     "name": "part=13",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-13.png",
+     "x": 1026,
+     "y": 236,
+     "w": 67,
+     "h": 26,
+     "figma": "269:261"
+    },
+    {
+     "name": "part=14",
+     "file": "parts/01_terrain_tiles/01_terrain_tiles-part-14.png",
+     "x": 1109,
+     "y": 210,
+     "w": 37,
+     "h": 52,
+     "figma": "269:262"
+    }
+   ]
+  },
+  {
+   "key": "02_ruins_architecture",
+   "title": "Ruins & architecture",
+   "panel": [
+    1162,
+    61,
+    1529,
+    275
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-01.png",
+     "x": 1175,
+     "y": 97,
+     "w": 37,
+     "h": 74,
+     "figma": "269:264"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-02.png",
+     "x": 1225,
+     "y": 97,
+     "w": 29,
+     "h": 74,
+     "figma": "269:265"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-03.png",
+     "x": 1265,
+     "y": 97,
+     "w": 29,
+     "h": 74,
+     "figma": "269:266"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-04.png",
+     "x": 1308,
+     "y": 97,
+     "w": 25,
+     "h": 74,
+     "figma": "269:267"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-05.png",
+     "x": 1357,
+     "y": 94,
+     "w": 66,
+     "h": 82,
+     "figma": "269:268"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-06.png",
+     "x": 1402,
+     "y": 149,
+     "w": 20,
+     "h": 46,
+     "figma": "269:269"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-07.png",
+     "x": 1413,
+     "y": 82,
+     "w": 108,
+     "h": 181,
+     "figma": "269:270"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-08.png",
+     "x": 1175,
+     "y": 184,
+     "w": 89,
+     "h": 78,
+     "figma": "269:271"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-09.png",
+     "x": 1284,
+     "y": 184,
+     "w": 26,
+     "h": 78,
+     "figma": "269:272"
+    },
+    {
+     "name": "part=10",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-10.png",
+     "x": 1329,
+     "y": 184,
+     "w": 17,
+     "h": 78,
+     "figma": "269:273"
+    },
+    {
+     "name": "part=11",
+     "file": "parts/02_ruins_architecture/02_ruins_architecture-part-11.png",
+     "x": 1366,
+     "y": 198,
+     "w": 30,
+     "h": 65,
+     "figma": "269:274"
+    }
+   ]
+  },
+  {
+   "key": "03_structures",
+   "title": "Structures",
+   "panel": [
+    877,
+    278,
+    1120,
+    469
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/03_structures/03_structures-part-01.png",
+     "x": 895,
+     "y": 312,
+     "w": 80,
+     "h": 43,
+     "figma": "269:276"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/03_structures/03_structures-part-02.png",
+     "x": 1009,
+     "y": 311,
+     "w": 17,
+     "h": 58,
+     "figma": "269:277"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/03_structures/03_structures-part-03.png",
+     "x": 978,
+     "y": 351,
+     "w": 8,
+     "h": 36,
+     "figma": "269:278"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/03_structures/03_structures-part-04.png",
+     "x": 1044,
+     "y": 297,
+     "w": 62,
+     "h": 160,
+     "figma": "269:279"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/03_structures/03_structures-part-05.png",
+     "x": 892,
+     "y": 369,
+     "w": 71,
+     "h": 70,
+     "figma": "269:280"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/03_structures/03_structures-part-06.png",
+     "x": 977,
+     "y": 404,
+     "w": 10,
+     "h": 34,
+     "figma": "269:281"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/03_structures/03_structures-part-07.png",
+     "x": 999,
+     "y": 378,
+     "w": 37,
+     "h": 77,
+     "figma": "269:282"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/03_structures/03_structures-part-08.png",
+     "x": 889,
+     "y": 449,
+     "w": 99,
+     "h": 8,
+     "figma": "269:283"
+    }
+   ]
+  },
+  {
+   "key": "04_props",
+   "title": "Props",
+   "panel": [
+    1122,
+    278,
+    1307,
+    469
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/04_props/04_props-part-01.png",
+     "x": 1133,
+     "y": 313,
+     "w": 49,
+     "h": 37,
+     "figma": "269:285"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/04_props/04_props-part-02.png",
+     "x": 1198,
+     "y": 311,
+     "w": 45,
+     "h": 39,
+     "figma": "269:286"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/04_props/04_props-part-03.png",
+     "x": 1252,
+     "y": 330,
+     "w": 34,
+     "h": 20,
+     "figma": "269:287"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/04_props/04_props-part-04.png",
+     "x": 1132,
+     "y": 368,
+     "w": 71,
+     "h": 21,
+     "figma": "269:288"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/04_props/04_props-part-05.png",
+     "x": 1134,
+     "y": 409,
+     "w": 36,
+     "h": 45,
+     "figma": "269:289"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/04_props/04_props-part-06.png",
+     "x": 1191,
+     "y": 367,
+     "w": 51,
+     "h": 89,
+     "figma": "269:290"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/04_props/04_props-part-07.png",
+     "x": 1261,
+     "y": 365,
+     "w": 27,
+     "h": 91,
+     "figma": "269:291"
+    }
+   ]
+  },
+  {
+   "key": "05_plants",
+   "title": "Plants",
+   "panel": [
+    1309,
+    278,
+    1529,
+    469
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/05_plants/05_plants-part-01.png",
+     "x": 1323,
+     "y": 313,
+     "w": 22,
+     "h": 59,
+     "figma": "269:293"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/05_plants/05_plants-part-02.png",
+     "x": 1362,
+     "y": 330,
+     "w": 30,
+     "h": 26,
+     "figma": "269:294"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/05_plants/05_plants-part-03.png",
+     "x": 1413,
+     "y": 309,
+     "w": 23,
+     "h": 47,
+     "figma": "269:295"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/05_plants/05_plants-part-04.png",
+     "x": 1325,
+     "y": 392,
+     "w": 23,
+     "h": 16,
+     "figma": "269:296"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/05_plants/05_plants-part-05.png",
+     "x": 1362,
+     "y": 383,
+     "w": 30,
+     "h": 25,
+     "figma": "269:297"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/05_plants/05_plants-part-06.png",
+     "x": 1450,
+     "y": 304,
+     "w": 61,
+     "h": 151,
+     "figma": "269:298"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/05_plants/05_plants-part-07.png",
+     "x": 1405,
+     "y": 369,
+     "w": 54,
+     "h": 86,
+     "figma": "269:299"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/05_plants/05_plants-part-08.png",
+     "x": 1323,
+     "y": 433,
+     "w": 34,
+     "h": 23,
+     "figma": "269:300"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/05_plants/05_plants-part-09.png",
+     "x": 1377,
+     "y": 440,
+     "w": 34,
+     "h": 15,
+     "figma": "269:301"
+    }
+   ]
+  },
+  {
+   "key": "06_underground_tiles",
+   "title": "Underground tiles",
+   "panel": [
+    877,
+    472,
+    1083,
+    638
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-01.png",
+     "x": 890,
+     "y": 504,
+     "w": 56,
+     "h": 21,
+     "figma": "269:303"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-02.png",
+     "x": 958,
+     "y": 504,
+     "w": 46,
+     "h": 21,
+     "figma": "269:304"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-03.png",
+     "x": 1019,
+     "y": 503,
+     "w": 49,
+     "h": 22,
+     "figma": "269:305"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-04.png",
+     "x": 889,
+     "y": 535,
+     "w": 68,
+     "h": 36,
+     "figma": "269:306"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-05.png",
+     "x": 979,
+     "y": 535,
+     "w": 26,
+     "h": 36,
+     "figma": "269:307"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-06.png",
+     "x": 1019,
+     "y": 535,
+     "w": 49,
+     "h": 37,
+     "figma": "269:308"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-07.png",
+     "x": 889,
+     "y": 582,
+     "w": 27,
+     "h": 44,
+     "figma": "269:309"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-08.png",
+     "x": 929,
+     "y": 582,
+     "w": 28,
+     "h": 44,
+     "figma": "269:310"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-09.png",
+     "x": 969,
+     "y": 582,
+     "w": 61,
+     "h": 44,
+     "figma": "269:311"
+    },
+    {
+     "name": "part=10",
+     "file": "parts/06_underground_tiles/06_underground_tiles-part-10.png",
+     "x": 1044,
+     "y": 586,
+     "w": 24,
+     "h": 40,
+     "figma": "269:312"
+    }
+   ]
+  },
+  {
+   "key": "07_underground_props",
+   "title": "Underground props",
+   "panel": [
+    1085,
+    472,
+    1301,
+    638
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/07_underground_props/07_underground_props-part-01.png",
+     "x": 1135,
+     "y": 504,
+     "w": 85,
+     "h": 53,
+     "figma": "269:314"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/07_underground_props/07_underground_props-part-02.png",
+     "x": 1234,
+     "y": 504,
+     "w": 24,
+     "h": 67,
+     "figma": "269:315"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/07_underground_props/07_underground_props-part-03.png",
+     "x": 1273,
+     "y": 505,
+     "w": 12,
+     "h": 30,
+     "figma": "269:316"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/07_underground_props/07_underground_props-part-04.png",
+     "x": 1099,
+     "y": 506,
+     "w": 58,
+     "h": 120,
+     "figma": "269:317"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/07_underground_props/07_underground_props-part-05.png",
+     "x": 1270,
+     "y": 545,
+     "w": 15,
+     "h": 29,
+     "figma": "269:318"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/07_underground_props/07_underground_props-part-06.png",
+     "x": 1171,
+     "y": 579,
+     "w": 25,
+     "h": 47,
+     "figma": "269:319"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/07_underground_props/07_underground_props-part-07.png",
+     "x": 1208,
+     "y": 575,
+     "w": 24,
+     "h": 51,
+     "figma": "269:320"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/07_underground_props/07_underground_props-part-08.png",
+     "x": 1241,
+     "y": 601,
+     "w": 17,
+     "h": 25,
+     "figma": "269:321"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/07_underground_props/07_underground_props-part-09.png",
+     "x": 1267,
+     "y": 585,
+     "w": 19,
+     "h": 41,
+     "figma": "269:322"
+    }
+   ]
+  },
+  {
+   "key": "08_water_fx",
+   "title": "Water & FX",
+   "panel": [
+    1302,
+    472,
+    1529,
+    638
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/08_water_fx/08_water_fx-part-01.png",
+     "x": 1317,
+     "y": 508,
+     "w": 59,
+     "h": 49,
+     "figma": "269:324"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/08_water_fx/08_water_fx-part-02.png",
+     "x": 1391,
+     "y": 506,
+     "w": 13,
+     "h": 51,
+     "figma": "269:325"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/08_water_fx/08_water_fx-part-03.png",
+     "x": 1418,
+     "y": 506,
+     "w": 37,
+     "h": 83,
+     "figma": "269:326"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/08_water_fx/08_water_fx-part-04.png",
+     "x": 1470,
+     "y": 506,
+     "w": 40,
+     "h": 68,
+     "figma": "269:327"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/08_water_fx/08_water_fx-part-05.png",
+     "x": 1317,
+     "y": 569,
+     "w": 47,
+     "h": 57,
+     "figma": "269:328"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/08_water_fx/08_water_fx-part-06.png",
+     "x": 1378,
+     "y": 568,
+     "w": 23,
+     "h": 58,
+     "figma": "269:329"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/08_water_fx/08_water_fx-part-07.png",
+     "x": 1418,
+     "y": 609,
+     "w": 17,
+     "h": 16,
+     "figma": "269:330"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/08_water_fx/08_water_fx-part-08.png",
+     "x": 1452,
+     "y": 604,
+     "w": 25,
+     "h": 21,
+     "figma": "269:331"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/08_water_fx/08_water_fx-part-09.png",
+     "x": 1492,
+     "y": 607,
+     "w": 16,
+     "h": 18,
+     "figma": "269:332"
+    },
+    {
+     "name": "part=10",
+     "file": "parts/08_water_fx/08_water_fx-part-10.png",
+     "x": 1496,
+     "y": 590,
+     "w": 17,
+     "h": 19,
+     "figma": "269:333"
+    }
+   ]
+  },
+  {
+   "key": "09_enemies",
+   "title": "Enemies (examples)",
+   "panel": [
+    877,
+    641,
+    1248,
+    787
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/09_enemies/09_enemies-part-01.png",
+     "x": 891,
+     "y": 684,
+     "w": 45,
+     "h": 36,
+     "figma": "269:335"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/09_enemies/09_enemies-part-02.png",
+     "x": 956,
+     "y": 684,
+     "w": 40,
+     "h": 36,
+     "figma": "269:336"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/09_enemies/09_enemies-part-03.png",
+     "x": 1026,
+     "y": 687,
+     "w": 50,
+     "h": 28,
+     "figma": "269:337"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/09_enemies/09_enemies-part-04.png",
+     "x": 1112,
+     "y": 671,
+     "w": 35,
+     "h": 36,
+     "figma": "269:338"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/09_enemies/09_enemies-part-05.png",
+     "x": 1161,
+     "y": 677,
+     "w": 70,
+     "h": 73,
+     "figma": "269:339"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/09_enemies/09_enemies-part-06.png",
+     "x": 892,
+     "y": 736,
+     "w": 52,
+     "h": 34,
+     "figma": "269:340"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/09_enemies/09_enemies-part-07.png",
+     "x": 962,
+     "y": 751,
+     "w": 33,
+     "h": 19,
+     "figma": "269:341"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/09_enemies/09_enemies-part-08.png",
+     "x": 1014,
+     "y": 746,
+     "w": 56,
+     "h": 24,
+     "figma": "269:342"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/09_enemies/09_enemies-part-09.png",
+     "x": 1082,
+     "y": 716,
+     "w": 27,
+     "h": 54,
+     "figma": "269:343"
+    },
+    {
+     "name": "part=10",
+     "file": "parts/09_enemies/09_enemies-part-10.png",
+     "x": 1129,
+     "y": 758,
+     "w": 27,
+     "h": 13,
+     "figma": "269:344"
+    },
+    {
+     "name": "part=11",
+     "file": "parts/09_enemies/09_enemies-part-11.png",
+     "x": 1169,
+     "y": 758,
+     "w": 27,
+     "h": 13,
+     "figma": "269:345"
+    },
+    {
+     "name": "part=12",
+     "file": "parts/09_enemies/09_enemies-part-12.png",
+     "x": 1212,
+     "y": 758,
+     "w": 23,
+     "h": 12,
+     "figma": "269:346"
+    }
+   ]
+  },
+  {
+   "key": "10_npc_interactables",
+   "title": "NPC / interactables",
+   "panel": [
+    1250,
+    641,
+    1529,
+    787
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-01.png",
+     "x": 1269,
+     "y": 686,
+     "w": 15,
+     "h": 32,
+     "figma": "269:348"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-02.png",
+     "x": 1300,
+     "y": 689,
+     "w": 13,
+     "h": 29,
+     "figma": "269:349"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-03.png",
+     "x": 1331,
+     "y": 685,
+     "w": 21,
+     "h": 33,
+     "figma": "269:350"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-04.png",
+     "x": 1501,
+     "y": 686,
+     "w": 12,
+     "h": 12,
+     "figma": "269:351"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-05.png",
+     "x": 1266,
+     "y": 730,
+     "w": 17,
+     "h": 32,
+     "figma": "269:352"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-06.png",
+     "x": 1300,
+     "y": 735,
+     "w": 23,
+     "h": 26,
+     "figma": "269:353"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-07.png",
+     "x": 1340,
+     "y": 734,
+     "w": 24,
+     "h": 28,
+     "figma": "269:354"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/10_npc_interactables/10_npc_interactables-part-08.png",
+     "x": 1376,
+     "y": 700,
+     "w": 143,
+     "h": 70,
+     "figma": "269:355"
+    }
+   ]
+  },
+  {
+   "key": "11_details_small_fx",
+   "title": "Details / small FX",
+   "panel": [
+    877,
+    789,
+    1189,
+    973
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-01.png",
+     "x": 890,
+     "y": 820,
+     "w": 16,
+     "h": 47,
+     "figma": "269:357"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-02.png",
+     "x": 934,
+     "y": 837,
+     "w": 12,
+     "h": 24,
+     "figma": "269:358"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-03.png",
+     "x": 979,
+     "y": 837,
+     "w": 12,
+     "h": 31,
+     "figma": "269:359"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-04.png",
+     "x": 1017,
+     "y": 832,
+     "w": 8,
+     "h": 15,
+     "figma": "269:360"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-05.png",
+     "x": 1043,
+     "y": 819,
+     "w": 12,
+     "h": 27,
+     "figma": "269:361"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-06.png",
+     "x": 1076,
+     "y": 820,
+     "w": 18,
+     "h": 22,
+     "figma": "269:362"
+    },
+    {
+     "name": "part=07",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-07.png",
+     "x": 1115,
+     "y": 820,
+     "w": 15,
+     "h": 21,
+     "figma": "269:363"
+    },
+    {
+     "name": "part=08",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-08.png",
+     "x": 1156,
+     "y": 823,
+     "w": 11,
+     "h": 16,
+     "figma": "269:364"
+    },
+    {
+     "name": "part=09",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-09.png",
+     "x": 1011,
+     "y": 870,
+     "w": 17,
+     "h": 13,
+     "figma": "269:365"
+    },
+    {
+     "name": "part=10",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-10.png",
+     "x": 1042,
+     "y": 859,
+     "w": 8,
+     "h": 30,
+     "figma": "269:366"
+    },
+    {
+     "name": "part=11",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-11.png",
+     "x": 1066,
+     "y": 858,
+     "w": 11,
+     "h": 29,
+     "figma": "269:367"
+    },
+    {
+     "name": "part=12",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-12.png",
+     "x": 1098,
+     "y": 860,
+     "w": 11,
+     "h": 30,
+     "figma": "269:368"
+    },
+    {
+     "name": "part=13",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-13.png",
+     "x": 1128,
+     "y": 858,
+     "w": 13,
+     "h": 25,
+     "figma": "269:369"
+    },
+    {
+     "name": "part=14",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-14.png",
+     "x": 1162,
+     "y": 864,
+     "w": 8,
+     "h": 21,
+     "figma": "269:370"
+    },
+    {
+     "name": "part=15",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-15.png",
+     "x": 889,
+     "y": 886,
+     "w": 20,
+     "h": 26,
+     "figma": "269:371"
+    },
+    {
+     "name": "part=16",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-16.png",
+     "x": 928,
+     "y": 894,
+     "w": 12,
+     "h": 15,
+     "figma": "269:372"
+    },
+    {
+     "name": "part=17",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-17.png",
+     "x": 961,
+     "y": 900,
+     "w": 9,
+     "h": 12,
+     "figma": "269:373"
+    },
+    {
+     "name": "part=18",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-18.png",
+     "x": 1002,
+     "y": 901,
+     "w": 15,
+     "h": 12,
+     "figma": "269:374"
+    },
+    {
+     "name": "part=19",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-19.png",
+     "x": 1038,
+     "y": 904,
+     "w": 11,
+     "h": 12,
+     "figma": "269:375"
+    },
+    {
+     "name": "part=20",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-20.png",
+     "x": 1077,
+     "y": 903,
+     "w": 10,
+     "h": 12,
+     "figma": "269:376"
+    },
+    {
+     "name": "part=21",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-21.png",
+     "x": 1101,
+     "y": 907,
+     "w": 10,
+     "h": 8,
+     "figma": "269:377"
+    },
+    {
+     "name": "part=22",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-22.png",
+     "x": 1132,
+     "y": 903,
+     "w": 10,
+     "h": 11,
+     "figma": "269:378"
+    },
+    {
+     "name": "part=23",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-23.png",
+     "x": 1160,
+     "y": 907,
+     "w": 14,
+     "h": 10,
+     "figma": "269:379"
+    },
+    {
+     "name": "part=24",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-24.png",
+     "x": 890,
+     "y": 933,
+     "w": 20,
+     "h": 23,
+     "figma": "269:380"
+    },
+    {
+     "name": "part=25",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-25.png",
+     "x": 928,
+     "y": 929,
+     "w": 23,
+     "h": 25,
+     "figma": "269:381"
+    },
+    {
+     "name": "part=26",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-26.png",
+     "x": 968,
+     "y": 938,
+     "w": 18,
+     "h": 18,
+     "figma": "269:382"
+    },
+    {
+     "name": "part=27",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-27.png",
+     "x": 1001,
+     "y": 935,
+     "w": 17,
+     "h": 20,
+     "figma": "269:383"
+    },
+    {
+     "name": "part=28",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-28.png",
+     "x": 1033,
+     "y": 940,
+     "w": 9,
+     "h": 11,
+     "figma": "269:384"
+    },
+    {
+     "name": "part=29",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-29.png",
+     "x": 1061,
+     "y": 936,
+     "w": 21,
+     "h": 21,
+     "figma": "269:385"
+    },
+    {
+     "name": "part=30",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-30.png",
+     "x": 1099,
+     "y": 936,
+     "w": 19,
+     "h": 19,
+     "figma": "269:386"
+    },
+    {
+     "name": "part=31",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-31.png",
+     "x": 1139,
+     "y": 940,
+     "w": 9,
+     "h": 10,
+     "figma": "269:387"
+    },
+    {
+     "name": "part=32",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-32.png",
+     "x": 1157,
+     "y": 939,
+     "w": 18,
+     "h": 8,
+     "figma": "269:388"
+    }
+   ]
+  },
+  {
+   "key": "12_background_layers",
+   "title": "Background layers",
+   "panel": [
+    1191,
+    789,
+    1529,
+    973
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/12_background_layers/12_background_layers-part-01.png",
+     "x": 1203,
+     "y": 824,
+     "w": 312,
+     "h": 36,
+     "figma": "269:390"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/12_background_layers/12_background_layers-part-02.png",
+     "x": 1203,
+     "y": 868,
+     "w": 312,
+     "h": 22,
+     "figma": "269:391"
+    },
+    {
+     "name": "part=03",
+     "file": "parts/12_background_layers/12_background_layers-part-03.png",
+     "x": 1204,
+     "y": 912,
+     "w": 27,
+     "h": 27,
+     "figma": "269:392"
+    },
+    {
+     "name": "part=04",
+     "file": "parts/12_background_layers/12_background_layers-part-04.png",
+     "x": 1241,
+     "y": 900,
+     "w": 182,
+     "h": 26,
+     "figma": "269:393"
+    },
+    {
+     "name": "part=05",
+     "file": "parts/12_background_layers/12_background_layers-part-05.png",
+     "x": 1433,
+     "y": 899,
+     "w": 81,
+     "h": 27,
+     "figma": "269:394"
+    },
+    {
+     "name": "part=06",
+     "file": "parts/12_background_layers/12_background_layers-part-06.png",
+     "x": 1203,
+     "y": 934,
+     "w": 312,
+     "h": 28,
+     "figma": "269:395"
+    }
+   ]
+  },
+  {
+   "key": "13_palette_mark",
+   "title": "Palette + mark",
+   "panel": [
+    877,
+    976,
+    1536,
+    1024
+   ],
+   "parts": [
+    {
+     "name": "part=01",
+     "file": "parts/13_palette_mark/13_palette_mark-part-01.png",
+     "x": 1164,
+     "y": 983,
+     "w": 165,
+     "h": 28,
+     "figma": "269:397"
+    },
+    {
+     "name": "part=02",
+     "file": "parts/13_palette_mark/13_palette_mark-part-02.png",
+     "x": 1361,
+     "y": 984,
+     "w": 32,
+     "h": 25,
+     "figma": "269:398"
+    }
+   ]
+  }
+ ],
+ "scenes": [
+  {
+   "key": "scene",
+   "title": "03 Ørkenen — level scene",
+   "rect": [
+    4,
+    3,
+    870,
+    846
+   ],
+   "layers": [
+    {
+     "name": "001 · sky · #0064FC",
+     "file": "layers/scene/scene-layer-001.png",
+     "x": 0,
+     "y": 0,
+     "w": 866,
+     "h": 236,
+     "figma": "270:43"
+    },
+    {
+     "name": "002 · earth mass · #8F1F1D",
+     "file": "layers/scene/scene-layer-002.png",
+     "x": 0,
+     "y": 294,
+     "w": 866,
+     "h": 549,
+     "figma": "270:44"
+    },
+    {
+     "name": "003 · pink sandstone (far dunes, cave columns) · #FC8DD8",
+     "file": "layers/scene/scene-layer-003.png",
+     "x": 0,
+     "y": 202,
+     "w": 866,
+     "h": 620,
+     "figma": "270:45"
+    },
+    {
+     "name": "004 · cave hollow west · #681082",
+     "file": "layers/scene/scene-layer-004.png",
+     "x": 29,
+     "y": 361,
+     "w": 837,
+     "h": 303,
+     "figma": "270:46"
+    },
+    {
+     "name": "005 · red rock bands · #CE2F1B",
+     "file": "layers/scene/scene-layer-005.png",
+     "x": 0,
+     "y": 383,
+     "w": 866,
+     "h": 444,
+     "figma": "270:47"
+    },
+    {
+     "name": "006 · deep pools + boss hall · #015588",
+     "file": "layers/scene/scene-layer-006.png",
+     "x": 18,
+     "y": 476,
+     "w": 826,
+     "h": 323,
+     "figma": "270:48"
+    },
+    {
+     "name": "007 · underground lake · #1BF4DF",
+     "file": "layers/scene/scene-layer-007.png",
+     "x": 229,
+     "y": 699,
+     "w": 349,
+     "h": 118,
+     "figma": "270:49"
+    },
+    {
+     "name": "008 · sand rim + top soil · #FCA533",
+     "file": "layers/scene/scene-layer-008.png",
+     "x": 0,
+     "y": 177,
+     "w": 866,
+     "h": 638,
+     "figma": "270:50"
+    },
+    {
+     "name": "009 · cave hollow east · #7C10A4",
+     "file": "layers/scene/scene-layer-009.png",
+     "x": 368,
+     "y": 277,
+     "w": 498,
+     "h": 325,
+     "figma": "270:51"
+    },
+    {
+     "name": "010 · rock spires + statue · #34F869",
+     "file": "layers/scene/scene-layer-010.png",
+     "x": 665,
+     "y": 120,
+     "w": 201,
+     "h": 167,
+     "figma": "270:52"
+    },
+    {
+     "name": "011 · waterfall + sand fall · #9DD9FB",
+     "file": "layers/scene/scene-layer-011.png",
+     "x": 254,
+     "y": 277,
+     "w": 252,
+     "h": 235,
+     "figma": "270:53"
+    },
+    {
+     "name": "012 · text title · #68F0FB",
+     "file": "layers/scene/scene-layer-012.png",
+     "x": 23,
+     "y": 11,
+     "w": 271,
+     "h": 44,
+     "figma": "270:54"
+    },
+    {
+     "name": "013 · cave rims · #B5E430",
+     "file": "layers/scene/scene-layer-013.png",
+     "x": 17,
+     "y": 461,
+     "w": 848,
+     "h": 320,
+     "figma": "270:55"
+    },
+    {
+     "name": "014 · cave passages · #6E0BEE",
+     "file": "layers/scene/scene-layer-014.png",
+     "x": 43,
+     "y": 304,
+     "w": 728,
+     "h": 205,
+     "figma": "270:56"
+    },
+    {
+     "name": "015 · aqueduct + bridge ruins · #F23845",
+     "file": "layers/scene/scene-layer-015.png",
+     "x": 319,
+     "y": 181,
+     "w": 260,
+     "h": 123,
+     "figma": "270:57"
+    },
+    {
+     "name": "016 · root curtain · #827002",
+     "file": "layers/scene/scene-layer-016.png",
+     "x": 180,
+     "y": 532,
+     "w": 103,
+     "h": 129,
+     "figma": "270:58"
+    },
+    {
+     "name": "017 · mask · #FBAC43",
+     "file": "layers/scene/scene-layer-017.png",
+     "x": 0,
+     "y": 148,
+     "w": 866,
+     "h": 662,
+     "figma": "270:59"
+    },
+    {
+     "name": "018 · mask · #822CF8",
+     "file": "layers/scene/scene-layer-018.png",
+     "x": 174,
+     "y": 437,
+     "w": 686,
+     "h": 256,
+     "figma": "270:60"
+    },
+    {
+     "name": "019 · mask · #F4BB30",
+     "file": "layers/scene/scene-layer-019.png",
+     "x": 2,
+     "y": 330,
+     "w": 817,
+     "h": 479,
+     "figma": "270:61"
+    },
+    {
+     "name": "020 · text subtitle · #FA38FA",
+     "file": "layers/scene/scene-layer-020.png",
+     "x": 23,
+     "y": 61,
+     "w": 218,
+     "h": 24,
+     "figma": "270:62"
+    },
+    {
+     "name": "021 · sun + relic glow · #FDED77",
+     "file": "layers/scene/scene-layer-021.png",
+     "x": 61,
+     "y": 104,
+     "w": 717,
+     "h": 684,
+     "figma": "270:63"
+    },
+    {
+     "name": "022 · mask · #0FC8FB",
+     "file": "layers/scene/scene-layer-022.png",
+     "x": 113,
+     "y": 345,
+     "w": 505,
+     "h": 327,
+     "figma": "270:64"
+    },
+    {
+     "name": "023 · mask · #59B03F",
+     "file": "layers/scene/scene-layer-023.png",
+     "x": 73,
+     "y": 642,
+     "w": 155,
+     "h": 62,
+     "figma": "270:65"
+    },
+    {
+     "name": "024 · mask · #4C8080",
+     "file": "layers/scene/scene-layer-024.png",
+     "x": 503,
+     "y": 496,
+     "w": 71,
+     "h": 147,
+     "figma": "270:66"
+    },
+    {
+     "name": "025 · mask · #9621EA",
+     "file": "layers/scene/scene-layer-025.png",
+     "x": 140,
+     "y": 297,
+     "w": 483,
+     "h": 389,
+     "figma": "270:67"
+    },
+    {
+     "name": "026 · text line 2 · #69F828",
+     "file": "layers/scene/scene-layer-026.png",
+     "x": 23,
+     "y": 120,
+     "w": 150,
+     "h": 28,
+     "figma": "270:68"
+    },
+    {
+     "name": "027 · mask · #79078F",
+     "file": "layers/scene/scene-layer-027.png",
+     "x": 119,
+     "y": 261,
+     "w": 637,
+     "h": 350,
+     "figma": "270:69"
+    },
+    {
+     "name": "028 · text line 1 · #FDDF09",
+     "file": "layers/scene/scene-layer-028.png",
+     "x": 23,
+     "y": 98,
+     "w": 168,
+     "h": 23,
+     "figma": "270:70"
+    },
+    {
+     "name": "029 · mask · #07BF2B",
+     "file": "layers/scene/scene-layer-029.png",
+     "x": 168,
+     "y": 303,
+     "w": 540,
+     "h": 170,
+     "figma": "270:71"
+    },
+    {
+     "name": "030 · mask · #7709CA",
+     "file": "layers/scene/scene-layer-030.png",
+     "x": 133,
+     "y": 277,
+     "w": 641,
+     "h": 352,
+     "figma": "270:72"
+    },
+    {
+     "name": "031 · mask · #C0F829",
+     "file": "layers/scene/scene-layer-031.png",
+     "x": 380,
+     "y": 315,
+     "w": 34,
+     "h": 96,
+     "figma": "270:73"
+    },
+    {
+     "name": "032 · mask · #FB9226",
+     "file": "layers/scene/scene-layer-032.png",
+     "x": 275,
+     "y": 174,
+     "w": 109,
+     "h": 113,
+     "figma": "270:74"
+    },
+    {
+     "name": "033 · mask · #F4A4EA",
+     "file": "layers/scene/scene-layer-033.png",
+     "x": 240,
+     "y": 288,
+     "w": 595,
+     "h": 502,
+     "figma": "270:75"
+    },
+    {
+     "name": "034 · mask · #F19AD1",
+     "file": "layers/scene/scene-layer-034.png",
+     "x": 20,
+     "y": 205,
+     "w": 846,
+     "h": 583,
+     "figma": "270:76"
+    },
+    {
+     "name": "035 · mask · #FEED4C",
+     "file": "layers/scene/scene-layer-035.png",
+     "x": 238,
+     "y": 686,
+     "w": 587,
+     "h": 107,
+     "figma": "270:77"
+    },
+    {
+     "name": "036 · mask · #7F0824",
+     "file": "layers/scene/scene-layer-036.png",
+     "x": 227,
+     "y": 303,
+     "w": 628,
+     "h": 378,
+     "figma": "270:78"
+    },
+    {
+     "name": "037 · mask · #0BCF31",
+     "file": "layers/scene/scene-layer-037.png",
+     "x": 174,
+     "y": 309,
+     "w": 544,
+     "h": 297,
+     "figma": "270:79"
+    },
+    {
+     "name": "038 · mask · #9E161E",
+     "file": "layers/scene/scene-layer-038.png",
+     "x": 0,
+     "y": 364,
+     "w": 866,
+     "h": 451,
+     "figma": "270:80"
+    },
+    {
+     "name": "039 · mask · #E9020B",
+     "file": "layers/scene/scene-layer-039.png",
+     "x": 55,
+     "y": 216,
+     "w": 39,
+     "h": 114,
+     "figma": "270:81"
+    },
+    {
+     "name": "040 · mask · #8A212E",
+     "file": "layers/scene/scene-layer-040.png",
+     "x": 208,
+     "y": 298,
+     "w": 658,
+     "h": 518,
+     "figma": "270:82"
+    },
+    {
+     "name": "041 · mask · #8F0615",
+     "file": "layers/scene/scene-layer-041.png",
+     "x": 191,
+     "y": 308,
+     "w": 664,
+     "h": 430,
+     "figma": "270:83"
+    },
+    {
+     "name": "042 · mask · #B0D445",
+     "file": "layers/scene/scene-layer-042.png",
+     "x": 119,
+     "y": 643,
+     "w": 127,
+     "h": 145,
+     "figma": "270:84"
+    },
+    {
+     "name": "043 · mask · #5E63F9",
+     "file": "layers/scene/scene-layer-043.png",
+     "x": 0,
+     "y": 227,
+     "w": 835,
+     "h": 563,
+     "figma": "270:85"
+    },
+    {
+     "name": "044 · mask · #FCD23A",
+     "file": "layers/scene/scene-layer-044.png",
+     "x": 2,
+     "y": 731,
+     "w": 794,
+     "h": 63,
+     "figma": "270:86"
+    },
+    {
+     "name": "045 · mask · #BD2B1D",
+     "file": "layers/scene/scene-layer-045.png",
+     "x": 0,
+     "y": 395,
+     "w": 866,
+     "h": 422,
+     "figma": "270:87"
+    },
+    {
+     "name": "046 · mask · #AB205D",
+     "file": "layers/scene/scene-layer-046.png",
+     "x": 391,
+     "y": 392,
+     "w": 101,
+     "h": 245,
+     "figma": "270:88"
+    },
+    {
+     "name": "047 · mask · #78057C",
+     "file": "layers/scene/scene-layer-047.png",
+     "x": 587,
+     "y": 270,
+     "w": 170,
+     "h": 86,
+     "figma": "270:89"
+    },
+    {
+     "name": "048 · mask · #D1D52E",
+     "file": "layers/scene/scene-layer-048.png",
+     "x": 3,
+     "y": 342,
+     "w": 835,
+     "h": 446,
+     "figma": "270:90"
+    },
+    {
+     "name": "049 · mask · #AFCFFA",
+     "file": "layers/scene/scene-layer-049.png",
+     "x": 284,
+     "y": 286,
+     "w": 249,
+     "h": 218,
+     "figma": "270:91"
+    },
+    {
+     "name": "050 · mask · #A140E8",
+     "file": "layers/scene/scene-layer-050.png",
+     "x": 174,
+     "y": 421,
+     "w": 275,
+     "h": 280,
+     "figma": "270:92"
+    },
+    {
+     "name": "051 · mask · #27EDF8",
+     "file": "layers/scene/scene-layer-051.png",
+     "x": 118,
+     "y": 615,
+     "w": 109,
+     "h": 16,
+     "figma": "270:93"
+    },
+    {
+     "name": "052 · text START · #F82F31",
+     "file": "layers/scene/scene-layer-052.png",
+     "x": 29,
+     "y": 801,
+     "w": 60,
+     "h": 21,
+     "figma": "270:94"
+    },
+    {
+     "name": "053 · mask · #F54D30",
+     "file": "layers/scene/scene-layer-053.png",
+     "x": 210,
+     "y": 255,
+     "w": 81,
+     "h": 45,
+     "figma": "270:95"
+    },
+    {
+     "name": "054 · mask · #A5EB37",
+     "file": "layers/scene/scene-layer-054.png",
+     "x": 117,
+     "y": 316,
+     "w": 549,
+     "h": 351,
+     "figma": "270:96"
+    },
+    {
+     "name": "055 · mask · #06E1FB",
+     "file": "layers/scene/scene-layer-055.png",
+     "x": 113,
+     "y": 363,
+     "w": 513,
+     "h": 288,
+     "figma": "270:97"
+    },
+    {
+     "name": "056 · mask · #6911BB",
+     "file": "layers/scene/scene-layer-056.png",
+     "x": 116,
+     "y": 273,
+     "w": 418,
+     "h": 333,
+     "figma": "270:98"
+    },
+    {
+     "name": "057 · mask · #13B836",
+     "file": "layers/scene/scene-layer-057.png",
+     "x": 173,
+     "y": 324,
+     "w": 542,
+     "h": 156,
+     "figma": "270:99"
+    },
+    {
+     "name": "058 · mask · #165FFB",
+     "file": "layers/scene/scene-layer-058.png",
+     "x": 249,
+     "y": 215,
+     "w": 517,
+     "h": 22,
+     "figma": "270:100"
+    },
+    {
+     "name": "059 · mask · #C7E143",
+     "file": "layers/scene/scene-layer-059.png",
+     "x": 259,
+     "y": 331,
+     "w": 597,
+     "h": 445,
+     "figma": "270:101"
+    },
+    {
+     "name": "060 · mask · #2C5BFA",
+     "file": "layers/scene/scene-layer-060.png",
+     "x": 10,
+     "y": 220,
+     "w": 747,
+     "h": 143,
+     "figma": "270:102"
+    },
+    {
+     "name": "061 · mask · #F2ABE0",
+     "file": "layers/scene/scene-layer-061.png",
+     "x": 80,
+     "y": 217,
+     "w": 750,
+     "h": 562,
+     "figma": "270:103"
+    },
+    {
+     "name": "062 · mask · #3906E7",
+     "file": "layers/scene/scene-layer-062.png",
+     "x": 82,
+     "y": 295,
+     "w": 752,
+     "h": 283,
+     "figma": "270:104"
+    },
+    {
+     "name": "063 · mask · #900793",
+     "file": "layers/scene/scene-layer-063.png",
+     "x": 561,
+     "y": 274,
+     "w": 54,
+     "h": 79,
+     "figma": "270:105"
+    },
+    {
+     "name": "064 · mask · #2F9645",
+     "file": "layers/scene/scene-layer-064.png",
+     "x": 114,
+     "y": 689,
+     "w": 27,
+     "h": 39,
+     "figma": "270:106"
+    },
+    {
+     "name": "065 · mask · #61688C",
+     "file": "layers/scene/scene-layer-065.png",
+     "x": 566,
+     "y": 521,
+     "w": 35,
+     "h": 37,
+     "figma": "270:107"
+    },
+    {
+     "name": "066 · mask · #06B218",
+     "file": "layers/scene/scene-layer-066.png",
+     "x": 129,
+     "y": 349,
+     "w": 384,
+     "h": 454,
+     "figma": "270:108"
+    },
+    {
+     "name": "067 · mask · #8D12DA",
+     "file": "layers/scene/scene-layer-067.png",
+     "x": 138,
+     "y": 277,
+     "w": 458,
+     "h": 288,
+     "figma": "270:109"
+    },
+    {
+     "name": "068 · mask · #2DCC32",
+     "file": "layers/scene/scene-layer-068.png",
+     "x": 25,
+     "y": 294,
+     "w": 631,
+     "h": 75,
+     "figma": "270:110"
+    },
+    {
+     "name": "069 · mask · #D1B9F2",
+     "file": "layers/scene/scene-layer-069.png",
+     "x": 495,
+     "y": 289,
+     "w": 39,
+     "h": 23,
+     "figma": "270:111"
+    },
+    {
+     "name": "070 · mask · #3D04A8",
+     "file": "layers/scene/scene-layer-070.png",
+     "x": 76,
+     "y": 231,
+     "w": 54,
+     "h": 18,
+     "figma": "270:112"
+    },
+    {
+     "name": "071 · mask · #739B1D",
+     "file": "layers/scene/scene-layer-071.png",
+     "x": 797,
+     "y": 328,
+     "w": 31,
+     "h": 41,
+     "figma": "270:113"
+    },
+    {
+     "name": "072 · mask · #03889D",
+     "file": "layers/scene/scene-layer-072.png",
+     "x": 290,
+     "y": 298,
+     "w": 59,
+     "h": 24,
+     "figma": "270:114"
+    },
+    {
+     "name": "073 · mask · #815904",
+     "file": "layers/scene/scene-layer-073.png",
+     "x": 265,
+     "y": 632,
+     "w": 21,
+     "h": 29,
+     "figma": "270:115"
+    },
+    {
+     "name": "074 · mask · #FB78D6",
+     "file": "layers/scene/scene-layer-074.png",
+     "x": 78,
+     "y": 268,
+     "w": 473,
+     "h": 372,
+     "figma": "270:116"
+    },
+    {
+     "name": "075 · mask · #FDB108",
+     "file": "layers/scene/scene-layer-075.png",
+     "x": 71,
+     "y": 470,
+     "w": 20,
+     "h": 302,
+     "figma": "270:117"
+    },
+    {
+     "name": "076 · mask · #11D74A",
+     "file": "layers/scene/scene-layer-076.png",
+     "x": 182,
+     "y": 554,
+     "w": 17,
+     "h": 52,
+     "figma": "270:118"
+    },
+    {
+     "name": "077 · mask · #28D518",
+     "file": "layers/scene/scene-layer-077.png",
+     "x": 217,
+     "y": 431,
+     "w": 34,
+     "h": 18,
+     "figma": "270:119"
+    },
+    {
+     "name": "078 · mask · #B2B425",
+     "file": "layers/scene/scene-layer-078.png",
+     "x": 169,
+     "y": 308,
+     "w": 285,
+     "h": 56,
+     "figma": "270:120"
+    },
+    {
+     "name": "079 · mask · #5D4DC3",
+     "file": "layers/scene/scene-layer-079.png",
+     "x": 853,
+     "y": 694,
+     "w": 13,
+     "h": 49,
+     "figma": "270:121"
+    },
+    {
+     "name": "080 · mask · #76CECD",
+     "file": "layers/scene/scene-layer-080.png",
+     "x": 744,
+     "y": 634,
+     "w": 11,
+     "h": 44,
+     "figma": "270:122"
+    },
+    {
+     "name": "081 · mask · #21BE47",
+     "file": "layers/scene/scene-layer-081.png",
+     "x": 686,
+     "y": 360,
+     "w": 27,
+     "h": 25,
+     "figma": "270:123"
+    },
+    {
+     "name": "082 · mask · #BE1018",
+     "file": "layers/scene/scene-layer-082.png",
+     "x": 440,
+     "y": 674,
+     "w": 19,
+     "h": 28,
+     "figma": "270:124"
+    },
+    {
+     "name": "083 · mask · #0D1922",
+     "file": "layers/scene/scene-layer-083.png",
+     "x": 0,
+     "y": 335,
+     "w": 866,
+     "h": 508,
+     "figma": "270:125"
+    },
+    {
+     "name": "084 · mask · #344175",
+     "file": "layers/scene/scene-layer-084.png",
+     "x": 855,
+     "y": 662,
+     "w": 11,
+     "h": 33,
+     "figma": "270:126"
+    },
+    {
+     "name": "085 · mask · #A0780C",
+     "file": "layers/scene/scene-layer-085.png",
+     "x": 192,
+     "y": 307,
+     "w": 20,
+     "h": 17,
+     "figma": "270:127"
+    },
+    {
+     "name": "086 · mask · #BE3CE4",
+     "file": "layers/scene/scene-layer-086.png",
+     "x": 467,
+     "y": 682,
+     "w": 19,
+     "h": 16,
+     "figma": "270:128"
+    },
+    {
+     "name": "087 · mask · #249492",
+     "file": "layers/scene/scene-layer-087.png",
+     "x": 333,
+     "y": 489,
+     "w": 18,
+     "h": 21,
+     "figma": "270:129"
+    },
+    {
+     "name": "088 · mask · #680F00",
+     "file": "layers/scene/scene-layer-088.png",
+     "x": 189,
+     "y": 320,
+     "w": 23,
+     "h": 12,
+     "figma": "270:130"
+    },
+    {
+     "name": "089 · mask · #716E12",
+     "file": "layers/scene/scene-layer-089.png",
+     "x": 112,
+     "y": 602,
+     "w": 16,
+     "h": 17,
+     "figma": "270:131"
+    },
+    {
+     "name": "090 · mask · #872D83",
+     "file": "layers/scene/scene-layer-090.png",
+     "x": 126,
+     "y": 603,
+     "w": 16,
+     "h": 16,
+     "figma": "270:132"
+    },
+    {
+     "name": "091 · mask · #E39E65",
+     "file": "layers/scene/scene-layer-091.png",
+     "x": 31,
+     "y": 768,
+     "w": 18,
+     "h": 18,
+     "figma": "270:133"
+    },
+    {
+     "name": "092 · mask · #FBADC6",
+     "file": "layers/scene/scene-layer-092.png",
+     "x": 782,
+     "y": 363,
+     "w": 21,
+     "h": 13,
+     "figma": "270:134"
+    },
+    {
+     "name": "093 · mask · #027A86",
+     "file": "layers/scene/scene-layer-093.png",
+     "x": 316,
+     "y": 304,
+     "w": 19,
+     "h": 10,
+     "figma": "270:135"
+    },
+    {
+     "name": "094 · mask · #B52E34",
+     "file": "layers/scene/scene-layer-094.png",
+     "x": 439,
+     "y": 605,
+     "w": 16,
+     "h": 12,
+     "figma": "270:136"
+    },
+    {
+     "name": "095 · mask · #C6521E",
+     "file": "layers/scene/scene-layer-095.png",
+     "x": 757,
+     "y": 337,
+     "w": 13,
+     "h": 14,
+     "figma": "270:137"
+    },
+    {
+     "name": "096 · mask · #A332F9",
+     "file": "layers/scene/scene-layer-096.png",
+     "x": 167,
+     "y": 398,
+     "w": 19,
+     "h": 40,
+     "figma": "270:138"
+    },
+    {
+     "name": "097 · mask · #06ABD6",
+     "file": "layers/scene/scene-layer-097.png",
+     "x": 574,
+     "y": 741,
+     "w": 9,
+     "h": 19,
+     "figma": "270:139"
+    },
+    {
+     "name": "098 · mask · #C852D0",
+     "file": "layers/scene/scene-layer-098.png",
+     "x": 143,
+     "y": 265,
+     "w": 13,
+     "h": 13,
+     "figma": "270:140"
+    },
+    {
+     "name": "099 · mask · #99441E",
+     "file": "layers/scene/scene-layer-099.png",
+     "x": 761,
+     "y": 350,
+     "w": 10,
+     "h": 15,
+     "figma": "270:141"
+    },
+    {
+     "name": "100 · mask · #1FF8CB",
+     "file": "layers/scene/scene-layer-100.png",
+     "x": 246,
+     "y": 773,
+     "w": 10,
+     "h": 12,
+     "figma": "270:142"
+    },
+    {
+     "name": "101 · mask · #FCC320",
+     "file": "layers/scene/scene-layer-101.png",
+     "x": 104,
+     "y": 372,
+     "w": 703,
+     "h": 142,
+     "figma": "270:143"
+    },
+    {
+     "name": "102 · mask · #0FDCDE",
+     "file": "layers/scene/scene-layer-102.png",
+     "x": 571,
+     "y": 760,
+     "w": 6,
+     "h": 22,
+     "figma": "270:144"
+    },
+    {
+     "name": "103 · mask · #F26946",
+     "file": "layers/scene/scene-layer-103.png",
+     "x": 263,
+     "y": 284,
+     "w": 12,
+     "h": 7,
+     "figma": "270:145"
+    },
+    {
+     "name": "104 · mask · #F0DB1F",
+     "file": "layers/scene/scene-layer-104.png",
+     "x": 3,
+     "y": 728,
+     "w": 15,
+     "h": 6,
+     "figma": "270:146"
+    },
+    {
+     "name": "105 · mask · #26CDFA",
+     "file": "layers/scene/scene-layer-105.png",
+     "x": 540,
+     "y": 380,
+     "w": 10,
+     "h": 6,
+     "figma": "270:147"
+    },
+    {
+     "name": "106 · mask · #992B02",
+     "file": "layers/scene/scene-layer-106.png",
+     "x": 205,
+     "y": 352,
+     "w": 162,
+     "h": 105,
+     "figma": "270:148"
+    },
+    {
+     "name": "107 · mask · #93F530",
+     "file": "layers/scene/scene-layer-107.png",
+     "x": 623,
+     "y": 353,
+     "w": 5,
+     "h": 7,
+     "figma": "270:149"
+    },
+    {
+     "name": "108 · mask · #C9372A",
+     "file": "layers/scene/scene-layer-108.png",
+     "x": 374,
+     "y": 517,
+     "w": 3,
+     "h": 7,
+     "figma": "270:150"
+    }
+   ]
+  },
+  {
+   "key": "thumb_1_start",
+   "title": "1. Start — sand og ruinar",
+   "rect": [
+    16,
+    855,
+    172,
+    965
+   ],
+   "layers": [
+    {
+     "name": "001 · mask · #2D96FB",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-001.png",
+     "x": 6,
+     "y": 1,
+     "w": 150,
+     "h": 35,
+     "figma": "270:152"
+    },
+    {
+     "name": "002 · mask · #FBADC6",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-002.png",
+     "x": 1,
+     "y": 19,
+     "w": 126,
+     "h": 60,
+     "figma": "270:153"
+    },
+    {
+     "name": "003 · mask · #C9372A",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-003.png",
+     "x": 0,
+     "y": 62,
+     "w": 156,
+     "h": 48,
+     "figma": "270:154"
+    },
+    {
+     "name": "004 · mask · #FCA533",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-004.png",
+     "x": 0,
+     "y": 73,
+     "w": 155,
+     "h": 27,
+     "figma": "270:155"
+    },
+    {
+     "name": "005 · mask · #FBBAD5",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-005.png",
+     "x": 1,
+     "y": 4,
+     "w": 131,
+     "h": 73,
+     "figma": "270:156"
+    },
+    {
+     "name": "006 · mask · #F54D30",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-006.png",
+     "x": 92,
+     "y": 21,
+     "w": 64,
+     "h": 60,
+     "figma": "270:157"
+    },
+    {
+     "name": "007 · mask · #C74140",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-007.png",
+     "x": 15,
+     "y": 53,
+     "w": 29,
+     "h": 26,
+     "figma": "270:158"
+    },
+    {
+     "name": "008 · mask · #F26946",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-008.png",
+     "x": 0,
+     "y": 52,
+     "w": 21,
+     "h": 26,
+     "figma": "270:159"
+    },
+    {
+     "name": "009 · mask · #0D1922",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-009.png",
+     "x": 0,
+     "y": 0,
+     "w": 156,
+     "h": 110,
+     "figma": "270:160"
+    },
+    {
+     "name": "010 · mask · #F2ABE0",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-010.png",
+     "x": 9,
+     "y": 8,
+     "w": 137,
+     "h": 36,
+     "figma": "270:161"
+    },
+    {
+     "name": "011 · mask · #CE2F1B",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-011.png",
+     "x": 58,
+     "y": 84,
+     "w": 82,
+     "h": 21,
+     "figma": "270:162"
+    },
+    {
+     "name": "012 · mask · #FD9E82",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-012.png",
+     "x": 131,
+     "y": 41,
+     "w": 15,
+     "h": 22,
+     "figma": "270:163"
+    },
+    {
+     "name": "013 · mask · #FB9226",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-013.png",
+     "x": 93,
+     "y": 59,
+     "w": 10,
+     "h": 14,
+     "figma": "270:164"
+    },
+    {
+     "name": "014 · mask · #B52E34",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-014.png",
+     "x": 20,
+     "y": 65,
+     "w": 10,
+     "h": 12,
+     "figma": "270:165"
+    },
+    {
+     "name": "015 · mask · #D1B9F2",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-015.png",
+     "x": 88,
+     "y": 32,
+     "w": 12,
+     "h": 9,
+     "figma": "270:166"
+    },
+    {
+     "name": "016 · mask · #FBAC43",
+     "file": "layers/thumb_1_start/thumb_1_start-layer-016.png",
+     "x": 48,
+     "y": 93,
+     "w": 5,
+     "h": 4,
+     "figma": "270:167"
+    }
+   ]
+  },
+  {
+   "key": "thumb_2_kanjon",
+   "title": "2. Kanjon — gamle bruer",
+   "rect": [
+    186,
+    855,
+    340,
+    965
+   ],
+   "layers": [
+    {
+     "name": "001 · mask · #A028B1",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-001.png",
+     "x": 0,
+     "y": 31,
+     "w": 154,
+     "h": 70,
+     "figma": "270:169"
+    },
+    {
+     "name": "002 · mask · #FBADC6",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-002.png",
+     "x": 32,
+     "y": 7,
+     "w": 101,
+     "h": 103,
+     "figma": "270:170"
+    },
+    {
+     "name": "003 · mask · #F2ABE0",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-003.png",
+     "x": 8,
+     "y": 0,
+     "w": 146,
+     "h": 37,
+     "figma": "270:171"
+    },
+    {
+     "name": "004 · mask · #FCA0B2",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-004.png",
+     "x": 25,
+     "y": 15,
+     "w": 108,
+     "h": 95,
+     "figma": "270:172"
+    },
+    {
+     "name": "005 · mask · #B42C90",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-005.png",
+     "x": 0,
+     "y": 3,
+     "w": 32,
+     "h": 36,
+     "figma": "270:173"
+    },
+    {
+     "name": "006 · mask · #FBAC43",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-006.png",
+     "x": 0,
+     "y": 24,
+     "w": 149,
+     "h": 85,
+     "figma": "270:174"
+    },
+    {
+     "name": "007 · mask · #C9372A",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-007.png",
+     "x": 104,
+     "y": 94,
+     "w": 50,
+     "h": 16,
+     "figma": "270:175"
+    },
+    {
+     "name": "008 · mask · #0D1922",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-008.png",
+     "x": 0,
+     "y": 0,
+     "w": 154,
+     "h": 110,
+     "figma": "270:176"
+    },
+    {
+     "name": "009 · mask · #FC8DD8",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-009.png",
+     "x": 132,
+     "y": 14,
+     "w": 16,
+     "h": 11,
+     "figma": "270:177"
+    },
+    {
+     "name": "010 · mask · #F19AD1",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-010.png",
+     "x": 76,
+     "y": 24,
+     "w": 13,
+     "h": 14,
+     "figma": "270:178"
+    },
+    {
+     "name": "011 · mask · #F23845",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-011.png",
+     "x": 103,
+     "y": 27,
+     "w": 15,
+     "h": 10,
+     "figma": "270:179"
+    },
+    {
+     "name": "012 · mask · #FBBAD5",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-012.png",
+     "x": 59,
+     "y": 26,
+     "w": 11,
+     "h": 11,
+     "figma": "270:180"
+    },
+    {
+     "name": "013 · mask · #FCA533",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-013.png",
+     "x": 22,
+     "y": 25,
+     "w": 112,
+     "h": 84,
+     "figma": "270:181"
+    },
+    {
+     "name": "014 · mask · #F4A4EA",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-014.png",
+     "x": 89,
+     "y": 1,
+     "w": 17,
+     "h": 11,
+     "figma": "270:182"
+    },
+    {
+     "name": "015 · mask · #F82F31",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-015.png",
+     "x": 101,
+     "y": 33,
+     "w": 9,
+     "h": 4,
+     "figma": "270:183"
+    },
+    {
+     "name": "016 · mask · #B52E34",
+     "file": "layers/thumb_2_kanjon/thumb_2_kanjon-layer-016.png",
+     "x": 150,
+     "y": 105,
+     "w": 4,
+     "h": 4,
+     "figma": "270:184"
+    }
+   ]
+  },
+  {
+   "key": "thumb_3_undergrunn",
+   "title": "3. Undergrunn — gøymde kjelder",
+   "rect": [
+    354,
+    855,
+    516,
+    965
+   ],
+   "layers": [
+    {
+     "name": "001 · mask · #20CE79",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-001.png",
+     "x": 0,
+     "y": 0,
+     "w": 162,
+     "h": 96,
+     "figma": "270:186"
+    },
+    {
+     "name": "002 · mask · #027A86",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-002.png",
+     "x": 11,
+     "y": 20,
+     "w": 115,
+     "h": 76,
+     "figma": "270:187"
+    },
+    {
+     "name": "003 · mask · #76440D",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-003.png",
+     "x": 1,
+     "y": 81,
+     "w": 161,
+     "h": 29,
+     "figma": "270:188"
+    },
+    {
+     "name": "004 · mask · #026A7A",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-004.png",
+     "x": 11,
+     "y": 20,
+     "w": 141,
+     "h": 78,
+     "figma": "270:189"
+    },
+    {
+     "name": "005 · mask · #20B7FA",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-005.png",
+     "x": 53,
+     "y": 44,
+     "w": 51,
+     "h": 48,
+     "figma": "270:190"
+    },
+    {
+     "name": "006 · mask · #0D1922",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-006.png",
+     "x": 0,
+     "y": 0,
+     "w": 162,
+     "h": 110,
+     "figma": "270:191"
+    },
+    {
+     "name": "007 · mask · #06E1FB",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-007.png",
+     "x": 65,
+     "y": 87,
+     "w": 35,
+     "h": 20,
+     "figma": "270:192"
+    },
+    {
+     "name": "008 · mask · #20D462",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-008.png",
+     "x": 1,
+     "y": 59,
+     "w": 161,
+     "h": 22,
+     "figma": "270:193"
+    },
+    {
+     "name": "009 · mask · #3ABDFB",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-009.png",
+     "x": 61,
+     "y": 48,
+     "w": 44,
+     "h": 45,
+     "figma": "270:194"
+    },
+    {
+     "name": "010 · mask · #26CDFA",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-010.png",
+     "x": 53,
+     "y": 88,
+     "w": 54,
+     "h": 10,
+     "figma": "270:195"
+    },
+    {
+     "name": "011 · mask · #03889D",
+     "file": "layers/thumb_3_undergrunn/thumb_3_undergrunn-layer-011.png",
+     "x": 64,
+     "y": 45,
+     "w": 47,
+     "h": 43,
+     "figma": "270:196"
+    }
+   ]
+  },
+  {
+   "key": "thumb_4_oase",
+   "title": "4. Oase — liv i ørkenen",
+   "rect": [
+    529,
+    855,
+    689,
+    965
+   ],
+   "layers": [
+    {
+     "name": "001 · mask · #2D96FB",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-001.png",
+     "x": 1,
+     "y": 1,
+     "w": 159,
+     "h": 64,
+     "figma": "270:198"
+    },
+    {
+     "name": "002 · mask · #886130",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-002.png",
+     "x": 1,
+     "y": 42,
+     "w": 158,
+     "h": 68,
+     "figma": "270:199"
+    },
+    {
+     "name": "003 · mask · #A9C1C9",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-003.png",
+     "x": 1,
+     "y": 58,
+     "w": 154,
+     "h": 36,
+     "figma": "270:200"
+    },
+    {
+     "name": "004 · mask · #3C9F2E",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-004.png",
+     "x": 4,
+     "y": 25,
+     "w": 155,
+     "h": 63,
+     "figma": "270:201"
+    },
+    {
+     "name": "005 · mask · #27EDF8",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-005.png",
+     "x": 60,
+     "y": 84,
+     "w": 43,
+     "h": 25,
+     "figma": "270:202"
+    },
+    {
+     "name": "006 · mask · #0D1922",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-006.png",
+     "x": 0,
+     "y": 0,
+     "w": 160,
+     "h": 110,
+     "figma": "270:203"
+    },
+    {
+     "name": "007 · mask · #97C6D5",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-007.png",
+     "x": 26,
+     "y": 54,
+     "w": 104,
+     "h": 27,
+     "figma": "270:204"
+    },
+    {
+     "name": "008 · mask · #715D68",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-008.png",
+     "x": 78,
+     "y": 56,
+     "w": 16,
+     "h": 28,
+     "figma": "270:205"
+    },
+    {
+     "name": "009 · mask · #06E1FB",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-009.png",
+     "x": 55,
+     "y": 89,
+     "w": 52,
+     "h": 11,
+     "figma": "270:206"
+    },
+    {
+     "name": "010 · mask · #10A4FB",
+     "file": "layers/thumb_4_oase/thumb_4_oase-layer-010.png",
+     "x": 66,
+     "y": 51,
+     "w": 15,
+     "h": 7,
+     "figma": "270:207"
+    }
+   ]
+  },
+  {
+   "key": "thumb_5_boss",
+   "title": "5. Boss — den gløymde maskina",
+   "rect": [
+    701,
+    855,
+    862,
+    965
+   ],
+   "layers": [
+    {
+     "name": "001 · mask · #243BC4",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-001.png",
+     "x": 1,
+     "y": 1,
+     "w": 159,
+     "h": 95,
+     "figma": "270:209"
+    },
+    {
+     "name": "002 · mask · #FCC320",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-002.png",
+     "x": 54,
+     "y": 7,
+     "w": 49,
+     "h": 48,
+     "figma": "270:210"
+    },
+    {
+     "name": "003 · mask · #FCA533",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-003.png",
+     "x": 9,
+     "y": 22,
+     "w": 142,
+     "h": 86,
+     "figma": "270:211"
+    },
+    {
+     "name": "004 · mask · #FDED77",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-004.png",
+     "x": 55,
+     "y": 51,
+     "w": 46,
+     "h": 49,
+     "figma": "270:212"
+    },
+    {
+     "name": "005 · mask · #E58225",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-005.png",
+     "x": 1,
+     "y": 81,
+     "w": 159,
+     "h": 28,
+     "figma": "270:213"
+    },
+    {
+     "name": "006 · mask · #0D1922",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-006.png",
+     "x": 0,
+     "y": 0,
+     "w": 161,
+     "h": 110,
+     "figma": "270:214"
+    },
+    {
+     "name": "007 · mask · #C6521E",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-007.png",
+     "x": 52,
+     "y": 98,
+     "w": 108,
+     "h": 12,
+     "figma": "270:215"
+    },
+    {
+     "name": "008 · mask · #FB9226",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-008.png",
+     "x": 1,
+     "y": 86,
+     "w": 135,
+     "h": 22,
+     "figma": "270:216"
+    },
+    {
+     "name": "009 · mask · #FBAC43",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-009.png",
+     "x": 12,
+     "y": 27,
+     "w": 12,
+     "h": 51,
+     "figma": "270:217"
+    },
+    {
+     "name": "010 · mask · #D37A40",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-010.png",
+     "x": 112,
+     "y": 83,
+     "w": 15,
+     "h": 15,
+     "figma": "270:218"
+    },
+    {
+     "name": "011 · mask · #D96C33",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-011.png",
+     "x": 117,
+     "y": 82,
+     "w": 43,
+     "h": 28,
+     "figma": "270:219"
+    },
+    {
+     "name": "012 · mask · #F4BB30",
+     "file": "layers/thumb_5_boss/thumb_5_boss-layer-012.png",
+     "x": 12,
+     "y": 22,
+     "w": 13,
+     "h": 6,
+     "figma": "270:220"
+    }
+   ]
+  }
+ ]
+}
