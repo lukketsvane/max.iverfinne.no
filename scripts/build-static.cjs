@@ -55,7 +55,7 @@ for (const [pack, ids, sheets] of [
 }
 // Sligo's pack and its specials (the tun's sac and its burst) ship with the game.
 mkdirSync(join(output, 'assets/max-skins-v1/sligo'), { recursive: true });
-for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png']) copyFileSync(join(root, 'assets/max-skins-v1/sligo', file), join(output, 'assets/max-skins-v1/sligo', file));
+for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png', 'specials.json']) copyFileSync(join(root, 'assets/max-skins-v1/sligo', file), join(output, 'assets/max-skins-v1/sligo', file));
 const milestoneDirectory = join(output, 'assets/boss-milestones-v1/native');
 mkdirSync(milestoneDirectory, { recursive: true });
 for (const id of ['05-mossback', '10-bellkeeper', '15-moon-moth']) {

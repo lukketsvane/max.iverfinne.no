@@ -21,8 +21,130 @@
    5,
    6,
    7
+  ],
+  "throw": [
+   8,
+   9,
+   10,
+   11
+  ],
+  "lash": [
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "hurt": [
+   20,
+   21,
+   22
+  ],
+  "float": [
+   23,
+   24,
+   25,
+   26
+  ],
+  "sleep": [
+   27,
+   28
+  ],
+  "parts": [
+   29,
+   30
   ]
  },
  "scale": 0.5,
- "source": "docs/asset-review/sligo-specials-v1/level.json (object 0856438B), last row; scripts/build-sligo-specials.py"
+ "source": "docs/asset-review/sligo-specials-v1/level.json (object 0856438B); scripts/build-sligo-specials.py",
+ "sourceClips": [
+  [
+   "sac",
+   7,
+   [
+    2,
+    3,
+    4,
+    5
+   ]
+  ],
+  [
+   "burst",
+   7,
+   [
+    6,
+    7,
+    8,
+    9
+   ]
+  ],
+  [
+   "throw",
+   4,
+   [
+    0,
+    1,
+    2,
+    3
+   ]
+  ],
+  [
+   "lash",
+   3,
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  ],
+  [
+   "hurt",
+   6,
+   [
+    0,
+    1,
+    2
+   ]
+  ],
+  [
+   "float",
+   5,
+   [
+    2,
+    3,
+    4,
+    5
+   ]
+  ],
+  [
+   "sleep",
+   7,
+   [
+    0,
+    1
+   ]
+  ]
+ ],
+ "sourceParts": [
+  [
+   21,
+   158,
+   29,
+   169
+  ],
+  [
+   294,
+   116,
+   305,
+   136
+  ]
+ ]
 }
