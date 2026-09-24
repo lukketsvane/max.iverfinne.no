@@ -85,12 +85,12 @@ test('feet stand on the original frames\' body bottom, one pixel up only where t
   assert.equal(lifted, 18, 'walk, stretch and two run frames');
 });
 
-test('the standing Sligo is as tall as the other skins stand, centred on the anchor', async () => {
+test('the standing Sligo is half as tall as the other skins stand, centred on the anchor', async () => {
   const images = await sheets();
   for (let f = 0; f < 8; f++) {
     const opaque = cell(images.main, f), ys = opaque.map(([, y]) => y), xs = opaque.map(([x]) => x);
     const height = Math.max(...ys) - Math.min(...ys) + 1, middle = (Math.min(...xs) + Math.max(...xs)) / 2;
-    assert.ok(height >= 23 && height <= 25, `idle ${f} is ${height} px tall`);
+    assert.ok(height >= 11 && height <= 13, `idle ${f} is ${height} px tall: half as tall as Max`);
     assert.ok(Math.abs(middle - 16) <= 0.5, `idle ${f} is centred at ${middle}`);
   }
 });
