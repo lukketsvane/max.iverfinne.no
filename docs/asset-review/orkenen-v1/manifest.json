@@ -13,129 +13,129 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-ground-block-large",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-01.png",
-     "x": 889,
-     "y": 94,
-     "w": 67,
-     "h": 59,
+     "x": 887,
+     "y": 91,
+     "w": 73,
+     "h": 65,
      "figma": "269:249"
     },
     {
-     "name": "part=02",
+     "name": "part=02-ground-corner-right",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-02.png",
-     "x": 971,
-     "y": 94,
-     "w": 40,
-     "h": 58,
+     "x": 968,
+     "y": 91,
+     "w": 46,
+     "h": 64,
      "figma": "269:250"
     },
     {
-     "name": "part=03",
+     "name": "part=03-ground-slope-down",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-03.png",
-     "x": 1026,
-     "y": 94,
-     "w": 68,
-     "h": 58,
+     "x": 1023,
+     "y": 91,
+     "w": 73,
+     "h": 64,
      "figma": "269:251"
     },
     {
-     "name": "part=04",
+     "name": "part=04-ground-block-small",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-04.png",
-     "x": 1109,
-     "y": 114,
-     "w": 37,
-     "h": 38,
+     "x": 1106,
+     "y": 109,
+     "w": 42,
+     "h": 47,
      "figma": "269:252"
     },
     {
-     "name": "part=05",
+     "name": "part=05-cliff-edge-left",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-05.png",
-     "x": 890,
-     "y": 166,
-     "w": 24,
-     "h": 55,
+     "x": 887,
+     "y": 164,
+     "w": 31,
+     "h": 59,
      "figma": "269:253"
     },
     {
-     "name": "part=06",
+     "name": "part=06-slope-up",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-06.png",
-     "x": 930,
-     "y": 166,
-     "w": 40,
-     "h": 56,
+     "x": 927,
+     "y": 163,
+     "w": 46,
+     "h": 61,
      "figma": "269:254"
     },
     {
-     "name": "part=07",
+     "name": "part=07-slope-step-up",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-07.png",
-     "x": 985,
-     "y": 166,
-     "w": 39,
-     "h": 56,
+     "x": 982,
+     "y": 164,
+     "w": 46,
+     "h": 60,
      "figma": "269:255"
     },
     {
-     "name": "part=08",
+     "name": "part=08-slope-steep",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-08.png",
-     "x": 1040,
-     "y": 167,
-     "w": 25,
-     "h": 54,
+     "x": 1036,
+     "y": 165,
+     "w": 32,
+     "h": 59,
      "figma": "269:256"
     },
     {
-     "name": "part=09",
+     "name": "part=09-cliff-sliver",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-09.png",
-     "x": 1081,
-     "y": 167,
-     "w": 13,
-     "h": 54,
+     "x": 1079,
+     "y": 163,
+     "w": 17,
+     "h": 60,
      "figma": "269:257"
     },
     {
-     "name": "part=10",
+     "name": "part=10-ledge-top",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-10.png",
-     "x": 1109,
-     "y": 166,
-     "w": 37,
-     "h": 28,
+     "x": 1106,
+     "y": 163,
+     "w": 42,
+     "h": 35,
      "figma": "269:258"
     },
     {
-     "name": "part=11",
+     "name": "part=11-ledge-long",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-11.png",
-     "x": 889,
-     "y": 235,
-     "w": 81,
-     "h": 27,
+     "x": 887,
+     "y": 233,
+     "w": 87,
+     "h": 31,
      "figma": "269:259"
     },
     {
-     "name": "part=12",
+     "name": "part=12-ledge-short",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-12.png",
-     "x": 985,
-     "y": 236,
-     "w": 26,
-     "h": 26,
+     "x": 982,
+     "y": 233,
+     "w": 31,
+     "h": 32,
      "figma": "269:260"
     },
     {
-     "name": "part=13",
+     "name": "part=13-ledge-medium",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-13.png",
-     "x": 1026,
-     "y": 236,
-     "w": 67,
-     "h": 26,
+     "x": 1023,
+     "y": 232,
+     "w": 73,
+     "h": 32,
      "figma": "269:261"
     },
     {
-     "name": "part=14",
+     "name": "part=14-overhang-notch",
      "file": "parts/01_terrain_tiles/01_terrain_tiles-part-14.png",
-     "x": 1109,
-     "y": 210,
-     "w": 37,
-     "h": 52,
+     "x": 1106,
+     "y": 208,
+     "w": 42,
+     "h": 56,
      "figma": "269:262"
     }
    ]
@@ -151,102 +151,102 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-column-capital",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-01.png",
-     "x": 1175,
-     "y": 97,
-     "w": 37,
-     "h": 74,
+     "x": 1172,
+     "y": 95,
+     "w": 43,
+     "h": 80,
      "figma": "269:264"
     },
     {
-     "name": "part=02",
+     "name": "part=02-column-slim",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-02.png",
-     "x": 1225,
-     "y": 97,
-     "w": 29,
-     "h": 74,
+     "x": 1224,
+     "y": 95,
+     "w": 31,
+     "h": 80,
      "figma": "269:265"
     },
     {
-     "name": "part=03",
+     "name": "part=03-column-plinth",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-03.png",
-     "x": 1265,
-     "y": 97,
-     "w": 29,
-     "h": 74,
+     "x": 1264,
+     "y": 95,
+     "w": 32,
+     "h": 80,
      "figma": "269:266"
     },
     {
-     "name": "part=04",
+     "name": "part=04-pillar-broken",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-04.png",
-     "x": 1308,
-     "y": 97,
-     "w": 25,
-     "h": 74,
+     "x": 1305,
+     "y": 94,
+     "w": 34,
+     "h": 81,
      "figma": "269:267"
     },
     {
-     "name": "part=05",
+     "name": "part=05-banners-pair",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-05.png",
-     "x": 1357,
-     "y": 94,
-     "w": 66,
-     "h": 82,
+     "x": 1355,
+     "y": 92,
+     "w": 71,
+     "h": 89,
      "figma": "269:268"
     },
     {
-     "name": "part=06",
+     "name": "part=06-banner-small",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-06.png",
-     "x": 1402,
-     "y": 149,
-     "w": 20,
-     "h": 46,
+     "x": 1401,
+     "y": 145,
+     "w": 23,
+     "h": 56,
      "figma": "269:269"
     },
     {
-     "name": "part=07",
+     "name": "part=07-seated-colossus",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-07.png",
-     "x": 1413,
-     "y": 82,
-     "w": 108,
-     "h": 181,
+     "x": 1411,
+     "y": 79,
+     "w": 113,
+     "h": 187,
      "figma": "269:270"
     },
     {
-     "name": "part=08",
+     "name": "part=08-aqueduct-arches",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-08.png",
-     "x": 1175,
-     "y": 184,
-     "w": 89,
-     "h": 78,
+     "x": 1173,
+     "y": 181,
+     "w": 96,
+     "h": 84,
      "figma": "269:271"
     },
     {
-     "name": "part=09",
+     "name": "part=09-wall-segment",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-09.png",
-     "x": 1284,
-     "y": 184,
-     "w": 26,
-     "h": 78,
+     "x": 1281,
+     "y": 181,
+     "w": 31,
+     "h": 84,
      "figma": "269:272"
     },
     {
-     "name": "part=10",
+     "name": "part=10-wall-post",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-10.png",
-     "x": 1329,
-     "y": 184,
-     "w": 17,
-     "h": 78,
+     "x": 1327,
+     "y": 181,
+     "w": 21,
+     "h": 84,
      "figma": "269:273"
     },
     {
-     "name": "part=11",
+     "name": "part=11-idol-small",
      "file": "parts/02_ruins_architecture/02_ruins_architecture-part-11.png",
-     "x": 1366,
-     "y": 198,
-     "w": 30,
-     "h": 65,
+     "x": 1364,
+     "y": 196,
+     "w": 35,
+     "h": 70,
      "figma": "269:274"
     }
    ]
@@ -262,75 +262,75 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-scaffold-platform",
      "file": "parts/03_structures/03_structures-part-01.png",
-     "x": 895,
+     "x": 893,
      "y": 312,
-     "w": 80,
-     "h": 43,
+     "w": 83,
+     "h": 45,
      "figma": "269:276"
     },
     {
-     "name": "part=02",
+     "name": "part=02-ladder",
      "file": "parts/03_structures/03_structures-part-02.png",
-     "x": 1009,
-     "y": 311,
-     "w": 17,
-     "h": 58,
+     "x": 1006,
+     "y": 308,
+     "w": 22,
+     "h": 65,
      "figma": "269:277"
     },
     {
-     "name": "part=03",
+     "name": "part=03-torch-post",
      "file": "parts/03_structures/03_structures-part-03.png",
-     "x": 978,
-     "y": 351,
-     "w": 8,
-     "h": 36,
+     "x": 975,
+     "y": 346,
+     "w": 14,
+     "h": 44,
      "figma": "269:278"
     },
     {
-     "name": "part=04",
+     "name": "part=04-windmill-tower",
      "file": "parts/03_structures/03_structures-part-04.png",
-     "x": 1044,
-     "y": 297,
-     "w": 62,
-     "h": 160,
+     "x": 1042,
+     "y": 296,
+     "w": 66,
+     "h": 164,
      "figma": "269:279"
     },
     {
-     "name": "part=05",
+     "name": "part=05-tarp-shelter",
      "file": "parts/03_structures/03_structures-part-05.png",
      "x": 892,
-     "y": 369,
-     "w": 71,
-     "h": 70,
+     "y": 366,
+     "w": 72,
+     "h": 75,
      "figma": "269:280"
     },
     {
-     "name": "part=06",
+     "name": "part=06-lamp-post-small",
      "file": "parts/03_structures/03_structures-part-06.png",
-     "x": 977,
-     "y": 404,
-     "w": 10,
-     "h": 34,
+     "x": 976,
+     "y": 401,
+     "w": 13,
+     "h": 40,
      "figma": "269:281"
     },
     {
-     "name": "part=07",
+     "name": "part=07-ladder-platform",
      "file": "parts/03_structures/03_structures-part-07.png",
-     "x": 999,
-     "y": 378,
-     "w": 37,
-     "h": 77,
+     "x": 997,
+     "y": 377,
+     "w": 40,
+     "h": 79,
      "figma": "269:282"
     },
     {
-     "name": "part=08",
+     "name": "part=08-plank-beam",
      "file": "parts/03_structures/03_structures-part-08.png",
-     "x": 889,
-     "y": 449,
-     "w": 99,
-     "h": 8,
+     "x": 887,
+     "y": 448,
+     "w": 103,
+     "h": 12,
      "figma": "269:283"
     }
    ]
@@ -346,66 +346,66 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-pedestal-pair",
      "file": "parts/04_props/04_props-part-01.png",
-     "x": 1133,
-     "y": 313,
-     "w": 49,
-     "h": 37,
+     "x": 1131,
+     "y": 312,
+     "w": 53,
+     "h": 40,
      "figma": "269:285"
     },
     {
-     "name": "part=02",
+     "name": "part=02-cloth-cot",
      "file": "parts/04_props/04_props-part-02.png",
-     "x": 1198,
-     "y": 311,
-     "w": 45,
-     "h": 39,
+     "x": 1195,
+     "y": 309,
+     "w": 51,
+     "h": 42,
      "figma": "269:286"
     },
     {
-     "name": "part=03",
+     "name": "part=03-chest",
      "file": "parts/04_props/04_props-part-03.png",
-     "x": 1252,
-     "y": 330,
-     "w": 34,
-     "h": 20,
+     "x": 1249,
+     "y": 329,
+     "w": 37,
+     "h": 23,
      "figma": "269:287"
     },
     {
-     "name": "part=04",
+     "name": "part=04-bench",
      "file": "parts/04_props/04_props-part-04.png",
-     "x": 1132,
-     "y": 368,
-     "w": 71,
-     "h": 21,
+     "x": 1130,
+     "y": 364,
+     "w": 75,
+     "h": 26,
      "figma": "269:288"
     },
     {
-     "name": "part=05",
+     "name": "part=05-clay-urn",
      "file": "parts/04_props/04_props-part-05.png",
-     "x": 1134,
-     "y": 409,
-     "w": 36,
-     "h": 45,
+     "x": 1131,
+     "y": 407,
+     "w": 41,
+     "h": 50,
      "figma": "269:289"
     },
     {
-     "name": "part=06",
+     "name": "part=06-well-with-pulley",
      "file": "parts/04_props/04_props-part-06.png",
-     "x": 1191,
-     "y": 367,
-     "w": 51,
-     "h": 89,
+     "x": 1188,
+     "y": 364,
+     "w": 57,
+     "h": 93,
      "figma": "269:290"
     },
     {
-     "name": "part=07",
+     "name": "part=07-water-pipe",
      "file": "parts/04_props/04_props-part-07.png",
-     "x": 1261,
-     "y": 365,
-     "w": 27,
-     "h": 91,
+     "x": 1259,
+     "y": 362,
+     "w": 30,
+     "h": 94,
      "figma": "269:291"
     }
    ]
@@ -421,84 +421,84 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-saguaro-tall",
      "file": "parts/05_plants/05_plants-part-01.png",
-     "x": 1323,
-     "y": 313,
-     "w": 22,
-     "h": 59,
+     "x": 1320,
+     "y": 310,
+     "w": 29,
+     "h": 65,
      "figma": "269:293"
     },
     {
-     "name": "part=02",
+     "name": "part=02-barrel-cactus",
      "file": "parts/05_plants/05_plants-part-02.png",
-     "x": 1362,
-     "y": 330,
-     "w": 30,
-     "h": 26,
+     "x": 1359,
+     "y": 326,
+     "w": 36,
+     "h": 33,
      "figma": "269:294"
     },
     {
-     "name": "part=03",
+     "name": "part=03-saguaro-small",
      "file": "parts/05_plants/05_plants-part-03.png",
-     "x": 1413,
-     "y": 309,
-     "w": 23,
-     "h": 47,
+     "x": 1411,
+     "y": 306,
+     "w": 27,
+     "h": 53,
      "figma": "269:295"
     },
     {
-     "name": "part=04",
+     "name": "part=04-dry-shrub-small",
      "file": "parts/05_plants/05_plants-part-04.png",
-     "x": 1325,
-     "y": 392,
-     "w": 23,
-     "h": 16,
+     "x": 1324,
+     "y": 390,
+     "w": 24,
+     "h": 20,
      "figma": "269:296"
     },
     {
-     "name": "part=05",
+     "name": "part=05-dead-bush",
      "file": "parts/05_plants/05_plants-part-05.png",
-     "x": 1362,
-     "y": 383,
-     "w": 30,
-     "h": 25,
+     "x": 1356,
+     "y": 377,
+     "w": 39,
+     "h": 35,
      "figma": "269:297"
     },
     {
-     "name": "part=06",
+     "name": "part=06-palm-tall-with-cactus",
      "file": "parts/05_plants/05_plants-part-06.png",
-     "x": 1450,
-     "y": 304,
-     "w": 61,
-     "h": 151,
+     "x": 1448,
+     "y": 300,
+     "w": 64,
+     "h": 156,
      "figma": "269:298"
     },
     {
-     "name": "part=07",
+     "name": "part=07-palm-short",
      "file": "parts/05_plants/05_plants-part-07.png",
-     "x": 1405,
-     "y": 369,
-     "w": 54,
-     "h": 86,
+     "x": 1404,
+     "y": 367,
+     "w": 56,
+     "h": 89,
      "figma": "269:299"
     },
     {
-     "name": "part=08",
+     "name": "part=08-thorn-bush",
      "file": "parts/05_plants/05_plants-part-08.png",
-     "x": 1323,
-     "y": 433,
-     "w": 34,
-     "h": 23,
+     "x": 1318,
+     "y": 427,
+     "w": 42,
+     "h": 30,
      "figma": "269:300"
     },
     {
-     "name": "part=09",
+     "name": "part=09-dry-grass-tuft",
      "file": "parts/05_plants/05_plants-part-09.png",
-     "x": 1377,
-     "y": 440,
-     "w": 34,
-     "h": 15,
+     "x": 1374,
+     "y": 435,
+     "w": 41,
+     "h": 23,
      "figma": "269:301"
     }
    ]
@@ -514,93 +514,93 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-ceiling-strip",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-01.png",
-     "x": 890,
-     "y": 504,
-     "w": 56,
-     "h": 21,
+     "x": 889,
+     "y": 503,
+     "w": 59,
+     "h": 24,
      "figma": "269:303"
     },
     {
-     "name": "part=02",
+     "name": "part=02-ceiling-strip-2",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-02.png",
-     "x": 958,
-     "y": 504,
-     "w": 46,
-     "h": 21,
+     "x": 956,
+     "y": 501,
+     "w": 49,
+     "h": 26,
      "figma": "269:304"
     },
     {
-     "name": "part=03",
+     "name": "part=03-ceiling-drip",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-03.png",
-     "x": 1019,
-     "y": 503,
-     "w": 49,
-     "h": 22,
+     "x": 1017,
+     "y": 500,
+     "w": 53,
+     "h": 27,
      "figma": "269:305"
     },
     {
-     "name": "part=04",
+     "name": "part=04-arch-block",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-04.png",
      "x": 889,
      "y": 535,
-     "w": 68,
-     "h": 36,
+     "w": 71,
+     "h": 37,
      "figma": "269:306"
     },
     {
-     "name": "part=05",
+     "name": "part=05-wedge",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-05.png",
      "x": 979,
      "y": 535,
-     "w": 26,
-     "h": 36,
+     "w": 28,
+     "h": 37,
      "figma": "269:307"
     },
     {
-     "name": "part=06",
+     "name": "part=06-ceiling-corner",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-06.png",
-     "x": 1019,
-     "y": 535,
-     "w": 49,
-     "h": 37,
+     "x": 1017,
+     "y": 534,
+     "w": 53,
+     "h": 38,
      "figma": "269:308"
     },
     {
-     "name": "part=07",
+     "name": "part=07-brick-column",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-07.png",
-     "x": 889,
-     "y": 582,
-     "w": 27,
-     "h": 44,
+     "x": 888,
+     "y": 581,
+     "w": 29,
+     "h": 46,
      "figma": "269:309"
     },
     {
-     "name": "part=08",
+     "name": "part=08-brick-notch",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-08.png",
-     "x": 929,
-     "y": 582,
-     "w": 28,
-     "h": 44,
+     "x": 928,
+     "y": 581,
+     "w": 29,
+     "h": 46,
      "figma": "269:310"
     },
     {
-     "name": "part=09",
+     "name": "part=09-brick-wall",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-09.png",
-     "x": 969,
-     "y": 582,
-     "w": 61,
-     "h": 44,
+     "x": 968,
+     "y": 581,
+     "w": 63,
+     "h": 47,
      "figma": "269:311"
     },
     {
-     "name": "part=10",
+     "name": "part=10-brick-cap",
      "file": "parts/06_underground_tiles/06_underground_tiles-part-10.png",
-     "x": 1044,
-     "y": 586,
-     "w": 24,
-     "h": 40,
+     "x": 1043,
+     "y": 583,
+     "w": 27,
+     "h": 44,
      "figma": "269:312"
     }
    ]
@@ -616,84 +616,84 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-stalactite-cluster",
      "file": "parts/07_underground_props/07_underground_props-part-01.png",
-     "x": 1135,
-     "y": 504,
-     "w": 85,
-     "h": 53,
+     "x": 1134,
+     "y": 501,
+     "w": 88,
+     "h": 66,
      "figma": "269:314"
     },
     {
-     "name": "part=02",
+     "name": "part=02-banner-teal",
      "file": "parts/07_underground_props/07_underground_props-part-02.png",
-     "x": 1234,
-     "y": 504,
-     "w": 24,
-     "h": 67,
+     "x": 1233,
+     "y": 501,
+     "w": 28,
+     "h": 74,
      "figma": "269:315"
     },
     {
-     "name": "part=03",
+     "name": "part=03-banner-violet",
      "file": "parts/07_underground_props/07_underground_props-part-03.png",
      "x": 1273,
-     "y": 505,
-     "w": 12,
-     "h": 30,
+     "y": 502,
+     "w": 14,
+     "h": 35,
      "figma": "269:316"
     },
     {
-     "name": "part=04",
+     "name": "part=04-pillar-and-shrine",
      "file": "parts/07_underground_props/07_underground_props-part-04.png",
-     "x": 1099,
-     "y": 506,
-     "w": 58,
-     "h": 120,
+     "x": 1097,
+     "y": 504,
+     "w": 62,
+     "h": 123,
      "figma": "269:317"
     },
     {
-     "name": "part=05",
+     "name": "part=05-crystal-shard-pink",
      "file": "parts/07_underground_props/07_underground_props-part-05.png",
-     "x": 1270,
-     "y": 545,
-     "w": 15,
-     "h": 29,
+     "x": 1269,
+     "y": 544,
+     "w": 17,
+     "h": 33,
      "figma": "269:318"
     },
     {
-     "name": "part=06",
+     "name": "part=06-crystal-spire",
      "file": "parts/07_underground_props/07_underground_props-part-06.png",
-     "x": 1171,
-     "y": 579,
-     "w": 25,
-     "h": 47,
+     "x": 1169,
+     "y": 576,
+     "w": 28,
+     "h": 51,
      "figma": "269:319"
     },
     {
-     "name": "part=07",
+     "name": "part=07-crystal-spire-2",
      "file": "parts/07_underground_props/07_underground_props-part-07.png",
-     "x": 1208,
-     "y": 575,
-     "w": 24,
-     "h": 51,
+     "x": 1206,
+     "y": 573,
+     "w": 29,
+     "h": 55,
      "figma": "269:320"
     },
     {
-     "name": "part=08",
+     "name": "part=08-crystal-small",
      "file": "parts/07_underground_props/07_underground_props-part-08.png",
-     "x": 1241,
-     "y": 601,
-     "w": 17,
-     "h": 25,
+     "x": 1240,
+     "y": 600,
+     "w": 20,
+     "h": 28,
      "figma": "269:321"
     },
     {
-     "name": "part=09",
+     "name": "part=09-crystal-goblet",
      "file": "parts/07_underground_props/07_underground_props-part-09.png",
-     "x": 1267,
-     "y": 585,
-     "w": 19,
-     "h": 41,
+     "x": 1266,
+     "y": 583,
+     "w": 21,
+     "h": 45,
      "figma": "269:322"
     }
    ]
@@ -709,93 +709,93 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-water-ledge-pipe",
      "file": "parts/08_water_fx/08_water_fx-part-01.png",
-     "x": 1317,
-     "y": 508,
-     "w": 59,
-     "h": 49,
+     "x": 1313,
+     "y": 505,
+     "w": 66,
+     "h": 54,
      "figma": "269:324"
     },
     {
-     "name": "part=02",
+     "name": "part=02-water-column",
      "file": "parts/08_water_fx/08_water_fx-part-02.png",
-     "x": 1391,
-     "y": 506,
-     "w": 13,
-     "h": 51,
+     "x": 1388,
+     "y": 504,
+     "w": 19,
+     "h": 54,
      "figma": "269:325"
     },
     {
-     "name": "part=03",
+     "name": "part=03-waterfall-wide",
      "file": "parts/08_water_fx/08_water_fx-part-03.png",
-     "x": 1418,
-     "y": 506,
-     "w": 37,
-     "h": 83,
+     "x": 1414,
+     "y": 504,
+     "w": 44,
+     "h": 87,
      "figma": "269:326"
     },
     {
-     "name": "part=04",
+     "name": "part=04-waterfall-splash",
      "file": "parts/08_water_fx/08_water_fx-part-04.png",
-     "x": 1470,
-     "y": 506,
-     "w": 40,
-     "h": 68,
+     "x": 1468,
+     "y": 504,
+     "w": 44,
+     "h": 73,
      "figma": "269:327"
     },
     {
-     "name": "part=05",
+     "name": "part=05-fountain-basin-double",
      "file": "parts/08_water_fx/08_water_fx-part-05.png",
-     "x": 1317,
-     "y": 569,
-     "w": 47,
-     "h": 57,
+     "x": 1313,
+     "y": 565,
+     "w": 54,
+     "h": 63,
      "figma": "269:328"
     },
     {
-     "name": "part=06",
+     "name": "part=06-fountain-basin-single",
      "file": "parts/08_water_fx/08_water_fx-part-06.png",
-     "x": 1378,
-     "y": 568,
-     "w": 23,
-     "h": 58,
+     "x": 1375,
+     "y": 565,
+     "w": 30,
+     "h": 63,
      "figma": "269:329"
     },
     {
-     "name": "part=07",
+     "name": "part=07-water-orb",
      "file": "parts/08_water_fx/08_water_fx-part-07.png",
-     "x": 1418,
-     "y": 609,
-     "w": 17,
-     "h": 16,
+     "x": 1416,
+     "y": 599,
+     "w": 22,
+     "h": 29,
      "figma": "269:330"
     },
     {
-     "name": "part=08",
+     "name": "part=08-splash-drop",
      "file": "parts/08_water_fx/08_water_fx-part-08.png",
-     "x": 1452,
-     "y": 604,
-     "w": 25,
-     "h": 21,
+     "x": 1448,
+     "y": 598,
+     "w": 30,
+     "h": 29,
      "figma": "269:331"
     },
     {
-     "name": "part=09",
+     "name": "part=09-water-drop",
      "file": "parts/08_water_fx/08_water_fx-part-09.png",
-     "x": 1492,
-     "y": 607,
-     "w": 16,
-     "h": 18,
+     "x": 1489,
+     "y": 602,
+     "w": 24,
+     "h": 25,
      "figma": "269:332"
     },
     {
-     "name": "part=10",
+     "name": "part=10-droplets",
      "file": "parts/08_water_fx/08_water_fx-part-10.png",
      "x": 1496,
-     "y": 590,
+     "y": 586,
      "w": 17,
-     "h": 19,
+     "h": 23,
      "figma": "269:333"
     }
    ]
@@ -811,111 +811,111 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-scorpion",
      "file": "parts/09_enemies/09_enemies-part-01.png",
-     "x": 891,
-     "y": 684,
-     "w": 45,
-     "h": 36,
+     "x": 888,
+     "y": 682,
+     "w": 51,
+     "h": 42,
      "figma": "269:335"
     },
     {
-     "name": "part=02",
+     "name": "part=02-scorpion-2",
      "file": "parts/09_enemies/09_enemies-part-02.png",
-     "x": 956,
-     "y": 684,
-     "w": 40,
-     "h": 36,
+     "x": 955,
+     "y": 683,
+     "w": 44,
+     "h": 40,
      "figma": "269:336"
     },
     {
-     "name": "part=03",
+     "name": "part=03-sand-raptor",
      "file": "parts/09_enemies/09_enemies-part-03.png",
-     "x": 1026,
-     "y": 687,
-     "w": 50,
-     "h": 28,
+     "x": 1024,
+     "y": 685,
+     "w": 55,
+     "h": 34,
      "figma": "269:337"
     },
     {
-     "name": "part=04",
+     "name": "part=04-vulture",
      "file": "parts/09_enemies/09_enemies-part-04.png",
-     "x": 1112,
-     "y": 671,
-     "w": 35,
-     "h": 36,
+     "x": 1111,
+     "y": 670,
+     "w": 38,
+     "h": 41,
      "figma": "269:338"
     },
     {
-     "name": "part=05",
+     "name": "part=05-golem",
      "file": "parts/09_enemies/09_enemies-part-05.png",
-     "x": 1161,
-     "y": 677,
-     "w": 70,
-     "h": 73,
+     "x": 1158,
+     "y": 675,
+     "w": 76,
+     "h": 78,
      "figma": "269:339"
     },
     {
-     "name": "part=06",
+     "name": "part=06-beetle-large",
      "file": "parts/09_enemies/09_enemies-part-06.png",
-     "x": 892,
-     "y": 736,
-     "w": 52,
-     "h": 34,
+     "x": 889,
+     "y": 734,
+     "w": 59,
+     "h": 39,
      "figma": "269:340"
     },
     {
-     "name": "part=07",
+     "name": "part=07-beetle-small",
      "file": "parts/09_enemies/09_enemies-part-07.png",
-     "x": 962,
-     "y": 751,
-     "w": 33,
-     "h": 19,
+     "x": 960,
+     "y": 750,
+     "w": 36,
+     "h": 21,
      "figma": "269:341"
     },
     {
-     "name": "part=08",
+     "name": "part=08-sand-snake",
      "file": "parts/09_enemies/09_enemies-part-08.png",
-     "x": 1014,
-     "y": 746,
-     "w": 56,
-     "h": 24,
+     "x": 1010,
+     "y": 745,
+     "w": 61,
+     "h": 28,
      "figma": "269:342"
     },
     {
-     "name": "part=09",
+     "name": "part=09-mummy",
      "file": "parts/09_enemies/09_enemies-part-09.png",
-     "x": 1082,
-     "y": 716,
-     "w": 27,
-     "h": 54,
+     "x": 1079,
+     "y": 714,
+     "w": 33,
+     "h": 60,
      "figma": "269:343"
     },
     {
-     "name": "part=10",
+     "name": "part=10-sand-drift",
      "file": "parts/09_enemies/09_enemies-part-10.png",
-     "x": 1129,
-     "y": 758,
-     "w": 27,
-     "h": 13,
+     "x": 1124,
+     "y": 755,
+     "w": 35,
+     "h": 18,
      "figma": "269:344"
     },
     {
-     "name": "part=11",
+     "name": "part=11-sand-drift-2",
      "file": "parts/09_enemies/09_enemies-part-11.png",
-     "x": 1169,
-     "y": 758,
-     "w": 27,
-     "h": 13,
+     "x": 1166,
+     "y": 755,
+     "w": 33,
+     "h": 19,
      "figma": "269:345"
     },
     {
-     "name": "part=12",
+     "name": "part=12-sand-drift-3",
      "file": "parts/09_enemies/09_enemies-part-12.png",
-     "x": 1212,
-     "y": 758,
-     "w": 23,
-     "h": 12,
+     "x": 1209,
+     "y": 755,
+     "w": 30,
+     "h": 18,
      "figma": "269:346"
     }
    ]
@@ -931,75 +931,75 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-nomad",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-01.png",
-     "x": 1269,
-     "y": 686,
-     "w": 15,
-     "h": 32,
+     "x": 1265,
+     "y": 685,
+     "w": 22,
+     "h": 35,
      "figma": "269:348"
     },
     {
-     "name": "part=02",
+     "name": "part=02-nomad-child",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-02.png",
-     "x": 1300,
+     "x": 1298,
      "y": 689,
-     "w": 13,
-     "h": 29,
+     "w": 17,
+     "h": 31,
      "figma": "269:349"
     },
     {
-     "name": "part=03",
+     "name": "part=03-merchant",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-03.png",
-     "x": 1331,
-     "y": 685,
-     "w": 21,
-     "h": 33,
+     "x": 1328,
+     "y": 683,
+     "w": 27,
+     "h": 37,
      "figma": "269:350"
     },
     {
-     "name": "part=04",
+     "name": "part=04-spark-star",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-04.png",
-     "x": 1501,
-     "y": 686,
-     "w": 12,
-     "h": 12,
+     "x": 1493,
+     "y": 680,
+     "w": 23,
+     "h": 27,
      "figma": "269:351"
     },
     {
-     "name": "part=05",
+     "name": "part=05-nomad-2",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-05.png",
-     "x": 1266,
-     "y": 730,
-     "w": 17,
-     "h": 32,
+     "x": 1264,
+     "y": 728,
+     "w": 22,
+     "h": 35,
      "figma": "269:352"
     },
     {
-     "name": "part=06",
+     "name": "part=06-sand-spirit",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-06.png",
-     "x": 1300,
-     "y": 735,
-     "w": 23,
-     "h": 26,
+     "x": 1297,
+     "y": 733,
+     "w": 29,
+     "h": 30,
      "figma": "269:353"
     },
     {
-     "name": "part=07",
+     "name": "part=07-trade-chest",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-07.png",
-     "x": 1340,
-     "y": 734,
-     "w": 24,
-     "h": 28,
+     "x": 1336,
+     "y": 731,
+     "w": 30,
+     "h": 32,
      "figma": "269:354"
     },
     {
-     "name": "part=08",
+     "name": "part=08-camel-and-shrine",
      "file": "parts/10_npc_interactables/10_npc_interactables-part-08.png",
-     "x": 1376,
-     "y": 700,
-     "w": 143,
-     "h": 70,
+     "x": 1373,
+     "y": 693,
+     "w": 147,
+     "h": 80,
      "figma": "269:355"
     }
    ]
@@ -1015,292 +1015,328 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-torch-flame",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-01.png",
-     "x": 890,
+     "x": 888,
      "y": 820,
-     "w": 16,
-     "h": 47,
+     "w": 20,
+     "h": 50,
      "figma": "269:357"
     },
     {
-     "name": "part=02",
+     "name": "part=02-lantern-hanging",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-02.png",
-     "x": 934,
-     "y": 837,
-     "w": 12,
-     "h": 24,
+     "x": 931,
+     "y": 819,
+     "w": 18,
+     "h": 46,
      "figma": "269:358"
     },
     {
-     "name": "part=03",
+     "name": "part=03-lantern-tall",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-03.png",
-     "x": 979,
-     "y": 837,
-     "w": 12,
-     "h": 31,
+     "x": 975,
+     "y": 829,
+     "w": 18,
+     "h": 41,
      "figma": "269:359"
     },
     {
-     "name": "part=04",
+     "name": "part=04-lantern-hook",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-04.png",
-     "x": 1017,
-     "y": 832,
-     "w": 8,
-     "h": 15,
+     "x": 982,
+     "y": 819,
+     "w": 5,
+     "h": 10,
      "figma": "269:360"
     },
     {
-     "name": "part=05",
+     "name": "part=05-lantern-small",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-05.png",
-     "x": 1043,
+     "x": 1014,
      "y": 819,
-     "w": 12,
-     "h": 27,
+     "w": 14,
+     "h": 30,
      "figma": "269:361"
     },
     {
-     "name": "part=06",
+     "name": "part=06-oil-lamp",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-06.png",
-     "x": 1076,
-     "y": 820,
-     "w": 18,
-     "h": 22,
+     "x": 1042,
+     "y": 819,
+     "w": 14,
+     "h": 28,
      "figma": "269:362"
     },
     {
-     "name": "part=07",
+     "name": "part=07-plaque-glyph",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-07.png",
-     "x": 1115,
-     "y": 820,
-     "w": 15,
-     "h": 21,
+     "x": 1074,
+     "y": 817,
+     "w": 22,
+     "h": 27,
      "figma": "269:363"
     },
     {
-     "name": "part=08",
+     "name": "part=08-plaque-scroll",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-08.png",
-     "x": 1156,
-     "y": 823,
-     "w": 11,
-     "h": 16,
+     "x": 1113,
+     "y": 816,
+     "w": 18,
+     "h": 26,
      "figma": "269:364"
     },
     {
-     "name": "part=09",
+     "name": "part=09-frost-sparkle",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-09.png",
-     "x": 1011,
-     "y": 870,
-     "w": 17,
-     "h": 13,
+     "x": 1150,
+     "y": 817,
+     "w": 23,
+     "h": 26,
      "figma": "269:365"
     },
     {
-     "name": "part=10",
+     "name": "part=10-ash-scatter",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-10.png",
-     "x": 1042,
-     "y": 859,
-     "w": 8,
-     "h": 30,
+     "x": 889,
+     "y": 883,
+     "w": 20,
+     "h": 29,
      "figma": "269:366"
     },
     {
-     "name": "part=11",
+     "name": "part=11-lantern-green",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-11.png",
-     "x": 1066,
-     "y": 858,
-     "w": 11,
-     "h": 29,
+     "x": 924,
+     "y": 877,
+     "w": 18,
+     "h": 34,
      "figma": "269:367"
     },
     {
-     "name": "part=12",
+     "name": "part=12-debris-bit",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-12.png",
-     "x": 1098,
-     "y": 860,
-     "w": 11,
-     "h": 30,
+     "x": 961,
+     "y": 882,
+     "w": 7,
+     "h": 9,
      "figma": "269:368"
     },
     {
-     "name": "part=13",
+     "name": "part=13-debris-bit-2",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-13.png",
-     "x": 1128,
-     "y": 858,
-     "w": 13,
-     "h": 25,
+     "x": 976,
+     "y": 881,
+     "w": 7,
+     "h": 9,
      "figma": "269:369"
     },
     {
-     "name": "part=14",
+     "name": "part=14-bone-scatter",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-14.png",
-     "x": 1162,
-     "y": 864,
-     "w": 8,
-     "h": 21,
+     "x": 1009,
+     "y": 867,
+     "w": 21,
+     "h": 18,
      "figma": "269:370"
     },
     {
-     "name": "part=15",
+     "name": "part=15-pendant-hanging",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-15.png",
-     "x": 889,
-     "y": 886,
-     "w": 20,
-     "h": 26,
+     "x": 1040,
+     "y": 857,
+     "w": 13,
+     "h": 34,
      "figma": "269:371"
     },
     {
-     "name": "part=16",
+     "name": "part=16-pendant-lamp",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-16.png",
-     "x": 928,
-     "y": 894,
-     "w": 12,
-     "h": 15,
+     "x": 1064,
+     "y": 858,
+     "w": 14,
+     "h": 31,
      "figma": "269:372"
     },
     {
-     "name": "part=17",
+     "name": "part=17-charm-hanging",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-17.png",
-     "x": 961,
-     "y": 900,
-     "w": 9,
-     "h": 12,
+     "x": 1096,
+     "y": 857,
+     "w": 14,
+     "h": 38,
      "figma": "269:373"
     },
     {
-     "name": "part=18",
+     "name": "part=18-glow-orb",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-18.png",
-     "x": 1002,
-     "y": 901,
+     "x": 1126,
+     "y": 856,
      "w": 15,
-     "h": 12,
+     "h": 29,
      "figma": "269:374"
     },
     {
-     "name": "part=19",
+     "name": "part=19-glow-orb-double",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-19.png",
-     "x": 1038,
-     "y": 904,
-     "w": 11,
-     "h": 12,
+     "x": 1157,
+     "y": 858,
+     "w": 18,
+     "h": 32,
      "figma": "269:375"
     },
     {
-     "name": "part=20",
+     "name": "part=20-debris-bit-3",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-20.png",
-     "x": 1077,
-     "y": 903,
-     "w": 10,
-     "h": 12,
+     "x": 961,
+     "y": 898,
+     "w": 13,
+     "h": 14,
      "figma": "269:376"
     },
     {
-     "name": "part=21",
+     "name": "part=21-debris-bit-4",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-21.png",
-     "x": 1101,
-     "y": 907,
-     "w": 10,
-     "h": 8,
+     "x": 977,
+     "y": 903,
+     "w": 7,
+     "h": 9,
      "figma": "269:377"
     },
     {
-     "name": "part=22",
+     "name": "part=22-skull",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-22.png",
-     "x": 1132,
-     "y": 903,
-     "w": 10,
-     "h": 11,
+     "x": 1000,
+     "y": 898,
+     "w": 19,
+     "h": 18,
      "figma": "269:378"
     },
     {
-     "name": "part=23",
+     "name": "part=23-rock-ball",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-23.png",
-     "x": 1160,
-     "y": 907,
-     "w": 14,
-     "h": 10,
+     "x": 1036,
+     "y": 903,
+     "w": 16,
+     "h": 15,
      "figma": "269:379"
     },
     {
-     "name": "part=24",
+     "name": "part=24-dust-mote",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-24.png",
-     "x": 890,
-     "y": 933,
-     "w": 20,
-     "h": 23,
+     "x": 1076,
+     "y": 901,
+     "w": 13,
+     "h": 17,
      "figma": "269:380"
     },
     {
-     "name": "part=25",
+     "name": "part=25-dust-mote-2",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-25.png",
-     "x": 928,
-     "y": 929,
-     "w": 23,
-     "h": 25,
+     "x": 1099,
+     "y": 904,
+     "w": 12,
+     "h": 13,
      "figma": "269:381"
     },
     {
-     "name": "part=26",
+     "name": "part=26-sparkle-cross",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-26.png",
-     "x": 968,
-     "y": 938,
-     "w": 18,
-     "h": 18,
+     "x": 1126,
+     "y": 896,
+     "w": 21,
+     "h": 24,
      "figma": "269:382"
     },
     {
-     "name": "part=27",
+     "name": "part=27-sparkle-bits",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-27.png",
-     "x": 1001,
-     "y": 935,
-     "w": 17,
-     "h": 20,
+     "x": 1160,
+     "y": 903,
+     "w": 14,
+     "h": 14,
      "figma": "269:383"
     },
     {
-     "name": "part=28",
+     "name": "part=28-dust-burst",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-28.png",
-     "x": 1033,
-     "y": 940,
-     "w": 9,
-     "h": 11,
+     "x": 888,
+     "y": 931,
+     "w": 24,
+     "h": 27,
      "figma": "269:384"
     },
     {
-     "name": "part=29",
+     "name": "part=29-dust-cloud",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-29.png",
-     "x": 1061,
-     "y": 936,
-     "w": 21,
-     "h": 21,
+     "x": 927,
+     "y": 928,
+     "w": 25,
+     "h": 29,
      "figma": "269:385"
     },
     {
-     "name": "part=30",
+     "name": "part=30-sand-burst",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-30.png",
-     "x": 1099,
-     "y": 936,
-     "w": 19,
-     "h": 19,
+     "x": 965,
+     "y": 933,
+     "w": 23,
+     "h": 24,
      "figma": "269:386"
     },
     {
-     "name": "part=31",
+     "name": "part=31-rubble-burst",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-31.png",
-     "x": 1139,
-     "y": 940,
-     "w": 9,
-     "h": 10,
+     "x": 1000,
+     "y": 933,
+     "w": 20,
+     "h": 24,
      "figma": "269:387"
     },
     {
-     "name": "part=32",
+     "name": "part=32-sparkle-tiny",
      "file": "parts/11_details_small_fx/11_details_small_fx-part-32.png",
-     "x": 1157,
+     "x": 1032,
      "y": 939,
-     "w": 18,
-     "h": 8,
+     "w": 11,
+     "h": 14,
      "figma": "269:388"
+    },
+    {
+     "name": "part=33-glow-burst",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-33.png",
+     "x": 1057,
+     "y": 929,
+     "w": 27,
+     "h": 30,
+     "figma": "298:2"
+    },
+    {
+     "name": "part=34-glow-burst-2",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-34.png",
+     "x": 1095,
+     "y": 929,
+     "w": 25,
+     "h": 30,
+     "figma": "298:3"
+    },
+    {
+     "name": "part=35-star-flash",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-35.png",
+     "x": 1132,
+     "y": 933,
+     "w": 20,
+     "h": 25,
+     "figma": "298:4"
+    },
+    {
+     "name": "part=36-star-twinkle",
+     "file": "parts/11_details_small_fx/11_details_small_fx-part-36.png",
+     "x": 1157,
+     "y": 934,
+     "w": 18,
+     "h": 23,
+     "figma": "298:5"
     }
    ]
   },
@@ -1315,57 +1351,57 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-mountains-far",
      "file": "parts/12_background_layers/12_background_layers-part-01.png",
-     "x": 1203,
-     "y": 824,
-     "w": 312,
-     "h": 36,
+     "x": 1202,
+     "y": 821,
+     "w": 315,
+     "h": 41,
      "figma": "269:390"
     },
     {
-     "name": "part=02",
+     "name": "part=02-dunes-mid",
      "file": "parts/12_background_layers/12_background_layers-part-02.png",
-     "x": 1203,
-     "y": 868,
-     "w": 312,
-     "h": 22,
+     "x": 1201,
+     "y": 866,
+     "w": 316,
+     "h": 27,
      "figma": "269:391"
     },
     {
-     "name": "part=03",
+     "name": "part=03-sun",
      "file": "parts/12_background_layers/12_background_layers-part-03.png",
-     "x": 1204,
-     "y": 912,
-     "w": 27,
-     "h": 27,
+     "x": 1202,
+     "y": 911,
+     "w": 29,
+     "h": 28,
      "figma": "269:392"
     },
     {
-     "name": "part=04",
+     "name": "part=04-clouds-pair",
      "file": "parts/12_background_layers/12_background_layers-part-04.png",
-     "x": 1241,
-     "y": 900,
-     "w": 182,
-     "h": 26,
+     "x": 1238,
+     "y": 896,
+     "w": 187,
+     "h": 33,
      "figma": "269:393"
     },
     {
-     "name": "part=05",
+     "name": "part=05-cloud",
      "file": "parts/12_background_layers/12_background_layers-part-05.png",
-     "x": 1433,
-     "y": 899,
-     "w": 81,
-     "h": 27,
+     "x": 1431,
+     "y": 896,
+     "w": 86,
+     "h": 33,
      "figma": "269:394"
     },
     {
-     "name": "part=06",
+     "name": "part=06-dunes-near",
      "file": "parts/12_background_layers/12_background_layers-part-06.png",
      "x": 1203,
-     "y": 934,
-     "w": 312,
-     "h": 28,
+     "y": 932,
+     "w": 314,
+     "h": 31,
      "figma": "269:395"
     }
    ]
@@ -1381,21 +1417,21 @@
    ],
    "parts": [
     {
-     "name": "part=01",
+     "name": "part=01-palette-strip",
      "file": "parts/13_palette_mark/13_palette_mark-part-01.png",
-     "x": 1164,
+     "x": 1163,
      "y": 983,
-     "w": 165,
-     "h": 28,
+     "w": 166,
+     "h": 30,
      "figma": "269:397"
     },
     {
-     "name": "part=02",
+     "name": "part=02-mark",
      "file": "parts/13_palette_mark/13_palette_mark-part-02.png",
-     "x": 1361,
-     "y": 984,
-     "w": 32,
-     "h": 25,
+     "x": 1359,
+     "y": 983,
+     "w": 36,
+     "h": 27,
      "figma": "269:398"
     }
    ]
@@ -1418,8 +1454,7 @@
      "x": 0,
      "y": 0,
      "w": 866,
-     "h": 236,
-     "figma": "270:43"
+     "h": 236
     },
     {
      "name": "002 · earth mass · #8F1F1D",
@@ -1427,8 +1462,7 @@
      "x": 0,
      "y": 294,
      "w": 866,
-     "h": 549,
-     "figma": "270:44"
+     "h": 549
     },
     {
      "name": "003 · pink sandstone (far dunes, cave columns) · #FC8DD8",
@@ -1436,8 +1470,7 @@
      "x": 0,
      "y": 202,
      "w": 866,
-     "h": 620,
-     "figma": "270:45"
+     "h": 620
     },
     {
      "name": "004 · cave hollow west · #681082",
@@ -1445,8 +1478,7 @@
      "x": 29,
      "y": 361,
      "w": 837,
-     "h": 303,
-     "figma": "270:46"
+     "h": 303
     },
     {
      "name": "005 · red rock bands · #CE2F1B",
@@ -1454,8 +1486,7 @@
      "x": 0,
      "y": 383,
      "w": 866,
-     "h": 444,
-     "figma": "270:47"
+     "h": 444
     },
     {
      "name": "006 · deep pools + boss hall · #015588",
@@ -1463,8 +1494,7 @@
      "x": 18,
      "y": 476,
      "w": 826,
-     "h": 323,
-     "figma": "270:48"
+     "h": 323
     },
     {
      "name": "007 · underground lake · #1BF4DF",
@@ -1472,8 +1502,7 @@
      "x": 229,
      "y": 699,
      "w": 349,
-     "h": 118,
-     "figma": "270:49"
+     "h": 118
     },
     {
      "name": "008 · sand rim + top soil · #FCA533",
@@ -1481,8 +1510,7 @@
      "x": 0,
      "y": 177,
      "w": 866,
-     "h": 638,
-     "figma": "270:50"
+     "h": 638
     },
     {
      "name": "009 · cave hollow east · #7C10A4",
@@ -1490,8 +1518,7 @@
      "x": 368,
      "y": 277,
      "w": 498,
-     "h": 325,
-     "figma": "270:51"
+     "h": 325
     },
     {
      "name": "010 · rock spires + statue · #34F869",
@@ -1499,8 +1526,7 @@
      "x": 665,
      "y": 120,
      "w": 201,
-     "h": 167,
-     "figma": "270:52"
+     "h": 167
     },
     {
      "name": "011 · waterfall + sand fall · #9DD9FB",
@@ -1508,8 +1534,7 @@
      "x": 254,
      "y": 277,
      "w": 252,
-     "h": 235,
-     "figma": "270:53"
+     "h": 235
     },
     {
      "name": "012 · text title · #68F0FB",
@@ -1517,8 +1542,7 @@
      "x": 23,
      "y": 11,
      "w": 271,
-     "h": 44,
-     "figma": "270:54"
+     "h": 44
     },
     {
      "name": "013 · cave rims · #B5E430",
@@ -1526,8 +1550,7 @@
      "x": 17,
      "y": 461,
      "w": 848,
-     "h": 320,
-     "figma": "270:55"
+     "h": 320
     },
     {
      "name": "014 · cave passages · #6E0BEE",
@@ -1535,8 +1558,7 @@
      "x": 43,
      "y": 304,
      "w": 728,
-     "h": 205,
-     "figma": "270:56"
+     "h": 205
     },
     {
      "name": "015 · aqueduct + bridge ruins · #F23845",
@@ -1544,8 +1566,7 @@
      "x": 319,
      "y": 181,
      "w": 260,
-     "h": 123,
-     "figma": "270:57"
+     "h": 123
     },
     {
      "name": "016 · root curtain · #827002",
@@ -1553,8 +1574,7 @@
      "x": 180,
      "y": 532,
      "w": 103,
-     "h": 129,
-     "figma": "270:58"
+     "h": 129
     },
     {
      "name": "017 · mask · #FBAC43",
@@ -1562,8 +1582,7 @@
      "x": 0,
      "y": 148,
      "w": 866,
-     "h": 662,
-     "figma": "270:59"
+     "h": 662
     },
     {
      "name": "018 · mask · #822CF8",
@@ -1571,8 +1590,7 @@
      "x": 174,
      "y": 437,
      "w": 686,
-     "h": 256,
-     "figma": "270:60"
+     "h": 256
     },
     {
      "name": "019 · mask · #F4BB30",
@@ -1580,8 +1598,7 @@
      "x": 2,
      "y": 330,
      "w": 817,
-     "h": 479,
-     "figma": "270:61"
+     "h": 479
     },
     {
      "name": "020 · text subtitle · #FA38FA",
@@ -1589,8 +1606,7 @@
      "x": 23,
      "y": 61,
      "w": 218,
-     "h": 24,
-     "figma": "270:62"
+     "h": 24
     },
     {
      "name": "021 · sun + relic glow · #FDED77",
@@ -1598,8 +1614,7 @@
      "x": 61,
      "y": 104,
      "w": 717,
-     "h": 684,
-     "figma": "270:63"
+     "h": 684
     },
     {
      "name": "022 · mask · #0FC8FB",
@@ -1607,8 +1622,7 @@
      "x": 113,
      "y": 345,
      "w": 505,
-     "h": 327,
-     "figma": "270:64"
+     "h": 327
     },
     {
      "name": "023 · mask · #59B03F",
@@ -1616,8 +1630,7 @@
      "x": 73,
      "y": 642,
      "w": 155,
-     "h": 62,
-     "figma": "270:65"
+     "h": 62
     },
     {
      "name": "024 · mask · #4C8080",
@@ -1625,8 +1638,7 @@
      "x": 503,
      "y": 496,
      "w": 71,
-     "h": 147,
-     "figma": "270:66"
+     "h": 147
     },
     {
      "name": "025 · mask · #9621EA",
@@ -1634,8 +1646,7 @@
      "x": 140,
      "y": 297,
      "w": 483,
-     "h": 389,
-     "figma": "270:67"
+     "h": 389
     },
     {
      "name": "026 · text line 2 · #69F828",
@@ -1643,8 +1654,7 @@
      "x": 23,
      "y": 120,
      "w": 150,
-     "h": 28,
-     "figma": "270:68"
+     "h": 28
     },
     {
      "name": "027 · mask · #79078F",
@@ -1652,8 +1662,7 @@
      "x": 119,
      "y": 261,
      "w": 637,
-     "h": 350,
-     "figma": "270:69"
+     "h": 350
     },
     {
      "name": "028 · text line 1 · #FDDF09",
@@ -1661,8 +1670,7 @@
      "x": 23,
      "y": 98,
      "w": 168,
-     "h": 23,
-     "figma": "270:70"
+     "h": 23
     },
     {
      "name": "029 · mask · #07BF2B",
@@ -1670,8 +1678,7 @@
      "x": 168,
      "y": 303,
      "w": 540,
-     "h": 170,
-     "figma": "270:71"
+     "h": 170
     },
     {
      "name": "030 · mask · #7709CA",
@@ -1679,8 +1686,7 @@
      "x": 133,
      "y": 277,
      "w": 641,
-     "h": 352,
-     "figma": "270:72"
+     "h": 352
     },
     {
      "name": "031 · mask · #C0F829",
@@ -1688,8 +1694,7 @@
      "x": 380,
      "y": 315,
      "w": 34,
-     "h": 96,
-     "figma": "270:73"
+     "h": 96
     },
     {
      "name": "032 · mask · #FB9226",
@@ -1697,8 +1702,7 @@
      "x": 275,
      "y": 174,
      "w": 109,
-     "h": 113,
-     "figma": "270:74"
+     "h": 113
     },
     {
      "name": "033 · mask · #F4A4EA",
@@ -1706,8 +1710,7 @@
      "x": 240,
      "y": 288,
      "w": 595,
-     "h": 502,
-     "figma": "270:75"
+     "h": 502
     },
     {
      "name": "034 · mask · #F19AD1",
@@ -1715,8 +1718,7 @@
      "x": 20,
      "y": 205,
      "w": 846,
-     "h": 583,
-     "figma": "270:76"
+     "h": 583
     },
     {
      "name": "035 · mask · #FEED4C",
@@ -1724,8 +1726,7 @@
      "x": 238,
      "y": 686,
      "w": 587,
-     "h": 107,
-     "figma": "270:77"
+     "h": 107
     },
     {
      "name": "036 · mask · #7F0824",
@@ -1733,8 +1734,7 @@
      "x": 227,
      "y": 303,
      "w": 628,
-     "h": 378,
-     "figma": "270:78"
+     "h": 378
     },
     {
      "name": "037 · mask · #0BCF31",
@@ -1742,8 +1742,7 @@
      "x": 174,
      "y": 309,
      "w": 544,
-     "h": 297,
-     "figma": "270:79"
+     "h": 297
     },
     {
      "name": "038 · mask · #9E161E",
@@ -1751,8 +1750,7 @@
      "x": 0,
      "y": 364,
      "w": 866,
-     "h": 451,
-     "figma": "270:80"
+     "h": 451
     },
     {
      "name": "039 · mask · #E9020B",
@@ -1760,8 +1758,7 @@
      "x": 55,
      "y": 216,
      "w": 39,
-     "h": 114,
-     "figma": "270:81"
+     "h": 114
     },
     {
      "name": "040 · mask · #8A212E",
@@ -1769,8 +1766,7 @@
      "x": 208,
      "y": 298,
      "w": 658,
-     "h": 518,
-     "figma": "270:82"
+     "h": 518
     },
     {
      "name": "041 · mask · #8F0615",
@@ -1778,8 +1774,7 @@
      "x": 191,
      "y": 308,
      "w": 664,
-     "h": 430,
-     "figma": "270:83"
+     "h": 430
     },
     {
      "name": "042 · mask · #B0D445",
@@ -1787,8 +1782,7 @@
      "x": 119,
      "y": 643,
      "w": 127,
-     "h": 145,
-     "figma": "270:84"
+     "h": 145
     },
     {
      "name": "043 · mask · #5E63F9",
@@ -1796,8 +1790,7 @@
      "x": 0,
      "y": 227,
      "w": 835,
-     "h": 563,
-     "figma": "270:85"
+     "h": 563
     },
     {
      "name": "044 · mask · #FCD23A",
@@ -1805,8 +1798,7 @@
      "x": 2,
      "y": 731,
      "w": 794,
-     "h": 63,
-     "figma": "270:86"
+     "h": 63
     },
     {
      "name": "045 · mask · #BD2B1D",
@@ -1814,8 +1806,7 @@
      "x": 0,
      "y": 395,
      "w": 866,
-     "h": 422,
-     "figma": "270:87"
+     "h": 422
     },
     {
      "name": "046 · mask · #AB205D",
@@ -1823,8 +1814,7 @@
      "x": 391,
      "y": 392,
      "w": 101,
-     "h": 245,
-     "figma": "270:88"
+     "h": 245
     },
     {
      "name": "047 · mask · #78057C",
@@ -1832,8 +1822,7 @@
      "x": 587,
      "y": 270,
      "w": 170,
-     "h": 86,
-     "figma": "270:89"
+     "h": 86
     },
     {
      "name": "048 · mask · #D1D52E",
@@ -1841,8 +1830,7 @@
      "x": 3,
      "y": 342,
      "w": 835,
-     "h": 446,
-     "figma": "270:90"
+     "h": 446
     },
     {
      "name": "049 · mask · #AFCFFA",
@@ -1850,8 +1838,7 @@
      "x": 284,
      "y": 286,
      "w": 249,
-     "h": 218,
-     "figma": "270:91"
+     "h": 218
     },
     {
      "name": "050 · mask · #A140E8",
@@ -1859,8 +1846,7 @@
      "x": 174,
      "y": 421,
      "w": 275,
-     "h": 280,
-     "figma": "270:92"
+     "h": 280
     },
     {
      "name": "051 · mask · #27EDF8",
@@ -1868,8 +1854,7 @@
      "x": 118,
      "y": 615,
      "w": 109,
-     "h": 16,
-     "figma": "270:93"
+     "h": 16
     },
     {
      "name": "052 · text START · #F82F31",
@@ -1877,8 +1862,7 @@
      "x": 29,
      "y": 801,
      "w": 60,
-     "h": 21,
-     "figma": "270:94"
+     "h": 21
     },
     {
      "name": "053 · mask · #F54D30",
@@ -1886,8 +1870,7 @@
      "x": 210,
      "y": 255,
      "w": 81,
-     "h": 45,
-     "figma": "270:95"
+     "h": 45
     },
     {
      "name": "054 · mask · #A5EB37",
@@ -1895,8 +1878,7 @@
      "x": 117,
      "y": 316,
      "w": 549,
-     "h": 351,
-     "figma": "270:96"
+     "h": 351
     },
     {
      "name": "055 · mask · #06E1FB",
@@ -1904,8 +1886,7 @@
      "x": 113,
      "y": 363,
      "w": 513,
-     "h": 288,
-     "figma": "270:97"
+     "h": 288
     },
     {
      "name": "056 · mask · #6911BB",
@@ -1913,8 +1894,7 @@
      "x": 116,
      "y": 273,
      "w": 418,
-     "h": 333,
-     "figma": "270:98"
+     "h": 333
     },
     {
      "name": "057 · mask · #13B836",
@@ -1922,8 +1902,7 @@
      "x": 173,
      "y": 324,
      "w": 542,
-     "h": 156,
-     "figma": "270:99"
+     "h": 156
     },
     {
      "name": "058 · mask · #165FFB",
@@ -1931,8 +1910,7 @@
      "x": 249,
      "y": 215,
      "w": 517,
-     "h": 22,
-     "figma": "270:100"
+     "h": 22
     },
     {
      "name": "059 · mask · #C7E143",
@@ -1940,8 +1918,7 @@
      "x": 259,
      "y": 331,
      "w": 597,
-     "h": 445,
-     "figma": "270:101"
+     "h": 445
     },
     {
      "name": "060 · mask · #2C5BFA",
@@ -1949,8 +1926,7 @@
      "x": 10,
      "y": 220,
      "w": 747,
-     "h": 143,
-     "figma": "270:102"
+     "h": 143
     },
     {
      "name": "061 · mask · #F2ABE0",
@@ -1958,8 +1934,7 @@
      "x": 80,
      "y": 217,
      "w": 750,
-     "h": 562,
-     "figma": "270:103"
+     "h": 562
     },
     {
      "name": "062 · mask · #3906E7",
@@ -1967,8 +1942,7 @@
      "x": 82,
      "y": 295,
      "w": 752,
-     "h": 283,
-     "figma": "270:104"
+     "h": 283
     },
     {
      "name": "063 · mask · #900793",
@@ -1976,8 +1950,7 @@
      "x": 561,
      "y": 274,
      "w": 54,
-     "h": 79,
-     "figma": "270:105"
+     "h": 79
     },
     {
      "name": "064 · mask · #2F9645",
@@ -1985,8 +1958,7 @@
      "x": 114,
      "y": 689,
      "w": 27,
-     "h": 39,
-     "figma": "270:106"
+     "h": 39
     },
     {
      "name": "065 · mask · #61688C",
@@ -1994,8 +1966,7 @@
      "x": 566,
      "y": 521,
      "w": 35,
-     "h": 37,
-     "figma": "270:107"
+     "h": 37
     },
     {
      "name": "066 · mask · #06B218",
@@ -2003,8 +1974,7 @@
      "x": 129,
      "y": 349,
      "w": 384,
-     "h": 454,
-     "figma": "270:108"
+     "h": 454
     },
     {
      "name": "067 · mask · #8D12DA",
@@ -2012,8 +1982,7 @@
      "x": 138,
      "y": 277,
      "w": 458,
-     "h": 288,
-     "figma": "270:109"
+     "h": 288
     },
     {
      "name": "068 · mask · #2DCC32",
@@ -2021,8 +1990,7 @@
      "x": 25,
      "y": 294,
      "w": 631,
-     "h": 75,
-     "figma": "270:110"
+     "h": 75
     },
     {
      "name": "069 · mask · #D1B9F2",
@@ -2030,8 +1998,7 @@
      "x": 495,
      "y": 289,
      "w": 39,
-     "h": 23,
-     "figma": "270:111"
+     "h": 23
     },
     {
      "name": "070 · mask · #3D04A8",
@@ -2039,8 +2006,7 @@
      "x": 76,
      "y": 231,
      "w": 54,
-     "h": 18,
-     "figma": "270:112"
+     "h": 18
     },
     {
      "name": "071 · mask · #739B1D",
@@ -2048,8 +2014,7 @@
      "x": 797,
      "y": 328,
      "w": 31,
-     "h": 41,
-     "figma": "270:113"
+     "h": 41
     },
     {
      "name": "072 · mask · #03889D",
@@ -2057,8 +2022,7 @@
      "x": 290,
      "y": 298,
      "w": 59,
-     "h": 24,
-     "figma": "270:114"
+     "h": 24
     },
     {
      "name": "073 · mask · #815904",
@@ -2066,8 +2030,7 @@
      "x": 265,
      "y": 632,
      "w": 21,
-     "h": 29,
-     "figma": "270:115"
+     "h": 29
     },
     {
      "name": "074 · mask · #FB78D6",
@@ -2075,8 +2038,7 @@
      "x": 78,
      "y": 268,
      "w": 473,
-     "h": 372,
-     "figma": "270:116"
+     "h": 372
     },
     {
      "name": "075 · mask · #FDB108",
@@ -2084,8 +2046,7 @@
      "x": 71,
      "y": 470,
      "w": 20,
-     "h": 302,
-     "figma": "270:117"
+     "h": 302
     },
     {
      "name": "076 · mask · #11D74A",
@@ -2093,8 +2054,7 @@
      "x": 182,
      "y": 554,
      "w": 17,
-     "h": 52,
-     "figma": "270:118"
+     "h": 52
     },
     {
      "name": "077 · mask · #28D518",
@@ -2102,8 +2062,7 @@
      "x": 217,
      "y": 431,
      "w": 34,
-     "h": 18,
-     "figma": "270:119"
+     "h": 18
     },
     {
      "name": "078 · mask · #B2B425",
@@ -2111,8 +2070,7 @@
      "x": 169,
      "y": 308,
      "w": 285,
-     "h": 56,
-     "figma": "270:120"
+     "h": 56
     },
     {
      "name": "079 · mask · #5D4DC3",
@@ -2120,8 +2078,7 @@
      "x": 853,
      "y": 694,
      "w": 13,
-     "h": 49,
-     "figma": "270:121"
+     "h": 49
     },
     {
      "name": "080 · mask · #76CECD",
@@ -2129,8 +2086,7 @@
      "x": 744,
      "y": 634,
      "w": 11,
-     "h": 44,
-     "figma": "270:122"
+     "h": 44
     },
     {
      "name": "081 · mask · #21BE47",
@@ -2138,8 +2094,7 @@
      "x": 686,
      "y": 360,
      "w": 27,
-     "h": 25,
-     "figma": "270:123"
+     "h": 25
     },
     {
      "name": "082 · mask · #BE1018",
@@ -2147,8 +2102,7 @@
      "x": 440,
      "y": 674,
      "w": 19,
-     "h": 28,
-     "figma": "270:124"
+     "h": 28
     },
     {
      "name": "083 · mask · #0D1922",
@@ -2156,8 +2110,7 @@
      "x": 0,
      "y": 335,
      "w": 866,
-     "h": 508,
-     "figma": "270:125"
+     "h": 508
     },
     {
      "name": "084 · mask · #344175",
@@ -2165,8 +2118,7 @@
      "x": 855,
      "y": 662,
      "w": 11,
-     "h": 33,
-     "figma": "270:126"
+     "h": 33
     },
     {
      "name": "085 · mask · #A0780C",
@@ -2174,8 +2126,7 @@
      "x": 192,
      "y": 307,
      "w": 20,
-     "h": 17,
-     "figma": "270:127"
+     "h": 17
     },
     {
      "name": "086 · mask · #BE3CE4",
@@ -2183,8 +2134,7 @@
      "x": 467,
      "y": 682,
      "w": 19,
-     "h": 16,
-     "figma": "270:128"
+     "h": 16
     },
     {
      "name": "087 · mask · #249492",
@@ -2192,8 +2142,7 @@
      "x": 333,
      "y": 489,
      "w": 18,
-     "h": 21,
-     "figma": "270:129"
+     "h": 21
     },
     {
      "name": "088 · mask · #680F00",
@@ -2201,8 +2150,7 @@
      "x": 189,
      "y": 320,
      "w": 23,
-     "h": 12,
-     "figma": "270:130"
+     "h": 12
     },
     {
      "name": "089 · mask · #716E12",
@@ -2210,8 +2158,7 @@
      "x": 112,
      "y": 602,
      "w": 16,
-     "h": 17,
-     "figma": "270:131"
+     "h": 17
     },
     {
      "name": "090 · mask · #872D83",
@@ -2219,8 +2166,7 @@
      "x": 126,
      "y": 603,
      "w": 16,
-     "h": 16,
-     "figma": "270:132"
+     "h": 16
     },
     {
      "name": "091 · mask · #E39E65",
@@ -2228,8 +2174,7 @@
      "x": 31,
      "y": 768,
      "w": 18,
-     "h": 18,
-     "figma": "270:133"
+     "h": 18
     },
     {
      "name": "092 · mask · #FBADC6",
@@ -2237,8 +2182,7 @@
      "x": 782,
      "y": 363,
      "w": 21,
-     "h": 13,
-     "figma": "270:134"
+     "h": 13
     },
     {
      "name": "093 · mask · #027A86",
@@ -2246,8 +2190,7 @@
      "x": 316,
      "y": 304,
      "w": 19,
-     "h": 10,
-     "figma": "270:135"
+     "h": 10
     },
     {
      "name": "094 · mask · #B52E34",
@@ -2255,8 +2198,7 @@
      "x": 439,
      "y": 605,
      "w": 16,
-     "h": 12,
-     "figma": "270:136"
+     "h": 12
     },
     {
      "name": "095 · mask · #C6521E",
@@ -2264,8 +2206,7 @@
      "x": 757,
      "y": 337,
      "w": 13,
-     "h": 14,
-     "figma": "270:137"
+     "h": 14
     },
     {
      "name": "096 · mask · #A332F9",
@@ -2273,8 +2214,7 @@
      "x": 167,
      "y": 398,
      "w": 19,
-     "h": 40,
-     "figma": "270:138"
+     "h": 40
     },
     {
      "name": "097 · mask · #06ABD6",
@@ -2282,8 +2222,7 @@
      "x": 574,
      "y": 741,
      "w": 9,
-     "h": 19,
-     "figma": "270:139"
+     "h": 19
     },
     {
      "name": "098 · mask · #C852D0",
@@ -2291,8 +2230,7 @@
      "x": 143,
      "y": 265,
      "w": 13,
-     "h": 13,
-     "figma": "270:140"
+     "h": 13
     },
     {
      "name": "099 · mask · #99441E",
@@ -2300,8 +2238,7 @@
      "x": 761,
      "y": 350,
      "w": 10,
-     "h": 15,
-     "figma": "270:141"
+     "h": 15
     },
     {
      "name": "100 · mask · #1FF8CB",
@@ -2309,8 +2246,7 @@
      "x": 246,
      "y": 773,
      "w": 10,
-     "h": 12,
-     "figma": "270:142"
+     "h": 12
     },
     {
      "name": "101 · mask · #FCC320",
@@ -2318,8 +2254,7 @@
      "x": 104,
      "y": 372,
      "w": 703,
-     "h": 142,
-     "figma": "270:143"
+     "h": 142
     },
     {
      "name": "102 · mask · #0FDCDE",
@@ -2327,8 +2262,7 @@
      "x": 571,
      "y": 760,
      "w": 6,
-     "h": 22,
-     "figma": "270:144"
+     "h": 22
     },
     {
      "name": "103 · mask · #F26946",
@@ -2336,8 +2270,7 @@
      "x": 263,
      "y": 284,
      "w": 12,
-     "h": 7,
-     "figma": "270:145"
+     "h": 7
     },
     {
      "name": "104 · mask · #F0DB1F",
@@ -2345,8 +2278,7 @@
      "x": 3,
      "y": 728,
      "w": 15,
-     "h": 6,
-     "figma": "270:146"
+     "h": 6
     },
     {
      "name": "105 · mask · #26CDFA",
@@ -2354,8 +2286,7 @@
      "x": 540,
      "y": 380,
      "w": 10,
-     "h": 6,
-     "figma": "270:147"
+     "h": 6
     },
     {
      "name": "106 · mask · #992B02",
@@ -2363,8 +2294,7 @@
      "x": 205,
      "y": 352,
      "w": 162,
-     "h": 105,
-     "figma": "270:148"
+     "h": 105
     },
     {
      "name": "107 · mask · #93F530",
@@ -2372,8 +2302,7 @@
      "x": 623,
      "y": 353,
      "w": 5,
-     "h": 7,
-     "figma": "270:149"
+     "h": 7
     },
     {
      "name": "108 · mask · #C9372A",
@@ -2381,8 +2310,7 @@
      "x": 374,
      "y": 517,
      "w": 3,
-     "h": 7,
-     "figma": "270:150"
+     "h": 7
     }
    ]
   },
@@ -2402,8 +2330,7 @@
      "x": 6,
      "y": 1,
      "w": 150,
-     "h": 35,
-     "figma": "270:152"
+     "h": 35
     },
     {
      "name": "002 · mask · #FBADC6",
@@ -2411,8 +2338,7 @@
      "x": 1,
      "y": 19,
      "w": 126,
-     "h": 60,
-     "figma": "270:153"
+     "h": 60
     },
     {
      "name": "003 · mask · #C9372A",
@@ -2420,8 +2346,7 @@
      "x": 0,
      "y": 62,
      "w": 156,
-     "h": 48,
-     "figma": "270:154"
+     "h": 48
     },
     {
      "name": "004 · mask · #FCA533",
@@ -2429,8 +2354,7 @@
      "x": 0,
      "y": 73,
      "w": 155,
-     "h": 27,
-     "figma": "270:155"
+     "h": 27
     },
     {
      "name": "005 · mask · #FBBAD5",
@@ -2438,8 +2362,7 @@
      "x": 1,
      "y": 4,
      "w": 131,
-     "h": 73,
-     "figma": "270:156"
+     "h": 73
     },
     {
      "name": "006 · mask · #F54D30",
@@ -2447,8 +2370,7 @@
      "x": 92,
      "y": 21,
      "w": 64,
-     "h": 60,
-     "figma": "270:157"
+     "h": 60
     },
     {
      "name": "007 · mask · #C74140",
@@ -2456,8 +2378,7 @@
      "x": 15,
      "y": 53,
      "w": 29,
-     "h": 26,
-     "figma": "270:158"
+     "h": 26
     },
     {
      "name": "008 · mask · #F26946",
@@ -2465,8 +2386,7 @@
      "x": 0,
      "y": 52,
      "w": 21,
-     "h": 26,
-     "figma": "270:159"
+     "h": 26
     },
     {
      "name": "009 · mask · #0D1922",
@@ -2474,8 +2394,7 @@
      "x": 0,
      "y": 0,
      "w": 156,
-     "h": 110,
-     "figma": "270:160"
+     "h": 110
     },
     {
      "name": "010 · mask · #F2ABE0",
@@ -2483,8 +2402,7 @@
      "x": 9,
      "y": 8,
      "w": 137,
-     "h": 36,
-     "figma": "270:161"
+     "h": 36
     },
     {
      "name": "011 · mask · #CE2F1B",
@@ -2492,8 +2410,7 @@
      "x": 58,
      "y": 84,
      "w": 82,
-     "h": 21,
-     "figma": "270:162"
+     "h": 21
     },
     {
      "name": "012 · mask · #FD9E82",
@@ -2501,8 +2418,7 @@
      "x": 131,
      "y": 41,
      "w": 15,
-     "h": 22,
-     "figma": "270:163"
+     "h": 22
     },
     {
      "name": "013 · mask · #FB9226",
@@ -2510,8 +2426,7 @@
      "x": 93,
      "y": 59,
      "w": 10,
-     "h": 14,
-     "figma": "270:164"
+     "h": 14
     },
     {
      "name": "014 · mask · #B52E34",
@@ -2519,8 +2434,7 @@
      "x": 20,
      "y": 65,
      "w": 10,
-     "h": 12,
-     "figma": "270:165"
+     "h": 12
     },
     {
      "name": "015 · mask · #D1B9F2",
@@ -2528,8 +2442,7 @@
      "x": 88,
      "y": 32,
      "w": 12,
-     "h": 9,
-     "figma": "270:166"
+     "h": 9
     },
     {
      "name": "016 · mask · #FBAC43",
@@ -2537,8 +2450,7 @@
      "x": 48,
      "y": 93,
      "w": 5,
-     "h": 4,
-     "figma": "270:167"
+     "h": 4
     }
    ]
   },
@@ -2558,8 +2470,7 @@
      "x": 0,
      "y": 31,
      "w": 154,
-     "h": 70,
-     "figma": "270:169"
+     "h": 70
     },
     {
      "name": "002 · mask · #FBADC6",
@@ -2567,8 +2478,7 @@
      "x": 32,
      "y": 7,
      "w": 101,
-     "h": 103,
-     "figma": "270:170"
+     "h": 103
     },
     {
      "name": "003 · mask · #F2ABE0",
@@ -2576,8 +2486,7 @@
      "x": 8,
      "y": 0,
      "w": 146,
-     "h": 37,
-     "figma": "270:171"
+     "h": 37
     },
     {
      "name": "004 · mask · #FCA0B2",
@@ -2585,8 +2494,7 @@
      "x": 25,
      "y": 15,
      "w": 108,
-     "h": 95,
-     "figma": "270:172"
+     "h": 95
     },
     {
      "name": "005 · mask · #B42C90",
@@ -2594,8 +2502,7 @@
      "x": 0,
      "y": 3,
      "w": 32,
-     "h": 36,
-     "figma": "270:173"
+     "h": 36
     },
     {
      "name": "006 · mask · #FBAC43",
@@ -2603,8 +2510,7 @@
      "x": 0,
      "y": 24,
      "w": 149,
-     "h": 85,
-     "figma": "270:174"
+     "h": 85
     },
     {
      "name": "007 · mask · #C9372A",
@@ -2612,8 +2518,7 @@
      "x": 104,
      "y": 94,
      "w": 50,
-     "h": 16,
-     "figma": "270:175"
+     "h": 16
     },
     {
      "name": "008 · mask · #0D1922",
@@ -2621,8 +2526,7 @@
      "x": 0,
      "y": 0,
      "w": 154,
-     "h": 110,
-     "figma": "270:176"
+     "h": 110
     },
     {
      "name": "009 · mask · #FC8DD8",
@@ -2630,8 +2534,7 @@
      "x": 132,
      "y": 14,
      "w": 16,
-     "h": 11,
-     "figma": "270:177"
+     "h": 11
     },
     {
      "name": "010 · mask · #F19AD1",
@@ -2639,8 +2542,7 @@
      "x": 76,
      "y": 24,
      "w": 13,
-     "h": 14,
-     "figma": "270:178"
+     "h": 14
     },
     {
      "name": "011 · mask · #F23845",
@@ -2648,8 +2550,7 @@
      "x": 103,
      "y": 27,
      "w": 15,
-     "h": 10,
-     "figma": "270:179"
+     "h": 10
     },
     {
      "name": "012 · mask · #FBBAD5",
@@ -2657,8 +2558,7 @@
      "x": 59,
      "y": 26,
      "w": 11,
-     "h": 11,
-     "figma": "270:180"
+     "h": 11
     },
     {
      "name": "013 · mask · #FCA533",
@@ -2666,8 +2566,7 @@
      "x": 22,
      "y": 25,
      "w": 112,
-     "h": 84,
-     "figma": "270:181"
+     "h": 84
     },
     {
      "name": "014 · mask · #F4A4EA",
@@ -2675,8 +2574,7 @@
      "x": 89,
      "y": 1,
      "w": 17,
-     "h": 11,
-     "figma": "270:182"
+     "h": 11
     },
     {
      "name": "015 · mask · #F82F31",
@@ -2684,8 +2582,7 @@
      "x": 101,
      "y": 33,
      "w": 9,
-     "h": 4,
-     "figma": "270:183"
+     "h": 4
     },
     {
      "name": "016 · mask · #B52E34",
@@ -2693,8 +2590,7 @@
      "x": 150,
      "y": 105,
      "w": 4,
-     "h": 4,
-     "figma": "270:184"
+     "h": 4
     }
    ]
   },
@@ -2714,8 +2610,7 @@
      "x": 0,
      "y": 0,
      "w": 162,
-     "h": 96,
-     "figma": "270:186"
+     "h": 96
     },
     {
      "name": "002 · mask · #027A86",
@@ -2723,8 +2618,7 @@
      "x": 11,
      "y": 20,
      "w": 115,
-     "h": 76,
-     "figma": "270:187"
+     "h": 76
     },
     {
      "name": "003 · mask · #76440D",
@@ -2732,8 +2626,7 @@
      "x": 1,
      "y": 81,
      "w": 161,
-     "h": 29,
-     "figma": "270:188"
+     "h": 29
     },
     {
      "name": "004 · mask · #026A7A",
@@ -2741,8 +2634,7 @@
      "x": 11,
      "y": 20,
      "w": 141,
-     "h": 78,
-     "figma": "270:189"
+     "h": 78
     },
     {
      "name": "005 · mask · #20B7FA",
@@ -2750,8 +2642,7 @@
      "x": 53,
      "y": 44,
      "w": 51,
-     "h": 48,
-     "figma": "270:190"
+     "h": 48
     },
     {
      "name": "006 · mask · #0D1922",
@@ -2759,8 +2650,7 @@
      "x": 0,
      "y": 0,
      "w": 162,
-     "h": 110,
-     "figma": "270:191"
+     "h": 110
     },
     {
      "name": "007 · mask · #06E1FB",
@@ -2768,8 +2658,7 @@
      "x": 65,
      "y": 87,
      "w": 35,
-     "h": 20,
-     "figma": "270:192"
+     "h": 20
     },
     {
      "name": "008 · mask · #20D462",
@@ -2777,8 +2666,7 @@
      "x": 1,
      "y": 59,
      "w": 161,
-     "h": 22,
-     "figma": "270:193"
+     "h": 22
     },
     {
      "name": "009 · mask · #3ABDFB",
@@ -2786,8 +2674,7 @@
      "x": 61,
      "y": 48,
      "w": 44,
-     "h": 45,
-     "figma": "270:194"
+     "h": 45
     },
     {
      "name": "010 · mask · #26CDFA",
@@ -2795,8 +2682,7 @@
      "x": 53,
      "y": 88,
      "w": 54,
-     "h": 10,
-     "figma": "270:195"
+     "h": 10
     },
     {
      "name": "011 · mask · #03889D",
@@ -2804,8 +2690,7 @@
      "x": 64,
      "y": 45,
      "w": 47,
-     "h": 43,
-     "figma": "270:196"
+     "h": 43
     }
    ]
   },
@@ -2825,8 +2710,7 @@
      "x": 1,
      "y": 1,
      "w": 159,
-     "h": 64,
-     "figma": "270:198"
+     "h": 64
     },
     {
      "name": "002 · mask · #886130",
@@ -2834,8 +2718,7 @@
      "x": 1,
      "y": 42,
      "w": 158,
-     "h": 68,
-     "figma": "270:199"
+     "h": 68
     },
     {
      "name": "003 · mask · #A9C1C9",
@@ -2843,8 +2726,7 @@
      "x": 1,
      "y": 58,
      "w": 154,
-     "h": 36,
-     "figma": "270:200"
+     "h": 36
     },
     {
      "name": "004 · mask · #3C9F2E",
@@ -2852,8 +2734,7 @@
      "x": 4,
      "y": 25,
      "w": 155,
-     "h": 63,
-     "figma": "270:201"
+     "h": 63
     },
     {
      "name": "005 · mask · #27EDF8",
@@ -2861,8 +2742,7 @@
      "x": 60,
      "y": 84,
      "w": 43,
-     "h": 25,
-     "figma": "270:202"
+     "h": 25
     },
     {
      "name": "006 · mask · #0D1922",
@@ -2870,8 +2750,7 @@
      "x": 0,
      "y": 0,
      "w": 160,
-     "h": 110,
-     "figma": "270:203"
+     "h": 110
     },
     {
      "name": "007 · mask · #97C6D5",
@@ -2879,8 +2758,7 @@
      "x": 26,
      "y": 54,
      "w": 104,
-     "h": 27,
-     "figma": "270:204"
+     "h": 27
     },
     {
      "name": "008 · mask · #715D68",
@@ -2888,8 +2766,7 @@
      "x": 78,
      "y": 56,
      "w": 16,
-     "h": 28,
-     "figma": "270:205"
+     "h": 28
     },
     {
      "name": "009 · mask · #06E1FB",
@@ -2897,8 +2774,7 @@
      "x": 55,
      "y": 89,
      "w": 52,
-     "h": 11,
-     "figma": "270:206"
+     "h": 11
     },
     {
      "name": "010 · mask · #10A4FB",
@@ -2906,8 +2782,7 @@
      "x": 66,
      "y": 51,
      "w": 15,
-     "h": 7,
-     "figma": "270:207"
+     "h": 7
     }
    ]
   },
@@ -2927,8 +2802,7 @@
      "x": 1,
      "y": 1,
      "w": 159,
-     "h": 95,
-     "figma": "270:209"
+     "h": 95
     },
     {
      "name": "002 · mask · #FCC320",
@@ -2936,8 +2810,7 @@
      "x": 54,
      "y": 7,
      "w": 49,
-     "h": 48,
-     "figma": "270:210"
+     "h": 48
     },
     {
      "name": "003 · mask · #FCA533",
@@ -2945,8 +2818,7 @@
      "x": 9,
      "y": 22,
      "w": 142,
-     "h": 86,
-     "figma": "270:211"
+     "h": 86
     },
     {
      "name": "004 · mask · #FDED77",
@@ -2954,8 +2826,7 @@
      "x": 55,
      "y": 51,
      "w": 46,
-     "h": 49,
-     "figma": "270:212"
+     "h": 49
     },
     {
      "name": "005 · mask · #E58225",
@@ -2963,8 +2834,7 @@
      "x": 1,
      "y": 81,
      "w": 159,
-     "h": 28,
-     "figma": "270:213"
+     "h": 28
     },
     {
      "name": "006 · mask · #0D1922",
@@ -2972,8 +2842,7 @@
      "x": 0,
      "y": 0,
      "w": 161,
-     "h": 110,
-     "figma": "270:214"
+     "h": 110
     },
     {
      "name": "007 · mask · #C6521E",
@@ -2981,8 +2850,7 @@
      "x": 52,
      "y": 98,
      "w": 108,
-     "h": 12,
-     "figma": "270:215"
+     "h": 12
     },
     {
      "name": "008 · mask · #FB9226",
@@ -2990,8 +2858,7 @@
      "x": 1,
      "y": 86,
      "w": 135,
-     "h": 22,
-     "figma": "270:216"
+     "h": 22
     },
     {
      "name": "009 · mask · #FBAC43",
@@ -2999,8 +2866,7 @@
      "x": 12,
      "y": 27,
      "w": 12,
-     "h": 51,
-     "figma": "270:217"
+     "h": 51
     },
     {
      "name": "010 · mask · #D37A40",
@@ -3008,8 +2874,7 @@
      "x": 112,
      "y": 83,
      "w": 15,
-     "h": 15,
-     "figma": "270:218"
+     "h": 15
     },
     {
      "name": "011 · mask · #D96C33",
@@ -3017,8 +2882,7 @@
      "x": 117,
      "y": 82,
      "w": 43,
-     "h": 28,
-     "figma": "270:219"
+     "h": 28
     },
     {
      "name": "012 · mask · #F4BB30",
@@ -3026,8 +2890,7 @@
      "x": 12,
      "y": 22,
      "w": 13,
-     "h": 6,
-     "figma": "270:220"
+     "h": 6
     }
    ]
   }
