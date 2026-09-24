@@ -197,7 +197,7 @@ test('travel clears queued and held actions plus all unreachable seeds while ret
   g.requestDodge(1); g.gardenPress = true; g.seedPickups = [{ id: 'old-route', x: -2000 }, { x: 12 }];
   g.enterLevel(2);
   assert.equal(g.jumpBuf, 0); assert.equal(g.dodgeBuf, 0); assert.equal(g.gardenPress, false); assert.equal(g.heldDown, false); assert.equal(g.readInput().axis, 0);
-  assert.equal(g.seedPickups.length, 1); assert.equal(g.seedPickups[0].id, 'route:2');
-  assert.equal(g.seedPickups[0].routeReward, true, 'only the new garden route reward remains');
+  assert.deepEqual(g.seedPickups.map(q => q.id).sort(), ['cache:2:0', 'cache:2:1', 'route:2']);
+  assert.ok(g.seedPickups.every(q => q.routeReward || q.placeCache), 'only the new garden\'s route reward and place caches remain');
   assert.equal(g.P.classId, 'runner'); assert.equal(g.P.skin, 'tide');
 });

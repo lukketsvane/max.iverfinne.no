@@ -12,12 +12,13 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
  group('Plant traversal',[['plant-climb','Moss · Growing plant climb']]);
  group('Platform routes',layouts.map(world=>['layout'+world,'Garden '+world+' · Layout']));
+ group('Garden places',layouts.map(world=>['place'+world,'Garden '+world+' · Place']));
  group('Bosses and encounters',[...Object.entries(bosses),['boss','Hollow Crown · Garden 20'],['mixed','Mixed encounter · Garden 16'],['rats','Rat pack · Four variants']]);
  group('Original fixtures',[...modeLabels.entries()].filter(([mode])=>!newModes.includes(mode)&&mode!=='boss'));
  const requestedStage=Number.parseInt(params.get('stage'),10),platformStage=Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):6;
@@ -32,9 +33,9 @@
  function show(mode){
   current=mode;chooser.value=mode;const serial=++fixtureSerial;
   status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');
-  const custom=newModes.includes(mode)||mode==='boss',layout=mode.startsWith('layout'),milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
+  const custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
-  const world=layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
+  const world=placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
   classChooser.disabled=!custom;
@@ -93,6 +94,7 @@
       resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:'original'});rogueRun.seed=${reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
+      if(${placeView}){var placeAt=stageLayout().place;if(placeAt){P.face=placeAt.side;P.x=placeAt.side>0?placeAt.bounds.x-8:placeAt.bounds.x+placeAt.bounds.w+8;P.y=surfaceY(P.x);}}
       rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;runActive=true;menuPaused=false;
       gardenPlots=[];rogueRun.garden=[];floatKrek=[];bombs=[];gardenSeeds=8;gardenRaidT=krekSpawnT=9999;gardenRaidActive=false;
       if(!${layout||plantClimb}){

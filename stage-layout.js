@@ -315,6 +315,7 @@
     var colors = { body: '#1e2933', shadow: '#111b29', light: '#465d64', lip: '#75938e', moss: '#405743', root: '#2b342d', line: '#36423a' };
     var cx = Math.round(camX), cy = Math.round(camY);
     layout.platforms.forEach(function (p, index) {
+      if (p.place) return;
       var x = p.x - cx, y = p.y - cy;
       if (p.solid) {
         if (layout.art && !p.draw) return;
