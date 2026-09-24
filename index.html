@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX · NIGHT GARDEN"><link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png"><link rel="manifest" href="/manifest.webmanifest"><title>MAX · NIGHT GARDEN</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX FUGLESPRENGER"><link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png"><link rel="manifest" href="/manifest.webmanifest"><title>MAX FUGLESPRENGER</title>
 <link rel="stylesheet" href="run-results.css">
 <script src="assets/results-native/code/max-bouquet.js"></script>
 <script src="run-results.js"></script>
@@ -74,6 +74,14 @@
 #perkMenu small{font:10px/1.25 monospace;color:#abb6b1;max-width:120px}
 #perkMenu .perk-wait{grid-column:1/-1;justify-self:center;font:12px monospace;color:#e9ead5;background:#071019e8;padding:12px 18px;border:1px solid #535d62;border-radius:5px}
 @media(max-height:430px){#perkMenu{width:330px}#perkMenu button{min-height:112px}}
+/* iPhone 16e gameplay UI: icon-only boon dock, no text HUD. */
+#perkMenu{width:min(238px,calc(100vw - 28px));gap:8px;bottom:max(8px,calc(env(safe-area-inset-bottom) + 5px))}
+#perkMenu button{aspect-ratio:1/1;min-height:0;padding:0;grid-template-rows:1fr;border-radius:9px;background:rgba(5,8,8,.62)}
+#perkMenu strong,#perkMenu small,#perkMenu .perkKey{display:none!important}
+#perkMenu .perkIcon{width:31px;height:31px}
+#perkMenu .perkDots{bottom:5px}
+#perkMenu .perk-wait{display:none!important}
+@media(max-height:430px){#perkMenu{left:50%;right:auto;transform:translateX(-50%);width:min(220px,calc(100vw - 28px))}#perkMenu button{min-height:0}}
 </style>
 <div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="gameTitle"></div><div id="blastHud"></div><div id="gardenHud"></div><div id="gardenHint"></div><div id="roundHud"></div><div id="perkMenu" aria-live="polite"></div>
@@ -3376,7 +3384,7 @@ function renderRogueChoice(){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
     bt.setAttribute('aria-label',p.name+', level '+lvl+'. '+p.desc+'. Key '+(index+1));
-    bt.innerHTML='<i class="perkKey" aria-hidden="true">'+(index+1)+'</i><canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas><strong>'+p.name+'</strong><small>'+p.desc+'</small>'+perkDots(lvl,perkMax(p.id));
+    bt.innerHTML='<canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas>'+perkDots(lvl,perkMax(p.id));
     var icon=bt.querySelector('canvas'),ink=boonInk(p.id);if(icon&&ink)icon.getContext('2d').drawImage(ink,0,0);
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
