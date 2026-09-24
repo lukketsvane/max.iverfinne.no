@@ -332,6 +332,7 @@
         ctx.fillStyle = colors.moss; for (var km = 2; km < p.w - 3; km += 5) { ctx.fillRect(x + km, y - 1, 3, 1); if ((km + index) % 4 === 0) ctx.fillRect(x + km + 1, y + 1, 1, 2 + (km % 3)); }
         return;
       }
+      if (layout.art && p.art) return; // the picture already draws its bridges and rungs
       if (x + p.w < -4 || x > width + 4 || y > height + 8 || y + p.depth < -12) return;
       var woody = p.style === 'branch' || p.style === 'root';
       ctx.fillStyle = colors.shadow; ctx.fillRect(x + 3, y + 3, p.w - 6, p.depth + 2);
