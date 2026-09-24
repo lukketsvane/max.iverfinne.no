@@ -14,7 +14,8 @@ function secretSkin(img){
   secretSkins.push([img,c]);return c;
 }
 function drawGardenSecret(g,plants,W,G,t,locked){
-  if(locked||!plants.length||!plants.every(function(p){return p.found;}))return false;
+  // Sligo's two cords join the list once Sligo is unlocked, but the secret stays about the garden's own plants.
+  if(locked||!plants.length||!plants.every(function(p){return p.found||SLIGO_KINDS.indexOf(p.kind)>=0;}))return false;
   var str='GOODNIGHT, GARDEN',x0=Math.round(W/2-(str.length*6-1)/2),y=Math.round(G*.24);
   if(ready(BOSS_FONT)){g.globalAlpha=.5+.3*Math.sin(t*.9);for(var i=0;i<str.length;i++){var n=str.charCodeAt(i)-32;g.drawImage(BOSS_FONT,n%16*6,Math.floor(n/16)*8,5,7,x0+i*6,y,5,7);}g.globalAlpha=1;}
   return true;

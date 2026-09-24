@@ -42,6 +42,237 @@
    "width": 256,
    "height": 256,
    "note": "Sligo, the easter-egg skin, main sheet; scripts/build-sligo.py. The menu's assets/max-skins-v1/<id>/main.png counts it as loaded; interaction.png joins this list when the game loads the pack"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/bloom-01.png",
+   "sha1": "32681f300b84cd3bfbc506368c4cf0d69da317a8",
+   "width": 15,
+   "height": 15,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/bloom-02.png",
+   "sha1": "0c13de540665d96d33a5f647c52eb46076aaae8c",
+   "width": 9,
+   "height": 8,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/bloom-03.png",
+   "sha1": "a3225a456d87fa3cf63ea4dc6620cccfccc8f7a4",
+   "width": 10,
+   "height": 13,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/bloom-04.png",
+   "sha1": "123856e2b535ff26271ee0843daec43c7c846cad",
+   "width": 7,
+   "height": 8,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/bloom-05.png",
+   "sha1": "5f11edaee6bc372aa5c289a1b9096ac5bfd3ef51",
+   "width": 11,
+   "height": 8,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/flower-01.png",
+   "sha1": "10a080fdf0afe5fb14015a8682037b9ca86bb6fe",
+   "width": 21,
+   "height": 25,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/flower-02.png",
+   "sha1": "8d0351e298d8cd8bf2908900f05eb1b011dbe09a",
+   "width": 17,
+   "height": 21,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/flower-03.png",
+   "sha1": "d50bce0e1037ff1ec6b2917934b8c922c2f5b22e",
+   "width": 17,
+   "height": 19,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/root-01.png",
+   "sha1": "c8bed5f4b55ebd91635370d6b2780485f135479c",
+   "width": 17,
+   "height": 12,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/root-02.png",
+   "sha1": "6b438e4fb7afbdb3f90548ae86374dde877d716e",
+   "width": 17,
+   "height": 12,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/root-03.png",
+   "sha1": "4416c37f1f710b83f626196797b5ea6d08261d10",
+   "width": 17,
+   "height": 12,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/stem-01.png",
+   "sha1": "66f4a68af89286f5bc38dcff6fd2c0775273b9c3",
+   "width": 7,
+   "height": 8,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/stem-02.png",
+   "sha1": "1a1878d0025ba07ce871cb6c3e4a75e8d56b1627",
+   "width": 7,
+   "height": 9,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/stem-03.png",
+   "sha1": "57f6e2774171f0b8de491add6e9b01175b34a68d",
+   "width": 7,
+   "height": 8,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/stem-04.png",
+   "sha1": "0ad76193249f2a931e60b92fe0402c248e4a30a1",
+   "width": 7,
+   "height": 9,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/stem-05.png",
+   "sha1": "d621c721e58bc5058881bf279eb10bbf37dadae3",
+   "width": 7,
+   "height": 9,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cord/stem-06.png",
+   "sha1": "1444e28262844cf6d8ebe36a59d41d5bf05403e4",
+   "width": 7,
+   "height": 8,
+   "note": "Sligo's cord plant (kind 25), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/bloom-01.png",
+   "sha1": "264608f0ca424f76ff0be0641fa6e418e535c8cc",
+   "width": 7,
+   "height": 7,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/bloom-02.png",
+   "sha1": "84e8cbc678f209d585420d2d8fb90a1cfc65b091",
+   "width": 7,
+   "height": 7,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/bloom-03.png",
+   "sha1": "95b72fa07fc2912d380627cde4fc861267d0d7a3",
+   "width": 7,
+   "height": 7,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/bloom-04.png",
+   "sha1": "55a2d8f7c1f77ef768831a339d8998fd883a7573",
+   "width": 8,
+   "height": 7,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/flower-01.png",
+   "sha1": "bef13c3ba09640244be162b761382565530a3b31",
+   "width": 33,
+   "height": 17,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/flower-02.png",
+   "sha1": "48efef4427b7dd2ea04e1e8a161a1fc67fa24851",
+   "width": 31,
+   "height": 16,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/flower-03.png",
+   "sha1": "ba3bad783c93b57f0d7c13bf8690ce64be0c2e5a",
+   "width": 31,
+   "height": 17,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/root-01.png",
+   "sha1": "8dbfc5f3dd4a97a82452d547cc43fe09654f8194",
+   "width": 19,
+   "height": 11,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/root-02.png",
+   "sha1": "b03e970532ac2423175abff90402fdbd7d1ecb47",
+   "width": 17,
+   "height": 11,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/root-03.png",
+   "sha1": "958706969296894c11d64184d5894c00f68e0d1c",
+   "width": 23,
+   "height": 11,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/stem-01.png",
+   "sha1": "3a79da81e7c1fcb94f9d428b438a8c10a2bf0303",
+   "width": 17,
+   "height": 12,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/stem-02.png",
+   "sha1": "5ff4987c46f45a3a569cc124cfa6d09c34ff2b94",
+   "width": 17,
+   "height": 10,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/stem-03.png",
+   "sha1": "eb13e84cb71436ae2cbcd6f8bf504e0f0ff33d19",
+   "width": 19,
+   "height": 15,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/stem-04.png",
+   "sha1": "cf889c35eb5292f38b4fee549a4816d6f457a7a0",
+   "width": 21,
+   "height": 16,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/stem-05.png",
+   "sha1": "e8bebd54c34c5022aa06601d6147d296dddbe3a8",
+   "width": 17,
+   "height": 9,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/plants-v1/sligo-cap/stem-06.png",
+   "sha1": "01b1c3080f7a61b3ddb6dd8d053f087f93c7f385",
+   "width": 23,
+   "height": 21,
+   "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
   }
  ]
 }

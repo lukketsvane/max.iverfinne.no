@@ -6,7 +6,7 @@ const root = path.join(__dirname, '..');
 
 test('fifteen hand-drawn plants join the garden as kinds 9-23, each assembled from its own part files', () => {
   const g = loadGame().game; g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });
-  assert.equal(g.GARDEN_FIG_FORMS.length, 25);
+  assert.equal(g.GARDEN_FIG_FORMS.length, 27);   // 0-24 and Sligo's cord and cap
   assert.equal(g.SPRITE_PLANTS.length, 16);
   for (const d of g.SPRITE_PLANTS) {
     const types = new Set(d.parts.map(q => q[0]));
