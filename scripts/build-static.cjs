@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'garden-places.js', 'review.html'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'garden-places.js', 'tiles.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -36,6 +36,9 @@ cpSync(join(root, 'assets/biomes-v1'), join(output, 'assets/biomes-v1'), { recur
 cpSync(join(root, 'assets/boon-symbols-v1'), join(output, 'assets/boon-symbols-v1'), { recursive: true });
 cpSync(join(root, 'assets/plants-v1'), join(output, 'assets/plants-v1'), { recursive: true });
 cpSync(join(root, 'assets/garden-view-v1'), join(output, 'assets/garden-view-v1'), { recursive: true });
+cpSync(join(root, 'assets/tiles-v1'), join(output, 'assets/tiles-v1'), { recursive: true });
+cpSync(join(root, 'assets/backdrop-v1'), join(output, 'assets/backdrop-v1'), { recursive: true });
+cpSync(join(root, 'assets/night-v1'), join(output, 'assets/night-v1'), { recursive: true });
 copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
 for (const [pack, ids, sheets] of [
   ['max-skins-v1', ['moss', 'tide', 'ember', 'moon'], ['atlas.json', 'main.png', 'interaction.png']],

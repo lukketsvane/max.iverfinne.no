@@ -29,8 +29,8 @@ test('Max walks in through the culvert, across the court to the lift tower, and 
 });
 
 function sanctuary(classId = 'mech') {
-  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 2; g.activeStageLayout = null; g.floatKrek = [];
-  return { g, L: g.stageLayout() };
+  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 2; g.floatKrek = [];
+  return { g, L: g.activeStageLayout = g.pictureLayout(2) };
 }
 
 // Jump from where Max stands toward a floor at art coordinates (tx, ty), steering
@@ -53,7 +53,7 @@ function hop(g, L, tx, ty, tol = 1.5, hz = 60) {
 }
 function stand(g, L, x, y) { Object.assign(g.P, { x: L.art.x + x, y: L.art.y + y, vx: 0, vy: 0, grounded: true, st: 'free', platform: null, coyote: .1, airJumpUsed: false }); }
 
-test('garden 2 is the Sunken Sanctuary picture level: art, rock, hidden ledges, markers, flat soil', () => {
+test('the Sunken Sanctuary picture: art, rock, hidden ledges, markers, flat soil', () => {
   const { g, L } = sanctuary();
   assert.equal(L.picture, 'sunken-sanctuary');
   assert.ok(L.art && L.art.w === 1536 && L.art.h === 540);
@@ -112,4 +112,14 @@ test('the rail bridge ends over the court: walking off it lands on the court, an
   stand(g, L, 100, 371);
   for (let t = 0; t < 14; t += 1 / 60) g.updatePlayer(1 / 60, { axis: 1, top: 48 });
   assert.ok(g.P.x - L.art.x > 470 && g.P.y - L.art.y < 380, 'through the tram trench and up onto the rails, ' + Math.round(g.P.x - L.art.x) + ',' + Math.round(g.P.y - L.art.y));
+});
+
+test('garden 1 is the only picture in the garden sequence: garden 2 is generated again', () => {
+  const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId: 'mech' });
+  g.rogueRun.world = 1; g.activeStageLayout = null; assert.equal(g.stageLayout().picture, 'railway-ruins');
+  g.rogueRun.world = 2; g.activeStageLayout = null;
+  const L = g.stageLayout();
+  assert.equal(L.picture, undefined); assert.equal(L.art, undefined);
+  assert.ok(L.platforms.some(p => p.id !== 'base'), 'garden 2 has its own ledges');
+  assert.equal(g.pictureLayout(2).picture, 'sunken-sanctuary', 'the Sanctuary still builds for the bonus realms');
 });

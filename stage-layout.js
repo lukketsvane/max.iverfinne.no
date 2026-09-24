@@ -311,9 +311,69 @@
     best.nodes = tiers(best, ground, wet); best.seed = seed;
     return best;
   }
-  function draw(ctx, layout, camX, camY, width, height) {
+  // Ledges and rock drawn from the Sanctuary tile atlas (tiles.js): mossy stone
+  // strips, plank ledges on legs, ruin lintels and nine-sliced rock with vines.
+  function drawTiles(ctx, layout, cx, cy, width, height, tiles) {
+    var img = tiles.img, P = tiles.pieces;
+    function blit(name, x, y, w, h, ox, oy) {
+      var s = P[name]; if (!s) return;
+      w = Math.min(w == null ? s[2] : w, s[2] - (ox || 0)); h = Math.min(h == null ? s[3] : h, s[3] - (oy || 0));
+      if (w <= 0 || h <= 0 || x + w < 0 || y + h < 0 || x > width || y > height) return;
+      ctx.drawImage(img, s[0] + (ox || 0), s[1] + (oy || 0), w, h, x, y, w, h);
+    }
+    function row(kind, x, y, w) {
+      var L = P['ledge.' + kind + '.left'], R = P['ledge.' + kind + '.right'], M = P['ledge.' + kind + '.mid'];
+      var lw = Math.min(L[2], Math.ceil(w / 2)), rw = Math.min(R[2], w - lw);
+      for (var mx = x + lw; mx < x + w - rw; mx += M[2]) blit('ledge.' + kind + '.mid', mx, y, Math.min(M[2], x + w - rw - mx));
+      blit('ledge.' + kind + '.left', x, y, lw);
+      blit('ledge.' + kind + '.right', x + w - rw, y, rw, null, R[2] - rw);
+    }
+    function rock(x, y, w, h) {
+      var T = P['rock.top.mid'], M = P['rock.mid.mid'], B = P['rock.bottom.mid'], lw = P['rock.mid.left'][2], rw = P['rock.mid.right'][2];
+      var th = Math.min(T[3], h), bh = Math.min(B[3], h - th);
+      function band(y0, hh, part) {
+        blit('rock.' + part + '.left', x, y0, lw, hh); blit('rock.' + part + '.right', x + w - rw, y0, rw, hh);
+        var start = x + lw + Math.max(0, Math.floor((-x - lw) / M[2])) * M[2];
+        for (var mx = start; mx < Math.min(x + w - rw, width + 1); mx += M[2]) blit('rock.' + part + '.mid', mx, y0, Math.min(M[2], x + w - rw - mx), hh);
+      }
+      band(y, th, 'top');
+      var my0 = y + th, my1 = y + h - bh, first = my0 + Math.max(0, Math.floor(-my0 / M[3])) * M[3];
+      for (var my = first; my < Math.min(my1, height + 1); my += M[3]) band(my, Math.min(M[3], my1 - my), 'mid');
+      if (bh > 0) band(y + h - bh, bh, 'bottom');
+    }
+    var flora = ['flora.flowers', 'flora.mushrooms', 'flora.ferns'];
+    layout.platforms.forEach(function (p, index) {
+      if (p.place) return; // a garden place draws its own rock
+      var x = Math.round(p.x - cx), y = Math.round(p.y - cy), w = Math.round(p.w), hash = (p.x * 73856093 ^ p.y * 19349663) >>> 0;
+      if (p.solid) {
+        if (layout.art && !p.draw) return;
+        var h = Math.round(p.h);
+        if (x + w < -4 || x > width + 4 || y > height + 30 || y + h < -4) return;
+        rock(x, y - 2, w, h + 2);
+        var V = P.vines;
+        if (w >= 24 && h >= 12 && hash % 3 === 0) blit('vines', x + 4 + hash % Math.max(1, w - V[2] - 8), y + h - 3, Math.min(V[2], w - 8));
+        if (w >= 30 && hash % 5 === 1) { var f = flora[hash % 3], F = P[f]; blit(f, x + 4 + (hash >>> 3) % Math.max(1, w - F[2] - 8), y - F[3] + 2); }
+        return;
+      }
+      if (layout.art && p.art) return; // the picture already draws its bridges and rungs
+      if (x + w < -12 || x > width + 12 || y > height + 30 || y + 30 < 0) return;
+      // frost and ember gardens keep their own snow and ember ledges (MaxPlaces.ledgeArt)
+      var biome = root.MaxPlaces && root.MaxPlaces.biome && root.MaxPlaces.biome(layout.stage), art = biome && root.MaxPlaces.ledgeArt && root.MaxPlaces.ledgeArt(p, layout.stage);
+      if (art) {
+        ctx.drawImage(art.canvas, x + art.dx, y + art.dy);
+        if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(w / 2), y - 3, 1, 1); }
+        return;
+      }
+      var kind = p.style === 'branch' || p.style === 'root' ? 'wood' : p.style === 'ruin' ? 'ruin' : 'stone';
+      row(kind, x, y - (kind === 'stone' ? 2 : 1), w);
+      if (kind === 'stone' && w >= 28 && hash % 3 === 0) { var g = flora[(hash >>> 2) % 3], G = P[g]; blit(g, x + 3 + (hash >>> 4) % Math.max(1, w - G[2] - 6), y - G[3] + 2); }
+      if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(w / 2), y - 3, 1, 1); }
+    });
+  }
+  function draw(ctx, layout, camX, camY, width, height, tiles) {
     var colors = { body: '#1e2933', shadow: '#111b29', light: '#465d64', lip: '#75938e', moss: '#405743', root: '#2b342d', line: '#36423a' };
     var cx = Math.round(camX), cy = Math.round(camY);
+    if (tiles && tiles.img && tiles.img.complete && tiles.img.naturalWidth && tiles.pieces) return drawTiles(ctx, layout, cx, cy, width, height, tiles);
     layout.platforms.forEach(function (p, index) {
       if (p.place) return;
       var x = p.x - cx, y = p.y - cy;

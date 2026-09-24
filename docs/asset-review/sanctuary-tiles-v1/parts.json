@@ -1,0 +1,1570 @@
+[
+ {
+  "group": "backdrop",
+  "file": "parts/backdrop/01.png",
+  "x": 852,
+  "y": 560,
+  "w": 342,
+  "h": 448
+ },
+ {
+  "group": "bridges",
+  "file": "parts/bridges/01.png",
+  "x": 1151,
+  "y": 115,
+  "w": 33,
+  "h": 115
+ },
+ {
+  "group": "bridges",
+  "file": "parts/bridges/02.png",
+  "x": 888,
+  "y": 163,
+  "w": 260,
+  "h": 67
+ },
+ {
+  "group": "bridges",
+  "file": "parts/bridges/03.png",
+  "x": 1194,
+  "y": 167,
+  "w": 92,
+  "h": 137
+ },
+ {
+  "group": "bridges",
+  "file": "parts/bridges/04.png",
+  "x": 1088,
+  "y": 240,
+  "w": 110,
+  "h": 90
+ },
+ {
+  "group": "bridges",
+  "file": "parts/bridges/05.png",
+  "x": 1225,
+  "y": 273,
+  "w": 32,
+  "h": 46
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/01.png",
+  "x": 691,
+  "y": 465,
+  "w": 33,
+  "h": 33
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/02.png",
+  "x": 770,
+  "y": 461,
+  "w": 61,
+  "h": 37
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/03.png",
+  "x": 843,
+  "y": 470,
+  "w": 47,
+  "h": 28
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/04.png",
+  "x": 904,
+  "y": 470,
+  "w": 44,
+  "h": 28
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/05.png",
+  "x": 958,
+  "y": 472,
+  "w": 29,
+  "h": 27
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/06.png",
+  "x": 1000,
+  "y": 468,
+  "w": 29,
+  "h": 31
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/07.png",
+  "x": 1039,
+  "y": 471,
+  "w": 17,
+  "h": 27
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/08.png",
+  "x": 1064,
+  "y": 469,
+  "w": 51,
+  "h": 34
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/09.png",
+  "x": 1133,
+  "y": 464,
+  "w": 78,
+  "h": 82
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/10.png",
+  "x": 729,
+  "y": 480,
+  "w": 36,
+  "h": 18
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/11.png",
+  "x": 780,
+  "y": 517,
+  "w": 58,
+  "h": 29
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/12.png",
+  "x": 851,
+  "y": 514,
+  "w": 32,
+  "h": 31
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/13.png",
+  "x": 895,
+  "y": 513,
+  "w": 32,
+  "h": 32
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/14.png",
+  "x": 938,
+  "y": 524,
+  "w": 32,
+  "h": 21
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/15.png",
+  "x": 981,
+  "y": 513,
+  "w": 32,
+  "h": 32
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/16.png",
+  "x": 1023,
+  "y": 516,
+  "w": 33,
+  "h": 29
+ },
+ {
+  "group": "flora",
+  "file": "parts/flora/17.png",
+  "x": 1071,
+  "y": 523,
+  "w": 46,
+  "h": 22
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/01.png",
+  "x": 1322,
+  "y": 708,
+  "w": 6,
+  "h": 10
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/02.png",
+  "x": 1215,
+  "y": 741,
+  "w": 15,
+  "h": 12
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/03.png",
+  "x": 1314,
+  "y": 738,
+  "w": 7,
+  "h": 9
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/04.png",
+  "x": 1361,
+  "y": 764,
+  "w": 26,
+  "h": 70
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/05.png",
+  "x": 1456,
+  "y": 758,
+  "w": 31,
+  "h": 76
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/06.png",
+  "x": 1217,
+  "y": 778,
+  "w": 23,
+  "h": 36
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/07.png",
+  "x": 1295,
+  "y": 775,
+  "w": 32,
+  "h": 49
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/08.png",
+  "x": 1405,
+  "y": 771,
+  "w": 26,
+  "h": 67
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/09.png",
+  "x": 1506,
+  "y": 797,
+  "w": 14,
+  "h": 10
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/10.png",
+  "x": 1313,
+  "y": 817,
+  "w": 5,
+  "h": 33
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/11.png",
+  "x": 1506,
+  "y": 818,
+  "w": 15,
+  "h": 15
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/12.png",
+  "x": 1221,
+  "y": 857,
+  "w": 12,
+  "h": 16
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/13.png",
+  "x": 1291,
+  "y": 858,
+  "w": 34,
+  "h": 16
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/14.png",
+  "x": 1354,
+  "y": 855,
+  "w": 34,
+  "h": 19
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/15.png",
+  "x": 1402,
+  "y": 855,
+  "w": 28,
+  "h": 20
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/16.png",
+  "x": 1455,
+  "y": 854,
+  "w": 30,
+  "h": 21
+ },
+ {
+  "group": "fx",
+  "file": "parts/fx/17.png",
+  "x": 1507,
+  "y": 843,
+  "w": 12,
+  "h": 12
+ },
+ {
+  "group": "misc",
+  "file": "parts/misc/01.png",
+  "x": 632,
+  "y": 220,
+  "w": 60,
+  "h": 83
+ },
+ {
+  "group": "misc",
+  "file": "parts/misc/02.png",
+  "x": 705,
+  "y": 220,
+  "w": 54,
+  "h": 107
+ },
+ {
+  "group": "misc",
+  "file": "parts/misc/03.png",
+  "x": 774,
+  "y": 220,
+  "w": 59,
+  "h": 100
+ },
+ {
+  "group": "pond",
+  "file": "parts/pond/01.png",
+  "x": 1209,
+  "y": 884,
+  "w": 314,
+  "h": 124
+ },
+ {
+  "group": "props",
+  "file": "parts/props/01.png",
+  "x": 498,
+  "y": 760,
+  "w": 18,
+  "h": 52
+ },
+ {
+  "group": "props",
+  "file": "parts/props/02.png",
+  "x": 527,
+  "y": 760,
+  "w": 23,
+  "h": 48
+ },
+ {
+  "group": "props",
+  "file": "parts/props/03.png",
+  "x": 568,
+  "y": 757,
+  "w": 24,
+  "h": 67
+ },
+ {
+  "group": "props",
+  "file": "parts/props/04.png",
+  "x": 607,
+  "y": 761,
+  "w": 22,
+  "h": 63
+ },
+ {
+  "group": "props",
+  "file": "parts/props/05.png",
+  "x": 640,
+  "y": 760,
+  "w": 36,
+  "h": 28
+ },
+ {
+  "group": "props",
+  "file": "parts/props/06.png",
+  "x": 690,
+  "y": 756,
+  "w": 62,
+  "h": 36
+ },
+ {
+  "group": "props",
+  "file": "parts/props/07.png",
+  "x": 766,
+  "y": 757,
+  "w": 26,
+  "h": 36
+ },
+ {
+  "group": "props",
+  "file": "parts/props/08.png",
+  "x": 807,
+  "y": 763,
+  "w": 31,
+  "h": 29
+ },
+ {
+  "group": "props",
+  "file": "parts/props/09.png",
+  "x": 756,
+  "y": 811,
+  "w": 43,
+  "h": 53
+ },
+ {
+  "group": "props",
+  "file": "parts/props/10.png",
+  "x": 823,
+  "y": 811,
+  "w": 17,
+  "h": 48
+ },
+ {
+  "group": "props",
+  "file": "parts/props/11.png",
+  "x": 512,
+  "y": 823,
+  "w": 49,
+  "h": 27
+ },
+ {
+  "group": "props",
+  "file": "parts/props/12.png",
+  "x": 588,
+  "y": 835,
+  "w": 38,
+  "h": 109
+ },
+ {
+  "group": "props",
+  "file": "parts/props/13.png",
+  "x": 646,
+  "y": 817,
+  "w": 42,
+  "h": 35
+ },
+ {
+  "group": "props",
+  "file": "parts/props/14.png",
+  "x": 706,
+  "y": 816,
+  "w": 25,
+  "h": 47
+ },
+ {
+  "group": "props",
+  "file": "parts/props/15.png",
+  "x": 501,
+  "y": 872,
+  "w": 76,
+  "h": 44
+ },
+ {
+  "group": "props",
+  "file": "parts/props/16.png",
+  "x": 633,
+  "y": 874,
+  "w": 29,
+  "h": 69
+ },
+ {
+  "group": "props",
+  "file": "parts/props/17.png",
+  "x": 677,
+  "y": 873,
+  "w": 33,
+  "h": 70
+ },
+ {
+  "group": "props",
+  "file": "parts/props/18.png",
+  "x": 726,
+  "y": 876,
+  "w": 40,
+  "h": 70
+ },
+ {
+  "group": "props",
+  "file": "parts/props/19.png",
+  "x": 776,
+  "y": 875,
+  "w": 62,
+  "h": 71
+ },
+ {
+  "group": "props",
+  "file": "parts/props/20.png",
+  "x": 502,
+  "y": 926,
+  "w": 89,
+  "h": 81
+ },
+ {
+  "group": "props",
+  "file": "parts/props/21.png",
+  "x": 605,
+  "y": 954,
+  "w": 53,
+  "h": 53
+ },
+ {
+  "group": "props",
+  "file": "parts/props/22.png",
+  "x": 672,
+  "y": 958,
+  "w": 89,
+  "h": 49
+ },
+ {
+  "group": "props",
+  "file": "parts/props/23.png",
+  "x": 775,
+  "y": 965,
+  "w": 26,
+  "h": 41
+ },
+ {
+  "group": "props",
+  "file": "parts/props/24.png",
+  "x": 814,
+  "y": 965,
+  "w": 23,
+  "h": 41
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/01.png",
+  "x": 1249,
+  "y": 406,
+  "w": 104,
+  "h": 59
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/02.png",
+  "x": 1361,
+  "y": 406,
+  "w": 71,
+  "h": 57
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/03.png",
+  "x": 1440,
+  "y": 398,
+  "w": 81,
+  "h": 65
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/04.png",
+  "x": 1330,
+  "y": 478,
+  "w": 24,
+  "h": 30
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/05.png",
+  "x": 1360,
+  "y": 477,
+  "w": 26,
+  "h": 32
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/06.png",
+  "x": 1427,
+  "y": 472,
+  "w": 95,
+  "h": 37
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/07.png",
+  "x": 1219,
+  "y": 480,
+  "w": 145,
+  "h": 67
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/08.png",
+  "x": 1398,
+  "y": 494,
+  "w": 16,
+  "h": 14
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/09.png",
+  "x": 1375,
+  "y": 522,
+  "w": 45,
+  "h": 31
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/10.png",
+  "x": 1431,
+  "y": 525,
+  "w": 41,
+  "h": 28
+ },
+ {
+  "group": "rocks",
+  "file": "parts/rocks/11.png",
+  "x": 1484,
+  "y": 530,
+  "w": 39,
+  "h": 23
+ },
+ {
+  "group": "rooms",
+  "file": "parts/rooms/01.png",
+  "x": 15,
+  "y": 757,
+  "w": 193,
+  "h": 113
+ },
+ {
+  "group": "rooms",
+  "file": "parts/rooms/02.png",
+  "x": 220,
+  "y": 758,
+  "w": 109,
+  "h": 112
+ },
+ {
+  "group": "rooms",
+  "file": "parts/rooms/03.png",
+  "x": 341,
+  "y": 758,
+  "w": 144,
+  "h": 116
+ },
+ {
+  "group": "rooms",
+  "file": "parts/rooms/04.png",
+  "x": 16,
+  "y": 880,
+  "w": 192,
+  "h": 128
+ },
+ {
+  "group": "rooms",
+  "file": "parts/rooms/05.png",
+  "x": 221,
+  "y": 880,
+  "w": 107,
+  "h": 128
+ },
+ {
+  "group": "rooms",
+  "file": "parts/rooms/06.png",
+  "x": 342,
+  "y": 881,
+  "w": 143,
+  "h": 127
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/01.png",
+  "x": 632,
+  "y": 13,
+  "w": 90,
+  "h": 197
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/02.png",
+  "x": 731,
+  "y": 19,
+  "w": 77,
+  "h": 192
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/03.png",
+  "x": 862,
+  "y": 21,
+  "w": 137,
+  "h": 132
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/04.png",
+  "x": 1053,
+  "y": 29,
+  "w": 25,
+  "h": 125
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/05.png",
+  "x": 1094,
+  "y": 24,
+  "w": 147,
+  "h": 129
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/06.png",
+  "x": 811,
+  "y": 93,
+  "w": 64,
+  "h": 117
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/07.png",
+  "x": 984,
+  "y": 76,
+  "w": 43,
+  "h": 77
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/08.png",
+  "x": 847,
+  "y": 220,
+  "w": 16,
+  "h": 80
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/09.png",
+  "x": 875,
+  "y": 220,
+  "w": 73,
+  "h": 90
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/10.png",
+  "x": 962,
+  "y": 220,
+  "w": 28,
+  "h": 98
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/11.png",
+  "x": 1003,
+  "y": 220,
+  "w": 36,
+  "h": 81
+ },
+ {
+  "group": "ruins",
+  "file": "parts/ruins/12.png",
+  "x": 1048,
+  "y": 221,
+  "w": 20,
+  "h": 80
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/01.png",
+  "x": 1443,
+  "y": 23,
+  "w": 77,
+  "h": 217
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/02.png",
+  "x": 1251,
+  "y": 35,
+  "w": 70,
+  "h": 119
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/03.png",
+  "x": 1390,
+  "y": 26,
+  "w": 37,
+  "h": 85
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/04.png",
+  "x": 1344,
+  "y": 52,
+  "w": 24,
+  "h": 214
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/05.png",
+  "x": 1393,
+  "y": 121,
+  "w": 31,
+  "h": 77
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/06.png",
+  "x": 1297,
+  "y": 203,
+  "w": 28,
+  "h": 147
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/07.png",
+  "x": 1393,
+  "y": 212,
+  "w": 29,
+  "h": 53
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/08.png",
+  "x": 1438,
+  "y": 254,
+  "w": 83,
+  "h": 80
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/09.png",
+  "x": 1338,
+  "y": 286,
+  "w": 90,
+  "h": 51
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/10.png",
+  "x": 1470,
+  "y": 296,
+  "w": 27,
+  "h": 36
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/11.png",
+  "x": 1271,
+  "y": 325,
+  "w": 54,
+  "h": 64
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/12.png",
+  "x": 1349,
+  "y": 348,
+  "w": 24,
+  "h": 40
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/13.png",
+  "x": 1391,
+  "y": 356,
+  "w": 41,
+  "h": 32
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/14.png",
+  "x": 1453,
+  "y": 336,
+  "w": 18,
+  "h": 58
+ },
+ {
+  "group": "scaffolds",
+  "file": "parts/scaffolds/15.png",
+  "x": 1495,
+  "y": 345,
+  "w": 27,
+  "h": 43
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/01.png",
+  "x": 17,
+  "y": 18,
+  "w": 73,
+  "h": 48
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/02.png",
+  "x": 104,
+  "y": 18,
+  "w": 95,
+  "h": 107
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/03.png",
+  "x": 213,
+  "y": 18,
+  "w": 43,
+  "h": 47
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/04.png",
+  "x": 271,
+  "y": 18,
+  "w": 34,
+  "h": 47
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/05.png",
+  "x": 320,
+  "y": 18,
+  "w": 36,
+  "h": 48
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/06.png",
+  "x": 369,
+  "y": 19,
+  "w": 34,
+  "h": 46
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/07.png",
+  "x": 419,
+  "y": 19,
+  "w": 35,
+  "h": 46
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/08.png",
+  "x": 472,
+  "y": 18,
+  "w": 45,
+  "h": 48
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/09.png",
+  "x": 531,
+  "y": 18,
+  "w": 84,
+  "h": 48
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/10.png",
+  "x": 17,
+  "y": 76,
+  "w": 73,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/11.png",
+  "x": 214,
+  "y": 76,
+  "w": 42,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/12.png",
+  "x": 271,
+  "y": 76,
+  "w": 34,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/13.png",
+  "x": 320,
+  "y": 76,
+  "w": 36,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/14.png",
+  "x": 369,
+  "y": 76,
+  "w": 34,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/15.png",
+  "x": 419,
+  "y": 76,
+  "w": 35,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/16.png",
+  "x": 472,
+  "y": 76,
+  "w": 45,
+  "h": 60
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/17.png",
+  "x": 531,
+  "y": 76,
+  "w": 85,
+  "h": 109
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/18.png",
+  "x": 104,
+  "y": 99,
+  "w": 95,
+  "h": 87
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/19.png",
+  "x": 17,
+  "y": 135,
+  "w": 73,
+  "h": 53
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/20.png",
+  "x": 214,
+  "y": 137,
+  "w": 42,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/21.png",
+  "x": 271,
+  "y": 137,
+  "w": 34,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/22.png",
+  "x": 321,
+  "y": 137,
+  "w": 34,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/23.png",
+  "x": 369,
+  "y": 137,
+  "w": 29,
+  "h": 49
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/24.png",
+  "x": 415,
+  "y": 160,
+  "w": 41,
+  "h": 26
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/25.png",
+  "x": 472,
+  "y": 146,
+  "w": 45,
+  "h": 40
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/26.png",
+  "x": 18,
+  "y": 199,
+  "w": 72,
+  "h": 92
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/27.png",
+  "x": 104,
+  "y": 199,
+  "w": 27,
+  "h": 92
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/28.png",
+  "x": 149,
+  "y": 198,
+  "w": 50,
+  "h": 75
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/29.png",
+  "x": 214,
+  "y": 198,
+  "w": 42,
+  "h": 101
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/30.png",
+  "x": 271,
+  "y": 198,
+  "w": 34,
+  "h": 102
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/31.png",
+  "x": 320,
+  "y": 198,
+  "w": 35,
+  "h": 91
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/32.png",
+  "x": 362,
+  "y": 199,
+  "w": 35,
+  "h": 89
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/33.png",
+  "x": 415,
+  "y": 199,
+  "w": 40,
+  "h": 97
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/34.png",
+  "x": 472,
+  "y": 199,
+  "w": 45,
+  "h": 100
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/35.png",
+  "x": 532,
+  "y": 199,
+  "w": 83,
+  "h": 101
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/36.png",
+  "x": 106,
+  "y": 310,
+  "w": 96,
+  "h": 90
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/37.png",
+  "x": 403,
+  "y": 310,
+  "w": 105,
+  "h": 155
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/38.png",
+  "x": 16,
+  "y": 313,
+  "w": 77,
+  "h": 183
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/39.png",
+  "x": 218,
+  "y": 313,
+  "w": 92,
+  "h": 191
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/40.png",
+  "x": 322,
+  "y": 312,
+  "w": 64,
+  "h": 120
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/41.png",
+  "x": 522,
+  "y": 317,
+  "w": 65,
+  "h": 106
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/42.png",
+  "x": 107,
+  "y": 409,
+  "w": 49,
+  "h": 91
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/43.png",
+  "x": 166,
+  "y": 410,
+  "w": 37,
+  "h": 85
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/44.png",
+  "x": 218,
+  "y": 410,
+  "w": 53,
+  "h": 89
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/45.png",
+  "x": 324,
+  "y": 410,
+  "w": 65,
+  "h": 91
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/46.png",
+  "x": 411,
+  "y": 423,
+  "w": 74,
+  "h": 77
+ },
+ {
+  "group": "terrain",
+  "file": "parts/terrain/47.png",
+  "x": 499,
+  "y": 435,
+  "w": 83,
+  "h": 66
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/01.png",
+  "x": 832,
+  "y": 306,
+  "w": 372,
+  "h": 147
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/02.png",
+  "x": 595,
+  "y": 314,
+  "w": 103,
+  "h": 188
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/03.png",
+  "x": 731,
+  "y": 324,
+  "w": 100,
+  "h": 116
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/04.png",
+  "x": 1195,
+  "y": 332,
+  "w": 67,
+  "h": 121
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/05.png",
+  "x": 674,
+  "y": 381,
+  "w": 80,
+  "h": 73
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/06.png",
+  "x": 819,
+  "y": 439,
+  "w": 30,
+  "h": 14
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/07.png",
+  "x": 1208,
+  "y": 567,
+  "w": 86,
+  "h": 123
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/08.png",
+  "x": 1300,
+  "y": 559,
+  "w": 79,
+  "h": 131
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/09.png",
+  "x": 1385,
+  "y": 564,
+  "w": 54,
+  "h": 126
+ },
+ {
+  "group": "trees",
+  "file": "parts/trees/10.png",
+  "x": 1449,
+  "y": 577,
+  "w": 74,
+  "h": 113
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/01.png",
+  "x": 15,
+  "y": 515,
+  "w": 98,
+  "h": 164
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/02.png",
+  "x": 122,
+  "y": 515,
+  "w": 94,
+  "h": 165
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/03.png",
+  "x": 222,
+  "y": 516,
+  "w": 63,
+  "h": 105
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/04.png",
+  "x": 308,
+  "y": 517,
+  "w": 70,
+  "h": 104
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/05.png",
+  "x": 389,
+  "y": 517,
+  "w": 51,
+  "h": 104
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/06.png",
+  "x": 449,
+  "y": 517,
+  "w": 66,
+  "h": 102
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/07.png",
+  "x": 527,
+  "y": 517,
+  "w": 69,
+  "h": 104
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/08.png",
+  "x": 606,
+  "y": 517,
+  "w": 28,
+  "h": 104
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/09.png",
+  "x": 646,
+  "y": 517,
+  "w": 30,
+  "h": 104
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/10.png",
+  "x": 690,
+  "y": 517,
+  "w": 76,
+  "h": 102
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/11.png",
+  "x": 780,
+  "y": 559,
+  "w": 59,
+  "h": 58
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/12.png",
+  "x": 226,
+  "y": 630,
+  "w": 53,
+  "h": 49
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/13.png",
+  "x": 288,
+  "y": 629,
+  "w": 89,
+  "h": 50
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/14.png",
+  "x": 388,
+  "y": 629,
+  "w": 95,
+  "h": 62
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/15.png",
+  "x": 492,
+  "y": 629,
+  "w": 96,
+  "h": 62
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/16.png",
+  "x": 596,
+  "y": 630,
+  "w": 80,
+  "h": 116
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/17.png",
+  "x": 681,
+  "y": 629,
+  "w": 85,
+  "h": 117
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/18.png",
+  "x": 780,
+  "y": 629,
+  "w": 59,
+  "h": 48
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/19.png",
+  "x": 15,
+  "y": 689,
+  "w": 97,
+  "h": 56
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/20.png",
+  "x": 122,
+  "y": 689,
+  "w": 94,
+  "h": 56
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/21.png",
+  "x": 226,
+  "y": 689,
+  "w": 53,
+  "h": 57
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/22.png",
+  "x": 289,
+  "y": 689,
+  "w": 88,
+  "h": 57
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/23.png",
+  "x": 780,
+  "y": 688,
+  "w": 59,
+  "h": 57
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/24.png",
+  "x": 438,
+  "y": 713,
+  "w": 10,
+  "h": 23
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/25.png",
+  "x": 464,
+  "y": 710,
+  "w": 19,
+  "h": 32
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/26.png",
+  "x": 511,
+  "y": 730,
+  "w": 46,
+  "h": 13
+ },
+ {
+  "group": "waterfalls",
+  "file": "parts/waterfalls/27.png",
+  "x": 566,
+  "y": 733,
+  "w": 19,
+  "h": 9
+ }
+]
