@@ -30,6 +30,20 @@ test('a quick tap still throws at the nearest threat, and a single Joy-Con aims 
   set(2, false); assert.ok(g.bombs[0].vx > 0); assert.ok(g.bombs[0].perks.charge > .4);
 });
 
+test('light stick aim and trigger pressure work while neutral drift is ignored', () => {
+  const {g,state,set}=padded();
+  state.buttons[7]={pressed:false,value:.22};g.pollPads();assert.ok(g.charge,'a light trigger press starts aiming');
+  state.axes[2]=-.08;g.pollPads();assert.equal(g.charge.rs,false,'small resting drift stays neutral');
+  state.axes[2]=-.2;g.pollPads();assert.equal(g.charge.rs,true);assert.ok(g.chargePoint().x<g.P.x-40,'gentle tilt chooses a manual direction');
+  state.axes[2]=-.75;g.pollPads();assert.ok(g.chargePoint().x<=g.P.x-159,'full range at three-quarter tilt');
+  set(7,false);assert.ok(g.bombs[0].vx<0,'quick light manual aim is not replaced by auto-aim');
+});
+
+test('aiming down with a single Joy-Con never starts planting', () => {
+  const {g,state,set}=padded();set(2,true);g.gardenPress=false;state.axes[1]=.5;g.pollPads();
+  assert.equal(g.heldDown,false);assert.equal(g.gardenPress,false);assert.ok(g.chargePoint().y>g.P.y);
+});
+
 test('the keyboard holds B to aim with the arrows and charge, and releasing throws', () => {
   const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'mech' }); g.bombs.length = 0; g.bombCool = 0;
   h.key('keydown', 'b'); h.key('keydown', 'ArrowLeft'); h.key('keydown', 'ArrowUp');
