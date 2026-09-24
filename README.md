@@ -1,4 +1,4 @@
-# MAX · NIGHT GARDEN
+# MAX FUGLESPRENGER
 
 A phone-first native-pixel garden roguelite. Grow a garden, defend it, explore twenty vertical stages and physically climb onward. The result of a run is the actual garden you grew.
 
