@@ -194,8 +194,8 @@ test('rat corpses use a one-shot with an empty terminal frame and are removed wi
   assert.equal(JSON.stringify(k),before);art.enemyDefeated(k,11);art.reset();calls.length=0;art.drawDefeated(ctx,11.1,0,0);assert.equal(calls.length,0);
 });
 
-test('Sligo\'s pack loads on demand, never with the others, and until it exists the original Max stands in', async () => {
-  const { art, status, requests } = await nativeArt();
+test('Sligo\'s pack loads on demand, never with the others, and until it loads the original Max stands in', async () => {
+  const { art, status, requests } = await nativeArt('/sligo/');   // Sligo's sheets fail to load here
   assert.equal(status.loaded.length, 16); assert.equal(requests.some(url => url.includes('/sligo/')), false);
   assert.equal(art.playerImage('sligo', 'main'), null); assert.equal(art.playerImage('sligo', 'interaction'), null);
   await new Promise(resolve => setTimeout(resolve, 20));
