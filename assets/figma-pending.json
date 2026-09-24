@@ -38,7 +38,7 @@
   },
   {
    "path": "assets/max-skins-v1/sligo/main.png",
-   "sha1": "cd8331479fb2b83dbd77ae45ebdfbc1a776d5b3d",
+   "sha1": "6a435d693d10172cd1cabe71b572a1f9f783d1fb",
    "width": 256,
    "height": 256,
    "note": "Sligo, the easter-egg skin, main sheet; scripts/build-sligo.py. The menu's assets/max-skins-v1/<id>/main.png counts it as loaded; interaction.png joins this list when the game loads the pack"
@@ -276,7 +276,7 @@
   },
   {
    "path": "assets/max-skins-v1/sligo/specials.png",
-   "sha1": "7314c49f1bdbd33d72462381f8f0936343ffc026",
+   "sha1": "cb4305f4f42b872edcd0964a4003b1ebc6c78395",
    "width": 320,
    "height": 40,
    "note": "Sligo's specials: the tun's blood sac and its burst, from the owner's specials sheet; scripts/build-sligo-specials.py"
