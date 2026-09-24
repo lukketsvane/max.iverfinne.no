@@ -99,11 +99,12 @@ Contracts to read: `README.md` → *Pixel-art contract*; `assets/max-skins-v1/RE
 
 ## Generated packs
 
-Three packs are written by scripts from pack sources, not drawn as sheets:
+These packs are written by scripts from pack sources, not drawn as sheets:
 
 | Sheets | Source | Generator |
 | --- | --- | --- |
-| `assets/max-skins-v1/*/main.png`, `interaction.png` | `assets/max-skins-v1/source/*.png` | `python scripts/build-native-art.py` |
+| `assets/max-skins-v1/{moss,tide,ember,moon}/main.png`, `interaction.png` | `assets/max-skins-v1/source/*.png` | `python scripts/build-native-art.py` |
+| `assets/max-skins-v1/sligo/main.png`, `interaction.png` (the easter-egg skin) | `docs/asset-review/sligo-v1/source.png` | `python3 scripts/build-sligo.py` |
 | `assets/enemies-v1/*/sprites.png` (incl. Hollow Crown) | `assets/enemies-v1/source/*.png` | `python scripts/build-native-art.py` |
 | `assets/rat-enemies-v1/*/sprites.png` (indexed, plus `frames/*.png`) | `assets/rat-enemies-v1/source-poses.json` | `python scripts/build-rat-assets.py` |
 
