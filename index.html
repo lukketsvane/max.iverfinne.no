@@ -120,6 +120,28 @@ var BIOME_BG = {
   ember: { far: loadImg("assets/biomes-v1/ember-far.png"), mid: loadImg("assets/biomes-v1/ember-mid.png") }
 };
 function gardenBackdrop(world) { world = world || worldLevel(); return world >= 16 && world <= 19 ? BIOME_BG.ember : world >= 11 && world <= 15 ? BIOME_BG.frost : null; }
+/* The Sanctuary backdrop (assets/backdrop-v1): five 320x180 parallax layers for
+   the gardens without a snow or ember backdrop. Its painted moon replaces the
+   drawn one; until every layer loads the old mountains and forest stand in. */
+var SANCTUARY_LAYERS = ['sky', 'band', 'mountains', 'ruins', 'forest'], SANCTUARY_BG = {}, SANCTUARY_PAR = { sky: 0.02, band: 0.05, mountains: 0.09, ruins: 0.15, forest: 0.3 }, SANCTUARY_TOP = '#06103c';
+SANCTUARY_LAYERS.forEach(function (k) { SANCTUARY_BG[k] = loadImg('assets/backdrop-v1/' + k + '.png'); });
+function sanctuaryBackdrop(world) { return !gardenBackdrop(world) && SANCTUARY_LAYERS.every(function (k) { return ready(SANCTUARY_BG[k]); }); }
+function drawSanctuarySky(top) {
+  ctx.fillStyle = SANCTUARY_TOP; ctx.fillRect(0, 0, IW, IH);
+  if (top > 0) {
+    var off = Math.round(camX * SANCTUARY_PAR.sky); ctx.fillStyle = '#9fb4f0';
+    for (var x = 0; x < IW; x++) { var h = Math.imul(x + off, 2654435761) >>> 0; if (h % 19) continue; ctx.fillRect(x, (h >>> 9) % top, 1, 1); }
+  }
+  drawSanctuaryLayer('sky', top);
+}
+function drawSanctuaryLayer(k, top) {
+  var im = SANCTUARY_BG[k], w = im.naturalWidth, off = Math.round(camX * SANCTUARY_PAR[k]);
+  for (var i = Math.floor(off / w); i * w - off < IW; i++) {
+    var x = i * w - off;
+    if (i & 1) { ctx.save(); ctx.translate(x + w, top); ctx.scale(-1, 1); ctx.drawImage(im, 0, 0); ctx.restore(); }
+    else ctx.drawImage(im, x, top);
+  }
+}
 var SKY = '#0d0909', MTN_BASE = '#302d4a', FOREST_BASE = '#424b2c';
 var HY = 200;
 
@@ -5842,16 +5864,21 @@ function frame(now) {
   var mh = ready(IMG.mtn) ? IMG.mtn.naturalHeight : 159;
   var bdrop = Math.max(0, Math.round(Math.min(60, IH * 0.15)) - (hy - mh));
   applyBiomePalette(P.x);
-  drawSky(tSec, hy);
+  var sanctuary = sanctuaryBackdrop(), stop = hy - 140;
+  if (sanctuary) drawSanctuarySky(stop); else drawSky(tSec, hy);
   drawBiomeSkyBands(hy);
-  drawMoon(hy);
+  if (!sanctuary) drawMoon(hy);
   drawSecretSky(tSec, hy);
   var backdrop = gardenBackdrop(), far = backdrop && ready(backdrop.far) ? backdrop.far : IMG.mtn, mid = backdrop && ready(backdrop.mid) ? backdrop.mid : IMG.forest;
-  drawTiled(far, 0.10, hy + bdrop, true, MTN_BASE);
+  if (sanctuary) { drawSanctuaryLayer('band', stop + bdrop); drawSanctuaryLayer('mountains', stop + bdrop); drawSanctuaryLayer('ruins', stop + Math.round(bdrop * 0.7)); }
+  else drawTiled(far, 0.10, hy + bdrop, true, MTN_BASE);
   drawFlock();
   drawSwanSky();
-  drawTiled(mid, 0.35, hy + Math.round(bdrop * 0.55), mid !== IMG.forest, FOREST_BASE);
-  drawClouds(hy + Math.round(bdrop * 0.6), tSec);
+  if (sanctuary) drawSanctuaryLayer('forest', stop + Math.round(bdrop * 0.55));
+  else {
+    drawTiled(mid, 0.35, hy + Math.round(bdrop * 0.55), mid !== IMG.forest, FOREST_BASE);
+    drawClouds(hy + Math.round(bdrop * 0.6), tSec);
+  }
   drawBiomeBackdrop(tSec, hy);
   drawBiomeTint();
   drawFarFlora(tSec);
