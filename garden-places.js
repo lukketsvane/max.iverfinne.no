@@ -25,6 +25,14 @@
     crown: { shade: ['#1b1a22', '#2c2a36', '#3b3846', '#56526a', '#76708a'], line: '#0d0c12', moss: ['#343f2a', '#55663a', '#b9a261'], back: ['#131219', '#1a1822'], wood: false, ashlar: true }
   };
   var FLOWER = ['#3f7fd0', '#72b6ff', '#d6eeff'];
+  // Gardens 11-15 are frost and 16-19 ember (see gardenBackdrop in index.html): their
+  // stone wears snow or ember moss instead of green moss, and their flowers follow.
+  var CAPS = {
+    frost: { moss: ['#6f8597', '#b7cad8', '#eef6fb'], flower: ['#7fb0d8', '#bfe3ff', '#ffffff'] },
+    ember: { moss: ['#4a261a', '#8f3a1c', '#dd7a33'], flower: ['#b8452a', '#f08a3c', '#ffd27a'] }
+  };
+  function biome(stage) { stage = stage | 0; return stage >= 16 && stage <= 19 ? 'ember' : stage >= 11 && stage <= 15 ? 'frost' : null; }
+  function dress(st, stage) { var c = CAPS[biome(stage)]; if (!c) return { st: st, flower: FLOWER }; var o = {}; for (var k in st) o[k] = st[k]; o.moss = c.moss; return { st: o, flower: c.flower }; }
   function hash(a, b) { var h = Math.imul((a >>> 0) ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul((b | 0) + 0x632be5ab, 0xc2b2ae35); h = Math.imul(h ^ h >>> 15, 0x2c1b3c6d); return (h ^ h >>> 13) >>> 0; }
   function shape(place, mirror) {
     var w = place.rows.reduce(function (m, r) { return Math.max(m, r.length); }, 0);
@@ -102,7 +110,58 @@
     }
     return best;
   }
+  /* ------------------------------------------------------------- blooms */
+  // A bounce bloom grows on dry, flat soil straight under a route ledge that a
+  // plain jump cannot reach (26-44 px up). Jump or drop onto it and it springs
+  // Max 52 px high, through the one-way ledge and onto it: a shortcut up a
+  // route, never the only way. Walking across it does nothing.
+  var BLOOM = { w: 10, v: 212, low: 26, high: 44 };
+  function blooms(layout, ground, wet) {
+    var out = [], b = layout.place && layout.place.bounds;
+    [-1, 1].forEach(function (side) {
+      var best = null;
+      layout.platforms.forEach(function (p) {
+        if (p.place || p.solid || p.route !== side) return;
+        var x = Math.round(p.x + p.w / 2), g = Math.round(ground(x)), h = g - p.y;
+        if (h < BLOOM.low || h > BLOOM.high || p.w < 14) return;
+        for (var d = -8; d <= 8; d += 4) if (wet(x + d) || Math.abs(Math.round(ground(x + d)) - g) > 2) return;
+        if (b && x + 8 >= b.x - 12 && x - 8 <= b.x + b.w + 12) return;
+        if (layout.platforms.some(function (q) { return q.solid && x + 6 > q.x && x - 6 < q.x + q.w && q.y < g && q.y + q.h > p.y - 12; })) return;
+        if (!best || p.y < best.p.y) best = { p: p, x: x, g: g };
+      });
+      if (best) out.push({ id: 'bloom' + (side < 0 ? 'L' : 'R'), x: best.x, y: best.g, w: BLOOM.w, target: best.p.id, route: side });
+    });
+    return out;
+  }
+  function bloomAt(layout, x, y) {
+    var list = layout && layout.blooms; if (!list) return null;
+    for (var i = 0; i < list.length; i++) { var q = list[i]; if (Math.abs(x - q.x) <= q.w / 2 + 1 && Math.abs(y - q.y) <= 3) return q; }
+    return null;
+  }
+  function drawBlooms(ctx, layout, camX, camY, W, H, t, squash) {
+    var list = layout && layout.blooms; if (!list) return;
+    var cx = Math.round(camX), cy = Math.round(camY);
+    list.forEach(function (q) {
+      var x = q.x - cx, y = q.y - cy; if (x < -12 || x > W + 12 || y < -20 || y > H + 12) return;
+      var s = squash ? squash(q) : 0, sway = Math.round(Math.sin((t || 0) * 2.3 + q.x * .21) * .6), cap = s > 0 ? 1 : 0;
+      ctx.fillStyle = '#2f4a26'; ctx.fillRect(x - 3, y - 2, 2, 2); ctx.fillRect(x + 1, y - 2, 2, 2);
+      ctx.fillStyle = '#4c7430'; ctx.fillRect(x, y - 5 + cap * 2, 1, 5 - cap * 2); ctx.fillRect(x - 4, y - 1, 3, 1); ctx.fillRect(x + 2, y - 1, 3, 1);
+      var top = y - 9 + cap * 3, wide = 4 + cap;
+      ctx.fillStyle = '#0c1017'; ctx.fillRect(x - wide - 1, top, wide * 2 + 3, 4 - cap);
+      ctx.fillStyle = '#3f7fd0'; ctx.fillRect(x - wide, top, wide * 2 + 1, 3 - cap);
+      ctx.fillStyle = '#72b6ff'; ctx.fillRect(x - wide + 1, top, wide * 2 - 1, 1);
+      ctx.fillStyle = '#d6eeff'; ctx.fillRect(x + sway, top - 1, 1, 1);
+      var glow = .5 + .5 * Math.sin((t || 0) * 3.1 + q.x);
+      ctx.fillStyle = 'rgba(114,182,255,' + (.07 + .05 * glow).toFixed(3) + ')'; ctx.fillRect(x - 7, top - 3, 15, 9);
+    });
+  }
   function furnish(layout, ground, wet) {
+    if (!layout.platforms) return layout;
+    furnishPlace(layout, ground, wet);
+    if (!layout.blooms) layout.blooms = blooms(layout, ground, wet);
+    return layout;
+  }
+  function furnishPlace(layout, ground, wet) {
     var place = PLACES[layout.stage | 0];
     if (!place || layout.place || !layout.platforms) return layout;
     var key = hash(layout.seed == null ? 0 : layout.seed >>> 0, (layout.stage | 0) * 977 + 13), side = key & 1 ? 1 : -1, width = 0;
@@ -179,7 +238,7 @@
   function bake(layout, veilGroup) {
     var p = layout.place, doc = root.document;
     if (!doc || !doc.createElement || typeof root.ImageData !== 'function') return null;
-    var st = STYLES[p.style] || STYLES.stone, rows = p.rows, sx = p.soil.x, soil = p.soil.y, W = soil.length, top = p.y - 2 * CELL;
+    var dressed = dress(STYLES[p.style] || STYLES.stone, p.stage), st = dressed.st, rows = p.rows, sx = p.soil.x, soil = p.soil.y, W = soil.length, top = p.y - 2 * CELL;
     var H = Math.max.apply(null, soil) - top + 2, ox = p.x - sx, oy = p.y - top, ids = groups(rows);
     var bases = layout.platforms.filter(function (q) { return q.place && q.solid && /:p(f|r\d+)$/.test(q.id); });
     var mask = new Uint8Array(W * H); // 0 air, 1 rock, 2 veil, 3 back wall, 4 pillar
@@ -195,7 +254,7 @@
     }
     function solid(x, y) { if (x < 0 || x >= W || y < 0 || y >= H) return false; var k = mask[y * W + x]; return k === 1 || k === 2; }
     function mine(x, y) { var k = mask[y * W + x]; if (veilGroup == null) return k !== 2; if (k !== 2) return false; var c = Math.floor((x - ox) / CELL), r = Math.floor((y - oy) / CELL); return ids[r] && ids[r][c] === veilGroup; }
-    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), back = st.back.map(rgb), flower = FLOWER.map(rgb);
+    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), back = st.back.map(rgb), flower = dressed.flower.map(rgb);
     function put(x, y, col) { if (x < 0 || x >= W || y < 0 || y >= H) return; var o = (y * W + x) * 4; out[o] = col[0]; out[o + 1] = col[1]; out[o + 2] = col[2]; out[o + 3] = 255; }
     function open(x, y) { return !solid(x, y) && (x < 0 || x >= W || y < 0 || y >= H || mask[y * W + x] !== 1 && mask[y * W + x] !== 2) && (y >= H || y < 0 || x < 0 || x >= W || top + y < soil[x]); }
     for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
@@ -238,6 +297,64 @@
       p.decor.forEach(function (d) { ornament(g, d.ch, (d.x - p.x) / CELL, (d.y - p.y) / CELL, ox, oy, rows, pal); });
     }
     return { canvas: cv, x: sx, y: top };
+  }
+  /* -------------------------------------------------------------- ledges */
+  // Route ledges wear the same materials as the places: terraces and crossings
+  // are mossy cobble with a rocky underside, ruins are ashlar with broken
+  // pillar stubs, canopy is a leafy branch and switchbacks a root with hanging
+  // strands. The top row is the walking surface (p.y), exactly as before.
+  function ledgePixels(p, stage) {
+    var dressed = dress(STYLES[p.style] || STYLES.stone, stage), st = dressed.st, wood = !!st.wood;
+    var depth = Math.max(3, p.depth | 0), W = p.w + 2, H = depth + 14, ox = 1, oy = 3, mask = new Uint8Array(W * H);
+    function set(x, y) { if (x >= 0 && x < W && y >= 0 && y < H) mask[y * W + x] = 1; }
+    for (var x = 0; x < p.w; x++) {
+      var wx = p.x + x, edge = Math.min(x, p.w - 1 - x), bottom = depth;
+      if (edge === 0) bottom = depth - 2; else if (edge === 1) bottom = depth - 1;
+      if (!wood && p.style !== 'ruin' && edge > 2) bottom += Math.min(edge - 2, hash(wx, 51) % 4 + (edge > p.w / 4 ? 2 : 0));
+      if (wood && p.style === 'branch') bottom = Math.max(3, depth - (edge < 3 ? 1 : 0));
+      for (var y = 0; y < bottom; y++) set(ox + x, oy + y);
+    }
+    if (p.style === 'ruin') [4, p.w - 9].forEach(function (x0, i) { if (x0 < 2 || x0 + 4 > p.w - 2) return; for (var y = depth; y < depth + (i ? 7 : 10) - hash(p.x + x0, 61) % 3; y++) for (var x = 0; x < 4; x++) set(ox + x0 + x, oy + y); });
+    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), flower = dressed.flower.map(rgb);
+    function solid(x, y) { return x >= 0 && x < W && y >= 0 && y < H && mask[y * W + x] === 1; }
+    function put(x, y, col) { if (x < 0 || x >= W || y < 0 || y >= H) return; var o = (y * W + x) * 4; out[o] = col[0]; out[o + 1] = col[1]; out[o + 2] = col[2]; out[o + 3] = 255; }
+    for (var y2 = 0; y2 < H; y2++) for (var x2 = 0; x2 < W; x2++) {
+      if (!solid(x2, y2)) continue;
+      var wx2 = p.x - ox + x2, wy2 = p.y - oy + y2, top = y2 - oy;
+      var drip = hash(wx2, 23) % 6 === 0 ? 1 + hash(wx2, 29) % 3 : 0;
+      if (top < 2 + drip && !solid(x2, y2 - top - 1) && (top <= 1 || solid(x2, y2 - 1))) { put(x2, y2, top === 0 ? moss[2] : top === 1 ? moss[1] : moss[0]); continue; }
+      if (!solid(x2 - 1, y2) || !solid(x2 + 1, y2) || !solid(x2, y2 + 1)) { put(x2, y2, line); continue; }
+      put(x2, y2, shade[texture(st, wx2, wy2)]);
+    }
+    for (x2 = 1; x2 < W - 1; x2++) {
+      if (!solid(x2, oy)) continue;
+      var wx3 = p.x - ox + x2, hh = hash(wx3, 37);
+      if (hh % 3 === 0) put(x2, oy - 1, moss[hh % 2 ? 1 : 2]);
+      if (wood && p.style === 'branch' && hh % 5 < 2) { put(x2, oy - 1, moss[1]); if (hh % 5 === 0) { put(x2, oy - 2, moss[2]); put(x2 + 1, oy - 1, moss[0]); } }
+      if (hh % 23 === 0 && x2 > 2 && x2 < W - 3) { put(x2, oy - 1, moss[0]); put(x2, oy - 2, flower[1]); put(x2 - 1, oy - 2, flower[0]); put(x2 + 1, oy - 2, flower[0]); put(x2, oy - 3, flower[2]); }
+    }
+    for (x2 = 2; x2 < W - 2; x2++) {
+      var yb = H - 1; while (yb > 0 && !solid(x2, yb)) yb--;
+      if (!yb || !solid(x2, yb)) continue;
+      var wx4 = p.x - ox + x2, hv = hash(wx4, 41), strand = p.style === 'root' ? hv % 5 === 1 : hv % 9 === 1;
+      if (!strand) continue;
+      var len = p.style === 'root' ? 3 + hv % 6 : 2 + hv % 5;
+      for (var k = 1; k <= len && yb + k < H; k++) put(x2 + (p.style === 'root' && k > 2 && hv & 2 ? 1 : 0), yb + k, p.style === 'root' ? (k === len ? line : shade[k % 2 ? 2 : 1]) : moss[k % 3 === 0 ? 1 : 0]);
+    }
+    return { data: out, w: W, h: H, x: p.x - ox, y: p.y - oy };
+  }
+  var ledgeCache = typeof WeakMap === 'function' ? new WeakMap() : null;
+  function ledgeArt(p, stage) {
+    if (!ledgeCache || p.solid || p.place) return null;
+    var a = ledgeCache.get(p); if (a !== undefined) return a;
+    a = null;
+    var doc = root.document;
+    if (doc && doc.createElement && typeof root.ImageData === 'function') {
+      var px = ledgePixels(p, stage), cv = doc.createElement('canvas'); cv.width = px.w; cv.height = px.h;
+      var g = cv.getContext && cv.getContext('2d');
+      if (g && g.putImageData) { g.putImageData(new root.ImageData(px.data, px.w, px.h), 0, 0); a = { canvas: cv, dx: px.x - p.x, dy: px.y - p.y }; }
+    }
+    ledgeCache.set(p, a); return a;
   }
   function behind(rows, c, r) {
     var ch = at(rows, c, r);
@@ -745,7 +862,7 @@
     '..._____|____|_##########_|____|_____...'
   ] });
 
-  var api = { cell: CELL, places: PLACES, styles: STYLES, furnish: furnish, draw: draw, drawFront: drawFront, inside: inside, veilAt: veilAt, rects: rects };
+  var api = { cell: CELL, places: PLACES, styles: STYLES, furnish: furnish, draw: draw, drawFront: drawFront, inside: inside, veilAt: veilAt, rects: rects, bloom: BLOOM, bloomAt: bloomAt, drawBlooms: drawBlooms, ledgePixels: ledgePixels, ledgeArt: ledgeArt, biome: biome };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxPlaces = api;
 })(typeof window === 'object' ? window : globalThis);
