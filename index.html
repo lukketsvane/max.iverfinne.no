@@ -398,6 +398,7 @@ var touches = {}, moveId = null;
 
 function doJump(variable) {
   if(P&&P.brace>0)P.brace=0;
+  if(P&&P.tun>0)endTun();
   if(P&&P.st==='climb'&&climb){if(climb.exit)climbBoost();else jumpFromPlant(variable);return;}
   if(P&&canPlantClimb(rogueRun.classId)&&!warp&&P.st!=='float'&&!P.climbRegrab){
     var plant=plantClimbAt(P.x,P.y,9);if(plant&&requestClimb(plant))return;
@@ -678,7 +679,8 @@ var P = {
   land: 0, idleT: 0, fidget: null, held: false,
   st: 'free', still: 0, squatT: 0, lampLit: 0, lampBlock: false, crouchGardenLatch: false,
   dodgeT: 0, dodgeCool: 0, dodgeDir: 1, dodgeId: 0, dodgeDust: 0, throwPose: 0,
-  skillCool: 0, skillDenied: 0, skillPose: 0, skillAnim: 'idle', brace: 0, braceX: 0, braceTag: 0, pounce: 0, pounceY: 0
+  skillCool: 0, skillDenied: 0, skillPose: 0, skillAnim: 'idle', brace: 0, braceX: 0, braceTag: 0, pounce: 0, pounceY: 0,
+  tun: 0, tunX: 0, hurt: 0
 };
 P.y = surfaceY(0);
 
@@ -702,7 +704,7 @@ function ownClass(){return window.MaxClasses.get(rogueRun.classId);}
 function dodgeRecovery(){return DODGE_COOLDOWN*ownClass().dodgeRecovery*Math.pow(.83,rogueRun.perks.dash||0);}
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
-  if(P.dodgeCool>0||P.pounce||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
+  if(P.dodgeCool>0||P.pounce||P.tun>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
   P.dodgeT=DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;P.brace=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
@@ -748,11 +750,14 @@ function updatePlayer(dt, inp) {
     if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){chime([1319],0,.012);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
     P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
     if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
+    if(P.tun>0){var tunLeft=P.tun-step;if(tunLeft<=1e-6||!P.grounded||P.wet||climb||P.st==='float'||Math.abs(P.x-P.tunX)>6)endTun();else P.tun=tunLeft;}
+    P.hurt=Math.max(0,(P.hurt||0)-step);
     if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
-    updateHands(step,taskSteer(inp));
+    var held=P.tun>0?{axis:0,top:inp.top}:inp;
+    updateHands(step,taskSteer(held));
     if(P.st==='burrow')updateBurrow(step,inp);
     else if(P.st==='climb')updateClimb(step,inp);
-    else physics(step,(P.st==='free'||P.st==='float')?inp:{axis:0,top:inp.top});
+    else physics(step,(P.st==='free'||P.st==='float')?held:{axis:0,top:inp.top});
     if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
     P.throwPose=Math.max(0,P.throwPose-step);
     animate(step);
@@ -842,6 +847,9 @@ function animate(dt) {
   else if (!P.grounded) {
     P.idleT = 0; P.fidget = null; P.land = 0;
     setAnim(P.vy < -18 ? 'rise' : 'fall');
+  } else if (P.tun > 0 && sheet2Ready) {
+    if (P.anim !== 'crouch' || P.done) setAnim('squat');
+    P.land = 0; P.idleT = 0; P.fidget = null;
   } else if (P.land > 0) {
     P.land -= dt; P.idleT = 0;
     if (spd > 10) P.land = 0;
@@ -3015,17 +3023,19 @@ function drawCompanion(){
   });
 }
 function bracedMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.bracing:P.brace>0;return performance.now()<(m.braceUntil||0)&&Math.abs(a.x-(m.braceX||0))<=6;}
+function curledMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.curled:P.tun>0;return performance.now()<(m.tunUntil||0)&&Math.abs(a.x-(m.tunX||0))<=6;}
 function classProtection(plant){
   var protection=0;
-  function guard(avatar,classId,braced){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=(braced?kit.braceRadius:kit.radius)&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,braced?kit.braceProtection:kit.protection);}
-  if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P));
+  function guard(avatar,classId,braced,curled){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=(braced?kit.braceRadius:kit.radius)&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,braced?kit.braceProtection:kit.protection);
+    if(curled&&kit.tunRadius&&Math.abs(avatar.x-plant.x)<=kit.tunRadius&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,kit.tunProtection);}
+  if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a),curledMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P),curledMember(null,P));
   return 1-protection;
 }
 function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
 function useClassSkill(){
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
-    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():false;
+    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
   return ok;
 }
@@ -3039,6 +3049,7 @@ function coopClassSkill(action,m,now){
   if(kit.skill==='dispatch')return dispatchWorld();
   if(!P.grounded||P.wet)return false;
   if(kit.skill==='brace'){m.braceUntil=now+kit.braceTime*1000;m.braceX=P.x;braceShove(P.x,P.y);return true;}
+  if(kit.skill==='tun'){m.tunUntil=now+kit.tunTime*1000;m.tunX=P.x;skillRing(P.x,P.y,kit.tunRadius,'tun');return true;}
   if(kit.skill==='bloom')return herbalistBloom()>0;
   if(kit.skill==='pounce'){if(m.airTop==null||!m.landAt||now-m.landAt>800)return false;
     var drop=Math.max(0,Math.min(160,+action.drop||0,P.y-m.airTop+2));m.airTop=null;mossSlam(P.x,P.y,drop);return true;}
@@ -3103,6 +3114,18 @@ function bulwarkBrace(){
   if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag}))return false;}else braceShove(P.x,P.y);
   P.brace=kit.braceTime;P.braceX=P.x;P.skillCool=parry?kit.parryCd:kit.skillCd;skillCue(parry?'parry':'brace',0);return true;
 }
+// Sligo's tun: curled up it neither moves nor throws, nothing knocks it back, and plants within
+// tunRadius take less of every kind of damage (plantProtection). A jump uncurls it early; the
+// cooldown counts from the moment it uncurls. It adds no score. A guest's tun follows the host's.
+function sligoTun(){
+  if(P.tun>0||!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0)return false;
+  var kit=ownClass();
+  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag}))return false;}else skillRing(P.x,P.y,kit.tunRadius,'tun');
+  task=null;holdWater=null;if(P.st!=='free')P.st='free';
+  P.tun=kit.tunTime;P.tunX=P.x;P.vx=0;P.skillCool=0;P.throwPose=0;if(sheet2Ready)setAnim('crouch');
+  skillCue('tun',0);return true;
+}
+function endTun(){if(!(P.tun>0))return;P.tun=0;P.skillCool=ownClass().skillCd;}
 // A brace on a tell is a parry: the biter is hurt, knocked away and stunned. Late in the tell hurts most.
 function braceShove(x,y){
   var r=window.MaxClasses.get('bulwark').braceRadius,n=0;
@@ -3146,6 +3169,11 @@ function herbalistBloom(){
 function drawClassAuras(){
   runPlayers().forEach(function(a){
     var kit=window.MaxClasses.get(a.member?a.member.classId:rogueRun.classId),p=a.p;
+    if(kit.skill==='tun'&&p.grounded&&!p.wet&&(!a.member||a.member.id===coop.me?P.tun>0:!!p.curled)){
+      ctx.fillStyle='#d99aa8';ctx.globalAlpha=.55;
+      for(var e=-kit.tunRadius;e<=kit.tunRadius;e+=2)ctx.fillRect(Math.round(p.x+e-camX),Math.round(surfaceY(p.x+e)-camY)+2,1,1);
+      ctx.globalAlpha=1;return;
+    }
     if(!kit.protection||!p.grounded||p.wet)return;
     var braced=!a.member||a.member.id===coop.me?P.brace>0:!!p.bracing,r=braced?kit.braceRadius:kit.radius,step=braced?2:4;
     ctx.fillStyle='#8eb6b8';ctx.globalAlpha=braced?.6:.2;
@@ -3158,6 +3186,7 @@ function drawSkillPip(){
   var kit=ownClass(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
   ctx.fillStyle='rgba(236,232,220,.22)';ctx.fillRect(x,y,5,1);
   if(P.skillDenied>0){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
+  else if(P.tun>0){var left=Math.round(5*P.tun/kit.tunTime);ctx.fillStyle='rgba(236,232,220,.5)';if(left>0)ctx.fillRect(x,y,left,1);}
   else if(P.skillCool>0||P.pounce){var w=Math.round(5*(1-P.skillCool/kit.skillCd));ctx.fillStyle='rgba(236,232,220,.5)';if(w>0)ctx.fillRect(x,y,w,1);}
   else{ctx.fillStyle='#ece8dc';ctx.fillRect(x,y,5,1);}
 }
@@ -3224,7 +3253,7 @@ function recordGardenPlant(p){
 }
 function clearRunInput(){
   heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;charge=null;queuedThrow=null;padAx=0;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
-  if(P){P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;}
+  if(P){P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;endTun();}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
 function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
@@ -3336,7 +3365,8 @@ function plantCollection(){
   var seen={},add=function(list){(list||[]).forEach(function(p){if(p&&(p.growth||0)>=1&&!(p.kind in seen))seen[p.kind]=p.seed||7;});};
   if(window.MaxRunRecords)window.MaxRunRecords.getAll().forEach(function(r){add(r.plants);});
   add(rogueRun.garden);
-  var out=[];for(var k=0;k<GARDEN_FIG_FORMS.length;k++)out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7,feature:PLANT_FEATURES[k]||'',tier:PLANT_TIER[k]||1});
+  var secret=!(window.MaxEasterEggs&&window.MaxEasterEggs.has('sligo')),out=[];
+  for(var k=0;k<GARDEN_FIG_FORMS.length;k++){if(secret&&SLIGO_KINDS.indexOf(k)>=0)continue;out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7,feature:PLANT_FEATURES[k]||'',tier:PLANT_TIER[k]||1});}
   return out;
 }
 var GARDEN_VIEW_LAYERS=['sky','far-mountains','mist','mid-mountains','forest','soil','fireflies','water'],GARDEN_VIEW={},galleryPlants={};
@@ -3627,9 +3657,12 @@ var GARDEN_FIG_FORMS=[
 {fi:0,off:0,sprite:0},{fi:1,off:1,sprite:1},{fi:2,off:2,sprite:2},{fi:3,off:3,sprite:3},{fi:4,off:4,sprite:4},{fi:5,off:5,sprite:5},{fi:6,off:6,sprite:6},{fi:7,off:7,sprite:7},{fi:0,off:8,sprite:8},{fi:1,off:9,sprite:9},{fi:0,off:10,sprite:10},{fi:2,off:11,sprite:11},{fi:6,off:12,sprite:12},{fi:1,off:13,sprite:13},{fi:4,off:14,sprite:14},{fi:7,off:15,sprite:15}
 ];
 function plantTierWeights(w){return w<=5?[1,0,0,0]:w<=10?[.72,.24,.04,0]:w<=15?[.5,.33,.15,.02]:[.42,.3,.2,.08];}
+// Sligo grows nothing but its two umbilical cords, and nobody else ever grows them.
+var SLIGO_KINDS=[25,26];
 function gardenKindFor(x){
   var q=biomeAt(x),w=worldLevel(),home=w>=16?'e':w>=11?'f':'g',tiers=plantTierWeights(w),pool=[],total=0;
   for(var k=0;k<GARDEN_FIG_FORMS.length;k++){
+    if(SLIGO_KINDS.indexOf(k)>=0)continue;
     var wt=tiers[(PLANT_TIER[k]||1)-1];if(!wt)continue;
     if(PLANT_HOME[k].indexOf(home)<0){if(PLANT_TIER[k]!==1)continue;wt*=.35;}
     if(q.id==='wetland'&&(k===0||k===18)||q.id==='moon'&&(k===1||k===9)||q.id==='grove'&&(k===6||k===12)||q.id==='fungal'&&(k===3||k===4))wt*=2;
@@ -3639,13 +3672,18 @@ function gardenKindFor(x){
   for(var i=0;i<pool.length;i+=2){r-=pool[i+1];if(r<0)return pool[i];}
   return pool.length?pool[pool.length-2]:0;
 }
+// Seeded by position like gardenKindFor. The cap, the rarer cord, is one in five before garden 6
+// and two in five after it.
+function sligoKindFor(x){return h1(x*.731+biomeAt(x).seg*1.93)<(worldLevel()<6?.2:.4)?SLIGO_KINDS[1]:SLIGO_KINDS[0];}
+// The planting actor's class decides: on the host a guest's seed runs as the guest (coopWithMember).
+function seedKindFor(x){return ownClass().skill==='tun'?sligoKindFor(x):gardenKindFor(x);}
 function plantGardenSeed(x){
   x=dryX(x);if(waterAt(x)||nearestGardenPlot(x,12))return true;
   if(gardenSeeds<=0){socialTone('call');puff(x,surfaceY(x),2,.2);return true;}
   return embody('sow',x,function(){
     if(gardenSeeds<=0||nearestGardenPlot(x,12))return;
     gardenSeeds--;
-    gardenPlots.push({x:x,kind:gardenKindFor(x),growth:0,moisture:.26,health:1,pulse:1,hit:0,age:0,dead:0,seed:Math.random()*999,seedMark:0,carer:skillOwner()});
+    gardenPlots.push({x:x,kind:seedKindFor(x),growth:0,moisture:.26,health:1,pulse:1,hit:0,age:0,dead:0,seed:Math.random()*999,seedMark:0,carer:skillOwner()});
     recordGardenPlant(gardenPlots[gardenPlots.length-1]);
     gardenAction(8,7,'PLANTED');
     if(gardenPlots.length>30)gardenPlots.shift();
@@ -4770,6 +4808,7 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
+  if(P.tun>0)return false;
   if(coopGuest()){
     if(!P.grounded||P.wet||task||P.st!=='free')return false;
     if(interactEncounter())return true;
@@ -4811,6 +4850,7 @@ function poseExit() {                                      // leave a held pose 
 
 function updateHands(dt, inp) {
   if (P.st === 'climb' || P.st === 'float') { task = null; return; }
+  if (P.tun > 0) { task = null; holdWater = null; gardenPress = false; lampToggle = false; return; }
   if(P.dodgeT>0&&jumpBuf<=0){gardenPress=false;return;}
   var move = inp.axis !== 0, low = heldDown || heldSpace || swipeDown || gardenPress;
   gardenPress=false;
@@ -5006,7 +5046,7 @@ var bombCoolMax=0,queuedThrow=null;
 function throwCooldown(power){return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
 function throwBomb(target,power) {                         // a bird {kind, o} or a spot {x, y}
   power=Math.max(0,Math.min(1,+power||0));
-  if (runIsPaused() || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
+  if (runIsPaused() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
   if(coopGuest()){
     var aim=target.o||target;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:Number.isSafeInteger(aim.spore)?aim.spore:0,power:power}))return false;
     bombCool=bombCoolMax=throwCooldown(power);task=null;
@@ -5057,7 +5097,7 @@ function autoTarget() {
 }
 
 var charge=null,lastPad=null;
-function chargeStart(src){if(charge||runIsPaused()||warp||P.st==='float'||(climb&&climb.exit))return false;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
+function chargeStart(src){if(charge||runIsPaused()||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
 function targetPoint(a){return a.o?{x:a.o.x,y:a.o.y-(a.kind==='krek'?0:6),o:a}:{x:a.x,y:a.y,s:a};}
 function aimAssist(dx,dy){
   var x0=P.x,y0=P.y-12,d=Math.hypot(dx,dy)||1,best=null,bs=1e9;dx/=d;dy/=d;
@@ -5266,9 +5306,9 @@ function explode(x, y, wet, build) {
   var wl = waterAt(x);
   if (wet && wl) { ripple(x, wl.level, 'splash'); ripple(x - 9, wl.level, 'ring'); ripple(x + 9, wl.level, 'ring'); }
   else if (Math.abs(surfaceY(x) - y) < 16) { scorches.push({ x: x, w: 8 + Math.random() * 4, life: 35, seed: Math.random() * 50 }); if (scorches.length > 12) scorches.shift(); }
-  if (P.dodgeT<=0 && !(P.brace>0) && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
+  if (P.dodgeT<=0 && !(P.brace>0) && !(P.tun>0) && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
     var away = Math.abs(P.x - x) < 0.5 ? -P.face : (P.x > x ? 1 : -1);
-    P.vx = away * 95 * ownClass().knockback; P.vy = -118 * ownClass().knockback; P.grounded = false; P.coyote = 0; P.land = 0;
+    P.vx = away * 95 * ownClass().knockback; P.vy = -118 * ownClass().knockback; P.grounded = false; P.coyote = 0; P.land = 0; P.hurt = 2;
     task = null; P.st = 'free'; P.lampBlock = true; setAnim('rise');
   }
   if (n||pestN) {
@@ -5448,6 +5488,7 @@ function skillCue(kind,dist){
   else if(kind==='arrive')socialTone('water');
   else if(kind==='slam'){sfx('thud',dist);sfx('poof',dist);}
   else if(kind==='brace'){sfx('thud',dist);chime([294,392],.05,.03);}
+  else if(kind==='tun'){sfx('thud',dist);chime([220,277,330],.06,.03);}
   else if(kind==='parry'){sfx('thud',dist);chime([587,880,1175],.03,.05);}
   else if(kind==='absorb'){sfx('thud',dist);chime([392,494,587],.04,.035);}
   else if(kind==='bloom'||kind==='revive'){chime([523,659,784,1047],.045,.05);if(kind==='revive')chime([784,1175],.1,.06);}
@@ -5783,6 +5824,86 @@ function drawFigmaPlants(t) {
   }
 }
 
+/* ---------------------------------------------------------------- Sligo's trail
+   Wherever a Sligo walks on soil, a ledge or a picture floor it leaves a thin glistening slime
+   streak and, every 10-20 px (more often while it is hurt or just after a tun), a clot of dark
+   blood, now and then with a drip over a ledge's lip; a landing leaves a denser smear. Purely
+   visual: each client records the Sligo avatars it draws into one capped ring of marks, solid
+   pixels on the surface's top row, which dissolve by an ordered dither over their last seconds. */
+var TRAIL_CAP=700,TRAIL_LIFE=45,TRAIL_FADE=5;
+var TRAIL_INK=['#4f6b5c','#9fb89a','#dfe8d0','#2a0306','#4a070c','#6e1016','#9c2a32'];
+// dx, dy, ink per pixel; dy 0 is the surface's top row. 0-3 slime, 4-9 clots, 10-11 drips.
+var TRAIL_SHAPES=[
+  [0,0,0,1,0,1],[0,0,1,1,0,0],[0,0,0,1,0,0],[0,0,0,1,0,2],
+  [0,0,4,1,0,6],[0,0,3,1,0,4,0,-1,6],[-1,0,3,0,0,4,1,0,5,0,-1,6],[0,0,4,1,0,3,2,0,4,1,-1,5,2,-1,6],[0,0,5,1,0,4,1,-1,6],[-1,0,4,0,0,3,1,0,4,2,0,3,0,-1,6],
+  [0,0,4,0,1,6],[0,0,4,0,1,3,0,2,6]
+];
+var TRAIL_BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+var sligoTrail={x:new Int32Array(TRAIL_CAP),y:new Int32Array(TRAIL_CAP),t:new Float64Array(TRAIL_CAP),shape:new Uint8Array(TRAIL_CAP),seen:new Int16Array(TRAIL_CAP),next:0,size:0,clock:0,world:0,seed:0};
+function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,salt:salt||0};}
+var trailSelf=trailTracker(0);
+function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
+function trailMark(x,y,shape){var T=sligoTrail,i=T.next;T.x[i]=x;T.y[i]=y;T.t[i]=T.clock;T.shape[i]=shape;T.next=(i+1)%TRAIL_CAP;if(T.size<TRAIL_CAP)T.size++;}
+// The ledge (or rock top) under a foot within 4 px, as MaxStageLayout.at finds it, without allocating.
+function trailLedge(x,y){var L=stageLayout().platforms||[],best=null,d=4;for(var i=0;i<L.length;i++){var p=L[i],e=Math.abs(p.y-y);if(e<=d&&x>=p.x-3&&x<=p.x+p.w+3){best=p;d=e;}}return best;}
+// A mark on the top row of whatever holds the foot up, kept on the ledge's own pixels.
+function trailSpot(x,y,shape,wide){
+  var p=trailLedge(x,y);
+  if(!p){trailMark(x,Math.round(surfaceY(x)),shape);return null;}
+  var left=Math.round(p.x),right=Math.round(p.x+p.w)-1;
+  trailMark(Math.max(left+(wide?1:0),Math.min(right-(wide?2:1),x)),Math.round(p.y),shape);return p;
+}
+function trailClot(k,x,y){
+  var p=trailSpot(x,y,4+Math.floor(trailRand(k)*6),true);
+  if(!p||trailRand(k)<.5)return;
+  var left=Math.round(p.x),right=Math.round(p.x+p.w)-1;
+  if(x-left<=4)trailMark(left-1,Math.round(p.y),trailRand(k)<.5?10:11);
+  else if(right-x<=4)trailMark(right+1,Math.round(p.y),trailRand(k)<.5?10:11);
+}
+function trailSlime(k,x,y){var r=trailRand(k);trailSpot(x,y,r<.12?3:k.n%3,false);}
+function trailFollow(k,a,curled,hurt,dt){
+  var on=!!a.grounded&&!a.wet&&a.st!=='climb'&&a.st!=='float'&&a.st!=='burrow',x=Math.round(a.x);
+  k.after=Math.max(0,k.after-dt);
+  if(k.curled&&!curled&&on){k.after=3;trailClot(k,x,a.y);}
+  k.curled=curled;
+  if(!on){if(k.on===1)k.on=0;return;}
+  if(k.on!==1||Math.abs(x-k.mx)>24){
+    var landed=k.on===0;k.on=1;k.mx=x;
+    if(landed){for(var s=-4;s<=2;s+=2)trailSlime(k,x+s,a.y);trailClot(k,x,a.y);}
+    return;
+  }
+  while(Math.abs(x-k.mx)>=2){
+    k.mx+=x>k.mx?2:-2;trailSlime(k,k.mx,a.y);k.clot-=2;
+    if(k.clot<=0){trailClot(k,k.mx,a.y);var often=hurt||k.after>0;k.clot=often?4+Math.floor(trailRand(k)*5):10+Math.floor(trailRand(k)*11);}
+  }
+}
+function updateSligoTrail(dt){
+  var T=sligoTrail,w=worldLevel();T.clock+=dt;
+  if(T.world!==w||T.seed!==rogueRun.seed){T.world=w;T.seed=rogueRun.seed;T.size=T.next=0;trailSelf.on=-1;}
+  if(rogueRun.classId==='sligo')trailFollow(trailSelf,P,P.tun>0,P.hurt>0,dt);else trailSelf.on=-1;
+  if(!coop)return;
+  for(var id in coop.members){
+    var m=coop.members[id],a=m.draw||m.avatar;if(m.left||id===coop.me||m.classId!=='sligo'||!a)continue;
+    var k=m.trail||(m.trail=trailTracker(m.slot));
+    if(a.world!==w||k.world!==w){k.world=w;k.on=-1;if(a.world!==w)continue;}
+    trailFollow(k,a,!!a.curled,false,dt);
+  }
+}
+function drawSligoTrail(){
+  var T=sligoTrail,n=0,i,j,q,c,age,cut,sh,px,py,alpha=ctx.globalAlpha;
+  for(i=0;i<T.size;i++){age=T.clock-T.t[i];if(age<0||age>=TRAIL_LIFE)continue;px=T.x[i]-camX;py=T.y[i]-camY;if(px<-4||px>IW+4||py<-4||py>IH+4)continue;T.seen[n++]=i;}
+  if(!n)return;
+  ctx.globalAlpha=1;
+  for(c=0;c<TRAIL_INK.length;c++){
+    ctx.fillStyle=TRAIL_INK[c];
+    for(j=0;j<n;j++){
+      i=T.seen[j];age=T.clock-T.t[i];cut=age>TRAIL_LIFE-TRAIL_FADE?(age-TRAIL_LIFE+TRAIL_FADE)/TRAIL_FADE*16:0;sh=TRAIL_SHAPES[T.shape[i]];
+      for(q=0;q<sh.length;q+=3){if(sh[q+2]!==c)continue;px=T.x[i]+sh[q];py=T.y[i]+sh[q+1];if(cut&&TRAIL_BAYER[(py&3)*4+(px&3)]<cut)continue;ctx.fillRect(px-camX,py-camY,1,1);}
+    }
+  }
+  ctx.globalAlpha=alpha;
+}
+
 function drawPlayer() {
   var px = Math.round(P.x - camX), py = Math.round(P.y - camY);
   var wp = waterAt(P.x), L = wp ? Math.round(wp.level - camY) : null;
@@ -5878,6 +5999,7 @@ function frame(now) {
   var inp = readInput();
   if(!runIsPaused())updateCharge(dt);
   if(!runIsPaused())updatePlayer(dt, inp);
+  if(!runIsPaused())updateSligoTrail(dt);
   if(!runIsPaused())updateWarp(dt);
   if(!runIsPaused())updateParts(dt);
   if(!coopGuest()){
@@ -5982,6 +6104,7 @@ function frame(now) {
   drawLandmarks(tSec);
   drawBiomeTransitionMarkers();
   drawPlatforms(tSec);
+  drawSligoTrail();
   drawSmartWorld(tSec);
   drawSpots(tSec);drawSeedPickups(tSec);
   drawRunExploration(tSec);

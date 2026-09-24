@@ -18,6 +18,7 @@ const stateNames = [
   'PICTURE_ART', 'SANCTUARY_BG', 'NIGHT_BG', 'CAVERN_BG', 'activeStageLayout', 'placeView', 'mouse', 'queuedThrow', 'padAx', 'bombCoolMax', 'charge', 'tunnels', 'swans', 'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
   'wonders', 'wonderRun', 'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
+  'sligoTrail', 'trailSelf', 'plantAtlasReady',
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
@@ -37,7 +38,9 @@ const functionNames = [
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',
   'runHudBoons', 'runHudIconPosition', 'drawTinyBoon', 'levelTallyLayout', 'drawRunHud',
-  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
+  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember',
+  'sligoTun', 'endTun', 'curledMember', 'plantProtection', 'SLIGO_KINDS', 'seedKindFor', 'sligoKindFor', 'plantGardenSeed',
+  'updateSligoTrail', 'drawSligoTrail', 'trailFollow', 'trailTracker', 'TRAIL_CAP', 'TRAIL_LIFE', 'TRAIL_FADE', 'TRAIL_INK', 'drawClassAuras', 'drawSkillPip', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
   'secretHash', 'secretEventFor', 'secretEvent', 'updateSecrets', 'drawSecretBanner', 'drawSecretSky', 'drawSecretGround', 'drawSecretAir',
   'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog', 'secretDay', 'drawSecretDay', 'secretLogoTap', 'secretSkin', 'drawGardenSecret', 'drawWorldBanner',
 ];

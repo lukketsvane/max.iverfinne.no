@@ -15,7 +15,7 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 ## Non-negotiable product invariants
 
 1. **One Play flow / one shared garden.** There is no player-facing Solo versus Multiplayer split.
-2. **Maximum four players.** Players can join a running garden.
+2. **Maximum four players.** Players can join a running garden. There are five characters (the fifth, Sligo, is hidden until unlocked), but never more than four players.
 3. **One player per character.** Mech, Moss, Bulwark and Herbalist are exclusive slots. Taken characters must be disabled in UI and reserved server-side.
 4. **First player sets difficulty.** Easy/Medium/Hard/Insane is run-wide. Once a shared run exists, joiners inherit the existing difficulty and cannot change it.
 5. **Physical stage progression.** A player must actually climb the cleared exit plant to the top and cross into the next garden. Do not replace this with a ground teleport. Once one player reaches the next stage, teammates may catch up automatically.
@@ -60,8 +60,9 @@ Relevant tests cover physical ascent and co-op catch-up. Keep them when refactor
 - **Moss**: climbing specialist. Skill: pounce; the host clamps the slam to the drop it saw and starts the cooldown at landing.
 - **Bulwark**: plant protection/tank role. Skill: brace; it swallows warned roots only, never spores, gusts or rats, and ends when he moves.
 - **Herbalist**: care/healing role. Skill: bloom; it revives one freshly fallen plant and never the last one, and adds no score.
+- **Sligo** (Max Sligo Neverdahl): a hidden, pink tardigrade (`hidden: true`), shown only once unlocked (see Easter eggs). Average stats. Skill: tun; curled for 3 s it cannot move, throw, dodge or tend, nothing knocks it back, and plants within 40 px take half of every kind of damage through `plantProtection` (the stronger of a tun and a Bulwark guard counts, never both). A jump uncurls it early, the 9 s cooldown counts from the uncurl, and it adds no score. It grows only its two umbilical cords, `SLIGO_KINDS` (25 cord, 26 cap, the cap rarer before garden 6), decided by the planting actor's class, and nobody else grows them; the gallery hides both until Sligo is unlocked. It leaves a trail: slime every 2 px and a clot of dark blood every 10-20 px (more often while hurt or just after a tun), a smear where it lands, now and then a drip over a ledge lip. Purely visual and local: each client records the Sligo avatars it draws into a 700-mark ring (`sligoTrail`), solid pixels on the surface's top row drawn after the platforms, which dissolve by a 4×4 ordered dither over the last 5 of their 45 s. Its skin `sligo` loads on demand; until `assets/max-skins-v1/sligo/` exists the original Max stands in.
 
-Skills are one tap on Max or E, never a new pause, sprite or boon. Guests run the local part. The host checks cooldown and position in the `skill` branch of `coopInput`, and `coopClassSkill` runs the guest's own class verb. A guest's brace follows the host's: the snapshot carries what is left of it.
+Skills are one tap on Max or E, never a new pause, sprite or boon. Guests run the local part. The host checks cooldown and position in the `skill` branch of `coopInput`, and `coopClassSkill` runs the guest's own class verb. A guest's brace and tun follow the host's: the snapshot carries what is left of them (`braceLeft`, `tunLeft`, tagged by `braceTag`), and a tun's host cooldown starts when the guest uncurls.
 
 Character appearance and gameplay role are one selection. Do not reintroduce a separate skin/costume picker.
 
@@ -191,6 +192,12 @@ Important checked-in migrations are listed in `README.md`. Hosted migration hist
 ### Accounts
 
 Account UI is optional metadata. Play should remain low-friction and can establish a device identity. Passwords are never stored by the game client.
+
+### Easter eggs
+
+`easter-eggs.mjs` keeps the unlocks under one device key (`max-easter-eggs-v1`): eggs typed on the device, plus each account's list from the server. Typing "sligo" or "max sligo neverdahl" (case, spaces and punctuation ignored) into the Login form's username unlocks Sligo at once with a reveal and never signs in; signing in to an account named sligo counts too. After sign-in the menu loads `public.max_my_unlocks()` and sends local unlocks with `public.max_unlock(p_phrase)`; before joining as Sligo it makes sure the server has the unlock. `player-loadout.mjs` treats a hidden character as valid only when unlocked; inside a room the server's reservation decides (`coop-session.mjs`). `window.MaxEasterEggs` lets the game read the list.
+
+Migration `20260924150000_easter_eggs_and_sligo.sql`: the catalogue `public.max_easter_eggs` and `public.max_unlocks` (RLS, own rows readable, no client writes), `max_egg_private.all_access` (the owner, lukketsvane, found by email, has every egg, including later ones), the two public RPCs, 'sligo' in both class checks, `global_join` admitting Sligo only with the unlock, `submit` accepting Sligo runs and `valid_plants` kinds 0-26. `tests/easter-eggs-database.test.cjs` runs it in PGlite on the checked-in history.
 
 ## Release gate
 
