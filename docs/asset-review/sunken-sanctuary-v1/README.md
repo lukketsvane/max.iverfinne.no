@@ -19,7 +19,7 @@ The clown mask that came with the sheet does not register with it: its layout an
 
 - The sheet is a JPEG, so parts carry compression noise and far more colours than a pack palette allows.
 - Glow parts (`fx/lights`, `fx/particles`, the wisps and the candelabra) keep a soft halo alpha; every other part has binary alpha. Runtime art needs binary alpha and a pack palette (`docs/figma.md`).
-- The level illustration at the top has its labels baked in and is one connected scene, so it is not split.
+- The level illustration at the top is one connected scene, so it is not split. It is garden 2 in the game: `scripts/build-sunken-sanctuary.py` paints out its labels, adds an entrance tunnel on the soil line and traces its rock into collision (`assets/levels-v1/sunken-sanctuary.png`, `levels-v1/sunken-sanctuary.js`).
 
 ## Figma
 
