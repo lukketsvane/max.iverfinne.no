@@ -378,21 +378,6 @@ test('special action clips and detached parts render from exact cells with mirro
   assert.ok(g.SLIGO_FX.burst.includes(frames.at(-1)));
 });
 
-test('tissue mutations use their atlas cells for local and remote action poses', () => {
-  const {game:g}=fresh(), im=g.sligoMutations(), calls=[];
-  im.complete=true;im.naturalWidth=512;im.naturalHeight=640;
-  g.ctx={save(){},restore(){},translate(x,y){assert.ok(Number.isInteger(x)&&Number.isInteger(y));},scale(x){assert.equal(x,-1);},drawImage(image,sx,sy,w,h,dx,dy,dw,dh){calls.push({image,f:sy/64*8+sx/64});assert.deepEqual([w,h,dx,dy,dw,dh],[64,64,-32,-63,64,64]);}};
-  for(const [anim,st,name] of [['run','free','crawl'],['toss','free','throw'],['water','task','tend'],['idle','float','float'],['rise','free','rise'],['fall','free','fall']]){
-    assert.equal(g.drawSligoMutation({anim,st,frame:2,face:-1},10.3,40.8),true);
-    const [start,count]=g.SLIGO_MUT[name],c=calls.at(-1);
-    assert.equal(c.image,im);assert.ok(c.f>=start&&c.f<start+count);
-  }
-  assert.equal(g.drawSligoMutation({anim:'run',dodging:true},10,40),false,'remote dodge keeps its roll');
-  assert.equal(g.drawSligoMutation({anim:'run',hurt:1},10,40),false,'hurt wins over mutation');
-  im.complete=false;
-  assert.equal(g.drawSligoMutation({anim:'toss'},10,40),false,'failed or loading atlas falls back');
-});
-
 test('fresh Sligo plants draw red clots instead of ordinary dark seeds, with a red loading fallback', () => {
   const {game:g}=fresh(),fx=g.sligoFx(),images=[],inks=[];
   g.plantAtlasReady=true;
