@@ -1,0 +1,448 @@
+{
+ "schema": "max-sligo-mutations/v1",
+ "image": "mutations.png",
+ "cell": [
+  64,
+  64
+ ],
+ "columns": 8,
+ "anchor": [
+  32,
+  63
+ ],
+ "scale": 0.75,
+ "palette": [
+  "#000000",
+  "#6d272e",
+  "#a94c4f",
+  "#bb2e3c",
+  "#d35459",
+  "#e66d6b",
+  "#ed5f67",
+  "#ef4758",
+  "#f27c77",
+  "#f57074",
+  "#f88981",
+  "#f98580",
+  "#fb7e81",
+  "#fb8984",
+  "#fd9495",
+  "#ffc4c8"
+ ],
+ "clips": {
+  "crawl": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10
+  ],
+  "throw": [
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18
+  ],
+  "tend": [
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32
+  ],
+  "float": [
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54
+  ],
+  "fall": [
+   55,
+   56,
+   57,
+   58,
+   59,
+   60,
+   61,
+   62,
+   63,
+   64,
+   65,
+   66,
+   67,
+   68,
+   69,
+   70
+  ],
+  "rise": [
+   71,
+   72,
+   73,
+   74,
+   75,
+   76,
+   77,
+   78,
+   79
+  ]
+ },
+ "frames": [
+  {
+   "source": "source.zip/037-IMG_3958-037.png",
+   "frame": 0
+  },
+  {
+   "source": "source.zip/038-IMG_3958-038.png",
+   "frame": 1
+  },
+  {
+   "source": "source.zip/039-IMG_3958-039.png",
+   "frame": 2
+  },
+  {
+   "source": "source.zip/040-IMG_3958-040.png",
+   "frame": 3
+  },
+  {
+   "source": "source.zip/041-IMG_3958-041.png",
+   "frame": 4
+  },
+  {
+   "source": "source.zip/042-IMG_3958-042.png",
+   "frame": 5
+  },
+  {
+   "source": "source.zip/043-IMG_3958-043.png",
+   "frame": 6
+  },
+  {
+   "source": "source.zip/044-IMG_3958-044.png",
+   "frame": 7
+  },
+  {
+   "source": "source.zip/045-IMG_3958-045.png",
+   "frame": 8
+  },
+  {
+   "source": "source.zip/046-IMG_3958-046.png",
+   "frame": 9
+  },
+  {
+   "source": "source.zip/047-IMG_3958-047.png",
+   "frame": 10
+  },
+  {
+   "source": "source.zip/109-IMG_3956-003.png",
+   "frame": 11
+  },
+  {
+   "source": "source.zip/110-IMG_3956-004.png",
+   "frame": 12
+  },
+  {
+   "source": "source.zip/111-IMG_3956-005.png",
+   "frame": 13
+  },
+  {
+   "source": "source.zip/112-IMG_3956-006.png",
+   "frame": 14
+  },
+  {
+   "source": "source.zip/113-IMG_3956-007.png",
+   "frame": 15
+  },
+  {
+   "source": "source.zip/114-IMG_3956-008.png",
+   "frame": 16
+  },
+  {
+   "source": "source.zip/115-IMG_3956-009.png",
+   "frame": 17
+  },
+  {
+   "source": "source.zip/116-IMG_3956-010.png",
+   "frame": 18
+  },
+  {
+   "source": "source.zip/117-IMG_3956-011.png",
+   "frame": 19
+  },
+  {
+   "source": "source.zip/118-IMG_3956-012.png",
+   "frame": 20
+  },
+  {
+   "source": "source.zip/119-IMG_3956-013.png",
+   "frame": 21
+  },
+  {
+   "source": "source.zip/120-IMG_3956-014.png",
+   "frame": 22
+  },
+  {
+   "source": "source.zip/121-IMG_3956-015.png",
+   "frame": 23
+  },
+  {
+   "source": "source.zip/122-IMG_3956-016.png",
+   "frame": 24
+  },
+  {
+   "source": "source.zip/123-IMG_3956-017.png",
+   "frame": 25
+  },
+  {
+   "source": "source.zip/124-IMG_3956-018.png",
+   "frame": 26
+  },
+  {
+   "source": "source.zip/125-IMG_3956-019.png",
+   "frame": 27
+  },
+  {
+   "source": "source.zip/126-IMG_3956-020.png",
+   "frame": 28
+  },
+  {
+   "source": "source.zip/127-IMG_3956-021.png",
+   "frame": 29
+  },
+  {
+   "source": "source.zip/128-IMG_3956-022.png",
+   "frame": 30
+  },
+  {
+   "source": "source.zip/129-IMG_3956-023.png",
+   "frame": 31
+  },
+  {
+   "source": "source.zip/130-IMG_3956-024.png",
+   "frame": 32
+  },
+  {
+   "source": "source.zip/013-IMG_3958-013.png",
+   "frame": 33
+  },
+  {
+   "source": "source.zip/014-IMG_3958-014.png",
+   "frame": 34
+  },
+  {
+   "source": "source.zip/015-IMG_3958-015.png",
+   "frame": 35
+  },
+  {
+   "source": "source.zip/016-IMG_3958-016.png",
+   "frame": 36
+  },
+  {
+   "source": "source.zip/017-IMG_3958-017.png",
+   "frame": 37
+  },
+  {
+   "source": "source.zip/018-IMG_3958-018.png",
+   "frame": 38
+  },
+  {
+   "source": "source.zip/019-IMG_3958-019.png",
+   "frame": 39
+  },
+  {
+   "source": "source.zip/020-IMG_3958-020.png",
+   "frame": 40
+  },
+  {
+   "source": "source.zip/021-IMG_3958-021.png",
+   "frame": 41
+  },
+  {
+   "source": "source.zip/024-IMG_3958-024.png",
+   "frame": 42
+  },
+  {
+   "source": "source.zip/025-IMG_3958-025.png",
+   "frame": 43
+  },
+  {
+   "source": "source.zip/026-IMG_3958-026.png",
+   "frame": 44
+  },
+  {
+   "source": "source.zip/027-IMG_3958-027.png",
+   "frame": 45
+  },
+  {
+   "source": "source.zip/028-IMG_3958-028.png",
+   "frame": 46
+  },
+  {
+   "source": "source.zip/029-IMG_3958-029.png",
+   "frame": 47
+  },
+  {
+   "source": "source.zip/030-IMG_3958-030.png",
+   "frame": 48
+  },
+  {
+   "source": "source.zip/031-IMG_3958-031.png",
+   "frame": 49
+  },
+  {
+   "source": "source.zip/032-IMG_3958-032.png",
+   "frame": 50
+  },
+  {
+   "source": "source.zip/033-IMG_3958-033.png",
+   "frame": 51
+  },
+  {
+   "source": "source.zip/034-IMG_3958-034.png",
+   "frame": 52
+  },
+  {
+   "source": "source.zip/035-IMG_3958-035.png",
+   "frame": 53
+  },
+  {
+   "source": "source.zip/036-IMG_3958-036.png",
+   "frame": 54
+  },
+  {
+   "source": "source.zip/239-IMG_3955-069.png",
+   "frame": 55
+  },
+  {
+   "source": "source.zip/240-IMG_3955-070.png",
+   "frame": 56
+  },
+  {
+   "source": "source.zip/241-IMG_3955-071.png",
+   "frame": 57
+  },
+  {
+   "source": "source.zip/242-IMG_3955-072.png",
+   "frame": 58
+  },
+  {
+   "source": "source.zip/243-IMG_3955-073.png",
+   "frame": 59
+  },
+  {
+   "source": "source.zip/244-IMG_3955-074.png",
+   "frame": 60
+  },
+  {
+   "source": "source.zip/245-IMG_3955-075.png",
+   "frame": 61
+  },
+  {
+   "source": "source.zip/246-IMG_3955-076.png",
+   "frame": 62
+  },
+  {
+   "source": "source.zip/247-IMG_3955-077.png",
+   "frame": 63
+  },
+  {
+   "source": "source.zip/248-IMG_3955-078.png",
+   "frame": 64
+  },
+  {
+   "source": "source.zip/249-IMG_3955-079.png",
+   "frame": 65
+  },
+  {
+   "source": "source.zip/250-IMG_3955-080.png",
+   "frame": 66
+  },
+  {
+   "source": "source.zip/251-IMG_3955-081.png",
+   "frame": 67
+  },
+  {
+   "source": "source.zip/252-IMG_3955-082.png",
+   "frame": 68
+  },
+  {
+   "source": "source.zip/253-IMG_3955-083.png",
+   "frame": 69
+  },
+  {
+   "source": "source.zip/254-IMG_3955-084.png",
+   "frame": 70
+  },
+  {
+   "source": "source.zip/274-IMG_3954-001.png",
+   "frame": 71
+  },
+  {
+   "source": "source.zip/275-IMG_3954-002.png",
+   "frame": 72
+  },
+  {
+   "source": "source.zip/276-IMG_3954-003.png",
+   "frame": 73
+  },
+  {
+   "source": "source.zip/277-IMG_3954-004.png",
+   "frame": 74
+  },
+  {
+   "source": "source.zip/278-IMG_3954-005.png",
+   "frame": 75
+  },
+  {
+   "source": "source.zip/279-IMG_3954-006.png",
+   "frame": 76
+  },
+  {
+   "source": "source.zip/280-IMG_3954-007.png",
+   "frame": 77
+  },
+  {
+   "source": "source.zip/281-IMG_3954-008.png",
+   "frame": 78
+  },
+  {
+   "source": "source.zip/282-IMG_3954-009.png",
+   "frame": 79
+  }
+ ]
+}
