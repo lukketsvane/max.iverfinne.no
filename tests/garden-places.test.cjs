@@ -154,8 +154,8 @@ test('no seed roots in rock, loose world seeds rise out of it, and wonder perche
 });
 
 test('Figma gardens and picture levels are left as drawn', () => {
-  const pic = loadGame({ __pictures: true }).game; pic.resetRogueRun('test', { classId: 'mech' }); pic.rogueRun.world = 1;
-  const P = pic.pictureLayout(1); assert.equal(P.picture, 'moonlit-ruins'); assert.equal(P.place, undefined);
+  const pic = loadGame({ __pictures: true }).game; pic.resetRogueRun('test', { classId: 'mech' }); pic.rogueRun.world = 1; pic.activeStageLayout = null;
+  assert.equal(pic.stageLayout().picture, 'railway-ruins'); assert.equal(pic.stageLayout().place, undefined);
   const h = loadGame();
   h.window.MaxLevelData = { gardens: { 1: [{ frame: 'garden-01', ledges: [{ x: 50, rise: 16, w: 40, style: 'stone' }, { x: -90, rise: 16, w: 40, style: 'stone' }] }] } };
   h.game.resetRogueRun('test', { classId: 'mech' }); h.game.activeStageLayout = null;

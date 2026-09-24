@@ -10,7 +10,7 @@ const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
   .replace('/* MAX_SECRETS */', fs.readFileSync(path.join(__dirname, '../secrets.inc.js'), 'utf8')).replace('/* MAX_WONDERS */', fs.readFileSync(path.join(__dirname, '../wonders.inc.js'), 'utf8'));
 const stateNames = [
   'bossSeen', 'parts',
-  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedDust', 'gardenStats',
+  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedCollected', 'seedDust', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
@@ -21,7 +21,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
+  'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapIndex', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
@@ -31,7 +31,7 @@ const functionNames = [
   'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
   'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
   'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
-  'stageLayout', 'pictureLayout', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
+  'stageLayout', 'pictureLayout', 'levelSpots', 'digSpots', 'digBlast', 'pickupShown', 'drawSpots', 'drawSeedPickups', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
   'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
   'runTimeThreat', 'runDurabilityScale', 'runDamageScale', 'runPlayerPower', 'runRewardScale', 'runReward', 'grantRogueLevel', 'openingRaidT', 'burstKrek', 'runRaidLimit', 'runRaidInterval', 'runPatrolLimit', 'runPatrolInterval',
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',

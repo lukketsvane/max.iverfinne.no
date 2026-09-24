@@ -133,3 +133,18 @@ test('co-op guests see the host wonder, send their star taps to the host and log
   [0, 1, 2].forEach(i => host.wonderTapHost(i)); sync();
   assert.ok(guest.wonders.pzd > 0); assert.equal((guest.rogueMeta.wonders || {}).stars, 1, 'the guest logs the team find');
 });
+
+test('a star tap goes to the nearest untapped star, even when two stars sit within one finger', () => {
+  const { game: g } = require('./game-harness.cjs').loadGame();
+  g.resetRogueRun('test', { classId: 'mech' }); g.rogueRun.world = 3; g.runActive = true; g.updateWonders(0);
+  Object.assign(g.wonders, { pz: 'stars', pzs: 0, pzt: 10, pzd: 0 });
+  let close = null;
+  for (let seed = 1; seed < 4000 && !close; seed++) {
+    g.wonders.seed = seed;
+    const p = [0, 1, 2].map(i => g.wonderStarPos(i));
+    if (Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) < 10) close = p;
+  }
+  assert.ok(close, 'some seed puts two stars close together');
+  const cam = { x: g.camX || 0, y: g.camY || 0 };
+  for (const i of [0, 1]) assert.equal(g.wonderTapIndex(close[i].x + cam.x, close[i].y + cam.y), i, 'tapping star ' + i + ' picks it');
+});
