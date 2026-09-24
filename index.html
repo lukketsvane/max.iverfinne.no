@@ -5869,7 +5869,7 @@ var TRAIL_BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
 var sligoTrail={x:new Int32Array(TRAIL_CAP),y:new Int32Array(TRAIL_CAP),t:new Float64Array(TRAIL_CAP),shape:new Uint8Array(TRAIL_CAP),seen:new Int16Array(TRAIL_CAP),next:0,size:0,clock:0,world:0,seed:0};
 // Sligo's specials (assets/max-skins-v1/sligo/specials.png, scripts/build-sligo-specials.py): the blood
 // sac it curls up in for a tun, and the splat when the sac bursts. Loaded the first time a Sligo needs it.
-var SLIGO_FX={img:null,cell:40,ax:20,ay:39,sac:[0,1,2,3],burst:[4,5,6,7],throw:[8,9,10,11],lash:[12,13,14,15,16,17,18,19],hurt:[20,21,22],float:[23,24,25,26],sleep:[27,28],parts:[29,30]},sligoBursts=[];
+var SLIGO_FX={img:null,cell:40,ax:20,ay:39,sac:[0,1,2,3],burst:[4,5,6,7],throw:[8,9,10,11],lash:[12,13,14,15,16,17,18,19],hurt:[20,21,22],float:[23,24,25,26,38,39],sleep:[27,28],parts:[29,30],roll:[31,32,33,34,35,36,37]},sligoBursts=[];
 function sligoFx(){return SLIGO_FX.img||(SLIGO_FX.img=loadImg('assets/max-skins-v1/sligo/specials.png'));}
 function sligoFxFrame(f,x,y){var F=SLIGO_FX,im=sligoFx();if(!ready(im))return false;ctx.drawImage(im,f*F.cell,0,F.cell,F.cell,Math.round(x)-F.ax,Math.round(y)-F.ay,F.cell,F.cell);return true;}
 function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,salt:salt||0};}
@@ -5878,7 +5878,8 @@ function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
 // Cosmetic poses follow the existing animation clock: hit/pour markers remain authoritative.
 function drawSligoAction(a,x,y){
   var clip=null,step=a.frame||0;
-  if(a.anim==='toss'){clip=SLIGO_FX.throw;step=[0,1,2,3,0][Math.min(4,step)];}
+  if(a.dodgeT>0||a.dodging){clip=SLIGO_FX.roll;step=a.dodgeT>0?Math.min(6,Math.max(0,Math.floor((1-a.dodgeT/DODGE_TIME)*7))):(a.frame||0)%7;}
+  else if(a.anim==='toss'){clip=SLIGO_FX.throw;step=[0,1,2,3,0][Math.min(4,step)];}
   else if(a.hurt>0){clip=SLIGO_FX.hurt;step=Math.min(2,Math.floor((2-Math.min(2,a.hurt))*8));}
   else if(a.st==='float'){clip=SLIGO_FX.float;step=Math.floor(tSec*8)%clip.length;}
   else if(a.anim==='dig'||a.anim==='water'||a.anim==='waterHold'||a.anim==='pick'){clip=SLIGO_FX.lash;step=step%clip.length;}

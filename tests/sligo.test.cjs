@@ -361,13 +361,17 @@ test('guest Sligo projectile and blood splash survive the host snapshot', () => 
 });
 
 test('special action clips and detached parts render from exact cells with mirrored facing', () => {
-  const {game:g}=fresh();const fx=g.sligoFx();fx.complete=true;fx.naturalWidth=1240;fx.naturalHeight=40;
+  const {game:g}=fresh();const fx=g.sligoFx();fx.complete=true;fx.naturalWidth=1600;fx.naturalHeight=40;
   const frames=[],mirrors=[];g.ctx={save(){},restore(){},translate(){},scale(x){mirrors.push(x);},drawImage(im,sx,sy,w,h,dx,dy){frames.push(sx/40);assert.equal(w,40);assert.equal(h,40);assert.ok(Number.isInteger(dx)&&Number.isInteger(dy));},fillRect(){}};
   for(const [anim,st,hurt,clip] of [['toss','free',0,'throw'],['dig','task',0,'lash'],['idle','float',0,'float'],['rest','rest',0,'sleep'],['idle','free',1,'hurt']]){
     assert.equal(g.drawSligoAction({anim,st,hurt,face:-1,frame:0},10,30),true);
     assert.ok(g.SLIGO_FX[clip].includes(frames.at(-1)));
   }
   assert.equal(mirrors.length,5);
+  for(const state of [{dodgeT:.16},{dodgeT:.08},{dodging:true,frame:4}]){
+    assert.equal(g.drawSligoAction({...state,anim:'run',face:1},10,30),true);
+    assert.ok(g.SLIGO_FX.roll.includes(frames.at(-1)));
+  }
   g.P.aim={x:g.P.x+60,y:g.P.y};g.launchBomb();g.drawBombs(0);
   assert.ok(g.SLIGO_FX.parts.includes(frames.at(-1)));
   g.explode(g.P.x+100,g.P.y-20,false,{sligo:true});g.drawBooms();
