@@ -23,7 +23,8 @@
       { "nodeId": "142:2", "group": "plants", "name": "09 PLANTS — production" },
       { "nodeId": "143:2", "group": "plant-sprites", "name": "10 PLANT SPRITES — production" },
       { "nodeId": "145:2", "group": "garden-view", "name": "11 GARDEN VIEW — production" },
-      { "nodeId": "148:2", "group": "cloudberry", "name": "12 CLOUDBERRY — production" }
+      { "nodeId": "148:2", "group": "cloudberry", "name": "12 CLOUDBERRY — production" },
+      { "nodeId": "340:2", "group": "tiles", "name": "13 TILES — production" }
     ]
   },
   "rules": {
@@ -625,7 +626,8 @@
     { "path": "assets/rat-enemies-v1/black/sprites.png", "nodeId": "53:26", "group": "rats", "width": 384, "height": 160, "sha1": "9da1a16ddb1e7eb7b1e72e222b980134361c744e" },
     { "path": "assets/rat-enemies-v1/common/sprites.png", "nodeId": "53:24", "group": "rats", "width": 384, "height": 160, "sha1": "e39fb5eaa15179d7eba95eb030a097052b5774fe" },
     { "path": "assets/rat-enemies-v1/plague/sprites.png", "nodeId": "53:30", "group": "rats", "width": 384, "height": 160, "sha1": "691c06d2caa89fc6c22f6a63dc65ea9f746ed9a2" },
-    { "path": "assets/results-native/sprites/font-5x7.png", "nodeId": "53:46", "group": "companion", "width": 96, "height": 32, "sha1": "972d11f3bcb444d13d8b748fd56585bd8f0d53bb" }
+    { "path": "assets/results-native/sprites/font-5x7.png", "nodeId": "53:46", "group": "companion", "width": 96, "height": 32, "sha1": "972d11f3bcb444d13d8b748fd56585bd8f0d53bb" },
+    { "path": "assets/tiles-v1/sanctuary.png", "nodeId": "340:3", "group": "tiles", "width": 128, "height": 75, "sha1": "8b0552caf2119b1ce407f92d45fc0c09128fccbf" }
   ],
   "unused": [
     { "path": "docs/asset-review/plants-assembled-v1/new-plants.png", "nodeId": "143:174", "section": "117:2", "width": 480, "height": 80, "sha1": "c4cc0923cde4f14392a6babb988bd371ad8730b1", "status": "unused" },
