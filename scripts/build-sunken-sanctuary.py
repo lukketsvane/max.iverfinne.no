@@ -156,7 +156,7 @@ def air_mask():
 
 
 def blocks(rock):
-    """Greedy rectangles over the 3 px rock grid, the Moonlit Ruins format."""
+    """Greedy rectangles over the 3 px rock grid, the picture-level format."""
     gh, gw = H // CELL, W // CELL
     cells = rock[CELL // 2::CELL, CELL // 2::CELL][:gh, :gw].copy()
     out = []
