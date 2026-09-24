@@ -1,4 +1,4 @@
-# Claude handoff — MAX · NIGHT GARDEN
+# Claude handoff — MAX FUGLESPRENGER
 
 This file is the engineering handoff for the next primary agent. Read `README.md` first, then this file, then the relevant tests before changing behavior.
 
