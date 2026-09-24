@@ -13,10 +13,12 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
+  if (eggs !== undefined) w.localStorage.setItem('max-easter-eggs-v1', JSON.stringify(eggs));
+  const calls = [], signIns = [];
   let listener, session = restoredUser ? { user: restoredUser } : null, begun = null, beginCount = 0, active = false, music = .75, effects = .75;
   const channels = new Map(), pauses = [];
   const emit = user => { session = user ? { user } : null; listener?.('SIGNED_IN', session); };
@@ -28,8 +30,9 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
         if (anonymousDisabled) return { data: {}, error: { code: 'anonymous_provider_disabled' } };
         const user = { id: 'anon-player', email: null, is_anonymous: true }; emit(user); return { data: { user, session }, error: null };
       },
-      async signUp(input) { const user = { id: 'signed-player', email: input.email }; emit(user); return { data: { user, session }, error: null }; },
+      async signUp(input) { signIns.push(['signUp', input.email]); const user = { id: 'signed-player', email: input.email }; emit(user); return { data: { user, session }, error: null }; },
       async signInWithPassword(input) {
+        signIns.push(['signIn', input.email]);
         if (anonymousDisabled && input.email.startsWith('autoguest_') && !session) return { data: {}, error: { code: 'invalid_credentials' } };
         const user = { id: 'signed-player', email: input.email }; emit(user); return { data: { user, session }, error: null };
       },
@@ -38,6 +41,8 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     realtime: { async setAuth() {}, isConnected: () => true, connect() {} },
     async rpc(name, args) {
       const id = session?.user?.id || 'anon-player';
+      calls.push([name, args]);
+      const scripted = rpc && await rpc(name, args, id); if (scripted) return scripted;
       if (name === 'max_coop_status') return { data: sharedStatus || { active:false, players:0, taken:[], difficulty:null, mine:null }, error: null };
       if (name === 'max_coop_global') {
         const room=roomFor(id);room.difficulty=args?.p_difficulty||'medium';room.members[0].classId=args?.p_class_id||'mech';
@@ -80,7 +85,12 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     w.document.querySelector('form').dispatchEvent(new w.Event('submit', { bubbles: true, cancelable: true }));
     await settle();
   }
-  return { w, dom, click, submit, settle, pauses, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
+  function type(selector, text) {
+    const input = w.document.querySelector(selector);
+    for (const ch of text) { input.value += ch; input.dispatchEvent(new w.Event('input', { bubbles: true })); }
+  }
+  const classIds = () => [...w.document.querySelectorAll('[data-class-id]')].map(n => n.dataset.classId);
+  return { w, dom, click, submit, settle, pauses, calls, signIns, type, classIds, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
 }
 
 test('home keeps one Play entry plus login, settings and credits', async () => {
@@ -228,4 +238,101 @@ test('the home screen names who is in the shared garden and offers Login until s
     const nav=guest.w.document.querySelector('.max-home-nav').textContent;
     assert.ok(nav.includes('Login')&&!nav.includes('Garden'));
   } finally { guest.dom.window.close(); }
+});
+
+const OPEN = ['mech', 'runner', 'bulwark', 'herbalist'];
+test('Sligo stays off the character screen until its name is typed into Login, which wakes it at once and never signs in', async () => {
+  const m = await menu();
+  try {
+    m.click('Play');
+    assert.deepEqual(m.classIds(), OPEN); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '4');
+    assert.equal(m.w.MaxEasterEggs.has('sligo'), false);
+    m.click('Back'); m.click('Login');
+    m.type('input[name="username"]', 'Max Sligo Neverdahl');
+    const reveal = m.w.document.querySelector('.max-egg-reveal');
+    assert.ok(reveal, 'a reveal in the menu\'s style'); assert.match(reveal.textContent, /MAX SLIGO NEVERDAHL AWAKES/);
+    assert.equal(reveal.getAttribute('role'), 'status');
+    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-easter-eggs-v1')).local, ['sligo'], 'remembered on the device');
+    assert.equal(m.w.MaxEasterEggs.has('sligo'), true);
+    m.w.document.querySelector('input[name="username"]').value = 'sligo';
+    m.w.document.querySelector('input[name="password"]').value = 'a long password';
+    m.w.document.querySelector('form').dispatchEvent(new m.w.Event('submit', { bubbles: true, cancelable: true }));
+    await m.settle();
+    assert.deepEqual(m.signIns, [], 'the name is a spell, never a sign-in');
+    m.click('Back'); m.click('Play');
+    assert.deepEqual(m.classIds(), [...OPEN, 'sligo']); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '5');
+    assert.match(m.w.document.querySelector('[data-class-id="sligo"]').textContent, /^Sligo/);
+    m.click('Sligo');
+    const header = m.w.document.querySelector('.max-character-name');
+    assert.equal(header.textContent, 'Max Sligo Neverdahl'); assert.equal(header.dataset.long, 'true');
+    assert.equal(m.w.document.querySelector('[data-class-id="sligo"]').getAttribute('aria-pressed'), 'true');
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /max-skins-v1\/sligo\/main\.png$/);
+    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'sligo', skinId: 'sligo', difficulty: 'medium' });
+    m.click('Mech'); assert.equal(m.w.document.querySelector('.max-character-name').dataset.long, undefined);
+  } finally { m.dom.window.close(); }
+});
+
+test('a stored Sligo on a device that never unlocked it starts as Mech', async () => {
+  const m = await menu(JSON.stringify({ classId: 'sligo', skinId: 'sligo', difficulty: 'hard' }));
+  try {
+    m.click('Play');
+    assert.deepEqual(m.classIds(), OPEN);
+    assert.equal(m.w.document.querySelector('[data-class-id="mech"]').getAttribute('aria-pressed'), 'true');
+  } finally { m.dom.window.close(); }
+});
+
+test('after sign-in the server\'s unlocks show Sligo: the owner has every egg, and an account named sligo counts', async () => {
+  const owner = await menu(undefined, { restoredUser: { id: 'owner-account', email: 'lukketsvane@players.max.invalid' },
+    rpc: name => name === 'max_my_unlocks' ? { data: ['sligo'], error: null } : null });
+  try {
+    await owner.settle(); owner.click('Play');
+    assert.deepEqual(owner.classIds(), [...OPEN, 'sligo']);
+    assert.ok(owner.calls.some(c => c[0] === 'max_my_unlocks'));
+  } finally { owner.dom.window.close(); }
+  const named = await menu(undefined, { restoredUser: { id: 'sligo-account', email: 'sligo@players.max.invalid' },
+    rpc: name => name === 'max_unlock' ? { data: ['sligo'], error: null } : null });
+  try {
+    await named.settle(); named.click('Play');
+    assert.deepEqual(named.classIds(), [...OPEN, 'sligo']);
+    assert.ok(named.calls.some(c => c[0] === 'max_unlock' && c[1].p_phrase === 'sligo'));
+  } finally { named.dom.window.close(); }
+});
+
+test('a taken Sligo is greyed out like the four, and the shared status and the home list know it', async () => {
+  const status = { active: true, players: 2, taken: ['sligo', 'mech'], difficulty: 'easy', mine: null, members: [{ name: 'iver', classId: 'sligo' }, { name: 'Guest', classId: 'mech' }] };
+  const m = await menu(JSON.stringify({ classId: 'sligo', difficulty: 'hard' }), { eggs: { v: 1, local: ['sligo'] }, sharedStatus: status });
+  try {
+    await m.settle();
+    assert.deepEqual([...m.w.document.querySelectorAll('.max-home-players p')].map(p => p.textContent), ['IN THE GARDEN', 'iver - Sligo', 'Guest - Mech']);
+    m.click('Play'); await m.settle();
+    const sligo = m.w.document.querySelector('[data-class-id="sligo"]');
+    assert.equal(sligo.disabled, true); assert.equal(sligo.getAttribute('aria-disabled'), 'true'); assert.equal(sligo.title, 'Already playing');
+    assert.equal(m.w.document.querySelector('[data-class-id="runner"]').getAttribute('aria-pressed'), 'true', 'the first free character is picked instead');
+    for (const button of m.w.document.querySelectorAll('[data-difficulty]')) assert.equal(button.disabled, true);
+    assert.match(m.w.document.body.textContent, /DIFFICULTY · EASY · RUNNING/);
+  } finally { m.dom.window.close(); }
+});
+
+test('if the server will not let Sligo in, the menu says so and the player picks another character', async () => {
+  const m = await menu(undefined, { eggs: { v: 1, local: ['sligo'] },
+    rpc: (name, args) => name === 'max_coop_global' && args?.p_class_id === 'sligo' ? { data: null, error: { message: 'Choose an available character.', code: 'PT400' } } : null });
+  try {
+    m.click('Play'); m.click('Sligo'); m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 0);
+    assert.match(m.w.document.querySelector('.max-status').textContent, /has not let Sligo in yet\. Choose another character/);
+    assert.ok(m.calls.findIndex(c => c[0] === 'max_unlock' && c[1].p_phrase === 'sligo') < m.calls.findIndex(c => c[0] === 'max_coop_global'), 'the device unlock goes first');
+    for (const button of m.w.document.querySelectorAll('[data-class-id]')) assert.equal(button.disabled, false);
+    m.click('Mech'); m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 1); assert.equal(m.begun.selection.classId, 'mech');
+  } finally { m.dom.window.close(); }
+});
+
+test('four players fill the garden even while a fifth character is free', async () => {
+  const m = await menu(undefined, { eggs: { v: 1, local: ['sligo'] }, sharedStatus: { active: true, players: 4, taken: OPEN, difficulty: 'medium', mine: null } });
+  try {
+    m.click('Play'); await m.settle();
+    assert.equal(m.w.document.querySelector('[data-class-id="sligo"]').disabled, false);
+    assert.equal(m.w.document.querySelector('.max-play-actions > button').disabled, true);
+    assert.match(m.w.document.querySelector('.max-status').textContent, /Garden full · four players are playing/);
+  } finally { m.dom.window.close(); }
 });

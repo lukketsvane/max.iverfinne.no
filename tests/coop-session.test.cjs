@@ -138,3 +138,22 @@ test('character identity owns its appearance while difficulty remains an indepen
   const tank=new CoopSession(net.client,{id:'p'}, {}, {classId:'bulwark',skinId:'tide',difficulty:'easy'});
   assert.deepEqual(tank.selection,{classId:'bulwark',skinId:'ember',difficulty:'easy'});
 });
+
+test('inside a room a hidden character is as valid as the four: the server already checked its unlock', async () => {
+  const { CoopSession } = await module();
+  const room = { id: 'room', host: 'host', state: 'playing', members: [{ id: 'host', slot: 1, ready: true, name: 'host', classId: 'mech' }, { id: 'guest', slot: 2, ready: true, name: 'guest', classId: 'sligo' }] };
+  const net = fakeChannelClient({ room, userId: 'guest' }), starts = [];
+  const s = new CoopSession(net.client, { id: 'guest' }, { start: n => starts.push(n) }, { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' });
+  try {
+    assert.deepEqual(s.selection, { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' });
+    await s.enter({ global: true });
+    assert.equal(s.selection.classId, 'sligo'); assert.equal(starts.length, 1);
+  } finally { await s.leave(); }
+  const hostNet = fakeChannelClient({ room, userId: 'host' }), joins = [];
+  const h = new CoopSession(hostNet.client, { id: 'host' }, { join: (id, kit) => joins.push([id, kit]) }, { classId: 'mech', difficulty: 'hard' });
+  h.room = room; h.entered = true; h.playing = true;
+  h.receive('guest', { v: 1, proto: 2, sid: 'guest-session-1', seq: 1, selection: { classId: 'sligo', difficulty: 'hard' } });
+  assert.deepEqual(joins, [['guest', { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' }]]);
+  h.receive('guest', { v: 1, proto: 2, sid: 'guest-session-2', seq: 1, selection: { classId: 'runner', difficulty: 'hard' } });
+  assert.equal(joins.length, 1, 'a member cannot swap away from the character the server reserved');
+});

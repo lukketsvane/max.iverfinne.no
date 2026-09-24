@@ -34,6 +34,8 @@ The four playable characters are also the four gameplay roles. There is no separ
 | Bulwark | Protects nearby plants and resists knockback | Brace: 65% guard to 64 px for 3 s, shoves pests, swallows warned roots (1 s each); steering, jumping or leaving the ground ends it (10 s) |
 | Herbalist | Stronger tending and nearby plant healing | Bloom: heals nearby plants by 49% of their missing health, waters them and revives the one plant that fell most recently (12 s) |
 
+A fifth, hidden character waits to be found: type its name into the Login form. **Sligo** (Max Sligo Neverdahl), a pink tardigrade, taps Max to curl into a tun for 3 s: it cannot move or throw, nothing knocks it back, and plants within 40 px take half damage; a jump uncurls it and the 9 s cooldown starts then. It grows only its own two cords and leaves a slime-and-blood trail.
+
 Only one connected player may occupy each character. If Mech is already playing, Mech is disabled/greyed for the next player, and the same rule applies to the other three characters. The database also reserves the character so two clients cannot race into the same role.
 
 ### Difficulty belongs to the run
@@ -194,6 +196,7 @@ Checked-in migrations:
 20260922153500_single_shared_garden.sql
 20260923110000_twenty_plant_kinds.sql
 20260923120000_run_stats.sql
+20260924150000_easter_eggs_and_sligo.sql
 ```
 
 The room schema has since been evolved in place through the shared-garden RPCs. Before changing hosted SQL, inspect the live project and the migration history rather than blindly replaying old migrations.

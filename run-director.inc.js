@@ -251,8 +251,8 @@ function updateHazardContact(){
     var h=runHazards[i];if(h.tell>0||h.absorbed||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
     if(Math.abs(P.x-h.x)<h.r&&Math.abs(P.y-h.y)<20){
       hazardHits[h.id]=true;
-      if(P.dodgeT>0||P.brace>0)continue;
-      P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
+      if(P.dodgeT>0||P.brace>0||P.tun>0)continue;
+      P.hurt=2;P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
