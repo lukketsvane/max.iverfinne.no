@@ -35,6 +35,13 @@
    "width": 418,
    "height": 180,
    "note": "cavern backdrop behind the underground gardens (1-10); scripts/build-cavern-layers.py"
+  },
+  {
+   "path": "assets/max-skins-v1/sligo/main.png",
+   "sha1": "cd8331479fb2b83dbd77ae45ebdfbc1a776d5b3d",
+   "width": 256,
+   "height": 256,
+   "note": "Sligo, the easter-egg skin, main sheet; scripts/build-sligo.py. The menu's assets/max-skins-v1/<id>/main.png counts it as loaded; interaction.png joins this list when the game loads the pack"
   }
  ]
 }

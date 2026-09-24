@@ -9,7 +9,7 @@ import { FIGMA, FigmaError, all, connect, download, metadata, tool, toolCalls, u
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE = '52:2', RULES = { pixelArt: '38:4', exportCheck: '40:47' }, GRIDS = '39:2', PALETTE = '39:39';
 const PULLABLE = ['DRIFT', 'NEW-IN-FIGMA', 'MISSING-IN-REPO', 'MANIFEST-STALE'];
-const GENERATED = [[/^assets\/(max-skins-v1|enemies-v1)\//, 'scripts/build-native-art.py'], [/^assets\/rat-enemies-v1\//, 'scripts/build-rat-assets.py']];
+const GENERATED = [[/^assets\/max-skins-v1\/sligo\//, 'scripts/build-sligo.py'], [/^assets\/(max-skins-v1|enemies-v1)\//, 'scripts/build-native-art.py'], [/^assets\/rat-enemies-v1\//, 'scripts/build-rat-assets.py']];
 const HINTS = {
   DRIFT: 'Figma changed the image → npm run figma:pull',
   'NEW-IN-FIGMA': 'new layer in the production section → npm run figma:pull',

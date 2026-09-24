@@ -1,0 +1,294 @@
+{
+  "name": "Untitled",
+  "ledges": [
+    {
+      "x": -20,
+      "rise": 96,
+      "w": 8,
+      "style": "stone"
+    },
+    {
+      "x": -12,
+      "rise": 92,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": 0,
+      "rise": 96,
+      "w": 8,
+      "style": "stone"
+    },
+    {
+      "x": 16,
+      "rise": 96,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": 28,
+      "rise": 96,
+      "w": 8,
+      "style": "stone"
+    },
+    {
+      "x": 40,
+      "rise": 96,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": 52,
+      "rise": 96,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": 64,
+      "rise": 96,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": -20,
+      "rise": 76,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": -12,
+      "rise": 76,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": 0,
+      "rise": 76,
+      "w": 8,
+      "style": "stone"
+    },
+    {
+      "x": 12,
+      "rise": 80,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": 60,
+      "rise": 64,
+      "w": 7,
+      "style": "stone"
+    },
+    {
+      "x": -24,
+      "rise": 48,
+      "w": 12,
+      "style": "stone"
+    },
+    {
+      "x": -4,
+      "rise": 60,
+      "w": 12,
+      "style": "stone"
+    },
+    {
+      "x": 20,
+      "rise": 32,
+      "w": 10,
+      "style": "stone"
+    },
+    {
+      "x": 40,
+      "rise": 28,
+      "w": 11,
+      "style": "stone"
+    },
+    {
+      "x": 56,
+      "rise": 36,
+      "w": 11,
+      "style": "stone"
+    },
+    {
+      "x": -20,
+      "rise": 28,
+      "w": 3,
+      "style": "stone"
+    },
+    {
+      "x": -12,
+      "rise": 40,
+      "w": 20,
+      "style": "stone"
+    },
+    {
+      "x": 32,
+      "rise": 24,
+      "w": 3,
+      "style": "stone"
+    },
+    {
+      "x": 148,
+      "rise": 188,
+      "w": 515.5726755092561,
+      "style": "stone"
+    },
+    {
+      "x": 780,
+      "rise": 176,
+      "w": 209.70629533741598,
+      "style": "stone"
+    },
+    {
+      "x": 352,
+      "rise": -196,
+      "w": 39,
+      "style": "stone"
+    },
+    {
+      "x": 308,
+      "rise": -208,
+      "w": 40,
+      "style": "stone"
+    },
+    {
+      "x": 288,
+      "rise": -168,
+      "w": 39,
+      "style": "stone"
+    },
+    {
+      "x": 308,
+      "rise": -156,
+      "w": 33,
+      "style": "stone"
+    },
+    {
+      "x": 412,
+      "rise": -180,
+      "w": 18,
+      "style": "stone"
+    },
+    {
+      "x": 436,
+      "rise": -188,
+      "w": 14,
+      "style": "stone"
+    },
+    {
+      "x": 388,
+      "rise": -112,
+      "w": 27,
+      "style": "stone"
+    },
+    {
+      "x": 220,
+      "rise": -232,
+      "w": 22,
+      "style": "stone"
+    },
+    {
+      "x": 260,
+      "rise": -172,
+      "w": 15,
+      "style": "stone"
+    },
+    {
+      "x": 468,
+      "rise": -204,
+      "w": 9,
+      "style": "stone"
+    },
+    {
+      "x": 564,
+      "rise": -160,
+      "w": 36,
+      "style": "stone"
+    },
+    {
+      "x": 584,
+      "rise": -200,
+      "w": 36,
+      "style": "stone"
+    },
+    {
+      "x": 420,
+      "rise": -176,
+      "w": 26,
+      "style": "stone"
+    },
+    {
+      "x": 312,
+      "rise": -188,
+      "w": 20,
+      "style": "stone"
+    },
+    {
+      "x": 508,
+      "rise": -288,
+      "w": 29,
+      "style": "stone"
+    },
+    {
+      "x": 560,
+      "rise": -112,
+      "w": 26,
+      "style": "stone"
+    },
+    {
+      "x": 476,
+      "rise": -216,
+      "w": 26,
+      "style": "stone"
+    },
+    {
+      "x": 432,
+      "rise": -132,
+      "w": 19,
+      "style": "stone"
+    },
+    {
+      "x": 468,
+      "rise": -152,
+      "w": 32,
+      "style": "stone"
+    },
+    {
+      "x": 480,
+      "rise": -216,
+      "w": 8,
+      "style": "stone"
+    }
+  ],
+  "blocks": [
+    {
+      "x": 756,
+      "rise": 200,
+      "w": 258.17501358936,
+      "style": "stone",
+      "h": 249.6637494050954
+    },
+    {
+      "x": 136,
+      "rise": 192,
+      "w": 542,
+      "style": "stone",
+      "h": 447
+    },
+    {
+      "x": -68,
+      "rise": 72,
+      "w": 28,
+      "style": "stone",
+      "h": 80
+    }
+  ],
+  "spots": {
+    "start": [
+      {
+        "x": -56,
+        "rise": 4
+      }
+    ]
+  }
+}
