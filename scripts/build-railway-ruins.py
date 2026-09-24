@@ -1,4 +1,4 @@
-"""Build the Railway Ruins picture level (garden 1) at Max's scale.
+"""Build the Railway Ruins picture level (garden 2) at Max's scale.
 
 The owner's railway scene and kit sheets are painted at about four times the
 game's pixel size. Everything here is brought down to native pixels, where Max
@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parent.parent
 REVIEW = ROOT / 'docs/asset-review/railway-ruins-v1'
 ART = 'assets/levels-v1/railway-ruins.png'
 DATA = 'levels-v1/railway-ruins.js'
-GARDEN = 1
+GARDEN = 2
 CELL = 3
 
 W, H = 1080, 224
@@ -340,7 +340,7 @@ def main():
     }
     (ROOT / DATA).parent.mkdir(parents=True, exist_ok=True)
     (ROOT / DATA).write_text(
-        '/* Garden 1, the Railway Ruins at native pixels: built by scripts/build-railway-ruins.py from\n'
+        '/* Garden 2, the Railway Ruins at native pixels: built by scripts/build-railway-ruins.py from\n'
         '   docs/asset-review/railway-ruins-v1 (the owner\'s scene and kit sheets). Do not edit by hand. */\n'
         '(window.MaxPictureLevels = window.MaxPictureLevels || {})[%d] = %s;\n' % (GARDEN, json.dumps(data, separators=(',', ':'))))
     (REVIEW / 'placements.json').write_text(json.dumps(

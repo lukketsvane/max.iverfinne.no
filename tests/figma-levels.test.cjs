@@ -153,7 +153,7 @@ test('the game reads designed gardens first and ships the generated level data',
   const { dataFile } = await tool, html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const order = ['stage-layout.js', 'levels-data.js', 'levels.js'].map(f => html.indexOf(`<script src="${f}"></script>`));
   assert.ok(order[0] > 0 && order[0] < order[1] && order[1] < order[2], 'the loader and its data follow stage-layout.js');
-  assert.match(html, /activeStageLayout=\(level===1&&pictureLayout\(level\)\)\|\|window\.MaxLevels\.layout\(level,levelOriginX\(level\),surfaceY,waterAt,rogueRun\.seed\)\|\|window\.MaxPlaces\.furnish\(window\.MaxStageLayout\.create\(/);
+  assert.match(html, /activeStageLayout=\(level<=2&&pictureLayout\(level\)\)\|\|window\.MaxLevels\.layout\(level,levelOriginX\(level\),surfaceY,waterAt,rogueRun\.seed\)\|\|window\.MaxPlaces\.furnish\(window\.MaxStageLayout\.create\(/);
   assert.match(fs.readFileSync(path.join(root, 'scripts/build-static.cjs'), 'utf8'), /'stage-layout\.js', 'levels-data\.js', 'levels\.js'/);
   const text = fs.readFileSync(path.join(root, 'levels-data.js'), 'utf8').replace(/\r\n/g, '\n'), box = { window: {} };
   vm.runInNewContext(text, box);
