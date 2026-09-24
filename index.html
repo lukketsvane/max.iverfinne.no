@@ -6173,7 +6173,7 @@ function frame(now) {
   drawVignette();
   drawWarp(tSec);
   drawWorldBanner(tSec);drawPlaceBanner();drawBossBar(dt);
-  drawRunHud();
+  rosterShown=false;drawRunHud();if(!rosterShown)hideRoster();
 
   camX = fx; camY = fy;
   requestAnimationFrame(frame);
