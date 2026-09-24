@@ -310,15 +310,13 @@ function chooseMax() {
   updateSelection();
 }
 function roleChoices(grid) {
-  const abilities = { mech: 'Robots', runner: 'Climbing', bulwark: 'Guard', herbalist: 'Healing', sligo: 'Tun' };
   const ids = visibleClassIds();
   grid.replaceChildren(); grid.dataset.count = String(ids.length);
   for (const id of ids) {
     const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
+    // The card shows the character alone; its name is only read out.
     choice.setAttribute('aria-label', classInfo(id).name);
     choice.append(skinPreview(characterSkin(id)));
-    pixelText(choice, classInfo(id).name, 2, 0);
-    const ability = el('span', abilities[id], 'max-role-ability'); ability.setAttribute('aria-hidden', 'true'); choice.append(ability);
     grid.append(choice);
   }
 }
