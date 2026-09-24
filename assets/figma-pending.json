@@ -280,6 +280,13 @@
    "width": 1600,
    "height": 40,
    "note": "Sligo sac, burst, throw, lash, hurt, float, sleep and detached body parts; scripts/build-sligo-specials.py. Figma check unavailable: desktop MCP not reachable."
+  },
+  {
+   "path": "assets/max-skins-v1/sligo/brood.png",
+   "sha1": "f3e0f13afd8fa91e0b73a4611b378f5f9a6333a5",
+   "width": 2560,
+   "height": 40,
+   "note": "Sligo's Cultivator evolution (bud, chain, stand, brood mother), from docs/asset-review/sligo-evolution-v1; scripts/build-sligo-evolution.py"
   }
  ]
 }
