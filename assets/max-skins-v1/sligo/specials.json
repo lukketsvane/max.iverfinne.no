@@ -1,0 +1,28 @@
+{
+ "schema": "max-sligo-specials/v1",
+ "image": "specials.png",
+ "cell": [
+  40,
+  40
+ ],
+ "anchor": [
+  20,
+  39
+ ],
+ "clips": {
+  "sac": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "burst": [
+   4,
+   5,
+   6,
+   7
+  ]
+ },
+ "scale": 1.0,
+ "source": "docs/asset-review/sligo-specials-v1/level.json (object 0856438B), last row; scripts/build-sligo-specials.py"
+}

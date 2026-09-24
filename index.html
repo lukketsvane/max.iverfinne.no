@@ -5856,6 +5856,11 @@ var TRAIL_SHAPES=[
 ];
 var TRAIL_BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
 var sligoTrail={x:new Int32Array(TRAIL_CAP),y:new Int32Array(TRAIL_CAP),t:new Float64Array(TRAIL_CAP),shape:new Uint8Array(TRAIL_CAP),seen:new Int16Array(TRAIL_CAP),next:0,size:0,clock:0,world:0,seed:0};
+// Sligo's specials (assets/max-skins-v1/sligo/specials.png, scripts/build-sligo-specials.py): the blood
+// sac it curls up in for a tun, and the splat when the sac bursts. Loaded the first time a Sligo needs it.
+var SLIGO_FX={img:null,cell:40,ax:20,ay:39,sac:[0,1,2,3],burst:[4,5,6,7]},sligoBursts=[];
+function sligoFx(){return SLIGO_FX.img||(SLIGO_FX.img=loadImg('assets/max-skins-v1/sligo/specials.png'));}
+function sligoFxFrame(f,x,y){var F=SLIGO_FX,im=sligoFx();if(!ready(im))return false;ctx.drawImage(im,f*F.cell,0,F.cell,F.cell,Math.round(x)-F.ax,Math.round(y)-F.ay,F.cell,F.cell);return true;}
 function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,salt:salt||0};}
 var trailSelf=trailTracker(0);
 function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
@@ -5880,7 +5885,7 @@ function trailSlime(k,x,y){var r=trailRand(k);trailSpot(x,y,r<.12?3:k.n%3,false)
 function trailFollow(k,a,curled,hurt,dt){
   var on=!!a.grounded&&!a.wet&&a.st!=='climb'&&a.st!=='float'&&a.st!=='burrow',x=Math.round(a.x);
   k.after=Math.max(0,k.after-dt);
-  if(k.curled&&!curled&&on){k.after=3;trailClot(k,x,a.y);}
+  if(k.curled&&!curled&&on){k.after=3;trailClot(k,x,a.y);sligoBursts.push({x:x,y:Math.round(a.y),t:sligoTrail.clock});if(sligoBursts.length>8)sligoBursts.shift();}
   k.curled=curled;
   if(!on){if(k.on===1)k.on=0;return;}
   if(k.on!==1||Math.abs(x-k.mx)>24){
@@ -5907,6 +5912,7 @@ function updateSligoTrail(dt){
 }
 function drawSligoTrail(){
   var T=sligoTrail,n=0,i,j,q,c,age,cut,sh,px,py,alpha=ctx.globalAlpha;
+  for(i=sligoBursts.length-1;i>=0;i--){age=T.clock-sligoBursts[i].t;if(age<0||age>=.4){sligoBursts.splice(i,1);continue;}sligoFxFrame(SLIGO_FX.burst[Math.floor(age/.1)],sligoBursts[i].x-camX,sligoBursts[i].y-camY);}
   for(i=0;i<T.size;i++){age=T.clock-T.t[i];if(age<0||age>=TRAIL_LIFE)continue;px=T.x[i]-camX;py=T.y[i]-camY;if(px<-4||px>IW+4||py<-4||py>IH+4)continue;T.seen[n++]=i;}
   if(!n)return;
   ctx.globalAlpha=1;
@@ -5930,6 +5936,11 @@ function drawPlayer() {
     ctx.fillStyle = 'rgba(10,14,10,' + (0.40 - lift * 0.26).toFixed(2) + ')';
     ctx.fillRect(px - (sw >> 1), gy, sw, 1);
     if (sw > 3) ctx.fillRect(px - (sw >> 1) + 1, gy + 1, sw - 2, 1);
+  }
+  if (P.skin === 'sligo' && (P.tun > 0 || P.curled)) {
+    var sac = SLIGO_FX.sac, inTun = P.tun > 0 ? window.MaxClasses.get('sligo').tunTime - P.tun : 1;
+    var sf = inTun < .3 ? sac[Math.min(3, Math.floor(inTun / .1))] : sac[2 + (Math.floor(performance.now() / 250) & 1)];
+    if (sligoFxFrame(sf, px, py)) return;
   }
   var a = ANIM[P.anim], native = window.MaxNativeArt && window.MaxNativeArt.playerImage(P.skin, a.sh === 2 ? 'interaction' : 'main');
   var img = native || (a.sh === 2 ? sheet2 : sheet);

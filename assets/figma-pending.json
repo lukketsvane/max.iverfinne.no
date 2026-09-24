@@ -273,6 +273,13 @@
    "width": 23,
    "height": 21,
    "note": "Sligo's cap plant (kind 26), cut from docs/asset-review/sligo-plants-v1; scripts/build-sligo-plants.py"
+  },
+  {
+   "path": "assets/max-skins-v1/sligo/specials.png",
+   "sha1": "7314c49f1bdbd33d72462381f8f0936343ffc026",
+   "width": 320,
+   "height": 40,
+   "note": "Sligo's specials: the tun's blood sac and its burst, from the owner's specials sheet; scripts/build-sligo-specials.py"
   }
  ]
 }
