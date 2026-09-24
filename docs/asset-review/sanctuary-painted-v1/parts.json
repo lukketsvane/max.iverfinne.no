@@ -1,0 +1,642 @@
+[
+ {
+  "group": "branches",
+  "file": "parts/branches/01.png",
+  "x": 968,
+  "y": 364,
+  "w": 202,
+  "h": 36
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/02.png",
+  "x": 1019,
+  "y": 365,
+  "w": 489,
+  "h": 188
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/03.png",
+  "x": 1194,
+  "y": 365,
+  "w": 211,
+  "h": 77
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/04.png",
+  "x": 1207,
+  "y": 366,
+  "w": 17,
+  "h": 11
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/05.png",
+  "x": 874,
+  "y": 415,
+  "w": 135,
+  "h": 94
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/06.png",
+  "x": 1025,
+  "y": 415,
+  "w": 126,
+  "h": 40
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/07.png",
+  "x": 1472,
+  "y": 452,
+  "w": 9,
+  "h": 15
+ },
+ {
+  "group": "branches",
+  "file": "parts/branches/08.png",
+  "x": 923,
+  "y": 510,
+  "w": 248,
+  "h": 62
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/01.png",
+  "x": 41,
+  "y": 838,
+  "w": 146,
+  "h": 72
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/02.png",
+  "x": 199,
+  "y": 837,
+  "w": 115,
+  "h": 75
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/03.png",
+  "x": 321,
+  "y": 837,
+  "w": 177,
+  "h": 78
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/04.png",
+  "x": 512,
+  "y": 838,
+  "w": 144,
+  "h": 76
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/05.png",
+  "x": 665,
+  "y": 840,
+  "w": 184,
+  "h": 79
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/06.png",
+  "x": 849,
+  "y": 846,
+  "w": 97,
+  "h": 73
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/07.png",
+  "x": 915,
+  "y": 842,
+  "w": 203,
+  "h": 74
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/08.png",
+  "x": 1125,
+  "y": 843,
+  "w": 104,
+  "h": 75
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/09.png",
+  "x": 1239,
+  "y": 846,
+  "w": 81,
+  "h": 73
+ },
+ {
+  "group": "ground-flora",
+  "file": "parts/ground-flora/10.png",
+  "x": 1321,
+  "y": 841,
+  "w": 184,
+  "h": 76
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/01.png",
+  "x": 1100,
+  "y": 86,
+  "w": 73,
+  "h": 130
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/02.png",
+  "x": 656,
+  "y": 107,
+  "w": 232,
+  "h": 110
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/03.png",
+  "x": 900,
+  "y": 110,
+  "w": 56,
+  "h": 107
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/04.png",
+  "x": 963,
+  "y": 104,
+  "w": 30,
+  "h": 56
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/05.png",
+  "x": 998,
+  "y": 117,
+  "w": 27,
+  "h": 62
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/06.png",
+  "x": 1038,
+  "y": 104,
+  "w": 27,
+  "h": 47
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/07.png",
+  "x": 1257,
+  "y": 119,
+  "w": 88,
+  "h": 99
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/08.png",
+  "x": 1187,
+  "y": 122,
+  "w": 70,
+  "h": 90
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/09.png",
+  "x": 1354,
+  "y": 127,
+  "w": 125,
+  "h": 89
+ },
+ {
+  "group": "lights-props",
+  "file": "parts/lights-props/10.png",
+  "x": 1051,
+  "y": 156,
+  "w": 50,
+  "h": 58
+ },
+ {
+  "group": "misc",
+  "file": "parts/misc/01.png",
+  "x": 333,
+  "y": 340,
+  "w": 173,
+  "h": 56
+ },
+ {
+  "group": "misc",
+  "file": "parts/misc/02.png",
+  "x": 520,
+  "y": 340,
+  "w": 210,
+  "h": 56
+ },
+ {
+  "group": "misc",
+  "file": "parts/misc/03.png",
+  "x": 749,
+  "y": 343,
+  "w": 191,
+  "h": 54
+ },
+ {
+  "group": "props",
+  "file": "parts/props/01.png",
+  "x": 939,
+  "y": 239,
+  "w": 33,
+  "h": 31
+ },
+ {
+  "group": "props",
+  "file": "parts/props/02.png",
+  "x": 1182,
+  "y": 233,
+  "w": 139,
+  "h": 128
+ },
+ {
+  "group": "props",
+  "file": "parts/props/03.png",
+  "x": 1345,
+  "y": 239,
+  "w": 29,
+  "h": 37
+ },
+ {
+  "group": "props",
+  "file": "parts/props/04.png",
+  "x": 898,
+  "y": 242,
+  "w": 22,
+  "h": 17
+ },
+ {
+  "group": "props",
+  "file": "parts/props/05.png",
+  "x": 903,
+  "y": 263,
+  "w": 16,
+  "h": 8
+ },
+ {
+  "group": "props",
+  "file": "parts/props/06.png",
+  "x": 971,
+  "y": 248,
+  "w": 101,
+  "h": 98
+ },
+ {
+  "group": "props",
+  "file": "parts/props/07.png",
+  "x": 1084,
+  "y": 246,
+  "w": 87,
+  "h": 98
+ },
+ {
+  "group": "props",
+  "file": "parts/props/08.png",
+  "x": 1363,
+  "y": 242,
+  "w": 131,
+  "h": 102
+ },
+ {
+  "group": "props",
+  "file": "parts/props/09.png",
+  "x": 895,
+  "y": 286,
+  "w": 48,
+  "h": 31
+ },
+ {
+  "group": "props",
+  "file": "parts/props/10.png",
+  "x": 951,
+  "y": 285,
+  "w": 12,
+  "h": 17
+ },
+ {
+  "group": "props",
+  "file": "parts/props/11.png",
+  "x": 1340,
+  "y": 280,
+  "w": 17,
+  "h": 33
+ },
+ {
+  "group": "ruins-wood",
+  "file": "parts/ruins-wood/01.png",
+  "x": 47,
+  "y": 16,
+  "w": 317,
+  "h": 203
+ },
+ {
+  "group": "ruins-wood",
+  "file": "parts/ruins-wood/02.png",
+  "x": 368,
+  "y": 102,
+  "w": 277,
+  "h": 115
+ },
+ {
+  "group": "ruins-wood",
+  "file": "parts/ruins-wood/03.png",
+  "x": 637,
+  "y": 160,
+  "w": 11,
+  "h": 43
+ },
+ {
+  "group": "stone",
+  "file": "parts/stone/01.png",
+  "x": 231,
+  "y": 415,
+  "w": 169,
+  "h": 65
+ },
+ {
+  "group": "stone",
+  "file": "parts/stone/02.png",
+  "x": 415,
+  "y": 415,
+  "w": 206,
+  "h": 65
+ },
+ {
+  "group": "stone",
+  "file": "parts/stone/03.png",
+  "x": 640,
+  "y": 415,
+  "w": 224,
+  "h": 76
+ },
+ {
+  "group": "stone",
+  "file": "parts/stone/04.png",
+  "x": 230,
+  "y": 499,
+  "w": 210,
+  "h": 64
+ },
+ {
+  "group": "stone",
+  "file": "parts/stone/05.png",
+  "x": 455,
+  "y": 500,
+  "w": 196,
+  "h": 62
+ },
+ {
+  "group": "stone",
+  "file": "parts/stone/06.png",
+  "x": 663,
+  "y": 500,
+  "w": 247,
+  "h": 63
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/01.png",
+  "x": 38,
+  "y": 582,
+  "w": 291,
+  "h": 67
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/02.png",
+  "x": 343,
+  "y": 582,
+  "w": 206,
+  "h": 68
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/03.png",
+  "x": 566,
+  "y": 580,
+  "w": 212,
+  "h": 70
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/04.png",
+  "x": 792,
+  "y": 580,
+  "w": 187,
+  "h": 71
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/05.png",
+  "x": 993,
+  "y": 582,
+  "w": 235,
+  "h": 68
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/06.png",
+  "x": 1240,
+  "y": 583,
+  "w": 256,
+  "h": 66
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/07.png",
+  "x": 44,
+  "y": 671,
+  "w": 165,
+  "h": 71
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/08.png",
+  "x": 220,
+  "y": 671,
+  "w": 157,
+  "h": 71
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/09.png",
+  "x": 388,
+  "y": 670,
+  "w": 157,
+  "h": 67
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/10.png",
+  "x": 562,
+  "y": 668,
+  "w": 421,
+  "h": 76
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/11.png",
+  "x": 995,
+  "y": 670,
+  "w": 174,
+  "h": 74
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/12.png",
+  "x": 1186,
+  "y": 670,
+  "w": 311,
+  "h": 74
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/13.png",
+  "x": 40,
+  "y": 755,
+  "w": 167,
+  "h": 66
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/14.png",
+  "x": 217,
+  "y": 757,
+  "w": 95,
+  "h": 64
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/15.png",
+  "x": 327,
+  "y": 758,
+  "w": 131,
+  "h": 60
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/16.png",
+  "x": 474,
+  "y": 756,
+  "w": 163,
+  "h": 70
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/17.png",
+  "x": 648,
+  "y": 756,
+  "w": 245,
+  "h": 86
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/18.png",
+  "x": 907,
+  "y": 759,
+  "w": 325,
+  "h": 74
+ },
+ {
+  "group": "tiles",
+  "file": "parts/tiles/19.png",
+  "x": 1248,
+  "y": 759,
+  "w": 254,
+  "h": 70
+ },
+ {
+  "group": "water",
+  "file": "parts/water/01.png",
+  "x": 47,
+  "y": 236,
+  "w": 171,
+  "h": 327
+ },
+ {
+  "group": "water",
+  "file": "parts/water/02.png",
+  "x": 240,
+  "y": 237,
+  "w": 80,
+  "h": 120
+ },
+ {
+  "group": "water",
+  "file": "parts/water/03.png",
+  "x": 348,
+  "y": 239,
+  "w": 35,
+  "h": 78
+ },
+ {
+  "group": "water",
+  "file": "parts/water/04.png",
+  "x": 319,
+  "y": 256,
+  "w": 3,
+  "h": 20
+ },
+ {
+  "group": "water",
+  "file": "parts/water/05.png",
+  "x": 416,
+  "y": 252,
+  "w": 49,
+  "h": 56
+ },
+ {
+  "group": "water",
+  "file": "parts/water/06.png",
+  "x": 492,
+  "y": 247,
+  "w": 102,
+  "h": 70
+ },
+ {
+  "group": "water",
+  "file": "parts/water/07.png",
+  "x": 581,
+  "y": 256,
+  "w": 12,
+  "h": 13
+ },
+ {
+  "group": "water",
+  "file": "parts/water/08.png",
+  "x": 600,
+  "y": 257,
+  "w": 103,
+  "h": 59
+ },
+ {
+  "group": "water",
+  "file": "parts/water/09.png",
+  "x": 722,
+  "y": 255,
+  "w": 154,
+  "h": 64
+ },
+ {
+  "group": "water",
+  "file": "parts/water/10.png",
+  "x": 47,
+  "y": 471,
+  "w": 9,
+  "h": 16
+ }
+]

@@ -6,6 +6,7 @@
 <script src="build-paths.js"></script>
 <script src="max-classes.js"></script>
 <script src="stage-layout.js"></script>
+<script src="tiles.js"></script>
 <script src="garden-places.js"></script>
 <script src="levels-v1/moonlit-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
@@ -270,7 +271,8 @@ function stageLayout(){
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
 function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:surfaceY(x);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
-function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);}
+var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
+function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);}
 /* Garden places (garden-places.js): every garden has one landmark of its own.
    Finding it, and the false walls inside it, are each player's own view. Its
    caches are ordinary seed pickups: the host owns them, guests claim them. */
