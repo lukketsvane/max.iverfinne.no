@@ -10,7 +10,6 @@
 <script src="garden-places.js"></script>
 <script src="levels-v1/moonlit-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
-<script src="levels-v1/ashen-glass-furnace.js"></script>
 <script src="levels-data.js"></script>
 <script src="levels.js"></script>
 <script src="native-art.js"></script>
@@ -121,11 +120,31 @@ var BIOME_BG = {
 };
 function gardenBackdrop(world) { world = world || worldLevel(); return world >= 16 && world <= 19 ? BIOME_BG.ember : world >= 11 && world <= 15 ? BIOME_BG.frost : null; }
 /* The Sanctuary backdrop (assets/backdrop-v1): five 320x180 parallax layers for
-   the gardens without a snow or ember backdrop. Its painted moon replaces the
-   drawn one; until every layer loads the old mountains and forest stand in. */
+   the even gardens and the Crown without a snow or ember backdrop. Its painted
+   moon replaces the drawn one; until every layer loads the old mountains and
+   forest stand in. */
 var SANCTUARY_LAYERS = ['sky', 'band', 'mountains', 'ruins', 'forest'], SANCTUARY_BG = {}, SANCTUARY_PAR = { sky: 0.02, band: 0.05, mountains: 0.09, ruins: 0.15, forest: 0.3 }, SANCTUARY_TOP = '#06103c';
 SANCTUARY_LAYERS.forEach(function (k) { SANCTUARY_BG[k] = loadImg('assets/backdrop-v1/' + k + '.png'); });
-function sanctuaryBackdrop(world) { return !gardenBackdrop(world) && SANCTUARY_LAYERS.every(function (k) { return ready(SANCTUARY_BG[k]); }); }
+function nightGarden(world) { world = world || worldLevel(); return !gardenBackdrop(world) && world % 2 === 1; }
+function sanctuaryBackdrop(world) { return !gardenBackdrop(world) && !nightGarden(world) && SANCTUARY_LAYERS.every(function (k) { return ready(SANCTUARY_BG[k]); }); }
+/* The night forest (assets/night-v1): ten wrapping layers, sky to terrain, all
+   180 tall and drawn from one top, for the odd gardens without a biome backdrop.
+   Each is [name, parallax, share of the short-screen drop, where across the view
+   the strip's middle sits]: the one moon stays put, 70% across. The stars
+   repeat up a tall sky every 90 rows, shifted sideways so they do not line up. */
+var NIGHT_LAYERS = [['01-sky', 0, 0], ['02-stars', 0.01, 0], ['03-moon', 0, 0, 0.7], ['04-clouds', 0.03, 0.9], ['05-mountains-far', 0.05, 1], ['06-mountains-mid', 0.08, 1], ['07-ruins', 0.12, 0.8], ['08-forest', 0.16, 0.7], ['09-trees', 0.24, 0.55], ['10-terrain', 0.32, 0.5]], NIGHT_BG = {}, NIGHT_TOP = '#020e25', NIGHT_BASE = '#0d2049';
+NIGHT_LAYERS.forEach(function (l) { NIGHT_BG[l[0]] = loadImg('assets/night-v1/' + l[0] + '.png'); });
+function nightBackdrop(world) { return nightGarden(world) && NIGHT_LAYERS.every(function (l) { return ready(NIGHT_BG[l[0]]); }); }
+function drawNightLayers(from, to, top, bdrop) {
+  for (var n = from; n < to; n++) {
+    var l = NIGHT_LAYERS[n], im = NIGHT_BG[l[0]], w = im.naturalWidth, y = top + Math.round(bdrop * l[2]);
+    var off = Math.round(camX * l[1]) + (l[3] ? (w >> 1) - Math.round(IW * l[3]) : 0), up = n === 1 ? Math.max(0, Math.ceil(y / 90)) : 0;
+    if (!n) { ctx.fillStyle = NIGHT_TOP; ctx.fillRect(0, 0, IW, IH); ctx.fillStyle = NIGHT_BASE; ctx.fillRect(0, top + im.naturalHeight, IW, IH); }
+    for (var k = 0; k <= up; k++, off += 397, y -= 90) {
+      for (var i = Math.floor(off / w); i * w - off < IW; i++) ctx.drawImage(im, i * w - off, y);
+    }
+  }
+}
 function drawSanctuarySky(top) {
   ctx.fillStyle = SANCTUARY_TOP; ctx.fillRect(0, 0, IW, IH);
   if (top > 0) {
@@ -287,7 +306,7 @@ function pictureLava(){
 }
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=pictureLayout(level)||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
@@ -5864,17 +5883,19 @@ function frame(now) {
   var mh = ready(IMG.mtn) ? IMG.mtn.naturalHeight : 159;
   var bdrop = Math.max(0, Math.round(Math.min(60, IH * 0.15)) - (hy - mh));
   applyBiomePalette(P.x);
-  var sanctuary = sanctuaryBackdrop(), stop = hy - 140;
-  if (sanctuary) drawSanctuarySky(stop); else drawSky(tSec, hy);
+  var sanctuary = sanctuaryBackdrop(), night = !sanctuary && nightBackdrop(), stop = hy - 140;
+  if (night) drawNightLayers(0, 3, stop, bdrop); else if (sanctuary) drawSanctuarySky(stop); else drawSky(tSec, hy);
   drawBiomeSkyBands(hy);
-  if (!sanctuary) drawMoon(hy);
+  if (!sanctuary && !night) drawMoon(hy);
   drawSecretSky(tSec, hy);
   var backdrop = gardenBackdrop(), far = backdrop && ready(backdrop.far) ? backdrop.far : IMG.mtn, mid = backdrop && ready(backdrop.mid) ? backdrop.mid : IMG.forest;
-  if (sanctuary) { drawSanctuaryLayer('band', stop + bdrop); drawSanctuaryLayer('mountains', stop + bdrop); drawSanctuaryLayer('ruins', stop + Math.round(bdrop * 0.7)); }
+  if (night) drawNightLayers(3, 7, stop, bdrop);
+  else if (sanctuary) { drawSanctuaryLayer('band', stop + bdrop); drawSanctuaryLayer('mountains', stop + bdrop); drawSanctuaryLayer('ruins', stop + Math.round(bdrop * 0.7)); }
   else drawTiled(far, 0.10, hy + bdrop, true, MTN_BASE);
   drawFlock();
   drawSwanSky();
-  if (sanctuary) drawSanctuaryLayer('forest', stop + Math.round(bdrop * 0.55));
+  if (night) drawNightLayers(7, 10, stop, bdrop);
+  else if (sanctuary) drawSanctuaryLayer('forest', stop + Math.round(bdrop * 0.55));
   else {
     drawTiled(mid, 0.35, hy + Math.round(bdrop * 0.55), mid !== IMG.forest, FOREST_BASE);
     drawClouds(hy + Math.round(bdrop * 0.6), tSec);
