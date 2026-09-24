@@ -259,4 +259,4 @@ Prefer small commits that keep CI green. Preserve concurrent changes already on 
 
 When the user says a mechanic feels wrong, fix the actual interaction rather than documenting around it.
 
-Sligo now uses 31 native specials frames: sac/burst, throw, tending lash, hurt, floating tendrils, sleep, and two detached flesh/cord projectiles. `bomb.sligo` survives the scalar co-op snapshot and the same flag on the blast selects blood effects; perks retain the original combat rules. `drawSligoAction` follows existing animation frames without changing hit/pour timing. Figma desktop MCP was unavailable; the existing pending-art entry pins the expanded strip.
+Sligo now uses 40 native specials frames: sac/burst, throw, tending lash, hurt, floating tendrils, sleep, and two detached flesh/cord projectiles. `bomb.sligo` survives the scalar co-op snapshot and the same flag on the blast selects blood effects; perks retain the original combat rules. `drawSligoAction` follows existing animation frames without changing hit/pour timing. Figma desktop MCP was unavailable; the existing pending-art entry pins the expanded strip.

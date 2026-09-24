@@ -11,7 +11,7 @@ and hard alpha at half, and all frames share one palette of at most 16 colours. 
 40x40 cell with its bottom row on row 39, centred on x 20, like the skins' feet (the splash is taller than a skin cell).
 
     python3 scripts/build-sligo-specials.py
-      -> assets/max-skins-v1/sligo/specials.png (31 cells in a row), specials.json
+      -> assets/max-skins-v1/sligo/specials.png (40 cells in a row), specials.json
 """
 import base64
 import io
@@ -109,6 +109,13 @@ def main():
     for box in PARTS:
         clips['parts'].append(len(frames))
         frames.append(native(a, box, scale))
+    clips['roll'] = []
+    for i in range(7):
+        clips['roll'].append(len(frames))
+        frames.append(native(a, rows[2][i], scale))
+    clips['float'].extend([len(frames), len(frames) + 1])
+    for i in [6, 7]:
+        frames.append(native(a, rows[5][i], scale))
     strip = np.zeros((CELL, CELL * len(frames), 4), np.uint8)
     for k, f in enumerate(frames):
         h, w = f.shape[:2]
@@ -142,7 +149,7 @@ def main():
         'schema': 'max-sligo-specials/v1', 'image': 'specials.png', 'cell': [CELL, CELL], 'anchor': [CELL // 2, CELL - 1],
         'clips': clips, 'scale': round(scale, 4),
         'source': 'docs/asset-review/sligo-specials-v1/level.json (object ' + SHEET + '); scripts/build-sligo-specials.py',
-        'sourceClips': CLIPS, 'sourceParts': PARTS,
+        'sourceClips': CLIPS + [('roll', 2, list(range(7))), ('float', 5, [6, 7])], 'sourceParts': PARTS,
     }, indent=1) + '\n')
     print('specials.png', out.shape[1], 'x', out.shape[0], 'frames', len(frames), 'scale', round(scale, 3),
           'rows found', [len(r) for r in rows])
