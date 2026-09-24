@@ -8,8 +8,9 @@ game's pixel size. Everything here is brought down to native pixels, where Max
   sky above the upper floor is cleared, so the station, the viaduct and the lift
   tower stand against the garden's own night sky;
 - the kit sheets (stone ruins, wooden piers and ladders, mossy islands at 1/4,
-  the mill machinery at 1/8, and planters and lanterns from the Pixel Mill cut
-  of the mill scene) are cut into pieces and placed west and east of it, so the
+  the mill machinery at 1/8, planters and lanterns from the Pixel Mill cut of
+  the mill scene, and arch blocks, stairs, pillars, slabs and water from the
+  Pixel Mill cut of the mossy-ruins sheet, its keyed-out holes filled again) are cut into pieces and placed west and east of it, so the
   garden is as wide as the gardens that follow.
 
 Collision is the floors the pictures show: the scene's lower court and rail
@@ -60,6 +61,13 @@ MILL = {'planter-wide': '050', 'planter-pink': '051', 'planter-blue': '052', 'pl
         'lamp-post': '066', 'lantern': '067', 'lantern-round': '068', 'vine-long': '060',
         'vine-flower': '062', 'crate': '077', 'crate-small': '078', 'chest': '080'}
 MILL_FRAME = 'B07C3D03-8D5E-4531-B6DC-41483A5A24DE-'
+# The owner's Pixel Mill cut of a mossy-ruins sheet. Its background removal keyed
+# out every pixel near (7, 15, 28), dark stone included, so enclosed holes are
+# filled again with that colour mixed with the piece's own darkest tones.
+RUINS = {'arch-block': '020', 'arch-block-b': '021', 'stair-slope': '023', 'stair-slope-b': '025', 'ledge': '002',
+         'ledge-long': '012', 'step-block': '001', 'pillar': '034', 'pillar-b': '035', 'pillar-c': '036',
+         'slab': '050', 'slab-b': '051', 'slab-c': '057', 'water': '076', 'water-b': '077', 'water-c': '086'}
+RUINS_KEY = (7, 15, 28)
 
 
 def native(path, f):
@@ -97,7 +105,31 @@ def cut_kits():
         part[part[..., 3] < 128] = 0
         part[..., 3] = np.where(part[..., 3] > 0, 255, 0)
         pieces['mill/' + name] = trim(part)
+    atlas = np.array(Image.open(REVIEW / 'kits/mossy-ruins/atlas.png').convert('RGBA'))
+    frames = json.loads((REVIEW / 'kits/mossy-ruins/atlas.json').read_text())['frames']
+    for name, key in RUINS.items():
+        fr, sp = frames['ruins-' + key]['frame'], frames['ruins-' + key]['spriteSourceSize']
+        part = atlas[fr['y'] + sp['y']:fr['y'] + sp['y'] + sp['h'], fr['x'] + sp['x']:fr['x'] + sp['x'] + sp['w']].copy()
+        part[part[..., 3] < 128] = 0
+        part[..., 3] = np.where(part[..., 3] > 0, 255, 0)
+        pieces['ruins/' + name] = trim(refill(part, 3 + int(key)))
     return pieces
+
+
+def refill(a, seed):
+    """Fill the holes the colour key punched into dark stone."""
+    op = a[..., 3] > 0
+    closed = ndimage.binary_fill_holes(ndimage.binary_closing(op, structure=np.ones((3, 3)), iterations=2))
+    hole = (ndimage.binary_fill_holes(op) | closed & ndimage.binary_dilation(op)) & ~op
+    if not hole.any():
+        return a
+    dark = a[op][:, :3]
+    tone = dark[dark.astype(int).sum(1) <= np.percentile(dark.astype(int).sum(1), 20)]
+    pick = tone[np.random.default_rng(seed).integers(len(tone), size=int(hole.sum()))]
+    out = a.copy()
+    out[hole, :3] = np.clip(pick * 0.5 + np.array(RUINS_KEY) * 0.5, 0, 255).astype(np.uint8)
+    out[hole, 3] = 255
+    return out
 
 
 def trim(a):
