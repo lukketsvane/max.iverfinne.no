@@ -6,7 +6,9 @@
     { id: 'mech', name: 'Mech', special: 'robots', desc: 'Clumsy hands, clever robots. Starts with a tiny rover; boons grow it into a crew. Tap Max to dispatch one to a plant under attack.', speed: 1, jump: 1, control: 1, dodgeRecovery: 1, stagger: 1, care: .45, knockback: 1, protection: 0, radius: 0, robot: 1, skill: 'dispatch', skillCd: 8, seeds: .4 },
     { id: 'runner', name: 'Moss', special: 'climbing', desc: 'Fastest mover. Climbs plants past half height. Tap Max to pounce: a slam that hits harder the higher you drop from.', speed: 1.25, jump: 1.15, control: 1.2, dodgeRecovery: .8, stagger: 1, care: 1, knockback: 1, protection: 0, radius: 0, robot: 0, seeds: .7, skill: 'pounce', skillCd: 6, pounceRadius: 30, pounceDrop: 96 },
     { id: 'bulwark', name: 'Bulwark', special: 'guard', desc: 'Clumsy gardener, real fighter. Slow, heavy bombs hit double on a pest\'s bite tell. Brace as a pest winds up to parry it and get the brace back fast.', speed: .85, jump: 1, control: 1, dodgeRecovery: 1, stagger: 1.5, care: .45, knockback: .55, protection: .3, radius: 48, robot: 0, seeds: .4, skill: 'brace', skillCd: 10, braceTime: 3, braceProtection: .65, braceRadius: 64, throwCd: 1.7, parryCd: 2.5 },
-    { id: 'herbalist', name: 'Herbalist', special: 'healing', desc: 'Stronger care that heals neighbours. Tap Max to bloom: heal and water nearby plants and revive one that just fell.', speed: 1, jump: 1, control: 1, dodgeRecovery: 1, stagger: 1, care: 1.4, knockback: 1, protection: 0, radius: 34, robot: 0, seeds: .7, skill: 'bloom', skillCd: 12, bloomRadius: 48, bloomShare: .35, bloomCap: .6 }
+    { id: 'herbalist', name: 'Herbalist', special: 'healing', desc: 'Stronger care that heals neighbours. Tap Max to bloom: heal and water nearby plants and revive one that just fell.', speed: 1, jump: 1, control: 1, dodgeRecovery: 1, stagger: 1, care: 1.4, knockback: 1, protection: 0, radius: 34, robot: 0, seeds: .7, skill: 'bloom', skillCd: 12, bloomRadius: 48, bloomShare: .35, bloomCap: .6 },
+    // Hidden until unlocked (easter-eggs.mjs). The tun's cooldown counts from the moment it uncurls.
+    { id: 'sligo', name: 'Sligo', fullName: 'Max Sligo Neverdahl', hidden: true, special: 'tun', desc: 'A tardigrade from the silo\'s deep that only grows its two cords. Tap Max to curl into a tun: nothing moves it, and plants beside it take half damage.', speed: 1, jump: 1, control: 1, dodgeRecovery: 1, stagger: 1, care: 1, knockback: 1, protection: 0, radius: 0, robot: 0, seeds: .55, skill: 'tun', skillCd: 9, tunTime: 3, tunRadius: 40, tunProtection: .5 }
   ];
   all.forEach(Object.freeze); Object.freeze(all);
   function clean(id) { if (id === 'moss') id = 'runner'; return all.some(function (c) { return c.id === id; }) ? id : 'mech'; }
@@ -15,8 +17,9 @@
   function canHaveRobot(id) { return id === 'mech'; }
   function canClimb(id) { return id === 'runner' || id === 'moss'; }
   function cleanPerks(value, id) { return builds.clean(value, clean(id)); }
-  function skin(id) { return ['original', 'moss', 'tide', 'ember', 'moon'].indexOf(id) >= 0 ? id : 'original'; }
-  var api = { all: all, clean: clean, get: get, perks: perks, skin: skin, canHaveRobot: canHaveRobot, canClimb: canClimb, cleanPerks: cleanPerks };
+  function skin(id) { return ['original', 'moss', 'tide', 'ember', 'moon', 'sligo'].indexOf(id) >= 0 ? id : 'original'; }
+  var hidden = Object.freeze(all.filter(function (c) { return c.hidden; }).map(function (c) { return c.id; }));
+  var api = { all: all, hidden: hidden, clean: clean, get: get, perks: perks, skin: skin, canHaveRobot: canHaveRobot, canClimb: canClimb, cleanPerks: cleanPerks };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxClasses = api;
 })(typeof window === 'object' ? window : globalThis);

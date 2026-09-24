@@ -20,7 +20,7 @@ function context() {
   };
   return { ctx, calls };
 }
-async function nativeArt(failure = '') {
+async function nativeArt(failure = '', alias = {}) {
   const requests = [], events = [];
   const sandbox = {
     URL, Promise, Map, WeakMap, console,
@@ -32,7 +32,7 @@ async function nativeArt(failure = '') {
     },
     async fetch(url) {
       requests.push(url.href);
-      return { ok: true, async json() { return JSON.parse(fs.readFileSync(path.join(root, url.pathname), 'utf8')); } };
+      return { ok: true, async json() { return JSON.parse(fs.readFileSync(path.join(root, alias[url.pathname] || url.pathname), 'utf8')); } };
     },
   };
   sandbox.window = { dispatchEvent: event => events.push(event) };
@@ -192,4 +192,20 @@ test('rat corpses use a one-shot with an empty terminal frame and are removed wi
   assert.match(lastSprite(calls)[1].src,/rat-enemies-v1\/common\/sprites\.png$/);
   calls.length=0;art.drawDefeated(ctx,10.8,0,0);assert.equal(calls.length,0);
   assert.equal(JSON.stringify(k),before);art.enemyDefeated(k,11);art.reset();calls.length=0;art.drawDefeated(ctx,11.1,0,0);assert.equal(calls.length,0);
+});
+
+test('Sligo\'s pack loads on demand, never with the others, and until it loads the original Max stands in', async () => {
+  const { art, status, requests } = await nativeArt('/sligo/');   // Sligo's sheets fail to load here
+  assert.equal(status.loaded.length, 16); assert.equal(requests.some(url => url.includes('/sligo/')), false);
+  assert.equal(art.playerImage('sligo', 'main'), null); assert.equal(art.playerImage('sligo', 'interaction'), null);
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.equal(requests.filter(url => url.endsWith('max-skins-v1/sligo/atlas.json')).length, 1, 'asked for once');
+  assert.equal(art.playerImage('sligo', 'main'), null, 'a missing pack keeps the original Max');
+  assert.equal(requests.filter(url => url.includes('/sligo/')).length, 1, 'and is not asked for again every frame');
+  // With a pack in place (the moss sheets stand in for it here) Sligo draws from its own folder.
+  const packed = await nativeArt('', { '/assets/max-skins-v1/sligo/atlas.json': 'assets/max-skins-v1/moss/atlas.json' });
+  assert.equal(packed.art.playerImage('sligo', 'main'), null);
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.match(packed.art.playerImage('sligo', 'main').src, /max-skins-v1\/sligo\/main\.png$/);
+  assert.match(packed.art.playerImage('sligo', 'interaction').src, /max-skins-v1\/sligo\/interaction\.png$/);
 });

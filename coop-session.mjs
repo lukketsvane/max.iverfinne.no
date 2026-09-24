@@ -1,5 +1,9 @@
-import { DEFAULT_LOADOUT, sameLoadout, validLoadout } from './player-loadout.mjs';
+import { DEFAULT_LOADOUT, HIDDEN_CLASS_IDS, sameLoadout, validLoadout as checkLoadout } from './player-loadout.mjs';
 import { encodeFrame, CoopFrameReceiver, COOP_TRANSPORT_LIMITS } from './coop-transport.mjs';
+
+// The server reserves every member's character and refuses a hidden one without its unlock
+// (global_join), so inside a room a hidden character is as valid as the other four.
+const validLoadout = value => checkLoadout(value, HIDDEN_CLASS_IDS);
 
 // One authoritative garden. Private topics bind selections and input to the
 // authenticated sender. A fresh round trip locks every choice before Start.

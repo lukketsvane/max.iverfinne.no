@@ -1,13 +1,16 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 
 // Presentation only: atlas animation never changes an attack, collision or heal.
-const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon']);
+const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon', 'sligo']);
+// A hidden character's pack loads the first time someone plays it; until it has loaded,
+// or if it is missing, the original Max stands in.
+const ON_DEMAND = Object.freeze(['sligo']);
 const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
 const RATS = Object.freeze(['common', 'black', 'albino', 'plague']);
 const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bellkeeper', 'moon-moth': '15-moon-moth' });
 
 export function createNativeArt() {
-  const atlases = Object.create(null), flashes = Object.create(null);
+  const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null);
   const clocks = new Map();
   let anonymousClocks = new WeakMap(), deaths = [], loading, sweptAt = 0;
 
@@ -98,7 +101,7 @@ export function createNativeArt() {
   }
   function load() {
     if (loading) return loading;
-    const files = SKINS.slice(1).map(id => [id, `assets/max-skins-v1/${id}/atlas.json`])
+    const files = SKINS.slice(1).filter(id => !ON_DEMAND.includes(id)).map(id => [id, `assets/max-skins-v1/${id}/atlas.json`])
       .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]));
@@ -119,8 +122,14 @@ export function createNativeArt() {
     });
     return loading;
   }
+  function loadSkin(id) {
+    if (demand[id] || !ON_DEMAND.includes(id) || typeof fetch !== 'function') return;
+    demand[id] = loadAtlas(`assets/max-skins-v1/${id}/atlas.json`).then(atlas => { atlases[id] = atlas; }, () => {});
+  }
   function playerImage(skin, sheet) {
-    return SKINS.includes(skin) && atlases[skin]?.images[sheet] || null;
+    if (!SKINS.includes(skin)) return null;
+    if (!atlases[skin]) loadSkin(skin);
+    return atlases[skin]?.images[sheet] || null;
   }
   function drawEnemy(ctx, enemy, x, y, time) {
     const id = idFor(enemy), atlas = atlases[id];

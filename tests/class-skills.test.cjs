@@ -47,6 +47,7 @@ test('tapping Max fires the class skill and never bombs his own feet', () => {
     if (kit.id === 'runner') assert.equal(g.P.pounce, 1);
     if (kit.id === 'bulwark') { assert.equal(g.P.brace, 3); assert.equal(g.P.skillCool, 10); }
     if (kit.id === 'herbalist') { assert.ok(Math.abs(p.health - .745) < 1e-9); assert.equal(g.P.skillCool, 12); }
+    if (kit.id === 'sligo') { assert.equal(g.P.tun, 3); assert.equal(g.P.skillCool, 0, 'a tun cools from its end'); }
     const cool = g.P.skillCool;
     tap(h, g.P.x, g.P.y - 3); assert.ok(g.P.skillDenied > 0);
     g.P.skillDenied = 0; h.key('keydown', 'e');
