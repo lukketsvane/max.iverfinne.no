@@ -21,7 +21,6 @@ The mask joins a few things the sheet draws as neighbours: the underground pilla
 
 File `TC0PHGMTCMR6im4hb3CSbF`, page **References** (162:2), section **03 ØRKENEN — clown-mask split** (269:246):
 
-- 13 component sets `orkenen/01_terrain_tiles` … `orkenen/13_palette_mark`. Each part is a component `part=NN`, laid out as on the sheet, following `08_cliff_edges`.
-- Frames `orkenen/scene` and `orkenen/thumb_1_start` … `thumb_5_boss`, one rectangle per layer.
+- 13 component sets `orkenen/01_terrain_tiles` … `orkenen/13_palette_mark`. Each part is a component `part=NN` filled with its PNG from `parts/` at 1:1, laid out as on the sheet, following `08_cliff_edges`.
 
-Every node is sized and placed. The image fills are pending: this session's network policy refused `mcp.figma.com`, where `upload_assets` posts. To finish, call `upload_assets` with the `figma` node ids from manifest.json (at most 60 per call), save the returned `uploads` array and run `post-uploads.py` on it.
+The scene and thumbnail layers were filled too and then removed from the page; their PNGs remain in `layers/`. `post-uploads.py` fills nodes from an `upload_assets` response when a part needs refreshing.
