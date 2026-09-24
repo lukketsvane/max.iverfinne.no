@@ -24,7 +24,7 @@ function wonderDraw(name,x,y,f){
 function wonderRoll(n){return secretHash(wonders.seed,wonders.world*131+n);}
 function wonderGround(n,spread){var w=worldLevel(),side=wonderRoll(n)<.5?-1:1;return Math.round(dryX(levelOriginX(w)+side*(50+wonderRoll(n+1)*(spread||150))));}
 function wonderPerch(k){
-  var l=typeof stageLayout==='function'?stageLayout():null,ps=l&&l.platforms?l.platforms.slice().sort(function(a,b){return a.y-b.y;}):[];
+  var l=typeof stageLayout==='function'?stageLayout():null,ps=l&&l.platforms?l.platforms.filter(function(p){return !p.place;}).sort(function(a,b){return a.y-b.y;}):[];
   var p=ps[Math.min(k,ps.length-1)];return p?{x:p.x+Math.floor(p.w/2),y:p.y}:null;
 }
 function wonderOn(x,y,r){return runPlayers().some(function(a){return Math.abs(a.p.x-x)<(r||8)&&Math.abs(a.p.y-y)<7&&Math.abs(a.p.vy||0)<30;});}
