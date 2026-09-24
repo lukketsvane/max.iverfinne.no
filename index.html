@@ -259,7 +259,7 @@ function stageLayout(){
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
 function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:surfaceY(x);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
-function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);}
+function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
 /* Garden places (garden-places.js): every garden has one landmark of its own.
    Finding it, and the false walls inside it, are each player's own view. Its
    caches are ordinary seed pickups: the host owns them, guests claim them. */
@@ -659,7 +659,17 @@ function dodgeSweep(x0,y0,x1,y1){
 
 // Small physics steps keep jump arcs, braking and short dodges consistent at
 // 30, 60 and 120 Hz, without updating the scenery more than once per frame.
+// Bounce blooms (garden-places.js): the same launch for every class, a full
+// jump that no early release cuts short, and a squash the bloom shows for a moment.
+var bloomT=0;
+function bloomSpring(q){
+  P.vy=-window.MaxPlaces.bloom.v;P.grounded=false;P.platform=null;P.coyote=0;P.held=false;P.airJumpUsed=false;P.land=0;
+  q.hitAt=bloomT;setAnim('rise');puff(q.x,q.y,6,.45);
+  for(var f=0;f<5;f++)feathers.push({x:q.x+(f-2)*2,y:q.y-8,vx:(f-2)*14,vy:-20-f%2*12,c:f%2?'#72b6ff':'#d6eeff',life:.45,ph:f});
+  chime([392,587,784],.045,.045);
+}
 function updatePlayer(dt, inp) {
+  bloomT+=dt;
   var steps=Math.max(1,Math.ceil(dt*120-1e-7)),step=dt/steps;
   for(var i=0;i<steps&&!runIsPaused();i++){
     P.climbRegrab=Math.max(0,(P.climbRegrab||0)-step);
@@ -703,8 +713,10 @@ function physics(dt, inp) {
     P.dodgeT=0;cancelPounce();
     P.platform=null;
     P.airJumpUsed=!groundJump;
+    var spring=groundJump&&!P.platform&&window.MaxPlaces.bloomAt(layout,P.x,P.y);
     P.vy = JUMP_V*ownClass().jump*(1+.06*(rogueRun.perks.spring||0))*featherJump()*(groundJump?1:.9); P.grounded = false; P.coyote = 0; jumpBuf = 0;
     P.held = jumpVariable; P.land = 0;
+    if(spring)bloomSpring(spring);
     setAnim('rise'); if (P.wet) ripple(P.x, wp0.level, 'splash'); else puff(P.x, P.y, 5, 0.45);
     if(airJump){for(var f=0;f<5;f++)feathers.push({x:P.x,y:P.y-4,vx:(f-2)*9,vy:8,c:'#dddcca',life:.5,ph:f});}
   }
@@ -729,7 +741,9 @@ function physics(dt, inp) {
     if(platform)g=platform.y;
     else{P.platform=null;P.grounded=false;P.coyote=.1;}
   }
-  if (P.y >= g || (P.grounded && P.vy>=0 && g-P.y<=3)) {
+  var bloom=!P.grounded&&!P.platform&&P.vy>60&&P.y>=g&&!P.pounce&&!(heldDown||heldSpace||swipeDown)?window.MaxPlaces.bloomAt(layout,P.x,g):null;
+  if (bloom) { P.y = g; bloomSpring(bloom); }
+  else if (P.y >= g || (P.grounded && P.vy>=0 && g-P.y<=3)) {
     var slam=false;
     if (!P.grounded) {
       if (P.st === 'float') landFloat();

@@ -333,6 +333,12 @@
         return;
       }
       if (x + p.w < -4 || x > width + 4 || y > height + 8 || y + p.depth < -12) return;
+      var art = root.MaxPlaces && root.MaxPlaces.ledgeArt && root.MaxPlaces.ledgeArt(p, layout.stage);
+      if (art) {
+        ctx.drawImage(art.canvas, x + art.dx, y + art.dy);
+        if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(p.w / 2), y - 3, 1, 1); }
+        return;
+      }
       var woody = p.style === 'branch' || p.style === 'root';
       ctx.fillStyle = colors.shadow; ctx.fillRect(x + 3, y + 3, p.w - 6, p.depth + 2);
       ctx.fillStyle = woody ? colors.root : colors.body; ctx.fillRect(x, y + 1, p.w, 3); ctx.fillRect(x + 2, y + 3, p.w - 4, p.depth - 2);
