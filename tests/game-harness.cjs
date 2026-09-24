@@ -10,7 +10,7 @@ const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
   .replace('/* MAX_SECRETS */', fs.readFileSync(path.join(__dirname, '../secrets.inc.js'), 'utf8')).replace('/* MAX_WONDERS */', fs.readFileSync(path.join(__dirname, '../wonders.inc.js'), 'utf8'));
 const stateNames = [
   'bossSeen', 'parts',
-  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedDust', 'gardenStats',
+  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedCollected', 'seedDust', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
@@ -31,7 +31,7 @@ const functionNames = [
   'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
   'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
   'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
-  'stageLayout', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
+  'stageLayout', 'levelSpots', 'digSpots', 'digBlast', 'pickupShown', 'drawSpots', 'drawSeedPickups', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
   'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
   'runTimeThreat', 'runDurabilityScale', 'runDamageScale', 'runPlayerPower', 'runRewardScale', 'runReward', 'grantRogueLevel', 'openingRaidT', 'burstKrek', 'runRaidLimit', 'runRaidInterval', 'runPatrolLimit', 'runPatrolInterval',
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
