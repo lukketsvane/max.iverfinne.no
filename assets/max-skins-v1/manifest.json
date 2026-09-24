@@ -17,6 +17,10 @@
     {
       "id": "moon",
       "manifest": "moon/atlas.json"
+    },
+    {
+      "id": "sligo",
+      "manifest": "sligo/atlas.json"
     }
   ]
 }

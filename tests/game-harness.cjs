@@ -18,6 +18,7 @@ const stateNames = [
   'PICTURE_ART', 'SANCTUARY_BG', 'NIGHT_BG', 'CAVERN_BG', 'activeStageLayout', 'placeView', 'mouse', 'queuedThrow', 'padAx', 'bombCoolMax', 'charge', 'tunnels', 'swans', 'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
   'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
   'wonders', 'wonderRun', 'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
+  'sligoTrail', 'trailSelf', 'plantAtlasReady',
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
@@ -37,7 +38,9 @@ const functionNames = [
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',
   'runHudBoons', 'runHudIconPosition', 'drawTinyBoon', 'levelTallyLayout', 'drawRunHud',
-  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
+  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember',
+  'sligoTun', 'endTun', 'curledMember', 'plantProtection', 'SLIGO_KINDS', 'seedKindFor', 'sligoKindFor', 'plantGardenSeed',
+  'updateSligoTrail', 'drawSligoTrail', 'trailFollow', 'trailTracker', 'TRAIL_CAP', 'TRAIL_LIFE', 'TRAIL_FADE', 'TRAIL_INK', 'drawClassAuras', 'drawSkillPip', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'galleryPlant', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
   'secretHash', 'secretEventFor', 'secretEvent', 'updateSecrets', 'drawSecretBanner', 'drawSecretSky', 'drawSecretGround', 'drawSecretAir',
   'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog', 'secretDay', 'drawSecretDay', 'secretLogoTap', 'secretSkin', 'drawGardenSecret', 'drawWorldBanner',
 ];
@@ -102,10 +105,10 @@ function loadGame(saved = {}) {
     addEventListener(name, fn) { (docListeners[name] ||= []).push(fn); },
   };
   let now = 10000;
-  const timers = [], listeners = {}, docListeners = {};
+  const timers = [], listeners = {}, docListeners = {}, images = [];
   const sandbox = {
     document, localStorage, console,
-    Image: class { constructor() { this.complete = false; this.naturalWidth = 0; } },
+    Image: class { constructor() { this.complete = false; this.naturalWidth = 0; images.push(this); } },
     performance: { now: () => now },
     setTimeout(callback, delay) { timers.push({ callback, delay }); return timers.length; },
     clearTimeout() {}, setInterval() {}, clearInterval() {},
@@ -125,7 +128,7 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {
-    game: sandbox.game, document, elements, storage, timers, window: sandbox,
+    game: sandbox.game, document, elements, storage, timers, images, window: sandbox,
     key(type, key, repeat = false) { for (const fn of listeners[type] || []) fn({ type, key, repeat, preventDefault() {} }); },
     emit(type) { for (const fn of [...(listeners[type] || []), ...(docListeners[type] || [])]) fn({ type, preventDefault() {} }); },
     pointer(type, x, y, pointerId = 1) { for (const fn of elements.get('stage').listeners[type] || []) fn({ type, clientX: x, clientY: y, pointerId, pointerType: 'touch', preventDefault() {} }); },

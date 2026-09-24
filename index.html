@@ -398,6 +398,7 @@ var touches = {}, moveId = null;
 
 function doJump(variable) {
   if(P&&P.brace>0)P.brace=0;
+  if(P&&P.tun>0)endTun();
   if(P&&P.st==='climb'&&climb){if(climb.exit)climbBoost();else jumpFromPlant(variable);return;}
   if(P&&canPlantClimb(rogueRun.classId)&&!warp&&P.st!=='float'&&!P.climbRegrab){
     var plant=plantClimbAt(P.x,P.y,9);if(plant&&requestClimb(plant))return;
@@ -678,7 +679,8 @@ var P = {
   land: 0, idleT: 0, fidget: null, held: false,
   st: 'free', still: 0, squatT: 0, lampLit: 0, lampBlock: false, crouchGardenLatch: false,
   dodgeT: 0, dodgeCool: 0, dodgeDir: 1, dodgeId: 0, dodgeDust: 0, throwPose: 0,
-  skillCool: 0, skillDenied: 0, skillPose: 0, skillAnim: 'idle', brace: 0, braceX: 0, braceTag: 0, pounce: 0, pounceY: 0
+  skillCool: 0, skillDenied: 0, skillPose: 0, skillAnim: 'idle', brace: 0, braceX: 0, braceTag: 0, pounce: 0, pounceY: 0,
+  tun: 0, tunX: 0, hurt: 0
 };
 P.y = surfaceY(0);
 
@@ -702,7 +704,7 @@ function ownClass(){return window.MaxClasses.get(rogueRun.classId);}
 function dodgeRecovery(){return DODGE_COOLDOWN*ownClass().dodgeRecovery*Math.pow(.83,rogueRun.perks.dash||0);}
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
-  if(P.dodgeCool>0||P.pounce||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
+  if(P.dodgeCool>0||P.pounce||P.tun>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
   P.dodgeT=DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;P.brace=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
@@ -748,11 +750,14 @@ function updatePlayer(dt, inp) {
     if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){chime([1319],0,.012);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
     P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
     if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
+    if(P.tun>0){var tunLeft=P.tun-step;if(tunLeft<=1e-6||!P.grounded||P.wet||climb||P.st==='float'||Math.abs(P.x-P.tunX)>6)endTun();else P.tun=tunLeft;}
+    P.hurt=Math.max(0,(P.hurt||0)-step);
     if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
-    updateHands(step,taskSteer(inp));
+    var held=P.tun>0?{axis:0,top:inp.top}:inp;
+    updateHands(step,taskSteer(held));
     if(P.st==='burrow')updateBurrow(step,inp);
     else if(P.st==='climb')updateClimb(step,inp);
-    else physics(step,(P.st==='free'||P.st==='float')?inp:{axis:0,top:inp.top});
+    else physics(step,(P.st==='free'||P.st==='float')?held:{axis:0,top:inp.top});
     if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
     P.throwPose=Math.max(0,P.throwPose-step);
     animate(step);
@@ -842,6 +847,9 @@ function animate(dt) {
   else if (!P.grounded) {
     P.idleT = 0; P.fidget = null; P.land = 0;
     setAnim(P.vy < -18 ? 'rise' : 'fall');
+  } else if (P.tun > 0 && sheet2Ready) {
+    if (P.anim !== 'crouch' || P.done) setAnim('squat');
+    P.land = 0; P.idleT = 0; P.fidget = null;
   } else if (P.land > 0) {
     P.land -= dt; P.idleT = 0;
     if (spd > 10) P.land = 0;
@@ -896,6 +904,9 @@ for (var fi = 0; fi < 26; fi++) flies.push({
 /* ---------------------------------------------------------------- Figma garden assets + small fauna */
 var PA = {"fam":[{"s":[[37,78,35,7],[433,78,35,7],[469,78,35,7],[1,86,35,7],[37,86,35,7],[73,86,35,7],[109,86,35,7],[145,86,35,7],[181,86,35,7],[73,78,35,7],[109,78,35,7],[145,78,35,7],[181,78,35,7],[217,78,35,7],[253,78,35,7],[289,78,35,7],[325,78,35,7],[361,78,35,7],[397,78,35,7]],"f":[[211,70,35,7],[247,70,35,7],[283,70,35,7],[319,70,35,7],[355,70,35,7],[391,70,35,7],[427,70,35,7],[463,70,35,7],[1,78,35,7]]},{"s":[[323,62,41,7],[365,62,41,7],[407,62,41,7],[449,62,41,7],[1,70,41,7],[43,70,41,7],[85,70,41,7],[127,70,41,7],[169,70,41,7],[448,41,41,9],[359,52,41,8]],"f":[[275,52,41,8],[217,29,41,10],[317,52,41,8]]},{"s":[[1,62,45,7],[47,62,45,7],[93,62,45,7],[139,62,45,7],[185,62,45,7],[231,62,45,7],[277,62,45,7]],"f":[[417,52,45,7],[463,52,45,7]]},{"s":[[186,41,29,10],[216,41,29,10],[246,41,29,10],[276,41,29,10],[306,41,29,10],[336,41,29,10],[366,41,29,10],[396,41,29,10]],"f":[[126,41,29,10],[156,41,29,10]]},{"s":[[281,1,39,12],[321,1,39,12],[361,1,39,12],[121,1,39,13],[401,1,39,12]],"f":[[161,1,39,12],[201,1,39,12],[241,1,39,12]]},{"s":[[441,1,41,11],[1,29,41,11],[301,29,41,10],[43,29,41,11],[343,29,41,10],[85,52,41,9],[127,52,41,9],[385,29,41,10],[169,52,41,9],[43,52,41,9]],"f":[[1,52,41,9],[259,29,41,10]]},{"s":[[235,52,19,9],[211,52,23,9],[426,41,21,10],[255,52,19,9],[205,110,21,7],[401,52,15,8],[181,110,23,7]],"f":[[427,29,41,10],[469,29,41,10],[1,41,41,10],[43,41,41,10],[85,41,40,10]]},{"s":[[151,29,21,11],[173,29,21,11],[195,29,21,11]],"f":[[85,29,21,11],[107,29,21,11],[129,29,21,11]]}],"roots":[[217,86,35,7],[433,86,35,7],[469,86,35,7],[1,94,35,7],[37,94,35,7],[73,94,35,7],[109,94,35,7],[145,94,35,7],[181,94,35,7],[253,86,35,7],[289,86,35,7],[325,86,35,7],[361,86,35,7],[397,86,35,7]],"seeds":[[217,94,35,7],[109,102,35,7],[433,102,35,7],[469,102,35,7],[1,110,35,7],[37,110,35,7],[73,110,35,7],[109,110,35,7],[145,110,35,7],[253,94,35,7],[289,94,35,7],[325,94,35,7],[361,94,35,7],[397,94,35,7],[433,94,35,7],[469,94,35,7],[1,102,35,7],[37,102,35,7],[73,102,35,7],[145,102,35,7],[181,102,35,7],[217,102,35,7],[253,102,35,7],[289,102,35,7],[325,102,35,7],[361,102,35,7],[397,102,35,7]],"pumpkin":[[1,1,29,27],[31,1,29,27],[61,1,29,27],[91,1,29,27]]};
 PA.fam.push({s:PA.fam[0].s.map(function(r){return r.slice();}),f:PA.fam[0].f.map(function(r){return r.slice();})});
+// Sligo's umbilical plants, families 9 and 10 (kinds 25 and 26): their own folder (dir), blooms (b) that are not
+// their heads and roots (r) of their own. Every piece is [0, 0, width, height]; scripts/build-sligo-plants.py prints this line.
+PA.fam.push({"dir":"sligo-cord","s":[[0,0,7,8],[0,0,7,9],[0,0,7,8],[0,0,7,9],[0,0,7,9],[0,0,7,8]],"f":[[0,0,21,25],[0,0,17,21],[0,0,17,19]],"b":[[0,0,15,15],[0,0,9,8],[0,0,10,13],[0,0,7,8],[0,0,11,8]],"r":[[0,0,17,12],[0,0,17,12],[0,0,17,12]]},{"dir":"sligo-cap","s":[[0,0,17,12],[0,0,17,10],[0,0,19,15],[0,0,21,16],[0,0,17,9],[0,0,23,21]],"f":[[0,0,33,17],[0,0,31,16],[0,0,31,17]],"b":[[0,0,7,7],[0,0,7,7],[0,0,7,7],[0,0,8,7]],"r":[[0,0,19,11],[0,0,17,11],[0,0,23,11]]});
 var plantAtlasReady = false;
 (function () {
   var waiting = 0;
@@ -907,7 +918,12 @@ var plantAtlasReady = false;
       r.img.onload = function () { if (--waiting === 0) plantAtlasReady = true; };
     });
   }
-  PA.fam.forEach(function (f, i) { parts(f.s, 'plant-' + (i + 1), 'stem'); parts(f.f, 'plant-' + (i + 1), 'flower'); });
+  PA.fam.forEach(function (f, i) {
+    var dir = f.dir || 'plant-' + (i + 1);
+    parts(f.s, dir, 'stem'); parts(f.f, dir, 'flower');
+    if (f.b) parts(f.b, dir, 'bloom');
+    if (f.r) parts(f.r, dir, 'root');
+  });
   parts(PA.roots, 'roots', 'root'); parts(PA.seeds, 'seeds', 'seed'); parts(PA.pumpkin, 'pumpkin', 'pumpkin');
 })();
 var SPRITE_PLANTS=[{"name":"moon-lily","top":64,"parts":[["root",1,-11,0,22,8],["stem",1,-13,-8,28,8],["stem",2,-11,-16,26,8],["stem",3,-14,-24,23,8],["stem",4,-14,-32,30,8],["stem",5,-1,-40,16,8],["stem",6,-2,-48,14,8],["stem",7,-12,-56,25,8],["stem",8,-8,-64,20,8],["bloom",1,-7,-16,4,5],["bloom",2,5,-27,4,5],["bloom",3,-11,-59,23,11],["bloom",4,1,-62,2,2]]},{"name":"sunpuff","top":47,"parts":[["root",1,-9,0,17,6],["stem",1,-9,-8,16,8],["stem",2,-15,-16,29,8],["stem",3,-15,-24,29,8],["stem",4,-12,-32,24,8],["stem",5,-11,-40,22,8],["stem",6,-7,-47,15,7],["bloom",1,-7,-9,3,5],["bloom",2,-13,-19,7,7],["bloom",3,2,-23,10,8],["bloom",4,-11,-34,9,8],["bloom",5,7,-33,5,3],["bloom",6,-6,-45,12,10]]},{"name":"frost-fern","top":63,"parts":[["root",1,-9,0,19,9],["stem",1,-17,-8,19,8],["stem",2,-17,-16,36,8],["stem",3,-17,-24,32,8],["stem",4,-14,-32,31,8],["stem",5,-19,-40,34,8],["stem",6,-17,-48,33,8],["stem",7,-5,-56,11,8],["stem",8,-4,-63,7,7],["bloom",1,1,-1,4,1],["bloom",2,-4,-13,3,2],["bloom",3,0,-23,2,2],["bloom",4,-3,-32,3,3]]},{"name":"jade-vine","top":64,"parts":[["root",1,-8,0,17,7],["stem",1,-10,-8,18,8],["stem",2,-6,-16,21,8],["stem",3,-5,-24,14,8],["stem",4,-9,-32,26,8],["stem",5,-5,-40,21,8],["stem",6,-10,-48,19,8],["stem",7,2,-56,6,8],["stem",8,2,-64,9,8],["bloom",1,-11,-11,6,8],["bloom",2,4,-22,6,7],["bloom",3,-10,-30,6,8],["bloom",4,5,-41,6,8],["bloom",5,5,-62,7,8]]},{"name":"star-grass","top":64,"parts":[["root",1,-9,0,20,8],["stem",1,-3,-8,18,8],["stem",2,-15,-16,30,8],["stem",3,-15,-24,34,8],["stem",4,-18,-32,36,8],["stem",5,-11,-40,29,8],["stem",6,-13,-48,28,8],["stem",7,-14,-56,17,8],["stem",8,1,-64,13,8],["bloom",1,0,-20,1,4],["bloom",2,17,-22,3,4],["bloom",3,13,-23,3,3],["bloom",4,-17,-28,6,7],["bloom",5,16,-36,3,4],["bloom",6,9,-39,7,4],["bloom",7,-14,-44,3,3],["bloom",8,-10,-46,2,2],["bloom",9,-15,-48,3,3],["bloom",10,9,-56,3,3],["bloom",11,7,-58,2,2],["bloom",12,12,-58,2,2],["bloom",13,13,-61,3,4]]},{"name":"rose-curl","top":65,"parts":[["root",1,-6,0,14,7],["stem",1,-1,-8,9,7],["stem",2,-6,-16,17,8],["stem",3,-10,-24,20,8],["stem",4,-11,-32,19,8],["stem",5,-4,-40,12,8],["stem",6,-6,-48,16,8],["stem",7,-4,-56,11,8],["stem",8,-4,-61,10,5],["bloom",1,-1,-2,3,2],["bloom",2,-10,-19,6,7],["bloom",3,6,-31,6,7],["bloom",4,-3,-28,2,2],["bloom",5,7,-35,2,2],["bloom",6,-7,-40,5,6],["bloom",7,-6,-53,3,4],["bloom",8,1,-65,7,6]]},{"name":"snow-bush","top":60,"parts":[["root",1,-9,0,17,9],["stem",1,-18,-8,39,8],["stem",2,-19,-16,38,8],["stem",3,-22,-24,40,8],["stem",4,-18,-32,36,8],["stem",5,-12,-40,28,8],["stem",6,-9,-48,23,8],["stem",7,-7,-56,14,8],["stem",8,-5,-58,4,2],["bloom",1,-14,-12,4,5],["bloom",2,-7,-12,4,4],["bloom",3,13,-16,10,7],["bloom",4,2,-19,7,3],["bloom",5,-11,-24,4,6],["bloom",6,-16,-26,4,5],["bloom",7,-19,-28,4,4],["bloom",8,14,-31,5,6],["bloom",9,-5,-32,3,4],["bloom",10,11,-32,2,4],["bloom",11,7,-32,3,3],["bloom",12,-10,-42,2,4],["bloom",13,-7,-40,2,2],["bloom",14,-14,-43,3,4],["bloom",15,11,-42,5,3],["bloom",16,3,-43,2,2],["bloom",17,6,-47,3,5],["bloom",18,-5,-45,4,3],["bloom",19,-8,-53,4,4],["bloom",20,4,-55,2,3],["bloom",21,1,-56,2,2],["bloom",22,-4,-60,4,5]]},{"name":"blue-poppy","top":60,"parts":[["root",1,-10,0,19,12],["stem",1,-12,-8,14,8],["stem",2,-10,-16,21,8],["stem",3,-12,-24,20,8],["stem",4,-10,-32,20,8],["stem",5,-9,-40,18,8],["stem",6,-9,-48,12,8],["stem",7,-2,-56,8,8],["bloom",1,2,-44,9,9],["bloom",2,-13,-49,9,9],["bloom",3,-6,-60,12,10]]},{"name":"gold-bud","top":55,"parts":[["root",1,-10,0,21,6],["stem",1,-7,-8,19,8],["stem",2,-16,-16,34,8],["stem",3,-16,-24,35,8],["stem",4,-8,-32,18,8],["stem",5,-9,-40,17,8],["stem",6,-8,-48,16,8],["stem",7,-5,-55,10,7],["bloom",1,-3,-2,3,2],["bloom",2,1,-2,3,2],["bloom",3,15,-17,3,2],["bloom",4,11,-20,2,3],["bloom",5,-10,-19,2,2],["bloom",6,14,-21,2,3],["bloom",7,-15,-22,3,3],["bloom",8,-7,-41,3,3],["bloom",9,-4,-49,2,2],["bloom",10,2,-50,2,2],["bloom",11,-1,-54,3,5]]},{"name":"bluebell","top":63,"parts":[["root",1,-7,0,15,8],["stem",1,-11,-8,21,8],["stem",2,-10,-16,21,8],["stem",3,-11,-24,21,8],["stem",4,-9,-32,17,8],["stem",5,-8,-40,21,8],["stem",6,-10,-48,20,8],["stem",7,-9,-56,15,8],["stem",8,0,-63,8,7],["bloom",1,4,-11,7,7],["bloom",2,2,-13,2,2],["bloom",3,-14,-23,7,7],["bloom",4,4,-19,3,2],["bloom",5,6,-25,2,2],["bloom",6,9,-37,6,8],["bloom",7,0,-42,5,5],["bloom",8,-11,-41,4,4],["bloom",9,5,-58,7,7]]},{"name":"cloudberry","top":60,"parts":[["root",1,-8,0,17,17],["stem",1,-11,-8,17,8],["stem",2,-10,-16,15,8],["stem",3,-4,-24,7,8],["stem",4,-20,-32,34,8],["stem",5,-21,-40,34,8],["stem",6,-15,-48,25,8],["stem",7,-14,-56,24,8],["stem",8,-5,-60,4,4]]},{"name":"alder-cone","top":49,"parts":[["root",1,-8,0,12,12],["stem",1,-14,-8,21,8],["stem",2,-13,-16,19,8],["stem",3,-10,-24,16,8],["stem",4,-13,-32,17,8],["stem",5,-12,-40,17,8],["stem",6,-10,-48,13,8],["stem",7,-4,-49,1,1],["bloom",1,-2,-4,6,4],["bloom",2,-14,-8,4,4],["bloom",3,0,-14,5,5],["bloom",4,-12,-24,7,5],["bloom",5,-3,-30,4,5],["bloom",6,-8,-36,3,5],["bloom",7,-1,-37,6,4],["bloom",8,-9,-43,3,2],["bloom",9,-4,-44,1,3]]},{"name":"nightberry","top":56,"parts":[["root",1,-8,0,15,11],["stem",1,-7,-8,15,8],["stem",2,-9,-16,18,8],["stem",3,-10,-24,17,8],["stem",4,-8,-32,16,8],["stem",5,-7,-40,18,8],["stem",6,-6,-48,12,8],["stem",7,-2,-56,8,8],["bloom",1,0,-4,7,4],["bloom",2,-4,-5,3,4],["bloom",3,-5,-9,7,4],["bloom",4,-8,-12,5,4],["bloom",5,-5,-14,3,2],["bloom",6,4,-15,5,3],["bloom",7,1,-19,3,3],["bloom",8,-8,-21,7,4],["bloom",9,2,-24,4,3],["bloom",10,-10,-27,7,5],["bloom",11,-7,-30,3,3],["bloom",12,2,-30,8,5],["bloom",13,-5,-36,8,5],["bloom",14,5,-40,3,3],["bloom",15,-2,-41,3,3],["bloom",16,-9,-46,9,8],["bloom",17,6,-48,2,3],["bloom",18,-6,-54,7,5],["bloom",19,1,-55,5,5]]},{"name":"dusk-bell","top":62,"parts":[["root",1,-6,0,12,15],["stem",1,-6,-8,12,8],["stem",2,-7,-16,17,8],["stem",3,-6,-24,15,8],["stem",4,-6,-32,14,8],["stem",5,-6,-40,15,8],["stem",6,-5,-48,13,8],["stem",7,-3,-56,9,8],["stem",8,-4,-62,9,6],["bloom",1,5,-11,6,7],["bloom",2,-7,-16,3,3],["bloom",3,7,-28,2,5],["bloom",4,-8,-35,6,8],["bloom",5,4,-46,6,6],["bloom",6,-5,-51,2,5]]},{"name":"reindeer-moss","top":65,"parts":[["root",1,-6,0,14,13],["stem",1,-3,-8,11,8],["stem",2,-8,-16,19,8],["stem",3,-10,-24,21,8],["stem",4,-10,-32,25,8],["stem",5,-8,-40,21,8],["stem",6,-2,-48,15,8],["stem",7,-8,-56,18,8],["stem",8,-7,-64,16,8],["stem",9,3,-65,2,1],["bloom",1,-10,-13,12,13],["bloom",2,4,-14,9,9],["bloom",3,-11,-29,12,12],["bloom",4,3,-30,12,8],["bloom",5,-8,-39,8,8],["bloom",6,9,-43,3,3],["bloom",7,5,-48,6,5]]},{"name":"ink-fan","top":49,"parts":[["root",1,-7,0,11,10],["stem",1,-11,-8,20,8],["stem",2,-13,-16,20,8],["stem",3,-8,-24,19,8],["stem",4,-14,-32,22,8],["stem",5,-12,-40,20,8],["stem",6,-10,-48,16,8],["bloom",1,3,-14,4,3],["bloom",2,-12,-15,5,4],["bloom",3,-9,-23,2,2],["bloom",4,-8,-31,3,3],["bloom",5,3,-33,5,3],["bloom",6,-1,-40,5,3],["bloom",7,-6,-43,3,3],["bloom",8,-3,-49,2,2]]}];
@@ -918,9 +934,12 @@ SPRITE_PLANTS.forEach(function (d) {
     q.img.onload = function () { if (--waiting === 0) d.ready = true; };
   });
 });
-var PLANT_FEATURES=['water','grow','chill','shelter','thorns','heal','bind','chill','seeds','heal','grow','chill','bind','seeds','thorns','shelter','seeds','grow','water','berries','shelter','berries','chill','heal','thorns'];
-var PLANT_TIER=[1,1,1,1,2,2,2,2,1,3,2,2,3,2,2,3,3,1,1,4,2,2,3,3,4];
-var PLANT_HOME=['g','gf','g','gf','ge','gf','ge','f','ge','f','e','f','e','f','g','f','g','e','g','fe','g','gf','f','f','e'];
+var PLANT_FEATURES=['water','grow','chill','shelter','thorns','heal','bind','chill','seeds','heal','grow','chill','bind','seeds','thorns','shelter','seeds','grow','water','berries','shelter','berries','chill','heal','thorns','heal','bind'];
+var PLANT_TIER=[1,1,1,1,2,2,2,2,1,3,2,2,3,2,2,3,3,1,1,4,2,2,3,3,4,1,2];
+var PLANT_HOME=['g','gf','g','gf','ge','gf','ge','f','ge','f','e','f','e','f','g','f','g','e','g','fe','g','gf','f','f','e','gfe','gfe'];
+// Sligo's umbilical plants: the cord (25) and the cap (26). No ordinary seed grows them (gardenKindFor) and the garden
+// collection leaves them out: they are Sligo's.
+var SLIGO_KINDS=[25,26];
 var CLOUDBERRY={berries:[],bursts:[],anchors:[[-10,-46],[11,-35],[-10,-24]]};
 for(var cbi=1;cbi<=6;cbi++)CLOUDBERRY.berries.push(loadImg('assets/plants-v1/cloudberry/berry-0'+cbi+'.png'));
 for(cbi=1;cbi<=4;cbi++)CLOUDBERRY.bursts.push(loadImg('assets/plants-v1/cloudberry/burst-0'+cbi+'.png'));
@@ -1743,7 +1762,11 @@ var FAM_CYCLE = [
   { s: [2, 3],       f: [1, 2] },         // plant_5 arches: 5 / 3
   { s: [4, 6],       f: [1, 1] },         // plant_6: 10 / 2
   { s: [3, 4],       f: [2, 3] },         // plant_7 starbursts: 7 / 5
-  { s: [1, 2],       f: [1, 2] }          // plant_8 twig + puff: 3 / 3
+  { s: [1, 2],       f: [1, 2] },         // plant_8 twig + puff: 3 / 3
+  // the garden-only families: the wild flora (FIG_SLOTS) never deals them
+  { s: [6, 3, 8, 2], f: [2, 3, 2, 2] },   // plant_9, plant_1's pieces recoloured: 19 / 9
+  { s: [3, 3],       f: [1, 2] },         // sligo-cord boxes and coils: 6 / 3
+  { s: [3, 3],       f: [1, 2] }          // sligo-cap cord and caps: 6 / 3
 ];
 var FIG_BW = 24, FIG_SLOTS = [0, 0, 1, 2, 3, 4, 5, 6, 7];
 function famPieces(fi, k) {
@@ -3015,17 +3038,19 @@ function drawCompanion(){
   });
 }
 function bracedMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.bracing:P.brace>0;return performance.now()<(m.braceUntil||0)&&Math.abs(a.x-(m.braceX||0))<=6;}
+function curledMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.curled:P.tun>0;return performance.now()<(m.tunUntil||0)&&Math.abs(a.x-(m.tunX||0))<=6;}
 function classProtection(plant){
   var protection=0;
-  function guard(avatar,classId,braced){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=(braced?kit.braceRadius:kit.radius)&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,braced?kit.braceProtection:kit.protection);}
-  if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P));
+  function guard(avatar,classId,braced,curled){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=(braced?kit.braceRadius:kit.radius)&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,braced?kit.braceProtection:kit.protection);
+    if(curled&&kit.tunRadius&&Math.abs(avatar.x-plant.x)<=kit.tunRadius&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,kit.tunProtection);}
+  if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a),curledMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P),curledMember(null,P));
   return 1-protection;
 }
 function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
 function useClassSkill(){
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
-    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():false;
+    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
   return ok;
 }
@@ -3039,6 +3064,7 @@ function coopClassSkill(action,m,now){
   if(kit.skill==='dispatch')return dispatchWorld();
   if(!P.grounded||P.wet)return false;
   if(kit.skill==='brace'){m.braceUntil=now+kit.braceTime*1000;m.braceX=P.x;braceShove(P.x,P.y);return true;}
+  if(kit.skill==='tun'){m.tunUntil=now+kit.tunTime*1000;m.tunX=P.x;skillRing(P.x,P.y,kit.tunRadius,'tun');return true;}
   if(kit.skill==='bloom')return herbalistBloom()>0;
   if(kit.skill==='pounce'){if(m.airTop==null||!m.landAt||now-m.landAt>800)return false;
     var drop=Math.max(0,Math.min(160,+action.drop||0,P.y-m.airTop+2));m.airTop=null;mossSlam(P.x,P.y,drop);return true;}
@@ -3103,6 +3129,18 @@ function bulwarkBrace(){
   if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag}))return false;}else braceShove(P.x,P.y);
   P.brace=kit.braceTime;P.braceX=P.x;P.skillCool=parry?kit.parryCd:kit.skillCd;skillCue(parry?'parry':'brace',0);return true;
 }
+// Sligo's tun: curled up it neither moves nor throws, nothing knocks it back, and plants within
+// tunRadius take less of every kind of damage (plantProtection). A jump uncurls it early; the
+// cooldown counts from the moment it uncurls. It adds no score. A guest's tun follows the host's.
+function sligoTun(){
+  if(P.tun>0||!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0)return false;
+  var kit=ownClass();
+  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag}))return false;}else skillRing(P.x,P.y,kit.tunRadius,'tun');
+  task=null;holdWater=null;if(P.st!=='free')P.st='free';
+  P.tun=kit.tunTime;P.tunX=P.x;P.vx=0;P.skillCool=0;P.throwPose=0;if(sheet2Ready)setAnim('crouch');
+  skillCue('tun',0);return true;
+}
+function endTun(){if(!(P.tun>0))return;P.tun=0;P.skillCool=ownClass().skillCd;}
 // A brace on a tell is a parry: the biter is hurt, knocked away and stunned. Late in the tell hurts most.
 function braceShove(x,y){
   var r=window.MaxClasses.get('bulwark').braceRadius,n=0;
@@ -3146,6 +3184,11 @@ function herbalistBloom(){
 function drawClassAuras(){
   runPlayers().forEach(function(a){
     var kit=window.MaxClasses.get(a.member?a.member.classId:rogueRun.classId),p=a.p;
+    if(kit.skill==='tun'&&p.grounded&&!p.wet&&(!a.member||a.member.id===coop.me?P.tun>0:!!p.curled)){
+      ctx.fillStyle='#d99aa8';ctx.globalAlpha=.55;
+      for(var e=-kit.tunRadius;e<=kit.tunRadius;e+=2)ctx.fillRect(Math.round(p.x+e-camX),Math.round(surfaceY(p.x+e)-camY)+2,1,1);
+      ctx.globalAlpha=1;return;
+    }
     if(!kit.protection||!p.grounded||p.wet)return;
     var braced=!a.member||a.member.id===coop.me?P.brace>0:!!p.bracing,r=braced?kit.braceRadius:kit.radius,step=braced?2:4;
     ctx.fillStyle='#8eb6b8';ctx.globalAlpha=braced?.6:.2;
@@ -3158,6 +3201,7 @@ function drawSkillPip(){
   var kit=ownClass(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
   ctx.fillStyle='rgba(236,232,220,.22)';ctx.fillRect(x,y,5,1);
   if(P.skillDenied>0){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
+  else if(P.tun>0){var left=Math.round(5*P.tun/kit.tunTime);ctx.fillStyle='rgba(236,232,220,.5)';if(left>0)ctx.fillRect(x,y,left,1);}
   else if(P.skillCool>0||P.pounce){var w=Math.round(5*(1-P.skillCool/kit.skillCd));ctx.fillStyle='rgba(236,232,220,.5)';if(w>0)ctx.fillRect(x,y,w,1);}
   else{ctx.fillStyle='#ece8dc';ctx.fillRect(x,y,5,1);}
 }
@@ -3224,7 +3268,7 @@ function recordGardenPlant(p){
 }
 function clearRunInput(){
   heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;charge=null;queuedThrow=null;padAx=0;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
-  if(P){P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;}
+  if(P){P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;endTun();}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
 function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
@@ -3336,7 +3380,8 @@ function plantCollection(){
   var seen={},add=function(list){(list||[]).forEach(function(p){if(p&&(p.growth||0)>=1&&!(p.kind in seen))seen[p.kind]=p.seed||7;});};
   if(window.MaxRunRecords)window.MaxRunRecords.getAll().forEach(function(r){add(r.plants);});
   add(rogueRun.garden);
-  var out=[];for(var k=0;k<GARDEN_FIG_FORMS.length;k++)out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7,feature:PLANT_FEATURES[k]||'',tier:PLANT_TIER[k]||1});
+  var secret=!(window.MaxEasterEggs&&window.MaxEasterEggs.has('sligo')),out=[];
+  for(var k=0;k<GARDEN_FIG_FORMS.length;k++){if(secret&&SLIGO_KINDS.indexOf(k)>=0)continue;out.push({kind:k,found:k in seen,seed:k in seen?seen[k]:7,feature:PLANT_FEATURES[k]||'',tier:PLANT_TIER[k]||1});}
   return out;
 }
 var GARDEN_VIEW_LAYERS=['sky','far-mountains','mist','mid-mountains','forest','soil','fireflies','water'],GARDEN_VIEW={},galleryPlants={};
@@ -3624,12 +3669,15 @@ function nearestGardenPlot(x,maxD){
 var GARDEN_FIG_FORMS=[
   {fi:8,off:0},{fi:0,off:7},{fi:1,off:1},{fi:2,off:2},{fi:3,off:3},
   {fi:4,off:4},{fi:5,off:5},{fi:6,off:6},{fi:7,off:7},
-{fi:0,off:0,sprite:0},{fi:1,off:1,sprite:1},{fi:2,off:2,sprite:2},{fi:3,off:3,sprite:3},{fi:4,off:4,sprite:4},{fi:5,off:5,sprite:5},{fi:6,off:6,sprite:6},{fi:7,off:7,sprite:7},{fi:0,off:8,sprite:8},{fi:1,off:9,sprite:9},{fi:0,off:10,sprite:10},{fi:2,off:11,sprite:11},{fi:6,off:12,sprite:12},{fi:1,off:13,sprite:13},{fi:4,off:14,sprite:14},{fi:7,off:15,sprite:15}
+{fi:0,off:0,sprite:0},{fi:1,off:1,sprite:1},{fi:2,off:2,sprite:2},{fi:3,off:3,sprite:3},{fi:4,off:4,sprite:4},{fi:5,off:5,sprite:5},{fi:6,off:6,sprite:6},{fi:7,off:7,sprite:7},{fi:0,off:8,sprite:8},{fi:1,off:9,sprite:9},{fi:0,off:10,sprite:10},{fi:2,off:11,sprite:11},{fi:6,off:12,sprite:12},{fi:1,off:13,sprite:13},{fi:4,off:14,sprite:14},{fi:7,off:15,sprite:15},
+  {fi:9,off:0},{fi:10,off:0}
 ];
 function plantTierWeights(w){return w<=5?[1,0,0,0]:w<=10?[.72,.24,.04,0]:w<=15?[.5,.33,.15,.02]:[.42,.3,.2,.08];}
+// Sligo grows nothing but its two umbilical cords, and nobody else ever grows them.
 function gardenKindFor(x){
   var q=biomeAt(x),w=worldLevel(),home=w>=16?'e':w>=11?'f':'g',tiers=plantTierWeights(w),pool=[],total=0;
   for(var k=0;k<GARDEN_FIG_FORMS.length;k++){
+    if(SLIGO_KINDS.indexOf(k)>=0)continue;
     var wt=tiers[(PLANT_TIER[k]||1)-1];if(!wt)continue;
     if(PLANT_HOME[k].indexOf(home)<0){if(PLANT_TIER[k]!==1)continue;wt*=.35;}
     if(q.id==='wetland'&&(k===0||k===18)||q.id==='moon'&&(k===1||k===9)||q.id==='grove'&&(k===6||k===12)||q.id==='fungal'&&(k===3||k===4))wt*=2;
@@ -3639,13 +3687,18 @@ function gardenKindFor(x){
   for(var i=0;i<pool.length;i+=2){r-=pool[i+1];if(r<0)return pool[i];}
   return pool.length?pool[pool.length-2]:0;
 }
+// Seeded by position like gardenKindFor. The cap, the rarer cord, is one in five before garden 6
+// and two in five after it.
+function sligoKindFor(x){return h1(x*.731+biomeAt(x).seg*1.93)<(worldLevel()<6?.2:.4)?SLIGO_KINDS[1]:SLIGO_KINDS[0];}
+// The planting actor's class decides: on the host a guest's seed runs as the guest (coopWithMember).
+function seedKindFor(x){return ownClass().skill==='tun'?sligoKindFor(x):gardenKindFor(x);}
 function plantGardenSeed(x){
   x=dryX(x);if(waterAt(x)||nearestGardenPlot(x,12))return true;
   if(gardenSeeds<=0){socialTone('call');puff(x,surfaceY(x),2,.2);return true;}
   return embody('sow',x,function(){
     if(gardenSeeds<=0||nearestGardenPlot(x,12))return;
     gardenSeeds--;
-    gardenPlots.push({x:x,kind:gardenKindFor(x),growth:0,moisture:.26,health:1,pulse:1,hit:0,age:0,dead:0,seed:Math.random()*999,seedMark:0,carer:skillOwner()});
+    gardenPlots.push({x:x,kind:seedKindFor(x),growth:0,moisture:.26,health:1,pulse:1,hit:0,age:0,dead:0,seed:Math.random()*999,seedMark:0,carer:skillOwner()});
     recordGardenPlant(gardenPlots[gardenPlots.length-1]);
     gardenAction(8,7,'PLANTED');
     if(gardenPlots.length>30)gardenPlots.shift();
@@ -3764,7 +3817,8 @@ function gardenFigForm(p){return GARDEN_FIG_FORMS[imod(p.kind|0,GARDEN_FIG_FORMS
 var PLANT_STEM=[
   ['#062128','#294321','#3b5a2e'],['#1b171d','#242a17','#2f3718'],['#0e1e1d','#183427','#274628'],
   ['#0e1e1d','#262938','#38475f'],['#142722','#405054','#5e6781'],['#171b0f','#2e361c','#585633'],
-  ['#0a2628','#1e4852','#315f6a'],['#261e18','#3b2d21','#504e2a'],['#0b1830','#28465a','#3e6a78']
+  ['#0a2628','#1e4852','#315f6a'],['#261e18','#3b2d21','#504e2a'],['#0b1830','#28465a','#3e6a78'],
+  ['#8f3634','#dc7470','#f29f9b'],['#740d1b','#d03946','#fc947c']   // Sligo's cord and cap, from their paintings
 ];
 var G_TOP=2.7, PLANT_MATURE_H=46;
 function plantTopH(){return Math.max(72,ANCHOR+10);}          // ground to just past the top edge
@@ -3843,10 +3897,10 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     drawSeedAsset(sr,sx,gy-2);return;
   }
   if(form.sprite!=null&&!p.stalk){drawSpritePlant(p,SPRITE_PLANTS[form.sprite],sx,gy,t,flip);drawRipePods(p,sx,gy,t,g);return;}
-  var rr=PA.roots[imod(p.kind*2+(p.seed|0),PA.roots.length)];
+  var roots=fam.r||PA.roots,rr=roots[imod(p.kind*2+(p.seed|0),roots.length)];   // a family with roots of its own keeps to them
   drawRootAsset(rr,sx,gy,flip);
   var stalk=!!p.stalk,H=Math.min(plantHeight(p),maxHeight||Infinity),topY=stalk?Math.min(gy-H,-4):gy-H,cols=PLANT_STEM[form.fi];
-  var head=(!stalk&&fam.f.length&&g>.5)?fam.f[imod(Math.floor(g*2)+form.off,fam.f.length)]:null;
+  var head=(!stalk&&fam.f.length&&g>.5)?fam.f[imod(Math.floor(g*2)+form.off,fam.f.length)]:null,blooms=fam.b||fam.f;   // blooms are the heads unless the family has its own
 
   // 1. the stem: one unbroken line from the soil to the top
   var runs=stemRuns(p,sx,gy,topY,t);
@@ -3876,8 +3930,8 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     var mid=gy-(yb-r[3]*.5),lx=sx+plantLean(p,mid,t),fl=flip?!(j&1):!!(j&1);
     if(top<=IH+4&&yb>=-4){
       figmaSeg(r,lx,yb,fl);
-      if(stalk&&fam.f.length&&j%5===3){
-        var bl=fam.f[imod(j+form.off,fam.f.length)],bs=(j&2)?1:-1;
+      if(stalk&&blooms.length&&j%5===3){
+        var bl=blooms[imod(j+form.off,blooms.length)],bs=(j&2)?1:-1;
         figmaSeg(bl,lx+bs*6,yb-2,bs<0);
       }
     }
@@ -3889,10 +3943,10 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
   else if(!stalk){ctx.fillStyle=cols[2];ctx.fillRect(sx+plantLean(p,H,t),topY-1,2,2);}
 
   // 4. ripe plants fill out with more blooms along the lower stem
-  if(!stalk&&g>1.05&&fam.f.length&&stemY.length){
+  if(!stalk&&g>1.05&&blooms.length&&stemY.length){
     var fullness=Math.min(6,1+Math.floor((g-1)*2.2)),span=Math.max(1,Math.floor(stemY.length*.8));
     for(var k=0;k<fullness;k++){
-      var idx=Math.min(stemY.length-1,Math.floor((k+.5)/fullness*span)),br=fam.f[imod(k+form.off+(p.seed|0),fam.f.length)];
+      var idx=Math.min(stemY.length-1,Math.floor((k+.5)/fullness*span)),br=blooms[imod(k+form.off+(p.seed|0),blooms.length)];
       var side=(k&1)?1:-1,by=Math.round(stemY[idx]),bx=sx+plantLean(p,gy-by,t)+side*(5+(k%3)*2);
       figmaSeg(br,bx,by,side<0);
     }
@@ -4770,6 +4824,7 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
+  if(P.tun>0)return false;
   if(coopGuest()){
     if(!P.grounded||P.wet||task||P.st!=='free')return false;
     if(interactEncounter())return true;
@@ -4811,6 +4866,7 @@ function poseExit() {                                      // leave a held pose 
 
 function updateHands(dt, inp) {
   if (P.st === 'climb' || P.st === 'float') { task = null; return; }
+  if (P.tun > 0) { task = null; holdWater = null; gardenPress = false; lampToggle = false; return; }
   if(P.dodgeT>0&&jumpBuf<=0){gardenPress=false;return;}
   var move = inp.axis !== 0, low = heldDown || heldSpace || swipeDown || gardenPress;
   gardenPress=false;
@@ -5006,7 +5062,7 @@ var bombCoolMax=0,queuedThrow=null;
 function throwCooldown(power){return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
 function throwBomb(target,power) {                         // a bird {kind, o} or a spot {x, y}
   power=Math.max(0,Math.min(1,+power||0));
-  if (runIsPaused() || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
+  if (runIsPaused() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
   if(coopGuest()){
     var aim=target.o||target;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:Number.isSafeInteger(aim.spore)?aim.spore:0,power:power}))return false;
     bombCool=bombCoolMax=throwCooldown(power);task=null;
@@ -5057,7 +5113,7 @@ function autoTarget() {
 }
 
 var charge=null,lastPad=null;
-function chargeStart(src){if(charge||runIsPaused()||warp||P.st==='float'||(climb&&climb.exit))return false;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
+function chargeStart(src){if(charge||runIsPaused()||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
 function targetPoint(a){return a.o?{x:a.o.x,y:a.o.y-(a.kind==='krek'?0:6),o:a}:{x:a.x,y:a.y,s:a};}
 function aimAssist(dx,dy){
   var x0=P.x,y0=P.y-12,d=Math.hypot(dx,dy)||1,best=null,bs=1e9;dx/=d;dy/=d;
@@ -5266,9 +5322,9 @@ function explode(x, y, wet, build) {
   var wl = waterAt(x);
   if (wet && wl) { ripple(x, wl.level, 'splash'); ripple(x - 9, wl.level, 'ring'); ripple(x + 9, wl.level, 'ring'); }
   else if (Math.abs(surfaceY(x) - y) < 16) { scorches.push({ x: x, w: 8 + Math.random() * 4, life: 35, seed: Math.random() * 50 }); if (scorches.length > 12) scorches.shift(); }
-  if (P.dodgeT<=0 && !(P.brace>0) && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
+  if (P.dodgeT<=0 && !(P.brace>0) && !(P.tun>0) && P.st !== 'climb' && P.st !== 'float' && Math.abs(P.x - x) < BR * 1.1 && Math.abs(P.y - 10 - y) < 26) {   // a timed dodge slips through the blast
     var away = Math.abs(P.x - x) < 0.5 ? -P.face : (P.x > x ? 1 : -1);
-    P.vx = away * 95 * ownClass().knockback; P.vy = -118 * ownClass().knockback; P.grounded = false; P.coyote = 0; P.land = 0;
+    P.vx = away * 95 * ownClass().knockback; P.vy = -118 * ownClass().knockback; P.grounded = false; P.coyote = 0; P.land = 0; P.hurt = 2;
     task = null; P.st = 'free'; P.lampBlock = true; setAnim('rise');
   }
   if (n||pestN) {
@@ -5448,6 +5504,7 @@ function skillCue(kind,dist){
   else if(kind==='arrive')socialTone('water');
   else if(kind==='slam'){sfx('thud',dist);sfx('poof',dist);}
   else if(kind==='brace'){sfx('thud',dist);chime([294,392],.05,.03);}
+  else if(kind==='tun'){sfx('thud',dist);chime([220,277,330],.06,.03);}
   else if(kind==='parry'){sfx('thud',dist);chime([587,880,1175],.03,.05);}
   else if(kind==='absorb'){sfx('thud',dist);chime([392,494,587],.04,.035);}
   else if(kind==='bloom'||kind==='revive'){chime([523,659,784,1047],.045,.05);if(kind==='revive')chime([784,1175],.1,.06);}
@@ -5783,6 +5840,86 @@ function drawFigmaPlants(t) {
   }
 }
 
+/* ---------------------------------------------------------------- Sligo's trail
+   Wherever a Sligo walks on soil, a ledge or a picture floor it leaves a thin glistening slime
+   streak and, every 10-20 px (more often while it is hurt or just after a tun), a clot of dark
+   blood, now and then with a drip over a ledge's lip; a landing leaves a denser smear. Purely
+   visual: each client records the Sligo avatars it draws into one capped ring of marks, solid
+   pixels on the surface's top row, which dissolve by an ordered dither over their last seconds. */
+var TRAIL_CAP=700,TRAIL_LIFE=45,TRAIL_FADE=5;
+var TRAIL_INK=['#4f6b5c','#9fb89a','#dfe8d0','#2a0306','#4a070c','#6e1016','#9c2a32'];
+// dx, dy, ink per pixel; dy 0 is the surface's top row. 0-3 slime, 4-9 clots, 10-11 drips.
+var TRAIL_SHAPES=[
+  [0,0,0,1,0,1],[0,0,1,1,0,0],[0,0,0,1,0,0],[0,0,0,1,0,2],
+  [0,0,4,1,0,6],[0,0,3,1,0,4,0,-1,6],[-1,0,3,0,0,4,1,0,5,0,-1,6],[0,0,4,1,0,3,2,0,4,1,-1,5,2,-1,6],[0,0,5,1,0,4,1,-1,6],[-1,0,4,0,0,3,1,0,4,2,0,3,0,-1,6],
+  [0,0,4,0,1,6],[0,0,4,0,1,3,0,2,6]
+];
+var TRAIL_BAYER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+var sligoTrail={x:new Int32Array(TRAIL_CAP),y:new Int32Array(TRAIL_CAP),t:new Float64Array(TRAIL_CAP),shape:new Uint8Array(TRAIL_CAP),seen:new Int16Array(TRAIL_CAP),next:0,size:0,clock:0,world:0,seed:0};
+function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,salt:salt||0};}
+var trailSelf=trailTracker(0);
+function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
+function trailMark(x,y,shape){var T=sligoTrail,i=T.next;T.x[i]=x;T.y[i]=y;T.t[i]=T.clock;T.shape[i]=shape;T.next=(i+1)%TRAIL_CAP;if(T.size<TRAIL_CAP)T.size++;}
+// The ledge (or rock top) under a foot within 4 px, as MaxStageLayout.at finds it, without allocating.
+function trailLedge(x,y){var L=stageLayout().platforms||[],best=null,d=4;for(var i=0;i<L.length;i++){var p=L[i],e=Math.abs(p.y-y);if(e<=d&&x>=p.x-3&&x<=p.x+p.w+3){best=p;d=e;}}return best;}
+// A mark on the top row of whatever holds the foot up, kept on the ledge's own pixels.
+function trailSpot(x,y,shape,wide){
+  var p=trailLedge(x,y);
+  if(!p){trailMark(x,Math.round(surfaceY(x)),shape);return null;}
+  var left=Math.round(p.x),right=Math.round(p.x+p.w)-1;
+  trailMark(Math.max(left+(wide?1:0),Math.min(right-(wide?2:1),x)),Math.round(p.y),shape);return p;
+}
+function trailClot(k,x,y){
+  var p=trailSpot(x,y,4+Math.floor(trailRand(k)*6),true);
+  if(!p||trailRand(k)<.5)return;
+  var left=Math.round(p.x),right=Math.round(p.x+p.w)-1;
+  if(x-left<=4)trailMark(left-1,Math.round(p.y),trailRand(k)<.5?10:11);
+  else if(right-x<=4)trailMark(right+1,Math.round(p.y),trailRand(k)<.5?10:11);
+}
+function trailSlime(k,x,y){var r=trailRand(k);trailSpot(x,y,r<.12?3:k.n%3,false);}
+function trailFollow(k,a,curled,hurt,dt){
+  var on=!!a.grounded&&!a.wet&&a.st!=='climb'&&a.st!=='float'&&a.st!=='burrow',x=Math.round(a.x);
+  k.after=Math.max(0,k.after-dt);
+  if(k.curled&&!curled&&on){k.after=3;trailClot(k,x,a.y);}
+  k.curled=curled;
+  if(!on){if(k.on===1)k.on=0;return;}
+  if(k.on!==1||Math.abs(x-k.mx)>24){
+    var landed=k.on===0;k.on=1;k.mx=x;
+    if(landed){for(var s=-4;s<=2;s+=2)trailSlime(k,x+s,a.y);trailClot(k,x,a.y);}
+    return;
+  }
+  while(Math.abs(x-k.mx)>=2){
+    k.mx+=x>k.mx?2:-2;trailSlime(k,k.mx,a.y);k.clot-=2;
+    if(k.clot<=0){trailClot(k,k.mx,a.y);var often=hurt||k.after>0;k.clot=often?4+Math.floor(trailRand(k)*5):10+Math.floor(trailRand(k)*11);}
+  }
+}
+function updateSligoTrail(dt){
+  var T=sligoTrail,w=worldLevel();T.clock+=dt;
+  if(T.world!==w||T.seed!==rogueRun.seed){T.world=w;T.seed=rogueRun.seed;T.size=T.next=0;trailSelf.on=-1;}
+  if(rogueRun.classId==='sligo')trailFollow(trailSelf,P,P.tun>0,P.hurt>0,dt);else trailSelf.on=-1;
+  if(!coop)return;
+  for(var id in coop.members){
+    var m=coop.members[id],a=m.draw||m.avatar;if(m.left||id===coop.me||m.classId!=='sligo'||!a)continue;
+    var k=m.trail||(m.trail=trailTracker(m.slot));
+    if(a.world!==w||k.world!==w){k.world=w;k.on=-1;if(a.world!==w)continue;}
+    trailFollow(k,a,!!a.curled,false,dt);
+  }
+}
+function drawSligoTrail(){
+  var T=sligoTrail,n=0,i,j,q,c,age,cut,sh,px,py,alpha=ctx.globalAlpha;
+  for(i=0;i<T.size;i++){age=T.clock-T.t[i];if(age<0||age>=TRAIL_LIFE)continue;px=T.x[i]-camX;py=T.y[i]-camY;if(px<-4||px>IW+4||py<-4||py>IH+4)continue;T.seen[n++]=i;}
+  if(!n)return;
+  ctx.globalAlpha=1;
+  for(c=0;c<TRAIL_INK.length;c++){
+    ctx.fillStyle=TRAIL_INK[c];
+    for(j=0;j<n;j++){
+      i=T.seen[j];age=T.clock-T.t[i];cut=age>TRAIL_LIFE-TRAIL_FADE?(age-TRAIL_LIFE+TRAIL_FADE)/TRAIL_FADE*16:0;sh=TRAIL_SHAPES[T.shape[i]];
+      for(q=0;q<sh.length;q+=3){if(sh[q+2]!==c)continue;px=T.x[i]+sh[q];py=T.y[i]+sh[q+1];if(cut&&TRAIL_BAYER[(py&3)*4+(px&3)]<cut)continue;ctx.fillRect(px-camX,py-camY,1,1);}
+    }
+  }
+  ctx.globalAlpha=alpha;
+}
+
 function drawPlayer() {
   var px = Math.round(P.x - camX), py = Math.round(P.y - camY);
   var wp = waterAt(P.x), L = wp ? Math.round(wp.level - camY) : null;
@@ -5878,6 +6015,7 @@ function frame(now) {
   var inp = readInput();
   if(!runIsPaused())updateCharge(dt);
   if(!runIsPaused())updatePlayer(dt, inp);
+  if(!runIsPaused())updateSligoTrail(dt);
   if(!runIsPaused())updateWarp(dt);
   if(!runIsPaused())updateParts(dt);
   if(!coopGuest()){
@@ -5982,6 +6120,7 @@ function frame(now) {
   drawLandmarks(tSec);
   drawBiomeTransitionMarkers();
   drawPlatforms(tSec);
+  drawSligoTrail();
   drawSmartWorld(tSec);
   drawSpots(tSec);drawSeedPickups(tSec);
   drawRunExploration(tSec);

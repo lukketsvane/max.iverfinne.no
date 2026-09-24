@@ -80,7 +80,9 @@ test('missing backend and network errors are reported without pretending a globa
 
 test('a bouquet with every plant kind the game grows can be published', async () => {
   const { createLeaderboard } = await import('../garden-leaderboard.mjs');
-  const kinds = require('./game-harness.cjs').loadGame().game.plantCollection().length;
+  // The gallery hides Sligo's two cords until Sligo is unlocked, but a Sligo bouquet still publishes them.
+  const game = require('./game-harness.cjs').loadGame().game, kinds = Math.max(game.plantCollection().length, Math.max(...game.SLIGO_KINDS) + 1);
+  assert.equal(kinds, 27);
   const plants = Array.from({ length: 124 }, (_, i) => ({ id: i + 1, kind: i % kinds, seed: i * 7.9, growth: 1 + i / 9, stalk: i % 5 === 0 }));
   const client = { rpc: async () => ({ data: { ...row(), plants }, error: null }) };
   const result = await createLeaderboard(client, () => ({ id: owner })).submit({ ...run(), plants });

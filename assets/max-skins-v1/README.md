@@ -46,3 +46,13 @@ cosmetic skin in solo and co-op play, with original Max as a loading/failure
 fallback. The production build copies runtime PNGs and JSON. Use
 `review.html?mode=native-skins&portrait=1` to compare all five Max appearances
 in the actual game renderer at their native foot registration.
+
+## Sligo, the easter egg
+
+`sligo/` is a fifth pack under the same contract: Max Sligo Neverdahl, a pink
+one-eyed tardigrade. `python3 scripts/build-sligo.py` builds it from the
+owner's sheet in `docs/asset-review/sligo-v1/`, whose README gives the row use,
+the interaction poses and the review. It is not in `manifest.json` or the game
+yet. Sligo stands 24px tall and 13–15px wide. Where the original body bottom is
+a cell's last row (walk, stretch, run 2 and 5), its feet stand one pixel higher
+so no cell touches its edge.

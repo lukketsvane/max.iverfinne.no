@@ -2,7 +2,9 @@
 // and this device's other finished runs are never uploaded by this adapter.
 const PAGE_SIZE = 20;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const CLASSES = new Set(['mech', 'runner', 'bulwark', 'herbalist']);
+const CLASSES = new Set(['mech', 'runner', 'bulwark', 'herbalist', 'sligo']);
+// Kinds 0-24 plus Sligo's two cords (25 and 26), as max_garden_private.valid_plants allows.
+const MAX_KIND = 26;
 
 function clone(value) { return JSON.parse(JSON.stringify(value)); }
 function validatePlants(plants) {
@@ -10,7 +12,7 @@ function validatePlants(plants) {
   const ids = new Set();
   for (const plant of plants) {
     if (!plant || !Number.isSafeInteger(plant.id) || plant.id < 1 || ids.has(plant.id) ||
-        !Number.isInteger(plant.kind) || plant.kind < 0 || plant.kind > 24 ||
+        !Number.isInteger(plant.kind) || plant.kind < 0 || plant.kind > MAX_KIND ||
         !Number.isFinite(plant.seed) || Math.abs(plant.seed) > 1e12 ||
         !Number.isFinite(plant.growth) || plant.growth < 0 || plant.growth > 1e6 ||
         typeof plant.stalk !== 'boolean') throw new Error('This bouquet contains an invalid plant record.');

@@ -3,8 +3,9 @@ import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
-import { CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
+import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
+import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
 let client = null;
@@ -23,7 +24,10 @@ let status;
 let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
-let selected = readLoadout(window.localStorage);
+// Hidden characters show only once unlocked; the game reads the same list (the plant gallery).
+const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
+window.MaxEasterEggs = { has: eggs.has, list: eggs.list };
+let selected = readLoadout(window.localStorage, eggs.list());
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
 
 function el(tag, text, className) {
@@ -118,6 +122,8 @@ const PLANT_NOTES = [
   ['Dusk Bell', 'Violet bells hang from arching stalks and open only after the sun is down.'],
   ['Reindeer Moss', 'A pale lichen tower. It grows slowly, and it heals whatever grows beside it.'],
   ['Ink Fan', 'Dark fan leaves with pale veins, and hard red berries that prick a biting pest.'],
+  ['Sligo Cord', 'A pink cord Sligo grows from the silo floor. It pulses slowly, like something asleep.'],
+  ['Sligo Cap', 'A cord that ends in a soft pink cap. Only Sligo can grow one.'],
 ];
 const FEATURE_TEXT = {
   water: 'Keeps its neighbours watered.', grow: 'Its neighbours grow faster.', chill: 'Pests near it slow down.',
@@ -255,10 +261,28 @@ function gardenGestures() {
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id === 'runner' ? 'Moss' : id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return CLASS_SKINS[id] || 'moss'; }
+// The four open characters, then any hidden one this player has unlocked.
+function visibleClassIds() { return [...CLASS_IDS, ...HIDDEN_CLASS_IDS.filter(id => eggs.has(id))]; }
 function skinPreview(id) {
   const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');
-  const image = el('img'); image.src = 'assets/max-skins-v1/' + id + '/main.png'; image.alt = ''; image.draggable = false;
+  const image = el('img'); image.alt = ''; image.draggable = false;
+  // A pack that has not shipped yet shows nothing rather than a broken image.
+  image.addEventListener('error', () => { image.style.visibility = 'hidden'; });
+  image.addEventListener('load', () => { image.style.visibility = ''; });
+  image.src = 'assets/max-skins-v1/' + id + '/main.png';
   frame.append(image); return frame;
+}
+// Pixel text word by word, so a long line wraps on a narrow screen.
+function pixelWords(node, text, scale) {
+  text.split(' ').forEach((word, i) => { if (i) node.append(' '); node.append(pixelText(el('span', undefined, 'max-pixel-word'), word, scale, 0)); });
+  return node;
+}
+// A long name (Max Sligo Neverdahl) is drawn a size smaller so it fits the detail header.
+function characterName(node, info) {
+  node.replaceChildren(); delete node.dataset.long;
+  const text = info.fullName || info.name;
+  if (text.length <= 10) { pixelText(node, text, 3, 0); return; }
+  node.dataset.long = 'true'; pixelWords(node, text, 2);
 }
 function chooseMax() {
   const hero = el('div', undefined, 'max-character-hero');
@@ -270,15 +294,7 @@ function chooseMax() {
   const characters = el('fieldset', undefined, 'max-role-picker');
   characters.append(el('legend', '01 / CHARACTER'));
   const grid = el('div', undefined, 'max-role-grid');
-  const abilities = { mech: 'Robots', runner: 'Climbing', bulwark: 'Guard', herbalist: 'Healing' };
-  for (const id of CLASS_IDS) {
-    const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
-    choice.setAttribute('aria-label', classInfo(id).name);
-    choice.append(skinPreview(characterSkin(id)));
-    pixelText(choice, classInfo(id).name, 2, 0);
-    const ability = el('span', abilities[id], 'max-role-ability'); ability.setAttribute('aria-hidden', 'true'); choice.append(ability);
-    grid.append(choice);
-  }
+  roleChoices(grid);
   characters.append(grid);
 
   const difficulty = el('fieldset', undefined, 'max-skin-picker max-difficulty-picker');
@@ -293,10 +309,29 @@ function chooseMax() {
   difficulty.append(difficultyGrid); card.append(characters, difficulty);
   updateSelection();
 }
+function roleChoices(grid) {
+  const abilities = { mech: 'Robots', runner: 'Climbing', bulwark: 'Guard', herbalist: 'Healing', sligo: 'Tun' };
+  const ids = visibleClassIds();
+  grid.replaceChildren(); grid.dataset.count = String(ids.length);
+  for (const id of ids) {
+    const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
+    choice.setAttribute('aria-label', classInfo(id).name);
+    choice.append(skinPreview(characterSkin(id)));
+    pixelText(choice, classInfo(id).name, 2, 0);
+    const ability = el('span', abilities[id], 'max-role-ability'); ability.setAttribute('aria-hidden', 'true'); choice.append(ability);
+    grid.append(choice);
+  }
+}
+// An unlock arrived (typed, or loaded after sign-in) or went away with an account.
+function unlocksChanged() {
+  selected = readLoadout(window.localStorage, eggs.list());
+  const grid = screen === 'play' && card?.querySelector('.max-role-grid');
+  if (grid) { roleChoices(grid); updateSelection(); updatePlayReady(); }
+}
 function selectMax(change) {
   selected = { ...selected, ...change };
   if (change.classId) selected.skinId = characterSkin(change.classId);
-  writeLoadout(window.localStorage, selected); updateSelection();
+  writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
 }
 function updateSelection() {
   const taken = new Set(Array.isArray(sharedStatus.taken) ? sharedStatus.taken : []);
@@ -304,13 +339,13 @@ function updateSelection() {
   const runExists = !!sharedStatus.active && Number(sharedStatus.players || 0) > 0;
   if (runExists && DIFFICULTY_IDS.includes(sharedStatus.difficulty) && selected.difficulty !== sharedStatus.difficulty) {
     selected = { ...selected, difficulty: sharedStatus.difficulty };
-    writeLoadout(window.localStorage, selected);
+    writeLoadout(window.localStorage, selected, eggs.list());
   }
   if (taken.has(selected.classId) && selected.classId !== mine) {
-    const free = CLASS_IDS.find(id => !taken.has(id) || id === mine);
+    const free = visibleClassIds().find(id => !taken.has(id) || id === mine);
     if (free) {
       selected = { ...selected, classId: free, skinId: characterSkin(free) };
-      writeLoadout(window.localStorage, selected);
+      writeLoadout(window.localStorage, selected, eggs.list());
     }
   }
   for (const option of card.querySelectorAll('[data-class-id]')) {
@@ -334,7 +369,7 @@ function updateSelection() {
   const description = card.querySelector('.max-class-detail');
   if (description) description.textContent = classInfo(selected.classId).desc;
   const name = card.querySelector('.max-character-name');
-  if (name) { name.replaceChildren(); pixelText(name, classInfo(selected.classId).name, 3, 0); }
+  if (name) characterName(name, classInfo(selected.classId));
   const heroImage = card.querySelector('.max-character-stage img');
   if (heroImage) heroImage.src = 'assets/max-skins-v1/' + characterSkin(selected.classId) + '/main.png';
 }
@@ -359,10 +394,10 @@ async function refreshSharedStatus() {
     if (data && typeof data === 'object') sharedStatus = {
       active: !!data.active,
       players: Math.max(0, Number(data.players) || 0),
-      taken: Array.isArray(data.taken) ? data.taken.filter(id => CLASS_IDS.includes(id)) : [],
+      taken: Array.isArray(data.taken) ? data.taken.filter(id => ALL_CLASS_IDS.includes(id)) : [],
       difficulty: DIFFICULTY_IDS.includes(data.difficulty) ? data.difficulty : null,
-      mine: CLASS_IDS.includes(data.mine) ? data.mine : null,
-      members: Array.isArray(data.members) ? data.members.filter(m => m && typeof m.name === 'string').slice(0, 4).map(m => ({ name: m.name.slice(0, 24), classId: CLASS_IDS.includes(m.classId) ? m.classId : null })) : [],
+      mine: ALL_CLASS_IDS.includes(data.mine) ? data.mine : null,
+      members: Array.isArray(data.members) ? data.members.filter(m => m && typeof m.name === 'string').slice(0, 4).map(m => ({ name: m.name.slice(0, 24), classId: ALL_CLASS_IDS.includes(m.classId) ? m.classId : null })) : [],
     };
   } catch {}
   if (screen === 'play') { updateSelection(); updatePlayReady(); }
@@ -397,13 +432,15 @@ async function joinSharedGarden() {
   busy = true; message('Joining garden…');
   try {
     await ensurePlayIdentity();
+    // A hidden character joins only once the server has its unlock (typed here while signed out).
+    if (HIDDEN_CLASS_IDS.includes(selected.classId)) await eggs.ensure(client, user, selected.classId);
     await refreshSharedStatus();
     const unavailable = new Set(sharedStatus.taken || []);
     if (unavailable.has(selected.classId) && selected.classId !== sharedStatus.mine) {
-      const free = CLASS_IDS.find(id => !unavailable.has(id));
+      const free = visibleClassIds().find(id => !unavailable.has(id));
       if (!free) throw new Error('The garden already has all four characters.');
       selected = { ...selected, classId: free, skinId: characterSkin(free) };
-      writeLoadout(window.localStorage, selected); updateSelection();
+      writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
     }
   }
   catch (error) { busy = false; message(error.message || 'Could not join yet. Try Play again.', true); return; }
@@ -413,11 +450,14 @@ async function joinSharedGarden() {
 function updatePlayReady() {
   if (screen !== 'play') return;
   const taken = new Set(sharedStatus.taken || []);
-  const noCharacter = CLASS_IDS.every(id => taken.has(id) && id !== sharedStatus.mine);
-  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady || noCharacter;
-  status.hidden = sessionReady && !noCharacter;
+  const noCharacter = visibleClassIds().every(id => taken.has(id) && id !== sharedStatus.mine);
+  // Four players fill the garden even when a fifth character is still free.
+  const full = !!sharedStatus.active && Number(sharedStatus.players || 0) >= 4 && !sharedStatus.mine;
+  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady || noCharacter || full;
+  status.hidden = sessionReady && !noCharacter && !full;
   if (!sessionReady) message('Restoring account…');
   else if (noCharacter) message('Garden full · all four characters are playing', true);
+  else if (full) message('Garden full · four players are playing', true);
 }
 async function enterRoom(code) {
   if (busy || session) return;
@@ -441,8 +481,14 @@ async function enterRoom(code) {
   }, selected);
   session = candidate;
   try { await candidate.enter(code); if (!candidate.playing) { lobbyVersion = ''; lobby(candidate.room); } }
-  catch (error) { if (session === candidate) session = null; message(error.message, true); }
+  catch (error) { if (session === candidate) session = null; message(joinRefusal(error), true); }
   finally { busy = false; }
+}
+// The server refuses a hidden character it has no unlock for (or before the migration exists).
+function joinRefusal(error) {
+  const text = error?.message || 'Could not join the garden.';
+  if (!HIDDEN_CLASS_IDS.includes(selected.classId) || !/available character|rejected this character/i.test(text)) return text;
+  return 'The shared garden has not let ' + classInfo(selected.classId).name + ' in yet. Choose another character and press Play.';
 }
 function lobby(room) {
   const version = JSON.stringify([room.code, room.members, room.state, session?.canReady, session?.canStart]);
@@ -521,7 +567,7 @@ function help() {
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['SKILL', 'Tap Max. Mech sends the rover to the plant under attack. Moss pounces — harder from higher. Bulwark braces until he moves. Herbalist blooms and revives a plant that just fell.'],
+    ['SKILL', 'Tap Max. Mech sends the rover to the plant under attack. Moss pounces — harder from higher. Bulwark braces until he moves. Herbalist blooms and revives a plant that just fell.' + (eggs.has('sligo') ? ' Sligo curls into a tun until you jump.' : '')],
     ['MOSS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
     ['MECH', 'Only Mech owns watering robots. Any nearby teammate can tap a Mech robot to refill it.'],
     ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
@@ -552,8 +598,12 @@ function login(create = false) {
   passLabel.append(pass);
   const submit = el('button', create ? 'Create account and sign in' : 'Sign in', 'primary'); submit.type = 'submit';
   form.append(nameLabel, passLabel, submit);
+  // Typing a hidden character's name wakes it at once. The name is a spell, never a sign-in.
+  name.addEventListener('input', () => { const egg = eggForPhrase(name.value); if (egg) unlockEgg(egg); });
   form.addEventListener('submit', async event => {
     event.preventDefault(); if (busy) return;
+    const egg = eggForPhrase(name.value);
+    if (egg) { unlockEgg(egg); return; }
     let input;
     try { input = credentials(name.value, pass.value); } catch (error) { message(error.message, true); return; }
     busy = true; submit.disabled = true; message('Connecting …');
@@ -572,7 +622,20 @@ function login(create = false) {
   card.append(button(create ? 'Already have an account? Sign in' : 'New player? Create account', () => { if (!busy) login(!create); }, 'subtle'));
   back();
 }
-function setUser(next) { user = next; }
+function setUser(next) { user = next; eggs.setUser(next?.id); }
+function unlockEgg(id) {
+  eggs.unlockLocal(id); revealEgg(id);
+  if (client && user) void eggs.ensure(client, user, id);
+}
+function revealEgg(id) {
+  if (!EGGS[id] || !card) return;
+  let box = card.querySelector('.max-egg-reveal');
+  if (!box) {
+    box = el('div', undefined, 'max-egg-reveal'); box.setAttribute('role', 'status'); box.setAttribute('aria-live', 'polite');
+    const form = card.querySelector('form'); if (form) form.before(box); else card.append(box);
+  }
+  box.replaceChildren(pixelWords(el('p', undefined, 'max-egg-title'), EGGS[id].reveal, 2), el('p', classInfo(id).name + ' waits for you on the character screen.'));
+}
 function account() {
   if (!sessionReady) { page('account', 'Account'); card.append(el('p', 'Connecting…')); back(); return; }
   if (!client) { page('account', 'Guest'); card.append(el('p', 'Play without an account.')); back(); return; }
@@ -664,6 +727,9 @@ if (client) {
     setUser(authSession?.user || null); sessionReady = true;
     // Never await Supabase calls from its auth callback (the SDK holds a lock).
     if (changed) setTimeout(() => {
+      // Load the account's easter eggs and send the ones typed on this device; an account
+      // named after a hidden character has it too.
+      if (user) void eggs.sync(client, user, playerName(user));
       if (!opened) return;
       if (screen === 'play') updatePlayReady();
       else if (screen === 'home') home();
