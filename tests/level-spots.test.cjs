@@ -64,9 +64,9 @@ test('generated gardens have no designer spots, so nothing changes there', () =>
   assert.equal(g.digSpots().length, 0); assert.equal(g.levelSpots(g.stageLayout(), 'secret').length, 0);
 });
 
-test('garden 2, the Sunken Sanctuary, has its secret cache and its cracked soil too', () => {
+test('the Sunken Sanctuary, built for a bonus realm, has its secret cache and its cracked soil too', () => {
   const g = loadGame({ __pictures: true }).game;
-  g.resetRogueRun('test', { classId: 'mech' }); g.enterLevel(2); g.activeStageLayout = null; g.runActive = true; g.initRunStage();
+  g.resetRogueRun('test', { classId: 'mech' }); g.enterLevel(2); g.activeStageLayout = g.pictureLayout(2); g.runActive = true; g.initRunStage();
   const L = g.stageLayout();
   assert.equal(L.picture, 'sunken-sanctuary');
   assert.ok(g.seedPickups.some(p => p.id === 'secret:2:0' && p.hidden));
@@ -77,7 +77,7 @@ test('garden 2, the Sunken Sanctuary, has its secret cache and its cracked soil 
 test('a hand-made garden always sets a puzzle on its puzzle spot, one that works off the soil', () => {
   for (const w of [1, 2]) for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
     const g = loadGame({ __pictures: true }).game;
-    g.resetRogueRun('test', { classId: 'mech' }); if (w > 1) g.enterLevel(w); g.activeStageLayout = null; g.runActive = true;
+    g.resetRogueRun('test', { classId: 'mech' }); if (w > 1) g.enterLevel(w); g.activeStageLayout = w > 1 ? g.pictureLayout(w) : null; g.runActive = true;
     g.wonders.seed = seed; g.rollWonders();
     const spot = g.levelSpots(g.stageLayout(), 'puzzle')[0], label = `garden ${w} seed ${seed}`;
     assert.ok(['crack', 'echo', 'stars', 'well', 'crown', 'clover'].includes(g.wonders.pz), label + ': ' + g.wonders.pz);

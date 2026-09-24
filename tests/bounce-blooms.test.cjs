@@ -88,8 +88,8 @@ test('walking across a bloom or dropping on it with down held does not launch Ma
 });
 
 test('Figma gardens and the picture level have no blooms', () => {
-  const pic = loadGame({ __pictures: true }).game; pic.resetRogueRun('test', { classId: 'mech' }); pic.rogueRun.world = 1; pic.activeStageLayout = null;
-  assert.ok(!(pic.stageLayout().blooms || []).length);
+  const pic = loadGame({ __pictures: true }).game; pic.resetRogueRun('test', { classId: 'mech' }); pic.rogueRun.world = 1;
+  assert.ok(!(pic.pictureLayout(1).blooms || []).length);
   const h = loadGame();
   h.window.MaxLevelData = { gardens: { 1: [{ frame: 'garden-01', ledges: [{ x: 50, rise: 16, w: 40, style: 'stone' }, { x: -90, rise: 16, w: 40, style: 'stone' }] }] } };
   h.game.resetRogueRun('test', { classId: 'mech' }); h.game.activeStageLayout = null;
