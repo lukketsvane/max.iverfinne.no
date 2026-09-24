@@ -8,6 +8,7 @@
 <script src="stage-layout.js"></script>
 <script src="tiles.js"></script>
 <script src="garden-places.js"></script>
+<script src="levels-v1/seed-vault.js"></script>
 <script src="levels-v1/railway-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
 <script src="levels-data.js"></script>
@@ -306,7 +307,7 @@ function pictureLava(){
 }
 function stageLayout(){
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level===1&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level<=2&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
