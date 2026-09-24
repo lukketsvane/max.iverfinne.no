@@ -6,9 +6,10 @@ This is concept art at source pixels 1:1. It is not native 1× game art and noth
 
 ## Files
 
-- **parts/<panel>/<panel>-part-NN.png**: the 138 loose sprites of the modular sheet across 13 panels (terrain tiles, ruins, structures, props, plants, underground tiles, underground props, water & FX, enemies, NPCs, details/FX, background layers, palette + mark). The mask decides which sprite a pixel belongs to. The source decides where the sprite ends, because the sheet background is flat dark grey. This keeps each cut on the drawn pixels, not on the mask's smoothed outline. Alpha is 0 or 255, with RGB 0 under alpha 0. Panel headings and the footer tagline are text and are left out.
+- **parts/<panel>/<panel>-part-NN.png**: the 142 loose sprites of the modular sheet across 13 panels (terrain tiles, ruins, structures, props, plants, underground tiles, underground props, water & FX, enemies, NPCs, details/FX, background layers, palette + mark). The mask decides which sprite a pixel belongs to. The source decides where the sprite ends, because the sheet background is flat dark grey. This keeps each cut on the drawn pixels, not on the mask's smoothed outline. Alpha is 0 or 255, with RGB 0 under alpha 0. Panel headings and the footer tagline are text and are left out.
 - **layers/<panel>/<panel>-layer-NNN.png**: the level scene (108 layers) and the five thumbnails (10–16 layers each). There is one layer per mask colour, cropped to its bounds, largest first. The layers partition the panel, so stacking them at their offsets rebuilds it exactly. Layer outlines follow the mask, which is looser than the painting.
 - **manifest.json**: every file with its position on the board (parts) or in its panel (layers), its size, and the Figma node it fills.
+- **part-names.json**: a short name per part, in cut order; `split.py` appends it to `part=NN`.
 - **figma-nodes.json**: the Figma nodes, input to `split.py`.
 - **split.py**: regenerates everything (`python docs/asset-review/orkenen-v1/split.py`, needs numpy, pillow and scipy).
 - **post-uploads.py**: posts each PNG to a Figma `upload_assets` URL for its node.
@@ -21,6 +22,6 @@ The mask joins a few things the sheet draws as neighbours: the underground pilla
 
 File `TC0PHGMTCMR6im4hb3CSbF`, page **References** (162:2), section **03 ØRKENEN — clown-mask split** (269:246):
 
-- 13 component sets `orkenen/01_terrain_tiles` … `orkenen/13_palette_mark`. Each part is a component `part=NN` filled with its PNG from `parts/` at 1:1, laid out as on the sheet, following `08_cliff_edges`.
+- 13 component sets `orkenen/01_terrain_tiles` … `orkenen/13_palette_mark`. Each part is a component `part=NN-name` (names in `part-names.json`) with its source box as description, filled with its PNG from `parts/` at 1:1, laid out as on the sheet, following `08_cliff_edges`.
 
 The scene and thumbnail layers were filled too and then removed from the page; their PNGs remain in `layers/`. `post-uploads.py` fills nodes from an `upload_assets` response when a part needs refreshing.

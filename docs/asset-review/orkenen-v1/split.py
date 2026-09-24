@@ -65,6 +65,7 @@ MERGE = 2        # mask blobs this close are one sprite (per-panel overrides bel
 MERGE_BY_PANEL = {'11_details_small_fx': 4, '12_background_layers': 0}
 REACH = 5        # how far past the mask outline the drawn sprite may extend
 EIGHT = np.ones((3, 3))
+NAMES = json.loads((HERE / 'part-names.json').read_text()) if (HERE / 'part-names.json').exists() else {}
 
 
 def save(path, rgb, alpha):
@@ -180,7 +181,7 @@ def sheet_parts():
         for k in keep:
             own, core = owner == k, lab == k
             cc, _ = ndi.label(own & (d > 14), structure=EIGHT)   # hysteresis 14 / 34
-            a = np.isin(cc, np.unique(cc[own & (d > 34)])[1:])
+            a = np.isin(cc, np.unique(cc[own & (d > 34)]))
             a |= ndi.binary_erosion(core, iterations=2) & (d > 7)  # dark pixels inside
             hc, hn = ndi.label(ndi.binary_fill_holes(a) & ~a)
             inside = ndi.binary_dilation(core)
@@ -198,11 +199,13 @@ def sheet_parts():
             b = (ys.min(), ys.max() + 1, xs.min(), xs.max() + 1)
             items.append(dict(b=b, a=a, cx=(b[2] + b[3]) / 2, cy=(b[0] + b[1]) / 2))
         parts = []
+        labels = NAMES.get(key, [])
         for n, it in enumerate(reading_order(items), 1):
             by0, by1, bx0, bx1 = it['b']
             file = f'parts/{key}/{key}-part-{n:02d}.png'
             save(HERE / file, S[y0 + by0:y0 + by1, x0 + bx0:x0 + bx1], it['a'][by0:by1, bx0:bx1])
-            parts.append(dict(name=f'part={n:02d}', file=file, x=int(x0 + bx0), y=int(y0 + by0),
+            label = f'-{labels[n - 1]}' if len(labels) == len(items) else ''
+            parts.append(dict(name=f'part={n:02d}{label}', file=file, x=int(x0 + bx0), y=int(y0 + by0),
                               w=int(bx1 - bx0), h=int(by1 - by0)))
         out.append(dict(key=key, title=title, panel=[x0 - INSET, y0 - INSET, x1 + INSET, y1 + INSET], parts=parts))
     return out
