@@ -310,3 +310,25 @@ test('a guest\'s Sligo leaves the same kind of trail on the host, and a host Sli
   for (let i = 0; i < 60; i++) { rhost.updatePlayer(1 / 60, right); reverse.sync(); viewer.updateSligoTrail(1 / 60); }
   assert.ok(marks(viewer).filter(slime).length > 10, 'a guest sees the host Sligo\'s trail');
 });
+
+test('a tun curls Sligo up inside its blood sac, and the sac bursts in a splat where it ends', () => {
+  const { game: g } = fresh();
+  const fx = g.sligoFx(); fx.complete = true; fx.naturalWidth = 320; fx.naturalHeight = 40;
+  const calls = [], ctx = { fillStyle: '', globalAlpha: 1, fillRect() {}, drawImage(im, sx, sy, sw, sh, dx, dy) { calls.push({ fx: im === fx, sx, sw, dx, dy }); } };
+  const old = g.ctx; g.ctx = ctx;
+  try {
+    g.useClassSkill(); g.updatePlayer(1 / 60, idle); assert.ok(g.P.tun > 0);
+    g.drawPlayer();
+    const sac = calls.filter(c => c.fx);
+    assert.equal(sac.length, 1, 'curled, Sligo is drawn from its specials and not from its skin');
+    assert.ok(g.SLIGO_FX.sac.includes(sac[0].sx / 40), 'a sac frame'); assert.equal(sac[0].dx, Math.round(g.P.x - g.camX) - 20, 'on whole pixels, centred on Sligo');
+    calls.length = 0;
+    for (let i = 0; i < 181; i++) { g.updatePlayer(1 / 60, idle); g.updateSligoTrail(1 / 60); }
+    assert.equal(g.P.tun, 0); assert.equal(g.sligoBursts.length, 1, 'the sac bursts where the tun ends');
+    g.drawSligoTrail();
+    assert.ok(calls.some(c => c.fx && g.SLIGO_FX.burst.includes(c.sx / 40)), 'a splat frame');
+    for (let i = 0; i < 30; i++) g.updateSligoTrail(1 / 60);
+    calls.length = 0; g.drawSligoTrail();
+    assert.equal(calls.filter(c => c.fx).length, 0, 'the burst is over in 0.4 s'); assert.equal(g.sligoBursts.length, 0);
+  } finally { g.ctx = old; }
+});
