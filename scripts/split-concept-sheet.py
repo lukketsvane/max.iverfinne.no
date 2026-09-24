@@ -10,9 +10,9 @@ The sheet puts its parts on a flat dark panel. Each pixel is scored by its
 distance from a smooth estimate of that panel colour; the section headings and
 panel rules are blanked; what is left splits into connected parts, and a small
 fragment that lies inside a bigger part's box joins it. Parts keep binary
-alpha, except glowing lights, wisps and particles, whose halo fades out
-against the panel. The glow parts are not runtime-ready yet: runtime art
-needs binary alpha. The layout below (panels, sections, headings) belongs to
+alpha and at most 64 colours, except glowing lights, wisps and particles,
+whose halo fades out against the panel and which stay lossless. The glow
+parts are not runtime-ready yet: runtime art needs binary alpha. The layout below (panels, sections, headings) belongs to
 the Sunken Sanctuary sheet (1536x1024). Requires Pillow, numpy and scipy.
 """
 from pathlib import Path
@@ -225,6 +225,23 @@ def cut(p, glow):
     p['mask'] = rgba[..., 3] > 0
     return rgba
 
+def save_part(rgba, file, glow):
+    """A binary-alpha part keeps at most PART_COLOURS colours (the sheet's
+    JPEG noise gives each part hundreds); a glow part stays lossless RGBA."""
+    if glow:
+        Image.fromarray(rgba, 'RGBA').save(file, optimize=True)
+        return
+    solid = rgba[..., 3] > 0
+    q = Image.fromarray(rgba[..., :3]).quantize(colors=PART_COLOURS, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    colours = np.array(q.getpalette()[:3 * PART_COLOURS]).reshape(-1, 3)
+    index = np.asarray(q).copy()
+    clear = len(colours)
+    index[~solid] = clear
+    image = Image.fromarray(index.astype(np.uint8), 'P')
+    image.putpalette(np.vstack([colours, [[0, 0, 0]]]).astype(np.uint8).flatten().tolist())
+    image.save(file, optimize=True, transparency=clear)
+
+PART_COLOURS = 64
 out = ROOT / 'parts'
 shutil.rmtree(out, ignore_errors=True)
 clown = np.zeros((H, W, 3), np.uint8)
@@ -240,7 +257,7 @@ for group in ORDER:
         rgba = cut(p, glow)
         file = out / group.replace('/', '__') / (label + '.png')
         file.parent.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(rgba, 'RGBA').save(file, optimize=True)
+        save_part(rgba, file, glow)
         if oxipng: oxipng.optimize(file, level=6)
         hue = (k * 0.61803) % 1; k += 1
         colour = (np.array(colorsys.hsv_to_rgb(hue, 0.85, 1.0)) * 255).astype(np.uint8)
@@ -251,6 +268,7 @@ for group in ORDER:
                                                  parts=manifest), indent=1) + '\n')
 # one flat colour per part: a palette image, exact while the sheet has at most 254 parts
 Image.fromarray(clown).quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(ROOT / 'clown-mask.png', optimize=True)
+if oxipng: oxipng.optimize(ROOT / 'clown-mask.png', level=6)
 print(len(manifest), 'parts')
 for group in ORDER:
     got = [m for m in manifest if m['group'] == group]

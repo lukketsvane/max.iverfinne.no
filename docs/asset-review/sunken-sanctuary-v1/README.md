@@ -4,7 +4,7 @@ Concept sheet from the owner (`source.jpg`, 1536×1024, generated pixel art), cu
 
 - `source.jpg`: the sheet as received.
 - `clown-mask.png`: the label map the cut came from. Each part is one flat colour at its place in the sheet; black is empty panel; the grey top is the level illustration, kept whole.
-- `parts/<group>/<nn-name>.png`: 170 parts at the sheet's own 1× scale, in 24 groups that follow the sheet's panels (tiles, structures, flora, props, enemies, fx, palette).
+- `parts/<group>/<nn-name>.png`: 170 parts at the sheet's own 1× scale, in 24 groups that follow the sheet's panels (tiles, structures, flora, props, enemies, fx, palette). Each binary-alpha part keeps at most 64 colours, which drops the JPEG noise and is visually unchanged.
 - `parts.json`: every part's group, name, file, source box (`x`, `y`, `w`, `h`), alpha mode and clown colour.
 
 Rebuild with `python3 scripts/split-concept-sheet.py docs/asset-review/sunken-sanctuary-v1` (Pillow, numpy, scipy; pyoxipng optional).
