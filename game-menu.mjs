@@ -247,12 +247,13 @@ function launchRelic(id) {
 }
 
 function gardenTap(x, y) {
-  const g = scene, info = g.info; if (!inGarden || !info) return;
+  const g = scene, info = g.info;
+  if (!opened || liveSettings || screen !== 'home' || !info) return;
   if (g.focus >= 0 || focusedRelic) { unfocusPlant(); return; }
   const size = sceneSize(), nx = x / size.px, ny = y / size.px, wx = nx + g.scroll, i = Math.round((wx - info.x0) / info.spacing);
   const stone = (info.relics || []).find(r => Math.abs(wx - r.x) < 16 && ny > info.ground - 25 && ny < info.ground + 5);
-  if (stone) { focusRelic(stone.id); return; }
-  if (i >= 0 && i < info.count && Math.abs(wx - (info.x0 + i * info.spacing)) < info.spacing * .45 && ny > info.ground - 76 && ny < info.ground + 10) focusPlant(i);
+  if (stone) { enterGarden(); focusRelic(stone.id); return; }
+  if (i >= 0 && i < info.count && Math.abs(wx - (info.x0 + i * info.spacing)) < info.spacing * .45 && ny > info.ground - 76 && ny < info.ground + 10) { enterGarden(); focusPlant(i); }
 }
 function gardenStep(dir) {
   if (!inGarden) return;
@@ -263,16 +264,27 @@ function gardenStep(dir) {
 }
 function touchDistance(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1; }
 function gardenGestures() {
+  let lastTap = null, wheelDown = 0, wheelTime = 0, wheelEntryUntil = 0;
+  const tap = (x, y) => {
+    const now = performance.now(), repeated = lastTap && now - lastTap.t < 400 && Math.hypot(x - lastTap.x, y - lastTap.y) < 24;
+    lastTap = { x, y, t: now };
+    // A double tap opens the landscape; its second tap must not close a note
+    // that the first tap just opened.
+    if (repeated) { if (!inGarden) enterGarden(); return; }
+    gardenTap(x, y);
+  };
   const press = e => {
-    if (!inGarden || pinch) return;
+    if (!opened || liveSettings || screen !== 'home' || pinch || e.button > 0) return;
+    if (e.isPrimary === false) { scene.drag = null; lastTap = null; return; }
     const now = performance.now();
-    scene.drag = { id: e.pointerId, last: e.clientX, t: now, v: 0, x0: e.clientX, y0: e.clientY, t0: now, moved: false }; scene.vel = 0;
+    scene.drag = { id: e.pointerId, home: !inGarden, touch: e.pointerType !== 'mouse', last: e.clientX, t: now, v: 0, x0: e.clientX, y0: e.clientY, t0: now, moved: false }; scene.vel = 0;
     gardenCanvas.setPointerCapture?.(e.pointerId);
   };
   gardenCanvas.addEventListener('pointerdown', press);
   relicTargets.addEventListener('pointerdown', press);
   gardenCanvas.addEventListener('pointermove', e => {
     const d = scene.drag; if (!d || d.id !== e.pointerId) return;
+    if (d.home) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) >= 8) d.moved = true; return; }
     if (!d.moved) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 8) return; d.moved = true; d.last = e.clientX; d.t = performance.now(); scene.target = null; unfocusPlant(); return; }
     const now = performance.now(), dx = (e.clientX - d.last) / sceneSize().px, out = scene.scroll < 0 || scene.scroll > scene.max;
     scene.scroll -= dx * (out ? .35 : 1);
@@ -281,13 +293,23 @@ function gardenGestures() {
   const release = e => {
     const d = scene.drag; if (!d || d.id !== e.pointerId) return;
     scene.drag = null;
-    if (!d.moved) { if (e.type === 'pointerup' && performance.now() - d.t0 < 450) gardenTap(e.clientX, e.clientY); return; }
+    if (e.type === 'pointercancel') { lastTap = null; scene.vel = 0; return; }
+    const dx = e.clientX - d.x0, dy = e.clientY - d.y0, elapsed = performance.now() - d.t0;
+    d.moved ||= Math.hypot(dx, dy) >= 8;
+    if (!d.moved) { if (elapsed < 450) tap(e.clientX, e.clientY); return; }
+    lastTap = null;
+    if (d.home) {
+      // Swiping up scrolls down into the garden, like the wheel shortcut.
+      if (d.touch && dy < -80 && -dy > Math.abs(dx) * 1.3 && elapsed < 700) enterGarden();
+      return;
+    }
     scene.vel = performance.now() - d.t < 90 ? d.v : 0;
   };
   gardenCanvas.addEventListener('pointerup', release); gardenCanvas.addEventListener('pointercancel', release);
+  gardenCanvas.addEventListener('dblclick', e => { e.preventDefault(); if (!inGarden) enterGarden(); });
   overlay.addEventListener('touchstart', e => {
     if (e.touches.length !== 2 || !opened || liveSettings || (!inGarden && screen !== 'home')) return;
-    pinch = { d: touchDistance(e.touches) }; scene.drag = null;
+    pinch = { d: touchDistance(e.touches) }; scene.drag = null; lastTap = null;
   }, { passive: true });
   overlay.addEventListener('touchmove', e => {
     if (!pinch || e.touches.length !== 2) return;
@@ -295,14 +317,28 @@ function gardenGestures() {
     if (!inGarden && r > 1.22) { pinch = null; enterGarden(); } else if (inGarden && r < .82) { pinch = null; if (scene.focus >= 0 || focusedRelic) unfocusPlant(); else exitGarden(); }
   }, { passive: true });
   overlay.addEventListener('touchend', e => { if (e.touches.length < 2) pinch = null; });
+  overlay.addEventListener('touchcancel', () => { pinch = null; scene.drag = null; lastTap = null; });
   overlay.addEventListener('wheel', e => {
+    if (!opened || liveSettings || screen !== 'home') return;
+    const now = performance.now(), unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
     if (inGarden) {
       e.preventDefault();
       if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; if (scene.focus >= 0 || focusedRelic) unfocusPlant(); else exitGarden(); } return; }
+      // Consume the rest of the entry gesture so momentum does not carry the
+      // first visible plants and stones straight off screen.
+      if (now < wheelEntryUntil) { wheelEntryUntil = now + 180; return; }
       scene.target = null; scene.vel = 0;
-      scene.scroll = Math.max(-12, Math.min(scene.max + 12, scene.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / sceneSize().px));
-    } else if (e.ctrlKey && opened && screen === 'home') {
+      scene.scroll = Math.max(-12, Math.min(scene.max + 12, scene.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit / sceneSize().px));
+    } else if (e.ctrlKey) {
+      wheelDown = 0;
       e.preventDefault(); wheelPinch = Math.min(0, wheelPinch + e.deltaY); if (wheelPinch < -40) { wheelPinch = 0; enterGarden(); }
+    } else {
+      // Let a short screen scroll its menu first. Small or sideways wheel
+      // movements are not requests to leave the menu.
+      if (overlay.scrollTop + overlay.clientHeight < overlay.scrollHeight - 2 || e.deltaY <= 0 || Math.abs(e.deltaX) > e.deltaY) { wheelDown = 0; return; }
+      e.preventDefault();
+      wheelDown = (now - wheelTime < 250 ? wheelDown : 0) + e.deltaY * unit; wheelTime = now;
+      if (wheelDown >= 100) { wheelDown = 0; wheelEntryUntil = now + 300; enterGarden(); }
     }
   }, { passive: false });
 }
@@ -630,7 +666,11 @@ function help() {
 }
 function credits() {
   page('credits', 'MAX');
-  card.append(el('p', 'A little night garden.'), el('p', 'Original pixel art, plants and companions from the MAX collection.'));
+  const links = el('div', undefined, 'max-credit-links');
+  for (const site of ['iverfinne.no', 'github.com/lukketsvane', 'm-a-x.no']) {
+    const link = el('a', site); link.href = 'https://' + site; link.target = '_blank'; link.rel = 'noopener noreferrer'; links.append(link);
+  }
+  card.append(links);
   for (const track of SOUNDTRACK) card.append(el('p', track.title + ' · ' + track.artist));
   back();
 }
@@ -752,7 +792,7 @@ function attach(bridge) {
     }
     if (event.key === 'Escape') { event.preventDefault(); if (liveSettings) dismissSettings(); else if (!busy && !session) screen !== 'home' && home(); }
     if (event.key !== 'Tab') return;
-    const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled)')].filter(n => n.getClientRects().length);
+    const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled),a[href]')].filter(n => n.getClientRects().length);
     if (!controls.length) return;
     const i = controls.indexOf(document.activeElement);
     if (event.shiftKey && i <= 0) { event.preventDefault(); controls.at(-1).focus(); }
