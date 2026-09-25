@@ -2,6 +2,34 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 
 async function module(){return import('../coop-session.mjs');}
+test('a finished solo session leaves immediately and repeated leave waits for the same departure',async()=>{
+  const {CoopSession}=await module();
+  const room={id:'room',host:'host',state:'playing',mode:'last-seed',members:[{id:'host',slot:1,ready:true,name:'host',classId:'runner'}]};
+  const net=fakeChannelClient({room,userId:'host'}),calls=[];let release;
+  const original=net.client.rpc;
+  net.client.rpc=async(name,args)=>{
+    if(args?.p_action==='leave'){calls.push(args);await new Promise(resolve=>{release=resolve;});return {data:{closed:true},error:null};}
+    return original(name,args);
+  };
+  const s=new CoopSession(net.client,{id:'host'},{},{classId:'runner',mode:'last-seed'});
+  await s.enter({global:true});
+  s.tick({},()=>({ended:true}),1000);
+  assert.equal(s.closed,true);assert.equal(s.playing,false);assert.equal(calls.length,1);assert.equal(s.channels.size,0);
+  let departed=false;const again=s.leave().then(()=>{departed=true;});await Promise.resolve();
+  assert.equal(departed,false,'retry cannot race the pending server departure');
+  release();await again;assert.equal(departed,true);assert.equal(calls.length,1);
+  s.tick({},()=>{throw new Error('closed run must not send more state');},2000);
+});
+
+test('a downed player keeps the session while a teammate can still revive them',async()=>{
+  const {CoopSession}=await module();
+  const room={id:'room',host:'host',state:'playing',members:[{id:'host',slot:1,ready:true,name:'host'},{id:'guest',slot:2,ready:true,name:'guest'}]};
+  const net=fakeChannelClient({room,userId:'host'}),s=new CoopSession(net.client,{id:'host'});
+  try {
+    await s.enter({global:true});s.tick({},()=>({ended:false,members:[{id:'host',vital:{hp:0}},{id:'guest',vital:{hp:100}}]}),1000);
+    assert.equal(s.closed,false);assert.equal(s.playing,true);assert.ok(net.sent.some(f=>f.frame.payload.state?.members?.[0]?.vital?.hp===0));
+  }finally{await s.leave();}
+});
 function fakeChannelClient({room,userId}={}){
   const channels=new Map(),removed=[],sent=[];
   const client={

@@ -315,7 +315,11 @@ export class CoopSession {
     if (this.host && (this.sendingState || now < this.nextStateAt)) return;
     if (now - this.lastSend < (this.host ? 100 : 66)) return;
     this.lastSend = now;
-    this.send(this.host ? { lobby: this.lobbyPacket(), state: capture() } : { selection: this.selection, avatar, actions: this.pending });
+    const state = this.host ? capture() : null;
+    // A finished solo run must stop reserving and heartbeating its shared room.
+    // Otherwise Play can reconnect to a dead gardener waiting for a revive.
+    if (state?.ended && this.room.members.length === 1) { void this.leave(); return; }
+    this.send(this.host ? { lobby: this.lobbyPacket(), state } : { selection: this.selection, avatar, actions: this.pending });
   }
   send(packet) {
     const channel = this.channels.get(this.host ? 'state' : this.user.id);
@@ -343,11 +347,12 @@ export class CoopSession {
     this.hooks.error?.(reason); void this.leave();
   }
   async leave() {
-    if (this.closed) return;
+    if (this.closed) return this.leaving;
     this.send({ end: true }); this.closed = true; this.playing = false;
     this.cancelPrepare('You left the garden.'); clearInterval(this.timer); clearTimeout(this.transferTimer);
     this.frameReceiver.reset(); this.sendingState = false;
     const channels = [...this.channels.values()]; this.channels.clear();
-    await Promise.allSettled([this.room ? this.rpc('leave') : Promise.resolve(), ...channels.map(c => this.client.removeChannel(c))]);
+    this.leaving = Promise.allSettled([this.room ? this.rpc('leave') : Promise.resolve(), ...channels.map(c => this.client.removeChannel(c))]);
+    await this.leaving;
   }
 }
