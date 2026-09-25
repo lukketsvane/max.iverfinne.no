@@ -23,6 +23,7 @@ Unlocked **relic stones** in the collection garden select game modes using the s
 - If the authoritative player disappears, authority can hand over to another active player.
 - A returning player reconnects to the same shared run when the reserved membership is still valid.
 - During a run, **Settings → Invite** copies a link to that exact session and mode. Friends choose a free character and inherit its difficulty. Ended sessions cannot be joined through an old link; mode and character unlocks still apply.
+- When a run ends with one player left in the room, the client leaves immediately so its dead session cannot be rejoined. Play again waits for that departure before joining a fresh run.
 - Settings and boon selection do **not** pause the world.
 - The app must work with normal current Safari/WebKit behavior. Experimental WebKit feature flags are not a requirement.
 

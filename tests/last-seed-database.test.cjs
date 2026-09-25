@@ -42,5 +42,10 @@ test('mode rooms isolate normal Play, enforce unlocks, preserve Polge and surviv
     await as(0);const replacement=await join('mech','last-seed');assert.notEqual(replacement.id,survival.id);
     await as(5);await assert.rejects(invite(survival.id,'runner','last-seed'),{code:'PT410'});
     assert.equal((await invite(replacement.id,'runner','last-seed')).id,replacement.id);
+    const leave=async()=> (await db.query("select public.max_coop('leave',jsonb_build_object('room',$1::text)) as r",[replacement.id])).rows[0].r;
+    assert.equal((await leave()).closed,false,'leaving a teammate does not close the run');
+    await as(0);assert.equal((await leave()).closed,true,'the last player releases the finished room');
+    assert.equal((await db.query("select public.max_coop_status('last-seed') as s")).rows[0].s.active,false);
+    const fresh=await join('mech','last-seed');assert.notEqual(fresh.id,replacement.id,'Play starts a new session after solo death');
   }finally{await db.close();}
 });

@@ -225,6 +225,25 @@ test('live Settings returns to the same shared run without pausing or restarting
   } finally { m.dom.window.close(); }
 });
 
+test('Play again cannot rejoin the dead room before its departure has completed', async () => {
+  let release;
+  const m = await menu(undefined, { rpc: async (name, args) => {
+    if (name === 'max_coop' && args?.p_action === 'leave') {
+      await new Promise(resolve => { release = resolve; }); return { data: { closed: true }, error: null };
+    }
+    return null;
+  } });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle(); assert.equal(m.beginCount, 1);
+    m.w.MaxGameMenu.replay(); m.click('Play'); await m.settle();
+    assert.equal(m.calls.filter(([name]) => name === 'max_coop_global').length, 1);
+    assert.equal(m.beginCount, 1);
+    release(); await m.settle();
+    assert.equal(m.beginCount, 2);
+    assert.equal(m.calls.filter(([name]) => name === 'max_coop_global').length, 2);
+  } finally { release?.(); m.dom.window.close(); }
+});
+
 for (const mode of ['garden', 'last-seed']) test('Invite copies the active ' + mode + ' session and keeps the run going', async () => {
   const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' }, scenes: [] });
   try {

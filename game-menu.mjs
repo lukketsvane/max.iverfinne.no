@@ -25,6 +25,7 @@ let sessionReady = !client;
 let status;
 let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
+let leavingSession = null;
 let liveSettings = false, settingsButton;
 let selectedMode = 'garden', focusedRelic = null, relicTargets;
 let invitedRoom = null, inviteState = null;
@@ -538,6 +539,7 @@ async function joinSharedGarden() {
   if (!client) { close(); return; }
   busy = true; message('Joining garden…');
   try {
+    await leavingSession; leavingSession = null;
     await ensurePlayIdentity();
     // A hidden character joins only once the server has its unlock (typed here while signed out).
     if (HIDDEN_CLASS_IDS.includes(selected.classId)) await eggs.ensure(client, user, selected.classId);
@@ -694,7 +696,7 @@ function dismissSettings() {
 }
 async function exitToMenu() {
   const old = session; session = null;
-  game.exitRun?.(); if (old) void old.leave();
+  game.exitRun?.(); if (old) leavingSession = old.leave();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; game.pause(true); home(); startScene();
 }
@@ -867,7 +869,7 @@ function attach(bridge) {
   }
 }
 function replay() {
-  const old = session; session = null; if (old) void old.leave(); game.stopCoop?.();
+  const old = session; session = null; if (old) leavingSession = old.leave(); game.stopCoop?.();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; overlay.hidden = false; game.pause(true); play(selectedMode); startScene();
 }
