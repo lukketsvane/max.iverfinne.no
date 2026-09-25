@@ -34,7 +34,7 @@ const functionNames = [
   'polgeStandin', 'polgePlace', 'polgeBurst', 'polgeLure', 'updatePolge', 'drawPolgeStands',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap', 'drawSligoColony', 'sligoCompanionAt',
   'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapIndex', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
-  'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'stopCoop', 'runIsPaused',
+  'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'coopMarker', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
   'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'launchBomb', 'drawBombs', 'drawSligoAction', 'drawSligoSeed', 'highGround', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
