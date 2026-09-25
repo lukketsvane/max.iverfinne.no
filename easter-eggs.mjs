@@ -5,6 +5,8 @@
 export const EGG_KEY = 'max-easter-eggs-v1';
 export const EGGS = Object.freeze({
   sligo: Object.freeze({ name: 'Max Sligo Neverdahl', phrases: Object.freeze(['sligo', 'maxsligoneverdahl']), reveal: 'MAX SLIGO NEVERDAHL AWAKES' }),
+  'relic-bastion': Object.freeze({ name: 'Bastion', phrases: Object.freeze([]) }),
+  'relic-minos': Object.freeze({ name: 'Minos', phrases: Object.freeze([]) }),
 });
 const IDS = Object.keys(EGGS);
 const clean = list => Array.isArray(list) ? IDS.filter(id => list.includes(id)) : [];
@@ -61,7 +63,7 @@ export function createEasterEggs(storage, { onChange } = {}) {
     if (named) unlockLocal(named);
     try {
       let eggs = await rpc(client, 'max_my_unlocks');
-      for (const id of state.local) if (!eggs.includes(id)) eggs = await rpc(client, 'max_unlock', { p_phrase: EGGS[id].phrases[0] });
+      for (const id of state.local) if (!eggs.includes(id) && EGGS[id].phrases.length) eggs = await rpc(client, 'max_unlock', { p_phrase: EGGS[id].phrases[0] });
       remember(user.id, eggs);
     } catch {}
     return list();
@@ -70,6 +72,7 @@ export function createEasterEggs(storage, { onChange } = {}) {
   async function ensure(client, user, id) {
     if (!client || !user?.id || !IDS.includes(id) || !list().includes(id)) return false;
     if ((state.accounts[user.id] || []).includes(id)) return true;
+    if (!EGGS[id].phrases.length) return false;
     try { const eggs = await rpc(client, 'max_unlock', { p_phrase: EGGS[id].phrases[0] }); remember(user.id, eggs); return eggs.includes(id); }
     catch { return false; }
   }

@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'garden-places.js', 'tiles.js', 'review.html'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'relic-play.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'garden-places.js', 'tiles.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -72,14 +72,14 @@ buildSync({
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu.js'),
   bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],
-  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify(config) },
+  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify(config), __MAX_RELIC_REVIEW__: 'false' },
 });
 
 // The isolated visual fixture has no connected account client.
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu-review.js'),
   bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],
-  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify({ ...config, publishableKey: '' }) },
+  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify({ ...config, publishableKey: '' }), __MAX_RELIC_REVIEW__: 'true' },
 });
 
 console.log(`Built game in dist/. Accounts: ${config.publishableKey ? 'configured' : 'guest mode (publishable key missing)'}.`);

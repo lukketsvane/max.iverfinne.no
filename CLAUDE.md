@@ -29,6 +29,10 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 
 ## Current multiplayer model
 
+The owner explicitly added personal relic games beside the shared Play flow. `relics.mjs` defines the stones and grants all of them to the canonical signed-in owner account; future account-scoped `relic-*` unlocks are understood by `easter-eggs.mjs` but have no login phrase. `relic-tower.mjs` and `relic-minos.mjs` are deterministic simulations; `relic-play.mjs` owns their canvas, touch, keyboard, gamepad and result lifecycle. No hosted schema mutation is needed for the owner grant. Do not infer owner rights from `user_metadata` or a typed name. This grant only exposes local gameplay.
+
+Relic entry is through the collection garden, never live Settings. It leaves the shared run untouched. `MaxGameMenu.ownsInput()` gives the active relic exclusive controller input; the normal garden waits for held buttons to release after it returns. Abort all mode listeners on exit and clear input on blur/cancel. Personal challenges pause on backgrounding; the live shared garden still does not pause. Relic results stay out of plant discovery, bouquets and the public leaderboard. The review-only owner fixture is compiled out of `game-menu.js` and uses memory storage. The new stones, towers and maze are procedural native pixels; existing PNGs and atlas contracts are unchanged.
+
 Supabase holds one shared live garden. The first player creates/owns the run settings. Later players enter the current run up to four total.
 
 The client obtains `max_coop_status` before joining. It reports the active run, occupied character IDs, run difficulty and the current user's reserved character. The menu greys occupied characters and locks difficulty when the run exists. Database RPCs are the final authority; UI disabling is not the security/concurrency guarantee.
