@@ -127,7 +127,7 @@ test('character owns appearance and difficulty is the only separate run choice',
   const m = await menu();
   try {
     m.click('Play');
-    assert.deepEqual([...m.w.document.querySelectorAll('[data-class-id]')].map(n => n.dataset.classId), ['mech','runner','bulwark','herbalist']);
+    assert.deepEqual([...m.w.document.querySelectorAll('[data-class-id]')].map(n => n.dataset.classId), ['mech','runner','bulwark','herbalist','polge']);
     assert.equal(m.w.document.querySelector('[data-skin-id]'), null);
     assert.deepEqual([...m.w.document.querySelectorAll('[data-difficulty]')].map(n => n.dataset.difficulty), ['easy','medium','hard','insane']);
     m.click('Herbalist'); m.click('hard difficulty');
@@ -136,6 +136,18 @@ test('character owns appearance and difficulty is the only separate run choice',
     assert.equal(m.w.document.querySelector('[data-difficulty="hard"]').getAttribute('aria-pressed'), 'true');
     assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId:'herbalist', skinId:'moon', difficulty:'hard' });
   } finally { m.dom.window.close(); }
+});
+
+test('Pølge is selectable without an unlock, keeps Ø in his name and requests his own server role', async () => {
+  const m=await menu();
+  try {
+    m.click('Play');m.click('Pølge');
+    assert.equal(m.w.document.querySelector('.max-character-name').textContent,'Pølge');
+    assert.match(m.w.document.querySelector('.max-character-stage img').src,/polge\/main\.png$/);
+    m.click('Play');await m.settle();
+    assert.equal(m.begun.selection.classId,'polge');assert.equal(m.begun.selection.skinId,'polge');
+    assert.equal(m.calls.find(([name])=>name==='max_coop_global')[1].p_class_id,'polge');
+  } finally {m.dom.window.close();}
 });
 
 test('Play silently enters the one shared running garden and carries character plus difficulty', async () => {
@@ -307,12 +319,12 @@ test('an in-flight presence update cannot bring a signed-out account back online
   } finally { m.dom.window.close(); }
 });
 
-const OPEN = ['mech', 'runner', 'bulwark', 'herbalist'];
+const OPEN = ['mech', 'runner', 'bulwark', 'herbalist', 'polge'];
 test('Sligo stays off the character screen until its name is typed into Login, which wakes it at once and never signs in', async () => {
   const m = await menu();
   try {
     m.click('Play');
-    assert.deepEqual(m.classIds(), OPEN); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '4');
+    assert.deepEqual(m.classIds(), OPEN); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '5');
     assert.equal(m.w.MaxEasterEggs.has('sligo'), false);
     m.click('Back'); m.click('Login');
     m.type('input[name="username"]', 'Max Sligo Neverdahl');
@@ -327,7 +339,7 @@ test('Sligo stays off the character screen until its name is typed into Login, w
     await m.settle();
     assert.deepEqual(m.signIns, [], 'the name is a spell, never a sign-in');
     m.click('Back'); m.click('Play');
-    assert.deepEqual(m.classIds(), [...OPEN, 'sligo']); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '5');
+    assert.deepEqual(m.classIds(), [...OPEN, 'sligo']); assert.equal(m.w.document.querySelector('.max-role-grid').dataset.count, '6');
     const sligoCard = m.w.document.querySelector('[data-class-id="sligo"]');
     assert.equal(sligoCard.getAttribute('aria-label'), 'Sligo'); assert.equal(sligoCard.textContent, '', 'the card shows the character alone');
     m.click('Sligo');

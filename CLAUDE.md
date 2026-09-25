@@ -15,7 +15,7 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 ## Non-negotiable product invariants
 
 1. **One Play flow / one shared garden.** There is no player-facing Solo versus Multiplayer split.
-2. **Maximum four players.** Players can join a running garden. There are five characters (the fifth, Sligo, is hidden until unlocked), but never more than four players.
+2. **Maximum four players.** Players can join a running garden. There are six characters (Sligo is hidden until unlocked), but never more than four players.
 3. **One player per character.** Mech, Moss, Bulwark and Herbalist are exclusive slots. Taken characters must be disabled in UI and reserved server-side.
 4. **First player sets difficulty.** Easy/Medium/Hard/Insane is run-wide. Once a shared run exists, joiners inherit the existing difficulty and cannot change it.
 5. **Physical stage progression.** A player must actually climb the cleared exit plant to the top and cross into the next garden. Do not replace this with a ground teleport. Once one player reaches the next stage, teammates may catch up automatically.
@@ -61,6 +61,8 @@ The player who earned the ascent must not be pre-teleported. This behavior was a
 Relevant tests cover physical ascent and co-op catch-up. Keep them when refactoring.
 
 ## Characters
+
+- **Pølge**: open mannequin class, native supplied pose pack. `polge.inc.js` owns stand-ins: one per owner, three bites or six seconds, ordinary-pest lure, delayed splinter burst. Bosses ignore lure. Rats only approach on reachable current surfaces. Varnish, Splinters and Raincoat are exclusive boons. Stand-ins and remaining Pølge cooldown replicate for authority transfer; clear on stage/reset/departure. Never insert stand-ins into plant archives. `20260925114556_polge_character.sql` is a guarded, idempotent manual migration for class checks and RPC validators; it has NOT been applied to hosted Supabase by this implementation.
 
 - **Mech**: only character with watering robot. Robot boons must not leak to another character through stale snapshots or forged selections. Skill: dispatch the rover to one threatened plant; the pour is the rover's only heal and shelters that plant from friendly blasts.
 - **Moss**: climbing specialist. Skill: pounce; the host clamps the slam to the drop it saw and starts the cooldown at landing.

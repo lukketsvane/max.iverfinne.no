@@ -2,7 +2,7 @@
 // and this device's other finished runs are never uploaded by this adapter.
 const PAGE_SIZE = 20;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const CLASSES = new Set(['mech', 'runner', 'bulwark', 'herbalist', 'sligo']);
+const CLASSES = new Set(['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']);
 // Kinds 0-24 plus Sligo's two cords (25 and 26), as max_garden_private.valid_plants allows.
 const MAX_KIND = 26;
 

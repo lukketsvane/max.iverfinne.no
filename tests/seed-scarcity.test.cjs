@@ -5,7 +5,7 @@ const { loadGame } = require('./game-harness.cjs');
 function fresh(classId) { const h = loadGame(); h.game.resetRogueRun('test', { classId }); return h.game; }
 
 test('seeds are scarce, and the two gardening classes find almost twice as many', () => {
-  assert.deepEqual(classes.all.map(c => [c.id, c.seeds]), [['mech', .4], ['runner', .7], ['bulwark', .4], ['herbalist', .7], ['sligo', .55]]);
+  assert.deepEqual(classes.all.map(c => [c.id, c.seeds]), [['mech', .4], ['runner', .7], ['bulwark', .4], ['herbalist', .7], ['polge', .55], ['sligo', .55]]);
   const found = {};
   for (const id of ['mech', 'runner', 'bulwark', 'herbalist', 'sligo']) {
     const g = fresh(id); g.seedPickups = [];

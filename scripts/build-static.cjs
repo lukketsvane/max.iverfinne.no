@@ -25,6 +25,7 @@ mkdirSync(output, { recursive: true });
 for (const file of files) copyFileSync(join(root, file), join(output, file));
 writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8')
   .replace('/* MAX_SLIGO_LIFE */', readFileSync(join(root, 'sligo-life.inc.js'), 'utf8'))
+  .replace('/* MAX_POLGE */', readFileSync(join(root, 'polge.inc.js'), 'utf8'))
   .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
   .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8'))
   .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8'))
@@ -43,7 +44,7 @@ cpSync(join(root, 'assets/night-v1'), join(output, 'assets/night-v1'), { recursi
 cpSync(join(root, 'assets/cavern-v1'), join(output, 'assets/cavern-v1'), { recursive: true });
 copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
 for (const [pack, ids, sheets] of [
-  ['max-skins-v1', ['moss', 'tide', 'ember', 'moon'], ['atlas.json', 'main.png', 'interaction.png']],
+  ['max-skins-v1', ['moss', 'tide', 'ember', 'moon', 'polge'], ['atlas.json', 'main.png', 'interaction.png']],
   ['rat-enemies-v1', ['common', 'black', 'albino', 'plague'], ['atlas.json', 'sprites.png']],
   ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown'], ['atlas.json', 'sprites.png']],
 ]) {

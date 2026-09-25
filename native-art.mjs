@@ -1,7 +1,7 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 
 // Presentation only: atlas animation never changes an attack, collision or heal.
-const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon', 'sligo']);
+const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 // A hidden character's pack loads the first time someone plays it; until it has loaded,
 // or if it is missing, the original Max stands in.
 const ON_DEMAND = Object.freeze(['sligo']);

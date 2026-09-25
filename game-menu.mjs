@@ -314,7 +314,7 @@ function gardenGestures() {
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id === 'runner' ? 'Moss' : id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return CLASS_SKINS[id] || 'moss'; }
-// The four open characters, then any hidden one this player has unlocked.
+// The open characters, then any hidden one this player has unlocked.
 function visibleClassIds() { return [...CLASS_IDS, ...HIDDEN_CLASS_IDS.filter(id => eggs.has(id))]; }
 function skinPreview(id) {
   const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');

@@ -95,8 +95,8 @@ test('ensure asks the server for a hidden character once, only when this player 
 
 test('a Sligo loadout is only valid when Sligo is unlocked; otherwise it falls back to the default', async () => {
   const { validLoadout, readLoadout, writeLoadout, CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, CLASS_SKINS, DEFAULT_LOADOUT } = await loadoutModule;
-  assert.deepEqual([...CLASS_IDS], ['mech', 'runner', 'bulwark', 'herbalist']); assert.deepEqual([...HIDDEN_CLASS_IDS], ['sligo']);
-  assert.deepEqual([...ALL_CLASS_IDS], ['mech', 'runner', 'bulwark', 'herbalist', 'sligo']); assert.equal(CLASS_SKINS.sligo, 'sligo');
+  assert.deepEqual([...CLASS_IDS], ['mech', 'runner', 'bulwark', 'herbalist', 'polge']); assert.deepEqual([...HIDDEN_CLASS_IDS], ['sligo']);
+  assert.deepEqual([...ALL_CLASS_IDS], ['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']); assert.equal(CLASS_SKINS.sligo, 'sligo');
   assert.equal(validLoadout({ classId: 'sligo', difficulty: 'hard' }), null);
   assert.equal(validLoadout({ classId: 'sligo' }, ['moth']), null);
   assert.deepEqual(validLoadout({ classId: 'sligo', difficulty: 'hard' }, ['sligo']), { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' });

@@ -1,5 +1,9 @@
 # Four cosmetic Max skins
 
+Pølge is an additional playable pack using the same cell, anchor, palette limit
+and clip/event contract. Its supplied poses and deterministic generator are
+documented in `docs/asset-review/polge-v1/README.md`.
+
 Moss (pointed hood/satchel), Tide (round rain hood/collar), Ember
 (headband/ribbon) and Moon (short cape/cap). Selection is cosmetic and independent
 of build paths. Delivered for the main developer's review in issue #10.

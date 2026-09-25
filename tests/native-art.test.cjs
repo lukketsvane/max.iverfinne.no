@@ -48,13 +48,13 @@ function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage'
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
   const { art, status, requests, events } = await nativeArt('/moss/interaction.png');
-  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 15);
+  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 16);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
   assert.match(art.playerImage('ember', 'main').src, /ember\/main.png$/);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
-  assert.equal((await art.load()).loaded.length, 15); assert.equal(requests.length, 16);
+  assert.equal((await art.load()).loaded.length, 16); assert.equal(requests.length, 17);
   assert.equal(events.length, 1); assert.equal(events[0].type, 'max-native-art-ready');
 });
 
@@ -196,7 +196,7 @@ test('rat corpses use a one-shot with an empty terminal frame and are removed wi
 
 test('Sligo\'s pack loads on demand, never with the others, and until it loads the original Max stands in', async () => {
   const { art, status, requests } = await nativeArt('/sligo/');   // Sligo's sheets fail to load here
-  assert.equal(status.loaded.length, 16); assert.equal(requests.some(url => url.includes('/sligo/')), false);
+  assert.equal(status.loaded.length, 17); assert.equal(requests.some(url => url.includes('/sligo/')), false);
   assert.equal(art.playerImage('sligo', 'main'), null); assert.equal(art.playerImage('sligo', 'interaction'), null);
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.equal(requests.filter(url => url.endsWith('max-skins-v1/sligo/atlas.json')).length, 1, 'asked for once');
