@@ -30,6 +30,7 @@
 .max-menu[data-screen="play"] .max-status{display:block!important;height:18px;min-height:18px;margin:8px 0 0;overflow:hidden}
 .max-menu .max-status:empty{display:none}
 .max-menu .max-status[data-error="true"]{color:#f0b9a1}
+.max-invite:has(.max-status:not(:empty)){margin-bottom:16px}
 .max-menu .max-help-row{padding:14px 0;border-top:1px solid var(--line);font-size:12px;line-height:1.6;color:#bacbcc}
 .max-help-row strong{display:block;margin-bottom:5px;color:#e4dcae;font-size:10px;letter-spacing:.12em}
 .max-menu .max-cloud{padding:16px;border:1px solid var(--line);background:#14242b;margin-bottom:18px}
