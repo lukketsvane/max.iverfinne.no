@@ -165,6 +165,11 @@ function relocateSligos(){
     c.bodies.forEach(function(b){if(b.sligoId!==c.active){b.x=a.x;b.y=a.y;b.vx=b.vy=0;b.world=worldLevel();b.grounded=false;b.platform=null;b.st='free';b.tun=0;b.curled=false;}});
   });
 }
+function relocateSligoMember(m){
+  var c=m.sligo;if(!c)return;
+  sligoRemember(c,m.avatar,Math.max(0,(m.cool-performance.now())/1000));
+  c.bodies.forEach(function(b){if(b.sligoId!==c.active){b.x=m.avatar.x;b.y=m.avatar.y;b.world=worldLevel();b.vx=b.vy=0;b.platform=null;b.grounded=false;b.st='free';b.tun=0;b.curled=false;}});
+}
 function captureSligo(m){
   var c=sligoColony(m);if(!c)return null;
   sligoRemember(c,sligoOwnAvatar(m),m.id===coop.me?bombCool:Math.max(0,(m.cool-performance.now())/1000));
@@ -173,6 +178,7 @@ function captureSligo(m){
 }
 function applySligo(m,q){
   var c=q.sligo;if(m.classId!=='sligo'||!c||!Array.isArray(c.bodies)||c.bodies.length>5||!Number.isInteger(c.divisions)||c.divisions<0||c.divisions>4)return;
+  if(m.id===coop.me&&(q.place|0)!==(m.place|0))sligoPendingSwap=0;
   if(m.id===coop.me&&sligoPendingSwap&&(q.sligoAck||0)<sligoPendingSwap)return;
   var bodies=c.bodies.filter(function(b){return coopCleanAvatar(b)&&Number.isInteger(b.sligoId)&&b.sligoId>=1&&b.sligoId<=5&&Number.isFinite(b.sligoMass);}).map(function(b){return Object.assign(coopPlain(b),{sligoMass:sligoMass(b)});});
   if(bodies.length!==c.divisions+1||new Set(bodies.map(function(b){return b.sligoId;})).size!==bodies.length||!bodies.some(function(b){return b.sligoId===c.active;}))return;
