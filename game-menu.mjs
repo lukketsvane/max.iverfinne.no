@@ -8,6 +8,7 @@ import { createLeaderboard } from './garden-leaderboard.mjs';
 import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
 import { relicCollection, drawRelicStone, relicRecord } from './relics.mjs';
 import { mountRelicGame } from './relic-play.mjs';
+import { OnlinePlayers, onlinePlayerNames } from './online-players.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
 let client = null;
@@ -32,6 +33,7 @@ const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged })
 window.MaxEasterEggs = { has: eggs.has, list: eggs.list };
 let selected = readLoadout(window.localStorage, eggs.list());
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
+const onlinePlayers = client ? new OnlinePlayers(client, () => renderPlayers()) : null;
 
 function el(tag, text, className) {
   const n = document.createElement(tag);
@@ -81,22 +83,28 @@ function home() {
   }
   nav.append(links); content.append(brand, nav);
   content.append(el('p', 'GROW · EXPLORE · SURVIVE', 'max-home-note'));
-  const players = el('p', '', 'max-home-players'); players.hidden = true; content.append(players); showPlayers(players);
+  const players = el('div', '', 'max-home-players'); players.hidden = true; players.setAttribute('aria-label', 'Online players'); content.append(players);
   card.append(content);
+  showPlayers(players);
   queueMicrotask(() => { if (opened && screen === 'home') title.focus({ preventScroll: true }); });
 }
 let playersTimer = 0;
+function renderPlayers(node = card?.querySelector('.max-home-players')) {
+  if (!node?.isConnected || screen !== 'home') return;
+  const names = onlinePlayerNames(sharedStatus.active ? sharedStatus.members : [], onlinePlayers?.names());
+  if (node.dataset.names === JSON.stringify(names)) return;
+  node.dataset.names = JSON.stringify(names);
+  node.replaceChildren(...names.map(name => pixelText(el('p', undefined, 'max-home-player'), name, 2, 0)));
+  node.hidden = !names.length;
+}
 function showPlayers(node) {
   clearTimeout(playersTimer);
+  renderPlayers(node);
   if (!client) return;
-  void refreshSharedStatus().then(s => {
+  void refreshSharedStatus().then(() => {
     if (!node.isConnected || screen !== 'home') return;
-    node.replaceChildren();
-    const members = s.active ? s.members : [];
-    node.append(pixelText(el('p', undefined, 'max-home-players-title'), members.length ? 'IN THE GARDEN' : 'GARDEN IS EMPTY', 2, 1));
-    for (const m of members) node.append(pixelText(el('p', undefined, 'max-home-player'), m.name + (m.classId ? ' - ' + classInfo(m.classId).name : ''), 2, 1));
-    node.hidden = false;
-    playersTimer = setTimeout(() => showPlayers(node), 20000);
+    renderPlayers(node);
+    if (opened && !document.hidden) playersTimer = setTimeout(() => showPlayers(node), 20000);
   });
 }
 const PLANT_NOTES = [
@@ -443,7 +451,7 @@ async function refreshSharedStatus() {
       mine: ALL_CLASS_IDS.includes(data.mine) ? data.mine : null,
       members: Array.isArray(data.members) ? data.members.filter(m => m && typeof m.name === 'string').slice(0, 4).map(m => ({ name: m.name.slice(0, 24), classId: ALL_CLASS_IDS.includes(m.classId) ? m.classId : null })) : [],
     };
-  } catch {}
+  } catch { sharedStatus.members = []; }
   if (screen === 'play') { updateSelection(); updatePlayReady(); }
   return sharedStatus;
 }
@@ -668,7 +676,7 @@ function login(create = false) {
 }
 function setUser(next) {
   if (activeRelic && next?.id !== user?.id) activeRelic.close();
-  user = next; eggs.setUser(next?.id);
+  user = next; eggs.setUser(next?.id); onlinePlayers?.setUser(next);
   if (focusedRelic && !availableRelics().some(r => r.id === focusedRelic)) unfocusPlant();
   refreshRelicTargets();
 }
@@ -756,6 +764,7 @@ function attach(bridge) {
   });
   overlay.addEventListener('keyup', e => e.stopPropagation());
   document.body.append(overlay);
+  if (!document.hidden) onlinePlayers?.start();
   window.addEventListener('keydown', event => { if (event.key === 'Escape' && !opened) openSettings(); });
   // This branch is removed from the production bundle. The visual-review bundle
   // uses in-memory storage and an isolated, synthetic account, never live Auth.
@@ -771,10 +780,16 @@ function replay() {
 }
 window.MaxGameMenu = { attach, open, replay, ownsInput: () => !!activeRelic };
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) return;
+  if (document.hidden) { onlinePlayers?.stop(); clearTimeout(playersTimer); return; }
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();
+  onlinePlayers?.start();
+  if (opened && screen === 'home') showPlayers(card.querySelector('.max-home-players'));
   if (session?.playing) void session.resume();
 });
+window.addEventListener('pagehide', () => { onlinePlayers?.stop(); clearTimeout(playersTimer); });
+window.addEventListener('pageshow', () => { if (!document.hidden) onlinePlayers?.start(); });
+window.addEventListener('offline', () => onlinePlayers?.stop());
+window.addEventListener('online', () => { if (!document.hidden) onlinePlayers?.start(); });
 window.dispatchEvent(new Event('max-menu-ready'));
 if (client) {
   client.auth.onAuthStateChange((_event, authSession) => {

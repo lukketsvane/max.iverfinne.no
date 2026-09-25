@@ -221,6 +221,8 @@ Frontend configuration accepts only the public Supabase URL and publishable key.
 
 Accounts are optional metadata, not a separate gameplay mode. The game can establish a device identity for zero-friction Play.
 
+The home footer lists online usernames, including signed-in players in the menu, their collection or a relic game. `online-players.mjs` uses Realtime Presence and merges the shared garden's current roster, showing each name once. Only public usernames are broadcast; guests browsing the menu do not announce themselves. The list clears on disconnect and refreshes when the app returns. With nobody online, the footer stays empty.
+
 ## Deployment
 
 Vercel project: `max.iverfinne.no`  
