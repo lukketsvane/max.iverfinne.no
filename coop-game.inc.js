@@ -33,7 +33,7 @@ function coopJoin(id,kit){
   else if(m.avatar.world!==worldLevel())coopPlace(m);
   m.left=false;m.last=performance.now();if(kit!==m){m.ack=null;m.trust=true;}m.dodge=null;coopNextChoice(m);return true;
 }
-function coopPlace(m){var x=P.x+((m.slot||2)-1)*12;m.avatar=Object.assign(coopAvatar(),{classId:m.classId,skin:m.skin,x:x,y:playerSupportY(x,surfaceY(x)),st:'free',grounded:true,wet:false});m.place=(m.place|0)+1;}
+function coopPlace(m){var x=P.x+((m.slot||2)-1)*12;m.avatar=Object.assign(coopAvatar(),{classId:m.classId,skin:m.skin,x:x,y:playerSupportY(x,surfaceY(x)),st:'free',grounded:true,wet:false});m.place=(m.place|0)+1;relocateSligoMember(m);}
 function coopRoster(room){
   if(!coop)return;
   var wasHost=coop.host;coop.host=room.host===coop.me;coop.network.room=room;
@@ -236,6 +236,7 @@ function coopState(s){
   if(!['plants','garden','seedsOnGround','pests','bombs','birds','fauna'].every(function(k){return Array.isArray(s[k])&&s[k].length<=(k==='garden'?20000:200)&&s[k].every(function(o){return o&&typeof o==='object';});}))return;
   if(Number.isInteger(s.seed))rogueRun.seed=s.seed>>>0;
   var previousWorld=worldLevel(),wasEnded=rogueRun.ended;
+  if(previousWorld!==s.world)sligoPendingSwap=0;
   rogueRun.world=s.world;rogueRun.clearedWorld=s.cleared;rogueRun.level=s.level;rogueRun.xp=s.xp;rogueRun.next=s.next;rogueRun.difficulty=['easy','medium','hard','insane'].indexOf(s.difficulty)>=0?s.difficulty:(rogueRun.difficulty||'medium');rogueRun.ascenderId=typeof s.ascender==='string'?s.ascender:'';
   rogueRun.garden=s.garden.map(coopPlain);gardenPlots=s.plants.map(coopPlain);seedPickups=s.seedsOnGround.map(coopPlain);
   if(Array.isArray(s.collected)&&s.collected.length<=20000){seedCollected={};s.collected.forEach(function(k){if(typeof k==='string'&&k.length<=32)seedCollected[k]=1;});}

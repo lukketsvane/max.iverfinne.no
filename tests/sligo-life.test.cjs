@@ -107,3 +107,12 @@ test('host handoff keeps colonies and food; new authority can continue feeding a
   guest.sligoFeed(c,c.bodies[1],100);assert.equal(c.divisions,2);assert.equal(c.bodies.length,3);
   guest.updateSligoLife(1/60);assert.equal(guest.coopCapture().members.length,2,'clones never occupy player slots');
 });
+
+test('travel supersedes an unacknowledged guest swap, and returning players bring every cell',()=>{
+  const p=party(),{host,guest}=p,m=host.coop.members[p.ids[1]],c=host.sligoColony(m);
+  host.sligoFeed(c,c.bodies[0],100);p.sync();assert.equal(guest.requestSligoSwap(2),true);
+  host.enterLevel(2);p.send();p.sync();assert.equal(guest.sligoPendingSwap,0);assert.equal(guest.P.sligoId,c.active);
+  m.left=true;host.enterLevel(3);assert.notEqual(m.avatar.world,3);
+  assert.equal(host.coopJoin(m.id,m),true);assert.equal(m.avatar.world,3);
+  assert.ok(c.bodies.every(b=>b.world===3&&Math.abs(b.x-m.avatar.x)<40));assert.equal(c.divisions,1);
+});
