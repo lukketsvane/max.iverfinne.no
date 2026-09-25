@@ -25,6 +25,7 @@ jobs:
       - name: Apply checked source edits
         run: |
           node scripts/apply-high-tide.cjs
+          node scripts/high-tide-test-contracts.cjs
           node <<'JS'
           const fs=require('node:fs'),f='tests/relics.test.cjs';
           let s=fs.readFileSync(f,'utf8');
@@ -33,6 +34,10 @@ jobs:
           if(!s.includes(before))throw new Error('Relic guest test changed; review expected public access.');
           s=s.replace(before,"assert.deepEqual(relicCollection(user).map(r=>r.id),['high-tide']);");
           fs.writeFileSync(f,s);
+          const m='tests/menu.test.cjs', old="if (mode === 'last-seed') { m.click('Garden'); await m.settle(); m.click('Last Seed relic'); m.click('ENTER'); }";
+          let menu=fs.readFileSync(m,'utf8');
+          if(!menu.includes(old))throw new Error('Invite fixture missing');
+          fs.writeFileSync(m,menu.replace(old,"if (mode !== 'garden') { m.click('Garden'); await m.settle(); m.click(mode === 'high-tide' ? 'High Tide relic' : 'Last Seed relic'); m.click('ENTER'); }"));
           JS
           git mv supabase/migrations/20260925203705_high_tide.sql supabase/migrations/20260925204140_high_tide.sql
       - name: Test mode and integration contracts
@@ -41,8 +46,8 @@ jobs:
         run: npm run build
       - name: Commit source for preview, not production
         run: |
-          git rm scripts/apply-high-tide.cjs .github/workflows/high-tide-integrate.yml
-          git add index.html last-seed.inc.js coop-game.inc.js run-director.inc.js game-menu.mjs coop-session.mjs run-results.js scripts/build-static.cjs tests/game-harness.cjs tests/relics.test.cjs review.html supabase/migrations
+          git rm scripts/apply-high-tide.cjs scripts/high-tide-test-contracts.cjs .github/workflows/high-tide-integrate.yml
+          git add index.html last-seed.inc.js coop-game.inc.js run-director.inc.js game-menu.mjs coop-session.mjs run-results.js scripts/build-static.cjs tests/game-harness.cjs tests/relics.test.cjs tests/menu.test.cjs tests/results.test.cjs review.html supabase/migrations
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Implement High Tide in the shared game engine'
