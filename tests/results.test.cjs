@@ -117,6 +117,7 @@ test('run finalization saves the complete archive once with the owner captured a
     w.rogueMeta = {}; w.gardenPlots = []; w.gardenWave = 3; w.gardenScore = 99; w.runElapsed = 301.12;
     w.gardenStats = { harvested: 1 }; w.recordGardenPlant = () => {}; w.worldLevel = () => 4;
     w.MaxGardenLeaderboard = { identity: () => ({ id: 'later-account', name: 'Different person' }) };
+    w.highTideMode = () => w.rogueRun.mode === 'high-tide';
     w.eval(functionSource('finalizeRogueRun'));
     w.finalizeRogueRun(false); w.finalizeRogueRun(false);
     const records = w.MaxRunRecords.getAll(); assert.equal(records.length, 1);

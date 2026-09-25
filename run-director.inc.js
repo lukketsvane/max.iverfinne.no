@@ -89,7 +89,7 @@ function updateRunLoot(){
   }
 }
 function initRunStage(){
-  if(lastSeedMode()){runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;seedPickups=[];return;}
+  if(singleSeedMode()){runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;seedPickups=[];return;}
   if(worldLevel()>1)runCheckpoint();
   runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
@@ -264,6 +264,7 @@ function updateHazardContact(){
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
 }
 function updateRunDirector(dt){
+  if(highTideMode())return;
   if(lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
   updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateRunHazards(dt);
 }

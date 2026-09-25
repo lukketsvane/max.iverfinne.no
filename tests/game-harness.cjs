@@ -7,6 +7,7 @@ const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
   .replace('/* MAX_SLIGO_LIFE */', fs.readFileSync(path.join(__dirname, '../sligo-life.inc.js'), 'utf8'))
   .replace('/* MAX_POLGE */', fs.readFileSync(path.join(__dirname, '../polge.inc.js'), 'utf8'))
   .replace('/* MAX_LAST_SEED */', fs.readFileSync(path.join(__dirname, '../last-seed.inc.js'), 'utf8'))
+  .replace('/* MAX_HIGH_TIDE */', fs.readFileSync(path.join(__dirname, '../high-tide.inc.js'), 'utf8'))
   .replace('/* MAX_COOP_GAME */', fs.readFileSync(path.join(__dirname, '../coop-game.inc.js'), 'utf8'))
   .replace('/* MAX_RUN_DIRECTOR */', fs.readFileSync(path.join(__dirname, '../run-director.inc.js'), 'utf8'))
   .replace('/* MAX_RAT_ENEMIES */', fs.readFileSync(path.join(__dirname, '../rat-enemies.inc.js'), 'utf8'))
@@ -28,6 +29,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
+  'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideAtSummit','updateHighTide','updateHighTideClimb','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
   'lastSeedMode','seedVital','seedDown','seedActors','resetLastSeed','startLastSeed','damageGardener','updateLastSeed','lastSeedEnemy','drawLastSeedHud',
   'polgeStandin', 'polgePlace', 'polgeBurst', 'polgeLure', 'updatePolge', 'drawPolgeStands',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap', 'drawSligoColony', 'sligoCompanionAt',

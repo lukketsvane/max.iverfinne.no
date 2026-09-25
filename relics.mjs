@@ -1,22 +1,19 @@
 // Relics open alternate rules in the same shared garden engine.
-// Future unlocks use the same account-scoped list as the hidden characters.
 export const RELICS = Object.freeze([
+  Object.freeze({ id: 'high-tide', name: 'High Tide', open: true, note: 'One seed. A rising sea. Climb your plant, hold Tend to grow its tip, then release to climb again. Risk the side ledges for dew. Reach the crown before the water. Max cannot swim.', color: '#73afbd' }),
   Object.freeze({ id: 'last-seed', name: 'Last Seed', note: 'One seed. Endless waves. Tend your plant and revive your team. Everyone down ends the run.', color: '#9fdbbf' }),
 ]);
 export function hasFullDiscovery(user) {
   return !!user?.id && !user.is_anonymous && user.email === 'lukketsvane@players.max.invalid';
 }
 export function relicCollection(user, unlocks = []) {
-  if (!user?.id || user.is_anonymous) return [];
-  // The server also validates the mode entitlement when joining a room.
-  // Use the Auth account's canonical identifier, never editable profile metadata.
+  const signedIn = !!user?.id && !user.is_anonymous;
   const owner = hasFullDiscovery(user);
-  return RELICS.filter(r => owner || unlocks.includes('relic-' + r.id));
+  return RELICS.filter(r => r.open || signedIn && (owner || unlocks.includes('relic-' + r.id)));
 }
-
 export function drawRelicStone(g, id, x, ground, t = 0, selected = false) {
   x = Math.round(x); ground = Math.round(ground);
-  const ink = '#9fdbbf';
+  const ink = id === 'high-tide' ? '#73afbd' : '#9fdbbf';
   const rows = [
     '    11111     ', '   1222221    ', '  122223221   ', '  122222221   ',
     ' 12222222221  ', ' 12222222221  ', ' 12222222221  ', ' 122222222221 ',
@@ -32,7 +29,9 @@ export function drawRelicStone(g, id, x, ground, t = 0, selected = false) {
     g.fillRect(x - 7 + xx, y + yy, 1, 1);
   }));
   g.fillStyle = ink;
-  const rune = ['10001','10101','11111','01110','01010','01010','11011'];
+  const rune = id === 'high-tide'
+    ? ['00100','01110','10101','00100','11011','00100','11011']
+    : ['10001','10101','11111','01110','01010','01010','11011'];
   rune.forEach((row, yy) => [...row].forEach((p, xx) => { if (p === '1') g.fillRect(x - 2 + xx, ground - 12 + yy, 1, 1); }));
   g.fillStyle = '#6b8a65'; g.fillRect(x - 6, ground - 2, 4, 2); g.fillRect(x + 4, ground - 1, 4, 1);
   if (selected || Math.sin(t * 1.7) > .4) { g.fillStyle = ink; g.fillRect(x - 10, ground - 8, 1, 1); g.fillRect(x + 9, ground - 15, 1, 1); }
