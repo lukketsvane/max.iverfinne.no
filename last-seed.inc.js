@@ -5,7 +5,7 @@ function seedVital(member){
   var owner=member||(!coop?rogueRun:coop.members[coop.me]);
   return owner.vital||(owner.vital={hp:100,shield:0,revive:0,hurt:0});
 }
-function seedDown(member){return lastSeedMode()&&seedVital(member).hp<=0;}
+function seedDown(member){return singleSeedMode()&&seedVital(member).hp<=0;}
 function seedActors(){return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m),v:seedVital(m),id:m.id};}):[{member:null,p:P,v:seedVital(null),id:'solo'}];}
 function seedHeld(){return !!(heldDown||heldSpace||swipeDown||gardenPress);}
 function seedReviveTarget(actor){
@@ -117,7 +117,7 @@ function lastSeedEnemy(k,dt){
   return true;
 }
 function seedVitalFrom(value){
-  return {hp:Math.max(0,Math.min(100,+value.hp||0)),shield:Math.max(0,Math.min(3,+value.shield||0)),revive:Math.max(0,Math.min(3,+value.revive||0)),hurt:Math.max(0,Math.min(4,+value.hurt||0))};
+  return {air:Number.isFinite(value.air)?Math.max(0,Math.min(3.2,value.air)):highTideProfile().breath,hp:Math.max(0,Math.min(100,+value.hp||0)),shield:Math.max(0,Math.min(3,+value.shield||0)),revive:Math.max(0,Math.min(3,+value.revive||0)),hurt:Math.max(0,Math.min(4,+value.hurt||0))};
 }
 function drawLastSeedHud(){
   if(!lastSeedMode()||!runActive||rogueRun.ended)return;

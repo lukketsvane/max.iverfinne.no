@@ -27,6 +27,7 @@ writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'),
   .replace('/* MAX_SLIGO_LIFE */', readFileSync(join(root, 'sligo-life.inc.js'), 'utf8'))
   .replace('/* MAX_POLGE */', readFileSync(join(root, 'polge.inc.js'), 'utf8'))
   .replace('/* MAX_LAST_SEED */', readFileSync(join(root, 'last-seed.inc.js'), 'utf8'))
+  .replace('/* MAX_HIGH_TIDE */', readFileSync(join(root, 'high-tide.inc.js'), 'utf8'))
   .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
   .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8'))
   .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8'))

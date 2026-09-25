@@ -12,11 +12,11 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed','high-tide');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
- group('Game modes',[['last-seed','Last Seed · live survival']]);
+ group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · grow and climb']]);
  group('Sligo',[['sligo-life','Sligo · Eat and grow'],['sligo-colony','Sligo · AI and control swap']]);
  group('Pølge',[['polge','Pølge · Stand-in and splinters']]);
  group('Relics',[['relic-garden','Relics · Game mode stones']]);
@@ -160,7 +160,7 @@
       }
       ensureCompanion();clearRunInput();
     }
-    if(${mode==='last-seed'}){resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},mode:'last-seed'});clearRunInput();}
+    if(${['last-seed','high-tide'].includes(mode)}){resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},mode:${JSON.stringify(mode)}});clearRunInput();}
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
     if(${gameplay}){
       var reviewStateClock=0,reviewFrame=frame;
