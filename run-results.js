@@ -191,7 +191,7 @@
     if (!panel || panel.hidden || !callbacks) return;
     if (run) paintBouquet(bouquet, run.plants, page);
     else paintBouquet(bouquet, [], 0);
-    if (callbacks.drawScene) callbacks.drawScene(scene, bouquet);
+    if (callbacks.drawScene) callbacks.drawScene(scene, bouquet, run);
     if (!recordsView.hidden) visibleRecords.forEach(function (entry) { paintBouquet(entry.canvas, entry.record.plants, 0); });
     if (!collection.hidden && callbacks.drawPlant) visiblePlants.forEach(function (entry) {
       var ctx = entry.canvas.getContext('2d'); if (ctx) { ctx.clearRect(0, 0, 64, 96); ctx.imageSmoothingEnabled = false; }
