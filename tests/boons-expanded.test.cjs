@@ -5,11 +5,12 @@ const builds=require('../build-paths.js');
 const {loadGame,plot}=require('./game-harness.cjs');
 const root=path.join(__dirname,'..'),manifest=JSON.parse(fs.readFileSync(path.join(root,'assets/figma-manifest.json'),'utf8'));
 
-test('every boon has its own native 9x9 symbol in the Figma production set',()=>{
+test('every boon has its own native 9x9 symbol in production or the hash-pinned pending set',()=>{
+  const pending=JSON.parse(fs.readFileSync(path.join(root,'assets/figma-pending.json'),'utf8'));
   for(const p of builds.perks){
     const file='assets/boon-symbols-v1/'+p.id+'.png',b=fs.readFileSync(path.join(root,file));
     assert.deepEqual([b.readUInt32BE(16),b.readUInt32BE(20)],[9,9],file);
-    assert.ok(manifest.production.some(e=>e.path===file),file);
+    assert.ok(manifest.production.concat(pending.files).some(e=>e.path===file),file);
   }
 });
 

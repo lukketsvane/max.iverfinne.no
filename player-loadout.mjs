@@ -1,11 +1,11 @@
 // Character and difficulty are selected before a new run.
 // Each character owns both its look and its exclusive ability: there is no separate skin picker.
-export const CLASS_IDS = Object.freeze(['mech', 'runner', 'bulwark', 'herbalist']);
+export const CLASS_IDS = Object.freeze(['mech', 'runner', 'bulwark', 'herbalist', 'polge']);
 // Hidden characters are easter eggs (easter-eggs.mjs): each is picked only once its egg is unlocked.
 export const HIDDEN_CLASS_IDS = Object.freeze(['sligo']);
 export const ALL_CLASS_IDS = Object.freeze([...CLASS_IDS, ...HIDDEN_CLASS_IDS]);
 export const DIFFICULTY_IDS = Object.freeze(['easy', 'medium', 'hard', 'insane']);
-export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss', bulwark: 'ember', herbalist: 'moon', sligo: 'sligo' });
+export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss', bulwark: 'ember', herbalist: 'moon', polge: 'polge', sligo: 'sligo' });
 export const DEFAULT_LOADOUT = Object.freeze({ classId: 'mech', skinId: CLASS_SKINS.mech, difficulty: 'medium' });
 
 // `unlocked` lists the easter eggs this player has. A hidden character that is not in it is

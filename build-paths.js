@@ -2,6 +2,9 @@
   'use strict';
   var paths=['Cultivator','Warden','Vanguard'];
   var perks=[
+    {id:'varnish',name:'Varnish',desc:'Stand-ins take one more bite',path:1,max:3,classId:'polge'},
+    {id:'splinters',name:'Splinters',desc:'Stand-ins burst harder and wider',path:2,max:3,classId:'polge'},
+    {id:'raincoat',name:'Raincoat',desc:'Bursting stand-ins water nearby plants',path:0,max:3,classId:'polge'},
     {id:'growth',name:'Quick roots',desc:'35% faster growth',path:0},
     {id:'water',name:'Deep soil',desc:'30% less water loss',path:0},
     {id:'yield',name:'Seed rain',desc:'More seeds per harvest',path:0},

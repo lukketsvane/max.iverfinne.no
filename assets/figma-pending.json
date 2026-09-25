@@ -287,6 +287,41 @@
    "width": 2560,
    "height": 40,
    "note": "Sligo's Cultivator evolution (bud, chain, stand, brood mother), from docs/asset-review/sligo-evolution-v1; scripts/build-sligo-evolution.py"
+  },
+  {
+   "path": "assets/max-skins-v1/polge/main.png",
+   "sha1": "6e6fff3745a2fa70ded41cf9f470d18e151a1938",
+   "width": 256,
+   "height": 256,
+   "note": "Owner mannequin poses; scripts/build-polge.py. Figma desktop unavailable."
+  },
+  {
+   "path": "assets/max-skins-v1/polge/interaction.png",
+   "sha1": "4ec7657fcda31ddc6397944e9b4c789d70d02bdd",
+   "width": 256,
+   "height": 256,
+   "note": "Owner mannequin poses; scripts/build-polge.py. Figma desktop unavailable."
+  },
+  {
+   "path": "assets/boon-symbols-v1/varnish.png",
+   "sha1": "cf53fb151a06f55a9cc08985c9eb976f051f94f1",
+   "width": 9,
+   "height": 9,
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+  },
+  {
+   "path": "assets/boon-symbols-v1/splinters.png",
+   "sha1": "07d819e090ae457b25628a6059e362525b1ddeed",
+   "width": 9,
+   "height": 9,
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+  },
+  {
+   "path": "assets/boon-symbols-v1/raincoat.png",
+   "sha1": "a1d5a26f880e915ac254a55955bad895e3055072",
+   "width": 9,
+   "height": 9,
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   }
  ]
 }

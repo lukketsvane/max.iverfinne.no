@@ -139,5 +139,26 @@ test('easter eggs: owners have everything, a phrase unlocks Sligo, rows are priv
       await db.query('delete from auth.users where id=$1', [device]);
       assert.equal((await db.query('select count(*)::int as n from public.max_unlocks where user_id=$1', [device])).rows[0].n, 0);
     });
+    await t.test('Pølge migration preserves live permissions, opens one exclusive role, keeps four seats and accepts its bouquet', async () => {
+      await db.exec('reset role');
+      const migration=fs.readFileSync(path.join(dir,fs.readdirSync(dir).find(n=>n.endsWith('_polge_character.sql'))),'utf8');
+      const security=async()=> (await db.query("select proacl::text, prosecdef, proconfig from pg_proc where oid in ('max_coop_private.global_join(text,text)'::regprocedure,'max_garden_private.submit(uuid,uuid,jsonb,integer,numeric,boolean,integer,text)'::regprocedure) order by oid")).rows;
+      const before=await security();await db.exec(migration);await db.exec(migration);assert.deepEqual(await security(),before);
+      await db.exec('delete from max_coop_private.rooms');
+      await as(bob);assert.deepEqual(await mine(),[]);
+      const room=await join('polge');assert.equal(room.members[0].classId,'polge');
+      await as(alice);await assert.rejects(join('polge'),{code:'PT409'});await join('mech');
+      await as(owner);await join('runner');await as(carol);assert.equal((await join('herbalist')).members.length,4);
+      await db.exec('reset role');await db.query('insert into auth.users(id,email,is_anonymous) values ($1,$2,false)',[device,'device@players.max.invalid']);
+      await as(device);await assert.rejects(join('bulwark'),{code:'PT409'});await assert.rejects(join('admin'),{message:'Choose an available character.'});
+      await as(bob);
+      const published=(await db.query("select max_garden_private.submit($1,$2,$3::jsonb,1,30,false,1,'polge') as result",[bob,'88888888-8888-4888-8888-888888888888',JSON.stringify([{id:1,kind:0,seed:1,growth:1,stalk:false}])])).rows[0].result;
+      assert.equal(published.class_id,'polge');
+      await db.exec('reset role');
+      const definition=(await db.query("select pg_get_functiondef('max_coop_private.global_join(text,text)'::regprocedure) as sql")).rows[0].sql;
+      await db.exec(definition.replace("p_class_id not in ('mech','runner','bulwark','herbalist','sligo','polge')","p_class_id not in ('mech', 'runner', 'bulwark', 'herbalist', 'sligo', 'polge')"));
+      await assert.rejects(db.exec(migration),/Unexpected class validation/);await db.exec('rollback');
+      assert.equal((await db.query("select pg_get_functiondef('max_coop_private.global_join(text,text)'::regprocedure) as sql")).rows[0].sql.includes("'mech', 'runner'"),true,'unexpected live logic was not overwritten');
+    });
   } finally { await db.close(); }
 });

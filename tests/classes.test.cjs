@@ -28,9 +28,9 @@ function party(classIds = classes.all.map(c => c.id)) {
 }
 
 test('class selection is validated, independent of skin, and retry restores only the selected starting kit', () => {
-  assert.deepEqual(classes.all.map(c => c.id), ['mech', 'runner', 'bulwark', 'herbalist', 'sligo']);
-  assert.deepEqual(classes.all.map(c => c.name), ['Mech', 'Moss', 'Bulwark', 'Herbalist', 'Sligo']);
-  assert.deepEqual(classes.all.map(c => c.special), ['robots', 'climbing', 'guard', 'healing', 'tun']);
+  assert.deepEqual(classes.all.map(c => c.id), ['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']);
+  assert.deepEqual(classes.all.map(c => c.name), ['Mech', 'Moss', 'Bulwark', 'Herbalist', 'Pølge', 'Sligo']);
+  assert.deepEqual(classes.all.map(c => c.special), ['robots', 'climbing', 'guard', 'healing', 'stand-in', 'tun']);
   assert.deepEqual([...classes.hidden], ['sligo'], 'Sligo is the one hidden character');
   assert.equal(classes.clean('sligo'), 'sligo'); assert.equal(classes.skin('sligo'), 'sligo');
   assert.equal(classes.clean('moss'), 'runner'); assert.equal(classes.get('runner').name, 'Moss');

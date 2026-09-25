@@ -3089,7 +3089,7 @@ function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,
 function useClassSkill(){
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
-    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():false;
+    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():kit.skill==='standin'?polgeStandin():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
   return ok;
 }
@@ -3102,6 +3102,7 @@ function coopClassSkill(action,m,now){
   var kit=ownClass();
   if(kit.skill==='dispatch')return dispatchWorld();
   if(!P.grounded||P.wet)return false;
+  if(kit.skill==='standin')return polgePlace();
   if(kit.skill==='brace'){m.braceUntil=now+kit.braceTime*1000;m.braceX=P.x;braceShove(P.x,P.y);return true;}
   if(kit.skill==='tun'){m.tunUntil=now+kit.tunTime*1000;m.tunX=P.x;skillRing(P.x,P.y,kit.tunRadius,'tun');return true;}
   if(kit.skill==='bloom')return herbalistBloom()>0;
@@ -3357,6 +3358,7 @@ function runStats(won){
     boons:Object.assign({},rogueRun.perks),traits:Object.assign({},rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,timeline:rogueRun.timeline.slice(0,41)};
 }
 function resetRogueRun(reason,selection){
+  polgeStands=[];
   selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
@@ -4232,6 +4234,7 @@ function warpCover(){
 }
 function enterLevel(n,ascenderId){
   if(coopGuest()||!Number.isInteger(n)||n<1||n>RUN_STAGES||rogueRun.ended)return;
+  polgeStands=[];
   clearRunInput();
   var carried=0,i;
   for(i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead)carried++;
@@ -4561,6 +4564,7 @@ function burstKrek(k){
 }
 function updateKrek(dt){
   if(runIsPaused()||climb&&climb.exit||warp||P.st==='float')return;
+  updatePolge(dt);
   var active=0;for(var pi=0;pi<gardenPlots.length;pi++)if(!gardenPlots[pi].dead&&gardenPlots[pi].health>0)active++;
   var cleared=rogueRun.clearedWorld===worldLevel(),ambientAllowed=!gardenRaidActive&&(cleared||gardenRaidT>3);
   if(ambientAllowed)krekSpawnT-=dt;
@@ -4576,6 +4580,7 @@ function updateKrek(dt){
     if(k.flee>0&&!k.boss&&!isRat(k)){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
     var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
     if(lamp){k.lampCooldown=7;staggerKrek(k,.85);k.fleeFromX=lamp.p.x;continue;}
+    if(polgeLure(k,dt))continue;
     if(updateEnemyRole(k,dt))continue;
     var shoo=k.kind<3&&!k.elite&&!k.queen&&!k.boss&&!k.scout&&!k.startle&&runPlayers().find(function(a){return Math.abs(a.p.vx)>30&&Math.abs(a.p.x-k.x)<18&&Math.abs(a.p.y-12-k.y)<22&&(k.x-a.p.x)*a.p.vx>0;});
     if(shoo){staggerKrek(k,.5);k.fleeFromX=shoo.p.x;k.startle=4;continue;}
@@ -6118,6 +6123,7 @@ function drawVignette() {
 }
 
 /* MAX_SLIGO_LIFE */
+/* MAX_POLGE */
 /* MAX_COOP_GAME */
 /* MAX_RUN_DIRECTOR */
 /* MAX_RAT_ENEMIES */
@@ -6252,6 +6258,7 @@ function frame(now) {
   drawBiomeTransitionMarkers();
   drawPlatforms(tSec);
   drawSligoTrail();
+  drawPolgeStands();
   drawSmartWorld(tSec);
   drawSpots(tSec);drawSeedPickups(tSec);
   drawRunExploration(tSec);
