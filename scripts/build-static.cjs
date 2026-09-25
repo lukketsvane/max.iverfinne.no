@@ -25,6 +25,7 @@ mkdirSync(output, { recursive: true });
 for (const file of files) copyFileSync(join(root, file), join(output, file));
 writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8')
   .replace(/<!-- MAX_RAW_SOURCE_FALLBACK_START -->[\s\S]*?<!-- MAX_RAW_SOURCE_FALLBACK_END -->/, '')
+  .replace('/* MAX_SLIGO_LIFE */', readFileSync(join(root, 'sligo-life.inc.js'), 'utf8'))
   .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
   .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8'))
   .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8'))

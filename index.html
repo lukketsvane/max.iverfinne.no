@@ -424,6 +424,7 @@ window.addEventListener('keydown', function (e) {
   else if (k === 'k' || k === 'K') { if (!e.repeat) requestDodge(); }
   else if (k === 'x' || k === 'X') { if (!e.repeat) requestDodge(); }
   else if ((k === 'e' || k === 'E') && !e.repeat) useClassSkill();
+  else if ((k === 'q' || k === 'Q') && !e.repeat) cycleSligo();
   else return;
   unlockAudio();
   e.preventDefault();
@@ -500,7 +501,8 @@ function pollPads(){
     if(aiming){var aim=padAim(gp.axes[2]||0,gp.axes[3]||0);if(aim){charge.ax=aim.x;charge.ay=aim.y;charge.rs=true;charge.lock=false;}else if(!charge.rs){aim=padAim(ax,ay);charge.ax=aim?aim.x:(b[15]?1:0)-(b[14]?1:0);charge.ay=aim?aim.y:b[12]?-1:b[13]?1:0;}}
     if(!shoot&&pad.shoot&&charge&&charge.src==='pad')chargeRelease();pad.shoot=shoot;
     if((hit(10)||hit(11))&&!D&&!work&&!aiming)requestDodge();
-    if(hit(4))useClassSkill();if(hit(6))lampToggle=true;if(hit(8))refillCompanion();if(hit(9))padEscape();
+    if(hit(6)&&rogueRun.classId==='sligo')cycleSligo();
+    if(hit(4))useClassSkill();if(hit(6)&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(8))refillCompanion();if(hit(9))padEscape();
     if(b.some(Boolean))unlockAudio();
   }
   pad.menu=menu;pad.b=b;pad.L=L;pad.R=R;pad.U=U;pad.D=D;
@@ -533,7 +535,8 @@ function hitThing(wx, wy) {
   return false;
 }
 function touchKind(wx, wy) {
-  if (Math.abs(wx - P.x) < 8 && wy > P.y - 25 && wy < P.y + 5) return 'max';
+  var sligo=P.skin==='sligo',h=sligo?sligoHeight(P):24;
+  if (Math.abs(wx - P.x) < (sligo?Math.max(8,h*.5):8) && wy > P.y-h-(sligo?3:1) && wy < P.y+5) return 'max';
   if (hitThing(wx, wy)) return 'thing';
   if (wy < surfaceY(wx) - 45) return 'sky';
   return 'steer';
@@ -582,7 +585,7 @@ stage.addEventListener('pointerdown', function (e) {
     if(mouseAim(w)){e.preventDefault();return;}
   }
   touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,ax:e.clientX,gx:e.clientX,gy:e.clientY,travelX:0,
-    wx:w.x,wy:w.y,onMax:touchKind(w.x,w.y)==='max',t0:performance.now(),j:false,jumped:false,jumpY:e.clientY,low:false,dragged:false};
+    wx:w.x,wy:w.y,onMax:touchKind(w.x,w.y)==='max',sligo:(sligoCompanionAt(w.x,w.y)||{}).sligoId||0,t0:performance.now(),j:false,jumped:false,jumpY:e.clientY,low:false,dragged:false};
   if(moveId===null)moveId=e.pointerId;
   e.preventDefault();
 }, {passive:false});
@@ -613,13 +616,14 @@ stage.addEventListener('pointermove', function(e){
 function endPointer(e){
   var t=touches[e.pointerId];if(!t)return;
   var flickX=e.clientX-t.x0,flickY=e.clientY-t.y0;
+  if(e.type==='pointerup'&&!runIsPaused())holdSligoTouch(t);
   if(e.type==='pointerup'&&!runIsPaused()&&moveId===e.pointerId&&!t.jumped&&!t.low&&t.dragged&&
      performance.now()-t.t0<=180&&Math.abs(flickX)>=44&&Math.abs(flickX)>Math.abs(flickY)*2&&Math.abs(flickX)>=t.travelX*.8){
     requestDodge(flickX<0?-1:1);
   }
-  if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&(catchWish(t.wx,t.wy)||wonderTap(t.wx,t.wy)))t.dragged=true;
+  if(e.type==='pointerup'&&!runIsPaused()&&!t.sligo&&!t.swapped&&!t.dragged&&!t.jumped&&!t.low&&(catchWish(t.wx,t.wy)||wonderTap(t.wx,t.wy)))t.dragged=true;
   // Cancellation (iOS app switch, browser gesture, lost capture) is never a tap.
-  if(e.type==='pointerup'&&!runIsPaused()&&!t.dragged&&!t.jumped&&!t.low&&performance.now()-t.t0<240){
+  if(e.type==='pointerup'&&!runIsPaused()&&!t.sligo&&!t.swapped&&!t.dragged&&!t.jumped&&!t.low&&performance.now()-t.t0<240){
     var pest=krekAt(t.wx,t.wy,t.onMax?6:14)||(t.onMax?floatKrek.find(function(k){return k.boss&&enemyDistance(k,t.wx,t.wy)<14;}):null),bird=t.onMax?null:birdAt(t.wx,t.wy),spore=sporeAt(t.wx,t.wy,12),held;
     if(climb&&climb.exit)climbBoost();
     else if(spore)throwBomb(sporeAim(spore));
@@ -670,6 +674,7 @@ function drawMouseReticle(){
 }
 window.addEventListener('pointerup',function(e){if(e.pointerType==='mouse'&&e.button===0&&charge&&charge.src==='mouse')chargeRelease();});
 function mouseAim(w){
+  if(sligoCompanionAt(w.x,w.y))return false;
   if(catchWish(w.x,w.y)||wonderTap(w.x,w.y))return true;
   if(touchKind(w.x,w.y)==='max'||companionAt(w.x,w.y)||P.st==='climb'||climb&&climb.exit||canPlantClimb(rogueRun.classId)&&plantClimbAt(w.x,w.y,12))return false;
   if(chargeStart('mouse')){charge.mx=w.x;charge.my=w.y;}return true;
@@ -3073,6 +3078,7 @@ function classProtection(plant){
   function guard(avatar,classId,braced,curled){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=(braced?kit.braceRadius:kit.radius)&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,braced?kit.braceProtection:kit.protection);
     if(curled&&kit.tunRadius&&Math.abs(avatar.x-plant.x)<=kit.tunRadius&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,kit.tunProtection);}
   if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a),curledMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P),curledMember(null,P));
+  eachSligo(function(c){c.bodies.forEach(function(b){if(b.sligoId!==c.active&&b.tun>0&&b.grounded&&!b.wet)guard(b,'sligo',false,true);});});
   return 1-protection;
 }
 function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
@@ -3370,7 +3376,7 @@ function resetRogueRun(reason,selection){
   selectedPerk=null;resultAtlasReady=false;clearRunInput();task=null;bombs.length=0;
   climb=null;climbGoal=null;warp=null;P.st='free';P.lampLit=0;P.dodgeCool=0;P.skillCool=0;bombCool=0;setAnim('idle');
   P.x=levelOriginX(keepWorld);P.y=surfaceY(P.x);P.vx=P.vy=0;P.airJumpUsed=false;P.grounded=true;P.coyote=.1;started=false;
-  runDropId=0;hazardId=0;initRunStage();
+  resetSligoLife();runDropId=0;hazardId=0;initRunStage();
 
   updateGardenHud();saveGarden();
 }
@@ -3783,7 +3789,8 @@ function harvestGardenPlot(p){
   var gain=1+(p.health>.86?1:0)+(rogueRun.perks.yield||0)+(plantFeature(p)==='seeds'?1:0);
   if(Math.random()<.2*(rogueRun.perks.bounty||0)){gain*=2;chime([659,880,1047],.05,.04);}
   gardenStats.harvested=(gardenStats.harvested||0)+1;grantRogueXP(1);
-  spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');
+  if(SLIGO_KINDS.indexOf(p.kind)>=0){spawnSligoMeat(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'MEAT');}
+  else{spawnLooseSeeds(p.x,surfaceY(p.x)-2,gain);gardenAction(35,12,'SEEDS');}
   goldHarvest(p);
   p.pulse=1.2;p.moisture=Math.max(0,p.moisture-.12);
   if(rogueRun.perks.bloom)gardenPlots.forEach(function(q){if(!q.dead&&Math.abs(q.x-p.x)<52){q.health=clamp01(q.health+.16);q.moisture=clamp01(q.moisture+.12);q.pulse=1.5;}});
@@ -4241,6 +4248,7 @@ function enterLevel(n,ascenderId){
     m.avatar=Object.assign(coopAvatar(),{world:n,classId:m.classId,skin:m.skin,x:sx,y:ascended?surfaceY(sx):surfaceY(sx)-80,st:ascended?'free':'float',grounded:ascended});
     m.last=performance.now();m.draw=null;m.dodge=null;m.braceUntil=0;m.airTop=null;m.landAt=0;
   });
+  relocateSligos();
   eachCompanion(function(bot,m){bot.relocate(m?coopMemberAvatar(m).x:P.x);});
   initRunStage();
   started=false;                                           // the camera cuts while the clouds cover the screen
@@ -5092,7 +5100,7 @@ var bombCoolMax=0,queuedThrow=null;
 function throwCooldown(power){return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
 function throwBomb(target,power) {                         // a bird {kind, o} or a spot {x, y}
   power=Math.max(0,Math.min(1,+power||0));
-  if (runIsPaused() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
+  if (runIsPaused() || !sligoCanThrow() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
   if(coopGuest()){
     var aim=target.o||target;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:Number.isSafeInteger(aim.spore)?aim.spore:0,power:power}))return false;
     bombCool=bombCoolMax=throwCooldown(power);task=null;
@@ -5110,7 +5118,9 @@ function throwBomb(target,power) {                         // a bird {kind, o} o
   return true;
 }
 function launchBomb() {
-  var t = P.aim, x0 = P.x + P.face * 10, y0 = P.y - 12, tx, ty, vx = 0, vy = 0;
+  var bodyHeight=ownClass().skill==='tun'?sligoHeight(P):24;
+  if(!sligoShed())return false;
+  var t = P.aim, x0 = P.x + P.face * (ownClass().skill==='tun'?Math.max(3,bodyHeight*.42):10), y0 = P.y - bodyHeight*.5, tx, ty, vx = 0, vy = 0;
   if (t.o) {
     tx = t.o.x; ty = t.o.y - (t.kind === 'crow' || t.kind === 'tit' ? 5 : (t.kind==='krek'?0:8));
     if (birdAlive(t)) { vx = t.o.vx || 0; vy = t.o.vy || 0; }
@@ -5919,7 +5929,7 @@ function sligoEvo(){
   var n=pathRanks(line,p);return line*4+(n>=E.at[3]?3:n>=E.at[2]?2:1);
 }
 function sligoEvoImg(){return SLIGO_EVO.img||(SLIGO_EVO.img=loadImg('assets/max-skins-v1/sligo/brood.png'));}
-function drawSligoEvo(a,x,y){
+function drawSligoEvo(a,x,y,scale){
   var E=SLIGO_EVO,evo=a.evo|0,stage=evo&3,key=a.evoKey||'me',seen=E.seen[key];
   if(!seen||seen.evo!==evo)seen=E.seen[key]={evo:evo,t:seen&&evo>seen.evo?tSec:-9};   // a new stage grows in once
   if(!stage)return false;
@@ -5930,10 +5940,12 @@ function drawSligoEvo(a,x,y){
   else if(a.anim==='walk'||a.anim==='run'){w=E.walk[stage];f=w[Math.floor(tSec*(a.anim==='run'?16:12))%w.length];bob=stage===3?Math.floor(tSec*8)&1:0;}
   else{w=E.idle[stage];f=w[Math.floor(tSec*[0,2,6,8][stage])%w.length];}
   ctx.save();ctx.translate(Math.round(x),Math.round(y)-bob);if(a.face<0)ctx.scale(-1,1);
-  ctx.drawImage(im,f*E.cell,0,E.cell,E.cell,-E.ax,-E.ay,E.cell,E.cell);ctx.restore();return true;
+  // Evolution changes shape; food remains the sole source of body size.
+  var size=scale==null?1:scale*12/sligoSourceHeight(im,f*E.cell,0,E.cell);
+  sligoCell(im,f*E.cell,0,E.cell,E.cell/2,E.ay,0,0,size);ctx.restore();return true;
 }
 function sligoFx(){return SLIGO_FX.img||(SLIGO_FX.img=loadImg('assets/max-skins-v1/sligo/specials.png'));}
-function sligoFxFrame(f,x,y){var F=SLIGO_FX,im=sligoFx();if(!ready(im))return false;ctx.drawImage(im,f*F.cell,0,F.cell,F.cell,Math.round(x)-F.ax,Math.round(y)-F.ay,F.cell,F.cell);return true;}
+function sligoFxFrame(f,x,y,scale){var F=SLIGO_FX,im=sligoFx();if(!ready(im))return false;sligoCell(im,f*F.cell,0,F.cell,F.ax,F.ay,x,y,scale==null?1:scale);return true;}
 function trailTracker(salt){return {on:-1,mx:0,clot:12,after:0,curled:false,n:0,salt:salt||0};}
 var trailSelf=trailTracker(0);
 function trailRand(k){k.n++;return h1(k.n*.917+k.salt*7.3);}
@@ -5944,7 +5956,7 @@ function drawSligoSeed(x,y){
   rect(Math.round(x)-2,Math.round(y)-1,5,3,'#8f263a');
   rect(Math.round(x)-1,Math.round(y)-2,3,2,'#dc7470');
 }
-function drawSligoAction(a,x,y){
+function drawSligoAction(a,x,y,scale){
   var clip=null,step=a.frame||0;
   if(a.dodgeT>0||a.dodging){clip=SLIGO_FX.roll;step=a.dodgeT>0?Math.min(6,Math.max(0,Math.floor((1-a.dodgeT/DODGE_TIME)*7))):(a.frame||0)%7;}
   else if(a.anim==='toss'){clip=SLIGO_FX.throw;step=[0,1,2,3,0][Math.min(4,step)];}
@@ -5954,7 +5966,7 @@ function drawSligoAction(a,x,y){
   else if(a.anim==='rest'){clip=SLIGO_FX.sleep;step=Math.floor(tSec*2)%2;}
   if(!clip||!ready(sligoFx()))return false;
   ctx.save();ctx.translate(Math.round(x),Math.round(y));if(a.face<0)ctx.scale(-1,1);
-  sligoFxFrame(clip[step],0,0);ctx.restore();return true;
+  sligoFxFrame(clip[step],0,0,scale);ctx.restore();return true;
 }
 function trailMark(x,y,shape){var T=sligoTrail,i=T.next;T.x[i]=x;T.y[i]=y;T.t[i]=T.clock;T.shape[i]=shape;T.next=(i+1)%TRAIL_CAP;if(T.size<TRAIL_CAP)T.size++;}
 // The ledge (or rock top) under a foot within 4 px, as MaxStageLayout.at finds it, without allocating.
@@ -5994,6 +6006,7 @@ function updateSligoTrail(dt){
   var T=sligoTrail,w=worldLevel();T.clock+=dt;
   if(T.world!==w||T.seed!==rogueRun.seed){T.world=w;T.seed=rogueRun.seed;T.size=T.next=0;trailSelf.on=-1;}
   if(rogueRun.classId==='sligo')trailFollow(trailSelf,P,P.tun>0,P.hurt>0,dt);else trailSelf.on=-1;
+  eachSligo(function(c,m,a){c.bodies.forEach(function(b){if(b.sligoId===c.active)return;if(!b.trail)b.trail=trailTracker(b.sligoId*31);trailFollow(b.trail,b,b.tun>0,b.hurt>0,dt);});});
   if(!coop)return;
   for(var id in coop.members){
     var m=coop.members[id],a=m.draw||m.avatar;if(m.left||id===coop.me||m.classId!=='sligo'||!a)continue;
@@ -6020,6 +6033,7 @@ function drawSligoTrail(){
 
 function drawPlayer() {
   var px = Math.round(P.x - camX), py = Math.round(P.y - camY);
+  var bodyScale=P.skin==='sligo'?Math.sqrt(sligoMass(P)):1;
   var wp = waterAt(P.x), L = wp ? Math.round(wp.level - camY) : null;
   if (!wp) {
     var gy = Math.round(surfaceY(P.x) - camY);
@@ -6032,7 +6046,7 @@ function drawPlayer() {
   if (P.skin === 'sligo' && (P.tun > 0 || P.curled)) {
     var sac = SLIGO_FX.sac, inTun = P.tun > 0 ? window.MaxClasses.get('sligo').tunTime - P.tun : 1;
     var sf = inTun < .3 ? sac[Math.min(3, Math.floor(inTun / .1))] : sac[2 + (Math.floor(performance.now() / 250) & 1)];
-    if (sligoFxFrame(sf, px, py)) return;
+    if (sligoFxFrame(sf, px, py, bodyScale)) return;
   }
   var a = ANIM[P.anim], native = window.MaxNativeArt && window.MaxNativeArt.playerImage(P.skin, a.sh === 2 ? 'interaction' : 'main');
   var img = native || (a.sh === 2 ? sheet2 : sheet);
@@ -6041,7 +6055,11 @@ function drawPlayer() {
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
-    if(P.skin==='sligo'&&(drawSligoEvo(P,px,py)||drawSligoAction(P,px,py)))return;
+    if(P.skin==='sligo'&&(drawSligoEvo(P,px,py,bodyScale)||drawSligoAction(P,px,py,bodyScale)))return;
+    if(P.skin==='sligo'){
+      ctx.save();ctx.translate(px,py);if(P.face<0)ctx.scale(-1,1);
+      sligoCell(img,fr*CELL,a.row*CELL,CELL,CELL/2,CELL-1,0,0,bodyScale);ctx.restore();return;
+    }
     if (P.face < 0) {
       ctx.save(); ctx.translate(dx + CELL, dy); ctx.scale(-1, 1);
       ctx.drawImage(img, fr * CELL, a.row * CELL, CELL, CELL, 0, 0, CELL, CELL);
@@ -6092,6 +6110,7 @@ function drawVignette() {
   ctx.fillStyle = vig; ctx.fillRect(0, 0, IW, IH);
 }
 
+/* MAX_SLIGO_LIFE */
 /* MAX_COOP_GAME */
 /* MAX_RUN_DIRECTOR */
 /* MAX_RAT_ENEMIES */
@@ -6119,6 +6138,7 @@ function frame(now) {
   var inp = readInput();
   if(!runIsPaused())updateCharge(dt);
   if(!runIsPaused())updatePlayer(dt, inp);
+  if(!runIsPaused())updateSligoLife(dt);
   if(!runIsPaused())updateSligoTrail(dt);
   if(!runIsPaused())updateWarp(dt);
   if(!runIsPaused())updateParts(dt);
@@ -6248,7 +6268,7 @@ function frame(now) {
   drawWonderAir();
   drawBirdBlasts();
   drawCompanion();
-  P.evo=sligoEvo();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();drawTeamArrows();drawMouseReticle();
+  P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();drawTeamArrows();drawMouseReticle();
   drawPickupNotice(dt);
   drawClimbSky(tSec);
   drawBombs(tSec);

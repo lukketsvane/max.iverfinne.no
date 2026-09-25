@@ -34,7 +34,7 @@ The four playable characters are also the four gameplay roles. There is no separ
 | Bulwark | Protects nearby plants and resists knockback | Brace: 65% guard to 64 px for 3 s, shoves pests, swallows warned roots (1 s each); steering, jumping or leaving the ground ends it (10 s) |
 | Herbalist | Stronger tending and nearby plant healing | Bloom: heals nearby plants by 49% of their missing health, waters them and revives the one plant that fell most recently (12 s) |
 
-A fifth, hidden character waits to be found: type its name into the Login form. **Sligo** (Max Sligo Neverdahl), the forgotten, defiled zygote drained of his endoplasm by the gluttonous twins JP and IE and starved out of the Triforce, taps Max to curl into a tun for 3 s: it cannot move or throw, nothing knocks it back, and plants within 40 px take half damage; a jump uncurls it and the 9 s cooldown starts then. He survived. He grows only his own two cords and leaves a slime-and-blood trail. His throws shed flesh-and-cord pieces that burst into blood clots, with the same damage, cooldown and boons as other throws. His specials sheet supplies throw, tending lash, hurt, floating tendrils and sleep poses.
+A fifth, hidden character waits to be found: type its name into the Login form. **Sligo** (Max Sligo Neverdahl), the forgotten, defiled zygote drained of his endoplasm by the gluttonous twins JP and IE and starved out of the Triforce, taps Max to curl into a tun for 3 s: it cannot move or throw, nothing knocks it back, and plants within 40 px take half damage; a jump uncurls it and the 9 s cooldown starts then. He survived. He grows only his own two cords and leaves a slime-and-blood trail. He begins at half his previous height (about 6 art pixels). Harvesting either cord drops meat; walking over meat feeds a Sligo. Throws shed real body mass, down to a tiny 3-pixel body that must eat before throwing again. At 42 pixels (1.75× Max’s 24-pixel standing height), a cell divides into two equal-mass bodies. Four divisions are shared across the colony for the run: at most five bodies, one controlled and four AI companions. Companions follow, eat and defend with their own flesh. Hold a companion for 480 ms to exchange control in place, including momentum, size and cooldowns. Q or the left trigger cycles bodies. Throws keep the existing damage and boon rules. His specials sheet supplies throw, tending lash, hurt, floating tendrils and sleep poses.
 
 Only one connected player may occupy each character. If Mech is already playing, Mech is disabled/greyed for the next player, and the same rule applies to the other three characters. The database also reserves the character so two clients cannot race into the same role.
 
@@ -65,6 +65,7 @@ Moss can also climb ordinary living plants for traversal, but ordinary plant cli
 - Tap Max / E: class skill. A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a tap on Max throws at a pest near the finger, or boosts a stem climb. A Mech rover too low to dispatch refills when tapped over Max. A brace refuses while you steer, and jumping or grabbing a stem out of a pounce spends its cooldown.
 - R or tap nearby Mech rover: refill.
 - L: lantern.
+- Sligo: hold an AI clone for half a second to swap; Q / left trigger cycles bodies.
 - Shift: run on keyboard.
 
 Pickups and bombs must work for both the authoritative player and guests. Guest actions are validated by the host rather than silently discarded.
@@ -150,6 +151,7 @@ The project deliberately remains a small static game rather than a framework app
 - `build-paths.js` — boon definitions and choice rules.
 - `max-classes.js` / `player-loadout.mjs` — character rules and persisted selection.
 - `companion.js` — Mech watering robot.
+- `sligo-life.inc.js` — Sligo body mass, meat, division, AI and control swapping.
 - `soundtrack.mjs` — streamed soundtrack and music volume.
 - `native-art.mjs` — native enemy/boss artwork integration.
 - `run-results.js` / `run-results.css` — actual-run bouquet and records.
@@ -176,7 +178,7 @@ Serve the production output locally:
 python -m http.server 8765 --directory dist
 ```
 
-Then open `http://localhost:8765`.
+Then open `http://localhost:8765`. Sligo review scenes: `review.html?mode=sligo-life&portrait=1` (birth and meat) and `review.html?mode=sligo-colony&portrait=1` (companions and swapping).
 
 A change is not release-ready unless both `npm test` and `npm run build` pass. The regression suite covers gameplay, co-op transport/session behavior, database rules, native art contracts, mobile controls and review fixtures.
 
