@@ -368,8 +368,13 @@ function drawTeamArrows(){
   return n;
 }
 function coopMarker(p,slot,own){
-  var x=Math.round(p.x-camX),y=Math.round(p.y-camY)-29;
+  // Sligo begins only six art pixels tall. A fixed Max-height marker made a
+  // living teammate look absent, especially on a phone. Keep the marker just
+  // above the actual body and give tiny Sligo a short team-colour foot line.
+  var x=Math.round(p.x-camX),body=p.skin==='sligo'?sligoHeight(p):24;
+  var y=Math.round(p.y-camY)-(p.skin==='sligo'?body+5:29);
   ctx.fillStyle=['#e3ce80','#87bccf','#b79bcb','#a4bf87'][slot-1]||'#e3ce80';
   ctx.fillRect(x-1,y,3,1);ctx.fillRect(x,y-1,1,3);
+  if(p.skin==='sligo')ctx.fillRect(x-2,Math.round(p.y-camY)+1,5,1);
   if(own){ctx.fillRect(x-2,y+3,1,1);ctx.fillRect(x+2,y+3,1,1);}
 }
