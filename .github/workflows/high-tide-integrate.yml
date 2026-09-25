@@ -4,14 +4,16 @@ on:
     branches: [high-tide]
     paths: ['.github/workflows/high-tide-integrate.yml', 'scripts/apply-high-tide.cjs', 'high-tide.inc.js', 'tests/high-tide*.test.cjs']
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: high-tide-integration
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
-  integrate:
+  stage:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,20 +34,36 @@ jobs:
           s=s.replace(before,"assert.deepEqual(relicCollection(user).map(r=>r.id),['high-tide']);");
           fs.writeFileSync(f,s);
           JS
-      - name: Test every game regression
+          git mv supabase/migrations/20260925203705_high_tide.sql supabase/migrations/20260925204140_high_tide.sql
+      - name: Test mode and integration contracts
+        run: node --test tests/high-tide*.test.cjs tests/last-seed*.test.cjs tests/relics.test.cjs tests/moss-climb.test.cjs tests/results.test.cjs tests/menu.test.cjs
+      - name: Build production bundle
+        run: npm run build
+      - name: Commit source for preview, not production
+        run: |
+          git rm scripts/apply-high-tide.cjs .github/workflows/high-tide-integrate.yml
+          git add index.html last-seed.inc.js coop-game.inc.js run-director.inc.js game-menu.mjs coop-session.mjs run-results.js scripts/build-static.cjs tests/game-harness.cjs tests/relics.test.cjs review.html supabase/migrations
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Implement High Tide in the shared game engine'
+          git push origin HEAD:high-tide
+  verify:
+    needs: stage
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: high-tide
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Full game regression suite
         run: |
           set -o pipefail
           npm test 2>&1 | tee /tmp/high-tide-tests.log
-      - name: Build production bundle
-        run: npm run build
-      - name: Publish verified source edits on feature branch
-        run: |
-          git rm scripts/apply-high-tide.cjs .github/workflows/high-tide-integrate.yml
-          git add index.html last-seed.inc.js coop-game.inc.js run-director.inc.js game-menu.mjs coop-session.mjs run-results.js scripts/build-static.cjs tests/game-harness.cjs tests/relics.test.cjs review.html
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Integrate tested High Tide mode into shared game engine'
-          git push origin HEAD:high-tide
+      - run: npm run build
       - uses: actions/upload-artifact@v4
         if: always()
         with:
