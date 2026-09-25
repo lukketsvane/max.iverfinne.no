@@ -77,12 +77,13 @@ function home() {
     credits: '<path d="M6 0h4v4H6zM0 6h4v4H0zM12 6h4v4h-4zM6 12h4v4H6zM6 6h4v4H6z"/>',
   };
   const signedIn = signedInUser();
-  for (const [label, action, icon] of [['Play', play, 'play'], signedIn ? ['Garden', enterGarden, 'garden'] : ['Login', account, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
+  for (const [label, action, icon] of [['Play', play, 'play'], ['Garden', enterGarden, 'garden'], ['Settings', settings, 'settings'], ['Credits', credits, 'credits']]) {
     const b = button('', action, 'max-home-button max-icon-' + icon + (icon === 'play' ? ' primary' : ''));
     b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" shape-rendering="crispEdges">' + icons[icon] + '</svg>';
     pixelText(b, label, icon === 'play' ? 3 : 2, 1);
     if (icon === 'settings' || icon === 'credits') links.append(b); else nav.append(b);
   }
+  if (!signedIn) links.append(button('Login', account, 'max-home-login'));
   nav.append(links); content.append(brand, nav);
   content.append(el('p', 'GROW · EXPLORE · SURVIVE', 'max-home-note'));
   const players = el('div', '', 'max-home-players'); players.hidden = true; players.setAttribute('aria-label', 'Online players'); content.append(players);
@@ -465,7 +466,7 @@ function selectionSummary() {
 }
 function readInvite() {
   const params = new URL(window.location.href).searchParams, id = params.get('join'), mode = params.get('mode') || 'garden';
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '') && ['garden', 'last-seed'].includes(mode) ? { id: id.toLowerCase(), mode } : null;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '') && ['garden', 'last-seed', 'high-tide'].includes(mode) ? { id: id.toLowerCase(), mode } : null;
 }
 function clearInvite() {
   if (invitedRoom) {
@@ -477,9 +478,10 @@ function clearInvite() {
 function play(mode, room = null) {
   if (!room) clearInvite();
   invitedRoom = room; inviteState = room ? 'loading' : null;
-  selectedMode = mode === 'last-seed' ? mode : 'garden';
+  selectedMode = ['last-seed', 'high-tide'].includes(mode) ? mode : 'garden';
   sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
-  page('play', selectedMode === 'last-seed' ? 'Last Seed' : 'Your Max');
+  page('play', selectedMode === 'high-tide' ? 'High Tide' : selectedMode === 'last-seed' ? 'Last Seed' : 'Your Max');
+  if (selectedMode === 'high-tide') card.append(el('p', 'One seed. Grow above the rising sea. Up by the stem to climb; hold Tend to grow, release to climb. Max cannot swim.'));
   if (invitedRoom) card.append(el('p', 'You are invited. Choose your character to join.'));
   if (selectedMode === 'last-seed') card.append(el('p', 'Plant the only seed to begin. Hold Tend beside a fallen teammate to revive.'));
   chooseMax();
@@ -492,7 +494,7 @@ async function refreshSharedStatus() {
   if (!client) return sharedStatus;
   const mode = selectedMode, room = invitedRoom;
   try {
-    const { data, error } = await client.rpc('max_coop_status', mode === 'last-seed' ? { p_mode: mode } : undefined);
+    const { data, error } = await client.rpc('max_coop_status', mode !== 'garden' ? { p_mode: mode } : undefined);
     if (error) throw error;
     if (mode !== selectedMode || room !== invitedRoom) return sharedStatus;
     if (room) inviteState = data?.active && data.id === room ? 'ready' : 'expired';
