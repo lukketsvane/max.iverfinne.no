@@ -230,6 +230,8 @@ Project ID: `prj_QU1gHXGoDr99H3MxAUcaXGx2wgMe`
 
 `vercel.json` builds static `dist/` with `npm ci` and `npm run build`. `main` is the production branch.
 
+`max.iverfinne.no` belongs to this project's production deployment. Do not assign it in another project's `alias` list: a TV deployment previously reclaimed the domain and served unbuilt GitHub source. Serve the built game directly on the custom domain; do not redirect players to a generated Vercel URL.
+
 When Vercel's remote build-rate quota is exhausted, do not try to evade account limits. Prefer an already-built deployment promotion, or a supported prebuilt deployment if authenticated CI/CLI credentials are available.
 
 Before calling a release live, verify:

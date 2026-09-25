@@ -8,7 +8,7 @@
 <nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button></nav></details><p id="fixture-help"></p><p id="status" role="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
 <script>
 (async function(){
- const source=(await fetch('index.html').then(r=>r.text())).replace(/<!-- MAX_RAW_SOURCE_FALLBACK_START -->[\s\S]*?<!-- MAX_RAW_SOURCE_FALLBACK_END -->/, ''), frame=document.querySelector('iframe'),status=document.getElementById('status');
+ const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
  const pressureMinutes=[0,5,10,20];
