@@ -115,7 +115,7 @@ function initRunStage(){
     runEncounters.push({id:w*2+i,x:x,y:route?route.y:surfaceY(x),type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='nest'?10:14});
   }
   stageWeather={type:w%3===0?'seedfall':w%3===1?'bloom':'drought',at:36+(w%4)*4,life:0,started:false};
-  rogueRun.bossDefeated=false;
+  rogueRun.bossDefeated=false;initExpedition();
 }
 function encounterFloor(e){return Number.isFinite(e.y)?e.y:surfaceY(e.x);}
 function encounterAt(x){return runEncounters.find(function(e){return !e.done&&!e.locked&&Math.abs(e.x-x)<14&&Math.abs(P.y-encounterFloor(e))<6;});}
@@ -131,6 +131,7 @@ function spawnEncounterGuard(e){
 }
 function interactEncounter(){
   if(!P.grounded||P.wet||runIsPaused())return false;
+  if(interactExpedition())return true;
   var e=encounterAt(P.x);if(!e)return false;
   if(e.active)return false;
   if(coopGuest())return coopAction('encounter');
@@ -258,7 +259,7 @@ function updateHazardContact(){
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
 }
 function updateRunDirector(dt){
-  updateRunLoot();updateEncounters(dt);updateStageWeather(dt);updateRunHazards(dt);
+  updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateRunHazards(dt);
 }
 function dewDodge(){
   if(ownTraits().dew<3||coopGuest())return;
@@ -304,6 +305,7 @@ function updatePestDive(k,dt){
   return true;
 }
 function updateEnemyRole(k,dt){
+  if(updateExpeditionGuard(k,dt))return true;
   if(isRat(k)){updateRat(k,dt);return true;}
   if(k.boss){if(k.finalBoss===false)updateStageBoss(k,dt);else updateHollowCrown(k,dt);return true;}
   if(updatePestDive(k,dt))return true;
@@ -512,6 +514,7 @@ function drawRunItem(type,x,y,bright){
   }else {ctx.fillRect(x-2,y-2,5,4);ctx.fillRect(x-1,y-4,2,2);ctx.fillStyle='#f1d587';ctx.fillRect(x,y-1,1,2);}
 }
 function drawRunExploration(t){
+  drawExpedition(t);
   runEncounters.forEach(function(e){
     var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);if(x<-20||x>IW+20)return;
     ctx.fillStyle=e.locked?'#202827':'#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
@@ -619,4 +622,133 @@ function drawPickupNotice(dt){
     for(var dot=0;dot<3;dot++){ctx.fillStyle=dot<pickupNotice.count?'#ddd79c':'#48554e';ctx.fillRect(x-5+dot*4,y+3,2,2);}
   }else drawRunItem(pickupNotice.type,x,y-4,true);
   ctx.restore();
+}
+
+/* The optional upper district is a second commitment, independent of the two
+   mutually exclusive shrines. Scalar state travels in the host snapshot. */
+var runExpedition=null;
+function initExpedition(){
+  var E=stageLayout().expedition;
+  runExpedition=E?{stage:worldLevel(),mask:0,active:false,done:false,queued:0,serial:0,watch:-1,charge:0,egg:false,eggHold:0,glow:0}:null;
+  if(!E)return;
+  E.rooms.forEach(function(r,i){var id='exp-cache:'+worldLevel()+':'+i;
+    if(!seedCollected[id])seedPickups.push({id:id,placeCache:true,hidden:i!==0,x:r.secret.x,y:r.secret.y-6,amount:seedCount(i===0?1:2),fall:false,ph:i});
+  });
+}
+function expeditionNear(p,n,r){return Math.abs(p.x-n.x)<(r||16)&&Math.abs(p.y-n.y)<7;}
+function expeditionNode(){var E=stageLayout().expedition;return E&&E.nodes.findIndex(function(n){return expeditionNear(P,n);});}
+function expeditionWake(i){
+  var e=runExpedition;e.active=true;e.anchor=i;e.queued+=worldLevel()<6?1:2;e.glow=1;
+  chime([330+i*110,660+i*110],.07,.025);
+}
+function interactExpedition(){
+  var e=runExpedition,E=stageLayout().expedition;if(!e||!E||e.done)return false;
+  var i=expeditionNode();if(i<0||i==null)return false;
+  if(coopGuest())return coopAction('encounter');
+  if(e.mask&(1<<i))return true;
+  if(E.mode==='relay'){expeditionWake(i);e.mask|=1<<i;}
+  else if(E.mode==='watch'&&e.watch!==i){e.watch=i;e.charge=0;if(!(e['woke'+i])){e['woke'+i]=true;expeditionWake(i);}}
+  else if(E.mode!=='watch'){puff(E.nodes[i].x,E.nodes[i].y-12,3,.3);}
+  return true;
+}
+function expeditionBlast(x,y){
+  var e=runExpedition,E=stageLayout().expedition;
+  if(coopGuest()||!e||!E||e.done||!(E.mode==='bells'||E.mode==='salvage'))return;
+  for(var i=0;i<E.nodes.length;i++){
+    var n=E.nodes[i];if(e.mask&(1<<i)||Math.hypot(x-n.x,y-(n.y-10))>22)continue;
+    // Bells have a visible one/two/three pip order. A wrong note is harmless.
+    if(E.mode==='bells'&&e.mask!==(1<<i)-1){chime([165],.08,.018);return;}
+    expeditionWake(i);e.mask|=1<<i;puff(n.x,n.y-12,8,.5);return;
+  }
+}
+function updateExpedition(dt){
+  var e=runExpedition,E=stageLayout().expedition;if(coopGuest()||!e||!E)return;
+  e.glow=Math.max(0,e.glow-dt);
+  if(e.watch>=0&&!(e.mask&(1<<e.watch))){
+    var n=E.nodes[e.watch],present=runPlayers().some(function(a){return expeditionNear(a.p,n,24)&&a.p.grounded;});
+    // Leaving is always possible; returning resumes the hold without another fee.
+    if(present)e.charge=Math.min(6,e.charge+dt);
+    if(e.charge>=6){e.mask|=1<<e.watch;e.watch=-1;e.charge=0;chime([659,880],.06,.02);}
+  }
+  if(e.queued>0&&floatKrek.length<MAX_ACTIVE_ENEMIES){
+    var n=E.nodes[e.anchor||0],kind=E.guards[e.serial%E.guards.length];
+    if(!enemyUnlocked(kind))kind=2;
+    var side=e.serial%2?1:-1,k=makeKrek(side,false,kind);
+    safeEnemyPosition(k,n.x+side*85,n.y-32);k.eventId=1000+worldLevel();k.eventX=n.x;k.eventY=n.y;k.expedition=true;k.bite=1.2;
+    floatKrek.push(k);e.serial++;e.queued--;
+  }
+  if(e.mask===7&&!e.queued&&!e.done&&!floatKrek.some(function(k){return k.eventId===1000+worldLevel();})){
+    e.done=true;e.glow=4;
+    runPlayers().forEach(function(a,i){dropRunItem(E.item,E.summit.x+i*4,E.summit.y-12,a.member&&a.member.id);});
+    grantRogueXP(runReward(5));chime([523,659,784,1047],.07,.03);
+  }
+  var secret=E.rooms[2].secret;
+  if(!e.egg){
+    if(runPlayers().some(function(a){return expeditionNear(a.p,secret,12)&&a.p.grounded&&Math.abs(a.p.vx||0)<3;}))e.eggHold+=dt;else e.eggHold=0;
+    if(e.eggHold>=2){e.egg=true;e.glow=4;spawnLooseSeeds(secret.x,secret.y-14,1);chime([784,988,1175],.1,.024);}
+  }
+}
+function updateExpeditionGuard(k,dt){
+  if(!k.expedition)return false;
+  var nearest=runPlayers().slice().sort(function(a,b){return Math.hypot(a.p.x-k.x,a.p.y-k.y)-Math.hypot(b.p.x-k.x,b.p.y-k.y);})[0];
+  var p=nearest&&nearest.p;if(!p)return true;
+  var close=Math.hypot(p.x-k.eventX,p.y-k.eventY)<220,target=close?p:{x:k.eventX,y:k.eventY};
+  if(k.kind===2&&updatePestDive(k,dt))return true;
+  if(k.windup>0){k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);return true;}
+  var ranged=k.kind===4||k.kind===9,offset=ranged?48:26,side=k.x<target.x?-1:1;
+  moveEnemyTo(k,target.x+side*offset,target.y-24,dt,k.kind===3?27:17);
+  if(close&&k.bite<=0&&Math.hypot(k.x-p.x,k.y-p.y)<110){
+    k.tell=k.windup=.9;k.bite=2.8;
+    addRunHazard(k.kind===4?'spore':k.kind===9?'root':'gust',p.x,k.kind===5?15:10,1.15,0,k.x,k.y,p.y);
+  }
+  return true;
+}
+function expeditionText(text,x,y,color){
+  text=text.toUpperCase();x=Math.round(x-text.length*3);y=Math.round(y);
+  if(!runPixelFont.complete||!runPixelFont.naturalWidth)return;
+  ctx.fillStyle=color||'rgba(12,20,22,.9)';ctx.fillRect(x-3,y-2,text.length*6+5,11);
+  for(var i=0;i<text.length;i++){var n=text.charCodeAt(i)-32;if(n>=0&&n<96)ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,x+i*6,y,5,7);}
+}
+function drawExpedition(t){
+  var E=stageLayout().expedition,e=runExpedition;if(!E||!e)return;
+  var entryX=Math.round(E.start.x-camX),entryY=Math.round(E.start.y-camY);
+  // Signpost and upward trail lights advertise a place worth investigating.
+  var origin=levelOriginX(worldLevel());
+  for(var wx=origin+E.side*80;E.side*(E.start.x-wx)>35;wx+=E.side*64){
+    var sx=Math.round(wx-camX),sy=Math.round(surfaceY(wx)-camY);if(sx<-5||sx>IW+5||waterAt(wx))continue;
+    ctx.fillStyle='#53695c';ctx.fillRect(sx,sy-10,1,10);ctx.fillStyle='#b8bd83';ctx.fillRect(sx-1,sy-11,3,2);ctx.fillRect(sx+E.side*3,sy-10,1,1);
+  }
+  ctx.fillStyle='#556d63';ctx.fillRect(entryX-2,entryY-23,2,23);ctx.fillRect(entryX-8,entryY-23,15,7);
+  ctx.fillStyle='#ded59f';ctx.fillRect(entryX-1,entryY-21,1,4);ctx.fillRect(entryX-2,entryY-20,3,1);
+  if(Math.abs(P.x-E.start.x)<68&&Math.abs(P.y-E.start.y)<36)expeditionText(E.name,entryX,entryY-39);
+  E.nodes.forEach(function(n,i){
+    var x=Math.round(n.x-camX),y=Math.round(n.y-camY);if(x<-50||x>IW+50||y<-40||y>IH+40)return;
+    var lit=e.mask&(1<<i),near=expeditionNear(P,n,26);
+    ctx.fillStyle='#263b3c';ctx.fillRect(x-7,y-7,14,7);ctx.fillRect(x-5,y-19,10,12);
+    ctx.fillStyle=lit?'#cce0a2':'#a69b6b';
+    if(E.mode==='bells'){ctx.fillRect(x-5,y-16,10,2);ctx.fillRect(x-3,y-20,6,4);ctx.fillRect(x,y-14,1,3);}
+    else if(E.mode==='salvage'){ctx.fillRect(x-6,y-15,12,2);ctx.fillRect(x-1,y-13,2,4);}
+    else if(E.mode==='watch'){ctx.fillRect(x-5,y-18,10,1);ctx.fillRect(x-1,y-25,2,7);ctx.fillRect(x-5,y-25,10,1);}
+    else{ctx.fillRect(x-1,y-22,2,12);ctx.fillRect(x-4,y-22,8,3);}
+    for(var j=0;j<=i;j++)ctx.fillRect(x-i*3+j*6,y-31,2,2);
+    if(lit){ctx.fillStyle='#d9edaa';ctx.fillRect(x-3,y-11,6,1);ctx.fillRect(x-1,y-13,2,5);}
+    if(e.watch===i&&!lit){ctx.fillStyle='#8ccbd3';ctx.fillRect(x-9,y-35,Math.round(e.charge*3),2);}
+    if(near&&!lit)expeditionText(E.mode==='bells'?'Strike in order':E.mode==='salvage'?'Blast the seal':E.mode==='watch'?'Tend, then hold':'Tend to light',x,y-47);
+    if(i===2){drawRunItem(E.item,x+12,y-12,false);if(near&&e.mask===7&&!e.done)expeditionText('Defeat the keepers',x,y-47);}
+  });
+  E.rooms.forEach(function(r,i){
+    var x=Math.round(r.secret.x-camX),y=Math.round(r.secret.y-camY),near=Math.hypot(P.x-r.secret.x,P.y-r.secret.y)<38;
+    if(x<-24||x>IW+24||y<-24||y>IH+24)return;
+    ctx.fillStyle='#334a46';ctx.fillRect(x-9,y-17,2,17);ctx.fillRect(x+7,y-17,2,17);ctx.fillRect(x-9,y-19,18,2);
+    if(!near){ctx.fillStyle='#496354';for(var k=0;k<5;k++)ctx.fillRect(x-6+k*3,y-16,2,8+(k%3)*3);}
+    if(i===2&&near){
+      ctx.fillStyle='#bbaf79';var shape=worldLevel()%4;
+      if(shape===0){ctx.fillRect(x-4,y-10,9,7);for(var c=-1;c<=1;c++)ctx.fillRect(x+c*3,y-13,2,4);}
+      else if(shape===1){ctx.fillRect(x-3,y-9,6,6);ctx.fillRect(x+3,y-8,3,3);}
+      else if(shape===2){ctx.fillRect(x-5,y-10,10,7);ctx.fillStyle='#ede0af';ctx.fillRect(x,y-10,1,7);}
+      else{ctx.fillRect(x-4,y-8,8,5);ctx.fillRect(x+2,y-11,3,4);}
+      if(e.egg)expeditionText(E.egg,x,y-32);
+    }
+  });
+  if(e.glow>0){var n=e.done?E.summit:E.nodes[e.anchor||0],x=Math.round(n.x-camX),y=Math.round(n.y-camY);ctx.fillStyle='#d7dca4';for(var s=0;s<8;s++){var a=s*Math.PI/4+t;ctx.fillRect(Math.round(x+Math.cos(a)*16),Math.round(y-18+Math.sin(a)*12),1,2);}}
 }

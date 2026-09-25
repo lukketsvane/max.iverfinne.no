@@ -19,7 +19,7 @@ const stateNames = [
   'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
   'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'soloCrew', 'IW', 'IH', 'SCALE', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
   'PICTURE_ART', 'SANCTUARY_BG', 'NIGHT_BG', 'CAVERN_BG', 'activeStageLayout', 'placeView', 'mouse', 'queuedThrow', 'padAx', 'bombCoolMax', 'charge', 'tunnels', 'swans', 'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'feathers', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
-  'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
+  'runExpedition', 'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
   'wonders', 'wonderRun', 'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
   'sligoTrail', 'trailSelf', 'plantAtlasReady',
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
@@ -33,7 +33,7 @@ const functionNames = [
   'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'launchBomb', 'drawBombs', 'drawSligoAction', 'drawSligoSeed', 'highGround', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'gardenBackdrop', 'sanctuaryBackdrop', 'drawSanctuaryLayer', 'nightGarden', 'nightBackdrop', 'drawNightLayers', 'cavernGarden', 'cavernBackdrop', 'drawCavernLayers', 'surfaceY', 'terrainY', 'updateGarden', 'updateGardenFun', 'updateSeedPickups', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
-  'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
+  'initExpedition', 'interactExpedition', 'updateExpedition', 'expeditionBlast', 'drawExpedition', 'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
   'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
   'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
   'stageLayout', 'pictureLayout', 'levelSpots', 'digSpots', 'digBlast', 'pickupShown', 'drawSpots', 'drawSeedPickups', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
@@ -126,6 +126,7 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'max-classes.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'stage-layout.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'garden-places.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'stage-expeditions.js'), 'utf8'), sandbox);
   const pics = path.join(__dirname, '..', 'levels-v1'); if (saved.__pictures && fs.existsSync(pics)) for (const f of fs.readdirSync(pics).filter(n => n.endsWith('.js'))) vm.runInNewContext(fs.readFileSync(path.join(pics, f), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels-data.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels.js'), 'utf8'), sandbox);

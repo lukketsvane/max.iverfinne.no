@@ -8,6 +8,7 @@
 <script src="stage-layout.js"></script>
 <script src="tiles.js"></script>
 <script src="garden-places.js"></script>
+<script src="stage-expeditions.js"></script>
 <script src="levels-v1/seed-vault.js"></script>
 <script src="levels-v1/railway-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
@@ -325,6 +326,7 @@ function pictureLava(){
 function stageLayout(){
   var level=worldLevel();
   if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level<=2&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+  window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
@@ -5301,7 +5303,7 @@ function scatterFrom(x) {                                  // everyone who heard
 }
 
 function explode(x, y, wet, build) {
-  wonderBlast(x,y);digBlast(x,y);
+  wonderBlast(x,y);digBlast(x,y);expeditionBlast(x,y);
   build=build||Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers});
   var chainSeeds=[];
   var BR = BLAST_R + (build.blast||0)*5 + Math.round((build.charge||0)*8);

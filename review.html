@@ -98,6 +98,7 @@
       resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:'original'});rogueRun.seed=${reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
+      if(${layout}&&${params.has('expedition')}){var ex=stageLayout().expedition;P.x=ex.start.x;P.y=ex.start.y;if(${params.has('summit')}){P.x=ex.summit.x;P.y=ex.summit.y;P.platform=ex.nodes[2].platformId;}}
       if(${placeView}){var placeAt=stageLayout().place;if(placeAt){P.face=placeAt.side;P.x=placeAt.side>0?placeAt.bounds.x-8:placeAt.bounds.x+placeAt.bounds.w+8;P.y=surfaceY(P.x);}}
       rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;runActive=true;menuPaused=false;
       gardenPlots=[];rogueRun.garden=[];floatKrek=[];bombs=[];gardenSeeds=8;gardenRaidT=krekSpawnT=9999;gardenRaidActive=false;

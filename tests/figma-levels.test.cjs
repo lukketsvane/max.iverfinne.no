@@ -55,7 +55,7 @@ test('a live frame replaces the generated garden, the run uses its spots, and an
   h.window.MaxLevelData = data; g.resetRogueRun();
   const layout = g.stageLayout(), designed = layouts.create(1, g.levelOriginX(1), g.surfaceY, g.waterAt, 1);
   assert.equal(layout.designed, true); assert.equal(layout.frame, 'garden-01'); assert.equal(layout.seed, g.rogueRun.seed);
-  assert.deepEqual(shape(layout.platforms), shape(designed.platforms));
+  assert.deepEqual(shape(layout.platforms.filter(p => !p.expedition)), shape(designed.platforms));
   assert.notDeepEqual(shape(layout.platforms), shape(layouts.create(1, g.levelOriginX(1), g.surfaceY, g.waterAt, g.rogueRun.seed).platforms));
   const [reward, seed] = layout.rewards;
   assert.ok(g.runLoot.some(q => q.type === 'feathers' && q.x === reward.x && q.y === reward.y - 12), 'the feather waits on the designed reward');
@@ -72,7 +72,7 @@ test('a live frame replaces the generated garden, the run uses its spots, and an
   const generated = other.game.stageLayout();
   assert.equal(generated.designed, undefined);
   // A generated garden also gets its place from garden-places.js.
-  assert.equal(JSON.stringify(generated), JSON.stringify(require('../garden-places.js').furnish(layouts.create(5, other.game.levelOriginX(5), other.game.surfaceY, other.game.waterAt, other.game.rogueRun.seed), other.game.surfaceY, other.game.waterAt)));
+  assert.equal(JSON.stringify(generated), JSON.stringify(require('../stage-expeditions.js').furnish(require('../garden-places.js').furnish(layouts.create(5, other.game.levelOriginX(5), other.game.surfaceY, other.game.waterAt, other.game.rogueRun.seed), other.game.surfaceY, other.game.waterAt), other.game.surfaceY, other.game.waterAt)));
 });
 
 test('the run seed picks one variant per garden, the same on every client', async () => {

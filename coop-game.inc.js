@@ -226,6 +226,7 @@ function coopCapture(){
   return {world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
     secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),
     difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
+    expedition:runExpedition?coopPlain(runExpedition):null,
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
     plants:gardenPlots.map(coopPlain),garden:rogueRun.garden.map(coopPlain),seedsOnGround:seedPickups.slice(0,180).map(coopPlain),collected:Object.keys(seedCollected),dust:seedDust,
     pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0});}),bombs:bombs.map(coopPlain),
@@ -243,6 +244,7 @@ function coopState(s){
   if(Number.isFinite(s.dust)&&s.dust>=0&&s.dust<1)seedDust=s.dust;
   sligoMeat=Array.isArray(s.sligoMeat)?s.sligoMeat.slice(0,80).filter(function(q){return q&&['x','y','id','age'].every(function(k){return Number.isFinite(q[k]);});}).map(coopPlain):[];
   runLoot=Array.isArray(s.loot)?s.loot.slice(0,200).map(coopPlain):[];
+  runExpedition=s.expedition&&s.expedition.stage===s.world?coopPlain(s.expedition):null;
   runEncounters=Array.isArray(s.encounters)?s.encounters.slice(0,4).map(coopPlain):[];
   runHazards=Array.isArray(s.hazards)?s.hazards.slice(0,32).map(coopPlain):[];
   stageWeather=s.stageWeather?coopPlain(s.stageWeather):null;rogueRun.bossDefeated=!!s.bossDefeated;
