@@ -35,6 +35,8 @@ Relic entry is through the collection garden, never live Settings. It leaves the
 
 Supabase holds one shared live garden. The first player creates/owns the run settings. Later players enter the current run up to four total.
 
+The home footer shows usernames only, merging `max-online-v1` Realtime Presence with the shared-game status roster. Presence covers signed-in menu/collection/relic players as well as normal Play. `online-players.mjs` broadcasts only the canonical public username, deduplicates names across tabs and roster entries, removes the old identity on sign-out, and rebuilds its channel on foreground/BFCache return. It never joins a game, changes its difficulty, or provides authorization. No empty-garden message is shown.
+
 The client obtains `max_coop_status` before joining. It reports the active run, occupied character IDs, run difficulty and the current user's reserved character. The menu greys occupied characters and locks difficulty when the run exists. Database RPCs are the final authority; UI disabling is not the security/concurrency guarantee.
 
 `coop-session.mjs` owns room membership, Realtime channels, authority/reconnect and encoded snapshots. `coop-game.inc.js` owns the mapping between network members and actual game actors/actions.

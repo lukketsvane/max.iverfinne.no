@@ -13,7 +13,7 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {} } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
@@ -55,8 +55,16 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
       if (name === 'max_garden_publish') return { data: null, error: null };
       return { data: null, error: null };
     },
-    channel(name) {
-      const ch = { name, on() { return ch; }, subscribe(fn) { ch.status = fn; fn('SUBSCRIBED'); return ch; }, async send() {} };
+    channel(name, options) {
+      const key = options?.config?.presence?.key, handlers = {};
+      const ch = { name, key, state: { ...present }, tracked: [],
+        on(type, filter, fn) { handlers[type + ':' + filter.event] = fn; return ch; },
+        subscribe(fn) { ch.status = fn; fn('SUBSCRIBED'); return ch; }, async send() {},
+        presenceState() { return ch.state; },
+        sync(state) { ch.state = state; handlers['presence:sync']?.(); },
+        async track(payload) { ch.tracked.push(payload); ch.sync({ ...ch.state, [key]: [payload] }); return 'ok'; },
+        async untrack() { delete ch.state[key]; handlers['presence:sync']?.(); return 'ok'; },
+      };
       channels.set(name, ch); return ch;
     },
     async removeChannel(ch) { channels.delete(ch.name); ch.status?.('CLOSED'); },
@@ -93,7 +101,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     for (const ch of text) { input.value += ch; input.dispatchEvent(new w.Event('input', { bubbles: true })); }
   }
   const classIds = () => [...w.document.querySelectorAll('[data-class-id]')].map(n => n.dataset.classId);
-  return { w, dom, click, submit, settle, pauses, calls, signIns, type, classIds, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
+  return { w, dom, click, submit, settle, pauses, calls, signIns, type, classIds, channels, emit, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
 }
 
 test('home keeps one Play entry plus login, settings and credits', async () => {
@@ -226,21 +234,77 @@ test('signed out, the menu garden shows every plant greyed out; signed in, the o
   }
 });
 
-test('the home screen names who is in the shared garden and offers Login until signed in', async () => {
+test('home shows just usernames and keeps the empty state silent', async () => {
   const m=await menu(undefined,{restoredUser:{id:'returning-player',email:'iver@players.max.invalid'},sharedStatus:{active:true,players:2,taken:['mech','runner'],difficulty:'medium',mine:null,members:[{name:'iver',classId:'mech'},{name:'Guest',classId:'runner'}]}});
   try{
     await m.settle();
     const lines=[...m.w.document.querySelectorAll('.max-home-players p')].map(p=>p.textContent);
-    assert.deepEqual(lines,['IN THE GARDEN','iver - Mech','Guest - Moss']);
+    assert.deepEqual(lines,['Guest','iver']);
     assert.ok(m.w.document.querySelector('.max-home-nav').textContent.includes('Garden'));
   } finally { m.dom.window.close(); }
   const guest=await menu(undefined);
   try{
     await guest.settle();
-    assert.deepEqual([...guest.w.document.querySelectorAll('.max-home-players p')].map(p=>p.textContent),['GARDEN IS EMPTY']);
+    assert.deepEqual([...guest.w.document.querySelectorAll('.max-home-players p')],[]);
+    assert.equal(guest.w.document.querySelector('.max-home-players').hidden,true);
     const nav=guest.w.document.querySelector('.max-home-nav').textContent;
     assert.ok(nav.includes('Login')&&!nav.includes('Garden'));
   } finally { guest.dom.window.close(); }
+});
+
+test('online names include the menu and relic players, deduplicate tabs and games, and update on leave', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' }, scenes: [],
+    present: { a: [{ name: 'alice' }], secondTab: [{ name: 'alice' }], b: [{ name: 'bob' }], invalid: [{ name: '<script>' }, { email: 'private@example.com' }] },
+    sharedStatus: { active: true, members: [{ name: 'alice', classId: 'runner' }, { name: 'carol', classId: 'mech' }] } });
+  try {
+    const names = () => [...m.w.document.querySelectorAll('.max-home-player')].map(p => p.textContent);
+    assert.deepEqual(names(), ['alice', 'bob', 'carol', 'lukketsvane']);
+    const presence = m.channels.get('max-online-v1');
+    assert.deepEqual(JSON.parse(JSON.stringify(presence.tracked.at(-1))), { name: 'lukketsvane' }, 'only a public username is broadcast');
+    presence.sync({ a: [{ name: 'alice' }], d: [{ name: 'dora' }] });
+    assert.deepEqual(names(), ['alice', 'carol', 'dora', 'lukketsvane']);
+    m.click('Garden'); await m.settle(); m.click('Bastion relic'); m.click('ENTER'); await m.settle();
+    assert.equal(m.channels.get('max-online-v1'), presence, 'playing a relic keeps the account present');
+    m.click('Return to garden'); await m.settle(); m.click('Your garden. Back to the menu');
+    assert.deepEqual(names(), ['alice', 'carol', 'dora', 'lukketsvane']);
+  } finally { m.dom.window.close(); }
+});
+
+test('sign-out removes the local online name and foregrounding restores presence without joining a game', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'alice-id', email: 'alice@players.max.invalid' }, present: { b: [{ name: 'bob' }] } });
+  try {
+    const names = () => [...m.w.document.querySelectorAll('.max-home-player')].map(p => p.textContent);
+    assert.deepEqual(names(), ['alice', 'bob']);
+    const old = m.channels.get('max-online-v1');
+    m.emit(null); await m.settle();
+    assert.deepEqual(names(), ['bob']); assert.equal(old.state[old.key], undefined);
+    m.emit({ id: 'carol-id', email: 'carol@players.max.invalid' }); await m.settle();
+    assert.deepEqual(names(), ['bob', 'carol']);
+    Object.defineProperty(m.w.document, 'hidden', { configurable: true, value: true });
+    m.w.document.dispatchEvent(new m.w.Event('visibilitychange')); await m.settle();
+    assert.equal(m.channels.has('max-online-v1'), false); assert.deepEqual(names(), []);
+    old.sync({ stale: [{ name: 'stale_player' }] });
+    Object.defineProperty(m.w.document, 'hidden', { configurable: true, value: false });
+    m.w.document.dispatchEvent(new m.w.Event('visibilitychange')); await m.settle();
+    assert.notEqual(m.channels.get('max-online-v1'), old); assert.deepEqual(names(), ['bob', 'carol']);
+    assert.equal(m.beginCount, 0); assert.ok(!m.calls.some(([name]) => name === 'max_coop_global'));
+  } finally { m.dom.window.close(); }
+});
+
+test('an in-flight presence update cannot bring a signed-out account back online', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'alice-id', email: 'alice@players.max.invalid' } });
+  try {
+    const presence = m.channels.get('max-online-v1'), track = presence.track;
+    let finish;
+    const delayed = new Promise(resolve => { finish = resolve; });
+    presence.track = async payload => { await delayed; return track(payload); };
+    m.emit({ id: 'bob-id', email: 'bob@players.max.invalid' }); await m.settle();
+    m.emit(null); finish(); await m.settle();
+    assert.equal(presence.state[presence.key], undefined);
+    assert.equal(m.w.document.querySelector('.max-home-players').hidden, true);
+    presence.status('CHANNEL_ERROR'); presence.sync({ stale: [{ name: 'stale_player' }] });
+    assert.equal(m.w.document.querySelector('.max-home-players').hidden, true, 'a disconnected channel cannot restore old names');
+  } finally { m.dom.window.close(); }
 });
 
 const OPEN = ['mech', 'runner', 'bulwark', 'herbalist'];
@@ -307,7 +371,7 @@ test('a taken Sligo is greyed out like the four, and the shared status and the h
   const m = await menu(JSON.stringify({ classId: 'sligo', difficulty: 'hard' }), { eggs: { v: 1, local: ['sligo'] }, sharedStatus: status });
   try {
     await m.settle();
-    assert.deepEqual([...m.w.document.querySelectorAll('.max-home-players p')].map(p => p.textContent), ['IN THE GARDEN', 'iver - Sligo', 'Guest - Mech']);
+    assert.deepEqual([...m.w.document.querySelectorAll('.max-home-players p')].map(p => p.textContent), ['Guest', 'iver']);
     m.click('Play'); await m.settle();
     const sligo = m.w.document.querySelector('[data-class-id="sligo"]');
     assert.equal(sligo.disabled, true); assert.equal(sligo.getAttribute('aria-disabled'), 'true'); assert.equal(sligo.title, 'Already playing');

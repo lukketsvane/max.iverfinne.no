@@ -53,9 +53,8 @@
 .max-menu .max-home-links button{min-height:44px;padding:10px 2px;background:transparent;border-color:transparent;gap:0;color:#a7bebb}
 .max-home-links svg{display:none}
 .max-menu .max-home-note{margin:24px 0 0;font-size:9px;letter-spacing:.17em;color:#99aead}
-.max-menu .max-home-players{position:fixed;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 22px));margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+.max-menu .max-home-players{position:fixed;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 22px));margin:0;padding:0 12px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 16px;max-height:20vh;overflow:auto}
 .max-menu .max-home-players p{margin:0}
-.max-menu .max-home-players-title{opacity:.6}
 
 /* Character selection is a part of the landscape, not a second framed modal. */
 .max-menu[data-screen="play"]::before{background:linear-gradient(90deg,#061220ed,#071523bc 55%,#080f2060),linear-gradient(0deg,#06101bb3,transparent 72%)}
@@ -155,6 +154,7 @@
   .max-menu .max-home-button{min-height:44px;padding:10px 14px}
   .max-menu .max-icon-play{min-height:52px}
   .max-menu .max-home-note{display:none}
+  .max-menu .max-home-players{left:50%}
   .max-menu[data-screen="play"] .max-menu-card{display:grid;grid-template-columns:150px minmax(0,1fr);column-gap:28px;width:min(100%,640px);padding-top:0;padding-bottom:0}
   .max-menu[data-screen="play"] .max-menu-header{margin-bottom:14px}
   .max-menu[data-screen="play"] .max-back{top:0}
