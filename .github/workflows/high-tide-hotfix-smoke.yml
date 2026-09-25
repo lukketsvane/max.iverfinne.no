@@ -1,0 +1,17 @@
+name: High Tide hotfix smoke
+on:
+  push:
+    branches: ['fix/high-tide-mobile-coop']
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: node --test tests/high-tide-controls.test.cjs tests/high-tide.test.cjs
+      - run: npm run build
