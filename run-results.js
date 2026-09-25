@@ -132,7 +132,7 @@
     recordsButton = button('Garden records', 'run-results-records', openRecords);
     publishBox = el('div', 'run-results-publish');
     publishButton = button('Add bouquet', '', publishRun);
-    publishStatus = el('p', 'run-results-publish-status'); publishStatus.setAttribute('role', 'status');
+    publishStatus = el('p', 'run-results-publish-status'); publishStatus.setAttribute('role', 'status'); publishStatus.hidden = true;
     publishBox.append(publishButton, publishStatus);
     saveNotice = el('p', 'run-results-publish-status'); saveNotice.setAttribute('role', 'status');
     actions.append(retry, recordsButton); footer.append(publishBox, saveNotice, nav, actions);
@@ -272,17 +272,17 @@
     var api = window.MaxGardenLeaderboard, who = api && api.identity();
     publishBox.hidden = !(run && run.mode !== 'last-seed' && run.id && run.plants.length && api && api.configured && who && run.ownerId === who.id && !run.published);
     publishButton.disabled = !!(run && published[run.id]);
-    publishStatus.textContent = run && published[run.id] || '';
+    publishStatus.textContent = '';
   }
   async function publishRun() {
     if (!run || run.mode === 'last-seed' || publishButton.disabled) return;
-    var record = run, api = window.MaxGardenLeaderboard; publishButton.disabled = true; publishStatus.textContent = 'Adding your bouquet…';
+    var record = run, api = window.MaxGardenLeaderboard; publishButton.disabled = true;
     try {
       var best = await api.submit(record);
       published[record.id] = best.id === record.id ? 'Your bouquet is on the leaderboard.' : 'Your best bouquet is already here.';
       if (!panel.hidden && run && run.id === record.id) updatePublish();
     } catch (error) {
-      if (!panel.hidden && run && run.id === record.id) { publishButton.disabled = false; publishStatus.textContent = error.message || 'Could not add your bouquet. Your garden is still saved here.'; }
+      if (!panel.hidden && run && run.id === record.id) publishButton.disabled = false;
     }
   }
   function openRecords() {
