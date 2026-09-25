@@ -13,7 +13,14 @@ const found = (g, id) => (g.rogueMeta.wonders || {})[id] | 0;
 test('every run rolls its own wonders: seeded, repeatable, none in the first garden or on a boss night', () => {
   const seen = { pz: new Set(), en: new Set(), gate: new Set() }, a = [], b = [];
   let ultra = 0, gardens = 0;
-  const g = fresh(), roll = (seed, w) => { g.rogueRun.seed = seed; g.rogueRun.world = w; g.wonderRun = null; g.updateWonders(0); return g.wonders; };
+  // This is the 4,800-roll probability test, not a terrain sweep. Keep a real
+  // layout per garden; traversal/seed coverage lives in the physics suites.
+  const g = fresh(), layouts = new Map(), roll = (seed, w) => {
+    g.rogueRun.seed = seed; g.rogueRun.world = w;
+    if (!layouts.has(w)) { g.activeStageLayout = null; layouts.set(w, g.stageLayout()); }
+    g.activeStageLayout = { ...layouts.get(w), seed };
+    g.wonderRun = null; g.updateWonders(0); return g.wonders;
+  };
   for (let seed = 1; seed <= 600; seed++) for (const w of [1, 2, 3, 4, 5, 7, 12, 18]) {
     const s = roll(seed, w);
     if (w === 1 || w % 5 === 0) { assert.equal(s.pz, ''); assert.equal(s.en, ''); assert.equal(s.gate, ''); continue; }

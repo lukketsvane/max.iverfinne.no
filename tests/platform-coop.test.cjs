@@ -189,3 +189,21 @@ test('low shelves cannot start or continue refills, while a Moss teammate can re
   for (let i = 0; i < 40; i++) g.updateCompanion(.05);
   assert.equal(bot.state.water, .6); assert.equal(g.ensureCompanion(member), null);
 });
+
+test('upper-district interactions use the guest height and survive authority snapshots without double rewards',()=>{
+  const {host,guest,send,place}=pair(),g=host.game;
+  guest.game.coopState(JSON.parse(JSON.stringify(g.coopCapture())));
+  const n=g.stageLayout().expedition.nodes[0];
+  place(n.x,g.surfaceY(n.x));send([{id:1,type:'encounter',world:1}]);
+  assert.equal(g.runExpedition.mask,0,'a ground packet cannot light a high beacon');
+  place(n.x,n.y);assert.equal(guest.game.interactEncounter(),true);
+  send([{id:2,type:'encounter',world:1}]);assert.equal(g.runExpedition.mask,1);
+  const queued=g.runExpedition.queued;send([{id:2,type:'encounter',world:1}]);assert.equal(g.runExpedition.queued,queued);
+  const state=JSON.parse(JSON.stringify(g.coopCapture()));guest.game.coopState(state);
+  assert.deepEqual(JSON.parse(JSON.stringify(guest.game.runExpedition)),state.expedition);
+  guest.game.updateExpedition(30);assert.equal(guest.game.runExpedition.queued,queued,'a guest does not simulate or award');
+  guest.game.coop.host=true;guest.game.runExpedition.mask=7;guest.game.runExpedition.queued=0;guest.game.floatKrek=[];guest.game.runLoot=[];
+  guest.game.updateExpedition(.1);const drops=guest.game.runLoot.length;
+  assert.equal(drops,2,'each connected teammate owns one reward');
+  guest.game.updateExpedition(30);assert.equal(guest.game.runLoot.length,drops);
+});

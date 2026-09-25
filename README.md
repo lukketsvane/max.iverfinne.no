@@ -271,3 +271,7 @@ The source of truth for behavior is **current `main` + passing tests + this READ
 B and Y tend or plant; down plus the bottom face button also plants without jumping. Dodge is on either stick click, never B or down. Menus use spatial stick/D-pad navigation, held-direction repeat, confirm and back, with focus kept in the visible dialog. Held confirm is released before it can trigger a gameplay action.
 
 Aim has a 0.12 radial deadzone and reaches full throw distance at 0.75 stick travel; small resting drift is ignored. Light trigger pressure starts charging. A single Joy-Con can aim down with its movement stick without planting. Disconnecting cancels a held throw and releases controller movement.
+
+### Upper districts
+
+All twenty main gardens include an optional 288–384 pixel ascent with three side galleries, hidden seed caches and a keepsake. Relay beacons, ordered bells, salvage seals and guarded watch points earn a summit item while the global threat clock keeps running. Follow the trail lamps; use the existing tend and throw controls. The full level catalogue and review links are in [Upper districts](docs/design/upper-districts.md).

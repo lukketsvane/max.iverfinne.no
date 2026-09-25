@@ -16,7 +16,7 @@ test("garden 2 is the Railway Ruins at Max's scale: art, rock, hidden ledges, ma
   assert.equal(L.picture, 'railway-ruins');
   assert.ok(L.art && L.art.w >= 1000 && L.art.w <= 1200 && L.art.h === 224, 'about as wide as the gardens that follow');
   assert.ok(L.platforms.filter(p => p.solid).length > 20);
-  const ledges = L.platforms.filter(p => !p.solid);
+  const ledges = L.platforms.filter(p => !p.solid && !p.expedition);
   assert.ok(ledges.length >= 20 && ledges.every(p => p.art), 'the art draws its own decks, rungs and island tops');
   assert.equal(L.rewards.length, 2); assert.equal(L.trials.length, 2); assert.equal(L.bonuses.length, 2);
   assert.ok(L.spots.door && L.spots.dig && L.spots.secret && L.spots.puzzle);
@@ -47,7 +47,7 @@ test('garden 1 is the Seed Vault at the bottom of the silo: native art, hidden f
   const { g, L } = vault();
   assert.equal(L.picture, 'seed-vault');
   assert.ok(L.art && L.art.w === 557 && L.art.h === 314);
-  const ledges = L.platforms.filter(p => !p.solid);
+  const ledges = L.platforms.filter(p => !p.solid && !p.expedition);
   assert.ok(ledges.length >= 20 && ledges.every(p => p.art), 'the art draws its own floors, bridge and ladders');
   assert.equal(L.rewards.length, 3, 'two rewards and the seed on the pedestal'); assert.equal(L.trials.length, 2); assert.equal(L.bonuses.length, 2);
   assert.ok(L.spots.door && L.spots.dig && L.spots.secret && L.spots.puzzle);
@@ -107,7 +107,7 @@ test('the Sunken Sanctuary picture: art, rock, hidden ledges, markers, flat soil
   assert.equal(L.picture, 'sunken-sanctuary');
   assert.ok(L.art && L.art.w === 1536 && L.art.h === 540);
   assert.ok(L.platforms.filter(p => p.solid).length > 100);
-  const ledges = L.platforms.filter(p => !p.solid);
+  const ledges = L.platforms.filter(p => !p.solid && !p.expedition);
   assert.ok(ledges.length >= 10 && ledges.every(p => p.art), 'the art draws its own bridges and rungs');
   assert.equal(L.rewards.length, 2); assert.equal(L.trials.length, 2); assert.equal(L.bonuses.length, 2);
   assert.ok(L.spots.door && L.spots.dig && L.spots.secret && L.spots.puzzle);
