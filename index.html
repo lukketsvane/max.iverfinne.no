@@ -3519,8 +3519,10 @@ function drawResultPlant(canvas,p){
   }finally{ctx=old;IH=oldH;ANCHOR=oldA;worldWeather.wind=oldWind;}
 }
 function resultAssetsReady(){return plantAtlasReady&&sheetReady&&ready(soilImg)&&Object.keys(IMG).every(function(k){return ready(IMG[k]);});}
-function drawResultScene(canvas,bouquet){
-  var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY};
+function drawResultScene(canvas,bouquet,resultRun){
+  var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY},oldSkin=P.skin;
+  var resultClass=resultRun&&resultRun.classId;
+  if(resultClass)P.skin=resultClass==='runner'?'moss':resultClass;
   try{
     ctx=canvas.getContext('2d');if(!ctx)return;
     IW=canvas.width;IH=canvas.height;ctx.imageSmoothingEnabled=false;
@@ -3539,9 +3541,9 @@ function drawResultScene(canvas,bouquet){
       var r=SM.min[(x|0)%SM.min.length];soilStamp(r,x,gy+10+(x%17),false);
     }
     if(bouquet&&bouquet.width)ctx.drawImage(bouquet,cx-48,gy-91);
-    if(sheetReady)ctx.drawImage(sheet,0,0,CELL,CELL,cx-44,gy-31,CELL,CELL);
+    drawPlayerSprite(cx-44,gy-31);
     if(companion&&window.MaxCompanion)window.MaxCompanion.draw(ctx,{tier:companion.state.tier,state:'idle',face:-1,clock:0,water:companion.state.water},cx+40,gy);
-  }finally{ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;}
+  }finally{P.skin=oldSkin;ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;}
 }
 function perkMax(id){return window.MaxBuilds.max(id);}
 var ROGUE_PERKS=window.MaxBuilds.perks;
