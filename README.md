@@ -22,6 +22,7 @@ Unlocked **relic stones** in the collection garden select game modes using the s
 - A brief PWA/background interruption must not count as leaving.
 - If the authoritative player disappears, authority can hand over to another active player.
 - A returning player reconnects to the same shared run when the reserved membership is still valid.
+- During a run, **Settings → Invite** copies a link to that exact session and mode. Friends choose a free character and inherit its difficulty. Ended sessions cannot be joined through an old link; mode and character unlocks still apply.
 - Settings and boon selection do **not** pause the world.
 - The app must work with normal current Safari/WebKit behavior. Experimental WebKit feature flags are not a requirement.
 

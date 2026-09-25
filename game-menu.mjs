@@ -27,6 +27,7 @@ let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, g
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
 let selectedMode = 'garden', focusedRelic = null, relicTargets;
+let invitedRoom = null, inviteState = null;
 // Hidden characters show only once unlocked; the game reads the same list (the plant gallery).
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
 window.MaxEasterEggs = { has: eggs.has, list: eggs.list, allDiscovered: () => hasFullDiscovery(user) };
@@ -58,6 +59,7 @@ function page(name, title) {
 }
 function back() { card.append(button('Back', liveSettings ? dismissSettings : home, 'subtle max-back')); }
 function home() {
+  clearInvite();
   page('home', 'MAX');
   card.replaceChildren();
   const content = el('div', undefined, 'max-home-content');
@@ -460,10 +462,24 @@ function selectionSummary() {
   summary.append(skinPreview(characterSkin(selected.classId)), el('p', classInfo(selected.classId).name + ' · ' + selected.difficulty.toUpperCase()));
   card.append(summary);
 }
-function play(mode) {
+function readInvite() {
+  const params = new URL(window.location.href).searchParams, id = params.get('join'), mode = params.get('mode') || 'garden';
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '') && ['garden', 'last-seed'].includes(mode) ? { id: id.toLowerCase(), mode } : null;
+}
+function clearInvite() {
+  if (invitedRoom) {
+    const url = new URL(window.location.href); url.searchParams.delete('join'); url.searchParams.delete('mode');
+    window.history.replaceState(window.history.state, '', url);
+  }
+  invitedRoom = null; inviteState = null;
+}
+function play(mode, room = null) {
+  if (!room) clearInvite();
+  invitedRoom = room; inviteState = room ? 'loading' : null;
   selectedMode = mode === 'last-seed' ? mode : 'garden';
   sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
   page('play', selectedMode === 'last-seed' ? 'Last Seed' : 'Your Max');
+  if (invitedRoom) card.append(el('p', 'You are invited. Choose your character to join.'));
   if (selectedMode === 'last-seed') card.append(el('p', 'Plant the only seed to begin. Hold Tend beside a fallen teammate to revive.'));
   chooseMax();
   const actions = el('div', undefined, 'max-play-actions max-play-one');
@@ -473,9 +489,12 @@ function play(mode) {
 }
 async function refreshSharedStatus() {
   if (!client) return sharedStatus;
+  const mode = selectedMode, room = invitedRoom;
   try {
-    const { data, error } = await client.rpc('max_coop_status', selectedMode === 'last-seed' ? { p_mode: selectedMode } : undefined);
+    const { data, error } = await client.rpc('max_coop_status', mode === 'last-seed' ? { p_mode: mode } : undefined);
     if (error) throw error;
+    if (mode !== selectedMode || room !== invitedRoom) return sharedStatus;
+    if (room) inviteState = data?.active && data.id === room ? 'ready' : 'expired';
     if (data && typeof data === 'object') sharedStatus = {
       active: !!data.active,
       players: Math.max(0, Number(data.players) || 0),
@@ -484,7 +503,10 @@ async function refreshSharedStatus() {
       mine: ALL_CLASS_IDS.includes(data.mine) ? data.mine : null,
       members: Array.isArray(data.members) ? data.members.filter(m => m && typeof m.name === 'string').slice(0, 4).map(m => ({ name: m.name.slice(0, 24), classId: ALL_CLASS_IDS.includes(m.classId) ? m.classId : null })) : [],
     };
-  } catch { sharedStatus.members = []; }
+  } catch {
+    if (mode !== selectedMode || room !== invitedRoom) return sharedStatus;
+    sharedStatus.members = []; if (room) inviteState = 'error';
+  }
   if (screen === 'play') { updateSelection(); updatePlayReady(); }
   return sharedStatus;
 }
@@ -520,6 +542,7 @@ async function joinSharedGarden() {
     // A hidden character joins only once the server has its unlock (typed here while signed out).
     if (HIDDEN_CLASS_IDS.includes(selected.classId)) await eggs.ensure(client, user, selected.classId);
     await refreshSharedStatus();
+    if (invitedRoom && inviteState !== 'ready') throw new Error(inviteState === 'expired' ? 'This session has ended.' : 'Could not check invite. Try Play again.');
     const unavailable = new Set(sharedStatus.taken || []);
     if (unavailable.has(selected.classId) && selected.classId !== sharedStatus.mine) {
       const free = visibleClassIds().find(id => !unavailable.has(id));
@@ -530,7 +553,7 @@ async function joinSharedGarden() {
   }
   catch (error) { busy = false; message(error.message || 'Could not join yet. Try Play again.', true); return; }
   busy = false;
-  await enterRoom({ global: true });
+  await enterRoom({ global: true, ...(invitedRoom ? { id: invitedRoom } : {}) });
 }
 function updatePlayReady() {
   if (screen !== 'play') return;
@@ -538,11 +561,16 @@ function updatePlayReady() {
   const noCharacter = visibleClassIds().every(id => taken.has(id) && id !== sharedStatus.mine);
   // Four players fill the garden even when a fifth character is still free.
   const full = !!sharedStatus.active && Number(sharedStatus.players || 0) >= 4 && !sharedStatus.mine;
-  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady || noCharacter || full;
-  status.hidden = sessionReady && !noCharacter && !full;
+  const checking = inviteState === 'loading', expired = inviteState === 'expired', failed = inviteState === 'error';
+  for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady || noCharacter || full || checking || expired;
+  status.hidden = sessionReady && !noCharacter && !full && !checking && !expired && !failed;
   if (!sessionReady) message('Restoring account…');
+  else if (checking) message('Checking invite…');
+  else if (expired) message('This session has ended.', true);
+  else if (failed) message('Could not check invite. Try Play again.', true);
   else if (noCharacter) message('Garden full · all four characters are playing', true);
   else if (full) message('Garden full · four players are playing', true);
+  else if (status.dataset.error !== 'true') status.textContent = '';
 }
 async function enterRoom(code) {
   if (busy || session) return;
@@ -561,7 +589,7 @@ async function enterRoom(code) {
     error: reason => {
       game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
       liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
-      game.pause(true); play(selectedMode); card.append(status); message(reason, true); startScene();
+      game.pause(true); play(selectedMode, invitedRoom); card.append(status); message(reason, true); startScene();
     },
   }, { ...selected, mode: selectedMode });
   session = candidate;
@@ -613,6 +641,31 @@ function nextVolume(value) {
   return levels[(current < 0 ? 0 : current + 1) % levels.length];
 }
 function volumeLabel(name, value) { return name + ' ' + (value <= .01 ? 'off' : Math.round(value * 100) + '%'); }
+function inviteControl() {
+  const url = new URL(window.location.pathname, window.location.origin);
+  url.searchParams.set('join', session.room.id); url.searchParams.set('mode', session.mode);
+  const box = el('div', undefined, 'max-invite');
+  const feedback = el('p', '', 'max-status'); feedback.setAttribute('role', 'status');
+  const field = el('input'); field.type = 'text'; field.readOnly = true; field.value = url.href;
+  field.setAttribute('aria-label', 'Session invite link'); field.hidden = true;
+  field.addEventListener('click', () => field.select());
+  const selectLink = () => { field.hidden = false; field.focus(); field.select(); field.setSelectionRange(0, field.value.length); };
+  const invite = button('Invite', async () => {
+    invite.disabled = true; let copied = false;
+    // Call directly from the tap: iOS requires a user gesture for clipboard access.
+    try { await navigator.clipboard.writeText(url.href); copied = true; } catch {
+      selectLink();
+      try { copied = document.execCommand('copy'); } catch {}
+    }
+    if (!box.isConnected) return;
+    invite.disabled = false;
+    if (copied) {
+      field.hidden = true; invite.focus({ preventScroll: true });
+      feedback.textContent = 'Link copied. Send it to a friend.';
+    } else feedback.textContent = 'Select and copy this link to invite a friend.';
+  });
+  box.append(invite, field, feedback); return box;
+}
 function settings() {
   page('settings', 'Settings');
   const music = game.musicVolume?.() ?? 1, effects = game.effectsVolume?.() ?? 1;
@@ -620,6 +673,7 @@ function settings() {
   const effectsButton = button(volumeLabel('Effects', effects), () => { game.setEffectsVolume?.(nextVolume(effects)); settings(); });
   musicButton.setAttribute('aria-label', 'Music volume ' + Math.round(music * 100) + ' percent');
   effectsButton.setAttribute('aria-label', 'Effects volume ' + Math.round(effects * 100) + ' percent');
+  if (liveSettings && session?.playing && !session.closed) card.append(inviteControl());
   card.append(musicButton, effectsButton, button('Controls', help));
   if (!liveSettings && user && playerName(user) !== 'Guest') {
     if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords()));
@@ -807,7 +861,10 @@ function attach(bridge) {
   if (typeof __MAX_RELIC_REVIEW__ !== 'undefined' && __MAX_RELIC_REVIEW__ && window.__relicReview) {
     setUser({ id: 'relic-review', email: 'lukketsvane@players.max.invalid' });
     open(); enterGarden();
-  } else open();
+  } else {
+    const invite = readInvite(); open();
+    if (invite && client) play(invite.mode, invite.id);
+  }
 }
 function replay() {
   const old = session; session = null; if (old) void old.leave(); game.stopCoop?.();

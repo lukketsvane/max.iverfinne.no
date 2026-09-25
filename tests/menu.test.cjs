@@ -24,8 +24,9 @@ test('full discovery follows the authenticated owner and clears on sign-out or a
   } finally { m.dom.window.close(); }
 });
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {} } = {}) {
-  const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
+const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, url = 'https://max.iverfinne.no' } = {}) {
+  const dom = new JSDOM('<!doctype html><html><body></body></html>', { url, runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
   if (eggs !== undefined) w.localStorage.setItem('max-easter-eggs-v1', JSON.stringify(eggs));
@@ -33,7 +34,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   let listener, session = restoredUser ? { user: restoredUser } : null, begun = null, beginCount = 0, active = false, music = .75, effects = .75;
   const channels = new Map(), pauses = [];
   const emit = user => { session = user ? { user } : null; listener?.('SIGNED_IN', session); };
-  const roomFor = id => ({ id: 'shared-garden', code: 'SHARED00001', host: id, state: 'playing', members: [{ id, slot: 1, ready: true, name: 'max' }] });
+  const roomFor = id => ({ id: INVITE_ROOM, code: 'SHARED00001', host: id, state: 'playing', members: [{ id, slot: 1, ready: true, name: 'max' }] });
   w.testClient = {
     auth: {
       onAuthStateChange(fn) { listener = fn; queueMicrotask(() => fn('INITIAL_SESSION', session)); },
@@ -221,6 +222,93 @@ test('live Settings returns to the same shared run without pausing or restarting
     m.click('Back');await m.settle();
     assert.equal(overlay.hidden,true);assert.equal(m.beginCount,1);assert.equal(m.active,true);
     assert.equal(m.w.document.activeElement,trigger);
+  } finally { m.dom.window.close(); }
+});
+
+for (const mode of ['garden', 'last-seed']) test('Invite copies the active ' + mode + ' session and keeps the run going', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' }, scenes: [] });
+  try {
+    m.click('Settings');
+    assert.equal([...m.w.document.querySelectorAll('button')].some(b => b.textContent === 'Invite'), false);
+    m.click('Back');
+    if (mode === 'last-seed') { m.click('Garden'); await m.settle(); m.click('Last Seed relic'); m.click('ENTER'); }
+    else m.click('Play');
+    m.click('Play'); await m.settle();
+    const copied = []; Object.defineProperty(m.w.navigator, 'clipboard', { value: { async writeText(value) { copied.push(value); } } });
+    m.w.document.querySelector('.max-live-settings').click();
+    m.click('Invite'); await m.settle();
+    assert.deepEqual(copied, ['https://max.iverfinne.no/?join=' + INVITE_ROOM + '&mode=' + mode]);
+    assert.match(m.w.document.body.textContent, /Link copied/);
+    assert.equal(m.beginCount, 1); assert.equal(m.active, true); assert.equal(m.pauses.at(-1), false);
+    m.click('Back'); assert.equal(m.active, true);
+  } finally { m.dom.window.close(); }
+});
+
+test('Invite falls back to a selected link when clipboard access is denied and can retry', async () => {
+  const m = await menu();
+  try {
+    m.click('Play'); m.click('Play'); await m.settle(); m.w.document.querySelector('.max-live-settings').click();
+    let denied = true;
+    Object.defineProperty(m.w.navigator, 'clipboard', { value: { async writeText() { if (denied) throw new Error('Denied'); } } });
+    m.w.document.execCommand = () => false;
+    m.click('Invite'); await m.settle();
+    const field = m.w.document.querySelector('input[aria-label="Session invite link"]');
+    assert.equal(field.hidden, false); assert.equal(field.readOnly, true);
+    assert.equal(field.selectionStart, 0); assert.equal(field.selectionEnd, field.value.length);
+    assert.match(m.w.document.body.textContent, /Select and copy/); assert.doesNotMatch(m.w.document.body.textContent, /Link copied/);
+    denied = false; m.click('Invite'); await m.settle();
+    assert.equal(field.hidden, true); assert.match(m.w.document.body.textContent, /Link copied/);
+  } finally { m.dom.window.close(); }
+});
+
+for (const mode of ['garden', 'last-seed']) test(mode + ' invite opens character selection and joins only its session', async () => {
+  const m = await menu(undefined, { url: 'https://max.iverfinne.no/?join=' + INVITE_ROOM + '&mode=' + mode,
+    sharedStatus: { id: INVITE_ROOM, active: true, players: 1, taken: ['mech'], difficulty: 'hard' } });
+  try {
+    assert.equal(m.w.document.querySelector('.max-menu').dataset.screen, 'play');
+    assert.match(m.w.document.body.textContent, /You are invited/); assert.equal(m.beginCount, 0);
+    assert.doesNotMatch(m.w.document.querySelector('.max-status').textContent, /Restoring|Checking/);
+    assert.equal(m.w.document.querySelector('[data-class-id="mech"]').disabled, true);
+    assert.equal(m.w.document.querySelector('[data-difficulty="hard"]').disabled, true);
+    m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 1);
+    const args = m.calls.find(([name]) => name === 'max_coop_global')[1];
+    assert.equal(args.p_room, INVITE_ROOM); assert.equal(args.p_mode, mode); assert.equal(args.p_class_id, 'runner'); assert.equal(args.p_difficulty, 'hard');
+    assert.equal(m.begun.room.mode, mode);
+    m.w.document.querySelector('.max-live-settings').click(); m.click('Exit to main menu'); await m.settle();
+    assert.equal(new URL(m.w.location.href).searchParams.has('join'), false);
+    m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(m.calls.filter(([name]) => name === 'max_coop_global').at(-1)[1].p_room, undefined, 'ordinary Play no longer targets the invite');
+  } finally { m.dom.window.close(); }
+});
+
+test('ended and full invitations cannot start a different session; Back returns to ordinary Play', async () => {
+  for (const state of [
+    { active: false },
+    { id: 'different-room', active: true, players: 1, taken: ['mech'] },
+    { id: INVITE_ROOM, active: true, players: 4, taken: ['mech', 'runner', 'bulwark', 'herbalist'] },
+  ]) {
+    const m = await menu(undefined, { url: 'https://max.iverfinne.no/?join=' + INVITE_ROOM + '&mode=garden', sharedStatus: state });
+    try {
+      assert.equal(m.w.document.querySelector('.max-play-actions button').disabled, true);
+      assert.match(m.w.document.querySelector('.max-status').textContent, /session has ended|Garden full/);
+      assert.equal(m.calls.some(([name]) => name === 'max_coop_global'), false);
+      m.click('Back'); assert.equal(m.w.location.search, ''); assert.equal(m.w.document.querySelector('.max-menu').dataset.screen, 'home');
+    } finally { m.dom.window.close(); }
+  }
+});
+
+test('a failed invite lookup offers a retry and preserves the target; server refusal stays visible', async () => {
+  let fail = true;
+  const m = await menu(undefined, { url: 'https://max.iverfinne.no/?join=' + INVITE_ROOM + '&mode=last-seed',
+    sharedStatus: { id: INVITE_ROOM, active: true, players: 1, taken: ['mech'], difficulty: 'easy' },
+    rpc: async name => name === 'max_coop_status' && fail ? { error: { message: 'Offline' } } :
+      name === 'max_coop_global' ? { error: { message: 'This relic is locked.' } } : null });
+  try {
+    assert.match(m.w.document.querySelector('.max-status').textContent, /Could not check invite/);
+    fail = false; m.click('Play'); await m.settle();
+    assert.equal(m.calls.find(([name]) => name === 'max_coop_global')[1].p_room, INVITE_ROOM);
+    assert.equal(m.beginCount, 0); assert.match(m.w.document.querySelector('.max-status').textContent, /relic is locked/);
   } finally { m.dom.window.close(); }
 });
 

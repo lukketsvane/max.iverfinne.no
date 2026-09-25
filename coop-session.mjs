@@ -46,6 +46,7 @@ export class CoopSession {
         p_class_id: this.selection.classId,
         p_difficulty: this.selection.difficulty,
         ...(this.mode === 'last-seed' ? { p_mode: this.mode } : {}),
+        ...(code.id ? { p_room: code.id, p_mode: this.mode } : {}),
       });
       if (error) throw new Error(error.message || 'Could not join the garden.');
       this.room = data;
