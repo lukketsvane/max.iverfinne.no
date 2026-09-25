@@ -34,11 +34,16 @@
 .max-help-row strong{display:block;margin-bottom:5px;color:#e4dcae;font-size:10px;letter-spacing:.12em}
 .max-menu .max-cloud{padding:16px;border:1px solid var(--line);background:#14242b;margin-bottom:18px}
 .max-menu .max-cloud p{margin:0;font-size:11px}
+.max-credit-links{display:flex;flex-direction:column;align-items:flex-start;margin-bottom:24px}
+.max-credit-links a{display:flex;align-items:center;min-height:44px;color:var(--ink);font-size:13px;text-underline-offset:4px;overflow-wrap:anywhere;touch-action:manipulation}
+.max-credit-links a:last-child{margin-top:20px}
+.max-credit-links a:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 
 /* Title screen: one primary action, with the garden left open around it. */
 .max-menu[data-screen="home"]{padding:0;overflow:auto;align-items:flex-start}
 .max-menu[data-screen="home"]::before{background:linear-gradient(90deg,#050d1cb3,#07132040 48%,transparent 78%),linear-gradient(0deg,#040b180d,transparent 55%)}
-.max-menu[data-screen="home"] .max-menu-card{width:100%;min-height:100%;border:0;padding:0;background:none;box-shadow:none}
+.max-menu[data-screen="home"] .max-menu-card{width:100%;min-height:100%;border:0;padding:0;background:none;box-shadow:none;pointer-events:none}
+.max-menu[data-screen="home"] .max-home-brand,.max-menu[data-screen="home"] .max-home-nav,.max-menu[data-screen="home"] .max-home-players{pointer-events:auto}
 .max-home-content{width:300px;margin:clamp(70px,16vh,150px) 0 52px clamp(40px,15vw,260px);text-align:center}
 .max-home-brand{display:flex;flex-direction:column;align-items:center;gap:18px}
 .max-menu .max-home-brand h1{font-size:100px;line-height:1;letter-spacing:.04em}
@@ -218,7 +223,7 @@
 .max-garden-scene{position:fixed;inset:0;z-index:-2;width:100%;height:100%;image-rendering:pixelated;transform-origin:30% 60%;transition:transform 1.4s cubic-bezier(.25,.1,.25,1);pointer-events:none;touch-action:none}
 .max-menu::before{transition:opacity 1.1s ease}
 .max-menu[data-view="garden"]{overflow:hidden}
-.max-menu[data-view="garden"] .max-garden-scene{pointer-events:auto}
+.max-menu[data-screen="home"] .max-garden-scene{pointer-events:auto}
 .max-menu[data-view="garden"]::before{opacity:0}
 .max-home-brand,.max-home-nav,.max-menu .max-home-note,.max-menu .max-home-players{transition:transform 1s cubic-bezier(.4,0,.2,1),opacity .8s ease}
 .max-menu[data-view="garden"] .max-menu-card{pointer-events:none}

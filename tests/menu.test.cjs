@@ -257,6 +257,114 @@ test('signed out, the menu garden shows every plant greyed out; signed in, the o
   }
 });
 
+function gardenPointer(m, type, x, y, extra = {}) {
+  const event = new m.w.MouseEvent(type, { bubbles: true, cancelable: true, clientX: x, clientY: y, button: 0 });
+  Object.assign(event, { pointerId: 1, pointerType: 'touch', isPrimary: true, ...extra });
+  m.w.document.querySelector('.max-garden-scene').dispatchEvent(event);
+}
+function gardenTapAt(m, x, y) { gardenPointer(m, 'pointerdown', x, y); gardenPointer(m, 'pointerup', x, y); }
+function gardenWheel(m, deltaY, extra = {}) {
+  m.w.document.querySelector('.max-menu').dispatchEvent(new m.w.WheelEvent('wheel', { bubbles: true, cancelable: true, deltaY, ...extra }));
+}
+
+test('a visible home stone opens directly and the second tap keeps its entry open', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' }, scenes: [] });
+  try {
+    const overlay = m.w.document.querySelector('.max-menu');
+    // The fixture draws the stone at (30, 120) with five CSS pixels per art pixel.
+    gardenTapAt(m, 150, 550);
+    assert.equal(overlay.dataset.view, 'garden');
+    assert.equal(overlay.dataset.focus, 'relic');
+    assert.match(m.w.document.querySelector('.max-garden-note').textContent, /LAST SEED/);
+    gardenTapAt(m, 150, 550);
+    assert.equal(overlay.dataset.focus, 'relic', 'double tapping must not close the stone');
+    m.click('ENTER'); await m.settle();
+    assert.equal(overlay.dataset.screen, 'play');
+    assert.equal(m.beginCount, 0, 'opening the stone still allows character selection before joining');
+  } finally { m.dom.window.close(); }
+});
+
+test('a home flower opens its own note without first pressing Garden', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'gardener', email: 'iver@players.max.invalid' }, scenes: [] });
+  try {
+    gardenTapAt(m, 150, 400);
+    assert.equal(m.w.document.querySelector('.max-menu').dataset.focus, 'plant');
+    assert.match(m.w.document.querySelector('.max-garden-note').textContent, /SKYBELL/);
+    gardenTapAt(m, 150, 400);
+    assert.equal(m.w.document.querySelector('.max-menu').dataset.focus, 'plant');
+  } finally { m.dom.window.close(); }
+});
+
+test('a double tap on the empty landscape opens the garden, while one tap does not', async () => {
+  const m = await menu(undefined, { scenes: [] });
+  try {
+    const overlay = m.w.document.querySelector('.max-menu');
+    gardenTapAt(m, 20, 700);
+    assert.equal(overlay.dataset.view, undefined);
+    gardenTapAt(m, 20, 700);
+    assert.equal(overlay.dataset.view, 'garden');
+    assert.equal(overlay.dataset.focus, undefined);
+    m.click('Your garden. Back to the menu');
+    m.w.document.querySelector('.max-garden-scene').dispatchEvent(new m.w.MouseEvent('dblclick', { bubbles: true, cancelable: true }));
+    assert.equal(overlay.dataset.view, 'garden', 'desktop double click also opens the landscape');
+  } finally { m.dom.window.close(); }
+});
+
+test('an upward swipe enters the garden without treating jitter, a drag or cancellation as a tap', async () => {
+  const m = await menu(undefined, { scenes: [] });
+  try {
+    const overlay = m.w.document.querySelector('.max-menu');
+    for (const [x, y, end] of [[152, 405, 'pointercancel'], [230, 400, 'pointerup'], [150, 360, 'pointerup']]) {
+      gardenPointer(m, 'pointerdown', 150, 400);
+      gardenPointer(m, 'pointermove', x, y);
+      gardenPointer(m, end, x, y);
+      assert.equal(overlay.dataset.view, undefined);
+    }
+    gardenPointer(m, 'pointerdown', 20, 700);
+    gardenPointer(m, 'pointermove', 24, 580);
+    gardenPointer(m, 'pointerup', 24, 580);
+    assert.equal(overlay.dataset.view, 'garden');
+    assert.equal(overlay.dataset.focus, undefined);
+  } finally { m.dom.window.close(); }
+});
+
+test('firm downward scrolling opens the garden and absorbs entry momentum', async () => {
+  const scenes = [], m = await menu(undefined, { scenes });
+  try {
+    const overlay = m.w.document.querySelector('.max-menu');
+    gardenWheel(m, 10);
+    gardenWheel(m, 20, { deltaX: 150 });
+    gardenWheel(m, -140);
+    gardenWheel(m, 50);
+    assert.equal(overlay.dataset.view, undefined, 'small, sideways and upward scrolling keep the menu');
+    gardenWheel(m, 60);
+    assert.equal(overlay.dataset.view, 'garden');
+    gardenWheel(m, 300);
+    await m.settle();
+    assert.equal(scenes.at(-1).scroll, 0, 'the opening flick leaves the first objects in view');
+    await new Promise(resolve => setTimeout(resolve, 210));
+    gardenWheel(m, 0, { deltaX: 30 });
+    await m.settle();
+    assert.ok(scenes.at(-1).scroll > 0, 'ordinary garden scrolling resumes after the entry gesture');
+  } finally { m.dom.window.close(); }
+});
+
+test('wheel entry respects native menu overflow, other menu screens and wheel units', async () => {
+  const m = await menu(undefined, { scenes: [] });
+  try {
+    const overlay = m.w.document.querySelector('.max-menu');
+    Object.defineProperties(overlay, { clientHeight: { value: 320 }, scrollHeight: { value: 600 } });
+    gardenWheel(m, 300);
+    assert.equal(overlay.dataset.view, undefined, 'a short menu can reach its lower controls first');
+    overlay.scrollTop = 280;
+    m.click('Settings'); gardenWheel(m, 300);
+    assert.equal(overlay.dataset.view, undefined);
+    m.click('Back');
+    gardenWheel(m, 7, { deltaMode: 1 });
+    assert.equal(overlay.dataset.view, 'garden', 'line-based mouse wheels also enter');
+  } finally { m.dom.window.close(); }
+});
+
 test('home shows just usernames and keeps the empty state silent', async () => {
   const m=await menu(undefined,{restoredUser:{id:'returning-player',email:'iver@players.max.invalid'},sharedStatus:{active:true,players:2,taken:['mech','runner'],difficulty:'medium',mine:null,members:[{name:'iver',classId:'mech'},{name:'Guest',classId:'runner'}]}});
   try{

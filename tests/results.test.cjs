@@ -168,7 +168,11 @@ test('publishing is opt-in, uses the captured owner and exact snapshot, and reje
     assert.equal(submits, 0); assert.equal(s.button('Add bouquet').parentNode.hidden, false);
     s.button('Add bouquet').click(); await settle();
     assert.equal(submits, 1); assert.deepEqual(submitted.plants, snapshot(record.plants));
-    assert.match(w.document.querySelector('.run-results-publish-status').textContent, /on the leaderboard/);
+    assert.equal(w.document.querySelector('.run-results-publish-status').hidden, true);
+    assert.equal(w.document.querySelector('.run-results-publish-status').textContent, '');
+    assert.equal(s.button('Add bouquet').disabled, true);
+    s.button('Add bouquet').click(); await settle();
+    assert.equal(submits, 1, 'the completed action stays disabled without redundant status text');
     w.MaxGardenLeaderboard.identity = () => ({ id: 'somebody-else' });
     w.MaxRunResults.show({ ...s.options, recordId: record.id });
     assert.equal(s.button('Add bouquet').parentNode.hidden, true);

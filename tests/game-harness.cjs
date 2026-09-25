@@ -51,7 +51,7 @@ const functionNames = [
   'sligoTun', 'endTun', 'curledMember', 'plantProtection', 'SLIGO_KINDS', 'seedKindFor', 'sligoKindFor', 'plantGardenSeed',
   'updateSligoTrail', 'drawSligoTrail', 'drawPlayer', 'sligoFx', 'SLIGO_FX', 'sligoBursts', 'SLIGO_EVO', 'sligoEvo', 'drawSligoEvo', 'sligoEvoImg', 'pathRanks', 'coopCleanAvatar', 'trailFollow', 'trailTracker', 'TRAIL_CAP', 'TRAIL_LIFE', 'TRAIL_FADE', 'TRAIL_INK', 'drawClassAuras', 'drawSkillPip', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'galleryPlant', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
   'secretHash', 'secretEventFor', 'secretEvent', 'updateSecrets', 'drawSecretBanner', 'drawSecretSky', 'drawSecretGround', 'drawSecretAir',
-  'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog', 'secretDay', 'drawSecretDay', 'secretLogoTap', 'secretSkin', 'drawGardenSecret', 'drawWorldBanner',
+  'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog', 'secretDay', 'drawSecretDay', 'secretLogoTap', 'secretSkin', 'drawWorldBanner',
 ];
 // Export lexical bindings only in this VM. The shipped game has no test API.
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +
