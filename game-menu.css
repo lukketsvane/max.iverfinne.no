@@ -27,6 +27,7 @@
 .max-menu label{display:block;margin-bottom:18px;color:#c1cebf;font-size:11px}
 .max-menu .max-menu-foot{border-top:1px solid var(--line);margin:24px 0 0;padding-top:16px;font-size:10px;color:#8da6aa}
 .max-menu .max-status{margin:14px 0 0;font-size:11px;color:#bacbb7}
+.max-menu[data-screen="play"] .max-status{display:block!important;height:18px;min-height:18px;margin:8px 0 0;overflow:hidden}
 .max-menu .max-status:empty{display:none}
 .max-menu .max-status[data-error="true"]{color:#f0b9a1}
 .max-menu .max-help-row{padding:14px 0;border-top:1px solid var(--line);font-size:12px;line-height:1.6;color:#bacbcc}
@@ -114,9 +115,9 @@
   .max-menu[data-screen="play"] .max-menu-card{display:block;width:min(100%,360px);padding:8px 0}
   .max-menu[data-screen="play"] .max-menu-header{margin-bottom:22px}
   .max-menu[data-screen="play"] .max-back{top:5px;right:-9px}
-  .max-character-hero{flex-direction:row;align-items:center;gap:20px;padding:0;margin:0 0 26px;text-align:left;min-height:116px}
+  .max-character-hero{flex-direction:row;align-items:center;gap:20px;padding:0;margin:0 0 26px;text-align:left;height:156px;min-height:156px;overflow:hidden}
   .max-character-stage{flex:none;width:96px;height:108px;margin:0 0 7px}
-  .max-character-intro{min-width:0}
+  .max-character-intro{min-width:0;max-height:156px;overflow:hidden}
   .max-menu .max-character-name{margin-bottom:10px}
   .max-menu .max-class-detail{font-size:11px;line-height:1.55}
   .max-menu fieldset{margin-bottom:20px}
