@@ -6,6 +6,8 @@ import { CoopSession } from './coop-session.mjs';
 import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
 import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
+import { relicCollection, drawRelicStone, relicRecord } from './relics.mjs';
+import { mountRelicGame } from './relic-play.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
 let client = null;
@@ -24,6 +26,7 @@ let status;
 let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
+let activeRelic = null, focusedRelic = null, relicTargets;
 // Hidden characters show only once unlocked; the game reads the same list (the plant gallery).
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
 window.MaxEasterEggs = { has: eggs.has, list: eggs.list };
@@ -136,6 +139,7 @@ const scene = { scroll: 0, vel: 0, target: null, max: 0, drag: null, t0: 0, last
 let inGarden = false;
 function signedInUser() { return !!user && playerName(user) !== 'Guest'; }
 function plantKinds() { const kinds = game?.plantCollection?.() || []; return signedInUser() ? kinds : kinds.map(k => ({ ...k, found: false })); }
+function availableRelics() { return relicCollection(user, eggs.list()); }
 function sceneSize() {
   const dpr = window.devicePixelRatio || 1, dw = Math.round(window.innerWidth * dpr), dh = Math.round(window.innerHeight * dpr);
   const scale = Math.max(2, Math.round(Math.min(dw, dh) / 150));
@@ -159,12 +163,17 @@ function sceneFrame(now) {
   if (!g.drag) {
     if (g.target !== null) { g.scroll += (g.target - g.scroll) * Math.min(1, dt * 6); if (Math.abs(g.target - g.scroll) < .5) { g.scroll = g.target; g.target = null; } }
     else { g.scroll += g.vel * dt; g.vel *= Math.pow(.03, dt); if (Math.abs(g.vel) < 3) g.vel = 0; }
-    if (g.focus < 0 && g.scroll < 0) { g.scroll -= g.scroll * Math.min(1, dt * 10); g.vel = 0; }
-    else if (g.focus < 0 && g.scroll > g.max) { g.scroll += (g.max - g.scroll) * Math.min(1, dt * 10); g.vel = 0; }
+    if (g.focus < 0 && !focusedRelic && g.scroll < 0) { g.scroll -= g.scroll * Math.min(1, dt * 10); g.vel = 0; }
+    else if (g.focus < 0 && !focusedRelic && g.scroll > g.max) { g.scroll += (g.max - g.scroll) * Math.min(1, dt * 10); g.vel = 0; }
   }
-  g.dim += ((g.focus >= 0 ? 1 : 0) - g.dim) * Math.min(1, dt * 4);
-  const info = game.drawGardenScene(gardenCanvas, { scroll: g.scroll, t: (now - g.t0) / 1000, focus: g.focus, dim: g.dim, locked: !signedInUser() });
+  g.dim += ((g.focus >= 0 || focusedRelic ? 1 : 0) - g.dim) * Math.min(1, dt * 4);
+  const info = game.drawGardenScene(gardenCanvas, { scroll: g.scroll, t: (now - g.t0) / 1000, focus: g.focus, dim: g.dim, locked: !signedInUser(), relics: availableRelics(), focusRelic: focusedRelic, drawRelic: drawRelicStone });
   if (info) { g.max = info.max; if (info.ready) g.info = info; }
+  for (const target of relicTargets?.children || []) {
+    const stone = info?.relics?.find(r => r.id === target.dataset.relic);
+    target.hidden = !inGarden || !stone || !!focusedRelic || g.focus >= 0 || stone.x - g.scroll < 0 || stone.x - g.scroll > size.w;
+    if (stone) { target.style.left = (stone.x - g.scroll) * size.px + 'px'; target.style.top = info.ground * size.px + 'px'; }
+  }
   const prev = g.scroll <= 2, next = g.scroll >= g.max - 2;
   if (gardenPrev.hidden !== prev) gardenPrev.hidden = prev;
   if (gardenNext.hidden !== next) gardenNext.hidden = next;
@@ -177,6 +186,7 @@ function enterGarden() {
   const wonders = game.wonderLog?.() || [];
   if (wonders.length) { gardenCount.append(el('br')); pixelText(gardenCount, wonders.filter(w => w.found).length + ' / ' + wonders.length + ' WONDERS', 2, 1); }
   inGarden = true; overlay.dataset.view = 'garden'; card.inert = true; gardenHud.inert = false;
+  refreshRelicTargets();
   let seen = false; try { seen = localStorage.getItem('max-garden-pinch-hint') === '1'; localStorage.setItem('max-garden-pinch-hint', '1'); } catch {}
   gardenHint.hidden = seen; gardenHint.classList.remove('gone');
   if (!seen) setTimeout(() => gardenHint.classList.add('gone'), 3600);
@@ -190,6 +200,7 @@ function exitGarden() {
   queueMicrotask(() => { if (opened && screen === 'home') document.getElementById('max-menu-title')?.focus({ preventScroll: true }); });
 }
 function focusPlant(i) {
+  focusedRelic = null;
   const g = scene, info = g.info; if (!inGarden || !info || i < 0 || i >= info.count) return;
   const k = g.kinds[i] || { kind: i, found: false }, note = PLANT_NOTES[k.kind] || ['No ' + (k.kind + 1), ''], size = sceneSize();
   g.focus = i; g.vel = 0; g.target = info.x0 + i * info.spacing - Math.round(gardenCanvas.width * .3);
@@ -201,29 +212,63 @@ function focusPlant(i) {
   overlay.dataset.focus = 'plant';
 }
 function unfocusPlant() {
-  if (scene.focus < 0) return;
-  scene.focus = -1; gardenCanvas.style.transform = ''; delete overlay.dataset.focus;
+  if (scene.focus < 0 && !focusedRelic) return;
+  scene.focus = -1; focusedRelic = null; gardenCanvas.style.transform = ''; delete overlay.dataset.focus;
+}
+function refreshRelicTargets() {
+  if (!relicTargets) return;
+  relicTargets.replaceChildren();
+  for (const relic of availableRelics()) {
+    const b = button('', e => { if (e.detail === 0) focusRelic(relic.id); }, 'max-garden-relic-target');
+    b.dataset.relic = relic.id; b.setAttribute('aria-label', relic.name + ' relic'); relicTargets.append(b);
+  }
+}
+function focusRelic(id) {
+  const relic = availableRelics().find(r => r.id === id), info = scene.info, stone = info?.relics?.find(r => r.id === id);
+  if (!relic || !inGarden || !stone) return;
+  scene.focus = -1; focusedRelic = id; scene.vel = 0; scene.target = stone.x - Math.round(gardenCanvas.width * .3);
+  const size = sceneSize();
+  gardenCanvas.style.transformOrigin = Math.round(gardenCanvas.width * .3 * size.px) + 'px ' + Math.round((info.ground - 10) * size.px) + 'px';
+  gardenCanvas.style.transform = 'scale(2)';
+  gardenNote.replaceChildren(pixelText(el('h3'), relic.name.toUpperCase(), 2, 1), el('p', relic.note));
+  const enter = button('', () => launchRelic(id), 'max-relic-enter'); pixelText(enter, 'ENTER', 2, 1); gardenNote.append(enter);
+  const record = relicRecord(window.localStorage, user?.id, id);
+  if (record?.wins) gardenNote.append(el('p', record.wins + (record.wins === 1 ? ' clear' : ' clears'), 'max-relic-record'));
+  overlay.dataset.focus = 'relic'; enter.focus({ preventScroll: true });
+}
+function launchRelic(id) {
+  if (activeRelic || !availableRelics().some(r => r.id === id) || !inGarden || liveSettings) return;
+  // These are personal, finite challenges. They never start, mutate or publish a shared run.
+  game.clearInput?.(); stopScene(); game.setCovered?.(true); overlay.inert = true; overlay.hidden = true;
+  activeRelic = mountRelicGame({ id, owner: user.id, skin: selected.classId, onSound: kind => game.relicSound?.(kind), onExit() {
+    activeRelic = null; overlay.inert = false; overlay.hidden = false; game.clearInput?.(); unfocusPlant(); startScene(); gardenTitle.focus({ preventScroll: true });
+  } });
 }
 function gardenTap(x, y) {
   const g = scene, info = g.info; if (!inGarden || !info) return;
-  if (g.focus >= 0) { unfocusPlant(); return; }
+  if (g.focus >= 0 || focusedRelic) { unfocusPlant(); return; }
   const size = sceneSize(), nx = x / size.px, ny = y / size.px, wx = nx + g.scroll, i = Math.round((wx - info.x0) / info.spacing);
+  const stone = (info.relics || []).find(r => Math.abs(wx - r.x) < 16 && ny > info.ground - 25 && ny < info.ground + 5);
+  if (stone) { focusRelic(stone.id); return; }
   if (i >= 0 && i < info.count && Math.abs(wx - (info.x0 + i * info.spacing)) < info.spacing * .45 && ny > info.ground - 76 && ny < info.ground + 10) focusPlant(i);
 }
 function gardenStep(dir) {
   if (!inGarden) return;
+  if (focusedRelic) { unfocusPlant(); return; }
   if (scene.focus >= 0) { focusPlant(Math.max(0, Math.min((scene.info?.count || 1) - 1, scene.focus + dir))); return; }
   const page = Math.max(game.gallerySpacing || 40, Math.round(gardenCanvas.width * .75));
   scene.vel = 0; scene.target = Math.max(0, Math.min(scene.max, (scene.target ?? scene.scroll) + dir * page));
 }
 function touchDistance(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1; }
 function gardenGestures() {
-  gardenCanvas.addEventListener('pointerdown', e => {
+  const press = e => {
     if (!inGarden || pinch) return;
     const now = performance.now();
     scene.drag = { id: e.pointerId, last: e.clientX, t: now, v: 0, x0: e.clientX, y0: e.clientY, t0: now, moved: false }; scene.vel = 0;
     gardenCanvas.setPointerCapture?.(e.pointerId);
-  });
+  };
+  gardenCanvas.addEventListener('pointerdown', press);
+  relicTargets.addEventListener('pointerdown', press);
   gardenCanvas.addEventListener('pointermove', e => {
     const d = scene.drag; if (!d || d.id !== e.pointerId) return;
     if (!d.moved) { if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 8) return; d.moved = true; d.last = e.clientX; d.t = performance.now(); scene.target = null; unfocusPlant(); return; }
@@ -245,13 +290,13 @@ function gardenGestures() {
   overlay.addEventListener('touchmove', e => {
     if (!pinch || e.touches.length !== 2) return;
     const r = touchDistance(e.touches) / pinch.d;
-    if (!inGarden && r > 1.22) { pinch = null; enterGarden(); } else if (inGarden && r < .82) { pinch = null; if (scene.focus >= 0) unfocusPlant(); else exitGarden(); }
+    if (!inGarden && r > 1.22) { pinch = null; enterGarden(); } else if (inGarden && r < .82) { pinch = null; if (scene.focus >= 0 || focusedRelic) unfocusPlant(); else exitGarden(); }
   }, { passive: true });
   overlay.addEventListener('touchend', e => { if (e.touches.length < 2) pinch = null; });
   overlay.addEventListener('wheel', e => {
     if (inGarden) {
       e.preventDefault();
-      if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; if (scene.focus >= 0) unfocusPlant(); else exitGarden(); } return; }
+      if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; if (scene.focus >= 0 || focusedRelic) unfocusPlant(); else exitGarden(); } return; }
       scene.target = null; scene.vel = 0;
       scene.scroll = Math.max(-12, Math.min(scene.max + 12, scene.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / sceneSize().px));
     } else if (e.ctrlKey && opened && screen === 'home') {
@@ -325,6 +370,7 @@ function unlocksChanged() {
   selected = readLoadout(window.localStorage, eggs.list());
   const grid = screen === 'play' && card?.querySelector('.max-role-grid');
   if (grid) { roleChoices(grid); updateSelection(); updatePlayReady(); }
+  refreshRelicTargets();
 }
 function selectMax(change) {
   selected = { ...selected, ...change };
@@ -620,7 +666,12 @@ function login(create = false) {
   card.append(button(create ? 'Already have an account? Sign in' : 'New player? Create account', () => { if (!busy) login(!create); }, 'subtle'));
   back();
 }
-function setUser(next) { user = next; eggs.setUser(next?.id); }
+function setUser(next) {
+  if (activeRelic && next?.id !== user?.id) activeRelic.close();
+  user = next; eggs.setUser(next?.id);
+  if (focusedRelic && !availableRelics().some(r => r.id === focusedRelic)) unfocusPlant();
+  refreshRelicTargets();
+}
 function unlockEgg(id) {
   eggs.unlockLocal(id); revealEgg(id);
   if (client && user) void eggs.ensure(client, user, id);
@@ -680,7 +731,8 @@ function attach(bridge) {
   gardenNext = button('', () => gardenStep(1), 'max-garden-arrow max-garden-next'); gardenNext.setAttribute('aria-label', 'More plants'); gardenNext.innerHTML = chevron('M0 0h3v2H0zM2 2h3v2H2zM4 4h3v4H4zM2 8h3v2H2zM0 10h3v2H0z');
   gardenHint = el('p', undefined, 'max-garden-hint'); pixelText(gardenHint, 'PINCH TO RETURN', 2, 1);
   gardenNote = el('div', undefined, 'max-garden-note'); gardenNote.setAttribute('aria-live', 'polite');
-  gardenHud.append(gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, gardenNote);
+  relicTargets = el('div', undefined, 'max-garden-relics');
+  gardenHud.append(gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, gardenNote, relicTargets);
   overlay.append(gardenCanvas, card, gardenHud);
   gardenGestures();
   settingsButton = button('', openSettings, 'max-live-settings'); settingsButton.hidden = true;
@@ -690,7 +742,7 @@ function attach(bridge) {
   overlay.addEventListener('keydown', event => {
     event.stopPropagation();
     if (inGarden) {
-      if (event.key === 'Escape') { event.preventDefault(); if (scene.focus >= 0) unfocusPlant(); else exitGarden(); }
+      if (event.key === 'Escape') { event.preventDefault(); if (scene.focus >= 0 || focusedRelic) unfocusPlant(); else exitGarden(); }
       else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); gardenStep(event.key === 'ArrowRight' ? 1 : -1); }
       return;
     }
@@ -705,14 +757,19 @@ function attach(bridge) {
   overlay.addEventListener('keyup', e => e.stopPropagation());
   document.body.append(overlay);
   window.addEventListener('keydown', event => { if (event.key === 'Escape' && !opened) openSettings(); });
-  open();
+  // This branch is removed from the production bundle. The visual-review bundle
+  // uses in-memory storage and an isolated, synthetic account, never live Auth.
+  if (typeof __MAX_RELIC_REVIEW__ !== 'undefined' && __MAX_RELIC_REVIEW__ && window.__relicReview) {
+    setUser({ id: 'relic-review', email: 'lukketsvane@players.max.invalid' });
+    open(); enterGarden();
+  } else open();
 }
 function replay() {
   const old = session; session = null; if (old) void old.leave(); game.stopCoop?.();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; overlay.hidden = false; game.pause(true); play(); startScene();
 }
-window.MaxGameMenu = { attach, open, replay };
+window.MaxGameMenu = { attach, open, replay, ownsInput: () => !!activeRelic };
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) return;
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();

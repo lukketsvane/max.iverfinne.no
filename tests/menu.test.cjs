@@ -70,7 +70,10 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     coopRoster() {}, coopState() {}, coopInput() {}, coopDepart() {}, coopJoin() {}, stopCoop() { active = false; },
     exitRun() { active = false; }, clearInput() {}, musicVolume: () => music, effectsVolume: () => effects, setMusicVolume: value => { music = value; }, setEffectsVolume: value => { effects = value; },
   };
-  if (scenes) Object.assign(bridge, { setCovered() {}, plantCollection: () => [{ kind: 0, found: true, seed: 7 }], drawGardenScene: (canvas, view) => { scenes.push(view); return { ready: true, max: 0 }; } });
+  if (scenes) {
+    w.HTMLCanvasElement.prototype.getContext = function() { return new Proxy({ canvas:this }, { get:(target,key)=>key in target?target[key]:()=>{} }); };
+    Object.assign(bridge, { setCovered() {}, plantCollection: () => [{ kind: 0, found: true, seed: 7 }], drawGardenScene: (canvas, view) => { scenes.push(view); return { ready:true,max:0,ground:120,x0:30+(view.relics||[]).length*46,spacing:46,count:1,relics:(view.relics||[]).map((r,i)=>({id:r.id,x:30+i*46})) }; } });
+  }
   w.MaxGameMenu.attach(bridge);
   const settle = async () => { for (let i = 0; i < 4; i++) await new Promise(resolve => setTimeout(resolve, 10)); };
   await settle();
@@ -336,4 +339,27 @@ test('four players fill the garden even while a fifth character is free', async 
     assert.equal(m.w.document.querySelector('.max-play-actions > button').disabled, true);
     assert.match(m.w.document.querySelector('.max-status').textContent, /Garden full · four players are playing/);
   } finally { m.dom.window.close(); }
+});
+
+test('owner relic stones launch both games from the garden, then return without joining or changing the shared run', async()=>{
+  const scenes=[],m=await menu(undefined,{restoredUser:{id:'owner',email:'lukketsvane@players.max.invalid'},scenes});
+  try{
+    m.click('Garden');await m.settle();
+    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['bastion','minos']);
+    for(const id of ['Bastion','Minos']){
+      m.click(id+' relic');m.click('ENTER');await m.settle();
+      const game=m.w.document.querySelector('.max-relic-game');assert.equal(game.dataset.relic,id.toLowerCase());
+      assert.equal(m.w.document.querySelector('.max-menu').hidden,true);
+      assert.equal(m.beginCount,0);assert.equal(m.calls.some(([name])=>name==='max_coop_global'),false);
+      m.click('Return to garden');await m.settle();assert.equal(m.w.document.querySelector('.max-relic-game'),null);
+      assert.equal(m.w.document.querySelector('.max-menu').dataset.view,'garden');
+    }
+  }finally{m.dom.window.close();}
+});
+test('another account has no owner stones and account-scoped relic grants only reveal that relic',async()=>{
+  for(const granted of [[],['relic-minos']]){
+    const scenes=[],m=await menu(undefined,{restoredUser:{id:'alice',email:'alice@players.max.invalid'},scenes,rpc:async name=>name==='max_my_unlocks'?{data:granted,error:null}:null});
+    try{m.click('Garden');await m.settle();assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),granted.map(id=>id.slice(6)));}
+    finally{m.dom.window.close();}
+  }
 });

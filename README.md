@@ -15,6 +15,8 @@ These are product rules, not suggestions. Preserve them unless the design is exp
 
 There is no separate single-player and multiplayer mode. **Play** enters the one shared live garden.
 
+Unlocked **relic stones** in the collection garden open separate personal challenges. They have their own rules and results; ordinary Play still enters the shared garden.
+
 - 1–4 players can be present.
 - Players may join an already-running garden.
 - A brief PWA/background interruption must not count as leaving.
@@ -70,7 +72,18 @@ Moss can also climb ordinary living plants for traversal, but ordinary plant cli
 
 Pickups and bombs must work for both the authoritative player and guests. Guest actions are validated by the host rather than silently discarded.
 
-## Run structure
+## Relic stones
+
+The stones stand beside the collected flowers, at the beginning of **Garden**. Tap one, then **Enter**. The signed-in `lukketsvane@players.max.invalid` account receives every relic automatically. Other accounts can receive `relic-bastion` and `relic-minos` through the existing account unlock list; their discovery conditions are intentionally left for later. This is a client-side entitlement to local games, not a database or shared-room permission. A typed display name never grants owner access.
+
+- **Bastion** is a twelve-wave tower defence. Plant Thorn (fast single shots), Frost (slowing shots), and Ember (armour-piercing splash) towers along the road. Kills and cleared waves pay seeds. Towers have three levels and can be sold for 70% of their investment. Runners, shells and brutes lead to the final Crown. Protect the heart, or the run ends. Time can run at 1× or 2×.
+- **Minos** is a new seeded labyrinth on every attempt. Collect three seals and reach the opened door while the minotaur follows the corridors. Its straight charge has a stationary warning and a recovery. Drag to move or tap a seen corridor to walk there. Dash escapes a charge; Pulse briefly stuns a nearby hunter. The map and a small compass point toward the remaining objectives, and a thread traces the route you walked.
+
+Both modes support touch and keyboard. Bastion: arrows move the tile cursor, Enter builds/selects, 1–3 choose flowers, U upgrades, Space starts a wave. Minos: WASD/arrows move, Space/Shift dash, E pulses, M opens the map. Escape pauses. On a controller, Bastion uses the stick/D-pad and A to build/select, shoulders to choose flowers, X to start a wave and Y to upgrade; Minos uses the stick, A to dash, X to pulse and Y for the map. Start pauses. Backgrounding pauses these personal challenges and clears held input.
+
+Finishing records only the account's relic wins and best times under `max-relic-records-v1`. These games never create bouquet records, discover ordinary flowers, join a shared room or alter its difficulty. Returning restores the same garden view. `review.html?mode=relic-garden&portrait=1` provides an isolated owner fixture with in-memory storage and no connected account client.
+
+## Garden runs
 
 Every garden also has a **place** of its own to explore beside its routes (`garden-places.js`): a Shepherd Hut, a Hollow Oak, a Broken Aqueduct, a Sunken Chapel, a Root Stair, Cairn Terraces, a Lantern Tree, a Sky Stair, a Collapsed Tower, a Bell Cellar, an Old Quarry, a Weeping Willow, Twin Towers, a Catacomb, Moon Steps, a Giant's Stair, a Nest Crown, a Sluice Gate, a Gatehouse and the Throne Vault. Each has rooms, climbs and a false wall; one seed cache is out in the open and one is hidden behind the false wall. The run seed only picks its side and footing. A walking Bulwark reaches both caches, can always get back out, and can cross the place in both directions.
 
@@ -138,6 +151,7 @@ The project deliberately remains a small static game rather than a framework app
 
 - `index.html` — main simulation, renderer, controls and embedded original game art.
 - `game-menu.mjs` / `game-menu.css` — menu, character/difficulty selection, settings, accounts, shared-play entry and the garden view (pinch out on the menu, scroll the found plants, tap one for its note, pinch in to return).
+- `relics.mjs`, `relic-tower.mjs`, `relic-minos.mjs`, `relic-play.mjs` / `.css` — garden relics, account access, the two deterministic game engines, their mobile presentation and personal records.
 - `coop-session.mjs` — Supabase room/session/reconnect/authority transport.
 - `coop-transport.mjs` — encoded realtime frame transport and limits.
 - `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
