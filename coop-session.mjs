@@ -19,6 +19,7 @@ export class CoopSession {
   constructor(client, user, hooks = {}, selection = DEFAULT_LOADOUT) {
     this.client = client; this.user = user; this.hooks = hooks;
     this.selection = Object.freeze(validLoadout(selection) || { ...DEFAULT_LOADOUT });
+    this.mode = selection.mode === 'last-seed' ? 'last-seed' : 'garden';
     this.token = token(); this.loadouts = Object.create(null); this.memberTokens = Object.create(null);
     this.room = null; this.channels = new Map(); this.pending = [];
     this.actionId = 0; this.sequence = 0; this.received = new Map();
@@ -44,9 +45,12 @@ export class CoopSession {
       const { data, error } = await this.client.rpc('max_coop_global', {
         p_class_id: this.selection.classId,
         p_difficulty: this.selection.difficulty,
+        ...(this.mode === 'last-seed' ? { p_mode: this.mode } : {}),
       });
       if (error) throw new Error(error.message || 'Could not join the garden.');
       this.room = data;
+      if (this.mode === 'last-seed' && this.room.mode !== this.mode) throw new Error('This mode is not available on the server yet.');
+      this.mode = this.room.mode || 'garden';
       const me = this.room.members?.find(p => p.id === this.user.id);
       const canonical = validLoadout({
         classId: me?.classId || this.selection.classId,

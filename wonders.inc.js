@@ -34,7 +34,7 @@ function markWonder(id){
   if(!Object.hasOwn(WONDERS,id))return;var m=rogueMeta.wonders||(rogueMeta.wonders={});m[id]=(m[id]|0)+1;
   try{localStorage.setItem('max-fuglesprenger-meta-v1',JSON.stringify(rogueMeta));}catch(e){}
 }
-function wonderLog(){var m=rogueMeta.wonders||{};return Object.keys(WONDERS).map(function(id){return {id:id,name:WONDERS[id],found:(m[id]|0)>0};});}
+function wonderLog(){var m=rogueMeta.wonders||{},all=fullDiscovery();return Object.keys(WONDERS).map(function(id){return {id:id,name:WONDERS[id],found:all||(m[id]|0)>0};});}
 function foundWonder(id,x,y,seeds,levels){
   wonders.last=id;wonders.fc++;markWonder(id);(rogueRun.found||(rogueRun.found=[])).push(id);
   if(seeds)spawnLooseSeeds(x,y-10,seeds,true);

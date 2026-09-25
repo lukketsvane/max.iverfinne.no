@@ -246,3 +246,11 @@
 @media (prefers-reduced-motion:reduce){.max-garden-scene,.max-home-brand,.max-home-nav{transition:opacity .3s ease!important;transform:none!important}}
 .max-menu .max-garden-note .max-garden-rarity{margin:-4px 0 0;opacity:.55}
 .max-menu .max-garden-note .max-garden-feature{color:#e8cf7a}
+
+/* Collection stones select modes of the main game. */
+.max-menu .max-garden-relic-target{position:absolute;display:block;min-height:44px;width:44px;margin:0;padding:0;border:0;background:transparent;box-shadow:none;transform:translate(-50%,-100%);color:transparent}
+.max-menu .max-garden-relic-target:focus-visible{outline:1px solid #b5d4b6;outline-offset:3px}
+.max-menu .max-garden-relic-target[hidden]{display:none}
+.max-menu .max-relic-enter{width:auto;margin:18px 0 0;padding:12px 18px;min-height:44px;border-color:#9fbd9560;background:#1d3434;color:#e1e8c9;pointer-events:auto}
+.max-menu[data-focus="relic"] .max-garden-note{opacity:1;transform:none;pointer-events:auto;transition-delay:.6s}
+.max-menu[data-focus="relic"] .max-garden-arrow,.max-menu[data-focus="relic"] .max-garden-hint{opacity:0;pointer-events:none}

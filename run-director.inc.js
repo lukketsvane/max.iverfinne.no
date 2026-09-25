@@ -69,6 +69,7 @@ function runPlayers(){
 }
 function updateRunLoot(){
   if(coopGuest()){
+    if(seedDown())return;
     for(var gi=runLoot.length-1;gi>=0;gi--){
       var own=runLoot[gi];
       if(own.owner&&own.owner!==coop.me)continue;
@@ -79,6 +80,7 @@ function updateRunLoot(){
   for(var i=runLoot.length-1;i>=0;i--){
     var item=runLoot[i],nearest=null,dist=14;
     runPlayers().forEach(function(a){
+      if(seedDown(a.member))return;
       if(item.owner&&(!a.member||item.owner!==a.member.id))return;
       var d=Math.hypot(a.p.x-item.x,a.p.y-12-item.y);
       if(d<dist){nearest=a;dist=d;}
@@ -87,6 +89,7 @@ function updateRunLoot(){
   }
 }
 function initRunStage(){
+  if(lastSeedMode()){runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;seedPickups=[];return;}
   if(worldLevel()>1)runCheckpoint();
   runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
@@ -236,7 +239,8 @@ function updateRunHazards(dt){
     var h=runHazards[i];
     if(h.tell>0){h.tell=Math.max(0,h.tell-dt);if(!h.tell)rootAbsorb(h);continue;}
     if(!h.hit){
-      h.hit=true;
+      h.hit=true;rootAbsorb(h);
+      if(lastSeedMode()&&!h.absorbed)seedActors().forEach(function(a){if(Math.abs(a.p.x-h.x)<h.r&&Math.abs(a.p.y-h.y)<20)damageGardener(a.member,24*h.power*runDamageScale());});
       if(!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*plantProtection(p,false));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
@@ -248,6 +252,7 @@ function updateRunHazards(dt){
   }
 }
 function updateHazardContact(){
+  if(seedDown())return;
   for(var i=0;i<runHazards.length;i++){
     var h=runHazards[i];if(h.tell>0||h.absorbed||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
     if(Math.abs(P.x-h.x)<h.r&&Math.abs(P.y-h.y)<20){
@@ -259,6 +264,7 @@ function updateHazardContact(){
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
 }
 function updateRunDirector(dt){
+  if(lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
   updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateRunHazards(dt);
 }
 function dewDodge(){

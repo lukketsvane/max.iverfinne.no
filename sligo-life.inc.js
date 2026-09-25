@@ -56,6 +56,7 @@ function eachSligo(fn){
   else{var c=sligoColony(null);if(c)fn(c,null,P);}
 }
 function sligoSwap(c,id,m){
+  if(seedDown(m))return false;
   var next=sligoBody(c,id);if(!next||id===c.active)return false;
   var local=!m||m.id===coop.me,a=local?P:m.avatar;
   if(a.exitClimb||local&&(warp||climb&&climb.exit))return false;
@@ -146,6 +147,7 @@ function updateSligoLife(dt){
     if(q.y>=floor-2){q.y=floor-2;q.vy=0;q.vx=approach(q.vx,0,100*dt);}
   }
   eachSligo(function(c,m,a){
+    if(seedDown(m))return;
     sligoRemember(c,a,!m||m.id===coop.me?bombCool:Math.max(0,(m.cool-performance.now())/1000));
     c.bodies.slice().forEach(function(b){
       if(b.sligoId!==c.active)sligoAI(c,b,a,m,dt);

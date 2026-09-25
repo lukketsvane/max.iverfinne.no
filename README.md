@@ -15,7 +15,7 @@ These are product rules, not suggestions. Preserve them unless the design is exp
 
 There is no separate single-player and multiplayer mode. **Play** enters the one shared live garden.
 
-Unlocked **relic stones** in the collection garden open separate personal challenges. They have their own rules and results; ordinary Play still enters the shared garden.
+Unlocked **relic stones** in the collection garden select game modes using the same garden, characters, assets and controls. Each mode has its own shared room; ordinary Play enters the main garden.
 
 - 1–4 players can be present.
 - Players may join an already-running garden.
@@ -77,14 +77,15 @@ Pickups and bombs must work for both the authoritative player and guests. Guest 
 
 ## Relic stones
 
-The stones stand beside the collected flowers, at the beginning of **Garden**. Tap one, then **Enter**. The signed-in `lukketsvane@players.max.invalid` account receives every relic automatically. Other accounts can receive `relic-bastion` and `relic-minos` through the existing account unlock list; their discovery conditions are intentionally left for later. This is a client-side entitlement to local games, not a database or shared-room permission. A typed display name never grants owner access.
+The signed-in owner also sees every plant (including Sligo's two cords) and every wonder as discovered. This follows the canonical account across devices and clears on sign-out; it does not create run records, scores or gameplay rewards. Future plants and wonders in the catalogues are included automatically.
 
-- **Bastion** is a twelve-wave tower defence. Plant Thorn (fast single shots), Frost (slowing shots), and Ember (armour-piercing splash) towers along the road. Kills and cleared waves pay seeds. Towers have three levels and can be sold for 70% of their investment. Runners, shells and brutes lead to the final Crown. Protect the heart, or the run ends. Time can run at 1× or 2×.
-- **Minos** is a new seeded labyrinth on every attempt. Collect three seals and reach the opened door while the minotaur follows the corridors. Its straight charge has a stationary warning and a recovery. Drag to move or tap a seen corridor to walk there. Dash escapes a charge; Pulse briefly stuns a nearby hunter. The map and a small compass point toward the remaining objectives, and a thread traces the route you walked.
+The stones stand beside the collected flowers, at the beginning of **Garden**. Tap **Last Seed**, then **Enter**, choose your character and press **Play**. The canonical signed-in `lukketsvane@players.max.invalid` account receives all modes automatically. Other accounts use the `relic-last-seed` unlock. The server verifies the unlock when joining; a display name never grants access.
 
-Both modes support touch and keyboard. Bastion: arrows move the tile cursor, Enter builds/selects, 1–3 choose flowers, U upgrades, Space starts a wave. Minos: WASD/arrows move, Space/Shift dash, E pulses, M opens the map. Escape pauses. On a controller, Bastion uses the stick/D-pad and A to build/select, shoulders to choose flowers, X to start a wave and Y to upgrade; Minos uses the stick, A to dash, X to pulse and Y for the map. Start pauses. Backgrounding pauses these personal challenges and clears held input.
+**Last Seed** uses the main garden engine with different rules. The team shares exactly one seed. Planting it starts the timer and endless waves of existing enemies. No more seeds drop, the single plant can be tended but never harvested, and the team stays in the same garden. Clearing a wave earns a boon and a short care break. A living, watered plant heals nearby gardeners; losing it removes that recovery but does not end the run.
 
-Finishing records only the account's relic wins and best times under `max-relic-records-v1`. These games never create bouquet records, discover ordinary flowers, join a shared room or alter its difficulty. Returning restores the same garden view. `review.html?mode=relic-garden&portrait=1` provides an isolated owner fixture with in-memory storage and no connected account client.
+Each player has 100 health. Attacks have a warning, dodging avoids damage and Bulwark's brace reduces it. At zero health a gardener goes down. A living teammate holds the normal Tend control (↓ / Space, controller Tend, or touch drag down) within reach for three uninterrupted seconds to revive them at half health. Moving away, taking damage or releasing Tend resets progress. The run ends when everyone is down. Health, waves, the plant and revives replicate from the host and survive a host handoff.
+
+Results preserve the actual single plant, wave, survival time and plant lifetime in the garden archive; they are excluded from normal garden scores and public leaderboard publishing. Retry keeps Last Seed selected. `review.html?mode=last-seed` runs the real simulation with isolated memory storage; `mode=relic-garden` previews the owner collection. Bastion and Minos have been removed.
 
 ## Garden runs
 
@@ -154,7 +155,7 @@ The project deliberately remains a small static game rather than a framework app
 
 - `index.html` — main simulation, renderer, controls and embedded original game art.
 - `game-menu.mjs` / `game-menu.css` — menu, character/difficulty selection, settings, accounts, shared-play entry and the garden view (pinch out on the menu, scroll the found plants, tap one for its note, pinch in to return).
-- `relics.mjs`, `relic-tower.mjs`, `relic-minos.mjs`, `relic-play.mjs` / `.css` — garden relics, account access, the two deterministic game engines, their mobile presentation and personal records.
+- `relics.mjs`, `last-seed.inc.js` — mode selection/access and Last Seed rules within the shared garden engine.
 - `coop-session.mjs` — Supabase room/session/reconnect/authority transport.
 - `coop-transport.mjs` — encoded realtime frame transport and limits.
 - `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
@@ -216,6 +217,8 @@ Checked-in migrations:
 20260923110000_twenty_plant_kinds.sql
 20260923120000_run_stats.sql
 20260924150000_easter_eggs_and_sligo.sql
+20260925114556_polge_character.sql
+20260925131349_last_seed_mode.sql
 ```
 
 The room schema has since been evolved in place through the shared-garden RPCs. Before changing hosted SQL, inspect the live project and the migration history rather than blindly replaying old migrations.
@@ -224,7 +227,7 @@ Frontend configuration accepts only the public Supabase URL and publishable key.
 
 Accounts are optional metadata, not a separate gameplay mode. The game can establish a device identity for zero-friction Play.
 
-The home footer lists online usernames, including signed-in players in the menu, their collection or a relic game. `online-players.mjs` uses Realtime Presence and merges the shared garden's current roster, showing each name once. Only public usernames are broadcast; guests browsing the menu do not announce themselves. The list clears on disconnect and refreshes when the app returns. With nobody online, the footer stays empty.
+The home footer lists online usernames, including signed-in players in the menu, their collection or an alternate game mode. `online-players.mjs` uses Realtime Presence and merges the shared garden's current roster, showing each name once. Only public usernames are broadcast; guests browsing the menu do not announce themselves. The list clears on disconnect and refreshes when the app returns. With nobody online, the footer stays empty.
 
 ## Deployment
 

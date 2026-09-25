@@ -13,6 +13,17 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 
+test('full discovery follows the authenticated owner and clears on sign-out or account switch', async () => {
+  const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' } });
+  try {
+    assert.equal(m.w.MaxEasterEggs.allDiscovered(), true);
+    m.emit(null); await m.settle();
+    assert.equal(m.w.MaxEasterEggs.allDiscovered(), false);
+    m.emit({ id: 'other', email: 'other@players.max.invalid', user_metadata: { name: 'lukketsvane' } }); await m.settle();
+    assert.equal(m.w.MaxEasterEggs.allDiscovered(), false);
+  } finally { m.dom.window.close(); }
+});
+
 async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {} } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://max.iverfinne.no', runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
@@ -45,7 +56,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
       const scripted = rpc && await rpc(name, args, id); if (scripted) return scripted;
       if (name === 'max_coop_status') return { data: sharedStatus || { active:false, players:0, taken:[], difficulty:null, mine:null }, error: null };
       if (name === 'max_coop_global') {
-        const room=roomFor(id);room.difficulty=args?.p_difficulty||'medium';room.members[0].classId=args?.p_class_id||'mech';
+        const room=roomFor(id);room.mode=args?.p_mode||'garden';room.difficulty=args?.p_difficulty||'medium';room.members[0].classId=args?.p_class_id||'mech';
         return { data: room, error: null };
       }
       if (name === 'max_coop') {
@@ -275,9 +286,9 @@ test('online names include the menu and relic players, deduplicate tabs and game
     assert.deepEqual(JSON.parse(JSON.stringify(presence.tracked.at(-1))), { name: 'lukketsvane' }, 'only a public username is broadcast');
     presence.sync({ a: [{ name: 'alice' }], d: [{ name: 'dora' }] });
     assert.deepEqual(names(), ['alice', 'carol', 'dora', 'lukketsvane']);
-    m.click('Garden'); await m.settle(); m.click('Bastion relic'); m.click('ENTER'); await m.settle();
+    m.click('Garden'); await m.settle(); m.click('Last Seed relic'); m.click('ENTER'); await m.settle();
     assert.equal(m.channels.get('max-online-v1'), presence, 'playing a relic keeps the account present');
-    m.click('Return to garden'); await m.settle(); m.click('Your garden. Back to the menu');
+    m.click('Back'); await m.settle();
     assert.deepEqual(names(), ['alice', 'carol', 'dora', 'lukketsvane']);
   } finally { m.dom.window.close(); }
 });
@@ -417,23 +428,24 @@ test('four players fill the garden even while a fifth character is free', async 
   } finally { m.dom.window.close(); }
 });
 
-test('owner relic stones launch both games from the garden, then return without joining or changing the shared run', async()=>{
+test('Last Seed opens the ordinary character selection and joins its own shared mode', async()=>{
   const scenes=[],m=await menu(undefined,{restoredUser:{id:'owner',email:'lukketsvane@players.max.invalid'},scenes});
   try{
     m.click('Garden');await m.settle();
-    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['bastion','minos']);
-    for(const id of ['Bastion','Minos']){
-      m.click(id+' relic');m.click('ENTER');await m.settle();
-      const game=m.w.document.querySelector('.max-relic-game');assert.equal(game.dataset.relic,id.toLowerCase());
-      assert.equal(m.w.document.querySelector('.max-menu').hidden,true);
-      assert.equal(m.beginCount,0);assert.equal(m.calls.some(([name])=>name==='max_coop_global'),false);
-      m.click('Return to garden');await m.settle();assert.equal(m.w.document.querySelector('.max-relic-game'),null);
-      assert.equal(m.w.document.querySelector('.max-menu').dataset.view,'garden');
-    }
+    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['last-seed']);
+    m.click('Last Seed relic');m.click('ENTER');await m.settle();
+    assert.equal(m.w.document.querySelector('.max-relic-game'),null);
+    assert.ok(m.classIds().includes('polge'));
+    m.click('Play');await m.settle();
+    assert.equal(m.beginCount,1);
+    assert.equal(m.begun.room.mode,'last-seed');
+    assert.equal(m.calls.find(([name])=>name==='max_coop_global')[1].p_mode,'last-seed');
+    m.w.MaxGameMenu.replay();await m.settle();m.click('Play');await m.settle();
+    assert.equal(m.begun.room.mode,'last-seed','retry keeps the mode');
   }finally{m.dom.window.close();}
 });
 test('another account has no owner stones and account-scoped relic grants only reveal that relic',async()=>{
-  for(const granted of [[],['relic-minos']]){
+  for(const granted of [[],['relic-last-seed']]){
     const scenes=[],m=await menu(undefined,{restoredUser:{id:'alice',email:'alice@players.max.invalid'},scenes,rpc:async name=>name==='max_my_unlocks'?{data:granted,error:null}:null});
     try{m.click('Garden');await m.settle();assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),granted.map(id=>id.slice(6)));}
     finally{m.dom.window.close();}

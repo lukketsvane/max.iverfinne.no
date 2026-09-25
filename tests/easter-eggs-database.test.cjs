@@ -43,7 +43,7 @@ test('easter eggs: owners have everything, a phrase unlocks Sligo, rows are priv
       alter table realtime.messages enable row level security;
       create function realtime.topic() returns text language sql stable as $$ select current_setting('realtime.topic', true) $$;
       grant usage on schema auth, realtime to anon, authenticated; grant select, insert on realtime.messages to authenticated;`);
-    for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.sql')).sort()) await db.exec(fs.readFileSync(path.join(dir, name), 'utf8'));
+    for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.sql') && n <= file).sort()) await db.exec(fs.readFileSync(path.join(dir, name), 'utf8'));
     await db.exec(sql);
     const as = async id => { await db.exec('reset role; set role ' + (id ? 'authenticated' : 'anon')); await db.query("select set_config('request.jwt.claim.sub',$1,false)", [id || '']); };
     const mine = async () => (await db.query('select public.max_my_unlocks() as eggs')).rows[0].eggs;

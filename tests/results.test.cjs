@@ -192,3 +192,17 @@ test('unavailable or stale online responses keep real saved gardens usable', asy
     assert.doesNotMatch(w.document.querySelector('.run-results-entry-copy').textContent, /Run \d/);
   } finally { s.close(); }
 });
+
+test('Last Seed archives only the actual plant and survival measures, with no ordinary leaderboard publication', async () => {
+  const s=session(),w=s.w,calls=[];
+  try {
+    w.MaxGardenLeaderboard={configured:true,identity:()=>({id:'owner'}),submit:async r=>calls.push(r)};
+    const actual=plants(1),saved=w.MaxRunRecords.save({mode:'last-seed',ownerId:'owner',plants:actual,wave:9,seconds:215,plantSeconds:190});
+    w.MaxRunResults.show({...s.options,recordId:saved.record.id});
+    assert.deepEqual(snapshot(saved.record.plants),actual);assert.equal(saved.record.mode,'last-seed');
+    assert.match(w.document.querySelector('#runResultsTitle').getAttribute('aria-label')||w.document.querySelector('#runResultsTitle').textContent,/Last Seed/i);
+    assert.equal(s.button('Add bouquet').parentNode.hidden,true);
+    s.button('Add bouquet').click();await settle();assert.deepEqual(calls,[]);
+    w.MaxRunResults.showRecords(s.options);assert.match(w.document.querySelector('.run-results-entry-copy').textContent,/Last Seed.*Wave 9.*3:35.*190s/);
+  }finally{s.close();}
+});
