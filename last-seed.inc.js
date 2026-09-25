@@ -7,7 +7,9 @@ function seedVital(member){
 }
 function seedDown(member){return singleSeedMode()&&seedVital(member).hp<=0;}
 function seedActors(){return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m),v:seedVital(m),id:m.id};}):[{member:null,p:P,v:seedVital(null),id:'solo'}];}
-function seedHeld(){return !!(heldDown||heldSpace||swipeDown||gardenPress);}
+// A gardening tap is queued until hands consume it. Climbing bypasses hands,
+// so continuous tide care must read held controls, never the queued tap.
+function seedHeld(){return !!(heldDown||heldSpace||swipeDown||(!highTideMode()&&gardenPress));}
 function seedReviveTarget(actor){
   if(!lastSeedMode()||actor.v.hp<=0)return null;
   return seedActors().find(function(a){return a.id!==actor.id&&a.v.hp<=0&&Math.hypot(a.p.x-actor.p.x,a.p.y-actor.p.y)<19;})||null;
