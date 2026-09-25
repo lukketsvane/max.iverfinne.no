@@ -321,7 +321,7 @@ test('a tun curls Sligo up inside its blood sac, and the sac bursts in a splat w
     g.drawPlayer();
     const sac = calls.filter(c => c.fx);
     assert.equal(sac.length, 1, 'curled, Sligo is drawn from its specials and not from its skin');
-    assert.ok(g.SLIGO_FX.sac.includes(sac[0].sx / 40), 'a sac frame'); assert.equal(sac[0].dx, Math.round(g.P.x - g.camX) - 20, 'on whole pixels, centred on Sligo');
+    assert.ok(g.SLIGO_FX.sac.includes(sac[0].sx / 40), 'a sac frame'); assert.equal(sac[0].dx, Math.round(g.P.x - g.camX) - 10, 'half-size sac, on whole pixels and centred on Sligo');
     calls.length = 0;
     for (let i = 0; i < 181; i++) { g.updatePlayer(1 / 60, idle); g.updateSligoTrail(1 / 60); }
     assert.equal(g.P.tun, 0); assert.equal(g.sligoBursts.length, 1, 'the sac bursts where the tun ends');

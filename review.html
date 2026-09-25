@@ -3,19 +3,20 @@
 *{box-sizing:border-box}body{margin:0;padding:12px;background:#111;color:#eee;font:13px/1.4 monospace}h1{margin:0 0 5px;font-size:18px}p{max-width:70em;line-height:1.5;margin:6px 0 10px}.review-controls{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin:10px 0}.review-controls label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:#c4cfbd}.review-controls label:first-child{flex:1 1 190px;max-width:360px}button,select{min-height:40px;padding:8px;background:#253026;color:#eee;border:1px solid #889279;border-radius:0;font:inherit}select{width:100%}button:focus-visible,select:focus-visible{outline:2px solid #e8e492;outline-offset:2px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}details{margin:8px 0}summary{cursor:pointer;color:#b8cba6}iframe{display:block;border:0;outline:1px solid #444;max-width:100vw;background:#111;margin-left:-12px}#status{font-size:11px;color:#d1ddb9;min-height:30px;margin:8px 0}#fixture-help{font-size:11px;color:#a6b2a0;margin:8px 0;max-width:850px}.intro{font-size:11px;color:#a6b2a0;margin-bottom:8px}@media(max-width:480px){.review-controls{gap:6px}.review-controls label:first-child{max-width:none;flex-basis:calc(100% - 106px)}.review-controls label:nth-child(2){width:100px}.review-controls button{flex:1;min-height:34px;font-size:11px}h1{font-size:16px}}
 </style>
 <h1>MAX · visual review</h1><p class="intro">Actual game renderer and controls. Fixture saves stay in memory.</p>
-<div class="review-controls"><label>Scene<select id="fixture" aria-label="Review scene"></select></label><label>Class<select id="review-class" aria-label="Review class"><option value="mech">Mech</option><option value="runner">Moss</option><option value="bulwark">Bulwark</option><option value="herbalist">Herbalist</option></select></label><label>Viewport<select id="viewport" aria-label="Review viewport"><option value="desktop">Desktop · 1000 × 650</option><option value="phone">Phone · 390 × 844</option><option value="small">Small phone · 320 × 568</option><option value="landscape">Landscape · 844 × 390</option><option value="compact">Small landscape · 568 × 320</option></select></label><button id="restart" type="button">Reset scene</button><button id="rotate" type="button">Portrait / landscape</button></div>
+<div class="review-controls"><label>Scene<select id="fixture" aria-label="Review scene"></select></label><label>Class<select id="review-class" aria-label="Review class"><option value="mech">Mech</option><option value="runner">Moss</option><option value="bulwark">Bulwark</option><option value="herbalist">Herbalist</option><option value="sligo">Sligo</option></select></label><label>Viewport<select id="viewport" aria-label="Review viewport"><option value="desktop">Desktop · 1000 × 650</option><option value="phone">Phone · 390 × 844</option><option value="small">Small phone · 320 × 568</option><option value="landscape">Landscape · 844 × 390</option><option value="compact">Small landscape · 568 × 320</option></select></label><button id="restart" type="button">Reset scene</button><button id="rotate" type="button">Portrait / landscape</button></div>
 <details><summary>Original fixtures</summary>
 <nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button></nav></details><p id="fixture-help"></p><p id="status" role="status">Loading…</p><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
 <script>
 (async function(){
- const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
+ const source=(await fetch('index.html').then(r=>r.text())).replace(/<!-- MAX_RAW_SOURCE_FALLBACK_START -->[\s\S]*?<!-- MAX_RAW_SOURCE_FALLBACK_END -->/, ''), frame=document.querySelector('iframe'),status=document.getElementById('status');
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
+ group('Sligo',[['sligo-life','Sligo · Eat and grow'],['sligo-colony','Sligo · AI and control swap']]);
  group('Plant traversal',[['plant-climb','Moss · Growing plant climb']]);
  group('Platform routes',layouts.map(world=>['layout'+world,'Garden '+world+' · Layout']));
  group('Garden places',layouts.map(world=>['place'+world,'Garden '+world+' · Place']));
@@ -26,7 +27,7 @@
  const requestedClass=params.get('class')==='moss'?'runner':params.get('class');
  const requestedSeed=Number.parseInt(params.get('seed'),10),reviewSeed=params.has('authored')?'undefined':Number.isFinite(requestedSeed)?requestedSeed>>>0:1;
  let current=modeLabels.has(reviewMode)?reviewMode:'results',fixtureSerial=0;
- classChooser.value=['mech','runner','bulwark','herbalist'].includes(requestedClass)?requestedClass:current==='plant-climb'?'runner':'mech';
+ classChooser.value=['mech','runner','bulwark','herbalist','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':current==='plant-climb'?'runner':'mech';
  const viewport=document.getElementById('viewport'),viewports={desktop:[1000,650],phone:[390,844],small:[320,568],landscape:[844,390],compact:[568,320]};
  function resize(name){viewport.value=name;[frame.width,frame.height]=viewports[name];}
  resize(params.has('portrait')?'phone':'desktop');
@@ -38,8 +39,9 @@
   const world=placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
+  if(mode.startsWith('sligo-'))classChooser.value='sligo';
   classChooser.disabled=!custom;
-  help.textContent=rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Moss can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diver, seed thief, spore caster, shield beetle, healing moth, thorn caster, dew leech and rammer. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
+  help.textContent=mode.startsWith('sligo-')?'Harvest the red cords with ↓ / Space; walk over meat to eat. B throws flesh and shrinks you. Hold a clone for half a second, Q, or left trigger to swap. Four divisions per run.':rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Moss can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diver, seed thief, spore caster, shield beetle, healing moth, thorn caster, dew leech and rammer. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   // Install storage before the first external script, so the game, result
@@ -101,6 +103,15 @@
         [-26,26].forEach(function(offset,i){var x=dryX(P.x+offset),p={id:i+1,x:x,kind:i?6:3,seed:79+i*23.7,growth:1.35,stalk:false,health:1,moisture:.85,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
         rogueRun.nextPlantId=3;
       }
+      if(${mode.startsWith('sligo-')}){
+        P.skin='sligo';gardenPlots.forEach(function(p,i){p.kind=25+i;});
+        if(${mode==='sligo-colony'}){
+          var colony=sligoColony(null);sligoRemember(colony,P,0);sligoFeed(colony,colony.bodies[0],SLIGO_LIFE.maxMass);
+          colony.bodies[0].sligoMass=.25;P.sligoMass=.25;colony.bodies[1].sligoMass=2;colony.bodies[1].x=P.x-40;
+          colony.bodies[1].y=surfaceY(colony.bodies[1].x);colony.bodies[1].grounded=true;
+        }
+        spawnSligoMeat(P.x+35,surfaceY(P.x+35)-2,5);
+      }
       if(${milestone||finalBoss}){
         gardenWave=3;gardenRaidActive=true;gardenRaidGrace=0;gardenBossSpawned=true;rogueRun.raidRemaining=0;
         var stageBoss=${finalBoss?'makeHollowCrown()':'makeStageBoss('+world+')'};stageBoss.cool=.8;floatKrek=[stageBoss];
@@ -145,7 +156,7 @@
         reviewFrame(now);
         if(now-reviewStateClock<250)return;reviewStateClock=now;
         var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
-        parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended},${JSON.stringify(location.origin)});
+        parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }
     /* MAX_REVIEW_FIXTURE_END */
