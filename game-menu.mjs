@@ -6,8 +6,7 @@ import { CoopSession } from './coop-session.mjs';
 import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
 import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
-import { relicCollection, drawRelicStone, relicRecord } from './relics.mjs';
-import { mountRelicGame } from './relic-play.mjs';
+import { hasFullDiscovery, relicCollection, drawRelicStone } from './relics.mjs';
 import { OnlinePlayers, onlinePlayerNames } from './online-players.mjs';
 
 const config = __MAX_SUPABASE_CONFIG__;
@@ -27,10 +26,10 @@ let status;
 let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let session = null, loginDestination = null, lobbyVersion = '';
 let liveSettings = false, settingsButton;
-let activeRelic = null, focusedRelic = null, relicTargets;
+let selectedMode = 'garden', focusedRelic = null, relicTargets;
 // Hidden characters show only once unlocked; the game reads the same list (the plant gallery).
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
-window.MaxEasterEggs = { has: eggs.has, list: eggs.list };
+window.MaxEasterEggs = { has: eggs.has, list: eggs.list, allDiscovered: () => hasFullDiscovery(user) };
 let selected = readLoadout(window.localStorage, eggs.list());
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
 const onlinePlayers = client ? new OnlinePlayers(client, () => renderPlayers()) : null;
@@ -240,18 +239,13 @@ function focusRelic(id) {
   gardenCanvas.style.transform = 'scale(2)';
   gardenNote.replaceChildren(pixelText(el('h3'), relic.name.toUpperCase(), 2, 1), el('p', relic.note));
   const enter = button('', () => launchRelic(id), 'max-relic-enter'); pixelText(enter, 'ENTER', 2, 1); gardenNote.append(enter);
-  const record = relicRecord(window.localStorage, user?.id, id);
-  if (record?.wins) gardenNote.append(el('p', record.wins + (record.wins === 1 ? ' clear' : ' clears'), 'max-relic-record'));
   overlay.dataset.focus = 'relic'; enter.focus({ preventScroll: true });
 }
 function launchRelic(id) {
-  if (activeRelic || !availableRelics().some(r => r.id === id) || !inGarden || liveSettings) return;
-  // These are personal, finite challenges. They never start, mutate or publish a shared run.
-  game.clearInput?.(); stopScene(); game.setCovered?.(true); overlay.inert = true; overlay.hidden = true;
-  activeRelic = mountRelicGame({ id, owner: user.id, skin: selected.classId, onSound: kind => game.relicSound?.(kind), onExit() {
-    activeRelic = null; overlay.inert = false; overlay.hidden = false; game.clearInput?.(); unfocusPlant(); startScene(); gardenTitle.focus({ preventScroll: true });
-  } });
+  if (!availableRelics().some(r => r.id === id) || !inGarden || liveSettings) return;
+  game.clearInput?.(); exitGarden(); play(id);
 }
+
 function gardenTap(x, y) {
   const g = scene, info = g.info; if (!inGarden || !info) return;
   if (g.focus >= 0 || focusedRelic) { unfocusPlant(); return; }
@@ -430,8 +424,11 @@ function selectionSummary() {
   summary.append(skinPreview(characterSkin(selected.classId)), el('p', classInfo(selected.classId).name + ' · ' + selected.difficulty.toUpperCase()));
   card.append(summary);
 }
-function play() {
-  page('play', 'Your Max');
+function play(mode) {
+  selectedMode = mode === 'last-seed' ? mode : 'garden';
+  sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
+  page('play', selectedMode === 'last-seed' ? 'Last Seed' : 'Your Max');
+  if (selectedMode === 'last-seed') card.append(el('p', 'Plant the only seed to begin. Hold Tend beside a fallen teammate to revive.'));
   chooseMax();
   const actions = el('div', undefined, 'max-play-actions max-play-one');
   actions.append(pixelText(button('', joinSharedGarden, 'primary'), 'Play', 3, 0));
@@ -441,7 +438,7 @@ function play() {
 async function refreshSharedStatus() {
   if (!client) return sharedStatus;
   try {
-    const { data, error } = await client.rpc('max_coop_status');
+    const { data, error } = await client.rpc('max_coop_status', selectedMode === 'last-seed' ? { p_mode: selectedMode } : undefined);
     if (error) throw error;
     if (data && typeof data === 'object') sharedStatus = {
       active: !!data.active,
@@ -528,9 +525,9 @@ async function enterRoom(code) {
     error: reason => {
       game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
       liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
-      game.pause(true); play(); card.append(status); message(reason, true); startScene();
+      game.pause(true); play(selectedMode); card.append(status); message(reason, true); startScene();
     },
-  }, selected);
+  }, { ...selected, mode: selectedMode });
   session = candidate;
   try { await candidate.enter(code); if (!candidate.playing) { lobbyVersion = ''; lobby(candidate.room); } }
   catch (error) { if (session === candidate) session = null; message(joinRefusal(error), true); }
@@ -675,7 +672,6 @@ function login(create = false) {
   back();
 }
 function setUser(next) {
-  if (activeRelic && next?.id !== user?.id) activeRelic.close();
   user = next; eggs.setUser(next?.id); onlinePlayers?.setUser(next);
   if (focusedRelic && !availableRelics().some(r => r.id === focusedRelic)) unfocusPlant();
   refreshRelicTargets();
@@ -718,7 +714,7 @@ function close() {
   // the confirmed absence of one) before letting a new run start.
   if (!sessionReady) { updatePlayReady(); return; }
   if (session) { void session.leave(); session = null; }
-  opened = false; exitGarden(); stopScene(); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId }); game.pause(false);
+  opened = false; exitGarden(); stopScene(); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId, mode: selectedMode }); game.pause(false);
   settingsButton.hidden = false;
 }
 function attach(bridge) {
@@ -776,9 +772,9 @@ function attach(bridge) {
 function replay() {
   const old = session; session = null; if (old) void old.leave(); game.stopCoop?.();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
-  opened = true; overlay.hidden = false; game.pause(true); play(); startScene();
+  opened = true; overlay.hidden = false; game.pause(true); play(selectedMode); startScene();
 }
-window.MaxGameMenu = { attach, open, replay, ownsInput: () => !!activeRelic };
+window.MaxGameMenu = { attach, open, replay, ownsInput: () => false };
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { onlinePlayers?.stop(); clearTimeout(playersTimer); return; }
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();

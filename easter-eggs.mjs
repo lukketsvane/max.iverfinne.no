@@ -5,8 +5,7 @@
 export const EGG_KEY = 'max-easter-eggs-v1';
 export const EGGS = Object.freeze({
   sligo: Object.freeze({ name: 'Max Sligo Neverdahl', phrases: Object.freeze(['sligo', 'maxsligoneverdahl']), reveal: 'MAX SLIGO NEVERDAHL AWAKES' }),
-  'relic-bastion': Object.freeze({ name: 'Bastion', phrases: Object.freeze([]) }),
-  'relic-minos': Object.freeze({ name: 'Minos', phrases: Object.freeze([]) }),
+  'relic-last-seed': Object.freeze({ name: 'Last Seed', phrases: Object.freeze([]) }),
 });
 const IDS = Object.keys(EGGS);
 const clean = list => Array.isArray(list) ? IDS.filter(id => list.includes(id)) : [];

@@ -32,7 +32,7 @@
       record = {
         id: options.id || uuid(),
         number: records.reduce(function (n, entry) { return Math.max(n, entry.number || 0); }, 0) + 1,
-        finishedAt: new Date().toISOString(), won: !!options.won,
+        finishedAt: new Date().toISOString(), won: !!options.won, mode: options.mode === 'last-seed' ? 'last-seed' : 'garden', plantSeconds: Math.max(0, +options.plantSeconds || 0),
         world: Math.max(1, Math.floor(+options.world || 1)), wave: Math.max(0, Math.floor(+options.wave || 0)),
         seconds: Math.max(0, +options.seconds || 0), classId: options.classId || null,
         ownerId: options.ownerId || null, name: options.name || null,
@@ -72,6 +72,7 @@
   function clonePlants(plants) { return JSON.parse(JSON.stringify(Array.isArray(plants) ? plants : [])); }
   function summary(record) {
     var seconds = count(record.seconds, 0);
+    if (record.mode === 'last-seed') return 'Last Seed · Wave ' + count(record.wave, 0) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + ' · Plant alive ' + Math.floor(count(record.plantSeconds, 0)) + 's';
     return record.plants.length + (record.plants.length === 1 ? ' plant' : ' plants') + ' · World ' + count(record.world, 1) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
   }
   function paintLabel(entry) {
@@ -269,12 +270,12 @@
   }
   function updatePublish() {
     var api = window.MaxGardenLeaderboard, who = api && api.identity();
-    publishBox.hidden = !(run && run.id && run.plants.length && api && api.configured && who && run.ownerId === who.id && !run.published);
+    publishBox.hidden = !(run && run.mode !== 'last-seed' && run.id && run.plants.length && api && api.configured && who && run.ownerId === who.id && !run.published);
     publishButton.disabled = !!(run && published[run.id]);
     publishStatus.textContent = run && published[run.id] || '';
   }
   async function publishRun() {
-    if (!run || publishButton.disabled) return;
+    if (!run || run.mode === 'last-seed' || publishButton.disabled) return;
     var record = run, api = window.MaxGardenLeaderboard; publishButton.disabled = true; publishStatus.textContent = 'Adding your bouquet…';
     try {
       var best = await api.submit(record);
@@ -298,9 +299,9 @@
   function showBouquet(saved) {
     recordsView.hidden = true; header.hidden = false; footer.hidden = false; collection.hidden = true;
     panel.classList.remove('show-collection'); panel.setAttribute('aria-labelledby', 'runResultsTitle');
-    setLabel(title, saved ? 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
+    setLabel(title, run.mode === 'last-seed' ? 'LAST SEED' : saved ? 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
     var identity = window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.identity();
-    setLabel(subtitle, run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
+    setLabel(subtitle, run.mode === 'last-seed' ? 'WAVE '+count(run.wave,0)+' / '+Math.floor(count(run.seconds,0))+' SECONDS' : run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
     inspectButton.setAttribute('aria-expanded', 'false'); retry.disabled = false; retry.hidden = typeof callbacks.onRetry !== 'function';
     var status = window.MaxRunRecords.status(); saveNotice.textContent = status.persisted ? '' : status.error || 'This browser could not save your garden. Keep this tab open to retain it.'; saveNotice.hidden = !saveNotice.textContent;
     updatePublish(); renderPage(); layout(); title.focus({ preventScroll: true });
@@ -314,7 +315,7 @@
   function show(options) {
     options = options || {}; prepare(options);
     run = options.recordId && window.MaxRunRecords.get(options.recordId);
-    if (!run) run = { plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
+    if (!run) run = { mode: options.mode, plantSeconds: options.plantSeconds, plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
     originRun = run; originPage = page = 0; showBouquet(false);
   }
   function showRecords(options) { prepare(options); run = originRun = null; page = originPage = 0; openRecords(); layout(); return true; }

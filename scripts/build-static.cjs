@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'relic-play.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'garden-places.js', 'stage-expeditions.js', 'tiles.js', 'review.html'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'garden-places.js', 'stage-expeditions.js', 'tiles.js', 'review.html'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -26,6 +26,7 @@ for (const file of files) copyFileSync(join(root, file), join(output, file));
 writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8')
   .replace('/* MAX_SLIGO_LIFE */', readFileSync(join(root, 'sligo-life.inc.js'), 'utf8'))
   .replace('/* MAX_POLGE */', readFileSync(join(root, 'polge.inc.js'), 'utf8'))
+  .replace('/* MAX_LAST_SEED */', readFileSync(join(root, 'last-seed.inc.js'), 'utf8'))
   .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
   .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8'))
   .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8'))
