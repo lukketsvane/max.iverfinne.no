@@ -589,8 +589,12 @@ stage.addEventListener('pointerdown', function (e) {
     else lockMouse();
     if(mouseAim(w)){e.preventDefault();return;}
   }
-  touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,ax:e.clientX,gx:e.clientX,gy:e.clientY,travelX:0,
+  var touch=touches[e.pointerId]={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,ax:e.clientX,gx:e.clientX,gy:e.clientY,travelX:0,
     wx:w.x,wy:w.y,onMax:touchKind(w.x,w.y)==='max',sligo:(sligoCompanionAt(w.x,w.y)||{}).sligoId||0,t0:performance.now(),j:false,jumped:false,jumpY:e.clientY,low:false,dragged:false};
+  // High Tide is built around one continuous Tend gesture. On touch, holding
+  // your own character is Tend immediately: before the race it plants the seed;
+  // on the vine it grows the tip until the finger is released.
+  if(highTideMode()&&touch.onMax){touch.low=true;gardenPress=true;swipeDown=true;}
   if(moveId===null)moveId=e.pointerId;
   e.preventDefault();
 }, {passive:false});
