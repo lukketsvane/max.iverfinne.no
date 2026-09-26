@@ -4,9 +4,9 @@ const relics=import('../relics.mjs');
 
 test('only the signed-in owner receives all relics; future grants are per account and cannot come from a display name',async()=>{
   const {relicCollection}=await relics;
-  assert.deepEqual(relicCollection({id:'owner',email:'lukketsvane@players.max.invalid'}).map(r=>r.id),['high-tide','last-seed']);
-  for(const user of [null,{id:'guest',is_anonymous:true,email:'lukketsvane@players.max.invalid'},{id:'other',email:'someone@players.max.invalid',user_metadata:{name:'lukketsvane'}},{email:'lukketsvane@players.max.invalid'}])assert.deepEqual(relicCollection(user).map(r=>r.id),['high-tide']);
-  assert.deepEqual(relicCollection({id:'other',email:'someone@players.max.invalid'},['relic-last-seed']).map(r=>r.id),['high-tide','last-seed']);
+  assert.deepEqual(relicCollection({id:'owner',email:'lukketsvane@players.max.invalid'}).map(r=>r.id),['night-relay','high-tide','last-seed']);
+  for(const user of [null,{id:'guest',is_anonymous:true,email:'lukketsvane@players.max.invalid'},{id:'other',email:'someone@players.max.invalid',user_metadata:{name:'lukketsvane'}},{email:'lukketsvane@players.max.invalid'}])assert.deepEqual(relicCollection(user).map(r=>r.id),['night-relay','high-tide']);
+  assert.deepEqual(relicCollection({id:'other',email:'someone@players.max.invalid'},['relic-last-seed']).map(r=>r.id),['night-relay','high-tide','last-seed']);
 });
 test('future relic unlocks survive account caching and never invent a login phrase',async()=>{
   const {createEasterEggs}=await import('../easter-eggs.mjs'),data=new Map(),calls=[];

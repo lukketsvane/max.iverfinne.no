@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Night Relay playtest</title>
+<style>*{box-sizing:border-box}body{margin:0;padding:12px;background:#101722;color:#ead7ac;font:13px/1.5 monospace}h1{font-size:19px;margin:0}p{margin:5px 0 10px}button,select{font:inherit;color:inherit;background:#283540;border:1px solid #8a927c;padding:8px;min-height:38px}button[aria-pressed=true]{background:#775a38}label{display:inline-flex;gap:6px;align-items:center}.controls,.input{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.players{display:flex;gap:12px;flex-wrap:wrap}.player{width:390px}iframe{display:block;width:390px;height:650px;border:0;max-width:100%}.status{min-height:60px;font-size:11px;white-space:pre-wrap}.input button{padding:5px;min-width:38px}</style></head><body>
+<h1>Night Relay · two-player playtest</h1><p>Isolated memory-only clients. Real game, controls and network snapshots. No accounts or live rooms.</p>
+<div class="controls"><label>Players<select id="count"><option>1</option><option selected>2</option></select></label><label>Controls<select id="style"><option value="auto">Input pilots</option><option value="manual">Manual</option></select></label><label>Difficulty<select id="difficulty"><option>easy</option><option selected>medium</option><option>hard</option><option>insane</option></select></label><button id="reset">New run</button><button id="play">Play</button><button id="pause">Pause</button><button id="link" aria-pressed="false">Disconnect P2</button><button id="handoff">Hand off host</button></div>
+<div class="players" id="players"></div><pre id="log"></pre>
+<script>
+(async()=>{
+ const source=await fetch('index.html').then(r=>r.text()),root=document.querySelector('#players');
+ const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
+ let frames=[],serial=0,latest=[],host=0,blocked=false,room;
+ const send=(i,data)=>frames[i]?.contentWindow.postMessage({...data,serial},location.origin);
+ function reset(){
+  serial++;host=0;blocked=false;latest=[];root.replaceChildren();frames=[];document.querySelector('#log').textContent='';document.querySelector('#link').setAttribute('aria-pressed','false');document.querySelector('#link').textContent='Disconnect P2';
+  const count=+document.querySelector('#count').value,auto=document.querySelector('#style').value==='auto',difficulty=document.querySelector('#difficulty').value;
+  room={host:ids[0],mode:'night-relay',members:['mech','herbalist'].slice(0,count).map((classId,i)=>({id:ids[i],slot:i+1,name:'TEST '+(i+1),classId,skin:i?'moon':'tide',difficulty}))};
+  for(let i=0;i<count;i++){
+   const panel=document.createElement('section');panel.className='player';panel.innerHTML='<strong>Player '+(i+1)+'</strong><div class="input"></div><div class="status">Loading…</div>';
+   [['Left','ArrowLeft'],['Right','ArrowRight'],['Jump','ArrowUp'],['Tend','ArrowDown']].forEach(([name,key])=>{const b=document.createElement('button');b.textContent=name;b.setAttribute('aria-label','P'+(i+1)+' '+name);b.setAttribute('aria-pressed','false');panel.querySelector('.input').append(b);b.onclick=()=>{const toggle=key!=='ArrowUp',on=toggle?b.getAttribute('aria-pressed')!=='true':true;b.setAttribute('aria-pressed',String(toggle&&on));send(i,{type:'input',key,on});if(!toggle)setTimeout(()=>send(i,{type:'input',key,on:false}),250);};});
+   const f=document.createElement('iframe');f.title='Player '+(i+1);f.setAttribute('sandbox','allow-scripts allow-same-origin');panel.append(f);root.append(panel);frames.push(f);
+   const setup='<script src="night-relay-playtest-pilot.js"><'+'/script><script>const memory=new Map();Object.defineProperty(window,"localStorage",{value:{getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k),clear:()=>memory.clear()}});<'+'/script>';
+   const hook=`
+    const serial=${serial},slot=${i},reviewRoom=${JSON.stringify(room)},reviewOrigin=${JSON.stringify(location.origin)};
+    let running=false,auto=${auto},blocked=false,networkAt=-1000,stateAt=-1000,packetId=0,pending=[];
+    const send=(type,data)=>parent.postMessage({type,serial,slot,...data},reviewOrigin);
+    beginCoop({room:reviewRoom,user:{id:reviewRoom.members[slot].id},host:slot===0,
+     action(type,data){pending.push({...data,type,id:++packetId});return true;},
+     tick(avatar,capture){if(!running||blocked||performance.now()-networkAt<66)return;networkAt=performance.now();send('wire',{kind:coop.host?'state':'input',packet:coop.host?capture():{avatar,actions:pending}});}
+    });menuPaused=true;clearRunInput();
+    const api={seedActors,seedVital,stageLayout,relayProfile,RELAY_LOCKS};
+    ${['P','rogueRun','coop'].map(n=>`Object.defineProperty(api,'${n}',{get:()=>${n}});`).join('')}
+    const key=(type,key)=>window.dispatchEvent(new KeyboardEvent(type,{key,bubbles:true,cancelable:true})),pilot=createRelayPilot(api,key,slot);
+    window.addEventListener('message',event=>{if(event.source!==parent||event.origin!==reviewOrigin||event.data.serial!==serial)return;const d=event.data;
+     if(d.type==='play'){running=true;menuPaused=false;}
+     if(d.type==='pause'){running=false;menuPaused=true;pilot.stop();clearRunInput();}
+     if(d.type==='block'){blocked=d.value;pilot.stop();clearRunInput();}
+     if(d.type==='roster')coopRoster(d.room);
+     if(d.type==='input'){auto=false;pilot.stop();key(d.on?'keydown':'keyup',d.key);}
+     if(d.type==='wire'&&!blocked){if(d.kind==='input')coopInput(d.id,d.packet);else{coopState(d.packet);pending=pending.filter(a=>a.id>(d.packet.acks[reviewRoom.members[slot].id]||0));}}
+    });
+    const originalFrame=frame;let previous=performance.now();
+    frame=function(now){const dt=Math.max(0,Math.min(.05,(now-previous)/1000));previous=now;
+     if(running&&!blocked&&auto&&!rogueRun.ended)pilot.tick(dt);originalFrame(now);
+     if(now-stateAt>200){stateAt=now;const s=rogueRun.survival;send('state',{state:{ready:ready(runPixelFont)&&sheetReady&&sheet2Ready,running,auto,blocked,host:coop.host,ended:rogueRun.ended,won:runWon,waiting:s.waiting,time:+s.elapsed.toFixed(2),locks:s.stage,passes:s.passes,heat:+s.heat.toFixed(1),energy:+s.energy.toFixed(1),x:Math.round(P.x),height:Math.round(s.base-P.y),hp:Math.round(seedVital().hp),carrier:s.carrier,phase:pilot.phase,peers:seedActors().map(a=>({id:a.id,x:a.p.x,y:a.p.y,hp:a.v.hp}))}});}
+    };
+   `;
+   f.srcdoc=source.replace('<head>','<head><base href="'+new URL('.',location.href).href+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace('start();\n})();','start();\n'+hook+'})();');
+  }
+ }
+ window.addEventListener('message',event=>{const d=event.data;if(event.origin!==location.origin||d.serial!==serial||event.source!==frames[d.slot]?.contentWindow)return;
+  if(d.type==='wire'&&!blocked){if(d.kind==='input')setTimeout(()=>send(host,{...d,id:ids[d.slot]}),100);else frames.forEach((_,i)=>{if(i!==host)setTimeout(()=>send(i,d),100);});}
+  if(d.type==='state'){latest[d.slot]=d.state;const n=frames[d.slot].parentElement.querySelector('.status');n.dataset.state=JSON.stringify(d.state);n.textContent=[d.state.won?'LIGHT DELIVERED':d.state.ended?'RUN ENDED':d.state.waiting?'WAITING FOR A PARTNER':d.state.running?'PLAYING':'PAUSED',d.state.time+'s · '+d.state.locks+'/3 locks · '+d.state.passes+' handoffs',d.state.energy+'% light · '+d.state.hp+' HP · '+d.state.phase+(d.state.host?' · HOST':'')].join('\n');}
+ });
+ document.querySelector('#play').onclick=()=>frames.forEach((_,i)=>send(i,{type:'play'}));
+ document.querySelector('#pause').onclick=()=>frames.forEach((_,i)=>send(i,{type:'pause'}));
+ document.querySelector('#reset').onclick=reset;
+ document.querySelector('#link').onclick=()=>{blocked=!blocked;document.querySelector('#link').setAttribute('aria-pressed',String(blocked));document.querySelector('#link').textContent=blocked?'Reconnect P2':'Disconnect P2';send(1,{type:'block',value:blocked});};
+ document.querySelector('#handoff').onclick=()=>{if(frames.length<2||blocked)return;host=1-host;room={...room,host:ids[host]};frames.forEach((_,i)=>send(i,{type:'roster',room}));};
+ reset();
+})();
+</script></body></html>

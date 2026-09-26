@@ -32,9 +32,10 @@
       record = {
         id: options.id || uuid(),
         number: records.reduce(function (n, entry) { return Math.max(n, entry.number || 0); }, 0) + 1,
-        finishedAt: new Date().toISOString(), won: !!options.won, mode: ['last-seed', 'high-tide'].indexOf(options.mode) >= 0 ? options.mode : 'garden', ascent: Math.max(0, Math.min(Math.max(480,+options.goal||480), +options.ascent || 0)), goal: options.mode === 'high-tide' ? Math.max(480,+options.goal||480) : 0, plantSeconds: Math.max(0, +options.plantSeconds || 0),
+        finishedAt: new Date().toISOString(), won: !!options.won, mode: ['last-seed', 'high-tide', 'night-relay'].indexOf(options.mode) >= 0 ? options.mode : 'garden', ascent: Math.max(0, Math.min(Math.max(480,+options.goal||480), +options.ascent || 0)), goal: options.mode === 'high-tide' ? Math.max(480,+options.goal||480) : 0, plantSeconds: Math.max(0, +options.plantSeconds || 0),
         world: Math.max(1, Math.floor(+options.world || 1)), wave: Math.max(0, Math.floor(+options.wave || 0)),
         seconds: Math.max(0, +options.seconds || 0), classId: options.classId || null,
+        passes: Math.max(0, Math.floor(+options.passes || 0)), resets: Math.max(0, Math.floor(+options.resets || 0)), light: Math.max(0, Math.min(100, +options.light || 0)), reason: typeof options.reason === 'string' ? options.reason.slice(0,80) : '',
         ownerId: options.ownerId || null, name: options.name || null,
         plants: copy(Array.isArray(options.plants) ? options.plants : [])
       };
@@ -72,6 +73,7 @@
   function clonePlants(plants) { return JSON.parse(JSON.stringify(Array.isArray(plants) ? plants : [])); }
   function summary(record) {
     var seconds = count(record.seconds, 0);
+    if (record.mode === 'night-relay') return 'Night Relay · ' + count(record.wave, 0) + '/3 locks · ' + count(record.passes, 0) + ' handoffs · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + ' · ' + count(record.light, 0) + '% light';
     if (record.mode === 'high-tide') return 'High Tide · ' + (record.won ? 'Escaped' : 'Drowned') + ' · ' + count(record.ascent, 0) + '/'+count(record.goal,480)+' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
     if (record.mode === 'last-seed') return 'Last Seed · Wave ' + count(record.wave, 0) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + ' · Plant alive ' + Math.floor(count(record.plantSeconds, 0)) + 's';
     return record.plants.length + (record.plants.length === 1 ? ' plant' : ' plants') + ' · World ' + count(record.world, 1) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
@@ -210,6 +212,7 @@
       item.append(c, el('span', 'run-results-plant-id', String(p.id))); gallery.appendChild(item); visiblePlants.push({ canvas: c, plant: p });
     }
     empty.hidden = !!run.plants.length; inspectButton.hidden = !run.plants.length || run.mode === 'high-tide';
+    empty.textContent = run.mode === 'night-relay' ? run.reason || (run.won ? 'Everyone made it home.' : 'The light went out.') : 'Your next garden starts with one seed.';
     previous.parentNode.hidden = run.plants.length <= PAGE_SIZE;
     previous.disabled = page === 0; next.disabled = end >= run.plants.length;
     pageLabel.textContent = 'Bouquet ' + (page + 1) + ' of ' + Math.max(1, Math.ceil(run.plants.length / PAGE_SIZE));
@@ -300,9 +303,9 @@
   function showBouquet(saved) {
     recordsView.hidden = true; header.hidden = false; footer.hidden = false; collection.hidden = true;
     panel.classList.remove('show-collection'); panel.setAttribute('aria-labelledby', 'runResultsTitle');
-    setLabel(title, run.mode === 'high-tide' ? (run.won ? 'TIDE OUTRUN' : 'HIGH TIDE') : run.mode === 'last-seed' ? 'LAST SEED' : saved ? 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
+    setLabel(title, run.mode === 'night-relay' ? (run.won ? 'LIGHT DELIVERED' : 'NIGHT RELAY') : run.mode === 'high-tide' ? (run.won ? 'TIDE OUTRUN' : 'HIGH TIDE') : run.mode === 'last-seed' ? 'LAST SEED' : saved ? 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
     var identity = window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.identity();
-    setLabel(subtitle, run.mode === 'high-tide' ? 'VAKTAR '+count(run.wave,0)+'/5 · '+Math.round(count(run.ascent,0))+'/'+count(run.goal,480) : run.mode === 'last-seed' ? 'WAVE '+count(run.wave,0)+' / '+Math.floor(count(run.seconds,0))+' SECONDS' : run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
+    setLabel(subtitle, run.mode === 'night-relay' ? 'LOCKS '+count(run.wave,0)+'/3 / '+count(run.passes,0)+' HANDOFFS' : run.mode === 'high-tide' ? 'VAKTAR '+count(run.wave,0)+'/5 · '+Math.round(count(run.ascent,0))+'/'+count(run.goal,480) : run.mode === 'last-seed' ? 'WAVE '+count(run.wave,0)+' / '+Math.floor(count(run.seconds,0))+' SECONDS' : run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
     inspectButton.setAttribute('aria-expanded', 'false'); retry.disabled = false; retry.hidden = typeof callbacks.onRetry !== 'function';
     var status = window.MaxRunRecords.status(); saveNotice.textContent = status.persisted ? '' : status.error || 'This browser could not save your garden. Keep this tab open to retain it.'; saveNotice.hidden = !saveNotice.textContent;
     updatePublish(); renderPage(); layout(); title.focus({ preventScroll: true });

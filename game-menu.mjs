@@ -466,7 +466,7 @@ function selectionSummary() {
 }
 function readInvite() {
   const params = new URL(window.location.href).searchParams, id = params.get('join'), mode = params.get('mode') || 'garden';
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '') && ['garden', 'last-seed', 'high-tide'].includes(mode) ? { id: id.toLowerCase(), mode } : null;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '') && ['garden', 'last-seed', 'high-tide', 'night-relay'].includes(mode) ? { id: id.toLowerCase(), mode } : null;
 }
 function clearInvite() {
   if (invitedRoom) {
@@ -478,12 +478,13 @@ function clearInvite() {
 function play(mode, room = null) {
   if (!room) clearInvite();
   invitedRoom = room; inviteState = room ? 'loading' : null;
-  selectedMode = ['last-seed', 'high-tide'].includes(mode) ? mode : 'garden';
+  selectedMode = ['last-seed', 'high-tide', 'night-relay'].includes(mode) ? mode : 'garden';
   sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
-  page('play', selectedMode === 'high-tide' ? 'High Tide' : selectedMode === 'last-seed' ? 'Last Seed' : 'Your Max');
+  page('play', selectedMode === 'night-relay' ? 'Night Relay' : selectedMode === 'high-tide' ? 'High Tide' : selectedMode === 'last-seed' ? 'Last Seed' : 'Your Max');
   if (selectedMode === 'high-tide') card.append(el('p', 'One seed. Grow above the rising sea. Up by the stem to climb; hold Tend to grow, release to climb. Max cannot swim.'));
   if (invitedRoom) card.append(el('p', 'You are invited. Choose your character to join.'));
   if (selectedMode === 'last-seed') card.append(el('p', 'Plant the only seed to begin. Hold Tend beside a fallen teammate to revive.'));
+  if (selectedMode === 'night-relay') card.append(el('p', '2–4 players. Carry the light through three locks. Both hold Tend together to pass it. Blue rune: partner. Gold rune: carrier. Swap carriers after each lock.'));
   chooseMax();
   const actions = el('div', undefined, 'max-play-actions max-play-one');
   actions.append(pixelText(button('', joinSharedGarden, 'primary'), 'Play', 3, 0));

@@ -244,13 +244,13 @@ test('Play again cannot rejoin the dead room before its departure has completed'
   } finally { release?.(); m.dom.window.close(); }
 });
 
-for (const mode of ['garden', 'last-seed', 'high-tide']) test('Invite copies the active ' + mode + ' session and keeps the run going', async () => {
+for (const mode of ['garden', 'last-seed', 'high-tide', 'night-relay']) test('Invite copies the active ' + mode + ' session and keeps the run going', async () => {
   const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' }, scenes: [] });
   try {
     m.click('Settings');
     assert.equal([...m.w.document.querySelectorAll('button')].some(b => b.textContent === 'Invite'), false);
     m.click('Back');
-    if (mode !== 'garden') { m.click('Garden'); await m.settle(); m.click(mode === 'high-tide' ? 'High Tide relic' : 'Last Seed relic'); m.click('ENTER'); }
+    if (mode !== 'garden') { m.click('Garden'); await m.settle(); m.click(mode === 'night-relay' ? 'Night Relay relic' : mode === 'high-tide' ? 'High Tide relic' : 'Last Seed relic'); m.click('ENTER'); }
     else m.click('Play');
     m.click('Play'); await m.settle();
     const copied = []; Object.defineProperty(m.w.navigator, 'clipboard', { value: { async writeText(value) { copied.push(value); } } });
@@ -280,7 +280,7 @@ test('Invite falls back to a selected link when clipboard access is denied and c
   } finally { m.dom.window.close(); }
 });
 
-for (const mode of ['garden', 'last-seed', 'high-tide']) test(mode + ' invite opens character selection and joins only its session', async () => {
+for (const mode of ['garden', 'last-seed', 'high-tide', 'night-relay']) test(mode + ' invite opens character selection and joins only its session', async () => {
   const m = await menu(undefined, { url: 'https://max.iverfinne.no/?join=' + INVITE_ROOM + '&mode=' + mode,
     sharedStatus: { id: INVITE_ROOM, active: true, players: 1, taken: ['mech'], difficulty: 'hard' } });
   try {
@@ -382,7 +382,7 @@ test('a visible home stone opens directly and the second tap keeps its entry ope
     gardenTapAt(m, 150, 550);
     assert.equal(overlay.dataset.view, 'garden');
     assert.equal(overlay.dataset.focus, 'relic');
-    assert.match(m.w.document.querySelector('.max-garden-note').textContent, /HIGH TIDE/);
+    assert.match(m.w.document.querySelector('.max-garden-note').textContent, /NIGHT RELAY/);
     gardenTapAt(m, 150, 550);
     assert.equal(overlay.dataset.focus, 'relic', 'double tapping must not close the stone');
     m.click('ENTER'); await m.settle();
@@ -394,10 +394,10 @@ test('a visible home stone opens directly and the second tap keeps its entry ope
 test('a home flower opens its own note without first pressing Garden', async () => {
   const m = await menu(undefined, { restoredUser: { id: 'gardener', email: 'iver@players.max.invalid' }, scenes: [] });
   try {
-    gardenTapAt(m, 380, 400);
+    gardenTapAt(m, 610, 400);
     assert.equal(m.w.document.querySelector('.max-menu').dataset.focus, 'plant');
     assert.match(m.w.document.querySelector('.max-garden-note').textContent, /SKYBELL/);
-    gardenTapAt(m, 380, 400);
+    gardenTapAt(m, 610, 400);
     assert.equal(m.w.document.querySelector('.max-menu').dataset.focus, 'plant');
   } finally { m.dom.window.close(); }
 });
@@ -647,7 +647,7 @@ test('Last Seed opens the ordinary character selection and joins its own shared 
   const scenes=[],m=await menu(undefined,{restoredUser:{id:'owner',email:'lukketsvane@players.max.invalid'},scenes});
   try{
     m.click('Garden');await m.settle();
-    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['high-tide','last-seed']);
+    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['night-relay','high-tide','last-seed']);
     m.click('Last Seed relic');m.click('ENTER');await m.settle();
     assert.equal(m.w.document.querySelector('.max-relic-game'),null);
     assert.ok(m.classIds().includes('polge'));
@@ -662,7 +662,7 @@ test('Last Seed opens the ordinary character selection and joins its own shared 
 test('another account has no owner stones and account-scoped relic grants only reveal that relic',async()=>{
   for(const granted of [[],['relic-last-seed']]){
     const scenes=[],m=await menu(undefined,{restoredUser:{id:'alice',email:'alice@players.max.invalid'},scenes,rpc:async name=>name==='max_my_unlocks'?{data:granted,error:null}:null});
-    try{m.click('Garden');await m.settle();assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['high-tide',...granted.map(id=>id.slice(6))]);}
+    try{m.click('Garden');await m.settle();assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['night-relay','high-tide',...granted.map(id=>id.slice(6))]);}
     finally{m.dom.window.close();}
   }
 });
@@ -672,7 +672,7 @@ test('a first-time guest opens High Tide, chooses a character and keeps the reli
   const scenes=[],m=await menu(undefined,{scenes});
   try{
     m.click('Garden');await m.settle();
-    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['high-tide']);
+    assert.deepEqual(Array.from(scenes.at(-1).relics,r=>r.id),['night-relay','high-tide']);
     m.click('High Tide relic');m.click('ENTER');await m.settle();
     assert.match(m.w.document.body.textContent,/High Tide/);
     assert.ok(m.classIds().includes('polge'));
