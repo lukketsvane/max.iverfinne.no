@@ -16,7 +16,8 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
    const page=await context.newPage(),errors=[];
    page.on('pageerror',error=>errors.push(error.message));
    page.on('response',response=>{if(response.status()>=400)errors.push(response.status()+' '+response.url());});
-   for(const zone of [-1,0,1,2,3,4]){
+   for(const zone of [-2,-1,0,1,2,3,4]){
+    const scene=zone===-2?'touch':zone===-1?'keyboard':'guardian-'+(zone+1);
     const params=zone<0?'':'&zone='+zone;
     await page.goto(base+'/review.html?mode=high-tide&portrait=1'+params+(zone>=0?'&still=1':''),{waitUntil:'load'});
     await page.waitForFunction(()=>{const n=document.querySelector('#status');return n.textContent.startsWith('Fixture error:')||n.dataset.state&&JSON.parse(n.dataset.state).tide?.artReady;},{},{timeout:20000});
@@ -25,23 +26,24 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     if(zone>=0){assert.ok(state.bossId);assert.equal(state.tide.bosses,zone);}
     else{
      const iframe=page.frames().find(f=>f!==page.mainFrame());
-     await page.locator('iframe').screenshot({path:`browser-review/${name}-before.png`});
+     await page.locator('iframe').screenshot({path:`browser-review/${name}-${scene}-before.png`});
      // WebKit does not transfer keyboard focus after the canvas prevents a
      // pointer's default action. The shipped game runs in the top frame.
      await iframe.evaluate(()=>window.focus());
      assert.equal(await iframe.evaluate(()=>document.hasFocus()),true);
-     await page.keyboard.down('ArrowDown');
+     if(zone===-2)await iframe.locator('#stage').tap({position:{x:195,y:540}});
+     else await page.keyboard.down('ArrowDown');
      try{await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.state).tide.started,{},{timeout:8000});}
      catch(error){
       console.error('Start state:',await page.locator('#status').getAttribute('data-state'),'errors:',errors);
       console.error('Input focus:',await iframe.evaluate(()=>({focused:document.hasFocus(),active:document.activeElement.tagName,locked:!!document.pointerLockElement})));
-      await page.locator('iframe').screenshot({path:`browser-review/${name}-failed.png`});throw error;
+      await page.locator('iframe').screenshot({path:`browser-review/${name}-${scene}-failed.png`});throw error;
      }
-     await page.keyboard.up('ArrowDown');await page.keyboard.press('ArrowUp');
+     if(zone===-1){await page.keyboard.up('ArrowDown');await page.keyboard.press('ArrowUp');}
      await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.state).tide.height>30,{},{timeout:8000});
     }
-    await page.locator('iframe').screenshot({path:`browser-review/${name}-${zone<0?'start':'guardian-'+(zone+1)}.png`});
-    assert.deepEqual(errors,[]);console.log(name,zone<0?'start and grow':'guardian '+(zone+1),'OK');
+    await page.locator('iframe').screenshot({path:`browser-review/${name}-${scene}.png`});
+    assert.deepEqual(errors,[]);console.log(name,scene,'OK');
    }
   }finally{await browser.close();}
  }
