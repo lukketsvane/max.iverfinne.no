@@ -1,5 +1,6 @@
 // Relics open alternate rules in the same shared garden engine.
 export const RELICS = Object.freeze([
+  Object.freeze({ id: 'night-relay', name: 'Night Relay', open: true, minPlayers: 2, note: '2–4 players. Steal the light. Pass it before it burns. One holds the switch, one carries the seed. Nobody gets left behind.', color: '#e4bb77' }),
   Object.freeze({ id: 'high-tide', name: 'High Tide', open: true, note: 'Ei morplante. Fem hagar. Stell planta, finn oppgraderingar og slå vaktarane før floa tek deg.', color: '#73afbd' }),
   Object.freeze({ id: 'last-seed', name: 'Last Seed', note: 'One seed. Endless waves. Tend your plant and revive your team. Everyone down ends the run.', color: '#9fdbbf' }),
 ]);
@@ -13,7 +14,7 @@ export function relicCollection(user, unlocks = []) {
 }
 export function drawRelicStone(g, id, x, ground, t = 0, selected = false) {
   x = Math.round(x); ground = Math.round(ground);
-  const ink = id === 'high-tide' ? '#73afbd' : '#9fdbbf';
+  const ink = id === 'night-relay' ? '#e4bb77' : id === 'high-tide' ? '#73afbd' : '#9fdbbf';
   const rows = [
     '    11111     ', '   1222221    ', '  122223221   ', '  122222221   ',
     ' 12222222221  ', ' 12222222221  ', ' 12222222221  ', ' 122222222221 ',
@@ -29,7 +30,7 @@ export function drawRelicStone(g, id, x, ground, t = 0, selected = false) {
     g.fillRect(x - 7 + xx, y + yy, 1, 1);
   }));
   g.fillStyle = ink;
-  const rune = id === 'high-tide'
+  const rune = id === 'night-relay' ? ['01010','11111','01010','00100','01110','10101','10001'] : id === 'high-tide'
     ? ['00100','01110','10101','00100','11011','00100','11011']
     : ['10001','10101','11111','01110','01010','01010','11011'];
   rune.forEach((row, yy) => [...row].forEach((p, xx) => { if (p === '1') g.fillRect(x - 2 + xx, ground - 12 + yy, 1, 1); }));

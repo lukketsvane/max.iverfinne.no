@@ -279,11 +279,11 @@ function pondNear(x) {
   }
   return null;
 }
-function waterAt(x) { if(highTideMode())return null; var p = pondNear(x); return (p && Math.abs(x - p.cx) < p.hw) ? p : null; }
+function waterAt(x) { if(isolatedRelicMode())return null; var p = pondNear(x); return (p && Math.abs(x - p.cx) < p.hw) ? p : null; }
 // A picture level holds the soil under its art at its own ground line, eased
 // back to the rolling terrain over 24 px beyond each edge.
 function surfaceY(x) {
-  if(highTideMode()&&rogueRun.survival)return rogueRun.survival.base;
+  if(isolatedRelicMode()&&rogueRun.survival)return rogueRun.survival.base;
   var pg = activeStageLayout && activeStageLayout.ground;
   if (pg && x > pg.x0 - 24 && x < pg.x1 + 24) {
     var t = x < pg.x0 ? (pg.x0 - x) / 24 : x > pg.x1 ? (x - pg.x1) / 24 : 0;
@@ -325,6 +325,7 @@ function pictureLava(){
   return false;
 }
 function stageLayout(){
+  if(nightRelayMode())return nightRelayLayout();
   if(highTideMode())return highTideLayout();
   var level=worldLevel();
   if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level<=2&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
@@ -595,7 +596,7 @@ stage.addEventListener('pointerdown', function (e) {
   // High Tide is built around one continuous Tend gesture. On touch, holding
   // your own character is Tend immediately: before the race it plants the seed;
   // on the vine it grows the tip until the finger is released.
-  if(highTideMode()&&touch.onMax){touch.low=true;gardenPress=true;swipeDown=true;}
+  if(isolatedRelicMode()&&touch.onMax){touch.low=true;gardenPress=true;swipeDown=true;}
   if(moveId===null)moveId=e.pointerId;
   e.preventDefault();
 }, {passive:false});
@@ -807,6 +808,7 @@ function updatePlayer(dt, inp) {
     if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
     P.throwPose=Math.max(0,P.throwPose-step);
     animate(step);
+    if(nightRelayMode())relayConstrain(P);
   }
 }
 
@@ -3341,6 +3343,7 @@ function saveGarden(){
 }
 function finalizeRogueRun(won){
   if(rogueRun.finalized)return;
+  if(nightRelayMode()){finalizeNightRelay(won);return;}
   if(highTideMode()){finalizeHighTide(won);return;}
   gardenPlots.forEach(recordGardenPlant);
   rogueRun.finalized=true;
@@ -3389,7 +3392,7 @@ function resetRogueRun(reason,selection){
   crows.length=0;smallFauna.length=0;
   var keepWorld=1; // Each attempt begins with the same garden and base abilities.
   rogueRun={classId:classId,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
-  rogueRun.mode=['last-seed','high-tide'].indexOf(selection.mode)>=0?selection.mode:'garden';resetLastSeed();resetHighTide();
+  rogueRun.mode=['last-seed','high-tide','night-relay'].indexOf(selection.mode)>=0?selection.mode:'garden';resetLastSeed();resetHighTide();resetNightRelay();
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
   rogueRun.recordId=window.MaxRunRecords?window.MaxRunRecords.uuid():null;
@@ -3409,7 +3412,7 @@ function endRogueRun(){
   rogueRun.ended=true;rogueRun.won=false;rogueRun.choice=null;runWon=false;runFinishT=0;clearRunInput();finalizeRogueRun(false);saveGarden();showRunResult();
 }
 function winRogueRun(){
-  if(singleSeedMode())return;
+  if(relicRunMode())return;
   if(rogueRun.ended)return;
   if(coop)Object.values(coop.members).forEach(function(m){m.choices=[];m.owed=0;});
   var alive=0,mature=0,health=0;
@@ -3421,7 +3424,7 @@ function winRogueRun(){
   socialTone('gift');saveGarden();showRunResult();
 }
 function updateRunCompetition(dt){
-  if(highTideMode())return;
+  if(isolatedRelicMode())return;
   if(lastSeedMode()&&!rogueRun.survival.started)return;
   if(runIsPaused()||!runActive)return;
   runElapsed+=dt;
@@ -3613,7 +3616,7 @@ function grantRogueXP(n){
   }
 }
 function seedBucketSpawn(b){
-  if(singleSeedMode())return null;
+  if(relicRunMode())return null;
   if(b!==0&&h1(b*2.71+9)>=seedRate())return null;
   if(seedCollected['b'+b])return null;if(b!==0&&h1(b*12.77+6.1)<.38)return null;
   var x=b*126+24+h1(b*4.61+3)*78;if(b===0)x=42;x=dryX(x);
@@ -3652,6 +3655,7 @@ function collectSeed(q){
   nudgeGardenHint(seedStreak>=3?'SEED STREAK ×'+seedStreak+' · +'+gain+' SEEDS':'SEED FOUND · +'+gain);updateGardenHud();saveGarden();
 }
 function updateSeedPickups(dt){
+  if(nightRelayMode())return;
   seedSpawnClock-=dt;seedStreakT=Math.max(0,seedStreakT-dt);if(seedStreakT<=0)seedStreak=0;
   if(seedSpawnClock<=0){seedSpawnClock=.6;if(coop&&coop.host)coopMembers().forEach(function(m){coopWithMember(m,ensureSeedPickups);});else if(!coop)ensureSeedPickups();}
   var magnet=10+(rogueRun.perks.magnet||0)*12;
@@ -3762,6 +3766,7 @@ function sligoKindFor(x){return h1(x*.731+biomeAt(x).seg*1.93)<(worldLevel()<6?.
 // The planting actor's class decides: on the host a guest's seed runs as the guest (coopWithMember).
 function seedKindFor(x){return ownClass().skill==='tun'?sligoKindFor(x):gardenKindFor(x);}
 function plantGardenSeed(x){
+  if(nightRelayMode())return false;
   if(seedDown(coopActor)||singleSeedMode()&&rogueRun.survival.started)return false;
   if(highTideMode())x=rogueRun.survival.root;
   x=dryX(x);if(waterAt(x)||nearestGardenPlot(x,12))return true;
@@ -3852,7 +3857,7 @@ function gardenGrowthRate(p){
   return b;
 }
 function updateGarden(dt){
-  if(highTideMode())return;
+  if(isolatedRelicMode())return;
   var i,p;
   for(i=gardenPlots.length-1;i>=0;i--){
     p=gardenPlots[i];recordGardenPlant(p);p.age+=dt;p.pulse=Math.max(0,p.pulse-dt*1.5);p.hit=Math.max(0,p.hit-dt*2.5);if(p.guard)p.guard=Math.max(0,p.guard-dt*1.5);
@@ -4455,6 +4460,7 @@ function drawLevelTallies(level){
   });
 }
 function drawRunHud(){
+  if(nightRelayMode()){drawNightRelayHud();drawRoster();return;}
   if(highTideMode()){drawHighTideHud();drawRoster();return;}
   if(!runActive||rogueRun.ended)return;
   if(lastSeedMode()){drawLastSeedHud();drawRoster();return;}
@@ -4477,6 +4483,7 @@ function raidPressure(){
   return (Math.max(0,runElapsed)/150+(worldLevel()-1)*.14)*difficultyScale();
 }
 function updateGardenFun(dt){
+  if(nightRelayMode()){updateNightRelay(dt);return;}
   if(highTideMode()){updateHighTide(dt);return;}
   if(lastSeedMode()){updateLastSeed(dt);return;}
   if(runIsPaused()||climb&&climb.exit||warp||P.st==='float')return;
@@ -4609,6 +4616,7 @@ function burstKrek(k){
   saveGarden();
 }
 function updateKrek(dt){
+  if(nightRelayMode())return;
   if(highTideMode()){updateHighTideEnemies(dt);return;}
   if(runIsPaused()||climb&&climb.exit||warp||P.st==='float')return;
   updatePolge(dt);
@@ -4923,6 +4931,7 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
+  if(nightRelayMode())return false;
   if(seedDown(coopActor)||seedReviveNearby())return false;
   if(P.tun>0)return false;
   if(coopGuest()){
@@ -4965,6 +4974,11 @@ function poseExit() {                                      // leave a held pose 
 }
 
 function updateHands(dt, inp) {
+  if(nightRelayMode()){
+    task=holdWater=null;gardenPress=false;lampToggle=false;
+    if(P.st!=='free'&&P.st!=='float')P.st='free';
+    return;
+  }
   if (P.st === 'climb' || P.st === 'float') { task = null; return; }
   if (P.tun > 0) { task = null; holdWater = null; gardenPress = false; lampToggle = false; return; }
   if(P.dodgeT>0&&jumpBuf<=0){gardenPress=false;return;}
@@ -6177,6 +6191,7 @@ function drawVignette() {
 /* MAX_POLGE */
 /* MAX_LAST_SEED */
 /* MAX_HIGH_TIDE */
+/* MAX_NIGHT_RELAY */
 /* MAX_COOP_GAME */
 /* MAX_RUN_DIRECTOR */
 /* MAX_RAT_ENEMIES */
@@ -6210,7 +6225,7 @@ function frame(now) {
   if(!runIsPaused())updateParts(dt);
   if(!coopGuest()){
   var ownBuild=rogueRun.perks;if(coop)rogueRun.perks=coopTeamPerks();
-  if(!highTideMode()){
+  if(!isolatedRelicMode()){
   if(!runIsPaused())updateCrows(dt);
   if(!runIsPaused())updateSmallFauna(dt);
   if(!runIsPaused())updateFlock(dt);
@@ -6230,7 +6245,7 @@ function frame(now) {
   if(!runIsPaused())updateRunCompetition(clockDt);
   if(!runIsPaused())updateRunDirector(dt);
   if(!runIsPaused())updateKrek(dt);
-  if(!highTideMode()){
+  if(!isolatedRelicMode()){
   if(!runIsPaused())gardenBirdGuards(dt);
   if(!runIsPaused())updateSmartWorld(dt);
   if(!runIsPaused())rebalanceEcology(dt);
@@ -6238,7 +6253,7 @@ function frame(now) {
   }
   if(!runIsPaused())updateBombs(dt);
   if(!runIsPaused())updateFeathers(dt);
-  if(!runIsPaused()&&!highTideMode())refillBirds(dt);
+  if(!runIsPaused()&&!isolatedRelicMode())refillBirds(dt);
   if(coop)rogueRun.perks=coop.members[coop.me].perks;
   }else{
     bombCool=Math.max(0,bombCool-dt);
@@ -6249,8 +6264,8 @@ function frame(now) {
   }
   if(!runIsPaused())updateHazardContact();
   if(!runIsPaused())listenRun();
-  if(!runIsPaused()&&!singleSeedMode())updateSecrets(dt);
-  if(!runIsPaused()&&!singleSeedMode())updateWonders(dt);
+  if(!runIsPaused()&&!relicRunMode())updateSecrets(dt);
+  if(!runIsPaused()&&!relicRunMode())updateWonders(dt);
   if(!runIsPaused())updatePlace(dt);
   }
   if((rogueRun.ended||(window.MaxRunResults&&window.MaxRunResults.isOpen()))&&!resultAtlasReady&&resultAssetsReady()){resultAtlasReady=true;if(window.MaxRunResults)window.MaxRunResults.redraw();}
@@ -6271,7 +6286,7 @@ function frame(now) {
   camX = Math.round(camX); camY = Math.round(camY);
   buildSurfCache();
 
-  if(highTideMode()){ctx.fillStyle='#080a0f';ctx.fillRect(0,0,IW,IH);}else{
+  if(nightRelayMode()){drawRelayBackdrop();}else if(highTideMode()){ctx.fillStyle='#080a0f';ctx.fillRect(0,0,IW,IH);}else{
   var hy = HY = ANCHOR + 6;
   hy += backdropLift();
   /* on a short screen the far layers sink behind the ground, so a strip of
@@ -6318,11 +6333,11 @@ function frame(now) {
   drawPlatforms(tSec);
   drawSligoTrail();
   drawPolgeStands();
-  if(!highTideMode())drawSmartWorld(tSec);
+  if(!isolatedRelicMode())drawSmartWorld(tSec);
   drawSpots(tSec);drawSeedPickups(tSec);
   drawRunExploration(tSec);
   drawGardenPlots(tSec);drawHighTideWorld(tSec);
-  if(!highTideMode()){
+  if(!isolatedRelicMode()){
   drawSecretGround(tSec);
   drawWonders(tSec);
   drawAnts();
@@ -6334,7 +6349,7 @@ function frame(now) {
   }
   drawClassAuras();
   drawParts();
-  if(!highTideMode()){
+  if(!isolatedRelicMode()){
   drawCrows();
   drawSmallFauna();
   drawSwans();
@@ -6350,7 +6365,7 @@ function frame(now) {
   drawClimbSky(tSec);
   drawBombs(tSec);
   drawFeathers();
-  if(!highTideMode()){
+  if(!isolatedRelicMode()){
   drawPondDeco(true);
   drawLowFlora(tSec, true);
   drawGlows(tSec);
@@ -6362,9 +6377,10 @@ function frame(now) {
   drawBiomeGrade();
   }
   drawBooms();
-  if(!highTideMode())drawVignette();
+  if(!isolatedRelicMode())drawVignette();
   drawWarp(tSec);
   drawHighTideWater(tSec);
+  drawRelayDarkness();drawNightRelay(tSec);
   drawWorldBanner(tSec);drawPlaceBanner();drawBossBar(dt);
   rosterShown=false;drawRunHud();if(!rosterShown)hideRoster();
 

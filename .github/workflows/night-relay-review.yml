@@ -1,0 +1,27 @@
+name: Night Relay paired browser review
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['night-relay*', 'index.html', 'coop-game.inc.js', 'last-seed.inc.js', 'scripts/check-night-relay-browser.cjs', '.github/workflows/night-relay-review.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browsers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps webkit chromium
+      - run: node scripts/check-night-relay-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: night-relay-browser-review
+          path: browser-review/relay-*.png
+          if-no-files-found: ignore

@@ -5,7 +5,7 @@ function seedVital(member){
   var owner=member||(!coop?rogueRun:coop.members[coop.me]);
   return owner.vital||(owner.vital={hp:100,shield:0,revive:0,hurt:0});
 }
-function seedDown(member){return singleSeedMode()&&seedVital(member).hp<=0;}
+function seedDown(member){return relicRunMode()&&seedVital(member).hp<=0;}
 function seedActors(){return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m),v:seedVital(m),id:m.id};}):[{member:null,p:P,v:seedVital(null),id:'solo'}];}
 // A gardening tap is queued until hands consume it. Climbing bypasses hands,
 // so continuous tide care must read held controls, never the queued tap.
@@ -33,7 +33,7 @@ function startLastSeed(plant){
   showRound('LAST SEED','Protect the plant. Keep each other alive.',2400);
 }
 function damageGardener(member,amount){
-  if(!singleSeedMode()||coopGuest()||rogueRun.ended)return false;
+  if(!relicRunMode()||coopGuest()||rogueRun.ended)return false;
   var v=seedVital(member),a=member?coopMemberAvatar(member):P;
   var remote=member&&member.id!==coop.me;
   if(v.hp<=0||v.shield>0||(remote?member.dodge&&performance.now()<member.dodge.expires:a.dodgeT>0)||(remote?curledMember(member,a):a.tun>0))return false;
@@ -43,7 +43,7 @@ function damageGardener(member,amount){
   if(v.hp===0){
     // Keep a fallen climber where their partner can reach them. The ground
     // fallback is far below the authored High Tide platforms.
-    if(!highTideMode())a.y=playerSupportY(a.x,a.y);a.grounded=true;
+    if(!isolatedRelicMode())a.y=playerSupportY(a.x,a.y);a.grounded=true;
     a.vx=a.vy=0;a.anim='rest';a.frame=0;a.st='rest';a.bracing=a.curled=false;a.tun=a.brace=0;a.lampLit=0;
     if(member){member.braceUntil=member.tunUntil=0;member.reviveHeld=false;member.dodge=null;}
     if(!member||member.id===coop.me){task=holdWater=climb=warp=null;clearRunInput();setAnim('rest');}

@@ -6,6 +6,16 @@ const { JSDOM } = require('jsdom');
 
 const root = join(__dirname, '..');
 const snapshot = value => JSON.parse(JSON.stringify(value));
+test('Night Relay stores the real heist, never a fabricated bouquet or normal leaderboard score',()=>{
+ const s=session(),w=s.w;
+ try{
+  const saved=w.MaxRunRecords.save({mode:'night-relay',won:true,plants:[],wave:3,seconds:81,passes:6,resets:1,light:57,reason:'Everyone made it home.'});
+  w.MaxRunResults.show({...s.options,recordId:saved.record.id,onRetry(){}});
+  assert.equal(saved.record.mode,'night-relay');assert.equal(saved.record.passes,6);assert.equal(saved.record.light,57);assert.equal(saved.record.plants.length,0);
+  assert.match(w.document.body.textContent,/LIGHT DELIVERED/);assert.match(w.document.body.textContent,/6 handoffs/);assert.match(w.document.body.textContent,/Everyone made it home/);
+  assert.equal(w.document.querySelector('.run-results-publish').hidden,true);
+ }finally{s.close();}
+});
 const plants = (length = 53, variant = 0) => Array.from({ length }, (_, i) => ({ id: i + 1, kind: (i + variant) % 9, seed: i * 10 + variant / 3, growth: .05 + i / 16 + variant, stalk: i % 7 === variant }));
 function session(storage = {}) {
   const dom = new JSDOM('<!doctype html><body><button id="garden">Your garden</button>', { url: 'https://max.test/', runScripts: 'outside-only', pretendToBeVisual: true });
@@ -118,6 +128,7 @@ test('run finalization saves the complete archive once with the owner captured a
     w.gardenStats = { harvested: 1 }; w.recordGardenPlant = () => {}; w.worldLevel = () => 4;
     w.MaxGardenLeaderboard = { identity: () => ({ id: 'later-account', name: 'Different person' }) };
     w.highTideMode = () => w.rogueRun.mode === 'high-tide';
+    w.nightRelayMode = () => w.rogueRun.mode === 'night-relay';
     w.eval(functionSource('finalizeRogueRun'));
     w.finalizeRogueRun(false); w.finalizeRogueRun(false);
     const records = w.MaxRunRecords.getAll(); assert.equal(records.length, 1);

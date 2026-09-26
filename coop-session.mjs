@@ -19,7 +19,7 @@ export class CoopSession {
   constructor(client, user, hooks = {}, selection = DEFAULT_LOADOUT) {
     this.client = client; this.user = user; this.hooks = hooks;
     this.selection = Object.freeze(validLoadout(selection) || { ...DEFAULT_LOADOUT });
-    this.mode = ['last-seed', 'high-tide'].includes(selection.mode) ? selection.mode : 'garden';
+    this.mode = ['last-seed', 'high-tide', 'night-relay'].includes(selection.mode) ? selection.mode : 'garden';
     this.token = token(); this.loadouts = Object.create(null); this.memberTokens = Object.create(null);
     this.room = null; this.channels = new Map(); this.pending = [];
     this.actionId = 0; this.sequence = 0; this.received = new Map();
