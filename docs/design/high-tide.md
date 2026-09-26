@@ -17,8 +17,9 @@ omtala i `assets/levels-v1/README.md`.
 
 1. Plant den eine morplanta. Ho byrjar med vatn til ei utforskingstur.
 2. Bruk plattformene til å hente ti oppgraderingar og ni doggdråpar. Oppgraderingar
-   gir dei vanlege vala. Dogg fyller vatn og helse og bremsar floa ei kort stund.
-3. Stell frå bakken eller ein vaksen del av stengelen. Det fyller vatn og helse.
+   gir val som verkar i denne modusen. Dogg fyller vatn og helse og bremsar floa.
+   Begge funna gir ein kort dobbel vekstspurt. Spurtane ventar bak ein låst vaktar.
+3. Stell frå bakken eller ein vaksen del av stengelen. Det fyller vatn og plantehelse, og hjelper ein såra spelar tilbake i kampen.
    Planta veks av seg sjølv medan ho har vatn, også medan spelaren er borte.
 4. Kvar etappe sluttar ved ein vaktar. Vidare vekst ventar på at vaktaren er slått.
    Mossback stormar fram, Bellkeeper varslar salver, Moon Moth har eit avbrytbart
@@ -46,10 +47,13 @@ morplanta. Vekst frå kjøt og deling brukar den vanlege kolonimodellen.
 | Hard | 35 s | 4,8 px/s | 3 s |
 | Insane | 28 s | 5,5 px/s | 2,6 s |
 
-Grunnveksten er 8 px/s. Vaktarane har 14, 23, 33, 45 og 62 grunnhelse, før den
-vanlege tids- og vanskegradsveksten. Fleire spelarar aukar grunnhelsa med 55 %
+Grunnveksten er 8 px/s. Vaktarane har 14, 23, 33, 45 og 62 grunnhelse. Skaden aukar med vaktarane og valt vanskegrad, utan ein ekstra
+tidsstraff for utforsking eller redning. Fleire spelarar aukar grunnhelsa med 55 %
 per ekstra spelar. Fiendetaket er fire vanlege fiendar i tillegg til vaktaren.
-Dette er ein første spelbar balanse, ikkje ein påstand om ferdig speltesting.
+Vasstapet er 1,6 % per sekund før oppgraderingar; stell fyller 18 % per sekund.
+Quick roots gir 35 % meir vekst per rang, Deep soil gir 30 % mindre vasstap,
+og Sap, Thorns, Barkskin, Mulch og Sap burst har verknad også langs morstengelen.
+Speltestrundane og avgrensingane er dokumenterte i `high-tide-playtest.md`.
 
 ## Kontroll
 
@@ -58,3 +62,15 @@ oppgraderingar, tilkomst til alle samlepunkta, ordinære bomber mot vaktarane,
 varsla angrep, stell, tørke, drukning, Sligo, fleirspelar og byte av vert.
 `review.html?mode=high-tide&portrait=1` brukar den verkelege motoren med isolerte
 lagringar. `&zone=0` til `&zone=4` opnar kvar sjefskamp; `&still=1` frys biletet.
+
+## Rørsle og samarbeid
+
+Retningshopp held seg frie frå stengelen, også i lufta. Stå nær stengelen og hopp
+utan sideretning for å gripe han. Klatrefarten blir målt langs svingane, slik at
+begge klientane sender rørsle verten kan godta. Ein utslått klatrar blir verande
+på staden og kan reddast, utan å bli flytta til botnen av kartet.
+
+`playtest.html` opnar to isolerte motorar med vanleg input og 100 ms forseinking
+kvar veg. Ingen konto, lagring eller offentleg lobby blir brukt. Dei valfrie
+pilotane trykkjer berre dei vanlege tastane. Knappane over kvart bilete tek over
+manuelt. `scripts/playtest-high-tide.cjs` køyrer same inputpilot ved 30 Hz.

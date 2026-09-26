@@ -128,7 +128,7 @@ test('a downed climber stays reachable high up and a partner can revive them thr
  s.height=p.tideHeight=700;s.bosses=2;s.waterY=s.base-400;const pt=g.highTideRoutePoint(630);stand(g,pt);
  const m=g.coop.members[ids[1]];Object.assign(m.avatar,pt,{vx:0,vy:0,st:'climb',grounded:false});
  g.damageGardener(m,200);assert.equal(m.avatar.y,pt.y);assert.equal(g.seedVital(m).hp,0);sync();assert.equal(q.P.y,pt.y);
- step(g,3.1,true);assert.equal(g.seedVital(m).hp,50);sync();assert.equal(q.seedVital().hp,50);assert.equal(q.P.st,'free');
+ step(g,3.1,true);assert.ok(g.seedVital(m).hp>=50&&g.seedVital(m).hp<51);sync();assert.equal(q.seedVital().hp,g.seedVital(m).hp);assert.equal(q.P.st,'free');
 });
 test('exploration stores a growth rush which waits behind a boss gate and survives sync',()=>{
  const {players:[h,j],sync}=pair(),g=h.game,p=start(g),s=g.rogueRun.survival;stand(g,g.highTidePods()[0]);g.updateHighTide(.05);
