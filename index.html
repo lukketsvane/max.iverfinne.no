@@ -419,7 +419,7 @@ window.addEventListener('keydown', function (e) {
   if (runIsPaused()) return;
   if (k === 'ArrowLeft' || k === 'a' || k === 'A') heldL = true;
   else if (k === 'ArrowRight' || k === 'd' || k === 'D') heldR = true;
-  else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!heldUp && (!charge||ownClass().id==='mech')) doJump(true); heldUp = true; }
+  else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!heldUp && (!charge||placesBombs())) doJump(true); heldUp = true; }
   else if ((k === 'r' || k === 'R') && !e.repeat) refillCompanion();
   else if (k === 'Shift') heldRun = true;
   else if (k === 'ArrowDown' || k === 's' || k === 'S') { heldDown = true; if (!e.repeat) gardenPress = true; }
@@ -678,7 +678,7 @@ function drawMouseReticle(){
   if(mouse.locked&&(!runActive||rogueRun.ended||runIsPaused())&&document.exitPointerLock)document.exitPointerLock();
   if(!mouse.seen||!runActive||rogueRun.ended||runIsPaused()||performance.now()-mouse.t>8000&&!(charge&&charge.src==='mouse'))return false;
   var w=screenToWorld(mouse.x,mouse.y),rx=Math.round(w.x-camX),ry=Math.round(w.y-camY);
-  if(!charge&&ownClass().id!=='mech'){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
+  if(!charge&&!placesBombs()){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
   ctx.fillStyle='rgba(4,8,10,.85)';ctx.fillRect(rx-4,ry-1,9,3);ctx.fillRect(rx-1,ry-4,3,9);
   ctx.fillStyle=bombCool>0?'#6d7690':'#f2df91';ctx.fillRect(rx-3,ry,3,1);ctx.fillRect(rx+1,ry,3,1);ctx.fillRect(rx,ry-3,1,3);ctx.fillRect(rx,ry+1,1,3);
   return true;
@@ -710,7 +710,7 @@ function readInput() {
     }
   }
   if(axis===0&&padAx){axis=padAx<0?-1:1;top=heldRun?RUN_V:WALK_V+(RUN_V-WALK_V)*Math.max(0,Math.min(1,(Math.abs(padAx)-.55)/.35));}
-  if(charge&&charge.lock&&ownClass().id!=='mech')axis=0;
+  if(charge&&charge.lock&&!placesBombs())axis=0;
   return { axis: axis, top: top };
 }
 
@@ -5179,9 +5179,10 @@ function lob(x0, y0, tx, ty, vx, vy) {
 }
 var bombCoolMax=0,queuedThrow=null;
 function throwCooldown(power){return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
+function placesBombs(){return ownClass().id==='mech'||ownClass().id==='runner';}
 function throwBomb(target,power) {                         // a bird {kind, o} or a spot {x, y}
   if(seedDown(coopActor))return false;
-  if(ownClass().id==='mech')target={x:P.x,y:P.y-2};
+  if(placesBombs())target={x:P.x,y:P.y-2};
   power=Math.max(0,Math.min(1,+power||0));
   if (runIsPaused() || !sligoCanThrow() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
   if(coopGuest()){
@@ -5203,7 +5204,7 @@ function throwBomb(target,power) {                         // a bird {kind, o} o
 function launchBomb() {
   var bodyHeight=ownClass().skill==='tun'?sligoHeight(P):24;
   if(!sligoShed())return false;
-  if(ownClass().id==='mech'){
+  if(placesBombs()){
     // Place, don't lob. A platform is a real support; dropping in mid-air
     // releases a vertical charge that can land without a contact detonation.
     var fuse=2,placed=!!P.grounded&&!P.wet;
@@ -5254,7 +5255,7 @@ function aimAssist(dx,dy){
 }
 function mouseSnap(wx,wy){var s=sporeAt(wx,wy,12);if(s)return sporeAim(s);var k=krekAt(wx,wy,14);if(k)return {kind:'krek',o:k};return birdAt(wx,wy);}
 function chargePoint(){
-  if(ownClass().id==='mech')return {x:P.x,y:P.y-2};
+  if(placesBombs())return {x:P.x,y:P.y-2};
   if(charge.mx!=null){var m=mouseSnap(charge.mx,charge.my);return m?targetPoint(m):{x:charge.mx,y:charge.my};}
   var d=Math.hypot(charge.ax,charge.ay);
   if(d>(charge.src==='pad'?.1:.3)){var a=aimAssist(charge.ax,charge.ay);if(a)return targetPoint(a);var r=40+120*Math.min(1,d);return {x:P.x+charge.ax/d*r,y:P.y-12+charge.ay/d*r};}
@@ -5278,7 +5279,7 @@ function drawCharge(){
   if(runIsPaused())return;
   var bx=Math.round(P.x-camX)-5,by=Math.round(P.y-camY)-30,cool=bombCool>0&&bombCoolMax>0;
   if(charge){
-    if(ownClass().id==='mech'){
+    if(placesBombs()){
       var r=BLAST_R+(rogueRun.perks.blast||0)*5+Math.round(charge.t*8),x=Math.round(P.x-camX),y=Math.round(P.y-camY);
       ctx.fillStyle='#d5ad63';ctx.fillRect(x-r,y-1,r*2,1);ctx.fillRect(x-r,y-4,1,3);ctx.fillRect(x+r,y-4,1,3);
       ctx.fillRect(bx,by,Math.round(10*charge.t),1);return;
@@ -5405,6 +5406,7 @@ function explode(x, y, wet, build) {
   build=build||Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers});
   var chainSeeds=[];
   var BR = BLAST_R + (build.blast||0)*5 + Math.round((build.charge||0)*8);
+  guardianBlast(x,y,BR);encounterBlast(x,y,BR);
   var intercepted=false;
   runHazards=runHazards.filter(function(h){if(h.type!=='spore'||h.tell<=0)return true;var q=hazardPosition(h);if(Math.hypot(q.x-x,q.y-y)>BR+5)return true;intercepted=true;return false;});
   booms.push({ id:++coopFxId,x: x, y: y, t: 0, seed: Math.random() * 97, wet: wet, sligo:!!build.sligo });

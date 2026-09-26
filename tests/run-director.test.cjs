@@ -116,11 +116,14 @@ test('each stage offers two dry routes and a third ember or dew can be earned by
       assert.equal(options.length,2);assert.notEqual(options[0].type,options[1].type);
       assert.notEqual(options[0].id,options[1].id);assert.ok(Math.abs(options[0].x-options[1].x)>100);
       options.forEach(e=>{assert.equal(g.playerWetAt(e.x,e.y),false);assert.ok(g.playerSupportId(e.x,e.y));assert.equal(e.locked,false);});
-      const e=stage<=5&&options.find(q=>q.type===type);if(!e)continue;
+      const e=stage<=5&&options.find(q=>q.type===type||q.type===(type==='rain'?'loom':'echo'));if(!e)continue;
       Object.assign(g.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});g.gardenSeeds=9;
       assert.equal(g.interactEncounter(),true);
       for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
-      g.updateEncounters(e.duration+.01);g.updateRunLoot();earned++;
+      if(e.type==='loom'){g.heldDown=true;g.P.x=e.x-8;g.updateEncounters(2);g.P.x=e.x+8;g.updateEncounters(2);g.heldDown=false;}
+      else if(e.type==='echo'){for(let hit=0;hit<3;hit++){g.explode(e.x+(e.note-1)*23,e.y-8,false,{});g.updateEncounters(.5);}}
+      else g.updateEncounters(e.duration+.01);
+      g.updateRunLoot();earned++;
       assert.equal(g.rogueRun.traits[type==='rain'?'dew':'embers'],earned);
     }
     assert.ok(earned>=3,'a specialised milestone is reachable before the middle of the run');

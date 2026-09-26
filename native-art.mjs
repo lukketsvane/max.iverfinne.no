@@ -8,7 +8,7 @@ const ON_DEMAND = Object.freeze(['sligo']);
 const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
 const RATS = Object.freeze(['common', 'black', 'albino', 'plague']);
 const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bellkeeper', 'moon-moth': '15-moon-moth' });
-const GUARDIANS = Object.freeze(['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','frostjaw','kiln-beetle']);
+const GUARDIANS = Object.freeze(['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','frostjaw','kiln-beetle','glass-snail','wick-hermit','spindle-widow','orchard-mimic','tuning-fork','ash-ferryman','compost-choir','seed-engine']);
 
 export function createNativeArt() {
   const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null);

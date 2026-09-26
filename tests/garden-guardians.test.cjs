@@ -14,7 +14,7 @@ test('altar requires a living grown plant, reach and a finished optional trial',
 test('all twenty altars lie on reachable dry soil, and each garden has a named guardian',()=>{
  const {game:g}=game();const designs=new Set();
  for(let stage=1;stage<=20;stage++){if(stage>1)g.enterLevel(stage);atAltar(g);assert.equal(g.playerWetAt(g.P.x,g.P.y),false);assert.equal(g.P.y,g.surfaceY(g.P.x));const s=g.gardenBossSpec(stage);designs.add(s.id);assert.ok(s.name.length>3);assert.equal(s.stage,stage);}
- assert.equal(designs.size,12);
+ assert.equal(designs.size,20);
 });
 test('new guardian patterns warn before hitting, expose double damage and clean up on defeat',()=>{
  for(const stage of [1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19]){
@@ -42,7 +42,7 @@ test('Mech bombs remain on ledges, fall vertically onto platforms, and other cla
   Object.assign(g.P,{x,y:p.y,grounded:true,platform:p.id});g.throwBomb({x:x+70,y:p.y-20});g.updateBombs(.5);assert.equal(g.bombs[0].y,p.y-2);
   g.bombs=[];g.bombCool=0;g.P.y=p.y-24;g.P.grounded=false;g.throwBomb({x:x+70,y:p.y});for(let i=0;i<hz;i++)g.updateBombs(1/hz);assert.equal(g.bombs[0].x,x);assert.equal(g.bombs[0].y,p.y-2);
  }
- for(const id of ['runner','bulwark','herbalist','polge','sligo']){const {game:g}=game(id);g.throwBomb({x:g.P.x+60,y:g.P.y-20});assert.equal(g.bombs[0].st,'fly');assert.notEqual(g.bombs[0].vx,0);}
+ for(const id of ['bulwark','herbalist','polge','sligo']){const {game:g}=game(id);g.throwBomb({x:g.P.x+60,y:g.P.y-20});assert.equal(g.bombs[0].st,'fly');assert.notEqual(g.bombs[0].vx,0);}
 });
 test('two-player altar and planted bomb survive duplicate input, snapshots and a host change',()=>{
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
@@ -69,5 +69,5 @@ test('mandatory guardians keep clock pressure without multiplying long fights by
  const {game:g}=game('herbalist',19),k=g.makeStageBoss(19);g.floatKrek=[k];
  const fresh=g.runDurabilityScale(k);g.runElapsed=1200;const later=g.runDurabilityScale(k);
  assert.ok(later>fresh);assert.ok(later<g.runDurabilityScale());
- const hp=k.hp;g.damagePest(k,1,k.x);assert.ok(Math.abs(hp-k.hp-1/later)<1e-8);
+ const hp=k.hp;g.damagePest(k,1,k.x);assert.ok(Math.abs(hp-k.hp-.45/later)<1e-8);
 });
