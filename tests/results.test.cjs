@@ -6,17 +6,21 @@ const { JSDOM } = require('jsdom');
 
 const root = join(__dirname, '..');
 const snapshot = value => JSON.parse(JSON.stringify(value));
-test('the complete result scene draws a native saved-class sprite and restores live state',()=>{
+test('the complete result scene draws a native saved-class sprite and restores live state',async()=>{
  const h=require('./game-harness.cjs').loadGame(),g=h.game,draws=[],skins=[];
+ const {CLASS_SKINS}=await import('../player-loadout.mjs'),expected=[];
  const native={width:256,height:256};h.window.MaxNativeArt={playerImage(skin,atlas){skins.push([skin,atlas]);return native;}};
  const context=new Proxy({drawImage(...args){draws.push(args);}}, {get(target,key){if(key in target)return target[key];if(key==='createLinearGradient')return()=>({addColorStop(){}});return()=>{};}});
  const before=[g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)];
  for(const mode of ['garden','last-seed','high-tide','night-relay']){
-  assert.doesNotThrow(()=>g.drawResultScene({width:150,height:324,getContext(){return context;}},null,{mode,classId:'runner'}));
-  assert.deepEqual([g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)],before);
+  for(const [classId,skin] of Object.entries(CLASS_SKINS)){
+   expected.push([skin,'main']);
+   assert.doesNotThrow(()=>g.drawResultScene({width:150,height:324,getContext(){return context;}},null,{mode,classId}));
+   assert.deepEqual([g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)],before);
+  }
  }
- assert.deepEqual(skins,Array.from({length:4},()=>['moss','main']));
- assert.equal(draws.filter(a=>a[0]===native).length,4);
+ assert.deepEqual(skins,expected);
+ assert.equal(draws.filter(a=>a[0]===native).length,expected.length);
  assert.ok(draws.filter(a=>a[0]===native).every(a=>a[1]===0&&a[2]===0&&a[3]===a[7]&&a[4]===a[8]),'idle frame stays at native pixel size');
 });
 test('Night Relay stores the real heist, never a fabricated bouquet or normal leaderboard score',()=>{
