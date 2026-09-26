@@ -3,7 +3,7 @@ const {loadGame}=require('../tests/game-harness.cjs');
 const pilot=require('../high-tide-playtest-pilot.js');
 const graph=JSON.parse(fs.readFileSync('high-tide-playtest-routes.json'));
 const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
-function run({classes=['mech'],style='explore',difficulty='medium',seconds=480,latency=100}){
+function run({classes=['mech'],style='explore',difficulty='medium',seconds=480,latency=100,observe}){
  const clients=classes.map(()=>loadGame()),queue=[],actions=classes.map(()=>[]),seq=classes.map(()=>0),lastSent=classes.map(()=>-1e3);let now=0;
  const room={mode:'high-tide',host:ids[0],members:classes.map((classId,i)=>({id:ids[i],slot:i+1,classId,skin:{mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[classId],difficulty}))};
  const copy=x=>JSON.parse(JSON.stringify(x));
@@ -24,6 +24,7 @@ function run({classes=['mech'],style='explore',difficulty='medium',seconds=480,l
    else{clients[1].game.coopState(q.data);actions[1]=actions[1].filter(a=>a.id>(q.data.acks[ids[1]]||0));}
   }
   clients.forEach((h,i)=>{pilots[i].tick(1/30);h.tick(1000/30);});
+  if(observe)observe(clients,frame,pilots);
  }
  const g=clients[0].game,s=g.rogueRun.survival,p=g.highTidePlant();
  return {classes,style,difficulty,latency,won:g.runWon,ended:g.rogueRun.ended,seconds:+s.elapsed.toFixed(1),bosses:s.bosses,height:Math.round(s.height),boons:s.boonMask.toString(2).split('1').length-1,dew:s.dewMask.toString(2).split('1').length-1,plant:p&&+p.health.toFixed(2),players:clients.map((h,i)=>({hp:+h.game.seedVital().hp.toFixed(1),x:Math.round(h.game.P.x),height:Math.round(s.base-h.game.P.y),phase:pilots[i].phase,metrics:pilots[i].metrics,events:pilots[i].events}))};

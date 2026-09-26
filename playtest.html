@@ -48,7 +48,7 @@
      if(now-stateAt>250){stateAt=now;const s=rogueRun.survival,p=highTidePlant();send('state',{state:{ready:ready(highTideLayout().art.img),running,auto,ended:rogueRun.ended,won:runWon,time:Math.round(s.elapsed),bosses:s.bosses,plantHeight:Math.round(s.height),height:Math.round(s.base-P.y),x:Math.round(P.x),hp:Math.round(seedVital().hp),water:p?Math.round(p.moisture*100):0,plant:p?Math.round(p.health*100):0,boons:s.boonMask,dew:s.dewMask,phase:pilot.phase,metrics:pilot.metrics}});}
     };
    `;
-   f.srcdoc=source.replace('<head>','<head><base href="'+location.href.replace(/playtest(?:\.html)?.*$/,'')+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace(/\}\)\(\);\s*<\/script>/g,hook+'})();<'+'/script>');
+   f.srcdoc=source.replace('<head>','<head><base href="'+location.href.replace(/playtest(?:\.html)?.*$/,'')+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace('start();\n})();','start();\n'+hook+'})();');
   }
  }
  window.addEventListener('message',event=>{
