@@ -203,8 +203,11 @@ test('milestone bosses retain reinforcements and enrage while health supports a 
   const boss = g.makeStageBoss(10); g.floatKrek = [boss];
   assert.ok(boss.maxHp >= 30 && boss.maxHp < 56, String(boss.maxHp));
   const crown = g.makeHollowCrown(); assert.ok(crown.maxHp >= 95, String(crown.maxHp));
+  boss.life = 1; boss.windup = 0; boss.attackT = .01; g.updateKrek(.02);
+  const normalGap = boss.cool - boss.exposed, normalOpening = boss.exposed;
   boss.life = 61; boss.windup = 0; boss.attackT = .01; g.updateKrek(.02);
-  assert.ok(boss.cool <= 2.2 * .6 + 1e-9, 'an enraged boss comes back faster: ' + boss.cool);
+  assert.equal(boss.exposed, normalOpening, 'enrage keeps the full planted-bomb opportunity');
+  assert.ok(boss.cool - boss.exposed < normalGap, 'enrage shortens the pause before its next tell');
   const adds = g.floatKrek.length; boss.attack = 3; boss.cool = 0; boss.attackT = 0; boss.windup = 0; boss.exposed = 0; g.updateKrek(.01);
   assert.equal(g.floatKrek.length, adds + 1, 'every fourth attack calls a guard');
 });

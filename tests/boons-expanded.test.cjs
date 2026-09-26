@@ -19,6 +19,18 @@ test('Morning dew keeps a dry plant wetter than it would be',()=>{
   assert.ok(run(3)>run(0)+.1);
 });
 
+test('one Morning dew rank slows thirst and Deep soil turns that moisture into a refill',()=>{
+  const water=(dew,soil)=>{
+    const g=loadGame().game;g.resetRogueRun();g.rogueRun.perks.dew=dew;g.rogueRun.perks.water=soil;
+    const p=plot({x:0,moisture:.2,health:.8});g.gardenPlots=[p];
+    for(let i=0;i<60;i++)g.updateGarden(1/6);
+    return p.moisture;
+  };
+  const plain=water(0,0),dew=water(1,0),together=water(1,3);
+  assert.ok(dew>plain+.04,'the first rank provides moisture before it becomes self-sustaining');
+  assert.ok(together>.21&&together>dew+.04,'retained moisture lets the same dew rank refill the plant');
+});
+
 test('Bramble cuts a biting pest and Evergreen saves one dying plant per garden',()=>{
   const g=loadGame().game;g.resetRogueRun();g.rogueRun.perks.bramble=2;g.rogueRun.perks.evergreen=1;
   const p=plot({x:0,health:.005}),k={kind:0,queen:false,elite:false};g.gardenPlots=[p];

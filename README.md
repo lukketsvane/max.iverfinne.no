@@ -114,11 +114,15 @@ Bosses telegraph attacks in amber and expose themselves in cyan for double damag
 | 16–19 | Kiln Beetle, Ash Ferryman, Compost Choir, Seed Engine |
 | 20 | Hollow Crown |
 
+Cyan begins after the guardian's entire volley has landed and cleared. Every guardian gives enough time to react and plant a two-second bomb: 3.2 seconds on Easy, 2.75 on Medium, 2.5 on Hard and 2.35 on Insane. Moon Moth and Hollow Crown descend within ground-bomb reach during recovery. Solving a boss's special objective grants a longer opening; enrage shortens the gap before the next attack without taking that opening away.
+
+Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts do not stack the shake. Planted bombs show their actual upgraded reach, and a short input buffer accepts an attack released just before a reload or bomb slot becomes ready.
+
 The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech and Moss bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Charging preserves movement for both; other classes retain their aimed throws.
 
 New boss objectives reward tactics: crack Glass Snail’s front or flank it, snuff Wick Hermit’s wicks, cut Spindle Widow’s silk anchors, find Orchard Mimic’s cyan fruit, interrupt Tuning Fork’s echo, carry dew into Ash Ferryman, silence all Compost Choir voices, and break Seed Engine’s orbiting seeds. These actions open longer damage windows; ordinary attacks still work.
 
-Optional trials include Dew Relay (retrieve a drop from a platform route), Rain Loom (tend both seedbeds before they dry), and Echo Nest (hit the cyan egg three times). Each awards a personal upgrade to every player. Abandoned objectives fade after 75 seconds so the altar cannot be locked forever.
+Optional trials include Dew Relay (retrieve a drop from a platform route), Rain Loom (tend both seedbeds before they dry), and Echo Nest (hit the cyan egg three times). Each awards a personal upgrade to every player. Defeating all the guards at a Nest, Rain or Cache shrine makes its remaining charge four times faster while a player is present. All six trial types fade after 75 seconds without a reward and retire their guards, so an abandoned optional route cannot lock the guardian altar forever.
 
 Later specialist enemies include seed thieves, spore casters, shield beetles, healing moths, thorn casters, dew leeches and rammers.
 
@@ -133,7 +137,7 @@ Black, albino and plague rat variants unlock later still.
 
 ## Boons and run pickups
 
-Boons are a live overlay; the simulation continues underneath them. Current build paths include the original upgrades plus:
+Boons are a live overlay; the simulation continues underneath them. Each choice shows its name, effect, rank and any signature upgrade that the pick unlocks. Once a build is started, one choice develops it whenever possible: an unlocked signature first, then a missing prerequisite or another owned rank. The other two choices explore other paths. Current build paths include the original upgrades plus:
 
 - Green Thumb — stronger tending.
 - Wide Watering — reaches more neighbours.
@@ -142,8 +146,9 @@ Boons are a live overlay; the simulation continues underneath them. Current buil
 - Mulch — defeated pests restore nearby plants.
 - Long Stride — faster movement.
 - Spring Step — higher jumps.
+- Quick Hands — shorter recovery between attacks; planted bombs keep their two-second fuse.
 
-Mech-only robot boons remain exclusive to Mech.
+Mech-only robot boons remain exclusive to Mech. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
 
 Run pickups include feathers, embers and dew. They are collected in-world and belong to the current attempt. A run keeps its full plant archive across all twenty gardens and builds the result bouquet from those exact plants.
 
@@ -152,6 +157,8 @@ Run pickups include feathers, embers and dew. They are collected in-world and be
 Music and effects are separate device preferences.
 
 Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack. Effects come back after an iPhone interruption (a call, Siri, the app switcher) as soon as the page returns or the next touch lands. A hurt plant crunches; falls, raids, cleared gardens, boon offers and picks and trials each have their own short cue on every player's phone.
+
+Bomb effects use a short, warm impact with a soft placement click and one nearby fuse cue. Distance falloff, a shared effects compressor and a limited number of overlapping voices keep co-op volleys from building into constant noise. Boss warnings, cyan openings and broken objectives have distinct cues on both host and guest. Failed trials do not play a reward cue.
 
 The soundtrack player is streamed and survives menus/reconnects without decoding the whole playlist into memory.
 

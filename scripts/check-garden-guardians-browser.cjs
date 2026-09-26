@@ -43,6 +43,30 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
    await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).bombs.length===0,{},{timeout:2000});
    assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
    }
+   await page.goto(base+'/review.html?mode=boons&portrait=1');
+   await page.waitForFunction(()=>!!document.querySelector('#status').dataset.state,{},{timeout:15000});
+   const boonFrame=page.frames().find(f=>f!==page.mainFrame());
+   for(const viewport of ['phone','small','landscape','compact']){
+    await page.locator('#viewport').selectOption(viewport);
+    await page.waitForFunction(name=>{
+     const view=JSON.parse(document.querySelector('#status').dataset.guardian).view;
+     return view.width===({phone:390,small:320,landscape:844,compact:568})[name];
+    },viewport,{timeout:3000});
+    const player=JSON.parse(await page.locator('#status').getAttribute('data-guardian')).view.player;
+    const bounds=await boonFrame.locator('#perkMenu button').evaluateAll((buttons,player)=>buttons.map(b=>{
+     const r=b.getBoundingClientRect(),n=b.querySelector('strong'),d=b.querySelector('small');
+     return {name:n?.textContent,description:d?.textContent,nameVisible:getComputedStyle(n).display!=='none',descriptionVisible:getComputedStyle(d).display!=='none',inside:r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,overflow:b.scrollWidth>b.clientWidth,overlapsPlayer:r.left<player.right&&r.right>player.left&&r.top<player.bottom&&r.bottom>player.top};
+    }),player);
+    assert.equal(bounds.length,3);
+    assert.ok(bounds.every(b=>b.name&&b.description&&b.nameVisible&&b.descriptionVisible&&b.inside&&!b.overflow&&!b.overlapsPlayer),JSON.stringify({viewport,bounds}));
+    await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-boons-${viewport}.png`});
+   }
+   assert.match(await boonFrame.locator('#perkMenu').innerText(),/Unlocks Chain bloom/);
+   const before=JSON.parse(await page.locator('#status').getAttribute('data-state')).elapsed;
+   await page.waitForFunction(t=>JSON.parse(document.querySelector('#status').dataset.state).elapsed>t,before,{timeout:3000});
+   await boonFrame.locator('#perkMenu button').first().click();
+   await boonFrame.locator('#perkMenu').waitFor({state:'hidden'});
+   assert.deepEqual(errors,[]);console.log(engineName,'readable live boon choices fit four phone orientations and select OK');
    await page.goto(base+'/guardian-motion-review.html');
    await page.waitForFunction(()=>document.querySelector('#status').dataset.ready==='true',{},{timeout:15000});
    for(const action of ['idle','move','windup','attack','recover','vulnerable','hurt','death']){

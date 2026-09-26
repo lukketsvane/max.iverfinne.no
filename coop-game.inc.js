@@ -270,7 +270,7 @@ function coopState(s){
   bombs=s.bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});});crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
   worldWeather=coopPlain(s.weather||{});gardenStats=coopPlain(s.stats||{});gardenSeeds=s.seeds;gardenScore=s.score;gardenWave=s.wave;runElapsed=s.elapsed;tSec=s.time;
   if(Array.isArray(s.effects)&&s.effects.length<=30){
-    s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.abs(e.x-P.x);if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else sfx('boom',d);}});booms=s.effects.map(coopPlain);
+    s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.hypot(e.x-P.x,e.y-(P.y-10));if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else if(!e.poof&&!e.ring&&(!Number.isFinite(e.t)||e.t<.4)){sfx('boom',d);blastFeedback(e);}}});booms=s.effects.map(coopPlain);
   }
   var ids=[],placed=null;
   s.members.forEach(function(q){

@@ -221,11 +221,22 @@ function completeEncounter(e){
 function updateEncounters(dt){
   runEncounters.forEach(function(e){
     if(!e.active)return;
+    e.age=(e.age||0)+dt;
+    // Every optional trial has an exit. A guard that wandered off must never
+    // hold the mandatory altar shut for the rest of the run.
+    if(e.age>75){
+      e.active=false;e.done=true;e.failed=true;e.carrier='';e.guardsRemaining=0;
+      floatKrek.forEach(function(k){if(k.eventId===e.id){k.eventId=0;k.raid=false;staggerKrek(k,5);}});
+      nudgeGardenHint('TRIAL FADED · THE GUARDIAN IS READY');return;
+    }
     e.guardSpawn=Math.max(0,(e.guardSpawn||0)-dt);
     if(e.guardsRemaining>0&&e.guardSpawn<=0&&spawnEncounterGuard(e))e.guardSpawn=.6;
     if(objectiveEncounter(e)){updateObjectiveEncounter(e,dt);return;}
-    if(runPlayers().some(function(a){var height=a.p.y-encounterFloor(e);return Math.abs(a.p.x-e.x)<78&&height>=-28&&height<6;}))e.progress=Math.min(e.duration,e.progress+dt);
-    if(e.progress>=e.duration&&!e.guardsRemaining&&!floatKrek.some(function(k){return k.eventId===e.id;}))completeEncounter(e);
+    var defended=!e.guardsRemaining&&!floatKrek.some(function(k){return k.eventId===e.id;});
+    // Clearing the fight earns a quick finish instead of another idle wait.
+    // Somebody must still return to the shrine to claim its charged reward.
+    if(runPlayers().some(function(a){var height=a.p.y-encounterFloor(e);return !seedDown(a.member)&&Math.abs(a.p.x-e.x)<78&&height>=-28&&height<6;}))e.progress=Math.min(e.duration,e.progress+dt*(defended?4:1));
+    if(e.progress>=e.duration&&defended)completeEncounter(e);
   });
 }
 function objectiveEncounter(e){return e.type==='relay'||e.type==='loom'||e.type==='echo';}
@@ -233,9 +244,7 @@ function encounterReward(e){return {nest:'feathers',rain:'dew',cache:'embers',re
 function encounterTip(e){return {relay:'DEW RELAY · FETCH THE DROP AND BRING IT BACK',loom:'RAIN LOOM · TEND BOTH SEEDBEDS',echo:'ECHO NEST · HIT THE CYAN EGG'}[e.type]||'TEND TO START';}
 function carrierPlayer(id){return runPlayers().find(function(a){return (a.member?a.member.id:'solo')===id&&!seedDown(a.member);});}
 function updateObjectiveEncounter(e,dt){
-  e.age=(e.age||0)+dt;e.hitCool=Math.max(0,(e.hitCool||0)-dt);
-  // An abandoned optional route must never lock the mandatory guardian.
-  if(e.age>75){e.active=false;e.done=true;e.failed=true;e.carrier='';nudgeGardenHint('TRIAL FADED · THE GUARDIAN IS READY');return;}
+  e.hitCool=Math.max(0,(e.hitCool||0)-dt);
   if(e.type==='relay'){
     var carrier=carrierPlayer(e.carrier);if(e.carrier&&!carrier)e.carrier='';
     if(!e.carrier)runPlayers().some(function(a){if(!seedDown(a.member)&&Math.hypot(a.p.x-e.goalX,a.p.y-10-(e.goalY-10))<16){e.carrier=a.member?a.member.id:'solo';return true;}});
@@ -306,7 +315,7 @@ function damagePest(k,amount,x,build){
   if(k.boss&&k.exposed>0)factor*=2;
   k.hp-=amount*factor*runPlayerPower()/runDurabilityScale(k);k.flash=1;
   // Moon Moth's restorative channel is a deliberate interrupt opportunity.
-  if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;k.windup=0;k.exposed=k.guardianStage?2.2:1.4;k.cool=k.exposed+.8;}
+  if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;if(k.guardianStage&&!k.tideBoss)openGuardian(k,3.4);else{k.windup=0;k.exposed=k.guardianStage?2.2:1.4;k.cool=k.exposed+.8;}}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
   if(!k.boss&&!frontal&&(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
   if(k.hp<=0){var i=floatKrek.indexOf(k);if(i>=0)floatKrek.splice(i,1);burstKrek(k);return true;}
@@ -540,8 +549,20 @@ function makeStageBoss(stage){
   return k;
 }
 function guardianTip(k){return {shell:'BREAK THE SHELL OR GET BEHIND IT',wick:'SNUFF THE THREE WICKS',spindle:'CUT BOTH SILK ANCHORS',orchard:'HIT THE CYAN FRUIT',echo:'HIT DURING THE ECHO TO SILENCE IT',ferry:'CARRY DEW INTO THE HULL',choir:'SILENCE ALL THREE VOICES',engine:'BREAK THE ORBITING SEEDS'}[k.pattern]||'';}
+function guardianRecovery(k){
+  // A cyan opening includes time to recognise it, approach and place a full
+  // two-second fuse. Harder fights narrow the reaction, never remove it.
+  k.exposed=({easy:3.2,medium:2.75,hard:2.5,insane:2.35}[rogueRun.difficulty]||2.75);
+  k.vx=k.vy=0;k.cool=k.exposed+.7*(k.life>60?.55:1);
+}
+function guardianSettles(k,dt){
+  if(!(k.settleT>0))return false;
+  k.vx=k.vy=0;k.settleT=Math.max(0,k.settleT-dt);
+  if(!k.settleT)guardianRecovery(k);
+  return true;
+}
 function openGuardian(k,seconds){
-  k.windup=0;k.attackT=0;k.vx=k.vy=0;k.exposed=Math.max(k.exposed||0,seconds);k.cool=k.exposed+.8;
+  k.windup=0;k.attackT=0;k.settleT=0;k.vx=k.vy=0;k.exposed=Math.max(k.exposed||0,seconds);k.cool=k.exposed+.8;
   runHazards=runHazards.filter(function(h){return h.guardianOwner!==k.ph;});
 }
 function guardianCoreHit(k){
@@ -614,7 +635,15 @@ function summonBossGuard(k,kind,index){
 }
 function guardianHazard(k,type,x,r,tell,power,y){
   var h=addRunHazard(type,x,r,tell,power,k.x,k.y,y);
-  if(h){h.guardianStage=k.guardianStage;h.guardianOwner=k.ph;}
+  if(h){
+    h.guardianStage=k.guardianStage;h.guardianOwner=k.ph;
+    // Cyan starts after the final strike has finished, including its contact
+    // lifetime. This scalar clock also survives a host handoff mid-volley.
+    if(k.windup>0||k.attackT>0||k.settleT>0){
+      var remaining=k.windup>0?k.windup+(k.attackDuration||.35):Math.max(0,k.attackT||0);
+      k.settleT=Math.max(k.settleT||0,tell+h.life-remaining+.08);
+    }
+  }
 }
 function updateGardenGuardian(k,dt){
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
@@ -629,7 +658,7 @@ function updateGardenGuardian(k,dt){
     }else if(k.pattern==='dash'||k.pattern==='charge'){
       k.x+=k.chargeV*step;k.y=surfaceY(k.x)-13;k.vx=k.chargeV;
     }
-    if(!k.attackT){k.vx=k.vy=0;k.exposed=guardianTip(k)?2.25:k.guardianStage<=3?2:1.65;k.cool=k.exposed+1.1-(k.phase-1)*.15;}
+    if(!k.attackT){k.vx=k.vy=0;if(!(k.settleT>0))guardianRecovery(k);}
     return;
   }
   if(k.windup>0){
@@ -637,6 +666,7 @@ function updateGardenGuardian(k,dt){
     if(!k.windup){k.attackT=k.attackDuration;k.fromX=k.x;}
     return;
   }
+  if(guardianSettles(k,dt))return;
   k.cool-=dt;
   var target=pickKrekTarget(k),anchor=target?target.x:P.x,players=runPlayers(),a=players[k.attack%players.length].p;
   // Keep all new bosses in planting range; elevated routes remain useful for
@@ -645,7 +675,7 @@ function updateGardenGuardian(k,dt){
   else k.vx=k.vy=0;
   if(k.cool>0||k.exposed>0)return;
   if(k.nodes&&k.nodes.every(function(n){return n.hp<=0;}))resetGuardianNodes(k);
-  k.attack++;k.tell=k.windup=(rogueRun.difficulty==='easy'?1.45:1.15);k.attackDuration=.42;
+  k.attack++;k.tell=k.windup=(rogueRun.difficulty==='easy'?1.45:1.15);k.attackDuration=.42;k.settleT=0;
   var aim=k.attack%2?anchor:Math.max(anchor-96,Math.min(anchor+96,a.x)),dir=aim<k.x?-1:1;
   k.face=dir;k.landX=aim;k.chargeV=dir*(k.pattern==='dash'?145:112);
   var power=.5+Math.min(.35,k.guardianStage*.015),extra=k.phase>1?1:0;
@@ -708,7 +738,7 @@ function updateStageBoss(k,dt){
     var step=Math.min(dt,k.attackT);k.attackT=Math.max(0,k.attackT-dt);
     if(k.bossId==='mossback'){k.x+=k.chargeV*step;k.y=surfaceY(k.x)-8;k.vx=k.chargeV;}
     if(k.guardianStage&&k.bossId==='moon-moth')k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,step*12);
-    if(!k.attackT){k.vx=k.vy=0;k.exposed=k.bossId==='mossback'?1.2:k.guardianStage&&k.bossId==='moon-moth'?2.2:1;k.cool=(2.2-(k.phase-1)*.35)*rage;if(k.guardianStage&&k.bossId==='moon-moth')k.cool=Math.max(k.exposed+.4,k.cool);}
+    if(!k.attackT){k.vx=k.vy=0;if(k.guardianStage){if(!(k.settleT>0))guardianRecovery(k);}else{k.exposed=k.bossId==='mossback'?1.2:1;k.cool=(2.2-(k.phase-1)*.35)*rage;}}
     return;
   }
   if(k.windup>0){
@@ -719,27 +749,28 @@ function updateStageBoss(k,dt){
     }
     return;
   }
+  if(k.guardianStage&&guardianSettles(k,dt))return;
   k.cool-=dt;
   var target=pickKrekTarget(k),anchor=target?target.x:P.x,offset=k.bossId==='mossback'?8:k.bossId==='moon-moth'?40:13;
   if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-52:52),surfaceY(anchor)-offset,dt,k.bossId==='moon-moth'?24:15);
   else k.vx=k.vy=0;
-  if(k.cool>0)return;
-  k.attack++;k.tell=k.windup=k.bossId==='mossback'?1:.95;
+  if(k.cool>0||k.exposed>0)return;
+  k.attack++;k.tell=k.windup=k.guardianStage&&rogueRun.difficulty==='easy'?1.4:k.bossId==='mossback'?1:.95;k.attackDuration=k.bossId==='mossback'?.42:.35;k.settleT=0;
   if(k.attack%4===0)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,k.attack);
   if(k.bossId==='mossback'){
     var dir=anchor<k.x?-1:1;k.face=dir;k.chargeV=dir*118;
     // Three distinct root markers leave spaces that a jump or higher route clears.
-    for(var i=0;i<3;i++)addRunHazard('root',k.x+dir*(22+i*23),10,k.tell,.75,k.x,k.y);
+    for(var i=0;i<3;i++)guardianHazard(k,'root',k.x+dir*(22+i*23),10,k.tell,.75);
   }else if(k.bossId==='bellkeeper'){
-    addRunHazard('spore',anchor,13,k.tell,.85,k.x,k.y);
-    if(k.attack%2)for(var side=-1;side<=1;side+=2)addRunHazard('spore',anchor+side*34,10,k.tell+.2,.7,k.x,k.y);
-    else runPlayers().forEach(function(a){addRunHazard('root',a.p.x,10,k.tell,.65,k.x,k.y,a.p.y);});
+    guardianHazard(k,'spore',anchor,13,k.tell,.85);
+    if(k.attack%2)for(var side=-1;side<=1;side+=2)guardianHazard(k,'spore',anchor+side*34,10,k.tell+.2,.7);
+    else runPlayers().forEach(function(a){guardianHazard(k,'root',a.p.x,10,k.tell,.65,a.p.y);});
   }else{
     var wounded=floatKrek.filter(function(q){return q!==k&&!q.boss&&q.hp<q.maxHp;}).sort(function(a,b){return (b.maxHp-b.hp)-(a.maxHp-a.hp);})[0];
     if(wounded&&k.attack%2===0){k.healing=true;k.healTarget=wounded.ph;k.healX=wounded.x;k.healY=wounded.y;}
     else{
-      addRunHazard('spore',anchor,12,k.tell,.85,k.x,k.y);
-      runPlayers().forEach(function(a){addRunHazard('gust',a.p.x,12,k.tell+.15,0,k.x,k.y,a.p.y);});
+      guardianHazard(k,'spore',anchor,12,k.tell,.85);
+      runPlayers().forEach(function(a){guardianHazard(k,'gust',a.p.x,12,k.tell+.15,0,a.p.y);});
     }
   }
 }
@@ -751,27 +782,34 @@ function updateHollowCrown(k,dt){
   }
   k.life=(k.life||0)+dt;var rage=k.life>60?.6:1;
   k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
+  if(k.guardianStage&&k.exposed>0)k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,dt*12);
+  if(k.guardianStage&&k.attackT>0){
+    k.vx=k.vy=0;k.attackT=Math.max(0,k.attackT-dt);
+    if(!k.attackT&&!(k.settleT>0))guardianRecovery(k);
+    return;
+  }
   if(k.windup>0){
     k.vx=k.vy=0;
     k.windup=Math.max(0,k.windup-dt);
-    if(k.windup===0){k.exposed=1.2;k.cool=(2.6-(k.phase-1)*.4)*rage;}
+    if(k.windup===0){if(k.guardianStage)k.attackT=k.attackDuration;else{k.exposed=1.2;k.cool=(2.6-(k.phase-1)*.4)*rage;}}
     return;
   }
+  if(k.guardianStage&&guardianSettles(k,dt))return;
   k.cool-=dt;
   var target=pickKrekTarget(k),anchor=target?target.x:P.x;
   if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-42:42),surfaceY(anchor)-26,dt,12);
   else k.vx=k.vy=0;
-  if(k.cool>0)return;
-  k.attack++;k.tell=1.15;k.windup=k.tell;
+  if(k.cool>0||k.exposed>0)return;
+  k.attack++;k.tell=k.guardianStage&&rogueRun.difficulty==='easy'?1.45:1.15;k.windup=k.tell;k.attackDuration=.35;k.settleT=0;
   if(k.attack%4===0)summonBossGuard(k,5,k.attack);
   var count=k.phase,pattern=k.attack%3;
   if(pattern===0){
     var ordered=gardenPlots.filter(function(p){return !p.dead;}).slice().sort(function(a,b){return Math.abs(a.x-k.x)-Math.abs(b.x-k.x);});
-    for(var i=0;i<Math.min(count+1,ordered.length);i++)addRunHazard('root',ordered[i].x,11,1.4,1,k.x,k.y);
+    for(var i=0;i<Math.min(count+1,ordered.length);i++)guardianHazard(k,'root',ordered[i].x,11,k.tell+.25,1);
   }else if(pattern===1){
-    for(var j=-1;j<=1;j++)addRunHazard('spore',anchor+j*(26-count*2),10,1.4,.8,k.x,k.y);
+    for(var j=-1;j<=1;j++)guardianHazard(k,'spore',anchor+j*(26-count*2),10,k.tell+.25,.8);
   }else{
-    runPlayers().forEach(function(a){addRunHazard('root',a.p.x,12,1.4,.9,k.x,k.y);});
+    runPlayers().forEach(function(a){guardianHazard(k,'root',a.p.x,12,k.tell+.25,.9);});
   }
 }
 function drawRunItem(type,x,y,bright){
