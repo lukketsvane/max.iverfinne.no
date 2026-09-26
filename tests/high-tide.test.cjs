@@ -47,3 +47,11 @@ test('High Tide spawns authored pressure enemies; rammers create knockback hazar
  const tip=g.highTideRoutePoint(s.height);g.floatKrek.push({x:tip.x,y:tip.y-7,vx:0,vy:0,face:1,ph:0,hp:2,maxHp:2,flash:0,bite:0,startle:0,flee:0,tide:true,tideType:'harass',kind:0,elite:false,raid:true});
  g.updateHighTideEnemies(.05);assert.ok(s.jam>0,'a harasser on the tip should stall tending until cleared');
 });
+
+test('a gardener attached to the winding vine can tend the live tip within reach',()=>{
+ const g=setup().game,p=start(g);assert.equal(g.beginClimb(p,false),true);g.heldSpace=true;
+ g.updatePlayer(.05,{axis:0,top:g.WALK_V});
+ const actor={member:null,p:g.P,v:g.seedVital(),id:'solo'},before=g.rogueRun.survival.height;
+ assert.equal(g.highTideCarer(actor),true,JSON.stringify({p:g.P,s:g.rogueRun.survival,route:g.highTideRoutePoint(g.rogueRun.survival.base-g.P.y)}));
+ g.updateHighTide(.05);assert.ok(g.rogueRun.survival.height>before);
+});
