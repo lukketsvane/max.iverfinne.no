@@ -1,7 +1,7 @@
 # Garden guardians — native 1×
 
-Eight generated boss designs join Mossback, Bellkeeper, Moon Moth and Hollow
-Crown. The main garden has 20 configured encounters, including later remixes.
+Sixteen generated boss designs join Mossback, Bellkeeper, Moon Moth and Hollow
+Crown. The main garden has 20 distinct configured guardians, one per stage.
 `run-director.inc.js` owns attacks, phases and rewards; art never applies damage.
 
 ## Source and registration
@@ -26,7 +26,7 @@ authored poses per creature, not 64 unique drawings.
 
 The new art uses the existing dark teal, moss, bark and pale palette, with
 restrained purple, frost and kiln accents. New runtime PNGs must be placed in
-the game's Figma production section. The sheets are now in group `366:2`
+the game's Figma production section. The sheets are now in groups `366:2` and `369:2`
 inside current production frame `160:2`; `figma.json` records their nodes and
 successful byte-for-byte readback. Until the legacy source section `52:2` and
 global manifest are reconciled, `assets/figma-pending.json` pins the exact bytes

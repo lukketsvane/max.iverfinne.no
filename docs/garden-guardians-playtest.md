@@ -1,7 +1,7 @@
 # Garden guardians — 2026-09-26
 
-The main garden now has twenty mandatory guardians, with eight new native sprite
-designs and later rematches. Mech places stationary bombs with a two-second fuse.
+The main garden now has twenty mandatory guardians, with twenty distinct designs and combat kits.
+Mech and Moss place stationary bombs with a two-second fuse.
 
 ## Input-driven two-player iterations
 
@@ -30,8 +30,36 @@ duplicate delivery, rewards for both players and authority handoff.
 
 ## Art verification
 
-All eight 256×256 runtime PNGs were imported at native size into Figma production
-group 366:2, and read back byte-for-byte. The legacy whole-project `figma:check`
+All sixteen new 256×256 runtime PNGs were imported at native size into Figma production
+groups 366:2 and 369:2, and read back byte-for-byte. The legacy whole-project `figma:check`
 cannot run here: its desktop endpoint is unavailable and its configured source
 section 52:2 is absent from the current file. New sheets remain hash-pinned in
 the documented pending manifest until that global source manifest is reconciled.
+
+## Original encounter expansion
+
+The eight rematches were replaced with Glass Snail, Wick Hermit, Spindle Widow,
+Orchard Mimic, Tuning Fork, Ash Ferryman, Compost Choir and Seed Engine. Each has
+its own sprite sheet and a different combat objective. Objective completion
+opens a longer core window; armour never makes normal attacks ineffective.
+Dew Relay, Rain Loom and Echo Nest add carrying, care and targeting trials.
+
+Focused checks cover shell breaking and flanking, interrupt ownership, wicks,
+anchors, rotating seeds, false fruit, regrowing choir voices, carrying dew,
+trial completion/expiry, guest held care and a host change with carried dew.
+Moss's planted bombs are exercised at 30/60/120 Hz. All sprites pass the native
+palette, binary alpha, bounds and fixed-anchor checks.
+
+Additional input-driven Moss + Herbalist trials use 100 ms simulated latency.
+The first pilot cleared guardian 1 but mishandled Moss's ordinary plant climb.
+After correcting the pilot's exit input, it cleared guardians 1 and 2 in 23.5
+and 26.6 seconds, climbed into garden 3, then lost its new plant. An isolated
+Glass Snail arena cleared in 46.7 seconds and physically climbed into garden 9.
+Isolated late-stage arenas start at player level 1 with no inherited upgrades;
+they test controls and failure paths, not the balance of a fully equipped run.
+These are automated VM playtests, not a claim of a human twenty-stage clear.
+
+The browser review exercises every guardian's live warning and native art in
+Chromium and WebKit, and checks movement, placement, stationary ticking and
+explosion for both bomb classes. Screenshots are uploaded by the dedicated
+Garden guardians browser review workflow.

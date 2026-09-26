@@ -70,5 +70,77 @@
       887
     ],
     "uniformScale": 0.06588235294117648
+  },
+  {
+    "id": "glass-snail",
+    "masterSHA256": "9bb4afcff018b3c43ad90b67cc864d8b4abc6e70bf0cd288fcd1db71c9423fdc",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06306306306306306
+  },
+  {
+    "id": "wick-hermit",
+    "masterSHA256": "c51e38f09aa6d158420b8164cbef00c3410d96500181f831dce960ff8d78ce6a",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06542056074766354
+  },
+  {
+    "id": "spindle-widow",
+    "masterSHA256": "702a362b352f85a235c70c5f130e9b2aa9277e6b7e81c4d29f231c047d524d51",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06306306306306306
+  },
+  {
+    "id": "orchard-mimic",
+    "masterSHA256": "96c642d5d8a7f50d8618dfe9939c4cfed39ca67645e09b7083438117a0a98475",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06619385342789598
+  },
+  {
+    "id": "tuning-fork",
+    "masterSHA256": "29005af14b8350eff002f112a0aab01abfded6f8314e1bd0ce27140ede580e0c",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06965174129353234
+  },
+  {
+    "id": "ash-ferryman",
+    "masterSHA256": "4838223807aca020f2229879d1816b426165c7c6fe29781849c0f4ffcc7c02c3",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06526806526806526
+  },
+  {
+    "id": "compost-choir",
+    "masterSHA256": "9c6c321a770472617ff184f7d2a5155e22bc4b3bac28f23fc1a8b0ed664b5fc0",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06436781609195402
+  },
+  {
+    "id": "seed-engine",
+    "masterSHA256": "769e433bb64c6f0ae9341d6a06ec1d757abe265e74c47c411cb03db4f5ed2c13",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.0660377358490566
   }
 ]

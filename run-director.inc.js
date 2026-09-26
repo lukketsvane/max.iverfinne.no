@@ -1,19 +1,19 @@
 /* Run-only exploration, mixed encounters and twenty guardian fights.
    Included in the game closure. Nothing here writes a resumable run. */
 var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId=0,bossEvent=null;
-// Later rematches introduce extra patterns, not only more health. The four
-// milestone guardians keep their authored moves and native animations.
+// Every stage has a different creature and combat kit. The four milestone
+// guardians keep their authored moves and native animations.
 var GARDEN_BOSSES=[
   ['sprout-sentinel','SPROUT SENTINEL','roots'],['dew-duke','DEW DUKE','leap'],
   ['thorn-duelist','THORN DUELIST','dash'],['spore-oracle','SPORE ORACLE','spores'],
   ['mossback','MOSSBACK','milestone'],['root-ram','ROOT RAM','charge'],
-  ['silk-weaver','SILK WEAVER','web'],['dew-duke','RAINCALLER','leap'],
-  ['spore-oracle','PLAGUE ORACLE','spores'],['bellkeeper','BELLKEEPER','milestone'],
-  ['frostjaw','FROSTJAW','pincer'],['root-ram','RIMEHORN','charge'],
-  ['silk-weaver','PALE WEAVER','web'],['thorn-duelist','WHITE THORN','dash'],
+  ['silk-weaver','SILK WEAVER','web'],['glass-snail','GLASS SNAIL','shell'],
+  ['wick-hermit','WICK HERMIT','wick'],['bellkeeper','BELLKEEPER','milestone'],
+  ['frostjaw','FROSTJAW','pincer'],['spindle-widow','SPINDLE WIDOW','spindle'],
+  ['orchard-mimic','ORCHARD MIMIC','orchard'],['tuning-fork','TUNING FORK','echo'],
   ['moon-moth','MOON MOTH','milestone'],['kiln-beetle','KILN BEETLE','furnace'],
-  ['spore-oracle','ASH ORACLE','spores'],['kiln-beetle','CINDER REGENT','furnace'],
-  ['root-ram','SUNROOT','charge'],['hollow-crown','HOLLOW CROWN','crown']
+  ['ash-ferryman','ASH FERRYMAN','ferry'],['compost-choir','COMPOST CHOIR','choir'],
+  ['seed-engine','SEED ENGINE','engine'],['hollow-crown','HOLLOW CROWN','crown']
 ];
 function gardenBossSpec(stage){var w=Math.max(1,Math.min(RUN_STAGES,stage|0)),s=GARDEN_BOSSES[w-1];return {id:s[0],name:s[1],pattern:s[2],stage:w,remix:Math.floor((w-1)/7)};}
 function initBossEvent(){
@@ -34,7 +34,7 @@ function interactBossEvent(){
   bossEvent.status='active';bossEvent.startedAt=runElapsed;
   gardenRaidActive=true;gardenBossSpawned=true;gardenWave=FINAL_WAVE;
   rogueRun.raidRemaining=0;rogueRun.raidTotal=1;
-  floatKrek.push(k);nudgeGardenHint(k.bossName+' · AMBER: DODGE · CYAN: ATTACK');
+  floatKrek.push(k);nudgeGardenHint(k.bossName+' · '+(guardianTip(k)||'AMBER: DODGE · CYAN: ATTACK'));
   updateGardenHud();return true;
 }
 function gardenBossDefeated(k){
@@ -175,8 +175,9 @@ function initRunStage(){
   }
   // Two routes, one trial: choosing a reward spends time, not another menu.
   for(var i=0;i<2;i++){
-    var type=['nest','rain','cache'][(w-1+i)%3],route=layout&&layout.trials&&layout.trials[i],x=route?route.x:dryX(origin+side*(i?1:-1)*126);
-    runEncounters.push({id:w*2+i,x:x,y:route?route.y:surfaceY(x),type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='nest'?10:14});
+    var type=w<4?['nest','rain','cache'][(w-1+i)%3]:['relay','loom','echo','nest','rain','cache'][(w-4+i)%6],route=layout&&layout.trials&&layout.trials[i],x=route?route.x:dryX(origin+side*(i?1:-1)*126);
+    var goal=layout&&layout.rewards&&layout.rewards.slice().sort(function(a,b){return Math.abs(b.x-x)-Math.abs(a.x-x);})[0];
+    runEncounters.push({id:w*2+i,x:x,y:route?route.y:surfaceY(x),type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='echo'?3:type==='loom'?4:type==='relay'?1:type==='nest'?10:14,goalX:goal?goal.x:x+48,goalY:goal?goal.y:surfaceY(x+48)});
   }
   stageWeather={type:w%3===0?'seedfall':w%3===1?'bloom':'drought',at:36+(w%4)*4,life:0,started:false};
   rogueRun.bossDefeated=false;initExpedition();initBossEvent();
@@ -198,29 +199,62 @@ function interactEncounter(){
   if(interactBossEvent())return true;
   if(interactExpedition())return true;
   var e=encounterAt(P.x);if(!e)return false;
-  if(e.active)return false;
+  if(e.active)return e.type==='loom';
   if(coopGuest())return coopAction('encounter');
   if(gardenSeeds<e.cost){puff(e.x,encounterFloor(e)-8,3,.3);return true;}
   gardenSeeds-=e.cost;e.active=true;
+  e.age=0;e.carrier='';e.chargeA=e.chargeB=0;e.note=e.id%3;
   runEncounters.forEach(function(other){if(other!==e)other.locked=true;});
-  e.guardsRemaining=3+Math.min(3,Math.floor(worldLevel()/5))+coopSize();e.guardIndex=0;e.guardSpawn=.6;
+  e.guardsRemaining=objectiveEncounter(e)?1+coopSize():3+Math.min(3,Math.floor(worldLevel()/5))+coopSize();e.guardIndex=0;e.guardSpawn=.6;
   while(spawnEncounterGuard(e)){}
+  if(objectiveEncounter(e))nudgeGardenHint(encounterTip(e));
   return true;
 }
 function completeEncounter(e){
   if(!e.active||e.done||e.locked)return;
-  e.active=false;e.done=true;var type={nest:'feathers',rain:'dew',cache:'embers'}[e.type];
+  e.active=false;e.done=true;var type=encounterReward(e);
   runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*8;dropRunItem(type,x,encounterFloor(e)-13,a.member&&a.member.id);});
-  if(e.type==='rain')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
+  if(e.type==='rain'||e.type==='loom')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
   spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(runReward(4));
+  if(objectiveEncounter(e)){floatKrek.forEach(function(k){if(k.eventId===e.id)staggerKrek(k,5);});nudgeGardenHint('TRIAL COMPLETE · COLLECT YOUR UPGRADE');}
 }
 function updateEncounters(dt){
   runEncounters.forEach(function(e){
     if(!e.active)return;
     e.guardSpawn=Math.max(0,(e.guardSpawn||0)-dt);
     if(e.guardsRemaining>0&&e.guardSpawn<=0&&spawnEncounterGuard(e))e.guardSpawn=.6;
+    if(objectiveEncounter(e)){updateObjectiveEncounter(e,dt);return;}
     if(runPlayers().some(function(a){var height=a.p.y-encounterFloor(e);return Math.abs(a.p.x-e.x)<78&&height>=-28&&height<6;}))e.progress=Math.min(e.duration,e.progress+dt);
     if(e.progress>=e.duration&&!e.guardsRemaining&&!floatKrek.some(function(k){return k.eventId===e.id;}))completeEncounter(e);
+  });
+}
+function objectiveEncounter(e){return e.type==='relay'||e.type==='loom'||e.type==='echo';}
+function encounterReward(e){return {nest:'feathers',rain:'dew',cache:'embers',relay:'feathers',loom:'dew',echo:'embers'}[e.type];}
+function encounterTip(e){return {relay:'DEW RELAY · FETCH THE DROP AND BRING IT BACK',loom:'RAIN LOOM · TEND BOTH SEEDBEDS',echo:'ECHO NEST · HIT THE CYAN EGG'}[e.type]||'TEND TO START';}
+function carrierPlayer(id){return runPlayers().find(function(a){return (a.member?a.member.id:'solo')===id&&!seedDown(a.member);});}
+function updateObjectiveEncounter(e,dt){
+  e.age=(e.age||0)+dt;e.hitCool=Math.max(0,(e.hitCool||0)-dt);
+  // An abandoned optional route must never lock the mandatory guardian.
+  if(e.age>75){e.active=false;e.done=true;e.failed=true;e.carrier='';nudgeGardenHint('TRIAL FADED · THE GUARDIAN IS READY');return;}
+  if(e.type==='relay'){
+    var carrier=carrierPlayer(e.carrier);if(e.carrier&&!carrier)e.carrier='';
+    if(!e.carrier)runPlayers().some(function(a){if(!seedDown(a.member)&&Math.hypot(a.p.x-e.goalX,a.p.y-10-(e.goalY-10))<16){e.carrier=a.member?a.member.id:'solo';return true;}});
+    carrier=carrierPlayer(e.carrier);if(carrier&&Math.hypot(carrier.p.x-e.x,carrier.p.y-encounterFloor(e))<18){e.progress=1;completeEncounter(e);}
+  }else if(e.type==='loom'){
+    ['chargeA','chargeB'].forEach(function(key,i){
+      var tending=runPlayers().some(function(a){var held=a.member&&a.member.id!==coop.me?a.p.gardenTend:!!(heldDown||heldSpace||swipeDown);return held&&!seedDown(a.member)&&a.p.grounded&&!a.p.wet&&Math.abs(a.p.x-(e.x+(i?8:-8)))<6&&Math.abs(a.p.y-encounterFloor(e))<6;});
+      e[key]=Math.max(0,Math.min(2,(e[key]||0)+dt*(tending?1:-.12)));
+    });
+    e.progress=e.chargeA+e.chargeB;if(e.chargeA>=1.65&&e.chargeB>=1.65)completeEncounter(e);
+  }
+}
+function encounterBlast(x,y,r){
+  if(coopGuest()||relicRunMode())return;
+  runEncounters.forEach(function(e){if(!e.active||e.type!=='echo'||e.hitCool>0)return;
+    var index=-1,dist=r+4;for(var i=0;i<3;i++){var d=Math.hypot(x-(e.x+(i-1)*23),y-(encounterFloor(e)-8));if(d<dist){dist=d;index=i;}}
+    if(index<0)return;e.hitCool=.45;
+    if(index===e.note){e.progress++;e.note=(e.note+1+e.id%2)%3;chime([659,880],.07,.025);if(e.progress>=3)completeEncounter(e);}
+    else{e.guardsRemaining=Math.min(2,(e.guardsRemaining||0)+1);addRunHazard('root',e.x+(index-1)*23,8,1.2,.4,null,null,encounterFloor(e));}
   });
 }
 function updateStageWeather(dt){
@@ -264,6 +298,11 @@ function damagePest(k,amount,x,build){
   if(coopGuest()||!k||k.hp<=0)return false;
   var frontal=k.kind===5&&!k.flee&&(x-k.x)*k.face>=-1;
   var factor=frontal?.25:1;
+  if(k.guardianStage&&k.exposed<=0){
+    if(k.pattern==='shell'&&(x-k.x)*k.face>=0){factor*=.3;k.shellHits=(k.shellHits||0)+1;if(k.shellHits>=2){k.shellHits=0;openGuardian(k,3.4);}}
+    if(['wick','spindle','choir','engine'].includes(k.pattern)&&(k.nodes||[]).some(function(n){return n.hp>0;}))factor*=.45;
+    if(k.pattern==='echo'&&k.windup>0){openGuardian(k,3.4);gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-k.x)<110){p.health=clamp01(p.health+.05);p.moisture=clamp01(p.moisture+.1);}});}
+  }
   if(k.boss&&k.exposed>0)factor*=2;
   k.hp-=amount*factor*runPlayerPower()/runDurabilityScale(k);k.flash=1;
   // Moon Moth's restorative channel is a deliberate interrupt opportunity.
@@ -497,7 +536,76 @@ function makeStageBoss(stage){
   k.guardianStage=w;k.bossName=spec.name;k.pattern=spec.pattern;k.remix=spec.remix;
   k.hp=k.maxHp=(8+w*2.3)*(1+Math.max(0,coopSize()-1)*.55);
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;k.attackT=0;k.attackDuration=.35;
+  resetGuardianNodes(k);
   return k;
+}
+function guardianTip(k){return {shell:'BREAK THE SHELL OR GET BEHIND IT',wick:'SNUFF THE THREE WICKS',spindle:'CUT BOTH SILK ANCHORS',orchard:'HIT THE CYAN FRUIT',echo:'HIT DURING THE ECHO TO SILENCE IT',ferry:'CARRY DEW INTO THE HULL',choir:'SILENCE ALL THREE VOICES',engine:'BREAK THE ORBITING SEEDS'}[k.pattern]||'';}
+function openGuardian(k,seconds){
+  k.windup=0;k.attackT=0;k.vx=k.vy=0;k.exposed=Math.max(k.exposed||0,seconds);k.cool=k.exposed+.8;
+  runHazards=runHazards.filter(function(h){return h.guardianOwner!==k.ph;});
+}
+function guardianCoreHit(k){
+  openGuardian(k,3.4);
+  // Objective damage goes through the normal death/reward path exactly once.
+  damagePest(k,k.maxHp*.08*runDurabilityScale(k)/(2*runPlayerPower()),k.x);
+  chime([523,784,1047],.07,.025);
+}
+function resetGuardianNodes(k){
+  var count={wick:3,spindle:2,orchard:3,ferry:2,choir:3,engine:3}[k.pattern]||0;
+  if(!count)return;
+  var p=gardenPlots.find(function(p){return !p.dead;}),anchor=p?p.x:k.x,ripe=((k.attack||0)+(k.guardianStage||0))%3;
+  k.nodes=[];
+  for(var i=0;i<count;i++){
+    var x=dryX(anchor+(count===2?(i?46:-46):(i-1)*42));
+    k.nodes.push({x:x,y:surfaceY(x)-8,hp:1,kind:k.pattern,index:i,ripe:i===ripe,quiet:0,carrier:''});
+  }
+}
+function updateGuardianNodes(k,dt){
+  if(k.pattern==='echo'){
+    k.echoClock=(k.echoClock||0)-dt;
+    if(k.echoClock<=0&&!(k.windup>0)){var a=runPlayers()[(k.attack||0)%runPlayers().length].p;k.echoX=a.x;k.echoY=a.y;k.echoClock=.7;}
+  }
+  (k.nodes||[]).forEach(function(n,i){
+    if(n.kind==='engine'){var angle=(k.life||0)*(.65+k.phase*.15)+i*Math.PI*2/3;n.x=k.x+Math.cos(angle)*32;n.y=surfaceY(n.x)-9-Math.max(0,Math.sin(angle))*22;}
+    if(n.kind==='choir'&&n.hp<=0&&k.exposed<=0){n.quiet=Math.max(0,n.quiet-dt);if(!n.quiet)n.hp=1;}
+    if(n.kind!=='ferry'||n.hp<=0)return;
+    var a=carrierPlayer(n.carrier);if(n.carrier&&!a)n.carrier='';
+    if(!n.carrier)runPlayers().some(function(p){if(!seedDown(p.member)&&Math.hypot(p.p.x-n.x,p.p.y-10-n.y)<15){n.carrier=p.member?p.member.id:'solo';return true;}});
+    a=carrierPlayer(n.carrier);
+    if(a&&Math.hypot(a.p.x-k.x,a.p.y-10-k.y)<22){n.hp=0;n.carrier='';guardianCoreHit(k);}
+  });
+}
+function guardianBlast(x,y,r){
+  if(coopGuest()||relicRunMode())return;
+  floatKrek.slice().forEach(function(k){if(!k.guardianStage||k.hp<=0||!k.nodes||k.exposed>0)return;
+    var hits=k.nodes.filter(function(n){return n.hp>0&&n.kind!=='ferry'&&Math.hypot(n.x-x,n.y-y)<r+4;});
+    // The nearest fruit is the deliberate target; a wide blast cannot both
+    // punish a correct hit and solve a different pod in the same explosion.
+    if(k.pattern==='orchard')hits.sort(function(a,b){return Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y);}).splice(1);
+    hits.forEach(function(n){n.hp=0;n.quiet=7;puff(n.x,n.y,6,.5);
+      if(n.kind==='orchard'){if(n.ripe){k.nodes.forEach(function(q){q.hp=0;});guardianCoreHit(k);}else{summonBossGuard(k,0,n.index);guardianHazard(k,'root',n.x,9,1.3,.5);}}
+    });
+    if(hits.length&&k.pattern!=='orchard'&&k.nodes.every(function(n){return n.hp<=0;}))guardianCoreHit(k);
+  });
+}
+function drawGuardianNodes(t){
+  floatKrek.forEach(function(k){if(!k.guardianStage)return;
+    (k.nodes||[]).forEach(function(n){
+      if(n.hp<=0&&!(n.kind==='choir'&&n.quiet>0))return;
+      var carrier=carrierPlayer(n.carrier),nx=carrier?carrier.p.x:n.x,ny=carrier?carrier.p.y-27:n.y;
+      var x=Math.round(nx-camX),y=Math.round(ny-camY),cyan=n.kind==='ferry'||n.kind==='orchard'&&n.ripe;
+      if(x<-10||x>IW+10)return;
+      if(n.kind==='spindle'){ctx.fillStyle='#82725b';var dx=k.x-n.x,dy=k.y-n.y,steps=Math.ceil(Math.hypot(dx,dy)/3);for(var j=0;j<steps;j++)rect(Math.round(x+dx*j/steps),Math.round(y+dy*j/steps),1,1,'#82725b');}
+      var color=n.hp<=0?'#536448':cyan?'#77bbb9':'#d4a64e';
+      rect(x-4,y-4,9,9,'#10171c');rect(x-3,y-3,7,7,color);rect(x-1,y-1,3,3,'#1d2b34');
+      if(n.kind==='wick'){rect(x-2,y+4,5,4,'#b5b190');rect(x,y-6,1,2,color);}
+      if(n.kind==='spindle'){rect(x-5,y-5,11,1,'#b5b190');rect(x-5,y+5,11,1,'#b5b190');}
+      if(n.kind==='orchard'){rect(x,y-6,1,2,'#536448');rect(x+1,y-7,3,1,'#536448');}
+      if(n.kind==='choir'){rect(x-1,y-2,3,5,'#493650');if(n.hp<=0)rect(x-4,y+6,Math.ceil(n.quiet/7*9),1,'#77bbb9');}
+      if(n.kind==='engine'){rect(x-5,y-1,1,3,color);rect(x+5,y-1,1,3,color);}
+      if(n.kind==='ferry')drawRunItem('dew',x,y,false);
+    });
+  });
 }
 function summonBossGuard(k,kind,index){
   if(floatKrek.length>=MAX_ACTIVE_ENEMIES)return;
@@ -506,12 +614,13 @@ function summonBossGuard(k,kind,index){
 }
 function guardianHazard(k,type,x,r,tell,power,y){
   var h=addRunHazard(type,x,r,tell,power,k.x,k.y,y);
-  if(h)h.guardianStage=k.guardianStage;
+  if(h){h.guardianStage=k.guardianStage;h.guardianOwner=k.ph;}
 }
 function updateGardenGuardian(k,dt){
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
   if(phase>k.phase){k.phase=phase;if(k.guardianStage>=4)summonBossGuard(k,k.pattern==='spores'?4:1,phase);}
   k.life=(k.life||0)+dt;k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
+  updateGuardianNodes(k,dt);if(k.hp<=0)return;
   if(k.attackT>0){
     var step=Math.min(dt,k.attackT);k.attackT=Math.max(0,k.attackT-dt);
     if(k.pattern==='leap'){
@@ -520,7 +629,7 @@ function updateGardenGuardian(k,dt){
     }else if(k.pattern==='dash'||k.pattern==='charge'){
       k.x+=k.chargeV*step;k.y=surfaceY(k.x)-13;k.vx=k.chargeV;
     }
-    if(!k.attackT){k.vx=k.vy=0;k.exposed=k.guardianStage<=3?2:1.65;k.cool=k.exposed+1.1-(k.phase-1)*.15;}
+    if(!k.attackT){k.vx=k.vy=0;k.exposed=guardianTip(k)?2.25:k.guardianStage<=3?2:1.65;k.cool=k.exposed+1.1-(k.phase-1)*.15;}
     return;
   }
   if(k.windup>0){
@@ -535,6 +644,7 @@ function updateGardenGuardian(k,dt){
   if(k.exposed<=0)moveEnemyTo(k,anchor+(k.attack%2?-30:30),surfaceY(anchor)-13,dt,18+k.remix*2);
   else k.vx=k.vy=0;
   if(k.cool>0||k.exposed>0)return;
+  if(k.nodes&&k.nodes.every(function(n){return n.hp<=0;}))resetGuardianNodes(k);
   k.attack++;k.tell=k.windup=(rogueRun.difficulty==='easy'?1.45:1.15);k.attackDuration=.42;
   var aim=k.attack%2?anchor:Math.max(anchor-96,Math.min(anchor+96,a.x)),dir=aim<k.x?-1:1;
   k.face=dir;k.landX=aim;k.chargeV=dir*(k.pattern==='dash'?145:112);
@@ -562,6 +672,27 @@ function updateGardenGuardian(k,dt){
   }else if(k.pattern==='furnace'){
     for(var i=0;i<3+k.remix;i++)guardianHazard(k,'spore',aim+(i-1)*27,10,k.tell+i*.18,power*.75);
     if(k.phase>1)guardianHazard(k,'root',k.x,17,k.tell+.35,power);
+  }else if(k.pattern==='shell'){
+    // Staggered shards advance from its front, leaving the rear open.
+    for(var i=0;i<3+k.phase;i++)guardianHazard(k,'root',k.x+dir*(18+i*17),7,k.tell+i*.22,power*.65);
+  }else if(k.pattern==='wick'){
+    (k.nodes||[]).forEach(function(n,i){if(n.hp>0)guardianHazard(k,'spore',a.x+(i-1)*24,9,k.tell+i*.28,power*.65);});
+  }else if(k.pattern==='spindle'){
+    (k.nodes||[]).forEach(function(n){if(n.hp>0){guardianHazard(k,'root',(n.x+k.x)/2,10,k.tell,power*.6);guardianHazard(k,'root',n.x,8,k.tell+.65,power*.6);}});
+  }else if(k.pattern==='orchard'){
+    guardianHazard(k,'root',aim,15,k.tell,power);guardianHazard(k,'spore',aim-dir*36,9,k.tell+.55,power*.65);
+  }else if(k.pattern==='echo'){
+    k.tell=k.windup=2.45;
+    guardianHazard(k,'root',Number.isFinite(k.echoX)?k.echoX:a.x,13,k.tell,power,Number.isFinite(k.echoY)?k.echoY:a.y);
+    guardianHazard(k,'spore',a.x,10,k.tell+.5,power*.7,a.y);
+  }else if(k.pattern==='ferry'){
+    // Broad oar sweeps alternate banks. Carrying dew through the safe bank
+    // ends the attack early and opens the hull for the other player.
+    for(var i=1;i<=3;i++)guardianHazard(k,'root',k.x+dir*i*23,9,k.tell+i*.18,power*.65);
+  }else if(k.pattern==='choir'){
+    (k.nodes||[]).forEach(function(n,i){if(n.hp>0)guardianHazard(k,'spore',aim+(i-1)*30,8,k.tell+i*.36,power*.65);});
+  }else if(k.pattern==='engine'){
+    (k.nodes||[]).forEach(function(n,i){if(n.hp>0)guardianHazard(k,'root',n.x,9,k.tell+i*.25,power*.7);});
   }
 }
 function updateStageBoss(k,dt){
@@ -654,12 +785,13 @@ function drawRunItem(type,x,y,bright){
 }
 function drawRunExploration(t){
   drawBossEvent(t);
+  drawGuardianNodes(t);
   drawExpedition(t);
   runEncounters.forEach(function(e){
     var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);if(x<-20||x>IW+20)return;
     ctx.fillStyle=e.locked?'#202827':'#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
     ctx.fillStyle=e.locked?'#344039':e.done?'#465346':'#657668';ctx.fillRect(x-7,y-16,14,2);ctx.fillRect(x-6,y-13,2,7);ctx.fillRect(x+4,y-13,2,7);
-    if(!e.done&&!e.locked)drawRunItem({nest:'feathers',rain:'dew',cache:'embers'}[e.type],x,y-9,false);
+    if(!e.done&&!e.locked)drawRunItem(encounterReward(e),x,y-9,false);
     if(e.active){
       ctx.fillStyle='#d1c67f';ctx.fillRect(x-9,y-20,Math.round(18*e.progress/e.duration),1);
       ctx.globalAlpha=.18;ctx.fillRect(x-78,y-1,156,1);ctx.globalAlpha=1;
@@ -668,6 +800,12 @@ function drawRunExploration(t){
       for(var c=0;c<e.cost;c++)ctx.fillRect(x-e.cost*2+c*4,y-22,2,2);
       ctx.fillRect(x,y-29,1,3);ctx.fillRect(x-2,y-27,1,1);ctx.fillRect(x+2,y-27,1,1);ctx.fillRect(x-1,y-26,3,1);
     }
+  });
+  runEncounters.forEach(function(e){if(!e.active||!objectiveEncounter(e))return;
+    var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);
+    if(e.type==='relay'){var a=carrierPlayer(e.carrier),rx=Math.round((a?a.p.x:e.goalX)-camX),ry=Math.round((a?a.p.y-27:e.goalY-13)-camY);drawRunItem('dew',rx,ry,false);drawArrow(Math.max(7,Math.min(IW-7,rx)),Math.max(15,Math.min(IH-15,ry-12)),'down','#77bbb9');}
+    if(e.type==='loom')for(var i=0;i<2;i++){rect(x+(i?8:-8)-3,y-4,7,4,'#536448');rect(x+(i?8:-8)-3,y-6,Math.round(7*(i?e.chargeB:e.chargeA)/2),2,'#77bbb9');}
+    if(e.type==='echo')for(var i=0;i<3;i++){var nx=x+(i-1)*23;rect(nx-3,y-12,7,9,'#10171c');rect(nx-2,y-11,5,7,i===e.note?'#77bbb9':'#82725b');}
   });
   runLoot.forEach(function(q){
     if(q.owner&&coop&&q.owner!==coop.me)return;

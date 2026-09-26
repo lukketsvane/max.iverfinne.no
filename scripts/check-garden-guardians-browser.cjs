@@ -4,7 +4,7 @@ const {spawn}=require('node:child_process'),{webkit,chromium}=require('playwrigh
 const port=8782,base=`http://127.0.0.1:${port}`;
 const server=spawn('python3',['-m','http.server',String(port),'--directory','dist'],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','dew-duke','spore-oracle','bellkeeper','frostjaw','root-ram','silk-weaver','thorn-duelist','moon-moth','kiln-beetle','spore-oracle','kiln-beetle','root-ram','hollow-crown'];
+const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','bellkeeper','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
 (async()=>{
  fs.mkdirSync('guardian-browser-review',{recursive:true});
  for(let i=0;i<50;i++){try{if((await fetch(base)).ok)break;}catch{}await pause(100);}
@@ -25,7 +25,8 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${String(stage).padStart(2,'0')}.png`});
     assert.deepEqual(errors,[]);console.log(engineName,'guardian',stage,'native art + live warning OK');
    }
-   await page.goto(base+'/review.html?mode=layout1&portrait=1');
+   for(const classId of ['mech','runner']){
+   await page.goto(base+'/review.html?mode=layout1&portrait=1&class='+classId);
    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
    const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
    await page.keyboard.down('b');await page.keyboard.down('ArrowRight');
@@ -38,9 +39,10 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
    await page.waitForFunction(()=>{const b=JSON.parse(document.querySelector('#status').dataset.guardian).bombs[0];return b&&b.fuse<.7;},{},{timeout:2000});
    const ticking=JSON.parse(await page.locator('#status').getAttribute('data-guardian')).bombs[0];
    assert.equal(ticking.x,placed.x);assert.equal(ticking.y,placed.y);
-   await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-mech-fuse.png`});
+   await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${classId}-fuse.png`});
    await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).bombs.length===0,{},{timeout:2000});
-   assert.deepEqual(errors,[]);console.log(engineName,'Mech charge movement, stationary placement and delayed explosion OK');
+   assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
+   }
   }finally{await browser.close();}
  }
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.kill());

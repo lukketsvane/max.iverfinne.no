@@ -11,10 +11,11 @@ function palette(state){return base.concat(state===2?amber:state===5?cyan:[]).ma
 function bounds(bytes,w=32,h=32){let x0=w,y0=h,x1=0,y1=0;for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(bytes[(y*w+x)*4+3]>=128){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x+1);y1=Math.max(y1,y+1);}return x1?[x0,y0,x1,y1]:null;}
 async function run(){
  fs.mkdirSync(path.join(pack,'source'),{recursive:true});fs.mkdirSync(path.join(pack,'native'),{recursive:true});
- const manifest=[];const previews=[];const pins=[];const provenance=[];
+ const manifest=[];const previews=[];const pins=[];const provenance=JSON.parse(fs.readFileSync(path.join(pack,'provenance.json')));
+ const pendingPath=path.join(root,'assets/figma-pending.json'),pending=JSON.parse(fs.readFileSync(pendingPath));
  for(const input of inputs){
   const sourcePath=path.join(pack,'source',input.id+'.png');
-  if(process.argv.includes('--import')){
+  if(process.argv.includes('--import')||!fs.existsSync(sourcePath)){
    const master=fs.readFileSync(input.source),raw=await sharp(master).ensureAlpha().raw().toBuffer({resolveWithObject:true});
    const gridW=raw.info.width/4,gridH=raw.info.height/2;
    const cells=[];let maxW=0,maxH=0;
@@ -27,6 +28,7 @@ async function run(){
     for(let y=0;y<height;y++)for(let x=0;x<width;x++){const a=(y*width+x)*4;if(pose[a+3]<128)continue;let color=colors[0],distance=Infinity;for(const c of colors){const d=c.reduce((s,v,j)=>s+(v-pose[a+j])**2,0);if(d<distance){distance=d;color=c;}}const q=((top+y)*256+i*32+left+x)*4;native[q]=color[0];native[q+1]=color[1];native[q+2]=color[2];native[q+3]=255;}
    }
    await sharp(native,{raw:{width:256,height:32,channels:4}}).png().toFile(sourcePath);
+   var old=provenance.findIndex(p=>p.id===input.id);if(old>=0)provenance.splice(old,1);
    provenance.push({id:input.id,masterSHA256:crypto.createHash('sha256').update(master).digest('hex'),masterSize:[raw.info.width,raw.info.height],uniformScale:scale});
   }
   const source=await sharp(sourcePath).ensureAlpha().raw().toBuffer();const out=Buffer.alloc(256*256*4),frames=[];
@@ -42,14 +44,16 @@ async function run(){
   fs.writeFileSync(path.join(root,file),png);
   const data={schema:'max-native-atlas/v1',id:input.id,kind:'boss',cell:[32,32],anchor:[16,31],facing:'right',palette:base.concat(amber,cyan).map(s=>'#'+s),sheets:{sprites:{image:input.id+'.png',size:[256,256]}},frames,animations:Object.fromEntries(states.map((name,i)=>[name,{frames:Array.from({length:8},(_,j)=>i*8+j),fps:8,loop:['idle','move','vulnerable'].includes(name)}]))};
   fs.writeFileSync(path.join(pack,'native',input.id+'.json'),JSON.stringify(data,null,2)+'\n');manifest.push({id:input.id,manifest:'native/'+input.id+'.json'});
-  pins.push({path:file,sha1:crypto.createHash('sha1').update(png).digest('hex'),width:256,height:256,note:'Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation.'});
-  previews.push({input:await sharp(sourcePath).extract({left:0,top:0,width:32,height:32}).png().toBuffer(),left:manifest.length*40-36,top:8});
+  const sha1=crypto.createHash('sha1').update(png).digest('hex'),prior=pending.files.find(p=>p.path===file&&p.sha1===sha1);
+  pins.push({path:file,sha1,width:256,height:256,note:prior?prior.note:'New native guardian PNG awaiting byte-for-byte Figma verification. Legacy source section 52:2 is absent; see docs/figma.md pending workflow.'});
+  previews.push({input:await sharp(sourcePath).extract({left:0,top:0,width:32,height:32}).png().toBuffer(),left:(manifest.length-1)%8*40+4,top:Math.floor((manifest.length-1)/8)*40+8});
  }
  fs.writeFileSync(path.join(pack,'manifest.json'),JSON.stringify({schema:'max-native-pack/v1',id:'garden-guardians-v1',assets:manifest},null,2)+'\n');
  if(provenance.length)fs.writeFileSync(path.join(pack,'provenance.json'),JSON.stringify(provenance,null,2)+'\n');
- const pendingPath=path.join(root,'assets/figma-pending.json'),pending=JSON.parse(fs.readFileSync(pendingPath));pending.files=pending.files.filter(e=>!e.path.startsWith('assets/garden-guardians-v1/')).concat(pins);fs.writeFileSync(pendingPath,JSON.stringify(pending,null,1)+'\n');
- const contact=await sharp({create:{width:inputs.length*40+8,height:44,channels:4,background:'#52646a'}}).composite(previews).png().toBuffer();
- await sharp(contact).resize((inputs.length*40+8)*4,176,{kernel:'nearest'}).png().toFile(path.join(pack,'contact-4x.png'));
+ pending.files=pending.files.filter(e=>!e.path.startsWith('assets/garden-guardians-v1/')).concat(pins);fs.writeFileSync(pendingPath,JSON.stringify(pending,null,1)+'\n');
+ const width=Math.min(8,inputs.length)*40+8,height=Math.ceil(inputs.length/8)*40+8;
+ const contact=await sharp({create:{width,height,channels:4,background:'#52646a'}}).composite(previews).png().toBuffer();
+ await sharp(contact).resize(width*4,height*4,{kernel:'nearest'}).png().toFile(path.join(pack,'contact-4x.png'));
  console.log('Packed '+inputs.length+' native guardian atlases.');
 }
 run().catch(e=>{console.error(e);process.exitCode=1;});

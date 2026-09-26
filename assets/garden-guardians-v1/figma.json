@@ -4,7 +4,7 @@
   "productionFrame": "160:2",
   "group": "366:2",
   "verifiedOn": "2026-09-26",
-  "verification": "Figma getBytesAsync() matched each repository PNG byte for byte; all layers 256×256 at native 1×.",
+  "verification": "Figma getBytesAsync() matched each repository PNG byte for byte; all layers 256\u00d7256 at native 1\u00d7.",
   "legacySync": "The repository's legacy Draft 0:1 and production section 52:2 are absent. Existing global figma:check still requires source-manifest reconciliation.",
   "files": [
     {
@@ -70,6 +70,74 @@
       "width": 256,
       "height": 256,
       "bytesMatch": true
+    },
+    {
+      "id": "369:3",
+      "path": "assets/garden-guardians-v1/native/glass-snail.png",
+      "imageHash": "93bae5d8cf0ca12ecb13ba911fb09123ca66dbc2",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "369:4",
+      "path": "assets/garden-guardians-v1/native/wick-hermit.png",
+      "imageHash": "19c70136d0192efc2c49b2842820cb45b175f7c4",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "369:5",
+      "path": "assets/garden-guardians-v1/native/spindle-widow.png",
+      "imageHash": "7940720a4ed924f04b3b69fa901475ff307277f7",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "369:6",
+      "path": "assets/garden-guardians-v1/native/orchard-mimic.png",
+      "imageHash": "917169db3da797e3d3c48abfab5dace172a6b1fd",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "370:2",
+      "path": "assets/garden-guardians-v1/native/tuning-fork.png",
+      "imageHash": "fb0a8e49670a9588a8782ca99cedf5916d81b2e5",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "370:3",
+      "path": "assets/garden-guardians-v1/native/ash-ferryman.png",
+      "imageHash": "43c0c153e127940eb05f27f2f934bb29a7eb57ac",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "370:4",
+      "path": "assets/garden-guardians-v1/native/compost-choir.png",
+      "imageHash": "47e353c2b8b93e603e250efcee93a42f6c5de5e7",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "370:5",
+      "path": "assets/garden-guardians-v1/native/seed-engine.png",
+      "imageHash": "499b2dea43017a46e7c6a0602f4795110feac6b5",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
     }
+  ],
+  "groups": [
+    "366:2",
+    "369:2"
   ]
 }

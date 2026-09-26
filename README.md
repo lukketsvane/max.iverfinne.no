@@ -34,7 +34,7 @@ Five open characters and the hidden Sligo each own a gameplay role. There is no 
 | Character | Exclusive ability | Skill (tap Max / E) |
 | --- | --- | --- |
 | Mech | Plants stationary bombs with a two-second fuse; owns the watering robot and robot upgrades | Dispatch: sends the rover (a quarter tank, 8 s) to the plant under attack; it floods the soil, staggers biters and mends the plant while it pours |
-| Moss | Climbs living plants once they are at least half their maximum physical height | Pounce: a hop, or a dive from a stem, that slams pests on landing, up to double damage from 96 px or higher (6 s) |
+| Moss | Plants delayed bombs and climbs living plants once they are at least half their maximum physical height | Pounce: a hop, or a dive from a stem, that slams pests on landing, up to double damage from 96 px or higher (6 s) |
 | Bulwark | Protects nearby plants and resists knockback | Brace: 65% guard to 64 px for 3 s, shoves pests, swallows warned roots (1 s each); steering, jumping or leaving the ground ends it (10 s) |
 | Herbalist | Stronger tending and nearby plant healing | Bloom: heals nearby plants by 49% of their missing health, waters them and revives the one plant that fell most recently (12 s) |
 | Pølge | Quick rolls, slower tending; mannequin stand-ins | Stand-in: lures ordinary pests within 70 px for up to 6 s, takes three bites, then bursts into splinters (11 s) |
@@ -101,20 +101,24 @@ The run starts at the bottom of a silo and climbs out: gardens 1–10 are underg
 
 Every garden has an amber guardian altar on dry soil near its entrance. Grow a living plant, explore for upgrades, and use Tend at the altar when ready. The guardian must fall before the exit plant opens. Victory awards a boon and seeds, restores some plant health and water, and cancels outstanding boss strikes. The team still has to physically climb its exit plant. Three optional preparation raids offer extra experience and a boon; defeating them alone does not clear the garden.
 
-Bosses telegraph attacks in amber and expose themselves in cyan for double damage. Later rematches add attacks and phase changes. Eight new native sprite designs join the four milestone bosses:
+Bosses telegraph attacks in amber and expose themselves in cyan for double damage. All twenty guardians have distinct designs and combat kits. Sixteen native sprite designs join the four milestone bosses:
 
 | Garden | Boss |
 | --- | --- |
 | 1–4 | Sprout Sentinel, Dew Duke, Thorn Duelist, Spore Oracle |
 | 5 | Mossback |
-| 6–9 | Root Ram, Silk Weaver, Raincaller, Plague Oracle |
+| 6–9 | Root Ram, Silk Weaver, Glass Snail, Wick Hermit |
 | 10 | Bellkeeper |
-| 11–14 | Frostjaw, Rimehorn, Pale Weaver, White Thorn |
+| 11–14 | Frostjaw, Spindle Widow, Orchard Mimic, Tuning Fork |
 | 15 | Moon Moth |
-| 16–19 | Kiln Beetle, Ash Oracle, Cinder Regent, Sunroot |
+| 16–19 | Kiln Beetle, Ash Ferryman, Compost Choir, Seed Engine |
 | 20 | Hollow Crown |
 
-The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech's bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Charging preserves movement; other classes retain their aimed throws.
+The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech and Moss bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Charging preserves movement for both; other classes retain their aimed throws.
+
+New boss objectives reward tactics: crack Glass Snail’s front or flank it, snuff Wick Hermit’s wicks, cut Spindle Widow’s silk anchors, find Orchard Mimic’s cyan fruit, interrupt Tuning Fork’s echo, carry dew into Ash Ferryman, silence all Compost Choir voices, and break Seed Engine’s orbiting seeds. These actions open longer damage windows; ordinary attacks still work.
+
+Optional trials include Dew Relay (retrieve a drop from a platform route), Rain Loom (tend both seedbeds before they dry), and Echo Nest (hit the cyan egg three times). Each awards a personal upgrade to every player. Abandoned objectives fade after 75 seconds so the altar cannot be locked forever.
 
 Later specialist enemies include seed thieves, spore casters, shield beetles, healing moths, thorn casters, dew leeches and rammers.
 

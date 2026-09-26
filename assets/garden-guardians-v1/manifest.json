@@ -33,6 +33,38 @@
     {
       "id": "kiln-beetle",
       "manifest": "native/kiln-beetle.json"
+    },
+    {
+      "id": "glass-snail",
+      "manifest": "native/glass-snail.json"
+    },
+    {
+      "id": "wick-hermit",
+      "manifest": "native/wick-hermit.json"
+    },
+    {
+      "id": "spindle-widow",
+      "manifest": "native/spindle-widow.json"
+    },
+    {
+      "id": "orchard-mimic",
+      "manifest": "native/orchard-mimic.json"
+    },
+    {
+      "id": "tuning-fork",
+      "manifest": "native/tuning-fork.json"
+    },
+    {
+      "id": "ash-ferryman",
+      "manifest": "native/ash-ferryman.json"
+    },
+    {
+      "id": "compost-choir",
+      "manifest": "native/compost-choir.json"
+    },
+    {
+      "id": "seed-engine",
+      "manifest": "native/seed-engine.json"
     }
   ]
 }
