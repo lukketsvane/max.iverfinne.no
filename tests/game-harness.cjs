@@ -29,7 +29,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideRoutePoint','highTideBoons','highTideAtSummit','updateHighTide','updateHighTideClimb','updateHighTideEnemies','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
+  'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideRoutePoint','highTidePods','highTideBoons','highTideAtSummit','updateHighTide','updateHighTideClimb','updateHighTideEnemies','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
   'lastSeedMode','seedVital','seedDown','seedActors','resetLastSeed','startLastSeed','damageGardener','updateLastSeed','lastSeedEnemy','drawLastSeedHud',
   'polgeStandin', 'polgePlace', 'polgeBurst', 'polgeLure', 'updatePolge', 'drawPolgeStands',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap', 'drawSligoColony', 'sligoCompanionAt',
@@ -37,7 +37,7 @@ const functionNames = [
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'coopMarker', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
-  'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'launchBomb', 'drawBombs', 'drawSligoAction', 'drawSligoSeed', 'highGround', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
+  'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'launchBomb', 'drawBombs', 'updateRunDirector', 'drawSligoAction', 'drawSligoSeed', 'highGround', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'gardenBackdrop', 'sanctuaryBackdrop', 'drawSanctuaryLayer', 'nightGarden', 'nightBackdrop', 'drawNightLayers', 'cavernGarden', 'cavernBackdrop', 'drawCavernLayers', 'surfaceY', 'terrainY', 'updateGarden', 'updateGardenFun', 'updateSeedPickups', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
   'initExpedition', 'interactExpedition', 'updateExpedition', 'expeditionBlast', 'drawExpedition', 'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
