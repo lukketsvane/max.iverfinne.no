@@ -9,3 +9,6 @@ test('Night Relay remains playable at 250 ms one-way latency on Hard',()=>{
  const r=run({classes:['bulwark','polge'],difficulty:'hard',latency:250,seconds:140});
  assert.equal(r.won,true,JSON.stringify(r));assert.ok(r.passes>=2);
 });
+for(const fps of [30,60,120])test('Night Relay completes through host handoff at '+fps+' Hz',()=>{
+ const r=run({fps,handoffAt:7,seconds:100});assert.equal(r.won,true,JSON.stringify(r));
+});

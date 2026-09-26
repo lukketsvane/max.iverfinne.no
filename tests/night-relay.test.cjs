@@ -50,3 +50,19 @@ test('guest cannot submit carrier, heat, gate progress or cross a locked boundar
  const {g,s,m}=pair();const avatar={...m.avatar,x:900,y:s.base,relayTend:true};m.trust=true;
  g.coopInput(ids[1],{avatar,actions:[],carrier:ids[1],stage:3,energy:100});assert.ok(m.avatar.x<g.RELAY_LOCKS[0].x);assert.equal(s.stage,0);assert.equal(s.carrier,'');
 });
+test('four-player escape waits for everyone, including a downed third or fourth gardener',()=>{
+ const {g,s,room}=pair(),more=['33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444'];
+ more.forEach((id,i)=>{room.members.push({id,slot:i+3,classId:i?'polge':'runner'});g.coopJoin(id,{classId:i?'polge':'runner'});});
+ s.started=true;s.stage=3;s.carrier=ids[0];g.P.x=1100;g.P.y=s.base-22;g.heldDown=true;
+ const m=g.coop.members[ids[1]];m.avatar.x=1032;m.avatar.y=s.base;m.avatar.relayTend=true;
+ step(g,2.1);assert.equal(g.runWon,false);
+ more.forEach(id=>{g.coop.members[id].avatar.x=990;g.coop.members[id].avatar.y=s.base;});
+ g.seedVital(g.coop.members[more[0]]).hp=0;step(g,2.1);assert.equal(g.runWon,false);
+ g.seedVital(g.coop.members[more[0]]).hp=55;step(g,2.1);assert.equal(g.runWon,true);
+});
+test('floor pulses give a warning, hurt a grounded gardener and can be jumped',()=>{
+ const {g,s}=pair();s.started=true;s.stage=1;s.waiting=false;s.elapsed=2.7;const b={x:352,w:22,offset:0};
+ assert.equal(g.relayBeam(b),1);s.elapsed=3.5;assert.equal(g.relayBeam(b),2);g.P.x=s.x=352;g.P.y=s.y=s.base;
+ step(g,.1);assert.ok(g.seedVital().hp<100);
+ g.seedVital().hp=100;g.seedVital().shield=0;g.P.y=s.base-20;g.P.grounded=false;step(g,.1);assert.equal(g.seedVital().hp,100);
+});

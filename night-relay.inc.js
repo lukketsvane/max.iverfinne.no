@@ -50,7 +50,7 @@ function relayReturnSeed(penalty){
 }
 function relayTake(a,pass){
   var s=rogueRun.survival;s.carrier=a.id;s.heat=0;s.passArmed=false;
-  if(pass){s.passes++;s.energy=Math.min(100,s.energy+3);chime([523,784],.06,.035);}
+  if(pass){s.passes++;chime([523,784],.06,.035);}
   if(!s.started){s.started=true;showRound('NIGHT RELAY','Carry the light. Leave no one behind.',2200);}
 }
 function relayBeam(b){
@@ -168,10 +168,11 @@ function drawRelayDarkness(){
 function drawNightRelayHud(){
   if(!nightRelayMode()||!runActive||rogueRun.ended)return;
   var s=rogueRun.survival,y=safeTopArt()+3,id=coop&&coop.me,v=seedVital(),hint;
-  highTideText('NIGHT RELAY  '+s.stage+'/3',7,y);
+  highTideText('NIGHT RELAY',7,y);highTideText(s.stage+'/3',IW-25,y);
   hint=s.waiting?'WAITING FOR A PARTNER':!s.started?'TEND BESIDE THE LIGHT':v.hp<=0?'DOWN - PARTNER CAN REVIVE':s.flash>1.5?'TOO HOT - LIGHT RETURNED':s.stage===3?'BOTH EXIT RUNES - HOLD TEND':s.carrier===s.lastCarrier&&s.lastCarrier?'SWAP THE LIGHT':s.heat>relayProfile().heat*.72?'TOO HOT - BOTH HOLD TEND':s.carrier===id?'GOLD RUNE - HOLD TEND':s.carrier?'BLUE RUNE - HOLD TEND':'TEND TO PICK UP LIGHT';
-  highTideText(hint,7,y+11);
-  var w=Math.min(72,Math.floor(IW/4)),x=IW-w-7;ctx.fillStyle='#27313c';ctx.fillRect(x,y,w,3);ctx.fillStyle=s.energy<25?'#e39877':'#e9cb86';ctx.fillRect(x,y,Math.round(w*s.energy/100),3);
-  if(s.started&&!s.waiting){highTideText(Math.floor(s.elapsed/60)+':'+String(Math.floor(s.elapsed%60)).padStart(2,'0'),x,y+7);}
+  var maxChars=Math.max(10,Math.floor((IW-14)/6)),lines=[''];
+  hint.split(' ').forEach(function(word){var i=lines.length-1;if(lines[i].length+word.length+1>maxChars)lines.push(word);else lines[i]+=(lines[i]?' ':'')+word;});
+  lines.forEach(function(line,i){highTideText(line,7,y+18+i*9);});
+  var w=IW-14;ctx.fillStyle='#27313c';ctx.fillRect(7,y+10,w,2);ctx.fillStyle=s.energy<25?'#e39877':'#e9cb86';ctx.fillRect(7,y+10,Math.round(w*s.energy/100),2);
   if(s.stage<3){var g=RELAY_LOCKS[s.stage],target=s.carrier===id?g.door:g.pad,dx=target-P.x;if(Math.abs(dx)>IW*.38)highTideText(dx>0?'>':'<',dx>0?IW-12:5,Math.round(IH*.5));}
 }
