@@ -12,9 +12,10 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Glass Snail','Wick Hermit','Bellkeeper','Frostjaw','Spindle Widow','Orchard Mimic','Tuning Fork','Moon Moth','Kiln Beetle','Ash Ferryman','Compost Choir','Seed Engine'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed','high-tide');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed','high-tide','boons');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
+ group('Build choices',[['boons','Boons · live readable choices']]);
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
  group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · motherplant and guardians']]);
  group('Sligo',[['sligo-life','Sligo · Eat and grow'],['sligo-colony','Sligo · AI and control swap']]);
@@ -109,6 +110,11 @@
         [-26,26].forEach(function(offset,i){var x=dryX(P.x+offset),p={id:i+1,x:x,kind:i?6:3,seed:79+i*23.7,growth:1.35,stalk:false,health:1,moisture:.85,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
         rogueRun.nextPlantId=3;
       }
+      if(${mode==='boons'}){
+        rogueRun.perks.blast=1;rogueRun.perks.cadence=1;
+        rogueRun.choice=['blast','spring','mulch'].map(function(id){return ROGUE_PERKS.find(function(p){return p.id===id;});});
+        renderRogueChoice();runEncounters=[];runLoot=[];runHazards=[];
+      }
       if(${mode==='polge'}){
         rogueRun.perks.varnish=1;rogueRun.perks.splinters=1;rogueRun.perks.raincoat=1;
         [35,50,65].forEach(function(dx,i){var k=makeKrek(1,false,i);k.scout=false;k.x=P.x+dx;k.y=P.y-14;k.hp=k.maxHp=6;floatKrek.push(k);});
@@ -171,7 +177,8 @@
         reviewFrame(now);
         if(now-reviewStateClock<250)return;reviewStateClock=now;
         var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
-        parent.postMessage({type:'max-guardian-observation',serial:${serial},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
+        var reviewCanvasBounds=cv.getBoundingClientRect();
+        parent.postMessage({type:'max-guardian-observation',serial:${serial},view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
         parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }

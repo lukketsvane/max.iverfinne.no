@@ -18,7 +18,7 @@ const stateNames = [
   'polgeStands',
   'soloSligo', 'sligoMeat', 'sligoPendingSwap',
   'tSec',
-  'bossSeen', 'parts',
+  'bossSeen', 'parts', 'shake',
   'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedCollected', 'seedDust', 'gardenStats',
   'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
@@ -31,14 +31,14 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent',
+  'gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent','blastFeedback','drawCharge',
   'NIGHT_RELAY','RELAY_LOCKS','RELAY_LEDGES','RELAY_WISPS','relayProfile','relayActors','relayHeld','relayAt','relayBeam','relayCheckpoint','relayConstrain','resetNightRelay','nightRelayLayout','updateNightRelay','finishNightRelay','drawNightRelay','drawNightRelayHud','nightRelayMode','relicRunMode',
   'highTidePods','HIGH_TIDE_GATES','highTideMapPoint','highTideRoutePoint','highTideHeart','highTideTip','highTideBoons','highTideSpawnBoss','highTideSpawnPest','updateHighTideEnemies','highTideBossDefeated',
   'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideAtSummit','updateHighTide','updateHighTideClimb','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
   'lastSeedMode','seedVital','seedDown','seedActors','resetLastSeed','startLastSeed','damageGardener','updateLastSeed','lastSeedEnemy','drawLastSeedHud',
   'polgeStandin', 'polgePlace', 'polgeBurst', 'polgeLure', 'updatePolge', 'drawPolgeStands',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap', 'drawSligoColony', 'sligoCompanionAt',
-  'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapIndex', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
+  'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapIndex', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'sfx', 'runCue', 'guardianCue', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'coopMarker', 'stopCoop', 'runIsPaused',
   'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
   'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
@@ -134,6 +134,18 @@ function loadGame(saved = {}) {
     addEventListener(name, fn) { (listeners[name] ||= []).push(fn); },
   };
   sandbox.window = sandbox;
+  // Reproducible playtest worlds must seed before modules build their ecology,
+  // not only before resetRogueRun. Each client owns an independent stream.
+  if (Number.isInteger(saved.__randomSeed)) {
+    let seed = saved.__randomSeed >>> 0;
+    sandbox.Math = Object.create(Math);
+    sandbox.Math.random = () => {
+      seed = (seed + 0x6d2b79f5) >>> 0;
+      let value = Math.imul(seed ^ (seed >>> 15), seed | 1);
+      value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+    };
+  }
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'build-paths.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'max-classes.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'stage-layout.js'), 'utf8'), sandbox);
@@ -165,18 +177,19 @@ function plot(overrides = {}) {
 }
 
 function fakeAudio(h) {
-  const contexts = [], param = () => ({ value: 0, points: [], setValueAtTime(v) { this.points.push(v); }, exponentialRampToValueAtTime(v) { this.points.push(v); } });
+  const contexts = [], param = () => ({ value: 0, points: [], events: [], setValueAtTime(v, t) { this.value = v; this.points.push(v); this.events.push({ type: 'set', value: v, time: t }); }, exponentialRampToValueAtTime(v, t) { this.value = v; this.points.push(v); this.events.push({ type: 'exponential', value: v, time: t }); } });
   h.window.AudioContext = class {
-    constructor() { Object.assign(this, { state: 'suspended', currentTime: 0, sampleRate: 8000, destination: {}, nodes: [] }); contexts.push(this); }
+    constructor() { Object.assign(this, { state: 'suspended', currentTime: 0, sampleRate: 22050, destination: { kind: 'destination' }, nodes: [] }); contexts.push(this); }
     resume() { if (this.state !== 'closed') this.state = 'running'; return Promise.resolve(); }
     suspend() { this.state = 'suspended'; return Promise.resolve(); }
     close() { this.state = 'closed'; return Promise.resolve(); }
-    node(kind, parts) { const n = { kind, connect() {}, start() {}, stop() {}, ...parts }; this.nodes.push(n); return n; }
+    node(kind, parts) { const n = { kind, outputs: [], connect(to) { this.outputs.push(to); }, disconnect() {}, start(time, offset = 0) { this.startTime = time; this.offset = offset; }, stop(time) { this.stopTime = time; }, ...parts }; this.nodes.push(n); return n; }
     createOscillator() { return this.node('osc', { type: 'sine', frequency: param() }); }
     createGain() { return this.node('gain', { gain: param() }); }
     createBiquadFilter() { return this.node('filter', { Q: param(), frequency: param() }); }
+    createDynamicsCompressor() { return this.node('compressor', { threshold: param(), knee: param(), ratio: param(), attack: param(), release: param() }); }
     createBufferSource() { return this.node('noise', {}); }
-    createBuffer(channels, length) { return { getChannelData: () => new Float32Array(length) }; }
+    createBuffer(channels, length, sampleRate) { const data = Array.from({ length: channels }, () => new Float32Array(length)); return { sampleRate, length, getChannelData: channel => data[channel] }; }
   };
   return contexts;
 }

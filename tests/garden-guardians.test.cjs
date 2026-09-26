@@ -20,7 +20,7 @@ test('new guardian patterns warn before hitting, expose double damage and clean 
  for(const stage of [1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19]){
   const {game:g}=game('herbalist',stage);atAltar(g);g.gardenPlots=[plot({id:1,x:g.P.x-24})];g.interactBossEvent();const k=g.liveBoss();k.cool=0;
   g.updateKrek(.01);assert.ok(k.windup>=1.1);assert.ok(g.runHazards.length);assert.equal(g.gardenPlots[0].health,1);
-  for(let i=0;i<300&&!k.exposed;i++)g.updateKrek(.01);assert.ok(k.exposed>=1.5);
+  for(let i=0;i<500&&!k.exposed;i++)g.updateKrek(.01);assert.ok(k.exposed>=2.3);
   const hp=k.hp;g.damagePest(k,1,k.x);assert.equal(hp-k.hp,2);
   const level=g.rogueRun.level;g.damagePest(k,10000,k.x);assert.equal(g.rogueRun.clearedWorld,stage);assert.ok(g.rogueRun.level>level);assert.equal(g.runHazards.filter(h=>h.guardianStage===stage).length,0);
   const after=g.rogueRun.level;g.gardenBossDefeated(k);assert.equal(g.rogueRun.level,after);

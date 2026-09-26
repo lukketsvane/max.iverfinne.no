@@ -106,6 +106,10 @@ The recent expanded specialists are:
 
 Their attacks need readable counterplay and must not become unavoidable background damage.
 
+The mandatory guardians' cyan recovery windows fit a two-second planted bomb plus reaction time: Easy 3.2 s, Medium 2.75 s, Hard 2.5 s, Insane 2.35 s. `guardianHazard` records the last strike's remaining time plus contact lifetime in the scalar `settleT`; movement ends, the volley finishes, then `guardianRecovery` opens the target. `settleT` travels in the ordinary co-op snapshot and must survive a host handoff. Objective interrupts use `openGuardian` to cancel their owner's strikes and grant 3.4 s. Moon Moth and Hollow Crown descend to ground-bomb reach during cyan. Enrage shortens only the following gap, not the fuse window. `tests/garden-guardian-pacing.test.cjs` exercises all twenty fights at 30/60/120 Hz, including planted damage and hazard clearance.
+
+All six optional trial types expire after 75 s, set `failed`, award nothing and release their guards to flee. Successful Nest/Rain/Cache defence charges four times faster after its guards have fallen, but still requires a gardener at the shrine. Failed trials must not play the success cue. Neither trial expiry nor boss recovery changes the global pressure clock.
+
 ## Run power (Risk of Rain rules)
 
 The enemy clock stays superlinear and unbounded; the team answers it the way Risk of Rain does.
@@ -113,7 +117,7 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - Every level adds a fifth of base damage to every hit the team lands (`runPlayerPower`), bombs, skills and burns alike.
 - Kill, raid and shrine XP scale with `runRewardScale()`, the square root of the clock's toughness factor, so levels keep coming while kills slow down. Harvest and seed-shed XP stay flat so the Cultivator snowball does not grow.
 - Every cleared garden and every milestone boss grants one guaranteed boon (`grantRogueLevel`), which waits behind any open choice. Milestone bosses also drop seven seeds.
-- Boon offers are a seeded weighted roll (`MaxBuilds.choices`): a freshly unlocked capstone always shows, class boons weigh 1.6x for their class, and an offer always spans at least two paths.
+- Boon offers are seeded (`MaxBuilds.choices`). One slot continues an invested build: an unlocked capstone, a missing prerequisite toward one, or another owned rank. The other two slots use other paths when available. Mech's free starter rover does not count as chosen investment. Class boons still weigh 1.6x in weighted draws, and offers span at least two paths whenever possible.
 - Easy keeps its 28 s opening in every garden (`openingRaidT`).
 - Enemy heals (healing moth, dew leech, Moon Moth channel) go through `healPest`, which divides by `runDurabilityScale()` exactly as `damagePest` does, so a heal is worth the same number of hits at every point of the clock.
 
@@ -156,13 +160,15 @@ Plant protection is one rule, `plantProtection(plant, bite)`, and every kind of 
 
 A boon is not done merely because it appears in the menu. Each must materially affect the live simulation and have a regression test.
 
-Boon selection is a live overlay. Never restore the old pause/wait-for-team behavior. In co-op every team level adds one pick to each player's own queue (`owed`); a player works through it alone and nobody waits for anyone's pick.
+Boon selection is a live overlay. Its cards show names and effects, rank dots, and a signature unlock when the next rank enables one (`MaxBuilds.unlocks`). Never restore the old pause/wait-for-team behavior. In co-op every team level adds one pick to each player's own queue (`owed`); a player works through it alone and nobody waits for anyone's pick.
+
+`perkChoices` passes the active survival mode to the catalogue. Last Seed excludes `yield`, `bloom`, `spread`, `magnet`, `luck`, `recycle` and `bounty`: its only plant cannot be harvested and it has no loose seeds or plant neighbours. High Tide keeps its own motherplant whitelist. Mode filtering applies to continuation and unlock hints too, so no suggestion points into a disabled path. Quick Hands keeps the `cadence` ID; it shortens attack recovery, never the planted bomb's two-second fuse.
 
 ### Co-op boon owners
 
 A boon belongs to the player who picked it. The host applies each effect with its owner's ranks, never one player's upgrade for the whole world:
 
-- The acting player: movement, throws, tending, harvesting, pickups and the seed spots around them (Long Stride, Spring Step, Light Step, Quick Fuse, Green Thumb, Wide Watering, Seed Rain, Bumper Crop, Bloom Pulse, Rain Engine, Seed Sense, Golden Seeds).
+- The acting player: movement, throws, tending, harvesting, pickups and the seed spots around them (Long Stride, Spring Step, Light Step, Quick Hands, Green Thumb, Wide Watering, Seed Rain, Bumper Crop, Bloom Pulse, Rain Engine, Seed Sense, Golden Seeds).
 - The bomb's thrower: Big Blast, Wild Spark, Sap Burst, Chain Bloom and embers ride on the bomb. Rover boons ride on the Mech's own crew.
 - The plant's carer, whoever planted it or last watered it (`plantPerks(p)`): Quick Roots, Deep Soil, Morning Dew, Sap and the seeds a plant sheds. A carer who left takes their boons along.
 - The team's best rank (`coopTeamPerks`) only where the effect is global: Sticky Pollen, because pests belong to nobody, and Golden Seeds' bonus seed on a raid clear, a team reward that spawns at the host.
@@ -173,8 +179,11 @@ A boon belongs to the player who picked it. The host applies each effect with it
 Music and effects are separate. Settings uses discrete steps 75 / 50 / 25 / off.
 
 - `soundtrack.mjs`: streamed music and music gain.
+- `effectsBus()`: one effects-only low-pass/compressor/gain bus, with distance falloff and a bounded voice budget. Music never passes through it.
 - `effectsAudio()`: the one effects context and effects gain. It resumes on focus, pageshow, visibility and the next touch, including the iOS `interrupted` state, and a closed context is rebuilt on the next touch.
 - `listenRun()` hears garden events from state every frame (a crunch when a plant is hurt, then fall, lost, raid, clear, boon offer and pick, trial start and done), so guests hear what the host simulates. Do not put those cues back at the event sites.
+
+Bomb placement and a single near-detonation fuse cue stay quiet. Boss windup, exposure, objective breaks and hit feedback also come from shared state. Failed trial expiry is not a completion cue. Keep explosion envelopes short and camera impulses local/non-additive when adding combat effects.
 
 Do not collapse them back into one `soundEnabled` flag.
 
