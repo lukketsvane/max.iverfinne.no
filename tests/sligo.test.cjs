@@ -192,7 +192,7 @@ test('a guest Sligo planting on a Mech host grows a cord; the host\'s own seed s
   assert.equal(sligo.game.crouchGardenAction(), true); assert.equal(sligo.pending.at(-1).type, 'grow'); send(1);
   assert.equal(host.gardenPlots.length, 1); assert.ok(host.SLIGO_KINDS.includes(host.gardenPlots[0].kind)); assert.equal(host.gardenPlots[0].carer, ids[1]);
   assert.equal(host.rogueRun.classId, 'mech');
-  host.P.x += 60; host.P.y = host.surfaceY(host.P.x);
+  host.P.x -= 60; host.P.y = host.surfaceY(host.P.x);
   assert.equal(host.crouchGardenAction(), true); assert.equal(host.gardenPlots.length, 2);
   assert.ok(!host.SLIGO_KINDS.includes(host.gardenPlots[1].kind));
 });

@@ -1,0 +1,75 @@
+{
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "10:2",
+  "productionFrame": "160:2",
+  "group": "366:2",
+  "verifiedOn": "2026-09-26",
+  "verification": "Figma getBytesAsync() matched each repository PNG byte for byte; all layers 256×256 at native 1×.",
+  "legacySync": "The repository's legacy Draft 0:1 and production section 52:2 are absent. Existing global figma:check still requires source-manifest reconciliation.",
+  "files": [
+    {
+      "id": "366:3",
+      "path": "assets/garden-guardians-v1/native/dew-duke.png",
+      "imageHash": "0e583e359fe2d8ccb1c23cf4779d43b12fc8c72c",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:4",
+      "path": "assets/garden-guardians-v1/native/frostjaw.png",
+      "imageHash": "72da072eff9f1c50413bf3d46771c4c495da9839",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:5",
+      "path": "assets/garden-guardians-v1/native/kiln-beetle.png",
+      "imageHash": "04aaba857397cc0564779a37173a0cd1d44f1bc8",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:6",
+      "path": "assets/garden-guardians-v1/native/root-ram.png",
+      "imageHash": "3ee6c7c93c5833fb3f91588379803b94cf4778a6",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:7",
+      "path": "assets/garden-guardians-v1/native/silk-weaver.png",
+      "imageHash": "b181334dc5df6b47a4a89851a3a2bd1d1e4347f6",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:8",
+      "path": "assets/garden-guardians-v1/native/spore-oracle.png",
+      "imageHash": "a19114a252ac6582ba0a8ccbb3f52de5813f0301",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:9",
+      "path": "assets/garden-guardians-v1/native/sprout-sentinel.png",
+      "imageHash": "a66133a58b3ddb3b8536a2ab705688d5c2d7f8f3",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    },
+    {
+      "id": "366:10",
+      "path": "assets/garden-guardians-v1/native/thorn-duelist.png",
+      "imageHash": "87f0ad3a68b70d1d07faa6ce0ea2d3edb5cf430f",
+      "width": 256,
+      "height": 256,
+      "bytesMatch": true
+    }
+  ]
+}

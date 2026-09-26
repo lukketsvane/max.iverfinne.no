@@ -21,6 +21,8 @@ test('a garden with a live boss never clears, and the bar follows the boss until
   assert.equal(g.bossSeen.id, '');
   assert.ok(g.parts.length >= before + 40, 'the fall is marked for every player');
   g.levelCleared();
+  assert.notEqual(g.rogueRun.clearedWorld,5,'removing a boss without defeating it cannot open the exit');
+  g.floatKrek=[boss];g.damagePest(boss,10000,boss.x);
   assert.equal(g.rogueRun.clearedWorld, 5);
   for (const id of ['mossback', 'bellkeeper', 'moon-moth', 'hollow-crown']) assert.ok(g.BOSS_NAMES[id]);
 });

@@ -33,12 +33,12 @@ test('a cleared garden always pays one boon, even behind an open choice',()=>{
   assert.ok(g.rogueRun.choice&&g.rogueRun.choice.length,'the guaranteed boon is on offer');
 });
 
-test('the final raid of a garden pays the guaranteed boon and a petal',()=>{
+test('finishing preparation raids pays a boon but the boss still gates the exit and petal',()=>{
   const g=fresh();g.gardenPlots=[plot({x:g.P.x,growth:1})];g.rogueRun.plantedThisWorld=true;
   g.gardenWave=g.FINAL_WAVE;g.gardenRaidActive=true;g.gardenRaidGrace=0;g.rogueRun.raidRemaining=0;g.floatKrek=[];
   g.rogueRun.next=1e9;const petals=g.rogueMeta.petals|0,level=g.rogueRun.level;
   g.updateGardenFun(.016);
-  assert.equal(g.rogueRun.clearedWorld,1);assert.equal(g.rogueMeta.petals|0,petals+1);
+  assert.notEqual(g.rogueRun.clearedWorld,1);assert.equal(g.rogueMeta.petals|0,petals);
   assert.equal(g.rogueRun.level,level+1,'a level no XP bar could reach was granted');assert.ok(g.rogueRun.choice.length);
 });
 

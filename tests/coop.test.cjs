@@ -3,8 +3,8 @@ const assert = require('node:assert/strict');
 const { loadGame, plot } = require('./game-harness.cjs');
 const builds = require('../build-paths.js');
 const ids = [1,2,3,4].map(i => `${i}`.repeat(8)+'-'+`${i}`.repeat(4)+'-4'+`${i}`.repeat(3)+'-8'+`${i}`.repeat(3)+'-'+`${i}`.repeat(12));
-function team() {
-  const members = ids.map((id,i) => ({id, slot:i+1, ready:true}));
+function team(classes=[]) {
+  const members = ids.map((id,i) => ({id, slot:i+1, ready:true,classId:classes[i]||'mech'}));
   const room = {id:'room',host:ids[0],members};
   const games = ids.map(id => {
     const h=loadGame(); const pending=[];
@@ -173,7 +173,7 @@ test('defeating the final boss delivers a single shared victory to all four play
   games.forEach(h=>{assert.equal(h.game.runWon,true);assert.equal(h.game.rogueMeta.wins,1);assert.equal(h.game.rogueRun.choice,null);});
 });
 test('a guest can intercept a spore despite an older snapshot; the host alone awards the watering burst',()=>{
-  const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
+  const {games,sync,send}=team(['mech','herbalist']),host=games[0].game,guest=games[1].game;
   const p=plot({x:24,moisture:.2,health:.6});host.gardenPlots=[p];
   host.addRunHazard('spore',24,15,1.2,1,58,host.surfaceY(24)-24);sync();
   guest.throwAuto();assert.ok(games[1].pending[0].spore>0);

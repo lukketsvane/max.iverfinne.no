@@ -5,7 +5,7 @@ const { loadGame } = require('./game-harness.cjs');
 function padded() {
   const h = loadGame(), g = h.game, state = { buttons: Array.from({ length: 17 }, () => ({ pressed: false, value: 0 })), axes: [0, 0, 0, 0] };
   h.window.navigator = { getGamepads: () => [state] };
-  g.resetRogueRun('test', { classId: 'mech' }); g.floatKrek = []; g.bombs.length = 0; g.bombCool = 0;
+  g.resetRogueRun('test', { classId: 'herbalist' }); g.floatKrek = []; g.bombs.length = 0; g.bombCool = 0;
   const set = (i, on) => { state.buttons[i] = { pressed: on, value: on ? 1 : 0 }; g.pollPads(); };
   return { h, g, state, set };
 }
@@ -45,7 +45,7 @@ test('aiming down with a single Joy-Con never starts planting', () => {
 });
 
 test('the keyboard holds B to aim with the arrows and charge, and releasing throws', () => {
-  const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'mech' }); g.bombs.length = 0; g.bombCool = 0;
+  const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'herbalist' }); g.bombs.length = 0; g.bombCool = 0;
   h.key('keydown', 'b'); h.key('keydown', 'ArrowLeft'); h.key('keydown', 'ArrowUp');
   assert.equal(g.readInput().axis, 0); g.jumpBuf = 0; g.updateCharge(.9);
   assert.equal(g.jumpBuf, 0, 'up aims instead of jumping');
