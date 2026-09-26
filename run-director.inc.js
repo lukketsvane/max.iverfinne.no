@@ -179,7 +179,7 @@ function updateStageWeather(dt){
 // heals hp or resets a boss phase, and travelling cannot reset the multiplier.
 function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)*difficultyProfile().pressure/180,1.7);}
 function runDurabilityScale(){var d=difficultyProfile();return d.durability*(1+.65*(runTimeThreat()-1));}
-function runDamageScale(){var d=difficultyProfile();return d.damage*(1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
+function runDamageScale(){var d=difficultyProfile();if(highTideMode())return d.damage*(1+.08*rogueRun.survival.bosses);return d.damage*(1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
 // Risk of Rain rules for the team's side of the clock. Every level adds a fifth of
 // base damage to every hit the team lands, and kill rewards grow with the same
 // clock that toughens the pests, so levels keep coming while kills get slower.

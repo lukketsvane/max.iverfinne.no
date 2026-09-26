@@ -140,7 +140,7 @@ test('High Tide offers effective upgrades, and growth, water, regeneration and b
  const g=setup().game,p=start(g),s=g.rogueRun.survival;
  for(let i=0;i<40;i++)assert.ok(g.perkChoices(null,i).every(q=>!['yield','bloom','spread','magnet','luck','recycle','bounty','robot','fleet','sentry','dew','evergreen','bramble'].includes(q.id)));
  g.rogueRun.perks.growth=1;g.rogueRun.perks.water=1;g.rogueRun.perks.regen=1;p.moisture=.8;p.health=.5;
- stand(g,{x:150,y:s.base});const before=s.height;step(g,1);assert.ok(Math.abs(s.height-before-10.8)<.001);assert.ok(Math.abs(p.moisture-(.8-.0056))<.001);assert.ok(p.health>.504);
+ stand(g,{x:150,y:s.base});const before=s.height;step(g,1);assert.ok(Math.abs(s.height-before-10.8)<.001);assert.ok(Math.abs(p.moisture-(.8-.0112))<.001);assert.ok(p.health>.504);
  s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();g.rogueRun.perks.bark=2;
  const hp=p.health;g.runHazards=[{id:876,tide:true,x:g.highTideTip().x,y:g.highTideTip().y,r:16,power:1,tell:0,life:1}];g.updateRunHazards(.01);assert.ok(Math.abs(hp-p.health-.06*.78*.78)<.0001);
 });
@@ -151,4 +151,18 @@ test('two real input clients keep their climbing positions in agreement through 
   if(frame<150||frame%30)return;const g=clients[0].game,q=clients[1].game,a=g.coop.members[ids[1]].avatar;
   assert.ok(Math.hypot(q.P.x-a.x,q.P.y-a.y)<30,'guest was rejected at frame '+frame);checked++;
  }});assert.ok(checked>8);
+});
+
+test('High Tide damage grows by guardian, so exploring or rescuing does not inflate the next hit',()=>{
+ const g=setup().game;start(g);const startDamage=g.runDamageScale();g.runElapsed=600;
+ assert.equal(g.runDamageScale(),startDamage);g.rogueRun.survival.bosses=4;assert.ok(g.runDamageScale()>startDamage);assert.ok(g.runDamageScale()<startDamage*1.4);
+});
+test('holding a directional jump cannot catch the vine again mid-flight',()=>{
+ const h=setup(),g=h.game,p=start(g);g.rogueRun.survival.height=p.tideHeight=200;stand(g,g.highTideRoutePoint(52));g.P.grounded=false;g.heldUp=true;
+ g.physics(.001,{axis:-1,top:g.WALK_V});assert.equal(g.climb,null);
+});
+
+test('tending gives a wounded gardener a usable recovery window during a guardian fight',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());s.bossActive=true;
+ g.seedVital().hp=30;g.seedVital().hurt=1;step(g,2,true);assert.ok(g.seedVital().hp>=39.9);assert.equal(s.height,g.HIGH_TIDE_GATES[0]);
 });

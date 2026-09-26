@@ -57,6 +57,7 @@ function startHighTide(p){
   gardenSeeds=0;runElapsed=0;recordGardenPlant(p);showRound('HIGH TIDE','Stell. Utforsk. Forsvar.',2200);
 }
 function highTideHead(a){return a.p.y-((a.member?a.member.classId:rogueRun.classId)==='sligo'?Math.max(3,sligoHeight(a.p)):18);}
+function highTideStemDistance(x,y){var s=rogueRun.survival,q=highTideRoutePoint(Math.max(0,Math.min(s.height,s.base-y)));return Math.hypot(q.x-x,q.y-y);}
 function highTideNearPlant(a){
   var s=rogueRun.survival,h=Math.max(0,Math.min(s.height,s.base-a.p.y)),q=highTideRoutePoint(h);
   return a.v.hp>0&&highTideHead(a)<s.waterY&&(a.p.st==='climb'||a.p.grounded)&&Math.abs(a.p.x-q.x)<24&&Math.abs(a.p.y-q.y)<HIGH_TIDE.reach;
@@ -92,7 +93,7 @@ function highTideBossDefeated(k){
   var s=rogueRun.survival;if(!highTideMode()||!k.tideBoss||!s.bossActive||k.tideIndex!==s.bosses||k.tideSerial!==s.bossSerial)return;
   s.bossActive=false;s.bosses++;s.rest=12;s.calm=12;s.enemyClock=12;gardenWave=s.bosses;
   s.waterY=Math.min(s.base+70,s.waterY+90);runHazards=[];floatKrek=floatKrek.filter(function(e){return !e.tide;});
-  var p=highTidePlant();if(p){p.health=clamp01(p.health+.22);p.moisture=clamp01(p.moisture+.35);p.pulse=2;}
+  var p=highTidePlant();if(p){p.health=clamp01(p.health+.22);p.moisture=clamp01(p.moisture+.25);p.pulse=2;}
   seedActors().forEach(function(a){if(a.v.hp>0)a.v.hp=Math.min(100,a.v.hp+25);});
   grantRogueLevel();showRound(s.bosses===5?'KRONA ER OPEN':'HAGEN ER FRI','',1800);puff(k.x,k.y,18,1);
 }
@@ -165,7 +166,7 @@ function updateHighTide(dt){
     if(carers.length&&carers[0].member)p.carer=carers[0].member.id;
     carers.forEach(function(a){if((a.member?a.member.classId:rogueRun.classId)!=='sligo')return;var c=sligoColony(a.member),b=sligoBody(c,c.active);if(b&&b.sligoMass<SLIGO_LIFE.startMass){sligoFeed(c,b,Math.min(step*.12,SLIGO_LIFE.startMass-b.sligoMass));a.p.sligoMass=b.sligoMass;}});
     var perks=plantPerks(p);
-    p.moisture=clamp01(p.moisture+step*(care*.18-.008*Math.pow(.7,perks.water||0)));
+    p.moisture=clamp01(p.moisture+step*(care*.18-.016*Math.pow(.7,perks.water||0)));
     p.health=clamp01(p.health+step*(care*.035+(p.moisture>.2?.005*(perks.regen||0):0)-(p.moisture<=0?.008:0)));
     if(p.health<=0){finishHighTide(false);return;}
     // A watered motherplant grows while the team explores. Care replenishes
@@ -179,7 +180,7 @@ function updateHighTide(dt){
       if(!Number.isFinite(a.v.air))a.v.air=profile.breath;
       a.v.air=highTideHead(a)>=s.waterY?Math.max(0,a.v.air-step):Math.min(profile.breath,a.v.air+step*2);
       if(a.v.air<=1e-8){drownHighTide(a);return;}
-      if(highTideNearPlant(a)&&p.moisture>.2&&a.v.hurt<=0)a.v.hp=Math.min(100,a.v.hp+step*(s.bossActive?1:5));
+      if(highTideNearPlant(a)&&p.moisture>.2&&a.v.hurt<=1.5){var tending=carers.indexOf(a)>=0;a.v.hp=Math.min(100,a.v.hp+step*(tending?(s.bossActive?5:9):(s.bossActive?.5:5)));}
       s.best=Math.max(s.best,Math.min(HIGH_TIDE.height,Math.max(0,s.base-a.p.y)));
     });
     if(actors.every(function(a){return a.v.hp<=0;})){finishHighTide(false);return;}
@@ -285,7 +286,7 @@ function drawHighTideHud(){
   var s=rogueRun.survival,p=highTidePlant(),v=seedVital(),y=safeTopArt()+3;
   highTideText('HIGH TIDE  '+s.bosses+'/5',7,y);
   var cue=s.cycle+':'+s.phase;if(cue!==tideCue){if(s.phase==='warning')chime([220,277,330],.12,.045);if(s.phase==='surge')chime([165,220],.08,.035);tideCue=cue;}
-  var hint=!s.started?'STELL FOR AA PLANTE':v.hp<=0?'NEDE':s.phase==='warning'?'FLO KJEM':s.phase==='surge'?'FLO':p&&p.moisture<.2?'MORPLANTA TRENG VATN':s.bosses===5?'TIL KRONA':s.bossActive?'FORSVAR MORPLANTA':'';
+  var hint=!s.started?'STELL FOR AA PLANTE':v.hp<=0?'NEDE':s.phase==='warning'?'FLO KJEM':s.phase==='surge'?'FLO':p&&p.moisture<.2?'MORPLANTA TRENG VATN':s.bosses===5?'TIL KRONA':s.bossActive?'FORSVAR MORPLANTA':s.growthRush>0?'VEKSTSPURT':'';
   if(hint)highTideText(hint,7,y+10);
   if(p){var x=IW-30;ctx.fillStyle='#14221f';ctx.fillRect(x-1,y,25,8);ctx.fillStyle='#a5c77a';ctx.fillRect(x,y+1,Math.round(p.health*23),2);ctx.fillStyle='#79b8c8';ctx.fillRect(x,y+5,Math.round(p.moisture*23),2);}
   if(v.hp>0&&v.air<highTideProfile().breath-.05){var x=Math.round(P.x-camX)-9,py=Math.round(P.y-camY)-27;ctx.fillStyle='#152028';ctx.fillRect(x-1,py-1,20,3);ctx.fillStyle='#a8dce2';ctx.fillRect(x,py,Math.round(18*v.air/highTideProfile().breath),1);}

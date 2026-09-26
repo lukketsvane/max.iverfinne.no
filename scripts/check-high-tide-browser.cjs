@@ -48,6 +48,24 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     await page.locator('iframe').screenshot({path:`browser-review/${name}-${scene}.png`});
     assert.deepEqual(errors,[]);console.log(name,scene,'OK');
    }
+   const pairContext=await browser.newContext({viewport:{width:850,height:1120},deviceScaleFactor:1});
+   const pair=await pairContext.newPage();pair.on('pageerror',error=>errors.push(error.message));
+   await pair.goto(base+'/playtest.html',{waitUntil:'load'});
+   const pairStates=()=>pair.locator('.status').evaluateAll(nodes=>nodes.map(n=>n.dataset.state&&JSON.parse(n.dataset.state)));
+   await pair.waitForFunction(()=>document.querySelectorAll('.status').length===2&&[...document.querySelectorAll('.status')].every(n=>n.dataset.state&&JSON.parse(n.dataset.state).ready),{},{timeout:30000});
+   await pair.getByRole('button',{name:'Spel',exact:true}).click();
+   await pair.waitForFunction(()=>[...document.querySelectorAll('.status')].every(n=>JSON.parse(n.dataset.state).time>=18),{},{timeout:90000});
+   let states=await pairStates();assert.ok(states.every(s=>s.height>60&&s.hp>0));
+   const hostGuest=states[0].peers.find(a=>a.id.startsWith('2222')),ownGuest=states[1].peers.find(a=>a.id.startsWith('2222'));
+   assert.ok(Math.hypot(hostGuest.x-ownGuest.x,hostGuest.y-ownGuest.y)<35,'guest climbing must stay authoritative');
+   await pair.getByRole('button',{name:'P1 Venstre',exact:true}).click();
+   await pair.getByRole('button',{name:'P1 Hopp',exact:true}).click();
+   await pair.waitForFunction(()=>{const s=JSON.parse(document.querySelector('.status').dataset.state);return !s.auto&&s.motion!=='climb';},{},{timeout:5000});
+   await pair.getByRole('button',{name:'Pause',exact:true}).click();
+   await pair.waitForFunction(()=>[...document.querySelectorAll('.status')].every(n=>!JSON.parse(n.dataset.state).running),{},{timeout:5000});
+   states=await pairStates();assert.ok(states.every(s=>s.hp>0&&!s.ended));
+   await pair.screenshot({path:`browser-review/${name}-two-players.png`,fullPage:true});
+   assert.deepEqual(errors,[]);console.log(name,'two clients: progression, sync, manual jump and pause OK');
   }finally{await browser.close();}
  }
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>server.kill());

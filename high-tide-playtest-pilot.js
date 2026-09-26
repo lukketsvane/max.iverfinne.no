@@ -22,7 +22,7 @@
   }
   function stop(){Object.keys(held).forEach(k=>key(k,false));}
   function tick(dt){
-   time+=dt;const s=g.rogueRun.survival,p=g.highTidePlant(),a=g.P,v=g.seedVital(),q=g.highTideRoutePoint(Math.max(0,s.base-a.y)),boss=g.floatKrek.find(k=>k.boss);
+   time+=dt;const s=g.rogueRun.survival,p=g.highTidePlant(),a=g.P,v=g.seedVital(),q=g.highTideRoutePoint(Math.max(0,Math.min(s.height,s.base-a.y))),boss=g.floatKrek.find(k=>k.boss);
    if(g.rogueRun.ended){stop();return;}
    if(v.hp<previousHp){metrics.damage+=previousHp-v.hp;lastDamage=time;}previousHp=v.hp;
    if(s.bosses!==previousBosses){metrics.stages.push({boss:s.bosses,time:+s.elapsed.toFixed(1),hp:+v.hp.toFixed(1),level:g.rogueRun.level});previousBosses=s.bosses;target=edge=null;}
@@ -30,15 +30,15 @@
    key('ArrowUp',time<jumpUntil);
    if(!s.started){phase='plant';key(' ',true);return;}
    if(v.hp<=0){phase='down';stop();return;}
-   if(p.moisture<.25||p.health<.65||g.rogueRun.classId==='sligo'&&a.sligoMass<.07)care=true;
-   if(p.moisture>.8&&p.health>.88&&(g.rogueRun.classId!=='sligo'||a.sligoMass>.23))care=false;
+   if(v.hp<45||p.moisture<.25||p.health<.65||g.rogueRun.classId==='sligo'&&a.sligoMass<.07)care=true;
+   if(v.hp>80&&p.moisture>.8&&p.health>.88&&(g.rogueRun.classId!=='sligo'||a.sligoMass>.23))care=false;
    const nearStem=Math.abs(a.x-q.x)<22&&s.base-a.y<=s.height+4;
    let axis=0,tend=false;
-   const urgent=g.runHazards.find(h=>h.tell>0&&h.tell<.7&&Math.abs(a.x-h.x)<h.r+4&&Math.abs(a.y-h.y)<22);
+   const urgent=g.runHazards.find(h=>h.tell>0&&h.tell<.45&&Math.abs(a.x-h.x)<h.r+4&&Math.abs(a.y-h.y)<22);
    if(boss)metrics.combat+=dt;
    if(options.style==='vine'){
     phase='vine';tend=care&&nearStem;
-    if(a.st!=='climb'){axis=Math.abs(a.x-q.x)>4?Math.sign(q.x-a.x):0;if(nearStem&&time>=nextJump)jump();}
+    if(a.st!=='climb'){axis=Math.abs(a.x-q.x)>4?Math.sign(q.x-a.x):0;const at=floorAt(a);if(a.grounded&&s.base-a.y>s.height+4&&at>=0)axis=q.x<graph.floors[at].x+graph.floors[at].w/2?-1:1;else if(Math.abs(a.x-q.x)<7&&nearStem&&a.vy>=0&&time>=nextJump){axis=0;jump();}}
     if(a.st==='climb'&&s.height-(s.base-a.y)<3)metrics.waiting+=dt;
    }else{
     let at=floorAt(a);
@@ -57,14 +57,14 @@
      else if(boss&&Math.abs(a.y-target.y)<5&&time-lastDamage<1){axis=a.x<q.x?1:-1;jump();}
      if(s.height-(s.base-a.y)<3)metrics.waiting+=dt;
     }else if(a.grounded&&at>=0){
-     if(at===target.floor){edge=null;axis=Math.abs(target.x-a.x)>2?Math.sign(target.x-a.x):0;if(!target.bit&&Math.abs(a.x-q.x)<8&&!boss)jump();}
+     if(at===target.floor){edge=null;axis=Math.abs(target.x-a.x)>2?Math.sign(target.x-a.x):0;if(!target.bit&&Math.abs(a.x-q.x)<7&&!boss){axis=0;jump();}}
      else{
       if(!edge||edge.from!==at)edge=route(at,target.floor,s.waterY)?.[0]||null;
       if(edge){axis=Math.abs(edge.takeoff-a.x)>2?Math.sign(edge.takeoff-a.x):Math.sign(edge.aim-a.x);if(Math.abs(edge.takeoff-a.x)<=2&&time>=nextJump){edgeAt=time;jump();}}
-      else{axis=Math.abs(q.x-a.x)>4?Math.sign(q.x-a.x):0;if(nearStem)jump();}
+      else{axis=Math.abs(q.x-a.x)>4?Math.sign(q.x-a.x):0;if(nearStem&&Math.abs(a.x-q.x)<7){axis=0;jump();}}
      }
     }else if(edge){axis=Math.abs(edge.aim-a.x)>1.5?Math.sign(edge.aim-a.x):0;if(time-edgeAt>3)edge=null;}
-    else{axis=Math.abs(q.x-a.x)>4?Math.sign(q.x-a.x):0;if(nearStem&&a.vy>=0)jump();}
+    else{axis=Math.abs(q.x-a.x)>4?Math.sign(q.x-a.x):0;if(nearStem&&Math.abs(a.x-q.x)<7&&a.vy>=0){axis=0;jump();}}
    }
    if(urgent&&options.dodge!==false){phase='evade';tend=false;axis=a.x<=urgent.x?-1:1;jump();edge=null;}
    // A second gardener can revive through exactly the same Tend input.
