@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAX — raven and moonroot native sprites</title>
+<style>:root{color-scheme:dark;font:15px/1.5 system-ui;background:#151926;color:#e9e6d6}body{max-width:1050px;margin:auto;padding:20px}h1{font-size:24px}a{color:#86c6db}button,select{font:inherit;color:inherit;background:#242a3e;border:1px solid #54755a;padding:8px}label{display:inline-block;margin:4px}.views{display:flex;flex-wrap:wrap;gap:20px}figure{margin:0;background:#242a3e;padding:12px}canvas{display:block;image-rendering:pixelated;max-width:none}#fx{display:flex;flex-wrap:wrap;gap:6px}#fx figure{padding:6px;font-size:11px}#fx canvas{width:128px;height:96px}small{color:#acb771}.frame{overflow:auto}</style>
+<h1>Raven + Moonroot · native sprite bench</h1><p>Actual transparent PNG frames, not a boss fight. No saves, accounts or gameplay state are accessed. <a href="README.md">Asset contract</a> · <a href="DEVELOPER_HANDOFF.md">Developer handoff</a></p>
+<label>Enlargement <select id="zoom"><option>1</option><option>2</option><option selected>4</option><option>6</option></select>×</label>
+<label>Facing <select id="face"><option value="1">Right</option><option value="-1">Left</option></select></label>
+<button id="pause">Pause</button><p id="status">Loading…</p><div class="views" id="views"></div><h2>Separate effects and sprouts</h2><div id="fx"></div>
+<script type="module">
+import{loadAtlas,drawAtlas}from'../native-atlas.mjs';
+const $=id=>document.getElementById(id),views=[];let paused=matchMedia('(prefers-reduced-motion: reduce)').matches,time=0,previous=null;
+$('pause').textContent=paused?'Play':'Pause';$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Play':'Pause';previous=null;};
+try{
+ for(const id of ['raven','moonroot']){
+  const atlas=await loadAtlas(id+'.json'),f=document.createElement('figure'),title=document.createElement('figcaption'),select=document.createElement('select'),canvas=document.createElement('canvas'),frame=document.createElement('div');
+  title.textContent=id+' — 48×48 cells, anchor (24,44)';canvas.width=80;canvas.height=64;frame.className='frame';frame.append(canvas);
+  for(const name of Object.keys(atlas.manifest.animations)){const o=document.createElement('option');o.textContent=name;select.append(o);}
+  select.setAttribute('aria-label',id+' animation');select.onchange=()=>{time=0;};f.append(title,select,frame);$('views').append(f);views.push({id,atlas,select,canvas,ctx:canvas.getContext('2d')});
+ }
+ const fx=await loadAtlas('effects.json');
+ for(const name of Object.keys(fx.manifest.frames)){const f=document.createElement('figure'),label=document.createElement('figcaption'),c=document.createElement('canvas');c.width=32;c.height=24;label.textContent=name;const fr=fx.manifest.frames[name];drawAtlas(c.getContext('2d'),fx,name,0,fr.anchor[0],fr.anchor[1]);f.append(label,c);$('fx').append(f);}
+ function resize(){for(const v of views){const z=Number($('zoom').value);v.canvas.style.width=(80*z)+'px';v.canvas.style.height=(64*z)+'px';}}$('zoom').onchange=resize;resize();
+ $('status').textContent='32 raven poses · 30 moonroot poses · 33 effects/sprouts. No gameplay activation.';
+ function paint(now){if(previous!==null&&!paused&&!document.hidden)time+=Math.min((now-previous)/1000,.1);previous=now;
+  for(const v of views){const c=v.ctx;c.clearRect(0,0,80,64);c.fillStyle='#54755a';c.fillRect(0,55,80,1);drawAtlas(c,v.atlas,v.select.value,time,40,54,{facing:Number($('face').value)});}
+  requestAnimationFrame(paint);
+ }requestAnimationFrame(paint);window.__bossBench={views,fx};
+}catch(e){$('status').textContent='Load failed: '+e.message+'. Serve repository root over HTTP.';console.error(e);}
+</script></html>
