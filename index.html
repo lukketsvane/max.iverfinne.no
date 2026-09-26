@@ -4060,13 +4060,16 @@ function drawGardenPlots(t){
   for(var i=0;i<gardenPlots.length;i++){
     var p=gardenPlots[i],sx=Math.round(p.x-camX),gy=Math.round(surfaceY(p.x))-cy;
     if(sx<-52||sx>IW+52||gy<-8)continue;
-    var ph=p.dead?4:plantHeight(p);
-    if(!p.dead&&!p.stalk&&ph>tallH){tallH=ph;tallest=p;}
+    var ph=p.dead?4:(p.tideVine?0:plantHeight(p));
+    if(!p.dead&&!p.tideVine&&!p.stalk&&ph>tallH){tallH=ph;tallest=p;}
     if(gy>IH+8&&!p.stalk&&gy-ph>IH+4)continue;
     var damp=p.moisture>.4;ctx.globalAlpha=.34+.30*p.health;ctx.fillStyle=damp?'#27342b':'#342b24';
     ctx.fillRect(sx-3,gy,7,1);ctx.fillRect(sx-1,gy+1,3,1);ctx.globalAlpha=1;
     if(p.guard>0){ctx.fillStyle='#8eb6b8';ctx.globalAlpha=Math.min(.8,p.guard*2);ctx.fillRect(sx-1,gy+2,3,1);ctx.globalAlpha=1;}
     if(p.dead){ctx.fillStyle='#51473a';ctx.fillRect(sx-1,gy-3,1,3);ctx.fillRect(sx,gy-2,2,1);continue;}
+    // High Tide draws one continuous winding vine through the authored five-garden route.
+    // Do not also draw the ordinary straight garden plant through the scenery.
+    if(p.tideVine){if(p.pulse>0){ctx.fillStyle='#9ec4c9';ctx.globalAlpha=Math.min(.42,p.pulse*.32);ctx.fillRect(sx-4,gy-5,1,1);ctx.fillRect(sx+4,gy-8,1,1);ctx.globalAlpha=1;}continue;}
     ctx.globalAlpha=.42+.58*p.health;drawGrowingFigmaPlant(p,sx,gy,t);ctx.globalAlpha=1;
     var syn=gardenSynergy(p);
     if(syn>.08&&p.health>.55){
@@ -4150,9 +4153,10 @@ function plantClimbAt(x,y,range){
   var best=null,distance=range==null?10:range;
   gardenPlots.forEach(function(p){
     if(!plantClimbReady(p))return;
-    var gy=surfaceY(p.x),height=plantClimbHeight(p);
+    var gy=p.tideVine&&highTideMode()?rogueRun.survival.base:surfaceY(p.x),height=p.tideVine&&highTideMode()?(p.tideHeight||0):plantClimbHeight(p);
     if(y>gy+4||y<gy-height-4)return;
-    var stem=p.x+plantLean(p,Math.max(0,gy-y),tSec),dx=Math.abs(stem-x);
+    var h=Math.max(0,Math.min(height,gy-y));
+    var stem=p.tideVine&&highTideMode()?highTideRoutePoint(h).x:p.x+plantLean(p,h,tSec),dx=Math.abs(stem-x);
     if(dx<distance){best=p;distance=dx;}
   });return best;
 }
@@ -4604,7 +4608,7 @@ function burstKrek(k){
   saveGarden();
 }
 function updateKrek(dt){
-  if(highTideMode())return;
+  if(highTideMode()){updateHighTideEnemies(dt);return;}
   if(runIsPaused()||climb&&climb.exit||warp||P.st==='float')return;
   updatePolge(dt);
   var active=0;for(var pi=0;pi<gardenPlots.length;pi++)if(!gardenPlots[pi].dead&&gardenPlots[pi].health>0)active++;
