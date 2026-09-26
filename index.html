@@ -3273,6 +3273,7 @@ var bossSeen={id:'',t:0,ghost:1,x:0,y:0};
 function liveBoss(){for(var i=0;i<floatKrek.length;i++)if(floatKrek[i].boss&&floatKrek[i].hp>0)return floatKrek[i];return null;}
 function drawBossWord(str,cx,y,s){
   if(!ready(BOSS_FONT))return;
+  s=Math.max(1,Math.min(s,Math.floor((IW-8)/(str.length*6-1))));
   var x0=Math.round(cx-(str.length*6-1)*s/2);
   for(var i=0;i<str.length;i++){var n=Math.max(0,Math.min(63,str.charCodeAt(i)-32));ctx.drawImage(BOSS_FONT,n%16*6,Math.floor(n/16)*8,5,7,x0+i*6*s,y,5*s,7*s);}
 }
