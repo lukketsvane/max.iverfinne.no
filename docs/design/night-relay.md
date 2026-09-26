@@ -52,6 +52,12 @@ Mechanics tests separately cover waiting alone, stale members, remote inputs,
 handoff latching, overheating, revives, defeat, completion, late joining and
 host promotion. Four players must all reach the exit, not just the rune pair.
 
+The first paired WebKit pass reached all three locks after reconnect and host
+handoff, then exposed an existing shared results renderer calling an undefined
+sprite helper. The renderer now draws the saved class's native idle frame
+directly. A full-scene regression covers all four game modes, pixel size and
+live-state restoration; browser completion also checks both visible results.
+
 `night-relay-review.html` runs isolated, memory-only browser clients, with manual
 controls, input pilots, a connection-cut switch and host handoff. The production
 game exports no test API. `scripts/check-night-relay-browser.cjs` runs the paired

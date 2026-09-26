@@ -33,6 +33,11 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
    await page.screenshot({path:`browser-review/relay-${name}-two-players.png`,fullPage:true});
    await wait(()=>[...document.querySelectorAll('.status')].every(n=>JSON.parse(n.dataset.state).ended));
    const result=await states();assert.ok(result.every(s=>s.won&&s.locks===3&&s.passes>=2),JSON.stringify(result));
+   for(const frame of page.frames().filter(f=>f!==page.mainFrame())){
+    assert.equal(await frame.locator('#runResults').isVisible(),true,'both players see the completed result');
+    assert.match(await frame.locator('#runResultsTitle').textContent(),/LIGHT DELIVERED/);
+    assert.match(await frame.locator('.run-results-empty').textContent(),/Everyone made it home/);
+   }
    await page.screenshot({path:`browser-review/relay-${name}-complete.png`,fullPage:true});
    assert.deepEqual(errors,[]);console.log(name,'two clients completed after disconnect, rejoin and authority handoff',JSON.stringify(result));
    await page.selectOption('#count','1');await page.getByRole('button',{name:'New run',exact:true}).click();await ready();await page.getByRole('button',{name:'Play',exact:true}).click();await pause(2000);

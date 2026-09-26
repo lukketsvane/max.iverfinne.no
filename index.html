@@ -3554,7 +3554,10 @@ function drawResultScene(canvas,bouquet,resultRun){
       var r=SM.min[(x|0)%SM.min.length];soilStamp(r,x,gy+10+(x%17),false);
     }
     if(bouquet&&bouquet.width)ctx.drawImage(bouquet,cx-48,gy-91);
-    drawPlayerSprite(cx-44,gy-31);
+    // Results use the saved class's native idle frame, without live animation
+    // state, terrain, or a helper that is not part of the runtime.
+    var resultSprite=window.MaxNativeArt&&window.MaxNativeArt.playerImage(P.skin,'main');
+    if(resultSprite||sheetReady)ctx.drawImage(resultSprite||sheet,0,0,CELL,CELL,cx-44,gy-CELL+1,CELL,CELL);
     if(companion&&window.MaxCompanion)window.MaxCompanion.draw(ctx,{tier:companion.state.tier,state:'idle',face:-1,clock:0,water:companion.state.water},cx+40,gy);
   }finally{P.skin=oldSkin;ctx=old.ctx;IW=old.w;IH=old.h;ANCHOR=old.a;camX=old.x;camY=old.y;}
 }
