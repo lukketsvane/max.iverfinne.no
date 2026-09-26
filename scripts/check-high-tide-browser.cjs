@@ -23,6 +23,9 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     await page.waitForFunction(()=>{const n=document.querySelector('#status');return n.textContent.startsWith('Fixture error:')||n.dataset.state&&JSON.parse(n.dataset.state).tide?.artReady;},{},{timeout:20000});
     const status=await page.locator('#status').getAttribute('data-state');assert.ok(status,await page.locator('#status').innerText());const state=JSON.parse(status);
     assert.equal(state.tide.artReady,true);assert.equal(state.tide.floors,118);assert.equal(state.ended,false);
+    const gameFrame=page.frames().find(f=>f!==page.mainFrame());
+    const art=await gameFrame.evaluate(()=>window.MaxNativeArt.load());assert.deepEqual(art.failed,[]);
+    await gameFrame.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
     if(zone>=0){assert.ok(state.bossId);assert.equal(state.tide.bosses,zone);}
     else{
      const iframe=page.frames().find(f=>f!==page.mainFrame());

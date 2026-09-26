@@ -24,3 +24,13 @@ test('a garden with a live boss never clears, and the bar follows the boss until
   assert.equal(g.rogueRun.clearedWorld, 5);
   for (const id of ['mossback', 'bellkeeper', 'moon-moth', 'hollow-crown']) assert.ok(g.BOSS_NAMES[id]);
 });
+
+test('the Hollow Crown announcement fits a narrow phone at an integer scale', () => {
+  const g=loadGame().game,drawn=[];
+  g.resetRogueRun('phone',{mode:'high-tide'});g.IW=107;g.IH=190;
+  g.floatKrek=[g.makeHollowCrown()];g.BOSS_FONT={complete:true,naturalWidth:96};
+  g.ctx.drawImage=(...args)=>drawn.push(args);
+  g.drawBossBar(.01);
+  assert.ok(drawn.length>=22);
+  for(const q of drawn){assert.ok(q[5]>=0&&q[5]+q[7]<=g.IW);assert.equal(q[7]%5,0);}
+});
