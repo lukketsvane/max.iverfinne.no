@@ -264,7 +264,7 @@ function updateHazardContact(){
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
 }
 function updateRunDirector(dt){
-  if(highTideMode())return;
+  if(highTideMode()){updateRunLoot();updateRunHazards(dt);return;}
   if(lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
   updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateRunHazards(dt);
 }

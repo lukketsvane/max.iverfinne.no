@@ -211,3 +211,17 @@ test('Last Seed archives only the actual plant and survival measures, with no or
     w.MaxRunResults.showRecords(s.options);assert.match(w.document.querySelector('.run-results-entry-copy').textContent,/Last Seed.*Wave 9.*3:35.*190s/);
   }finally{s.close();}
 });
+
+test('High Tide game-over fills the mobile scene, keeps ascent, and removes the irrelevant plant browser', () => {
+  const s = session(), w = s.w;
+  try {
+    Object.defineProperty(w, 'innerWidth', { configurable: true, value: 390 });
+    Object.defineProperty(w, 'innerHeight', { configurable: true, value: 844 });
+    w.MaxRunResults.show({ ...s.options, mode: 'high-tide', ascent: 317, goal: 480, seconds: 108, won: false, plants: plants(1), classId: 'polge', onRetry() {} });
+    const scene = w.document.querySelector('.run-results-scene');
+    assert.equal(scene.style.width, '100%');
+    assert.equal(scene.style.height, '100%');
+    assert.equal(s.button('View every plant').hidden, true);
+    assert.match(w.document.querySelector('.run-results-subtitle').textContent, /DROWNED.*317.*480.*108/);
+  } finally { s.close(); }
+});
