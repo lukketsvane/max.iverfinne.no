@@ -29,7 +29,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideAtSummit','updateHighTide','updateHighTideClimb','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
+  'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideRoutePoint','highTideBoons','highTideAtSummit','updateHighTide','updateHighTideClimb','updateHighTideEnemies','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
   'lastSeedMode','seedVital','seedDown','seedActors','resetLastSeed','startLastSeed','damageGardener','updateLastSeed','lastSeedEnemy','drawLastSeedHud',
   'polgeStandin', 'polgePlace', 'polgeBurst', 'polgeLure', 'updatePolge', 'drawPolgeStands',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap', 'drawSligoColony', 'sligoCompanionAt',
