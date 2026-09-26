@@ -1,6 +1,6 @@
 /* High Tide uses the garden's native plants, movement, controls and replication.
    All mutable race state belongs to the host; snapshots carry only plain scalars. */
-var HIGH_TIDE={height:480,startHeight:24,reach:38,period:30,warning:4,surge:4,growth:8.8};
+var HIGH_TIDE={height:480,startHeight:24,reach:44,period:30,warning:4,surge:4,growth:8.8};
 var HIGH_TIDE_LEVEL={originX:76,originY:1472,topY:102,scale:480/(1472-102)};
 var HIGH_TIDE_PLATFORMS=[[30,1472,92,0,1],[108,1472,92,0,1],[186,1456,48,0,1],[224,1436,52,0,1],[269,1420,46,0,1],[319,1400,34,0,1],[350,1382,60,0,1],[405,1366,38,0,1],[424,1346,92,0,1],[475,1328,38,0,1],[438,1310,44,0,1],[401,1290,34,0,1],[345,1272,62,0,1],[308,1252,60,0,1],[350,1234,52,0,1],[393,1214,46,0,1],[429,1196,54,0,1],[475,1178,42,0,2],[504,1160,64,0,2],[540,1140,48,0,2],[501,1122,58,0,2],[463,1104,50,0,2],[430,1084,32,0,2],[361,1066,82,0,2],[341,1048,34,0,2],[286,1030,56,0,2],[246,1010,48,0,2],[209,992,42,0,2],[244,974,40,0,2],[279,956,58,0,2],[327,936,46,0,2],[360,918,64,0,2],[325,900,54,0,3],[276,880,68,0,3],[250,862,40,0,3],[212,844,32,0,3],[161,826,50,0,3],[113,808,66,0,3],[93,790,30,0,3],[53,770,54,0,3],[99,752,26,0,3],[129,734,46,0,3],[173,716,38,0,3],[214,698,40,0,3],[252,680,48,0,3],[301,660,26,0,3],[339,642,26,0,3],[328,624,120,0,4],[406,606,36,0,4],[441,586,34,0,4],[403,568,34,0,4],[355,548,50,0,4],[315,530,46,0,4],[277,512,34,0,4],[218,494,68,0,4],[187,476,42,0,4],[153,458,34,0,4],[112,438,48,0,4],[152,420,36,0,4],[195,400,34,0,4],[230,380,48,0,4],[238,362,120,0,4],[317,344,46,0,5],[361,326,42,0,5],[403,308,30,0,5],[417,290,78,0,5],[462,272,64,0,5],[502,252,56,0,5],[481,232,26,0,5],[421,214,70,0,5],[403,196,26,0,5],[339,176,78,0,5],[320,158,44,0,5],[353,140,58,0,5],[391,120,66,0,5],[427,102,78,0,5],[176,1420,32,1,1],[119,1400,62,1,1],[78,1380,60,1,1],[490,1288,48,1,1],[522,1268,60,1,1],[415,1046,42,1,2],[464,1028,32,1,2],[494,1008,56,1,2],[61,830,26,1,3],[25,812,26,1,3],[317,700,54,1,3],[354,680,68,1,3],[405,662,54,1,3],[192,552,36,1,4],[155,534,34,1,4],[116,514,36,1,4],[277,488,46,1,4],[321,468,42,1,4],[289,324,26,1,5],[255,306,26,1,5],[207,286,46,1,5],[515,192,30,1,5],[547,174,42,1,5],[18,1496,92,2,1],[242,1494,92,2,1],[426,1468,92,2,1],[523,1214,42,2,2],[301,1128,82,2,2],[189,922,66,2,3],[366,870,68,2,3],[58,606,120,2,4],[415,644,46,2,4],[167,386,78,2,5],[483,360,70,2,5],[137,584,34,2,4],[169,564,42,2,4],[209,544,34,2,4],[214,1478,60,2,1],[406,1446,48,2,1],[366,1424,60,2,1],[455,340,46,2,5],[427,322,26,2,5]];
 var HIGH_TIDE_ZONES=[
@@ -157,10 +157,14 @@ function highTideLayout(){
 }
 function highTideHead(a){return a.p.y-((a.member?a.member.classId:rogueRun.classId)==='sligo'?Math.max(3,sligoHeight(a.p)):18);}
 function highTideCarer(a){
-  var s=rogueRun.survival,tip=highTideTip(),remote=a.member&&a.member.id!==coop.me;
+  var s=rogueRun.survival,remote=a.member&&a.member.id!==coop.me;
   var held=remote?a.p.tideTend&&performance.now()-a.member.last<500:seedHeld();
-  return !!(a.v.hp>0&&held&&(a.p.st==='climb'||a.p.grounded)&&Math.abs(a.p.x-tip.x)<HIGH_TIDE.reach&&
-    Math.abs(tip.y-(a.p.y-8))<=HIGH_TIDE.reach&&highTideHead(a)<s.waterY);
+  var h=Math.max(0,Math.min(s.height,s.base-a.p.y)),vine=highTideRoutePoint(h),gap=s.height-h;
+  // On a winding vine, reach is measured along the ascent rather than straight
+  // through the air to a horizontally displaced tip. The gardener must still be
+  // on/next to the vine and within one hand-over-hand section of its live tip.
+  return !!(a.v.hp>0&&held&&(a.p.st==='climb'||a.p.grounded)&&Math.abs(a.p.x-vine.x)<18&&
+    gap<=HIGH_TIDE.reach&&highTideHead(a)<s.waterY);
 }
 function highTideAtSummit(a){
   var s=rogueRun.survival,top=highTideSummit();
