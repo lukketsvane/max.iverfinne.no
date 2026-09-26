@@ -33,7 +33,7 @@ function startLastSeed(plant){
   showRound('LAST SEED','Protect the plant. Keep each other alive.',2400);
 }
 function damageGardener(member,amount){
-  if(!lastSeedMode()||coopGuest()||rogueRun.ended)return false;
+  if(!singleSeedMode()||coopGuest()||rogueRun.ended)return false;
   var v=seedVital(member),a=member?coopMemberAvatar(member):P;
   var remote=member&&member.id!==coop.me;
   if(v.hp<=0||v.shield>0||(remote?member.dodge&&performance.now()<member.dodge.expires:a.dodgeT>0)||(remote?curledMember(member,a):a.tun>0))return false;
@@ -119,7 +119,7 @@ function lastSeedEnemy(k,dt){
   return true;
 }
 function seedVitalFrom(value){
-  return {air:Number.isFinite(value.air)?Math.max(0,Math.min(3.2,value.air)):highTideProfile().breath,hp:Math.max(0,Math.min(100,+value.hp||0)),shield:Math.max(0,Math.min(3,+value.shield||0)),revive:Math.max(0,Math.min(3,+value.revive||0)),hurt:Math.max(0,Math.min(4,+value.hurt||0))};
+  return {air:Number.isFinite(value.air)?Math.max(0,Math.min(highTideMode()?highTideProfile().breath:3.2,value.air)):highTideProfile().breath,hp:Math.max(0,Math.min(100,+value.hp||0)),shield:Math.max(0,Math.min(3,+value.shield||0)),revive:Math.max(0,Math.min(3,+value.revive||0)),hurt:Math.max(0,Math.min(4,+value.hurt||0))};
 }
 function drawLastSeedHud(){
   if(!lastSeedMode()||!runActive||rogueRun.ended)return;

@@ -283,3 +283,13 @@ Aim has a 0.12 radial deadzone and reaches full throw distance at 0.75 stick tra
 ### Upper districts
 
 All twenty main gardens include an optional 288–384 pixel ascent with three side galleries, hidden seed caches and a keepsake. Relay beacons, ordered bells, salvage seals and guarded watch points earn a summit item while the global threat clock keeps running. Follow the trail lamps; use the existing tend and throw controls. The full level catalogue and review links are in [Upper districts](docs/design/upper-districts.md).
+
+### High Tide
+
+High Tide now uses the complete supplied five-garden composition at native scale.
+One motherplant grows on stored water while players explore ten upgrade pickups
+and nine dew pickups. Tend restores water and health; five increasingly strong
+native guardians gate growth. Each victory gives a boon, a short rest and a tide
+retreat. Reach the final crown after all five victories. The host owns care,
+pickups, guardians and health, including after authority handoff. See
+[High Tide](docs/design/high-tide.md) for the source map, rules and initial balance.

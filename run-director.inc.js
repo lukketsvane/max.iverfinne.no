@@ -240,8 +240,9 @@ function updateRunHazards(dt){
     if(h.tell>0){h.tell=Math.max(0,h.tell-dt);if(!h.tell)rootAbsorb(h);continue;}
     if(!h.hit){
       h.hit=true;rootAbsorb(h);
-      if(lastSeedMode()&&!h.absorbed)seedActors().forEach(function(a){if(Math.abs(a.p.x-h.x)<h.r&&Math.abs(a.p.y-h.y)<20)damageGardener(a.member,24*h.power*runDamageScale());});
-      if(!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
+      if(singleSeedMode()&&!h.absorbed)seedActors().forEach(function(a){if(Math.abs(a.p.x-h.x)<h.r&&Math.abs(a.p.y-h.y)<20)damageGardener(a.member,24*h.power*runDamageScale());});
+      if(highTideMode()&&h.tide&&!h.absorbed){var mother=highTidePlant(),tip=highTideTip();if(mother&&h.power>0&&Math.abs(tip.x-h.x)<h.r&&Math.abs(tip.y-h.y)<20){mother.health=clamp01(mother.health-.06*h.power);mother.hit=1;}}
+      if(!highTideMode()&&!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*plantProtection(p,false));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
         if(p.health<=.01)plantFalls(p);

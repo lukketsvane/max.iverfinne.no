@@ -1,134 +1,50 @@
-/* High Tide uses the garden's native plants, movement, controls and replication.
-   All mutable race state belongs to the host; snapshots carry only plain scalars. */
-var HIGH_TIDE={height:480,startHeight:24,reach:44,period:30,warning:4,surge:4,growth:8.8};
-var HIGH_TIDE_LEVEL={originX:76,originY:1472,topY:102,scale:480/(1472-102)};
-var HIGH_TIDE_PLATFORMS=[[30,1472,92,0,1],[108,1472,92,0,1],[186,1456,48,0,1],[224,1436,52,0,1],[269,1420,46,0,1],[319,1400,34,0,1],[350,1382,60,0,1],[405,1366,38,0,1],[424,1346,92,0,1],[475,1328,38,0,1],[438,1310,44,0,1],[401,1290,34,0,1],[345,1272,62,0,1],[308,1252,60,0,1],[350,1234,52,0,1],[393,1214,46,0,1],[429,1196,54,0,1],[475,1178,42,0,2],[504,1160,64,0,2],[540,1140,48,0,2],[501,1122,58,0,2],[463,1104,50,0,2],[430,1084,32,0,2],[361,1066,82,0,2],[341,1048,34,0,2],[286,1030,56,0,2],[246,1010,48,0,2],[209,992,42,0,2],[244,974,40,0,2],[279,956,58,0,2],[327,936,46,0,2],[360,918,64,0,2],[325,900,54,0,3],[276,880,68,0,3],[250,862,40,0,3],[212,844,32,0,3],[161,826,50,0,3],[113,808,66,0,3],[93,790,30,0,3],[53,770,54,0,3],[99,752,26,0,3],[129,734,46,0,3],[173,716,38,0,3],[214,698,40,0,3],[252,680,48,0,3],[301,660,26,0,3],[339,642,26,0,3],[328,624,120,0,4],[406,606,36,0,4],[441,586,34,0,4],[403,568,34,0,4],[355,548,50,0,4],[315,530,46,0,4],[277,512,34,0,4],[218,494,68,0,4],[187,476,42,0,4],[153,458,34,0,4],[112,438,48,0,4],[152,420,36,0,4],[195,400,34,0,4],[230,380,48,0,4],[238,362,120,0,4],[317,344,46,0,5],[361,326,42,0,5],[403,308,30,0,5],[417,290,78,0,5],[462,272,64,0,5],[502,252,56,0,5],[481,232,26,0,5],[421,214,70,0,5],[403,196,26,0,5],[339,176,78,0,5],[320,158,44,0,5],[353,140,58,0,5],[391,120,66,0,5],[427,102,78,0,5],[176,1420,32,1,1],[119,1400,62,1,1],[78,1380,60,1,1],[490,1288,48,1,1],[522,1268,60,1,1],[415,1046,42,1,2],[464,1028,32,1,2],[494,1008,56,1,2],[61,830,26,1,3],[25,812,26,1,3],[317,700,54,1,3],[354,680,68,1,3],[405,662,54,1,3],[192,552,36,1,4],[155,534,34,1,4],[116,514,36,1,4],[277,488,46,1,4],[321,468,42,1,4],[289,324,26,1,5],[255,306,26,1,5],[207,286,46,1,5],[515,192,30,1,5],[547,174,42,1,5],[18,1496,92,2,1],[242,1494,92,2,1],[426,1468,92,2,1],[523,1214,42,2,2],[301,1128,82,2,2],[189,922,66,2,3],[366,870,68,2,3],[58,606,120,2,4],[415,644,46,2,4],[167,386,78,2,5],[483,360,70,2,5],[137,584,34,2,4],[169,564,42,2,4],[209,544,34,2,4],[214,1478,60,2,1],[406,1446,48,2,1],[366,1424,60,2,1],[455,340,46,2,5],[427,322,26,2,5]];
-var HIGH_TIDE_ZONES=[
-  {name:'VERKSTADHAGEN',from:0,to:97,style:'ruin'},
-  {name:'VASSARKADEN',from:97,to:194,style:'bridge'},
-  {name:'VINTERHAGEN',from:194,to:291,style:'root'},
-  {name:'MAANEARKIVET',from:291,to:389,style:'ruin'},
-  {name:'KLOKKEHAGEN',from:389,to:481,style:'branch'}
-];
-var HIGH_TIDE_BOON_RAW=[[552,1268,1],[522,1008,2],[432,662,4],[134,514,8],[568,174,16]];
-var HIGH_TIDE_DEW_RAW=[[342,1128,1],[222,922,2],[118,606,4]];
-var HIGH_TIDE_ENEMY_RAW=[
-  [404,1214,55,1,'ram',2],[402,1066,125,2,'harass',0],[392,918,175,4,'ram',2],
-  [80,770,225,8,'harass',1],[388,624,295,16,'ram',2],[136,438,345,32,'harass',0],
-  [340,344,395,64,'ram',1],[530,252,430,128,'ram',2]
-];
+/* High Tide: explore the authored gardens, nourish one motherplant, defeat five
+   guardians. The host owns every timer, pickup, boss and care outcome. */
+var HIGH_TIDE={height:1370,startHeight:24,reach:36,period:40,warning:5,surge:5,growth:8};
+var HIGH_TIDE_GATES=[312,572,848,1128,1370];
+var HIGH_TIDE_ZONES=['VERKSTADHAGEN','VASSARKADEN','VINTERHAGEN','MAANEARKIVET','KLOKKEHAGEN'];
+var HIGH_TIDE_BOON_RAW=[[108,1380],[552,1268],[436,1046],[522,1008],[38,812],[432,662],[134,514],[344,468],[230,286],[568,174]];
+var HIGH_TIDE_DEW_RAW=[[267,1494],[390,1424],[342,1128],[222,922],[400,870],[118,606],[204,564],[206,386],[518,360]];
 var tideLayoutKey='',tideCue='',tideRouteCache=null;
 function highTideMode(){return !!rogueRun&&rogueRun.mode==='high-tide';}
 function singleSeedMode(){return lastSeedMode()||highTideMode();}
 function highTideProfile(){return {
-  easy:{grace:42,speed:3.2,acceleration:.010,breath:3.4,growth:1.08,enemy:.78},
-  medium:{grace:34,speed:4.2,acceleration:.016,breath:2.8,growth:1,enemy:1},
-  hard:{grace:28,speed:5.1,acceleration:.021,breath:2.5,growth:.97,enemy:1.16},
-  insane:{grace:24,speed:5.9,acceleration:.026,breath:2.2,growth:.94,enemy:1.32}
-}[rogueRun.difficulty]||{grace:34,speed:4.2,acceleration:.016,breath:2.8,growth:1,enemy:1};}
-function highTideZoneForHeight(h){
-  for(var i=0;i<HIGH_TIDE_ZONES.length;i++)if(h<HIGH_TIDE_ZONES[i].to)return i;
-  return HIGH_TIDE_ZONES.length-1;
-}
-function highTideMapPoint(rawX,rawY){
-  var s=rogueRun.survival||{root:0,base:0},q=HIGH_TIDE_LEVEL.scale;
-  return {x:s.root+(rawX-HIGH_TIDE_LEVEL.originX)*q,y:s.base-(HIGH_TIDE_LEVEL.originY-rawY)*q,h:(HIGH_TIDE_LEVEL.originY-rawY)*q};
-}
+  easy:{grace:60,speed:3.1,acceleration:.002,breath:4,growth:1.15,enemy:.75},
+  medium:{grace:45,speed:4.1,acceleration:.003,breath:3.4,growth:1,enemy:1},
+  hard:{grace:35,speed:4.8,acceleration:.004,breath:3,growth:.98,enemy:1.15},
+  insane:{grace:28,speed:5.5,acceleration:.005,breath:2.6,growth:.96,enemy:1.3}
+}[rogueRun.difficulty];}
+function highTideMapPoint(x,y){var s=rogueRun.survival,d=window.MaxHighTideMap;return {x:s.root+x-d.origin.x,y:s.base+y-d.origin.y,h:d.origin.y-y};}
 function highTideRoute(){
   if(tideRouteCache)return tideRouteCache;
-  tideRouteCache=HIGH_TIDE_PLATFORMS.filter(function(q){return q[3]===0;}).map(function(q){
-    return {h:(HIGH_TIDE_LEVEL.originY-q[1])*HIGH_TIDE_LEVEL.scale,x:(q[0]+q[2]/2-HIGH_TIDE_LEVEL.originX)*HIGH_TIDE_LEVEL.scale};
-  }).sort(function(a,b){return a.h-b.h;});
+  var d=window.MaxHighTideMap,seen={};
+  tideRouteCache=d.platforms.filter(function(q){if(q[3]!==0||seen[q[1]])return false;seen[q[1]]=true;return true;}).map(function(q){return {h:d.origin.y-q[1],x:q[0]+q[2]/2-d.origin.x};}).sort(function(a,b){return a.h-b.h;});
   return tideRouteCache;
 }
 function highTideRoutePoint(height){
-  var route=highTideRoute(),h=Math.max(0,Math.min(HIGH_TIDE.height,height)),s=rogueRun.survival||{root:0,base:0};
-  if(!route.length)return {x:s.root,y:s.base-h,h:h};
-  if(h<=route[0].h)return {x:s.root+route[0].x,y:s.base-h,h:h};
-  for(var i=1;i<route.length;i++)if(h<=route[i].h){
-    var a=route[i-1],b=route[i],t=(h-a.h)/Math.max(.001,b.h-a.h);
-    return {x:s.root+a.x+(b.x-a.x)*t,y:s.base-h,h:h};
-  }
+  var route=highTideRoute(),s=rogueRun.survival,h=Math.max(0,Math.min(HIGH_TIDE.height,height));
+  for(var i=1;i<route.length;i++)if(h<=route[i].h){var a=route[i-1],b=route[i],t=(h-a.h)/Math.max(1,b.h-a.h);return {x:s.root+a.x+(b.x-a.x)*t,y:s.base-h,h:h};}
   return {x:s.root+route[route.length-1].x,y:s.base-h,h:h};
 }
-function highTideTip(){return highTideRoutePoint(rogueRun.survival.height||0);}
+function highTideTip(){return highTideRoutePoint(rogueRun.survival.height);}
 function highTideSummit(){return highTideRoutePoint(HIGH_TIDE.height);}
-function highTideBoons(){return HIGH_TIDE_BOON_RAW.map(function(q){var p=highTideMapPoint(q[0],q[1]);p.bit=q[2];return p;});}
-function highTideGrowthBonus(){
-  var p=coop?coopTeamPerks():rogueRun.perks||{};
-  return 1+.18*(p.growth||0)+.10*(p.tender||0);
-}
-function highTideEnemyCount(){var n=0;for(var i=0;i<floatKrek.length;i++)if(floatKrek[i].tide)n++;return n;}
-function highTideSpawnEnemy(raw,index,type,kind){
-  if(coopGuest()||rogueRun.ended)return null;
-  var p=highTideMapPoint(raw[0],raw[1]),zone=highTideZoneForHeight(Math.max(0,rogueRun.survival.best||rogueRun.survival.height));
-  var k=makeKrek(index&1?1:-1,zone>=3&&index%4===3,kind==null?2:kind);
-  k.x=p.x;k.y=p.y-18;k.tide=true;k.tideType=type||'ram';k.raid=true;k.scout=false;k.target=null;k.windup=0;k.attackTarget=null;
-  k.hp=k.maxHp=Math.max(2,k.hp+(zone>=2?1:0));k.bite=.25;k.flee=0;k.ph=(index+1)*.77;
-  floatKrek.push(k);return k;
-}
-function highTideSpawnEnemies(dt){
-  if(coopGuest()||!rogueRun.survival.started)return;
-  var s=rogueRun.survival,progress=Math.max(s.best,s.height),profile=highTideProfile();
-  for(var i=0;i<HIGH_TIDE_ENEMY_RAW.length;i++){
-    var q=HIGH_TIDE_ENEMY_RAW[i];
-    if(!(s.enemyMask&q[3])&&progress>=q[2]&&s.elapsed>=8){
-      s.enemyMask|=q[3];highTideSpawnEnemy(q,i,q[4],q[5]);
-    }
-  }
-  s.enemyClock=Math.max(0,(s.enemyClock||0)-dt);
-  var zone=highTideZoneForHeight(progress),cap=Math.min(4,1+Math.floor(zone/2)+Math.floor(coopSize()/2));
-  if(s.elapsed>=18&&s.enemyClock<=0&&highTideEnemyCount()<cap){
-    var pool=HIGH_TIDE_ENEMY_RAW.filter(function(q){return highTideZoneForHeight(q[2])===zone;});
-    var raw=pool[(s.enemyRound||0)%Math.max(1,pool.length)]||HIGH_TIDE_ENEMY_RAW[Math.min(HIGH_TIDE_ENEMY_RAW.length-1,zone+1)];
-    var round=s.enemyRound=(s.enemyRound||0)+1;
-    highTideSpawnEnemy(raw,round,round%3===2?'harass':'ram',round%3===0?1:2);
-    s.enemyClock=Math.max(8,17-zone*1.5)/profile.enemy;
-  }
-}
-function highTideEnemyTarget(){
-  var living=seedActors().filter(function(a){return a.v.hp>0;});
-  if(!living.length)return null;
-  return living.reduce(function(best,a){return !best||a.p.y<best.p.y?a:best;},null);
-}
-function updateHighTideEnemies(dt){
-  if(!highTideMode()||coopGuest()||runIsPaused()||rogueRun.ended)return;
-  highTideSpawnEnemies(dt);
-  var s=rogueRun.survival,tip=highTideTip();
-  for(var i=floatKrek.length-1;i>=0;i--){
-    var k=floatKrek[i];if(!k.tide)continue;
-    k.flash=Math.max(0,(k.flash||0)-dt*5);k.bite=Math.max(0,(k.bite||0)-dt);k.startle=Math.max(0,(k.startle||0)-dt);
-    if(k.flee>0){
-      k.flee-=dt;var away=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;
-      k.vx+=(away*48-k.vx)*Math.min(1,dt*4);k.vy+=(-10-k.vy)*Math.min(1,dt*2);k.x+=k.vx*dt;k.y+=k.vy*dt;continue;
-    }
-    if(k.tideType==='harass'){
-      var d=moveEnemyTo(k,tip.x,tip.y-7,dt,20);
-      if(d<12){k.vx=k.vy=0;s.jam=Math.max(s.jam,.24);if(k.bite<=0){k.bite=.7;highTidePlant().pulse=1.2;}}
-      continue;
-    }
-    var target=highTideEnemyTarget();if(!target)continue;
-    var d2=moveEnemyTo(k,target.p.x,target.p.y-10,dt,28);
-    if(d2<13&&k.bite<=0){
-      addRunHazard('tide-hit',target.p.x,15,.12,0,k.x,k.y,target.p.y);
-      k.bite=.95;k.flee=.20;k.fleeFromX=target.p.x;
-    }
-  }
-}
-function highTideClaimBoons(actors,plant){
-  var s=rogueRun.survival;
-  highTideBoons().forEach(function(q,i){
-    if(s.boonMask&q.bit)return;
-    var a=actors.find(function(x){return x.v.hp>0&&Math.abs(x.p.x-q.x)<14&&Math.abs(x.p.y-q.y)<18&&highTideHead(x)<s.waterY;});
-    if(!a)return;
-    s.boonMask|=q.bit;s.height=Math.min(HIGH_TIDE.height,s.height+12);s.calm=Math.max(s.calm,4);plant.pulse=1.8;
-    grantRogueLevel();showRound('BOON FOUND',HIGH_TIDE_ZONES[i].name,950);chime([523,659,784],.06,.04);
-  });
+function highTideHeart(){var s=rogueRun.survival;return highTideRoutePoint(s.bosses?HIGH_TIDE_GATES[Math.min(4,s.bosses-1)]:0);}
+function highTideGate(){return HIGH_TIDE_GATES[Math.min(4,rogueRun.survival.bosses)];}
+function highTideBoons(){return HIGH_TIDE_BOON_RAW.map(function(q,i){var p=highTideMapPoint(q[0],q[1]);p.bit=1<<i;return p;});}
+function highTidePods(){return HIGH_TIDE_DEW_RAW.map(function(q,i){var p=highTideMapPoint(q[0],q[1]);p.bit=1<<i;return p;});}
+function highTideLayout(){
+  var s=rogueRun.survival,key=s.root+':'+s.base,d=window.MaxHighTideMap;
+  if(activeStageLayout&&activeStageLayout.tide&&tideLayoutKey===key)return activeStageLayout;
+  tideLayoutKey=key;var a=highTideMapPoint(d.x,d.y);
+  var L={stage:1,seed:rogueRun.seed,origin:0,theme:'picture',kind:'picture',tide:true,ground:{x0:a.x,x1:a.x+d.w,y:s.base+110},platforms:[],routes:[],nodes:[],rewards:[],trials:[],bonuses:[],hazards:[],spots:{},blooms:[]};
+  L.art={img:PICTURE_ART[d.art]||(PICTURE_ART[d.art]=loadImg('assets/levels-v1/high-tide.png')),x:a.x,y:a.y,w:d.w,h:d.h};
+  d.platforms.forEach(function(q,i){var p=highTideMapPoint(q[0],q[1]);L.platforms.push({id:'five-gardens-'+i,x:p.x,y:p.y,w:q[2],depth:3,route:q[3]+1,style:'stone',tideRoute:q[3],zone:q[4],art:true});});
+  activeStageLayout=L;return L;
 }
 function resetHighTide(){
   if(!highTideMode())return;
   var base=Math.round(terrainY(0));
-  rogueRun.survival={started:false,elapsed:0,base:base,root:0,waterY:base+90,height:0,best:0,dewMask:0,boonMask:0,enemyMask:0,enemyClock:10,enemyRound:0,jam:0,calm:0,phase:'ready',cycle:0,zone:0,plantTime:0,escaped:''};
+  rogueRun.survival={started:false,elapsed:0,base:base,root:0,waterY:base+70,height:0,best:0,dewMask:0,boonMask:0,bosses:0,bossActive:false,bossSerial:0,enemyClock:12,enemyRound:0,rest:0,calm:0,phase:'ready',cycle:0,plantTime:0,escaped:''};
   rogueRun.vital={hp:100,air:highTideProfile().breath,shield:0,revive:0,hurt:0};
   gardenSeeds=1;seedPickups=[];runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;
   gardenRaidActive=false;gardenRaidT=0;floatKrek=[];activeStageLayout=null;tideLayoutKey='';tideCue='';tideRouteCache=null;
@@ -136,46 +52,139 @@ function resetHighTide(){
 function highTidePlant(){return gardenPlots.find(function(p){return p.tideVine&&!p.dead;})||null;}
 function startHighTide(p){
   if(!highTideMode()||rogueRun.survival.started)return;
-  var s=rogueRun.survival;s.started=true;s.root=p.x;s.plantId=p.id;s.height=HIGH_TIDE.startHeight;s.phase='opening';s.waterY=s.base+90;
-  p.tideVine=true;p.tideHeight=s.height;p.growth=.1+s.height/HIGH_TIDE.height*(G_TOP-.1);p.moisture=1;p.health=1;p.stalk=false;
-  gardenSeeds=0;runElapsed=0;recordGardenPlant(p);activeStageLayout=null;tideLayoutKey='';
-  showRound('HIGH TIDE','Tend. Fight. Take the side routes.',2800);
-}
-function highTidePods(){
-  return HIGH_TIDE_DEW_RAW.map(function(q){var p=highTideMapPoint(q[0],q[1]);p.bit=q[2];return p;});
-}
-function highTideLayout(){
-  var s=rogueRun.survival,key=rogueRun.seed+':'+s.root+':v2';
-  if(activeStageLayout&&activeStageLayout.tide&&key===tideLayoutKey)return activeStageLayout;
-  tideLayoutKey=key;
-  var L={stage:1,seed:rogueRun.seed,origin:0,theme:'canopy',kind:'canopy',tide:true,ground:{x0:-1000000,x1:1000000,y:s.base},platforms:[],routes:[],nodes:[],rewards:[],trials:[],bonuses:[],hazards:[],spots:{},blooms:[]};
-  HIGH_TIDE_PLATFORMS.forEach(function(q,i){
-    var p=highTideMapPoint(q[0],q[1]),zone=HIGH_TIDE_ZONES[Math.max(0,Math.min(4,q[4]-1))];
-    L.platforms.push({id:'five-gardens-'+i,x:p.x,y:p.y,w:Math.max(7,q[2]*HIGH_TIDE_LEVEL.scale),depth:q[3]===2?5:4,route:q[3]+1,style:zone.style,tideRoute:q[3],zone:q[4]});
-  });
-  activeStageLayout=L;return L;
+  var s=rogueRun.survival;s.started=true;s.plantId=p.id;s.height=HIGH_TIDE.startHeight;s.phase='opening';
+  p.tideVine=true;p.tideHeight=s.height;p.growth=.1;p.moisture=.8;p.health=1;p.stalk=false;
+  gardenSeeds=0;runElapsed=0;recordGardenPlant(p);showRound('HIGH TIDE','Stell. Utforsk. Forsvar.',2200);
 }
 function highTideHead(a){return a.p.y-((a.member?a.member.classId:rogueRun.classId)==='sligo'?Math.max(3,sligoHeight(a.p)):18);}
-function highTideCarer(a){
-  var s=rogueRun.survival,remote=a.member&&a.member.id!==coop.me;
-  var held=remote?a.p.tideTend&&performance.now()-a.member.last<500:seedHeld();
-  var h=Math.max(0,Math.min(s.height,s.base-a.p.y)),vine=highTideRoutePoint(h),gap=s.height-h;
-  // On a winding vine, reach is measured along the ascent rather than straight
-  // through the air to a horizontally displaced tip. The gardener must still be
-  // on/next to the vine and within one hand-over-hand section of its live tip.
-  return !!(a.v.hp>0&&held&&(a.p.st==='climb'||a.p.grounded)&&Math.abs(a.p.x-vine.x)<18&&
-    gap<=HIGH_TIDE.reach&&highTideHead(a)<s.waterY);
+function highTideNearPlant(a){
+  var s=rogueRun.survival,h=Math.max(0,Math.min(s.height,s.base-a.p.y)),q=highTideRoutePoint(h);
+  return a.v.hp>0&&highTideHead(a)<s.waterY&&(a.p.st==='climb'||a.p.grounded)&&Math.abs(a.p.x-q.x)<24&&Math.abs(a.p.y-q.y)<HIGH_TIDE.reach;
 }
-function highTideAtSummit(a){
-  var s=rogueRun.survival,top=highTideSummit();
-  return a.v.hp>0&&s.height>=HIGH_TIDE.height&&Math.abs(a.p.x-top.x)<=30&&
-    a.p.y<=top.y+2&&a.p.y>=top.y-30&&(a.p.st==='climb'||a.p.grounded)&&highTideHead(a)<s.waterY;
+function highTideCarer(a){
+  var remote=a.member&&a.member.id!==coop.me;
+  return !!((remote?a.p.tideTend&&performance.now()-a.member.last<500:seedHeld())&&highTideNearPlant(a));
+}
+function highTideCareRate(a){var id=a.member?a.member.classId:rogueRun.classId,perks=a.member?a.member.perks:rogueRun.perks;return (id==='herbalist'?1.4:id==='polge'?.8:1)*(1+.12*(perks.tender||0)+.08*(perks.water||0));}
+function highTideAtSummit(a){var s=rogueRun.survival,q=highTideSummit();return a.v.hp>0&&s.bosses===5&&s.height>=HIGH_TIDE.height&&Math.abs(a.p.x-q.x)<40&&Math.abs(a.p.y-q.y)<12&&(a.p.st==='climb'||a.p.grounded)&&highTideHead(a)<s.waterY;}
+function highTideClaimBoons(actors,p){
+  var s=rogueRun.survival;
+  highTideBoons().forEach(function(q){if(s.boonMask&q.bit)return;if(!actors.some(function(a){return a.v.hp>0&&Math.abs(a.p.x-q.x)<12&&Math.abs(a.p.y-q.y)<14&&highTideHead(a)<s.waterY;}))return;
+    s.boonMask|=q.bit;grantRogueLevel();p.pulse=1;chime([523,659,784],.06,.04);
+  });
+  highTidePods().forEach(function(q){if(s.dewMask&q.bit)return;var a=actors.find(function(a){return a.v.hp>0&&Math.hypot(a.p.x-q.x,a.p.y-q.y)<14&&highTideHead(a)<s.waterY;});if(!a)return;
+    s.dewMask|=q.bit;p.moisture=clamp01(p.moisture+.3);p.health=clamp01(p.health+.12);p.pulse=1.5;s.calm=Math.max(s.calm,8);a.v.hp=Math.min(100,a.v.hp+18);a.v.air=highTideProfile().breath;
+  });
+}
+function highTideSpawnBoss(){
+  var s=rogueRun.survival;if(s.bossActive||s.bosses>=5||s.height<highTideGate())return;
+  var q=highTideRoutePoint(highTideGate());
+  if(!seedActors().some(function(a){return a.v.hp>0&&Math.hypot(a.p.x-q.x,a.p.y-q.y)<110;}))return;
+  var index=s.bosses,k=index===4?makeHollowCrown():makeStageBoss([5,10,15,10][index]);
+  k.x=q.x+(index%2?-48:48);k.y=q.y-28;k.tide=true;k.tideBoss=true;k.tideIndex=index;k.tideSerial=++s.bossSerial;
+  k.finalBoss=false;k.hp=k.maxHp=[14,23,33,45,62][index]*(1+.55*(coopSize()-1));k.cool=2;k.windup=0;k.attack=0;k.exposed=0;k.flee=0;k.vx=k.vy=0;
+  s.bossActive=true;floatKrek.push(k);gardenWave=index+1;
+}
+function highTideBossDefeated(k){
+  var s=rogueRun.survival;if(!highTideMode()||!k.tideBoss||!s.bossActive||k.tideIndex!==s.bosses||k.tideSerial!==s.bossSerial)return;
+  s.bossActive=false;s.bosses++;s.rest=12;s.calm=12;s.enemyClock=12;gardenWave=s.bosses;
+  s.waterY=Math.min(s.base+70,s.waterY+90);runHazards=[];floatKrek=floatKrek.filter(function(e){return !e.tide;});
+  var p=highTidePlant();if(p){p.health=clamp01(p.health+.22);p.moisture=clamp01(p.moisture+.35);p.pulse=2;}
+  seedActors().forEach(function(a){if(a.v.hp>0)a.v.hp=Math.min(100,a.v.hp+25);});
+  grantRogueLevel();showRound(s.bosses===5?'KRONA ER OPEN':'HAGEN ER FRI','',1800);puff(k.x,k.y,18,1);
+}
+function highTideEnemyTarget(k){
+  var living=seedActors().filter(function(a){return a.v.hp>0;});
+  return living.reduce(function(best,a){return !best||Math.hypot(a.p.x-k.x,a.p.y-k.y)<Math.hypot(best.p.x-k.x,best.p.y-k.y)?a:best;},null);
+}
+function highTideSpawnPest(){
+  var s=rogueRun.survival,p=highTideTip(),i=s.enemyRound++,k=makeKrek(i%2?1:-1,false,i%3);
+  k.tide=true;k.tideType=i%3===2?'sap':'hunter';k.x=p.x+(i%2?60:-60);k.y=p.y-30;k.hp=k.maxHp=2+Math.floor(s.bosses/2);k.raid=true;k.scout=false;k.target=null;k.cool=1;k.windup=0;k.flee=0;
+  floatKrek.push(k);
+}
+function highTideStrike(k,x,y,r,power,tell,type){var h=addRunHazard(type||'root',x,r,tell,power,k.x,k.y,y);if(h)h.tide=true;}
+function updateHighTideBoss(k,dt){
+  var a=highTideEnemyTarget(k);if(!a)return;
+  k.phase=k.hp<k.maxHp/3?3:k.hp<k.maxHp*2/3?2:1;k.exposed=Math.max(0,k.exposed-dt);k.flee=0;
+  if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step;k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
+  if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){p.health=clamp01(p.health-.07);p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
+  k.cool-=dt;
+  var gate=highTideRoutePoint(HIGH_TIDE_GATES[k.tideIndex]);
+  if(k.exposed<=0)moveEnemyTo(k,gate.x+(k.attack%2?-44:44),gate.y-(k.bossId==='moon-moth'?40:22),dt,24);
+  if(k.cool>0)return;
+  k.attack++;k.tell=k.windup=Math.max(.75,1.25-k.tideIndex*.06);k.face=a.p.x<k.x?-1:1;k.chargeX=a.p.x;
+  if(k.bossId==='moon-moth'&&k.attack%3===0){var tip=highTideTip();k.healing=true;k.healX=tip.x;k.healY=tip.y;k.windup=k.tell=1.5;return;}
+  var power=.55+k.tideIndex*.08,type=k.bossId==='mossback'?'root':'spore';
+  highTideStrike(k,a.p.x,a.p.y,11,power,k.tell,type);
+  // Fixed telegraphs leave a full walking/jumping escape; later guardians layer
+  // flanking attacks and sap-feeders rather than unannounced contact damage.
+  if(k.tideIndex>0){for(var side=-1;side<=1;side+=2)highTideStrike(k,a.p.x+side*35,a.p.y,9,power*.7,k.tell+.25,type);}
+  if(k.tideIndex===4&&k.phase===3)seedActors().forEach(function(other){if(other.id!==a.id&&other.v.hp>0)highTideStrike(k,other.p.x,other.p.y,10,power,k.tell+.35,'spore');});
+  if(k.tideIndex>=2&&k.attack%2===0)highTideStrike(k,a.p.x,a.p.y,10,0,k.tell+.55,'gust');
+  if(k.tideIndex>=3&&k.phase>=2&&k.attack%3===0){var tip=highTideTip();highTideStrike(k,tip.x,tip.y,14,.6,k.tell+.4,'spore');}
+  if(k.attack%4===0&&floatKrek.length<5)highTideSpawnPest();
+}
+function updateHighTideEnemies(dt){
+  if(!highTideMode()||coopGuest()||runIsPaused()||rogueRun.ended||!rogueRun.survival.started)return;
+  var s=rogueRun.survival,p=highTidePlant();if(!p)return;
+  updatePolge(dt);highTideSpawnBoss();s.enemyClock-=dt;
+  if(s.rest<=0&&s.elapsed>16&&s.enemyClock<=0&&floatKrek.filter(function(k){return k.tide&&!k.boss;}).length<Math.min(4,1+s.bosses)){
+    highTideSpawnPest();s.enemyClock=Math.max(9,18-s.bosses*1.5)/highTideProfile().enemy;
+  }
+  floatKrek.slice().forEach(function(k){if(!k.tide||k.hp<=0)return;k.flash=Math.max(0,(k.flash||0)-dt*5);k.startle=Math.max(0,(k.startle||0)-dt);
+    if(k.burn>0){k.burn=Math.max(0,k.burn-dt);if(damagePest(k,(k.burnRate||.2)*dt,k.x-20))return;}
+    if(k.boss){updateHighTideBoss(k,dt);return;}
+    if(k.flee>0){k.flee-=dt;k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt;k.y-=8*dt;return;}
+    var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
+    var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
+    k.cool=Math.max(0,k.cool-dt);
+    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){p.health=clamp01(p.health-.045);p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale());}k.cool=1.5;}return;}
+    if(d<14&&k.cool<=0){k.tell=k.windup=.65;k.vx=k.vy=0;}
+  });
+}
+function updateHighTide(dt){
+  if(!highTideMode()||coopGuest()||runIsPaused()||!runActive||rogueRun.ended||!Number.isFinite(dt)||dt<=0)return;
+  var s=rogueRun.survival,p=highTidePlant(),profile=highTideProfile();if(!s.started)return;
+  if(!p||p.health<=0){finishHighTide(false);return;}
+  for(var left=Math.min(dt,2);left>1e-8&&!rogueRun.ended;){
+    var step=Math.min(left,.05);left-=step;s.elapsed+=step;s.plantTime+=step;runElapsed=s.elapsed;
+    s.rest=Math.max(0,s.rest-step);s.calm=Math.max(0,s.calm-step);
+    var since=Math.max(0,s.elapsed-profile.grace),phase=since%HIGH_TIDE.period;s.cycle=Math.floor(since/HIGH_TIDE.period);
+    s.phase=s.rest>0?'rest':s.elapsed<profile.grace?'opening':phase>=HIGH_TIDE.period-HIGH_TIDE.surge?'surge':phase>=HIGH_TIDE.period-HIGH_TIDE.surge-HIGH_TIDE.warning?'warning':'rise';
+    if(s.elapsed>profile.grace&&s.rest<=0){var floor=s.base-highTideGate()+80;
+      // The guardian's arena remains playable. This ceiling depends only on the
+      // unlocked district, never on a player's location or claimed progress.
+      s.waterY=Math.min(s.waterY,Math.max(floor,s.waterY-step*(profile.speed+Math.min(240,since)*profile.acceleration)*(s.phase==='surge'?1.6:1)*(s.calm>0?.4:1)));
+    }
+    var actors=seedActors(),carers=actors.filter(highTideCarer),care=carers.reduce(function(sum,a){return sum+highTideCareRate(a);},0);
+    if(carers.length&&carers[0].member)p.carer=carers[0].member.id;
+    carers.forEach(function(a){if((a.member?a.member.classId:rogueRun.classId)!=='sligo')return;var c=sligoColony(a.member),b=sligoBody(c,c.active);if(b&&b.sligoMass<SLIGO_LIFE.startMass){sligoFeed(c,b,Math.min(step*.12,SLIGO_LIFE.startMass-b.sligoMass));a.p.sligoMass=b.sligoMass;}});
+    p.moisture=clamp01(p.moisture+step*(care*.18-.008));
+    p.health=clamp01(p.health+step*(care*.035-(p.moisture<=0?.008:0)));
+    if(p.health<=0){finishHighTide(false);return;}
+    // A watered motherplant grows while the team explores. Care replenishes
+    // water and health; holding Tend cannot bypass the guardian's growth gate.
+    var perks=plantPerks(p),growth=(1+.12*(perks.growth||0));
+    if(p.moisture>.05&&p.health>.05)s.height=Math.min(highTideGate(),s.height+step*HIGH_TIDE.growth*profile.growth*growth*(p.moisture<.2?.4:1));
+    highTideClaimBoons(actors,p);p.tideHeight=s.height;p.growth=.1+s.height/HIGH_TIDE.height*(G_TOP-.1);p.stalk=s.bosses===5;p.age=s.elapsed;p.pulse=Math.max(0,(p.pulse||0)-step);recordGardenPlant(p);
+    actors.forEach(function(a){a.v.shield=Math.max(0,a.v.shield-step);a.v.hurt=Math.max(0,a.v.hurt-step);
+      if(a.v.hp<=0){var helper=actors.find(function(b){var remote=b.member&&b.member.id!==coop.me,held=remote?b.p.tideTend&&performance.now()-b.member.last<500:seedHeld();return b.id!==a.id&&b.v.hp>0&&held&&b.v.shield<=0&&Math.abs(b.p.vx)<8&&Math.hypot(b.p.x-a.p.x,b.p.y-a.p.y)<22&&highTideHead(a)<s.waterY;});a.v.revive=helper?Math.min(3,a.v.revive+step):0;if(a.v.revive>=3){a.v.hp=50;a.v.shield=3;a.v.air=profile.breath;a.v.revive=0;a.p.st='free';a.p.anim='idle';}return;}
+      if(!Number.isFinite(a.v.air))a.v.air=profile.breath;
+      a.v.air=highTideHead(a)>=s.waterY?Math.max(0,a.v.air-step):Math.min(profile.breath,a.v.air+step*2);
+      if(a.v.air<=1e-8){drownHighTide(a);return;}
+      if(highTideNearPlant(a)&&p.moisture>.2&&a.v.hurt<=0)a.v.hp=Math.min(100,a.v.hp+step*(s.bossActive?1:5));
+      s.best=Math.max(s.best,Math.min(HIGH_TIDE.height,Math.max(0,s.base-a.p.y)));
+    });
+    if(actors.every(function(a){return a.v.hp<=0;})){finishHighTide(false);return;}
+    var winner=actors.find(highTideAtSummit);if(winner){finishHighTide(true,winner.id);return;}
+  }
 }
 function drownHighTide(a){
   a.v.hp=0;a.v.air=0;a.v.revive=0;a.p.vx=a.p.vy=0;a.p.st='rest';a.p.anim='rest';a.p.frame=0;
   if(a.member){a.member.braceUntil=a.member.tunUntil=0;a.member.reviveHeld=false;a.member.dodge=null;}
   if(!a.member||a.member.id===coop.me){task=holdWater=climb=warp=null;clearRunInput();P.st='rest';P.vx=P.vy=0;setAnim('rest');shake=Math.max(shake,2);}
 }
+
 function finishHighTide(won,ascender){
   if(rogueRun.ended||coopGuest())return;
   rogueRun.survival.escaped=won?(ascender||'solo'):'';
@@ -183,53 +192,14 @@ function finishHighTide(won,ascender){
   rogueRun.ended=true;rogueRun.won=runWon=!!won;rogueRun.choice=null;runFinishT=0;
   clearRunInput();finalizeRogueRun(!!won);saveGarden();if(won)socialTone('gift');showRunResult();
 }
+
 function finalizeHighTide(won){
   gardenPlots.forEach(recordGardenPlant);rogueRun.finalized=true;
   if(!window.MaxRunRecords)return;
-  var s=rogueRun.survival,saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'high-tide',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:!!won,plants:rogueRun.garden,world:1,wave:0,seconds:s.elapsed,plantSeconds:s.plantTime,ascent:s.best,goal:HIGH_TIDE.height});
+  var s=rogueRun.survival,saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'high-tide',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:!!won,plants:rogueRun.garden,world:1,wave:s.bosses,seconds:s.elapsed,plantSeconds:s.plantTime,ascent:s.best,goal:HIGH_TIDE.height});
   rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
 }
-function updateHighTide(dt){
-  if(!highTideMode()||coopGuest()||runIsPaused()||!runActive||!Number.isFinite(dt)||dt<=0)return;
-  var s=rogueRun.survival,profile=highTideProfile(),plant=highTidePlant();
-  if(!s.started)return;
-  if(!plant){finishHighTide(false);return;}
-  for(var left=Math.min(dt,2);left>1e-8&&!rogueRun.ended;){
-    var step=Math.min(left,.05);left-=step;
-    s.elapsed+=step;s.plantTime+=step;runElapsed=s.elapsed;s.jam=Math.max(0,(s.jam||0)-step);
-    var since=Math.max(0,s.elapsed-profile.grace),phase=since%HIGH_TIDE.period;
-    s.cycle=Math.floor(since/HIGH_TIDE.period);
-    s.phase=s.elapsed<profile.grace?'opening':phase>=HIGH_TIDE.period-HIGH_TIDE.surge?'surge':phase>=HIGH_TIDE.period-HIGH_TIDE.surge-HIGH_TIDE.warning?'warning':'rise';
-    s.calm=Math.max(0,s.calm-step);
-    if(s.elapsed>profile.grace)s.waterY-=step*(profile.speed+Math.min(120,since)*profile.acceleration)*(s.phase==='surge'?1.65:1)*(s.calm>0?.52:1);
-    var actors=seedActors(),carers=actors.filter(highTideCarer);
-    if(carers.length){
-      var jam=s.jam>0?.28:1;
-      s.height=Math.min(HIGH_TIDE.height,s.height+step*HIGH_TIDE.growth*profile.growth*highTideGrowthBonus()*jam*(1+Math.min(.24,(carers.length-1)*.12)));
-    }
-    highTideClaimBoons(actors,plant);
-    highTidePods().forEach(function(q){
-      if(s.dewMask&q.bit)return;
-      var taker=actors.find(function(a){return a.v.hp>0&&Math.hypot(a.p.x-q.x,a.p.y-q.y)<14&&highTideHead(a)<s.waterY;});
-      if(!taker)return;
-      s.dewMask|=q.bit;s.height=Math.min(HIGH_TIDE.height,s.height+18);s.calm=Math.max(s.calm,3);
-      taker.v.air=profile.breath;plant.pulse=1.5;
-    });
-    plant.tideHeight=s.height;plant.growth=.1+s.height/HIGH_TIDE.height*(G_TOP-.1);plant.stalk=s.height>=HIGH_TIDE.height;
-    plant.moisture=plant.health=1;plant.age=s.elapsed;plant.pulse=Math.max(0,(plant.pulse||0)-step);recordGardenPlant(plant);
-    actors.forEach(function(a){
-      if(a.v.hp<=0)return;
-      if(!Number.isFinite(a.v.air))a.v.air=profile.breath;
-      if(highTideHead(a)>=s.waterY)a.v.air=Math.max(0,a.v.air-step);
-      else a.v.air=Math.min(profile.breath,a.v.air+step*2.2);
-      if(a.v.air<=1e-8){drownHighTide(a);return;}
-      s.best=Math.max(s.best,Math.min(HIGH_TIDE.height,Math.max(0,s.base-a.p.y)));
-    });
-    s.zone=highTideZoneForHeight(Math.max(s.best,s.height));
-    if(s.waterY<=highTideSummit().y||actors.every(function(a){return a.v.hp<=0;})){finishHighTide(false);return;}
-    var winner=actors.find(highTideAtSummit);if(winner){finishHighTide(true,winner.id);return;}
-  }
-}
+
 function updateHighTideClimb(dt,inp){
   var c=climb;if(!c){P.st='free';return;}
   var p=gardenPlots.find(function(q){return q.id===c.plantId;});
@@ -243,6 +213,7 @@ function updateHighTideClimb(dt,inp){
   setAnim('climb');
   if(tending&&Math.random()<dt*12)parts.push({x:P.x,y:P.y-8,vx:P.face*4,vy:-12,l:.35,m:.35,c:'126,174,190'});
 }
+
 function placeHighTideMember(m){
   var s=rogueRun.survival,plant=highTidePlant();
   if(!s.started||!plant)return false;
@@ -255,34 +226,12 @@ function placeHighTideMember(m){
   if(y-18>=s.waterY){seedVital(m).hp=0;seedVital(m).air=0;m.avatar.st=m.avatar.anim='rest';}
   relocateSligoMember(m);return true;
 }
+
 function highTideText(str,x,y){
   if(!ready(runPixelFont))return;
   for(var i=0;i<str.length;i++){var n=str.charCodeAt(i)-32;if(n>=0&&n<64)ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,Math.round(x+i*6),Math.round(y),5,7);}
 }
-function drawHighTideWorld(t){
-  if(!highTideMode()||!runActive)return;
-  var s=rogueRun.survival;
-  if(s.started){
-    var prev=highTideRoutePoint(0);
-    for(var h=4;h<=s.height;h+=4){
-      var q=highTideRoutePoint(h),x0=Math.round(prev.x-camX),y0=Math.round(prev.y-camY),x1=Math.round(q.x-camX),y1=Math.round(q.y-camY);
-      ctx.fillStyle=h%16<4?'#8eb56f':'#536c50';
-      var steps=Math.max(1,Math.ceil(Math.max(Math.abs(x1-x0),Math.abs(y1-y0))));
-      for(var j=0;j<=steps;j++){var x=Math.round(x0+(x1-x0)*j/steps),y=Math.round(y0+(y1-y0)*j/steps);ctx.fillRect(x,y,1,1);}
-      if(h%24<4){ctx.fillStyle='#789c61';ctx.fillRect(x1+(h/24&1?1:-2),y1-1,2,1);}
-      prev=q;
-    }
-  }
-  highTideBoons().forEach(function(q){
-    if(s.boonMask&q.bit)return;var x=Math.round(q.x-camX),y=Math.round(q.y-camY-8),pulse=(Math.floor(t*5)&1);
-    ctx.globalCompositeOperation='lighter';disc(x,y,7+pulse,'rgba(215,227,119,.08)');ctx.globalCompositeOperation='source-over';
-    ctx.fillStyle='#d9e377';ctx.fillRect(x,y-3,1,7);ctx.fillRect(x-3,y,7,1);ctx.fillStyle='#f4edbd';ctx.fillRect(x,y,1,1);
-  });
-  highTidePods().forEach(function(q){if(s.dewMask&q.bit)return;var x=Math.round(q.x-camX),y=Math.round(q.y-camY-10);ctx.fillStyle='#b8e4dc';ctx.fillRect(x,y-3,1,2);ctx.fillRect(x-1,y-1,3,3);ctx.fillStyle='#639aa7';ctx.fillRect(x-1,y+2,3,1);});
-  var top=highTideSummit(),cx=Math.round(top.x-camX),cy=Math.round(top.y-camY-8);
-  ctx.fillStyle='#e0d5a0';ctx.fillRect(cx-4,cy+3,9,2);ctx.fillRect(cx-4,cy-1,2,5);ctx.fillRect(cx-1,cy-3,3,7);ctx.fillRect(cx+3,cy-1,2,5);
-  if(!s.started){ctx.fillStyle='#9fdbbf';ctx.fillRect(Math.round(s.root-camX)-4,Math.round(s.base-camY)-1,9,1);}
-}
+
 function drawHighTideWater(t){
   if(!highTideMode()||!runActive)return;
   var s=rogueRun.survival,y=Math.round(s.waterY-camY),start=Math.max(0,y);
@@ -292,21 +241,33 @@ function drawHighTideWater(t){
   ctx.fillStyle=s.phase==='surge'?'#b2d5cf':'#699fac';
   if(y>=0){ctx.fillRect(0,y,IW,1);for(var x=0;x<IW;x+=16){var xx=x+Math.floor(t*9)%16;ctx.fillRect(xx,y+2,5,1);}}
 }
+
+function drawHighTideWorld(t){
+  if(!highTideMode()||!runActive)return;
+  var s=rogueRun.survival,p=highTidePlant(),prev=highTideRoutePoint(0);
+  if(p){
+    ctx.fillStyle=p.moisture<.2?'#84734b':'#69894e';
+    for(var h=2;h<=s.height+2;h+=2){var q=highTideRoutePoint(Math.min(h,s.height)),steps=Math.max(1,Math.ceil(Math.hypot(q.x-prev.x,q.y-prev.y)));
+      for(var j=0;j<=steps;j++)ctx.fillRect(Math.round(prev.x+(q.x-prev.x)*j/steps-camX),Math.round(prev.y+(q.y-prev.y)*j/steps-camY),2,2);
+      if(h%20===0){ctx.fillStyle='#a1bb72';ctx.fillRect(Math.round(q.x-camX)+(h%40?-3:2),Math.round(q.y-camY),3,2);ctx.fillStyle=p.moisture<.2?'#84734b':'#69894e';}prev=q;
+    }
+    var heart=highTideHeart(),tip=highTideTip();
+    [heart,tip].forEach(function(q,i){var x=Math.round(q.x-camX),y=Math.round(q.y-camY);if(x<-35||x>IW+35||y<-40||y>IH+40)return;
+      drawGrowingFigmaPlant(Object.assign({},p,{kind:6,growth:1.2,tideVine:false,stalk:false}),x,y,t,24);
+      if(!i||Math.abs(heart.y-tip.y)>30){ctx.fillStyle='#17251f';ctx.fillRect(x-11,y+3,22,5);ctx.fillStyle='#79b8c8';ctx.fillRect(x-10,y+4,Math.round(p.moisture*20),1);ctx.fillStyle='#a5c77a';ctx.fillRect(x-10,y+6,Math.round(p.health*20),1);}
+    });
+  }else{var r=highTideHeart();ctx.fillStyle='#a5c77a';ctx.fillRect(Math.round(r.x-camX)-4,Math.round(r.y-camY)-1,9,1);}
+  highTideBoons().forEach(function(q){if(s.boonMask&q.bit)return;var x=Math.round(q.x-camX),y=Math.round(q.y-camY-8);ctx.fillStyle='#e0d692';ctx.fillRect(x-2,y-2,5,5);ctx.fillStyle='#5c6844';ctx.fillRect(x-1,y-1,3,3);ctx.fillStyle='#e0d692';ctx.fillRect(x,y-4-(Math.floor(t*2)&1),1,1);});
+  highTidePods().forEach(function(q){if(s.dewMask&q.bit)return;var x=Math.round(q.x-camX),y=Math.round(q.y-camY-8);ctx.fillStyle='#b5dfe4';ctx.fillRect(x,y-3,1,2);ctx.fillRect(x-1,y-1,3,3);ctx.fillStyle='#548f9f';ctx.fillRect(x-1,y+2,3,1);});
+  seedActors().forEach(function(a){if(a.v.hp>=100)return;var x=Math.round(a.p.x-camX)-9,y=Math.round(a.p.y-camY)-31;ctx.fillStyle='#152028';ctx.fillRect(x-1,y-1,20,3);ctx.fillStyle=a.v.hp>0?'#acbc7d':'#d99d6b';ctx.fillRect(x,y,Math.round(18*(a.v.hp>0?a.v.hp/100:a.v.revive/3)),1);});
+}
 function drawHighTideHud(){
   if(!highTideMode()||!runActive||rogueRun.ended)return;
-  var s=rogueRun.survival,v=seedVital(),profile=highTideProfile(),top=safeTopArt()+3;
+  var s=rogueRun.survival,p=highTidePlant(),v=seedVital(),y=safeTopArt()+3;
+  highTideText('HIGH TIDE  '+s.bosses+'/5',7,y);
   var cue=s.cycle+':'+s.phase;if(cue!==tideCue){if(s.phase==='warning')chime([220,277,330],.12,.045);if(s.phase==='surge')chime([165,220],.08,.035);tideCue=cue;}
-  var head=P.y-(rogueRun.classId==='sligo'?Math.max(3,sligoHeight(P)):18),gap=Math.round(s.waterY-head),zone=HIGH_TIDE_ZONES[Math.max(0,Math.min(4,s.zone||0))];
-  highTideText('HIGH TIDE  '+Math.round(s.height/HIGH_TIDE.height*100)+'%',7,top);
-  if(!s.started){highTideText('TEND TO PLANT',7,top+11);return;}
-  highTideText(Math.floor(s.elapsed/60)+':'+String(Math.floor(s.elapsed%60)).padStart(2,'0')+'  '+zone.name,7,top+10);
-  var line=v.hp<=0?'DROWNED - WATCH YOUR TEAM':s.jam>0?'PLANT JAMMED - CLEAR PEST':s.phase==='warning'?'SURGE IN '+Math.ceil(HIGH_TIDE.period-HIGH_TIDE.surge-(Math.max(0,s.elapsed-profile.grace)%HIGH_TIDE.period)):s.phase==='surge'?'SURGE - KEEP MOVING':s.calm>0?'DEW - TIDE SLOWED':s.phase==='opening'?'TIDE IN '+Math.ceil(profile.grace-s.elapsed):'WATER '+Math.max(0,gap)+'  BOONS '+((s.boonMask&1?1:0)+(s.boonMask&2?1:0)+(s.boonMask&4?1:0)+(s.boonMask&8?1:0)+(s.boonMask&16?1:0))+'/5';
-  if(line)highTideText(line,7,top+20);
-  var hint=P.st==='climb'?(seedHeld()?'RELEASE TO CLIMB':'HOLD TEND TO GROW'):'SIDE ROUTES = BOONS';
-  if(v.hp>0)highTideText(hint,7,IH-13);
-  var bx=IW-8,by=top+3,bh=Math.min(75,IH-55);
-  ctx.fillStyle='#1b3039';ctx.fillRect(bx-2,by-2,5,bh+4);ctx.fillStyle='#9fdbbf';ctx.fillRect(bx,by+bh-Math.round(bh*s.height/HIGH_TIDE.height),1,Math.round(bh*s.height/HIGH_TIDE.height));
-  var wh=Math.round(bh*clamp01((s.base-s.waterY)/HIGH_TIDE.height));ctx.fillStyle='#73afbd';ctx.fillRect(bx-1,by+bh-wh,3,1);
-  var ph=Math.round(bh*clamp01((s.base-P.y)/HIGH_TIDE.height));ctx.fillStyle='#efe1aa';ctx.fillRect(bx-2,by+bh-ph,5,1);
-  if(v.hp>0&&Number.isFinite(v.air)&&v.air<profile.breath-.02){var x=Math.round(P.x-camX)-9,y=Math.round(P.y-camY)-29;ctx.fillStyle='#152028';ctx.fillRect(x-1,y-1,20,4);ctx.fillStyle=v.air<1?'#d78a77':'#a8dce2';ctx.fillRect(x,y,Math.round(18*v.air/profile.breath),2);}
+  var hint=!s.started?'STELL FOR AA PLANTE':v.hp<=0?'NEDE':s.phase==='warning'?'FLO KJEM':s.phase==='surge'?'FLO':p&&p.moisture<.2?'MORPLANTA TRENG VATN':s.bosses===5?'TIL KRONA':s.bossActive?'FORSVAR MORPLANTA':'';
+  if(hint)highTideText(hint,7,y+10);
+  if(p){var x=IW-30;ctx.fillStyle='#14221f';ctx.fillRect(x-1,y,25,8);ctx.fillStyle='#a5c77a';ctx.fillRect(x,y+1,Math.round(p.health*23),2);ctx.fillStyle='#79b8c8';ctx.fillRect(x,y+5,Math.round(p.moisture*23),2);}
+  if(v.hp>0&&v.air<highTideProfile().breath-.05){var x=Math.round(P.x-camX)-9,py=Math.round(P.y-camY)-27;ctx.fillStyle='#152028';ctx.fillRect(x-1,py-1,20,3);ctx.fillStyle='#a8dce2';ctx.fillRect(x,py,Math.round(18*v.air/highTideProfile().breath),1);}
 }

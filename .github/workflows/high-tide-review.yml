@@ -1,0 +1,33 @@
+name: High Tide phone review
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths:
+      - 'high-tide*'
+      - 'index.html'
+      - 'review.html'
+      - 'assets/levels-v1/high-tide.png'
+      - 'scripts/check-high-tide-browser.cjs'
+      - '.github/workflows/high-tide-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  phone:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps webkit chromium
+      - run: node scripts/check-high-tide-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: high-tide-phone-review
+          path: browser-review/*.png
+          if-no-files-found: ignore
