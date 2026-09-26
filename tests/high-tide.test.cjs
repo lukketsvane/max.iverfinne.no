@@ -109,7 +109,7 @@ test('a Moon Moth drain is telegraphed and a direct hit interrupts it',()=>{
  const health=p.health;g.damagePest(k,1,k.x-20);assert.equal(k.healing,false);assert.equal(k.windup,0);assert.ok(k.exposed>0);g.updateHighTideEnemies(.1);assert.equal(p.health,health);
 });
 test('ordinary bomb projectiles damage and defeat a guardian through the live collision path',()=>{
- const g=setup().game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();const k=g.liveBoss();
+ const g=setup('herbalist').game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();const k=g.liveBoss();
  for(let i=0;i<60*30&&k.hp>0;i++){
   g.bombCool=Math.max(0,g.bombCool-1/60);
   if(!g.bombCool)g.throwBomb({kind:'krek',o:k},.7);

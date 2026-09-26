@@ -33,7 +33,7 @@ Five open characters and the hidden Sligo each own a gameplay role. There is no 
 
 | Character | Exclusive ability | Skill (tap Max / E) |
 | --- | --- | --- |
-| Mech | Owns the watering robot and robot upgrades | Dispatch: sends the rover (a quarter tank, 8 s) to the plant under attack; it floods the soil, staggers biters and mends the plant while it pours |
+| Mech | Plants stationary bombs with a two-second fuse; owns the watering robot and robot upgrades | Dispatch: sends the rover (a quarter tank, 8 s) to the plant under attack; it floods the soil, staggers biters and mends the plant while it pours |
 | Moss | Climbs living plants once they are at least half their maximum physical height | Pounce: a hop, or a dive from a stem, that slams pests on landing, up to double damage from 96 px or higher (6 s) |
 | Bulwark | Protects nearby plants and resists knockback | Brace: 65% guard to 64 px for 3 s, shoves pests, swallows warned roots (1 s each); steering, jumping or leaving the ground ends it (10 s) |
 | Herbalist | Stronger tending and nearby plant healing | Bloom: heals nearby plants by 49% of their missing health, waters them and revives the one plant that fell most recently (12 s) |
@@ -99,16 +99,22 @@ There are 20 gardens with six route families: terraces, canopy, crossings, ruins
 
 The run starts at the bottom of a silo and climbs out: gardens 1–10 are underground, in front of a dark cavern with a black lake and ruins on its far shore, and the surface comes at garden 11. Garden 1 is the **Seed Vault**, frozen and dark: glass tanks of plants, a great wheel of seed jars, an ice bridge over a frozen pool, and ladders up three floors to a lit door. Garden 2 is the **Railway Ruins**, built at Max's scale from the owner's railway scene and kit sheets: a mill with its wheel and a wooden pier to the west, the station, viaduct and lift tower in the middle, and stone ruins and mossy floating islands to the east. Climb the vine off the viaduct or the lift tower to its roof beam. The other gardens are generated from the run's seed or drawn in Figma.
 
-Each normal garden has three finite raids. The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped even though time pressure keeps increasing.
+Every garden has an amber guardian altar on dry soil near its entrance. Grow a living plant, explore for upgrades, and use Tend at the altar when ready. The guardian must fall before the exit plant opens. Victory awards a boon and seeds, restores some plant health and water, and cancels outstanding boss strikes. The team still has to physically climb its exit plant. Three optional preparation raids offer extra experience and a boon; defeating them alone does not clear the garden.
 
-Milestone bosses:
+Bosses telegraph attacks in amber and expose themselves in cyan for double damage. Later rematches add attacks and phase changes. Eight new native sprite designs join the four milestone bosses:
 
 | Garden | Boss |
 | --- | --- |
+| 1–4 | Sprout Sentinel, Dew Duke, Thorn Duelist, Spore Oracle |
 | 5 | Mossback |
+| 6–9 | Root Ram, Silk Weaver, Raincaller, Plague Oracle |
 | 10 | Bellkeeper |
+| 11–14 | Frostjaw, Rimehorn, Pale Weaver, White Thorn |
 | 15 | Moon Moth |
+| 16–19 | Kiln Beetle, Ash Oracle, Cinder Regent, Sunroot |
 | 20 | Hollow Crown |
+
+The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech's bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Charging preserves movement; other classes retain their aimed throws.
 
 Later specialist enemies include seed thieves, spore casters, shield beetles, healing moths, thorn casters, dew leeches and rammers.
 

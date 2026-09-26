@@ -45,27 +45,23 @@ test('the clock starts before planting and keeps rising across stages and boon c
   g.grantRogueXP(4);g.updateRunCompetition(99);assert.equal(g.runElapsed,111);resolve(g);g.updateRunCompetition(1);assert.equal(g.runElapsed,112);
   g.runElapsed=3600;const late=g.raidPressure();g.updateRunCompetition(1);assert.ok(g.raidPressure()>late,'late runs keep getting harder');
 });
-test('twenty stages contain three finite encounters each and only the final boss ends in victory',()=>{
-  const {game:g}=fresh();let bosses=0,encounters=0;
+test('all twenty gardens require a defeated guardian and only the Crown wins the run',()=>{
+  const {game:g}=fresh();let bosses=0;
   for(let stage=1;stage<=20;stage++){
     if(stage>1)g.enterLevel(stage);
-    g.P.st='free';g.P.grounded=true;g.P.y=g.surfaceY(g.P.x);
-    g.gardenPlots=[plot({x:g.P.x,stalk:true}),plot({x:g.P.x+20})];g.saveGarden();
-    assert.equal(g.requestClimb(g.gardenPlots[0]),false,'a tall plant cannot skip the encounter');
-    for(let wave=1;wave<=3;wave++){
-      g.gardenRaidT=0;g.updateGardenFun(.01);encounters++;
-      assert.equal(g.gardenWave,wave);const total=g.rogueRun.raidTotal;let spawned=0;
-      for(let tick=0;tick<1000&&g.gardenRaidActive&&!g.rogueRun.ended;tick++){
-        g.updateGardenFun(.1);
-        for(const k of [...g.floatKrek]){spawned++;if(k.boss){bosses++;assert.ok([5,10,15,20].includes(stage));assert.equal(wave,3);assert.equal(k.finalBoss,stage===20);}g.damagePest(k,10000,k.x-20);}
-        resolve(g);
-      }
-      if(!g.rogueRun.ended)assert.equal(spawned,total);
-      assert.equal(g.rogueRun.ended,stage===20&&wave===3);
-    }
-    if(stage<20)assert.equal(g.rogueRun.clearedWorld,stage);
+    const e=g.bossEvent;
+    Object.assign(g.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});
+    g.gardenPlots=[plot({id:stage,x:e.x-24,stalk:true}),plot({id:stage+100,x:e.x+20})];
+    g.levelCleared();assert.notEqual(g.rogueRun.clearedWorld,stage);
+    assert.equal(g.requestClimb(g.gardenPlots[0]),false);
+    assert.ok(g.interactBossEvent());const boss=g.liveBoss();bosses++;
+    assert.equal(boss.guardianStage,stage);assert.equal(boss.finalBoss,stage===20);
+    g.interactBossEvent();assert.equal(g.floatKrek.filter(k=>k.boss).length,1);
+    g.damagePest(boss,10000,boss.x);resolve(g);
+    assert.equal(g.rogueRun.ended,stage===20);
+    if(stage<20){assert.equal(g.rogueRun.clearedWorld,stage);assert.ok(g.gardenPlots.some(p=>p.stalk));}
   }
-  assert.equal(encounters,60);assert.equal(bosses,4);assert.equal(g.runWon,true);assert.equal(g.rogueMeta.wins,1);
+  assert.equal(bosses,20);assert.equal(g.runWon,true);assert.equal(g.rogueMeta.wins,1);
   g.enterLevel(21);assert.equal(g.rogueRun.world,20);
 });
 test('enemy roles unlock by stage and thieves visibly wind up, steal, and return their seed when defeated',()=>{
@@ -178,7 +174,7 @@ test('one steering thumb can perform two distinct upward strokes without lifting
   assert.equal(g.dodgeBuf,0,'a returned jumping thumb cannot become a flick dodge');assert.equal(g.gardenPlots.length,0);
 });
 test('tapping an incoming spore fires immediately without steering Max or targeting the plant',()=>{
-  const h=fresh(),g=h.game;const p=plot({x:24});g.gardenPlots=[p];
+  const h=fresh(),g=h.game;g.resetRogueRun('test',{classId:'herbalist'});const p=plot({x:24});g.gardenPlots=[p];
   g.addRunHazard('spore',24,15,1.1,1,58,g.surfaceY(24)-24);
   const point=g.hazardPosition(g.runHazards[0]),x=(point.x-g.camX)*960/g.IW,y=(point.y-g.camY)*540/g.IH,before=g.P.x;
   h.pointer('pointerdown',x,y);h.advance(60);h.pointer('pointerup',x,y);
@@ -187,7 +183,7 @@ test('tapping an incoming spore fires immediately without steering Max or target
 });
 test('aimed bombs intercept moving spores at 30, 60 and 120 Hz and turn them into plant care',()=>{
   for(const hz of [30,60,120]){
-    const {game:g}=fresh();const p=plot({x:24,health:.6,moisture:.2});g.gardenPlots=[p];
+    const {game:g}=fresh();g.resetRogueRun('test',{classId:'herbalist'});const p=plot({x:24,health:.6,moisture:.2});g.gardenPlots=[p];
     g.addRunHazard('spore',24,15,1.1,1,58,g.surfaceY(24)-24);
     assert.ok(g.throwAuto());
     for(let i=0;i<hz&&g.runHazards.length;i++){g.updateRunHazards(1/hz);g.updateBombs(1/hz);}

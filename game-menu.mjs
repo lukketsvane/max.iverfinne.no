@@ -713,12 +713,12 @@ function help() {
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
     ['SKILL', 'Tap Max. Mech sends the rover to the plant under attack. Moss pounces — harder from higher. Bulwark braces until he moves. Herbalist blooms and revives a plant that just fell.' + (eggs.has('sligo') ? ' Sligo curls into a tun until you jump.' : '')],
     ['MOSS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
-    ['MECH', 'Only Mech owns watering robots. Any nearby teammate can tap a Mech robot to refill it.'],
-    ['EXPLORE', 'Choose one shrine per stage. Down starts its trial. Time strengthens enemies. Defeat the Hollow Crown in stage 20.'],
+    ['MECH', 'Mech places bombs at his feet. They stay put and explode after two seconds: plant, retreat, bait pests into the blast. Hold to charge a bigger blast while moving. Only Mech owns watering robots; any nearby teammate can refill one.'],
+    ['EXPLORE', 'Climb for seeds and upgrades; choose one shrine trial per garden. Grow a plant, then use Grow at the amber guardian altar when ready. Defeat every garden’s boss, choose a boon and climb your exit plant. Time strengthens enemies. The Hollow Crown awaits in garden 20.'],
     ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J or B to aim with the move keys, release to throw · K / X dodge · E skill · R refill · L lamp · 1–3 upgrade · Esc menu'],
     ['MOUSE', 'Click the game once to lock the mouse inside it; Esc frees it and opens the menu. The bright cross is your aim and the faint arc shows the throw. Click to throw there, hold to charge a wider, harder bomb. Right click dodges toward the cross, middle click uses the skill. Boon cards can be clicked, or press 1, 2 or 3.'],
     ['CONTROLLER', 'Stick moves; push farther to run. A light stick tilt aims; full aim reach needs only three-quarter tilt. A jump · B / Y grow · stick click dodge · hold X or ZR to aim with the right stick (or the left on a single Joy-Con) and release to throw · LB skill · LT lamp · RB run · − refill · + menu. Menus: stick / D-pad navigate, hold to repeat, A confirm, B back. When a boon is offered, flick the right stick to a card and press A.'],
-    ['THROWS', 'Every throw needs a moment to reload, shown as a bar over Max. A charged throw reloads longer. Two bombs in the air at most.'],
+    ['BOMBS', 'Every bomb needs a moment to reload, shown as a bar over Max. A charged bomb reloads longer. Two active bombs per player. Mech plants bombs; the other characters throw them.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
   card.append(button('Back', settings, 'subtle'));

@@ -8,6 +8,7 @@ const ON_DEMAND = Object.freeze(['sligo']);
 const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
 const RATS = Object.freeze(['common', 'black', 'albino', 'plague']);
 const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bellkeeper', 'moon-moth': '15-moon-moth' });
+const GUARDIANS = Object.freeze(['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','frostjaw','kiln-beetle']);
 
 export function createNativeArt() {
   const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null);
@@ -17,7 +18,7 @@ export function createNativeArt() {
   function reset() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
-  function milestone(enemy) { return !!enemy.boss && Object.hasOwn(MILESTONES, enemy.bossId); }
+  function milestone(enemy) { return !!enemy.boss && (Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
   function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
   function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function clockFor(enemy, time) {
@@ -104,7 +105,8 @@ export function createNativeArt() {
     const files = SKINS.slice(1).filter(id => !ON_DEMAND.includes(id)).map(id => [id, `assets/max-skins-v1/${id}/atlas.json`])
       .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
-      .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]));
+      .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
+      .concat(GUARDIANS.map(id => [id, `assets/garden-guardians-v1/native/${id}.json`]));
     loading = Promise.allSettled(files.map(async ([id, url]) => {
       const atlas = await loadAtlas(url);
       atlases[id] = atlas;

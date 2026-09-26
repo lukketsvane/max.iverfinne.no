@@ -62,6 +62,7 @@ for (const [pack, ids, sheets] of [
 mkdirSync(join(output, 'assets/max-skins-v1/sligo'), { recursive: true });
 for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png', 'specials.json', 'brood.png', 'brood.json']) copyFileSync(join(root, 'assets/max-skins-v1/sligo', file), join(output, 'assets/max-skins-v1/sligo', file));
 const milestoneDirectory = join(output, 'assets/boss-milestones-v1/native');
+cpSync(join(root, 'assets/garden-guardians-v1/native'), join(output, 'assets/garden-guardians-v1/native'), { recursive: true });
 mkdirSync(milestoneDirectory, { recursive: true });
 for (const id of ['05-mossback', '10-bellkeeper', '15-moon-moth']) {
   for (const extension of ['json', 'png']) {

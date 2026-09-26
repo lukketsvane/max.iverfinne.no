@@ -1,0 +1,38 @@
+{
+  "schema": "max-native-pack/v1",
+  "id": "garden-guardians-v1",
+  "assets": [
+    {
+      "id": "sprout-sentinel",
+      "manifest": "native/sprout-sentinel.json"
+    },
+    {
+      "id": "dew-duke",
+      "manifest": "native/dew-duke.json"
+    },
+    {
+      "id": "thorn-duelist",
+      "manifest": "native/thorn-duelist.json"
+    },
+    {
+      "id": "spore-oracle",
+      "manifest": "native/spore-oracle.json"
+    },
+    {
+      "id": "root-ram",
+      "manifest": "native/root-ram.json"
+    },
+    {
+      "id": "silk-weaver",
+      "manifest": "native/silk-weaver.json"
+    },
+    {
+      "id": "frostjaw",
+      "manifest": "native/frostjaw.json"
+    },
+    {
+      "id": "kiln-beetle",
+      "manifest": "native/kiln-beetle.json"
+    }
+  ]
+}

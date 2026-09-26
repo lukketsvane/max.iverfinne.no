@@ -137,7 +137,7 @@ test('each milestone has a distinct warned attack, a real damage opportunity and
     assert.equal(g.gardenPlots[0].health,hp);
     for(let i=0;i<240&&boss.exposed<=0;i++)g.updateKrek(.01);
     assert.ok(boss.exposed>=1);const before=boss.hp;g.damagePest(boss,1,boss.x);assert.equal(boss.hp,before-2);
-    g.damagePest(boss,10000,boss.x);assert.equal(g.rogueRun.ended,false);assert.equal(g.runWon,false);assert.equal(g.rogueRun.bossDefeated,false);
+    g.damagePest(boss,10000,boss.x);assert.equal(g.rogueRun.ended,false);assert.equal(g.runWon,false);assert.equal(g.rogueRun.bossDefeated,true);assert.equal(g.rogueRun.clearedWorld,stage);
   }
 });
 
@@ -198,10 +198,10 @@ test('rain dodge cannot heal a ground plant from a high safe ledge',()=>{
   assert.equal(plant.health,.5);assert.equal(plant.moisture,.2);
 });
 
-test('bosses are long fights: far more health, reinforcements every fourth attack and an enrage after a minute', () => {
+test('milestone bosses retain reinforcements and enrage while health supports a fight every garden', () => {
   const { game: g } = fresh(10); g.gardenPlots = [plot({ x: g.P.x })];
   const boss = g.makeStageBoss(10); g.floatKrek = [boss];
-  assert.ok(boss.maxHp >= 56, String(boss.maxHp));
+  assert.ok(boss.maxHp >= 30 && boss.maxHp < 56, String(boss.maxHp));
   const crown = g.makeHollowCrown(); assert.ok(crown.maxHp >= 95, String(crown.maxHp));
   boss.life = 61; boss.windup = 0; boss.attackT = .01; g.updateKrek(.02);
   assert.ok(boss.cool <= 2.2 * .6 + 1e-9, 'an enraged boss comes back faster: ' + boss.cool);

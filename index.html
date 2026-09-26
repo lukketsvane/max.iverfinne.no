@@ -419,7 +419,7 @@ window.addEventListener('keydown', function (e) {
   if (runIsPaused()) return;
   if (k === 'ArrowLeft' || k === 'a' || k === 'A') heldL = true;
   else if (k === 'ArrowRight' || k === 'd' || k === 'D') heldR = true;
-  else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!heldUp && !charge) doJump(true); heldUp = true; }
+  else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!heldUp && (!charge||ownClass().id==='mech')) doJump(true); heldUp = true; }
   else if ((k === 'r' || k === 'R') && !e.repeat) refillCompanion();
   else if (k === 'Shift') heldRun = true;
   else if (k === 'ArrowDown' || k === 's' || k === 'S') { heldDown = true; if (!e.repeat) gardenPress = true; }
@@ -678,7 +678,7 @@ function drawMouseReticle(){
   if(mouse.locked&&(!runActive||rogueRun.ended||runIsPaused())&&document.exitPointerLock)document.exitPointerLock();
   if(!mouse.seen||!runActive||rogueRun.ended||runIsPaused()||performance.now()-mouse.t>8000&&!(charge&&charge.src==='mouse'))return false;
   var w=screenToWorld(mouse.x,mouse.y),rx=Math.round(w.x-camX),ry=Math.round(w.y-camY);
-  if(!charge){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
+  if(!charge&&ownClass().id!=='mech'){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
   ctx.fillStyle='rgba(4,8,10,.85)';ctx.fillRect(rx-4,ry-1,9,3);ctx.fillRect(rx-1,ry-4,3,9);
   ctx.fillStyle=bombCool>0?'#6d7690':'#f2df91';ctx.fillRect(rx-3,ry,3,1);ctx.fillRect(rx+1,ry,3,1);ctx.fillRect(rx,ry-3,1,3);ctx.fillRect(rx,ry+1,1,3);
   return true;
@@ -710,7 +710,7 @@ function readInput() {
     }
   }
   if(axis===0&&padAx){axis=padAx<0?-1:1;top=heldRun?RUN_V:WALK_V+(RUN_V-WALK_V)*Math.max(0,Math.min(1,(Math.abs(padAx)-.55)/.35));}
-  if(charge&&charge.lock)axis=0;
+  if(charge&&charge.lock&&ownClass().id!=='mech')axis=0;
   return { axis: axis, top: top };
 }
 
@@ -3297,7 +3297,7 @@ function drawBossBar(dt){
   }
   if(bossSeen.id!==k.bossId){bossSeen={id:k.bossId,t:2.6,ghost:1,x:k.x,y:k.y};shake=Math.min(3,shake+2.5);chime([98,131,98,147,196],.18,.07);}
   bossSeen.x=k.x;bossSeen.y=k.y;
-  var f=Math.max(0,Math.min(1,k.hp/k.maxHp)),name=BOSS_NAMES[k.bossId]||'BOSS';
+  var f=Math.max(0,Math.min(1,k.hp/k.maxHp)),name=k.bossName||BOSS_NAMES[k.bossId]||'BOSS';
   bossSeen.t=Math.max(0,bossSeen.t-dt);bossSeen.ghost=Math.max(f,bossSeen.ghost-dt*.4);
   var w=Math.min(IW-16,140),x=Math.round((IW-w)/2),y=bossBarY();
   ctx.fillStyle='rgba(4,8,10,.8)';ctx.fillRect(x-1,y-1,w+2,5);
@@ -4133,10 +4133,10 @@ function makeStalk(p){
   chime([523,659,784,1047],.09,.05);
   gardenAction(120,20,'BEANSTALK');saveGarden();
 }
-/* surviving every raid of a world is another way up: the best plant shoots */
+/* A defeated guardian, not elapsed raids or a tall plant, opens the exit. */
 function levelCleared(){
   if(singleSeedMode())return;
-  var w=worldLevel();if(rogueRun.clearedWorld===w||liveBoss())return;
+  var w=worldLevel();if(rogueRun.clearedWorld===w||liveBoss()||!rogueRun.bossDefeated)return;
   if(w===RUN_STAGES){if(rogueRun.bossDefeated)winRogueRun();return;}
   rogueRun.clearedWorld=w;gardenRaidActive=false;
   var best=null,bs=-1;
@@ -4496,6 +4496,9 @@ function updateGardenFun(dt){
   if((gardenPlots.length>0||rogueRun.plantedThisWorld)&&alive===0){endRogueRun();return;}
   if(rogueRun.clearedWorld===worldLevel())return;
 
+  if(bossEvent&&bossEvent.status==='active')return;
+  if(!gardenRaidActive&&gardenWave>=FINAL_WAVE)return;
+
   if(!gardenRaidActive){
     if(active<1){
       gardenRaidT=Math.min(gardenRaidT,openingRaidT());roundLastSecond=-1;
@@ -4537,8 +4540,7 @@ function updateGardenFun(dt){
   if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent&&floatKrek.length<MAX_ACTIVE_ENEMIES){
     var bossWave=gardenWave===FINAL_WAVE,elite=bossWave&&!gardenBossSpawned;
     var index=rogueRun.raidTotal-rogueRun.raidRemaining,side=(Math.floor(index/2)+worldLevel()+gardenWave)%2?1:-1;
-    var k=elite?(worldLevel()===RUN_STAGES?makeHollowCrown():makeStageBoss(worldLevel())):null;
-    if(!k)k=makeKrek(side,elite,waveEnemyKind(index));k.raid=true;floatKrek.push(k);
+    var k=makeKrek(side,elite,waveEnemyKind(index));k.raid=true;floatKrek.push(k);
     rogueRun.raidRemaining--;raidAlive++;
     if(elite)gardenBossSpawned=true;
     gardenRaidSpawn=runRaidInterval();
@@ -4550,13 +4552,12 @@ function updateGardenFun(dt){
     var luck=rogueRun.perks.luck||0;
     var reward=1+Math.floor(gardenWave/3)+(perfect?1:0)+Math.min(1,luck);
     if(perfect){for(var pi=0;pi<gardenPlots.length;pi++){if(!gardenPlots[pi].dead){gardenPlots[pi].pulse=1.7;gardenPlots[pi].health=clamp01(gardenPlots[pi].health+.08);}}}
-    if(gardenWave>=FINAL_WAVE)rogueMeta.petals=(rogueMeta.petals|0)+1;
     spawnLooseSeeds(P.x,P.y-10,reward);
     grantRogueXP(runReward(2+(perfect?1:0)));
     var speed=Math.max(0,70-Math.floor(runElapsed/15));
     gardenAction(130+gardenWave*22+(perfect?180:0)+speed,30+(perfect?12:0),perfect?'PERFECT':'CLEAR');
-    if(gardenWave>=FINAL_WAVE){grantRogueLevel();krekSpawnT=Math.min(krekSpawnT,runPatrolInterval()/3);levelCleared();return;}
-    gardenRaidT=Math.max(4.5,6.5-raidPressure()*.12);
+    if(gardenWave>=FINAL_WAVE){grantRogueLevel();gardenRaidT=9999;nudgeGardenHint('PREPARED · TEND THE ALTAR WHEN READY');return;}
+    gardenRaidT=Math.max(12,22-raidPressure()*.3);
     saveGarden();updateGardenHud();
   }
 }
@@ -4606,13 +4607,14 @@ function burstKrek(k){
   if(k.rootHazard)runHazards=runHazards.filter(function(h){return h.id!==k.rootHazard||h.tell<=0;});
   if(k.tide&&!k.tideBoss&&seedActors().some(function(a){return (a.member?a.member.classId:rogueRun.classId)==='sligo';}))spawnSligoMeat(k.x,k.y,1);
   if(k.tideBoss&&highTideMode()){highTideBossDefeated(k);return;}
-  if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
+  if(k.boss&&k.finalBoss!==false){gardenBossDefeated(k);rogueRun.bossDefeated=true;winRogueRun();return;}
   if(k.scout){puff(k.x,k.y,6,.5);return;}
   if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen,true);
   gardenStats.defended=(gardenStats.defended||0)+1;var mulch=rogueRun.perks.mulch||0;if(mulch)gardenPlots.forEach(function(p){if(!p.dead&&(p.tideVine?highTideStemDistance(k.x,k.y):Math.abs(p.x-k.x))<48+mulch*8){p.health=clamp01(p.health+.025*mulch);p.moisture=clamp01(p.moisture+.018*mulch);p.pulse=Math.max(p.pulse,.5);}});
   var bonus=k&&(k.queen||k.boss)?7:(k&&k.elite?3:((gardenStats.defended%3)===0?1:0));
   if(bonus){spawnLooseSeeds(k.x,k.y,bonus);nudgeGardenHint((k&&k.elite?'ELITE DEFEATED':'PEST DEFEATED')+' · SEED DROP');}
   grantRogueXP(runReward(k&&(k.queen||k.boss)?7:(k&&k.elite?3:1)));if(k&&k.boss)grantRogueLevel();gardenAction(k&&k.queen?520:(k&&k.elite?180:55),k&&k.queen?65:(k&&k.elite?30:10),k&&k.queen?'DRONNING':(k&&k.elite?'STORKREK':'FORSVAR'));
+  if(k.boss)gardenBossDefeated(k);
   setTimeout(updateGardenHud,0);
   if(isRat(k)){puff(k.x,k.y+RAT_FOOT,5,.35);saveGarden();return;}
   var pal=['#202221','#4c5340','#757b59','#b4b58a','#d8d4a2'];for(var i=0;i<14;i++){var a=Math.random()*Math.PI*2,sp=18+Math.random()*38;feathers.push({x:k.x,y:k.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-10,c:pal[i%pal.length],life:2+Math.random()*2,ph:Math.random()*6.28,big:false});}booms.push({x:k.x,y:k.y,t:0,poof:true,big:false});
@@ -4634,7 +4636,7 @@ function updateKrek(dt){
   for(var i=floatKrek.length-1;i>=0;i--){
     var k=floatKrek[i],pressure=raidPressure();k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);k.lampCooldown=Math.max(0,(k.lampCooldown||0)-dt);k.hitStaggerCooldown=Math.max(0,(k.hitStaggerCooldown||0)-dt);k.startle=Math.max(0,(k.startle||0)-dt);
     if(k.glue>0)k.glue-=dt;
-    if(k.burn>0){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate*runPlayerPower()/runDurabilityScale();if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
+    if(k.burn>0){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate*runPlayerPower()/runDurabilityScale(k);if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
     if(k.flee>0&&!k.boss&&!isRat(k)){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
     var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
     if(lamp){k.lampCooldown=7;staggerKrek(k,.85);k.fleeFromX=lamp.p.x;continue;}
@@ -5179,6 +5181,7 @@ var bombCoolMax=0,queuedThrow=null;
 function throwCooldown(power){return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
 function throwBomb(target,power) {                         // a bird {kind, o} or a spot {x, y}
   if(seedDown(coopActor))return false;
+  if(ownClass().id==='mech')target={x:P.x,y:P.y-2};
   power=Math.max(0,Math.min(1,+power||0));
   if (runIsPaused() || !sligoCanThrow() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);}).length >= 2) return false;
   if(coopGuest()){
@@ -5200,6 +5203,13 @@ function throwBomb(target,power) {                         // a bird {kind, o} o
 function launchBomb() {
   var bodyHeight=ownClass().skill==='tun'?sligoHeight(P):24;
   if(!sligoShed())return false;
+  if(ownClass().id==='mech'){
+    // Place, don't lob. A platform is a real support; dropping in mid-air
+    // releases a vertical charge that can land without a contact detonation.
+    var fuse=2,placed=!!P.grounded&&!P.wet;
+    bombs.push({planted:true,sligo:false,owner:coop?(coopActor?coopActor.id:coop.me):'',perks:Object.assign({},rogueRun.perks,{planted:true,sligo:false,emberStacks:ownTraits().embers,charge:P.aimPower||0,high:highGround(P)}),x:P.x,y:P.y-2,vx:0,vy:0,st:placed?'planted':'drop',supportY:placed?P.y:0,fuse:fuse,fuseMax:fuse,t:0,hop:0,spin:0});
+    sfx('swish',0);return true;
+  }
   var t = P.aim, x0 = P.x + P.face * (ownClass().skill==='tun'?Math.max(3,bodyHeight*.42):10), y0 = P.y - bodyHeight*.5, tx, ty, vx = 0, vy = 0;
   if (t.o) {
     tx = t.o.x; ty = t.o.y - (t.kind === 'crow' || t.kind === 'tit' ? 5 : (t.kind==='krek'?0:8));
@@ -5244,6 +5254,7 @@ function aimAssist(dx,dy){
 }
 function mouseSnap(wx,wy){var s=sporeAt(wx,wy,12);if(s)return sporeAim(s);var k=krekAt(wx,wy,14);if(k)return {kind:'krek',o:k};return birdAt(wx,wy);}
 function chargePoint(){
+  if(ownClass().id==='mech')return {x:P.x,y:P.y-2};
   if(charge.mx!=null){var m=mouseSnap(charge.mx,charge.my);return m?targetPoint(m):{x:charge.mx,y:charge.my};}
   var d=Math.hypot(charge.ax,charge.ay);
   if(d>(charge.src==='pad'?.1:.3)){var a=aimAssist(charge.ax,charge.ay);if(a)return targetPoint(a);var r=40+120*Math.min(1,d);return {x:P.x+charge.ax/d*r,y:P.y-12+charge.ay/d*r};}
@@ -5267,6 +5278,11 @@ function drawCharge(){
   if(runIsPaused())return;
   var bx=Math.round(P.x-camX)-5,by=Math.round(P.y-camY)-30,cool=bombCool>0&&bombCoolMax>0;
   if(charge){
+    if(ownClass().id==='mech'){
+      var r=BLAST_R+(rogueRun.perks.blast||0)*5+Math.round(charge.t*8),x=Math.round(P.x-camX),y=Math.round(P.y-camY);
+      ctx.fillStyle='#d5ad63';ctx.fillRect(x-r,y-1,r*2,1);ctx.fillRect(x-r,y-4,1,3);ctx.fillRect(x+r,y-4,1,3);
+      ctx.fillRect(bx,by,Math.round(10*charge.t),1);return;
+    }
     var p=chargePoint(),x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,p.x,p.y,0,0),k=charge.t;
     ctx.fillStyle=cool?'#6d7690':k>=1?'#f2df91':'#cfc6a8';
     for(var t=.05;t<1.1;t+=.05){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;if(((t*20)|0)%2)ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-p.x,y-p.y)<4)break;}
@@ -5302,7 +5318,16 @@ function stepBombs(dt) {
   for (var i = bombs.length - 1; i >= 0; i--) {
     var b = bombs[i], w;
     b.t += dt; b.fuse -= dt;
-    if (b.st === 'fly') {
+    if(b.planted){
+      if(b.st==='drop'){
+        var oldY=b.y;b.vy+=BOMB_G*dt;b.y+=b.vy*dt;
+        var landing=window.MaxStageLayout.landing(stageLayout(),b.x,oldY+2,b.x,b.y+2);
+        var floor=landing?landing.y:surfaceY(b.x);
+        if(b.y+2>=floor){b.y=floor-2;b.supportY=floor;b.st='planted';b.vy=0;}
+      }
+      w=waterAt(b.x);if(w&&b.y>=w.level-2){b.st='water';b.y=w.level-1;}
+      // Neither enemy contact nor another blast shortens a planted fuse.
+    } else if (b.st === 'fly') {
       b.vy += BOMB_G * dt; b.x += b.vx * dt; b.y += b.vy * dt; b.spin += dt * 16;
       if (b.t > 0.06 && bombHitsBird(b.x, b.y)) { explode(b.x, b.y, false,b.perks||(b.sligo?{sligo:true}:undefined)); bombs.splice(i, 1); continue; }
       w = waterAt(b.x);
@@ -5503,6 +5528,13 @@ function drawScorches() {
 function drawBombs(t) {
   for (var i = 0; i < bombs.length; i++) {
     var b = bombs[i], sx = Math.round(b.x - camX), sy = Math.round(b.y - camY);
+    if(b.planted){
+      var r=BLAST_R+(b.perks&&b.perks.blast||0)*5+Math.round((b.perks&&b.perks.charge||0)*8);
+      ctx.globalAlpha=b.fuse<.65?.8:.35;ctx.fillStyle='#d5ad63';
+      for(var tick=-r;tick<=r;tick+=4)ctx.fillRect(sx+tick,sy+1,2,1);
+      ctx.fillRect(sx-r,sy-2,1,3);ctx.fillRect(sx+r,sy-2,1,3);ctx.globalAlpha=1;
+      rect(sx-4,sy-10,9,2,'#1d2b34');rect(sx-4,sy-10,Math.ceil(9*Math.max(0,b.fuse)/(b.fuseMax||2)),2,b.fuse<.65?'#f1cd79':'#ab7833');
+    }
     if(b.sligo){
       var part=SLIGO_FX.parts[Math.floor(b.t*9)%SLIGO_FX.parts.length];
       if(!sligoFxFrame(part,sx,sy+4)){rect(sx-2,sy-3,5,5,'#8f263a');rect(sx-1,sy-3,2,2,'#dc7470');}

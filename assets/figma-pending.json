@@ -307,21 +307,21 @@
    "sha1": "cf53fb151a06f55a9cc08985c9eb976f051f94f1",
    "width": 9,
    "height": 9,
-   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/boon-symbols-v1/splinters.png",
    "sha1": "07d819e090ae457b25628a6059e362525b1ddeed",
    "width": 9,
    "height": 9,
-   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/boon-symbols-v1/raincoat.png",
    "sha1": "a1d5a26f880e915ac254a55955bad895e3055072",
    "width": 9,
    "height": 9,
-   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/levels-v1/high-tide.png",
@@ -329,6 +329,62 @@
    "width": 628,
    "height": 1614,
    "note": "Owner's complete five-garden composition; scripts/build-high-tide.py. Figma desktop MCP unavailable."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/sprout-sentinel.png",
+   "sha1": "a66133a58b3ddb3b8536a2ab705688d5c2d7f8f3",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/dew-duke.png",
+   "sha1": "0e583e359fe2d8ccb1c23cf4779d43b12fc8c72c",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/thorn-duelist.png",
+   "sha1": "87f0ad3a68b70d1d07faa6ce0ea2d3edb5cf430f",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/spore-oracle.png",
+   "sha1": "a19114a252ac6582ba0a8ccbb3f52de5813f0301",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/root-ram.png",
+   "sha1": "3ee6c7c93c5833fb3f91588379803b94cf4778a6",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/silk-weaver.png",
+   "sha1": "b181334dc5df6b47a4a89851a3a2bd1d1e4347f6",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/frostjaw.png",
+   "sha1": "72da072eff9f1c50413bf3d46771c4c495da9839",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+  },
+  {
+   "path": "assets/garden-guardians-v1/native/kiln-beetle.png",
+   "sha1": "04aaba857397cc0564779a37173a0cd1d44f1bc8",
+   "width": 256,
+   "height": 256,
+   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
   }
  ]
 }

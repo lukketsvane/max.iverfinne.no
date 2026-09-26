@@ -228,10 +228,11 @@ function coopCapture(){
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
     secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),polgeStands:polgeStands.map(coopPlain),
     difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
-    expedition:runExpedition?coopPlain(runExpedition):null,
+    expedition:runExpedition?coopPlain(runExpedition):null,bossEvent:bossEvent?coopPlain(bossEvent):null,
+    raid:{active:gardenRaidActive,timer:gardenRaidT,remaining:rogueRun.raidRemaining||0,total:rogueRun.raidTotal||0,threat:rogueRun.raidThreat||0,grace:gardenRaidGrace,spawn:gardenRaidSpawn,bossSpawned:gardenBossSpawned},
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
     plants:gardenPlots.map(coopPlain),garden:rogueRun.garden.map(coopPlain),seedsOnGround:seedPickups.slice(0,180).map(coopPlain),collected:Object.keys(seedCollected),dust:seedDust,
-    pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0});}),bombs:bombs.map(coopPlain),
+    pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0});}),bombs:bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});}),
     birds:crows.map(coopPlain),fauna:smallFauna.map(coopPlain),effects:booms.slice(-30).map(coopPlain),weather:coopPlain(worldWeather),robots:robots,robot:companion?coopPlain(companion.state):null,members:members,acks:acks};
 }
 function coopState(s){
@@ -250,6 +251,11 @@ function coopState(s){
   polgeStands=Array.isArray(s.polgeStands)?s.polgeStands.slice(0,4).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['x','y','age','hits','maxHits','splinters','raincoat'].every(function(k){return Number.isFinite(q[k]);})&&q.age>=0&&q.age<=6&&q.hits>0&&q.hits<=6&&q.maxHits>=q.hits&&q.maxHits<=6&&q.splinters>=0&&q.splinters<=3&&q.raincoat>=0&&q.raincoat<=3;}).map(coopPlain):[];
   runLoot=Array.isArray(s.loot)?s.loot.slice(0,200).map(coopPlain):[];
   runExpedition=s.expedition&&s.expedition.stage===s.world?coopPlain(s.expedition):null;
+  bossEvent=s.bossEvent&&s.bossEvent.stage===s.world?coopPlain(s.bossEvent):null;
+  if(!relicRunMode()){
+    gardenRaidActive=!!(bossEvent&&bossEvent.status==='active');
+    if(s.raid){gardenRaidActive=!!s.raid.active;gardenRaidT=s.raid.timer;gardenRaidGrace=s.raid.grace;gardenRaidSpawn=s.raid.spawn;gardenBossSpawned=!!s.raid.bossSpawned;rogueRun.raidRemaining=s.raid.remaining;rogueRun.raidTotal=s.raid.total;rogueRun.raidThreat=s.raid.threat;}
+  }
   runEncounters=Array.isArray(s.encounters)?s.encounters.slice(0,4).map(coopPlain):[];
   runHazards=Array.isArray(s.hazards)?s.hazards.slice(0,32).map(coopPlain):[];
   stageWeather=s.stageWeather?coopPlain(s.stageWeather):null;rogueRun.bossDefeated=!!s.bossDefeated;
@@ -260,7 +266,7 @@ function coopState(s){
     floatKrek.forEach(function(k){if(isRat(k)&&!s.pests.some(function(q){return isRat(q)&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
   }
   floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});return out;});
-  bombs=s.bombs.map(coopPlain);crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
+  bombs=s.bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});});crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
   worldWeather=coopPlain(s.weather||{});gardenStats=coopPlain(s.stats||{});gardenSeeds=s.seeds;gardenScore=s.score;gardenWave=s.wave;runElapsed=s.elapsed;tSec=s.time;
   if(Array.isArray(s.effects)&&s.effects.length<=30){
     s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.abs(e.x-P.x);if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else sfx('boom',d);}});booms=s.effects.map(coopPlain);

@@ -40,7 +40,7 @@ test('plant falls and losses, raids, cleared gardens, boon offers and picks and 
     fall: [g => g.plantFalls(g.gardenPlots[0])],
     lost: [g => g.updateGarden(.05), g => { g.gardenPlots[0].dead = .01; }],
     raid: [g => g.updateGardenFun(.05), g => { g.gardenRaidT = .01; }],
-    clear: [g => g.levelCleared()],
+    clear: [g => g.levelCleared(), g => { g.rogueRun.bossDefeated=true; }],
     level: [g => g.grantRogueXP(g.rogueRun.next)],
     boon: [g => g.chooseRoguePerk(g.rogueRun.choice[0].id), g => g.grantRogueXP(g.rogueRun.next)],
     trial: [g => { g.runEncounters[0].active = true; }],

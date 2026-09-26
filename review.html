@@ -10,7 +10,7 @@
 (async function(){
  const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
- const layouts=Array.from({length:20},(_,i)=>i+1),bosses={boss5:'Mossback · Garden 5',boss10:'Bellkeeper · Garden 10',boss15:'Moon Moth · Garden 15'};
+ const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Raincaller','Plague Oracle','Bellkeeper','Frostjaw','Rimehorn','Pale Weaver','White Thorn','Moon Moth','Kiln Beetle','Ash Oracle','Cinder Regent','Sunroot'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
  const pressureMinutes=[0,5,10,20];
  const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed','high-tide');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
@@ -124,6 +124,7 @@
         spawnSligoMeat(P.x+35,surfaceY(P.x+35)-2,5);
       }
       if(${milestone||finalBoss}){
+        bossEvent.status='active';bossEvent.startedAt=runElapsed;
         gardenWave=3;gardenRaidActive=true;gardenRaidGrace=0;gardenBossSpawned=true;rogueRun.raidRemaining=0;
         var stageBoss=${finalBoss?'makeHollowCrown()':'makeStageBoss('+world+')'};stageBoss.cool=.8;floatKrek=[stageBoss];
         rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;

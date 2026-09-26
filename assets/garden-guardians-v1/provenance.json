@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sprout-sentinel",
+    "masterSHA256": "b4cff4010e35b3eeddb714f0a0281ecde1b57f50e234322dc11c1f7bc914ea7a",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06982543640897755
+  },
+  {
+    "id": "dew-duke",
+    "masterSHA256": "02ea3b2a4378f797f1072f105ad721412d77fcb55fc9b4061a0798edd459f7f6",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06451612903225806
+  },
+  {
+    "id": "thorn-duelist",
+    "masterSHA256": "e43b08496ea26001eb21cc518a2dea950ec066bb27c68e44a717512af93c9405",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06306306306306306
+  },
+  {
+    "id": "spore-oracle",
+    "masterSHA256": "1fdec52579e2fccfcfc8d20d4eee3913d283b64a0b9cb02401e9d90c103165ab",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06557377049180328
+  },
+  {
+    "id": "root-ram",
+    "masterSHA256": "7863eeac13258a491e03cc3fab094948f365eda805349c98c1bd0704034daacf",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06511627906976744
+  },
+  {
+    "id": "silk-weaver",
+    "masterSHA256": "26b8d0a253becb8eced9dcf3f132b31832745b3feb58fc50d3e24c309770600c",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06557377049180328
+  },
+  {
+    "id": "frostjaw",
+    "masterSHA256": "ec2c94359c500347dd66b6d210d060c71b910587063e2aeedf9501c3f27c8f02",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06572769953051644
+  },
+  {
+    "id": "kiln-beetle",
+    "masterSHA256": "eebe2cb1505cc9eb2b5f4c1521cdd7bcfb83ed128543c83ca7070f532d8fa706",
+    "masterSize": [
+      1774,
+      887
+    ],
+    "uniformScale": 0.06588235294117648
+  }
+]
