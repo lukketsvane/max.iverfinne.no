@@ -1,7 +1,7 @@
 .run-results,.run-results *{box-sizing:border-box}
 .run-results[hidden],.run-results [hidden]{display:none!important}
 .run-results{position:fixed;z-index:80;inset:0;isolation:isolate;overflow:hidden;background:#111113;color:#f2f0df;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;text-align:center;touch-action:pan-y}
-.run-results-scene{position:absolute;inset:0;z-index:-1;image-rendering:pixelated;pointer-events:none}
+.run-results-scene{position:absolute;inset:0;width:100%;height:100%;z-index:-1;image-rendering:pixelated;pointer-events:none}
 .run-results-header{position:absolute;top:max(6.5%,env(safe-area-inset-top));left:0;width:100%;pointer-events:none}
 .run-results h1{margin:0;line-height:1;font-size:clamp(30px,6vw,76px);letter-spacing:.08em;font-weight:bold}
 .run-results h1:focus,.run-results h2:focus{outline:none}
@@ -73,3 +73,10 @@
 .run-results-publish-status{font-size:11px;max-width:450px;margin:8px auto;color:#d6dfc7}
 @media(max-width:480px){.run-results-archive{padding:18px 10px}.run-results-entries{gap:8px}.run-results button.run-results-open{padding:8px 5px}.run-results-entry-copy{font-size:10px}.run-results-header .run-results-inspect{margin-top:9px}}
 @media(max-width:340px){.run-results-garden{grid-template-columns:repeat(3,64px)}.run-results-entries{grid-template-columns:1fr}.run-results button.run-results-open{flex-direction:row;gap:12px;text-align:left}}
+
+/* High Tide has one objective plant, so the result composition should read as a single run,
+   not as an empty bouquet browser. Keep the actions in the safe lower band on tall phones. */
+@media(orientation:portrait) and (min-height:700px){
+ .run-results-footer{padding-bottom:max(6vh,env(safe-area-inset-bottom));}
+ .run-results-header{top:max(8%,env(safe-area-inset-top));}
+}

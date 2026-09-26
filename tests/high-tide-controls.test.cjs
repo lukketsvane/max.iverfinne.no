@@ -8,6 +8,7 @@ test('keyboard Tend plants the seed and grow/release climbs to the crown through
  h.key('keydown','ArrowDown');
  for(let i=0;i<1800&&!g.rogueRun.ended;i++){
   if(g.gardenPlots.length){
+   g.rogueRun.survival.enemyMask=255;g.rogueRun.survival.enemyClock=1e9;
    h.key('keyup','ArrowDown');
    if(g.P.st!=='climb'&&i%5===0){
     h.key('keyup',' ');held=false;h.key('keydown','ArrowUp');h.key('keyup','ArrowUp');
