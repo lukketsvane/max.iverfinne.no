@@ -1,0 +1,16 @@
+{
+  "id": "dew-duke",
+  "source": "/workspace/scratch/a35a908b80e3/generated_images/exec-61afa962-341b-4152-8766-ef862000494e.png",
+  "prompt": "Use case: precise-object-edit. Production native-pixel game sprite animation sheet. Reference image is the original Dew Duke identity and exact coarse pixel style, a squat moss-green frog or toad with pale round water belly, dark teal legs, broad mouth and tiny crownlike bumps. Create 32 DIFFERENT hand-drawn poses, TRANSPARENT background, EXACT 4 columns 8 rows, portrait 1:2, NO labels/text/grid/background/shadow. Four drawings per animation state, each same physical creature scale, face right, four feet or belly ground baseline fixed in every cell. Critical: idle toad should be chunky 26 native pixels wide by 20 high within 32x32 cell; ALL other living poses within MAX 1.1 times idle width, including splash and leap. Do NOT shrink normal body to fit huge attack effects. Compact leg bends and local belly articulation, short hop, droplets directly under/against body. No long extended airborne body, no sprawling hindlegs, no far-flung splash. Native 32-pixel look enlarged crisply: very few flat opaque blocky pixel clusters, muted moss/bark/dark-teal/pale-cream, thick clear outline, no smooth painting/detail/gradients/AA/blur. Amber ONLY row 3, cyan ONLY row 6. Row 1 idle: relaxed belly; belly rounds gently; cheeks puff; belly lowers. Row 2 move: short front footstep; hindlegs bunch; tiny hop with all knees tucked under body; broad compact landing. Row 3 windup: low squat; belly swells upward; cheeks inflate; forefeet brace with small amber belly dot. Row 4 attack: tight upward hop with knees folded; compact tuck at peak; belly lands and ripples directly beneath; round squat with 4 small droplets touching body. Row 5 recover: belly squashed; belly wobbles right; belly wobbles left; normal round belly. Row 6 vulnerable: cyan droplet appears in belly; droplet brightens; shoulders sag; cyan droplet dims. Row 7 hurt: head recoil; cheek compress; front leg catch; head steady. Row 8 death: throat deflates; knees fold; belly falls flat; compact collapsed toad puddle no wider than normal body. Keep every sprite visually distinct with local limb and face changes; do not simply shift/stretch/recolor same pose.",
+  "grid": [
+    4,
+    8
+  ],
+  "reference": "/workspace/scratch/a35a908b80e3/guardian-motion-references/dew-duke.png",
+  "mode": "built-in-imagegen",
+  "sha256": "3e6ba6bc3efed2c5e24a790a4f0ac9bb63efc33d2534b873d172529ae02f7016",
+  "sourceSize": [
+    887,
+    1774
+  ]
+}

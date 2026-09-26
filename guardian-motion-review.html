@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guardian motion review</title>
+<style>
+body{margin:0;background:#10171c;color:#d7d4b1;font:14px monospace}main{max-width:1024px;margin:24px auto;padding:0 16px}h1{font-size:20px}label,button{margin-right:12px}select,button{font:inherit;background:#2b4645;color:inherit;padding:7px;border:1px solid #536448}canvas{display:block;width:100%;image-rendering:pixelated;background:#1d2b34;margin-top:18px}.names{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:12px;line-height:1.5}#status{color:#98b0b0}p{line-height:1.5}
+</style>
+<main>
+<h1>Garden guardians · motion review</h1>
+<p>Native sprites through the game's animation renderer. Four poses per action; simulation timing still controls tells and attacks.</p>
+<label>Action <select id="action"><option>idle</option><option>move</option><option>windup</option><option>attack</option><option>recover</option><option>vulnerable</option><option>hurt</option><option>death</option></select></label>
+<button id="play">Pause</button><span id="status">Loading artwork…</span>
+<canvas width="256" height="224" aria-label="Sixteen animated garden guardians"></canvas>
+<div class="names"></div>
+</main>
+<script src="native-art.js"></script>
+<script>
+// Isolated art fixture: no simulation, account, save state or live-room access.
+const ids=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','glass-snail','wick-hermit','frostjaw','spindle-widow','orchard-mimic','tuning-fork','kiln-beetle','ash-ferryman','compost-choir','seed-engine'];
+const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),action=document.querySelector('#action'),status=document.querySelector('#status'),art=window.MaxNativeArt;
+document.querySelector('.names').replaceChildren(...ids.map((id,i)=>{const n=document.createElement('span');n.textContent=(i+1)+'. '+id.replaceAll('-',' ');return n;}));
+let ready=false,playing=true,elapsed=0,last=0,cycle=-1;
+const enemies=ids.map((bossId,i)=>({boss:true,bossId,ph:i+1,hp:10,face:1,x:0,y:0}));
+function select(){art.reset();elapsed=0;last=0;cycle=-1;}
+action.addEventListener('change',select);
+document.querySelector('#play').addEventListener('click',e=>{playing=!playing;e.target.textContent=playing?'Pause':'Play';});
+art.load().then(result=>{ready=!result.failed.length;status.textContent=ready?'32 authored poses per guardian':('Missing: '+result.failed.join(', '));status.dataset.ready=String(ready);});
+function draw(now){
+ if(last&&playing)elapsed+=(now-last)/1000;last=now;
+ if(ready){
+  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.imageSmoothingEnabled=false;
+  const name=action.value,p=elapsed%1,restart=cycle!==Math.floor(elapsed);
+  if(restart){cycle=Math.floor(elapsed);if(!['idle','move','vulnerable'].includes(name))art.reset();}
+  for(let i=0;i<enemies.length;i++){
+   const e=enemies[i],x=i%4*64+32,y=Math.floor(i/4)*56+30;
+   Object.assign(e,{hp:10,vx:0,vy:0,windup:0,attackT:0,exposed:0,flash:0,tell:1,attackDuration:1});
+   if(name==='move')e.vx=12;
+   if(name==='windup')e.windup=1-p;
+   if(name==='attack')e.attackT=1-p;
+   if(name==='vulnerable')e.exposed=1;
+   if(name==='hurt')e.flash=Math.max(.001,1-p);
+   if(name==='death')e.hp=0;
+   if(name==='recover'){
+    // Set the preceding attack only at each loop boundary, like a host timer.
+    if(restart){e.attackT=.01;art.drawEnemy(ctx,e,x,y,elapsed-.01);e.attackT=0;}
+   }
+   art.drawEnemy(ctx,e,x,y,elapsed);
+   ctx.fillStyle='#536448';ctx.fillRect(x-22,y+14,44,1);
+  }
+  status.dataset.elapsed=elapsed.toFixed(3);status.dataset.action=name;
+ }
+ requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</html>

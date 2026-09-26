@@ -43,6 +43,19 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
    await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).bombs.length===0,{},{timeout:2000});
    assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
    }
+   await page.goto(base+'/guardian-motion-review.html');
+   await page.waitForFunction(()=>document.querySelector('#status').dataset.ready==='true',{},{timeout:15000});
+   for(const action of ['idle','move','windup','attack','recover','vulnerable','hurt','death']){
+    await page.locator('#action').selectOption(action);
+    const samples=[];
+    for(let frame=0;frame<4;frame++){
+     await page.waitForTimeout(160);
+     samples.push(await page.locator('canvas').evaluate(c=>c.toDataURL()));
+    }
+    assert.ok(new Set(samples).size>=2,engineName+' '+action+' must visibly animate');
+    await page.locator('canvas').screenshot({path:`guardian-browser-review/${engineName}-motion-${action}.png`});
+   }
+   assert.deepEqual(errors,[]);console.log(engineName,'all sixteen guardians animate in all eight actions OK');
   }finally{await browser.close();}
  }
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.kill());

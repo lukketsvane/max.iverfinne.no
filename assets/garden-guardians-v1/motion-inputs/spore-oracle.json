@@ -1,0 +1,16 @@
+{
+  "id": "spore-oracle",
+  "source": "/workspace/scratch/a35a908b80e3/generated_images/exec-256adb91-27bb-42b0-8376-797eec1e877c.png",
+  "prompt": "Use case: precise-object-edit. Asset type: production pixel-art game sprite animation master. Input image: identity and pixel-style reference only, eight old poses of this same boss. Primary request: expand this creature into 32 genuinely distinct hand-drawn animation poses, NOT duplicate poses, not translations or recolors. TRANSPARENT background. Layout MUST be exactly 4 columns and 8 rows of equal square cells, portrait sheet aspect ratio 1:2, one creature in every cell, 32 sprites total. No headings, no text, no borders, no gridlines. Maintain uniform character proportions and scale across the entire sheet, face right throughout, same ground registration in each cell, generous transparent margins and no artwork crossing cells. Draw as extremely coarse native 32x32 game sprites enlarged with crisp nearest-neighbor square pixels: dark teal shadow, muted moss greens, bark browns, pale cream edge pixels, small restrained plum colors. No smooth illustration, no anti-aliasing, no gradients, no blur, no ground, no painted shadow. Each individual creature uses few flat pixel clusters and clear readable silhouette. Use amber accents only in row 3 windup, cyan accents only in row 6 vulnerable. All other rows keep the reference palette. Different poses must change limbs and secondary parts, never simply scale or shift the entire sprite. Death is a four-step readable collapse, last frame still contains remains. Spore Oracle: the attached dark-teal mushroom oracle with a large uneven plum-brown cap, pale hanging gills, small shadowy face and thin root arms and legs. Preserve the mushroom silhouette and no extra clothing. Row 1 idle: mushroom cap relaxed, gills breathe open, cap tilts and gills close, cap returns. Row 2 move: left root steps and cap sways right, both roots passing under, right root steps and cap sways left, weight settles. Row 3 windup: roots brace, cap compresses, gills fan and hands draw in, cap tilts sharply with a small amber glow under the gills. Row 4 attack: cap snaps open, burst of separate pale spore dots from gills, arms sweep forward and cap recoils, spores drift beside collapsed cap. Row 5 recover: cap slumps, root hand steadies cap, cap tilts back, gills relax. Row 6 vulnerable: opened stem shows small cyan knot, cap droops left while cyan pulses, cap droops right and root arms hang, stem remains split with dim cyan. Row 7 hurt: cap jerks sideways, gills crumple and root leg slips, cap tilts backward, roots catch. Row 8 death: cracked cap, thin stem folds, cap drops over splayed roots with a few detached spores, low shattered mushroom cap and root heap.",
+  "grid": [
+    4,
+    8
+  ],
+  "reference": "/workspace/scratch/a35a908b80e3/guardian-motion-references/spore-oracle.png",
+  "mode": "built-in-imagegen",
+  "sha256": "6b87bee47bb8c2f6ea5ab40e52e7e7fb106d920aa835425ff5e94f9efdf6244d",
+  "sourceSize": [
+    887,
+    1774
+  ]
+}

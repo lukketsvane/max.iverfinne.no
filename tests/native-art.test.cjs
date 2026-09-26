@@ -20,10 +20,10 @@ function context() {
   };
   return { ctx, calls };
 }
-async function nativeArt(failure = '', alias = {}) {
+async function nativeArt(failure = '', alias = {}, now = () => 0) {
   const requests = [], events = [];
   const sandbox = {
-    URL, Promise, Map, WeakMap, console,
+    URL, Promise, Map, WeakMap, console, performance: { now },
     document: { baseURI: 'https://max.example/', createElement() { return { getContext: () => context().ctx }; } },
     CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } },
     Image: class {
@@ -208,4 +208,88 @@ test('Sligo\'s pack loads on demand, never with the others, and until it loads t
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.match(packed.art.playerImage('sligo', 'main').src, /max-skins-v1\/sligo\/main\.png$/);
   assert.match(packed.art.playerImage('sligo', 'interaction').src, /max-skins-v1\/sligo\/interaction\.png$/);
+});
+
+test('all sixteen garden guardians play their complete tells and attacks, then loop cyan across snapshots', async () => {
+  const { art } = await nativeArt(), { ctx, calls } = context();
+  const ids = fs.readdirSync(path.join(root, 'assets/garden-guardians-v1/native')).filter(file => file.endsWith('.json')).map(file => file.slice(0, -5));
+  assert.equal(ids.length, 16);
+  for (const bossId of ids) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, `assets/garden-guardians-v1/native/${bossId}.json`)));
+    const k = enemy({ boss: true, bossId, windup: 2.45, tell: 2.45, attackDuration: .42 });
+    const original = JSON.stringify(k);
+    for (const [clip, duration, field] of [['windup', 2.45, 'windup'], ['attack', .42, 'attackT']]) {
+      const frames = manifest.animations[clip].frames;
+      for (let frame = 0; frame < frames.length; frame++) {
+        const state = { ...k, windup: 0, [field]: duration * (1 - (frame + .1) / frames.length) };
+        assert.equal(art.drawEnemy(ctx, state, 20.3, 40.6, 100 + frame * .03).clip, clip);
+        assert.deepEqual(lastSprite(calls).slice(2, 6), manifest.frames[frames[frame]].rect, `${bossId} ${clip} visits frame ${frame}`);
+      }
+    }
+    const frames = manifest.animations.vulnerable.frames, fps = manifest.animations.vulnerable.fps;
+    for (let i = 0; i <= frames.length; i++) {
+      const state = { ...k, windup: 0, exposed: 3 - i / fps, flash: i % 2 };
+      assert.equal(art.drawEnemy(ctx, state, 20.3, 40.6, 110 + i / fps + (i ? .001 : 0)).clip, 'vulnerable');
+      assert.deepEqual(lastSprite(calls).slice(2, 6), manifest.frames[frames[i % frames.length]].rect, `${bossId} keeps a local loop through replacement objects and hits`);
+    }
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, exposed: .001 }, 20, 40, 113.1).clip, 'vulnerable');
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, exposed: 0 }, 20, 40, 113.2).clip, 'recover');
+    assert.equal(art.drawEnemy(ctx, { ...k, windup: 0, vx: 12 }, 20, 40, 113.9).clip, 'move');
+    assert.equal(JSON.stringify(k), original, 'animation never changes attack timers, health or registration');
+    assert.deepEqual(calls.filter(call => call[0] === 'translate').at(-1), ['translate', 20, 53]);
+  }
+});
+
+test('boss recoil finishes after a short flash, restarts on a fresh hit, and never conceals combat signals', async () => {
+  const { art } = await nativeArt(), { ctx, calls } = context();
+  const k = enemy({ boss: true, bossId: 'sprout-sentinel', hp: 10, maxHp: 10 });
+  art.drawEnemy(ctx, k, 20, 40, 10);
+  const hit = { ...k, hp: 9, flash: 1 };
+  assert.equal(art.drawEnemy(ctx, hit, 20, 40, 11).clip, 'hurt');
+  const first = lastSprite(calls).slice(2, 4);
+  assert.equal(art.drawEnemy(ctx, { ...hit, flash: 0 }, 20, 40, 11.24).clip, 'hurt');
+  assert.notDeepEqual(lastSprite(calls).slice(2, 4), first, 'late recoil frames survive the 0.2-second flash');
+  assert.equal(art.drawEnemy(ctx, { ...hit, flash: 0 }, 20, 40, 11.31).clip, 'idle');
+  assert.equal(art.drawEnemy(ctx, { ...hit, hp: 8, flash: 0 }, 20, 40, 12).clip, 'hurt', 'a late snapshot still reacts to actual health loss');
+  assert.deepEqual(lastSprite(calls).slice(2, 4), first);
+  assert.equal(art.drawEnemy(ctx, { ...hit, hp: 8, flash: 0, windup: .5, tell: 1 }, 20, 40, 12.1).clip, 'windup');
+  assert.equal(art.drawEnemy(ctx, { ...hit, hp: 8, flash: 1, attackT: .2, attackDuration: .4 }, 20, 40, 12.2).clip, 'attack');
+  assert.equal(art.drawEnemy(ctx, { ...hit, hp: 8, flash: 1, exposed: 1 }, 20, 40, 12.3).clip, 'vulnerable');
+});
+
+test('boss corpses are idempotent, finish after victory freezes simulation time, and never move a hitbox', async () => {
+  let now = 10000;
+  const { art } = await nativeArt('', {}, () => now), { ctx, calls } = context();
+  const k = enemy({ boss: true, bossId: 'sprout-sentinel', hp: 0 }), original = JSON.stringify(k);
+  art.enemyDefeated(k, 80); art.enemyDefeated({ ...k }, 80);
+  art.drawDefeated(ctx, 80, 2, 3);
+  assert.equal(calls.filter(call => call[0] === 'drawImage').length, 1);
+  const first = lastSprite(calls).slice(2, 4);
+  assert.deepEqual(calls.filter(call => call[0] === 'translate').at(-1), ['translate', 18, 40]);
+  calls.length = 0; now += 300; art.drawDefeated(ctx, 80, 2, 3);
+  assert.notDeepEqual(lastSprite(calls).slice(2, 4), first, 'render time completes the collapse while game time remains frozen');
+  calls.length = 0; now += 1200; art.drawDefeated(ctx, 80, 2, 3);
+  assert.equal(calls.length, 0); assert.equal(JSON.stringify(k), original);
+  art.reset(); art.enemyDefeated(k, 90); art.drawDefeated(ctx, 90, 0, 0);
+  assert.equal(calls.filter(call => call[0] === 'drawImage').length, 1, 'a new run resets the defeat guard');
+});
+
+test('actual garden boss cycles display attack and recovery without hiding their real warning or vulnerability windows', async () => {
+  const { loadGame, plot } = require('./game-harness.cjs');
+  const { art } = await nativeArt(), { ctx } = context();
+  for (const stage of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]) {
+    const { game: g } = loadGame(); g.resetRogueRun(); if (stage > 1) g.enterLevel(stage);
+    const k = g.makeStageBoss(stage); k.cool = 0;
+    g.floatKrek = [k]; g.gardenPlots = [plot({ x: k.x - 24 })];
+    const clips = new Set();
+    for (let tick = 0; tick < 600; tick++) {
+      g.updateStageBoss(k, 1 / 60);
+      const { clip } = art.drawEnemy(ctx, k, 30, 40, stage * 20 + tick / 60);
+      clips.add(clip);
+      if (k.windup > 0) assert.equal(clip, 'windup', `${k.bossId} keeps its warning`);
+      else if (k.exposed > 0) assert.equal(clip, 'vulnerable', `${k.bossId} keeps its real damage window`);
+      else if (k.attackT > 0) assert.equal(clip, 'attack', `${k.bossId} visibly performs its attack`);
+    }
+    for (const clip of ['windup', 'attack', 'vulnerable', 'recover']) assert.ok(clips.has(clip), `${k.bossId} completes ${clip} through the real simulation`);
+  }
 });

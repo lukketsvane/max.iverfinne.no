@@ -307,21 +307,21 @@
    "sha1": "cf53fb151a06f55a9cc08985c9eb976f051f94f1",
    "width": 9,
    "height": 9,
-   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/boon-symbols-v1/splinters.png",
    "sha1": "07d819e090ae457b25628a6059e362525b1ddeed",
    "width": 9,
    "height": 9,
-   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/boon-symbols-v1/raincoat.png",
    "sha1": "a1d5a26f880e915ac254a55955bad895e3055072",
    "width": 9,
    "height": 9,
-   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/levels-v1/high-tide.png",
@@ -332,115 +332,115 @@
   },
   {
    "path": "assets/garden-guardians-v1/native/sprout-sentinel.png",
-   "sha1": "a66133a58b3ddb3b8536a2ab705688d5c2d7f8f3",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "15619fd9af225309860352051e28f381a34bc9bb",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:9. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/dew-duke.png",
-   "sha1": "0e583e359fe2d8ccb1c23cf4779d43b12fc8c72c",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "cb19c64e488d7b8991fc14e3346861018c74cf3f",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:3. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/thorn-duelist.png",
-   "sha1": "87f0ad3a68b70d1d07faa6ce0ea2d3edb5cf430f",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "c7f350cc2a80484ff6b890152546f240b1bc2c9b",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:10. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/spore-oracle.png",
-   "sha1": "a19114a252ac6582ba0a8ccbb3f52de5813f0301",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "ccca8f76f8ad15ca747bb966938dfa7558eef56c",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:8. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/root-ram.png",
-   "sha1": "3ee6c7c93c5833fb3f91588379803b94cf4778a6",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "f3a321b10aea6d3e60ffcfa5d6d92e6882bd59bf",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:6. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/silk-weaver.png",
-   "sha1": "b181334dc5df6b47a4a89851a3a2bd1d1e4347f6",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "31ab4e14796224856022c8ee0a5a5a04c13c6a79",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:7. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/frostjaw.png",
-   "sha1": "72da072eff9f1c50413bf3d46771c4c495da9839",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "1315dd73c1c8d1174bd5ea4616b14ef7f007490e",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:4. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/kiln-beetle.png",
-   "sha1": "04aaba857397cc0564779a37173a0cd1d44f1bc8",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 366:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "5e0801f45ac8f24be6f426e53fbde5147e9f8871",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 366:5. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/glass-snail.png",
-   "sha1": "93bae5d8cf0ca12ecb13ba911fb09123ca66dbc2",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "33cda437dc413e7d5f72062ddcbcc898e9106710",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 369:3. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/wick-hermit.png",
-   "sha1": "19c70136d0192efc2c49b2842820cb45b175f7c4",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "68c7a34760068daed2d6a74e2ea01b46dd0ac3bb",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 369:4. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/spindle-widow.png",
-   "sha1": "7940720a4ed924f04b3b69fa901475ff307277f7",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "22ac806bff24f74cd91a7c0be467aa2bb263f921",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 369:5. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/orchard-mimic.png",
-   "sha1": "917169db3da797e3d3c48abfab5dace172a6b1fd",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "c3912953088905108954bb998ab070321a156da9",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 369:6. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/tuning-fork.png",
-   "sha1": "fb0a8e49670a9588a8782ca99cedf5916d81b2e5",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "0643cea99715569fc44847165f65134035de3c46",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 370:2. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/ash-ferryman.png",
-   "sha1": "43c0c153e127940eb05f27f2f934bb29a7eb57ac",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "11bc3d0603795f6e3363d7d77a9931e6b0ab2e93",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 370:3. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/compost-choir.png",
-   "sha1": "47e353c2b8b93e603e250efcee93a42f6c5de5e7",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "51155d4545d553c7b242ee96de746442241063ba",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 370:4. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   },
   {
    "path": "assets/garden-guardians-v1/native/seed-engine.png",
-   "sha1": "499b2dea43017a46e7c6a0602f4795110feac6b5",
-   "width": 256,
-   "height": 256,
-   "note": "Native PNG verified byte-for-byte in current Figma production group 369:2 on 2026-09-26; legacy Draft 0:1 / source section 52:2 absent. See garden-guardians-v1/figma.json; pending global manifest reconciliation."
+   "sha1": "77fc5542054921edcc5bcd8daa25c2dd9c3d9ddd",
+   "width": 128,
+   "height": 288,
+   "note": "Byte-for-byte verified in Figma production frame 160:2, layer 370:5. Expanded 32-pose motion pack. Legacy source section 52:2 remains absent; see docs/figma.md pending workflow."
   }
  ]
 }

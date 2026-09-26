@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'run-director.inc.js'
       - 'review.html'
+      - 'guardian-motion-review.html'
       - 'native-art.mjs'
       - 'assets/garden-guardians-v1/**'
       - 'scripts/check-garden-guardians-browser.cjs'

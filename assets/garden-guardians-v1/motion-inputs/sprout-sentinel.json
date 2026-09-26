@@ -1,0 +1,16 @@
+{
+  "id": "sprout-sentinel",
+  "source": "/workspace/scratch/a35a908b80e3/generated_images/exec-4da027bc-bd88-43b4-9f18-954ca2708273.png",
+  "prompt": "Use case: precise-object-edit. Asset type: production pixel-art game sprite animation master. Input image: identity and pixel-style reference only, eight old poses of this same boss. Primary request: expand this creature into 32 genuinely distinct hand-drawn animation poses, NOT duplicate poses, not translations or recolors. TRANSPARENT background. Layout MUST be exactly 4 columns and 8 rows of equal square cells, portrait sheet aspect ratio 1:2, one creature in every cell, 32 sprites total. No headings, no text, no borders, no gridlines. Maintain uniform character proportions and scale across the entire sheet, face right throughout, same ground registration in each cell, generous transparent margins and no artwork crossing cells. Draw as extremely coarse native 32x32 game sprites enlarged with crisp nearest-neighbor square pixels: dark teal shadow, muted moss greens, bark browns, pale cream edge pixels, small restrained plum colors. No smooth illustration, no anti-aliasing, no gradients, no blur, no ground, no painted shadow. Each individual creature uses few flat pixel clusters and clear readable silhouette. Use amber accents only in row 3 windup, cyan accents only in row 6 vulnerable. All other rows keep the reference palette. Different poses must change limbs and secondary parts, never simply scale or shift the entire sprite. Death is a four-step readable collapse, last frame still contains remains. Sprout Sentinel: a squat round olive-green seed pod with overlapping pointed leaves, pale seed seam, short brown root legs and a small alert face. Preserve the attached creature's identity. Row 1 idle: curled leaves; one leaf lifts; face peeks and leaves fan slightly; leaves settle. Row 2 move: front roots reach, weight shifts over stretched front roots, rear roots step through, rear roots plant. Row 3 windup: crouch, leaf crown fans, root-foot lifts, crown fully unfurled with small amber core. Row 4 attack: raised root stomps; thick root drives into ground; root spikes kick outward beside feet; pod rebounds with scattered leaf chips. Row 5 recover: low squat, roots retract, pod rises, leaf crown folds. Row 6 vulnerable: split leaves expose cyan seed, seed throbs with leaves wide, drooping leaves and dim cyan seed, leaves begin closing. Row 7 hurt: recoil left, bent leaf and scrunched face, brace roots apart, head steadies. Row 8 death: cracked seed seam, pod splits and roots buckle, fallen leaf halves, small collapsed seed-and-root heap.",
+  "grid": [
+    4,
+    8
+  ],
+  "reference": "/workspace/scratch/a35a908b80e3/guardian-motion-references/sprout-sentinel.png",
+  "mode": "built-in-imagegen",
+  "sha256": "c4ac6c7fe04dbf1da9c1713ffd2b11de3f1297faae00a505d7cef1da3ea23a32",
+  "sourceSize": [
+    887,
+    1774
+  ]
+}
