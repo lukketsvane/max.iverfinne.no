@@ -1,0 +1,16 @@
+{
+  "id": "thorn-duelist",
+  "source": "/workspace/scratch/a35a908b80e3/generated_images/exec-8bcd1627-1418-4a07-8765-70c9cfc7b55c.png",
+  "prompt": "Use case: precise-object-edit. Asset type: production native-pixel game animation sprite sheet. Input reference: exact boss identity, colors and coarse original pixel design. Create exactly 32 DIFFERENT drawings in a transparent 4-column by 8-row sheet, portrait aspect1:2, evenly spaced, no text, labels, grid or background. Keep the reference design and restore its strong readable native-pixel mass. CRITICAL FRAMING: this creature is drawn at roughly 26 native pixels tall in a 32-pixel square cell; standing creature width about22 native pixels. Every attack stays within at most1.1 times standing width, never beyond28 pixels. All poses same physical scale and same registration. Four drawings per row share a fixed ground baseline. Strong blocky silhouette, chunky sparse pixel clusters, flat muted moss, dark teal, bark, pale cream. No detailed texture, no smooth painting, no thin antialiased lines, no gradients. Limbs must be at least2 coarse pixels wide and body mass readable at32x32. Tall standing proportions, a clear pale rim on head and upper back, minimal details. Amber ONLY row3, cyan ONLY row6. All face right. NO wide attack effects, no projectiles, no horizontal slash arcs, no floating debris except tight body-adjacent death fragments. Local joint articulation instead of stretching the full body. Thorn Duelist is a tall narrow twig mantis with upright curved head/antenna, a folded moss thorn blade arm, bark knees and short leaf cloak. Row 1 idle: poised guard; wrist rotates inward; tall antenna bows slightly; wrist resets. Row 2 move: short front toe step; rear knee passes under body; opposite toe steps; both knees settle. Row 3 windup: knees bend slightly; torso coils while blade folds tight behind shoulder; elbow raises beside head; small amber blade tip held directly above shoulder. Row 4 attack: short vertical chop close to torso; thorn blade crosses over chest; blade folds beside front knee; blade recoils to shoulder. NO wide horizontal slash and NO detached slash trail. Row 5 recover: forearm lowers; knee straightens; cloak curls inward; guard resets. Row 6 vulnerable: two chest leaves separate around cyan knot; cyan knot brightens; shoulders sag; knot dims. Row 7 hurt: head jerks a little; elbow folds across chest; knee buckles; stance catches. Row 8 death: antenna snaps; knee folds under body; torso sinks straight down; compact heap of folded thorn and cloak. Keep every pose within the SAME narrow upright-width envelope. Locally redraw limbs and cloak rather than displacing the body.",
+  "grid": [
+    4,
+    8
+  ],
+  "reference": "/workspace/scratch/a35a908b80e3/guardian-motion-references/thorn-duelist.png",
+  "mode": "built-in-imagegen",
+  "sha256": "63a70b9b51bffb89098d33f0ae02a3df7f3b8d0f72a6941f3c6472d24bf4917c",
+  "sourceSize": [
+    887,
+    1774
+  ]
+}

@@ -261,9 +261,10 @@ function coopState(s){
   stageWeather=s.stageWeather?coopPlain(s.stageWeather):null;rogueRun.bossDefeated=!!s.bossDefeated;
   if(s.secrets&&typeof s.secrets==='object')secretSync(s.secrets);
   if(s.wonders&&typeof s.wonders==='object')wonderSync(s.wonders);
-  // A removed rat produces one local corpse animation, never duplicate rewards.
-  if(previousWorld===s.world&&!s.ended&&window.MaxNativeArt){
-    floatKrek.forEach(function(k){if(isRat(k)&&!s.pests.some(function(q){return isRat(q)&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
+  // Removed bosses and rats collapse locally, including the final winning
+  // snapshot. A new garden or lost run is cleanup, never another defeat/reward.
+  if(previousWorld===s.world&&(!s.ended||s.won)&&window.MaxNativeArt){
+    floatKrek.forEach(function(k){if((k.boss||isRat(k))&&!s.pests.some(function(q){return q.kind===k.kind&&q.bossId===k.bossId&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
   }
   floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(Array.isArray(k.nodes))out.nodes=k.nodes.slice(0,6).filter(function(n){return n&&Number.isFinite(n.x)&&Number.isFinite(n.y)&&Number.isFinite(n.hp);}).map(coopPlain);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});return out;});
   bombs=s.bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});});crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);

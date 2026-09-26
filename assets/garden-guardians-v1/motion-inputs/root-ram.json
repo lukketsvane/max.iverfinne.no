@@ -1,0 +1,16 @@
+{
+  "id": "root-ram",
+  "source": "/workspace/scratch/a35a908b80e3/generated_images/exec-33fcb05f-c927-4e4b-b343-753e0daa12f5.png",
+  "prompt": "Use case: precise-object-edit. Asset type: production native-pixel game animation sprite sheet. Input reference: exact boss identity, colors and coarse original pixel design. Create exactly 32 DIFFERENT drawings in a transparent 4-column by 8-row sheet, portrait aspect1:2, evenly spaced, no text, labels, grid or background. Keep the reference design and restore its strong readable native-pixel mass. CRITICAL FRAMING: this creature is drawn at roughly 26 native pixels tall in a 32-pixel square cell; standing creature width about22 native pixels. Every attack stays within at most1.1 times standing width, never beyond28 pixels. All poses same physical scale and same registration. Four drawings per row share a fixed ground baseline. Strong blocky silhouette, chunky sparse pixel clusters, flat muted moss, dark teal, bark, pale cream. No detailed texture, no smooth painting, no thin antialiased lines, no gradients. Limbs must be at least2 coarse pixels wide and body mass readable at32x32. Tall standing proportions, a clear pale rim on head and upper back, minimal details. Amber ONLY row3, cyan ONLY row6. All face right. NO wide attack effects, no projectiles, no horizontal slash arcs, no floating debris except tight body-adjacent death fragments. Local joint articulation instead of stretching the full body. Root Ram is a compact tall mossy root quadruped with long upright twig antlers, a short body, strong woody legs, pale muzzle and chunky green shoulder moss. Row 1 idle: tall antlers upright; ear twitches and muzzle nods; moss tail flicks within body width; alert pose returns. Row 2 move: short front hoof reaches under muzzle; diagonal support legs alternate; rear hoof steps directly beneath body; feet plant. Row 3 windup: neck folds and antlers tilt forward over the muzzle; front hoof paws under chest; shoulders bunch; small amber forehead glint. Row 4 attack: hind knees kick while staying beneath tail; short compact bounding step with forehooves under muzzle; antlers shove close ahead of nose; compressed landing. NO long stretched sprint and NO detached dust or effects. Row 5 recover: front knees brace; neck rises; ears flick; tall antlers steady. Row 6 vulnerable: chest bark opens around cyan sap heart; head droops while cyan pulses; shoulders tremble; vulnerable stance settles. Row 7 hurt: antlers rock slightly back; front knees fold; one hoof catches; shoulders recover. Row 8 death: knees collapse underneath; antlers tip along back; belly drops down; compact heap with folded legs and antler fragments resting against body. Preserve HEIGHT and chunky torso in every living pose; antlers are tall branches, not broad horizontal moose paddles.",
+  "grid": [
+    4,
+    8
+  ],
+  "reference": "/workspace/scratch/a35a908b80e3/guardian-motion-references/root-ram.png",
+  "mode": "built-in-imagegen",
+  "sha256": "af2d3de60e51760c230e3a6172396bc5cfb6e309832fdb96a24943a658c10450",
+  "sourceSize": [
+    887,
+    1774
+  ]
+}

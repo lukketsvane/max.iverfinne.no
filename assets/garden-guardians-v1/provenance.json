@@ -6,7 +6,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06982543640897755
+    "uniformScale": 0.06982543640897755,
+    "motion": {
+      "masterSHA256": "c4ac6c7fe04dbf1da9c1713ffd2b11de3f1297faae00a505d7cef1da3ea23a32",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.13856812933025403,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          57,
+          210
+        ],
+        [
+          271,
+          424
+        ],
+        [
+          476,
+          652
+        ],
+        [
+          727,
+          899
+        ],
+        [
+          943,
+          1093
+        ],
+        [
+          1144,
+          1317
+        ],
+        [
+          1375,
+          1539
+        ],
+        [
+          1601,
+          1749
+        ]
+      ],
+      "rowBaselines": [
+        210,
+        424,
+        652,
+        899,
+        1093,
+        1317,
+        1539,
+        1749
+      ],
+      "columnOrigins": [
+        111.5,
+        329.5,
+        552,
+        774
+      ],
+      "sharedHorizontalOffset": 5.75,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "dew-duke",
@@ -15,7 +80,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06451612903225806
+    "uniformScale": 0.06451612903225806,
+    "motion": {
+      "masterSHA256": "3e6ba6bc3efed2c5e24a790a4f0ac9bb63efc33d2534b873d172529ae02f7016",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.13157894736842105,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          111,
+          244
+        ],
+        [
+          286,
+          451
+        ],
+        [
+          508,
+          665
+        ],
+        [
+          710,
+          895
+        ],
+        [
+          962,
+          1094
+        ],
+        [
+          1164,
+          1300
+        ],
+        [
+          1353,
+          1512
+        ],
+        [
+          1607,
+          1725
+        ]
+      ],
+      "rowBaselines": [
+        244,
+        451,
+        665,
+        895,
+        1094,
+        1300,
+        1512,
+        1725
+      ],
+      "columnOrigins": [
+        116.5,
+        331,
+        545.5,
+        764
+      ],
+      "sharedHorizontalOffset": 2.5,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "thorn-duelist",
@@ -24,7 +154,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06306306306306306
+    "uniformScale": 0.06306306306306306,
+    "motion": {
+      "masterSHA256": "63a70b9b51bffb89098d33f0ae02a3df7f3b8d0f72a6941f3c6472d24bf4917c",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.15422885572139303,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          42,
+          232
+        ],
+        [
+          254,
+          441
+        ],
+        [
+          471,
+          664
+        ],
+        [
+          684,
+          882
+        ],
+        [
+          912,
+          1105
+        ],
+        [
+          1126,
+          1327
+        ],
+        [
+          1351,
+          1547
+        ],
+        [
+          1569,
+          1744
+        ]
+      ],
+      "rowBaselines": [
+        232,
+        441,
+        664,
+        882,
+        1105,
+        1327,
+        1547,
+        1744
+      ],
+      "columnOrigins": [
+        116,
+        328,
+        548,
+        765.5
+      ],
+      "sharedHorizontalOffset": 1,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "spore-oracle",
@@ -33,7 +228,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06557377049180328
+    "uniformScale": 0.06557377049180328,
+    "motion": {
+      "masterSHA256": "6b87bee47bb8c2f6ea5ab40e52e7e7fb106d920aa835425ff5e94f9efdf6244d",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.13186813186813187,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          86,
+          257
+        ],
+        [
+          289,
+          461
+        ],
+        [
+          501,
+          680
+        ],
+        [
+          704,
+          887
+        ],
+        [
+          924,
+          1102
+        ],
+        [
+          1132,
+          1319
+        ],
+        [
+          1337,
+          1530
+        ],
+        [
+          1553,
+          1735
+        ]
+      ],
+      "rowBaselines": [
+        257,
+        461,
+        680,
+        887,
+        1102,
+        1319,
+        1530,
+        1735
+      ],
+      "columnOrigins": [
+        116.5,
+        331.5,
+        549,
+        761
+      ],
+      "sharedHorizontalOffset": -1.25,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "root-ram",
@@ -42,7 +302,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06511627906976744
+    "uniformScale": 0.06511627906976744,
+    "motion": {
+      "masterSHA256": "af2d3de60e51760c230e3a6172396bc5cfb6e309832fdb96a24943a658c10450",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.1477832512315271,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          37,
+          218
+        ],
+        [
+          243,
+          420
+        ],
+        [
+          465,
+          625
+        ],
+        [
+          671,
+          847
+        ],
+        [
+          885,
+          1069
+        ],
+        [
+          1106,
+          1288
+        ],
+        [
+          1331,
+          1508
+        ],
+        [
+          1574,
+          1738
+        ]
+      ],
+      "rowBaselines": [
+        218,
+        420,
+        625,
+        847,
+        1069,
+        1288,
+        1508,
+        1738
+      ],
+      "columnOrigins": [
+        123,
+        332,
+        552,
+        768
+      ],
+      "sharedHorizontalOffset": 9.5,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "silk-weaver",
@@ -51,7 +376,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06557377049180328
+    "uniformScale": 0.06557377049180328,
+    "motion": {
+      "masterSHA256": "8b2f89dc4a1273c033f991e71afac55403f13298b4beaaf1c6a7880a98a3b5af",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.1518987341772152,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          53,
+          215
+        ],
+        [
+          274,
+          423
+        ],
+        [
+          465,
+          647
+        ],
+        [
+          721,
+          868
+        ],
+        [
+          930,
+          1086
+        ],
+        [
+          1156,
+          1313
+        ],
+        [
+          1348,
+          1521
+        ],
+        [
+          1612,
+          1740
+        ]
+      ],
+      "rowBaselines": [
+        215,
+        423,
+        647,
+        868,
+        1086,
+        1313,
+        1521,
+        1740
+      ],
+      "columnOrigins": [
+        123.5,
+        345,
+        568.5,
+        781
+      ],
+      "sharedHorizontalOffset": -2.25,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "frostjaw",
@@ -60,7 +450,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06572769953051644
+    "uniformScale": 0.06572769953051644,
+    "motion": {
+      "masterSHA256": "9afb3774233ede8a525781faa53db78037619390e7ab69e3dd8e8fa451a12f28",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.13071895424836602,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          85,
+          218
+        ],
+        [
+          298,
+          426
+        ],
+        [
+          498,
+          645
+        ],
+        [
+          724,
+          864
+        ],
+        [
+          939,
+          1079
+        ],
+        [
+          1120,
+          1299
+        ],
+        [
+          1353,
+          1513
+        ],
+        [
+          1585,
+          1721
+        ]
+      ],
+      "rowBaselines": [
+        218,
+        426,
+        645,
+        864,
+        1079,
+        1299,
+        1513,
+        1721
+      ],
+      "columnOrigins": [
+        118.5,
+        341,
+        558.5,
+        769.5
+      ],
+      "sharedHorizontalOffset": 7.75,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "kiln-beetle",
@@ -69,7 +524,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06588235294117648
+    "uniformScale": 0.06588235294117648,
+    "motion": {
+      "masterSHA256": "ca3bfc2204a554cf0776565e8a9000eef7694cffdd9e7aedc9156ce343f0dbbf",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.13100436681222707,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          80,
+          230
+        ],
+        [
+          307,
+          429
+        ],
+        [
+          509,
+          627
+        ],
+        [
+          692,
+          848
+        ],
+        [
+          918,
+          1064
+        ],
+        [
+          1135,
+          1290
+        ],
+        [
+          1340,
+          1511
+        ],
+        [
+          1590,
+          1740
+        ]
+      ],
+      "rowBaselines": [
+        230,
+        429,
+        627,
+        848,
+        1064,
+        1290,
+        1511,
+        1740
+      ],
+      "columnOrigins": [
+        117.5,
+        340.5,
+        561.5,
+        782
+      ],
+      "sharedHorizontalOffset": 4,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "glass-snail",
@@ -78,7 +598,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06306306306306306
+    "uniformScale": 0.06306306306306306,
+    "motion": {
+      "masterSHA256": "b06db91404ba8a1bf274a0760ab943c962b8952771edbdabfc9b1f48c49e8630",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.1477832512315271,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          83,
+          219
+        ],
+        [
+          282,
+          412
+        ],
+        [
+          476,
+          627
+        ],
+        [
+          678,
+          845
+        ],
+        [
+          924,
+          1064
+        ],
+        [
+          1112,
+          1272
+        ],
+        [
+          1325,
+          1485
+        ],
+        [
+          1573,
+          1705
+        ]
+      ],
+      "rowBaselines": [
+        219,
+        412,
+        627,
+        845,
+        1064,
+        1272,
+        1485,
+        1705
+      ],
+      "columnOrigins": [
+        118.5,
+        339.5,
+        561,
+        775.5
+      ],
+      "sharedHorizontalOffset": 6,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "wick-hermit",
@@ -87,7 +672,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06542056074766354
+    "uniformScale": 0.06542056074766354,
+    "motion": {
+      "masterSHA256": "d204809cd6fd9409474c5bbb67adf2bd8e43ff91cce6651085f58a46f5409920",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.15113350125944586,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          52,
+          218
+        ],
+        [
+          272,
+          434
+        ],
+        [
+          461,
+          658
+        ],
+        [
+          686,
+          879
+        ],
+        [
+          912,
+          1094
+        ],
+        [
+          1122,
+          1319
+        ],
+        [
+          1369,
+          1537
+        ],
+        [
+          1600,
+          1750
+        ]
+      ],
+      "rowBaselines": [
+        218,
+        434,
+        658,
+        879,
+        1094,
+        1319,
+        1537,
+        1750
+      ],
+      "columnOrigins": [
+        113,
+        330.5,
+        557,
+        777.5
+      ],
+      "sharedHorizontalOffset": 6.25,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "spindle-widow",
@@ -96,7 +746,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06306306306306306
+    "uniformScale": 0.06306306306306306,
+    "motion": {
+      "masterSHA256": "3c39cc0b4de735043674b60a5c7298fef043b51e52523bb25d0b40c5ee9eaadb",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.15625,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          90,
+          234
+        ],
+        [
+          299,
+          444
+        ],
+        [
+          491,
+          650
+        ],
+        [
+          687,
+          880
+        ],
+        [
+          940,
+          1103
+        ],
+        [
+          1167,
+          1316
+        ],
+        [
+          1377,
+          1532
+        ],
+        [
+          1617,
+          1739
+        ]
+      ],
+      "rowBaselines": [
+        234,
+        444,
+        650,
+        880,
+        1103,
+        1316,
+        1532,
+        1739
+      ],
+      "columnOrigins": [
+        117,
+        336,
+        554.5,
+        771
+      ],
+      "sharedHorizontalOffset": -1,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "orchard-mimic",
@@ -105,7 +820,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06619385342789598
+    "uniformScale": 0.06619385342789598,
+    "motion": {
+      "masterSHA256": "3034c182af69143ee8275be682fc759fdede8525df1e7e4dcaf08954567b47be",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.136986301369863,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          54,
+          219
+        ],
+        [
+          266,
+          429
+        ],
+        [
+          456,
+          650
+        ],
+        [
+          678,
+          867
+        ],
+        [
+          917,
+          1082
+        ],
+        [
+          1109,
+          1308
+        ],
+        [
+          1359,
+          1517
+        ],
+        [
+          1573,
+          1725
+        ]
+      ],
+      "rowBaselines": [
+        219,
+        429,
+        650,
+        867,
+        1082,
+        1308,
+        1517,
+        1725
+      ],
+      "columnOrigins": [
+        113,
+        321.5,
+        543,
+        755
+      ],
+      "sharedHorizontalOffset": 18.5,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "tuning-fork",
@@ -114,7 +894,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06965174129353234
+    "uniformScale": 0.06965174129353234,
+    "motion": {
+      "masterSHA256": "4c818dd50a4d22e7feb51031d178cbc174ade19c205f467c79f540fcc93abff9",
+      "masterSize": [
+        1024,
+        1536
+      ],
+      "uniformScale": 0.18787878787878787,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          54,
+          208
+        ],
+        [
+          225,
+          380
+        ],
+        [
+          397,
+          557
+        ],
+        [
+          583,
+          744
+        ],
+        [
+          766,
+          931
+        ],
+        [
+          965,
+          1117
+        ],
+        [
+          1142,
+          1300
+        ],
+        [
+          1362,
+          1492
+        ]
+      ],
+      "rowBaselines": [
+        208,
+        380,
+        557,
+        744,
+        931,
+        1117,
+        1300,
+        1492
+      ],
+      "columnOrigins": [
+        194,
+        408,
+        616.5,
+        838
+      ],
+      "sharedHorizontalOffset": -1.75,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "ash-ferryman",
@@ -123,7 +968,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06526806526806526
+    "uniformScale": 0.06526806526806526,
+    "motion": {
+      "masterSHA256": "c2f012f8812d32857040629403a3618ab40a22b063da314f9d7fad24a28aa69f",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.13215859030837004,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          62,
+          225
+        ],
+        [
+          269,
+          418
+        ],
+        [
+          462,
+          638
+        ],
+        [
+          686,
+          854
+        ],
+        [
+          901,
+          1074
+        ],
+        [
+          1119,
+          1290
+        ],
+        [
+          1342,
+          1504
+        ],
+        [
+          1552,
+          1733
+        ]
+      ],
+      "rowBaselines": [
+        225,
+        418,
+        638,
+        854,
+        1074,
+        1290,
+        1504,
+        1733
+      ],
+      "columnOrigins": [
+        118.5,
+        333.5,
+        556.5,
+        770
+      ],
+      "sharedHorizontalOffset": 11,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "compost-choir",
@@ -132,7 +1042,72 @@
       1774,
       887
     ],
-    "uniformScale": 0.06436781609195402
+    "uniformScale": 0.06436781609195402,
+    "motion": {
+      "masterSHA256": "b2197a2550fffc5387cf4a468a0c76a4b3320176c06285125235c463d687ddae",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.14423076923076922,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          84,
+          222
+        ],
+        [
+          278,
+          426
+        ],
+        [
+          477,
+          647
+        ],
+        [
+          692,
+          855
+        ],
+        [
+          932,
+          1077
+        ],
+        [
+          1147,
+          1298
+        ],
+        [
+          1356,
+          1507
+        ],
+        [
+          1586,
+          1715
+        ]
+      ],
+      "rowBaselines": [
+        222,
+        426,
+        647,
+        855,
+        1077,
+        1298,
+        1507,
+        1715
+      ],
+      "columnOrigins": [
+        111.5,
+        332,
+        547,
+        761
+      ],
+      "sharedHorizontalOffset": 13,
+      "sourceKind": "motion-32"
+    }
   },
   {
     "id": "seed-engine",
@@ -141,6 +1116,71 @@
       1774,
       887
     ],
-    "uniformScale": 0.0660377358490566
+    "uniformScale": 0.0660377358490566,
+    "motion": {
+      "masterSHA256": "756bb01204084576ae59feaecb656988be0e2e4e305b0583597d28545467d8dd",
+      "masterSize": [
+        887,
+        1774
+      ],
+      "uniformScale": 0.12526096033402923,
+      "grid": [
+        4,
+        8
+      ],
+      "extraction": "alpha-components",
+      "rowSpans": [
+        [
+          53,
+          224
+        ],
+        [
+          270,
+          443
+        ],
+        [
+          480,
+          665
+        ],
+        [
+          713,
+          887
+        ],
+        [
+          936,
+          1110
+        ],
+        [
+          1150,
+          1331
+        ],
+        [
+          1381,
+          1551
+        ],
+        [
+          1572,
+          1752
+        ]
+      ],
+      "rowBaselines": [
+        224,
+        443,
+        665,
+        887,
+        1110,
+        1331,
+        1551,
+        1752
+      ],
+      "columnOrigins": [
+        118,
+        338.5,
+        559,
+        786
+      ],
+      "sharedHorizontalOffset": 2.75,
+      "sourceKind": "motion-32"
+    }
   }
 ]

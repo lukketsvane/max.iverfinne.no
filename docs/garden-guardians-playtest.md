@@ -63,3 +63,18 @@ The browser review exercises every guardian's live warning and native art in
 Chromium and WebKit, and checks movement, placement, stationary ticking and
 explosion for both bomb classes. Screenshots are uploaded by the dedicated
 Garden guardians browser review workflow.
+
+## Guardian animation expansion — 26 September 2026
+
+This pass changes artwork and presentation, not boss health, attack timings,
+movement, damage, rewards or progression. Seventeen targeted rendering/co-op
+checks pass, including complete real-simulation attack cycles for all nineteen
+nonfinal guardians and guest death animations. The final Crown's corpse now
+finishes even after victory stops the simulation clock.
+
+Two independent-client automated runs used normal input, Medium difficulty and
+100 ms snapshot latency. Mech + Herbalist defeated gardens 1–3 and physically
+entered garden 4 at 126.9 seconds. Moss + Herbalist defeated gardens 1–2, entered
+3 at 57.7 seconds, then lost the plant at 89.4 seconds while the Thorn Duelist
+was active. These are automated controller samples, not human playtests or a
+claim that the full campaign has been cleared.

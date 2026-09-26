@@ -21,15 +21,18 @@ export function createNativeArt() {
   function milestone(enemy) { return !!enemy.boss && (Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
   function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
   function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
+  function renderTime() { return typeof performance !== 'undefined' ? performance.now() / 1000 : 0; }
   function clockFor(enemy, time) {
     // `ph` is already a stable per-enemy seed in host snapshots. A WeakMap alone
     // would restart guest animations whenever a fresh snapshot replaces objects.
     const key = Number.isFinite(enemy.ph) ? `${idFor(enemy)}:${enemy.ph}` : null;
     let clock = key ? clocks.get(key) : anonymousClocks.get(enemy);
     if (!clock || time < clock.last - .5) {
-      clock = { name: '', since: time, last: time, windup: 0, bite: 0, flash: 0, exposed: 0, attackT: 0, releasedAt: -Infinity, recoveredAt: -Infinity };
+      clock = { name: '', since: time, last: time, windup: 0, bite: 0, flash: 0, exposed: 0, attackT: 0,
+        releasedAt: -Infinity, recoveredAt: -Infinity, hitAt: -Infinity, defeated: false };
       if (key) clocks.set(key, clock); else anonymousClocks.set(enemy, clock);
     }
+    clock.last = time;
     if (time - sweptAt > 5 || clocks.size > 128) {
       for (const [id, value] of clocks) if (time - value.last > 5) clocks.delete(id);
       sweptAt = time;
@@ -52,6 +55,10 @@ export function createNativeArt() {
         ((enemy.bite || 0) > clock.bite + .05 || enemy.stolen && !clock.stolen)) clock.releasedAt = time;
     if (enemy.boss && clock.exposed > 0 && !(enemy.exposed > 0)) clock.recoveredAt = time;
     if (enemy.boss && clock.attackT > 0 && !(enemy.attackT > 0)) clock.recoveredAt = time;
+    // A snapshot can arrive after the short damage flash has faded. The health
+    // edge still starts the local recoil, and repeated hits restart it cleanly.
+    if (enemy.boss && (enemy.flash > clock.flash || enemy.hp < clock.hp)) clock.hitAt = time;
+    if (enemy.boss && (enemy.windup > 0 || enemy.exposed > 0 || enemy.attackT > 0)) clock.hitAt = -Infinity;
     let name, progress;
     const phase = enemy.boss && !milestone(enemy) ? 'phase' + Math.max(1, Math.min(3, enemy.phase | 0)) + '/' : '';
     if (enemy.hp <= 0) name = 'death';
@@ -64,9 +71,11 @@ export function createNativeArt() {
     } else if (enemy.boss && enemy.attackT > 0) {
       name = phase + 'attack';
       progress = 1 - enemy.attackT / (enemy.attackDuration || .5);
-    } else if (enemy.flash > 0) {
+    } else if (enemy.flash > 0 || enemy.boss && time - clock.hitAt < .3) {
       name = (enemy.boss ? phase : '') + 'hurt';
-      progress = 1 - Math.min(1, enemy.flash);
+      // Boss recoil gets enough time for its authored poses. Amber windups,
+      // active attacks and the complete cyan damage window always take priority.
+      progress = enemy.boss && Number.isFinite(clock.hitAt) ? (time - clock.hitAt) / .3 : 1 - Math.min(1, enemy.flash);
     } else if (enemy.boss) {
       const recovery = time - clock.recoveredAt;
       name = phase + (recovery < .6 ? 'recover' : milestone(enemy) && Math.hypot(enemy.vx || 0, enemy.vy || 0) > 2 ? 'move' : 'idle');
@@ -85,7 +94,7 @@ export function createNativeArt() {
       clock.name = name; clock.since = time;
     }
     clock.last = time; clock.windup = enemy.windup || 0; clock.bite = enemy.bite || 0;
-    clock.flash = enemy.flash || 0; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0; clock.attackT = enemy.attackT || 0;
+    clock.flash = enemy.flash || 0; clock.hp = enemy.hp; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0; clock.attackT = enemy.attackT || 0;
     return { name, seconds: Math.max(0, time - clock.since), progress };
   }
   function flashAtlas(atlas) {
@@ -148,15 +157,22 @@ export function createNativeArt() {
   function enemyDefeated(enemy, time) {
     const atlas = atlases[idFor(enemy)];
     if (!atlas) return;
+    const clock = clockFor(enemy, time);
+    if (clock.defeated) return;
+    clock.defeated = true; clock.last = time;
     const clip = atlas.manifest.animations.death;
-    deaths.push({ atlas, x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time,
+    deaths.push({ atlas, x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
       duration: clip.frames.length / clip.fps });
     if (deaths.length > 32) deaths.shift();
   }
   function drawDefeated(ctx, time, cameraX, cameraY) {
-    deaths = deaths.filter(death => time >= death.at && time - death.at < death.duration);
+    const now = renderTime();
+    // Winning freezes the simulation clock. The final collapse still finishes
+    // behind the result overlay; this clock never advances live enemy attacks.
+    const elapsed = death => Math.max(time - death.at, now - death.renderedAt);
+    deaths = deaths.filter(death => time >= death.at && elapsed(death) < death.duration);
     for (const death of deaths) {
-      drawAtlas(ctx, death.atlas, 'death', time - death.at, death.x - cameraX, death.y - cameraY, { facing: death.face });
+      drawAtlas(ctx, death.atlas, 'death', elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
     }
   }
   return { skins: SKINS, load, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
