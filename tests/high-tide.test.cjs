@@ -9,7 +9,7 @@ function step(g,seconds,held=false){g.heldSpace=held;for(let t=0;t<seconds-1e-8;
 function stand(g,q){Object.assign(g.P,{x:q.x,y:q.y,vx:0,vy:0,grounded:true,st:'free'});}
 function pair(){const room={host:ids[0],mode:'high-tide',members:ids.map((id,i)=>({id,slot:i+1,classId:i?'polge':'mech'}))};const players=ids.map((id,i)=>{const h=loadGame();h.game.beginCoop({room,user:{id},host:i===0,action(){return true;},tick(){}});return h;});return {room,players,sync(){players[1].game.coopState(JSON.parse(JSON.stringify(players[0].game.coopCapture())));}};}
 
-test('High Tide remains publicly available, while the other relic remains account gated',async()=>{const {relicCollection}=await import('../relics.mjs');for(const u of [null,{}, {id:'guest',is_anonymous:true},{id:'player',email:'person@players.max.invalid'}])assert.deepEqual(relicCollection(u).map(r=>r.id),['high-tide']);});
+test('High Tide and Night Relay are public, while Last Seed remains account gated',async()=>{const {relicCollection}=await import('../relics.mjs');for(const u of [null,{}, {id:'guest',is_anonymous:true},{id:'player',email:'person@players.max.invalid'}])assert.deepEqual(relicCollection(u).map(r=>r.id),['night-relay','high-tide']);});
 test('all 178 art objects and 118 invisible floors use the uploaded native layout without replacement tiles',()=>{
  const {game:g,images}=setup(),L=g.highTideLayout();
  const source=JSON.parse(fs.readFileSync('docs/asset-review/high-tide-v1/level.json'));

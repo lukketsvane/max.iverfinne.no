@@ -16,7 +16,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
    page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
    await page.goto(base+'/night-relay-review.html',{waitUntil:'load'});
    const ready=()=>page.waitForFunction(()=>[...document.querySelectorAll('.status')].every(n=>n.dataset.state&&JSON.parse(n.dataset.state).ready),{},{timeout:30000});
-   const wait=fn=>page.waitForFunction(fn,{},{timeout:90000});
+   const wait=async fn=>{try{await page.waitForFunction(fn,{},{timeout:90000});}catch(e){console.error(name,'FAILED STATE',await states(),'ERRORS',errors);await page.screenshot({path:`browser-review/relay-${name}-failed.png`,fullPage:true});throw e;}};
    const states=()=>page.locator('.status').evaluateAll(ns=>ns.map(n=>JSON.parse(n.dataset.state)));
    await ready();await page.getByRole('button',{name:'Play',exact:true}).click();
    await wait(()=>JSON.parse(document.querySelector('.status').dataset.state).time>=2);

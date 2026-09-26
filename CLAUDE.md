@@ -29,6 +29,14 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 
 ## Current multiplayer model
 
+`night-relay.inc.js` adds Night Relay, a public 2–4 player light heist. It uses
+the existing engine and controls, not planting or raids. The first member waits
+for a partner; a missing partner freezes its mode clock and hazards. Locks need
+two distinct players and a new carrier after each lock; every connected player
+must make the final escape. Preserve freshness checks, gate bounds, checkpoints,
+handoff latching, health and host-owned snapshots. See `docs/design/night-relay.md`.
+Its records contain no plants and remain outside the normal leaderboard.
+
 Relic stones now select modes of the real garden game. Bastion and Minos and their standalone canvases were removed. `relics.mjs` defines the Last Seed stone and grants collection access to the canonical signed-in owner account; other accounts use `relic-last-seed`. Hosted joining also checks this entitlement. Never infer owner rights from a display name or `user_metadata`.
 
 `last-seed.inc.js` changes the shared engine's rules: one team seed, planting starts endless waves, no replenishment or travel, player health and three-second Tend revives, and all-down ends the run. The living plant heals nearby gardeners; its loss removes healing but does not end the game. Preserve host authority, late-join state and host handoff for health and wave progress. Keep the existing sprites, terrain, attacks and controls. Last Seed records contain only the actual plant and remain outside the normal leaderboard and meta scores.
