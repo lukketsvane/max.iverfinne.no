@@ -5,10 +5,10 @@
   options=options||{};let time=0,nextJump=0,jumpUntil=0,care=false,target=null,edge=null,edgeAt=0,goalAt=0,held={},phase='start';
   const rejected=new Set(),events=[],rank=['cadence','growth','water','tender','blast','bark','stride','spring','slow','wild','chain','shield','regen'];
   const metrics={waiting:0,climbing:0,platforming:0,tending:0,combat:0,damage:0,jumps:0,boons:[],stages:[],stalls:0};
-  let previousHp=100,previousBosses=0,lastDamage=0;
+  let previousHp=100,previousBosses=0,lastDamage=0,nextChoice=0,wantsJump=false;
   const key=(k,on)=>{on=!!on;if(held[k]!==on){held[k]=on;send(on?'keydown':'keyup',k);}};
   const pulse=k=>{send('keydown',k);send('keyup',k);};
-  const jump=()=>{if(time<nextJump)return;key('ArrowUp',false);key('ArrowUp',true);jumpUntil=time+(edge?.hold||.22);nextJump=time+.34;metrics.jumps++;};
+  const jump=()=>{if(time<nextJump)return;wantsJump=true;jumpUntil=time+(edge?.hold||.22);nextJump=time+.34;metrics.jumps++;};
   const floorAt=p=>graph.floors.findIndex(f=>Math.abs(f.y+g.rogueRun.survival.base-p.y)<2&&p.x>=f.x-2&&p.x<=f.x+f.w+2);
   function route(from,to,water){
    const costs=new Map([[from,0]]),prev=new Map(),open=[from];
@@ -26,7 +26,7 @@
    if(g.rogueRun.ended){stop();return;}
    if(v.hp<previousHp){metrics.damage+=previousHp-v.hp;lastDamage=time;}previousHp=v.hp;
    if(s.bosses!==previousBosses){metrics.stages.push({boss:s.bosses,time:+s.elapsed.toFixed(1),hp:+v.hp.toFixed(1),level:g.rogueRun.level});previousBosses=s.bosses;target=edge=null;}
-   if(g.rogueRun.choice?.length){const choices=g.rogueRun.choice;const best=[...choices].sort((a,b)=>(rank.indexOf(a.id)<0?99:rank.indexOf(a.id))-(rank.indexOf(b.id)<0?99:rank.indexOf(b.id)))[0];metrics.boons.push(best.id);pulse(String(choices.indexOf(best)+1));}
+   if(v.hp>0&&time>=nextChoice&&g.rogueRun.choice?.length){const choices=g.rogueRun.choice;const best=[...choices].sort((a,b)=>(rank.indexOf(a.id)<0?99:rank.indexOf(a.id))-(rank.indexOf(b.id)<0?99:rank.indexOf(b.id)))[0];nextChoice=time+1;metrics.boons.push(best.id);pulse(String(choices.indexOf(best)+1));}
    key('ArrowUp',time<jumpUntil);
    if(!s.started){phase='plant';key(' ',true);return;}
    if(v.hp<=0){phase='down';stop();return;}
@@ -43,7 +43,7 @@
    }else{
     let at=floorAt(a);
     if(!target||time-goalAt>16||target.bit!=null&&(s[target.mask]&target.bit)){
-     if(target&&time-goalAt>16){rejected.add(target.id);metrics.stalls++;events.push({time,stalled:target.id,x:a.x,h:s.base-a.y});}
+     if(target?.bit&&time-goalAt>16){rejected.add(target.id);metrics.stalls++;events.push({time,stalled:target.id,x:a.x,h:s.base-a.y});}
      edge=null;target=null;goalAt=time;
      const gate=g.HIGH_TIDE_GATES[Math.min(4,s.bosses)],loot=[...g.highTideBoons().map(b=>({...b,id:'boon'+b.bit,mask:'boonMask'})),...g.highTidePods().map(b=>({...b,id:'dew'+b.bit,mask:'dewMask'}))];
      const candidates=loot.filter(b=>!(s[b.mask]&b.bit)&&!rejected.has(b.id)&&b.h<=gate&&b.y-18<s.waterY&&b.h>=s.base-a.y-65).sort((a0,b0)=>Math.hypot(a0.x-a.x,a0.y-a.y)-Math.hypot(b0.x-a.x,b0.y-a.y));
@@ -71,6 +71,7 @@
    const friend=g.seedActors().find(b=>b.v.hp<=0&&Math.hypot(b.p.x-a.x,b.p.y-a.y)<22&&b.p.y-18<s.waterY);
    if(friend&&!urgent){axis=0;tend=true;phase='revive';}
    key('ArrowLeft',axis<0);key('ArrowRight',axis>0);key(' ',tend);
+   if(wantsJump){key('ArrowUp',false);key('ArrowUp',true);wantsJump=false;}
    const visible=g.floatKrek.some(k=>Math.hypot(k.x-a.x,k.y-a.y)<145);
    key('b',visible&&time%.64<.14);
    if(g.rogueRun.classId==='herbalist'&&p.health<.8&&time%4<dt)pulse('e');

@@ -44,7 +44,7 @@ function highTideLayout(){
 function resetHighTide(){
   if(!highTideMode())return;
   var base=Math.round(terrainY(0));
-  rogueRun.survival={started:false,elapsed:0,base:base,root:0,waterY:base+70,height:0,best:0,dewMask:0,boonMask:0,bosses:0,bossActive:false,bossSerial:0,enemyClock:12,enemyRound:0,rest:0,calm:0,phase:'ready',cycle:0,plantTime:0,escaped:''};
+  rogueRun.survival={started:false,elapsed:0,base:base,root:0,waterY:base+70,height:0,best:0,dewMask:0,boonMask:0,bosses:0,bossActive:false,bossSerial:0,enemyClock:12,enemyRound:0,rest:0,calm:0,phase:'ready',cycle:0,plantTime:0,growthRush:0,escaped:''};
   rogueRun.vital={hp:100,air:highTideProfile().breath,shield:0,revive:0,hurt:0};
   gardenSeeds=1;seedPickups=[];runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;
   gardenRaidActive=false;gardenRaidT=0;floatKrek=[];activeStageLayout=null;tideLayoutKey='';tideCue='';tideRouteCache=null;
@@ -65,16 +65,19 @@ function highTideCarer(a){
   var remote=a.member&&a.member.id!==coop.me;
   return !!((remote?a.p.tideTend&&performance.now()-a.member.last<500:seedHeld())&&highTideNearPlant(a));
 }
-function highTideCareRate(a){var id=a.member?a.member.classId:rogueRun.classId,perks=a.member?a.member.perks:rogueRun.perks;return (id==='herbalist'?1.4:id==='polge'?.8:1)*(1+.12*(perks.tender||0)+.08*(perks.water||0));}
+function highTideCareRate(a){var id=a.member?a.member.classId:rogueRun.classId,perks=a.member?a.member.perks:rogueRun.perks;return (id==='herbalist'?1.4:id==='polge'?.8:1)*(1+.12*(perks.tender||0));}
 function highTideAtSummit(a){var s=rogueRun.survival,q=highTideSummit();return a.v.hp>0&&s.bosses===5&&s.height>=HIGH_TIDE.height&&Math.abs(a.p.x-q.x)<40&&Math.abs(a.p.y-q.y)<12&&(a.p.st==='climb'||a.p.grounded)&&highTideHead(a)<s.waterY;}
 function highTideClaimBoons(actors,p){
   var s=rogueRun.survival;
   highTideBoons().forEach(function(q){if(s.boonMask&q.bit)return;if(!actors.some(function(a){return a.v.hp>0&&Math.abs(a.p.x-q.x)<12&&Math.abs(a.p.y-q.y)<14&&highTideHead(a)<s.waterY;}))return;
-    s.boonMask|=q.bit;grantRogueLevel();p.pulse=1;chime([523,659,784],.06,.04);
+    s.boonMask|=q.bit;s.growthRush=Math.min(12,(s.growthRush||0)+6);grantRogueLevel();p.pulse=1;chime([523,659,784],.06,.04);
   });
   highTidePods().forEach(function(q){if(s.dewMask&q.bit)return;var a=actors.find(function(a){return a.v.hp>0&&Math.hypot(a.p.x-q.x,a.p.y-q.y)<14&&highTideHead(a)<s.waterY;});if(!a)return;
-    s.dewMask|=q.bit;p.moisture=clamp01(p.moisture+.3);p.health=clamp01(p.health+.12);p.pulse=1.5;s.calm=Math.max(s.calm,8);a.v.hp=Math.min(100,a.v.hp+18);a.v.air=highTideProfile().breath;
+    s.dewMask|=q.bit;s.growthRush=Math.min(12,(s.growthRush||0)+5);p.moisture=clamp01(p.moisture+.3);p.health=clamp01(p.health+.12);p.pulse=1.5;s.calm=Math.max(s.calm,8);a.v.hp=Math.min(100,a.v.hp+18);a.v.air=highTideProfile().breath;
   });
+}
+function highTideDamagePlant(p,amount,bite){
+  var perks=plantPerks(p);p.health=clamp01(p.health-amount*Math.pow(.78,(bite?perks.shield:perks.bark)||0));p.hit=1;
 }
 function highTideSpawnBoss(){
   var s=rogueRun.survival;if(s.bossActive||s.bosses>=5||s.height<highTideGate())return;
@@ -107,7 +110,7 @@ function updateHighTideBoss(k,dt){
   var a=highTideEnemyTarget(k);if(!a)return;
   k.phase=k.hp<k.maxHp/3?3:k.hp<k.maxHp*2/3?2:1;k.exposed=Math.max(0,k.exposed-dt);k.flee=0;
   if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step;k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
-  if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){p.health=clamp01(p.health-.07);p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
+  if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){highTideDamagePlant(p,.07,false);p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
   k.cool-=dt;
   var gate=highTideRoutePoint(HIGH_TIDE_GATES[k.tideIndex]);
   if(k.exposed<=0)moveEnemyTo(k,gate.x+(k.attack%2?-44:44),gate.y-(k.bossId==='moon-moth'?40:22),dt,24);
@@ -133,12 +136,14 @@ function updateHighTideEnemies(dt){
   }
   floatKrek.slice().forEach(function(k){if(!k.tide||k.hp<=0)return;k.flash=Math.max(0,(k.flash||0)-dt*5);k.startle=Math.max(0,(k.startle||0)-dt);
     if(k.burn>0){k.burn=Math.max(0,k.burn-dt);if(damagePest(k,(k.burnRate||.2)*dt,k.x-20))return;}
+    if(k.glue>0)k.glue=Math.max(0,k.glue-dt);
     if(k.boss){updateHighTideBoss(k,dt);return;}
+    if(polgeLure(k,dt))return;
     if(k.flee>0){k.flee-=dt;k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt;k.y-=8*dt;return;}
     var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
     var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
     k.cool=Math.max(0,k.cool-dt);
-    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){p.health=clamp01(p.health-.045);p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale());}k.cool=1.5;}return;}
+    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){highTideDamagePlant(p,.045,true);p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale());}k.cool=1.5;}return;}
     if(d<14&&k.cool<=0){k.tell=k.windup=.65;k.vx=k.vy=0;}
   });
 }
@@ -159,12 +164,14 @@ function updateHighTide(dt){
     var actors=seedActors(),carers=actors.filter(highTideCarer),care=carers.reduce(function(sum,a){return sum+highTideCareRate(a);},0);
     if(carers.length&&carers[0].member)p.carer=carers[0].member.id;
     carers.forEach(function(a){if((a.member?a.member.classId:rogueRun.classId)!=='sligo')return;var c=sligoColony(a.member),b=sligoBody(c,c.active);if(b&&b.sligoMass<SLIGO_LIFE.startMass){sligoFeed(c,b,Math.min(step*.12,SLIGO_LIFE.startMass-b.sligoMass));a.p.sligoMass=b.sligoMass;}});
-    p.moisture=clamp01(p.moisture+step*(care*.18-.008));
-    p.health=clamp01(p.health+step*(care*.035-(p.moisture<=0?.008:0)));
+    var perks=plantPerks(p);
+    p.moisture=clamp01(p.moisture+step*(care*.18-.008*Math.pow(.7,perks.water||0)));
+    p.health=clamp01(p.health+step*(care*.035+(p.moisture>.2?.005*(perks.regen||0):0)-(p.moisture<=0?.008:0)));
     if(p.health<=0){finishHighTide(false);return;}
     // A watered motherplant grows while the team explores. Care replenishes
     // water and health; holding Tend cannot bypass the guardian's growth gate.
-    var perks=plantPerks(p),growth=(1+.12*(perks.growth||0));
+    var growth=(1+.35*(perks.growth||0))*(s.growthRush>0?2:1);
+    if(s.height<highTideGate()&&p.moisture>.05)s.growthRush=Math.max(0,(s.growthRush||0)-step);
     if(p.moisture>.05&&p.health>.05)s.height=Math.min(highTideGate(),s.height+step*HIGH_TIDE.growth*profile.growth*growth*(p.moisture<.2?.4:1));
     highTideClaimBoons(actors,p);p.tideHeight=s.height;p.growth=.1+s.height/HIGH_TIDE.height*(G_TOP-.1);p.stalk=s.bosses===5;p.age=s.elapsed;p.pulse=Math.max(0,(p.pulse||0)-step);recordGardenPlant(p);
     actors.forEach(function(a){a.v.shield=Math.max(0,a.v.shield-step);a.v.hurt=Math.max(0,a.v.hurt-step);
@@ -200,6 +207,18 @@ function finalizeHighTide(won){
   rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
 }
 
+// Travel at a bounded speed along the curved stem, including its horizontal
+// stretches. Vertical-only speed made the opening bend outrun coop validation.
+function highTideClimbHeight(height,distance,ceiling){
+  var route=highTideRoute(),h=Math.max(0,Math.min(height,ceiling));
+  for(var i=0;i<route.length&&distance>0&&h<ceiling;i++){
+    if(route[i].h<=h)continue;
+    var next=Math.min(ceiling,route[i].h),a=highTideRoutePoint(h),b=highTideRoutePoint(next),length=Math.hypot(b.x-a.x,b.y-a.y);
+    if(length>distance)return h+(next-h)*distance/length;
+    distance-=length;h=next;
+  }
+  return h;
+}
 function updateHighTideClimb(dt,inp){
   var c=climb;if(!c){P.st='free';return;}
   var p=gardenPlots.find(function(q){return q.id===c.plantId;});
@@ -207,7 +226,7 @@ function updateHighTideClimb(dt,inp){
   var s=rogueRun.survival;c.p=p;c.exit=false;c.t+=dt;c.boost=Math.max(0,c.boost-dt);c.gy=s.base;
   var tending=seedHeld();if(inp&&inp.axis)c.side=inp.axis;
   var want=tending?0:78+(c.boost>0?35:0);c.v=tending?0:approach(c.v,want,200*dt);
-  P.y=Math.max(s.base-p.tideHeight,Math.min(s.base-1,P.y-c.v*dt*(.6+.4*Math.max(0,Math.sin(c.t*9)))));
+  P.y=s.base-highTideClimbHeight(s.base-P.y,c.v*dt*(.6+.4*Math.max(0,Math.sin(c.t*9))),p.tideHeight);
   var h=Math.max(0,Math.min(p.tideHeight,s.base-P.y)),q=highTideRoutePoint(h);
   P.x=q.x+c.side*3;P.face=-c.side;P.vx=P.vy=0;P.grounded=false;P.platform=null;P.coyote=0;jumpBuf=0;
   setAnim('climb');

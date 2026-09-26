@@ -241,7 +241,7 @@ function updateRunHazards(dt){
     if(!h.hit){
       h.hit=true;rootAbsorb(h);
       if(singleSeedMode()&&!h.absorbed)seedActors().forEach(function(a){if(Math.abs(a.p.x-h.x)<h.r&&Math.abs(a.p.y-h.y)<20)damageGardener(a.member,24*h.power*runDamageScale());});
-      if(highTideMode()&&h.tide&&!h.absorbed){var mother=highTidePlant(),tip=highTideTip();if(mother&&h.power>0&&Math.abs(tip.x-h.x)<h.r&&Math.abs(tip.y-h.y)<20){mother.health=clamp01(mother.health-.06*h.power);mother.hit=1;}}
+      if(highTideMode()&&h.tide&&!h.absorbed){var mother=highTidePlant(),tip=highTideTip();if(mother&&h.power>0&&Math.abs(tip.x-h.x)<h.r&&Math.abs(tip.y-h.y)<20){highTideDamagePlant(mother,.06*h.power,false);}}
       if(!highTideMode()&&!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*plantProtection(p,false));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
@@ -277,7 +277,7 @@ function dewDodge(){
 function moveEnemyTo(k,x,y,dt,speed){
   var dx=x-k.x,dy=y-k.y,d=Math.hypot(dx,dy);k.face=dx<0?-1:1;
   if(d<3){k.vx=k.vy=0;return d;}
-  var sp=speed*(1+raidPressure()*.035)*Math.pow(.86,rogueRun.perks.slow||0);
+  var sp=speed*(1+raidPressure()*.035)*Math.pow(.86,(coop?coopTeamPerks():rogueRun.perks).slow||0)*(k.glue>0?.2:1);
   k.vx+=(dx/d*sp-k.vx)*Math.min(1,dt*3);k.vy+=(dy/d*sp-k.vy)*Math.min(1,dt*3);k.x+=k.vx*dt;k.y+=k.vy*dt;return d;
 }
 function cancelPestDive(k){

@@ -50,9 +50,9 @@
   // boons are a little more common for their own class, and the three picks span
   // at least two paths whenever the pool allows it. The roll is seeded, so the
   // host and every guest see the same offer.
-  function choices(p,level,salt,classId){
+  function choices(p,level,salt,classId,mode){
     p=clean(p,classId);
-    var pool=perks.filter(function(q){return available(p,q,classId);}),out=[];
+    var pool=perks.filter(function(q){return available(p,q,classId)&&(mode!=='high-tide'||['growth','water','regen','tender','shield','bark','mulch','blast','slow','cadence','dash','stride','spring','chain','wild','glue','varnish','splinters','raincoat'].indexOf(q.id)>=0);}),out=[];
     if(!pool.length)return out;
     var roll=roller(hash([level|0,salt|0,classId||'mech'].join(':')));
     function weight(q){return (q.classId?1.6:1)*(q.needs?.6:1);}

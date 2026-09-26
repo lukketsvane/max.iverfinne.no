@@ -41,7 +41,9 @@ function damageGardener(member,amount){
   v.hp=Math.max(0,v.hp-amount*(guarded?.35:1));v.shield=.85;v.hurt=4;v.revive=0;
   if(!member||member.id===coop.me){P.hurt=.4;shake=Math.max(shake,2);}
   if(v.hp===0){
-    a.y=playerSupportY(a.x,a.y);a.grounded=true;
+    // Keep a fallen climber where their partner can reach them. The ground
+    // fallback is far below the authored High Tide platforms.
+    if(!highTideMode())a.y=playerSupportY(a.x,a.y);a.grounded=true;
     a.vx=a.vy=0;a.anim='rest';a.frame=0;a.st='rest';a.bracing=a.curled=false;a.tun=a.brace=0;a.lampLit=0;
     if(member){member.braceUntil=member.tunUntil=0;member.reviveHeld=false;member.dodge=null;}
     if(!member||member.id===coop.me){task=holdWater=climb=warp=null;clearRunInput();setAnim('rest');}
