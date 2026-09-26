@@ -1,0 +1,564 @@
+[
+  {
+    "classes": [
+      "mech"
+    ],
+    "style": "vine",
+    "difficulty": "medium",
+    "latency": 100,
+    "won": false,
+    "ended": true,
+    "seconds": 291.8,
+    "bosses": 4,
+    "height": 1370,
+    "boons": 0,
+    "dew": 0,
+    "plant": 1,
+    "players": [
+      {
+        "hp": 0,
+        "x": 387,
+        "height": 1394,
+        "phase": "down",
+        "metrics": {
+          "waiting": 256.63333333332184,
+          "climbing": 268.7999999999982,
+          "platforming": 22.966666666666967,
+          "tending": 31.86666666666741,
+          "combat": 123.49999999999555,
+          "damage": 193.93333333331447,
+          "jumps": 56,
+          "boons": [
+            "cadence",
+            "tender",
+            "tender",
+            "bark",
+            "bark"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 44.9,
+              "hp": 100,
+              "level": 2
+            },
+            {
+              "boss": 2,
+              "time": 88.8,
+              "hp": 100,
+              "level": 3
+            },
+            {
+              "boss": 3,
+              "time": 150.3,
+              "hp": 100,
+              "level": 4
+            },
+            {
+              "boss": 4,
+              "time": 214,
+              "hp": 100,
+              "level": 6
+            }
+          ],
+          "stalls": 0
+        },
+        "events": []
+      }
+    ]
+  },
+  {
+    "classes": [
+      "mech"
+    ],
+    "style": "explore",
+    "difficulty": "medium",
+    "latency": 100,
+    "won": true,
+    "ended": true,
+    "seconds": 181.9,
+    "bosses": 5,
+    "height": 1370,
+    "boons": 3,
+    "dew": 0,
+    "plant": 1,
+    "players": [
+      {
+        "hp": 86.5,
+        "x": 393,
+        "height": 1370,
+        "phase": "ascent",
+        "metrics": {
+          "waiting": 88.43333333333088,
+          "climbing": 112.29999999999619,
+          "platforming": 69.59999999999862,
+          "tending": 1.7666666666666688,
+          "combat": 89.9333333333308,
+          "damage": 39.60000000000001,
+          "jumps": 75,
+          "boons": [
+            "growth",
+            "growth",
+            "water",
+            "water",
+            "water",
+            "wild",
+            "tender",
+            "tender"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 33.2,
+              "hp": 100,
+              "level": 3
+            },
+            {
+              "boss": 2,
+              "time": 55.3,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 88.7,
+              "hp": 100,
+              "level": 6
+            },
+            {
+              "boss": 4,
+              "time": 130.4,
+              "hp": 100,
+              "level": 7
+            },
+            {
+              "boss": 5,
+              "time": 181.4,
+              "hp": 86.3,
+              "level": 9
+            }
+          ],
+          "stalls": 0
+        },
+        "events": []
+      }
+    ]
+  },
+  {
+    "classes": [
+      "mech",
+      "herbalist"
+    ],
+    "style": [
+      "explore",
+      "vine"
+    ],
+    "difficulty": "medium",
+    "latency": 100,
+    "won": true,
+    "ended": true,
+    "seconds": 189.9,
+    "bosses": 5,
+    "height": 1370,
+    "boons": 4,
+    "dew": 2,
+    "plant": 1,
+    "players": [
+      {
+        "hp": 100,
+        "x": 393,
+        "height": 1370,
+        "phase": "ascent",
+        "metrics": {
+          "waiting": 66.2999999999988,
+          "climbing": 121.49999999999567,
+          "platforming": 68.36666666666535,
+          "tending": 1.400000000000001,
+          "combat": 87.13333333333095,
+          "damage": 0,
+          "jumps": 73,
+          "boons": [
+            "shield",
+            "tender",
+            "cadence",
+            "cadence",
+            "growth",
+            "spring",
+            "stride",
+            "tender",
+            "water"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 38.5,
+              "hp": 100,
+              "level": 3
+            },
+            {
+              "boss": 2,
+              "time": 66.9,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 112.6,
+              "hp": 100,
+              "level": 7
+            },
+            {
+              "boss": 4,
+              "time": 148.6,
+              "hp": 100,
+              "level": 8
+            },
+            {
+              "boss": 5,
+              "time": 189.8,
+              "hp": 100,
+              "level": 10
+            }
+          ],
+          "stalls": 0
+        },
+        "events": []
+      },
+      {
+        "hp": 100,
+        "x": 386,
+        "height": 1374,
+        "phase": "vine",
+        "metrics": {
+          "waiting": 171.5666666666595,
+          "climbing": 175.43333333332595,
+          "platforming": 14.266666666666627,
+          "tending": 1.400000000000001,
+          "combat": 87.06666666666429,
+          "damage": 21.599999999999994,
+          "jumps": 33,
+          "boons": [
+            "water",
+            "cadence",
+            "growth",
+            "bark",
+            "cadence",
+            "bark",
+            "cadence",
+            "tender"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 38.6,
+              "hp": 100,
+              "level": 3
+            },
+            {
+              "boss": 2,
+              "time": 66.9,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 112.6,
+              "hp": 100,
+              "level": 7
+            },
+            {
+              "boss": 4,
+              "time": 148.6,
+              "hp": 100,
+              "level": 8
+            }
+          ],
+          "stalls": 0
+        },
+        "events": []
+      }
+    ]
+  },
+  {
+    "classes": [
+      "runner",
+      "bulwark"
+    ],
+    "style": "explore",
+    "difficulty": "medium",
+    "latency": 100,
+    "won": true,
+    "ended": true,
+    "seconds": 220.7,
+    "bosses": 5,
+    "height": 1370,
+    "boons": 3,
+    "dew": 4,
+    "plant": 1,
+    "players": [
+      {
+        "hp": 100,
+        "x": 393,
+        "height": 1370,
+        "phase": "ascent",
+        "metrics": {
+          "waiting": 145.19999999999433,
+          "climbing": 156.03333333332705,
+          "platforming": 64.66666666666556,
+          "tending": 3.5666666666666638,
+          "combat": 116.29999999999596,
+          "damage": 23.19999999999999,
+          "jumps": 85,
+          "boons": [
+            "spring",
+            "tender",
+            "water",
+            "tender",
+            "stride",
+            "growth",
+            "growth",
+            "blast"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 34.5,
+              "hp": 100,
+              "level": 4
+            },
+            {
+              "boss": 2,
+              "time": 73,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 114.9,
+              "hp": 100,
+              "level": 7
+            },
+            {
+              "boss": 4,
+              "time": 155.1,
+              "hp": 100,
+              "level": 8
+            },
+            {
+              "boss": 5,
+              "time": 220.7,
+              "hp": 100,
+              "level": 9
+            }
+          ],
+          "stalls": 1
+        },
+        "events": [
+          {
+            "time": 131.13333333332847,
+            "stalled": "boon32",
+            "x": 168.31600000004784,
+            "h": 1085.9600000000228
+          }
+        ]
+      },
+      {
+        "hp": 80.1,
+        "x": 378,
+        "height": 1370,
+        "phase": "fight",
+        "metrics": {
+          "waiting": 78.1666666666648,
+          "climbing": 125.76666666666209,
+          "platforming": 94.76666666666385,
+          "tending": 15.099999999999957,
+          "combat": 116.16666666666264,
+          "damage": 74.09786666666668,
+          "jumps": 78,
+          "boons": [
+            "slow",
+            "tender",
+            "cadence",
+            "growth",
+            "spring",
+            "spring",
+            "slow"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 34.5,
+              "hp": 100,
+              "level": 4
+            },
+            {
+              "boss": 2,
+              "time": 73,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 114.9,
+              "hp": 100,
+              "level": 7
+            },
+            {
+              "boss": 4,
+              "time": 155.1,
+              "hp": 100,
+              "level": 8
+            }
+          ],
+          "stalls": 0
+        },
+        "events": []
+      }
+    ]
+  },
+  {
+    "classes": [
+      "sligo",
+      "polge"
+    ],
+    "style": "explore",
+    "difficulty": "medium",
+    "latency": 100,
+    "won": true,
+    "ended": true,
+    "seconds": 171.3,
+    "bosses": 5,
+    "height": 1370,
+    "boons": 4,
+    "dew": 3,
+    "plant": 1,
+    "players": [
+      {
+        "hp": 100,
+        "x": 393,
+        "height": 1370,
+        "phase": "care",
+        "metrics": {
+          "waiting": 44.20000000000005,
+          "climbing": 123.83333333332887,
+          "platforming": 47.4333333333332,
+          "tending": 49.333333333333094,
+          "combat": 68.1999999999987,
+          "damage": 0,
+          "jumps": 42,
+          "boons": [
+            "water",
+            "cadence",
+            "tender",
+            "stride",
+            "growth",
+            "growth",
+            "growth",
+            "bark",
+            "tender"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 35.5,
+              "hp": 100,
+              "level": 3
+            },
+            {
+              "boss": 2,
+              "time": 70.4,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 104.5,
+              "hp": 100,
+              "level": 6
+            },
+            {
+              "boss": 4,
+              "time": 131.5,
+              "hp": 100,
+              "level": 8
+            },
+            {
+              "boss": 5,
+              "time": 171.2,
+              "hp": 100,
+              "level": 10
+            }
+          ],
+          "stalls": 0
+        },
+        "events": []
+      },
+      {
+        "hp": 100,
+        "x": 393,
+        "height": 1370,
+        "phase": "fight",
+        "metrics": {
+          "waiting": 49.73333333333307,
+          "climbing": 67.89999999999871,
+          "platforming": 103.1999999999967,
+          "tending": 0,
+          "combat": 68.06666666666537,
+          "damage": 0,
+          "jumps": 113,
+          "boons": [
+            "water",
+            "water",
+            "shield",
+            "cadence",
+            "growth",
+            "wild",
+            "cadence",
+            "tender"
+          ],
+          "stages": [
+            {
+              "boss": 1,
+              "time": 35.5,
+              "hp": 100,
+              "level": 3
+            },
+            {
+              "boss": 2,
+              "time": 70.4,
+              "hp": 100,
+              "level": 5
+            },
+            {
+              "boss": 3,
+              "time": 104.5,
+              "hp": 100,
+              "level": 6
+            },
+            {
+              "boss": 4,
+              "time": 131.6,
+              "hp": 100,
+              "level": 8
+            }
+          ],
+          "stalls": 2
+        },
+        "events": [
+          {
+            "time": 88.5666666666642,
+            "stalled": "boon32",
+            "x": 248.26111111107397,
+            "h": 781.6791666666754
+          },
+          {
+            "time": 154.96666666666044,
+            "stalled": "boon512",
+            "x": 381.5661842926061,
+            "h": 1391.1084837444507
+          }
+        ]
+      }
+    ]
+  }
+]
