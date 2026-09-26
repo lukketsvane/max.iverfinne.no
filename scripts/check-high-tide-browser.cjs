@@ -26,7 +26,10 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     else{
      const iframe=page.frames().find(f=>f!==page.mainFrame());
      await page.locator('iframe').screenshot({path:`browser-review/${name}-before.png`});
-     await iframe.locator('#stage').click({position:{x:195,y:600}});
+     // WebKit does not transfer keyboard focus after the canvas prevents a
+     // pointer's default action. The shipped game runs in the top frame.
+     await iframe.evaluate(()=>window.focus());
+     assert.equal(await iframe.evaluate(()=>document.hasFocus()),true);
      await page.keyboard.down('ArrowDown');
      try{await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.state).tide.started,{},{timeout:8000});}
      catch(error){
