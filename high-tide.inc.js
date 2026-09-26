@@ -169,7 +169,7 @@ function highTideCarer(a){
 function highTideAtSummit(a){
   var s=rogueRun.survival,top=highTideSummit();
   return a.v.hp>0&&s.height>=HIGH_TIDE.height&&Math.abs(a.p.x-top.x)<=30&&
-    a.p.y<=top.y+5&&a.p.y>=top.y-30&&(a.p.st==='climb'||a.p.grounded)&&highTideHead(a)<s.waterY;
+    a.p.y<=top.y+2&&a.p.y>=top.y-30&&(a.p.st==='climb'||a.p.grounded)&&highTideHead(a)<s.waterY;
 }
 function drownHighTide(a){
   a.v.hp=0;a.v.air=0;a.v.revive=0;a.p.vx=a.p.vy=0;a.p.st='rest';a.p.anim='rest';a.p.frame=0;
