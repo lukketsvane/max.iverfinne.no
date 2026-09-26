@@ -24,9 +24,16 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     assert.equal(state.tide.artReady,true);assert.equal(state.tide.floors,118);assert.equal(state.ended,false);
     if(zone>=0){assert.ok(state.bossId);assert.equal(state.tide.bosses,zone);}
     else{
-     const iframe=page.frames().find(f=>f!==page.mainFrame());await iframe.locator('#stage').click({position:{x:195,y:600}});
+     const iframe=page.frames().find(f=>f!==page.mainFrame());
+     await page.locator('iframe').screenshot({path:`browser-review/${name}-before.png`});
+     await iframe.locator('#stage').click({position:{x:195,y:600}});
      await page.keyboard.down('ArrowDown');
-     await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.state).tide.started,{},{timeout:8000});
+     try{await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.state).tide.started,{},{timeout:8000});}
+     catch(error){
+      console.error('Start state:',await page.locator('#status').getAttribute('data-state'),'errors:',errors);
+      console.error('Input focus:',await iframe.evaluate(()=>({focused:document.hasFocus(),active:document.activeElement.tagName,locked:!!document.pointerLockElement})));
+      await page.locator('iframe').screenshot({path:`browser-review/${name}-failed.png`});throw error;
+     }
      await page.keyboard.up('ArrowDown');await page.keyboard.press('ArrowUp');
      await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.state).tide.height>30,{},{timeout:8000});
     }
