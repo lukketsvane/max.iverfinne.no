@@ -12,6 +12,7 @@
 <script src="levels-v1/seed-vault.js"></script>
 <script src="levels-v1/railway-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
+<script src="high-tide-map.js"></script>
 <script src="levels-data.js"></script>
 <script src="levels.js"></script>
 <script src="native-art.js"></script>
@@ -331,7 +332,7 @@ function stageLayout(){
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
-function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:surfaceY(x);}
+function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:highTideMode()?rogueRun.survival.base+110:surfaceY(x);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
 var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
 function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
@@ -855,7 +856,7 @@ function physics(dt, inp) {
   if(layout.hazards&&layout.hazards.length)pictureLava();
   if(rock){P.x=rock.x;P.y=rock.y;if(rock.wall)P.vx=0;if(rock.ceil&&P.vy<0)P.vy=0;}
 
-  var g = surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
+  var g = highTideMode()?rogueRun.survival.base+110:surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
   if(landing&&landing.y<g){g=landing.y;P.platform=landing.id;}
   else if(P.platform&&P.grounded){
     platform=window.MaxStageLayout.support(layout,P.platform,P.x);
@@ -3202,7 +3203,7 @@ function braceShove(x,y){
 }
 function braceAbsorber(h){
   if(h.type!=='root'||!(h.power>0))return null;
-  return runPlayers().find(function(a){var kit=window.MaxClasses.get(a.member?a.member.classId:rogueRun.classId);return kit.skill==='brace'&&bracedMember(a.member,a.p)&&Math.abs(h.x-a.p.x)<=kit.braceRadius&&Math.abs(h.y-surfaceY(a.p.x))<24;})||null;
+  return runPlayers().find(function(a){var kit=window.MaxClasses.get(a.member?a.member.classId:rogueRun.classId);return kit.skill==='brace'&&bracedMember(a.member,a.p)&&Math.abs(h.x-a.p.x)<=kit.braceRadius&&Math.abs(h.y-(highTideMode()?a.p.y:surfaceY(a.p.x)))<24;})||null;
 }
 function rootAbsorb(h){
   var holder=braceAbsorber(h);if(!holder)return false;
@@ -3210,7 +3211,7 @@ function rootAbsorb(h){
   if(!holder.member||holder.member.id===coop.me)P.brace=Math.max(0,P.brace-1);else holder.member.braceUntil-=1000;
   skillRing(h.x,h.y,h.r,'absorb');skillCue('absorb',Math.abs(h.x-P.x));return true;
 }
-function bloomReach(p){return Math.abs(p.x-P.x)<=ownClass().bloomRadius&&Math.abs(surfaceY(p.x)-P.y)<24;}
+function bloomReach(p){if(highTideMode()&&p.tideVine)return highTideNearPlant({p:P,v:seedVital(coopActor),member:coopActor});return Math.abs(p.x-P.x)<=ownClass().bloomRadius&&Math.abs(surfaceY(p.x)-P.y)<24;}
 function bloomSkill(){
   if(!P.grounded||P.wet||climb||P.st==='float')return false;
   var near=gardenPlots.filter(bloomReach);if(!near.length)return false;
@@ -3428,7 +3429,7 @@ function updateRunCompetition(dt){
 function showRunResult(){
   if(perkMenu)perkMenu.style.display='none';
   if(!window.MaxRunResults)return;
-  window.MaxRunResults.show({mode:rogueRun.mode,ascent:highTideMode()?rogueRun.survival.best:0,goal:highTideMode()?HIGH_TIDE.height:0,plantSeconds:rogueRun.survival&&rogueRun.survival.plantTime,recordId:rogueRun.recordId,won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN',{mode:rogueRun.mode});},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
+  window.MaxRunResults.show({mode:rogueRun.mode,ascent:highTideMode()?rogueRun.survival.best:0,goal:highTideMode()?HIGH_TIDE.height:0,plantSeconds:rogueRun.survival&&rogueRun.survival.plantTime,recordId:rogueRun.recordId,won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:highTideMode()?rogueRun.survival.bosses:gardenWave,seconds:runElapsed,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN',{mode:rogueRun.mode});},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
   resultAtlasReady=resultAssetsReady();
 }
 function openGardenRecords(){
@@ -4060,16 +4061,14 @@ function drawGardenPlots(t){
   for(var i=0;i<gardenPlots.length;i++){
     var p=gardenPlots[i],sx=Math.round(p.x-camX),gy=Math.round(surfaceY(p.x))-cy;
     if(sx<-52||sx>IW+52||gy<-8)continue;
-    var ph=p.dead?4:(p.tideVine?0:plantHeight(p));
-    if(!p.dead&&!p.tideVine&&!p.stalk&&ph>tallH){tallH=ph;tallest=p;}
+    if(p.tideVine)continue;
+    var ph=p.dead?4:plantHeight(p);
+    if(!p.dead&&!p.stalk&&ph>tallH){tallH=ph;tallest=p;}
     if(gy>IH+8&&!p.stalk&&gy-ph>IH+4)continue;
     var damp=p.moisture>.4;ctx.globalAlpha=.34+.30*p.health;ctx.fillStyle=damp?'#27342b':'#342b24';
     ctx.fillRect(sx-3,gy,7,1);ctx.fillRect(sx-1,gy+1,3,1);ctx.globalAlpha=1;
     if(p.guard>0){ctx.fillStyle='#8eb6b8';ctx.globalAlpha=Math.min(.8,p.guard*2);ctx.fillRect(sx-1,gy+2,3,1);ctx.globalAlpha=1;}
     if(p.dead){ctx.fillStyle='#51473a';ctx.fillRect(sx-1,gy-3,1,3);ctx.fillRect(sx,gy-2,2,1);continue;}
-    // High Tide draws one continuous winding vine through the authored five-garden route.
-    // Do not also draw the ordinary straight garden plant through the scenery.
-    if(p.tideVine){if(p.pulse>0){ctx.fillStyle='#9ec4c9';ctx.globalAlpha=Math.min(.42,p.pulse*.32);ctx.fillRect(sx-4,gy-5,1,1);ctx.fillRect(sx+4,gy-8,1,1);ctx.globalAlpha=1;}continue;}
     ctx.globalAlpha=.42+.58*p.health;drawGrowingFigmaPlant(p,sx,gy,t);ctx.globalAlpha=1;
     var syn=gardenSynergy(p);
     if(syn>.08&&p.health>.55){
@@ -4153,13 +4152,9 @@ function plantClimbAt(x,y,range){
   var best=null,distance=range==null?10:range;
   gardenPlots.forEach(function(p){
     if(!plantClimbReady(p))return;
-    var gy=p.tideVine&&highTideMode()?rogueRun.survival.base:surfaceY(p.x),height=p.tideVine&&highTideMode()?(p.tideHeight||0):plantClimbHeight(p);
+    var gy=surfaceY(p.x),height=plantClimbHeight(p);
     if(y>gy+4||y<gy-height-4)return;
-    var h=Math.max(0,Math.min(height,gy-y));
-    // The authored route begins with a horizontal station platform. The living
-    // vine is rooted at the planted seed, then bends toward that route after Max
-    // has actually left the soil; keep the first few pixels attachable at root.
-    var stem=p.tideVine&&highTideMode()?(h<=4?p.x:highTideRoutePoint(h).x):p.x+plantLean(p,h,tSec),dx=Math.abs(stem-x);
+    var stem=p.tideVine&&highTideMode()?highTideRoutePoint(Math.max(0,gy-y)).x:p.x+plantLean(p,Math.max(0,gy-y),tSec),dx=Math.abs(stem-x);
     if(dx<distance){best=p;distance=dx;}
   });return best;
 }
@@ -4598,6 +4593,8 @@ function burstKrek(k){
   if(window.MaxNativeArt)window.MaxNativeArt.enemyDefeated(k,tSec);
   if(k.divePhase)cancelPestDive(k);
   if(k.rootHazard)runHazards=runHazards.filter(function(h){return h.id!==k.rootHazard||h.tell<=0;});
+  if(k.tide&&!k.tideBoss&&seedActors().some(function(a){return (a.member?a.member.classId:rogueRun.classId)==='sligo';}))spawnSligoMeat(k.x,k.y,1);
+  if(k.tideBoss&&highTideMode()){highTideBossDefeated(k);return;}
   if(k.boss&&k.finalBoss!==false){rogueRun.bossDefeated=true;winRogueRun();return;}
   if(k.scout){puff(k.x,k.y,6,.5);return;}
   if(k.stolen)spawnLooseSeeds(k.x,k.y,k.stolen,true);
@@ -6212,6 +6209,7 @@ function frame(now) {
   if(!runIsPaused())updateParts(dt);
   if(!coopGuest()){
   var ownBuild=rogueRun.perks;if(coop)rogueRun.perks=coopTeamPerks();
+  if(!highTideMode()){
   if(!runIsPaused())updateCrows(dt);
   if(!runIsPaused())updateSmallFauna(dt);
   if(!runIsPaused())updateFlock(dt);
@@ -6223,6 +6221,7 @@ function frame(now) {
   if(!runIsPaused())updateLandmarks(dt);
   if(!runIsPaused())updateBirdBlasts(dt);
   if(!runIsPaused())updateAnts(dt);
+  }
   if(!runIsPaused())updateSeedPickups(dt);
   if(!runIsPaused())updateCompanion(dt);
   if(!runIsPaused())updateGarden(dt);
@@ -6230,13 +6229,15 @@ function frame(now) {
   if(!runIsPaused())updateRunCompetition(clockDt);
   if(!runIsPaused())updateRunDirector(dt);
   if(!runIsPaused())updateKrek(dt);
+  if(!highTideMode()){
   if(!runIsPaused())gardenBirdGuards(dt);
   if(!runIsPaused())updateSmartWorld(dt);
   if(!runIsPaused())rebalanceEcology(dt);
   if(!runIsPaused())ecosystemLinks(dt);
+  }
   if(!runIsPaused())updateBombs(dt);
   if(!runIsPaused())updateFeathers(dt);
-  if(!runIsPaused())refillBirds(dt);
+  if(!runIsPaused()&&!highTideMode())refillBirds(dt);
   if(coop)rogueRun.perks=coop.members[coop.me].perks;
   }else{
     bombCool=Math.max(0,bombCool-dt);
@@ -6269,6 +6270,7 @@ function frame(now) {
   camX = Math.round(camX); camY = Math.round(camY);
   buildSurfCache();
 
+  if(highTideMode()){ctx.fillStyle='#080a0f';ctx.fillRect(0,0,IW,IH);}else{
   var hy = HY = ANCHOR + 6;
   hy += backdropLift();
   /* on a short screen the far layers sink behind the ground, so a strip of
@@ -6311,26 +6313,31 @@ function frame(now) {
   drawBiomeFlora(tSec);
   drawLandmarks(tSec);
   drawBiomeTransitionMarkers();
+  }
   drawPlatforms(tSec);
   drawSligoTrail();
   drawPolgeStands();
-  drawSmartWorld(tSec);
+  if(!highTideMode())drawSmartWorld(tSec);
   drawSpots(tSec);drawSeedPickups(tSec);
   drawRunExploration(tSec);
   drawGardenPlots(tSec);drawHighTideWorld(tSec);
+  if(!highTideMode()){
   drawSecretGround(tSec);
   drawWonders(tSec);
-  drawClassAuras();
   drawAnts();
   drawLowFlora(tSec, false);
   drawLights(tSec);
   drawWater(tSec);
   drawPondDeco(false);
   drawPondExtras();
+  }
+  drawClassAuras();
   drawParts();
+  if(!highTideMode()){
   drawCrows();
   drawSmallFauna();
   drawSwans();
+  }
   drawKrek(tSec);
   drawRunHazards(tSec);
   drawSecretAir(tSec);
@@ -6342,6 +6349,7 @@ function frame(now) {
   drawClimbSky(tSec);
   drawBombs(tSec);
   drawFeathers();
+  if(!highTideMode()){
   drawPondDeco(true);
   drawLowFlora(tSec, true);
   drawGlows(tSec);
@@ -6351,11 +6359,12 @@ function frame(now) {
   drawForegroundFrame(tSec);
   drawWeather(tSec);
   drawBiomeGrade();
+  }
   drawBooms();
-  drawVignette();
+  if(!highTideMode())drawVignette();
   drawWarp(tSec);
-  drawWorldBanner(tSec);drawPlaceBanner();drawBossBar(dt);
   drawHighTideWater(tSec);
+  drawWorldBanner(tSec);drawPlaceBanner();drawBossBar(dt);
   rosterShown=false;drawRunHud();if(!rosterShown)hideRoster();
 
   camX = fx; camY = fy;

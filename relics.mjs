@@ -1,6 +1,6 @@
 // Relics open alternate rules in the same shared garden engine.
 export const RELICS = Object.freeze([
-  Object.freeze({ id: 'high-tide', name: 'High Tide', open: true, note: 'One seed. A rising sea. Climb your plant, hold Tend to grow its tip, then release to climb again. Risk the side ledges for dew. Reach the crown before the water. Max cannot swim.', color: '#73afbd' }),
+  Object.freeze({ id: 'high-tide', name: 'High Tide', open: true, note: 'Ei morplante. Fem hagar. Stell planta, finn oppgraderingar og slå vaktarane før floa tek deg.', color: '#73afbd' }),
   Object.freeze({ id: 'last-seed', name: 'Last Seed', note: 'One seed. Endless waves. Tend your plant and revive your team. Everyone down ends the run.', color: '#9fdbbf' }),
 ]);
 export function hasFullDiscovery(user) {

@@ -16,7 +16,7 @@
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
- group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · grow and climb']]);
+ group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · motherplant and guardians']]);
  group('Sligo',[['sligo-life','Sligo · Eat and grow'],['sligo-colony','Sligo · AI and control swap']]);
  group('Pølge',[['polge','Pølge · Stand-in and splinters']]);
  group('Relics',[['relic-garden','Relics · Game mode stones']]);
@@ -161,6 +161,8 @@
       ensureCompanion();clearRunInput();
     }
     if(${['last-seed','high-tide'].includes(mode)}){resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},mode:${JSON.stringify(mode)}});clearRunInput();}
+    if(${mode==='high-tide'&&params.has('zone')}){plantGardenSeed(0);var z=Math.max(0,Math.min(4,${Number(params.get('zone'))||0})),s=rogueRun.survival,p=highTidePlant();s.bosses=z;s.height=HIGH_TIDE_GATES[z];p.tideHeight=s.height;var q=highTideRoutePoint(s.height);P.x=q.x;P.y=q.y;P.grounded=true;P.st='free';s.waterY=q.y+120;started=false;highTideSpawnBoss();}
+    if(${mode==='high-tide'&&params.has('still')}){menuPaused=true;}
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
     if(${gameplay}){
       var reviewStateClock=0,reviewFrame=frame;
@@ -168,7 +170,7 @@
         reviewFrame(now);
         if(now-reviewStateClock<250)return;reviewStateClock=now;
         var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
-        parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:lastSeedMode()?seedVital().hp:null,wave:gardenWave,world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
+        parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }
     /* MAX_REVIEW_FIXTURE_END */

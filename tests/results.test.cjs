@@ -212,16 +212,13 @@ test('Last Seed archives only the actual plant and survival measures, with no or
   }finally{s.close();}
 });
 
-test('High Tide game-over fills the mobile scene, keeps ascent, and removes the irrelevant plant browser', () => {
-  const s = session(), w = s.w;
-  try {
-    Object.defineProperty(w, 'innerWidth', { configurable: true, value: 390 });
-    Object.defineProperty(w, 'innerHeight', { configurable: true, value: 844 });
-    w.MaxRunResults.show({ ...s.options, mode: 'high-tide', ascent: 317, goal: 480, seconds: 108, won: false, plants: plants(1), classId: 'polge', onRetry() {} });
-    const scene = w.document.querySelector('.run-results-scene');
-    assert.equal(scene.style.width, '100%');
-    assert.equal(scene.style.height, '100%');
-    assert.equal(s.button('View every plant').hidden, true);
-    assert.match(w.document.querySelector('.run-results-subtitle').textContent, /DROWNED.*317.*480.*108/);
-  } finally { s.close(); }
+test('High Tide results preserve the native ascent and guardian count on a tall phone', () => {
+ const s=session(),w=s.w;
+ try {
+  Object.defineProperty(w,'innerWidth',{configurable:true,value:390});Object.defineProperty(w,'innerHeight',{configurable:true,value:844});
+  const options={...s.options,mode:'high-tide',ascent:1128,goal:1370,wave:4,seconds:215,won:false,plants:plants(1),classId:'polge',onRetry(){}};
+  const saved=w.MaxRunRecords.save(options);assert.equal(saved.record.ascent,1128);assert.equal(saved.record.goal,1370);assert.equal(saved.record.wave,4);
+  w.MaxRunResults.show(options);const scene=w.document.querySelector('.run-results-scene');assert.equal(scene.style.width,'100%');assert.equal(scene.style.height,'100%');assert.equal(s.button('View every plant').hidden,true);
+  assert.match(w.document.querySelector('.run-results-subtitle').textContent,/VAKTAR 4\/5.*1128\/1370/);
+ }finally{s.close();}
 });

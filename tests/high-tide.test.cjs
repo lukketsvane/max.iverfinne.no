@@ -1,57 +1,119 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
+const fs=require('node:fs');
 const {loadGame}=require('./game-harness.cjs');
 const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
 function setup(classId='mech',difficulty='medium'){const h=loadGame();h.game.resetRogueRun('TEST',{classId,difficulty,mode:'high-tide'});return h;}
 function start(g){g.plantGardenSeed(0);assert.equal(g.gardenPlots.length,1);return g.highTidePlant();}
 function step(g,seconds,held=false){g.heldSpace=held;for(let t=0;t<seconds-1e-8;t+=.05)g.updateHighTide(Math.min(.05,seconds-t));}
-function race(g,hz=60){const p=start(g);assert.equal(g.beginClimb(p,false),true);let pumping=true;for(let i=0;i<hz*120&&!g.rogueRun.ended;i++){const s=g.rogueRun.survival,gap=s.height-(s.base-g.P.y);if(gap>40||s.height>=480)pumping=false;else if(gap<2)pumping=true;g.heldSpace=pumping;g.updatePlayer(1/hz,{axis:0,top:g.WALK_V});g.updateGardenFun(1/hz);g.updateRunCompetition(1/hz);}return g.rogueRun.survival;}
+function stand(g,q){Object.assign(g.P,{x:q.x,y:q.y,vx:0,vy:0,grounded:true,st:'free'});}
 function pair(){const room={host:ids[0],mode:'high-tide',members:ids.map((id,i)=>({id,slot:i+1,classId:i?'polge':'mech'}))};const players=ids.map((id,i)=>{const h=loadGame();h.game.beginCoop({room,user:{id},host:i===0,action(){return true;},tick(){}});return h;});return {room,players,sync(){players[1].game.coopState(JSON.parse(JSON.stringify(players[0].game.coopCapture())));}};}
-test('High Tide is available without a login, account grant or impersonation',async()=>{const {relicCollection}=await import('../relics.mjs');for(const u of [null,{}, {id:'guest',is_anonymous:true},{id:'player',email:'person@players.max.invalid'}])assert.deepEqual(relicCollection(u).map(r=>r.id),['high-tide']);assert.ok(relicCollection({id:'owner',email:'lukketsvane@players.max.invalid'}).some(r=>r.id==='last-seed'));});
-test('planting starts one finite shared vine; waiting, harvesting, seed pickups and spam do not win',()=>{const g=setup().game;const before=JSON.stringify(g.rogueRun.survival);step(g,8);g.updateRunCompetition(8);assert.equal(JSON.stringify(g.rogueRun.survival),before);assert.equal(g.runElapsed,0);const p=start(g);assert.equal(p.tideHeight,24);g.spawnLooseSeeds(0,g.P.y,9);g.collectSeed({amount:9});g.harvestGardenPlot(p);g.plantGardenSeed(80);g.winRogueRun();assert.equal(g.gardenSeeds,0);assert.equal(g.seedPickups.length,0);assert.equal(g.gardenPlots.length,1);assert.equal(g.rogueRun.ended,false);step(g,4,true);assert.ok(p.tideHeight<=53,'holding at the root cannot grow the whole route');assert.equal(g.floatKrek.length,0);g.enterLevel(2);assert.equal(g.rogueRun.world,1);});
-test('every character can grow and physically reach the crown; normal scores remain untouched',()=>{for(const classId of ['mech','runner','bulwark','herbalist','polge','sligo']){const g=setup(classId).game,s=race(g);assert.equal(g.runWon,true,classId);assert.equal(g.rogueRun.ended,true);assert.equal(s.height,480);assert.ok(s.best>=478);assert.ok(s.elapsed>40&&s.elapsed<70,JSON.stringify(s));assert.equal(g.rogueMeta.runs||0,0);assert.equal(g.rogueRun.garden.length,1);assert.equal(g.rogueRun.garden[0].tideHeight,480);}});
-test('the same grow/climb rhythm works at 30, 60 and 120 Hz, including Insane',()=>{let elapsed=[];for(const hz of [30,60,120]){const g=setup('bulwark','insane').game,s=race(g,hz);assert.equal(g.runWon,true,'rate '+hz);elapsed.push(s.elapsed);}assert.ok(Math.max(...elapsed)-Math.min(...elapsed)<2,JSON.stringify(elapsed));});
-test('the sea waits through the opening, then warns, surges and never rubber-bands',()=>{const g=setup().game;start(g);const s=g.rogueRun.survival,p=g.highTideProfile(),initial=s.waterY;step(g,p.grace-1);assert.equal(s.phase,'opening');assert.equal(s.waterY,initial,'the opening is for planting, fighting and choosing a route');step(g,2);assert.ok(s.waterY<initial,'water begins only after the opening');s.elapsed=p.grace+g.HIGH_TIDE.period-g.HIGH_TIDE.surge-g.HIGH_TIDE.warning+.1;s.waterY=s.base+1000;g.updateHighTide(.1);assert.equal(s.phase,'warning');const y=s.waterY;g.updateHighTide(.1);const ordinary=y-s.waterY;s.elapsed=p.grace+g.HIGH_TIDE.period-g.HIGH_TIDE.surge+.1;const y2=s.waterY;g.updateHighTide(.1);assert.equal(s.phase,'surge');assert.ok(y2-s.waterY>ordinary*1.5);const frozen=JSON.stringify(s);g.menuPaused=true;g.updateHighTide(1);assert.equal(JSON.stringify(s),frozen);g.menuPaused=false;g.P.y-=100;const y3=s.waterY;g.updateHighTide(.1);assert.ok(y3-s.waterY<2);});
-test('a short dunk is recoverable, but shields, dodges and tun cannot prevent drowning',()=>{const g=setup('sligo').game;start(g);const s=g.rogueRun.survival,v=g.seedVital();s.waterY=g.P.y-60;g.P.dodgeT=10;g.P.tun=10;v.shield=10;step(g,.6);assert.ok(v.air<g.highTideProfile().breath-.5&&v.hp===100);s.waterY=g.P.y+20;step(g,1);assert.equal(v.air,g.highTideProfile().breath);s.waterY=g.P.y-60;step(g,3);assert.equal(v.hp,0);assert.equal(g.rogueRun.ended,true);assert.equal(g.runWon,false);g.resetRogueRun('RETRY',{mode:'high-tide'});assert.equal(g.gardenSeeds,1);assert.equal(g.rogueRun.survival.started,false);assert.equal(g.seedDown(),false);});
-test('dew on authored recovery ledges is claimed once, grows only the actual plant and slows the tide',()=>{const g=setup().game,p=start(g),s=g.rogueRun.survival,q=g.highTidePods()[0];s.height=p.tideHeight=150;s.elapsed=20;s.waterY=s.base+100;g.P.x=q.x;g.P.y=q.y;g.P.grounded=true;const before=s.waterY;g.updateHighTide(.05);assert.equal(s.dewMask,1);assert.equal(s.height,168);assert.equal(s.waterY,before);const after=s.height;step(g,.5);assert.equal(s.height,after);assert.ok(s.calm>0);assert.equal(g.gardenPlots.length,1);});
-test('guest tend is validated at the moving authored tip and cannot set water, growth or health; handoff preserves the race',()=>{const {players:[h,j],room,sync}=pair(),g=h.game,q=j.game;start(g);sync();const s=g.rogueRun.survival,m=g.coop.members[ids[1]],tip=g.highTideRoutePoint(s.height);m.trust=true;q.P.x=tip.x;q.P.y=tip.y;q.P.st='climb';q.P.grounded=false;q.heldSpace=true;g.coopInput(ids[1],{avatar:{...q.coopAvatar(),waterY:-10000,hp:999,tideHeight:480},actions:[]});assert.equal(g.highTideCarer({member:m,p:m.avatar,v:g.seedVital(m),id:m.id}),true,JSON.stringify({avatar:m.avatar,s}));step(g,.2);assert.ok(s.height>24&&s.height<30);sync();assert.equal(q.rogueRun.survival.height,s.height);const frozen=JSON.stringify(q.rogueRun.survival);q.updateHighTide(1);assert.equal(JSON.stringify(q.rogueRun.survival),frozen);h.advance(1000);const height=s.height;step(g,.2);assert.equal(s.height,height,'stale input never pumps indefinitely');sync();q.coopRoster({...room,host:ids[1],members:[room.members[1]]});q.heldSpace=false;q.updateHighTide(.1);assert.equal(q.rogueRun.survival.height,height);assert.ok(q.rogueRun.survival.elapsed>s.elapsed);assert.equal(q.gardenSeeds,0);});
-test('a new teammate joins on a real dry platform from the five-garden layout, and an ended race replicates',()=>{const {players:[h,j],sync}=pair(),g=h.game,q=j.game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=220;s.best=180;s.waterY=s.base-90;g.P.x=g.highTideRoutePoint(180).x;g.P.y=s.base-180;delete g.coop.members[ids[1]];assert.equal(g.coopJoin(ids[1],{classId:'polge'}),true);const m=g.coop.members[ids[1]],layout=g.stageLayout();assert.ok(layout.platforms.some(p=>Math.abs(p.y-m.avatar.y)<1e-8&&m.avatar.x>=p.x&&m.avatar.x<=p.x+p.w));assert.ok(m.avatar.y-18<s.waterY,'late joiner must be placed above the tide');sync();assert.equal(q.P.y,m.avatar.y);for(const a of g.coopCapture().members)g.seedVital(g.coop.members[a.id]).hp=0;g.updateHighTide(.1);sync();assert.equal(q.rogueRun.ended,true);assert.equal(q.runWon,false);});
 
-test('High Tide uses all 118 collision surfaces from Dei fem hagane with main, side and catch routes across five zones',()=>{
- const g=setup().game;start(g);const L=g.highTideLayout();
- assert.equal(L.platforms.length,118);
+test('High Tide remains publicly available, while the other relic remains account gated',async()=>{const {relicCollection}=await import('../relics.mjs');for(const u of [null,{}, {id:'guest',is_anonymous:true},{id:'player',email:'person@players.max.invalid'}])assert.deepEqual(relicCollection(u).map(r=>r.id),['high-tide']);});
+test('all 178 art objects and 118 invisible floors use the uploaded native layout without replacement tiles',()=>{
+ const {game:g,images}=setup(),L=g.highTideLayout();
+ const source=JSON.parse(fs.readFileSync('docs/asset-review/high-tide-v1/level.json'));
+ const floors=source.objects.filter(o=>o.kind==='platform');
+ assert.equal(source.objects.filter(o=>o.asset).length,178);assert.equal(L.platforms.length,118);
+ assert.equal(L.art.w,628);assert.equal(L.art.h,1614);assert.ok(L.art.img.src.endsWith('high-tide.png'));
+ floors.forEach((o,i)=>{const p=L.platforms[i];assert.equal(p.x,o.x-source.spawn.x);assert.equal(p.y,g.rogueRun.survival.base+o.y-source.spawn.y);assert.equal(p.w,o.w);assert.equal(p.art,true);});
  assert.deepEqual([...new Set(L.platforms.map(p=>p.tideRoute))].sort(),[0,1,2]);
- assert.deepEqual([...new Set(L.platforms.map(p=>p.zone))].sort(),[1,2,3,4,5]);
- const bottom=g.highTideRoutePoint(0),top=g.highTideRoutePoint(480);
- assert.ok(Math.abs(bottom.x-g.rogueRun.survival.root)<2);
- assert.ok(Math.abs((g.rogueRun.survival.base-top.y)-480)<.01);
- assert.ok(Math.abs(top.x-bottom.x)>40,'the escape vine should wind through the authored route instead of rising straight up');
+ const calls=[];L.art.img.complete=true;L.art.img.naturalWidth=628;g.ctx.drawImage=(...a)=>calls.push(a);g.ctx.fillRect=(...a)=>assert.fail('invisible collision surfaces painted as tiles: '+a);
+ g.drawPlatforms(0);assert.equal(calls.length,1);assert.equal(calls[0].length,3,'bitmap is drawn 1:1, without runtime scaling');
 });
-test('side-route boons reward leaving the vine and use the existing boon choice system',()=>{
- const g=setup().game,p=start(g),s=g.rogueRun.survival,q=g.highTideBoons()[0];
- s.waterY=s.base+100;g.P.x=q.x;g.P.y=q.y;g.P.grounded=true;
- const before=s.height,level=g.rogueRun.level;g.updateHighTide(.05);
- assert.ok(s.boonMask&q.bit);assert.ok(s.height>=before+12);assert.ok(g.rogueRun.level>level);
- assert.ok(g.rogueRun.choice&&g.rogueRun.choice.length>0,'a side-route pickup should offer real run boons');
+test('planting starts one real motherplant; watering stores care for exploration and never bypasses a guardian',()=>{
+ const g=setup().game;const before=JSON.stringify(g.rogueRun.survival);step(g,8);assert.equal(JSON.stringify(g.rogueRun.survival),before);
+ const p=start(g),s=g.rogueRun.survival;p.health=.6;p.moisture=.1;
+ step(g,4,true);assert.ok(p.moisture>.7&&p.health>.7);
+ const height=s.height;stand(g,{x:120,y:s.base-40});step(g,10);assert.ok(s.height>height+60,'stored water grows the plant while the gardener explores');
+ stand(g,g.highTideRoutePoint(s.height));step(g,60,true);assert.equal(s.height,g.HIGH_TIDE_GATES[0]);
+ g.spawnLooseSeeds(0,g.P.y,9);g.harvestGardenPlot(p);g.plantGardenSeed(80);g.winRogueRun();assert.equal(g.gardenSeeds,0);assert.equal(g.gardenPlots.length,1);assert.equal(g.runWon,false);
 });
-test('High Tide spawns authored pressure enemies; rammers create knockback hazards and harassers jam tending',()=>{
- const g=setup().game,p=start(g),s=g.rogueRun.survival;s.elapsed=20;s.best=140;s.height=p.tideHeight=140;s.enemyClock=1e9;
- g.updateHighTideEnemies(.05);
- assert.ok(g.floatKrek.some(k=>k.tide),'ascent should activate enemies');
- const ram=g.floatKrek.find(k=>k.tideType==='ram')||g.floatKrek[0];ram.tideType='ram';ram.x=g.P.x;ram.y=g.P.y-10;ram.bite=0;
- g.updateHighTideEnemies(.05);
- assert.ok(g.runHazards.some(h=>h.type==='tide-hit'),'a ram should create a physical knockback hit');
- g.updateRunDirector(.2);g.updateHazardContact();
- assert.ok(!g.P.grounded&&Math.abs(g.P.vx)>0,'the hit should throw the player off footing');
- g.runHazards=[];g.floatKrek=[];s.best=130;s.height=p.tideHeight=130;s.enemyMask=255;s.enemyClock=1e9;
- const tip=g.highTideRoutePoint(s.height);g.floatKrek.push({x:tip.x,y:tip.y-7,vx:0,vy:0,face:1,ph:0,hp:2,maxHp:2,flash:0,bite:0,startle:0,flee:0,tide:true,tideType:'harass',kind:0,elite:false,raid:true});
- g.updateHighTideEnemies(.05);assert.ok(s.jam>0,'a harasser on the tip should stall tending until cleared');
+test('dryness stops growth; neglected or attacked plants can die and care restores health',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;p.moisture=0;p.health=.2;const height=s.height;
+ stand(g,{x:100,y:s.base});step(g,3);assert.equal(s.height,height);assert.ok(p.health<.2);
+ stand(g,g.highTideRoutePoint(0));step(g,2,true);assert.ok(p.health>.2&&p.moisture>.3&&s.height>height);
+ p.health=0;g.updateHighTide(.05);assert.equal(g.rogueRun.ended,true);assert.equal(g.runWon,false);
+});
+test('side-route upgrades and dew are single claims with actual boon choices and care, never free height',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;p.moisture=.4;p.health=.5;
+ stand(g,g.highTideBoons()[0]);g.updateHighTide(.05);const level=g.rogueRun.level;
+ assert.equal(s.boonMask,1);assert.ok(level>1);assert.ok(g.rogueRun.choice.length);g.updateHighTide(.05);assert.equal(g.rogueRun.level,level);
+ stand(g,g.highTidePods()[0]);const before=s.height;g.updateHighTide(.05);assert.equal(s.dewMask,1);assert.ok(p.moisture>.69&&p.health>.61);assert.ok(s.height-before<1);assert.ok(s.calm>7);
+ const moisture=p.moisture;g.updateHighTide(.05);assert.ok(p.moisture<=moisture);
+});
+test('five increasingly durable guardians gate progress and each victory rewards a boon, care and a retreating tide',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;let previousHP=0;
+ for(let i=0;i<5;i++){
+  s.height=p.tideHeight=g.HIGH_TIDE_GATES[i];const q=g.highTideRoutePoint(s.height);stand(g,q);s.waterY=q.y+100;g.highTideSpawnBoss();
+  const k=g.liveBoss();assert.ok(k&&k.tideBoss);assert.equal(k.tideIndex,i);assert.ok(k.maxHp>previousHP);previousHP=k.maxHp;
+  g.highTideSpawnBoss();assert.equal(g.floatKrek.filter(k=>k.boss).length,1,'one guardian only');
+  g.updateHighTide(.05);assert.equal(g.runWon,false,'standing at a grown gate does not win');
+  const level=g.rogueRun.level,water=s.waterY;g.damagePest(k,1e6,k.x-20);
+  assert.equal(s.bosses,i+1);assert.ok(g.rogueRun.level>level);assert.ok(s.waterY>water);assert.ok(s.rest>0);assert.equal(g.liveBoss(),null);
+  g.highTideBossDefeated(k);assert.equal(s.bosses,i+1,'duplicate kill notification cannot skip a guardian');
+  while(g.rogueRun.choice)g.chooseRoguePerk(g.rogueRun.choice[0].id);
+ }
+ g.updateHighTide(.05);assert.equal(g.runWon,true);assert.equal(g.rogueRun.garden.length,1);assert.equal(g.rogueMeta.runs||0,0);
+});
+test('boss tells give time to escape and attacks damage players only when they remain in the marked area',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();const k=g.liveBoss();k.cool=0;
+ g.updateHighTideEnemies(.05);assert.ok(g.runHazards.length);assert.ok(g.runHazards.every(h=>h.tell>=.75));assert.equal(g.seedVital().hp,100);
+ const h=g.runHazards[0];stand(g,{x:h.x+60,y:h.y});g.updateRunHazards(1.5);g.updateRunHazards(.05);assert.equal(g.seedVital().hp,100);
+ g.runHazards=[];k.windup=0;k.cool=0;g.updateHighTideEnemies(.05);g.updateRunHazards(1.5);g.updateRunHazards(.05);assert.ok(g.seedVital().hp<100);
+});
+test('all difficulties warn before surging; tide ignores player position and leaves room to fight at a locked gate',()=>{
+ for(const difficulty of ['easy','medium','hard','insane']){
+  const g=setup('bulwark',difficulty).game;start(g);const s=g.rogueRun.survival,p=g.highTideProfile();
+  s.elapsed=p.grace+g.HIGH_TIDE.period-g.HIGH_TIDE.surge-g.HIGH_TIDE.warning+.1;s.waterY=s.base+1000;g.updateHighTide(.05);assert.equal(s.phase,'warning');const y=s.waterY;g.updateHighTide(.05);const ordinary=y-s.waterY;
+  s.elapsed=p.grace+g.HIGH_TIDE.period-g.HIGH_TIDE.surge+.1;const y2=s.waterY;g.updateHighTide(.05);assert.equal(s.phase,'surge');assert.ok(y2-s.waterY>ordinary*1.5);
+  const frozen=JSON.stringify(s);g.menuPaused=true;g.updateHighTide(1);assert.equal(JSON.stringify(s),frozen);g.menuPaused=false;g.P.y-=100;const water=s.waterY;g.updateHighTide(.05);assert.ok(water-s.waterY<1);
+ }
+});
+test('a recoverable dunk and drowning ignore shields, dodge and the Sligo tun',()=>{
+ const g=setup('sligo').game;start(g);const s=g.rogueRun.survival,v=g.seedVital();s.waterY=g.P.y-60;g.P.dodgeT=10;g.P.tun=10;v.shield=10;
+ step(g,.6);assert.ok(v.air<g.highTideProfile().breath-.5&&v.hp===100);s.waterY=g.P.y+20;step(g,1);assert.equal(v.air,g.highTideProfile().breath);
+ s.waterY=g.P.y-60;step(g,5);assert.equal(v.hp,0);assert.equal(g.rogueRun.ended,true);g.resetRogueRun('RETRY',{mode:'high-tide'});assert.equal(g.gardenSeeds,1);assert.equal(g.seedDown(),false);
+});
+test('guest care requires fresh nearby input; boss state, plant health, tide and claimed upgrades survive authority handoff',()=>{
+ const {players:[h,j],room,sync}=pair(),g=h.game,q=j.game;const p=start(g),s=g.rogueRun.survival;p.moisture=.3;p.health=.5;sync();
+ const m=g.coop.members[ids[1]];m.trust=true;stand(q,g.highTideRoutePoint(0));q.heldSpace=true;
+ g.coopInput(ids[1],{avatar:{...q.coopAvatar(),waterY:-10000,hp:999,bosses:5,tideHeight:1370},actions:[]});step(g,.2);assert.ok(p.moisture>.32&&p.health>.5);assert.equal(s.bosses,0);assert.ok(s.waterY>0);
+ h.advance(1000);const moisture=p.moisture;step(g,.2);assert.ok(p.moisture<moisture,'stale guest cannot continue watering');
+ s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();s.boonMask=3;g.liveBoss().hp-=4;sync();
+ assert.equal(q.liveBoss().hp,g.liveBoss().hp);assert.equal(q.highTidePlant().health,p.health);assert.equal(q.rogueRun.survival.boonMask,3);
+ const frozen=JSON.stringify(q.rogueRun.survival);q.updateHighTide(1);assert.equal(JSON.stringify(q.rogueRun.survival),frozen);
+ q.coopRoster({...room,host:ids[1],members:[room.members[1]]});q.heldSpace=false;q.updateHighTide(.1);q.updateHighTideEnemies(.1);assert.equal(q.floatKrek.filter(k=>k.boss).length,1);assert.equal(q.rogueRun.survival.bosses,0);assert.ok(q.rogueRun.survival.elapsed>s.elapsed);
+});
+test('a late joiner lands on an actual dry authored floor and defeat replicates',()=>{
+ const {players:[h,j],sync}=pair(),g=h.game,q=j.game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=220;s.best=180;s.waterY=s.base-90;stand(g,g.highTideRoutePoint(180));
+ delete g.coop.members[ids[1]];assert.equal(g.coopJoin(ids[1],{classId:'polge'}),true);const m=g.coop.members[ids[1]];assert.ok(g.highTideLayout().platforms.some(p=>p.y===m.avatar.y&&m.avatar.x>=p.x&&m.avatar.x<=p.x+p.w));assert.ok(m.avatar.y-18<s.waterY);sync();assert.equal(q.P.y,m.avatar.y);
+ for(const a of g.coopCapture().members)g.seedVital(g.coop.members[a.id]).hp=0;g.updateHighTide(.1);sync();assert.equal(q.rogueRun.ended,true);
+});
+test('native routes are climbable by every class at 30, 60 and 120 Hz without holding Tend to move',()=>{
+ for(const classId of ['mech','runner','bulwark','herbalist','polge','sligo'])for(const hz of [30,60,120]){
+  const g=setup(classId).game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE.height;assert.equal(g.beginClimb(p,false),true);g.heldSpace=false;
+  for(let i=0;i<hz*40;i++)g.updatePlayer(1/hz,{axis:0,top:g.WALK_V});
+  assert.ok(Math.abs(g.P.y-(s.base-g.HIGH_TIDE.height))<1,classId+' '+hz);assert.equal(g.runWon,false,'climbing past all fights never wins');
+ }
 });
 
-test('a gardener attached to the winding vine can tend the live tip within reach',()=>{
- const g=setup().game,p=start(g);assert.equal(g.beginClimb(p,false),true);g.heldSpace=true;
- g.updatePlayer(.05,{axis:0,top:g.WALK_V});
- const actor={member:null,p:g.P,v:g.seedVital(),id:'solo'},before=g.rogueRun.survival.height;
- assert.equal(g.highTideCarer(actor),true,JSON.stringify({p:g.P,s:g.rogueRun.survival,route:g.highTideRoutePoint(g.rogueRun.survival.base-g.P.y)}));
- g.updateHighTide(.05);assert.ok(g.rogueRun.survival.height>before);
+test('Sligo can replenish spent flesh by tending the motherplant and pests leave edible meat',()=>{
+ const g=setup('sligo').game;start(g);g.throwBomb({x:60,y:g.P.y-10});g.bombCool=0;g.throwBomb({x:60,y:g.P.y-10});g.bombCool=0;g.throwBomb({x:60,y:g.P.y-10});
+ const spent=g.P.sligoMass;step(g,3,true);assert.ok(g.P.sligoMass>spent);assert.ok(g.P.sligoMass<=g.SLIGO_LIFE.startMass);
+ g.highTideSpawnPest();const k=g.floatKrek[0];g.damagePest(k,1e4,k.x-20);assert.ok(g.sligoMeat.length>0);
+});
+test('a Moon Moth drain is telegraphed and a direct hit interrupts it',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;s.bosses=2;s.height=p.tideHeight=g.HIGH_TIDE_GATES[2];stand(g,g.highTideTip());g.highTideSpawnBoss();
+ const k=g.liveBoss();k.attack=2;k.cool=0;g.updateHighTideEnemies(.05);assert.equal(k.healing,true);assert.equal(k.windup,1.5);
+ const health=p.health;g.damagePest(k,1,k.x-20);assert.equal(k.healing,false);assert.equal(k.windup,0);assert.ok(k.exposed>0);g.updateHighTideEnemies(.1);assert.equal(p.health,health);
+});
+test('ordinary bomb projectiles damage and defeat a guardian through the live collision path',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();const k=g.liveBoss();
+ for(let i=0;i<60*30&&k.hp>0;i++){
+  g.bombCool=Math.max(0,g.bombCool-1/60);
+  if(!g.bombCool)g.throwBomb({kind:'krek',o:k},.7);
+  g.updateBombs(1/60);
+ }
+ assert.ok(k.hp<=0,'normal projectiles must hit the native guardian');assert.equal(s.bosses,1);assert.equal(g.runWon,false);
 });

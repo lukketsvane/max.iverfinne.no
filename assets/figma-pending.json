@@ -307,21 +307,28 @@
    "sha1": "cf53fb151a06f55a9cc08985c9eb976f051f94f1",
    "width": 9,
    "height": 9,
-   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/boon-symbols-v1/splinters.png",
    "sha1": "07d819e090ae457b25628a6059e362525b1ddeed",
    "width": 9,
    "height": 9,
-   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
   },
   {
    "path": "assets/boon-symbols-v1/raincoat.png",
    "sha1": "a1d5a26f880e915ac254a55955bad895e3055072",
    "width": 9,
    "height": 9,
-   "note": "Pølge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+   "note": "P\u00f8lge native boon glyph; master in scripts/build-polge.py. Figma desktop unavailable."
+  },
+  {
+   "path": "assets/levels-v1/high-tide.png",
+   "sha1": "ae68d490e68d8cdd18e3ff20a1f1457abbb6d357",
+   "width": 628,
+   "height": 1614,
+   "note": "Owner's complete five-garden composition; scripts/build-high-tide.py. Figma desktop MCP unavailable."
   }
  ]
 }
