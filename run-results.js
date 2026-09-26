@@ -177,7 +177,10 @@
     var dpr = window.devicePixelRatio || 1, w = window.innerWidth, h = window.innerHeight;
     var scale = Math.max(2, Math.round(Math.min(w * dpr, h * dpr) / 150));
     scene.width = Math.ceil(w * dpr / scale); scene.height = Math.ceil(h * dpr / scale);
-    scene.style.width = scene.width * scale / dpr + 'px'; scene.style.height = scene.height * scale / dpr + 'px';
+    // The backing store stays on the low-res pixel grid, but the visible canvas must
+    // always cover the dialog. Explicit pixel dimensions left half of tall iPhone
+    // screens black when the browser reported a transient viewport during game-over.
+    scene.style.width = '100%'; scene.style.height = '100%';
     labels.forEach(function (entry) {
       var desired = entry.node === title ? Math.min(w * .76 / entry.canvas.width, 11) : w < 600 ? 2 : 3;
       var pixel = Math.max(1, Math.floor(desired * dpr)) / dpr;
@@ -209,7 +212,7 @@
       var c = el('canvas'); c.width = 64; c.height = 96; c.setAttribute('aria-hidden', 'true');
       item.append(c, el('span', 'run-results-plant-id', String(p.id))); gallery.appendChild(item); visiblePlants.push({ canvas: c, plant: p });
     }
-    empty.hidden = !!run.plants.length; inspectButton.hidden = !run.plants.length;
+    empty.hidden = !!run.plants.length; inspectButton.hidden = !run.plants.length || run.mode === 'high-tide';
     previous.parentNode.hidden = run.plants.length <= PAGE_SIZE;
     previous.disabled = page === 0; next.disabled = end >= run.plants.length;
     pageLabel.textContent = 'Bouquet ' + (page + 1) + ' of ' + Math.max(1, Math.ceil(run.plants.length / PAGE_SIZE));
@@ -302,7 +305,7 @@
     panel.classList.remove('show-collection'); panel.setAttribute('aria-labelledby', 'runResultsTitle');
     setLabel(title, run.mode === 'high-tide' ? (run.won ? 'TIDE OUTRUN' : 'HIGH TIDE') : run.mode === 'last-seed' ? 'LAST SEED' : saved ? 'SAVED GARDEN' : run.won ? 'GARDEN GROWN' : 'GAME OVER');
     var identity = window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.identity();
-    setLabel(subtitle, run.mode === 'high-tide' ? Math.round(count(run.ascent,0)/480*100)+'% CLIMBED / '+Math.floor(count(run.seconds,0))+' SECONDS' : run.mode === 'last-seed' ? 'WAVE '+count(run.wave,0)+' / '+Math.floor(count(run.seconds,0))+' SECONDS' : run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
+    setLabel(subtitle, run.mode === 'high-tide' ? (run.won?'ESCAPED · ':'DROWNED · ')+Math.round(count(run.ascent,0))+' / 480 · '+Math.floor(count(run.seconds,0))+' SECONDS' : run.mode === 'last-seed' ? 'WAVE '+count(run.wave,0)+' / '+Math.floor(count(run.seconds,0))+' SECONDS' : run.published && (!identity || run.ownerId !== identity.id) ? 'WHAT THEY GREW' : 'WHAT YOU GREW');
     inspectButton.setAttribute('aria-expanded', 'false'); retry.disabled = false; retry.hidden = typeof callbacks.onRetry !== 'function';
     var status = window.MaxRunRecords.status(); saveNotice.textContent = status.persisted ? '' : status.error || 'This browser could not save your garden. Keep this tab open to retain it.'; saveNotice.hidden = !saveNotice.textContent;
     updatePublish(); renderPage(); layout(); title.focus({ preventScroll: true });
@@ -316,7 +319,7 @@
   function show(options) {
     options = options || {}; prepare(options);
     run = options.recordId && window.MaxRunRecords.get(options.recordId);
-    if (!run) run = { mode: options.mode, plantSeconds: options.plantSeconds, plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
+    if (!run) run = { mode: options.mode, ascent: options.ascent, goal: options.goal, classId: options.classId, plantSeconds: options.plantSeconds, plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
     originRun = run; originPage = page = 0; showBouquet(false);
   }
   function showRecords(options) { prepare(options); run = originRun = null; page = originPage = 0; openRecords(); layout(); return true; }
