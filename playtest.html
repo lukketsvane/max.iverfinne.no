@@ -45,7 +45,7 @@
     frame=function(now){const dt=Math.max(0,Math.min(.05,(now-previous)/1000));previous=now;
      if(running&&!rogueRun.ended){if(auto)pilot.tick(dt);else if(manualFire){pilotTime+=dt;const on=pilotTime%.64<.14;if(on!==fireHeld){fireHeld=on;key(on?'keydown':'keyup','b');}}else if(fireHeld){fireHeld=false;key('keyup','b');}}
      originalFrame(now);
-     if(now-stateAt>250){stateAt=now;const s=rogueRun.survival,p=highTidePlant();send('state',{state:{ready:ready(highTideLayout().art.img),running,auto,ended:rogueRun.ended,won:runWon,time:Math.round(s.elapsed),bosses:s.bosses,plantHeight:Math.round(s.height),height:Math.round(s.base-P.y),x:Math.round(P.x),hp:Math.round(seedVital().hp),water:p?Math.round(p.moisture*100):0,plant:p?Math.round(p.health*100):0,boons:s.boonMask,dew:s.dewMask,phase:pilot.phase,metrics:pilot.metrics}});}
+     if(now-stateAt>250){stateAt=now;const s=rogueRun.survival,p=highTidePlant();send('state',{state:{ready:ready(highTideLayout().art.img),running,auto,ended:rogueRun.ended,won:runWon,time:Math.round(s.elapsed),bosses:s.bosses,plantHeight:Math.round(s.height),height:Math.round(s.base-P.y),x:Math.round(P.x),motion:P.st,peers:seedActors().map(a=>({id:a.id,x:a.p.x,y:a.p.y,hp:a.v.hp})),hp:Math.round(seedVital().hp),water:p?Math.round(p.moisture*100):0,plant:p?Math.round(p.health*100):0,boons:s.boonMask,dew:s.dewMask,phase:pilot.phase,metrics:pilot.metrics}});}
     };
    `;
    f.srcdoc=source.replace('<head>','<head><base href="'+location.href.replace(/playtest(?:\.html)?.*$/,'')+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace('start();\n})();','start();\n'+hook+'})();');
@@ -55,7 +55,7 @@
   const d=event.data;if(event.origin!==location.origin||d.serial!==serial||event.source!==frames[d.slot]?.contentWindow)return;
   if(d.type==='wire'){const target=d.slot?0:1;setTimeout(()=>send(target,d),100);}
   if(d.type==='state'){
-   latest[d.slot]=d.state;const n=frames[d.slot].parentElement.querySelector('.status');n.dataset.state=JSON.stringify(d.state);n.textContent=d.state.ready?[d.state.won?'SIGER':d.state.ended?'SLUTT':d.state.running?'SPELAR':'PAUSE',d.state.time+' s · '+d.state.bosses+'/5 · '+d.state.height+' px · x '+d.state.x,'Helse '+d.state.hp+' · plante '+d.state.plant+' · vatn '+d.state.water+' · '+d.state.phase].join('\n'):'Lastar…';
+   latest[d.slot]=d.state;const n=frames[d.slot].parentElement.querySelector('.status');n.dataset.state=JSON.stringify(d.state);n.textContent=d.state.ready?[d.state.won?'SIGER':d.state.ended?'SLUTT':d.state.running?'SPELAR':'PAUSE',d.state.time+' s · '+d.state.bosses+'/5 · '+d.state.height+' px · x '+d.state.x,'Helse '+d.state.hp+' · plante '+d.state.plant+' · vatn '+d.state.water+' · '+(d.state.auto?d.state.phase:'manuell')].join('\n'):'Lastar…';
    if(latest[0]?.ended){playing=false;document.querySelector('#log').textContent=JSON.stringify(latest.map(s=>s.metrics),null,2);}
   }
  });

@@ -23,7 +23,7 @@ function polgeBurst(q){
     floatKrek.slice().forEach(function(k){if(enemyDistance(k,q.x,q.y-12)<=r){
       if(!damagePest(k,1.5+q.splinters*.5,q.x,rogueRun.perks)&&!k.boss){staggerKrek(k,.8);k.fleeFromX=q.x;}
     }});
-    if(q.raincoat)gardenPlots.forEach(function(p){if(!p.dead&&(p.tideVine?Math.hypot(highTideRoutePoint(Math.max(0,Math.min(p.tideHeight,rogueRun.survival.base-q.y))).x-q.x,Math.max(0,rogueRun.survival.base-q.y-p.tideHeight)):Math.hypot(p.x-q.x,surfaceY(p.x)-q.y))<=r){p.moisture=clamp01(p.moisture+.18*q.raincoat);p.pulse=Math.max(p.pulse,.8);}});
+    if(q.raincoat)gardenPlots.forEach(function(p){if(!p.dead&&(p.tideVine?highTideStemDistance(q.x,q.y):Math.hypot(p.x-q.x,surfaceY(p.x)-q.y))<=r){p.moisture=clamp01(p.moisture+.18*q.raincoat);p.pulse=Math.max(p.pulse,.8);}});
     skillRing(q.x,q.y,r,'slam');
   }
   if(m)coopWithMember(m,burst);else burst();
