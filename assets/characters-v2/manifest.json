@@ -1,0 +1,18 @@
+{
+  "schema": "max-native-pack/v1",
+  "id": "characters-v2",
+  "assets": [
+    {
+      "id": "kestrel",
+      "manifest": "kestrel/atlas.json"
+    },
+    {
+      "id": "cairn",
+      "manifest": "cairn/atlas.json"
+    },
+    {
+      "id": "mycel",
+      "manifest": "mycel/atlas.json"
+    }
+  ]
+}

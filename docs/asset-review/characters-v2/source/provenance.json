@@ -1,0 +1,32 @@
+{
+  "kestrel": {
+    "main": {
+      "path": "docs/asset-review/characters-v2/source/kestrel-main.png",
+      "sha256": "0b698ea8cf519fe315d612805f92deb0f4edd3e2c29920706c91e9002c95a98f"
+    },
+    "interaction": {
+      "path": "docs/asset-review/characters-v2/source/kestrel-interaction.png",
+      "sha256": "94164a29739284097f4f5b238c4f7e19c3a5d24face69e5777348bc7f24169dd"
+    }
+  },
+  "cairn": {
+    "main": {
+      "path": "docs/asset-review/characters-v2/source/cairn-main.png",
+      "sha256": "1c86c2a368b2556c97f9e0bb8769859e71d1764d08975695a64fdfcee23379f0"
+    },
+    "interaction": {
+      "path": "docs/asset-review/characters-v2/source/cairn-interaction.png",
+      "sha256": "8b50dd514ae99ebed2c16bdcde57bd4c614a9254a0d84e1e46a6c55d47eb81fb"
+    }
+  },
+  "mycel": {
+    "main": {
+      "path": "docs/asset-review/characters-v2/source/mycel-main.png",
+      "sha256": "76c09d9accfa5265cc31fe6977419246b7ae2c918f893793213db86215e77199"
+    },
+    "interaction": {
+      "path": "docs/asset-review/characters-v2/source/mycel-interaction.png",
+      "sha256": "79e9f80839d7989a8d636c324a0911c1307fd9d477c061051b64ac5d82ac299f"
+    }
+  }
+}

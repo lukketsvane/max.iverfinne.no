@@ -36,13 +36,14 @@ test('Mech leaves a stationary two-second bomb; enemy contact cannot detonate it
   assert.equal(g.bombs.length,0);assert.ok(k.hp<20);
  }
 });
-test('Mech bombs remain on ledges, fall vertically onto platforms, and other classes still lob',()=>{
+test('Mech bombs remain on ledges and fall vertically; Sligo lobs flesh and native kits use their own attacks',()=>{
  for(const hz of [30,60,120]){
   const {game:g}=game();const p=[...g.stageLayout().platforms].sort((a,b)=>a.y-b.y)[0];assert.ok(p);const x=p.x+p.w/2;
   Object.assign(g.P,{x,y:p.y,grounded:true,platform:p.id});g.throwBomb({x:x+70,y:p.y-20});g.updateBombs(.5);assert.equal(g.bombs[0].y,p.y-2);
   g.bombs=[];g.bombCool=0;g.P.y=p.y-24;g.P.grounded=false;g.throwBomb({x:x+70,y:p.y});for(let i=0;i<hz;i++)g.updateBombs(1/hz);assert.equal(g.bombs[0].x,x);assert.equal(g.bombs[0].y,p.y-2);
  }
- for(const id of ['bulwark','herbalist','polge','sligo']){const {game:g}=game(id);g.throwBomb({x:g.P.x+60,y:g.P.y-20});assert.equal(g.bombs[0].st,'fly');assert.notEqual(g.bombs[0].vx,0);}
+ const {game:sligo}=game('sligo');sligo.throwBomb({x:sligo.P.x+60,y:sligo.P.y-20});assert.equal(sligo.bombs[0].st,'fly');assert.notEqual(sligo.bombs[0].vx,0);assert.equal(sligo.bombs[0].sligo,true);
+ for(const id of ['runner','bulwark','herbalist','polge']){const {game:g}=game(id);assert.equal(g.throwBomb({x:g.P.x+60,y:g.P.y-20}),true);assert.equal(g.bombs.length,0);if(id==='runner'||id==='herbalist')assert.equal(g.classShots[0].kind,id==='runner'?'needle':'spore');else assert.ok(g.booms.some(b=>b.strike===(id==='polge'?'jab':'cleave')));}
 });
 test('two-player altar and planted bomb survive duplicate input, snapshots and a host change',()=>{
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];

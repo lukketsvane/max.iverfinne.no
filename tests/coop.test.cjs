@@ -31,8 +31,8 @@ test('every player receives their own boon while the shared garden keeps running
   host.grantRogueXP(4);sync();
   games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(h.game.rogueRun.choice.length,3);});
   const before=host.runElapsed;host.updateRunCompetition(1);assert.equal(host.runElapsed,before+1);
-  const first=host.rogueRun.choice[0].id;host.chooseRoguePerk(first);
-  assert.equal(host.runIsPaused(),false);assert.equal(host.rogueRun.perks[first],1);
+  const first=host.rogueRun.choice[0].id,rank=host.rogueRun.perks[first];host.chooseRoguePerk(first);
+  assert.equal(host.runIsPaused(),false);assert.equal(host.rogueRun.perks[first],rank+1);
   for(let i=1;i<4;i++){const g=games[i].game;g.chooseRoguePerk(g.rogueRun.choice[i%3].id);send(i,games[i].pending);}
   sync();games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(Object.values(h.game.rogueRun.perks).reduce((a,b)=>a+b,0),2,'one earned boon plus the Mech starting rover');});
   host.grantRogueXP(7);sync();host.chooseRoguePerk(host.rogueRun.choice[0].id);

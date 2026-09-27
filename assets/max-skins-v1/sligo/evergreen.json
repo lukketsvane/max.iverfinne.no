@@ -1,0 +1,734 @@
+{
+ "schema": "max-sligo-evolution/v1",
+ "image": "evergreen.png",
+ "cell": [
+  40,
+  40
+ ],
+ "anchor": [
+  20,
+  39
+ ],
+ "rows": [
+  "young",
+  "grown",
+  "mature"
+ ],
+ "sourceColumns": 8,
+ "scale": 0.14814814814814814,
+ "palette": [
+  "#180f1b",
+  "#351623",
+  "#591d32",
+  "#7a2945",
+  "#9e3f59",
+  "#be596d",
+  "#da7782",
+  "#eda099",
+  "#f9c2ad",
+  "#ffe3ce",
+  "#372539",
+  "#58344b",
+  "#785169",
+  "#39412b",
+  "#606942",
+  "#979262"
+ ],
+ "source": "docs/asset-review/sligo-evolution-v1/evergreen-source.png",
+ "sourceSha256": "4ca6b5a1847adc57d1d9babeb41460c7dbc9ff33cdd8e7ef1e91793c33235a26",
+ "generator": "scripts/build-sligo-evolution-branches.py",
+ "sheets": {
+  "evergreen": {
+   "image": "evergreen.png",
+   "size": [
+    960,
+    40
+   ]
+  }
+ },
+ "clips": {
+  "grow": [
+   null,
+   [
+    0,
+    1,
+    2,
+    3
+   ],
+   [
+    8,
+    9,
+    10,
+    11
+   ],
+   [
+    16,
+    17,
+    18,
+    19
+   ]
+  ],
+  "walk": [
+   null,
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+   ]
+  ],
+  "idle": [
+   null,
+   [
+    0,
+    1,
+    0,
+    7
+   ],
+   [
+    8,
+    9,
+    8,
+    15
+   ],
+   [
+    16,
+    17,
+    16,
+    23
+   ]
+  ],
+  "air": [
+   null,
+   6,
+   14,
+   22
+  ]
+ },
+ "frames": [
+  {
+   "sheet": "evergreen",
+   "rect": [
+    0,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    7,
+    21,
+    34,
+    40
+   ],
+   "sourceRect": [
+    42,
+    80,
+    221,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    40,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    7,
+    22,
+    33,
+    40
+   ],
+   "sourceRect": [
+    302,
+    88,
+    477,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    80,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    6,
+    21,
+    35,
+    40
+   ],
+   "sourceRect": [
+    535,
+    82,
+    729,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    120,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    7,
+    20,
+    34,
+    40
+   ],
+   "sourceRect": [
+    801,
+    72,
+    985,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    160,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    7,
+    22,
+    33,
+    40
+   ],
+   "sourceRect": [
+    1059,
+    86,
+    1234,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    200,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    8,
+    22,
+    33,
+    40
+   ],
+   "sourceRect": [
+    1317,
+    90,
+    1488,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    240,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    6,
+    17,
+    34,
+    40
+   ],
+   "sourceRect": [
+    1569,
+    55,
+    1759,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    280,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    8,
+    21,
+    33,
+    40
+   ],
+   "sourceRect": [
+    1828,
+    79,
+    1994,
+    209
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    320,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    6,
+    15,
+    34,
+    40
+   ],
+   "sourceRect": [
+    35,
+    277,
+    221,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    360,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    6,
+    15,
+    35,
+    40
+   ],
+   "sourceRect": [
+    280,
+    279,
+    475,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    400,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    4,
+    14,
+    37,
+    40
+   ],
+   "sourceRect": [
+    517,
+    275,
+    742,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    440,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    6,
+    14,
+    35,
+    40
+   ],
+   "sourceRect": [
+    790,
+    274,
+    988,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    480,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    6,
+    15,
+    35,
+    40
+   ],
+   "sourceRect": [
+    1054,
+    280,
+    1248,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    520,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    5,
+    15,
+    35,
+    40
+   ],
+   "sourceRect": [
+    1306,
+    279,
+    1508,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    560,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    4,
+    15,
+    37,
+    40
+   ],
+   "sourceRect": [
+    1558,
+    277,
+    1779,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    600,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    7,
+    15,
+    34,
+    40
+   ],
+   "sourceRect": [
+    1826,
+    279,
+    2010,
+    449
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    640,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    3,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    16,
+    504,
+    249,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    680,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    3,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    274,
+    502,
+    512,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    720,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    2,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    524,
+    504,
+    767,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    760,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    3,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    787,
+    504,
+    1020,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    800,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    3,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    1041,
+    504,
+    1278,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    840,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    2,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    1294,
+    508,
+    1534,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    880,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    3,
+    8,
+    37,
+    40
+   ],
+   "sourceRect": [
+    1559,
+    502,
+    1787,
+    721
+   ]
+  },
+  {
+   "sheet": "evergreen",
+   "rect": [
+    920,
+    0,
+    40,
+    40
+   ],
+   "anchor": [
+    20,
+    39
+   ],
+   "opaqueBounds": [
+    3,
+    8,
+    38,
+    40
+   ],
+   "sourceRect": [
+    1798,
+    504,
+    2031,
+    721
+   ]
+  }
+ ]
+}

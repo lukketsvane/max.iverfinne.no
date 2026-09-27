@@ -31,15 +31,17 @@ Unlocked **relic stones** in the collection garden select game modes using the s
 
 Five open characters and the hidden Sligo each own a gameplay role. There is no separate skin picker. The garden still holds at most four players.
 
-| Character | Exclusive ability | Skill (tap Max / E) |
+| Character | Primary attack | Skill (tap character / E) |
 | --- | --- | --- |
-| Mech | Plants stationary bombs with a two-second fuse; owns the watering robot and robot upgrades | Dispatch: sends the rover (a quarter tank, 8 s) to the plant under attack; it floods the soil, staggers biters and mends the plant while it pours |
-| Moss | Plants delayed bombs and climbs living plants once they are at least half their maximum physical height | Pounce: a hop, or a dive from a stem, that slams pests on landing, up to double damage from 96 px or higher (6 s) |
-| Bulwark | Protects nearby plants and resists knockback | Brace: 65% guard to 64 px for 3 s, shoves pests, swallows warned roots (1 s each); steering, jumping or leaving the ground ends it (10 s) |
-| Herbalist | Stronger tending and nearby plant healing | Bloom: heals nearby plants by 49% of their missing health, waters them and revives the one plant that fell most recently (12 s) |
-| Pølge | Quick rolls, slower tending; mannequin stand-ins | Stand-in: lures ordinary pests within 70 px for up to 6 s, takes three bites, then bursts into splinters (11 s) |
+| Mech | Stationary bombs, fixed two-second fuse | Dispatch the watering rover |
+| Kestrel | Fast aimed needles; upgrades add piercing and fans | Pounce from above; landing volleys and aerial builds |
+| Cairn | Heavy close cleave; stronger against winding-up pests | Brace and timed parry; burrow where the soil allows |
+| Mycel | Spore bolts that chain near living plants | Bloom heals and waters plants, revives a recent fall and strikes nearby pests |
+| Pølge | Jab → cross → uppercut; dodge primes a stronger punch | Freely steer during a rapid close flurry |
 
-Pølge's Varnish boon adds one bite per rank, Splinters adds burst damage and reach, and Raincoat waters plants on bursting. Bosses ignore the lure. Stand-ins are host-authoritative, carry their owner's upgrades, survive authority handoff, and clear on travel or departure. His 56 supplied mannequin poses are compiled into native sheets by `scripts/build-polge.py`; `review.html?mode=polge&portrait=1` exercises the kit. Apply `supabase/migrations/20260925114556_polge_character.sql` to permit Pølge in shared rooms and published bouquets. This migration is supplied for manual application, not applied by the implementation.
+Kestrel is an avian archer, Cairn a broad stone creature and Mycel a walking mushroom. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
+
+Pølge is a limbless mannequin boxer and the glue of the pølgevenner. He never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. Every primary, skill and upgrade is validated by the host; projectiles, combo/flurry state and cooldowns survive an authority handoff.
 
 A hidden character waits to be found: type its name into the Login form. **Sligo** (Max Sligo Neverdahl), the forgotten, defiled zygote drained of his endoplasm by the gluttonous twins JP and IE and starved out of the Triforce, taps Max to curl into a tun for 3 s: it cannot move or throw, nothing knocks it back, and plants within 40 px take half damage; a jump uncurls it and the 9 s cooldown starts then. He survived. He grows only his own two cords and leaves a slime-and-blood trail. He begins at half his previous height (about 6 art pixels). Harvesting either cord drops meat; walking over meat feeds a Sligo. Throws shed real body mass, down to a tiny 3-pixel body that must eat before throwing again. At 42 pixels (1.75× Max’s 24-pixel standing height), a cell divides into two equal-mass bodies. Four divisions are shared across the colony for the run: at most five bodies, one controlled and four AI companions. Companions follow, eat and defend with their own flesh. Hold a companion for 480 ms to exchange control in place, including momentum, size and cooldowns. Q or the left trigger cycles bodies. Throws keep the existing damage and boon rules. His specials sheet supplies throw, tending lash, hurt, floating tendrils and sleep poses.
 
@@ -59,13 +61,13 @@ Do not replace stage progression with a ground-level teleport.
 
 A player must physically climb the cleared exit plant to its top and reach the next stage. When one player has successfully crossed into the next garden, the remaining teammates may be brought forward so the party can continue together. The player who made the ascent stays the ascender; do not teleport them before they complete the climb.
 
-Moss can also climb ordinary living plants for traversal, but ordinary plant climbing never skips uncleared stages.
+Kestrel can also climb ordinary living plants for traversal, but ordinary plant climbing never skips uncleared stages.
 
 ### Input and items
 
 - Touch drag left/right: move.
 - Swipe up: jump.
-- Moss: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, a tap on the held stem climbs faster and never throws, and any other tap throws from an ordinary stem.
+- Kestrel: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, a tap on the held stem climbs faster and never throws, and any other tap throws from an ordinary stem.
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.
@@ -85,13 +87,13 @@ The stones stand beside the collected flowers, at the beginning of **Garden**. T
 
 **Last Seed** uses the main garden engine with different rules. The team shares exactly one seed. Planting it starts the timer and endless waves of existing enemies. No more seeds drop, the single plant can be tended but never harvested, and the team stays in the same garden. Clearing a wave earns a boon and a short care break. A living, watered plant heals nearby gardeners; losing it removes that recovery but does not end the run.
 
-Each player has 100 health. Attacks have a warning, dodging avoids damage and Bulwark's brace reduces it. At zero health a gardener goes down. A living teammate holds the normal Tend control (↓ / Space, controller Tend, or touch drag down) within reach for three uninterrupted seconds to revive them at half health. Moving away, taking damage or releasing Tend resets progress. The run ends when everyone is down. Health, waves, the plant and revives replicate from the host and survive a host handoff.
+Each player has 100 health. Attacks have a warning, dodging avoids damage and Cairn's brace reduces it. At zero health a gardener goes down. A living teammate holds the normal Tend control (↓ / Space, controller Tend, or touch drag down) within reach for three uninterrupted seconds to revive them at half health. Moving away, taking damage or releasing Tend resets progress. The run ends when everyone is down. Health, waves, the plant and revives replicate from the host and survive a host handoff.
 
 Results preserve the actual single plant, wave, survival time and plant lifetime in the garden archive; they are excluded from normal garden scores and public leaderboard publishing. Retry keeps Last Seed selected. `review.html?mode=last-seed` runs the real simulation with isolated memory storage; `mode=relic-garden` previews the owner collection. Bastion and Minos have been removed.
 
 ## Garden runs
 
-Every garden also has a **place** of its own to explore beside its routes (`garden-places.js`): a Shepherd Hut, a Hollow Oak, a Broken Aqueduct, a Sunken Chapel, a Root Stair, Cairn Terraces, a Lantern Tree, a Sky Stair, a Collapsed Tower, a Bell Cellar, an Old Quarry, a Weeping Willow, Twin Towers, a Catacomb, Moon Steps, a Giant's Stair, a Nest Crown, a Sluice Gate, a Gatehouse and the Throne Vault. Each has rooms, climbs and a false wall; one seed cache is out in the open and one is hidden behind the false wall. The run seed only picks its side and footing. A walking Bulwark reaches both caches, can always get back out, and can cross the place in both directions.
+Every garden also has a **place** of its own to explore beside its routes (`garden-places.js`): a Shepherd Hut, a Hollow Oak, a Broken Aqueduct, a Sunken Chapel, a Root Stair, Cairn Terraces, a Lantern Tree, a Sky Stair, a Collapsed Tower, a Bell Cellar, an Old Quarry, a Weeping Willow, Twin Towers, a Catacomb, Moon Steps, a Giant's Stair, a Nest Crown, a Sluice Gate, a Gatehouse and the Throne Vault. Each has rooms, climbs and a false wall; one seed cache is out in the open and one is hidden behind the false wall. The run seed only picks its side and footing. A walking Cairn reaches both caches, can always get back out, and can cross the place in both directions.
 
 Routes now look like their family: mossy cobble for terraces and crossings, ashlar ruins with broken pillars, leafy canopy branches and hanging roots on switchbacks. The frost gardens (11–15) wear snow and the ember gardens (16–19) ember moss. Each route side can grow a **bounce bloom**: jump or drop onto it and it springs Max through the ledge above, a shortcut up the route. Ledges also pay in a fight: a bomb thrown from high ground (20 px or more above the soil) hits harder, up to 35% from two ledges up. Hand-made gardens (the Seed Vault, the Railway Ruins and gardens drawn in Figma) now use their marked spots: a secret cache that only shows itself up close, cracked soil you blast open for seeds, a wonder puzzle on their puzzle spot, and a secret-garden gate at their door.
 
@@ -118,7 +120,7 @@ Cyan begins after the guardian's entire volley has landed and cleared. Every gua
 
 Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts do not stack the shake. Planted bombs show their actual upgraded reach, and a short input buffer accepts an attack released just before a reload or bomb slot becomes ready.
 
-The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech and Moss bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Charging preserves movement for both; other classes retain their aimed throws.
+The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Mech can move while charging. Kestrel and Mycel fire directly along their aim; Cairn and Pølge show their close attack reach. Sligo retains aimed flesh throws.
 
 New boss objectives reward tactics: crack Glass Snail’s front or flank it, snuff Wick Hermit’s wicks, cut Spindle Widow’s silk anchors, find Orchard Mimic’s cyan fruit, interrupt Tuning Fork’s echo, carry dew into Ash Ferryman, silence all Compost Choir voices, and break Seed Engine’s orbiting seeds. These actions open longer damage windows; ordinary attacks still work.
 
@@ -148,6 +150,8 @@ Boons are a live overlay; the simulation continues underneath them. Each choice 
 - Spring Step — higher jumps.
 - Quick Hands — shorter recovery between attacks; planted bombs keep their two-second fuse.
 
+Every reworked class has three mutation directions and two signature combinations: piercing/fans/landing volleys for Kestrel; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on combo hits for Pølge. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Mech and Sligo.
+
 Mech-only robot boons remain exclusive to Mech. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
 
 Run pickups include feathers, embers and dew. They are collected in-world and belong to the current attempt. A run keeps its full plant archive across all twenty gardens and builds the result bouquet from those exact plants.
@@ -159,6 +163,8 @@ Music and effects are separate device preferences.
 Settings cycles each independently through **75% → 50% → 25% → Off**. Muting music must not mute effects, and muting effects must not stop the soundtrack. Effects come back after an iPhone interruption (a call, Siri, the app switcher) as soon as the page returns or the next touch lands. A hurt plant crunches; falls, raids, cleared gardens, boon offers and picks and trials each have their own short cue on every player's phone.
 
 Bomb effects use a short, warm impact with a soft placement click and one nearby fuse cue. Distance falloff, a shared effects compressor and a limited number of overlapping voices keep co-op volleys from building into constant noise. Boss warnings, cyan openings and broken objectives have distinct cues on both host and guest. Failed trials do not play a reward cue.
+
+Needles, stone cleaves, spores and Pølge’s three combo strikes have distinct short layered sounds. Class skills signal readiness once; important guardian warnings reserve headroom and briefly duck attack accents. Planting and watering use separate tactile cues. All strike sounds follow validated shared effects, including for guests.
 
 The soundtrack player is streamed and survives menus/reconnects without decoding the whole playlist into memory.
 
@@ -299,7 +305,7 @@ Aim has a 0.12 radial deadzone and reaches full throw distance at 0.75 stick tra
 
 ### Upper districts
 
-All twenty main gardens include an optional 288–384 pixel ascent with three side galleries, hidden seed caches and a keepsake. Relay beacons, ordered bells, salvage seals and guarded watch points earn a summit item while the global threat clock keeps running. Follow the trail lamps; use the existing tend and throw controls. The full level catalogue and review links are in [Upper districts](docs/design/upper-districts.md).
+All twenty main gardens include an optional 288–384 pixel ascent with three side galleries, hidden seed caches and a keepsake. Beyond a safe lower approach, each run combines two different motifs: Broken Viaduct, Folded Stair, Hanging Galleries, Needle Crossing and Crown Steps. Shelter, needle and gallery detours return safely without movement upgrades. The feather, dew or ember reward is visible at the entrance before committing to the climb. Relay beacons, ordered bells, salvage seals and guarded watch points earn a summit item while the global threat clock keeps running. Follow the trail lamps; use the existing tend and throw controls. The full level catalogue and review links are in [Upper districts](docs/design/upper-districts.md).
 
 ### High Tide
 

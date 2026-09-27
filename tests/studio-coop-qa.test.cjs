@@ -55,7 +55,7 @@ test('all twenty live encounters warn and expose the same guardian on both clien
 });
 
 test('a guest buffered planted bomb is accepted once despite duplicate packets and an authority handoff',()=>{
- const {clients,pending,room,sync}=party(),host=clients[0].game,guest=clients[1].game;
+ const {clients,pending,room,sync}=party(['runner','mech']),host=clients[0].game,guest=clients[1].game;
  host.gardenPlots=[plot({id:1,x:host.P.x+90,moisture:1})];host.gardenRaidT=host.krekSpawnT=9999;
  host.bombs=[0,1].map(i=>({owner:ids[1],perks:{planted:true},planted:true,sligo:false,x:guest.P.x+i*4,y:guest.P.y-2,vx:0,vy:0,st:'planted',supportY:guest.P.y,fuse:.2,fuseMax:2,t:1.8,hop:0,spin:0}));
  sync();guest.bombCool=0;guest.chargeStart('key');guest.chargeRelease();assert.ok(guest.queuedThrow);

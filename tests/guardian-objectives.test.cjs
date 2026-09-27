@@ -2,10 +2,12 @@ const {test}=require('node:test'),assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
 function arena(stage){const h=loadGame(),g=h.game;g.resetRogueRun('test',{classId:'runner'});g.enterLevel(stage);g.runActive=true;g.gardenPlots=[plot({id:1,x:g.P.x,growth:.7})];const k=g.makeStageBoss(stage);g.floatKrek=[k];g.bossEvent.status='active';return {h,g,k};}
 function blastNode(g,n){g.explode(n.x,n.y,false,{ });}
-test('Moss places the same two-second stationary bomb and can escape while charging',()=>{
- for(const hz of [30,60,120]){const {h,g}=arena(1);g.floatKrek=[];g.warp=null;Object.assign(g.P,{st:'free',y:g.surfaceY(g.P.x),grounded:true});h.key('keydown','b');h.key('keydown','ArrowRight');assert.equal(g.readInput().axis,1);h.key('keyup','b');h.key('keyup','ArrowRight');const b=g.bombs[0];assert.ok(b.planted);const x=b.x,y=b.y;
- for(let i=0;i<hz*1.8;i++)g.updateBombs(1/hz);assert.equal(g.bombs.length,1);assert.equal(b.x,x);assert.equal(b.y,y);
- for(let i=0;i<hz*.25;i++)g.updateBombs(1/hz);assert.equal(g.bombs.length,0);}
+test('Kestrel fires direct needles while steering, with identical damage at supported frame rates',()=>{
+ for(const hz of [30,60,120]){const {h,g}=arena(1);g.floatKrek=[];g.warp=null;Object.assign(g.P,{st:'free',y:g.surfaceY(g.P.x),grounded:true});
+ const k=Object.assign(g.makeKrek(1,false,0),{x:g.P.x+24,y:g.P.y-12,hp:5,maxHp:5});g.floatKrek=[k];
+ h.key('keydown','b');h.key('keydown','ArrowRight');assert.equal(g.readInput().axis,1);h.key('keyup','b');h.key('keyup','ArrowRight');assert.equal(g.bombs.length,0);assert.equal(g.classShots.length,1);assert.ok(g.classShots[0].vx>200);
+ for(let i=0;i<hz*.5;i++)g.updateBombs(1/hz);assert.equal(g.classShots.length,0);assert.ok(Math.abs(k.hp-4.28)<1e-9);
+ }
 });
 test('Glass Snail rewards flanking and breaking its front shell; Tuning Fork can be interrupted',()=>{
  const {g,k}=arena(8);k.face=1;const hp=k.hp;g.damagePest(k,1,k.x-10);assert.equal(hp-k.hp,1);g.damagePest(k,1,k.x+10);assert.equal(k.exposed,0);g.damagePest(k,1,k.x+10);assert.ok(k.exposed>3);

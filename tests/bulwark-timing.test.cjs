@@ -7,25 +7,28 @@ function pest(g, dx, windup) {
   k.y = g.surfaceY(k.x) - 14; k.attackTarget = windup > 0 ? g.gardenPlots[0] : null; g.floatKrek.push(k); return k;
 }
 
-test('Bulwark throws slow, heavy bombs; other classes keep the quick throw', () => {
-  for (const [id, factor] of [['bulwark', 1.7], ['runner', 1], ['mech', 1]]) {
+test('native class attacks have distinct recovery times while Mech and Sligo keep bomb recovery', () => {
+  for (const [id, cooldown] of [['bulwark', .72], ['runner', .36], ['herbalist', .58], ['polge', .24], ['mech', .75], ['sligo', .75]]) {
     const g = fresh(id); g.gardenPlots = [plot({ id: 1, x: g.P.x + 40 })];
     assert.equal(g.throwBomb({ x: g.P.x + 30, y: g.P.y - 10 }), true);
-    assert.ok(Math.abs(g.bombCool - .75 * factor) < 1e-9, `${id} ${g.bombCool}`);
-    assert.equal(g.throwBomb({ x: g.P.x + 30, y: g.P.y - 10 }), false, 'mashing during the cooldown throws nothing');
+    assert.ok(Math.abs(g.bombCool - cooldown) < 1e-9, `${id} ${g.bombCool}`);
+    assert.equal(g.throwBomb({ x: g.P.x + 30, y: g.P.y - 10 }), false, 'mashing during recovery cannot attack again');
+    assert.equal(g.bombs.length, ['mech','sligo'].includes(id) ? 1 : 0);
   }
 });
 
-test('a Bulwark bomb that lands on a bite tell hits double and stuns; a plain hit or another class does not', () => {
+test('Cairn cleaves punish a bite tell for 50% more damage and stagger; Kestrel needles keep their normal damage', () => {
   const hurt = {};
   for (const id of ['bulwark', 'runner']) for (const windup of [0, .3]) {
     const g = fresh(id); g.gardenPlots = [plot({ id: 1, x: g.P.x + 40 })];
-    const k = pest(g, 40, windup), scale = g.runDurabilityScale ? g.runDurabilityScale() : 1;
-    g.explode(k.x, k.y, false, { counter: id === 'bulwark' });
+    const k = pest(g, 24, windup), scale = g.runDurabilityScale();
+    assert.equal(g.throwBomb({ x:k.x, y:k.y }), true);
+    if(id==='runner')for(let i=0;i<36;i++)g.updateClassCombat(1/120);
     hurt[id + windup] = +((10 - k.hp) * scale).toFixed(6);
-    if (id === 'bulwark' && windup) assert.ok(k.flee >= 1.2, 'a counter stuns the biter');
+    assert.equal(g.bombs.length,0);
+    if (id === 'bulwark' && windup) assert.ok(k.flee >= .6, 'the cleave staggers the biter');
   }
-  assert.deepEqual(hurt, { bulwark0: 1, 'bulwark0.3': 2, runner0: 1, 'runner0.3': 1 });
+  assert.deepEqual(hurt, { bulwark0: 1.3, 'bulwark0.3': 1.95, runner0: .72, 'runner0.3': .72 });
 });
 
 test('a brace on a bite tell parries: the biter is hurt, the late tell hurts most, and the brace comes back fast', () => {

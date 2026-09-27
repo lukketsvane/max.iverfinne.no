@@ -47,7 +47,8 @@ cpSync(join(root, 'assets/night-v1'), join(output, 'assets/night-v1'), { recursi
 cpSync(join(root, 'assets/cavern-v1'), join(output, 'assets/cavern-v1'), { recursive: true });
 copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
 for (const [pack, ids, sheets] of [
-  ['max-skins-v1', ['moss', 'tide', 'ember', 'moon', 'polge'], ['atlas.json', 'main.png', 'interaction.png']],
+  ['max-skins-v1', ['tide', 'polge'], ['atlas.json', 'main.png', 'interaction.png']],
+  ['characters-v2', ['kestrel', 'cairn', 'mycel'], ['atlas.json', 'main.png', 'interaction.png']],
   ['rat-enemies-v1', ['common', 'black', 'albino', 'plague'], ['atlas.json', 'sprites.png']],
   ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown'], ['atlas.json', 'sprites.png']],
 ]) {
@@ -56,11 +57,14 @@ for (const [pack, ids, sheets] of [
     mkdirSync(directory, { recursive: true });
     for (const file of sheets) copyFileSync(join(root, 'assets', pack, id, file), join(directory, file));
   }
-  copyFileSync(join(root, 'assets', pack, 'manifest.json'), join(output, 'assets', pack, 'manifest.json'));
+  const packManifest = JSON.parse(readFileSync(join(root, 'assets', pack, 'manifest.json'), 'utf8'));
+  const shippedIds = pack === 'max-skins-v1' ? ids.concat('sligo') : ids;
+  packManifest.assets = shippedIds.map(id => ({ id, manifest: id + '/atlas.json' }));
+  writeFileSync(join(output, 'assets', pack, 'manifest.json'), JSON.stringify(packManifest, null, 2) + '\n');
 }
 // Sligo's pack and its specials (the tun's sac and its burst) ship with the game.
 mkdirSync(join(output, 'assets/max-skins-v1/sligo'), { recursive: true });
-for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png', 'specials.json', 'brood.png', 'brood.json']) copyFileSync(join(root, 'assets/max-skins-v1/sligo', file), join(output, 'assets/max-skins-v1/sligo', file));
+for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png', 'specials.json', 'brood.png', 'brood.json', 'evergreen.png', 'evergreen.json', 'chain.png', 'chain.json']) copyFileSync(join(root, 'assets/max-skins-v1/sligo', file), join(output, 'assets/max-skins-v1/sligo', file));
 const milestoneDirectory = join(output, 'assets/boss-milestones-v1/native');
 cpSync(join(root, 'assets/garden-guardians-v1/native'), join(output, 'assets/garden-guardians-v1/native'), { recursive: true });
 mkdirSync(milestoneDirectory, { recursive: true });
