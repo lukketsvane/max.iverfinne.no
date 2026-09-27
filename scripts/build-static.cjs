@@ -39,6 +39,8 @@ cpSync(join(root, 'icons'), join(output, 'icons'), { recursive: true });
 for (const d of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, d))) cpSync(join(root, d), join(output, d), { recursive: true });
 cpSync(join(root, 'assets/biomes-v1'), join(output, 'assets/biomes-v1'), { recursive: true });
 cpSync(join(root, 'assets/boon-symbols-v1'), join(output, 'assets/boon-symbols-v1'), { recursive: true });
+mkdirSync(join(output, 'assets/district-props-v1'), { recursive: true });
+for (const file of ['props.png','props.json','landmarks.png','landmarks.json']) copyFileSync(join(root,'assets/district-props-v1',file),join(output,'assets/district-props-v1',file));
 cpSync(join(root, 'assets/plants-v1'), join(output, 'assets/plants-v1'), { recursive: true });
 cpSync(join(root, 'assets/garden-view-v1'), join(output, 'assets/garden-view-v1'), { recursive: true });
 cpSync(join(root, 'assets/tiles-v1'), join(output, 'assets/tiles-v1'), { recursive: true });

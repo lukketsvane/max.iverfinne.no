@@ -24,14 +24,21 @@ async function scene(mode, classId, params = {}) {
   const layoutModes = Array.from(outer.window.document.querySelectorAll('#fixture option'), option => option.value).filter(value => value.startsWith('layout'));
   outer.window.close(); doc.window.close();
   let harness = read('tests/game-harness.cjs');
+  // This VM also constructs the selected review world and populates its scene.
+  // The full suite runs many physics workers concurrently; VM timeouts measure
+  // wall time, including that CPU contention. Keep a finite fixture-only budget
+  // while preserving the ordinary game harness's two-second startup guard.
+  const startupOptions="{ filename: 'index.html', timeout: 2000 }";
+  assert.ok(harness.includes(startupOptions),'review startup must retain a bounded VM execution');
+  harness=harness.replace(startupOptions,"{ filename: 'index.html', timeout: 10000 }");
   harness = harness.replace('const instrumented = source.replace(', 'const fixtureSource = source.replace(/\\}\\)\\(\\);\\s*$/, ' + JSON.stringify(hook + '\n})();') + ');\nconst instrumented = fixtureSource.replace(')
     .replace('sandbox.window = sandbox;', `
       sandbox.location = { origin: 'null' };
       sandbox.KeyboardEvent = class { constructor(type, options) { this.type = type; Object.assign(this, options); } preventDefault() {} };
       sandbox.dispatchEvent = event => { for (const fn of listeners[event.type] || []) fn(event); return true; };
-      sandbox.parent = { postMessage(data) { sandbox.reviewState = data; } }; sandbox.window = sandbox;
+      sandbox.parent = { postMessage(data) { if (data.type === 'max-circuit-observation') sandbox.reviewCircuitState = data; sandbox.reviewState = data; } }; sandbox.window = sandbox;
     `)
-    .replace('game: sandbox.game, document,', 'reviewState: () => sandbox.reviewState, game: sandbox.game, document,');
+    .replace('game: sandbox.game, document,', 'reviewState: () => sandbox.reviewState, reviewCircuitState: () => sandbox.reviewCircuitState, game: sandbox.game, document,');
   const filename = path.join(__dirname, 'generated-review-harness.cjs'), mod = new Module(filename, module);
   mod.filename = filename; mod.paths = module.paths; mod._compile(harness, filename);
   return { ...mod.exports.loadGame(), selectedMode: modeValue, className, layoutModes };
@@ -193,4 +200,51 @@ test('srcdoc review controls accept the real parent origin and reject forged inp
   send({ data: { ...data, down: false } });
   assert.equal(keys, 2); assert.equal(g.charge, null); assert.equal(g.classShots.length, 1);
   assert.equal(g.classShots[0].kind, 'needle'); assert.equal(g.bombs.length, 0);
+});
+
+test('the circuit fixture uses native altars, real Tend and a full ingress warning before a keeper arrives', async () => {
+  const s=await scene('circuit'),g=s.game,C=g.stageLayout().expedition.circuit;
+  assert.equal(s.selectedMode,'circuit');assert.equal(s.className,'Pølge');
+  assert.equal(g.rogueRun.world,8);assert.equal(g.rogueRun.seed,73);assert.equal(C.family,'bell');
+  assert.equal(g.P.x,C.choices[0].x);assert.equal(g.P.y,C.choices[0].y);assert.equal(g.P.platform,C.choices[0].platformId);
+  assert.equal(g.floatKrek.length,0);assert.equal(g.gardenPlots.length,0);assert.equal(g.runLoot.length,0);
+  assert.equal(g.runExpedition.circuitChoice,-1);assert.equal(g.runExpedition.circuitActive,false);
+  const geometry=JSON.stringify(C);s.tick(16);
+  assert.equal(s.reviewCircuitState().propsReady,false,'readiness reflects loaded artwork, not fixture assumptions');
+  for(const name of ['props','landmarks']){
+    const image=s.images.find(i=>i.src==='assets/district-props-v1/'+name+'.png');
+    assert.ok(image,'native district atlas requested');
+    image.complete=true;image.naturalWidth=192;
+  }
+  s.key('keydown',' ');s.tick(16);s.key('keyup',' ');
+  assert.equal(g.runExpedition.circuitActive,true);assert.equal(g.runExpedition.circuitChoice,0);
+  assert.equal(g.floatKrek.length,0,'Tend begins a warning, never an instant spawn');
+  for(let i=0;i<70;i++)s.tick(16);
+  assert.equal(g.floatKrek.length,0,'the first second is clear');
+  for(let i=0;i<45;i++)s.tick(16);
+  const observed=s.reviewCircuitState(),arrival=observed.log.arrivals[0];
+  assert.ok(observed.propsReady);assert.ok(arrival);
+  assert.ok(observed.log.warnings[0].tell>=1.3);
+  assert.ok(arrival.warning.shownFor>=1.3,'warning is visible for its full simulation interval');
+  assert.ok(Math.hypot(arrival.x-arrival.warning.x,arrival.y-arrival.warning.y)<8,'arrival uses the displayed location');
+  assert.equal(JSON.stringify(C),geometry,'activation never moves the generated terrain');
+  assert.equal(g.rogueRun.choice,null);
+  const key=g.P.x-C.arena.left<C.arena.right-g.P.x?'ArrowLeft':'ArrowRight';
+  s.key('keydown',key);s.key('keydown','Shift');
+  for(let i=0;i<720&&!g.runExpedition.circuitFailed;i++)s.tick(16);
+  s.key('keyup',key);s.key('keyup','Shift');s.tick(300);
+  assert.equal(g.runExpedition.circuitFailed,true,'walking away withdraws with normal movement');
+  assert.equal(g.runExpedition.circuitActive,false);assert.equal(g.runExpedition.circuitDone,false);
+  assert.equal(g.runExpedition.circuitQueued,0);assert.equal(g.runExpedition.circuitTell,0);
+  assert.equal(s.reviewCircuitState().log.rewards.length,0);assert.equal(s.reviewCircuitState().guards.length,0);
+  assert.equal(JSON.stringify(C),geometry);assert.equal(g.rogueRun.ended,false);
+});
+
+test('circuit review links select all three generated landmark families without changing the chosen class', async () => {
+  for(const [seed,family] of [[73,'bell'],[8,'arch'],[3,'pump']]){
+    const s=await scene('circuit','bulwark',{seed:String(seed)}),g=s.game;
+    assert.equal(g.stageLayout().expedition.circuit.family,family);
+    assert.equal(g.rogueRun.classId,'bulwark');assert.equal(g.rogueRun.seed,seed);
+    assert.equal(g.runExpedition.circuitActive,false);assert.equal(g.floatKrek.length,0);
+  }
 });

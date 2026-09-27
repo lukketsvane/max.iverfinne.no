@@ -1,0 +1,368 @@
+{
+  "schema": "max-native-atlas/v1",
+  "id": "district-props-v1",
+  "kind": "world-prop",
+  "cell": [
+    32,
+    32
+  ],
+  "anchor": [
+    16,
+    31
+  ],
+  "palette": [
+    "#121820",
+    "#1c2a31",
+    "#2b4146",
+    "#3b5b5f",
+    "#547c78",
+    "#7e9d8c",
+    "#b9bfa0",
+    "#e6d6aa",
+    "#9a7136",
+    "#cfa54e",
+    "#f5d784",
+    "#215964",
+    "#408d91",
+    "#70c8bc",
+    "#b8f0d2",
+    "#533d39"
+  ],
+  "sheets": {
+    "props": {
+      "image": "props.png",
+      "size": [
+        192,
+        64
+      ]
+    }
+  },
+  "frames": [
+    {
+      "name": "relay/idle",
+      "sheet": "props",
+      "rect": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        5,
+        3,
+        29,
+        32
+      ]
+    },
+    {
+      "name": "bells/idle",
+      "sheet": "props",
+      "rect": [
+        32,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        10,
+        30,
+        32
+      ]
+    },
+    {
+      "name": "salvage/idle",
+      "sheet": "props",
+      "rect": [
+        64,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        9,
+        30,
+        32
+      ]
+    },
+    {
+      "name": "watch/idle",
+      "sheet": "props",
+      "rect": [
+        96,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        3,
+        3,
+        29,
+        32
+      ]
+    },
+    {
+      "name": "altar/idle",
+      "sheet": "props",
+      "rect": [
+        128,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        13,
+        30,
+        32
+      ]
+    },
+    {
+      "name": "cache/idle",
+      "sheet": "props",
+      "rect": [
+        160,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        10,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "relay/lit",
+      "sheet": "props",
+      "rect": [
+        0,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        3,
+        28,
+        32
+      ]
+    },
+    {
+      "name": "bells/lit",
+      "sheet": "props",
+      "rect": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        10,
+        30,
+        32
+      ]
+    },
+    {
+      "name": "salvage/lit",
+      "sheet": "props",
+      "rect": [
+        64,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        7,
+        30,
+        32
+      ]
+    },
+    {
+      "name": "watch/lit",
+      "sheet": "props",
+      "rect": [
+        96,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        3,
+        3,
+        29,
+        32
+      ]
+    },
+    {
+      "name": "altar/lit",
+      "sheet": "props",
+      "rect": [
+        128,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        9,
+        30,
+        32
+      ]
+    },
+    {
+      "name": "cache/lit",
+      "sheet": "props",
+      "rect": [
+        160,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        10,
+        32,
+        32
+      ]
+    }
+  ],
+  "animations": {
+    "relay/idle": {
+      "frames": [
+        0
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "bells/idle": {
+      "frames": [
+        1
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "salvage/idle": {
+      "frames": [
+        2
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "watch/idle": {
+      "frames": [
+        3
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "altar/idle": {
+      "frames": [
+        4
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "cache/idle": {
+      "frames": [
+        5
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "relay/lit": {
+      "frames": [
+        6
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "bells/lit": {
+      "frames": [
+        7
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "salvage/lit": {
+      "frames": [
+        8
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "watch/lit": {
+      "frames": [
+        9
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "altar/lit": {
+      "frames": [
+        10
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "cache/lit": {
+      "frames": [
+        11
+      ],
+      "fps": 1,
+      "loop": true
+    }
+  }
+}

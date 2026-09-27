@@ -1,0 +1,125 @@
+{
+  "schema": "max-native-atlas/v1",
+  "id": "district-landmarks-v1",
+  "kind": "world-prop",
+  "cell": [
+    48,
+    64
+  ],
+  "anchor": [
+    24,
+    63
+  ],
+  "palette": [
+    "#121820",
+    "#1c2a31",
+    "#2b4146",
+    "#3b5b5f",
+    "#547c78",
+    "#7e9d8c",
+    "#b9bfa0",
+    "#e6d6aa",
+    "#9a7136",
+    "#cfa54e",
+    "#f5d784",
+    "#215964",
+    "#408d91",
+    "#70c8bc",
+    "#b8f0d2",
+    "#533d39"
+  ],
+  "sheets": {
+    "landmarks": {
+      "image": "landmarks.png",
+      "size": [
+        144,
+        64
+      ]
+    }
+  },
+  "frames": [
+    {
+      "name": "pump",
+      "sheet": "landmarks",
+      "rect": [
+        0,
+        0,
+        48,
+        64
+      ],
+      "anchor": [
+        24,
+        63
+      ],
+      "opaqueBounds": [
+        2,
+        15,
+        48,
+        64
+      ]
+    },
+    {
+      "name": "arch",
+      "sheet": "landmarks",
+      "rect": [
+        48,
+        0,
+        48,
+        64
+      ],
+      "anchor": [
+        24,
+        63
+      ],
+      "opaqueBounds": [
+        2,
+        12,
+        48,
+        64
+      ]
+    },
+    {
+      "name": "bell",
+      "sheet": "landmarks",
+      "rect": [
+        96,
+        0,
+        48,
+        64
+      ],
+      "anchor": [
+        24,
+        63
+      ],
+      "opaqueBounds": [
+        2,
+        6,
+        48,
+        64
+      ]
+    }
+  ],
+  "animations": {
+    "pump": {
+      "frames": [
+        0
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "arch": {
+      "frames": [
+        1
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "bell": {
+      "frames": [
+        2
+      ],
+      "fps": 1,
+      "loop": true
+    }
+  }
+}

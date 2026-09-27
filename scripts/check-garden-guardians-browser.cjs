@@ -5,6 +5,55 @@ const port=8782,base=`http://127.0.0.1:${port}`;
 const server=spawn('python3',['-m','http.server',String(port),'--directory','dist'],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','bellkeeper','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
+async function checkCircuit(page,engineName,errors){
+ const observation=async()=>JSON.parse(await page.locator('#status').getAttribute('data-circuit'));
+ const ready=async()=>page.waitForFunction(()=>{
+  const data=document.querySelector('#status').dataset.circuit;return data&&JSON.parse(data).propsReady;
+ },{},{timeout:15000});
+ await page.goto(base+'/review.html?mode=circuit&portrait=1');await ready();
+ const initial=await observation(),geometry=JSON.stringify(initial.geometry);
+ assert.equal(initial.classId,'polge');assert.equal(initial.world,8);assert.equal(initial.seed,73);
+ assert.equal(initial.geometry.family,'bell');assert.equal(initial.choice,-1);assert.equal(initial.active,false);
+ assert.equal(initial.guards.length,0);assert.equal(initial.boonOpen,false);
+ assert.ok(Math.abs(initial.player.x-initial.geometry.choices[0].x)<2);
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-bell-phone.png`});
+ await page.getByRole('button',{name:'Game Tend',exact:true}).click();
+ await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).active,{},{timeout:4000});
+ await page.getByRole('button',{name:'Game Tend',exact:true}).click();
+ const warning=await observation();assert.equal(warning.choice,0);assert.equal(warning.spawned,0);
+ assert.equal(warning.guards.length,0);assert.ok(warning.tell>0);
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-bell-warning.png`});
+ await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).log.arrivals.length>0,{},{timeout:5000});
+ const active=await observation(),arrival=active.log.arrivals[0];
+ assert.ok(active.log.warnings[0].tell>=1.3,'the first ingress receives the full warning');
+ assert.ok(arrival.warning.shownFor>=1.3,'a keeper never arrives early');
+ assert.ok(Math.hypot(arrival.x-arrival.warning.x,arrival.y-arrival.warning.y)<8,'keeper arrives at its displayed marker');
+ assert.equal(JSON.stringify(active.geometry),geometry,'combat preserves the generated geometry');
+ await page.locator('#viewport').selectOption('landscape');
+ await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).view.width===844,{},{timeout:3000});
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-bell-landscape.png`});
+ const beforeLeaving=await observation(),a=beforeLeaving.geometry.arena;
+ const key=beforeLeaving.player.x-a.left<a.right-beforeLeaving.player.x?'ArrowLeft':'ArrowRight';
+ const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
+ await page.keyboard.down('Shift');await page.keyboard.down(key);
+ try{
+  await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).failed,{},{timeout:18000});
+ }finally{await page.keyboard.up(key);await page.keyboard.up('Shift');}
+ const withdrawn=await observation();
+ assert.equal(withdrawn.active,false);assert.equal(withdrawn.done,false);assert.equal(withdrawn.queued,0);
+ assert.equal(withdrawn.tell,0);assert.equal(withdrawn.guards.length,0);assert.equal(withdrawn.log.rewards.length,0);
+ assert.equal(withdrawn.boonOpen,false);assert.equal(withdrawn.ended,false);assert.ok(withdrawn.away>=4);
+ assert.equal(JSON.stringify(withdrawn.geometry),geometry);
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-withdrawn.png`});
+ // Other court families use the same state machine; inspect their own native
+ // landmarks without repeating the full combat sequence for each seed.
+ for(const [seed,family] of [[8,'arch'],[3,'pump']]){
+  await page.goto(base+'/review.html?mode=circuit&portrait=1&seed='+seed);await ready();
+  const variant=await observation();assert.equal(variant.geometry.family,family);assert.equal(variant.active,false);
+  await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${family}-phone.png`});
+ }
+ assert.deepEqual(errors,[]);console.log(engineName,'circuit native props, Tend commitment, warned ingress, fixed geometry and real-input withdrawal OK');
+}
 (async()=>{
  fs.mkdirSync('guardian-browser-review',{recursive:true});
  for(let i=0;i<50;i++){try{if((await fetch(base)).ok)break;}catch{}await pause(100);}
@@ -14,6 +63,8 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
    const page=await browser.newPage({viewport:{width:1050,height:1030},deviceScaleFactor:1}),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
    page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
+   await checkCircuit(page,engineName,errors);
+   if(process.argv.includes('--circuit-only'))continue;
    for(let stage=1;stage<=20;stage++){
     await page.goto(base+'/review.html?mode='+(stage===20?'boss':'boss'+stage));
     await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
