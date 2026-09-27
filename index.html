@@ -9,6 +9,7 @@
 <script src="tiles.js"></script>
 <script src="garden-places.js"></script>
 <script src="stage-expeditions.js"></script>
+<script src="guardian-sites.js"></script>
 <script src="levels-v1/seed-vault.js"></script>
 <script src="levels-v1/railway-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
@@ -55,6 +56,9 @@
   .perkDots{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:3px;height:3px}
   .perkDots i{display:block;width:3px;height:3px;background:#566053}
   .perkDots i.on{background:#ebeebe}
+  @media(max-height:600px){
+    #perkMenu{top:max(8px,env(safe-area-inset-top));bottom:auto}
+  }
   @media(max-height:430px){
     #perkMenu{left:auto;right:max(8px,env(safe-area-inset-right));top:max(8px,env(safe-area-inset-top));bottom:auto;transform:none;width:min(330px,calc(100vw - 24px))}
     #perkMenu button{min-height:106px;padding-top:6px;gap:4px}
@@ -288,6 +292,7 @@ function pictureLayout(level){
   d.blocks.forEach(function(b,i){L.platforms.push({id:'r'+i,x:ax+b[0],y:ay+b[1],w:b[2],h:b[3],depth:6,route:1,style:'stone',solid:true});});
   L.platforms.push({id:'base',x:ax,y:ay+d.h-2,w:d.w,h:90,depth:6,route:1,style:'stone',solid:true,draw:d.h-d.entry.y<=12}); // a deep picture paints its own rock below the soil line
   (d.ledges||[]).forEach(function(b,i){L.platforms.push({id:'l'+i,x:ax+b[0],y:ay+b[1],w:b[2],depth:4,route:1,style:'branch',art:true});});
+  L.ladders=(d.ladders||[]).map(function(b,i){return {id:'picture-ladder-'+i,x:ax+b[0],top:ay+b[1],bottom:ay+b[2],w:b[3]||14,art:b[4]!==0};});
   (d.hazards||[]).forEach(function(h){L.hazards.push({type:h[0],x:ax+h[1],y:ay+h[2],w:h[3],h:h[4]});});
   var seed=null;(d.markers||[]).forEach(function(m){var a={x:ax+m[1],y:ay+m[2],side:1};if(m[0]==='reward')L.rewards.push(a);else if(m[0]==='seed')seed=a;else if(m[0]==='trial')L.trials.push(a);else if(m[0]==='bonus')L.bonuses.push(a);else L.spots[m[0]]=a;});
   if(seed)L.rewards.push(seed);
@@ -304,13 +309,51 @@ function stageLayout(){
   var level=worldLevel();
   if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level<=2&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
   window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
+  window.MaxGuardianSites.furnish(activeStageLayout,surfaceY,waterAt);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
 function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:highTideMode()?rogueRun.survival.base+110:surfaceY(x);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
 var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
-function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
+function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
+function drawLadders(L){
+  (L.ladders||[]).forEach(function(q){if(q.art)return;var x=Math.round(q.x-camX),top=Math.round(q.top-camY),bottom=Math.round(q.bottom-camY),w=Math.min(7,Math.round((q.w||14)/2));if(x+w<0||x-w>IW||bottom<0||top>IH)return;
+    rect(x-w,top,2,bottom-top,'#665239');rect(x+w-1,top,2,bottom-top,'#665239');
+    for(var y=top+3;y<bottom;y+=7){rect(x-w,y,w*2+1,2,'#a38655');rect(x-w+1,y+2,w*2-1,1,'#493d30');}
+  });
+}
+function ladderAt(x,y,margin){
+  margin=margin==null?8:margin;var best=null,dist=Infinity;
+  (stageLayout().ladders||[]).forEach(function(q){var d=Math.abs(x-q.x);if(d<=Math.max(margin,(q.w||14)/2)&&y>=q.top-3&&y<=q.bottom+5&&d<dist){best=q;dist=d;}});return best;
+}
+function ladderInput(){
+  var v=(heldDown||swipeDown?1:0)-(heldUp?1:0);
+  if(!v&&pad.ladderY)v=pad.ladderY;
+  if(!v)Object.keys(touches).some(function(id){var q=touches[id],dy=q.y-q.y0,dx=q.x-q.x0;if(Math.abs(dy)>18&&Math.abs(dy)>Math.abs(dx)){v=dy<0?-1:1;return true;}return false;});
+  return v;
+}
+function beginLadder(direction){
+  if(runIsPaused()||seedDown()||P.ladderRegrab>0||P.tun>0||P.st==='float'||P.st==='burrow'||climb||warp)return false;
+  var q=ladderAt(P.x,P.y);if(!q||direction<0&&P.y<=q.top+1||direction>0&&P.y>=q.bottom-1)return false;
+  P.ladderId=q.id;P.st='ladder';P.x=q.x;P.vx=P.vy=0;P.grounded=false;P.platform=null;P.coyote=0;P.held=false;P.land=0;P.brace=0;P.dodgeT=0;P.airJumpUsed=false;
+  task=holdWater=null;jumpBuf=0;gardenPress=false;cancelPounce();setAnim('climb');return true;
+}
+function leaveLadder(jump,axis){
+  P.ladderId=null;P.ladderRegrab=.22;P.st='free';P.grounded=false;P.platform=null;P.vx=(axis||0)*WALK_V*ownClass().speed;P.vy=jump?JUMP_V*ownClass().jump:0;P.held=!!jump;P.coyote=0;jumpBuf=0;gardenPress=false;setAnim(jump?'rise':'fall');
+}
+function updateLadder(dt,inp){
+  var q=(stageLayout().ladders||[]).find(function(q){return q.id===P.ladderId;});
+  if(!q||Math.abs(P.x-q.x)>Math.max(10,(q.w||14)/2+3)||P.y<q.top-4||P.y>q.bottom+5){leaveLadder(false,inp.axis);return;}
+  if(inp.axis){leaveLadder(heldUp,inp.axis);return;}
+  var dir=ladderInput();P.x=q.x;P.vx=0;P.vy=dir*48;P.y=Math.max(q.top,Math.min(q.bottom,P.y+P.vy*dt));P.grounded=false;P.coyote=0;gardenPress=false;jumpBuf=0;
+  if(dir&&((dir<0&&P.y<=q.top)||(dir>0&&P.y>=q.bottom))){
+    var y=P.y;leaveLadder(false,0);P.ladderRegrab=0;P.y=y;var support=window.MaxStageLayout.at(stageLayout(),P.x,y,4);
+    if(support||Math.abs(y-surfaceY(P.x))<5){P.grounded=true;P.platform=support?support.id:null;P.coyote=.1;P.vy=0;P.crouchGardenLatch=true;setAnim('idle');}
+    return;
+  }
+  setAnim('climb');
+}
 /* Garden places (garden-places.js): every garden has one landmark of its own.
    Finding it, and the false walls inside it, are each player's own view. Its
    caches are ordinary seed pickups: the host owns them, guests claim them. */
@@ -380,6 +423,8 @@ function doJump(variable) {
   if(P&&P.brace>0)P.brace=0;
   if(P&&P.tun>0)endTun();
   if(P&&P.st==='climb'&&climb){if(climb.exit)climbBoost();else jumpFromPlant(variable);return;}
+  if(P&&P.st==='ladder'){if(readInput().axis)leaveLadder(true,readInput().axis);return;}
+  if(P&&!readInput().axis&&beginLadder(-1))return;
   if(P&&canPlantClimb(rogueRun.classId)&&!warp&&P.st!=='float'&&!P.climbRegrab&&(!highTideMode()||!readInput().axis)){
     var plant=plantClimbAt(P.x,P.y,9);if(plant&&requestClimb(plant))return;
   }
@@ -476,6 +521,7 @@ function pollPads(){
     if(jump!==!!pad.jump)heldUp=jump;pad.jump=jump;
     var shoot=!!(b[2]||b[7]);if(shoot&&!pad.shoot)chargeStart('pad');
     var aiming=charge&&charge.src==='pad';
+    pad.ladderY=aiming?0:U?-1:D?1:0;
     var down=D&&!aiming;if(down!==!!pad.down){heldDown=down;if(down)gardenPress=true;}pad.down=down;
     if(work!==!!pad.work){heldSpace=work;if(work&&!aiming)gardenPress=true;}pad.work=work;
     var run=!!b[5];if(run!==!!pad.run)heldRun=run;pad.run=run;
@@ -676,6 +722,7 @@ function readInput() {
     var t = touches[moveId];
     if(t&&!t.low){
       var dx=t.x-t.ax,mag=Math.abs(dx);
+      if(P.st==='ladder'&&Math.abs(t.y-t.y0)>Math.abs(t.x-t.x0))mag=0;
       if(mag>12){
         axis=dx<0?-1:1;
         var speed=Math.min(1,(mag-12)/64);
@@ -761,12 +808,13 @@ function bloomSpring(q){
   chime([392,587,784],.045,.045);
 }
 function updatePlayer(dt, inp) {
-  if(seedDown()){task=holdWater=climb=warp=null;P.vx=P.vy=0;P.st='rest';setAnim('rest');return;}
+  if(seedDown()){task=holdWater=climb=warp=null;P.ladderId=null;P.vx=P.vy=0;P.st='rest';setAnim('rest');return;}
   if(lastSeedMode()&&seedHeld()&&seedReviveNearby()&&!inp.axis){task=holdWater=null;P.vx=0;setAnim('crouch');return;}
   bloomT+=dt;
   var steps=Math.max(1,Math.ceil(dt*120-1e-7)),step=dt/steps;
   for(var i=0;i<steps&&!runIsPaused();i++){
     P.climbRegrab=Math.max(0,(P.climbRegrab||0)-step);
+    P.ladderRegrab=Math.max(0,(P.ladderRegrab||0)-step);
     P.dodgeCool=Math.max(0,P.dodgeCool-step);
     if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){chime([1319],0,.012);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
     P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
@@ -775,9 +823,11 @@ function updatePlayer(dt, inp) {
     P.hurt=Math.max(0,(P.hurt||0)-step);
     if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
     var held=P.tun>0?{axis:0,top:inp.top}:inp;
+    if(P.st==='free'&&!held.axis&&ladderInput())beginLadder(ladderInput());
     updateHands(step,taskSteer(held));
     if(P.st==='burrow')updateBurrow(step,inp);
     else if(P.st==='climb')updateClimb(step,inp);
+    else if(P.st==='ladder')updateLadder(step,inp);
     else physics(step,(P.st==='free'||P.st==='float')?held:{axis:0,top:inp.top});
     if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
     P.throwPose=Math.max(0,P.throwPose-step);
@@ -887,6 +937,7 @@ function animate(dt) {
   }
 
   var a = ANIM[P.anim], rate = a.fps;
+  if(P.st==='ladder')rate=Math.abs(P.vy)/7;
   if (P.anim === 'walk') rate = spd / 2.55;        // the walk cycle moves a planted foot 2.55px per frame
   else if (P.anim === 'run') rate = spd / 3.4;     // the run row covers ~24px per 7 frames
   P.clock += dt * rate;
@@ -3284,7 +3335,8 @@ function recordGardenPlant(p){
 }
 function clearRunInput(){
   heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;charge=null;queuedThrow=null;padAx=0;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
-  if(P){P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;endTun();}
+  pad.ladderY=0;
+  if(P){P.ladderId=null;P.ladderRegrab=0;if(P.st==='ladder')P.st='free';P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;endTun();}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
 function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
@@ -4101,7 +4153,7 @@ function levelCleared(){
   if(w===RUN_STAGES){if(rogueRun.bossDefeated)winRogueRun();return;}
   rogueRun.clearedWorld=w;gardenRaidActive=false;
   var best=null,bs=-1;
-  for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead)continue;var s=p.growth+p.health*2;if(s>bs){bs=s;best=p;}}
+  for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead)continue;var local=guardianCourtPlant(p,bossEvent);var s=p.growth+p.health*2+(local?1000:0);if(s>bs){bs=s;best=p;}}
   if(best){best.growth=Math.max(best.growth,G_TOP);makeStalk(best);}
   gardenScore+=1500+w*250;
   for(i=0;i<36;i++)parts.push({x:P.x+(Math.random()-.5)*45,y:P.y-12-Math.random()*45,vx:(Math.random()-.5)*18,vy:-8-Math.random()*18,l:1.2+Math.random()*1.8,m:1.2,c:i&1?'238,222,132':'171,206,135'});
@@ -4945,7 +4997,7 @@ function updateHands(dt, inp) {
     if(P.st!=='free'&&P.st!=='float')P.st='free';
     return;
   }
-  if (P.st === 'climb' || P.st === 'float') { task = null; return; }
+  if (P.st === 'climb' || P.st === 'ladder' || P.st === 'float') { task = null; return; }
   if (P.tun > 0) { task = null; holdWater = null; gardenPress = false; lampToggle = false; return; }
   if(P.dodgeT>0&&jumpBuf<=0){gardenPress=false;return;}
   var move = inp.axis !== 0, low = heldDown || heldSpace || swipeDown || gardenPress;
@@ -5164,13 +5216,13 @@ function throwBomb(target,power) {                         // a bird {kind, o} o
     var aim=target.o||target;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:Number.isSafeInteger(aim.spore)?aim.spore:0,power:power}))return false;
     bombCool=bombCoolMax=throwCooldown(power);task=null;
     var guestX=target.o?target.o.x:target.x;if(Math.abs(guestX-P.x)>1)P.face=guestX>P.x?1:-1;
-    if(!climb)P.st='free';holdWater=null;P.still=0;P.throwPose=.28;sfx(placesBombs()?'place':'swish',0);return true;
+    if(!climb&&P.st!=='ladder')P.st='free';holdWater=null;P.still=0;P.throwPose=.28;sfx(placesBombs()?'place':'swish',0);return true;
   }
   bombCool = bombCoolMax = throwCooldown(power); task = null;
   var tx = target.o ? target.o.x : target.x;
   if (Math.abs(tx - P.x) > 1) P.face = tx > P.x ? 1 : -1;
   P.aim = target;P.aimPower=power;
-  if(!climb)P.st='free';holdWater=null;P.still=0;
+  if(!climb&&P.st!=='ladder')P.st='free';holdWater=null;P.still=0;
   // Release on input. The optional standing pose never owns movement or jumping.
   launchBomb();P.throwPose=.28;
   if(P.grounded&&!P.wet&&sheet2Ready&&Math.abs(P.vx)<3&&!readInput().axis){setAnim('toss');P.frame=ANIM.toss.hit;}
@@ -5696,6 +5748,7 @@ function skillCue(kind,dist){
   else if(kind==='bloom'||kind==='revive'){chime([523,659,784,1047],.045,.05);if(kind==='revive')chime([784,1175],.1,.06);}
 }
 var RUN_CUES={fall:[[466,392,311],.09,.05],lost:[[311,262],.16,.035],raid:[[440,330,440],.09,.045],clear:[[262,392,523,784],.09,.045],level:[[587,740,880,1175],.05,.04],boon:[[1175,1568],.06,.045],trial:[[294,440],.08,.04],done:[[659,880,1319],.06,.05]},heard=null;
+var heardShrines={seed:null,worlds:{}};
 function runCue(kind,dist){
   if(kind==='hurt')return sfx('crunch',dist);
   if(kind==='raid'||kind==='trial')sfx('thud',0);
@@ -5709,7 +5762,7 @@ function guardianCue(kind,k){
   else if(kind==='break')chime([392,587,784],.04,.05,'guardian:break',dist);
 }
 function listenRun(){
-  var b=heard,now={run:rogueRun,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:rogueRun.choice||null,hit:{},boss:{},fuses:[]},hurt=null,fuse=null,matched=[];
+  var b=heard,now={run:rogueRun,seed:rogueRun.seed,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:rogueRun.choice||null,hit:{},boss:{},fuses:[]},hurt=null,fuse=null,matched=[];
   gardenPlots.forEach(function(p){now.hit[p.id]=p.hit||0;if(p.dead)now.fall++;else if(b&&p.hit>(b.hit[p.id]||0)+.2&&(!hurt||Math.abs(p.x-P.x)<Math.abs(hurt.x-P.x)))hurt=p;});
   runEncounters.forEach(function(e){if(e.done&&!e.failed)now.done++;else if(e.active)now.trial++;});
   floatKrek.forEach(function(k){if(!k.boss)return;var key=k.bossId+':'+k.ph;now.boss[key]={warn:k.windup>0,open:k.exposed>0,hp:k.hp,nodes:(k.nodes||[]).reduce(function(sum,n){return sum+Math.max(0,n.hp);},0),actor:k};});
@@ -5719,8 +5772,17 @@ function listenRun(){
     ((b&&b.fuses)||[]).forEach(function(v){if(v.owner===q.owner&&Math.abs(v.x-q.x)<1&&q.t>=v.t-.02&&q.t-v.t<1&&matched.indexOf(v)<0&&(!old||v.t>old.t))old=v;});
     if(old)matched.push(old);now.fuses.push({owner:q.owner,x:q.x,t:q.t,fuse:q.fuse});
     if(old&&old.fuse>.65&&q.fuse<=.65&&q.fuse>0&&(!fuse||Math.hypot(q.x-P.x,q.y-P.y)<Math.hypot(fuse.x-P.x,fuse.y-P.y)))fuse=q;});
+  // Discovery belongs to the local explorer. It never points toward an unseen
+  // shrine, and the seed/world ledger survives same-run host handoff/reconnect.
+  if(heardShrines.seed!==rogueRun.seed)heardShrines={seed:rogueRun.seed,worlds:{}};
+  var shrine=false;
+  if(!relicRunMode()&&bossEvent&&bossEvent.stage===now.world&&bossEvent.status==='ready'&&!heardShrines.worlds[now.world]){
+    var sx=bossEvent.x-camX,sy=bossEvent.y-camY;
+    if(Math.hypot(bossEvent.x-P.x,bossEvent.y-P.y)<=90&&sx>=10&&sx<=IW-10&&sy>=26&&sy<=IH-4){heardShrines.worlds[now.world]=true;shrine=true;}
+  }
   heard=now;
-  if(!b||b.run!==now.run||b.world!==now.world||Math.abs(now.t-b.t)>1)return;
+  if(!b||b.run!==now.run||b.seed!==now.seed||b.world!==now.world||Math.abs(now.t-b.t)>1)return;
+  if(shrine)chime([440,659],.1,.036,'shrine:found');
   if(hurt)runCue('hurt',Math.abs(hurt.x-P.x));
   ['fall','lost','raid','clear','trial','done'].forEach(function(k){if(now[k]>b[k])runCue(k);});
   if(now.level!==b.level){if(b.level)runCue('boon');if(now.level)runCue('level');}

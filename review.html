@@ -104,6 +104,19 @@
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
       if(${layout}&&${params.has('expedition')}){var ex=stageLayout().expedition;P.x=ex.start.x;P.y=ex.start.y;if(${params.has('summit')}){P.x=ex.summit.x;P.y=ex.summit.y;P.platform=ex.nodes[2].platformId;}}
       if(${placeView}){var placeAt=stageLayout().place;if(placeAt){P.face=placeAt.side;P.x=placeAt.side>0?placeAt.bounds.x-8:placeAt.bounds.x+placeAt.bounds.w+8;P.y=surfaceY(P.x);}}
+      if(${milestone||finalBoss}&&bossEvent){
+        P.x=bossEvent.courtX;P.y=surfaceY(P.x);P.platform=null;P.grounded=true;P.wet=false;started=false;
+      }
+      if(${layout&&params.has('site')}){
+        var siteIndex=Math.max(0,Math.min(2,${Number.parseInt(params.get('site'),10)||0})),site=stageLayout().guardianSites[siteIndex];
+        bossEvent=Object.assign({},bossEvent,site,{siteId:site.id,siteIndex:siteIndex,status:'ready'});
+        seedPickups.forEach(function(q){if(q.guardianCache){q.x=site.x;q.y=site.y-6;}});
+        P.x=site.x;P.y=site.y;P.platform=site.platformId||null;P.grounded=true;P.wet=false;started=false;
+      }
+      if(${layout&&params.has('ladder')}){
+        var reviewLadder=stageLayout().ladders[${Number.parseInt(params.get('ladder'),10)||0}];
+        P.x=reviewLadder.x;P.y=reviewLadder.bottom;P.platform=playerSupportId(P.x,P.y);P.grounded=true;P.wet=false;started=false;
+      }
       rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;runActive=true;menuPaused=false;
       gardenPlots=[];rogueRun.garden=[];floatKrek=[];bombs=[];gardenSeeds=8;gardenRaidT=krekSpawnT=9999;gardenRaidActive=false;
       if(!${layout||plantClimb}){
@@ -178,7 +191,7 @@
         if(now-reviewStateClock<250)return;reviewStateClock=now;
         var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
         var reviewCanvasBounds=cv.getBoundingClientRect();
-        parent.postMessage({type:'max-guardian-observation',serial:${serial},view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
+        parent.postMessage({type:'max-guardian-observation',serial:${serial},shrine:bossEvent,entrance:{x:observedLayout.origin,y:surfaceY(observedLayout.origin)},sites:observedLayout.guardianSites||[],ladders:observedLayout.ladders||[],motion:P.st,playerY:P.y,view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
         parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }

@@ -37,6 +37,13 @@ It uses a premultiplied box filter with hard alpha at half, then one 255-colour 
   - the lower court as a 1:1 surface profile;
   - the rail terrace as rock;
   - the viaduct decks, the carts, the vine and the lift-tower rungs as one-way ledges.
+  - Explicit `LADDERS` spans make the viaduct vine, lift tower and eastern wooden
+    ladder continuously climbable by every character. A fourth, visibly drawn
+    return ladder at native x=172 leads from the soil to the mill deck, avoiding
+    a one-way trap behind its stone stair. Up/Down, controller
+    vertical input and touch drags share the same climb; releasing holds a rung,
+    and steering leaves it. `--data-only` updates collision and climb metadata
+    without rewriting the painting.
 - **Output:**
   - `assets/levels-v1/railway-ruins.png`;
   - `levels-v1/railway-ruins.js`;

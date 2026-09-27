@@ -89,7 +89,7 @@ test('every abandoned trial releases the altar, retires its guards and grants no
     assert.equal(e.guardsRemaining,0);assert.equal(e.carrier,'');
     assert.equal(g.rogueRun.xp,xp);assert.equal(g.runLoot.length,0);assert.equal(g.seedPickups.length,seeds);
     assert.equal(guard.eventId,0);assert.ok(guard.flee>0);
-    g.gardenPlots=[plot({x:g.bossEvent.x-24})];
+    g.gardenPlots=[plot({x:g.bossEvent.courtX-24})];
     Object.assign(g.P,{x:g.bossEvent.x,y:g.bossEvent.y,grounded:true,wet:false});
     assert.equal(g.interactBossEvent(),true);assert.ok(g.liveBoss());
   }

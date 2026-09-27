@@ -25,6 +25,32 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${String(stage).padStart(2,'0')}.png`});
     assert.deepEqual(errors,[]);console.log(engineName,'guardian',stage,'native art + live warning OK');
    }
+   for(let stage=1;stage<=20;stage++)for(let site=0;site<3;site++){
+    await page.goto(base+'/review.html?mode=layout'+stage+'&site='+site+'&portrait=1');
+    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
+    const observed=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
+    assert.equal(observed.sites.length,3);assert.equal(new Set(observed.sites.map(s=>s.id)).size,3);
+    assert.equal(observed.shrine.siteId,observed.sites[site].id);
+    assert.equal(observed.shrine.siteIndex,site);assert.ok(Math.abs(observed.shrine.x-observed.entrance.x)+Math.abs(observed.shrine.y-observed.entrance.y)>=160,'shrine requires exploring away from the entrance');
+    await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-shrine-${stage}-${site}.png`});
+    assert.deepEqual(errors,[]);
+   }
+   console.log(engineName,'all sixty authored shrine destinations render away from their entrances OK');
+   for(const stage of [1,2]){
+    await page.goto(base+'/review.html?mode=layout'+stage+'&ladder=0&portrait=1&class=bulwark');
+    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
+    const first=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
+    for(let ladder=0;ladder<first.ladders.length;ladder++){
+     if(ladder){await page.goto(base+'/review.html?mode=layout'+stage+'&ladder='+ladder+'&portrait=1&class=bulwark');await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});}
+     const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
+     await page.keyboard.down('ArrowUp');
+     await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).motion==='ladder',{},{timeout:3000});
+     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-ladder-${stage}-${ladder}.png`});
+     await page.waitForFunction(index=>{const o=JSON.parse(document.querySelector('#status').dataset.guardian);return o.playerY<=o.ladders[index].top+2;},ladder,{timeout:10000});
+     await page.keyboard.up('ArrowUp');assert.deepEqual(errors,[]);
+    }
+   }
+   console.log(engineName,'all nine authored ladders climb with real Bulwark keyboard input OK');
    for(const classId of ['mech','runner']){
    await page.goto(base+'/review.html?mode=layout1&portrait=1&class='+classId);
    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
@@ -57,9 +83,9 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
      const r=b.getBoundingClientRect(),n=b.querySelector('strong'),d=b.querySelector('small');
      return {name:n?.textContent,description:d?.textContent,nameVisible:getComputedStyle(n).display!=='none',descriptionVisible:getComputedStyle(d).display!=='none',inside:r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,overflow:b.scrollWidth>b.clientWidth,overlapsPlayer:r.left<player.right&&r.right>player.left&&r.top<player.bottom&&r.bottom>player.top};
     }),player);
-    assert.equal(bounds.length,3);
-    assert.ok(bounds.every(b=>b.name&&b.description&&b.nameVisible&&b.descriptionVisible&&b.inside&&!b.overflow&&!b.overlapsPlayer),JSON.stringify({viewport,bounds}));
+   assert.equal(bounds.length,3);
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-boons-${viewport}.png`});
+    assert.ok(bounds.every(b=>b.name&&b.description&&b.nameVisible&&b.descriptionVisible&&b.inside&&!b.overflow&&!b.overlapsPlayer),JSON.stringify({viewport,player,bounds}));
    }
    assert.match(await boonFrame.locator('#perkMenu').innerText(),/Unlocks Chain bloom/);
    const before=JSON.parse(await page.locator('#status').getAttribute('data-state')).elapsed;

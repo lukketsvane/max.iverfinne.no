@@ -26,7 +26,7 @@ test('all twenty live encounters warn and expose the same guardian on both clien
   if(stage>1)host.enterLevel(stage);
   // Isolated arena: a grown, watered plant and no ambient raid. All boss
   // timing, objectives and attacks then run through normal frame simulation.
-  host.gardenPlots=[plot({id:1,x:host.bossEvent.x-35,moisture:1,growth:.8})];
+  host.gardenPlots=[plot({id:1,x:host.bossEvent.courtX-35,moisture:1,growth:.8})];
   host.gardenRaidT=host.krekSpawnT=9999;
   Object.assign(host.P,{x:host.bossEvent.x,y:host.bossEvent.y,st:'free',grounded:true,wet:false,vx:0,vy:0});
   sync();clients[0].key('keydown',' ');clients[0].tick(1000/30);clients[0].key('keyup',' ');

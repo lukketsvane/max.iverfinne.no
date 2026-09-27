@@ -34,7 +34,7 @@ test('optional trials reward carrying, tending both beds, and selecting the cyan
  const echo=startTrial('echo');for(let i=0;i<3;i++){const x=echo.e.x+(echo.e.note-1)*23;echo.g.explode(x,echo.e.y-8,false,{});echo.g.updateEncounters(.5);}assert.ok(echo.e.done);assert.equal(echo.e.progress,3);assert.ok(echo.g.runLoot.some(q=>q.type==='embers'));
 });
 test('an abandoned objective expires without reward and frees the mandatory altar',()=>{
- const {g,e}=startTrial('relay'),xp=g.rogueRun.xp;g.updateEncounters(76);assert.equal(e.active,false);assert.ok(e.done&&e.failed);assert.equal(g.rogueRun.xp,xp);g.bossEvent.status='ready';Object.assign(g.P,{x:g.bossEvent.x,y:g.bossEvent.y,grounded:true});g.interactBossEvent();assert.ok(g.liveBoss());
+ const {g,e}=startTrial('relay'),xp=g.rogueRun.xp;g.updateEncounters(76);assert.equal(e.active,false);assert.ok(e.done&&e.failed);assert.equal(g.rogueRun.xp,xp);g.bossEvent.status='ready';g.gardenPlots=[plot({x:g.bossEvent.courtX})];Object.assign(g.P,{x:g.bossEvent.x,y:g.bossEvent.y,grounded:true});g.interactBossEvent();assert.ok(g.liveBoss());
 });
 test('two clients retain damaged objectives, held care, carried dew and ownership through a host change',()=>{
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'],room={host:ids[0],members:ids.map((id,i)=>({id,slot:i+1,classId:i?'runner':'mech'}))};
