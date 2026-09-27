@@ -250,3 +250,99 @@ test('authoritative shrine snapshots, planting reserve and host promotion do not
   assert.equal(g.coop.host, true); assert.equal(guest.ac.nodes.length, before, 'host promotion preserves local discovery');
   assert.equal(g.seedPickups.filter(s => s.id === 'guardian:1:seeds').length, 1, 'promotion does not recreate the reserve');
 });
+
+test('class weapons have distinct short material envelopes and restrained combo accents', () => {
+  const { g, contexts } = run(), ac = contexts[0], signatures = [];
+  for (const kind of ['needle', 'cleave', 'parry', 'spore', 'jab', 'cross', 'uppercut', 'flurry']) {
+    ac.currentTime += 1; const from = ac.nodes.length; g.classStrikeCue(kind, 0);
+    const played = ac.nodes.slice(from), tones = played.filter(n => n.kind === 'osc');
+    assert.ok(played.some(n => n.kind === 'noise') && tones.length, kind + ' layers material and body');
+    assert.ok(played.filter(n => n.kind === 'osc' || n.kind === 'noise').every(n => n.stopTime - ac.currentTime <= .28), kind + ' leaves no long tail');
+    assert.ok(sourcePeak(played) <= .08, kind + ' leaves dynamic headroom');
+    assert.ok(played.filter(n => n.kind === 'filter').every(n => Math.max(...n.frequency.points) < 2000), kind + ' avoids a harsh hiss');
+    signatures.push(tones.map(n => n.frequency.points.join(':')).join(','));
+  }
+  assert.equal(new Set(signatures).size, 8, 'weapons and all three boxer strikes are audibly distinct');
+  const flurry = ac.nodes.filter(n => n.kind === 'osc').slice(-3);
+  assert.ok(flurry[0].startTime < flurry[1].startTime && flurry[1].startTime < flurry[2].startTime, 'flurry is a short three-hit rhythm');
+});
+
+test('weapon sounds vary subtly, fall away with distance, honour Effects and bound rapid co-op attacks', () => {
+  const { g, contexts } = run(), ac = contexts[0];
+  let from = ac.nodes.length; g.classStrikeCue('jab', 0); const close = ac.nodes.slice(from);
+  ac.currentTime += 1; from = ac.nodes.length; g.classStrikeCue('jab', 0); const next = ac.nodes.slice(from);
+  const firstPitch = tuneOf(close)[0], nextPitch = tuneOf(next)[0];
+  assert.notEqual(firstPitch, nextPitch); assert.ok(Math.abs(nextPitch / firstPitch - 1) < .04, 'variation changes touch, not identity');
+  ac.currentTime += 1; from = ac.nodes.length; g.classStrikeCue('jab', 240); const far = ac.nodes.slice(from);
+  assert.ok(sourcePeak(far) < sourcePeak(close) * .4);
+  from = ac.nodes.length; g.classStrikeCue('spore', 500); assert.equal(ac.nodes.length, from, 'offscreen attacks have no volume floor');
+  g.setEffectsVolume(0); g.classStrikeCue('uppercut', 0); assert.equal(ac.nodes.length, from, 'muted attacks create no nodes');
+  g.setEffectsVolume(.75); ac.currentTime += 1; from = ac.nodes.length;
+  for (let i = 0; i < 40; i++) g.classStrikeCue('flurry', 0);
+  assert.equal(ac.nodes.slice(from).filter(n => n.kind === 'osc').length, 3, 'simultaneous flurries share one short group');
+});
+
+test('boss warning keeps reserved voices and briefly lowers following attacks under the telegraph', () => {
+  const { g, contexts } = run(), ac = contexts[0];
+  for (let i = 0; i < 14; i++) g.chime([400 + i * 10], 0, .02, 'load:' + i);
+  assert.equal(sources(ac).length, 12, 'ordinary cues cannot occupy the warning reserve');
+  const from = ac.nodes.length; g.guardianCue('warn', { x: g.P.x, y: g.P.y, pattern: 'roots' });
+  assert.equal(tuneOf(ac.nodes.slice(from)).length, 2, 'a warning sounds at the ordinary voice limit');
+  ac.currentTime = 1; let start = ac.nodes.length; g.classStrikeCue('cleave', 0); const normal = sourcePeak(ac.nodes.slice(start));
+  ac.currentTime = 2; g.guardianCue('warn', { x: g.P.x, y: g.P.y, pattern: 'roots' });
+  start = ac.nodes.length; g.classStrikeCue('cleave', 0); const underWarning = sourcePeak(ac.nodes.slice(start));
+  assert.ok(Math.abs(underWarning / normal - .42) < 1e-9, 'new impacts leave the warning clear');
+  ac.currentTime = 2.4; start = ac.nodes.length; g.classStrikeCue('cleave', 0);
+  assert.equal(sourcePeak(ac.nodes.slice(start)), normal, 'normal impact level returns after the warning');
+});
+
+test('each class hears a small personal ready motif exactly when its skill becomes available', () => {
+  const { g, contexts } = run(), ac = contexts[0], tunes = [];
+  for (const classId of ['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']) {
+    ac.currentTime += 1; const from = ac.nodes.length; g.skillReadyCue(classId);
+    const played = ac.nodes.slice(from); tunes.push(tuneOf(played).join());
+    assert.ok(sourcePeak(played) <= .013, 'readiness is quieter than attack feedback');
+  }
+  assert.equal(new Set(tunes).size, 6);
+  ac.currentTime += 1; g.P.skillCool = .01; const from = ac.nodes.length;
+  g.updatePlayer(.02, { axis: 0, top: 48 });
+  assert.deepEqual(tuneOf(ac.nodes.slice(from)), [988, 1319]);
+  const after = ac.nodes.length; ac.currentTime += 1; g.updatePlayer(.02, { axis: 0, top: 48 });
+  assert.equal(ac.nodes.length, after, 'staying ready never loops the motif');
+});
+
+test('tending water and planting have different physical sounds within the shared effects bus', () => {
+  const { g, contexts } = run(), ac = contexts[0];
+  let from = ac.nodes.length; g.socialTone('water'); const water = ac.nodes.slice(from);
+  ac.currentTime += 1; from = ac.nodes.length; g.socialTone('plant'); const plant = ac.nodes.slice(from);
+  assert.ok(water.some(n => n.kind === 'noise') && plant.some(n => n.kind === 'noise'));
+  assert.notDeepEqual(tuneOf(water), tuneOf(plant));
+  assert.ok(sourcePeak(water) < .03 && sourcePeak(plant) < .03, 'tending remains a gentle background action');
+  assert.equal(ac.nodes.filter(n => n.outputs.includes(ac.destination)).length, 1);
+});
+
+test('class strikes reach each guest once, including their own validated punches, without replaying old effects', () => {
+  const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
+  const room = { id: 'strike-audio', host: ids[0], members: ids.map((id, i) => ({ id, slot: i + 1, ready: true })) };
+  const loadouts = Object.fromEntries(ids.map((id, i) => [id, { classId: i ? 'polge' : 'runner', difficulty: 'easy' }]));
+  const [host, guest] = ids.map(id => {
+    const h = loadGame(), contexts = fakeAudio(h), pending = [];
+    h.game.beginCoop({ room, loadouts, user: { id }, host: id === ids[0], action(type, data) { pending.push({ id: pending.length + 1, type, ...data }); return true; }, tick() {}, fail(reason) { throw Error(reason); } });
+    h.game.unlockAudio(); return { g: h.game, ac: contexts[0], pending };
+  });
+  const sync = () => guest.g.coopState(JSON.parse(JSON.stringify(host.g.coopCapture())));
+  sync(); let from = guest.ac.nodes.length, hostFrom = host.ac.nodes.length;
+  host.g.combatFx('needle', host.g.P.x, host.g.P.y - 12, 8, 1); sync();
+  assert.ok(tuneOf(host.ac.nodes.slice(hostFrom)).length > 0, 'the attacking host hears its needle');
+  assert.equal(guest.ac.nodes.slice(from).filter(n => n.kind === 'noise').length, 1, 'a guest hears the same authoritative strike');
+  from = guest.ac.nodes.length; sync(); assert.equal(guest.ac.nodes.length, from, 'same snapshot never duplicates the cue');
+  host.ac.currentTime = guest.ac.currentTime = 1;
+  assert.equal(guest.g.classPrimary({ x: guest.g.P.x + 20, y: guest.g.P.y - 12 }), true);
+  assert.equal(guest.ac.nodes.length, from, 'prediction does not play an unconfirmed punch');
+  host.g.coopInput(ids[1], { avatar: JSON.parse(JSON.stringify(guest.g.coopAvatar())), actions: guest.pending.splice(0) }); sync();
+  assert.equal(guest.ac.nodes.slice(from).filter(n => n.kind === 'noise').length, 1, 'the owning guest hears its validated punch');
+  from = guest.ac.nodes.length; sync(); assert.equal(guest.ac.nodes.length, from);
+  host.ac.currentTime = guest.ac.currentTime = 2;
+  const old = host.g.combatFx('cleave', host.g.P.x, host.g.P.y - 12, 12, 1); old.t = .5; sync();
+  assert.equal(guest.ac.nodes.length, from, 'late join or delayed snapshots never sound expired strikes');
+});

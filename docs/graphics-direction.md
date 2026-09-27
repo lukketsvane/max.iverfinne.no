@@ -56,17 +56,19 @@ plants. Never substitute the preview names or example bouquets for player data.
 
 ## Native co-op art integration
 
-Four cosmetic Max skins are integrated independently of Mech, Moss, Bulwark
-and Herbalist class choice: Moss (hood/satchel), Tide (rain hood/collar), Ember
-(headband/ribbon), and Moon (cape/cap). Original Max remains the rendering fallback. The
-current costumes supply the class selection; they do not change class powers.
-Each skin retains the original 32×32 cells, anchor (16,31), animation rows,
-timings and gameplay event markers. All exported pixels have binary alpha.
+Kestrel, Cairn and Mycel replace the three cosmetic Max recolours. They have
+independent avian, stone and mushroom silhouettes, generated main/interaction
+sheets and a shared compact ink/cream/teal/ochre palette. Native 32×32 cells,
+anchor (16,31), binary alpha and existing animation timing remain binding.
+The compatibility keys moss/ember/moon load assets/characters-v2 instead.
+Mech, Pølge and Sligo keep their established identities.
 
 `native-art.mjs` preloads each complete main/interaction pair once. `drawPlayer`
-uses the selected player's sheets while retaining all original animation and
-water-clipping behavior. Missing or loading art falls back to original Max.
-Co-op snapshots carry each player's cosmetic selection separately from class.
+uses the player's sheets and preserves water clipping and integer anchors.
+The new characters' toss uses a dedicated interaction row so an attack never
+reuses its seed-sowing image. Missing/loading artwork retains the original
+failure fallback. Class and appearance are one choice; snapshots keep stable
+legacy keys for compatibility, not an independent skin selector.
 
 The same module integrates the four 16×16 role enemies and 32×32 Hollow Crown.
 Enemy world coordinates remain body centres; rendering converts them to the
@@ -118,12 +120,11 @@ short landscape screens; the primary action keeps pale text on deep green.
 
 Character selection presents a larger native costume preview and selected
 class description beside a compact class grid. Each class shows its signature
-ability, while four separate appearance swatches keep costume choice independent
-of class. Phone layouts put the preview above the controls and respect safe
+ability; selecting the class also selects its own silhouette. Phone layouts put the preview above the controls and respect safe
 areas. The visual review page includes desktop, phone, small-phone and two short
 landscape viewports for checking the actual menu without changing player saves.
 
 Dismissing in-run Settings restores keyboard focus to its trigger and leaves
 the active run advancing. Menu navigation, account restoration, independent
-class/costume selection and co-op handshakes remain covered by the existing
+class selection and co-op handshakes remain covered by the existing
 behavioral suites.

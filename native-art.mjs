@@ -2,6 +2,21 @@ import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 
 // Presentation only: atlas animation never changes an attack, collision or heal.
 const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon', 'polge', 'sligo']);
+// Persisted skin/class keys are network compatibility identifiers. These three
+// characters have wholly original anatomy and no longer load the Max recolours.
+const CHARACTER_ART = Object.freeze({ moss: 'kestrel', ember: 'cairn', moon: 'mycel' });
+function playerPath(skin, sheet = 'main') {
+  const character = CHARACTER_ART[skin];
+  // Assemble the final leaf separately so static runtime discovery does not
+  // mistake archival source/preview PNGs for live sheets.
+  const directory = character ? `assets/characters-v2/${character}/` : `assets/max-skins-v1/${skin}/`;
+  return directory + (sheet === 'interaction' ? 'interaction.png' : 'main.png');
+}
+function playerRow(skin, sheet, row, animation) {
+  // The original contract shares sow and toss. New characters have a dedicated
+  // attack row in the otherwise unused interaction cells, so tending stays calm.
+  return CHARACTER_ART[skin] && sheet === 'interaction' && animation === 'toss' ? 5 : row;
+}
 // A hidden character's pack loads the first time someone plays it; until it has loaded,
 // or if it is missing, the original Max stands in.
 const ON_DEMAND = Object.freeze(['sligo']);
@@ -109,9 +124,14 @@ export function createNativeArt() {
     }));
     return { manifest: atlas.manifest, images };
   }
+  function announceReady(status) {
+    if (typeof window !== 'undefined' && typeof CustomEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('max-native-art-ready', { detail: status }));
+    }
+  }
   function load() {
     if (loading) return loading;
-    const files = SKINS.slice(1).filter(id => !ON_DEMAND.includes(id)).map(id => [id, `assets/max-skins-v1/${id}/atlas.json`])
+    const files = SKINS.slice(1).filter(id => !ON_DEMAND.includes(id)).map(id => [id, CHARACTER_ART[id] ? `assets/characters-v2/${CHARACTER_ART[id]}/atlas.json` : `assets/max-skins-v1/${id}/atlas.json`])
       .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
@@ -126,16 +146,19 @@ export function createNativeArt() {
         loaded: results.filter(r => r.status === 'fulfilled').map(r => r.value),
         failed: results.map((r, i) => r.status === 'rejected' ? files[i][0] : null).filter(Boolean),
       };
-      if (typeof window !== 'undefined' && typeof CustomEvent === 'function') {
-        window.dispatchEvent(new CustomEvent('max-native-art-ready', { detail: status }));
-      }
+      announceReady(status);
       return status;
     });
     return loading;
   }
   function loadSkin(id) {
     if (demand[id] || !ON_DEMAND.includes(id) || typeof fetch !== 'function') return;
-    demand[id] = loadAtlas(`assets/max-skins-v1/${id}/atlas.json`).then(atlas => { atlases[id] = atlas; }, () => {});
+    demand[id] = loadAtlas(`assets/max-skins-v1/${id}/atlas.json`).then(atlas => {
+      atlases[id] = atlas;
+      // Saved results can be the first place Sligo appears. Refresh that scene
+      // when its deferred pack arrives, just as for the eager character packs.
+      announceReady({ loaded: [id], failed: [] });
+    }, () => {});
   }
   function playerImage(skin, sheet) {
     if (!SKINS.includes(skin)) return null;
@@ -175,7 +198,7 @@ export function createNativeArt() {
       drawAtlas(ctx, death.atlas, 'death', elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
     }
   }
-  return { skins: SKINS, load, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
+  return { skins: SKINS, load, playerPath, playerRow, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
 }
 
 if (typeof window !== 'undefined') {

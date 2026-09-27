@@ -346,17 +346,21 @@ function gardenGestures() {
     }
   }, { passive: false });
 }
-function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: id === 'runner' ? 'Moss' : id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
+function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Kestrel', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return CLASS_SKINS[id] || 'moss'; }
 // The open characters, then any hidden one this player has unlocked.
 function visibleClassIds() { return [...CLASS_IDS, ...HIDDEN_CLASS_IDS.filter(id => eggs.has(id))]; }
+function characterImage(id) {
+  const replacement = { moss: 'kestrel', ember: 'cairn', moon: 'mycel' }[id];
+  return replacement ? 'assets/characters-v2/' + replacement + '/main.png' : 'assets/max-skins-v1/' + id + '/main.png';
+}
 function skinPreview(id) {
   const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');
   const image = el('img'); image.alt = ''; image.draggable = false;
   // A pack that has not shipped yet shows nothing rather than a broken image.
   image.addEventListener('error', () => { image.style.visibility = 'hidden'; });
   image.addEventListener('load', () => { image.style.visibility = ''; });
-  image.src = 'assets/max-skins-v1/' + id + '/main.png';
+  image.src = characterImage(id);
   frame.append(image); return frame;
 }
 // Pixel text word by word, so a long line wraps on a narrow screen.
@@ -457,7 +461,7 @@ function updateSelection() {
   const name = card.querySelector('.max-character-name');
   if (name) characterName(name, classInfo(selected.classId));
   const heroImage = card.querySelector('.max-character-stage img');
-  if (heroImage) heroImage.src = 'assets/max-skins-v1/' + characterSkin(selected.classId) + '/main.png';
+  if (heroImage) heroImage.src = characterImage(characterSkin(selected.classId));
 }
 function selectionSummary() {
   const summary = el('div', undefined, 'max-selection-summary');
@@ -712,14 +716,15 @@ function help() {
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['LADDERS', 'Hold Up or Down beside a ladder to climb; release to hold a rung. Move sideways to step off, or hold Up and move to jump off. On touch, hold a vertical drag; on controller, use the stick or D-pad.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['SKILL', 'Tap Max. Mech sends the rover to the plant under attack. Moss pounces — harder from higher. Bulwark braces until he moves. Herbalist blooms and revives a plant that just fell.' + (eggs.has('sligo') ? ' Sligo curls into a tun until you jump.' : '')],
-    ['MOSS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
+    ['SKILL', 'Tap your character. Pølge unleashes a moving flurry. Kestrel pounces from above. Cairn braces and parries. Mycel blooms to heal the garden and strike pests. Mech dispatches the rover.' + (eggs.has('sligo') ? ' Sligo curls into a tun until you jump.' : '')],
+    ['KESTREL', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
     ['MECH', 'Mech places bombs at his feet. They stay put and explode after two seconds: plant, retreat, bait pests into the blast. Hold to charge a bigger blast while moving. Only Mech owns watering robots; any nearby teammate can refill one.'],
     ['EXPLORE', 'Find the amber guardian shrine: each garden chooses one of three locations. Explore for seeds and upgrades on the way. Establish a living plant beside its clearing, then use Grow at the shrine when ready. Defeat every garden’s boss, choose a boon and climb your exit plant. Time strengthens enemies. The Hollow Crown awaits in garden 20.'],
-    ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J or B to aim with the move keys, release to throw · K / X dodge · E skill · R refill · L lamp · 1–3 upgrade · Esc menu'],
-    ['MOUSE', 'Click the game once to lock the mouse inside it; Esc frees it and opens the menu. The bright cross is your aim and the faint arc shows the throw. Click to throw there, hold to charge a wider, harder bomb. Right click dodges toward the cross, middle click uses the skill. Boon cards can be clicked, or press 1, 2 or 3.'],
-    ['CONTROLLER', 'Stick moves; push farther to run. A light stick tilt aims; full aim reach needs only three-quarter tilt. A jump · B / Y grow · stick click dodge · hold X or ZR to aim with the right stick (or the left on a single Joy-Con) and release to throw · LB skill · LT lamp · RB run · − refill · + menu. Menus: stick / D-pad navigate, hold to repeat, A confirm, B back. When a boon is offered, flick the right stick to a card and press A.'],
-    ['BOMBS', 'Every bomb needs a moment to reload, shown as a bar over Max. A charged bomb reloads longer. Two active bombs per player. Mech and Moss place bombs at their feet with a two-second fuse; the other characters throw them.'],
+    ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J or B to aim with the move keys, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 upgrade · Esc menu'],
+    ['MOUSE', 'Click the game once to lock the mouse inside it; Esc frees it and opens the menu. The bright cross is your aim; the guide shows your attack direction or reach. Click to attack there. Mech can hold to charge a wider, harder bomb. Right click dodges toward the cross, middle click uses the skill. Boon cards can be clicked, or press 1, 2 or 3.'],
+    ['CONTROLLER', 'Stick moves; push farther to run. A light stick tilt aims; full aim reach needs only three-quarter tilt. A jump · B / Y grow · stick click dodge · hold X or ZR to aim with the right stick (or the left on a single Joy-Con) and release to attack · LB skill · LT lamp · RB run · − refill · + menu. Menus: stick / D-pad navigate, hold to repeat, A confirm, B back. When a boon is offered, flick the right stick to a card and press A.'],
+    ['ATTACKS', 'Pølge boxes: jab, cross, uppercut. Cairn cleaves nearby pests. Kestrel fires needles; Mycel chains spores beside living plants. Mech plants two-second bombs; Sligo throws flesh. The bar above your character shows attack recovery.'],
+    ['BUILDS', 'Class mutations change your attacks and skills. Combine the named prerequisites to unlock signature abilities. Each new choice can develop your build or open another direction.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
   card.append(button('Back', settings, 'subtle'));

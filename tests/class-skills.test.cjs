@@ -64,12 +64,12 @@ test('a pest body under the finger still takes the tap; the rest of Max belongs 
   const h = fresh('bulwark'), g = h.game;
   pest(g, { x: g.P.x, y: g.P.y - 14 });
   tap(h, g.P.x, g.P.y - 14);
-  assert.equal(g.bombs.length, 1); assert.equal(g.P.brace, 0);
-  g.bombCool = 0; g.bombs = [];
+  assert.equal(g.booms.filter(b => b.strike === 'cleave').length, 1); assert.equal(g.P.brace, 0);
+  g.bombCool = 0; g.booms = [];
   tap(h, g.P.x, g.P.y - 2);
-  assert.equal(g.bombs.length, 0); assert.equal(g.P.brace, 3);
+  assert.equal(g.booms.filter(b => b.strike === 'cleave').length, 0); assert.equal(g.P.brace, 3);
   tap(h, g.P.x + 12, g.P.y - 14);
-  assert.equal(g.bombs.length, 1);
+  assert.equal(g.booms.filter(b => b.strike === 'cleave').length, 1);
 });
 
 test('every tap on Max during an exit climb still boosts the climb', () => {
@@ -86,7 +86,7 @@ test('a Moss tap near a distant climbable stem throws instead of vanishing', () 
   const h = fresh('runner'), g = h.game, p = plot({ id: 1, x: g.P.x + 50, growth: 2.2 }); g.gardenPlots = [p];
   assert.equal(g.plantClimbAt(p.x, g.surfaceY(p.x) - 40, 12), p);
   tap(h, p.x, g.surfaceY(p.x) - 40);
-  assert.equal(g.bombs.length, 1); assert.equal(g.climb, null);
+  assert.equal(g.classShots.length, 1); assert.equal(g.climb, null);
 });
 
 test('Moss pounce slams from the first second, harder from a stem, never harms plants or grants traversal rewards', () => {
@@ -114,12 +114,12 @@ test('Moss throws from an ordinary stem, keeps it, and never throws from an exit
   assert.equal(g.requestClimb(p), true); steps(g, .5);
   const k = pest(g, { x: g.P.x + 40, y: g.P.y });
   assert.equal(g.throwBomb({ kind: 'krek', o: k }), true);
-  assert.equal(g.P.st, 'climb'); assert.ok(g.climb); assert.equal(g.bombs.length, 1);
+  assert.equal(g.P.st, 'climb'); assert.ok(g.climb); assert.equal(g.classShots.length, 1);
   steps(g, .2); assert.equal(g.P.st, 'climb'); assert.ok(g.climb);
   const { game: e } = fresh('runner'), stalk = plot({ id: 1, x: e.P.x, growth: 2.7, stalk: true }); e.gardenPlots = [stalk]; e.rogueRun.clearedWorld = 1;
   assert.equal(e.requestClimb(stalk, true), true); steps(e, .3);
   const q = pest(e, { x: e.P.x + 40, y: e.P.y });
-  assert.equal(e.throwBomb({ kind: 'krek', o: q }), false); assert.equal(e.bombs.length, 0);
+  assert.equal(e.throwBomb({ kind: 'krek', o: q }), false); assert.equal(e.classShots.length, 0);
 });
 
 test('Mech dispatch sends only its rover to the threatened plant, floods it, scares the biter and shelters it while pouring', () => {
@@ -328,10 +328,10 @@ test('inside Max’s box a boss body, a low rover and a pest while cooling take 
   pest(g, { x: g.P.x, y: g.surfaceY(g.P.x) - 8, boss: true });
   assert.equal(g.touchKind(g.P.x + 6, g.P.y - 18), 'max');
   tap(h, g.P.x + 6, g.P.y - 18);
-  assert.equal(g.bombs.length, 1); assert.equal(g.P.brace, 0); assert.equal(g.P.skillDenied, 0);
+  assert.equal(g.booms.filter(b => b.strike === 'cleave').length, 1); assert.equal(g.P.brace, 0); assert.equal(g.P.skillDenied, 0);
   const c = fresh('bulwark'), cg = c.game; cg.P.skillCool = 5; pest(cg, { x: cg.P.x + 4, y: cg.P.y - 14 });
   tap(c, cg.P.x, cg.P.y - 3);
-  assert.equal(cg.bombs.length, 1); assert.equal(cg.P.skillDenied, 0); assert.equal(cg.P.skillCool, 5);
+  assert.equal(cg.booms.filter(b => b.strike === 'cleave').length, 1); assert.equal(cg.P.skillDenied, 0); assert.equal(cg.P.skillCool, 5);
   const b = fresh('bulwark'), bg = b.game; bg.crows = [{ x: bg.P.x, y: bg.P.y - 5, vx: 0, vy: 0 }];
   tap(b, bg.P.x, bg.P.y - 8);
   assert.equal(bg.bombs.length, 0); assert.equal(bg.P.brace, 3);

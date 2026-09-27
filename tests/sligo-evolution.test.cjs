@@ -1,13 +1,14 @@
 'use strict';
 // Sligo evolves like Eevee (SLIGO_EVO in index.html): the first path capstone it takes is its stone,
 // and more ranks on that path grow it. The Cultivator line is the owner's brood sheet
-// (scripts/build-sligo-evolution.py); the other two lines keep Sligo as it is until their art exists.
+// (scripts/build-sligo-evolution.py); Evergreen and Chain have their own generated native pose strips.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { loadGame } = require('./game-harness.cjs');
+const builds = require('../build-paths.js');
 
 function fresh(classId = 'sligo') {
   const h = loadGame(); h.game.resetRogueRun('test', { classId, skinId: classId === 'sligo' ? 'sligo' : 'original' });
@@ -32,10 +33,42 @@ test('the first stone settles the line for the run, like Eevee', () => {
   assert.equal(g.sligoEvo(), 1, 'a later Evergreen and more Warden ranks do not turn the brood into a warden');
   const w = fresh();
   give(w, { shield: 1, bark: 1, evergreen: 1 });
-  assert.equal(w.sligoEvo(), 0, 'the Warden line has no art yet, so Sligo keeps its look');
+  assert.equal(w.sligoEvo(), 5, 'the Warden stone selects its first rooted form');
   assert.equal(w.rogueRun.evoLine, 1, 'but the line is settled');
-  give(w, { growth: 2, regen: 1, bloom: 1, yield: 5 }); assert.equal(w.sligoEvo(), 0);
+  give(w, { growth: 2, regen: 1, bloom: 1, yield: 5 }); assert.equal(w.sligoEvo(), 5);
   assert.equal(fresh().rogueRun.evoLine, undefined, 'a new run starts unsettled');
+});
+
+test('Evergreen and Chain grow through all three forms and carry the exact line to teammates', () => {
+  for (const [stone, line] of [['evergreen', 1], ['chain', 2]]) {
+    const g = fresh(); give(g, { [stone]: 1 });
+    assert.equal(g.sligoEvo(), line*4+1, stone+' starts at stage one');
+    // Use the path catalogue rather than assuming a boon remains on a particular path.
+    const pathPerks = builds.perks.filter(p => p.path === line && p.id !== stone && !p.classId);
+    give(g, { [pathPerks[0].id]: 4, [pathPerks[1].id]: 3 });
+    assert.equal(g.sligoEvo(), line*4+2, stone+' develops at eight ranks');
+    give(g, { [pathPerks[2].id]: 4 });
+    assert.equal(g.sligoEvo(), line*4+3, stone+' matures at twelve ranks');
+    assert.equal(g.coopCleanAvatar(g.coopAvatar()).evo, line*4+3);
+  }
+});
+
+test('each evolution line draws its own atlas for local and remote avatars, rejecting unknown lines', () => {
+  const g = fresh(), images = [0, 1, 2].map(line => g.sligoEvoImg(line));
+  for (const [line, im] of images.entries()) { im.complete = true; im.naturalWidth = line ? 960 : 2560; im.naturalHeight = 40; }
+  const calls = [], ctx = new Proxy({ drawImage(im, sx) { calls.push({ line: images.indexOf(im), frame: sx/40 }); } },
+    { get: (o, k) => k in o ? o[k] : () => {} });
+  g.ctx = ctx; g.tSec = 12;
+  for (let line=0; line<3; line++) for (let stage=1; stage<=3; stage++) {
+    const actor = { evo: line*4+stage, evoKey: 'mate-'+line+'-'+stage, grounded: true, anim: 'walk', face: 1 };
+    assert.equal(g.drawSligoEvo(actor, 20, 40), true);
+    const call = calls.pop(), clips = line ? g.SLIGO_EVO.branches : g.SLIGO_EVO;
+    assert.equal(call.line, line); assert.ok(clips.walk[stage].includes(call.frame));
+    actor.grounded = false; g.drawSligoEvo(actor, 20, 40);
+    assert.equal(calls.pop().frame, clips.air[stage]);
+  }
+  assert.equal(g.drawSligoEvo({ evo: 15 }, 0, 0), false, 'unknown line keeps the safe skin fallback');
+  assert.equal(g.sligoEvoImg(99), null);
 });
 
 test('only Sligo evolves', () => {
@@ -88,4 +121,34 @@ test('the brood strip is native art: 64 cells of 40, binary alpha, at most 16 co
   }
   const meta = JSON.parse(fs.readFileSync(path.join(dir, 'brood.json'), 'utf8'));
   assert.deepEqual(meta.anchor, [20, 39]);
+});
+
+test('Evergreen and Chain ship complete distinct native animation stages with registered feet', async () => {
+  const dir = path.join(__dirname, '../assets/max-skins-v1/sligo');
+  const { decode, artProblems } = await import(pathToFileURL(path.join(__dirname, '../scripts/figma-sync.mjs')).href);
+  const g = fresh(), hashes = new Set();
+  for (const name of ['evergreen', 'chain']) {
+    const bytes = fs.readFileSync(path.join(dir, name+'.png'));
+    const png = decode(bytes), data = Buffer.from(png.rgba);
+    const meta = JSON.parse(fs.readFileSync(path.join(dir, name+'.json'), 'utf8'));
+    assert.deepEqual(artProblems('assets/max-skins-v1/sligo/'+name+'.png', bytes), []);
+    assert.deepEqual([png.width, png.height], [24*40, 40]);
+    assert.deepEqual(meta.anchor, [20, 39]); assert.equal(meta.frames.length, 24);
+    assert.deepEqual(JSON.parse(JSON.stringify(g.SLIGO_EVO.branches)), meta.clips, 'runtime clips match the source atlas');
+    const colours = new Set(), poses = new Set();
+    for (let c=0; c<24; c++) {
+      let bottom = false, pixels = 0; const shape = [];
+      for (let y=0; y<40; y++) for (let x=0; x<40; x++) {
+        const i=((y*png.width)+c*40+x)*4, value=data.readUInt32BE(i);
+        shape.push(value);
+        if (data[i+3]) { pixels++; colours.add(value); if (y===39) bottom=true; }
+      }
+      assert.ok(pixels>40 && bottom, name+' cell '+c);
+      poses.add(shape.join(','));
+    }
+    assert.equal(poses.size, 24, 'every generated source pose remains distinct at native resolution');
+    assert.ok(colours.size<=16, 'shared bounded palette');
+    hashes.add(bytes.toString('base64'));
+  }
+  assert.equal(hashes.size, 2, 'branches have their own artwork');
 });

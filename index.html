@@ -43,8 +43,8 @@
   #perkMenu button{
     box-sizing:border-box;position:relative;display:flex;flex-direction:column;align-items:center;
     width:100%;min-height:126px;padding:10px 7px 16px;gap:6px;
-    border:1px solid rgba(222,228,194,.35);border-radius:7px;
-    background:rgba(5,8,8,.93);box-shadow:0 3px 12px #0007;color:#e9ead5;
+    border:1px solid rgba(222,228,194,.35);border-radius:2px;
+    background:rgba(5,8,8,.93);box-shadow:none;color:#e9ead5;
     touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer;
   }
   #perkMenu button:active{background:#25352b;border-color:#ebefc8}
@@ -52,6 +52,8 @@
   #perkMenu strong{font:600 11px/1.25 ui-monospace,monospace;text-align:center}
   #perkMenu small{font:11px/1.3 ui-monospace,monospace;color:#c0ccc2;text-align:center}
   #perkMenu .perkUnlock{font:10px/1.25 ui-monospace,monospace;color:#e0ba72;text-align:center;margin-top:auto}
+  #perkMenu button[data-signature="true"]{border-color:#e0ba72;border-top-width:3px}
+  .perkKind{font:8px/1 ui-monospace,monospace;color:#8eb6b8;letter-spacing:.05em;text-transform:uppercase}
   .perkIcon{width:27px;height:27px;display:block;image-rendering:pixelated;flex-shrink:0}
   .perkDots{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:3px;height:3px}
   .perkDots i{display:block;width:3px;height:3px;background:#566053}
@@ -698,7 +700,8 @@ function drawMouseReticle(){
   if(mouse.locked&&(!runActive||rogueRun.ended||runIsPaused())&&document.exitPointerLock)document.exitPointerLock();
   if(!mouse.seen||!runActive||rogueRun.ended||runIsPaused()||performance.now()-mouse.t>8000&&!(charge&&charge.src==='mouse'))return false;
   var w=screenToWorld(mouse.x,mouse.y),rx=Math.round(w.x-camX),ry=Math.round(w.y-camY);
-  if(!charge&&!placesBombs()){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
+  if(!charge&&nativeAttackClass())drawNativeAim(w,bombCool>0);
+  else if(!charge&&!placesBombs()){var x0=P.x+P.face*10,y0=P.y-12,v=lob(x0,y0,w.x,w.y,0,0);ctx.fillStyle='rgba(207,198,168,.45)';for(var t=.05;t<1.1;t+=.1){var x=x0+v.vx*t,y=y0+v.vy*t+.5*BOMB_G*t*t;ctx.fillRect(Math.round(x-camX),Math.round(y-camY),1,1);if(Math.hypot(x-w.x,y-w.y)<6)break;}}
   ctx.fillStyle='rgba(4,8,10,.85)';ctx.fillRect(rx-4,ry-1,9,3);ctx.fillRect(rx-1,ry-4,3,9);
   ctx.fillStyle=bombCool>0?'#6d7690':'#f2df91';ctx.fillRect(rx-3,ry,3,1);ctx.fillRect(rx+1,ry,3,1);ctx.fillRect(rx,ry-3,1,3);ctx.fillRect(rx,ry+1,1,3);
   return true;
@@ -731,7 +734,7 @@ function readInput() {
     }
   }
   if(axis===0&&padAx){axis=padAx<0?-1:1;top=heldRun?RUN_V:WALK_V+(RUN_V-WALK_V)*Math.max(0,Math.min(1,(Math.abs(padAx)-.55)/.35));}
-  if(charge&&charge.lock&&!placesBombs())axis=0;
+  if(charge&&charge.lock&&!placesBombs()&&!nativeAttackClass())axis=0;
   return { axis: axis, top: top };
 }
 
@@ -775,7 +778,7 @@ function startDodge() {
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;P.brace=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
   setAnim('run');puff(P.x,P.y,4,.3);sfx('swish',0);
-  dewDodge();
+  dewDodge();boxerDodge();
   if(coopGuest())coopAction('dodge',{x:P.x,y:P.y,direction:P.dodgeDir});
   return true;
 }
@@ -816,7 +819,7 @@ function updatePlayer(dt, inp) {
     P.climbRegrab=Math.max(0,(P.climbRegrab||0)-step);
     P.ladderRegrab=Math.max(0,(P.ladderRegrab||0)-step);
     P.dodgeCool=Math.max(0,P.dodgeCool-step);
-    if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){chime([1319],0,.012);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
+    if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){if(!coopActor)skillReadyCue(rogueRun.classId);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
     P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
     if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
     if(P.tun>0){var tunLeft=P.tun-step;if(tunLeft<=1e-6||!P.grounded||P.wet||climb||P.st==='float'||Math.abs(P.x-P.tunX)>6)endTun();else P.tun=tunLeft;}
@@ -2616,9 +2619,21 @@ var worldMind={
 function saveWorldMind(){}
 function playerIsCalm(){return P.grounded&&Math.abs(P.vx)<7&&worldMind.still>.65;}
 function socialTone(kind){
-  try{var v=effectVoice('social:'+kind,.18,.16,0,0);if(!v)return;
-    var f=kind==='crow'?280:kind==='water'?520:kind==='call'?440:kind==='gift'?784:659;
-    effectTone(v,f,kind==='crow'?196:f*1.22,.027,.16,kind==='crow'?'triangle':'sine');
+  try{var v=effectVoice('social:'+kind,.23,kind==='water'?.23:.16,0,0);if(!v)return;
+    var pitch=1+v.variant*.6;
+    if(kind==='water'){
+      effectNoise(v,.018,.14,1250,460,'bandpass');
+      effectTone(v,610*pitch,330,.024,.09,'sine');effectTone(v,820*pitch,410,.016,.075,'sine',.085);
+    }else if(kind==='plant'){
+      effectNoise(v,.027,.10,850,230,'lowpass');effectTone(v,240*pitch,132,.021,.095,'triangle');
+      effectTone(v,660,790,.01,.07,'sine',.085);
+    }else if(kind==='crow'){
+      effectTone(v,280*pitch,196,.023,.15,'triangle');effectNoise(v,.012,.085,720,340,'bandpass');
+    }else if(kind==='gift'){
+      effectTone(v,784,784,.023,.15,'sine');effectTone(v,1175,1175,.014,.12,'sine',.065);
+    }else{
+      var f=kind==='call'?440:659;effectTone(v,f*pitch,f*1.22,.023,.16,'sine');
+    }
   }catch(e){}
 }
 function nearestOf(list,x,maxD){
@@ -3114,7 +3129,7 @@ function useClassSkill(){
   if(seedDown())return false;
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
-    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():kit.skill==='standin'?polgeStandin():false;
+    ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():kit.skill==='flurry'?polgeFlurry():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
   return ok;
 }
@@ -3126,11 +3141,11 @@ function skillRing(x,y,r,cue){
 function coopClassSkill(action,m,now){
   var kit=ownClass();
   if(kit.skill==='dispatch')return dispatchWorld();
+  if(kit.skill==='flurry')return polgeFlurryWorld();
   if(!P.grounded||P.wet)return false;
-  if(kit.skill==='standin')return polgePlace();
-  if(kit.skill==='brace'){m.braceUntil=now+kit.braceTime*1000;m.braceX=P.x;braceShove(P.x,P.y);return true;}
+    if(kit.skill==='brace'){m.braceUntil=now+kit.braceTime*1000;m.braceX=P.x;P.skillCool=braceShove(P.x,P.y)>0?kit.parryCd:classSkillCooldown();return true;}
   if(kit.skill==='tun'){m.tunUntil=now+kit.tunTime*1000;m.tunX=P.x;skillRing(P.x,P.y,kit.tunRadius,'tun');return true;}
-  if(kit.skill==='bloom')return herbalistBloom()>0;
+  if(kit.skill==='bloom'){if(!gardenPlots.some(bloomReach)&&!floatKrek.some(function(k){return enemyDistance(k,P.x,P.y-12)<kit.bloomRadius;}))return false;return herbalistBloom()>0;}
   if(kit.skill==='pounce'){if(m.airTop==null||!m.landAt||now-m.landAt>800)return false;
     var drop=Math.max(0,Math.min(160,+action.drop||0,P.y-m.airTop+2));m.airTop=null;mossSlam(P.x,P.y,drop);return true;}
   return false;
@@ -3155,7 +3170,7 @@ function mechDispatch(){
   var list=coopGuest()?(coop.members[coop.me].crew||[]):ensureCrew();
   if(!list.some(dispatchReady)||!dispatchTargets(P,window.MaxCompanion.tiers[list[0].state.tier].dispatch).length)return false;
   if(coopGuest()?!coopAction('skill',{x:P.x,y:P.y}):!dispatchWorld())return false;
-  P.skillCool=ownClass().skillCd;P.skillPose=.25;P.skillAnim='toss';skillCue('dispatch',0);return true;
+  P.skillCool=classSkillCooldown();P.skillPose=.25;P.skillAnim='toss';skillCue('dispatch',0);return true;
 }
 function roverArrive(bot,p){
   var gy=surfaceY(p.x);
@@ -3165,7 +3180,7 @@ function roverArrive(bot,p){
 }
 function roverShelters(p){var found=false;eachCompanion(function(bot){if(bot.state.pourT>0&&bot.state.target===p)found=true;});return found;}
 function pounceDive(){P.pounce=2;P.pounceY=P.y;P.vy=320;P.vx*=.3;sfx('swish',0);}
-function cancelPounce(){if(P.pounce){P.pounce=0;P.skillCool=ownClass().skillCd;}}
+function cancelPounce(){if(P.pounce){P.pounce=0;P.skillCool=classSkillCooldown();}}
 function mossPounce(){
   if(climb){P.climbIgnoreId=climb.p.id;P.climbRegrab=.35;climb=null;climbGoal=null;P.st='free';P.grounded=false;P.platform=null;P.coyote=0;pounceDive();return true;}
   if(P.grounded&&P.wet)return false;
@@ -3175,23 +3190,26 @@ function mossPounce(){
   setAnim('rise');puff(P.x,P.y,5,.45);return true;
 }
 function landPounce(){
-  var drop=Math.max(0,Math.min(160,P.y-P.pounceY));P.pounce=0;P.skillCool=ownClass().skillCd;
+  var drop=Math.max(0,Math.min(160,P.y-P.pounceY));P.pounce=0;P.skillCool=classSkillCooldown();
   if(playerWetAt(P.x,P.y))return;
   shake=Math.min(3,shake+1.6);puff(P.x,P.y,9,.5);
   for(var i=0;i<8;i++){var a=-Math.PI*(.15+Math.random()*.7),sp=40+Math.random()*60;feathers.push({x:P.x,y:P.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,heavy:true,ph:0,c:Math.random()<.6?'#3b3128':'#56473a',life:2.2});}
   skillCue('slam',0);
-  if(coopGuest())coopAction('skill',{x:P.x,y:P.y,drop:drop});else mossSlam(P.x,P.y,drop);
+  if(coopGuest())coopAction('skill',{x:P.x,y:P.y,drop:drop,skillTag:(P.skillTag=(P.skillTag||0)+1)});else mossSlam(P.x,P.y,drop);
 }
 function mossSlam(x,y,drop){
   var kit=ownClass(),build=Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers}),r=kit.pounceRadius+3*(build.blast||0),mult=(1+.12*(build.emberStacks||0))*(1+Math.min(1,drop/kit.pounceDrop));
   floatKrek.slice().forEach(function(k){if(enemyDistance(k,x,y-12)<r&&!damagePest(k,mult,x,build)&&!k.boss){staggerKrek(k,.9);k.vx=(k.x<x?-1:1)*80;k.vy=-40;k.flash=.6;}});
+  combatObjectives(x,y-12,r);
+  needleFan({x:x+P.face*100,y:y-28},true);
+  if(build.updraft)needleFan({x:x-P.face*100,y:y-28},true);
   skillRing(x,y,r,'slam');
 }
 function parryable(x,y){var r=window.MaxClasses.get('bulwark').braceRadius;return floatKrek.some(function(k){return k.windup>0&&enemyDistance(k,x,y-12)<r;});}
 function bulwarkBrace(){
   if(!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0||readInput().axis)return false;
   var kit=ownClass(),parry=parryable(P.x,P.y);
-  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag}))return false;}else braceShove(P.x,P.y);
+  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag,skillTag:(P.skillTag=(P.skillTag||0)+1)}))return false;}else braceShove(P.x,P.y);
   P.brace=kit.braceTime;P.braceX=P.x;P.skillCool=parry?kit.parryCd:kit.skillCd;skillCue(parry?'parry':'brace',0);return true;
 }
 // Sligo's tun: curled up it neither moves nor throws, nothing knocks it back, and plants within
@@ -3200,20 +3218,25 @@ function bulwarkBrace(){
 function sligoTun(){
   if(P.tun>0||!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0)return false;
   var kit=ownClass();
-  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag}))return false;}else skillRing(P.x,P.y,kit.tunRadius,'tun');
+  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag,skillTag:(P.skillTag=(P.skillTag||0)+1)}))return false;}else skillRing(P.x,P.y,kit.tunRadius,'tun');
   task=null;holdWater=null;if(P.st!=='free')P.st='free';
   P.tun=kit.tunTime;P.tunX=P.x;P.vx=0;P.skillCool=0;P.throwPose=0;if(sheet2Ready)setAnim('crouch');
   skillCue('tun',0);return true;
 }
-function endTun(){if(!(P.tun>0))return;P.tun=0;P.skillCool=ownClass().skillCd;}
+function endTun(){if(!(P.tun>0))return;P.tun=0;P.skillCool=classSkillCooldown();}
 // A brace on a tell is a parry: the biter is hurt, knocked away and stunned. Late in the tell hurts most.
 function braceShove(x,y){
+  var b=combatBuild();
+  if(b.sanctuary)combatRestore(x,y,64,.15,.12);
   var r=window.MaxClasses.get('bulwark').braceRadius,n=0;
   floatKrek.slice().forEach(function(k){
     var d=enemyDistance(k,x,y-12);
-    if(k.windup>0&&d<r){n++;k.flash=1;if(!damagePest(k,k.windup<.16?3:2,x,null)&&!k.boss){staggerKrek(k,1.6);k.fleeFromX=x;k.vx=(k.x<x?-1:1)*120;k.vy=-30;}}
+    if(k.windup>0&&d<r){n++;k.flash=1;if(!damagePest(k,(k.windup<.16?3:2)*(1+.25*(b.counter||0)),x,b)&&!k.boss){staggerKrek(k,1.6);k.fleeFromX=x;k.vx=(k.x<x?-1:1)*120;k.vy=-30;}}
     else if(!k.boss&&d<26){staggerKrek(k,.75);k.vx=(k.x<x?-1:1)*97.5;k.vy=-15;k.flash=.6;}
   });
+  if(b.bedrock)floatKrek.slice().forEach(function(k){if(enemyDistance(k,x,y-12)<r)combatDamage(k,.4*b.bedrock,x,b);});
+  if(n&&b.aftershock)cairnCleave({x:x+P.face*26,y:y-12});
+  combatObjectives(x,y-12,26);
   skillRing(x,y,n?r:26,n?'parry':'brace');
   return n;
 }
@@ -3230,12 +3253,15 @@ function rootAbsorb(h){
 function bloomReach(p){if(highTideMode()&&p.tideVine)return highTideNearPlant({p:P,v:seedVital(coopActor),member:coopActor});return Math.abs(p.x-P.x)<=ownClass().bloomRadius&&Math.abs(surfaceY(p.x)-P.y)<24;}
 function bloomSkill(){
   if(!P.grounded||P.wet||climb||P.st==='float')return false;
-  var near=gardenPlots.filter(bloomReach);if(!near.length)return false;
-  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y}))return false;}else herbalistBloom();
-  P.skillCool=ownClass().skillCd;P.skillPose=.3;P.skillAnim='crouch';skillCue(near.some(function(p){return p.dead;})?'revive':'bloom',0);return true;
+  var near=gardenPlots.filter(bloomReach);if(!near.length&&!floatKrek.some(function(k){return enemyDistance(k,P.x,P.y-12)<ownClass().bloomRadius;}))return false;
+  if(coopGuest()){P.skillTag=(P.skillTag||0)+1;if(!coopAction('skill',{x:P.x,y:P.y,skillTag:P.skillTag}))return false;}else herbalistBloom();
+  P.skillCool=classSkillCooldown();P.skillPose=.3;P.skillAnim='crouch';skillCue(near.some(function(p){return p.dead;})?'revive':'bloom',0);return true;
 }
 function herbalistBloom(){
-  var kit=ownClass(),frac=Math.min(kit.bloomCap,kit.bloomShare*kit.care*(1+.12*(rogueRun.perks.tender||0))*(1+.08*ownTraits().dew)),n=0,stub=null;
+  var kit=ownClass(),frac=Math.min(kit.bloomCap,kit.bloomShare*kit.care*(1+.12*(rogueRun.perks.tender||0))*(1+.08*ownTraits().dew)*(rogueRun.perks.symphony?1.5:1)),n=0,stub=null;
+  if(rogueRun.perks.symphony)bombCool=0;
+  floatKrek.slice().forEach(function(k){if(enemyDistance(k,P.x,P.y-12)<kit.bloomRadius){combatDamage(k,1.4*(1+.2*(rogueRun.perks.ferment||0)),P.x,combatBuild());n++;}});
+  combatObjectives(P.x,P.y-12,kit.bloomRadius);
   gardenPlots.forEach(function(p){
     if(!bloomReach(p))return;
     if(p.dead){if(!stub||p.dead>stub.dead)stub=p;return;}
@@ -3392,7 +3418,7 @@ function runStats(won){
     boons:Object.assign({},rogueRun.perks),traits:Object.assign({},rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,timeline:rogueRun.timeline.slice(0,41)};
 }
 function resetRogueRun(reason,selection){
-  polgeStands=[];
+  polgeStands=[];classShots=[];classFighters=[];
   selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
@@ -3547,6 +3573,7 @@ function drawResultPlant(canvas,p){
   }finally{ctx=old;IH=oldH;ANCHOR=oldA;worldWeather.wind=oldWind;}
 }
 function resultAssetsReady(){return plantAtlasReady&&sheetReady&&ready(soilImg)&&Object.keys(IMG).every(function(k){return ready(IMG[k]);});}
+window.addEventListener('max-native-art-ready',function(){if(window.MaxRunResults&&window.MaxRunResults.isOpen())window.MaxRunResults.redraw();});
 function drawResultScene(canvas,bouquet,resultRun){
   var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY},oldSkin=P.skin;
   var resultClass=resultRun&&resultRun.classId;
@@ -3578,7 +3605,7 @@ function drawResultScene(canvas,bouquet,resultRun){
 }
 function perkMax(id){return window.MaxBuilds.max(id);}
 var ROGUE_PERKS=window.MaxBuilds.perks;
-function perkChoices(perks,salt,classId){return window.MaxBuilds.choices(perks||rogueRun.perks,rogueRun.level,(salt||0)+gardenWave+worldLevel(),classId||rogueRun.classId,highTideMode()?'high-tide':lastSeedMode()?'last-seed':null);}
+function perkChoices(perks,salt,classId){return window.MaxBuilds.choices(perks||rogueRun.perks,rogueRun.level,((salt||0)+gardenWave+worldLevel())^(rogueRun.seed|0),classId||rogueRun.classId,highTideMode()?'high-tide':lastSeedMode()?'last-seed':null);}
 
 var BOON_COLORS=['#a6c982','#8eb6b8','#e0ba72'],BOON_ART={},boonInked={};
 ROGUE_PERKS.forEach(function(p){BOON_ART[p.id]=loadImg('assets/boon-symbols-v1/'+p.id+'.png');});
@@ -3600,11 +3627,14 @@ function renderRogueChoice(){
   rogueRun.choice.forEach(function(p,index){
     var bt=document.createElement('button'),lvl=(rogueRun.perks[p.id]||0)+1;
     bt.type='button';bt.title=p.name+': '+p.desc;
+    if(p.needs)bt.setAttribute('data-signature','true');
     bt.setAttribute('aria-label',p.name+', level '+lvl+'. '+p.desc+'. Key '+(index+1));
     bt.innerHTML='<canvas class="perkIcon" width="9" height="9" aria-hidden="true"></canvas>'+perkDots(lvl,perkMax(p.id));
     var icon=bt.querySelector('canvas'),ink=boonInk(p.id);if(icon&&ink)icon.getContext('2d').drawImage(ink,0,0);
     var name=document.createElement('strong'),description=document.createElement('small');
-    name.textContent=p.name;description.textContent=p.desc;bt.appendChild(name);bt.appendChild(description);
+    name.textContent=p.name;description.textContent=p.desc;
+    if(p.classId){var kind=document.createElement('span');kind.className='perkKind';kind.textContent=p.needs?'Signature':'Mutation';bt.appendChild(kind);}
+    bt.appendChild(name);bt.appendChild(description);
     var mode=highTideMode()?'high-tide':lastSeedMode()?'last-seed':null;
     var unlocks=window.MaxBuilds.unlocks?window.MaxBuilds.unlocks(rogueRun.perks,p.id,rogueRun.classId,mode):[];
     if(unlocks.length){var next=document.createElement('span');next.className='perkUnlock';next.textContent='Unlocks '+unlocks[0].name;bt.appendChild(next);bt.setAttribute('aria-label',bt.getAttribute('aria-label')+'. '+next.textContent);}
@@ -4295,7 +4325,7 @@ function warpCover(){
 function enterLevel(n,ascenderId){
   if(singleSeedMode())return;
   if(coopGuest()||!Number.isInteger(n)||n<1||n>RUN_STAGES||rogueRun.ended)return;
-  polgeStands=[];
+  polgeStands=[];classShots=[];classFighters=[];
   clearRunInput();
   var carried=0,i;
   for(i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead)carried++;
@@ -5192,8 +5222,8 @@ function lob(x0, y0, tx, ty, vx, vy) {
   return { vx: (tx - x0) / T, vy: (ty - y0 - 0.5 * BOMB_G * T * T) / T };
 }
 var bombCoolMax=0,queuedThrow=null;
-function throwCooldown(power){return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
-function placesBombs(){return ownClass().id==='mech'||ownClass().id==='runner';}
+function throwCooldown(power){if(nativeAttackClass())return classAttackCooldown();return (.75+.75*(power||0))*Math.pow(.88,rogueRun.perks.cadence||0)*(ownClass().throwCd||1);}
+function placesBombs(){return ownClass().id==='mech';}
 function ownBombs(){return bombs.filter(function(b){return !coop||b.owner===(coopActor?coopActor.id:coop.me);});}
 function bufferBomb(target,power,auto){
   if(runIsPaused()||seedDown(coopActor)||!sligoCanThrow()||P.tun>0||(climb&&climb.exit)||warp||P.st==='float')return false;
@@ -5209,6 +5239,7 @@ function requestBomb(target,power){
 }
 function throwBomb(target,power) {                         // a bird {kind, o} or a spot {x, y}
   if(seedDown(coopActor))return false;
+  if(nativeAttackClass())return classPrimary(target);
   if(placesBombs())target={x:P.x,y:P.y-2};
   power=Math.max(0,Math.min(1,+power||0));
   if (runIsPaused() || !sligoCanThrow() || P.tun > 0 || (climb&&climb.exit) || warp || P.st==='float' || bombCool > 0 || ownBombs().length >= 2) return false;
@@ -5312,10 +5343,17 @@ function chargeRelease(){
   if(ok&&c.src==='pad')padRumble(c.t>.5?110:40,c.t>.5?.7:.25);
   return ok;
 }
+function drawNativeAim(target,cool){
+  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,melee=ownClass().id==='polge'||ownClass().id==='bulwark',reach=melee?(ownClass().id==='polge'?31:38+6*(rogueRun.perks.fault||0)):Math.min(160,length);
+  ctx.fillStyle=cool?'#6d7690':ownClass().id==='herbalist'?'#80d1b1':'#e6bf69';
+  for(var aimStep=8;aimStep<=reach;aimStep+=5)ctx.fillRect(Math.round(P.x+dx/length*aimStep-camX),Math.round(P.y-12+dy/length*aimStep-camY),1,1);
+  var tx=Math.round(P.x+dx/length*reach-camX),ty=Math.round(P.y-12+dy/length*reach-camY);ctx.fillRect(tx-2,ty,5,1);ctx.fillRect(tx,ty-2,1,5);
+}
 function drawCharge(){
   if(runIsPaused())return;
   var bx=Math.round(P.x-camX)-5,by=Math.round(P.y-camY)-30,cool=bombCool>0&&bombCoolMax>0;
   if(charge){
+    if(nativeAttackClass()){drawNativeAim(chargePoint(),cool);return;}
     if(placesBombs()){
       var r=BLAST_R+(rogueRun.perks.blast||0)*5+Math.round(charge.t*8),x=Math.round(P.x-camX),y=Math.round(P.y-camY);
       var ready=!cool&&ownBombs().length<2;
@@ -5352,6 +5390,7 @@ function curiousCrows(b) {                                 // a crow can't resis
   }
 }
 function updateBombs(dt) {
+  updateClassCombat(dt);
   var steps=Math.max(1,Math.ceil(dt*120-1e-7));
   for(var step=0;step<steps;step++)stepBombs(dt/steps);
 }
@@ -5576,6 +5615,7 @@ function drawScorches() {
   }
 }
 function drawBombs(t) {
+  drawClassShots();
   for (var i = 0; i < bombs.length; i++) {
     var b = bombs[i], sx = Math.round(b.x - camX), sy = Math.round(b.y - camY);
     if(b.planted){
@@ -5626,6 +5666,7 @@ function drawBooms() {
       if (t < 0.3) disc(sx, sy - Math.round(t * 8), Math.round((b.big ? 5 : 3) + t * 14), 'rgba(232,232,226,' + (0.55 * (1 - t / 0.3)).toFixed(2) + ')');
       continue;
     }
+    if(b.strike){drawCombatStrike(b,sx,sy);continue;}
     if(b.ring){if(t<.35){var rr=Math.max(2,b.r*Math.min(1,t/.25));ctx.fillStyle='rgba(236,232,220,'+(.5*(1-t/.35)).toFixed(2)+')';for(j=0;j<48;j++){var ra=j/48*Math.PI*2;ctx.fillRect(Math.round(sx+Math.cos(ra)*rr),Math.round(sy+Math.sin(ra)*rr*.5),1,1);}}continue;}
     var power=Math.max(0,Math.min(1,b.charge||0)),radius=b.radius||BLAST_R;
     var L = Math.max(0, 1 - t / 0.3);
@@ -5678,19 +5719,24 @@ function effectsBus(ac){
   compressor.threshold.value=-18;compressor.knee.value=16;compressor.ratio.value=3;
   compressor.attack.value=.008;compressor.release.value=.14;
   filter.connect(compressor);compressor.connect(gain);gain.connect(ac.destination);
-  effectsMix={ac:ac,input:filter,gain:gain,voices:[],last:{},serial:0};return effectsMix;
+  effectsMix={ac:ac,input:filter,gain:gain,voices:[],last:{},serial:0,focusUntil:0};return effectsMix;
 }
 function effectVoice(kind,duration,spacing,priority,dist){
   var ac=effectsAudio();if(!ac)return null;
   var mix=effectsBus(ac),now=ac.currentTime,d=Math.max(0,Number(dist)||0),reach=kind==='fuse'?160:480;
   if(d>=reach)return null;
+  // Keep two groups in reserve for warnings. A nearby windup briefly clears
+  // space under its descending notes, including on a guest's phone.
+  if(kind==='guardian:warn')priority=3;
   mix.voices=mix.voices.filter(function(v){return v.end>now;});
   if(mix.last[kind]!=null&&now-mix.last[kind]<spacing)return null;
   var alike=mix.voices.filter(function(v){return v.kind===kind;}).length;
-  if((kind==='boom'&&alike>=3)||(priority<2&&mix.voices.length>=9)||mix.voices.length>=14)return null;
-  mix.last[kind]=now;mix.voices.push({kind:kind,end:now+duration});
+  if((kind==='boom'&&alike>=3)||(kind.indexOf('strike:')===0&&alike>=2)||(priority<2&&mix.voices.length>=9)||(priority<3&&mix.voices.length>=12)||mix.voices.length>=14)return null;
+  mix.last[kind]=now;mix.voices.push({kind:kind,end:now+duration,priority:priority});
+  if(priority===3&&d<240)mix.focusUntil=Math.max(mix.focusUntil,now+.27);
   // The same near/far rule applies on the authoritative and guest phone.
   var distance=Math.pow(Math.max(0,1-d/reach),1.5),layer=kind==='boom'?1/(1+alike*.48):1;
+  if(priority<2&&now<mix.focusUntil)layer*=.42;
   return {ac:ac,bus:mix.input,now:now,volume:distance*layer,variant:(mix.serial++%5-2)*.025};
 }
 function effectEnvelope(param,now,peak,duration,attack){
@@ -5735,6 +5781,37 @@ function sfx(kind,dist){
     }else if(kind==='hit'){
       effectNoise(v,.045,.065,1600,650,'bandpass');effectTone(v,370*pitch,220,.024,.065,'triangle');
     }else effectNoise(v,.038,.11,1550,500,'bandpass');
+  }catch(e){}
+}
+/* Each weapon speaks in its own material: reed, stone, wet spores or dry glove.
+   Parameters describe short layers, not samples or an extra audio context.
+   A replicated combat effect calls this once on each phone, after validation. */
+var CLASS_STRIKE_CUES={
+  needle:{life:.14,space:.055,noise:[.028,.065,1800,780,'bandpass'],tones:[[970,480,.025,.075,'triangle'],[290,180,.022,.085,'sine',.012]]},
+  cleave:{life:.23,space:.10,noise:[.065,.14,940,230,'lowpass'],tones:[[104,46,.080,.18,'sine'],[360,150,.023,.095,'triangle',.02]]},
+  parry:{life:.24,space:.09,noise:[.024,.055,1600,920,'bandpass'],tones:[[587,587,.038,.16,'triangle'],[1175,1175,.023,.12,'sine',.04]]},
+  spore:{life:.21,space:.09,noise:[.025,.135,920,310,'bandpass'],tones:[[390,130,.042,.13,'sine'],[560,210,.018,.09,'sine',.065]]},
+  jab:{life:.12,space:.055,noise:[.039,.06,1300,400,'bandpass'],tones:[[156,74,.054,.085,'triangle']]},
+  cross:{life:.16,space:.06,noise:[.046,.08,1180,350,'bandpass'],tones:[[125,58,.067,.115,'triangle'],[265,135,.012,.065,'sine',.012]]},
+  uppercut:{life:.23,space:.09,noise:[.05,.12,750,1800,'bandpass'],tones:[[188,61,.078,.155,'triangle'],[94,48,.028,.16,'sine',.025]]},
+  flurry:{life:.27,space:.17,noise:[.046,.15,1380,380,'bandpass'],tones:[[156,74,.047,.068,'triangle'],[125,58,.053,.072,'triangle',.065],[188,61,.061,.10,'triangle',.135]]}
+};
+function classStrikeCue(kind,dist,combo){
+  try{
+    kind=({kestrel:'needle',runner:'needle',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
+    if(kind==='polge')kind=['jab','cross','uppercut'][Math.max(0,Math.min(2,Math.floor(Number(combo)||0)))];
+    var kit=CLASS_STRIKE_CUES[kind];if(!kit)return;
+    var v=effectVoice('strike:'+kind,kit.life,kit.space,kind==='parry'?2:1,dist);if(!v)return;
+    var pitch=1+v.variant*.6,n=kit.noise;
+    effectNoise(v,n[0],n[1],n[2]*pitch,n[3],n[4]);
+    kit.tones.forEach(function(t){effectTone(v,t[0]*pitch,t[1]*pitch,t[2],t[3],t[4],t[5]||0);});
+  }catch(e){}
+}
+function skillReadyCue(classId){
+  try{
+    var notes={mech:[988,1319],runner:[1175,1568],kestrel:[1175,1568],bulwark:[294,587],cairn:[294,587],herbalist:[523,784],mycel:[523,784],polge:[392,784],sligo:[277,554]}[classId]||[659,988];
+    var v=effectVoice('skill:ready',.22,.5,1,0);if(!v)return;
+    effectTone(v,notes[0],notes[0],.013,.11,'sine');effectTone(v,notes[1],notes[1],.010,.12,'sine',.065);
   }catch(e){}
 }
 function skillCue(kind,dist){
@@ -6129,11 +6206,14 @@ var sligoTrail={x:new Int32Array(TRAIL_CAP),y:new Int32Array(TRAIL_CAP),t:new Fl
 // sac it curls up in for a tun, and the splat when the sac bursts. Loaded the first time a Sligo needs it.
 var SLIGO_FX={img:null,cell:40,ax:20,ay:39,sac:[0,1,2,3],burst:[4,5,6,7],throw:[8,9,10,11],lash:[12,13,14,15,16,17,18,19],hurt:[20,21,22],float:[23,24,25,26,38,39],sleep:[27,28],parts:[29,30],roll:[31,32,33,34,35,36,37]},sligoBursts=[];
 // Sligo evolves like Eevee. The first path capstone it takes is its stone and settles its line for the run
-// (Bloom pulse the brood; Evergreen and Chain bloom wait for their art and keep Sligo as it is), and more
-// ranks on that path grow it: the stone buds it, 8 ranks make a chain, 12 fold it into the brood mother.
+// (Bloom pulse the brood; Evergreen the rooted guardian; Chain bloom the lashing coil), and more
+// ranks on that path grow it: the stone starts it, 8 ranks develop it, 12 complete its final shape.
 // Only a look: each client works out its own from its own boons and sends it with its avatar (line*4+stage).
 var SLIGO_EVO={img:null,cell:40,ax:20,ay:39,at:[0,0,8,12],seen:{},
-  lines:[{stone:'bloom',art:'brood'},{stone:'evergreen',art:null},{stone:'chain',art:null}],
+  lines:[{stone:'bloom',art:'brood'},{stone:'evergreen',art:'evergreen'},{stone:'chain',art:'chain'}],
+  branches:{grow:[null,[0,1,2,3],[8,9,10,11],[16,17,18,19]],
+    walk:[null,[0,1,2,3,4,5,6,7],[8,9,10,11,12,13,14,15],[16,17,18,19,20,21,22,23]],
+    idle:[null,[0,1,0,7],[8,9,8,15],[16,17,16,23]],air:[null,6,14,22]},
   grow:[null,[0,1,2,3,4],[27,28,29,30,31],[48,49,50,51,52,53,54,55]],
   walk:[null,[2,3,4,5,6,7,8,9,10,11,12,13,14,15],[16,17,18,19,20,21,22,23,24,25,26],[56,57,58,59,60,61,62,63]],
   idle:[null,[5,6],[32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47],[56,57,58,59,60,61,62,63]],
@@ -6146,17 +6226,21 @@ function sligoEvo(){
   if(!E.lines[line].art)return 0;
   var n=pathRanks(line,p);return line*4+(n>=E.at[3]?3:n>=E.at[2]?2:1);
 }
-function sligoEvoImg(){return SLIGO_EVO.img||(SLIGO_EVO.img=loadImg('assets/max-skins-v1/sligo/brood.png'));}
+function sligoEvoImg(line){
+  var E=SLIGO_EVO,L=E.lines[line||0];if(!L)return null;
+  if(!line)return E.img||(E.img=loadImg('assets/max-skins-v1/sligo/brood.png'));
+  return L.img||(L.img=loadImg(line===1?'assets/max-skins-v1/sligo/evergreen.png':'assets/max-skins-v1/sligo/chain.png'));
+}
 function drawSligoEvo(a,x,y,scale){
-  var E=SLIGO_EVO,evo=a.evo|0,stage=evo&3,key=a.evoKey||'me',seen=E.seen[key];
+  var E=SLIGO_EVO,evo=a.evo|0,stage=evo&3,line=evo>>2,key=a.evoKey||'me',seen=E.seen[key],clips=line?E.branches:E;
   if(!seen||seen.evo!==evo)seen=E.seen[key]={evo:evo,t:seen&&evo>seen.evo?tSec:-9};   // a new stage grows in once
-  if(!stage)return false;
-  var im=sligoEvoImg();if(!ready(im))return false;
-  var age=tSec-seen.t,grow=E.grow[stage],f,bob=0,w;
+  if(!stage||!E.lines[line])return false;
+  var im=sligoEvoImg(line);if(!ready(im))return false;
+  var age=tSec-seen.t,grow=clips.grow[stage],f,bob=0,w;
   if(age>=0&&age<grow.length/10)f=grow[Math.floor(age*10)];
-  else if(!a.grounded)f=E.air[stage];
-  else if(a.anim==='walk'||a.anim==='run'){w=E.walk[stage];f=w[Math.floor(tSec*(a.anim==='run'?16:12))%w.length];bob=stage===3?Math.floor(tSec*8)&1:0;}
-  else{w=E.idle[stage];f=w[Math.floor(tSec*[0,2,6,8][stage])%w.length];}
+  else if(!a.grounded)f=clips.air[stage];
+  else if(a.anim==='walk'||a.anim==='run'){w=clips.walk[stage];f=w[Math.floor(tSec*(a.anim==='run'?16:12))%w.length];bob=stage===3?Math.floor(tSec*8)&1:0;}
+  else{w=clips.idle[stage];f=w[Math.floor(tSec*[0,2,6,8][stage])%w.length];}
   ctx.save();ctx.translate(Math.round(x),Math.round(y)-bob);if(a.face<0)ctx.scale(-1,1);
   // Evolution changes shape; food remains the sole source of body size.
   var size=scale==null?1:scale*12/sligoSourceHeight(im,f*E.cell,0,E.cell);
@@ -6271,6 +6355,7 @@ function drawPlayer() {
   if (!native && (a.sh === 2 ? !sheet2Ready : !sheetReady)) return;
   if (secretTint && P === secretOwnP) img = secretSkin(img);
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
+  var artRow = native && window.MaxNativeArt.playerRow ? window.MaxNativeArt.playerRow(P.skin,a.sh===2?'interaction':'main',a.row,P.anim) : a.row;
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
     if(P.skin==='sligo'&&(drawSligoEvo(P,px,py,bodyScale)||drawSligoAction(P,px,py,bodyScale)))return;
@@ -6280,9 +6365,9 @@ function drawPlayer() {
     }
     if (P.face < 0) {
       ctx.save(); ctx.translate(dx + CELL, dy); ctx.scale(-1, 1);
-      ctx.drawImage(img, fr * CELL, a.row * CELL, CELL, CELL, 0, 0, CELL, CELL);
+      ctx.drawImage(img, fr * CELL, artRow * CELL, CELL, CELL, 0, 0, CELL, CELL);
       ctx.restore();
-    } else ctx.drawImage(img, fr * CELL, a.row * CELL, CELL, CELL, dx, dy, CELL, CELL);
+    } else ctx.drawImage(img, fr * CELL, artRow * CELL, CELL, CELL, dx, dy, CELL, CELL);
   }
   if (wp && py > L) {
     ctx.save(); ctx.beginPath(); ctx.rect(0, 0, IW, L); ctx.clip(); sprite(); ctx.restore();

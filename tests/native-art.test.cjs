@@ -47,11 +47,11 @@ function enemy(overrides = {}) {
 function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage').at(-1); }
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
-  const { art, status, requests, events } = await nativeArt('/moss/interaction.png');
+  const { art, status, requests, events } = await nativeArt('/kestrel/interaction.png');
   assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 32);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
-  assert.match(art.playerImage('ember', 'main').src, /ember\/main.png$/);
+  assert.match(art.playerImage('ember', 'main').src, /cairn\/main.png$/);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
   assert.equal((await art.load()).loaded.length, 32); assert.equal(requests.length, 33);
@@ -136,16 +136,22 @@ test('the actual player renderer uses each selected sheet while retaining origin
   const drawPlayer = html.match(/function drawPlayer\(\) \{[\s\S]*?(?=\nfunction drawParts)/)[0];
   const sandbox = { window: { MaxNativeArt: art }, ctx, camX: 0, camY: 0, CELL: 32, IW: 160, IH: 250,
     P: { x: 20, y: 40, face: 1, skin: 'moss', anim: 'idle', frame: 1, st: 'free' },
-    ANIM: { idle: { row: 0, f: [0, 1] }, water: { sh: 2, row: 3, f: [0, 1] } },
+    ANIM: { idle: { row: 0, f: [0, 1] }, water: { sh: 2, row: 3, f: [0, 1] }, toss: { sh: 2, row: 2, f: [0, 1] }, sow: { sh: 2, row: 2, f: [0, 1] } },
     sheet: { id: 'original-main' }, sheet2: { id: 'original-interaction' }, sheetReady: true, sheet2Ready: true,
     surfaceY: () => 40, waterAt: () => null, drawCanopy() {}, secretTint: false,
   };
   vm.runInNewContext(drawPlayer, sandbox); sandbox.drawPlayer();
-  assert.match(lastSprite(calls)[1].src, /moss\/main.png$/);
+  assert.match(lastSprite(calls)[1].src, /kestrel\/main.png$/);
   assert.deepEqual(lastSprite(calls).slice(2), [32, 0, 32, 32, 4, 9, 32, 32]);
   sandbox.P.anim = 'water'; sandbox.P.skin = 'moon'; sandbox.P.face = -1; sandbox.drawPlayer();
-  assert.match(lastSprite(calls)[1].src, /moon\/interaction.png$/);
+  assert.match(lastSprite(calls)[1].src, /mycel\/interaction.png$/);
   assert.ok(calls.some(call => call[0] === 'scale' && call[1] === -1));
+  for (const skin of ['moss', 'ember', 'moon']) {
+    sandbox.P.skin = skin; sandbox.P.anim = 'toss'; sandbox.drawPlayer();
+    assert.equal(lastSprite(calls)[3], 160, 'signature attacks use the dedicated row');
+    sandbox.P.anim = 'sow'; sandbox.drawPlayer();
+    assert.equal(lastSprite(calls)[3], 64, 'sowing keeps its quiet tending poses');
+  }
   sandbox.P.skin = 'original'; sandbox.drawPlayer(); assert.equal(lastSprite(calls)[1].id, 'original-interaction');
 });
 
@@ -208,6 +214,8 @@ test('Sligo\'s pack loads on demand, never with the others, and until it loads t
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.match(packed.art.playerImage('sligo', 'main').src, /max-skins-v1\/sligo\/main\.png$/);
   assert.match(packed.art.playerImage('sligo', 'interaction').src, /max-skins-v1\/sligo\/interaction\.png$/);
+  assert.equal(packed.events.length, 2, 'deferred art announces completion so saved-result portraits refresh');
+  assert.deepEqual([...packed.events.at(-1).detail.loaded], ['sligo']);
 });
 
 test('all sixteen garden guardians play their complete tells and attacks, then loop cyan across snapshots', async () => {

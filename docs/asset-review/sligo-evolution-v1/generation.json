@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-27",
+  "generations": [
+    {
+      "name": "evergreen",
+      "source": "evergreen-source.png",
+      "sourceSha256": "4ca6b5a1847adc57d1d9babeb41460c7dbc9ff33cdd8e7ef1e91793c33235a26",
+      "tool": "built-in image_gen.imagegen",
+      "transparent_background": true,
+      "reference": "brood-sheet.png",
+      "prompt": "Use case: stylized-concept. Production game sprite animation source atlas, transparent background. Reference image is Sligo's visual identity: pink fleshy one-eyed tardigrade with tiny stubby feet, morbid but charming alien zygote. Create ONE NEW EVERGREEN EVOLUTION sheet, exact rigid grid 8 columns and 3 rows (24 separate poses), each cell same size, generous transparent gutters. Side view, always facing right. Each row is a smoothly animating loop, eight significantly different poses, root feet lifting and body compressing for crawling. Row 1: Sligo young guardian, rounded pink one-eye body protected by two deep plum bark plates, tiny moss-green shoot, 6 root feet. Row 2: adolescent guardian, heavier shell of overlapping dark plum bark, fleshy coral-pink underside and single large black glossy eye, four branching root feet and a budding leaf crown. Row 3: final evergreen guardian, broad armored ancient root beast, open arch of heavy root armor behind its one-eyed pink head, tall moss crown with coral buds, many tangled root legs; distinct bold silhouette. Keep stage 3 squat and defensively broad. Art style: handcrafted bold dark-fantasy pixel art with deliberate chunky pixel clusters, 16-colour limited palette dark plum outlines, salmon pink flesh, deep crimson creases, very sparse sage green moss and ivory highlights. Native look designed to reduce into a 36x36 pixel sprite, no fine textures. Each pose fully separated inside its grid cell with transparent margins. Every row exactly eight poses. Do not include existing reference sheet in output. No labels, no text, no grid lines, no shadow below characters, no backdrop, no glow, no smooth gradients."
+    },
+    {
+      "name": "chain",
+      "source": "chain-source.png",
+      "sourceSha256": "23f3052253ae628aed997539d2d460fa74bcea5e5629232b64d57f77839650d6",
+      "tool": "built-in image_gen.imagegen",
+      "transparent_background": true,
+      "reference": "brood-sheet.png",
+      "prompt": "Use case: stylized-concept. Production game sprite animation source atlas, true transparent background. Reference image supplies Sligo visual identity: pink fleshy tardigrade with glossy black eyes, tiny stubby feet, morbid but charming zygote. Create ONE NEW CHAIN BLOOM EVOLUTION sheet in exact rigid grid 8 columns and 3 rows (24 separate poses), each cell same size, transparent gutters. Side view, always facing right. Every row eight animation poses in continuous crawling/lashing motion. Row 1 juvenile lash-form: compact deep coral pink head and two fleshy body nodes on a dark red umbilical cord, two glossy black eyes (main head and rear node), small claws. Row 2 hunting lash-form: sinuous arch of three pink lobes threaded onto twisted crimson muscle-cord, three large black eyes, sharp hooked umbilical tip sweeping above its head. Row 3 mature chain bloom: bold upright S-shaped coil of pink fleshy nodes, 4 black eyes spread around its arched crest and chest, dark red whip cords flaring backward with small coral thorn tips, hooked talons at the base; the head remains the distinctive round Sligo head looking right. Offensive unstable angular silhouette, no armor or foliage. Each pose must remain a single connected organism, no projectiles or floating bits. Art style: handcrafted bold dark-fantasy pixel art with chunky pixel clusters, strong silhouettes reducible to 36x36 native pixels, 16-colour palette dark plum outlines, fleshy salmon pink, crimson muscle, ivory wet highlights, black eyes. Keep each pose inside its cell, large fully transparent gutters. No text, no labels, no grid lines, no ground shadow, no backdrop, no smooth gradients, no scene. Do not include reference image in output."
+    }
+  ]
+}

@@ -149,7 +149,7 @@ function cleanTraits(value){
 function ownTraits(){return rogueRun.traits||(rogueRun.traits=emptyTraits());}
 function featherJump(){var n=ownTraits().feathers;return Math.sqrt(1+.10*n/(1+.045*n));}
 function traitNotice(type,count){
-  var names={feathers:'Jump higher',embers:'Stronger bombs',dew:'Stronger care'};
+  var names={feathers:'Jump higher',embers:'Stronger attacks',dew:'Stronger care'};
   if(count===3)names={feathers:'Double jump',embers:'Ember burn',dew:'Rain dodge'};
   pickupNotice={type:type,count:count,text:names[type],life:2.2};
   socialTone('gift');
@@ -1090,6 +1090,7 @@ function drawExpedition(t){
   }
   ctx.fillStyle='#556d63';ctx.fillRect(entryX-2,entryY-23,2,23);ctx.fillRect(entryX-8,entryY-23,15,7);
   ctx.fillStyle='#ded59f';ctx.fillRect(entryX-1,entryY-21,1,4);ctx.fillRect(entryX-2,entryY-20,3,1);
+  drawRunItem(E.item,entryX+12,entryY-14,false);
   if(Math.abs(P.x-E.start.x)<68&&Math.abs(P.y-E.start.y)<36){
     var shrineNear=!relicRunMode()&&bossEvent&&bossEvent.stage===worldLevel()&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32;
     expeditionText(E.name,entryX,entryY-(shrineNear?57:39));
@@ -1106,7 +1107,7 @@ function drawExpedition(t){
     for(var j=0;j<=i;j++)ctx.fillRect(x-i*3+j*6,y-31,2,2);
     if(lit){ctx.fillStyle='#d9edaa';ctx.fillRect(x-3,y-11,6,1);ctx.fillRect(x-1,y-13,2,5);}
     if(e.watch===i&&!lit){ctx.fillStyle='#8ccbd3';ctx.fillRect(x-9,y-35,Math.round(e.charge*3),2);}
-    if(near&&!lit)expeditionText(E.mode==='bells'?'Strike in order':E.mode==='salvage'?'Blast the seal':E.mode==='watch'?'Tend, then hold':'Tend to light',x,y-47);
+    if(near&&!lit)expeditionText(E.mode==='bells'?'Strike in order':E.mode==='salvage'?'Break the seal':E.mode==='watch'?'Tend, then hold':'Tend to light',x,y-47);
     if(i===2){drawRunItem(E.item,x+12,y-12,false);if(near&&e.mask===7&&!e.done)expeditionText('Defeat the keepers',x,y-47);}
   });
   E.rooms.forEach(function(r,i){

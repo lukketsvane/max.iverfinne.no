@@ -142,8 +142,8 @@ test('character owns appearance and difficulty is the only separate run choice',
     assert.deepEqual([...m.w.document.querySelectorAll('[data-class-id]')].map(n => n.dataset.classId), ['mech','runner','bulwark','herbalist','polge']);
     assert.equal(m.w.document.querySelector('[data-skin-id]'), null);
     assert.deepEqual([...m.w.document.querySelectorAll('[data-difficulty]')].map(n => n.dataset.difficulty), ['easy','medium','hard','insane']);
-    m.click('Herbalist'); m.click('hard difficulty');
-    assert.match(m.w.document.querySelector('.max-character-stage img').src, /max-skins-v1\/moon\/main\.png$/);
+    m.click('Mycel'); m.click('hard difficulty');
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /characters-v2\/mycel\/main\.png$/);
     assert.equal(m.w.document.querySelector('[data-class-id="herbalist"]').getAttribute('aria-pressed'), 'true');
     assert.equal(m.w.document.querySelector('[data-difficulty="hard"]').getAttribute('aria-pressed'), 'true');
     assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId:'herbalist', skinId:'moon', difficulty:'hard' });
@@ -165,7 +165,7 @@ test('Pølge is selectable without an unlock, keeps Ø in his name and requests 
 test('Play silently enters the one shared running garden and carries character plus difficulty', async () => {
   const m = await menu();
   try {
-    m.click('Play'); m.click('Moss'); m.click('easy difficulty'); m.click('Play'); await m.settle();
+    m.click('Play'); m.click('Kestrel'); m.click('easy difficulty'); m.click('Play'); await m.settle();
     assert.equal(m.beginCount,1);assert.equal(m.active,true);
     assert.deepEqual(JSON.parse(JSON.stringify(m.begun.selection)), { classId:'runner', skinId:'moss', difficulty:'easy' });
     assert.equal(m.begun.host,true);assert.equal(m.begun.room.state,'playing');
@@ -207,7 +207,7 @@ test('corrupt old preferences fall back to Mech medium and old independent skins
   const legacy = await menu(JSON.stringify({classId:'bulwark',skinId:'tide'}));
   try {
     legacy.click('Play');
-    assert.match(legacy.w.document.querySelector('.max-character-stage img').src,/max-skins-v1\/ember\/main\.png$/);
+    assert.match(legacy.w.document.querySelector('.max-character-stage img').src,/characters-v2\/cairn\/main\.png$/);
     assert.equal(legacy.w.document.querySelector('[data-difficulty="medium"]').getAttribute('aria-pressed'),'true');
   } finally { legacy.dom.window.close(); }
 });

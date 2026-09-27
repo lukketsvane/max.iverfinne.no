@@ -2,10 +2,11 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { loadGame } = require('./game-harness.cjs');
 
-function padded() {
+// Ballistic aiming belongs to Sligo; Mech places bombs and the four native kits use direct attacks.
+function padded(classId = 'sligo') {
   const h = loadGame(), g = h.game, state = { buttons: Array.from({ length: 17 }, () => ({ pressed: false, value: 0 })), axes: [0, 0, 0, 0] };
   h.window.navigator = { getGamepads: () => [state] };
-  g.resetRogueRun('test', { classId: 'herbalist' }); g.floatKrek = []; g.bombs.length = 0; g.bombCool = 0;
+  g.resetRogueRun('test', { classId }); g.floatKrek = []; g.bombs.length = 0; g.bombCool = 0;
   const set = (i, on) => { state.buttons[i] = { pressed: on, value: on ? 1 : 0 }; g.pollPads(); };
   return { h, g, state, set };
 }
@@ -45,7 +46,7 @@ test('aiming down with a single Joy-Con never starts planting', () => {
 });
 
 test('the keyboard holds B to aim with the arrows and charge, and releasing throws', () => {
-  const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'herbalist' }); g.bombs.length = 0; g.bombCool = 0;
+  const h = loadGame(), g = h.game; g.resetRogueRun('test', { classId: 'sligo' }); g.bombs.length = 0; g.bombCool = 0;
   h.key('keydown', 'b'); h.key('keydown', 'ArrowLeft'); h.key('keydown', 'ArrowUp');
   assert.equal(g.readInput().axis, 0); g.jumpBuf = 0; g.updateCharge(.9);
   assert.equal(g.jumpBuf, 0, 'up aims instead of jumping');
@@ -137,4 +138,30 @@ test('the game re-fits the screen whenever the window size changes, even without
   h.tick(16); const before = g.IH;
   h.window.innerHeight = 700; h.tick(16);
   assert.notEqual(g.IH, before, 'a changed window height is noticed on the next frame');
+});
+
+test('native kits aim with a controller while steering, release their own attack and never charge bomb damage', () => {
+  for (const classId of ['runner','bulwark','herbalist','polge']) {
+    const {g,state,set}=padded(classId);
+    state.axes[0]=1;set(7,true);state.axes[2]=-1;g.pollPads();
+    assert.equal(g.readInput().axis,1,classId+' remains mobile while aiming');
+    assert.ok(g.chargePoint().x<g.P.x-30);set(7,false);
+    const quick=g.bombCool;assert.ok(quick>0);assert.equal(g.bombs.length,0);
+    if(classId==='runner'||classId==='herbalist')assert.ok(g.classShots[0].vx<0);
+    else assert.ok(g.booms.some(b=>b.strike===(classId==='bulwark'?'cleave':'jab')));
+    g.bombCool=0;set(7,true);g.updateCharge(.9);set(7,false);
+    assert.equal(g.bombCool,quick,'holding native aim does not invent charged damage or recovery');
+    assert.equal(g.bombs.length,0);
+  }
+});
+
+test('native mouse aim releases a directional projectile or close strike without ballistic bombs', () => {
+  for (const classId of ['runner','bulwark','herbalist','polge']) {
+    const {h,g}=padded(classId);h.window.navigator={};
+    const stage=h.elements.get('stage');
+    for(const fn of stage.listeners.pointerdown||[])fn({type:'pointerdown',clientX:700,clientY:200,pointerId:9,pointerType:'mouse',button:0,preventDefault(){}});
+    assert.equal(g.charge.src,'mouse');const aim=g.chargePoint();g.chargeRelease();assert.equal(g.bombs.length,0);
+    if(classId==='runner'||classId==='herbalist')assert.equal(Math.sign(g.classShots[0].vx),Math.sign(aim.x-g.P.x));
+    else assert.ok(g.booms.some(b=>b.strike===(classId==='bulwark'?'cleave':'jab')));
+  }
 });

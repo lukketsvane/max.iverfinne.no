@@ -45,13 +45,14 @@ function coopRoster(room){
 function coopPromote(){
   var now=performance.now(),top=function(list,key){return list.reduce(function(n,o){return Math.max(n,+o[key]||0);},0);};
   sligoMeatId=Math.max(sligoMeatId,top(sligoMeat,'id'))+1000;
+  classShotId=Math.max(classShotId,top(classShots,'id'))+1000;classPestId=Math.max(classPestId,top(floatKrek,'combatId'))+1000;
   coopFxId=Math.max(coopFxId,top(booms,'id'))+1000;seedPickupUid=Math.max(seedPickupUid,top(seedPickups,'uid'))+1000;
   runDropId=Math.max(runDropId,top(runLoot,'id'))+1000;hazardId=Math.max(hazardId,top(runHazards,'id'))+1000;
   rogueRun.nextPlantId=Math.max(rogueRun.nextPlantId,top(rogueRun.garden,'id'),top(gardenPlots,'id'))+1000;
   Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;m.dodge=null;m.trust=true;coopNextChoice(m);});
   coop.ui='';coopShowChoices();
 }
-function coopDepart(id){if(coop&&coop.host&&id!==coop.me)delete coop.members[id];}
+function coopDepart(id){if(coop&&coop.host&&id!==coop.me){delete coop.members[id];classShots=classShots.filter(function(q){return q.owner!==id;});classFighters=classFighters.filter(function(q){return q.owner!==id;});}}
 function coopSupportY(x,y){var support=playerSupportY(x,y);return Math.abs(y-support)<=4?support:null;}
 function coopWithMember(m,fn){
   var oldP=P,oldClass=rogueRun.classId,oldPerks=rogueRun.perks,oldTraits=rogueRun.traits,oldTask=task,oldWater=holdWater,oldCool=bombCool,oldActor=coopActor,oldClimb=climb,oldWarp=warp;
@@ -148,6 +149,7 @@ function coopInput(id,packet){
       else if(action.type==='encounter')interactEncounter();
       else if(action.type==='refill')refillCompanion();
       else if(action.type==='throw'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<300){
+        if(Number.isSafeInteger(action.attackTag))m.attackTag=action.attackTag;
         var spore=runHazards.find(function(h){return h.id===action.spore&&h.type==='spore'&&h.tell>0&&Math.abs(h.x-P.x)<300;});
         // Aim at the current host trajectory, rather than a guest's old frame.
         throwBomb(spore?sporeAim(spore):{x:action.x,y:action.y},Number.isFinite(action.power)?action.power:0);
@@ -158,11 +160,12 @@ function coopInput(id,packet){
         var support=coopSupportY(x,y);if(support===null||playerWetAt(x,y))return;
         m.dodgeUntil=now+dodgeRecovery()*1000;
         m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:support,progress:0,expires:now+(DODGE_TIME+.12)*1000};
-        P.dodgeDir=dir;dewDodge();
+        P.dodgeDir=dir;dewDodge();boxerDodge();
       }
       else if(action.type==='skill'){
+        if(Number.isSafeInteger(action.skillTag))m.skillTag=action.skillTag;
         if(Number.isSafeInteger(action.tag))m.braceTag=action.tag;
-        if(Number.isFinite(action.x)&&Number.isFinite(action.y)&&now>=(m.skillUntil||0)-250&&Math.hypot(action.x-P.x,action.y-P.y)<=36&&coopClassSkill(action,m,now))m.skillUntil=Math.max(now,m.tunUntil||0)+ownClass().skillCd*1000;
+        if(Number.isFinite(action.x)&&Number.isFinite(action.y)&&now>=(m.skillUntil||0)-250&&Math.hypot(action.x-P.x,action.y-P.y)<=36&&coopClassSkill(action,m,now))m.skillUntil=Math.max(now,m.tunUntil||0)+(P.skillCool>0?P.skillCool:classSkillCooldown())*1000;
       }
     });
   });
@@ -227,11 +230,11 @@ function coopPlain(o){
   var out={};Object.keys(o).forEach(function(k){var v=o[k];if(k==='__proto__'||k==='constructor'||k==='prototype')return;if(typeof v==='number'&&Number.isFinite(v)||typeof v==='boolean'||typeof v==='string'&&v.length<80)out[k]=v;});return out;
 }
 function coopCapture(){
-  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,polgeCoolLeft:m.classId==='polge'?(m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)):0};}),acks={},robots=[];
+  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
-    secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),polgeStands:polgeStands.map(coopPlain),
+    secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),polgeStands:[],fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
     difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     expedition:runExpedition?coopPlain(runExpedition):null,bossEvent:bossEvent?coopPlain(bossEvent):null,
     raid:{active:gardenRaidActive,timer:gardenRaidT,remaining:rogueRun.raidRemaining||0,total:rogueRun.raidTotal||0,threat:rogueRun.raidThreat||0,grace:gardenRaidGrace,spawn:gardenRaidSpawn,bossSpawned:gardenBossSpawned},
@@ -253,7 +256,10 @@ function coopState(s){
   if(Array.isArray(s.collected)&&s.collected.length<=20000){seedCollected={};s.collected.forEach(function(k){if(typeof k==='string'&&k.length<=32)seedCollected[k]=1;});}
   if(Number.isFinite(s.dust)&&s.dust>=0&&s.dust<1)seedDust=s.dust;
   sligoMeat=Array.isArray(s.sligoMeat)?s.sligoMeat.slice(0,80).filter(function(q){return q&&['x','y','id','age'].every(function(k){return Number.isFinite(q[k]);});}).map(coopPlain):[];
-  polgeStands=Array.isArray(s.polgeStands)?s.polgeStands.slice(0,4).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['x','y','age','hits','maxHits','splinters','raincoat'].every(function(k){return Number.isFinite(q[k]);})&&q.age>=0&&q.age<=6&&q.hits>0&&q.hits<=6&&q.maxHits>=q.hits&&q.maxHits<=6&&q.splinters>=0&&q.splinters<=3&&q.raincoat>=0&&q.raincoat<=3;}).map(coopPlain):[];
+  polgeStands=[];
+  classFighters=Array.isArray(s.fighters)?s.fighters.slice(0,4).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['combo','window','weave','flurry','next'].every(function(k){return Number.isFinite(q[k]);})&&q.combo>=0&&q.combo<=2&&q.flurry>=0&&q.flurry<=7;}).map(coopPlain):[];
+  classShots=Array.isArray(s.shots)?s.shots.slice(0,48).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['needle','spore'].indexOf(q.kind)>=0&&['id','x','y','vx','vy','life','damage','pierce','hits'].every(function(k){return Number.isFinite(q[k]);})&&q.life>0&&q.life<=1.2&&q.damage>=0&&q.damage<=10&&Math.hypot(q.vx,q.vy)<=250;}).map(function(q){return Object.assign(coopPlain(q),{perks:coopPlain(q.perks||{})});}):[];
+  classShotId=classShots.reduce(function(n,q){return Math.max(n,q.id);},classShotId);
   runLoot=Array.isArray(s.loot)?s.loot.slice(0,200).map(coopPlain):[];
   runExpedition=s.expedition&&s.expedition.stage===s.world?coopPlain(s.expedition):null;
   bossEvent=s.bossEvent&&s.bossEvent.stage===s.world?coopPlain(s.bossEvent):null;
@@ -275,7 +281,7 @@ function coopState(s){
   bombs=s.bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});});crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
   worldWeather=coopPlain(s.weather||{});gardenStats=coopPlain(s.stats||{});gardenSeeds=s.seeds;gardenScore=s.score;gardenWave=s.wave;runElapsed=s.elapsed;tSec=s.time;
   if(Array.isArray(s.effects)&&s.effects.length<=30){
-    s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.hypot(e.x-P.x,e.y-(P.y-10));if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else if(!e.poof&&!e.ring&&(!Number.isFinite(e.t)||e.t<.4)){sfx('boom',d);blastFeedback(e);}}});booms=s.effects.map(coopPlain);
+    s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.hypot(e.x-P.x,e.y-(P.y-10));if(e.strike){if((!Number.isFinite(e.t)||e.t<.3)&&typeof classStrikeCue==='function')classStrikeCue(e.strike,d,e.combo);}else if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else if(!e.poof&&!e.ring&&(!Number.isFinite(e.t)||e.t<.4)){sfx('boom',d);blastFeedback(e);}}});booms=s.effects.map(coopPlain);
   }
   var ids=[],placed=null;
   s.members.forEach(function(q){
@@ -288,7 +294,14 @@ function coopState(s){
     if(q.id===coop.me)Object.keys(traits).forEach(function(type){if(traits[type]>(m.traits&&m.traits[type]||0))traitNotice(type,traits[type]);});
     m.traits=traits;applySligo(m,q);
     if(relicRunMode()&&q.vital){var wasDown=seedVital(m).hp<=0;m.vital=seedVitalFrom(q.vital);if(q.id===coop.me&&wasDown&&m.vital.hp>0){P.st='free';setAnim('idle');}if(q.id===coop.me&&m.vital.hp<=0){P.x=a.x;P.y=a.y;}}
-    if(m.classId==='polge'&&Number.isFinite(q.polgeCoolLeft))m.skillUntil=performance.now()+Math.max(0,Math.min(11,q.polgeCoolLeft))*1000;
+    if(Number.isSafeInteger(q.attackTag))m.attackTag=q.attackTag;
+    if(Number.isSafeInteger(q.skillTag))m.skillTag=q.skillTag;
+    if(Number.isFinite(q.skillLeft))m.skillUntil=performance.now()+Math.max(0,Math.min(30,q.skillLeft))*1000;
+    if(Number.isFinite(q.attackLeft))m.cool=performance.now()+Math.max(0,Math.min(5,q.attackLeft))*1000;
+    if(q.id===coop.me&&['runner','bulwark','herbalist','polge'].indexOf(m.classId)>=0){
+      if(q.attackTag===(P.attackTag||0)&&Number.isFinite(q.attackLeft))bombCool=Math.min(bombCool,Math.max(0,q.attackLeft));
+      if(q.skillTag===(P.skillTag||0)&&Number.isFinite(q.skillLeft))P.skillCool=Math.min(P.skillCool,Math.max(0,q.skillLeft));
+    }
     if(q.id!==coop.me){m.avatar=a;m.place=q.place|0;}
     else if((q.place|0)!==(m.place|0)){m.place=q.place|0;placed=a;}
     else if(P.brace>0&&q.braceTag===P.braceTag)P.brace=Math.min(P.brace,Math.max(0,+q.braceLeft||0));

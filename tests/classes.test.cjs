@@ -29,11 +29,11 @@ function party(classIds = classes.all.map(c => c.id)) {
 
 test('class selection is validated, independent of skin, and retry restores only the selected starting kit', () => {
   assert.deepEqual(classes.all.map(c => c.id), ['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']);
-  assert.deepEqual(classes.all.map(c => c.name), ['Mech', 'Moss', 'Bulwark', 'Herbalist', 'Pølge', 'Sligo']);
-  assert.deepEqual(classes.all.map(c => c.special), ['robots', 'climbing', 'guard', 'healing', 'stand-in', 'tun']);
+  assert.deepEqual(classes.all.map(c => c.name), ['Mech', 'Kestrel', 'Cairn', 'Mycel', 'Pølge', 'Sligo']);
+  assert.deepEqual(classes.all.map(c => c.special), ['robots', 'climbing', 'guard', 'healing', 'boxing', 'tun']);
   assert.deepEqual([...classes.hidden], ['sligo'], 'Sligo is the one hidden character');
   assert.equal(classes.clean('sligo'), 'sligo'); assert.equal(classes.skin('sligo'), 'sligo');
-  assert.equal(classes.clean('moss'), 'runner'); assert.equal(classes.get('runner').name, 'Moss');
+  assert.equal(classes.clean('moss'), 'runner'); assert.equal(classes.get('runner').name, 'Kestrel');
   assert.equal(classes.canHaveRobot('moss'), false); assert.equal(classes.canHaveRobot('__proto__'), false);
   for (const kit of classes.all) {
     assert.equal(classes.canHaveRobot(kit.id), kit.id === 'mech'); assert.equal(classes.canClimb(kit.id), kit.id === 'runner');
@@ -108,7 +108,9 @@ test('only Mech can upgrade robots while every class retains complete nonempty b
       if (!offers.length) break;
       const selected = offers[0]; reached.add(selected.path); p[selected.id]++;
     }
-    assert.deepEqual([...reached].sort(), [0, 1, 2]); assert.ok(p.chain && p.bloom);
+    assert.deepEqual([...reached].sort(), [0, 1, 2]); assert.ok(p.bloom);
+    assert.equal(!!p.chain,kit.id==='mech'||kit.id==='sligo','only bomb and flesh users develop blast signatures');
+    for(const q of builds.perks.filter(q=>q.classId===kit.id&&q.needs))assert.equal(p[q.id],builds.max(q.id),`${kit.id} reaches ${q.id}`);
     assert.deepEqual([p.robot, p.recycle, p.fleet, p.sentry], kit.id === 'mech' ? [4, 1, 2, 3] : [0, 0, 0, 0]);
     assert.equal(builds.perks.some(q => builds.available(p, q, kit.id)), false);
   }

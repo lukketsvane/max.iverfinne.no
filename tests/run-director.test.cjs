@@ -181,8 +181,8 @@ test('tapping an incoming spore fires immediately without steering Max or target
   g.addRunHazard('spore',24,15,1.1,1,58,g.surfaceY(24)-24);
   const point=g.hazardPosition(g.runHazards[0]),x=(point.x-g.camX)*960/g.IW,y=(point.y-g.camY)*540/g.IH,before=g.P.x;
   h.pointer('pointerdown',x,y);h.advance(60);h.pointer('pointerup',x,y);
-  assert.equal(g.bombs.length,1);assert.equal(g.P.x,before);assert.equal(g.readInput().axis,0);assert.equal(g.task,null);
-  assert.notEqual(g.bombs[0].vx,0);
+  assert.equal(g.classShots.length,1);assert.equal(g.P.x,before);assert.equal(g.readInput().axis,0);assert.equal(g.task,null);
+  assert.notEqual(g.classShots[0].vx,0);
 });
 test('aimed bombs intercept moving spores at 30, 60 and 120 Hz and turn them into plant care',()=>{
   for(const hz of [30,60,120]){

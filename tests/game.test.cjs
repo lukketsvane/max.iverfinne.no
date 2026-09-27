@@ -25,22 +25,22 @@ test('only an offered mutation can be selected', () => {
   game.chooseRoguePerk('__proto__');
   assert.equal(game.rogueRun.choice, choice);
   assert.equal(game.rogueRun.perks[unoffered], 0);
-  const selected = choice[0].id;
+  const selected = choice[0].id, previousRank = game.rogueRun.perks[selected];
   game.chooseRoguePerk(selected);
   game.chooseRoguePerk(selected);
-  assert.equal(game.rogueRun.perks[selected], 1);
+  assert.equal(game.rogueRun.perks[selected], previousRank + 1);
 });
 
 test('a boon is a live overlay and never clears held movement', () => {
   const h = loadGame(), {game, elements} = h;game.resetRogueRun('test');
   h.key('keydown', 'ArrowRight'); game.grantRogueXP(4);
-  const id = game.rogueRun.choice[0].id, menu = elements.get('perkMenu');
+  const id = game.rogueRun.choice[0].id, previousRank = game.rogueRun.perks[id], menu = elements.get('perkMenu');
   assert.equal(menu.getAttribute('role'), 'region');assert.equal(menu.getAttribute('aria-modal'),'false');
   assert.equal(menu.querySelectorAll('button').length, 3);
   assert.equal(game.readInput().axis, 1);assert.equal(game.runIsPaused(),false);
   const before=game.runElapsed;game.updateRunCompetition(.05);assert.ok(game.runElapsed>before);
   menu.querySelector('button').listeners.click[0]();
-  assert.equal(game.rogueRun.perks[id], 1); assert.equal(game.rogueRun.choice, null);
+  assert.equal(game.rogueRun.perks[id], previousRank + 1); assert.equal(game.rogueRun.choice, null);
   assert.equal(game.readInput().axis, 1);
   h.key('keyup','ArrowRight');
 });
