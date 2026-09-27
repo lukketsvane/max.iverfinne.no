@@ -1,6 +1,7 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
+const {clearShrineGuards}=require('./shrine-helpers.cjs');
 const idle={axis:0,top:48};
 function fresh(){const h=loadGame();h.game.resetRogueRun();h.game.krekSpawnT=9999;h.game.gardenRaidT=9999;return h;}
 function steps(g,seconds){for(let i=0;i<seconds*120;i++)g.updatePlayer(1/120,idle);}
@@ -102,8 +103,7 @@ test('shrines require in-reach downward interaction, consume seeds once, and wai
   assert.equal(g.crouchGardenAction(),true);assert.equal(g.gardenSeeds,2);assert.ok(e.active);const count=g.floatKrek.length;
   g.interactEncounter();assert.equal(g.gardenSeeds,2);assert.equal(g.floatKrek.length,count);
   g.updateEncounters(11);assert.equal(e.done,false,'time alone cannot complete the encounter');
-  g.floatKrek.forEach(k=>g.damagePest(k,100,k.x));
-  for(const k of [...g.floatKrek])g.damagePest(k,100,k.x);
+  clearShrineGuards(g,e);
   resolve(g);g.updateEncounters(.1);assert.equal(e.done,true);
   const loot=g.runLoot.length;g.interactEncounter();g.updateEncounters(30);assert.equal(g.runLoot.length,loot);
 });
@@ -119,7 +119,7 @@ test('each stage offers two dry routes and a third ember or dew can be earned by
       const e=stage<=5&&options.find(q=>q.type===type||q.type===(type==='rain'?'loom':'echo'));if(!e)continue;
       Object.assign(g.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});g.gardenSeeds=9;
       assert.equal(g.interactEncounter(),true);
-      for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
+      clearShrineGuards(g,e);
       if(e.type==='loom'){g.heldDown=true;g.P.x=e.x-8;g.updateEncounters(2);g.P.x=e.x+8;g.updateEncounters(2);g.heldDown=false;}
       else if(e.type==='echo'){for(let hit=0;hit<3;hit++){g.explode(e.x+(e.note-1)*23,e.y-8,false,{});g.updateEncounters(.5);}}
       else g.updateEncounters(e.duration+.01);
@@ -139,10 +139,10 @@ test('choosing one shrine closes the other without doubling cost, enemies or rew
   const guards=g.floatKrek.length;assert.equal(g.P.x,beforeX);assert.equal(g.runIsPaused(),false);
   assert.equal(g.gardenSeeds,9-second.cost);assert.equal(first.locked,true);assert.equal(first.active,false);
   g.P.x=first.x;assert.equal(g.interactEncounter(),false);assert.equal(g.gardenSeeds,9-second.cost);assert.equal(g.floatKrek.length,guards);
-  g.updateEncounters(20);assert.equal(second.progress,0,'travel away stops trial progress');
+  g.updateEncounters(3);assert.equal(second.progress,0,'travel away stops trial progress');
   g.updateRunCompetition(20);assert.equal(g.runElapsed,20,'exploration still increases pressure');
   g.P.x=second.x;g.updateEncounters(second.duration);assert.equal(second.done,false,'guards must also be defeated');
-  for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
+  clearShrineGuards(g,second);
   g.updateEncounters(.01);assert.equal(second.done,true);assert.equal(g.runLoot.length,1);assert.equal(g.runLoot[0].type,'dew');
   const drops=g.seedPickups.length;g.updateEncounters(30);g.interactEncounter();
   assert.equal(g.runLoot.length,1);assert.equal(g.seedPickups.length,drops);

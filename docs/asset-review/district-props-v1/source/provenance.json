@@ -1,0 +1,39 @@
+{
+  "tool": "built-in image_gen",
+  "source": "docs/asset-review/district-props-v1/source/master.png",
+  "sha256": "cf4f0035a541a5e35fb4b4d175e6d022f87c5250523507829e6e1c8bbb0be6f1",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "sourceRows": [
+    [
+      8,
+      246
+    ],
+    [
+      250,
+      483
+    ],
+    [
+      485,
+      691
+    ],
+    [
+      691,
+      1086
+    ]
+  ],
+  "reductionByObject": {
+    "relay": 0.14009661835748793,
+    "bells": 0.10727969348659004,
+    "salvage": 0.13526570048309178,
+    "watch": 0.1380952380952381,
+    "altar": 0.12612612612612611,
+    "cache": 0.12389380530973451,
+    "pump": 0.1393939393939394,
+    "arch": 0.14696485623003194,
+    "bell": 0.16140350877192983
+  },
+  "compiler": "scripts/build-district-props.py"
+}

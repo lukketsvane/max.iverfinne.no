@@ -126,6 +126,8 @@ New boss objectives reward tactics: crack Glass Snail’s front or flank it, snu
 
 Optional trials include Dew Relay (retrieve a drop from a platform route), Rain Loom (tend both seedbeds before they dry), and Echo Nest (hit the cyan egg three times). Each awards a personal upgrade to every player. Defeating all the guards at a Nest, Rain or Cache shrine makes its remaining charge four times faster while a player is present. All six trial types fade after 75 seconds without a reward and retire their guards, so an abandoned optional route cannot lock the guardian altar forever.
 
+Before starting a trial, its shrine shows the reward, seed cost and number of guards. Amber marks show the exact entry point for 1.35 seconds before each sentry arrives; a solo fight has at most two live trial sentries, while a full party has at most four. Sentries stay near their landing and within melee reach. Leave the trial area for four seconds to withdraw and open the other route; spent seeds are not refunded. Dew Relay counts the journey to its drop as participation. The global pressure clock keeps running.
+
 Later specialist enemies include seed thieves, spore casters, shield beetles, healing moths, thorn casters, dew leeches and rammers.
 
 Rats are deliberately a later threat and were softened after playtesting. Their introduction is difficulty-aware:
@@ -306,6 +308,8 @@ Aim has a 0.12 radial deadzone and reaches full throw distance at 0.75 stick tra
 ### Upper districts
 
 All twenty main gardens include an optional 288–384 pixel ascent with three side galleries, hidden seed caches and a keepsake. Beyond a safe lower approach, each run combines two different motifs: Broken Viaduct, Folded Stair, Hanging Galleries, Needle Crossing and Crown Steps. Shelter, needle and gallery detours return safely without movement upgrades. The feather, dew or ember reward is visible at the entrance before committing to the climb. Relay beacons, ordered bells, salvage seals and guarded watch points earn a summit item while the global threat clock keeps running. Follow the trail lamps; use the existing tend and throw controls. The full level catalogue and review links are in [Upper districts](docs/design/upper-districts.md).
+
+Where the terrain has room, an outer loop branches from the upper ascent and rejoins it higher up. The Old Pump Court, Split Bough Court and Broken Bell Court each have a broad combat terrace and two flank perches. A sign at the fork previews two gifts. Tend one altar to choose its reward, then clear the warned keepers to earn that gift for every teammate. The other altar closes for that visit. The loop can be crossed without accepting the fight, and every class can retreat by the normal platforms or walk off the terrace. Leaving for four seconds ends the challenge without a reward; it never locks the guardian. Native beacons, bells, salvage machinery, telescopes, altars and landmark sprites give the districts recognisable silhouettes.
 
 ### High Tide
 

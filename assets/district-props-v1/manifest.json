@@ -1,0 +1,14 @@
+{
+  "schema": "max-native-pack/v1",
+  "id": "district-props-v1",
+  "assets": [
+    {
+      "id": "district-props",
+      "manifest": "props.json"
+    },
+    {
+      "id": "district-landmarks",
+      "manifest": "landmarks.json"
+    }
+  ]
+}

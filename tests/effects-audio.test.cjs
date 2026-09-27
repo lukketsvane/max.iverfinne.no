@@ -27,6 +27,24 @@ function run(volume = .75) {
 }
 function heard(g, contexts, act) { g.listenRun(); const ac = contexts[0], from = ac ? ac.nodes.length : 0; act(); g.listenRun(); return ac ? ac.nodes.slice(from) : []; }
 
+test('circuit arrival and completion cues follow real state changes once; withdrawal stays quiet', () => {
+  for (const withdraw of [false, true]) {
+    const {g,contexts}=run(),ac=contexts[0];g.rogueRun.seed=73;g.rogueRun.world=8;g.activeStageLayout=null;g.initRunStage();g.floatKrek=[];g.rogueRun.next=1e9;
+    const C=g.stageLayout().expedition.circuit;assert.ok(C);
+    Object.assign(g.P,{x:C.choices[0].x,y:C.choices[0].y,grounded:true,wet:false,platform:C.arena.floorId,st:'free'});
+    const started=heard(g,contexts,()=>g.interactEncounter());
+    assert.deepEqual(started.filter(n=>n.kind==='osc').map(n=>n.frequency.points[0]),[262,392]);
+    assert.deepEqual(heard(g,contexts,()=>{}),[],'the same pending arrival is not sounded again');
+    ac.currentTime+=2;
+    const ended=heard(g,contexts,()=>{
+      if(withdraw){g.P.x=C.arena.right+400;g.updateExpedition(4.1);}
+      else {for(let i=0;i<5;i++){g.updateExpedition(1.4);g.floatKrek=g.floatKrek.filter(k=>!k.circuit);}g.updateExpedition(.01);}
+    });
+    assert.deepEqual(ended.filter(n=>n.kind==='osc').map(n=>n.frequency.points[0]),withdraw?[]:[523,659,880]);
+    assert.deepEqual(heard(g,contexts,()=>{}),[],'completed rewards do not replay their cue');
+  }
+});
+
 test('a bitten plant crunches and sinks instead of chirping', () => {
   const { g, contexts } = run(), played = heard(g, contexts, () => g.biteGarden(g.makeKrek(1, false, 0), g.gardenPlots[0]));
   const tones = played.filter(n => n.kind === 'osc');

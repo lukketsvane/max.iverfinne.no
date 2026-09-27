@@ -616,6 +616,20 @@
       "width": 256,
       "height": 256,
       "note": "Mycel original creature interaction poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained."
+    },
+    {
+      "path": "assets/district-props-v1/props.png",
+      "sha1": "4832a061399826ba62f00b8b29f71fcd990af736",
+      "width": 192,
+      "height": 64,
+      "note": "Original generated district machinery and architecture; scripts/build-district-props.py. Figma local MCP unavailable; source and prompt retained."
+    },
+    {
+      "path": "assets/district-props-v1/landmarks.png",
+      "sha1": "eb162f8a27e89e4c659cdd701bf2791601cf101f",
+      "width": 144,
+      "height": 64,
+      "note": "Original generated district machinery and architecture; scripts/build-district-props.py. Figma local MCP unavailable; source and prompt retained."
     }
   ]
 }

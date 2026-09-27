@@ -5842,6 +5842,8 @@ function listenRun(){
   var b=heard,now={run:rogueRun,seed:rogueRun.seed,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:rogueRun.choice||null,hit:{},boss:{},fuses:[]},hurt=null,fuse=null,matched=[];
   gardenPlots.forEach(function(p){now.hit[p.id]=p.hit||0;if(p.dead)now.fall++;else if(b&&p.hit>(b.hit[p.id]||0)+.2&&(!hurt||Math.abs(p.x-P.x)<Math.abs(hurt.x-P.x)))hurt=p;});
   runEncounters.forEach(function(e){if(e.done&&!e.failed)now.done++;else if(e.active)now.trial++;});
+  var district=runExpedition,region=!relicRunMode()&&stageLayout().expedition,court=region&&region.circuit;
+  now.circuit=district&&court?{done:!!district.circuitDone,warn:district.circuitActive&&district.circuitQueued>0?[district.circuitSerial,district.circuitSpawnX,district.circuitSpawnY].join(':'):'',x:court.focus.x,y:court.focus.y}:null;
   floatKrek.forEach(function(k){if(!k.boss)return;var key=k.bossId+':'+k.ph;now.boss[key]={warn:k.windup>0,open:k.exposed>0,hp:k.hp,nodes:(k.nodes||[]).reduce(function(sum,n){return sum+Math.max(0,n.hp);},0),actor:k};});
   // Planted x/owner and increasing age identify a charge without depending on
   // the guest's interpolated clock. Match each previous charge at most once.
@@ -5864,6 +5866,11 @@ function listenRun(){
   ['fall','lost','raid','clear','trial','done'].forEach(function(k){if(now[k]>b[k])runCue(k);});
   if(now.level!==b.level){if(b.level)runCue('boon');if(now.level)runCue('level');}
   if(fuse)sfx('fuse',Math.hypot(fuse.x-P.x,fuse.y-P.y));
+  if(now.circuit&&b.circuit){
+    var circuitDistance=Math.hypot(now.circuit.x-P.x,now.circuit.y-P.y);
+    if(now.circuit.done&&!b.circuit.done)chime([523,659,880],.07,.025,'run:done',circuitDistance);
+    else if(now.circuit.warn&&now.circuit.warn!==b.circuit.warn)chime([262,392],.07,.024,'run:trial',circuitDistance);
+  }
   Object.keys(now.boss).forEach(function(key){var q=now.boss[key],old=b.boss&&b.boss[key];if(!old)return;
     if(q.nodes<old.nodes)guardianCue('break',q.actor);
     else if(q.open&&!old.open)guardianCue('open',q.actor);

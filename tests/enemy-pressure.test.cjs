@@ -122,11 +122,28 @@ test('patrols, queued trial guards and raids share the same active cap in solo a
     assert.equal(g.interactEncounter(), true);
     assert.ok(rain.guardsRemaining>0);assert.equal(g.floatKrek.length,24);
     g.gardenRaidT=0;g.updateGardenFun(.01);assert.equal(g.gardenRaidActive,true);
-    const total=g.rogueRun.raidTotal;
-    for(let i=0;i<16;i++){
-      const killed=g.floatKrek[0];g.damagePest(killed,1e9,killed.x-killed.face*20);
-      g.updateEncounters(.7);g.updateGardenFun(.7);assert.ok(g.floatKrek.length<=24);
+    const total=g.rogueRun.raidTotal,guardBudget=rain.guardsRemaining,guardCap=2+Math.floor(players/2),seen=new Set();
+    function step(){
+      g.updateEncounters(.05);g.updateGardenFun(.05);
+      const guards=g.floatKrek.filter(k=>k.eventId===rain.id);guards.forEach(k=>seen.add(k));
+      assert.ok(g.floatKrek.length<=24,'all three sources share the global cap');
+      assert.ok(guards.length<=guardCap,'a shrine cannot exceed its own staged wave cap');
     }
+    // A raid may fill a freed patrol slot while the first shrine arrival is
+    // still being advertised. The completed warning must wait, not drop guards.
+    const patrol=g.floatKrek[0];g.damagePest(patrol,1e9,patrol.x-patrol.face*20);
+    for(let tick=0;tick<28;tick++)step();
+    assert.ok(g.floatKrek.some(k=>k.raid));assert.equal(g.floatKrek.length,24);
+    assert.equal(rain.ingressT,0);assert.equal(rain.guardsRemaining,guardBudget);
+    for(let i=0;i<guardBudget;i++){
+      for(let tick=0;tick<80&&(!rain.ingress||rain.ingressT>0);tick++)step();
+      assert.ok(rain.ingress&&rain.ingressT===0,'each queued guard gets its full warning');
+      const guards=g.floatKrek.filter(k=>k.eventId===rain.id);
+      const killed=guards.length>=guardCap?guards[0]:g.floatKrek.find(k=>k.patrol);
+      g.damagePest(killed,1e9,killed.x-killed.face*20);step();
+      assert.equal(rain.guardIndex,i+1,'one available slot admits one advertised guard');
+    }
+    assert.equal(seen.size,guardBudget);
     assert.equal(rain.guardsRemaining,0,'blocked guards eventually receive space without being discarded');
     assert.ok(g.floatKrek.some(k=>k.eventId===rain.id));assert.ok(g.floatKrek.some(k=>k.raid));assert.ok(g.floatKrek.some(k=>k.patrol));
     assert.equal(g.rogueRun.raidRemaining+g.floatKrek.filter(k=>k.raid).length,total,'the three sources preserve the raid accounting');

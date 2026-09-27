@@ -12,10 +12,11 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Glass Snail','Wick Hermit','Bellkeeper','Frostjaw','Spindle Widow','Orchard Mimic','Tuning Fork','Moon Moth','Kiln Beetle','Ash Ferryman','Compost Choir','Seed Engine'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed','high-tide','boons','class-kits');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','last-seed','high-tide','boons','class-kits','circuit');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Class combat',[['class-kits','Class kits · primary and special']]);
+ group('Exploration',[['circuit','Circuit · choose and defend']]);
  group('Build choices',[['boons','Boons · live readable choices']]);
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
  group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · motherplant and guardians']]);
@@ -31,8 +32,9 @@
  const requestedMode=params.get('mode'),reviewMode=requestedMode==='platforms'?'layout'+platformStage:requestedMode==='pressure'?'pressure10':requestedMode;
  const requestedClass=params.get('class')==='moss'?'runner':params.get('class');
  const requestedSeed=Number.parseInt(params.get('seed'),10),reviewSeed=params.has('authored')?'undefined':Number.isFinite(requestedSeed)?requestedSeed>>>0:1;
+ const circuitSeed=Number.isFinite(requestedSeed)?requestedSeed>>>0:73;
  let current=modeLabels.has(reviewMode)?reviewMode:'results',fixtureSerial=0;
- classChooser.value=['mech','runner','bulwark','herbalist','polge','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':current==='plant-climb'?'runner':'mech';
+ classChooser.value=['mech','runner','bulwark','herbalist','polge','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':current==='plant-climb'?'runner':current==='circuit'?'polge':'mech';
  const viewport=document.getElementById('viewport'),viewports={desktop:[1000,650],phone:[390,844],small:[320,568],landscape:[844,390],compact:[568,320]};
  function resize(name){viewport.value=name;[frame.width,frame.height]=viewports[name];}
  resize(params.has('portrait')?'phone':'desktop');
@@ -40,15 +42,17 @@
   current=mode;chooser.value=mode;const serial=++fixtureSerial;
   document.querySelectorAll('#review-input button[aria-pressed]').forEach(button=>button.setAttribute('aria-pressed','false'));
   status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');
-  const custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
+  status.removeAttribute('data-circuit');
+  const circuit=mode==='circuit',custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
-  const world=placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
+  const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):8):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
   if(mode.startsWith('sligo-'))classChooser.value='sligo';
   if(mode==='polge')classChooser.value='polge';
   classChooser.disabled=!custom;
   help.textContent=mode.startsWith('sligo-')?'Harvest the red cords with ↓ / Space; walk over meat to eat. B throws flesh and shrinks you. Hold a clone for half a second, Q, or left trigger to swap. Four divisions per run.':rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Kestrel can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diver, seed thief, spore caster, shield beetle, healing moth, thorn caster, dew leech and rammer. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
+  if(circuit)help.textContent='Choose either gift altar with ↓ / Space. Amber marks show where each keeper arrives. Defend the terrace to earn your chosen gift, or leave the terrace to withdraw. B punch · E flurry · X dodge · ↑ jump.';
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu'||mode==='relic-garden',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   // Install storage before the first external script, so the game, result
@@ -106,7 +110,7 @@
       });};
     }
     if(${custom}){
-      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${reviewSeed};
+      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${circuit?circuitSeed:reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
       if(${layout}&&${params.has('expedition')}){var ex=stageLayout().expedition;P.x=ex.start.x;P.y=ex.start.y;if(${params.has('summit')}){P.x=ex.summit.x;P.y=ex.summit.y;P.platform=ex.nodes[2].platformId;}}
@@ -126,7 +130,7 @@
       }
       rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;runActive=true;menuPaused=false;
       gardenPlots=[];rogueRun.garden=[];floatKrek=[];bombs=[];gardenSeeds=8;gardenRaidT=krekSpawnT=9999;gardenRaidActive=false;
-      if(!${layout||plantClimb}){
+      if(!${layout||plantClimb||circuit}){
         [-26,26].forEach(function(offset,i){var x=dryX(P.x+offset),p={id:i+1,x:x,kind:i?6:3,seed:79+i*23.7,growth:1.35,stalk:false,health:1,moisture:.85,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
         rogueRun.nextPlantId=3;
       }
@@ -140,6 +144,14 @@
         if(rogueRun.classId==='polge'){rogueRun.perks.varnish=1;rogueRun.perks.splinters=1;rogueRun.perks.raincoat=1;}
         [20,36,54].forEach(function(dx,i){var k=makeKrek(1,false,i);k.scout=false;k.x=P.x+dx;k.y=P.y-14;k.hp=k.maxHp=6;floatKrek.push(k);});
         runEncounters=[];runLoot=[];runHazards=[];
+      }
+      if(${circuit}){
+        var reviewCircuit=stageLayout().expedition&&stageLayout().expedition.circuit;
+        if(!reviewCircuit)throw new Error('This stage and seed have no circuit terrace.');
+        var reviewAltar=reviewCircuit.choices[0];
+        P.x=reviewAltar.x;P.y=reviewAltar.y;P.platform=reviewAltar.platformId;P.grounded=true;P.wet=false;P.st='free';P.vx=P.vy=0;
+        P.face=reviewCircuit.focus.x>P.x?1:-1;
+        runEncounters=[];runLoot=[];runHazards=[];seedPickups=[];gardenSeeds=0;started=false;
       }
       if(${mode.startsWith('sligo-')}){
         P.skin='sligo';gardenPlots.forEach(function(p,i){p.kind=25+i;});
@@ -194,14 +206,37 @@
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
     if(${gameplay}){
       var reviewStateClock=0,reviewFrame=frame,reviewCombat={strikes:{},cues:{},bombPeak:0,shotPeak:0,lastFx:0};
+      var reviewCircuitLog={warnings:[],arrivals:[],rewards:[],guardPeak:0,lastArrival:0};
       frame=function(now){
+        // Read before simulation so even the first warning frame is measured.
+        // The log never creates enemies, changes a clock, or completes a trial.
+        if(${circuit}&&runExpedition&&runExpedition.circuitActive&&runExpedition.circuitQueued>0){
+          var e=runExpedition,warnings=reviewCircuitLog.warnings,previous=warnings[warnings.length-1];
+          if(!previous||previous.serial!==e.circuitSerial||previous.x!==e.circuitSpawnX||previous.y!==e.circuitSpawnY||e.circuitTell>previous.lastTell+.01){
+            warnings.push({serial:e.circuitSerial,x:e.circuitSpawnX,y:e.circuitSpawnY,kind:e.circuitKind,age:e.circuitAge,tell:e.circuitTell,lastTell:e.circuitTell});
+          }else previous.lastTell=e.circuitTell;
+        }
         reviewFrame(now);
         // Observe every frame, before the slower status publication, so browser
         // checks never depend on catching a short-lived projectile or fist pose.
         booms.forEach(function(b){if(!(b.id>reviewCombat.lastFx))return;reviewCombat.lastFx=b.id;if(b.strike)reviewCombat.strikes[b.strike]=(reviewCombat.strikes[b.strike]||0)+1;if(b.cue)reviewCombat.cues[b.cue]=(reviewCombat.cues[b.cue]||0)+1;});
         reviewCombat.bombPeak=Math.max(reviewCombat.bombPeak,bombs.length);reviewCombat.shotPeak=Math.max(reviewCombat.shotPeak,classShots.length);
+        if(${circuit}&&runExpedition){
+          var e=runExpedition,guards=floatKrek.filter(function(k){return k.eventId===2000+worldLevel();});
+          reviewCircuitLog.guardPeak=Math.max(reviewCircuitLog.guardPeak,guards.length);
+          if(e.circuitSerial>reviewCircuitLog.lastArrival){
+            var k=guards[guards.length-1],warning=reviewCircuitLog.warnings[reviewCircuitLog.warnings.length-1];
+            reviewCircuitLog.arrivals.push({serial:e.circuitSerial,age:e.circuitAge,x:k&&k.x,y:k&&k.y,warning:warning?{x:warning.x,y:warning.y,shownFor:e.circuitAge-warning.age}:null});
+            reviewCircuitLog.lastArrival=e.circuitSerial;
+          }
+          if(e.circuitDone)runLoot.forEach(function(q){if(reviewCircuitLog.rewards.indexOf(q.id)<0)reviewCircuitLog.rewards.push(q.id);});
+        }
         if(now-reviewStateClock<250)return;reviewStateClock=now;
         var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
+        if(${circuit}){
+          var C=observedLayout.expedition.circuit,e=runExpedition;
+          parent.postMessage({type:'max-circuit-observation',serial:${serial},geometry:C,seed:rogueRun.seed,world:worldLevel(),classId:rogueRun.classId,player:{x:P.x,y:P.y,grounded:P.grounded,platformId:P.platform},active:e.circuitActive,choice:e.circuitChoice,done:e.circuitDone,failed:e.circuitFailed,queued:e.circuitQueued,spawned:e.circuitSerial,age:e.circuitAge,away:e.circuitAway,tell:e.circuitTell,warning:{x:e.circuitSpawnX,y:e.circuitSpawnY,kind:e.circuitKind},guards:floatKrek.filter(function(k){return k.eventId===2000+worldLevel();}).map(function(k){return {x:k.x,y:k.y,kind:k.kind};}),log:reviewCircuitLog,propsReady:ready(districtProps)&&ready(districtLandmarks),loot:runLoot.map(function(q){return {id:q.id,type:q.type,x:q.x,y:q.y};}),traits:rogueRun.traits,boonOpen:!!rogueRun.choice,ended:rogueRun.ended},${JSON.stringify(location.origin)});
+        }
         var reviewCanvasBounds=cv.getBoundingClientRect();
         parent.postMessage({type:'max-guardian-observation',serial:${serial},combat:{classId:rogueRun.classId,strikes:reviewCombat.strikes,cues:reviewCombat.cues,bombPeak:reviewCombat.bombPeak,shotPeak:reviewCombat.shotPeak,shotsCreated:classShotId,skillCool:P.skillCool,attackCool:bombCool,grounded:P.grounded,brace:P.brace,pounce:P.pounce},shrine:bossEvent,entrance:{x:observedLayout.origin,y:surfaceY(observedLayout.origin)},sites:observedLayout.guardianSites||[],ladders:observedLayout.ladders||[],motion:P.st,playerY:P.y,view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
         parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
@@ -219,13 +254,14 @@
   const data=event.data;
   if(event.source!==frame.contentWindow||event.origin!==location.origin||!data||data.serial!==fixtureSerial)return;
   if(data.type==='max-review-error'){status.textContent='Fixture error: '+data.message;return;}
+  if(data.type==='max-circuit-observation'){status.dataset.circuit=JSON.stringify(data);return;}
   if(data.type==='max-guardian-observation'){status.dataset.guardian=JSON.stringify(data);return;}
   if(data.type!=='max-review-state')return;
   status.dataset.state=JSON.stringify(data);
   const className={mech:'Mech',runner:'Kestrel',bulwark:'Cairn',herbalist:'Mycel',polge:'Pølge',sligo:'Sligo'}[data.classId]||data.classId,clock=Math.floor(data.elapsed/60)+':'+String(data.elapsed%60).padStart(2,'0');
   status.textContent='Garden '+data.world+(data.theme?' · '+data.theme:'')+' · '+className+' · '+clock+' · '+(data.motion==='climb'?'climbing plant '+data.climbPlantId:data.grounded?'grounded':'airborne')+' · '+data.height+' px above ground · x '+data.x+' · pressure '+data.pressure+(data.bossId?' · '+data.bossId+' phase '+data.phase:' · '+data.enemies+' enemies')+(data.ended?' · encounter ended':'');
  });
- chooser.onchange=()=>{if(chooser.value==='plant-climb')classChooser.value='runner';show(chooser.value);};classChooser.onchange=()=>show(current);
+ chooser.onchange=()=>{if(chooser.value==='plant-climb')classChooser.value='runner';if(chooser.value==='circuit')classChooser.value='polge';show(chooser.value);};classChooser.onchange=()=>show(current);
  document.getElementById('restart').onclick=()=>show(current);
  document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>show(b.dataset.mode));
  viewport.onchange=()=>resize(viewport.value);

@@ -1,6 +1,7 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
+const {clearShrineGuards}=require('./shrine-helpers.cjs');
 
 function arena(stage,difficulty='medium',classId='mech'){
   const h=loadGame(),g=h.game;
@@ -81,9 +82,10 @@ function trial(type){
 test('every abandoned trial releases the altar, retires its guards and grants no success reward',()=>{
   for(const type of ['nest','rain','cache','relay','loom','echo']){
     const {g,e}=trial(type),xp=g.rogueRun.xp,seeds=g.seedPickups.length;
+    g.updateEncounters(1.4);
     const guard=g.floatKrek.find(k=>k.eventId===e.id);
     assert.ok(guard);
-    g.updateEncounters(74.9);assert.equal(e.active,true);
+    g.updateEncounters(74.9-e.age);assert.equal(e.active,true);
     g.updateEncounters(.2);
     assert.equal(e.active,false);assert.ok(e.done&&e.failed);
     assert.equal(e.guardsRemaining,0);assert.equal(e.carrier,'');
@@ -98,8 +100,8 @@ test('every abandoned trial releases the altar, retires its guards and grants no
 test('defeating shrine guards accelerates its finish but still requires returning to the shrine',()=>{
   const {g,e}=trial('rain');
   g.updateEncounters(1);assert.equal(e.progress,1);assert.equal(e.done,false);
-  for(const k of [...g.floatKrek])g.damagePest(k,10000,k.x);
-  g.P.x=e.x+100;g.updateEncounters(1);assert.equal(e.progress,1);
+  clearShrineGuards(g,e);const charged=e.progress;
+  g.P.x=e.x+100;g.updateEncounters(1);assert.equal(e.progress,charged);
   g.P.x=e.x;g.updateEncounters(3.3);
   assert.equal(e.done,true);assert.equal(e.failed,undefined);
   assert.ok(g.runLoot.some(q=>q.type==='dew'));

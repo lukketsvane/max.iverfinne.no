@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { loadGame, plot } = require('./game-harness.cjs');
+const {clearShrineGuards}=require('./shrine-helpers.cjs');
 const builds = require('../build-paths.js');
 const ids = [1,2,3,4].map(i => `${i}`.repeat(8)+'-'+`${i}`.repeat(4)+'-4'+`${i}`.repeat(3)+'-8'+`${i}`.repeat(3)+'-'+`${i}`.repeat(12));
 function team(classes=[]) {
@@ -195,7 +196,7 @@ test('simultaneous guest shrine choices commit one shared trial and reward each 
   assert.equal(first.active,true);assert.equal(second.active,false);assert.equal(second.locked,true);
   assert.equal(host.gardenSeeds,9-first.cost);assert.equal(host.floatKrek.length,guards);
   games.forEach(h=>assert.equal(h.game.runEncounters[1].locked,true));
-  for(const k of [...host.floatKrek])host.damagePest(k,10000,k.x);
+  clearShrineGuards(host,first);
   host.updateEncounters(first.duration+.01);host.updateEncounters(30);sync();
   assert.equal(host.runLoot.length,4);assert.deepEqual(host.runLoot.map(q=>q.owner).sort(),ids);
   assert.ok(host.runLoot.every(q=>q.type==='feathers'));
