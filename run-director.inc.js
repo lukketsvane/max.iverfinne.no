@@ -1090,7 +1090,10 @@ function drawExpedition(t){
   }
   ctx.fillStyle='#556d63';ctx.fillRect(entryX-2,entryY-23,2,23);ctx.fillRect(entryX-8,entryY-23,15,7);
   ctx.fillStyle='#ded59f';ctx.fillRect(entryX-1,entryY-21,1,4);ctx.fillRect(entryX-2,entryY-20,3,1);
-  if(Math.abs(P.x-E.start.x)<68&&Math.abs(P.y-E.start.y)<36)expeditionText(E.name,entryX,entryY-39);
+  if(Math.abs(P.x-E.start.x)<68&&Math.abs(P.y-E.start.y)<36){
+    var shrineNear=!relicRunMode()&&bossEvent&&bossEvent.stage===worldLevel()&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32;
+    expeditionText(E.name,entryX,entryY-(shrineNear?57:39));
+  }
   E.nodes.forEach(function(n,i){
     var x=Math.round(n.x-camX),y=Math.round(n.y-camY);if(x<-50||x>IW+50||y<-40||y>IH+40)return;
     var lit=e.mask&(1<<i),near=expeditionNear(P,n,26);
