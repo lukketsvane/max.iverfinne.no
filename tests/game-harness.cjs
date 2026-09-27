@@ -31,7 +31,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent','blastFeedback','drawCharge',
+  'gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent','blastFeedback','drawCharge','ladderAt','beginLadder','updateLadder','ladderInput','drawLadders',
   'NIGHT_RELAY','RELAY_LOCKS','RELAY_LEDGES','RELAY_WISPS','relayProfile','relayActors','relayHeld','relayAt','relayBeam','relayCheckpoint','relayConstrain','resetNightRelay','nightRelayLayout','updateNightRelay','finishNightRelay','drawNightRelay','drawNightRelayHud','nightRelayMode','relicRunMode',
   'highTidePods','HIGH_TIDE_GATES','highTideMapPoint','highTideRoutePoint','highTideHeart','highTideTip','highTideBoons','highTideSpawnBoss','highTideSpawnPest','updateHighTideEnemies','highTideBossDefeated',
   'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideAtSummit','updateHighTide','updateHighTideClimb','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
@@ -151,6 +151,7 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'stage-layout.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'garden-places.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'stage-expeditions.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'guardian-sites.js'), 'utf8'), sandbox);
   const pics = path.join(__dirname, '..', 'levels-v1'); if (saved.__pictures && fs.existsSync(pics)) for (const f of fs.readdirSync(pics).filter(n => n.endsWith('.js'))) vm.runInNewContext(fs.readFileSync(path.join(pics, f), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels-data.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels.js'), 'utf8'), sandbox);

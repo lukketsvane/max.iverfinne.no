@@ -79,6 +79,9 @@ TERRACE = [(0, 93), (40, 93), (44, 99), (112, 99), (115, 93), (160, 94), (160, 1
 SCENE_LEDGES = [(150, 94, 116), (276, 94, 108), (172, 86, 11), (189, 88, 25), (128, 84, 14)]
 SCENE_LEDGES += [(221, y, 14) for y in (138, 121, 104)]                       # the vine off the bridge
 SCENE_LEDGES += [(338, y, 20) for y in (150, 133, 116, 77, 60)] + [(334, 43, 28)]  # rungs up the lift tower
+LADDERS = [(SX + 228, SY + 94, SY + 155, 14),
+           (SX + 348, SY + 43, SY + 167, 20), (909, 101, GROUND, 18),
+           (172, 133, GROUND, 14, 0)]  # visible return ladder beside the mill's stone stair
 
 
 # ---------------------------------------------------------------- the garden
@@ -162,7 +165,8 @@ def main():
     level.save(GARDEN, 'railway-ruins', MARKERS,
                'Garden 2, the Railway Ruins at native pixels: built by scripts/build-railway-ruins.py from '
                'docs/asset-review/railway-ruins-v1 (the owner\'s scene and kit sheets).',
-               ART, DATA, placements=REVIEW / 'placements.json', extra={'scene': {'x': SX, 'y': SY, 'w': 384, 'h': SCENE_ROWS}})
+               ART, DATA, placements=REVIEW / 'placements.json', extra={'scene': {'x': SX, 'y': SY, 'w': 384, 'h': SCENE_ROWS}},
+               ladders=LADDERS, data_only='--data-only' in sys.argv)
     print(ART, (W, H), 'blocks', len(level.blocks()), 'ledges', len(level.ledges))
     if '--preview' in sys.argv:
         reach = sys.argv[sys.argv.index('--reach') + 1] if '--reach' in sys.argv else None

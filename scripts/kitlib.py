@@ -244,18 +244,21 @@ class Level:
                 out.append([gx * CELL, gy * CELL, w * CELL, h * CELL])
         return out
 
-    def save(self, garden, level_id, markers, note, art_path, data_path, placements=None, extra=None, colours=255):
+    def save(self, garden, level_id, markers, note, art_path, data_path, placements=None, extra=None, colours=255, ladders=None, data_only=False):
         img = Image.fromarray(self.art, 'RGBA')
         q = img.convert('RGB').quantize(colours, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert('RGB')
         out = np.dstack([np.array(q), self.art[..., 3]])
         out[out[..., 3] == 0, :3] = 0
         (ROOT / art_path).parent.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(out, 'RGBA').save(ROOT / art_path, optimize=True)
+        if not data_only:
+            Image.fromarray(out, 'RGBA').save(ROOT / art_path, optimize=True)
         data = {
             'id': level_id, 'w': self.w, 'h': self.h, 'art': art_path, 'entry': {'x': 8, 'y': self.ground},
             'blocks': self.blocks(), 'ledges': [list(map(int, l)) for l in self.ledges], 'hazards': [],
             'markers': [[m, int(x), int(y)] for m, x, y in markers],
         }
+        if ladders:
+            data['ladders'] = [list(map(int, l)) for l in ladders]
         (ROOT / data_path).parent.mkdir(parents=True, exist_ok=True)
         (ROOT / data_path).write_text('/* %s Do not edit by hand. */\n(window.MaxPictureLevels = window.MaxPictureLevels || {})[%d] = %s;\n'
                                       % (note, garden, json.dumps(data, separators=(',', ':'))))

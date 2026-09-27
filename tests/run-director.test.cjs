@@ -51,7 +51,7 @@ test('all twenty gardens require a defeated guardian and only the Crown wins the
     if(stage>1)g.enterLevel(stage);
     const e=g.bossEvent;
     Object.assign(g.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});
-    g.gardenPlots=[plot({id:stage,x:e.x-24,stalk:true}),plot({id:stage+100,x:e.x+20})];
+    g.gardenPlots=[plot({id:stage,x:e.courtX-24,stalk:true}),plot({id:stage+100,x:e.courtX+20})];
     g.levelCleared();assert.notEqual(g.rogueRun.clearedWorld,stage);
     assert.equal(g.requestClimb(g.gardenPlots[0]),false);
     assert.ok(g.interactBossEvent());const boss=g.liveBoss();bosses++;

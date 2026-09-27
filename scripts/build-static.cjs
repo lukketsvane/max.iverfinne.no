@@ -6,7 +6,7 @@ const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'stage-expeditions.js', 'tiles.js', 'review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
+const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {

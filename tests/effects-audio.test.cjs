@@ -202,3 +202,51 @@ test('a guest hears a single fuse and each boss transition through 100 ms snapsh
   guest.ac.currentTime += .5; host.g.explode(host.g.P.x, host.g.P.y - 10); for (const effect of host.g.booms) effect.t = .9;
   sync(); assert.equal(guest.ac.nodes.length, afterBlast, 'a late snapshot does not replay an old explosion');
 });
+
+test('shrine discovery is local, visible and once per garden, without replay after handoff', () => {
+  const { g, contexts } = run(), ac = contexts[0], altar = { stage: 1, x: g.P.x + 220, y: g.P.y, status: 'ready' };
+  g.bossEvent = altar; g.camX = altar.x - 80; g.camY = altar.y - 100; g.listenRun();
+  const initial = ac.nodes.length; g.P.x = altar.x - 85; g.listenRun();
+  assert.deepEqual(tuneOf(ac.nodes.slice(initial)), [440, 659], 'finding the visible altar has a short discovery cue');
+  const found = ac.nodes.length;
+  g.P.x = altar.x - 200; g.listenRun(); g.P.x = altar.x - 30; ac.currentTime = 1; g.listenRun();
+  assert.equal(ac.nodes.length, found, 'walking back never repeats discovery');
+  g.rogueRun = { ...g.rogueRun }; g.listenRun(); g.listenRun();
+  assert.equal(ac.nodes.length, found, 'authority replacement keeps the same-run discovery ledger');
+  g.rogueRun.world = 2; g.bossEvent = { ...altar, stage: 2, x: g.P.x + 220 }; g.listenRun();
+  g.P.x = g.bossEvent.x - 60; g.camX = g.bossEvent.x + 20; ac.currentTime = 2; g.listenRun();
+  assert.equal(ac.nodes.length, found, 'no sound for a shrine outside the viewport');
+  g.camX = g.bossEvent.x - 80; g.listenRun();
+  assert.deepEqual(tuneOf(ac.nodes.slice(found)), [440, 659], 'a different garden can be discovered');
+});
+
+test('joining beside an already visible shrine establishes a silent audio baseline', () => {
+  const { g, contexts } = run(), ac = contexts[0];
+  g.bossEvent = { stage: 1, x: g.P.x + 35, y: g.P.y, status: 'ready' }; g.camX = g.P.x - 80; g.camY = g.P.y - 100;
+  const initial = ac.nodes.length; g.listenRun(); ac.currentTime = 1; g.listenRun();
+  assert.equal(ac.nodes.length, initial);
+  g.rogueRun.seed++; g.listenRun(); g.listenRun();
+  assert.equal(ac.nodes.length, initial, 'an initial authoritative seed snapshot is also silent');
+});
+
+test('authoritative shrine snapshots, planting reserve and host promotion do not replay discovery', () => {
+  const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
+  const room = { id: 'shrine-audio', host: ids[0], members: ids.map((id, i) => ({ id, slot: i + 1, ready: true })) };
+  const loadouts = Object.fromEntries(ids.map((id, i) => [id, { classId: i ? 'herbalist' : 'mech', skinId: 'moss' }]));
+  const peers = ids.map(id => {
+    const h = loadGame({ __pictures: true }), contexts = fakeAudio(h);
+    h.game.beginCoop({ room, loadouts, user: { id }, host: id === ids[0], action() { return true; }, tick() {}, fail(reason) { throw Error(reason); } });
+    h.game.unlockAudio(); return { g: h.game, ac: contexts[0] };
+  });
+  const [host, guest] = peers, g = guest.g;
+  host.g.rogueRun.seed = 73; host.g.activeStageLayout = null; host.g.initRunStage();
+  g.listenRun(); const before = guest.ac.nodes.length;
+  const snapshot = JSON.parse(JSON.stringify(host.g.coopCapture())); g.coopState(snapshot);
+  const site = g.bossEvent; g.P.x = site.x - 20; g.P.y = site.y; g.camX = site.x - 80; g.camY = site.y - 100;
+  g.listenRun(); assert.equal(guest.ac.nodes.length, before, 'the first authoritative site establishes a silent baseline');
+  assert.equal(g.seedPickups.filter(s => s.id === 'guardian:1:seeds').length, 1);
+  guest.ac.currentTime += 1; g.coopState(snapshot); g.listenRun(); assert.equal(guest.ac.nodes.length, before, 'a repeated snapshot stays silent');
+  g.coopRoster({ ...room, host: ids[1] }); g.listenRun();
+  assert.equal(g.coop.host, true); assert.equal(guest.ac.nodes.length, before, 'host promotion preserves local discovery');
+  assert.equal(g.seedPickups.filter(s => s.id === 'guardian:1:seeds').length, 1, 'promotion does not recreate the reserve');
+});

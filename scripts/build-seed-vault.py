@@ -65,6 +65,8 @@ LEDGES += rungs(436, 14, 147, 197)      # ladder: upper right to middle right
 LEDGES += rungs(454, 14, 197, GROUND)   # ladder: middle right to the soil
 LADDER = ('bridges/tall-ladder', 537, 147 - 99)   # the kit ladder up to the top deck
 LEDGES += rungs(LADDER[1] - 3, 24, 78, 147)
+LADDERS = [(129, 123, 187, 14), (82, 187, GROUND, 14),
+           (443, 147, 197, 14), (461, 197, GROUND, 14), (546, 78, 147, 18)]
 
 MARKERS = [
     ('reward', 522, 78), ('reward', 92, 123), ('seed', 279, 234),
@@ -101,14 +103,16 @@ def cut_frame(art):
 
 
 def main():
-    art = build()
-    q = Image.fromarray(art[..., :3]).quantize(255, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert('RGB')
-    out = np.dstack([np.array(q), art[..., 3]])
-    (ROOT / ART).parent.mkdir(parents=True, exist_ok=True)
-    Image.fromarray(out, 'RGBA').save(ROOT / ART, optimize=True)
+    if '--data-only' not in sys.argv:
+        art = build()
+        q = Image.fromarray(art[..., :3]).quantize(255, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).convert('RGB')
+        out = np.dstack([np.array(q), art[..., 3]])
+        (ROOT / ART).parent.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(out, 'RGBA').save(ROOT / ART, optimize=True)
     data = {
         'id': 'seed-vault', 'w': W, 'h': H, 'art': ART, 'entry': {'x': 8, 'y': GROUND},
         'blocks': [], 'ledges': [list(map(int, l)) for l in LEDGES], 'hazards': [],
+        'ladders': [list(l) for l in LADDERS],
         'markers': [[m, int(x), int(y)] for m, x, y in MARKERS],
     }
     (ROOT / DATA).parent.mkdir(parents=True, exist_ok=True)

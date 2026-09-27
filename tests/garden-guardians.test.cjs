@@ -5,20 +5,20 @@ function atAltar(g){Object.assign(g.P,{x:g.bossEvent.x,y:g.bossEvent.y,grounded:
 test('altar requires a living grown plant, reach and a finished optional trial',()=>{
  const {game:g}=game();assert.equal(g.interactBossEvent(),false);atAltar(g);
  assert.equal(g.interactBossEvent(),false);assert.equal(g.liveBoss(),null);
- g.gardenSeeds=1;assert.equal(g.crouchGardenAction(),true);assert.equal(g.gardenPlots.length,1,'an unready altar must let the first seed be planted');
- g.gardenPlots=[plot({x:g.P.x-25,growth:.05})];g.interactBossEvent();assert.equal(g.liveBoss(),null);
+ g.gardenSeeds=1;Object.assign(g.P,{x:g.bossEvent.courtX,y:g.bossEvent.courtY,platform:null});assert.equal(g.crouchGardenAction(),true);assert.equal(g.gardenPlots.length,1,'the nearby court allows the first seed to be planted');atAltar(g);
+ g.gardenPlots=[plot({x:g.bossEvent.courtX-25,growth:.05})];g.interactBossEvent();assert.equal(g.liveBoss(),null);
  g.gardenPlots[0].growth=.5;g.runEncounters[0].active=true;g.interactBossEvent();assert.equal(g.liveBoss(),null);
  g.runEncounters[0].done=true;g.interactBossEvent();assert.ok(g.liveBoss());assert.equal(g.bossEvent.status,'active');
  const count=g.floatKrek.length;g.interactBossEvent();assert.equal(g.floatKrek.length,count);
 });
-test('all twenty altars lie on reachable dry soil, and each garden has a named guardian',()=>{
+test('all twenty altars stand on dry terrain or a route platform, and each garden has a named guardian',()=>{
  const {game:g}=game();const designs=new Set();
- for(let stage=1;stage<=20;stage++){if(stage>1)g.enterLevel(stage);atAltar(g);assert.equal(g.playerWetAt(g.P.x,g.P.y),false);assert.equal(g.P.y,g.surfaceY(g.P.x));const s=g.gardenBossSpec(stage);designs.add(s.id);assert.ok(s.name.length>3);assert.equal(s.stage,stage);}
+ for(let stage=1;stage<=20;stage++){if(stage>1)g.enterLevel(stage);atAltar(g);assert.equal(g.playerWetAt(g.P.x,g.P.y),false);assert.equal(g.P.y,g.playerSupportY(g.P.x,g.P.y));const s=g.gardenBossSpec(stage);designs.add(s.id);assert.ok(s.name.length>3);assert.equal(s.stage,stage);}
  assert.equal(designs.size,20);
 });
 test('new guardian patterns warn before hitting, expose double damage and clean up on defeat',()=>{
  for(const stage of [1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19]){
-  const {game:g}=game('herbalist',stage);atAltar(g);g.gardenPlots=[plot({id:1,x:g.P.x-24})];g.interactBossEvent();const k=g.liveBoss();k.cool=0;
+  const {game:g}=game('herbalist',stage);atAltar(g);g.gardenPlots=[plot({id:1,x:g.bossEvent.courtX-24})];g.interactBossEvent();const k=g.liveBoss();k.cool=0;
   g.updateKrek(.01);assert.ok(k.windup>=1.1);assert.ok(g.runHazards.length);assert.equal(g.gardenPlots[0].health,1);
   for(let i=0;i<500&&!k.exposed;i++)g.updateKrek(.01);assert.ok(k.exposed>=2.3);
   const hp=k.hp;g.damagePest(k,1,k.x);assert.equal(hp-k.hp,2);
@@ -49,7 +49,7 @@ test('two-player altar and planted bomb survive duplicate input, snapshots and a
  const room={host:ids[0],members:ids.map((id,i)=>({id,slot:i+1,classId:i?'mech':'herbalist'}))},pending=[];
  const hs=ids.map((id,i)=>{const h=loadGame();h.game.beginCoop({room,user:{id},host:!i,action(type,data){pending.push({id:pending.length+1,type,...data});return true;},tick(){}});return h;});
  const host=hs[0].game,guest=hs[1].game;guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));atAltar(guest);assert.equal(guest.interactBossEvent(),false,'guest can plant beside an unready altar');assert.equal(pending.length,0);
- host.gardenPlots=[plot({id:1,x:host.bossEvent.x-24})];guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
+ host.gardenPlots=[plot({id:1,x:host.bossEvent.courtX-24})];guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
  atAltar(guest);host.coop.members[ids[1]].trust=true;guest.interactBossEvent();
  const packet={avatar:guest.coopAvatar(),actions:pending.slice()};host.coopInput(ids[1],packet);host.coopInput(ids[1],packet);assert.equal(host.floatKrek.filter(k=>k.boss).length,1);
  guest.rogueRun.perks.blast=2;host.coop.members[ids[1]].perks.blast=2;guest.throwBomb({x:guest.P.x+30,y:guest.P.y-4});host.coopInput(ids[1],{avatar:guest.coopAvatar(),actions:pending.slice()});

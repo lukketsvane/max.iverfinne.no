@@ -72,7 +72,9 @@ test('a live frame replaces the generated garden, the run uses its spots, and an
   const generated = other.game.stageLayout();
   assert.equal(generated.designed, undefined);
   // A generated garden also gets its place from garden-places.js.
-  assert.equal(JSON.stringify(generated), JSON.stringify(require('../stage-expeditions.js').furnish(require('../garden-places.js').furnish(layouts.create(5, other.game.levelOriginX(5), other.game.surfaceY, other.game.waterAt, other.game.rogueRun.seed), other.game.surfaceY, other.game.waterAt), other.game.surfaceY, other.game.waterAt)));
+  const expected = require('../stage-expeditions.js').furnish(require('../garden-places.js').furnish(layouts.create(5, other.game.levelOriginX(5), other.game.surfaceY, other.game.waterAt, other.game.rogueRun.seed), other.game.surfaceY, other.game.waterAt), other.game.surfaceY, other.game.waterAt);
+  require('../guardian-sites.js').furnish(expected, other.game.surfaceY, other.game.waterAt);
+  assert.equal(JSON.stringify(generated), JSON.stringify(expected));
 });
 
 test('the run seed picks one variant per garden, the same on every client', async () => {

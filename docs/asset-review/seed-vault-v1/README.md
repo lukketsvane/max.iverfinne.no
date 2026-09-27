@@ -25,6 +25,13 @@ Collision is the floors it shows, all one-way so Max can jump up through them:
 
 A wooden ladder from the Railway Ruins' kit reaches the top deck. The lowest floor is the garden's soil.
 
+All five ladder spans have explicit climb bounds in `LADDERS` and the generated
+`ladders` metadata. Up/Down, a controller's vertical stick, or a vertical touch
+drag climbs them continuously with every character. Releasing holds position;
+steering leaves the ladder. Their painted art stays at native size, and the old
+one-way rungs remain valid footholds. Use `--data-only` to rebuild these bounds
+without rewriting the painting.
+
 Output: `assets/levels-v1/seed-vault.png` and `levels-v1/seed-vault.js`.
 
 Rebuild with `python3 scripts/build-seed-vault.py`. To preview with the reach overlay, run `node tests/picture-sweep.cjs bulwark 1 reach.json`, then `python3 scripts/build-seed-vault.py --preview p.png --reach reach.json`.
