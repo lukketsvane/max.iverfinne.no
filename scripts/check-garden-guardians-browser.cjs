@@ -50,8 +50,8 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
      await page.keyboard.up('ArrowUp');assert.deepEqual(errors,[]);
     }
    }
-   console.log(engineName,'all nine authored ladders climb with real Bulwark keyboard input OK');
-   for(const classId of ['mech','runner']){
+   console.log(engineName,'all nine authored ladders climb with real Cairn keyboard input OK');
+   for(const classId of ['mech']){
    await page.goto(base+'/review.html?mode=layout1&portrait=1&class='+classId);
    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
    const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
@@ -68,6 +68,32 @@ const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossba
    await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${classId}-fuse.png`});
    await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).bombs.length===0,{},{timeout:2000});
    assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
+   }
+   // Each native kit must use its actual primary and special through keyboard
+   // input. Review counters accumulate real effects, avoiding short-frame races.
+   for(const [classId,primary] of [['runner','needle'],['bulwark','cleave'],['herbalist','spore'],['polge','jab']]){
+    await page.goto(base+'/review.html?mode=class-kits&portrait=1&class='+classId);
+    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
+    const game=page.frames().find(f=>f!==page.mainFrame());
+    const art=await game.evaluate(()=>window.MaxNativeArt.load());assert.deepEqual(art.failed,[]);
+    await game.evaluate(()=>window.focus());
+    await page.keyboard.press('b');
+    await page.waitForFunction(kind=>{const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;return c&&c.strikes[kind]>0;},primary,{timeout:4000});
+    let observation=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
+    assert.equal(observation.combat.classId,classId);assert.equal(observation.combat.bombPeak,0);
+    if(classId==='runner'||classId==='herbalist')assert.ok(observation.combat.shotsCreated>0,'native projectile was created');
+    else assert.equal(observation.combat.shotsCreated,0,'melee never creates a projectile');
+    await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).combat.grounded,{},{timeout:3000});
+    await page.keyboard.press('e');
+    await page.waitForFunction(id=>{
+     const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
+     return c.skillCool>0&&(id==='runner'?c.cues.slam>0:id==='bulwark'?c.cues.brace>0||c.cues.parry>0:id==='herbalist'?c.cues.bloom>0||c.cues.revive>0:c.strikes.flurry>0);
+    },classId,{timeout:5000});
+    observation=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
+    assert.equal(observation.combat.bombPeak,0,'native specials never place bombs');
+    if(classId==='polge')assert.equal(observation.combat.shotsCreated,0,'boxing special stays melee');
+    await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${classId}-native-kit.png`});
+    assert.deepEqual(errors,[]);console.log(engineName,classId,'native primary and special via keyboard OK');
    }
    await page.goto(base+'/review.html?mode=boons&portrait=1');
    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.state,{},{timeout:15000});
