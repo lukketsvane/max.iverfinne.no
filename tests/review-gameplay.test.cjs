@@ -25,7 +25,12 @@ async function scene(mode, classId, params = {}) {
   outer.window.close(); doc.window.close();
   let harness = read('tests/game-harness.cjs');
   harness = harness.replace('const instrumented = source.replace(', 'const fixtureSource = source.replace(/\\}\\)\\(\\);\\s*$/, ' + JSON.stringify(hook + '\n})();') + ');\nconst instrumented = fixtureSource.replace(')
-    .replace('sandbox.window = sandbox;', 'sandbox.parent = { postMessage(data) { sandbox.reviewState = data; } }; sandbox.window = sandbox;')
+    .replace('sandbox.window = sandbox;', `
+      sandbox.location = { origin: 'null' };
+      sandbox.KeyboardEvent = class { constructor(type, options) { this.type = type; Object.assign(this, options); } preventDefault() {} };
+      sandbox.dispatchEvent = event => { for (const fn of listeners[event.type] || []) fn(event); return true; };
+      sandbox.parent = { postMessage(data) { sandbox.reviewState = data; } }; sandbox.window = sandbox;
+    `)
     .replace('game: sandbox.game, document,', 'reviewState: () => sandbox.reviewState, game: sandbox.game, document,');
   const filename = path.join(__dirname, 'generated-review-harness.cjs'), mod = new Module(filename, module);
   mod.filename = filename; mod.paths = module.paths; mod._compile(harness, filename);
@@ -167,4 +172,25 @@ test('changing the growing-plant fixture class uses native climbing restrictions
     s.tick(300);
     assert.equal(s.reviewState().classId, classId); assert.equal(s.reviewState().robot, classId === 'mech');
   }
+});
+
+
+test('srcdoc review controls accept the real parent origin and reject forged input messages', async () => {
+  const s = await scene('class-kits', 'runner'), g = s.game, w = s.window;
+  assert.equal(w.location.origin, 'null', 'srcdoc location does not supply the parent page origin');
+  let keys = 0;
+  const dispatch = w.dispatchEvent;
+  w.dispatchEvent = event => { if (event.type === 'keydown' || event.type === 'keyup') keys++; return dispatch(event); };
+  const data = { type: 'max-review-input', serial: 1, key: 'b', down: true };
+  const send = fields => w.dispatchEvent({ type: 'message', source: w.parent, origin: 'https://max.example', data, ...fields });
+  for (const forged of [
+    { source: {} }, { origin: 'https://untrusted.example' }, { origin: 'null' },
+    { data: { ...data, serial: 2 } }, { data: { ...data, type: 'unrelated' } },
+    { data: { ...data, key: 'Escape' } }, { data: null },
+  ]) { send(forged); assert.equal(g.charge, null); }
+  assert.equal(keys, 0, 'untrusted messages never synthesize keyboard input');
+  send({}); assert.ok(g.charge, 'the parent Attack button begins the real attack input');
+  send({ data: { ...data, down: false } });
+  assert.equal(keys, 2); assert.equal(g.charge, null); assert.equal(g.classShots.length, 1);
+  assert.equal(g.classShots[0].kind, 'needle'); assert.equal(g.bombs.length, 0);
 });

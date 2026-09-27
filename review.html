@@ -70,7 +70,7 @@
   const hook=`
     /* MAX_REVIEW_FIXTURE_START */
     window.addEventListener('message',function(event){
-      if(event.source!==parent||event.origin!==location.origin||event.data.serial!==${serial}||event.data.type!=='max-review-input')return;
+      if(event.source!==parent||event.origin!==${JSON.stringify(location.origin)}||!event.data||event.data.serial!==${serial}||event.data.type!=='max-review-input')return;
       if(['ArrowLeft','ArrowRight','ArrowUp',' ','b','x','e','1','2','3'].indexOf(event.data.key)<0)return;
       window.dispatchEvent(new KeyboardEvent(event.data.down?'keydown':'keyup',{key:event.data.key,bubbles:true,cancelable:true}));
     });
