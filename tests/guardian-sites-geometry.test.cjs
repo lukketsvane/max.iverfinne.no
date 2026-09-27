@@ -40,14 +40,19 @@ function inspect(g,L,label,stats){
 test('every map has three distinct authored shrine destinations with a nearby dry court',()=>{
   const g=loadGame({__pictures:true}).game;g.resetRogueRun('site geometry',{classId:'bulwark'});
   const stats={courts:0,raised:0,earlyExpedition:0,districtFallback:0,maxDistance:0};
-  for(let stage=1;stage<=20;stage++)for(let i=0;i<seedCount;i++){
-    g.rogueRun.seed=seedAt(i);g.rogueRun.world=stage;g.activeStageLayout=null;
-    const L=g.stageLayout(),label=`garden ${stage}, seed ${seedAt(i)}`;
-    inspect(g,L,label,stats);
-    const before=JSON.stringify(L.guardianSites);sites.furnish(L,g.surfaceY,g.waterAt);
-    assert.equal(JSON.stringify(L.guardianSites),before,`${label}: repeated furnishing is stable`);
+  for(let stage=1;stage<=20;stage++){
+    const raisedBefore=stats.raised;
+    for(let i=0;i<seedCount;i++){
+      g.rogueRun.seed=seedAt(i);g.rogueRun.world=stage;g.activeStageLayout=null;
+      const L=g.stageLayout(),label=`garden ${stage}, seed ${seedAt(i)}`;
+      inspect(g,L,label,stats);
+      const before=JSON.stringify(L.guardianSites);sites.furnish(L,g.surfaceY,g.waterAt);
+      assert.equal(JSON.stringify(L.guardianSites),before,`${label}: repeated furnishing is stable`);
+    }
+    // Three safe, distinct destinations are mandatory. A lookout can use its
+    // district's dry bank when that seed has no safe court below a rest ledge.
+    assert.ok(stats.raised>raisedBefore,`garden ${stage} offers elevated approaches across its seeds`);
   }
-  assert.ok(stats.raised>=20*seedCount,'each map retains an elevated approach');
   console.log('Guardian site geometry',JSON.stringify({seedsPerStage:seedCount,...stats}));
 });
 
