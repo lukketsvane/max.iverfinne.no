@@ -22,6 +22,11 @@
     97,
     284
   ],
+  "checkedAt": "2026-09-30T23:12:30.616Z",
+  "packSHA1": {
+    "main": "ed7e283c560c5a3ff65561121eb7608e10a4c059",
+    "interaction": "37096b107d57aa4977e3efe7f59769764b39dda3"
+  },
   "frames": [
     0,
     1,
@@ -33,5 +38,14 @@
     7
   ],
   "recovered": true,
-  "pageErrors": []
+  "pageErrors": [],
+  "phoneMenu": {
+    "viewport": [
+      390,
+      844
+    ],
+    "selectedName": "Rattus norvegicus",
+    "description": "A rat-masked pro wrestler. Dropkick pests, roll into airborne saltos and land a wide splits stomp. Higher drops hit harder.",
+    "accountClient": "isolated guest"
+  }
 }

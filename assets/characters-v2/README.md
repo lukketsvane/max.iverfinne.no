@@ -7,7 +7,7 @@ keys `moss`, `ember`, `moon` remain wire identifiers;
 
 | Character | Role | Silhouette | Palette |
 | --- | --- | --- | --- |
-| Rattus norvegicus | pro wrestler / runner | grey rat mask, auburn hair, green cone hat, black-and-gold athletic ring gear, short navy cape and gold-trim boots | grey, navy, gold, green, auburn, cyan |
+| Rattus norvegicus | pro wrestler / runner | grey rat mask, auburn hair, green cone hat, small black/gold halter top and high-cut briefs, short navy cape and gold-trim boots | grey, navy, gold, green, auburn, cyan |
 | Cairn | stone tank / bulwark | broad boulder, slab fists, massive short feet | slate, ceramic, amber |
 | Mycel | spore support / herbalist | wide cap, luminous gills, root feet | burgundy, ivory, mint |
 
@@ -35,9 +35,9 @@ crouch matching the following stand clip.
 
 The built-in image_gen masters, complete prompts, source SHA-256 hashes and
 measured row centers live in `docs/asset-review/characters-v2/`. Rattus now uses
-the owner's two selected black-and-gold masters, `source/rattus-movement-v2.png`
-and `source/rattus-combat-v2.png`. Their exact two built-in image_gen prompts are
-retained in `source/rattus-wrestler-v2-prompts.json`; the native build does not
+the owner's revised black-and-gold masters, `source/rattus-movement-v3.png`
+and `source/rattus-combat-v3.png`. Their exact two built-in image_gen prompts are
+retained in `source/rattus-wrestler-v3-prompts.json`; the native build does not
 depend on the separate colour-variant gallery. One fixed 0.175 nearest-neighbour
 reduction applies to every selected pose from both masters. Whole connected
 figures preserve boots, hands, wide legs and the rotated hat across imperfect
@@ -53,8 +53,9 @@ guard poses, walk uses right-facing weight shifts, and run uses the movement
 master's right-facing run row. The sources have no authored gardening tools,
 lantern or complete prone rest sequence; those clips reuse crouch, reach,
 raised-arm and resting crouch poses. `registration.json` records each runtime
-cell's exact source file, row and column. Earlier rat-wizard, wrestling and
-retired Kestrel masters remain preserved with their provenance.
+cell's exact source file, row and column. The v2 ring-gear masters and prompts,
+earlier rat-wizard, wrestling and retired Kestrel masters remain preserved with
+their provenance.
 Run `python scripts/build-characters-v2.py` to reproduce the PNGs, atlases,
 registration log, native/4× contact sheets and 4× animation preview. A fixed
 reduction per character preserves pose proportions; connected-body extraction

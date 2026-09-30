@@ -3,9 +3,13 @@
 Rattus norvegicus replaced Kestrel on 2026-09-30. On 2026-10-01 the owner selected
 the supplied black-and-gold movement and combat sheets to replace the initial
 wizard robe artwork and perform a split while planting. Immutable copies are
-`source/rattus-movement-v2.png` and `source/rattus-combat-v2.png`; both match their
+`source/rattus-movement-v3.png` and `source/rattus-combat-v3.png`; both match their
 built-in image_gen outputs byte for byte. The exact two selected prompt records
-are self-contained in `source/rattus-wrestler-v2-prompts.json`.
+are self-contained in `source/rattus-wrestler-v3-prompts.json`. The v3 costume
+revision uses a smaller opaque triangle halter top and high-cut briefs with gold
+side bands. Its mask, hat, hair, cape, boots, body proportions and pose mapping
+remain the selected design. The earlier v2 masters and prompts remain unchanged
+and pinned alongside the new sources.
 `source/provenance.json` pins those files and continues to retain the earlier
 rat-wizard, wrestling and retired Kestrel sources.
 
@@ -20,7 +24,7 @@ masters, followed by the existing sixteen-colour palette and binary alpha.
 Pixels under transparency have RGB zero. A registration assertion rejects any
 pose taller than its original foot position, so no hat is cropped above a cell.
 
-All runtime drawings now use the selected black-and-gold athletic ring gear,
+All runtime drawings now use the revised black-and-gold athletic ring gear,
 short navy/gold cape, rat mask, auburn hair and green hat. Idle uses complete
 combat row 0 guard poses, omitting its jab columns. Walk uses movement row 1
 weight shifts; run uses movement row 4. All face right before the existing
