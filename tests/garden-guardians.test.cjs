@@ -43,7 +43,7 @@ test('Mech bombs remain on ledges and fall vertically; Sligo lobs flesh and nati
   g.bombs=[];g.bombCool=0;g.P.y=p.y-24;g.P.grounded=false;g.throwBomb({x:x+70,y:p.y});for(let i=0;i<hz;i++)g.updateBombs(1/hz);assert.equal(g.bombs[0].x,x);assert.equal(g.bombs[0].y,p.y-2);
  }
  const {game:sligo}=game('sligo');sligo.throwBomb({x:sligo.P.x+60,y:sligo.P.y-20});assert.equal(sligo.bombs[0].st,'fly');assert.notEqual(sligo.bombs[0].vx,0);assert.equal(sligo.bombs[0].sligo,true);
- for(const id of ['runner','bulwark','herbalist','polge']){const {game:g}=game(id);assert.equal(g.throwBomb({x:g.P.x+60,y:g.P.y-20}),true);assert.equal(g.bombs.length,0);if(id==='runner'||id==='herbalist')assert.equal(g.classShots[0].kind,id==='runner'?'needle':'spore');else assert.ok(g.booms.some(b=>b.strike===(id==='polge'?'jab':'cleave')));}
+ for(const id of ['runner','bulwark','herbalist','polge']){const {game:g}=game(id);assert.equal(g.throwBomb({x:g.P.x+60,y:g.P.y-20}),true);assert.equal(g.bombs.length,0);if(id==='herbalist')assert.equal(g.classShots[0].kind,'spore');else assert.ok(g.booms.some(b=>b.strike===(id==='runner'?'dropkick':id==='polge'?'jab':'cleave')));}
 });
 test('two-player altar and planted bomb survive duplicate input, snapshots and a host change',()=>{
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];

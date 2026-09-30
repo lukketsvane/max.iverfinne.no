@@ -822,9 +822,9 @@
         31
       ],
       "opaqueBounds": [
+        1,
         9,
-        4,
-        24,
+        31,
         30
       ]
     },
@@ -841,104 +841,104 @@
         31
       ],
       "opaqueBounds": [
-        7,
-        5,
-        25,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        8,
-        5,
-        24,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        8,
-        5,
-        25,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        7,
-        5,
-        25,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        9,
-        5,
-        24,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
+        1,
         10,
+        31,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        8,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        7,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
         4,
-        23,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
         31
       ]
     },
@@ -955,142 +955,142 @@
         31
       ],
       "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        0,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        27,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        7,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        9,
+        26,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        3,
+        24,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        12,
+        29,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        6,
+        27,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
         10,
-        4,
-        23,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        0,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        9,
-        5,
-        23,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        7,
-        5,
-        25,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        4,
-        26,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        7,
-        4,
-        26,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        7,
-        5,
-        26,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        9,
-        5,
-        24,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        9,
-        5,
-        23,
+        27,
         31
       ]
     },
@@ -1109,7 +1109,7 @@
       "opaqueBounds": [
         9,
         5,
-        23,
+        24,
         31
       ]
     },
@@ -2038,9 +2038,9 @@
         31
       ],
       "opaqueBounds": [
-        9,
-        5,
-        23,
+        8,
+        8,
+        25,
         31
       ]
     },
@@ -2057,9 +2057,9 @@
         31
       ],
       "opaqueBounds": [
-        7,
-        5,
-        25,
+        6,
+        8,
+        27,
         31
       ]
     },
@@ -2076,9 +2076,9 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        5,
-        26,
+        4,
+        9,
+        29,
         31
       ]
     },
@@ -2096,8 +2096,8 @@
       ],
       "opaqueBounds": [
         7,
-        5,
-        26,
+        10,
+        25,
         31
       ]
     },
@@ -2114,9 +2114,9 @@
         31
       ],
       "opaqueBounds": [
-        7,
-        5,
-        26,
+        2,
+        8,
+        31,
         31
       ]
     },
@@ -2133,9 +2133,9 @@
         31
       ],
       "opaqueBounds": [
+        0,
         9,
-        5,
-        24,
+        32,
         31
       ]
     },
@@ -2152,9 +2152,9 @@
         31
       ],
       "opaqueBounds": [
-        9,
-        5,
-        23,
+        2,
+        7,
+        31,
         31
       ]
     },
@@ -2171,9 +2171,9 @@
         31
       ],
       "opaqueBounds": [
+        3,
         9,
-        5,
-        23,
+        29,
         31
       ]
     },
@@ -2796,6 +2796,56 @@
         1
       ]
     },
-    "source": "image_gen original creature artwork"
+    "source": "image_gen original creature artwork",
+    "wrestling": {
+      "dropkick": {
+        "sheet": "interaction",
+        "row": 5,
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "salto": {
+        "sheet": "main",
+        "row": 6,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "splits": {
+        "sheet": "interaction",
+        "row": 5,
+        "frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "recovery": {
+        "sheet": "main",
+        "row": 5,
+        "frames": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    }
   }
 }

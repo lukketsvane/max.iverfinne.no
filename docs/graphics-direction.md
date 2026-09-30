@@ -56,9 +56,10 @@ plants. Never substitute the preview names or example bouquets for player data.
 
 ## Native co-op art integration
 
-Rattle Norvegicus, Cairn and Mycel replace the three cosmetic Max recolours. They have
-independent avian, stone and mushroom silhouettes, generated main/interaction
-sheets and a shared compact ink/cream/teal/ochre palette. Native 32×32 cells,
+Rattus norvegicus, Cairn and Mycel replace the three cosmetic Max recolours. They have
+independent rat-mask, stone and mushroom silhouettes, generated main/interaction
+sheets and individual sixteen-colour palettes. Rattus's wrestling source adds
+dropkicks, upside-down saltos and wide splits stomps. Native 32×32 cells,
 anchor (16,31), binary alpha and existing animation timing remain binding.
 The compatibility keys moss/ember/moon load assets/characters-v2 instead.
 Mech, Pølge and Sligo keep their established identities.

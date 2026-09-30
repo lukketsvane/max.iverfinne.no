@@ -165,12 +165,12 @@ test('Pølge is selectable without an unlock, keeps Ø in his name and requests 
 test('Play silently enters the one shared running garden and carries character plus difficulty', async () => {
   const m = await menu();
   try {
-    m.click('Play'); m.click('Rattle Norvegicus');
+    m.click('Play'); m.click('Rattus norvegicus');
     const name = m.w.document.querySelector('.max-character-name');
-    assert.equal(name.textContent, 'Rattle Norvegicus');
+    assert.equal(name.textContent, 'Rattus norvegicus');
     assert.equal(name.dataset.long, 'true');
     assert.match(m.w.document.querySelector('.max-character-stage img').src, /characters-v2\/rattle-norvegicus\/main\.png$/);
-    assert.match(m.w.document.querySelector('.max-class-detail').textContent, /rat-masked wizard/);
+    assert.match(m.w.document.querySelector('.max-class-detail').textContent, /rat-masked pro wrestler/);
     m.click('easy difficulty'); m.click('Play'); await m.settle();
     assert.equal(m.beginCount,1);assert.equal(m.active,true);
     assert.deepEqual(JSON.parse(JSON.stringify(m.begun.selection)), { classId:'runner', skinId:'moss', difficulty:'easy' });

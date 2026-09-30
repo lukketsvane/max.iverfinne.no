@@ -748,7 +748,7 @@ var P = {
   land: 0, idleT: 0, fidget: null, held: false,
   st: 'free', still: 0, squatT: 0, lampLit: 0, lampBlock: false, crouchGardenLatch: false,
   dodgeT: 0, dodgeCool: 0, dodgeDir: 1, dodgeId: 0, dodgeDust: 0, throwPose: 0,
-  skillCool: 0, skillDenied: 0, skillPose: 0, skillAnim: 'idle', brace: 0, braceX: 0, braceTag: 0, pounce: 0, pounceY: 0,
+  skillCool: 0, skillDenied: 0, skillPose: 0, skillAnim: 'idle', brace: 0, braceX: 0, braceTag: 0, pounce: 0, pounceY: 0, rattleMove: '', rattlePose: 0, rattleClock: 0,
   tun: 0, tunX: 0, hurt: 0
 };
 P.y = surfaceY(0);
@@ -821,6 +821,9 @@ function updatePlayer(dt, inp) {
     P.dodgeCool=Math.max(0,P.dodgeCool-step);
     if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){if(!coopActor)skillReadyCue(rogueRun.classId);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
     P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
+    if(P.pounce||P.rattlePose>0)P.rattleClock+=step;
+    P.rattlePose=Math.max(0,P.rattlePose-step);
+    if(!P.pounce&&!P.rattlePose)P.rattleMove='';
     if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
     if(P.tun>0){var tunLeft=P.tun-step;if(tunLeft<=1e-6||!P.grounded||P.wet||climb||P.st==='float'||Math.abs(P.x-P.tunX)>6)endTun();else P.tun=tunLeft;}
     P.hurt=Math.max(0,(P.hurt||0)-step);
@@ -3147,7 +3150,7 @@ function coopClassSkill(action,m,now){
   if(kit.skill==='tun'){m.tunUntil=now+kit.tunTime*1000;m.tunX=P.x;skillRing(P.x,P.y,kit.tunRadius,'tun');return true;}
   if(kit.skill==='bloom'){if(!gardenPlots.some(bloomReach)&&!floatKrek.some(function(k){return enemyDistance(k,P.x,P.y-12)<kit.bloomRadius;}))return false;return herbalistBloom()>0;}
   if(kit.skill==='pounce'){if(m.airTop==null||!m.landAt||now-m.landAt>800)return false;
-    var drop=Math.max(0,Math.min(160,+action.drop||0,P.y-m.airTop+2));m.airTop=null;mossSlam(P.x,P.y,drop);return true;}
+    var drop=Math.max(0,Math.min(160,+action.drop||0,P.y-m.airTop+2));m.airTop=null;mossSlam(P.x,P.y,drop);bombCool=Math.max(bombCool,.45);return true;}
   return false;
 }
 function dispatchTargets(owner,reach){
@@ -3179,31 +3182,29 @@ function roverArrive(bot,p){
   skillRing(p.x,gy,26,'arrive');socialTone('water');
 }
 function roverShelters(p){var found=false;eachCompanion(function(bot){if(bot.state.pourT>0&&bot.state.target===p)found=true;});return found;}
-function pounceDive(){P.pounce=2;P.pounceY=P.y;P.vy=320;P.vx*=.3;sfx('swish',0);}
-function cancelPounce(){if(P.pounce){P.pounce=0;P.skillCool=classSkillCooldown();}}
+function pounceDive(){P.pounce=2;P.pounceY=P.y;P.vy=320;P.vx*=.3;P.rattleMove='splits';P.rattleClock=0;sfx('swish',0);}
+function cancelPounce(){if(P.pounce){P.pounce=0;P.rattleMove='';P.rattlePose=0;P.skillCool=classSkillCooldown();}}
 function mossPounce(){
+  if(bombCool>0)return false;
   if(climb){P.climbIgnoreId=climb.p.id;P.climbRegrab=.35;climb=null;climbGoal=null;P.st='free';P.grounded=false;P.platform=null;P.coyote=0;pounceDive();return true;}
   if(P.grounded&&P.wet)return false;
   if(P.st!=='free'){task=null;holdWater=null;P.st='free';}
   if(!P.grounded){pounceDive();return true;}
-  P.pounce=1;P.vy=JUMP_V*ownClass().jump*(1+.06*(rogueRun.perks.spring||0))*featherJump()*1.1;P.grounded=false;P.coyote=0;P.platform=null;P.held=false;P.land=0;jumpBuf=0;
+  P.pounce=1;P.rattleMove='salto';P.rattleClock=0;P.vy=JUMP_V*ownClass().jump*(1+.06*(rogueRun.perks.spring||0))*featherJump()*1.1;P.grounded=false;P.coyote=0;P.platform=null;P.held=false;P.land=0;jumpBuf=0;
   setAnim('rise');puff(P.x,P.y,5,.45);return true;
 }
 function landPounce(){
-  var drop=Math.max(0,Math.min(160,P.y-P.pounceY));P.pounce=0;P.skillCool=classSkillCooldown();
+  var drop=Math.max(0,Math.min(160,P.y-P.pounceY));P.pounce=0;P.skillCool=classSkillCooldown();P.rattleMove='splits';P.rattlePose=.45;P.rattleClock=0;bombCool=bombCoolMax=Math.max(bombCool,.45);
   if(playerWetAt(P.x,P.y))return;
   shake=Math.min(3,shake+1.6);puff(P.x,P.y,9,.5);
-  for(var i=0;i<8;i++){var a=-Math.PI*(.15+Math.random()*.7),sp=40+Math.random()*60;feathers.push({x:P.x,y:P.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,heavy:true,ph:0,c:Math.random()<.6?'#3b3128':'#56473a',life:2.2});}
   skillCue('slam',0);
   if(coopGuest())coopAction('skill',{x:P.x,y:P.y,drop:drop,skillTag:(P.skillTag=(P.skillTag||0)+1)});else mossSlam(P.x,P.y,drop);
 }
 function mossSlam(x,y,drop){
-  var kit=ownClass(),build=Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers}),r=kit.pounceRadius+3*(build.blast||0),mult=(1+.12*(build.emberStacks||0))*(1+Math.min(1,drop/kit.pounceDrop));
-  floatKrek.slice().forEach(function(k){if(enemyDistance(k,x,y-12)<r&&!damagePest(k,mult,x,build)&&!k.boss){staggerKrek(k,.9);k.vx=(k.x<x?-1:1)*80;k.vy=-40;k.flash=.6;}});
+  var kit=ownClass(),build=Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers}),r=kit.pounceRadius+4*(build.fletching||0)+(build.updraft?12:0),mult=(1+.12*(build.emberStacks||0))*(1+.25*(build.needle||0))*(1+Math.min(1,drop/kit.pounceDrop));
+  floatKrek.slice().forEach(function(k){if(enemyDistance(k,x,y-12)<r&&combatLineClear(x,y-12,k.x,k.y)&&!damagePest(k,mult,x,build)&&!k.boss){staggerKrek(k,.9);k.vx=(k.x<x?-1:1)*80;k.vy=build.updraft?-85:-40;k.flash=.6;}});
   combatObjectives(x,y-12,r);
-  needleFan({x:x+P.face*100,y:y-28},true);
-  if(build.updraft)needleFan({x:x-P.face*100,y:y-28},true);
-  skillRing(x,y,r,'slam');
+  combatFx('splits',x,y-5,r,P.face);
 }
 function parryable(x,y){var r=window.MaxClasses.get('bulwark').braceRadius;return floatKrek.some(function(k){return k.windup>0&&enemyDistance(k,x,y-12)<r;});}
 function bulwarkBrace(){
@@ -3362,7 +3363,7 @@ function recordGardenPlant(p){
 function clearRunInput(){
   heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;charge=null;queuedThrow=null;padAx=0;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
   pad.ladderY=0;
-  if(P){P.ladderId=null;P.ladderRegrab=0;if(P.st==='ladder')P.st='free';P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.skillPose=0;endTun();}
+  if(P){P.ladderId=null;P.ladderRegrab=0;if(P.st==='ladder')P.st='free';P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.rattleMove='';P.rattlePose=0;P.rattleClock=0;P.skillPose=0;endTun();}
   if(P&&P.st==='watering'){P.st='free';setAnim('idle');}
 }
 function runIsPaused(){return !!(menuPaused||document.hidden||(rogueRun&&rogueRun.ended));}
@@ -5344,7 +5345,7 @@ function chargeRelease(){
   return ok;
 }
 function drawNativeAim(target,cool){
-  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,melee=ownClass().id==='polge'||ownClass().id==='bulwark',reach=melee?(ownClass().id==='polge'?31:38+6*(rogueRun.perks.fault||0)):Math.min(160,length);
+  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,id=ownClass().id,melee=['runner','polge','bulwark'].indexOf(id)>=0,reach=melee?(id==='runner'?(P.grounded?34:24)+3*(rogueRun.perks.fletching||0):id==='polge'?31:38+6*(rogueRun.perks.fault||0)):Math.min(160,length);
   ctx.fillStyle=cool?'#6d7690':ownClass().id==='herbalist'?'#80d1b1':'#e6bf69';
   for(var aimStep=8;aimStep<=reach;aimStep+=5)ctx.fillRect(Math.round(P.x+dx/length*aimStep-camX),Math.round(P.y-12+dy/length*aimStep-camY),1,1);
   var tx=Math.round(P.x+dx/length*reach-camX),ty=Math.round(P.y-12+dy/length*reach-camY);ctx.fillRect(tx-2,ty,5,1);ctx.fillRect(tx,ty-2,1,5);
@@ -5798,7 +5799,7 @@ var CLASS_STRIKE_CUES={
 };
 function classStrikeCue(kind,dist,combo){
   try{
-    kind=({kestrel:'needle',runner:'needle',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
+    kind=({kestrel:'needle',runner:'cleave',dropkick:'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
     if(kind==='polge')kind=['jab','cross','uppercut'][Math.max(0,Math.min(2,Math.floor(Number(combo)||0)))];
     var kit=CLASS_STRIKE_CUES[kind];if(!kit)return;
     var v=effectVoice('strike:'+kind,kit.life,kit.space,kind==='parry'?2:1,dist);if(!v)return;
@@ -6360,9 +6361,11 @@ function drawPlayer() {
   var a = ANIM[P.anim], native = window.MaxNativeArt && window.MaxNativeArt.playerImage(P.skin, a.sh === 2 ? 'interaction' : 'main');
   var img = native || (a.sh === 2 ? sheet2 : sheet);
   if (!native && (a.sh === 2 ? !sheet2Ready : !sheetReady)) return;
-  if (secretTint && P === secretOwnP) img = secretSkin(img);
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
   var artRow = native && window.MaxNativeArt.playerRow ? window.MaxNativeArt.playerRow(P.skin,a.sh===2?'interaction':'main',a.row,P.anim) : a.row;
+  var playerCell=window.MaxNativeArt&&window.MaxNativeArt.playerCell&&window.MaxNativeArt.playerCell(P.skin,P);
+  if(playerCell){var moveImage=window.MaxNativeArt.playerImage(P.skin,playerCell.sheet);if(moveImage){img=moveImage;fr=playerCell.column;artRow=playerCell.row;}}
+  if (secretTint && P === secretOwnP) img = secretSkin(img);
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
     if(P.skin==='sligo'&&(drawSligoEvo(P,px,py,bodyScale)||drawSligoAction(P,px,py,bodyScale)))return;
