@@ -1,7 +1,7 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs'), path = require('node:path'), { pathToFileURL } = require('node:url');
+const crypto = require('node:crypto'), fs = require('node:fs'), path = require('node:path'), { pathToFileURL } = require('node:url');
 const { loadGame, plot } = require('./game-harness.cjs');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
@@ -44,7 +44,8 @@ const sources = ops => ops.filter(o => o.src).map(o => o.src);
 
 test("Sligo's two plants are pieces cut to the native pixel rules, one palette of at most 16 colours each", async () => {
   const { artProblems, decode } = await import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
-  const pending = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-pending.json'), 'utf8')).files.map(e => e.path);
+  const pending = new Map(JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-pending.json'), 'utf8')).files.map(e => [e.path, e.sha1]));
+  const production = new Map(JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-manifest.json'), 'utf8')).production.map(e => [e.path, e.sha1]));
   assert.deepEqual(families.map(f => f.dir), ['sligo-cord', 'sligo-cap']);
   for (const fam of families) {
     assert.ok(fam.s.length >= 4 && fam.f.length >= 2 && fam.b.length >= 3 && fam.r.length >= 2, fam.dir + ' has slices, heads, blooms and roots');
@@ -54,7 +55,8 @@ test("Sligo's two plants are pieces cut to the native pixel rules, one palette o
       assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [r[2], r[3]], file + ' matches its PA entry');
       assert.deepEqual(artProblems(file, png), [], file);
       assert.ok(r[2] <= 35 && r[3] <= 25, file + ' is plant sized');
-      assert.ok(pending.includes(file), file + ' is pinned until it is in Figma');
+      const sha1 = crypto.createHash('sha1').update(png).digest('hex');
+      assert.ok(production.get(file) === sha1 || pending.get(file) === sha1, file + ' matches Figma or its pending pin');
       const { rgba } = decode(png);
       for (let i = 0; i < rgba.length; i += 4) if (rgba[i + 3]) colours.add(rgba.readUIntBE(i, 3));
     }
