@@ -12,6 +12,7 @@ The stored summaries at 00:14 Oslo time on 30 September show a two-player Easy v
 - The final garden requires lighting three summit beacons before summoning the Crown. The Crown has three damage-gated stages, protected transitions, increasingly strong existing attack patterns and explicit stage announcements. The result screen says VICTORY or GAME OVER; victory identifies the defeated Crown and Garden 20/20.
 - Future records retain the run seed, actual local class, each player's build, shared timeline, asset load status, guardian fight duration and Crown transition times. A balance copy is stored with the finished local garden as well as sent to the existing stats sink.
 - Game copy, High Tide zones and prompts, review controls and new Figma labels are English.
+- Enemy variety now starts with rats in garden 2, thieves in 3, beetles in 4, spore casters in 5 and healing moths in 6 on every difficulty. Small waves lead with the new role; later groups favor two non-bird roles plus a bird. Rat variants cycle from gardens 4, 7 and 10. Future balance summaries retain the actual spawned mix per garden and spawn source. See `enemy-encounters.md`.
 
 ## Figma handover
 

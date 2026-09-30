@@ -124,17 +124,38 @@ function stageCombatProfile(){
   var kind=layout&&(layout.kind||layout.theme)||['terraces','canopy','crossing','ruins','switchbacks'][(worldLevel()-1)%5];
   return COMBAT_PROFILES[kind]||COMBAT_PROFILES.terraces;
 }
+// Easy changes pressure, not the bestiary. One new role at a time, with a
+// guaranteed first arrival even in its smallest three-enemy raid.
+var ENEMY_GARDENS={3:3,4:5,5:4,6:6,8:2,9:8,10:10,11:12};
 function enemyUnlocked(kind){
-  var stage=worldLevel();
-  if(kind===8)return stage>=({easy:12,medium:10,hard:9,insane:8}[rogueRun.difficulty]||10);
-  if(kind<3)return true;
-  return stage>={3:6,4:7,5:8,6:9,9:11,10:13,11:16}[kind];
+  return kind>=0&&kind<3||worldLevel()>=ENEMY_GARDENS[kind];
 }
-function waveEnemyKind(index){
-  var first={6:3,7:4,8:5,9:6,11:9,13:10,16:11}[worldLevel()];
-  if(index===2&&first!=null)return first;
-  var kinds=stageCombatProfile().kinds,kind=kinds[(index+(gardenWave-1)*2)%kinds.length];
-  return enemyUnlocked(kind)?kind:(index+gardenWave)%3;
+function enemyFormation(){
+  var kinds=stageCombatProfile().kinds.filter(enemyUnlocked),birds=[],roles=[],rotation=Math.max(0,gardenWave-1);
+  kinds.forEach(function(kind){var list=kind<3?birds:roles;if(list.indexOf(kind)<0)list.push(kind);});
+  function rotate(list){var offset=rotation%Math.max(1,list.length);return list.slice(offset).concat(list.slice(0,offset));}
+  birds=rotate(birds);roles=rotate(roles);
+  var first=roles.find(function(kind){return ENEMY_GARDENS[kind]===worldLevel();});
+  if(first!=null)roles=[first].concat(roles.filter(function(kind){return kind!==first;}));
+  var order=[];
+  if(!roles.length)return birds;
+  // The first rat shares its group with two birds. Later groups place two
+  // different roles before one bird, instead of filling locked slots with birds.
+  for(var i=0;i<roles.length*birds.length;i++){
+    order.push(roles[i%roles.length]);
+    if(roles.length>1)order.push(roles[(i+1)%roles.length]);
+    else order.push(birds[i%birds.length]);
+    order.push(birds[(i+(roles.length===1?1:0))%birds.length]);
+  }
+  return order;
+}
+function waveEnemyKind(index){var order=enemyFormation();return order[Math.max(0,index|0)%order.length];}
+function recordEnemySpawn(k,source){
+  if(coopGuest()||relicRunMode()||!k||k.boss||[0,1,2,3,4,5,6,8,9,10,11].indexOf(k.kind)<0)return;
+  var rows=rogueRun.enemies||(rogueRun.enemies=[]),stage=worldLevel(),row=rows.find(function(q){return q.stage===stage;});
+  if(!row){if(rows.length>=RUN_STAGES)return;row={stage:stage,total:0};rows.push(row);}
+  ['total','kind'+k.kind,source].forEach(function(key){row[key]=(row[key]||0)+1;});
+  if(isRat(k)){var key='rat_'+k.ratVariant;row[key]=(row[key]||0)+1;}
 }
 function safeEnemyPosition(k,x,y){
   var chosen=null,best=-1,players=runPlayers();
@@ -199,7 +220,7 @@ function updateRunLoot(){
 function initRunStage(){
   if(relicRunMode()){bossEvent=null;runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;seedPickups=[];return;}
   if(worldLevel()>1)runCheckpoint();
-  runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
+  runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;rogueRun.patrolIndex=0;rogueRun.ratIndex=0;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
   // Each teammate has one feather to find. Leaving it behind is a time tradeoff.
   var players=runPlayers(),layout=typeof stageLayout==='function'?stageLayout():null;
@@ -267,7 +288,7 @@ function spawnEncounterGuard(e){
   // the warning; silently moving the arrival would invalidate that choice.
   k.x=e.ingressX;k.y=e.ingressY;k.vx=k.vy=0;k.bite=.8;
   k.eventId=e.id;k.eventX=e.x;k.eventY=encounterFloor(e);k.trialGuard=true;
-  floatKrek.push(k);e.guardIndex=(e.guardIndex||0)+1;e.guardsRemaining--;e.ingress=false;e.guardSpawn=.45;return true;
+  floatKrek.push(k);recordEnemySpawn(k,'trial');e.guardIndex=(e.guardIndex||0)+1;e.guardsRemaining--;e.ingress=false;e.guardSpawn=.45;return true;
 }
 function interactFinaleBeacon(){
   if(worldLevel()!==20||!bossEvent||bossEvent.status!=='ready')return false;
@@ -415,7 +436,7 @@ function raidBudget(active){
   return Math.min(36,Math.max(3,Math.ceil(base*(1+Math.max(0,coopSize()-1)*.42)*difficultyProfile().budget)));
 }
 function enemyKind(){
-  var choices=stageCombatProfile().kinds.filter(enemyUnlocked);
+  var choices=enemyFormation();
   return choices[(Math.random()*choices.length)|0];
 }
 function damagePest(k,amount,x,build){
@@ -763,7 +784,7 @@ function drawGuardianNodes(t){
 function summonBossGuard(k,kind,index){
   if(floatKrek.length>=MAX_ACTIVE_ENEMIES)return;
   var side=index%2?1:-1,add=makeKrek(side,false,kind);add.raid=true;add.guardianAdd=k.guardianStage||0;
-  safeEnemyPosition(add,k.x+side*76,k.y-10);floatKrek.push(add);
+  safeEnemyPosition(add,k.x+side*76,k.y-10);floatKrek.push(add);recordEnemySpawn(add,'guardian');
 }
 function guardianHazard(k,type,x,r,tell,power,y){
   x=guardianAimX(k,x);
@@ -1149,8 +1170,9 @@ function circuitTell(e,C){
   // Pick a flank once, then show the exact arrival point for the full warning.
   spots.sort(function(x,y){function distance(cx){return Math.min.apply(null,players.map(function(q){return Math.hypot(cx-q.p.x,a.y-13-(q.p.y-12));}));}return distance(y)-distance(x);});
   e.circuitSpawnX=spots[0];e.circuitSpawnY=a.y-13;e.circuitTell=1.35;
-  var kinds=C.family==='bell'?[2,0,9]:C.family==='arch'?[0,2,4]:[0,2,5];
-  var kind=kinds[e.circuitSerial%kinds.length];e.circuitKind=enemyUnlocked(kind)?kind:0;
+  var preferred=C.family==='bell'?9:C.family==='arch'?4:5;
+  var kinds=[preferred,5,4,3,2,0].filter(function(kind,i,list){return enemyUnlocked(kind)&&list.indexOf(kind)===i;});
+  e.circuitKind=kinds[e.circuitSerial%kinds.length];
 }
 function interactCircuit(e,E){
   var C=E.circuit;if(!C||!P.grounded||P.wet)return false;
@@ -1179,7 +1201,7 @@ function updateCircuit(e,E,dt){
       if(occupied){circuitTell(e,C);return;}
       var k=makeKrek(e.circuitSpawnX<C.focus.x?-1:1,false,e.circuitKind);
       k.x=e.circuitSpawnX;k.y=e.circuitSpawnY;k.eventId=id;k.eventX=C.focus.x;k.eventY=C.arena.y;k.expedition=true;k.circuit=true;k.bite=1.3;
-      floatKrek.push(k);e.circuitSerial++;e.circuitQueued--;
+      floatKrek.push(k);recordEnemySpawn(k,'circuit');e.circuitSerial++;e.circuitQueued--;
       if(e.circuitQueued)circuitTell(e,C);
     }
   }
@@ -1225,11 +1247,12 @@ function updateExpedition(dt){
     if(e.charge>=6){e.mask|=1<<e.watch;e.watch=-1;e.charge=0;chime([659,880],.06,.02);}
   }
   if(e.queued>0&&floatKrek.length<MAX_ACTIVE_ENEMIES){
-    var n=E.nodes[e.anchor||0],kind=E.guards[e.serial%E.guards.length];
-    if(!enemyUnlocked(kind))kind=2;
+    var n=E.nodes[e.anchor||0],kinds=E.guards.filter(enemyUnlocked);
+    kinds.sort(function(a,b){return (b>=3)-(a>=3);});
+    var kind=kinds.length?kinds[e.serial%kinds.length]:2;
     var side=e.serial%2?1:-1,k=makeKrek(side,false,kind);
     safeEnemyPosition(k,n.x+side*85,n.y-32);k.eventId=1000+worldLevel();k.eventX=n.x;k.eventY=n.y;k.expedition=true;k.bite=1.2;
-    floatKrek.push(k);e.serial++;e.queued--;
+    floatKrek.push(k);recordEnemySpawn(k,'expedition');e.serial++;e.queued--;
   }
   if(e.mask===7&&!e.queued&&!e.done&&!floatKrek.some(function(k){return k.eventId===1000+worldLevel();})){
     e.done=true;e.glow=4;

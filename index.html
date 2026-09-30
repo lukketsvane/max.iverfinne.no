@@ -3451,7 +3451,7 @@ function runStats(won){
   var own=coop&&coop.members[coop.me];
   return {v:2,seed:rogueRun.seed,mode:rogueRun.mode,art:window.MaxNativeArt&&window.MaxNativeArt.status?window.MaxNativeArt.status():null,players:coop?coopMembers().map(function(m){return {classId:m.classId,boons:Object.assign({},m.perks)};}):[],run:rogueRun.recordId||'',classId:own?own.classId:rogueRun.classId,difficulty:rogueRun.difficulty,won:!!won,world:worldLevel(),seconds:Math.round(runElapsed),level:rogueRun.level|0,
     score:gardenScore|0,wave:gardenWave|0,team:coop?coopSize():1,plants:rogueRun.garden.length,lost:gardenStats.lost|0,harvested:gardenStats.harvested|0,
-    boons:Object.assign({},own?own.perks:rogueRun.perks),traits:Object.assign({},own?own.traits:rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,bosses:(rogueRun.bosses||[]).slice(0,20),timeline:rogueRun.timeline.slice(0,41)};
+    boons:Object.assign({},own?own.perks:rogueRun.perks),traits:Object.assign({},own?own.traits:rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,bosses:(rogueRun.bosses||[]).slice(0,20),enemies:(rogueRun.enemies||[]).slice(0,20).map(coopPlain),timeline:rogueRun.timeline.slice(0,41)};
 }
 function resetRogueRun(reason,selection){
   polgeStands=[];classShots=[];classFighters=[];
@@ -4621,7 +4621,7 @@ function updateGardenFun(dt){
   if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent&&floatKrek.length<MAX_ACTIVE_ENEMIES){
     var bossWave=gardenWave===FINAL_WAVE,elite=bossWave&&!gardenBossSpawned;
     var index=rogueRun.raidTotal-rogueRun.raidRemaining,side=(Math.floor(index/2)+worldLevel()+gardenWave)%2?1:-1;
-    var k=makeKrek(side,elite,waveEnemyKind(index));k.raid=true;floatKrek.push(k);
+    var k=makeKrek(side,elite,waveEnemyKind(index));k.raid=true;floatKrek.push(k);recordEnemySpawn(k,'raid');
     rogueRun.raidRemaining--;raidAlive++;
     if(elite)gardenBossSpawned=true;
     gardenRaidSpawn=runRaidInterval();
@@ -4710,8 +4710,8 @@ function updateKrek(dt){
   var cleared=rogueRun.clearedWorld===worldLevel(),ambientAllowed=!lastSeedMode()&&!gardenRaidActive&&(cleared||gardenRaidT>3);
   if(ambientAllowed)krekSpawnT-=dt;
   if(ambientAllowed&&(active||runElapsed>=22)&&krekSpawnT<=0&&floatKrek.length<runPatrolLimit(active,cleared)){
-    var patrolIndex=rogueRun.patrolIndex||0,patrolKind=!active&&runElapsed<75?2:waveEnemyKind(patrolIndex),patrol=makeKrek(patrolIndex%2?1:-1,runElapsed>=180&&patrolIndex%Math.max(1,4-Math.floor(runElapsed/300))===0,patrolKind);
-    patrol.patrol=true;patrol.scout=!active;floatKrek.push(patrol);rogueRun.patrolIndex=patrolIndex+1;krekSpawnT=runPatrolInterval();updateGardenHud();
+    var patrolIndex=rogueRun.patrolIndex||0,patrolKind=worldLevel()===1&&!active&&runElapsed<75?2:waveEnemyKind(patrolIndex),patrol=makeKrek(patrolIndex%2?1:-1,runElapsed>=180&&patrolIndex%Math.max(1,4-Math.floor(runElapsed/300))===0,patrolKind);
+    patrol.patrol=true;patrol.scout=!active;floatKrek.push(patrol);recordEnemySpawn(patrol,'patrol');rogueRun.patrolIndex=patrolIndex+1;krekSpawnT=runPatrolInterval();updateGardenHud();
   }
   if(!active&&floatKrek.length===0)krekSpawnT=Math.min(krekSpawnT,4);
   for(var i=floatKrek.length-1;i>=0;i--){

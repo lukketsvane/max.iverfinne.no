@@ -55,6 +55,8 @@ Only the first player starting an empty shared garden chooses it. Once a run exi
 
 Easy is intentionally forgiving. It has much lower enemy damage, durability, density and wave budget, slower pressure growth and a longer opening grace period.
 
+Easy shares the same enemy roster as the other difficulties. Garden 1 teaches birds; garden 2 introduces ground rats, 3 seed thieves, 4 shield beetles, 5 spore casters and 6 healing moths. Thorn casters, dew leeches and rammers arrive at 8, 10 and 12. New roles lead their first raid, so even a three-enemy Easy wave shows them. Later formations favor two distinct non-bird roles plus a bird. The actual spawned mix and rat variants are retained per garden in balance records. See `docs/design/enemy-encounters.md`.
+
 ### Progression must be physical
 
 Do not replace stage progression with a ground-level teleport.
