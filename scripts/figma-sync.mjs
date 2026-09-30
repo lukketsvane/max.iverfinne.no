@@ -7,7 +7,7 @@ import { inflateSync } from 'node:zlib';
 import { FIGMA, FigmaError, all, connect, download, metadata, tool, toolCalls, unxml } from './figma-mcp.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE = '52:2', RULES = { pixelArt: '38:4', exportCheck: '40:47' }, GRIDS = '39:2', PALETTE = '39:39';
+const SOURCE = '160:2', RULES = { pixelArt: '396:3', exportCheck: '396:12' }, GRIDS = '396:19', PALETTE = '396:25';
 const PULLABLE = ['DRIFT', 'NEW-IN-FIGMA', 'MISSING-IN-REPO', 'MANIFEST-STALE'];
 const GENERATED = [[/^assets\/max-skins-v1\/sligo\//, 'scripts/build-sligo.py'], [/^assets\/(max-skins-v1|enemies-v1)\//, 'scripts/build-native-art.py'], [/^assets\/rat-enemies-v1\//, 'scripts/build-rat-assets.py']];
 const HINTS = {
@@ -154,7 +154,7 @@ async function withImages(layers) {
 }
 async function sourceSection() {
   const section = await metadata(SOURCE);
-  if (section.type !== 'section') throw new FigmaError(`Node ${SOURCE} is a ${section.type}, not the production section. Is ${FIGMA.fileName} the active tab?`);
+  if (!['section', 'frame'].includes(section.type)) throw new FigmaError(`Node ${SOURCE} is a ${section.type}, not the production frame. Is ${FIGMA.fileName} the active tab?`);
   return section;
 }
 const entryOf = l => ({ path: l.path, nodeId: l.nodeId, group: l.group, width: l.width, height: l.height, sha1: l.sha1 });
@@ -226,7 +226,7 @@ async function buildManifest() {
   const pages = await Promise.all([metadata(FIGMA.pages.production), metadata(FIGMA.pages.draft)]);
   const find = id => pages.flatMap(p => [p, ...all(p)]).find(n => n.id === id);
   const section = find(SOURCE);
-  if (section?.type !== 'section') throw new FigmaError(`Section ${SOURCE} not found. Is ${FIGMA.fileName} the active tab?`);
+  if (!['section', 'frame'].includes(section?.type)) throw new FigmaError(`Production frame ${SOURCE} not found. Is ${FIGMA.fileName} the active tab?`);
   const inSource = new Set(all(section));
   const layers = await withImages(assetLayers(section));
   for (const l of layers) if (l.sha1 && l.sha1 !== repoSha(l.path)) l.problems.push(repoSha(l.path) ? 'Figma image ≠ repo file: npm run figma:check, then figma:pull or update the layer' : 'repo file missing: npm run figma:pull');

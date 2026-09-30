@@ -8,7 +8,7 @@ function pest(g, dx, windup) {
 }
 
 test('native class attacks have distinct recovery times while Mech and Sligo keep bomb recovery', () => {
-  for (const [id, cooldown] of [['bulwark', .72], ['runner', .36], ['herbalist', .58], ['polge', .24], ['mech', .75], ['sligo', .75]]) {
+  for (const [id, cooldown] of [['bulwark', .72], ['runner', .5], ['herbalist', .58], ['polge', .24], ['mech', .75], ['sligo', .75]]) {
     const g = fresh(id); g.gardenPlots = [plot({ id: 1, x: g.P.x + 40 })];
     assert.equal(g.throwBomb({ x: g.P.x + 30, y: g.P.y - 10 }), true);
     assert.ok(Math.abs(g.bombCool - cooldown) < 1e-9, `${id} ${g.bombCool}`);
@@ -17,7 +17,7 @@ test('native class attacks have distinct recovery times while Mech and Sligo kee
   }
 });
 
-test('Cairn cleaves punish a bite tell for 50% more damage and stagger; Rattle Norvegicus needles keep their normal damage', () => {
+test('Cairn cleaves punish a bite tell for 50% more damage and stagger; Rattus norvegicus kicks keep their normal damage', () => {
   const hurt = {};
   for (const id of ['bulwark', 'runner']) for (const windup of [0, .3]) {
     const g = fresh(id); g.gardenPlots = [plot({ id: 1, x: g.P.x + 40 })];
@@ -28,7 +28,7 @@ test('Cairn cleaves punish a bite tell for 50% more damage and stagger; Rattle N
     assert.equal(g.bombs.length,0);
     if (id === 'bulwark' && windup) assert.ok(k.flee >= .6, 'the cleave staggers the biter');
   }
-  assert.deepEqual(hurt, { bulwark0: 1.3, 'bulwark0.3': 1.95, runner0: .72, 'runner0.3': .72 });
+  assert.deepEqual(hurt, { bulwark0: 1.3, 'bulwark0.3': 1.95, runner0: 1, 'runner0.3': 1 });
 });
 
 test('a brace on a bite tell parries: the biter is hurt, the late tell hurts most, and the brace comes back fast', () => {

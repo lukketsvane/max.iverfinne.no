@@ -143,6 +143,19 @@ test('the actual player renderer uses each selected sheet while retaining origin
   vm.runInNewContext(drawPlayer, sandbox); sandbox.drawPlayer();
   assert.match(lastSprite(calls)[1].src, /rattle-norvegicus\/main.png$/);
   assert.deepEqual(lastSprite(calls).slice(2), [32, 0, 32, 32, 4, 9, 32, 32]);
+  for (const [move, sheetName, column, row] of [['dropkick', 'interaction', 3, 5], ['salto', 'main', 6, 6], ['splits', 'interaction', 7, 5]]) {
+    Object.assign(sandbox.P, { rattleMove: move, rattlePose: .2, rattleClock: .23, pounce: move === 'splits' ? 2 : 0 });
+    const before = JSON.stringify(sandbox.P); sandbox.drawPlayer();
+    assert.match(lastSprite(calls)[1].src, new RegExp('rattle-norvegicus/' + sheetName + '\\.png$'));
+    assert.deepEqual(lastSprite(calls).slice(2), [column * 32, row * 32, 32, 32, 4, 9, 32, 32]);
+    assert.equal(JSON.stringify(sandbox.P), before, 'wrestling sprites never change movement or hit state');
+  }
+  Object.assign(sandbox.P, { rattleMove: 'splits', rattleClock: .08, pounce: 2 }); sandbox.drawPlayer();
+  assert.deepEqual(lastSprite(calls).slice(2), [192, 160, 32, 32, 4, 9, 32, 32], 'a short stomp descent reaches its wide split before landing');
+  Object.assign(sandbox.P, { pounce: 0, rattleClock: .34 }); sandbox.drawPlayer();
+  assert.deepEqual(lastSprite(calls).slice(2), [192, 160, 32, 32, 4, 9, 32, 32], 'splits landing uses its grounded recovery poses');
+  sandbox.P.rattlePose = 0; sandbox.drawPlayer();
+  assert.deepEqual(lastSprite(calls).slice(2), [32, 0, 32, 32, 4, 9, 32, 32], 'recovered moves return to normal movement art');
   sandbox.P.anim = 'water'; sandbox.P.skin = 'moon'; sandbox.P.face = -1; sandbox.drawPlayer();
   assert.match(lastSprite(calls)[1].src, /mycel\/interaction.png$/);
   assert.ok(calls.some(call => call[0] === 'scale' && call[1] === -1));

@@ -17,6 +17,15 @@ function playerRow(skin, sheet, row, animation) {
   // attack row in the otherwise unused interaction cells, so tending stays calm.
   return CHARACTER_ART[skin] && sheet === 'interaction' && animation === 'toss' ? 5 : row;
 }
+function playerCell(skin, player) {
+  if (skin !== 'moss' || !player || !(player.rattlePose > 0 || player.pounce > 0)) return null;
+  const clock = Math.max(0, Number.isFinite(player.rattleClock) ? player.rattleClock : 0);
+  const frame = Math.min(7, Math.floor(clock * 8 / .28));
+  if (player.rattleMove === 'salto') return { sheet: 'main', row: 6, column: player.pounce === 1 ? Math.floor(clock * 20) % 8 : frame };
+  if (player.rattleMove === 'dropkick') return { sheet: 'interaction', row: 5, column: Math.floor(frame / 2) };
+  if (player.rattleMove === 'splits') return player.pounce === 2 ? { sheet: 'interaction', row: 5, column: 4 + Math.min(3, Math.floor(clock * 4 / .16)) } : { sheet: 'main', row: 5, column: Math.min(7, Math.floor(clock * 8 / .45)) };
+  return null;
+}
 // A hidden character's pack loads the first time someone plays it; until it has loaded,
 // or if it is missing, the original Max stands in.
 const ON_DEMAND = Object.freeze(['sligo']);
@@ -198,7 +207,7 @@ export function createNativeArt() {
       drawAtlas(ctx, death.atlas, 'death', elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
     }
   }
-  return { skins: SKINS, load, playerPath, playerRow, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
+  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
 }
 
 if (typeof window !== 'undefined') {

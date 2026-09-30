@@ -33,6 +33,10 @@
     "master": {
       "path": "docs/asset-review/characters-v2/source/rattle-norvegicus.png",
       "sha256": "2852b86a4477c480d4e739fd7041133632fed83dd6f3fc59a842538a6ca3609a"
+    },
+    "wrestling": {
+      "path": "docs/asset-review/characters-v2/source/wrestling.png",
+      "sha256": "422d683073c150fcfa70b53552759535dd52aa94fc9995d2236b3fd3b944ec36"
     }
   }
 }

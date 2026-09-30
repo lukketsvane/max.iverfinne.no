@@ -187,6 +187,26 @@ function hogGarden() {
   const g = fresh().game, { seed, w } = seedFor(g, (s, w) => g.secretHash(s, w * 64 + 5) < .3);
   g.rogueRun.seed = seed; g.rogueRun.world = w; g.P.x = g.levelOriginX(w) + 1000; g.updateSecrets(0); return g;
 }
+
+test('secret tint follows the final wrestling sheet and stays exclusive to your own character', () => {
+  const h = fresh(), g = h.game, drawn = [];
+  const sheets = { main: { naturalWidth: 256, naturalHeight: 256 }, interaction: { naturalWidth: 256, naturalHeight: 256 } };
+  let cell = { sheet: 'interaction', row: 5, column: 2 };
+  h.window.MaxNativeArt = { playerImage: (skin, sheet) => sheets[sheet], playerRow: (skin, sheet, row) => row, playerCell: () => cell };
+  g.P.skin = 'moss'; g.P.face = 1; g.secretTint = true;
+  g.ctx.drawImage = (...args) => drawn.push(args);
+  for (const selected of [{ sheet: 'interaction', row: 5, column: 2 }, { sheet: 'main', row: 6, column: 3 }]) {
+    cell = selected;
+    const tinted = g.secretSkin(sheets[cell.sheet]); drawn.length = 0;
+    g.drawPlayer();
+    const sprite = drawn.findLast(args => args.length === 9);
+    assert.equal(sprite[0], tinted); assert.equal(sprite[1], cell.column * 32); assert.equal(sprite[2], cell.row * 32);
+  }
+  const own = g.P; g.P = { ...own }; drawn.length = 0;
+  g.drawPlayer();
+  assert.equal(drawn.findLast(args => args.length === 9)[0], sheets[cell.sheet]);
+  g.P = own;
+});
 function wait(g, seconds, water) { for (let t = 0; t < seconds; t += .5) { if (water) g.gardenPlots.forEach(p => { p.moisture = .9; }); g.updateSecrets(.5); } }
 test('a hedgehog settles under a grown plant and leaves two seeds if that plant stays watered', () => {
   const g = hogGarden(), at = g.secrets.hogAt;

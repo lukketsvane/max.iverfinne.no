@@ -4,11 +4,11 @@
   var perks=[
     // Stable class and legacy Pølge IDs keep shared-room saves compatible.
     // Every branch changes that character's own attack or skill.
-    {id:'needle',name:'Bodkin',desc:'Needles pierce one extra pest per rank',path:2,max:3,classId:'runner'},
-    {id:'fletching',name:'Pinion fan',desc:'Fans fire one extra needle per rank',path:1,max:3,classId:'runner'},
-    {id:'tailwind',name:'Tailwind',desc:'12% faster skill recovery per rank',path:0,max:3,classId:'runner'},
-    {id:'crosswind',name:'Crosswind',desc:'Needles gain 25% damage per pest pierced',path:2,max:1,classId:'runner',needs:{needle:1,fletching:1}},
-    {id:'updraft',name:'Updraft',desc:'Pounce landings fire needle fans in both directions',path:0,max:1,classId:'runner',needs:{tailwind:2,spring:1}},
+    {id:'needle',name:'Heavy boots',desc:'Kicks and splits stomps deal 25% more damage per rank',path:2,max:3,classId:'runner'},
+    {id:'fletching',name:'Wide stance',desc:'Kicks reach 3 px farther and splits stomps 4 px farther per rank',path:1,max:3,classId:'runner'},
+    {id:'tailwind',name:'Ring tempo',desc:'12% faster skill recovery per rank',path:0,max:3,classId:'runner'},
+    {id:'crosswind',name:'Crowd crush',desc:'Each additional pest caught in a kick takes 25% more damage',path:2,max:1,classId:'runner',needs:{needle:1,fletching:1}},
+    {id:'updraft',name:'Flying press',desc:'Airborne kicks deal 25% more damage; splits stomps reach 12 px farther',path:0,max:1,classId:'runner',needs:{tailwind:2,spring:1}},
     {id:'fault',name:'Fault line',desc:'Cleaves reach 6 px farther per rank',path:2,max:3,classId:'bulwark'},
     {id:'counter',name:'Reprisal',desc:'Parries punish pests 25% harder per rank',path:1,max:3,classId:'bulwark'},
     {id:'bedrock',name:'Stone pulse',desc:'Brace deals 0.4 more damage per rank',path:0,max:3,classId:'bulwark'},

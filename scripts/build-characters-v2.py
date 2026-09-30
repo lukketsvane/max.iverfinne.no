@@ -15,6 +15,12 @@ SPECS = {
   'skin': 'moss', 'class': 'runner', 'scale': .185,
   'palette': ['0b1017','101932','253459','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','b63330','247bad','52cde5'],
   'source': 'rattle-norvegicus.png',
+  'combatSource': 'wrestling.png', 'combatScale': .175,
+  'combatRows': {
+   ('main',5): [(4,0),(4,0),(4,3),(4,4),(4,1),(4,2),(4,6),(4,7)],
+   ('main',6): [(2,c) for c in range(8)],
+   ('interaction',5): [(0,0),(0,1),(0,3),(0,6),(3,1),(3,2),(3,3),(3,4)],
+  },
   'main': [
    [(0,c) for c in range(8)],
    [(1,c) for c in range(8)],
@@ -82,7 +88,7 @@ def reduce_pose(cell, spec):
  # Keep the authored body and significant disconnected limb/tool pixels; reject
  # single-pixel reduction dust, stray glows and neighbouring projectile-only art.
  mask[:]=False
- for group in groups[:1]:
+ for group in groups if spec.get('keepParts') else groups[:1]:
   for x,y in group: mask[y,x]=True
  palette=np.array([tuple(bytes.fromhex(c)) for c in spec['palette']],dtype=np.int32)
  distance=((a[:,:,:3].astype(np.int32)[:,:,None,:]-palette[None,None,:,:])**2).sum(axis=3)
@@ -136,6 +142,23 @@ def rattle_poses(spec):
   poses.append(cells)
  return {sheet:[[poses[row][col] for row,col in cells] for cells in spec[sheet]] for sheet in ['main','interaction']}
 
+def wrestling_poses(spec):
+ image=Image.open(SOURCE/spec['combatSource']).convert('RGBA')
+ pixels=np.array(image);groups=components(pixels[:,:,3]>=210)
+ assert len(groups)>=64 and len(groups[63])>1000 and (len(groups)==64 or len(groups[64])<100), 'wrestling master must contain 64 isolated full-body poses'
+ groups=sorted(groups[:64],key=lambda g:sum(y for x,y in g)/len(g))
+ reduced={**spec,'scale':spec['combatScale'],'keepParts':True};poses=[]
+ for row in range(8):
+  cells=[]
+  for group in sorted(groups[row*8:(row+1)*8],key=lambda g:sum(x for x,y in g)/len(g)):
+   mask=np.zeros(pixels.shape[:2],dtype=bool)
+   for x,y in group:mask[y,x]=True
+   selected=pixels.copy();selected[~mask]=0
+   cell=Image.fromarray(selected);cell=cell.crop(cell.getbbox())
+   cells.append(reduce_pose(cell,reduced))
+  poses.append(cells)
+ return {slot:[poses[row][col] for row,col in cells] for slot,cells in spec['combatRows'].items()}
+
 def main():
  PACK.mkdir(parents=True,exist_ok=True)
  original=json.loads((ROOT/'assets/max-skins-v1/source/original-poses.json').read_text())
@@ -144,8 +167,9 @@ def main():
  for ident,spec in SPECS.items():
   folder=PACK/ident;folder.mkdir(exist_ok=True)
   if 'source' in spec:
-   sourcefiles={'master':SOURCE/spec['source']}
+   sourcefiles={'master':SOURCE/spec['source'],'wrestling':SOURCE/spec['combatSource']}
    rows=rattle_poses(spec);mainrows=rows['main'];carerows=rows['interaction']
+   for (sheet,row),poses in wrestling_poses(spec).items():rows[sheet][row]=poses
   else:
    sourcefiles={sheet:SOURCE/f'{ident}-{sheet}.png' for sheet in ['main','interaction']}
    masters={sheet:Image.open(file).convert('RGBA') for sheet,file in sourcefiles.items()}
@@ -167,7 +191,9 @@ def main():
      out.paste(tile,(col*32,row*32))
      frames.append({'sheet':sheet,'rect':[col*32,row*32,32,32],'anchor':[16,31],'opaqueBounds':list(tile.getbbox())})
      entry={'sheet':sheet,'row':row,'column':col,'footBottom':bottom}
-     if 'source' in spec:entry['sourceCell']=list(spec[sheet][row][col])
+     if 'source' in spec:
+      entry['sourceCell']=list(spec['combatRows'].get((sheet,row),spec[sheet][row])[col])
+      entry['sourceFile']=spec['combatSource'] if (sheet,row) in spec['combatRows'] else spec['source']
      reg.append(entry)
    images[sheet]=out
    file=folder/f'{sheet}.png'
@@ -182,6 +208,13 @@ def main():
    'cell':[32,32],'anchor':[16,31],'cosmeticOnly':True,'facing':'right','palette':['#'+c for c in spec['palette']],
    'sheets':{s:{'image':s+'.png','size':[256,256]} for s in images},'frames':frames,'animations':animations,
    'presentation':{'attack':{'sheet':'interaction','row':5,'frames':[0,1,2,2,1]},'source':'image_gen original creature artwork'}}
+  if 'combatSource' in spec:
+   atlas['presentation']['wrestling']={
+    'dropkick':{'sheet':'interaction','row':5,'frames':[0,1,2,3]},
+    'salto':{'sheet':'main','row':6,'frames':list(range(8))},
+    'splits':{'sheet':'interaction','row':5,'frames':[4,5,6,7]},
+    'recovery':{'sheet':'main','row':5,'frames':list(range(8))},
+   }
   save_json(folder/'atlas.json',atlas)
   assets[ident]={'manifest':atlas,'images':images};manifest.append({'id':ident,'manifest':ident+'/atlas.json'})
   registration[ident]=reg
@@ -191,14 +224,17 @@ def main():
  preview(assets)
  # Preserve pending entries owned by other generators/agents.
  pendingPath=ROOT/'assets/figma-pending.json';pending=json.loads(pendingPath.read_text())
+ production={f['path']:f['sha1'] for f in json.loads((ROOT/'assets/figma-manifest.json').read_text())['production']}
  position=next((i for i,f in enumerate(pending['files']) if f['path'].replace('\\','/').startswith('assets/characters-v2/')),len(pending['files']))
  pending['files']=[f for f in pending['files'] if not f['path'].replace('\\','/').startswith('assets/characters-v2/')]
  generated=[]
  for ident in SPECS:
   for sheet in ['main','interaction']:
    file=PACK/ident/f'{sheet}.png'
-   generated.append({'path':file.relative_to(ROOT).as_posix(),'sha1':hashlib.sha1(file.read_bytes()).hexdigest(),'width':256,'height':256,
-    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained.'})
+   path=file.relative_to(ROOT).as_posix();sha1=hashlib.sha1(file.read_bytes()).hexdigest()
+   if production.get(path)==sha1:continue
+   generated.append({'path':path,'sha1':sha1,'width':256,'height':256,
+    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. Generated source and full prompts retained; awaiting Figma production synchronization.'})
  pending['files'][position:position]=generated
  save_json(pendingPath,pending)
  print('Built three original characters: 384 native cells, 75 clips, six 256x256 sheets.')
@@ -207,6 +243,22 @@ def preview(assets):
  rattle=Image.new('RGBA',(256,512))
  for i,sheet in enumerate(['main','interaction']):rattle.paste(assets['rattle-norvegicus']['images'][sheet],(0,i*256))
  rattle.save(REVIEW/'rattle-sheets-1x.png');rattle.resize((1024,2048),NEAREST).save(REVIEW/'rattle-sheets-4x.png')
+ a=assets['rattle-norvegicus'];moves=a['manifest']['presentation']['wrestling']
+ combat=Image.new('RGB',(384,205),'#1b2431');d=ImageDraw.Draw(combat)
+ for row,(name,clip) in enumerate(moves.items()):
+  d.text((3,25+row*47),name,fill='#d5d0bb')
+  for col,frame in enumerate(clip['frames']):
+   tile=a['images'][clip['sheet']].crop((frame*32,clip['row']*32,frame*32+32,clip['row']*32+32))
+   combat.paste(tile,(68+col*39,12+row*47),tile)
+ combat.save(REVIEW/'wrestling-1x.png');combat.resize((1536,820),NEAREST).save(REVIEW/'wrestling-4x.png')
+ animation=[]
+ for tick in range(96):
+  name=list(moves)[tick//24];clip=moves[name];frame=clip['frames'][(tick%24)*len(clip['frames'])//24]
+  image=Image.new('RGB',(64,64),'#1b2431');d=ImageDraw.Draw(image)
+  tile=a['images'][clip['sheet']].crop((frame*32,clip['row']*32,frame*32+32,clip['row']*32+32))
+  image.paste(tile,(16,8),tile);d.text((3,49),name,fill='#d5d0bb')
+  animation.append(image.resize((256,256),NEAREST))
+ animation[0].save(REVIEW/'wrestling-4x.gif',save_all=True,append_images=animation[1:],duration=90,loop=0,disposal=2)
  labels=['idle','walk','run','rise','water','toss','lampHold','rest']
  im=Image.new('RGB',(384,158),'#1b2431');draw=ImageDraw.Draw(im)
  for i,label in enumerate(labels):draw.text((68+i*39,3),'lamp' if label=='lampHold' else label,fill='#d5d0bb')

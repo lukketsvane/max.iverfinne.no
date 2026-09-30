@@ -5,7 +5,7 @@ function polgeStandin(){return false;}function polgePlace(){return false;}functi
 function nativeAttackClass(){return ['runner','bulwark','herbalist','polge'].indexOf(ownClass().id)>=0;}
 function classSkillCooldown(){return ownClass().skillCd*Math.pow(.88,ownClass().id==='runner'?(rogueRun.perks.tailwind||0):0);}
 function fighterState(){var owner=skillOwner(),q=classFighters.find(function(f){return f.owner===owner;});if(!q){q={owner:owner,world:worldLevel(),combo:0,window:0,weave:0,flurry:0,next:0};classFighters.push(q);}return q;}
-function classAttackCooldown(){return ({runner:.36,bulwark:.72,herbalist:.58,polge:.24}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
+function classAttackCooldown(){return ({runner:.5,bulwark:.72,herbalist:.58,polge:.24}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
 function combatFx(kind,x,y,r,face,combo){
   var q={id:++coopFxId,x:x,y:y,t:0,ring:1,r:r,strike:kind,cue:'strike:'+kind,owner:skillOwner(),face:face||1,combo:combo||0};booms.push(q);
   if(typeof classStrikeCue==='function')classStrikeCue(kind,Math.hypot(x-(coopActor?coop.members[coop.me].avatar.x:P.x),y-(coopActor?coop.members[coop.me].avatar.y:P.y)),combo||0);
@@ -22,28 +22,31 @@ function combatBuild(){return Object.assign({},rogueRun.perks,{emberStacks:ownTr
 function combatDamage(k,amount,x,build){return damagePest(k,amount*(1+.12*(build.emberStacks||0)),x,build);}
 function combatAim(target){var a=target&&target.o||target||{x:P.x+P.face*100,y:P.y-12};if(a.spore){var h=runHazards.find(function(h){return h.id===a.spore&&h.type==='spore'&&h.tell>0;});if(h){var point=hazardPosition(h),speed=ownClass().id==='runner'?230:140;for(var i=0;i<4;i++)point=hazardPosition(h,Math.hypot(point.x-P.x,point.y-(P.y-13))/speed);return {x:point.x,y:point.y,spore:h.id};}}return {x:Number.isFinite(a.x)?a.x:P.x+P.face*100,y:Number.isFinite(a.y)?a.y:P.y-12};}
 function classPrimary(target){
-  if(runIsPaused()||seedDown(coopActor)||bombCool>0||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;
+  if(runIsPaused()||seedDown(coopActor)||bombCool>0||P.tun>0||P.pounce||warp||P.st==='float'||(climb&&climb.exit))return false;
   var aim=combatAim(target);if(Math.abs(aim.x-P.x)>1)P.face=aim.x>P.x?1:-1;
   if(coopGuest()){P.attackTag=(P.attackTag||0)+1;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:aim.spore||0,attackTag:P.attackTag}))return false;}
   else{
     var kit=ownClass().id;
-    if(kit==='runner')needleFan(aim,false);
+    if(kit==='runner')rattleKick(aim);
     else if(kit==='herbalist')sporeShot(aim);
     else if(kit==='bulwark')cairnCleave(aim);
     else if(kit==='polge')polgePunch(aim,false);
   }
   bombCool=bombCoolMax=classAttackCooldown();task=null;holdWater=null;P.still=0;P.throwPose=.2;
+  if(ownClass().id==='runner'){P.rattleMove=P.grounded?'dropkick':'salto';P.rattlePose=.28;P.rattleClock=0;}
   if(!climb&&P.st!=='ladder')P.st='free';
   if(sheet2Ready){setAnim('toss');P.frame=ANIM.toss.hit;}
   return true;
 }
-function needleFan(aim,special){
-  var build=combatBuild(),count=1+(build.fletching||0)+(special?2:0),angle=Math.atan2(aim.y-(P.y-13),aim.x-P.x);
-  for(var i=0;i<count;i++){
-    var a=angle+(i-(count-1)/2)*.14,speed=230;
-    classShots.push({id:++classShotId,owner:skillOwner(),world:worldLevel(),kind:'needle',x:P.x+Math.cos(a)*7,y:P.y-13+Math.sin(a)*7,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,tx:aim.x,ty:aim.y,life:.85,damage:special?.65:.72,pierce:build.needle||0,hit:'',crosswind:build.crosswind||0,hits:0,perks:build});
-  }
-  combatFx('needle',P.x,P.y-13,11,P.face);
+function rattleKick(aim){
+  var b=combatBuild(),air=!P.grounded,r=(air?24:18)+3*(b.fletching||0),c=air?{x:P.x,y:P.y-12}:meleeCenter(aim,16),hit=0;
+  floatKrek.slice().sort(function(a,d){return enemyDistance(a,c.x,c.y)-enemyDistance(d,c.x,c.y);}).forEach(function(k){
+    if(enemyDistance(k,c.x,c.y)>r||!combatLineClear(P.x,P.y-12,k.x,k.y))return;
+    var damage=(air?1.1:1)*(1+.25*(b.needle||0))*(air&&b.updraft?1.25:1)*(1+(b.crosswind?.25*hit:0));hit++;
+    if(!combatDamage(k,damage,P.x,b)&&!k.boss){staggerKrek(k,air?.55:.4);k.vx=(air?(k.x<P.x?-1:1):P.face)*75;k.vy=air?-60:-25;}
+  });
+  combatObjectives(c.x,c.y,r);combatFx(air?'salto':'dropkick',c.x,c.y,r,P.face);
+  return hit;
 }
 function sporeShot(aim){
   var b=combatBuild(),a=Math.atan2(aim.y-(P.y-13),aim.x-P.x);
@@ -134,7 +137,8 @@ function updateClassCombat(dt){
 function drawClassShots(){classShots.forEach(function(s){var x=Math.round(s.x-camX),y=Math.round(s.y-camY);ctx.fillStyle=s.kind==='needle'?'#e6bf69':'#80d1b1';if(s.kind==='needle'){for(var n=0;n<7;n++)ctx.fillRect(x-Math.round(s.vx/230*n),y-Math.round(s.vy/230*n),1,1);}else{ctx.fillRect(x-2,y-2,5,4);ctx.fillStyle='#f5d895';ctx.fillRect(x-1,y-2,2,1);}});}
 function drawCombatStrike(b,x,y){
   if(b.t>.2)return;var alpha=1-b.t/.2,color=b.strike==='spore'?'#80d1b1':b.strike==='cleave'?'#cba877':b.strike==='needle'?'#e6bf69':'#eed2b5';ctx.globalAlpha=alpha;ctx.fillStyle=color;
-  if(['jab','cross','uppercut','flurry'].indexOf(b.strike)>=0){var r=Math.round(b.strike==='uppercut'?10:7);ctx.fillRect(x-r,y-3,r*2,6);ctx.fillRect(x-r+2,y-5,r*2-4,2);ctx.fillRect(x-r+2,y+3,r*2-4,2);ctx.fillStyle='#755b51';ctx.fillRect(x+(b.face<0?-3:1),y-4,1,8);}
+  if(['dropkick','salto','splits'].indexOf(b.strike)>=0){ctx.fillStyle='#efd17e';var span=Math.round(b.r*(.45+b.t*2));for(var i=0;i<12;i++){var angle=b.strike==='splits'?i/11*Math.PI:Math.PI*2*i/12;ctx.fillRect(x+Math.round(Math.cos(angle)*span),y+Math.round(Math.sin(angle)*span*(b.strike==='splits'?.25:1)),2,1);}}
+  else if(['jab','cross','uppercut','flurry'].indexOf(b.strike)>=0){var r=Math.round(b.strike==='uppercut'?10:7);ctx.fillRect(x-r,y-3,r*2,6);ctx.fillRect(x-r+2,y-5,r*2-4,2);ctx.fillRect(x-r+2,y+3,r*2-4,2);ctx.fillStyle='#755b51';ctx.fillRect(x+(b.face<0?-3:1),y-4,1,8);}
   else for(var i=0;i<14;i++){var a=(i/13-.5)*Math.PI,r=b.r*(.35+b.t*3);ctx.fillRect(x+Math.round(Math.cos(a)*r*(b.face||1)),y+Math.round(Math.sin(a)*r),2,2);}
   ctx.globalAlpha=1;
 }

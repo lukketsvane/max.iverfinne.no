@@ -86,7 +86,7 @@ test('a Moss tap near a distant climbable stem throws instead of vanishing', () 
   const h = fresh('runner'), g = h.game, p = plot({ id: 1, x: g.P.x + 50, growth: 2.2 }); g.gardenPlots = [p];
   assert.equal(g.plantClimbAt(p.x, g.surfaceY(p.x) - 40, 12), p);
   tap(h, p.x, g.surfaceY(p.x) - 40);
-  assert.equal(g.classShots.length, 1); assert.equal(g.climb, null);
+  assert.equal(g.classShots.length, 0); assert.ok(g.booms.some(b => b.strike === 'dropkick')); assert.equal(g.climb, null);
 });
 
 test('Moss pounce slams from the first second, harder from a stem, never harms plants or grants traversal rewards', () => {
@@ -114,7 +114,7 @@ test('Moss throws from an ordinary stem, keeps it, and never throws from an exit
   assert.equal(g.requestClimb(p), true); steps(g, .5);
   const k = pest(g, { x: g.P.x + 40, y: g.P.y });
   assert.equal(g.throwBomb({ kind: 'krek', o: k }), true);
-  assert.equal(g.P.st, 'climb'); assert.ok(g.climb); assert.equal(g.classShots.length, 1);
+  assert.equal(g.P.st, 'climb'); assert.ok(g.climb); assert.equal(g.classShots.length, 0); assert.ok(g.booms.some(b => b.strike === 'salto'));
   steps(g, .2); assert.equal(g.P.st, 'climb'); assert.ok(g.climb);
   const { game: e } = fresh('runner'), stalk = plot({ id: 1, x: e.P.x, growth: 2.7, stalk: true }); e.gardenPlots = [stalk]; e.rogueRun.clearedWorld = 1;
   assert.equal(e.requestClimb(stalk, true), true); steps(e, .3);

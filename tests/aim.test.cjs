@@ -147,8 +147,8 @@ test('native kits aim with a controller while steering, release their own attack
     assert.equal(g.readInput().axis,1,classId+' remains mobile while aiming');
     assert.ok(g.chargePoint().x<g.P.x-30);set(7,false);
     const quick=g.bombCool;assert.ok(quick>0);assert.equal(g.bombs.length,0);
-    if(classId==='runner'||classId==='herbalist')assert.ok(g.classShots[0].vx<0);
-    else assert.ok(g.booms.some(b=>b.strike===(classId==='bulwark'?'cleave':'jab')));
+    if(classId==='herbalist')assert.ok(g.classShots[0].vx<0);
+    else assert.ok(g.booms.some(b=>b.strike===(classId==='runner'?'dropkick':classId==='bulwark'?'cleave':'jab')));
     g.bombCool=0;set(7,true);g.updateCharge(.9);set(7,false);
     assert.equal(g.bombCool,quick,'holding native aim does not invent charged damage or recovery');
     assert.equal(g.bombs.length,0);
@@ -161,7 +161,7 @@ test('native mouse aim releases a directional projectile or close strike without
     const stage=h.elements.get('stage');
     for(const fn of stage.listeners.pointerdown||[])fn({type:'pointerdown',clientX:700,clientY:200,pointerId:9,pointerType:'mouse',button:0,preventDefault(){}});
     assert.equal(g.charge.src,'mouse');const aim=g.chargePoint();g.chargeRelease();assert.equal(g.bombs.length,0);
-    if(classId==='runner'||classId==='herbalist')assert.equal(Math.sign(g.classShots[0].vx),Math.sign(aim.x-g.P.x));
-    else assert.ok(g.booms.some(b=>b.strike===(classId==='bulwark'?'cleave':'jab')));
+    if(classId==='herbalist')assert.equal(Math.sign(g.classShots[0].vx),Math.sign(aim.x-g.P.x));
+    else assert.ok(g.booms.some(b=>b.strike===(classId==='runner'?'dropkick':classId==='bulwark'?'cleave':'jab')));
   }
 });

@@ -77,7 +77,7 @@ test('an unlock hint names only a signature that the next rank actually enables'
   const p=ranks({blast:1,cadence:1}),before=JSON.stringify(p);
   assert.deepEqual(builds.unlocks(p,'blast','mech').map(q=>q.id),['chain']);
   assert.deepEqual(builds.unlocks(ranks({blast:0,cadence:1}),'blast','mech'),[]);
-  assert.deepEqual(builds.unlocks(p,'blast','runner'),[],'Rattle Norvegicus cannot unlock bomb upgrades from legacy ranks');
+  assert.deepEqual(builds.unlocks(p,'blast','runner'),[],'Rattus norvegicus cannot unlock bomb upgrades from legacy ranks');
   assert.deepEqual(builds.unlocks(ranks({needle:1}),'fletching','runner').map(q=>q.id),['crosswind']);
   assert.deepEqual(builds.unlocks(ranks({robot:1}),'robot','mech').map(q=>q.id),['fleet','sentry']);
   assert.deepEqual(builds.unlocks(ranks({robot:1}),'robot','herbalist'),[]);
