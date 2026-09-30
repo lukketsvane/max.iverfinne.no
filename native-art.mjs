@@ -4,7 +4,7 @@ import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 // Persisted skin/class keys are network compatibility identifiers. These three
 // characters have wholly original anatomy and no longer load the Max recolours.
-const CHARACTER_ART = Object.freeze({ moss: 'kestrel', ember: 'cairn', moon: 'mycel' });
+const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus', ember: 'cairn', moon: 'mycel' });
 function playerPath(skin, sheet = 'main') {
   const character = CHARACTER_ART[skin];
   // Assemble the final leaf separately so static runtime discovery does not

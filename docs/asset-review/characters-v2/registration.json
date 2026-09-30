@@ -1,772 +1,1284 @@
 {
-  "kestrel": [
+  "rattle-norvegicus": [
     {
       "sheet": "main",
       "row": 0,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        1
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 0,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 0,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 1,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        1
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 2,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 3,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 4,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 5,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 6,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 1,
       "column": 7,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        1,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        1
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 2,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        3,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 5,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        3,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 2,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 0,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        0,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 1,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        4,
+        1
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 2,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        4,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 3,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        4,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 5,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        6,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 6,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        0,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 3,
       "column": 7,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        0,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 5,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        4,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 4,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        4,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 0,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        4,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 5,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        1
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 2,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        5,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 3,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        5,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        7
+      ]
     },
     {
       "sheet": "main",
       "row": 6,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 0,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        0
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 1,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        1
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 2,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        2
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 3,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        3
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 4,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        4
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 5,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        5
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 6,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        6
+      ]
     },
     {
       "sheet": "main",
       "row": 7,
       "column": 7,
-      "footBottom": 32
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        7
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 0,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 1,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        6
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 2,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        6
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        6
+      ]
     },
     {
       "sheet": "interaction",
       "row": 3,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        7
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 4,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        6
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        6
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        7
+      ]
     },
     {
       "sheet": "interaction",
       "row": 5,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 0,
-      "footBottom": 30
+      "footBottom": 30,
+      "sourceCell": [
+        5,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        4
+      ]
     },
     {
       "sheet": "interaction",
       "row": 6,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 0,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        0
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 1,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        6,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 2,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        5
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 3,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        1
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 4,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        2
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 5,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 6,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        3
+      ]
     },
     {
       "sheet": "interaction",
       "row": 7,
       "column": 7,
-      "footBottom": 31
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        4
+      ]
     }
   ],
   "cairn": [

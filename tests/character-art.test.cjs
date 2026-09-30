@@ -11,7 +11,7 @@ const original = json('assets/max-skins-v1/source/original-poses.json');
 
 test('three creature packs preserve native registration and gameplay markers with genuinely changing movement poses', async () => {
   const { decode, artProblems } = await import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
-  for (const [id, skin] of [['kestrel', 'moss'], ['cairn', 'ember'], ['mycel', 'moon']]) {
+  for (const [id, skin] of [['rattle-norvegicus', 'moss'], ['cairn', 'ember'], ['mycel', 'moon']]) {
     const directory = `assets/characters-v2/${id}/`, atlas = json(directory + 'atlas.json');
     assert.equal(atlas.compatibilitySkin, skin);
     assert.deepEqual(atlas.cell, [32, 32]); assert.deepEqual(atlas.anchor, [16, 31]);

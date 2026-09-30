@@ -1,6 +1,6 @@
 {
   "schema": "max-native-atlas/v1",
-  "id": "kestrel",
+  "id": "rattle-norvegicus",
   "kind": "player-skin",
   "classId": "runner",
   "compatibilitySkin": "moss",
@@ -15,22 +15,22 @@
   "cosmeticOnly": true,
   "facing": "right",
   "palette": [
-    "#14141e",
-    "#282030",
-    "#493044",
-    "#643536",
-    "#8e3c29",
-    "#b94c2f",
-    "#d8703b",
-    "#e59f4b",
-    "#f2ca75",
-    "#f6e5ba",
-    "#cbc49c",
-    "#847550",
-    "#35494c",
-    "#32737a",
-    "#60adb0",
-    "#a7ded3"
+    "#0b1017",
+    "#101932",
+    "#253459",
+    "#586369",
+    "#a3acaf",
+    "#f3e7ca",
+    "#9d7336",
+    "#efd17e",
+    "#193a28",
+    "#4f7545",
+    "#9f3b1f",
+    "#df763a",
+    "#edc191",
+    "#b63330",
+    "#247bad",
+    "#52cde5"
   ],
   "sheets": {
     "main": {
@@ -62,9 +62,9 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        14,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -81,9 +81,9 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        13,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -100,9 +100,9 @@
         31
       ],
       "opaqueBounds": [
-        7,
-        13,
-        26,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -119,9 +119,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        13,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -138,9 +138,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        13,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -157,9 +157,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        13,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -176,9 +176,9 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        13,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -195,9 +195,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        13,
-        27,
+        10,
+        4,
+        23,
         31
       ]
     },
@@ -214,644 +214,36 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        15,
-        28,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        14,
-        27,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        14,
-        27,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        15,
-        27,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        14,
-        29,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        14,
-        27,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        15,
-        28,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        224,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        16,
-        28,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        0,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        18,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        16,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        16,
-        29,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        17,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        16,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        18,
-        30,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        14,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        224,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        12,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        0,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        11,
-        28,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        13,
-        28,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        9,
-        26,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        9,
-        26,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        9,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        7,
-        9,
-        26,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        13,
-        27,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        224,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        14,
-        27,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        0,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        17,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        15,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
         8,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        11,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        15,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
         6,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
         8,
-        26,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        16,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        224,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
         6,
-        20,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        0,
-        160,
-        32,
+        25,
         32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        19,
-        27,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        19,
-        29,
-        31
       ]
     },
     {
       "sheet": "main",
       "rect": [
         64,
-        160,
+        32,
         32,
         32
       ],
@@ -860,17 +252,17 @@
         31
       ],
       "opaqueBounds": [
-        3,
-        19,
-        29,
-        31
+        8,
+        6,
+        24,
+        32
       ]
     },
     {
       "sheet": "main",
       "rect": [
         96,
-        160,
+        32,
         32,
         32
       ],
@@ -879,17 +271,17 @@
         31
       ],
       "opaqueBounds": [
-        3,
-        16,
-        29,
-        31
+        8,
+        6,
+        25,
+        32
       ]
     },
     {
       "sheet": "main",
       "rect": [
         128,
-        160,
+        32,
         32,
         32
       ],
@@ -898,17 +290,17 @@
         31
       ],
       "opaqueBounds": [
-        3,
-        16,
-        29,
-        31
+        8,
+        6,
+        25,
+        32
       ]
     },
     {
       "sheet": "main",
       "rect": [
         160,
-        160,
+        32,
         32,
         32
       ],
@@ -917,17 +309,17 @@
         31
       ],
       "opaqueBounds": [
-        3,
-        14,
-        29,
-        31
+        8,
+        6,
+        24,
+        32
       ]
     },
     {
       "sheet": "main",
       "rect": [
         192,
-        160,
+        32,
         32,
         32
       ],
@@ -936,17 +328,17 @@
         31
       ],
       "opaqueBounds": [
+        8,
         6,
-        14,
-        27,
-        31
+        24,
+        32
       ]
     },
     {
       "sheet": "main",
       "rect": [
         224,
-        160,
+        32,
         32,
         32
       ],
@@ -955,123 +347,731 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        13,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        0,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        12,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        32,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        10,
-        31,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        64,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        1,
-        12,
-        31,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        96,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        1,
-        13,
-        32,
-        30
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        128,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        13,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        160,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
+        8,
         5,
-        11,
-        28,
+        25,
+        32
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        0,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        6,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        6,
+        26,
+        32
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        224,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        4,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        0,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        10,
+        3,
+        23,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        3,
+        24,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        3,
+        24,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        2,
+        24,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        23,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        10,
+        3,
+        23,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        224,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        10,
+        3,
+        23,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        0,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        3,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        7,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        224,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        0,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        10,
+        4,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        224,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        10,
+        4,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        0,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        32,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        64,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        26,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        96,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        4,
+        26,
+        30
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        128,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        160,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
         31
       ]
     },
@@ -1088,9 +1088,9 @@
         31
       ],
       "opaqueBounds": [
-        2,
-        12,
-        30,
+        9,
+        5,
+        23,
         31
       ]
     },
@@ -1107,9 +1107,9 @@
         31
       ],
       "opaqueBounds": [
-        3,
-        12,
-        29,
+        9,
+        5,
+        23,
         31
       ]
     },
@@ -1126,9 +1126,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        13,
-        28,
+        9,
+        4,
+        24,
         32
       ]
     },
@@ -1145,9 +1145,9 @@
         31
       ],
       "opaqueBounds": [
-        4,
-        15,
-        28,
+        9,
+        5,
+        24,
         32
       ]
     },
@@ -1164,9 +1164,9 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        11,
-        26,
+        9,
+        5,
+        24,
         32
       ]
     },
@@ -1183,9 +1183,9 @@
         31
       ],
       "opaqueBounds": [
-        6,
-        11,
-        26,
+        8,
+        8,
+        25,
         32
       ]
     },
@@ -1202,9 +1202,9 @@
         31
       ],
       "opaqueBounds": [
-        4,
-        10,
-        29,
+        8,
+        5,
+        24,
         32
       ]
     },
@@ -1212,6 +1212,1146 @@
       "sheet": "main",
       "rect": [
         160,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        6,
+        24,
+        32
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        192,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        6,
+        24,
+        32
+      ]
+    },
+    {
+      "sheet": "main",
+      "rect": [
+        224,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        32
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        0,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        32,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        64,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        96,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        8,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        24,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        160,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        4,
+        23,
+        30
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        25,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        64,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        96,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        128,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        160,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        6,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        192,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        224,
+        192,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        7,
+        5,
+        26,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        0,
+        224,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        23,
+        31
+      ]
+    },
+    {
+      "sheet": "interaction",
+      "rect": [
+        32,
         224,
         32,
         32
@@ -1222,34 +2362,15 @@
       ],
       "opaqueBounds": [
         7,
-        11,
-        26,
-        32
-      ]
-    },
-    {
-      "sheet": "main",
-      "rect": [
-        192,
-        224,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
+        5,
+        25,
         31
-      ],
-      "opaqueBounds": [
-        6,
-        15,
-        27,
-        32
       ]
     },
     {
-      "sheet": "main",
+      "sheet": "interaction",
       "rect": [
-        224,
+        64,
         224,
         32,
         32
@@ -1260,825 +2381,8 @@
       ],
       "opaqueBounds": [
         5,
-        16,
-        27,
-        32
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        12,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        14,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        16,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        19,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        128,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        19,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        20,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        20,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        0,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        19,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        14,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        13,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        15,
-        31,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        16,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        128,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        15,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        14,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        13,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        32,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        12,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        11,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        13,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        13,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        17,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        128,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        17,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        15,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        15,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        64,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        11,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        12,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        13,
-        31,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        15,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        16,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        128,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        14,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        14,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        12,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        96,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        12,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        15,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        14,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        5,
-        13,
-        27,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        6,
-        6,
-        26,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        128,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
         10,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        14,
         28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        13,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        128,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        13,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        12,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        10,
-        31,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        1,
-        13,
-        31,
         31
       ]
     },
@@ -2086,45 +2390,7 @@
       "sheet": "interaction",
       "rect": [
         96,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        1,
-        14,
-        32,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        128,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        13,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        160,
+        224,
         32,
         32
       ],
@@ -2134,122 +2400,8 @@
       ],
       "opaqueBounds": [
         5,
-        11,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        2,
-        12,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        160,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        12,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
         13,
         28,
-        30
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        13,
-        28,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        12,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        11,
-        29,
         31
       ]
     },
@@ -2257,139 +2409,6 @@
       "sheet": "interaction",
       "rect": [
         128,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        12,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        160,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        10,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        192,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        11,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        224,
-        192,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        10,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        0,
-        224,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        16,
-        30,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        32,
-        224,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        16,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        64,
-        224,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        4,
-        16,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
-        96,
         224,
         32,
         32
@@ -2408,25 +2427,6 @@
     {
       "sheet": "interaction",
       "rect": [
-        128,
-        224,
-        32,
-        32
-      ],
-      "anchor": [
-        16,
-        31
-      ],
-      "opaqueBounds": [
-        3,
-        17,
-        29,
-        31
-      ]
-    },
-    {
-      "sheet": "interaction",
-      "rect": [
         160,
         224,
         32,
@@ -2438,8 +2438,8 @@
       ],
       "opaqueBounds": [
         4,
-        15,
-        28,
+        14,
+        29,
         31
       ]
     },
@@ -2456,9 +2456,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        16,
-        27,
+        4,
+        14,
+        29,
         31
       ]
     },
@@ -2475,9 +2475,9 @@
         31
       ],
       "opaqueBounds": [
-        5,
-        16,
-        27,
+        4,
+        14,
+        28,
         31
       ]
     }

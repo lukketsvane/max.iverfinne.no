@@ -1,0 +1,13 @@
+{
+  "attempt": 9,
+  "file": "attempt-09.png",
+  "transparent_background_requested": false,
+  "reference_files": [
+    "7-Photo-7.jpg",
+    "exec-f49e016e-7466-44c7-8796-7495d29e1b31.png",
+    "12-Pasted-Image-12.jpg",
+    "4-Photo-4.jpg",
+    "8-pillbug_sprite64_normalized_256.png"
+  ],
+  "prompt": "Use case: style-transfer. Create a new variation, ONE8x8 animation sprite sheet (64 full-body frames) of the rat-mask girl wizard.\nImage1 is the STRICT ORIGINAL PIXEL ART STYLE AND GRID: the black-hat man sprite sheet. Keep its chunky low-resolution contour pixels, 2-3 flat shade clusters and exact8 columns by8 rows. Image2 is a previous character CONCEPT ONLY: retain its unsettling grey mask silhouette and clothing identity, but remove the fine/smooth rendering and detailed hair. Image3 is the real navy/gold robe and green cone hat. Image4 is the real horrid grey mask. Image5 binds the original tiny native pixel scale.\nThe girl is a human wearing an uncanny grey theatrical rat mask, long smooth grey forehead, small sunken almond-shaped eyes with heavy dark lids, tapered projecting rat snout, black nose, reddish open mouth and two white tooth pixels. Low ears, dark underside of jaw. Long muted auburn hair, tall thin GREEN cone wizard hat; slim full-length NAVY blue wizard cloak with golden center stripe, cuffs, hem and only a few gold pattern pixels. Tiny pale human hands and feet. Do NOT turn her into a cute mouse or a skull.\nUse FEWER, LARGER pixel clusters than concept image2. 32x32 native cells with character14x27 pixels. Dark ONE native pixel outline, max16 colors, no gradients, no antialiasing, no curve smoothing, no strands or filigree. Express the creepy eyebrows and mouth using hard square pixel steps. Flat dusty blue background exactly like reference1, no background gradients or shadows.\nExactly8 equally spaced columns and8 rows, same bottom-center anchor and size. 8 consecutive animation frames per row: 1 idle with mask three-quarter right,2 walk right,3 walk left,4 run right,5 jump and land (no magic),6 cast tiny blue hand flame,7 hurt/recover (no magic),8 topple/lie/rise. Only row6 has flame. Same hat/head/cloak in every frame, coherent left-to-right actions, no clipping or overlap.\nNo text, labels, watermark, grids, borders, scenery, extra objects or people.\nAttempt09: Preserve the grotesque mask design from concept2, render it in the original sheet's blunt coarse pixels and restrained palette."
+}

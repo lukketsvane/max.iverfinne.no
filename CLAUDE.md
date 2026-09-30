@@ -16,10 +16,10 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 
 1. **One Play flow / one shared garden.** There is no player-facing Solo versus Multiplayer split.
 2. **Maximum four players.** Players can join a running garden. There are six characters (Sligo is hidden until unlocked), but never more than four players.
-3. **One player per character.** Mech, Kestrel, Cairn and Mycel are exclusive slots. Taken characters must be disabled in UI and reserved server-side.
+3. **One player per character.** Mech, Rattle Norvegicus, Cairn and Mycel are exclusive slots. Taken characters must be disabled in UI and reserved server-side.
 4. **First player sets difficulty.** Easy/Medium/Hard/Insane is run-wide. Once a shared run exists, joiners inherit the existing difficulty and cannot change it.
 5. **Physical stage progression.** A player must actually climb the cleared exit plant to the top and cross into the next garden. Do not replace this with a ground teleport. Once one player reaches the next stage, teammates may catch up automatically.
-6. **Kestrel climbing.** Kestrel can climb ordinary living plants only after they reach at least 50% of maximum physical height. Ordinary climbing cannot skip an uncleared stage.
+6. **Rattle Norvegicus climbing.** Rattle Norvegicus can climb ordinary living plants only after they reach at least 50% of maximum physical height. Ordinary climbing cannot skip an uncleared stage.
 7. **Live world during UI.** Settings and boon choices do not pause gameplay.
 8. **Guest parity.** Pickups, bombs/defend, movement and allowed interactions must work for guests as well as the authoritative client.
 9. **PWA continuity.** Brief backgrounding must not mean intentional leave. Rebuild Realtime channels on return; host authority may hand off while a client is suspended.
@@ -72,7 +72,7 @@ Relevant tests cover physical ascent and co-op catch-up. Keep them when refactor
 
 - **Pølge**: limbless boxer; `polge.inc.js` now owns all four native attack kits. Jab/cross/uppercut are close attacks, dodge primes a punch, and the special is a mobile flurry. No bombs or projectiles. Old stand-in functions only remain as harmless compatibility stubs. `varnish`, `splinters`, `raincoat` now mean flurry count, uppercut damage and skill recovery, with Haymaker and Second Wind signatures.
 - **Mech**: fixed two-second planted bombs and exclusive watering rover. Preserved kit.
-- **Kestrel** (`runner` / `moss` compatibility keys): avian needle archer, plant climbing, pounce and landing volleys. Piercing, fan and pounce directions combine into Crosswind and Updraft.
+- **Rattle Norvegicus** (`runner` / `moss` compatibility keys): rat-masked needle wizard, plant climbing, pounce and landing volleys. Piercing, fan and pounce directions combine into Crosswind and Updraft.
 - **Cairn** (`bulwark` / `ember`): stone close fighter, cleave, brace/parry and soil burrow. Fault, Counter and Bedrock combine into Aftershock and Sanctuary.
 - **Mycel** (`herbalist` / `moon`): mushroom spore caster, plant-adjacent chains and offensive healing bloom. Colony, Ferment and Symbiosis combine into Outbreak and Symphony.
 
@@ -259,7 +259,7 @@ Use it for:
 - bosses
 - expanded enemy mix
 - rats
-- Kestrel plant climbing
+- Rattle Norvegicus plant climbing
 - time-pressure scenes
 - player/robot/native art
 - result bouquets
@@ -281,7 +281,7 @@ Old closed PRs and historical verification documents are evidence, not architect
 - gameplay/balance: `index.html`, `run-director.inc.js`, corresponding tests
 - co-op: `coop-session.mjs`, `coop-transport.mjs`, `coop-game.inc.js`, Supabase migration/RPC tests
 - menu/join flow: `game-menu.mjs`, `player-loadout.mjs`, menu tests
-- Kestrel/progression: climb code in `index.html`, `tests/moss-climb.test.cjs`, co-op progression tests
+- Rattle Norvegicus/progression: climb code in `index.html`, `tests/moss-climb.test.cjs`, co-op progression tests
 - rats: `rat-enemies.inc.js`, `tests/rat-enemies.test.cjs`
 - art: `native-art.mjs`, relevant `assets/**/README.md`, native-art tests
 - bouquet/results: `run-results.js`, `assets/results-native/`, record/leaderboard tests

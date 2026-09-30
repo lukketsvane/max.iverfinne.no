@@ -17,7 +17,7 @@ test('native class attacks have distinct recovery times while Mech and Sligo kee
   }
 });
 
-test('Cairn cleaves punish a bite tell for 50% more damage and stagger; Kestrel needles keep their normal damage', () => {
+test('Cairn cleaves punish a bite tell for 50% more damage and stagger; Rattle Norvegicus needles keep their normal damage', () => {
   const hurt = {};
   for (const id of ['bulwark', 'runner']) for (const windup of [0, .3]) {
     const g = fresh(id); g.gardenPlots = [plot({ id: 1, x: g.P.x + 40 })];
