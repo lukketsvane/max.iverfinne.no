@@ -7,7 +7,7 @@ keys `moss`, `ember`, `moon` remain wire identifiers;
 
 | Character | Role | Silhouette | Palette |
 | --- | --- | --- | --- |
-| Rattus norvegicus | pro wrestler / runner | unsettling grey rat mask, auburn hair, green cone hat, navy robe with gold trim and wide wrestling boots | grey, navy, gold, green, auburn, cyan |
+| Rattus norvegicus | pro wrestler / runner | grey rat mask, auburn hair, green cone hat, black-and-gold athletic ring gear, short navy cape and gold-trim boots | grey, navy, gold, green, auburn, cyan |
 | Cairn | stone tank / bulwark | broad boulder, slab fists, massive short feet | slate, ceramic, amber |
 | Mycel | spore support / herbalist | wide cap, luminous gills, root feet | burgundy, ivory, mint |
 
@@ -26,27 +26,35 @@ keeps row 2. Rattus's wrestling presentation uses the following native cells:
 | Aerial salto | main | 6 | 0–7 |
 | Splits descent | interaction | 5 | 4–7 |
 | Impact and recovery | main | 5 | 0–7 |
+| Planting splits | interaction | 2 | 3–6, within the existing eight-frame sow clip |
 
 The renderer follows the game's wrestling state. Atlas presentation does not
-decide hit timing, range, damage or multiplayer authority. Idle, walk, run,
-look, jump, stretch and care keep their original Rattus drawings.
+decide hit timing, range, damage or multiplayer authority. Planting holds the
+complete wide splits through the existing hit frame 6, then returns to a low
+crouch matching the following stand clip.
 
 The built-in image_gen masters, complete prompts, source SHA-256 hashes and
-measured row windows live in `docs/asset-review/characters-v2/`. Rattus uses the
-immutable rat-wizard attempt 09 source; its original opaque blue matte is removed
-before a fixed 0.185 nearest-neighbour reduction. Standing frames are 27 pixels
-tall. The compiler maps its 64 source cells into both runtime sheets, retaining
-right-facing walk/run sequences, hand-light care and prone poses for rest.
-The second immutable master, `source/wrestling.png`, supplies the dropkick,
-upside-down salto, wide front splits and recovery drawings. Its 64 complete
-connected figures are isolated before one fixed 0.175 reduction; wide legs and
-the rotated hat can cross nominal source cells and must never be clipped.
-The widest native splits pose is 32 pixels. Combat reduction retains separated
-native pixels belonging to the same authored body, including boots and hands.
-The source has no dedicated digging, picking or lantern-tool sequence; those
-clips reuse its bend/reach poses or hand flame. `registration.json` records each
-Rattus runtime cell's source file, row and column. Retired Kestrel masters remain in
-the review archive, and its runtime sheets are removed.
+measured row centers live in `docs/asset-review/characters-v2/`. Rattus now uses
+the owner's two selected black-and-gold masters, `source/rattus-movement-v2.png`
+and `source/rattus-combat-v2.png`. Their exact two built-in image_gen prompts are
+retained in `source/rattus-wrestler-v2-prompts.json`; the native build does not
+depend on the separate colour-variant gallery. One fixed 0.175 nearest-neighbour
+reduction applies to every selected pose from both masters. Whole connected
+figures preserve boots, hands, wide legs and the rotated hat across imperfect
+nominal cell boundaries. Reduction retains separated native pixels belonging
+to the same authored figure. Registration rejects any pose taller than its
+original foot position, preventing silent top clipping.
+
+The supplied final source rows are clipped and some figures touch the row above.
+No runtime frame uses source row 7. Complete splits come from combat row 6;
+standing, crouching and recovery use complete earlier rows. The compiler rejects
+the vertically joined figures rather than inventing missing boots. Idle uses
+guard poses, walk uses right-facing weight shifts, and run uses the movement
+master's right-facing run row. The sources have no authored gardening tools,
+lantern or complete prone rest sequence; those clips reuse crouch, reach,
+raised-arm and resting crouch poses. `registration.json` records each runtime
+cell's exact source file, row and column. Earlier rat-wizard, wrestling and
+retired Kestrel masters remain preserved with their provenance.
 Run `python scripts/build-characters-v2.py` to reproduce the PNGs, atlases,
 registration log, native/4× contact sheets and 4× animation preview. A fixed
 reduction per character preserves pose proportions; connected-body extraction

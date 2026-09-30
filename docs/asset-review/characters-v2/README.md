@@ -1,44 +1,50 @@
 # Original character artwork, 2026-09-27
 
-Rattus norvegicus replaces Kestrel on 2026-09-30. Its immutable master is
-`source/rattle-norvegicus.png`, copied byte-for-byte from the owner's selected
-rat-wizard attempt 09. `source/rattle-prompt.json` contains that attempt's full
-prompt and reference filenames. `source/provenance.json` pins its SHA-256 and
-continues to retain the retired Kestrel source hashes and masters.
+Rattus norvegicus replaced Kestrel on 2026-09-30. On 2026-10-01 the owner selected
+the supplied black-and-gold movement and combat sheets to replace the initial
+wizard robe artwork and perform a split while planting. Immutable copies are
+`source/rattus-movement-v2.png` and `source/rattus-combat-v2.png`; both match their
+built-in image_gen outputs byte for byte. The exact two selected prompt records
+are self-contained in `source/rattus-wrestler-v2-prompts.json`.
+`source/provenance.json` pins those files and continues to retain the earlier
+rat-wizard, wrestling and retired Kestrel sources.
 
-Rattus's source has eight nominal rows: idle, right walk, left walk, right run,
-jump/land, hand casting, hurt/recovery and topple/rest. Its generated 1254-pixel
-size does not divide into integer cells. The compiler uses rounded eighth-sheet
-boundaries, removes the blue matte and detached dust, then applies one fixed
-0.185 nearest-neighbour scale, a sixteen-colour palette and binary alpha. It
-preserves the grey rat mask, auburn hair, green hat, navy robe and gold trim.
-The native standing silhouette is 27 pixels tall; jumping and compressed poses
-retain their relative dimensions. Every cell keeps the original foot anchor.
+Both supplied sheets have eight visual rows and eight poses per row, but their
+1254-pixel dimensions do not form integer cells. The final row is clipped;
+some final-row figures also touch the figures above. The compiler selects whole
+connected figures by measured row centers and nominal columns, rejects joined
+figures taller than a source row, and never uses source row 7. Complete source
+poses from rows 0–6 retain their boots, hands, hat and wide legs without drawing
+missing pixels. One fixed 0.175 nearest-neighbour reduction applies to both
+masters, followed by the existing sixteen-colour palette and binary alpha.
+Pixels under transparency have RGB zero. A registration assertion rejects any
+pose taller than its original foot position, so no hat is cropped above a cell.
 
-Only the right-facing walk and run rows supply movement. The source casting
-drawings supply magical watering/hand-light poses. Prone drawings
-appear only in the rest sequence. Digging, picking and planting reuse bend and
-reach drawings because the source has no authored tool-specific sequences.
-`registration.json` records the source row/column for each Rattus runtime frame;
-all 25 animation timings and hit/pour markers remain unchanged.
+All runtime drawings now use the selected black-and-gold athletic ring gear,
+short navy/gold cape, rat mask, auburn hair and green hat. Idle uses complete
+combat row 0 guard poses, omitting its jab columns. Walk uses movement row 1
+weight shifts; run uses movement row 4. All face right before the existing
+renderer mirrors the sprite. Care and rest borrow complete crouch, reach and
+raised-arm poses because these sources have no authored gardening tools,
+lantern or complete prone-rest sequence. No procedural silhouettes are drawn.
 
-The follow-up pro-wrestler design uses a second immutable built-in image_gen
-master, `source/wrestling.png`, with its full prompt in
-`source/wrestling-prompt.json`. Its 64 authored body groups contain a horizontal
-two-boot dropkick, an upside-down salto, front-facing splits and landing
-recovery. Extracting whole connected figures preserves wide legs and the
-rotated hat across imperfect nominal source cells. One fixed 0.175 reduction
-keeps the same palette, binary alpha, zero RGB under transparency and integer
-anchor. No new silhouettes or poses are drawn procedurally.
+Wrestling cells retain the runtime contract:
 
-Main row 6 contains all eight source row 2 salto poses. Interaction row 5
-columns 0–3 use source row 0 columns 0, 1, 3, 6 for dropkick; columns 4–7 use
-source row 3 columns 1, 2, 3, 4 for splits descent. Main row 5 uses source row 4
-columns 0, 0, 3, 4, 1, 2, 6, 7 to recover from the wide impact through bending
-and kneeling to standing. Idle, walk, run, look, jump, stretch, care and rest
-remain unchanged. `atlas.json` records these wrestling cells under
-`presentation.wrestling`; combat behavior and state timing belong to the game.
-`registration.json` identifies the master and source cell for every output.
+| Runtime cells | Selected source cells, zero-based |
+| --- | --- |
+| Main row 6, salto | Combat row 5, columns 0–7 |
+| Interaction row 5, columns 0–3, dropkick | Combat row 4, columns 0, 1, 3, 6 |
+| Interaction row 5, columns 4–7, splits descent | Combat row 6, columns 4, 1, 2, 3 |
+| Main row 5, impact/recovery | Combat (6,1), (6,2), (6,5), (6,6); movement (0,1), (0,2), (0,3); combat (0,0) |
+| Interaction row 2, planting | Combat (0,0); movement (0,1); combat (6,4), (6,1), (6,2), (6,3), (6,2); movement (0,0) |
+
+Planting columns 3–6 hold the full wide splits through the existing sow hit
+frame 6. Column 7 recovers to the same low crouch as interaction row 0 column 3,
+so the following stand clip rises without dipping. All 25 original clip frame
+sequences, fps, loops and hit/pour markers remain unchanged.
+`atlas.json` records the wrestling slots under `presentation.wrestling`;
+gameplay retains hit timing, damage and authority. `registration.json` records
+the exact selected master and source cell for all 128 Rattus runtime frames.
 
 `rattle-sheets-1x.png` shows both actual runtime sheets; `rattle-sheets-4x.png`
 is an exact integer enlargement. The existing contact and animation previews
@@ -49,10 +55,11 @@ previous bytes. Kestrel's three runtime files have been retired.
 `wrestling-4x.gif` plays dropkick, salto, splits and recovery in order. The
 integer enlargement reveals the full splits width and inverted green hat.
 
-`rattle-menu-390.png` and `rattle-menu-320.png` capture the selected character
-at phone widths. Browser checks confirm the full name and description fit,
-the preview loads the 256×256 native sheet with pixelated rendering, and no
-script errors occur. Saved selections retain `runner` and `moss`.
+`planting-1x.png` and `planting-4x.png` show all eight actual native planting
+frames, including the held splits and low-crouch recovery.
+
+`rattle-menu-390.png` and `rattle-menu-320.png` retain the earlier wizard-robed
+phone review. Saved selections still use `runner` and `moss`.
 
 Figma synchronization is recorded in `assets/figma-manifest.json`; any files
 awaiting import remain pinned in `assets/figma-pending.json`. The initial

@@ -18,7 +18,7 @@ function playerRow(skin, sheet, row, animation) {
   return CHARACTER_ART[skin] && sheet === 'interaction' && animation === 'toss' ? 5 : row;
 }
 function playerCell(skin, player) {
-  if (skin !== 'moss' || !player || !(player.rattlePose > 0 || player.pounce > 0)) return null;
+  if (skin !== 'moss' || !player || player.anim === 'sow' || !(player.rattlePose > 0 || player.pounce > 0)) return null;
   const clock = Math.max(0, Number.isFinite(player.rattleClock) ? player.rattleClock : 0);
   const frame = Math.min(7, Math.floor(clock * 8 / .28));
   if (player.rattleMove === 'salto') return { sheet: 'main', row: 6, column: player.pounce === 1 ? Math.floor(clock * 20) % 8 : frame };
