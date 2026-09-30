@@ -50,7 +50,7 @@ const functionNames = [
   'gardenLoop', 'loopX', 'loopDelta', 'wrapGardenPlayer', 'drawLoopForeground', 'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
   'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
   'stageLayout', 'pictureLayout', 'levelSpots', 'digSpots', 'digBlast', 'pickupShown', 'drawSpots', 'drawSeedPickups', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
-  'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
+  'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'enemyFormation', 'recordEnemySpawn', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
   'runTimeThreat', 'runDurabilityScale', 'runDamageScale', 'runPlayerPower', 'runRewardScale', 'runReward', 'grantRogueLevel', 'openingRaidT', 'burstKrek', 'runRaidLimit', 'runRaidInterval', 'runPatrolLimit', 'runPatrolInterval',
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',

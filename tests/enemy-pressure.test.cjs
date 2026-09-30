@@ -17,15 +17,15 @@ function fresh(players = 1) {
 
 function count(g, kind) { return g.floatKrek.filter(k => k.kind === kind && k.hp > 0).length; }
 
-test('specialists arrive one garden at a time from garden six in reproducible formations, with every unlocked role represented', () => {
+test('birds, rats and specialists form reproducible mixed encounters from garden two', () => {
   const g = fresh();
-  for (const [stage, expected] of [[1, [0, 1, 2]], [5, [0, 1, 2]], [6, [0, 1, 2, 3]], [7, [0, 1, 2, 3, 4]], [8, [0, 1, 2, 3, 4, 5]], [9, [0, 1, 2, 3, 4, 5, 6]]]) {
+  for (const [stage, expected] of [[1, [0, 1, 2]], [2, [0, 1, 2, 8]], [3, [0, 1, 2, 3, 8]], [4, [0, 1, 2, 3, 5, 8]], [5, [0, 1, 2, 3, 4, 5, 8]], [6, [0, 1, 2, 3, 4, 5, 6, 8]], [8, [0, 1, 2, 3, 4, 5, 6, 8, 9]]]) {
     g.rogueRun.world = stage;
     for (let wave = 1; wave <= 3; wave++) {
       g.gardenWave = wave;
-      const order = Array.from({ length: 30 }, (_, i) => g.waveEnemyKind(i));
+      const order = Array.from({ length: 60 }, (_, i) => g.waveEnemyKind(i));
       assert.deepEqual([...new Set(order)].sort(), expected, `garden ${stage}, encounter ${wave}`);
-      assert.deepEqual(Array.from({ length: 30 }, (_, i) => g.waveEnemyKind(i)), order, 'unrelated random animation cannot reshuffle a raid');
+      assert.deepEqual(Array.from({ length: 60 }, (_, i) => g.waveEnemyKind(i)), order, 'unrelated random animation cannot reshuffle a raid');
       for (let i = 0; i < order.length - 4; i++) {
         assert.ok(new Set(order.slice(i, i + 5)).size >= 2, 'no five-enemy monoculture');
       }

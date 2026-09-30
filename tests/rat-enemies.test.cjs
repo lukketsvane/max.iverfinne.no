@@ -9,14 +9,17 @@ function fresh(variant='common',x=-26){
  return {h,g,k,p:g.gardenPlots[0]};
 }
 function step(g,seconds,hz=120){for(let i=0;i<Math.round(seconds*hz);i++){g.updateKrek(1/hz);g.updateRunHazards(1/hz);}}
-test('rats stay out of the early run and unlock later according to difficulty',()=>{
+test('every difficulty includes ground rats from garden two, with no time-based variant shortcut',()=>{
  const {g}=fresh();assert.equal(g.makeKrek(1,false,8).kind,8);
- g.resetRogueRun('test',{difficulty:'medium'});
- for(let level=1;level<10;level++){g.rogueRun.world=level;g.gardenWave=1;const kinds=Array.from({length:48},(_,i)=>g.waveEnemyKind(i));assert.ok(!kinds.includes(8),'medium garden '+level+' stays rat-free');}
- g.rogueRun.world=10;assert.ok(Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'medium rats begin at garden 10');
- g.resetRogueRun('test',{difficulty:'easy'});
- for(let level=1;level<12;level++){g.rogueRun.world=level;g.gardenWave=1;assert.ok(!Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'easy garden '+level+' stays rat-free');}
- g.rogueRun.world=12;assert.ok(Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8),'easy rats begin at garden 12');
+ for(const difficulty of ['easy','medium','hard','insane']){
+  g.resetRogueRun('test',{difficulty});g.gardenWave=1;
+  assert.ok(!Array.from({length:48},(_,i)=>g.waveEnemyKind(i)).includes(8));
+  g.enterLevel(2);assert.equal(g.waveEnemyKind(0),8,'the first raid slot guarantees a rat on '+difficulty);
+  g.runElapsed=9999;assert.equal(g.makeRat(1).ratVariant,'common','waiting does not bypass the opening variant lesson');
+  for(const [stage,variants] of [[4,['black','common']],[7,['albino','common','black']],[10,['plague','common','black','albino']]]){
+   g.enterLevel(stage);assert.deepEqual(Array.from({length:variants.length},()=>g.makeRat(1).ratVariant),variants);
+  }
+ }
 });
 test('four rat roles have distinct speed/damage/durability and invalid variants are safe',()=>{
  const {g}=fresh();const common=g.makeRat(1,false,'common'),fast=g.makeRat(1,false,'black'),brute=g.makeRat(1,false,'albino'),plague=g.makeRat(1,false,'plague');

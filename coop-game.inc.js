@@ -236,7 +236,7 @@ function coopCapture(){
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
     secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),polgeStands:[],fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
-    timeline:(rogueRun.timeline||[]).slice(0,40).map(coopPlain),bosses:(rogueRun.bosses||[]).slice(0,20).map(coopPlain),difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
+    timeline:(rogueRun.timeline||[]).slice(0,40).map(coopPlain),bosses:(rogueRun.bosses||[]).slice(0,20).map(coopPlain),enemies:(rogueRun.enemies||[]).slice(0,20).map(coopPlain),difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     expedition:runExpedition?coopPlain(runExpedition):null,bossEvent:bossEvent?coopPlain(bossEvent):null,
     raid:{active:gardenRaidActive,timer:gardenRaidT,remaining:rogueRun.raidRemaining||0,total:rogueRun.raidTotal||0,threat:rogueRun.raidThreat||0,grace:gardenRaidGrace,spawn:gardenRaidSpawn,bossSpawned:gardenBossSpawned},
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
@@ -252,6 +252,7 @@ function coopState(s){
   if(Number.isInteger(s.seed))rogueRun.seed=s.seed>>>0;
   if(Array.isArray(s.timeline))rogueRun.timeline=s.timeline.slice(0,40).filter(function(q){return q&&Number.isFinite(q.w)&&Number.isFinite(q.t);}).map(coopPlain);
   if(Array.isArray(s.bosses))rogueRun.bosses=s.bosses.slice(0,20).filter(function(q){return q&&Number.isInteger(q.stage)&&q.stage>=1&&q.stage<=20&&Number.isFinite(q.seconds);}).map(coopPlain);
+  if(Array.isArray(s.enemies))rogueRun.enemies=s.enemies.slice(0,20).filter(function(q){return q&&Number.isInteger(q.stage)&&q.stage>=1&&q.stage<=20;}).map(function(q){var out={stage:q.stage};Object.keys(q).forEach(function(key){if(/^(total|raid|patrol|trial|guardian|circuit|expedition|kind(?:[0-6]|8|9|10|11)|rat_(?:common|black|albino|plague))$/.test(key)&&Number.isInteger(q[key])&&q[key]>=0&&q[key]<=100000)out[key]=q[key];});return out;});
   var previousWorld=worldLevel(),wasEnded=rogueRun.ended;
   if(previousWorld!==s.world)sligoPendingSwap=0;
   rogueRun.world=s.world;rogueRun.clearedWorld=s.cleared;rogueRun.level=s.level;rogueRun.xp=s.xp;rogueRun.next=s.next;rogueRun.difficulty=['easy','medium','hard','insane'].indexOf(s.difficulty)>=0?s.difficulty:(rogueRun.difficulty||'medium');rogueRun.ascenderId=typeof s.ascender==='string'?s.ascender:'';

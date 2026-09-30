@@ -55,11 +55,12 @@ test('rarity follows the garden: only commons for the first five, special plants
   assert.ok(ember.s.includes(19), 'the special cloudberry turns up late');
 });
 
-test('the first five gardens send only small birds; the rest arrive level by level', () => {
-  for (let w = 1; w <= 5; w++) {
+test('the first garden teaches birds; ground attackers and specialists arrive during the opening', () => {
+  for (let w = 1; w <= 6; w++) {
     const g = game(w);
-    for (const kind of [3, 4, 5, 6, 8, 9, 10, 11]) assert.equal(g.enemyUnlocked(kind), false, 'kind ' + kind + ' locked in world ' + w);
-    for (let wave = 1; wave <= 3; wave++) { g.gardenWave = wave; for (let i = 0; i < 12; i++) assert.ok(g.waveEnemyKind(i) < 3); }
+    const unlocks={3:3,4:5,5:4,6:6,8:2,9:8,10:10,11:12};
+    for (const [kind,stage] of Object.entries(unlocks)) assert.equal(g.enemyUnlocked(Number(kind)),w>=stage,'kind '+kind+' in world '+w);
+    for (let wave = 1; wave <= 3; wave++) { g.gardenWave = wave; for (let i = 0; i < 12; i++) assert.ok(g.enemyUnlocked(g.waveEnemyKind(i))); }
   }
   const g = game(9); assert.ok(g.enemyUnlocked(3) && g.enemyUnlocked(6));
 });

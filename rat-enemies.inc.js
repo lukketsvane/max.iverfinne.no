@@ -8,15 +8,19 @@ var RAT_STATS={
   plague:{speed:27,hp:1,damage:.60}
 };
 function isRat(k){return !!k&&!k.boss&&k.kind===RAT_KIND;}
-function ratStats(k){return Object.hasOwn(RAT_STATS,k.ratVariant)?RAT_STATS[k.ratVariant]:RAT_STATS.common;}
+function ratStats(k){return Object.prototype.hasOwnProperty.call(RAT_STATS,k.ratVariant)?RAT_STATS[k.ratVariant]:RAT_STATS.common;}
 function ratFloor(x){var water=waterAt(x);return water?Math.min(surfaceY(x),water.level):surfaceY(x);}
 function makeRat(side,elite,variant){
   var choices=['common'];
-  if(worldLevel()>=11||runElapsed>=540)choices.push('black');
-  if(worldLevel()>=14||runElapsed>=660)choices.push('albino');
-  if(worldLevel()>=17||runElapsed>=780)choices.push('plague');
+  if(worldLevel()>=4)choices.push('black');
+  if(worldLevel()>=7)choices.push('albino');
+  if(worldLevel()>=10)choices.push('plague');
   var ph=Math.random()*6.28;
-  variant=Object.hasOwn(RAT_STATS,variant)?variant:choices[Math.floor(ph/6.28*choices.length)];
+  if(!Object.prototype.hasOwnProperty.call(RAT_STATS,variant)){
+    var index=rogueRun.ratIndex||0;
+    // Show the newest variant first, then cycle without a random drought.
+    variant=choices[(choices.length-1+index)%choices.length];rogueRun.ratIndex=index+1;
+  }
   var plants=gardenPlots.filter(function(p){return !p.dead&&p.health>0;}),center=plants.length?plants[Math.floor(Math.random()*plants.length)].x:P.x;
   var x=center+side*(110+Math.random()*40),k={kind:RAT_KIND,ratVariant:variant,x:x,y:ratFloor(x)-RAT_FOOT,vx:0,vy:0,face:-side,ph:ph,
     target:null,attackTarget:null,bite:.45,windup:0,think:0,flee:0,flash:0,lampCooldown:0,elite:!!elite,queen:false,raid:false,pressure:raidPressure(),
