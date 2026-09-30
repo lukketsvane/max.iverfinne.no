@@ -62,5 +62,11 @@
       "path": "docs/asset-review/characters-v2/source/rattus-wrestler-v2-prompts.json",
       "sha256": "e4381938df340e4000b2488f64270b69bcc45a9032a6668f76fb9bf670f45111"
     }
+  },
+  "rattle-norvegicus-pink": {
+    "sheet": {
+      "path": "docs/asset-review/characters-v2/source/rattus-pink-gold-v1.png",
+      "sha256": "71d32adebc7bf2d6b7ed633baabb62f69bfecce4dcdd25641f8a21c8622a4202"
+    }
   }
 }

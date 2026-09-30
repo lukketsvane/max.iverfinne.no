@@ -1,10 +1,10 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 
 // Presentation only: atlas animation never changes an attack, collision or heal.
-const SKINS = Object.freeze(['original', 'moss', 'tide', 'ember', 'moon', 'polge', 'sligo']);
+const SKINS = Object.freeze(['original', 'moss', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 // Persisted skin/class keys are network compatibility identifiers. These three
 // characters have wholly original anatomy and no longer load the Max recolours.
-const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus', ember: 'cairn', moon: 'mycel' });
+const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
 function playerPath(skin, sheet = 'main') {
   const character = CHARACTER_ART[skin];
   // Assemble the final leaf separately so static runtime discovery does not
@@ -18,7 +18,7 @@ function playerRow(skin, sheet, row, animation) {
   return CHARACTER_ART[skin] && sheet === 'interaction' && animation === 'toss' ? 5 : row;
 }
 function playerCell(skin, player) {
-  if (skin !== 'moss' || !player || player.anim === 'sow' || !(player.rattlePose > 0 || player.pounce > 0)) return null;
+  if ((skin !== 'moss' && skin !== 'moss-pink') || !player || player.anim === 'sow' || !(player.rattlePose > 0 || player.pounce > 0)) return null;
   const clock = Math.max(0, Number.isFinite(player.rattleClock) ? player.rattleClock : 0);
   const frame = Math.min(7, Math.floor(clock * 8 / .28));
   if (player.rattleMove === 'salto') return { sheet: 'main', row: 6, column: player.pounce === 1 ? Math.floor(clock * 20) % 8 : frame };

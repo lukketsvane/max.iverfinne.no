@@ -75,6 +75,7 @@
 .max-character-stage .max-skin-preview img{width:768px;height:768px}
 .max-menu .max-character-name{margin:0 0 14px;color:var(--gold);font-size:21px;line-height:1.2}
 .max-menu .max-class-detail{max-width:230px;margin:0;font-size:11px;line-height:1.7;color:#b6ccca}
+.max-menu .max-outfit-hint{margin:8px 0 0;font-size:9px;line-height:1.5;color:var(--gold)}
 .max-menu fieldset{min-width:0;margin:0 0 24px;padding:0;border:0}
 .max-menu legend{padding:0;margin:0 0 12px;color:#9eb8b7;font-size:10px;letter-spacing:.15em;line-height:1.3}
 .max-role-picker,.max-skin-picker,.max-play-actions,.max-menu[data-screen="play"] .max-status{grid-column:2}

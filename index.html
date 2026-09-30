@@ -3051,7 +3051,7 @@ var WILD_PLANTS=false, seedPickups=[], seedCollected={}, seedSpawnClock=0, seedP
 var FINAL_WAVE=3,runElapsed=0,runFinishT=0,runWon=false,raidLostStart=0,gardenBossSpawned=false;
 var rogueMeta={runs:0,wins:0,bestWave:0,bestScore:0,bestTime:0,petals:0};
 var selectedPerk=null, resultAtlasReady=false, menuPaused=false, runActive=false, companion=null, soloCrew=[];
-var rogueRun={classId:'mech',ownerId:null,playerName:'Guest',garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,traits:emptyTraits(),perks:window.MaxClasses.perks('mech')};
+var rogueRun={classId:'mech',skinId:'tide',ownerId:null,playerName:'Guest',garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,traits:emptyTraits(),perks:window.MaxClasses.perks('mech')};
 try{
   var rm=JSON.parse(localStorage.getItem('max-fuglesprenger-meta-v1')||'null');if(rm)rogueMeta=Object.assign(rogueMeta,rm);
 }catch(e){}
@@ -3390,7 +3390,7 @@ function finalizeRogueRun(won){
   gardenPlots.forEach(recordGardenPlant);
   rogueRun.finalized=true;
   if(rogueRun.mode==='last-seed'){
-    if(window.MaxRunRecords){var saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'last-seed',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:false,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,plantSeconds:rogueRun.survival.plantTime});rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;}
+    if(window.MaxRunRecords){var saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'last-seed',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,skinId:rogueRun.skinId,won:false,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,plantSeconds:rogueRun.survival.plantTime});rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;}
     return;
   }
   rogueMeta.bestPlants=Math.max(rogueMeta.bestPlants|0,rogueRun.garden.length);
@@ -3404,7 +3404,7 @@ function finalizeRogueRun(won){
   try{localStorage.setItem('max-fuglesprenger-meta-v1',JSON.stringify(rogueMeta));}catch(e){}
   if(window.MaxRunStats)try{window.MaxRunStats(runStats(won));}catch(e){}
   if(window.MaxRunRecords){
-    var saved=window.MaxRunRecords.save({id:rogueRun.recordId,ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:won,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed});
+    var saved=window.MaxRunRecords.save({id:rogueRun.recordId,ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,skinId:rogueRun.skinId,won:won,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed});
     rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
   }
 }
@@ -3433,7 +3433,7 @@ function resetRogueRun(reason,selection){
   bloomPatches.length=0;gifts.length=0;signals.length=0;sanctuaries.length=0;waterBlessings.length=0;
   crows.length=0;smallFauna.length=0;
   var keepWorld=1; // Each attempt begins with the same garden and base abilities.
-  rogueRun={classId:classId,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
+  rogueRun={classId:classId,skinId:skin,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
   rogueRun.mode=['last-seed','high-tide','night-relay'].indexOf(selection.mode)>=0?selection.mode:'garden';resetLastSeed();resetHighTide();resetNightRelay();
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
@@ -3475,7 +3475,7 @@ function updateRunCompetition(dt){
 function showRunResult(){
   if(perkMenu)perkMenu.style.display='none';
   if(!window.MaxRunResults)return;
-  window.MaxRunResults.show({mode:rogueRun.mode,ascent:highTideMode()?rogueRun.survival.best:0,goal:highTideMode()?HIGH_TIDE.height:0,plantSeconds:rogueRun.survival&&rogueRun.survival.plantTime,recordId:rogueRun.recordId,won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:highTideMode()?rogueRun.survival.bosses:gardenWave,seconds:runElapsed,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN',{mode:rogueRun.mode});},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
+  window.MaxRunResults.show({mode:rogueRun.mode,classId:rogueRun.classId,skinId:rogueRun.skinId,ascent:highTideMode()?rogueRun.survival.best:0,goal:highTideMode()?HIGH_TIDE.height:0,plantSeconds:rogueRun.survival&&rogueRun.survival.plantTime,recordId:rogueRun.recordId,won:runWon,plants:rogueRun.garden,world:worldLevel(),wave:highTideMode()?rogueRun.survival.bosses:gardenWave,seconds:runElapsed,onRetry:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else resetRogueRun('NEW RUN',{mode:rogueRun.mode});},onMenu:function(){if(coop&&window.MaxGameMenu)window.MaxGameMenu.replay();else if(window.MaxGameMenu)window.MaxGameMenu.open();},drawPlant:drawResultPlant,drawScene:drawResultScene});
   resultAtlasReady=resultAssetsReady();
 }
 function openGardenRecords(){
@@ -3578,7 +3578,7 @@ window.addEventListener('max-native-art-ready',function(){if(window.MaxRunResult
 function drawResultScene(canvas,bouquet,resultRun){
   var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY},oldSkin=P.skin;
   var resultClass=resultRun&&resultRun.classId;
-  if(resultClass)P.skin={mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[resultClass]||window.MaxClasses.skin(resultClass);
+  if(resultClass)P.skin=resultClass==='runner'&&resultRun.skinId==='moss-pink'?'moss-pink':{mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[resultClass]||window.MaxClasses.skin(resultClass);
   try{
     ctx=canvas.getContext('2d');if(!ctx)return;
     IW=canvas.width;IH=canvas.height;ctx.imageSmoothingEnabled=false;

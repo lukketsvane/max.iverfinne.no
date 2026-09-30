@@ -25,7 +25,7 @@ test('full discovery follows the authenticated owner and clears on sign-out or a
 });
 
 const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, url = 'https://max.iverfinne.no' } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, summaryStarted = false, url = 'https://max.iverfinne.no' } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url, runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
@@ -84,7 +84,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   };
   w.eval(await compiled);
   const bridge = {
-    pause: value => pauses.push(value), summary: () => ({ started: active, ended: false }), canOpenMenu: () => !active,
+    pause: value => pauses.push(value), summary: () => ({ started: active || summaryStarted, ended: false }), canOpenMenu: () => !active,
     beginRun() { throw new Error('normal production Play must enter the shared garden'); },
     beginCoop(network) { active = true; beginCount++; begun = { selection: { ...network.selection }, host: network.host, room: { ...network.room } }; },
     coopRoster() {}, coopState() {}, coopInput() {}, coopDepart() {}, coopJoin() {}, stopCoop() { active = false; },
@@ -148,6 +148,85 @@ test('character owns appearance and difficulty is the only separate run choice',
     assert.equal(m.w.document.querySelector('[data-difficulty="hard"]').getAttribute('aria-pressed'), 'true');
     assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId:'herbalist', skinId:'moon', difficulty:'hard' });
   } finally { m.dom.window.close(); }
+});
+
+test('cosmetic loadouts remain class-scoped, persist and participate in session agreement', async () => {
+  const { validLoadout, sameLoadout, readLoadout, writeLoadout, CLASS_OUTFITS } = await import('../player-loadout.mjs');
+  const pink = { classId: 'runner', skinId: 'moss-pink', difficulty: 'hard' }, values = new Map();
+  const storage = { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) };
+  assert.deepEqual(CLASS_OUTFITS.runner, ['moss', 'moss-pink']);
+  assert.deepEqual(validLoadout(pink), pink);
+  assert.equal(writeLoadout(storage, pink), true); assert.deepEqual(readLoadout(storage), pink);
+  assert.deepEqual(validLoadout({ ...pink, classId: 'mech' }), { classId: 'mech', skinId: 'tide', difficulty: 'hard' });
+  assert.deepEqual(validLoadout({ ...pink, skinId: 'forged' }), { ...pink, skinId: 'moss' });
+  assert.equal(validLoadout({ ...pink, classId: 'sligo' }), null);
+  assert.equal(sameLoadout(pink, { ...pink }), true); assert.equal(sameLoadout(pink, { ...pink, skinId: 'moss' }), false);
+});
+
+test('portrait double-click cycles once, single clicks preserve choice and other characters keep their roles', async () => {
+  const m = await menu();
+  try {
+    m.click('Play');
+    const portrait = m.w.document.querySelector('[data-class-id="runner"]');
+    for (const detail of [1, 2]) portrait.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail, clientX: 80, clientY: 90 }));
+    portrait.dispatchEvent(new m.w.MouseEvent('dblclick', { bubbles: true, cancelable: true, detail: 2 }));
+    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'runner', skinId: 'moss-pink', difficulty: 'medium' });
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
+    assert.match(portrait.querySelector('img').src, /rattle-norvegicus-pink\/main\.png$/);
+    assert.match(m.w.document.querySelector('.max-outfit-hint').textContent, /Pink & gold/);
+    m.click('Rattus norvegicus'); m.click('Mycel'); m.click('Rattus norvegicus');
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
+    assert.equal(m.w.document.querySelector('[data-skin-id]'), null);
+    assert.equal(m.classIds().length, 5);
+    m.click('Back'); m.click('Play');
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
+  } finally { m.dom.window.close(); }
+});
+
+test('touch click pairs and keyboard can cycle Rattus before Play while her chosen outfit reaches the shared run', async () => {
+  const m = await menu(JSON.stringify({ classId: 'runner', skinId: 'moss-pink', difficulty: 'easy' }), { summaryStarted: true });
+  try {
+    m.click('Play');
+    const stage = m.w.document.querySelector('.max-character-stage'), portrait = m.w.document.querySelector('[data-class-id="runner"]');
+    assert.equal(stage.getAttribute('role'), 'button'); assert.equal(stage.tabIndex, 0);
+    for (let i = 0; i < 2; i++) stage.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail: 1, clientX: 40, clientY: 50 }));
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss');
+    const key = new m.w.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', shiftKey: true });
+    portrait.dispatchEvent(key); assert.equal(key.defaultPrevented, true);
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
+    portrait.dispatchEvent(new m.w.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', shiftKey: true, repeat: true }));
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
+    m.click('Play'); await m.settle();
+    assert.deepEqual(JSON.parse(JSON.stringify(m.begun.selection)), { classId: 'runner', skinId: 'moss-pink', difficulty: 'easy' });
+    for (let i = 0; i < 2; i++) stage.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 }));
+    stage.dispatchEvent(new m.w.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter' }));
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
+    assert.equal(m.beginCount, 1);
+  } finally { m.dom.window.close(); }
+});
+
+test('portrait gestures reject separated taps and cannot take an occupied character', async () => {
+  const m = await menu();
+  try {
+    m.click('Play'); m.click('Rattus norvegicus');
+    let now = 0; Object.defineProperty(m.w.performance, 'now', { value: () => now });
+    const portrait = m.w.document.querySelector('[data-class-id="runner"]');
+    for (const [time, x] of [[0, 20], [400, 20], [410, 80]]) {
+      now = time; portrait.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail: 1, clientX: x, clientY: 20 }));
+    }
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss');
+  } finally { m.dom.window.close(); }
+  const occupied = await menu(undefined, { sharedStatus: { active: true, players: 1, taken: ['runner'], difficulty: 'hard', mine: null } });
+  try {
+    occupied.click('Play'); await occupied.settle();
+    const portrait = occupied.w.document.querySelector('[data-class-id="runner"]'), before = occupied.w.localStorage.getItem('max-loadout-v1');
+    assert.equal(portrait.disabled, true);
+    for (let i = 0; i < 2; i++) portrait.dispatchEvent(new occupied.w.MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 }));
+    portrait.dispatchEvent(new occupied.w.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', shiftKey: true }));
+    assert.equal(occupied.w.localStorage.getItem('max-loadout-v1'), before);
+    assert.equal(occupied.w.document.querySelector('[data-class-id="mech"]').getAttribute('aria-pressed'), 'true');
+    assert.equal(occupied.w.document.querySelector('.max-outfit-hint').hidden, true);
+  } finally { occupied.dom.window.close(); }
 });
 
 test('Pølge is selectable without an unlock, keeps Ø in his name and requests his own server role', async () => {

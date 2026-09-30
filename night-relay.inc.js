@@ -66,7 +66,7 @@ function finishNightRelay(won,reason){
 }
 function finalizeNightRelay(won){
   rogueRun.finalized=true;if(!window.MaxRunRecords)return;
-  var s=rogueRun.survival,saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'night-relay',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:!!won,plants:[],world:1,wave:s.stage,seconds:s.elapsed,passes:s.passes,resets:s.resets,light:s.energy,reason:s.reason});
+  var s=rogueRun.survival,saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'night-relay',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,skinId:rogueRun.skinId,won:!!won,plants:[],world:1,wave:s.stage,seconds:s.elapsed,passes:s.passes,resets:s.resets,light:s.energy,reason:s.reason});
   rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
 }
 function updateNightRelay(dt){

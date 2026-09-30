@@ -1,5 +1,24 @@
 # Original character artwork, 2026-09-27
 
+The owner's pink-and-gold costume attachment is preserved unchanged as
+`source/rattus-pink-gold-v1.png`, pinned by SHA-256 in `source/provenance.json`.
+It is a supplied opaque 1254×1254 PNG with seven visual rows of eight figures,
+not an image_gen output produced during this import. Runtime sibling pack
+`rattle-norvegicus-pink` has the runner cosmetic key `moss-pink`. Deterministic
+near-white matte removal, whole-figure extraction, one fixed 0.175
+nearest-neighbour reduction and a sixteen-colour pink/gold palette produce its
+native sheets. Two vertically joined walk/run drawings are excluded, and no
+missing pixels are drawn. Its right-facing movement comes from source rows
+1/3; wrestling borrows real horizontal and inverted poses from rows 4/5.
+Interaction row 2 columns 3–6 hold the complete source row 5 column 2 splits
+through sow hit frame 6. Column 7 matches the stand clip's starting crouch.
+Every frame retains the original foot registration and animation timing.
+The base outfit and Cairn/Mycel runtime files remain unchanged.
+
+`rattle-pink-sheets-1x.png` / `rattle-pink-sheets-4x.png` show both actual native
+sheets. `pink-planting-1x.png` / `pink-planting-4x.png` show the planting sequence
+and complete boots at native size and exact integer enlargement.
+
 Rattus norvegicus replaced Kestrel on 2026-09-30. On 2026-10-01 the owner selected
 the supplied black-and-gold movement and combat sheets to replace the initial
 wizard robe artwork and perform a split while planting. Immutable copies are

@@ -16,7 +16,7 @@ function beginCoop(network){
   var hostSelection=network.loadouts&&network.loadouts[network.room.host]||selection;coop=null;resetRogueRun('NEW RUN',{classId:window.MaxClasses.clean(selection.classId||selection.class_id),skinId:window.MaxClasses.skin(selection.skinId||selection.skin_id||selection.skin),difficulty:hostSelection.difficulty||'medium',mode:network.room.mode||network.mode});companion=null;
   coop={network:network,host:network.host,me:network.user.id,members:{},ui:'',world:1};
   network.room.members.forEach(function(m){var x=levelOriginX(1)+(m.slot-1)*12;coop.members[m.id]=coopMember(m.id,m.slot,network.loadouts&&network.loadouts[m.id]||m,{x:x,y:surfaceY(x)});});
-  var me=coop.members[coop.me];rogueRun.classId=me.classId;P.classId=me.classId;P.skin=me.skin;rogueRun.perks=me.perks;rogueRun.traits=me.traits;
+  var me=coop.members[coop.me];rogueRun.classId=me.classId;P.classId=me.classId;rogueRun.skinId=P.skin=me.skin;rogueRun.perks=me.perks;rogueRun.traits=me.traits;
   P.x=me.avatar.x;P.y=me.avatar.y;P.grounded=true;P.wet=false;started=false;
   if(coop.host)initRunStage();
 }
@@ -330,7 +330,7 @@ function coopState(s){
     started=false;
   }
   if(placed){task=climb=warp=holdWater=null;Object.assign(P,{x:placed.x,y:placed.y,vx:0,vy:0,st:'free',grounded:placed.grounded,platform:null});setAnim('idle');}
-  var mine=coop.members[coop.me];rogueRun.classId=P.classId=mine.classId;P.skin=mine.skin;rogueRun.perks=mine.perks;rogueRun.traits=mine.traits;
+  var mine=coop.members[coop.me];rogueRun.classId=P.classId=mine.classId;rogueRun.skinId=P.skin=mine.skin;rogueRun.perks=mine.perks;rogueRun.traits=mine.traits;
   rogueRun.ended=!!s.ended;runWon=!!s.won;coopShowChoices();
   if(rogueRun.ended&&!wasEnded){finalizeRogueRun(runWon);clearRunInput();showRunResult();}
 }

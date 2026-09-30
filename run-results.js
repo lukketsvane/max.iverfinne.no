@@ -34,7 +34,7 @@
         number: records.reduce(function (n, entry) { return Math.max(n, entry.number || 0); }, 0) + 1,
         finishedAt: new Date().toISOString(), won: !!options.won, mode: ['last-seed', 'high-tide', 'night-relay'].indexOf(options.mode) >= 0 ? options.mode : 'garden', ascent: Math.max(0, Math.min(Math.max(480,+options.goal||480), +options.ascent || 0)), goal: options.mode === 'high-tide' ? Math.max(480,+options.goal||480) : 0, plantSeconds: Math.max(0, +options.plantSeconds || 0),
         world: Math.max(1, Math.floor(+options.world || 1)), wave: Math.max(0, Math.floor(+options.wave || 0)),
-        seconds: Math.max(0, +options.seconds || 0), classId: options.classId || null,
+        seconds: Math.max(0, +options.seconds || 0), classId: options.classId || null, skinId: options.skinId || null,
         passes: Math.max(0, Math.floor(+options.passes || 0)), resets: Math.max(0, Math.floor(+options.resets || 0)), light: Math.max(0, Math.min(100, +options.light || 0)), reason: typeof options.reason === 'string' ? options.reason.slice(0,80) : '',
         ownerId: options.ownerId || null, name: options.name || null,
         plants: copy(Array.isArray(options.plants) ? options.plants : [])
@@ -319,7 +319,7 @@
   function show(options) {
     options = options || {}; prepare(options);
     run = options.recordId && window.MaxRunRecords.get(options.recordId);
-    if (!run) run = { mode: options.mode, ascent: options.ascent, goal: options.goal, classId: options.classId, plantSeconds: options.plantSeconds, plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
+    if (!run) run = { mode: options.mode, ascent: options.ascent, goal: options.goal, classId: options.classId, skinId: options.skinId, plantSeconds: options.plantSeconds, plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
     originRun = run; originPage = page = 0; showBouquet(false);
   }
   function showRecords(options) { prepare(options); run = originRun = null; page = originPage = 0; openRecords(); layout(); return true; }

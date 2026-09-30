@@ -11,11 +11,24 @@ keys `moss`, `ember`, `moon` remain wire identifiers;
 | Cairn | stone tank / bulwark | broad boulder, slab fists, massive short feet | slate, ceramic, amber |
 | Mycel | spore support / herbalist | wide cap, luminous gills, root feet | burgundy, ivory, mint |
 
-All six sheets are native **256×256** PNGs, with **32×32** cells and integer
+All eight sheets are native **256×256** PNGs, with **32×32** cells and integer
 anchor **(16,31)**. Each character has 128 cells and the original 25 clips;
 frame sequences, fps, looping and hit/pour markers are unchanged. Binary alpha,
 zero RGB under transparency, no more than 16 opaque colours per character.
 Never smooth or enlarge the source pixels inside the world renderer.
+
+The alternate costume `rattle-norvegicus-pink` uses the saved cosmetic key
+`moss-pink` for the runner. Its pink/gold cape and ring gear use a separate
+sixteen-colour palette; its cells, anchors and all 25 animation timings match
+the base outfit. The owner's supplied opaque seven-row sheet is preserved
+byte-for-byte as `source/rattus-pink-gold-v1.png` in the review directory.
+The compiler removes only its near-white matte, extracts whole connected
+figures and applies the same fixed 0.175 nearest-neighbour reduction.
+Vertically joined drawings are omitted. Right-facing walk/run poses come from
+source rows 1/3; inverted and dropkick poses come from rows 4/5. Planting holds
+the complete row 5 column 2 splits through hit frame 6, then recovers to the
+same crouch as the stand clip. Base-outfit sheets and other character packs
+retain their existing bytes.
 
 Interaction row 5 is a dedicated signature attack for Cairn and Mycel; sowing
 keeps row 2. Rattus's wrestling presentation uses the following native cells:

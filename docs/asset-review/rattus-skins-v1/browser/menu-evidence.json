@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-09-30T23:40:09.906Z",
+  "viewport": [
+    390,
+    844
+  ],
+  "touch": true,
+  "room": "isolated authenticated room mock",
+  "packSHA1": {
+    "main": "bc2c303ce083143b2248246c91ea9ac8e5e249f0",
+    "interaction": "f9014abee3df052f2ee3587c9415dfacb38a4905"
+  },
+  "pinkMenuImage": "assets/characters-v2/rattle-norvegicus-pink/main.png",
+  "portraitDoubleTap": true,
+  "heroDoubleTap": true,
+  "singleCharacterSelection": true,
+  "rememberedCharacterOutfit": true,
+  "reloadPersistence": true,
+  "sharedRun": {
+    "selection": {
+      "classId": "runner",
+      "skinId": "moss-pink",
+      "difficulty": "medium"
+    },
+    "draw": {
+      "source": "http://max-review.local/assets/characters-v2/rattle-norvegicus-pink/main.png",
+      "rect": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "destination": [
+        49,
+        159,
+        32,
+        32
+      ],
+      "smoothing": false
+    },
+    "menuHidden": true
+  },
+  "occupiedCharacter": {
+    "denied": true,
+    "selection": {
+      "classId": "mech",
+      "skinId": "tide",
+      "difficulty": "hard"
+    }
+  },
+  "pageErrors": []
+}

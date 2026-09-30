@@ -1,11 +1,11 @@
 // Character and difficulty are selected before a new run.
-// Each character owns both its look and its exclusive ability: there is no separate skin picker.
 export const CLASS_IDS = Object.freeze(['mech', 'runner', 'bulwark', 'herbalist', 'polge']);
 // Hidden characters are easter eggs (easter-eggs.mjs): each is picked only once its egg is unlocked.
 export const HIDDEN_CLASS_IDS = Object.freeze(['sligo']);
 export const ALL_CLASS_IDS = Object.freeze([...CLASS_IDS, ...HIDDEN_CLASS_IDS]);
 export const DIFFICULTY_IDS = Object.freeze(['easy', 'medium', 'hard', 'insane']);
 export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss', bulwark: 'ember', herbalist: 'moon', polge: 'polge', sligo: 'sligo' });
+export const CLASS_OUTFITS = Object.freeze(Object.fromEntries(ALL_CLASS_IDS.map(id => [id, Object.freeze(id === 'runner' ? ['moss', 'moss-pink'] : [CLASS_SKINS[id]])])));
 export const DEFAULT_LOADOUT = Object.freeze({ classId: 'mech', skinId: CLASS_SKINS.mech, difficulty: 'medium' });
 
 // `unlocked` lists the easter eggs this player has. A hidden character that is not in it is
@@ -16,10 +16,11 @@ export function validLoadout(value, unlocked = []) {
   const open = CLASS_IDS.includes(classId) || HIDDEN_CLASS_IDS.includes(classId) && Array.isArray(unlocked) && unlocked.includes(classId);
   if (!open) return null;
   const difficulty = DIFFICULTY_IDS.includes(value?.difficulty) ? value.difficulty : 'medium';
-  return { classId, skinId: CLASS_SKINS[classId], difficulty };
+  const skinId = CLASS_OUTFITS[classId].includes(value?.skinId) ? value.skinId : CLASS_SKINS[classId];
+  return { classId, skinId, difficulty };
 }
 export function sameLoadout(a, b) {
-  return !!a && !!b && a.classId === b.classId && a.difficulty === b.difficulty;
+  return !!a && !!b && a.classId === b.classId && a.skinId === b.skinId && a.difficulty === b.difficulty;
 }
 export function readLoadout(storage, unlocked = []) {
   try { return validLoadout(JSON.parse(storage.getItem('max-loadout-v1')), unlocked) || { ...DEFAULT_LOADOUT }; }

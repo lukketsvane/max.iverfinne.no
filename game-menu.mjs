@@ -3,7 +3,7 @@ import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
-import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
+import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, CLASS_OUTFITS, readLoadout, writeLoadout } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
 import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
 import { hasFullDiscovery, relicCollection, drawRelicStone } from './relics.mjs';
@@ -33,6 +33,7 @@ let invitedRoom = null, inviteState = null;
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
 window.MaxEasterEggs = { has: eggs.has, list: eggs.list, allDiscovered: () => hasFullDiscovery(user) };
 let selected = readLoadout(window.localStorage, eggs.list());
+const selectedOutfits = { [selected.classId]: selected.skinId };
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
 const onlinePlayers = client ? new OnlinePlayers(client, () => renderPlayers()) : null;
 
@@ -347,11 +348,37 @@ function gardenGestures() {
   }, { passive: false });
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
-function characterSkin(id) { return CLASS_SKINS[id] || 'moss'; }
+function characterSkin(id) { return selectedOutfits[id] || CLASS_SKINS[id] || 'moss'; }
+function outfitName(id) { return id === 'moss-pink' ? 'Pink & gold' : 'Black & gold'; }
+function cycleOutfit(id) {
+  if (!opened || screen !== 'play' || busy || session?.playing || liveSettings) return;
+  if ((sharedStatus.taken || []).includes(id) && id !== sharedStatus.mine) return;
+  const outfits = CLASS_OUTFITS[id];
+  if (!outfits || outfits.length < 2) return;
+  selectMax({ classId: id, skinId: outfits[(outfits.indexOf(characterSkin(id)) + 1) % outfits.length] });
+}
+function outfitGestures(node, id) {
+  let last = null;
+  node.addEventListener('click', event => {
+    if (node.disabled || !opened || busy || screen !== 'play' || session?.playing || liveSettings) return;
+    const classId = id || selected.classId;
+    if (id) selectMax({ classId });
+    if (event.detail === 0) { last = null; return; }
+    const now = performance.now();
+    if (last && last.classId === classId && now - last.time <= 350 && Math.hypot(event.clientX - last.x, event.clientY - last.y) <= 24) {
+      event.preventDefault(); last = null; cycleOutfit(classId);
+    } else last = { classId, time: now, x: event.clientX, y: event.clientY };
+  });
+  node.addEventListener('keydown', event => {
+    if (!event.repeat && (event.shiftKey || !id) && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault(); last = null; cycleOutfit(id || selected.classId);
+    }
+  });
+}
 // The open characters, then any hidden one this player has unlocked.
 function visibleClassIds() { return [...CLASS_IDS, ...HIDDEN_CLASS_IDS.filter(id => eggs.has(id))]; }
 function characterImage(id) {
-  const replacement = { moss: 'rattle-norvegicus', ember: 'cairn', moon: 'mycel' }[id];
+  const replacement = { moss: 'rattle-norvegicus', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' }[id];
   return replacement ? 'assets/characters-v2/' + replacement + '/main.png' : 'assets/max-skins-v1/' + id + '/main.png';
 }
 function skinPreview(id) {
@@ -377,9 +404,10 @@ function characterName(node, info) {
 }
 function chooseMax() {
   const hero = el('div', undefined, 'max-character-hero');
-  const stage = el('div', undefined, 'max-character-stage'); stage.append(skinPreview(characterSkin(selected.classId)));
+  const stage = el('div', undefined, 'max-character-stage'); stage.append(skinPreview(characterSkin(selected.classId))); outfitGestures(stage);
   const intro = el('div', undefined, 'max-character-intro');
   intro.append(el('p', '', 'max-character-name'), el('p', '', 'max-class-detail'));
+  const outfit = el('p', '', 'max-outfit-hint'); outfit.id = 'max-outfit-hint'; outfit.setAttribute('aria-live', 'polite'); intro.append(outfit);
   hero.append(stage, intro); card.append(hero);
 
   const characters = el('fieldset', undefined, 'max-role-picker');
@@ -404,7 +432,7 @@ function roleChoices(grid) {
   const ids = visibleClassIds();
   grid.replaceChildren(); grid.dataset.count = String(ids.length);
   for (const id of ids) {
-    const choice = button('', () => selectMax({ classId: id }), 'max-role-choice'); choice.dataset.classId = id;
+    const choice = el('button', '', 'max-role-choice'); choice.type = 'button'; choice.dataset.classId = id; outfitGestures(choice, id);
     // The card shows the character alone; its name is only read out.
     choice.setAttribute('aria-label', classInfo(id).name);
     choice.append(skinPreview(characterSkin(id)));
@@ -414,13 +442,15 @@ function roleChoices(grid) {
 // An unlock arrived (typed, or loaded after sign-in) or went away with an account.
 function unlocksChanged() {
   selected = readLoadout(window.localStorage, eggs.list());
+  selectedOutfits[selected.classId] = selected.skinId;
   const grid = screen === 'play' && card?.querySelector('.max-role-grid');
   if (grid) { roleChoices(grid); updateSelection(); updatePlayReady(); }
   refreshRelicTargets();
 }
 function selectMax(change) {
   selected = { ...selected, ...change };
-  if (change.classId) selected.skinId = characterSkin(change.classId);
+  if (change.classId && !change.skinId) selected.skinId = characterSkin(change.classId);
+  selectedOutfits[selected.classId] = selected.skinId;
   writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
 }
 function updateSelection() {
@@ -443,7 +473,11 @@ function updateSelection() {
     option.disabled = occupied;
     option.setAttribute('aria-disabled', String(occupied));
     option.setAttribute('aria-pressed', String(option.dataset.classId === selected.classId));
-    option.title = occupied ? 'Already playing' : '';
+    const outfit = CLASS_OUTFITS[option.dataset.classId]?.length > 1;
+    option.title = occupied ? 'Already playing' : outfit ? 'Double-tap to change outfit · Shift+Enter on keyboard' : '';
+    if (outfit) option.setAttribute('aria-description', outfitName(characterSkin(option.dataset.classId)) + '. Double-tap or press Shift+Enter to change outfit.');
+    const image = option.querySelector('img');
+    if (image) image.src = characterImage(characterSkin(option.dataset.classId));
   }
   for (const option of card.querySelectorAll('[data-difficulty]')) {
     option.disabled = runExists;
@@ -461,11 +495,20 @@ function updateSelection() {
   const name = card.querySelector('.max-character-name');
   if (name) characterName(name, classInfo(selected.classId));
   const heroImage = card.querySelector('.max-character-stage img');
-  if (heroImage) heroImage.src = characterImage(characterSkin(selected.classId));
+  if (heroImage) heroImage.src = characterImage(selected.skinId);
+  const outfit = card.querySelector('.max-outfit-hint'), stage = card.querySelector('.max-character-stage');
+  const hasOutfits = CLASS_OUTFITS[selected.classId]?.length > 1;
+  if (outfit) { outfit.hidden = !hasOutfits; outfit.textContent = hasOutfits ? outfitName(selected.skinId) + ' · Double-tap sprite to change' : ''; }
+  if (stage) {
+    stage.tabIndex = hasOutfits ? 0 : -1;
+    stage.style.touchAction = 'manipulation';
+    if (hasOutfits) { stage.setAttribute('role', 'button'); stage.setAttribute('aria-label', 'Change ' + classInfo(selected.classId).name + ' outfit'); stage.setAttribute('aria-describedby', 'max-outfit-hint'); stage.setAttribute('aria-keyshortcuts', 'Enter Space Shift+Enter Shift+Space'); }
+    else { stage.removeAttribute('role'); stage.removeAttribute('aria-label'); stage.removeAttribute('aria-describedby'); stage.removeAttribute('aria-keyshortcuts'); }
+  }
 }
 function selectionSummary() {
   const summary = el('div', undefined, 'max-selection-summary');
-  summary.append(skinPreview(characterSkin(selected.classId)), el('p', classInfo(selected.classId).name + ' · ' + selected.difficulty.toUpperCase()));
+  summary.append(skinPreview(selected.skinId), el('p', classInfo(selected.classId).name + ' · ' + selected.difficulty.toUpperCase()));
   card.append(summary);
 }
 function readInvite() {
@@ -857,7 +900,7 @@ function attach(bridge) {
     }
     if (event.key === 'Escape') { event.preventDefault(); if (liveSettings) dismissSettings(); else if (!busy && !session) screen !== 'home' && home(); }
     if (event.key !== 'Tab') return;
-    const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled),a[href]')].filter(n => n.getClientRects().length);
+    const controls = [...card.querySelectorAll('button:not(:disabled),input:not(:disabled),a[href],[role="button"][tabindex="0"]')].filter(n => n.getClientRects().length);
     if (!controls.length) return;
     const i = controls.indexOf(document.activeElement);
     if (event.shiftKey && i <= 0) { event.preventDefault(); controls.at(-1).focus(); }
