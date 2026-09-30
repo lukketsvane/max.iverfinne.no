@@ -4,16 +4,29 @@ The gardens can be drawn in Figma and pushed into the game. The generator in `st
 
 ## Where the frames are
 
-- File **max.iverfinne.no max fuglesprenger** (`TC0PHGMTCMR6im4hb3CSbF`), page **levels** (`218:2`).
-- The components live in frame `218:3`.
-- One frame per garden, named `garden-01` … `garden-20`, 700×290. Their node IDs:
-  - 01 `219:2` · 02 `219:300` · 03 `219:616` · 04 `219:938` · 05 `219:1233`
-  - 06 `224:1401` · 07 `224:1639` · 08 `224:1942` · 09 `224:2181` · 10 `224:2463`
-  - 11 `225:2630` · 12 `225:2868` · 13 `225:3227` · 14 `225:3453` · 15 `225:3737`
-  - 16 `226:3913` · 17 `226:4175` · 18 `226:4521` · 19 `226:4723` · 20 `226:5032`
-- Every frame starts as a copy of the garden that seed 1 generates, so a designer starts from a garden that already plays.
-- 1 Figma px = 1 art px. Keep the instances on whole pixels.
-- The locked `terrain` vector and `water` rectangles show the real ground and ponds under that garden. The ground depends only on the stage, not on the run seed. They are reference and are never exported.
+- [Level Design page](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=382-2), page **382:2**.
+- Geometry components: **382:3**. Native district props: **391:2**.
+- Twenty frames named `garden-01` through `garden-20`, each 1800×720 at native 1:1.
+- These are editable draft blueprints from seed 123. Picture geometry, core routes, rewards, trials and bonus markers are visible. Locked terrain and expedition paths are reference geometry.
+- The final garden includes the three-beacon preparation and three-stage encounter brief in English.
+- The former page 218:2 is gone. Its frame IDs are historical.
+
+| Garden | Frame | Garden | Frame |
+| --- | --- | --- | --- |
+| 01 | 383:2 | 11 | 383:724 |
+| 02 | 383:80 | 12 | 383:780 |
+| 03 | 383:215 | 13 | 383:840 |
+| 04 | 383:274 | 14 | 383:898 |
+| 05 | 383:348 | 15 | 383:954 |
+| 06 | 383:419 | 16 | 383:1025 |
+| 07 | 383:474 | 17 | 383:1093 |
+| 08 | 383:537 | 18 | 383:1164 |
+| 09 | 383:592 | 19 | 383:1217 |
+| 10 | 383:652 | 20 | 383:1288 |
+
+The current blueprints are drafts: moving a component alone does not change the deployed game. Some optional or picture geometry requires upgrades or further reach work. Add `designed` only after the export report and a real-physics playtest pass. Gardens 1 and 2 retain their production picture layouts; replacing those requires explicit runtime integration.
+
+The geometry snapshot in `docs/design/figma-level-workbench.json` can be replayed offline with `npm run figma:levels -- --from docs/design/figma-level-workbench.json`. It exports no live gardens while every frame remains a draft.
 
 ## Live frames
 
@@ -38,6 +51,8 @@ The layer name is the tag. Instances keep their component's name, so do not rena
 | `puzzle` `door` `dig` `secret` `start` | Centre x, bottom y | `layout.spots.<tag>` |
 | `decor:<png path>` | Left edge, top edge, width and height | `layout.decor`: `{ src, x, y, w, h }` |
 | `designed` | Anywhere in the frame | Makes the frame live |
+
+The `art:` prop instances are visual authoring aids and are ignored by the geometry exporter. Their source PNGs are editable in production.
 
 Groups are not read. Put the instances directly in the garden frame. Text, vectors and rectangles are ignored.
 

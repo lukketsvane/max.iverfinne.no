@@ -36,7 +36,7 @@ test('every player receives their own boon while the shared garden keeps running
   assert.equal(host.runIsPaused(),false);assert.equal(host.rogueRun.perks[first],rank+1);
   for(let i=1;i<4;i++){const g=games[i].game;g.chooseRoguePerk(g.rogueRun.choice[i%3].id);send(i,games[i].pending);}
   sync();games.forEach(h=>{assert.equal(h.game.runIsPaused(),false);assert.equal(Object.values(h.game.rogueRun.perks).reduce((a,b)=>a+b,0),2,'one earned boon plus the Mech starting rover');});
-  host.grantRogueXP(7);sync();host.chooseRoguePerk(host.rogueRun.choice[0].id);
+  host.grantRogueXP(host.rogueRun.next);sync();host.chooseRoguePerk(host.rogueRun.choice[0].id);
   for(let i=1;i<4;i++)host.coopDepart(ids[i]);
   assert.equal(host.runIsPaused(),false,'disconnected players cannot affect live simulation');
 });
@@ -204,7 +204,8 @@ test('simultaneous guest shrine choices commit one shared trial and reward each 
 test('guests can tend at an active shrine and water a locked exit stalk without starting travel',()=>{
   for(const world of [1,20]){
     const {games,sync,send}=team(),host=games[0].game,guest=games[1].game;
-    host.rogueRun.world=world;guest.rogueRun.world=world;host.rogueRun.next=1e9;
+    if(world>1)host.enterLevel(world);sync();host.rogueRun.next=1e9;
+    guest.P.y=host.surfaceY(guest.P.x);guest.P.grounded=true;guest.P.wet=false;guest.P.st='free';host.coop.members[ids[1]].avatar=JSON.parse(JSON.stringify(guest.coopAvatar()));
     const e=host.runEncounters[0];e.x=guest.P.x;e.active=true;
     const p=plot({x:guest.P.x,stalk:true,growth:4,moisture:.2,health:.6});host.gardenPlots=[p];sync();
     assert.equal(guest.crouchGardenAction(),true);assert.equal(games[1].pending[0].type,'grow');

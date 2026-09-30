@@ -33,8 +33,8 @@ test('world boons follow each plant’s carer instead of the team’s best rank'
 
 test('seed spots near the host roll with the host’s Golden seeds, not a teammate’s',()=>{
   const {games}=team(),host=games[0].game,far=host.coop.members[ids[1]],roll=(b,luck)=>{host.rogueRun.perks.luck=luck;const q=host.seedBucketSpawn(b);host.rogueRun.perks.luck=0;return q&&q.amount;};
-  let b=10;while(!(roll(b,0)===1&&roll(b,5)===2))b++;
-  host.P.x=b*126+60;host.P.y=host.surfaceY(host.P.x);far.perks.luck=5;far.avatar.x=host.P.x+5000;host.seedPickups=[];games[0].tick(16);
+  let b=-18;while(!(roll(b,0)===1&&roll(b,5)===2))b++;
+  host.P.x=host.seedBucketSpawn(b).x-35;host.P.y=host.surfaceY(host.P.x);far.perks.luck=5;far.avatar.x=host.P.x+5000;host.seedPickups=[];games[0].tick(16);
   assert.equal(host.seedPickups.find(q=>q.b===b).amount,1);
 });
 

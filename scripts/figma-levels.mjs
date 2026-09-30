@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { FIGMA, FigmaError, connect, metadataXml, toolCalls, tree } from './figma-mcp.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..'), require = createRequire(import.meta.url);
-export const PAGE = '218:2';
+export const PAGE = '382:2';
 const DATA = 'levels-data.js', FRAME = /^garden-(0[1-9]|1\d|20)([b-z]?)$/;
 const MARKERS = ['reward', 'seed', 'bonus', 'trial', 'puzzle', 'door', 'dig', 'secret', 'start'], NEEDED = ['reward', 'seed', 'trial'];
 const STYLES = ['stone', 'branch', 'ruin', 'root'], TIERS = ['C0 walking', 'C1 running', 'C2 Moss or Spring Step 2', 'C3 the air jump'];
@@ -88,7 +88,7 @@ export function check(garden, stage, world) {
 export function exportLevels(xml, page, world) {
   const top = tree(xml), frames = [top, ...walk(top)].filter(n => FRAME.test(n.name)), seen = new Map(), report = [], gardens = {};
   let errors = 0;
-  if (top.id !== page || top.name?.trim().toLowerCase() !== 'levels') report.push(`note: node ${top.id} "${top.name}" is not the page ${page} "levels"`);
+  if (top.id !== page || !['levels','level design'].includes(top.name?.trim().toLowerCase())) report.push(`note: node ${top.id} "${top.name}" is not the page ${page} "levels"`);
   for (const f of frames) seen.set(f.name, (seen.get(f.name) || 0) + 1);
   for (const frame of frames.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)) {
     const stage = +FRAME.exec(frame.name)[1], { live, garden, problems, notes } = gardenOf(frame);

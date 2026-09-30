@@ -33,7 +33,7 @@ test('a run seed chooses exactly one of three authored sites in every garden, wi
 test('all twenty shrines require their exact support and a grown living plant near the court',()=>{
   const {g}=game();
   for(let stage=1;stage<=20;stage++){
-    if(stage>1)g.enterLevel(stage);atShrine(g);const e=g.bossEvent;
+    if(stage>1)g.enterLevel(stage);atShrine(g);const e=g.bossEvent;if(stage===20)e.seals=7;
     g.gardenPlots=[plot({id:1,x:e.courtX+400})];
     assert.equal(g.interactBossEvent(),false,`garden ${stage}: a remote entry plant cannot start this fight`);
     const local=plot({id:2,x:e.courtX,growth:.1});g.gardenPlots.push(local);
@@ -69,9 +69,9 @@ test('a nearby entry plant outside the safe court cannot substitute for establis
 test('every summoned guardian keeps its movement, objectives and warned strikes in the selected court',()=>{
   const {g}=game();
   for(let stage=1;stage<=20;stage++){
-    if(stage>1)g.enterLevel(stage);atShrine(g);const e=g.bossEvent;
+    if(stage>1)g.enterLevel(stage);atShrine(g);const e=g.bossEvent;if(stage===20)e.seals=7;
     g.gardenPlots=[plot({id:1,x:e.courtX+600,growth:3}),plot({id:2,x:e.courtX,growth:.4})];
-    assert.equal(g.interactBossEvent(),true);const k=g.liveBoss();k.hp=k.maxHp*.3;k.phase=3;k.cool=0;
+    assert.equal(g.interactBossEvent(),true);const k=g.liveBoss();k.hp=k.maxHp*.3;k.phase=3;k.crownStage=3;k.cool=0;
     Object.assign(g.P,{x:e.courtX,y:e.courtY,grounded:true,platform:null});
     for(let tick=0;tick<720;tick++){
       if(k.finalBoss)g.updateHollowCrown(k,1/60);else g.updateStageBoss(k,1/60);

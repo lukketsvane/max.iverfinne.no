@@ -1,0 +1,111 @@
+{
+  "page": "162:2",
+  "root": "398:2",
+  "assets": [
+    {
+      "nodeId": "399:2",
+      "name": "index.html stars 351×108",
+      "width": 351,
+      "height": 108,
+      "sha1": "560e5cd927afd5b125922dd24ffb41fb547225a3"
+    },
+    {
+      "nodeId": "399:3",
+      "name": "index.html mtn 739×159",
+      "width": 739,
+      "height": 159,
+      "sha1": "8da74866aded33a9e50565781d18fadef45c2f12"
+    },
+    {
+      "nodeId": "399:4",
+      "name": "index.html forest 540×108",
+      "width": 540,
+      "height": 108,
+      "sha1": "496e112679878162adc9f6290ecc81eee4b927a6"
+    },
+    {
+      "nodeId": "399:5",
+      "name": "index.html clouds 540×119",
+      "width": 540,
+      "height": 119,
+      "sha1": "4ed39e2a579ebb529fca0aae2c045b67d394b0c6"
+    },
+    {
+      "nodeId": "399:6",
+      "name": "index.html ground 12×12",
+      "width": 12,
+      "height": 12,
+      "sha1": "374d81e834887109e7f6ea248ed9ac7e17a233be"
+    },
+    {
+      "nodeId": "399:7",
+      "name": "index.html CROW_SRC 160×128",
+      "width": 160,
+      "height": 128,
+      "sha1": "5a4fa80c82d3f4ce97cd34d2f601a810af374b69"
+    },
+    {
+      "nodeId": "399:8",
+      "name": "index.html CROW_MINI_SRC 84×12",
+      "width": 84,
+      "height": 12,
+      "sha1": "41598fe2272f79ce591e6b201284fdb81d77eebc"
+    },
+    {
+      "nodeId": "399:9",
+      "name": "index.html ANT1_SRC 7×7",
+      "width": 7,
+      "height": 7,
+      "sha1": "c196f8241fd41f123b2a66b8390db48b7ddabf47"
+    },
+    {
+      "nodeId": "399:10",
+      "name": "index.html ANT2_SRC 7×7",
+      "width": 7,
+      "height": 7,
+      "sha1": "c34c995ee66bb6f609608ff854a5a5972c8fee9a"
+    },
+    {
+      "nodeId": "399:11",
+      "name": "index.html SOIL_SRC 128×27",
+      "width": 128,
+      "height": 27,
+      "sha1": "e6d08c7809d1994f2d0a9e255eb183d60ea4e35e"
+    },
+    {
+      "nodeId": "399:23",
+      "name": "index.html SHEET_SRC 256×256",
+      "width": 256,
+      "height": 256,
+      "sha1": "72e3fc3321c2e319a5968864faff791180606eef"
+    },
+    {
+      "nodeId": "399:24",
+      "name": "index.html SHEET2_SRC 256×256",
+      "width": 256,
+      "height": 256,
+      "sha1": "2d862b5b525c09223b38a2b20d47146c3d58a3e5"
+    },
+    {
+      "nodeId": "399:25",
+      "name": "index.html NPC_ATLAS_SRC 768×256",
+      "width": 768,
+      "height": 256,
+      "sha1": "9563d7249d7593887f955a0e51ba00a838c2c05b"
+    },
+    {
+      "nodeId": "399:26",
+      "name": "index.html SWAN_SRC 616×320",
+      "width": 616,
+      "height": 320,
+      "sha1": "954d2111e384d797cf66c0ceb33c82126a5c04da"
+    },
+    {
+      "nodeId": "399:27",
+      "name": "index.html GARDEN_SRC 256×98",
+      "width": 256,
+      "height": 98,
+      "sha1": "4f24b5aba23bb0fe9a62fddad86fc204f316c73c"
+    }
+  ]
+}

@@ -85,9 +85,10 @@ function coopInput(id,packet){
     if(!ladder||Math.abs(a.x-ladder.x)>Math.max(8,(ladder.w||14)/2+2)||a.y<ladder.top-3||a.y>ladder.bottom+5)a=null;
     else{a.grounded=false;a.exitClimb=false;a.gardenTend=false;}
   }
+  var loopBounds=gardenLoop();if(a&&loopBounds&&(a.x<loopBounds.left||a.x>=loopBounds.right))a=null;
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
-    if(m.trust||Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
+    if(m.trust||Math.abs(loopDelta(a.x,m.avatar.x))<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
       if(nightRelayMode())relayConstrain(a);a.wet=playerWetAt(a.x,a.y);a.grounded=a.grounded&&coopSupportY(a.x,a.y)!==null&&!a.wet;
       m.avatar=a;m.reviveHeld=!!a.reviveHeld;m.trust=false;accepted=true;
       if(!a.grounded||a.st==='climb'){m.airTop=m.airTop==null?a.y:Math.min(m.airTop,a.y);m.landAt=0;}
@@ -235,7 +236,7 @@ function coopCapture(){
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
     secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),polgeStands:[],fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
-    difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
+    timeline:(rogueRun.timeline||[]).slice(0,40).map(coopPlain),bosses:(rogueRun.bosses||[]).slice(0,20).map(coopPlain),difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     expedition:runExpedition?coopPlain(runExpedition):null,bossEvent:bossEvent?coopPlain(bossEvent):null,
     raid:{active:gardenRaidActive,timer:gardenRaidT,remaining:rogueRun.raidRemaining||0,total:rogueRun.raidTotal||0,threat:rogueRun.raidThreat||0,grace:gardenRaidGrace,spawn:gardenRaidSpawn,bossSpawned:gardenBossSpawned},
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
@@ -249,6 +250,8 @@ function coopState(s){
   if(s.mode&&s.mode!==rogueRun.mode)return;
   if(relicRunMode()&&s.survival){rogueRun.survival=coopPlain(s.survival);gardenRaidActive=lastSeedMode()&&!!s.survival.active;gardenRaidT=lastSeedMode()?s.survival.rest:0;}
   if(Number.isInteger(s.seed))rogueRun.seed=s.seed>>>0;
+  if(Array.isArray(s.timeline))rogueRun.timeline=s.timeline.slice(0,40).filter(function(q){return q&&Number.isFinite(q.w)&&Number.isFinite(q.t);}).map(coopPlain);
+  if(Array.isArray(s.bosses))rogueRun.bosses=s.bosses.slice(0,20).filter(function(q){return q&&Number.isInteger(q.stage)&&q.stage>=1&&q.stage<=20&&Number.isFinite(q.seconds);}).map(coopPlain);
   var previousWorld=worldLevel(),wasEnded=rogueRun.ended;
   if(previousWorld!==s.world)sligoPendingSwap=0;
   rogueRun.world=s.world;rogueRun.clearedWorld=s.cleared;rogueRun.level=s.level;rogueRun.xp=s.xp;rogueRun.next=s.next;rogueRun.difficulty=['easy','medium','hard','insane'].indexOf(s.difficulty)>=0?s.difficulty:(rogueRun.difficulty||'medium');rogueRun.ascenderId=typeof s.ascender==='string'?s.ascender:'';
@@ -321,6 +324,7 @@ function coopState(s){
   }
   if(previousWorld!==s.world){
     task=null;climb=null;warp=null;holdWater=null;clearRunInput();P.platform=null;
+    loopBackdropOffset=0;loopLayout=null;loopGeometry=null;
     P.x=levelOriginX(s.world)+(coop.members[coop.me].slot-1)*12;P.vx=P.vy=0;P.airJumpUsed=false;hazardHits={};
     if(s.ascender===coop.me){P.y=surfaceY(P.x);P.grounded=true;P.st='free';setAnim('idle');worldBanner=4;}
     else{P.y=surfaceY(P.x)-80;P.grounded=false;P.st='float';setAnim('hang');}

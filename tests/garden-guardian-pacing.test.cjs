@@ -22,7 +22,7 @@ test('all twenty cyan openings begin after their volley and fit a reaction plus 
     const {g,k}=arena(stage),dt=1/hz;
     // The last phase has the longest volleys. Preserve enough health for a
     // ground charge so the damage opportunity can be inspected after impact.
-    k.hp=k.maxHp*.3;k.phase=3;
+    k.hp=k.maxHp*.3;k.phase=3;k.crownStage=3;
     for(let tick=0;tick<hz*8&&!(k.exposed>0);tick++)bossStep(g,k,dt);
     assert.ok(k.exposed>2.5,`${stage} at ${hz} Hz opens a full fuse window`);
     assert.equal(g.runHazards.filter(h=>h.guardianOwner===k.ph).length,0,`${stage}: cyan never overlaps its own last strike`);

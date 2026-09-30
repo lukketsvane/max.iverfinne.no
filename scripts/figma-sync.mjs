@@ -7,7 +7,7 @@ import { inflateSync } from 'node:zlib';
 import { FIGMA, FigmaError, all, connect, download, metadata, tool, toolCalls, unxml } from './figma-mcp.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE = '52:2', RULES = { pixelArt: '38:4', exportCheck: '40:47' }, GRIDS = '39:2', PALETTE = '39:39';
+const SOURCE = '160:2', RULES = { pixelArt: '396:3', exportCheck: '396:12' }, GRIDS = '396:19', PALETTE = '396:25';
 const PULLABLE = ['DRIFT', 'NEW-IN-FIGMA', 'MISSING-IN-REPO', 'MANIFEST-STALE'];
 const GENERATED = [[/^assets\/max-skins-v1\/sligo\//, 'scripts/build-sligo.py'], [/^assets\/(max-skins-v1|enemies-v1)\//, 'scripts/build-native-art.py'], [/^assets\/rat-enemies-v1\//, 'scripts/build-rat-assets.py']];
 const HINTS = {
@@ -154,7 +154,7 @@ async function withImages(layers) {
 }
 async function sourceSection() {
   const section = await metadata(SOURCE);
-  if (section.type !== 'section') throw new FigmaError(`Node ${SOURCE} is a ${section.type}, not the production section. Is ${FIGMA.fileName} the active tab?`);
+  if (!['section', 'frame'].includes(section.type)) throw new FigmaError(`Node ${SOURCE} is a ${section.type}, not the production section. Is ${FIGMA.fileName} the active tab?`);
   return section;
 }
 const entryOf = l => ({ path: l.path, nodeId: l.nodeId, group: l.group, width: l.width, height: l.height, sha1: l.sha1 });
@@ -226,7 +226,7 @@ async function buildManifest() {
   const pages = await Promise.all([metadata(FIGMA.pages.production), metadata(FIGMA.pages.draft)]);
   const find = id => pages.flatMap(p => [p, ...all(p)]).find(n => n.id === id);
   const section = find(SOURCE);
-  if (section?.type !== 'section') throw new FigmaError(`Section ${SOURCE} not found. Is ${FIGMA.fileName} the active tab?`);
+  if (!section || !['section', 'frame'].includes(section.type)) throw new FigmaError(`Section ${SOURCE} not found. Is ${FIGMA.fileName} the active tab?`);
   const inSource = new Set(all(section));
   const layers = await withImages(assetLayers(section));
   for (const l of layers) if (l.sha1 && l.sha1 !== repoSha(l.path)) l.problems.push(repoSha(l.path) ? 'Figma image ≠ repo file: npm run figma:check, then figma:pull or update the layer' : 'repo file missing: npm run figma:pull');
@@ -295,7 +295,27 @@ async function drafts() {
   return 0;
 }
 
+export function checkSnapshot(snapshot, manifest) {
+  if (snapshot.fileKey !== FIGMA.fileKey || snapshot.root !== SOURCE) throw new Error('Snapshot belongs to a different Figma source');
+  const seen = new Set(), rows = [];
+  for (const [path, nodeId, width, height, hash, parent, x, y, fills] of snapshot.assets) {
+    const entry = manifest.production.find(e => e.path === path);
+    const match = !seen.has(path) && safePath(path) && fills === 1 && [x,y,width,height].every(Number.isInteger) && entry && entry.nodeId === nodeId && entry.width === width && entry.height === height && entry.sha1 === hash && repoSha(path) === hash;
+    rows.push({path, status:match ? 'MATCH' : 'MISMATCH'}); seen.add(path);
+  }
+  manifest.production.filter(e => !seen.has(e.path)).forEach(e => rows.push({path:e.path,status:'MISSING'}));
+  return rows;
+}
+
 async function main([command = 'check', ...options]) {
+  if (command === 'check' && options[0] === '--snapshot' && options.length === 2) {
+    const snapshot = JSON.parse(readFileSync(resolve(options[1]), 'utf8'));
+    const rows = checkSnapshot(snapshot, readManifest());
+    rows.forEach(r => console.log(`${r.status} ${r.path}`));
+    const bad = rows.filter(r => r.status !== 'MATCH').length;
+    console.log(`\n${rows.length} layers verified from Figma snapshot ${snapshot.capturedAt || ''} · ${bad} problem(s). This checks the captured file state.`);
+    return bad ? 1 : 0;
+  }
   const commands = ['check', 'pull', 'manifest', 'drafts'], known = ['--dry-run', '--allow-resize'];
   if (!commands.includes(command) || options.some(o => !known.includes(o))) {
     console.error(`Usage: node scripts/figma-sync.mjs [${commands.join('|')}] [${known.join('] [')}]`);

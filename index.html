@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX FUGLESPRENGER"><link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png"><link rel="manifest" href="/manifest.webmanifest"><title>MAX FUGLESPRENGER</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#000000"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="MAX NIGHT GARDEN"><link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64.png"><link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png"><link rel="manifest" href="/manifest.webmanifest"><title>MAX NIGHT GARDEN</title>
 <link rel="stylesheet" href="run-results.css">
 <script src="assets/results-native/code/max-bouquet.js"></script>
 <script src="run-results.js"></script>
@@ -259,10 +259,42 @@ function pondNear(x) {
   }
   return null;
 }
-function waterAt(x) { if(isolatedRelicMode())return null; var p = pondNear(x); return (p && Math.abs(x - p.cx) < p.hw) ? p : null; }
+function waterAt(x) { if(isolatedRelicMode())return null;var b=gardenLoop();if(b&&x>b.left-128&&x<b.right+128&&Math.min(x-b.left,b.right-x)<128)return null; var p = pondNear(x); return (p && Math.abs(x - p.cx) < p.hw) ? p : null; }
 // A picture level holds the soil under its art at its own ground line, eased
 // back to the rolling terrain over 24 px beyond each edge.
+// Finite horizontal gardens. The seam sits outside every authored route,
+// court and picture. Both ends ease to identical dry ground.
+var loopLayout=null,loopGeometry=null,loopBackdropOffset=0,loopPlatforms=null,loopPlatformCount=0,loopSites=null,loopExpedition=null;
+function gardenLoop(){
+  if(!activeStageLayout||!rogueRun||rogueRun.mode!=='garden'||activeStageLayout.stage!==worldLevel())return null;
+  if(loopLayout===activeStageLayout&&loopPlatforms===activeStageLayout.platforms&&loopPlatformCount===activeStageLayout.platforms.length&&loopSites===activeStageLayout.guardianSites&&loopExpedition===activeStageLayout.expedition)return loopGeometry;
+  var L=activeStageLayout,o=L.origin||0,left=o-2048,right=o+2048;
+  function visit(q){
+    if(!q||typeof q!=='object')return;
+    if(Array.isArray(q)){q.forEach(visit);return;}
+    if(Number.isFinite(q.x)&&Math.abs(q.x-o)<20000){left=Math.min(left,q.x);right=Math.max(right,q.x+(Number.isFinite(q.w)?q.w:0));}
+    ['x0','x1','x2','courtLeft','courtRight'].forEach(function(k){if(Number.isFinite(q[k])&&Math.abs(q[k]-o)<20000){left=Math.min(left,q[k]);right=Math.max(right,q[k]);}});
+    Object.keys(q).forEach(function(k){if(k!=='img'&&k!=='image')visit(q[k]);});
+  }
+  ['platforms','routes','trials','rewards','bonuses','nodes','ground','place','expedition','guardianSites','ladders','spots','art'].forEach(function(k){visit(L[k]);});
+  left=Math.floor(left-384);right=Math.ceil(right+384);
+  loopLayout=L;loopPlatforms=L.platforms;loopPlatformCount=L.platforms.length;loopSites=L.guardianSites;loopExpedition=L.expedition;loopGeometry={left:left,right:right,width:right-left,y:(terrainY(left+160)+terrainY(right-160))/2};
+  return loopGeometry;
+}
+function loopX(x){var b=gardenLoop();return b?b.left+((x-b.left)%b.width+b.width)%b.width:x;}
+function loopDelta(x,from){var b=gardenLoop(),d=x-from;return b?((d+b.width/2)%b.width+b.width)%b.width-b.width/2:d;}
+function loopGround(x){var b=gardenLoop();if(!b||x<b.left-128||x>b.right+128)return null;x=loopX(x);var d=Math.min(x-b.left,b.right-x);if(d>=128)return null;var t=Math.min(1,d/128);t=t*t*(3-2*t);return b.y*(1-t)+terrainY(x)*t;}
+function wrapGardenPlayer(){
+  var b=gardenLoop();if(!b||P.st==='climb'||warp)return;
+  var x=loopX(P.x),shift=x-P.x;if(Math.abs(shift)<.001)return;
+  P.x=x;camX+=shift;loopBackdropOffset-=shift;
+  if(Number.isFinite(P.tunX))P.tunX+=shift;
+  task=null;holdWater=null;P.platform=null;
+  // Preserve world height and velocity: this is a cylinder, not a teleport.
+  if(companion&&companion.state){companion.state.x+=shift;}
+}
 function surfaceY(x) {
+  var seam=loopGround(x);if(seam!==null)return seam;
   if(isolatedRelicMode()&&rogueRun.survival)return rogueRun.survival.base;
   var pg = activeStageLayout && activeStageLayout.ground;
   if (pg && x > pg.x0 - 24 && x < pg.x1 + 24) {
@@ -834,6 +866,7 @@ function updatePlayer(dt, inp) {
     else physics(step,(P.st==='free'||P.st==='float')?held:{axis:0,top:inp.top});
     if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
     P.throwPose=Math.max(0,P.throwPose-step);
+    wrapGardenPlayer();
     animate(step);
     if(nightRelayMode())relayConstrain(P);
   }
@@ -3338,6 +3371,7 @@ function drawBossBar(dt){
   if(bossSeen.id!==k.bossId){bossSeen={id:k.bossId,t:2.6,ghost:1,x:k.x,y:k.y};shake=Math.min(3,shake+2.5);chime([98,131,98,147,196],.18,.07);}
   bossSeen.x=k.x;bossSeen.y=k.y;
   var f=Math.max(0,Math.min(1,k.hp/k.maxHp)),name=k.bossName||BOSS_NAMES[k.bossId]||'BOSS';
+  if(k.guardianStage===20){name+=' '+(k.crownStage||1)+'/3';if(k.transitionT>0){drawBossWord('STAGE '+(k.crownStage||1)+' OF 3',IW/2,Math.round(IH*.28),2);drawBossWord(k.crownStage===3?'THE FINAL STAND':'THE CROWN WAKES',IW/2,Math.round(IH*.28)+20,1);}}
   bossSeen.t=Math.max(0,bossSeen.t-dt);bossSeen.ghost=Math.max(f,bossSeen.ghost-dt*.4);
   var w=Math.min(IW-16,140),x=Math.round((IW-w)/2),y=bossBarY();
   ctx.fillStyle='rgba(4,8,10,.8)';ctx.fillRect(x-1,y-1,w+2,5);
@@ -3401,9 +3435,10 @@ function finalizeRogueRun(won){
   if(won&&runElapsed>0&&(!rogueMeta.bestTime||runElapsed<rogueMeta.bestTime))rogueMeta.bestTime=Math.round(runElapsed*100)/100;
   rogueMeta.petals=(rogueMeta.petals|0)+Math.max(1,Math.floor(gardenWave/2)+Math.floor((gardenStats.harvested||0)/3)+(won?5:0));
   try{localStorage.setItem('max-fuglesprenger-meta-v1',JSON.stringify(rogueMeta));}catch(e){}
-  if(window.MaxRunStats)try{window.MaxRunStats(runStats(won));}catch(e){}
+  var balance=runStats(won);
+  if(window.MaxRunStats)try{window.MaxRunStats(balance);}catch(e){}
   if(window.MaxRunRecords){
-    var saved=window.MaxRunRecords.save({id:rogueRun.recordId,ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:won,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed});
+    var saved=window.MaxRunRecords.save({id:rogueRun.recordId,ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:balance.classId||rogueRun.classId,won:won,plants:rogueRun.garden,world:worldLevel(),wave:gardenWave,seconds:runElapsed,balance:balance});
     rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
   }
 }
@@ -3413,13 +3448,15 @@ function runCheckpoint(){
 }
 function runStats(won){
   runCheckpoint();
-  return {v:1,run:rogueRun.recordId||'',classId:rogueRun.classId,difficulty:rogueRun.difficulty,won:!!won,world:worldLevel(),seconds:Math.round(runElapsed),level:rogueRun.level|0,
+  var own=coop&&coop.members[coop.me];
+  return {v:2,seed:rogueRun.seed,mode:rogueRun.mode,art:window.MaxNativeArt&&window.MaxNativeArt.status?window.MaxNativeArt.status():null,players:coop?coopMembers().map(function(m){return {classId:m.classId,boons:Object.assign({},m.perks)};}):[],run:rogueRun.recordId||'',classId:own?own.classId:rogueRun.classId,difficulty:rogueRun.difficulty,won:!!won,world:worldLevel(),seconds:Math.round(runElapsed),level:rogueRun.level|0,
     score:gardenScore|0,wave:gardenWave|0,team:coop?coopSize():1,plants:rogueRun.garden.length,lost:gardenStats.lost|0,harvested:gardenStats.harvested|0,
-    boons:Object.assign({},rogueRun.perks),traits:Object.assign({},rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,timeline:rogueRun.timeline.slice(0,41)};
+    boons:Object.assign({},own?own.perks:rogueRun.perks),traits:Object.assign({},own?own.traits:rogueRun.traits||{}),wonders:(rogueRun.found||[]).slice(0,40),shovel:!!rogueRun.shovel,bosses:(rogueRun.bosses||[]).slice(0,20),timeline:rogueRun.timeline.slice(0,41)};
 }
 function resetRogueRun(reason,selection){
   polgeStands=[];classShots=[];classFighters=[];
   selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');
+  loopBackdropOffset=0;loopLayout=null;loopGeometry=null;
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
@@ -3666,7 +3703,7 @@ function grantRogueXP(n){
   rogueRun.xp+=Math.max(0,+n||0);
   // Keep surplus XP until its previous choice is resolved; never lose rewards.
   if((coop||!rogueRun.choice)&&rogueRun.xp>=rogueRun.next&&(coop?coopMembers().some(function(m){return perkChoices(m.perks,m.slot,m.classId).length;}):perkChoices().length)){
-    rogueRun.xp-=rogueRun.next;rogueRun.level++;rogueRun.next=Math.min(45,Math.round(rogueRun.next*1.18+2));offerRogueChoice();
+    rogueRun.xp-=rogueRun.next;rogueRun.level++;rogueRun.next=Math.round(rogueRun.next*1.22+4);offerRogueChoice();
   }
 }
 function seedBucketSpawn(b){
@@ -4342,7 +4379,7 @@ function enterLevel(n,ascenderId){
   rogueRun.ascenderId=typeof ascenderId==='string'?ascenderId:'';
   var x=levelOriginX(n),ownAscended=!!ascenderId&&(!coop||ascenderId===coop.me),ownSlot=coop&&coop.members[coop.me]?coop.members[coop.me].slot:1,ownX=x+(ownSlot-1)*12;
   P.x=ownX;P.vx=0;P.vy=0;P.airJumpUsed=false;P.coyote=0;P.face=1;P.wet=false;P.platform=null;P.climbRegrab=0;P.climbIgnoreId=null;
-  if(ownAscended){P.y=surfaceY(ownX);P.grounded=true;P.st='free';setAnim('idle');worldBanner=4;}
+  if(ownAscended){P.y=surfaceY(ownX);P.grounded=true;P.st='free';setAnim('idle');worldBanner=worldLevel()===20?8:4;}
   else{P.y=surfaceY(ownX)-80;P.grounded=false;P.st='float';setAnim('hang');}
   if(coop&&coop.host)coopMembers().forEach(function(m){
     var sx=x+(m.slot-1)*12,ascended=!!ascenderId&&m.id===ascenderId;
@@ -4357,7 +4394,7 @@ function enterLevel(n,ascenderId){
   saveGarden();updateGardenHud();
 }
 function landFloat(){
-  P.st='free';worldBanner=4;
+  P.st='free';worldBanner=worldLevel()===20?8:4;
   for(var i=0;i<6;i++)parts.push({x:P.x+(Math.random()-.5)*16,y:P.y-30-Math.random()*6,vx:(Math.random()-.5)*16,vy:-4-Math.random()*6,l:1.4,m:1.4,c:'98,130,80'});
   chime([659,523,784],.1,.04);saveGarden();
 }
@@ -4463,6 +4500,7 @@ function drawWorldBanner(t){
   ctx.globalAlpha=a*.9;
   drawLeafIcon(6,y,'#8aa276','#2f4426');
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
+  if(worldLevel()===20){drawBossWord('FINAL GARDEN',IW/2,y+18,1);expeditionText('LIGHT THREE BEACONS',IW/2,y+33);}
   drawSecretBanner(y);
   ctx.globalAlpha=1;
 }
@@ -4599,7 +4637,7 @@ function updateGardenFun(dt){
     grantRogueXP(runReward(2+(perfect?1:0)));
     var speed=Math.max(0,70-Math.floor(runElapsed/15));
     gardenAction(130+gardenWave*22+(perfect?180:0)+speed,30+(perfect?12:0),perfect?'PERFECT':'CLEAR');
-    if(gardenWave>=FINAL_WAVE){grantRogueLevel();gardenRaidT=9999;nudgeGardenHint('PREPARED · TEND THE ALTAR WHEN READY');return;}
+    if(gardenWave>=FINAL_WAVE){gardenRaidT=9999;nudgeGardenHint('PREPARED · TEND THE ALTAR WHEN READY');return;}
     gardenRaidT=Math.max(12,22-raidPressure()*.3);
     saveGarden();updateGardenHud();
   }
@@ -4656,7 +4694,7 @@ function burstKrek(k){
   gardenStats.defended=(gardenStats.defended||0)+1;var mulch=rogueRun.perks.mulch||0;if(mulch)gardenPlots.forEach(function(p){if(!p.dead&&(p.tideVine?highTideStemDistance(k.x,k.y):Math.abs(p.x-k.x))<48+mulch*8){p.health=clamp01(p.health+.025*mulch);p.moisture=clamp01(p.moisture+.018*mulch);p.pulse=Math.max(p.pulse,.5);}});
   var bonus=k&&(k.queen||k.boss)?7:(k&&k.elite?3:((gardenStats.defended%3)===0?1:0));
   if(bonus){spawnLooseSeeds(k.x,k.y,bonus);nudgeGardenHint((k&&k.elite?'ELITE DEFEATED':'PEST DEFEATED')+' · SEED DROP');}
-  grantRogueXP(runReward(k&&(k.queen||k.boss)?7:(k&&k.elite?3:1)));if(k&&k.boss)grantRogueLevel();gardenAction(k&&k.queen?520:(k&&k.elite?180:55),k&&k.queen?65:(k&&k.elite?30:10),k&&k.queen?'DRONNING':(k&&k.elite?'STORKREK':'FORSVAR'));
+  grantRogueXP(runReward(k&&(k.queen||k.boss)?7:(k&&k.elite?3:1)));if(k&&k.boss)grantRogueLevel();gardenAction(k&&k.queen?520:(k&&k.elite?180:55),k&&k.queen?65:(k&&k.elite?30:10),k&&k.queen?'QUEEN':(k&&k.elite?'ELITE':'DEFENDED'));
   if(k.boss)gardenBossDefeated(k);
   setTimeout(updateGardenHud,0);
   if(isRat(k)){puff(k.x,k.y+RAT_FOOT,5,.35);saveGarden();return;}
@@ -4679,7 +4717,7 @@ function updateKrek(dt){
   for(var i=floatKrek.length-1;i>=0;i--){
     var k=floatKrek[i],pressure=raidPressure();k.flash=Math.max(0,k.flash-dt*5);k.think-=dt;k.bite=Math.max(0,k.bite-dt);k.lampCooldown=Math.max(0,(k.lampCooldown||0)-dt);k.hitStaggerCooldown=Math.max(0,(k.hitStaggerCooldown||0)-dt);k.startle=Math.max(0,(k.startle||0)-dt);
     if(k.glue>0)k.glue-=dt;
-    if(k.burn>0){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate*runPlayerPower()/runDurabilityScale(k);if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
+    if(k.burn>0&&!(k.transitionT>0)){var burnStep=Math.min(dt,k.burn);k.burn-=burnStep;k.hp-=burnStep*k.burnRate*runPlayerPower()/runDurabilityScale(k);crownDamageGate(k);if(k.hp<=0){floatKrek.splice(i,1);burstKrek(k);continue;}}
     if(k.flee>0&&!k.boss&&!isRat(k)){if(k.divePhase)cancelPestDive(k);k.windup=0;k.attackTarget=null;k.flee-=dt;var dir=k.x<(Number.isFinite(k.fleeFromX)?k.fleeFromX:P.x)?-1:1;k.vx+=(dir*38-k.vx)*dt*2;k.vy+=(-18-k.vy)*dt*1.5;k.x+=k.vx*dt;k.y+=k.vy*dt;if(!k.raid&&!k.eventId&&Math.abs(k.x-P.x)>IW*1.2){floatKrek.splice(i,1);continue;}continue;}
     var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
     if(lamp){k.lampCooldown=7;staggerKrek(k,.85);k.fleeFromX=lamp.p.x;continue;}
@@ -6434,6 +6472,84 @@ function drawVignette() {
 /* ---------------------------------------------------------------- loop */
 var last = 0, tSec = 0, stepAcc = 0;
 
+function drawWorldForeground(dt){
+  if(!isolatedRelicMode()){
+  drawFarFlora(tSec);
+  drawLandmarkBack(tSec);
+  drawGround();
+  drawTrailAccents();
+  drawSoil();
+  drawBiomeSoil(tSec);
+  drawSurfaceTrim(tSec);
+  drawRocks();
+  drawGrass(tSec);
+  drawScorches();
+  drawTallFlora(tSec);
+  drawFigmaPlants(tSec);
+  drawBiomeFlora(tSec);
+  drawLandmarks(tSec);
+  drawBiomeTransitionMarkers();
+  }
+  drawPlatforms(tSec);
+  drawSligoTrail();
+  drawPolgeStands();
+  if(!isolatedRelicMode())drawSmartWorld(tSec);
+  drawSpots(tSec);drawSeedPickups(tSec);
+  drawRunExploration(tSec);
+  drawGardenPlots(tSec);drawHighTideWorld(tSec);
+  if(!isolatedRelicMode()){
+  drawSecretGround(tSec);
+  drawWonders(tSec);
+  drawAnts();
+  drawLowFlora(tSec, false);
+  drawLights(tSec);
+  drawWater(tSec);
+  drawPondDeco(false);
+  drawPondExtras();
+  }
+  drawClassAuras();
+  drawParts();
+  if(!isolatedRelicMode()){
+  drawCrows();
+  drawSmallFauna();
+  drawSwans();
+  }
+  drawKrek(tSec);
+  drawRunHazards(tSec);
+  drawSecretAir(tSec);
+  drawWonderAir();
+  drawBirdBlasts();
+  drawCompanion();
+  P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();
+  drawClimbSky(tSec);
+  drawBombs(tSec);
+  drawFeathers();
+  if(!isolatedRelicMode()){
+  drawPondDeco(true);
+  drawLowFlora(tSec, true);
+  drawGlows(tSec);
+  drawMaxLight(tSec);
+  drawFlyers(tSec);
+  drawFlies(tSec);
+  drawForegroundFrame(tSec);
+  drawWeather(tSec);
+  }
+  drawBooms();
+  drawWarp(tSec);
+  drawHighTideWater(tSec);
+}
+function drawLoopForeground(dt){
+  var b=gardenLoop(),camera=camX;
+  if(!b){buildSurfCache();drawWorldForeground(dt);return;}
+  // At most two visible slices; no mirrored map and no duplicate simulation.
+  var first=Math.floor((camera-b.left)/b.width),last=Math.floor((camera+IW-1-b.left)/b.width);
+  for(var tile=first;tile<=last;tile++){
+    var start=Math.max(0,b.left+tile*b.width-camera),end=Math.min(IW,b.right+tile*b.width-camera);
+    ctx.save();ctx.beginPath();ctx.rect(start,0,end-start,IH);ctx.clip();
+    camX=camera-tile*b.width;buildSurfCache();drawWorldForeground(tile===first?dt:0);ctx.restore();
+  }
+  camX=camera;buildSurfCache();
+}
 function frame(now) {
   var dt = (now - last) / 1000;
   var clockDt=Math.max(0,dt);
@@ -6519,6 +6635,7 @@ function frame(now) {
   camX = Math.round(camX); camY = Math.round(camY);
   buildSurfCache();
 
+  camX+=loopBackdropOffset;
   if(nightRelayMode()){drawRelayBackdrop();}else if(highTideMode()){ctx.fillStyle='#080a0f';ctx.fillRect(0,0,IW,IH);}else{
   var hy = HY = ANCHOR + 6;
   hy += backdropLift();
@@ -6547,72 +6664,11 @@ function frame(now) {
   }
   drawBiomeBackdrop(tSec, hy);
   drawBiomeTint();
-  drawFarFlora(tSec);
-  drawLandmarkBack(tSec);
-  drawGround();
-  drawTrailAccents();
-  drawSoil();
-  drawBiomeSoil(tSec);
-  drawSurfaceTrim(tSec);
-  drawRocks();
-  drawGrass(tSec);
-  drawScorches();
-  drawTallFlora(tSec);
-  drawFigmaPlants(tSec);
-  drawBiomeFlora(tSec);
-  drawLandmarks(tSec);
-  drawBiomeTransitionMarkers();
   }
-  drawPlatforms(tSec);
-  drawSligoTrail();
-  drawPolgeStands();
-  if(!isolatedRelicMode())drawSmartWorld(tSec);
-  drawSpots(tSec);drawSeedPickups(tSec);
-  drawRunExploration(tSec);
-  drawGardenPlots(tSec);drawHighTideWorld(tSec);
-  if(!isolatedRelicMode()){
-  drawSecretGround(tSec);
-  drawWonders(tSec);
-  drawAnts();
-  drawLowFlora(tSec, false);
-  drawLights(tSec);
-  drawWater(tSec);
-  drawPondDeco(false);
-  drawPondExtras();
-  }
-  drawClassAuras();
-  drawParts();
-  if(!isolatedRelicMode()){
-  drawCrows();
-  drawSmallFauna();
-  drawSwans();
-  }
-  drawKrek(tSec);
-  drawRunHazards(tSec);
-  drawSecretAir(tSec);
-  drawWonderAir();
-  drawBirdBlasts();
-  drawCompanion();
-  P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();drawTeamArrows();drawMouseReticle();
-  drawPickupNotice(dt);
-  drawClimbSky(tSec);
-  drawBombs(tSec);
-  drawFeathers();
-  if(!isolatedRelicMode()){
-  drawPondDeco(true);
-  drawLowFlora(tSec, true);
-  drawGlows(tSec);
-  drawMaxLight(tSec);
-  drawFlyers(tSec);
-  drawFlies(tSec);
-  drawForegroundFrame(tSec);
-  drawWeather(tSec);
-  drawBiomeGrade();
-  }
-  drawBooms();
-  if(!isolatedRelicMode())drawVignette();
-  drawWarp(tSec);
-  drawHighTideWater(tSec);
+  camX-=loopBackdropOffset;
+  drawLoopForeground(dt);
+  drawTeamArrows();drawMouseReticle();drawPickupNotice(dt);
+  if(!isolatedRelicMode()){drawBiomeGrade();drawVignette();}
   drawRelayDarkness();drawNightRelay(tSec);
   drawWorldBanner(tSec);drawPlaceBanner();drawBossBar(dt);
   rosterShown=false;drawRunHud();if(!rosterShown)hideRoster();
