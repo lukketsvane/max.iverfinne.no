@@ -41,6 +41,33 @@ SPECS = {
    [('movement',0,c) for c in [3,1,0,1,2,1,0,2]],
   ],
  },
+ 'rattle-norvegicus-pink': {
+  'skin': 'moss-pink', 'class': 'runner', 'scale': .175, 'keepParts': True, 'matte': True,
+  'variantOf': 'rattle-norvegicus', 'sourceLabel': 'owner-supplied pink-and-gold costume sheet',
+  'palette': ['0b1017','101932','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','7f2346','bd3b69','ef609a','ffc0c7'],
+  'sources': {'sheet': 'rattus-pink-gold-v1.png'},
+  'sourceRowCenters': {'sheet': [98,266,436,607,776,940,1153]},
+  'main': [
+   [('sheet',0,c) for c in range(8)],
+   [('sheet',1,c) for c in range(8)],
+   [('sheet',3,c) for c in [0,1,3,5,6,7,6,1]],
+   [('sheet',0,c) for c in range(8)],
+   [('sheet',3,0),('sheet',3,1),('sheet',4,2),('sheet',4,3),('sheet',4,2),('sheet',4,1),('sheet',4,6),('sheet',0,0)],
+   [('sheet',5,2),('sheet',5,5),('sheet',5,6),('sheet',4,1),('sheet',4,6),('sheet',4,7),('sheet',0,1),('sheet',0,0)],
+   [('sheet',3,1),('sheet',4,2),('sheet',4,4),('sheet',5,3),('sheet',5,4),('sheet',4,5),('sheet',4,6),('sheet',0,0)],
+   [('sheet',0,c) for c in range(8)],
+  ],
+  'interaction': [
+   [('sheet',0,0),('sheet',4,7),('sheet',4,6),('sheet',4,1),('sheet',4,1),('sheet',4,6),('sheet',4,7),('sheet',4,1)],
+   [('sheet',4,7),('sheet',4,6),('sheet',4,1),('sheet',6,3),('sheet',6,2),('sheet',4,1),('sheet',4,6),('sheet',4,7)],
+   [('sheet',0,0),('sheet',4,1),('sheet',5,6),('sheet',5,2),('sheet',5,2),('sheet',5,2),('sheet',5,2),('sheet',4,1)],
+   [('sheet',1,c) for c in range(8)],
+   [('sheet',4,7),('sheet',4,6),('sheet',4,1),('sheet',6,3),('sheet',6,2),('sheet',4,1),('sheet',4,6),('sheet',4,7)],
+   [('sheet',4,0),('sheet',4,2),('sheet',4,3),('sheet',4,6),('sheet',5,6),('sheet',5,2),('sheet',5,2),('sheet',5,5)],
+   [('sheet',0,2),('sheet',6,2),('sheet',6,7),('sheet',6,2),('sheet',6,7),('sheet',0,3),('sheet',0,4),('sheet',0,1)],
+   [('sheet',4,1),('sheet',4,6),('sheet',6,3),('sheet',6,4),('sheet',6,5),('sheet',6,6),('sheet',4,6),('sheet',4,7)],
+  ],
+ },
  'cairn': {
   'skin': 'ember', 'class': 'bulwark', 'scale': .18,
   'palette': ['131823','222b3b','344258','4b5062','696a79','858797','aea69d','d4bfa3','f6e3bd','f5b846','d98025','9b5a26','4c5030','788143','245762','5facb3'],
@@ -126,12 +153,14 @@ def rattle_poses(spec):
  poses={}
  for name,file in spec['sources'].items():
   pixels=np.array(Image.open(SOURCE/file).convert('RGBA'));found={}
+  if spec.get('matte'):
+   pixels[np.min(pixels[:,:,:3],axis=2)>=235]=0
   for group in components(pixels[:,:,3]>=210):
    if len(group)<1000:continue
    xs,ys=zip(*group)
    if max(ys)-min(ys)+1>185:continue
    cx,cy=sum(xs)/len(xs),sum(ys)/len(ys)
-   row=min(range(8),key=lambda r:abs(cy-spec['sourceRowCenters'][name][r]))
+   row=min(range(len(spec['sourceRowCenters'][name])),key=lambda r:abs(cy-spec['sourceRowCenters'][name][r]))
    col=min(range(8),key=lambda c:abs(cx-(c+.5)*pixels.shape[1]/8))
    assert (row,col) not in found, f'{name} duplicate source cell {(row,col)}'
    found[row,col]=group
@@ -153,7 +182,8 @@ def main():
  for ident,spec in SPECS.items():
   folder=PACK/ident;folder.mkdir(exist_ok=True)
   if 'sources' in spec:
-   sourcefiles={name:SOURCE/file for name,file in spec['sources'].items()};sourcefiles['prompts']=SOURCE/spec['prompts']
+   sourcefiles={name:SOURCE/file for name,file in spec['sources'].items()}
+   if 'prompts' in spec:sourcefiles['prompts']=SOURCE/spec['prompts']
    rows=rattle_poses(spec);mainrows=rows['main'];carerows=rows['interaction']
   else:
    sourcefiles={sheet:SOURCE/f'{ident}-{sheet}.png' for sheet in ['main','interaction']}
@@ -195,6 +225,8 @@ def main():
    'sheets':{s:{'image':s+'.png','size':[256,256]} for s in images},'frames':frames,'animations':animations,
    'presentation':{'attack':{'sheet':'interaction','row':5,'frames':[0,1,2,2,1]},'source':'image_gen original creature artwork'}}
   if 'sources' in spec:
+   atlas['presentation']['source']=spec.get('sourceLabel',atlas['presentation']['source'])
+   if 'variantOf' in spec:atlas['variantOf']=spec['variantOf']
    atlas['presentation']['wrestling']={
     'dropkick':{'sheet':'interaction','row':5,'frames':[0,1,2,3]},
     'salto':{'sheet':'main','row':6,'frames':list(range(8))},
@@ -220,12 +252,23 @@ def main():
    path=file.relative_to(ROOT).as_posix();sha1=hashlib.sha1(file.read_bytes()).hexdigest()
    if production.get(path)==sha1:continue
    generated.append({'path':path,'sha1':sha1,'width':256,'height':256,
-    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. Generated source and full prompts retained; awaiting Figma production synchronization.'})
+    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. '+('Owner-supplied source retained' if SPECS[ident].get('variantOf') else 'Generated source and full prompts retained')+'; awaiting Figma production synchronization.'})
  pending['files'][position:position]=generated
  save_json(pendingPath,pending)
- print('Built three original characters: 384 native cells, 75 clips, six 256x256 sheets.')
+ print(f'Built {len(SPECS)} native character packs: {len(SPECS)*128} cells, {len(SPECS)*25} clips, {len(SPECS)*2} 256x256 sheets.')
 
 def preview(assets):
+ pink=assets['rattle-norvegicus-pink']
+ sheets=Image.new('RGBA',(256,512))
+ for i,sheet in enumerate(['main','interaction']):sheets.paste(pink['images'][sheet],(0,i*256))
+ sheets.save(REVIEW/'rattle-pink-sheets-1x.png');sheets.resize((1024,2048),NEAREST).save(REVIEW/'rattle-pink-sheets-4x.png')
+ planting=Image.new('RGB',(256,48),'#1b2431')
+ for col in range(8):
+  tile=pink['images']['interaction'].crop((col*32,64,col*32+32,96))
+  planting.paste(tile,(col*32,0),tile)
+ ImageDraw.Draw(planting).text((3,35),'pink planting / splits',fill='#d5d0bb')
+ planting.save(REVIEW/'pink-planting-1x.png');planting.resize((1024,192),NEAREST).save(REVIEW/'pink-planting-4x.png')
+ assets={ident:a for ident,a in assets.items() if not SPECS[ident].get('variantOf')}
  rattle=Image.new('RGBA',(256,512))
  for i,sheet in enumerate(['main','interaction']):rattle.paste(assets['rattle-norvegicus']['images'][sheet],(0,i*256))
  rattle.save(REVIEW/'rattle-sheets-1x.png');rattle.resize((1024,2048),NEAREST).save(REVIEW/'rattle-sheets-4x.png')

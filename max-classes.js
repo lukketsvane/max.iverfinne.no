@@ -18,7 +18,7 @@
   function canHaveRobot(id) { return id === 'mech'; }
   function canClimb(id) { return id === 'runner' || id === 'moss'; }
   function cleanPerks(value, id) { return builds.clean(value, clean(id)); }
-  function skin(id) { return ['original', 'moss', 'tide', 'ember', 'moon', 'polge', 'sligo'].indexOf(id) >= 0 ? id : 'original'; }
+  function skin(id) { return ['original', 'moss', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo'].indexOf(id) >= 0 ? id : 'original'; }
   var hidden = Object.freeze(all.filter(function (c) { return c.hidden; }).map(function (c) { return c.id; }));
   var api = { all: all, hidden: hidden, clean: clean, get: get, perks: perks, skin: skin, canHaveRobot: canHaveRobot, canClimb: canClimb, cleanPerks: cleanPerks };
   if (typeof module === 'object' && module.exports) module.exports = api;

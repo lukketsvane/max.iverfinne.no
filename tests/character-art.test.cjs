@@ -9,9 +9,9 @@ const json = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const clips = json('assets/max-skins-v1/source/animations.json');
 const original = json('assets/max-skins-v1/source/original-poses.json');
 
-test('three creature packs preserve native registration and gameplay markers with genuinely changing movement poses', async () => {
+test('creature packs and the pink costume preserve native registration and gameplay markers with changing movement poses', async () => {
   const { decode, artProblems } = await import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
-  for (const [id, skin] of [['rattle-norvegicus', 'moss'], ['cairn', 'ember'], ['mycel', 'moon']]) {
+  for (const [id, skin] of [['rattle-norvegicus', 'moss'], ['rattle-norvegicus-pink', 'moss-pink'], ['cairn', 'ember'], ['mycel', 'moon']]) {
     const directory = `assets/characters-v2/${id}/`, atlas = json(directory + 'atlas.json');
     assert.equal(atlas.compatibilitySkin, skin);
     assert.deepEqual(atlas.cell, [32, 32]); assert.deepEqual(atlas.anchor, [16, 31]);
@@ -23,7 +23,7 @@ test('three creature packs preserve native registration and gameplay markers wit
       assert.deepEqual(artProblems(file, png), []);
       images[sheet] = decode(png);
       assert.equal(images[sheet].width, 256); assert.equal(images[sheet].height, 256);
-      assert.notEqual(crypto.createHash('sha256').update(png).digest('hex'), crypto.createHash('sha256').update(fs.readFileSync(path.join(root, `assets/max-skins-v1/${skin}/${sheet}.png`))).digest('hex'));
+      assert.notEqual(crypto.createHash('sha256').update(png).digest('hex'), crypto.createHash('sha256').update(fs.readFileSync(path.join(root, `assets/max-skins-v1/${skin === 'moss-pink' ? 'moss' : skin}/${sheet}.png`))).digest('hex'));
     }
     const signatures = [];
     for (const [index, frame] of atlas.frames.entries()) {
@@ -50,6 +50,30 @@ test('three creature packs preserve native registration and gameplay markers wit
     }
     assert.equal(new Set(signatures.slice(104, 107)).size, 3, `${id} has separate windup, attack and release poses`);
   }
+});
+
+test('pink planting holds its complete supplied splits with both boots through the sow hit', async () => {
+  const { decode } = await import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
+  const folder = 'assets/characters-v2/rattle-norvegicus-pink/';
+  const atlas = json(folder + 'atlas.json');
+  const registration = json('docs/asset-review/characters-v2/registration.json')['rattle-norvegicus-pink'];
+  assert.equal(atlas.variantOf, 'rattle-norvegicus');
+  assert.equal(atlas.animations.sow.hit, 6);
+  const image = decode(fs.readFileSync(path.join(root, folder + 'interaction.png')));
+  for (const column of [3, 4, 5, 6]) {
+    const index = 64 + 2 * 8 + column, frame = atlas.frames[index];
+    assert.deepEqual(registration[index].sourceCell, [5, 2]);
+    assert.equal(registration[index].sourceFile, 'rattus-pink-gold-v1.png');
+    assert.ok(frame.opaqueBounds[2] - frame.opaqueBounds[0] >= 28);
+    for (const [left, right] of [[0, 8], [24, 32]]) {
+      let pixels = 0;
+      for (let y = 24; y < 31; y++) for (let x = left; x < right; x++) {
+        if (image.rgba[((64 + y) * image.width + column * 32 + x) * 4 + 3]) pixels++;
+      }
+      assert.ok(pixels >= 3, `pink splits column ${column} preserves the boot at ${left}`);
+    }
+  }
+  assert.deepEqual(atlas.frames[64 + 2 * 8 + 7].opaqueBounds, atlas.frames[64 + 3].opaqueBounds);
 });
 
 test('generated creature source masters remain pinned to their documented provenance', () => {

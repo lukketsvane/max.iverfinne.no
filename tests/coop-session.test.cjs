@@ -148,12 +148,12 @@ test('global join reserves the requested character and inherits the server run d
   const net=fakeChannelClient({room,userId:'guest'});
   const original=net.client.rpc;
   net.client.rpc=async(name,args)=>{calls.push({name,args});return original(name,args);};
-  const s=new CoopSession(net.client,{id:'guest'}, {}, {classId:'runner',difficulty:'insane'});
+  const s=new CoopSession(net.client,{id:'guest'}, {}, {classId:'runner',skinId:'moss-pink',difficulty:'insane'});
   try{
     await s.enter({global:true});
     const join=calls.find(q=>q.name==='max_coop_global');
     assert.deepEqual(join.args,{p_class_id:'runner',p_difficulty:'insane'});
-    assert.deepEqual(s.selection,{classId:'runner',skinId:'moss',difficulty:'easy'},'existing garden difficulty is authoritative');
+    assert.deepEqual(s.selection,{classId:'runner',skinId:'moss-pink',difficulty:'easy'},'the chosen outfit survives the authoritative class reservation and difficulty');
   }finally{await s.leave();}
 });
 
@@ -165,6 +165,27 @@ test('character identity owns its appearance while difficulty remains an indepen
   assert.deepEqual(moss.selection,{classId:'runner',skinId:'moss',difficulty:'insane'});
   const tank=new CoopSession(net.client,{id:'p'}, {}, {classId:'bulwark',skinId:'tide',difficulty:'easy'});
   assert.deepEqual(tank.selection,{classId:'bulwark',skinId:'ember',difficulty:'easy'});
+});
+
+test('the host adopts a joining Rattus outfit and keeps it fixed through input and reconnects',async()=>{
+  const {CoopSession}=await module();
+  const room={id:'room',host:'host',state:'playing',difficulty:'easy',members:[
+    {id:'host',slot:1,ready:true,name:'host',classId:'mech'},
+    {id:'guest',slot:2,ready:true,name:'guest',classId:'runner'}
+  ]};
+  const net=fakeChannelClient({room,userId:'host'}),joins=[],inputs=[];
+  const s=new CoopSession(net.client,{id:'host'},{join:(id,kit)=>joins.push([id,kit]),input:(id,packet)=>inputs.push([id,packet])},{classId:'mech'});
+  s.room=room;s.entered=true;s.playing=true;
+  const packet={v:1,proto:2,sid:'guest-session-1',seq:1,selection:{classId:'runner',skinId:'moss-pink',difficulty:'insane'}};
+  s.receive('guest',packet);
+  assert.deepEqual(s.loadouts.guest,{classId:'runner',skinId:'moss-pink',difficulty:'easy'});
+  assert.equal(joins.length,1);assert.equal(joins[0][1].skinId,'moss-pink');
+  s.receive('guest',{...packet,seq:2,selection:{...packet.selection,skinId:'moss'}});
+  assert.equal(inputs.length,1);assert.equal(s.loadouts.guest.skinId,'moss-pink');
+  s.receive('guest',{...packet,sid:'guest-session-2',selection:{...packet.selection,skinId:'moss'}});
+  assert.equal(joins.length,2);assert.equal(joins[1][1].skinId,'moss-pink','reconnecting cannot replace a started outfit');
+  s.receive('guest',{...packet,sid:'guest-session-3',selection:{...packet.selection,classId:'bulwark'}});
+  assert.equal(joins.length,2,'the costume cannot bypass the server class reservation');
 });
 
 test('inside a room a hidden character is as valid as the four: the server already checked its unlock', async () => {

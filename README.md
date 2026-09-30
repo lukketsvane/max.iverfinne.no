@@ -29,7 +29,7 @@ Unlocked **relic stones** in the collection garden select game modes using the s
 
 ### Characters are exclusive
 
-Five open characters and the hidden Sligo each own a gameplay role. There is no separate skin picker. The garden still holds at most four players.
+Five open characters and the hidden Sligo each own a gameplay role. Before Play, double-tap a character sprite to cycle its available cosmetic outfits. Rattus has Black & gold and Pink & gold outfits; the chosen outfit is remembered and stays fixed during the run. Costumes share the same character slot and abilities. The garden still holds at most four players.
 
 | Character | Primary attack | Skill (tap character / E) |
 | --- | --- | --- |

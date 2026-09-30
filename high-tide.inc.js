@@ -204,7 +204,7 @@ function finishHighTide(won,ascender){
 function finalizeHighTide(won){
   gardenPlots.forEach(recordGardenPlant);rogueRun.finalized=true;
   if(!window.MaxRunRecords)return;
-  var s=rogueRun.survival,saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'high-tide',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,won:!!won,plants:rogueRun.garden,world:1,wave:s.bosses,seconds:s.elapsed,plantSeconds:s.plantTime,ascent:s.best,goal:HIGH_TIDE.height});
+  var s=rogueRun.survival,saved=window.MaxRunRecords.save({id:rogueRun.recordId,mode:'high-tide',ownerId:rogueRun.ownerId,name:rogueRun.playerName,classId:rogueRun.classId,skinId:rogueRun.skinId,won:!!won,plants:rogueRun.garden,world:1,wave:s.bosses,seconds:s.elapsed,plantSeconds:s.plantTime,ascent:s.best,goal:HIGH_TIDE.height});
   rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
 }
 

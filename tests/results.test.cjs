@@ -18,6 +18,11 @@ test('the complete result scene draws a native saved-class sprite and restores l
    assert.doesNotThrow(()=>g.drawResultScene({width:150,height:324,getContext(){return context;}},null,{mode,classId}));
    assert.deepEqual([g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)],before);
   }
+  for(const [classId,skinId,skin] of [['runner','moss-pink','moss-pink'],['runner','missing-costume','moss'],['mech','moss-pink','tide']]){
+   expected.push([skin,'main']);
+   g.drawResultScene({width:150,height:324,getContext(){return context;}},null,{mode,classId,skinId});
+   assert.deepEqual([g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)],before);
+  }
  }
  assert.deepEqual(skins,expected);
  assert.equal(draws.filter(a=>a[0]===native).length,expected.length);
@@ -45,8 +50,8 @@ function session(storage = {}) {
     storage() { return Object.fromEntries(Array.from({ length: w.localStorage.length }, (_, i) => { const key = w.localStorage.key(i); return [key, w.localStorage.getItem(key)]; })); },
     button(label) { return w.document.querySelector(`[aria-label="${label}"]`); }, close() { dom.window.close(); } };
 }
-function functionSource(name) {
-  const src = readFileSync(join(root, 'index.html'), 'utf8');
+function functionSource(name, file = 'index.html') {
+  const src = readFileSync(join(root, file), 'utf8');
   const start = src.indexOf('function ' + name + '('), end = src.indexOf('\nfunction ', start + 1);
   return src.slice(start, end);
 }
@@ -78,8 +83,8 @@ test('all 53 real plant IDs and attained forms remain accessible across bouquets
 test('every finished garden persists complete species, seed, growth and stalk data through retry and reload', () => {
   const s = session(); let reloaded;
   try {
-    const one = s.w.MaxRunRecords.save({ plants: plants(53), world: 4, seconds: 91.53, ownerId: 'player-a', name: 'An actual name' });
-    const two = s.w.MaxRunRecords.save({ plants: plants(5, 2), world: 2, seconds: 29.1 });
+    const one = s.w.MaxRunRecords.save({ classId: 'runner', skinId: 'moss-pink', plants: plants(53), world: 4, seconds: 91.53, ownerId: 'player-a', name: 'An actual name' });
+    const two = s.w.MaxRunRecords.save({ classId: 'runner', skinId: 'moss', plants: plants(5, 2), world: 2, seconds: 29.1 });
     assert.equal(one.persisted, true); assert.notDeepEqual(one.record.plants, two.record.plants);
     assert.match(one.record.id, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
     s.w.MaxRunResults.show({ ...s.options, recordId: one.record.id, onRetry() {} }); s.button('Play again').click();
@@ -87,16 +92,60 @@ test('every finished garden persists complete species, seed, growth and stalk da
     assert.equal(s.w.MaxRunRecords.get(one.record.id).plants[0].seed, 0);
     reloaded = session(s.storage()); const w = reloaded.w;
     assert.equal(w.MaxRunRecords.getAll().length, 2);
-    w.MaxRunResults.showRecords(reloaded.options);
+    const scenes = [];
+    w.MaxRunResults.showRecords({ ...reloaded.options, drawScene(_canvas, _bouquet, run) { scenes.push(snapshot(run)); } });
     const cards = w.document.querySelectorAll('.run-results-entry'); assert.equal(cards.length, 2);
     cards[1].querySelector('button').click();
+    assert.equal(scenes.at(-1).skinId, 'moss-pink');
     reloaded.button('Next bouquet').click(); reloaded.button('Next bouquet').click();
     assert.deepEqual([...new Map(reloaded.rendered.filter(p => p.seed % 10 === 0).map(p => [p.id, p])).values()].sort((a,b) => a.id-b.id), plants(53));
     assert.deepEqual(snapshot(w.MaxRunRecords.get(two.record.id).plants), plants(5, 2));
     assert.equal(w.MaxRunRecords.get(one.record.id).ownerId, 'player-a');
     assert.equal(w.MaxRunRecords.get(one.record.id).seconds, 91.53);
+    assert.equal(w.MaxRunRecords.get(one.record.id).skinId, 'moss-pink');
+    assert.equal(w.MaxRunRecords.get(two.record.id).skinId, 'moss');
     assert.ok(!w.document.body.textContent.match(/points|personal bests|IVER|RUNKEMANNEN|IDA/));
   } finally { s.close(); reloaded?.close(); }
+});
+
+test('run reset captures the outfit and results fallback keeps it after live appearance changes', () => {
+  const h = require('./game-harness.cjs').loadGame(), g = h.game, saved = [], shown = [];
+  h.window.MaxRunRecords = { uuid: () => 'captured-run', save(options) { saved.push(snapshot(options)); return { record: { id: 'captured-run' }, persisted: true }; } };
+  h.window.MaxRunResults = { hide() {}, show(options) { shown.push(options); } };
+  g.resetRogueRun('NEW RUN', { classId: 'runner', skinId: 'moss-pink' });
+  assert.equal(g.rogueRun.skinId, 'moss-pink');
+  g.P.skin = 'moss';
+  g.endRogueRun();
+  assert.equal(saved.at(-1).skinId, 'moss-pink');
+  assert.equal(shown.at(-1).classId, 'runner');
+  assert.equal(shown.at(-1).skinId, 'moss-pink');
+  const s = session(), scenes = [];
+  try {
+    s.w.MaxRunResults.show({ ...s.options, classId: shown.at(-1).classId, skinId: shown.at(-1).skinId, plants: plants(1), drawScene(_canvas, _bouquet, run) { scenes.push(snapshot(run)); } });
+    assert.equal(scenes.at(-1).skinId, 'moss-pink');
+  } finally { s.close(); }
+});
+
+test('all game modes save the captured outfit without changing their actual plants or statistics', () => {
+  for (const mode of ['garden', 'last-seed', 'high-tide', 'night-relay']) {
+    const s = session(), w = s.w;
+    try {
+      w.rogueRun = { mode, classId: 'runner', skinId: 'moss-pink', garden: plants(2), survival: { bosses: 3, elapsed: 83, plantTime: 71, best: 320, stage: 2, passes: 6, resets: 1, energy: 57, reason: 'Captured reason' } };
+      w.rogueMeta = {}; w.gardenPlots = []; w.gardenWave = 3; w.gardenScore = 99; w.runElapsed = 301.12;
+      w.gardenStats = { harvested: 1 }; w.recordGardenPlant = () => {}; w.worldLevel = () => 4;
+      w.highTideMode = () => mode === 'high-tide'; w.nightRelayMode = () => mode === 'night-relay'; w.HIGH_TIDE = { height: 480 };
+      w.eval(functionSource('finalizeHighTide', 'high-tide.inc.js'));
+      w.eval(functionSource('finalizeNightRelay', 'night-relay.inc.js'));
+      w.eval(functionSource('finalizeRogueRun'));
+      w.finalizeRogueRun(false);
+      const record = w.MaxRunRecords.getAll()[0];
+      assert.equal(record.skinId, 'moss-pink'); assert.equal(record.classId, 'runner');
+      assert.deepEqual(snapshot(record.plants), mode === 'night-relay' ? [] : plants(2));
+      assert.equal(record.seconds, mode === 'high-tide' || mode === 'night-relay' ? 83 : 301.12);
+      if (mode === 'night-relay') { assert.equal(record.passes, 6); assert.equal(record.light, 57); }
+      if (mode === 'high-tide') { assert.equal(record.ascent, 320); assert.equal(record.plantSeconds, 71); }
+    } finally { s.close(); }
+  }
 });
 
 test('all saved runs can be paged and opening a run uses its own plants', () => {

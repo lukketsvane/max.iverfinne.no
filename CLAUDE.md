@@ -86,7 +86,7 @@ Sligo's food/colony loop lives in `sligo-life.inc.js`, included by the build and
 
 Skills are one tap on the character or E and never pause the shared world. Guests run the local part. The host checks cooldown and position in the `skill` branch of `coopInput`, and `coopClassSkill` runs the guest's own class verb. A guest's brace and tun follow the host's: the snapshot carries what is left of them (`braceLeft`, `tunLeft`, tagged by `braceTag`), and a tun's host cooldown starts when the guest uncurls.
 
-Character appearance and gameplay role are one selection. Do not reintroduce a separate skin/costume picker.
+Double-tap a character sprite before Play to cycle its cosmetic outfits; Shift+Enter or Shift+Space also cycles a character card. Rattus has `moss` (Black & gold) and `moss-pink` (Pink & gold). Keep the same exclusive class reservation, abilities and difficulty, preserve the chosen outfit through co-op selection and snapshots, and never switch outfits mid-run.
 
 Sligo, the hidden character, has two umbilical plants of its own: kind 25, the cord (`PA.fam` 9, `assets/plants-v1/sligo-cord/`), and kind 26, the cap (`PA.fam` 10, `sligo-cap/`). Both are built by `scripts/build-sligo-plants.py` from the owner's paintings in `docs/asset-review/sligo-plants-v1/`. Each family has its own blooms (`b`) and roots (`r`), and `SLIGO_PLANTS` keeps both kinds away from ordinary seeds (`gardenKindFor`) and out of the garden collection (`tests/sligo-plants.test.cjs`).
 

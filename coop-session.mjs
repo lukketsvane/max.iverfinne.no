@@ -55,6 +55,7 @@ export class CoopSession {
       const me = this.room.members?.find(p => p.id === this.user.id);
       const canonical = validLoadout({
         classId: me?.classId || this.selection.classId,
+        skinId: this.selection.skinId,
         difficulty: this.room.difficulty || this.selection.difficulty,
       });
       if (!canonical) throw new Error('The server rejected this character.');
@@ -267,6 +268,7 @@ export class CoopSession {
         if (member?.classId && supplied.classId !== member.classId) return;
         const choice = validLoadout({
           classId: member?.classId || supplied.classId,
+          skinId: this.playing && this.loadouts[sender] ? this.loadouts[sender].skinId : supplied.skinId,
           difficulty: this.room.difficulty || supplied.difficulty,
         });
         if (!choice) return;

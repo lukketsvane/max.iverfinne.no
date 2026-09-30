@@ -49,13 +49,14 @@ function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage'
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
   const { art, status, requests, events } = await nativeArt('/rattle-norvegicus/interaction.png');
-  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 32);
+  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 33);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
   assert.match(art.playerImage('ember', 'main').src, /cairn\/main.png$/);
+  assert.match(art.playerImage('moss-pink', 'main').src, /rattle-norvegicus-pink\/main.png$/);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
-  assert.equal((await art.load()).loaded.length, 32); assert.equal(requests.length, 33);
+  assert.equal((await art.load()).loaded.length, 33); assert.equal(requests.length, 34);
   assert.equal(events.length, 1); assert.equal(events[0].type, 'max-native-art-ready');
 });
 
@@ -144,10 +145,11 @@ test('the actual player renderer uses each selected sheet while retaining origin
   vm.runInNewContext(drawPlayer, sandbox); sandbox.drawPlayer();
   assert.match(lastSprite(calls)[1].src, /rattle-norvegicus\/main.png$/);
   assert.deepEqual(lastSprite(calls).slice(2), [32, 0, 32, 32, 4, 9, 32, 32]);
-  for (const [move, sheetName, column, row] of [['dropkick', 'interaction', 3, 5], ['salto', 'main', 6, 6], ['splits', 'interaction', 7, 5]]) {
+  for (const skin of ['moss', 'moss-pink']) for (const [move, sheetName, column, row] of [['dropkick', 'interaction', 3, 5], ['salto', 'main', 6, 6], ['splits', 'interaction', 7, 5]]) {
+    sandbox.P.skin = skin;
     Object.assign(sandbox.P, { rattleMove: move, rattlePose: .2, rattleClock: .23, pounce: move === 'splits' ? 2 : 0 });
     const before = JSON.stringify(sandbox.P); sandbox.drawPlayer();
-    assert.match(lastSprite(calls)[1].src, new RegExp('rattle-norvegicus/' + sheetName + '\\.png$'));
+    assert.match(lastSprite(calls)[1].src, new RegExp('rattle-norvegicus' + (skin === 'moss-pink' ? '-pink' : '') + '/' + sheetName + '\\.png$'));
     assert.deepEqual(lastSprite(calls).slice(2), [column * 32, row * 32, 32, 32, 4, 9, 32, 32]);
     assert.equal(JSON.stringify(sandbox.P), before, 'wrestling sprites never change movement or hit state');
   }
@@ -160,7 +162,7 @@ test('the actual player renderer uses each selected sheet while retaining origin
   sandbox.P.anim = 'water'; sandbox.P.skin = 'moon'; sandbox.P.face = -1; sandbox.drawPlayer();
   assert.match(lastSprite(calls)[1].src, /mycel\/interaction.png$/);
   assert.ok(calls.some(call => call[0] === 'scale' && call[1] === -1));
-  for (const skin of ['moss', 'ember', 'moon']) {
+  for (const skin of ['moss', 'moss-pink', 'ember', 'moon']) {
     sandbox.P.skin = skin; sandbox.P.anim = 'toss'; sandbox.drawPlayer();
     assert.equal(lastSprite(calls)[3], 160, 'signature attacks use the dedicated row');
     sandbox.P.anim = 'sow'; sandbox.drawPlayer();
@@ -171,13 +173,13 @@ test('the actual player renderer uses each selected sheet while retaining origin
 
 test('Rattus planting follows the real sow timer locally and through guest avatars without combat poses or anchor drift', async () => {
   const { art } = await nativeArt(), ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
-  for (const mode of ['local', 'host', 'guest']) {
+  for (const skin of ['moss', 'moss-pink']) for (const mode of ['local', 'host', 'guest']) {
     const h = loadGame(), g = h.game, pending = [], remote = mode === 'guest' ? loadGame() : null;
-    g.resetRogueRun('test', { classId: 'runner', skinId: 'moss' });
+    g.resetRogueRun('test', { classId: 'runner', skinId: skin });
     if (mode !== 'local') {
       const room = { id: 'planting', host: ids[0], members: ids.map((id, i) => {
         const runner = mode === 'guest' ? i === 1 : i === 0;
-        return { id, slot: i + 1, classId: runner ? 'runner' : 'mech', skinId: runner ? 'moss' : 'tide' };
+        return { id, slot: i + 1, classId: runner ? 'runner' : 'mech', skinId: runner ? skin : 'tide' };
       }) };
       const network = (id, host) => ({ room, user: { id }, host, tick() {}, action(type, data) { pending.push({ id: pending.length + 1, type, ...data }); return true; } });
       g.beginCoop(network(ids[mode === 'guest' ? 1 : 0], mode === 'host'));
@@ -192,6 +194,7 @@ test('Rattus planting follows the real sow timer locally and through guest avata
       remote.game.gardenPlots = []; remote.game.gardenSeeds = 3; remote.game.runEncounters = [];
     }
     const x = g.P.x, y = g.P.y, frames = new Set();
+    assert.equal(g.P.skin, skin); assert.equal(g.rogueRun.skinId, skin);
     assert.equal(g.crouchGardenAction(), true, mode);
     for (let step = 0; step < 160; step++) {
       h.advance(1000 / 120); g.updatePlayer(1 / 120, { axis: 0, top: 48 });
@@ -200,7 +203,7 @@ test('Rattus planting follows the real sow timer locally and through guest avata
       if (g.P.anim === 'sow') {
         frames.add(g.P.frame); calls.length = 0; g.drawPlayer();
         const draw = calls.at(-1);
-        assert.ok(/rattle-norvegicus\/interaction\.png$/.test(draw[0].src), `${mode} uses the Rattus interaction sheet`);
+        assert.match(draw[0].src, new RegExp('rattle-norvegicus' + (skin === 'moss-pink' ? '-pink' : '') + '/interaction\\.png$'), `${mode} uses the selected Rattus interaction sheet`);
         assert.deepEqual(draw.slice(1), [g.P.frame * 32, 64, 32, 32, Math.round(x - g.camX) - 16, Math.round(y - g.camY) - 31, 32, 32]);
         if (mode !== 'guest' && g.P.frame < 6) assert.equal(g.gardenPlots.length, 0, 'the seed is not planted before the sow marker');
       }
@@ -211,6 +214,7 @@ test('Rattus planting follows the real sow timer locally and through guest avata
         if (actor.anim === 'sow') {
           const own = remote.game.P; remote.game.P = actor; calls.length = 0; remote.game.drawPlayer(); remote.game.P = own;
           assert.equal(calls.at(-1)[1], actor.frame * 32); assert.equal(calls.at(-1)[2], 64, 'the host draws the guest’s actual sow frame');
+          assert.equal(actor.skin, skin, 'host authority retains the reserved outfit');
         }
       }
     }
@@ -269,7 +273,7 @@ test('rat corpses use a one-shot with an empty terminal frame and are removed wi
 
 test('Sligo\'s pack loads on demand, never with the others, and until it loads the original Max stands in', async () => {
   const { art, status, requests } = await nativeArt('/sligo/');   // Sligo's sheets fail to load here
-  assert.equal(status.loaded.length, 33); assert.equal(requests.some(url => url.includes('/sligo/')), false);
+  assert.equal(status.loaded.length, 34); assert.equal(requests.some(url => url.includes('/sligo/')), false);
   assert.equal(art.playerImage('sligo', 'main'), null); assert.equal(art.playerImage('sligo', 'interaction'), null);
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.equal(requests.filter(url => url.endsWith('max-skins-v1/sligo/atlas.json')).length, 1, 'asked for once');
