@@ -1,0 +1,37 @@
+{
+  "frame": 6,
+  "source": "http://max-review.local/assets/characters-v2/rattle-norvegicus/interaction.png",
+  "rect": [
+    192,
+    64,
+    32,
+    32
+  ],
+  "destination": [
+    81,
+    253,
+    32,
+    32
+  ],
+  "smoothing": false,
+  "view": [
+    195,
+    422
+  ],
+  "foot": [
+    97,
+    284
+  ],
+  "frames": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "recovered": true,
+  "pageErrors": []
+}

@@ -12,34 +12,33 @@ REVIEW = SOURCE.parent
 NEAREST = Image.Resampling.NEAREST
 SPECS = {
  'rattle-norvegicus': {
-  'skin': 'moss', 'class': 'runner', 'scale': .185,
+  'skin': 'moss', 'class': 'runner', 'scale': .175, 'keepParts': True,
   'palette': ['0b1017','101932','253459','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','b63330','247bad','52cde5'],
-  'source': 'rattle-norvegicus.png',
-  'combatSource': 'wrestling.png', 'combatScale': .175,
-  'combatRows': {
-   ('main',5): [(4,0),(4,0),(4,3),(4,4),(4,1),(4,2),(4,6),(4,7)],
-   ('main',6): [(2,c) for c in range(8)],
-   ('interaction',5): [(0,0),(0,1),(0,3),(0,6),(3,1),(3,2),(3,3),(3,4)],
+  'sources': {'movement': 'rattus-movement-v2.png', 'combat': 'rattus-combat-v2.png'},
+  'prompts': 'rattus-wrestler-v2-prompts.json',
+  'sourceRowCenters': {
+   'movement': [90,264,437,609,775,933,1084,1206],
+   'combat': [90,265,434,610,777,925,1077,1192],
   },
   'main': [
-   [(0,c) for c in range(8)],
-   [(1,c) for c in range(8)],
-   [(3,c) for c in range(8)],
-   [(0,0),(4,1),(4,2),(4,0),(4,6),(6,6),(0,6),(0,7)],
-   [(4,0),(4,2),(4,3),(4,4),(4,4),(4,5),(4,6),(4,7)],
-   [(4,6),(6,2),(6,3),(6,4),(6,2),(6,5),(0,6),(0,7)],
-   [(5,0),(5,1),(5,3),(5,4),(5,5),(5,6),(5,7),(5,0)],
-   [(4,c) for c in range(8)],
+   [('combat',0,c) for c in [0,1,4,5,6,7,6,1]],
+   [('movement',1,c) for c in range(8)],
+   [('movement',4,c) for c in range(8)],
+   [('combat',0,0),('movement',1,0),('movement',1,1),('movement',1,2),('movement',1,4),('movement',1,6),('combat',0,6),('combat',0,7)],
+   [('combat',3,c) for c in [0,1,2,3,2,1,0,7]],
+   [('combat',6,1),('combat',6,2),('combat',6,5),('combat',6,6),('movement',0,1),('movement',0,2),('movement',0,3),('combat',0,0)],
+   [('combat',5,c) for c in range(8)],
+   [('movement',1,c) for c in range(8)],
   ],
   'interaction': [
-   [(6,0),(6,1),(6,2),(6,3),(6,2),(6,3),(6,4),(6,2)],
-   [(6,0),(6,1),(6,2),(6,3),(6,4),(6,3),(6,5),(6,6)],
-   [(6,0),(6,1),(6,2),(6,3),(6,4),(6,3),(6,5),(6,6)],
-   [(5,c) for c in range(8)],
-   [(6,0),(6,1),(6,2),(6,3),(6,4),(6,3),(6,5),(6,6)],
-   [(5,0),(5,1),(5,3),(5,4),(5,5),(5,6),(5,7),(5,0)],
-   [(5,0),(5,1),(5,2),(5,3),(5,2),(5,3),(5,4),(5,5)],
-   [(7,0),(6,2),(7,5),(7,1),(7,2),(7,3),(7,3),(7,4)],
+   [('combat',0,0),('movement',0,3),('movement',0,1),('movement',0,0),('movement',0,0),('movement',0,1),('movement',0,2),('movement',0,0)],
+   [('movement',0,c) for c in [4,3,2,1,0,1,3,4]],
+   [('combat',0,0),('movement',0,1),('combat',6,4),('combat',6,1),('combat',6,2),('combat',6,3),('combat',6,2),('movement',0,0)],
+   [('movement',1,c) for c in range(8)],
+   [('movement',0,4),('movement',0,3),('movement',0,2),('movement',2,1),('movement',0,2),('movement',0,1),('movement',0,3),('movement',0,4)],
+   [('combat',4,c) for c in [0,1,3,6]] + [('combat',6,c) for c in [4,1,2,3]],
+   [('combat',1,c) for c in [0,3,4,5,4,5,4,3]],
+   [('movement',0,c) for c in [3,1,0,1,2,1,0,2]],
   ],
  },
  'cairn': {
@@ -60,7 +59,8 @@ SPECS = {
 
 def save_json(path, data):
  path.parent.mkdir(parents=True, exist_ok=True)
- path.write_text(json.dumps(data, indent=2) + '\n')
+ text=json.dumps(data, indent=2) + '\n'
+ if not path.exists() or path.read_text()!=text:path.write_text(text)
 
 def components(mask):
  """Eight-connected pixel groups; source matte and detached glow are rejected."""
@@ -118,46 +118,32 @@ def row_poses(image, bounds, spec, joined=False):
 def register(pose, bottom):
  out=Image.new('RGBA',(32,32))
  assert pose.width<=32 and pose.height<=32, f'pose outside cell: {pose.size}'
+ assert pose.height<=bottom, f'pose above cell: height {pose.height}, foot {bottom}'
  out.paste(pose,(16-pose.width//2,bottom-pose.height))
  return out
 
 def rattle_poses(spec):
- image=Image.open(SOURCE/spec['source']).convert('RGBA')
- a=np.array(image)
- red,green,blue=[a[:,:,i].astype(np.int32) for i in range(3)]
- matte=(green-red>22)&(blue-red>35)&(blue-green<40)&(red>65)&(blue<225)
- a[matte]=0
- image=Image.fromarray(a)
- poses=[]
- for row in range(8):
-  cells=[]
-  for col in range(8):
-   cell=image.crop((round(col*image.width/8),round(row*image.height/8),round((col+1)*image.width/8),round((row+1)*image.height/8)))
-   pixels=np.array(cell);mask=np.zeros(pixels.shape[:2],dtype=bool)
-   group=components(pixels[:,:,3]>=210)[0]
-   for x,y in group:mask[y,x]=True
-   pixels[~mask]=0
-   cell=Image.fromarray(pixels);cell=cell.crop(cell.getbbox())
-   cells.append(reduce_pose(cell,spec))
-  poses.append(cells)
- return {sheet:[[poses[row][col] for row,col in cells] for cells in spec[sheet]] for sheet in ['main','interaction']}
-
-def wrestling_poses(spec):
- image=Image.open(SOURCE/spec['combatSource']).convert('RGBA')
- pixels=np.array(image);groups=components(pixels[:,:,3]>=210)
- assert len(groups)>=64 and len(groups[63])>1000 and (len(groups)==64 or len(groups[64])<100), 'wrestling master must contain 64 isolated full-body poses'
- groups=sorted(groups[:64],key=lambda g:sum(y for x,y in g)/len(g))
- reduced={**spec,'scale':spec['combatScale'],'keepParts':True};poses=[]
- for row in range(8):
-  cells=[]
-  for group in sorted(groups[row*8:(row+1)*8],key=lambda g:sum(x for x,y in g)/len(g)):
-   mask=np.zeros(pixels.shape[:2],dtype=bool)
-   for x,y in group:mask[y,x]=True
-   selected=pixels.copy();selected[~mask]=0
+ poses={}
+ for name,file in spec['sources'].items():
+  pixels=np.array(Image.open(SOURCE/file).convert('RGBA'));found={}
+  for group in components(pixels[:,:,3]>=210):
+   if len(group)<1000:continue
+   xs,ys=zip(*group)
+   if max(ys)-min(ys)+1>185:continue
+   cx,cy=sum(xs)/len(xs),sum(ys)/len(ys)
+   row=min(range(8),key=lambda r:abs(cy-spec['sourceRowCenters'][name][r]))
+   col=min(range(8),key=lambda c:abs(cx-(c+.5)*pixels.shape[1]/8))
+   assert (row,col) not in found, f'{name} duplicate source cell {(row,col)}'
+   found[row,col]=group
+  used={(r,c) for sheet in ['main','interaction'] for cells in spec[sheet] for source,r,c in cells if source==name}
+  for row,col in used:
+   group=found[row,col];xs,ys=zip(*group)
+   assert row<7 and min(xs)>0 and min(ys)>0 and max(xs)<pixels.shape[1]-1 and max(ys)<pixels.shape[0]-1, f'{name} cropped source cell {(row,col)}'
+   selected=np.zeros_like(pixels)
+   for x,y in group:selected[y,x]=pixels[y,x]
    cell=Image.fromarray(selected);cell=cell.crop(cell.getbbox())
-   cells.append(reduce_pose(cell,reduced))
-  poses.append(cells)
- return {slot:[poses[row][col] for row,col in cells] for slot,cells in spec['combatRows'].items()}
+   poses[name,row,col]=reduce_pose(cell,spec)
+ return {sheet:[[poses[source,row,col] for source,row,col in cells] for cells in spec[sheet]] for sheet in ['main','interaction']}
 
 def main():
  PACK.mkdir(parents=True,exist_ok=True)
@@ -166,10 +152,9 @@ def main():
  assets={};manifest=[];provenance=json.loads((SOURCE/'provenance.json').read_text());registration={}
  for ident,spec in SPECS.items():
   folder=PACK/ident;folder.mkdir(exist_ok=True)
-  if 'source' in spec:
-   sourcefiles={'master':SOURCE/spec['source'],'wrestling':SOURCE/spec['combatSource']}
+  if 'sources' in spec:
+   sourcefiles={name:SOURCE/file for name,file in spec['sources'].items()};sourcefiles['prompts']=SOURCE/spec['prompts']
    rows=rattle_poses(spec);mainrows=rows['main'];carerows=rows['interaction']
-   for (sheet,row),poses in wrestling_poses(spec).items():rows[sheet][row]=poses
   else:
    sourcefiles={sheet:SOURCE/f'{ident}-{sheet}.png' for sheet in ['main','interaction']}
    masters={sheet:Image.open(file).convert('RGBA') for sheet,file in sourcefiles.items()}
@@ -191,9 +176,10 @@ def main():
      out.paste(tile,(col*32,row*32))
      frames.append({'sheet':sheet,'rect':[col*32,row*32,32,32],'anchor':[16,31],'opaqueBounds':list(tile.getbbox())})
      entry={'sheet':sheet,'row':row,'column':col,'footBottom':bottom}
-     if 'source' in spec:
-      entry['sourceCell']=list(spec['combatRows'].get((sheet,row),spec[sheet][row])[col])
-      entry['sourceFile']=spec['combatSource'] if (sheet,row) in spec['combatRows'] else spec['source']
+     if 'sources' in spec:
+      source,sourceRow,sourceCol=spec[sheet][row][col]
+      entry['sourceCell']=[sourceRow,sourceCol]
+      entry['sourceFile']=spec['sources'][source]
      reg.append(entry)
    images[sheet]=out
    file=folder/f'{sheet}.png'
@@ -208,7 +194,7 @@ def main():
    'cell':[32,32],'anchor':[16,31],'cosmeticOnly':True,'facing':'right','palette':['#'+c for c in spec['palette']],
    'sheets':{s:{'image':s+'.png','size':[256,256]} for s in images},'frames':frames,'animations':animations,
    'presentation':{'attack':{'sheet':'interaction','row':5,'frames':[0,1,2,2,1]},'source':'image_gen original creature artwork'}}
-  if 'combatSource' in spec:
+  if 'sources' in spec:
    atlas['presentation']['wrestling']={
     'dropkick':{'sheet':'interaction','row':5,'frames':[0,1,2,3]},
     'salto':{'sheet':'main','row':6,'frames':list(range(8))},
@@ -218,7 +204,7 @@ def main():
   save_json(folder/'atlas.json',atlas)
   assets[ident]={'manifest':atlas,'images':images};manifest.append({'id':ident,'manifest':ident+'/atlas.json'})
   registration[ident]=reg
-  provenance[ident]={s:{'path':file.relative_to(ROOT).as_posix(), 'sha256':hashlib.sha256(file.read_bytes()).hexdigest()} for s,file in sourcefiles.items()}
+  provenance[ident]={**provenance.get(ident,{}),**{s:{'path':file.relative_to(ROOT).as_posix(), 'sha256':hashlib.sha256(file.read_bytes()).hexdigest()} for s,file in sourcefiles.items()}}
  save_json(PACK/'manifest.json',{'schema':'max-native-pack/v1','id':'characters-v2','assets':manifest})
  save_json(REVIEW/'registration.json',registration);save_json(SOURCE/'provenance.json',provenance)
  preview(assets)
@@ -244,6 +230,12 @@ def preview(assets):
  for i,sheet in enumerate(['main','interaction']):rattle.paste(assets['rattle-norvegicus']['images'][sheet],(0,i*256))
  rattle.save(REVIEW/'rattle-sheets-1x.png');rattle.resize((1024,2048),NEAREST).save(REVIEW/'rattle-sheets-4x.png')
  a=assets['rattle-norvegicus'];moves=a['manifest']['presentation']['wrestling']
+ planting=Image.new('RGB',(256,48),'#1b2431')
+ for col in range(8):
+  tile=a['images']['interaction'].crop((col*32,64,col*32+32,96))
+  planting.paste(tile,(col*32,0),tile)
+ ImageDraw.Draw(planting).text((3,35),'planting / splits',fill='#d5d0bb')
+ planting.save(REVIEW/'planting-1x.png');planting.resize((1024,192),NEAREST).save(REVIEW/'planting-4x.png')
  combat=Image.new('RGB',(384,205),'#1b2431');d=ImageDraw.Draw(combat)
  for row,(name,clip) in enumerate(moves.items()):
   d.text((3,25+row*47),name,fill='#d5d0bb')

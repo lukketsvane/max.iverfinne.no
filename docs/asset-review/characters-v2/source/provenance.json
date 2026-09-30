@@ -37,6 +37,18 @@
     "wrestling": {
       "path": "docs/asset-review/characters-v2/source/wrestling.png",
       "sha256": "422d683073c150fcfa70b53552759535dd52aa94fc9995d2236b3fd3b944ec36"
+    },
+    "movement": {
+      "path": "docs/asset-review/characters-v2/source/rattus-movement-v2.png",
+      "sha256": "993142d1c0ab29c5ba264db2c6d781676e0a8545f64bdd6e198ce460acec12d0"
+    },
+    "combat": {
+      "path": "docs/asset-review/characters-v2/source/rattus-combat-v2.png",
+      "sha256": "004d814581c417c637bfa8d1e8d28dcfec8195f16b4154db791d42ea67b12f54"
+    },
+    "prompts": {
+      "path": "docs/asset-review/characters-v2/source/rattus-wrestler-v2-prompts.json",
+      "sha256": "a1b29b90a35fe8291ba7f4613f496998cce7d386902626b43e337adae402a275"
     }
   }
 }

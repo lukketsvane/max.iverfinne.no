@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const { buildSync } = require('esbuild');
+const { loadGame } = require('./game-harness.cjs');
 
 const root = path.join(__dirname, '..');
 const source = buildSync({ entryPoints: [path.join(root, 'native-art.mjs')], bundle: true, write: false, format: 'iife' }).outputFiles[0].text;
@@ -163,9 +164,62 @@ test('the actual player renderer uses each selected sheet while retaining origin
     sandbox.P.skin = skin; sandbox.P.anim = 'toss'; sandbox.drawPlayer();
     assert.equal(lastSprite(calls)[3], 160, 'signature attacks use the dedicated row');
     sandbox.P.anim = 'sow'; sandbox.drawPlayer();
-    assert.equal(lastSprite(calls)[3], 64, 'sowing keeps its quiet tending poses');
+    assert.equal(lastSprite(calls)[3], 64, 'sowing uses the dedicated planting row');
   }
   sandbox.P.skin = 'original'; sandbox.drawPlayer(); assert.equal(lastSprite(calls)[1].id, 'original-interaction');
+});
+
+test('Rattus planting follows the real sow timer locally and through guest avatars without combat poses or anchor drift', async () => {
+  const { art } = await nativeArt(), ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
+  for (const mode of ['local', 'host', 'guest']) {
+    const h = loadGame(), g = h.game, pending = [], remote = mode === 'guest' ? loadGame() : null;
+    g.resetRogueRun('test', { classId: 'runner', skinId: 'moss' });
+    if (mode !== 'local') {
+      const room = { id: 'planting', host: ids[0], members: ids.map((id, i) => {
+        const runner = mode === 'guest' ? i === 1 : i === 0;
+        return { id, slot: i + 1, classId: runner ? 'runner' : 'mech', skinId: runner ? 'moss' : 'tide' };
+      }) };
+      const network = (id, host) => ({ room, user: { id }, host, tick() {}, action(type, data) { pending.push({ id: pending.length + 1, type, ...data }); return true; } });
+      g.beginCoop(network(ids[mode === 'guest' ? 1 : 0], mode === 'host'));
+      if (remote) remote.game.beginCoop(network(ids[0], true));
+    }
+    const calls = [], capture = (...args) => calls.push(args);
+    h.window.MaxNativeArt = art; g.ctx.drawImage = capture; g.sheet2Ready = true;
+    g.gardenPlots = []; g.gardenSeeds = 3; g.runEncounters = []; g.floatKrek = [];
+    Object.assign(g.P, { vx: 0, vy: 0, grounded: true, face: 1, rattleMove: 'splits', rattlePose: .45, rattleClock: 0 });
+    if (remote) {
+      remote.window.MaxNativeArt = art; remote.game.ctx.drawImage = capture;
+      remote.game.gardenPlots = []; remote.game.gardenSeeds = 3; remote.game.runEncounters = [];
+    }
+    const x = g.P.x, y = g.P.y, frames = new Set();
+    assert.equal(g.crouchGardenAction(), true, mode);
+    for (let step = 0; step < 160; step++) {
+      h.advance(1000 / 120); g.updatePlayer(1 / 120, { axis: 0, top: 48 });
+      assert.equal(g.P.x, x, `${mode} planting never moves the actor`);
+      assert.equal(g.P.y, y, `${mode} planting keeps its foot point`);
+      if (g.P.anim === 'sow') {
+        frames.add(g.P.frame); calls.length = 0; g.drawPlayer();
+        const draw = calls.at(-1);
+        assert.ok(/rattle-norvegicus\/interaction\.png$/.test(draw[0].src), `${mode} uses the Rattus interaction sheet`);
+        assert.deepEqual(draw.slice(1), [g.P.frame * 32, 64, 32, 32, Math.round(x - g.camX) - 16, Math.round(y - g.camY) - 31, 32, 32]);
+        if (mode !== 'guest' && g.P.frame < 6) assert.equal(g.gardenPlots.length, 0, 'the seed is not planted before the sow marker');
+      }
+      if (remote) {
+        remote.advance(1000 / 120);
+        remote.game.coopInput(ids[1], { avatar: JSON.parse(JSON.stringify(g.coopAvatar())), actions: pending });
+        const actor = remote.game.coop.members[ids[1]].avatar;
+        if (actor.anim === 'sow') {
+          const own = remote.game.P; remote.game.P = actor; calls.length = 0; remote.game.drawPlayer(); remote.game.P = own;
+          assert.equal(calls.at(-1)[1], actor.frame * 32); assert.equal(calls.at(-1)[2], 64, 'the host draws the guest’s actual sow frame');
+        }
+      }
+    }
+    assert.deepEqual([...frames], [0, 1, 2, 3, 4, 5, 6, 7], mode);
+    assert.equal(g.P.st, 'free', `${mode} recovers after planting`);
+    const authority = remote ? remote.game : g;
+    assert.equal(authority.gardenPlots.length, 1); assert.equal(authority.gardenSeeds, 2);
+    if (remote) assert.equal(g.gardenPlots.length, 0, 'the guest never writes an authoritative plant');
+  }
 });
 
 test('four rat variants load and draw every state on the native grid with fixed foot registration', async () => {
