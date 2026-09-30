@@ -108,12 +108,12 @@ test('killing a rammer during its windup cancels its warned root',()=>{
   assert.equal(plant.health,1,'the cancelled root never lands');
 });
 
-test('new roles enter progressively while rats remain a later threat',()=>{
+test('new roles enter progressively with rats appearing before the first milestone',()=>{
   const g=loadGame().game;g.resetRogueRun('test',{difficulty:'medium'});g.gardenWave=1;
   const kinds=stage=>{g.rogueRun.world=stage;return new Set(Array.from({length:80},(_,i)=>g.waveEnemyKind(i)));};
-  for(const stage of [1,2,3,4,5])assert.ok([...kinds(stage)].every(k=>k<3),'garden '+stage+' sends only small birds');
-  assert.ok(!kinds(10).has(9));assert.ok(kinds(11).has(9));
-  assert.ok(!kinds(12).has(10));assert.ok(kinds(13).has(10));
-  assert.ok(!kinds(15).has(11));assert.ok(kinds(16).has(11));
-  assert.ok(!kinds(9).has(8));assert.ok(kinds(10).has(8),'rats arrive once all four bug roles are known');
+  assert.ok([...kinds(1)].every(k=>k<3));assert.ok(kinds(2).has(8));
+  assert.ok(!kinds(7).has(9));assert.ok(kinds(8).has(9));
+  assert.ok(!kinds(9).has(10));assert.ok(kinds(10).has(10));
+  assert.ok(!kinds(11).has(11));assert.ok(kinds(12).has(11));
+  assert.ok(kinds(5).has(3)&&kinds(5).has(4)&&kinds(5).has(5),'the opening has multiple distinct bug roles');
 });

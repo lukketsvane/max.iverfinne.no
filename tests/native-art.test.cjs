@@ -20,7 +20,7 @@ function context() {
   };
   return { ctx, calls };
 }
-async function nativeArt(failure = '', alias = {}, now = () => 0) {
+async function nativeArt(failure = '', alias = {}, now = () => 0, legacy = false) {
   const requests = [], events = [];
   const sandbox = {
     URL, Promise, Map, WeakMap, console, performance: { now },
@@ -36,7 +36,7 @@ async function nativeArt(failure = '', alias = {}, now = () => 0) {
     },
   };
   sandbox.window = { dispatchEvent: event => events.push(event) };
-  vm.runInNewContext(source, sandbox);
+  vm.runInNewContext((legacy ? 'Object.hasOwn = undefined;' : '') + source, sandbox);
   const art = sandbox.window.MaxNativeArt, status = await art.load();
   return { art, status, requests, events };
 }
@@ -54,7 +54,7 @@ test('native assets load once, independent failures keep the other skins and ene
   assert.match(art.playerImage('ember', 'main').src, /cairn\/main.png$/);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
-  assert.equal((await art.load()).loaded.length, 32); assert.equal(requests.length, 33);
+  assert.equal((await art.load()).loaded.length, 32); assert.equal(requests.length, 34, "one failed pack gets one retry");
   assert.equal(events.length, 1); assert.equal(events[0].type, 'max-native-art-ready');
 });
 
@@ -300,4 +300,11 @@ test('actual garden boss cycles display attack and recovery without hiding their
     }
     for (const clip of ['windup', 'attack', 'vulnerable', 'recover']) assert.ok(clips.has(clip), `${k.bossId} completes ${clip} through the real simulation`);
   }
+});
+
+
+test('boss sprites render when the browser lacks Object.hasOwn', async()=>{
+ const {art}=await nativeArt('',{},()=>0,true),{ctx,calls}=context();
+ assert.ok(art.drawEnemy(ctx,enemy({boss:true,bossId:'dew-duke',guardianStage:2,phase:1}),20,30,0));
+ assert.match(lastSprite(calls)[1].src,/dew-duke/);
 });

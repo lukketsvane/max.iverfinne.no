@@ -50,7 +50,7 @@ test('all twenty gardens require a defeated guardian and only the Crown wins the
   const {game:g}=fresh();let bosses=0;
   for(let stage=1;stage<=20;stage++){
     if(stage>1)g.enterLevel(stage);
-    const e=g.bossEvent;
+    const e=g.bossEvent;if(stage===20)e.seals=7;
     Object.assign(g.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});
     g.gardenPlots=[plot({id:stage,x:e.courtX-24,stalk:true}),plot({id:stage+100,x:e.courtX+20})];
     g.levelCleared();assert.notEqual(g.rogueRun.clearedWorld,stage);
@@ -58,7 +58,7 @@ test('all twenty gardens require a defeated guardian and only the Crown wins the
     assert.ok(g.interactBossEvent());const boss=g.liveBoss();bosses++;
     assert.equal(boss.guardianStage,stage);assert.equal(boss.finalBoss,stage===20);
     g.interactBossEvent();assert.equal(g.floatKrek.filter(k=>k.boss).length,1);
-    g.damagePest(boss,10000,boss.x);resolve(g);
+    for(let phase=0;phase<(stage===20?3:1);phase++){boss.transitionT=0;g.damagePest(boss,10000,boss.x);}resolve(g);
     assert.equal(g.rogueRun.ended,stage===20);
     if(stage<20){assert.equal(g.rogueRun.clearedWorld,stage);assert.ok(g.gardenPlots.some(p=>p.stalk));}
   }
@@ -67,7 +67,7 @@ test('all twenty gardens require a defeated guardian and only the Crown wins the
 });
 test('enemy roles unlock by stage and thieves visibly wind up, steal, and return their seed when defeated',()=>{
   const {game:g}=fresh();assert.ok(Array.from({length:80},()=>g.enemyKind()).every(k=>[0,1,2].includes(k)),'Garden 1 starts without rats or specialists');
-  g.rogueRun.world=13;const kinds=new Set(Array.from({length:800},()=>g.enemyKind()));assert.deepEqual([...kinds].sort((a,b)=>a-b),[0,1,2,3,4,5,6,8,9,10]);
+  g.rogueRun.world=13;const kinds=new Set(Array.from({length:800},()=>g.enemyKind()));assert.deepEqual([...kinds].sort((a,b)=>a-b),[0,1,2,3,4,5,6,8,9,10,11]);
   g.rogueRun.world=2;g.seedPickups=[{id:'test',x:0,y:g.surfaceY(0)-2,amount:2}];
   const k=Object.assign(g.makeKrek(1),{kind:3,x:0,y:g.surfaceY(0)-4,vx:0,vy:0});g.floatKrek=[k];
   g.updateEnemyRole(k,.01);assert.ok(k.windup>.6);assert.equal(g.seedPickups.length,1);

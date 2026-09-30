@@ -146,6 +146,7 @@ test('run finalization saves the complete archive once with the owner captured a
     w.MaxGardenLeaderboard = { identity: () => ({ id: 'later-account', name: 'Different person' }) };
     w.highTideMode = () => w.rogueRun.mode === 'high-tide';
     w.nightRelayMode = () => w.rogueRun.mode === 'night-relay';
+    w.runStats=()=>({v:2,won:false,checkpoints:[]});
     w.eval(functionSource('finalizeRogueRun'));
     w.finalizeRogueRun(false); w.finalizeRogueRun(false);
     const records = w.MaxRunRecords.getAll(); assert.equal(records.length, 1);
@@ -247,6 +248,6 @@ test('High Tide results preserve the native ascent and guardian count on a tall 
   const options={...s.options,mode:'high-tide',ascent:1128,goal:1370,wave:4,seconds:215,won:false,plants:plants(1),classId:'polge',onRetry(){}};
   const saved=w.MaxRunRecords.save(options);assert.equal(saved.record.ascent,1128);assert.equal(saved.record.goal,1370);assert.equal(saved.record.wave,4);
   w.MaxRunResults.show(options);const scene=w.document.querySelector('.run-results-scene');assert.equal(scene.style.width,'100%');assert.equal(scene.style.height,'100%');assert.equal(s.button('View every plant').hidden,true);
-  assert.match(w.document.querySelector('.run-results-subtitle').textContent,/VAKTAR 4\/5.*1128\/1370/);
+  assert.match(w.document.querySelector('.run-results-subtitle').textContent,/GUARDIANS 4\/5.*1128\/1370/);
  }finally{s.close();}
 });

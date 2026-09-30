@@ -28,12 +28,12 @@ const GUARDIANS = Object.freeze(['sprout-sentinel','dew-duke','thorn-duelist','s
 export function createNativeArt() {
   const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null);
   const clocks = new Map();
-  let anonymousClocks = new WeakMap(), deaths = [], loading, sweptAt = 0;
+  let anonymousClocks = new WeakMap(), deaths = [], loading, sweptAt = 0, loadStatus = { loaded: [], failed: [] };
 
   function reset() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
-  function milestone(enemy) { return !!enemy.boss && (Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
+  function milestone(enemy) { return !!enemy.boss && (Object.prototype.hasOwnProperty.call(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
   function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
   function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function renderTime() { return typeof performance !== 'undefined' ? performance.now() / 1000 : 0; }
@@ -136,19 +136,31 @@ export function createNativeArt() {
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
       .concat(GUARDIANS.map(id => [id, `assets/garden-guardians-v1/native/${id}.json`]));
-    loading = Promise.allSettled(files.map(async ([id, url]) => {
-      const atlas = await loadAtlas(url);
-      atlases[id] = atlas;
-      if (!SKINS.includes(id)) flashes[id] = flashAtlas(atlas);
-      return id;
-    })).then(results => {
+    // Bound concurrent PNG decodes on Android. Retry transient fetch/decode
+    // failures once rather than keeping a fallback for the whole session.
+    loading = (async () => {
+      let cursor = 0;
+      const results = new Array(files.length);
+      await Promise.all(Array.from({ length: 4 }, async () => {
+        while (cursor < files.length) {
+          const i = cursor++, [id, url] = files[i];
+          for (let attempt = 0; attempt < 2; attempt++) {
+            try {
+              atlases[id] = await loadAtlas(url);
+              results[i] = { status: 'fulfilled', value: id };
+              break;
+            } catch (reason) { results[i] = { status: 'rejected', reason }; }
+          }
+        }
+      }));
       const status = {
         loaded: results.filter(r => r.status === 'fulfilled').map(r => r.value),
         failed: results.map((r, i) => r.status === 'rejected' ? files[i][0] : null).filter(Boolean),
       };
+      loadStatus = status;
       announceReady(status);
       return status;
-    });
+    })();
     return loading;
   }
   function loadSkin(id) {
@@ -168,6 +180,8 @@ export function createNativeArt() {
   function drawEnemy(ctx, enemy, x, y, time) {
     const id = idFor(enemy), atlas = atlases[id];
     if (!atlas) return false;
+    // Allocate tint sheets only for a visible hit, not every pack at boot.
+    if (enemy.flash > 0 && !flashes[id]) flashes[id] = flashAtlas(atlas);
     const state = pose(enemy, time), footY = Math.round(y + footOffset(enemy));
     const options = { facing: enemy.face, progress: state.progress };
     const frame = drawAtlas(ctx, atlas, state.name, state.seconds, x, footY, options);
@@ -198,7 +212,7 @@ export function createNativeArt() {
       drawAtlas(ctx, death.atlas, 'death', elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
     }
   }
-  return { skins: SKINS, load, playerPath, playerRow, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
+  return { skins: SKINS, load, playerPath, playerRow, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset, status: () => ({ loaded: [...loadStatus.loaded], failed: [...loadStatus.failed] }) };
 }
 
 if (typeof window !== 'undefined') {

@@ -14,7 +14,7 @@ const source = html.match(/<script>([\s\S]*?)<\/script>/)[1]
   .replace('/* MAX_RAT_ENEMIES */', fs.readFileSync(path.join(__dirname, '../rat-enemies.inc.js'), 'utf8'))
   .replace('/* MAX_SECRETS */', fs.readFileSync(path.join(__dirname, '../secrets.inc.js'), 'utf8')).replace('/* MAX_WONDERS */', fs.readFileSync(path.join(__dirname, '../wonders.inc.js'), 'utf8'));
 const stateNames = [
-  'bossEvent',
+  'bossEvent', 'loopBackdropOffset',
   'polgeStands', 'classShots', 'classFighters',
   'soloSligo', 'sligoMeat', 'sligoPendingSwap',
   'tSec',
@@ -31,7 +31,7 @@ const stateNames = [
   'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
 ];
 const functionNames = [
-  'gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent','blastFeedback','drawCharge','ladderAt','beginLadder','updateLadder','ladderInput','drawLadders',
+  'crownDamageGate','interactFinaleBeacon','gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent','blastFeedback','drawCharge','ladderAt','beginLadder','updateLadder','ladderInput','drawLadders',
   'NIGHT_RELAY','RELAY_LOCKS','RELAY_LEDGES','RELAY_WISPS','relayProfile','relayActors','relayHeld','relayAt','relayBeam','relayCheckpoint','relayConstrain','resetNightRelay','nightRelayLayout','updateNightRelay','finishNightRelay','drawNightRelay','drawNightRelayHud','nightRelayMode','relicRunMode',
   'highTidePods','HIGH_TIDE_GATES','highTideMapPoint','highTideRoutePoint','highTideHeart','highTideTip','highTideBoons','highTideSpawnBoss','highTideSpawnPest','updateHighTideEnemies','highTideBossDefeated',
   'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideAtSummit','updateHighTide','updateHighTideClimb','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
@@ -47,10 +47,10 @@ const functionNames = [
   'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
   'frame', 'gardenBackdrop', 'sanctuaryBackdrop', 'drawSanctuaryLayer', 'nightGarden', 'nightBackdrop', 'drawNightLayers', 'cavernGarden', 'cavernBackdrop', 'drawCavernLayers', 'surfaceY', 'terrainY', 'updateGarden', 'updateGardenFun', 'updateSeedPickups', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
   'initExpedition', 'interactExpedition', 'updateExpedition', 'expeditionBlast', 'drawExpedition', 'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
-  'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
+  'gardenLoop', 'loopX', 'loopDelta', 'wrapGardenPlayer', 'drawLoopForeground', 'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
   'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
   'stageLayout', 'pictureLayout', 'levelSpots', 'digSpots', 'digBlast', 'pickupShown', 'drawSpots', 'drawSeedPickups', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
-  'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
+  'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'enemyFormation', 'recordEnemySpawn', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
   'runTimeThreat', 'runDurabilityScale', 'runDamageScale', 'runPlayerPower', 'runRewardScale', 'runReward', 'grantRogueLevel', 'openingRaidT', 'burstKrek', 'runRaidLimit', 'runRaidInterval', 'runPatrolLimit', 'runPatrolInterval',
   'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
   'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',

@@ -6,14 +6,15 @@ the four `sprites.png` / `atlas.json` pairs and the manifest.
 
 | Variant | Role | Base speed | Additional health | Bite multiplier |
 |---|---|---:|---:|---:|
-| Common | Ground attacker | 32 | 0 | 1.0 |
-| Black | Fast flanker | 46 | 0 | 0.8 |
-| Albino | Slow, tougher attacker | 25 | 2 | 1.4 |
-| Plague | Bite plus delayed green pulse | 30 | 1 | 0.85 |
+| Common | Ground attacker | 27 | 0 | 0.62 |
+| Black | Fast flanker | 39 | 0 | 0.55 |
+| Albino | Slow, tougher attacker | 23 | 1 | 0.86 |
+| Plague | Bite plus delayed green pulse | 27 | 1 | 0.60 |
 
-Rats appear in all six existing enemy formations, from the first garden.
-Black rats unlock at garden 2 or 75 elapsed seconds, albinos at garden 4 or
-180 seconds, plague rats at garden 7 or 300 seconds. They use existing raid,
+Rats appear in all six existing enemy formations from garden 2, including Easy.
+Black rats unlock at garden 4, albinos at garden 7 and plague rats at garden 10.
+The newest variant appears first in each garden, then the unlocked variants
+cycle. Elapsed time does not skip an introduction. They use existing raid,
 patrol and trial population limits: this integration does not add an unlimited
 spawn loop or replace the milestone bosses.
 
