@@ -56,7 +56,7 @@ plants. Never substitute the preview names or example bouquets for player data.
 
 ## Native co-op art integration
 
-Kestrel, Cairn and Mycel replace the three cosmetic Max recolours. They have
+Rattle Norvegicus, Cairn and Mycel replace the three cosmetic Max recolours. They have
 independent avian, stone and mushroom silhouettes, generated main/interaction
 sheets and a shared compact ink/cream/teal/ochre palette. Native 32×32 cells,
 anchor (16,31), binary alpha and existing animation timing remain binding.

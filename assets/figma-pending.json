@@ -576,18 +576,18 @@
       "note": "Generated Sligo chain evolution poses; scripts/build-sligo-evolution-branches.py. Figma desktop unavailable."
     },
     {
-      "path": "assets/characters-v2/kestrel/main.png",
-      "sha1": "8e0e4cc3610414e112cc66f0ba9bbe5773f35d9d",
+      "path": "assets/characters-v2/rattle-norvegicus/main.png",
+      "sha1": "d98a7dce63eb3b16a087efc25c05557b4256abbf",
       "width": 256,
       "height": 256,
-      "note": "Kestrel original creature main poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained."
+      "note": "Rattle Norvegicus original creature main poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained."
     },
     {
-      "path": "assets/characters-v2/kestrel/interaction.png",
-      "sha1": "90a2fd10dc1a46e0f29ec406f282a662e825aa37",
+      "path": "assets/characters-v2/rattle-norvegicus/interaction.png",
+      "sha1": "fcd386e8ff55e48779102f0fe3d01dabbc4cf11a",
       "width": 256,
       "height": 256,
-      "note": "Kestrel original creature interaction poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained."
+      "note": "Rattle Norvegicus original creature interaction poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained."
     },
     {
       "path": "assets/characters-v2/cairn/main.png",

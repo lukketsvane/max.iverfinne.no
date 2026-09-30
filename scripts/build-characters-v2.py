@@ -1,10 +1,3 @@
-"""Reproduce Kestrel, Cairn and Mycel from six image_gen source masters.
-
-Generated masters are source artwork, never runtime atlases. This deterministic
-compiler cuts their reviewed poses, reduces every pose at a fixed scale, applies
-the character palette/binary alpha, and registers feet to the original 25 clips.
-It does not trace Max or synthesize replacement creature silhouettes.
-"""
 from pathlib import Path
 import hashlib
 import json
@@ -18,12 +11,30 @@ PACK = ROOT / 'assets/characters-v2'
 REVIEW = SOURCE.parent
 NEAREST = Image.Resampling.NEAREST
 SPECS = {
- 'kestrel': {
-  'skin': 'moss', 'class': 'runner', 'scale': .165,
-  'palette': ['14141e','282030','493044','643536','8e3c29','b94c2f','d8703b','e59f4b','f2ca75','f6e5ba','cbc49c','847550','35494c','32737a','60adb0','a7ded3'],
-  'rows': [[30,164],[170,304],[308,447],[452,602],[603,773],[786,921],[930,1071],[1073,1236]],
-  'careRows': [[28,174],[180,328],[330,480],[486,626],[627,789],[791,936],[942,1101],[1110,1240]],
-  'attack': [0,1,3,5,6,7,2,0],
+ 'rattle-norvegicus': {
+  'skin': 'moss', 'class': 'runner', 'scale': .185,
+  'palette': ['0b1017','101932','253459','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','b63330','247bad','52cde5'],
+  'source': 'rattle-norvegicus.png',
+  'main': [
+   [(0,c) for c in range(8)],
+   [(1,c) for c in range(8)],
+   [(3,c) for c in range(8)],
+   [(0,0),(4,1),(4,2),(4,0),(4,6),(6,6),(0,6),(0,7)],
+   [(4,0),(4,2),(4,3),(4,4),(4,4),(4,5),(4,6),(4,7)],
+   [(4,6),(6,2),(6,3),(6,4),(6,2),(6,5),(0,6),(0,7)],
+   [(5,0),(5,1),(5,3),(5,4),(5,5),(5,6),(5,7),(5,0)],
+   [(4,c) for c in range(8)],
+  ],
+  'interaction': [
+   [(6,0),(6,1),(6,2),(6,3),(6,2),(6,3),(6,4),(6,2)],
+   [(6,0),(6,1),(6,2),(6,3),(6,4),(6,3),(6,5),(6,6)],
+   [(6,0),(6,1),(6,2),(6,3),(6,4),(6,3),(6,5),(6,6)],
+   [(5,c) for c in range(8)],
+   [(6,0),(6,1),(6,2),(6,3),(6,4),(6,3),(6,5),(6,6)],
+   [(5,0),(5,1),(5,3),(5,4),(5,5),(5,6),(5,7),(5,0)],
+   [(5,0),(5,1),(5,2),(5,3),(5,2),(5,3),(5,4),(5,5)],
+   [(7,0),(6,2),(7,5),(7,1),(7,2),(7,3),(7,3),(7,4)],
+  ],
  },
  'cairn': {
   'skin': 'ember', 'class': 'bulwark', 'scale': .18,
@@ -104,22 +115,46 @@ def register(pose, bottom):
  out.paste(pose,(16-pose.width//2,bottom-pose.height))
  return out
 
+def rattle_poses(spec):
+ image=Image.open(SOURCE/spec['source']).convert('RGBA')
+ a=np.array(image)
+ red,green,blue=[a[:,:,i].astype(np.int32) for i in range(3)]
+ matte=(green-red>22)&(blue-red>35)&(blue-green<40)&(red>65)&(blue<225)
+ a[matte]=0
+ image=Image.fromarray(a)
+ poses=[]
+ for row in range(8):
+  cells=[]
+  for col in range(8):
+   cell=image.crop((round(col*image.width/8),round(row*image.height/8),round((col+1)*image.width/8),round((row+1)*image.height/8)))
+   pixels=np.array(cell);mask=np.zeros(pixels.shape[:2],dtype=bool)
+   group=components(pixels[:,:,3]>=210)[0]
+   for x,y in group:mask[y,x]=True
+   pixels[~mask]=0
+   cell=Image.fromarray(pixels);cell=cell.crop(cell.getbbox())
+   cells.append(reduce_pose(cell,spec))
+  poses.append(cells)
+ return {sheet:[[poses[row][col] for row,col in cells] for cells in spec[sheet]] for sheet in ['main','interaction']}
+
 def main():
  PACK.mkdir(parents=True,exist_ok=True)
  original=json.loads((ROOT/'assets/max-skins-v1/source/original-poses.json').read_text())
  clips=json.loads((ROOT/'assets/max-skins-v1/source/animations.json').read_text())
- assets={};manifest=[];provenance={};registration={}
+ assets={};manifest=[];provenance=json.loads((SOURCE/'provenance.json').read_text());registration={}
  for ident,spec in SPECS.items():
   folder=PACK/ident;folder.mkdir(exist_ok=True)
-  masters={sheet:Image.open(SOURCE/f'{ident}-{sheet}.png').convert('RGBA') for sheet in ['main','interaction']}
-  poses=[row_poses(masters['main'],bounds,spec,ident=='cairn' and r==5) for r,bounds in enumerate(spec['rows'])]
-  care=[row_poses(masters['interaction'],bounds,spec,ident=='cairn' and r==5) for r,bounds in enumerate(spec['careRows'])]
-  attack=[care[5][c] for c in spec['attack']]
-  # Landing uses the actual compression and recovery poses. The unused main row
-  # previews the attack; the production interaction row 5 contains that attack.
-  landing=[poses[4][7],care[0][3],care[0][3],care[0][2],care[0][2],care[0][1],poses[0][0],poses[0][1]]
-  mainrows=[poses[0],poses[1],poses[2],poses[3],poses[4],landing,attack,poses[3]]
-  carerows=care[:];carerows[5]=attack
+  if 'source' in spec:
+   sourcefiles={'master':SOURCE/spec['source']}
+   rows=rattle_poses(spec);mainrows=rows['main'];carerows=rows['interaction']
+  else:
+   sourcefiles={sheet:SOURCE/f'{ident}-{sheet}.png' for sheet in ['main','interaction']}
+   masters={sheet:Image.open(file).convert('RGBA') for sheet,file in sourcefiles.items()}
+   poses=[row_poses(masters['main'],bounds,spec,ident=='cairn' and r==5) for r,bounds in enumerate(spec['rows'])]
+   care=[row_poses(masters['interaction'],bounds,spec,ident=='cairn' and r==5) for r,bounds in enumerate(spec['careRows'])]
+   attack=[care[5][c] for c in spec['attack']]
+   landing=[poses[4][7],care[0][3],care[0][3],care[0][2],care[0][2],care[0][1],poses[0][0],poses[0][1]]
+   mainrows=[poses[0],poses[1],poses[2],poses[3],poses[4],landing,attack,poses[3]]
+   carerows=care[:];carerows[5]=attack
   images={};frames=[];reg=[]
   for sheet,rows in [('main',mainrows),('interaction',carerows)]:
    out=Image.new('RGBA',(256,256))
@@ -131,8 +166,12 @@ def main():
      tile=register(pose,bottom)
      out.paste(tile,(col*32,row*32))
      frames.append({'sheet':sheet,'rect':[col*32,row*32,32,32],'anchor':[16,31],'opaqueBounds':list(tile.getbbox())})
-     reg.append({'sheet':sheet,'row':row,'column':col,'footBottom':bottom})
-   images[sheet]=out;out.save(folder/f'{sheet}.png',optimize=True)
+     entry={'sheet':sheet,'row':row,'column':col,'footBottom':bottom}
+     if 'source' in spec:entry['sourceCell']=list(spec[sheet][row][col])
+     reg.append(entry)
+   images[sheet]=out
+   file=folder/f'{sheet}.png'
+   if not file.exists() or Image.open(file).convert('RGBA').tobytes()!=out.tobytes():out.save(file,optimize=True)
   animations={}
   for name,a in clips.items():
    offset=0 if a['sheet']=='main' else 64
@@ -146,27 +185,33 @@ def main():
   save_json(folder/'atlas.json',atlas)
   assets[ident]={'manifest':atlas,'images':images};manifest.append({'id':ident,'manifest':ident+'/atlas.json'})
   registration[ident]=reg
-  provenance[ident]={s:{'path':str((SOURCE/f'{ident}-{s}.png').relative_to(ROOT)), 'sha256':hashlib.sha256((SOURCE/f'{ident}-{s}.png').read_bytes()).hexdigest()} for s in masters}
+  provenance[ident]={s:{'path':file.relative_to(ROOT).as_posix(), 'sha256':hashlib.sha256(file.read_bytes()).hexdigest()} for s,file in sourcefiles.items()}
  save_json(PACK/'manifest.json',{'schema':'max-native-pack/v1','id':'characters-v2','assets':manifest})
  save_json(REVIEW/'registration.json',registration);save_json(SOURCE/'provenance.json',provenance)
  preview(assets)
  # Preserve pending entries owned by other generators/agents.
  pendingPath=ROOT/'assets/figma-pending.json';pending=json.loads(pendingPath.read_text())
- pending['files']=[f for f in pending['files'] if not f['path'].startswith('assets/characters-v2/')]
+ position=next((i for i,f in enumerate(pending['files']) if f['path'].replace('\\','/').startswith('assets/characters-v2/')),len(pending['files']))
+ pending['files']=[f for f in pending['files'] if not f['path'].replace('\\','/').startswith('assets/characters-v2/')]
+ generated=[]
  for ident in SPECS:
   for sheet in ['main','interaction']:
    file=PACK/ident/f'{sheet}.png'
-   pending['files'].append({'path':str(file.relative_to(ROOT)),'sha1':hashlib.sha1(file.read_bytes()).hexdigest(),'width':256,'height':256,
-    'note':f'{ident.title()} original creature {sheet} poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained.'})
+   generated.append({'path':file.relative_to(ROOT).as_posix(),'sha1':hashlib.sha1(file.read_bytes()).hexdigest(),'width':256,'height':256,
+    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. Figma MCP unavailable; generated source and full prompts retained.'})
+ pending['files'][position:position]=generated
  save_json(pendingPath,pending)
  print('Built three original characters: 384 native cells, 75 clips, six 256x256 sheets.')
 
 def preview(assets):
+ rattle=Image.new('RGBA',(256,512))
+ for i,sheet in enumerate(['main','interaction']):rattle.paste(assets['rattle-norvegicus']['images'][sheet],(0,i*256))
+ rattle.save(REVIEW/'rattle-sheets-1x.png');rattle.resize((1024,2048),NEAREST).save(REVIEW/'rattle-sheets-4x.png')
  labels=['idle','walk','run','rise','water','toss','lampHold','rest']
  im=Image.new('RGB',(384,158),'#1b2431');draw=ImageDraw.Draw(im)
  for i,label in enumerate(labels):draw.text((68+i*39,3),'lamp' if label=='lampHold' else label,fill='#d5d0bb')
  for y,(ident,a) in enumerate(assets.items()):
-  draw.text((3,31+y*47),ident,fill='#d5d0bb')
+  draw.text((3,31+y*47),ident.split('-')[0],fill='#d5d0bb')
   for x,label in enumerate(labels):
    c=a['manifest']['animations'][label];idx=c['frames'][min(2,len(c['frames'])-1)]
    if label=='toss':idx=64+5*8+2
@@ -181,7 +226,7 @@ def preview(assets):
    c=a['manifest']['animations'][name];idx=c['frames'][int((tick%24)*.09*c['fps'])%len(c['frames'])]
    if name=='toss':idx=64+5*8+[0,1,2,2,1][int((tick%24)*.09*18)%5]
    f=a['manifest']['frames'][idx];x,y,w,h=f['rect'];tile=a['images'][f['sheet']].crop((x,y,x+w,y+h))
-   image.paste(tile,(i*64+16,11),tile);d.text((i*64+7,48),ident,fill='#d5d0bb')
+   image.paste(tile,(i*64+16,11),tile);d.text((i*64+7,48),ident.split('-')[0],fill='#d5d0bb')
   animation.append(image.resize((768,272),NEAREST))
  animation[0].save(REVIEW/'animations-4x.gif',save_all=True,append_images=animation[1:],duration=90,loop=0,disposal=2)
 

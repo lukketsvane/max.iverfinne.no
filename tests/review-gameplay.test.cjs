@@ -68,7 +68,7 @@ test('legacy pressure links open the live ten-minute Garden 1 fixture and canoni
   const s = await scene('pressure', 'moss', { stage: '14' }), g = s.game;
   assert.equal(s.selectedMode, 'pressure10'); assert.equal(g.rogueRun.world, 1);
   assert.equal(g.runElapsed, 600); assert.equal(g.rogueRun.clearedWorld, 1);
-  assert.equal(s.className, 'Kestrel'); assert.equal(g.rogueRun.classId, 'runner');
+  assert.equal(s.className, 'Rattle Norvegicus'); assert.equal(g.rogueRun.classId, 'runner');
   assert.equal(g.companion, null); assert.ok(g.floatKrek.length > 0);
   assert.ok(g.floatKrek.every(k => k.patrol));
   s.tick(300);
@@ -154,7 +154,7 @@ test('pressure fixtures keep Garden 1 and use the actual run clock for native pa
 
 test('the growing-plant fixture defaults to Moss and climbs a real immature plant while its clock keeps advancing', async () => {
   const s = await scene('plant-climb'), g = s.game;
-  assert.equal(s.selectedMode, 'plant-climb'); assert.equal(s.className, 'Kestrel');
+  assert.equal(s.selectedMode, 'plant-climb'); assert.equal(s.className, 'Rattle Norvegicus');
   assert.equal(g.rogueRun.classId, 'runner'); assert.equal(g.rogueRun.world, 1);
   assert.notEqual(g.rogueRun.clearedWorld, 1);
   assert.deepEqual(Array.from(g.gardenPlots, p => p.growth), [1.45, .4, .9]);

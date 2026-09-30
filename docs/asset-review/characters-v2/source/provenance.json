@@ -28,5 +28,11 @@
       "path": "docs/asset-review/characters-v2/source/mycel-interaction.png",
       "sha256": "79e9f80839d7989a8d636c324a0911c1307fd9d477c061051b64ac5d82ac299f"
     }
+  },
+  "rattle-norvegicus": {
+    "master": {
+      "path": "docs/asset-review/characters-v2/source/rattle-norvegicus.png",
+      "sha256": "2852b86a4477c480d4e739fd7041133632fed83dd6f3fc59a842538a6ca3609a"
+    }
   }
 }

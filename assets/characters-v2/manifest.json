@@ -3,8 +3,8 @@
   "id": "characters-v2",
   "assets": [
     {
-      "id": "kestrel",
-      "manifest": "kestrel/atlas.json"
+      "id": "rattle-norvegicus",
+      "manifest": "rattle-norvegicus/atlas.json"
     },
     {
       "id": "cairn",

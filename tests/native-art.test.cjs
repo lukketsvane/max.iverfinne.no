@@ -47,7 +47,7 @@ function enemy(overrides = {}) {
 function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage').at(-1); }
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
-  const { art, status, requests, events } = await nativeArt('/kestrel/interaction.png');
+  const { art, status, requests, events } = await nativeArt('/rattle-norvegicus/interaction.png');
   assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 32);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
@@ -141,7 +141,7 @@ test('the actual player renderer uses each selected sheet while retaining origin
     surfaceY: () => 40, waterAt: () => null, drawCanopy() {}, secretTint: false,
   };
   vm.runInNewContext(drawPlayer, sandbox); sandbox.drawPlayer();
-  assert.match(lastSprite(calls)[1].src, /kestrel\/main.png$/);
+  assert.match(lastSprite(calls)[1].src, /rattle-norvegicus\/main.png$/);
   assert.deepEqual(lastSprite(calls).slice(2), [32, 0, 32, 32, 4, 9, 32, 32]);
   sandbox.P.anim = 'water'; sandbox.P.skin = 'moon'; sandbox.P.face = -1; sandbox.drawPlayer();
   assert.match(lastSprite(calls)[1].src, /mycel\/interaction.png$/);

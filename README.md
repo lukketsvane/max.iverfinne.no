@@ -34,12 +34,12 @@ Five open characters and the hidden Sligo each own a gameplay role. There is no 
 | Character | Primary attack | Skill (tap character / E) |
 | --- | --- | --- |
 | Mech | Stationary bombs, fixed two-second fuse | Dispatch the watering rover |
-| Kestrel | Fast aimed needles; upgrades add piercing and fans | Pounce from above; landing volleys and aerial builds |
+| Rattle Norvegicus | Fast aimed needles; upgrades add piercing and fans | Pounce from above; landing volleys and aerial builds |
 | Cairn | Heavy close cleave; stronger against winding-up pests | Brace and timed parry; burrow where the soil allows |
 | Mycel | Spore bolts that chain near living plants | Bloom heals and waters plants, revives a recent fall and strikes nearby pests |
 | Pølge | Jab → cross → uppercut; dodge primes a stronger punch | Freely steer during a rapid close flurry |
 
-Kestrel is an avian archer, Cairn a broad stone creature and Mycel a walking mushroom. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
+Rattle Norvegicus is a rat-masked wizard in a navy-and-gold cloak and green hat, Cairn a broad stone creature and Mycel a walking mushroom. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
 
 Pølge is a limbless mannequin boxer and the glue of the pølgevenner. He never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. Every primary, skill and upgrade is validated by the host; projectiles, combo/flurry state and cooldowns survive an authority handoff.
 
@@ -61,13 +61,13 @@ Do not replace stage progression with a ground-level teleport.
 
 A player must physically climb the cleared exit plant to its top and reach the next stage. When one player has successfully crossed into the next garden, the remaining teammates may be brought forward so the party can continue together. The player who made the ascent stays the ascender; do not teleport them before they complete the climb.
 
-Kestrel can also climb ordinary living plants for traversal, but ordinary plant climbing never skips uncleared stages.
+Rattle Norvegicus can also climb ordinary living plants for traversal, but ordinary plant climbing never skips uncleared stages.
 
 ### Input and items
 
 - Touch drag left/right: move.
 - Swipe up: jump.
-- Kestrel: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, a tap on the held stem climbs faster and never throws, and any other tap throws from an ordinary stem.
+- Rattle Norvegicus: swipe up beside a climbable plant to attach; swipe upward again to leap between plants; drag down to descend. A tap on Max pounces, even beside a stem, a tap on the held stem climbs faster and never throws, and any other tap throws from an ordinary stem.
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.
@@ -120,7 +120,7 @@ Cyan begins after the guardian's entire volley has landed and cleared. Every gua
 
 Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts do not stack the shake. Planted bombs show their actual upgraded reach, and a short input buffer accepts an attack released just before a reload or bomb slot becomes ready.
 
-The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Mech can move while charging. Kestrel and Mycel fire directly along their aim; Cairn and Pølge show their close attack reach. Sligo retains aimed flesh throws.
+The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Mech can move while charging. Rattle Norvegicus and Mycel fire directly along their aim; Cairn and Pølge show their close attack reach. Sligo retains aimed flesh throws.
 
 New boss objectives reward tactics: crack Glass Snail’s front or flank it, snuff Wick Hermit’s wicks, cut Spindle Widow’s silk anchors, find Orchard Mimic’s cyan fruit, interrupt Tuning Fork’s echo, carry dew into Ash Ferryman, silence all Compost Choir voices, and break Seed Engine’s orbiting seeds. These actions open longer damage windows; ordinary attacks still work.
 
@@ -152,7 +152,7 @@ Boons are a live overlay; the simulation continues underneath them. Each choice 
 - Spring Step — higher jumps.
 - Quick Hands — shorter recovery between attacks; planted bombs keep their two-second fuse.
 
-Every reworked class has three mutation directions and two signature combinations: piercing/fans/landing volleys for Kestrel; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on combo hits for Pølge. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Mech and Sligo.
+Every reworked class has three mutation directions and two signature combinations: piercing/fans/landing volleys for Rattle Norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on combo hits for Pølge. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Mech and Sligo.
 
 Mech-only robot boons remain exclusive to Mech. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
 
