@@ -30,6 +30,11 @@ function initBossEvent(){
   if(relicRunMode()){bossEvent=null;return;}
   var sites=stageLayout().guardianSites,index=guardianSiteIndex(rogueRun.seed,worldLevel()),site=sites[index];
   bossEvent={stage:worldLevel(),siteId:site.id,siteIndex:index,x:site.x,y:site.y,courtX:site.courtX,courtY:site.courtY,courtLeft:site.courtLeft,courtRight:site.courtRight,status:'ready',startedAt:0};
+  if(worldLevel()===20){
+    var L=stageLayout(),points=L.rewards.slice(0,2).concat([L.expedition?L.expedition.summit:{x:site.x,y:site.y}]);
+    bossEvent.seals=0;
+    points.forEach(function(q,i){bossEvent['seal'+i+'X']=q.x;bossEvent['seal'+i+'Y']=q.y;});
+  }
   // One shared planting reserve per garden, even when the entry seeds were
   // spent elsewhere. The ordinary pickup acknowledgement owns collection.
   var id='guardian:'+worldLevel()+':seeds';
@@ -38,10 +43,11 @@ function initBossEvent(){
 function interactBossEvent(){
   if(relicRunMode()||!bossEvent||bossEvent.stage!==worldLevel()||bossEvent.status!=='ready'||Math.abs(P.x-bossEvent.x)>16||Math.abs(P.y-bossEvent.y)>6||!P.grounded||P.wet||rogueRun.ended)return false;
   if(!guardianGardenPlant()){nudgeGardenHint('GROW A PLANT BY THE SHRINE BEFORE WAKING THE GUARDIAN');return false;}
+  if(worldLevel()===20&&bossEvent.seals!==7){nudgeGardenHint('LIGHT THE THREE CROWN BEACONS · TEND ON THE SUMMITS');return false;}
   if(coopGuest())return coopAction('encounter');
   // Optional trials must be finished first. This avoids stacking an unfinished
   // defence objective under a player-triggered boss.
-  if(runEncounters.some(function(e){return e.active&&!e.done;})){nudgeGardenHint('FINISH YOUR TRIAL FIRST');return true;}
+  if(runEncounters.some(function(e){return e.active&&!e.done;})){nudgeGardenHint('FINISH YOUR TRIAL FIRST');return false;}
   if(liveBoss())return true;
   if(floatKrek.length>=MAX_ACTIVE_ENEMIES){nudgeGardenHint('CLEAR SOME PESTS BEFORE WAKING THE GUARDIAN');return true;}
   var k=makeStageBoss(worldLevel());
@@ -58,7 +64,9 @@ function interactBossEvent(){
 function gardenBossDefeated(k){
   if(relicRunMode()||!k.boss||k.guardianStage!==worldLevel()||rogueRun.bossDefeated)return;
   rogueRun.bossDefeated=true;
-  if(bossEvent)bossEvent.status='defeated';
+  if(bossEvent){bossEvent.status='defeated';
+    (rogueRun.bosses||(rogueRun.bosses=[])).push({stage:worldLevel(),id:k.bossId,seconds:Math.round(Math.max(0,runElapsed-bossEvent.startedAt)*10)/10,team:coopSize(),level:rogueRun.level,hp:k.maxHp,phases:worldLevel()===20?3:1,transitions:(bossEvent.transitions||[]).slice(0,2)});
+  }
   // A victory has a clear release: no delayed boss strike or abandoned adds.
   runHazards=runHazards.filter(function(h){return h.guardianStage!==worldLevel();});
   floatKrek.forEach(function(q){if(q.guardianAdd===worldLevel()){q.raid=false;staggerKrek(q,30);}});
@@ -84,9 +92,11 @@ function drawBossEvent(t){
     }
   }
   if(x<-24||x>IW+24||y<-12||y>IH+35)return;
+  if(!drawDistrictProp('altar',ready||bossEvent.status==='active',x,y)){
   rect(x-9,y-3,19,3,'#293b37');rect(x-6,y-9,13,6,'#536448');
   rect(x-2,y-19,5,11,'#1d2b34');rect(x-5,y-20,3,5,ink);rect(x+3,y-20,3,5,ink);
   rect(x-1,y-24,3,5,ink);rect(x-1,y-12,3,3,ready?core:'#536448');
+  }
   if(ready){
     var glint=Math.round(Math.sin(t*2.8)*3);rect(x-8,y-20+glint,1,1,ink);rect(x+8,y-17-glint,1,1,ink);
   }
@@ -259,8 +269,19 @@ function spawnEncounterGuard(e){
   k.eventId=e.id;k.eventX=e.x;k.eventY=encounterFloor(e);k.trialGuard=true;
   floatKrek.push(k);e.guardIndex=(e.guardIndex||0)+1;e.guardsRemaining--;e.ingress=false;e.guardSpawn=.45;return true;
 }
+function interactFinaleBeacon(){
+  if(worldLevel()!==20||!bossEvent||bossEvent.status!=='ready')return false;
+  for(var i=0;i<3;i++){
+    if((bossEvent.seals&(1<<i))||Math.abs(P.x-bossEvent['seal'+i+'X'])>15||Math.abs(P.y-bossEvent['seal'+i+'Y'])>6)continue;
+    if(coopGuest())return coopAction('encounter');
+    bossEvent.seals|=1<<i;spawnLooseSeeds(P.x,P.y-12,2);chime([262,392,523],.12,.06);
+    nudgeGardenHint(bossEvent.seals===7?'CROWN UNSEALED · RETURN TO THE ALTAR':'BEACON LIT · FIND THE OTHER SUMMITS');return true;
+  }
+  return false;
+}
 function interactEncounter(){
   if(!P.grounded||P.wet||runIsPaused())return false;
+  if(interactFinaleBeacon())return true;
   if(interactBossEvent())return true;
   if(interactExpedition())return true;
   var e=encounterAt(P.x);if(!e)return false;
@@ -398,7 +419,7 @@ function enemyKind(){
   return choices[(Math.random()*choices.length)|0];
 }
 function damagePest(k,amount,x,build){
-  if(coopGuest()||!k||k.hp<=0)return false;
+  if(coopGuest()||!k||k.hp<=0||k.transitionT>0)return false;
   var frontal=k.kind===5&&!k.flee&&(x-k.x)*k.face>=-1;
   var factor=frontal?.25:1;
   if(k.guardianStage&&k.exposed<=0){
@@ -407,7 +428,7 @@ function damagePest(k,amount,x,build){
     if(k.pattern==='echo'&&k.windup>0){openGuardian(k,3.4);gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-k.x)<110){p.health=clamp01(p.health+.05);p.moisture=clamp01(p.moisture+.1);}});}
   }
   if(k.boss&&k.exposed>0)factor*=2;
-  k.hp-=amount*factor*runPlayerPower()/runDurabilityScale(k);k.flash=1;
+  k.hp-=amount*factor*runPlayerPower()/runDurabilityScale(k);crownDamageGate(k);k.flash=1;
   // Moon Moth's restorative channel is a deliberate interrupt opportunity.
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;if(k.guardianStage&&!k.tideBoss)openGuardian(k,3.4);else{k.windup=0;k.exposed=k.guardianStage?2.2:1.4;k.cool=k.exposed+.8;}}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
@@ -631,14 +652,19 @@ function makeHollowCrown(){
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;
   return k;
 }
+// Snapshot a bounded response to the build at summoning. No mid-fight rubber
+// banding; upgrades still help, and the two-second bomb opening stays intact.
+function guardianPowerScale(stage){
+  return 1+Math.min(2.4,Math.max(0,runPlayerPower()-1)*.12)*(Math.min(20,stage)/20);
+}
 function makeStageBoss(stage){
   var w=stage||worldLevel(),spec=gardenBossSpec(w),id=spec.id;
-  if(w===RUN_STAGES){var crown=makeHollowCrown();crown.guardianStage=w;crown.bossName=spec.name;return crown;}
+  if(w===RUN_STAGES){var crown=makeHollowCrown();crown.guardianStage=w;crown.bossName=spec.name;crown.hp=crown.maxHp=crown.maxHp*guardianPowerScale(w);return crown;}
   var k=makeKrek(w%2?1:-1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x,offset=id==='mossback'?8:13;
   safeEnemyPosition(k,x+(w%2?1:-1)*90,surfaceY(x)-offset);
   k.boss=true;k.finalBoss=false;k.bossId=id;k.queen=false;k.raid=true;k.kind=7;
   k.guardianStage=w;k.bossName=spec.name;k.pattern=spec.pattern;k.remix=spec.remix;
-  k.hp=k.maxHp=(8+w*2.3)*(1+Math.max(0,coopSize()-1)*.55);
+  k.hp=k.maxHp=(8+w*2.3)*(1+Math.max(0,coopSize()-1)*.8)*guardianPowerScale(w);
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;k.attackT=0;k.attackDuration=.35;
   resetGuardianNodes(k);
   return k;
@@ -886,7 +912,20 @@ function updateStageBoss(k,dt){
     }
   }
 }
+// Three separately gated final stages. A powerful hit cannot skip a stage.
+function crownDamageGate(k){
+  if(k.guardianStage!==20)return;
+  var stage=k.crownStage||1,floor=k.maxHp*(3-stage)/3;
+  if(stage<3&&k.hp<=floor){
+    if(bossEvent&&bossEvent.stage===20)(bossEvent.transitions||(bossEvent.transitions=[])).push(Math.round((runElapsed-bossEvent.startedAt)*10)/10);
+    k.hp=floor;k.crownStage=stage+1;k.transitionT=2.4;k.windup=k.attackT=k.exposed=k.settleT=0;k.cool=2.4;k.burn=0;
+    runHazards=runHazards.filter(function(h){return h.guardianStage!==20;});
+    nudgeGardenHint(stage===1?'STAGE II · THE CROWN WAKES':'FINAL STAGE · BREAK THE HOLLOW CROWN');
+  }
+}
 function updateHollowCrown(k,dt){
+  if(k.transitionT>0){k.transitionT=Math.max(0,k.transitionT-dt);k.vx=k.vy=0;if(k.transitionT>0)return;}
+
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
   if(phase>k.phase){
     k.phase=phase;
@@ -934,13 +973,23 @@ function drawRunItem(type,x,y,bright){
   }else {ctx.fillRect(x-2,y-2,5,4);ctx.fillRect(x-1,y-4,2,2);ctx.fillStyle='#f1d587';ctx.fillRect(x,y-1,1,2);}
 }
 function drawRunExploration(t){
+  if(worldLevel()===20&&bossEvent&&bossEvent.status==='ready'){
+    for(var i=0;i<3;i++){var bx=Math.round(bossEvent['seal'+i+'X']-camX),by=Math.round(bossEvent['seal'+i+'Y']-camY),lit=!!(bossEvent.seals&(1<<i));
+      drawDistrictProp('relay',lit,bx,by);
+      if(!lit&&Math.abs(P.x-bossEvent['seal'+i+'X'])<65&&Math.abs(P.y-bossEvent['seal'+i+'Y'])<35)expeditionText('TEND · CROWN BEACON '+(i+1),Math.max(64,Math.min(IW-64,bx)),by-38);
+    }
+  }
   drawBossEvent(t);
   drawGuardianNodes(t);
   drawExpedition(t);
   runEncounters.forEach(function(e){
     var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);if(x<-20||x>IW+20)return;
+    ctx.save();if(e.locked||e.done)ctx.globalAlpha=.55;
+    var shrineArt=drawDistrictProp({nest:'watch',rain:'relay',cache:'cache',relay:'relay',loom:'bells',echo:'altar'}[e.type]||'altar',e.active&&!e.done,x,y);ctx.restore();
+    if(!shrineArt){
     ctx.fillStyle=e.locked?'#202827':'#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
     ctx.fillStyle=e.locked?'#344039':e.done?'#465346':'#657668';ctx.fillRect(x-7,y-16,14,2);ctx.fillRect(x-6,y-13,2,7);ctx.fillRect(x+4,y-13,2,7);
+    }
     if(!e.done&&!e.locked)drawRunItem(encounterReward(e),x,y-9,false);
     if(e.active){
       ctx.fillStyle='#d1c67f';ctx.fillRect(x-9,y-20,Math.round(18*e.progress/e.duration),1);

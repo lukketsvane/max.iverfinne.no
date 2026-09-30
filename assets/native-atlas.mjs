@@ -6,8 +6,21 @@ export async function loadAtlas(url) {
   const manifest = await response.json();
   const entries = await Promise.all(Object.entries(manifest.sheets).map(async ([key, sheet]) => {
     const image = new Image();
+    const loaded = new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error(`Image request failed: ${sheet.image}`));
+    });
+    // decode() and the load event can fail independently; keep either path
+    // handled while awaiting the other.
+    loaded.catch(() => {});
     image.src = new URL(sheet.image, manifestURL).href;
-    await image.decode();
+    // Some mobile decoders reject decode() even though the PNG loaded.
+    try { if (typeof image.decode === 'function') await image.decode(); else await loaded; }
+    catch (error) {
+      if (image.complete === false) await loaded;
+      else if (!(image.complete && image.naturalWidth > 0)) throw error;
+    }
+    image.onload = image.onerror = null;
     return [key, image];
   }));
   return { manifest, images: Object.fromEntries(entries) };

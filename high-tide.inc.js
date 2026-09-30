@@ -2,7 +2,7 @@
    guardians. The host owns every timer, pickup, boss and care outcome. */
 var HIGH_TIDE={height:1370,startHeight:24,reach:36,period:40,warning:5,surge:5,growth:8};
 var HIGH_TIDE_GATES=[312,572,848,1128,1370];
-var HIGH_TIDE_ZONES=['VERKSTADHAGEN','VASSARKADEN','VINTERHAGEN','MAANEARKIVET','KLOKKEHAGEN'];
+var HIGH_TIDE_ZONES=['WORKSHOP GARDEN','WATER ARCADE','WINTER GARDEN','MOON ARCHIVE','BELL GARDEN'];
 var HIGH_TIDE_BOON_RAW=[[108,1380],[552,1268],[436,1046],[522,1008],[38,812],[432,662],[134,514],[344,468],[230,286],[568,174]];
 var HIGH_TIDE_DEW_RAW=[[267,1494],[390,1424],[342,1128],[222,922],[400,870],[118,606],[204,564],[206,386],[518,360]];
 var tideLayoutKey='',tideCue='',tideRouteCache=null;
@@ -95,7 +95,7 @@ function highTideBossDefeated(k){
   s.waterY=Math.min(s.base+70,s.waterY+90);runHazards=[];floatKrek=floatKrek.filter(function(e){return !e.tide;});
   var p=highTidePlant();if(p){p.health=clamp01(p.health+.22);p.moisture=clamp01(p.moisture+.25);p.pulse=2;}
   seedActors().forEach(function(a){if(a.v.hp>0)a.v.hp=Math.min(100,a.v.hp+25);});
-  grantRogueLevel();showRound(s.bosses===5?'KRONA ER OPEN':'HAGEN ER FRI','',1800);puff(k.x,k.y,18,1);
+  grantRogueLevel();showRound(s.bosses===5?'THE CROWN IS OPEN':'GARDEN CLEARED','',1800);puff(k.x,k.y,18,1);
 }
 function highTideEnemyTarget(k){
   var living=seedActors().filter(function(a){return a.v.hp>0;});
@@ -286,7 +286,7 @@ function drawHighTideHud(){
   var s=rogueRun.survival,p=highTidePlant(),v=seedVital(),y=safeTopArt()+3;
   highTideText('HIGH TIDE  '+s.bosses+'/5',7,y);
   var cue=s.cycle+':'+s.phase;if(cue!==tideCue){if(s.phase==='warning')chime([220,277,330],.12,.045);if(s.phase==='surge')chime([165,220],.08,.035);tideCue=cue;}
-  var hint=!s.started?'STELL FOR AA PLANTE':v.hp<=0?'NEDE':s.phase==='warning'?'FLO KJEM':s.phase==='surge'?'FLO':p&&p.moisture<.2?'MORPLANTA TRENG VATN':s.bosses===5?'TIL KRONA':s.bossActive?'FORSVAR MORPLANTA':s.growthRush>0?'VEKSTSPURT':'';
+  var hint=!s.started?'TEND TO PLANT':v.hp<=0?'DOWNED':s.phase==='warning'?'TIDE INCOMING':s.phase==='surge'?'HIGH TIDE':p&&p.moisture<.2?'MOTHERPLANT NEEDS WATER':s.bosses===5?'REACH THE CROWN':s.bossActive?'DEFEND THE MOTHERPLANT':s.growthRush>0?'GROWTH SURGE':'';
   if(hint)highTideText(hint,7,y+10);
   if(p){var x=IW-30;ctx.fillStyle='#14221f';ctx.fillRect(x-1,y,25,8);ctx.fillStyle='#a5c77a';ctx.fillRect(x,y+1,Math.round(p.health*23),2);ctx.fillStyle='#79b8c8';ctx.fillRect(x,y+5,Math.round(p.moisture*23),2);}
   if(v.hp>0&&v.air<highTideProfile().breath-.05){var x=Math.round(P.x-camX)-9,py=Math.round(P.y-camY)-27;ctx.fillStyle='#152028';ctx.fillRect(x-1,py-1,20,3);ctx.fillStyle='#a8dce2';ctx.fillRect(x,py,Math.round(18*v.air/highTideProfile().breath),1);}

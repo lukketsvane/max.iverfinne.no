@@ -23,7 +23,7 @@ test('all twenty live encounters warn and expose the same guardian on both clien
  const pairs=[['mech','herbalist'],['runner','bulwark'],['polge','herbalist'],['sligo','mech']];
  for(let stage=1;stage<=20;stage++){
   const {clients,sync}=party(pairs[(stage-1)%pairs.length]),host=clients[0].game,guest=clients[1].game;
-  if(stage>1)host.enterLevel(stage);
+  if(stage>1)host.enterLevel(stage);if(stage===20)host.bossEvent.seals=7;
   // Isolated arena: a grown, watered plant and no ambient raid. All boss
   // timing, objectives and attacks then run through normal frame simulation.
   host.gardenPlots=[plot({id:1,x:host.bossEvent.courtX-35,moisture:1,growth:.8})];

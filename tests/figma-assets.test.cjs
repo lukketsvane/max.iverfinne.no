@@ -87,8 +87,8 @@ const found = () => cached ??= runtime();
 test('figma manifest names the file, the source-of-truth section, the rules and one entry per production asset', () => {
   assert.equal(manifest.fileKey, 'TC0PHGMTCMR6im4hb3CSbF');
   assert.equal(manifest.url, 'https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF');
-  assert.deepEqual(manifest.pages, { production: '10:2', draft: '0:1' });
-  assert.equal(manifest.sourceOfTruth.section, '52:2');
+  assert.deepEqual(manifest.pages, { production: '10:2', draft: '162:2' });
+  assert.equal(manifest.sourceOfTruth.section, '160:2');
   const groups = manifest.sourceOfTruth.groups.map(g => g.group);
   assert.ok(manifest.rules.pixelArt.lines.includes('Use solid pixels or binary transparency'));
   assert.ok(manifest.rules.exportCheck.lines.length > 0 && manifest.rules.masterGrids.length > 0);
@@ -150,7 +150,7 @@ test('inline data-URI images in runtime code are the pinned ones that predate Fi
   const { inline } = await found(), sheets = new Set(manifest.production.map(e => e.sha1));
   assert.ok(inline.length > 0);
   assert.deepEqual(inline.filter(i => i.type !== 'png' || !(i.sha1 in INLINE || sheets.has(i.sha1))), [],
-    'new or changed inline image: add it to Figma section 52:2 as a file under assets/ (docs/figma.md)');
+    'new or changed inline image: add it to Figma frame 160:2 as a file under assets/ (docs/figma.md)');
 });
 
 test('production PNGs follow the native pixel rules: binary alpha, clean transparency, pack palette, 1× scale', async () => {

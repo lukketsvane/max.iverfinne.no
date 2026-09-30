@@ -45,6 +45,7 @@ const sources = ops => ops.filter(o => o.src).map(o => o.src);
 test("Sligo's two plants are pieces cut to the native pixel rules, one palette of at most 16 colours each", async () => {
   const { artProblems, decode } = await import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
   const pending = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-pending.json'), 'utf8')).files.map(e => e.path);
+  const production = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-manifest.json'), 'utf8')).production.map(e => e.path);
   assert.deepEqual(families.map(f => f.dir), ['sligo-cord', 'sligo-cap']);
   for (const fam of families) {
     assert.ok(fam.s.length >= 4 && fam.f.length >= 2 && fam.b.length >= 3 && fam.r.length >= 2, fam.dir + ' has slices, heads, blooms and roots');
@@ -54,7 +55,7 @@ test("Sligo's two plants are pieces cut to the native pixel rules, one palette o
       assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [r[2], r[3]], file + ' matches its PA entry');
       assert.deepEqual(artProblems(file, png), [], file);
       assert.ok(r[2] <= 35 && r[3] <= 25, file + ' is plant sized');
-      assert.ok(pending.includes(file), file + ' is pinned until it is in Figma');
+      assert.ok(pending.includes(file) || production.includes(file), file + ' has a pending pin or verified Figma source');
       const { rgba } = decode(png);
       for (let i = 0; i < rgba.length; i += 4) if (rgba[i + 3]) colours.add(rgba.readUIntBE(i, 3));
     }

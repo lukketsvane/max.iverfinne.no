@@ -10,10 +10,10 @@ test('XP earned across several levels offers every earned upgrade', () => {
     game.chooseRoguePerk(game.rogueRun.choice[0].id);
     choices++;
   }
-  assert.equal(choices, 6);
-  assert.equal(game.rogueRun.level, 7);
-  assert.equal(game.rogueRun.xp, 22, 'the gentler run curve retains every surplus point');
-  assert.equal(Object.values(game.rogueRun.perks).reduce((a, b) => a + b, 0), 7, 'six earned boons plus Mech’s starting rover');
+  assert.equal(choices, 5);
+  assert.equal(game.rogueRun.level, 6);
+  assert.equal(game.rogueRun.xp, 19, 'the uncapped run curve retains every surplus point');
+  assert.equal(Object.values(game.rogueRun.perks).reduce((a, b) => a + b, 0), 6, 'five earned boons plus Mech’s starting rover');
 });
 
 test('only an offered mutation can be selected', () => {
