@@ -39,16 +39,28 @@
       "sha256": "422d683073c150fcfa70b53552759535dd52aa94fc9995d2236b3fd3b944ec36"
     },
     "movement": {
+      "path": "docs/asset-review/characters-v2/source/rattus-movement-v3.png",
+      "sha256": "122abc08f64e5e887a439a25fd19bd7431176756838b89d31f0e545dfd46d75c"
+    },
+    "combat": {
+      "path": "docs/asset-review/characters-v2/source/rattus-combat-v3.png",
+      "sha256": "5b37d8d2ed6f746cfa45eda17582d631ab3b63d2814249b8985da8b38cb0bfcd"
+    },
+    "prompts": {
+      "path": "docs/asset-review/characters-v2/source/rattus-wrestler-v3-prompts.json",
+      "sha256": "bc7df140bf7ba89f36d564d976bf82b8c82fab42b1ca8cabfe9edf7c97d6d0ad"
+    },
+    "movement-v2": {
       "path": "docs/asset-review/characters-v2/source/rattus-movement-v2.png",
       "sha256": "993142d1c0ab29c5ba264db2c6d781676e0a8545f64bdd6e198ce460acec12d0"
     },
-    "combat": {
+    "combat-v2": {
       "path": "docs/asset-review/characters-v2/source/rattus-combat-v2.png",
       "sha256": "004d814581c417c637bfa8d1e8d28dcfec8195f16b4154db791d42ea67b12f54"
     },
-    "prompts": {
+    "prompts-v2": {
       "path": "docs/asset-review/characters-v2/source/rattus-wrestler-v2-prompts.json",
-      "sha256": "a1b29b90a35fe8291ba7f4613f496998cce7d386902626b43e337adae402a275"
+      "sha256": "e4381938df340e4000b2488f64270b69bcc45a9032a6668f76fb9bf670f45111"
     }
   }
 }

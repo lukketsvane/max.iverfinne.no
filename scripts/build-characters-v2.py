@@ -14,8 +14,8 @@ SPECS = {
  'rattle-norvegicus': {
   'skin': 'moss', 'class': 'runner', 'scale': .175, 'keepParts': True,
   'palette': ['0b1017','101932','253459','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','b63330','247bad','52cde5'],
-  'sources': {'movement': 'rattus-movement-v2.png', 'combat': 'rattus-combat-v2.png'},
-  'prompts': 'rattus-wrestler-v2-prompts.json',
+  'sources': {'movement': 'rattus-movement-v3.png', 'combat': 'rattus-combat-v3.png'},
+  'prompts': 'rattus-wrestler-v3-prompts.json',
   'sourceRowCenters': {
    'movement': [90,264,437,609,775,933,1084,1206],
    'combat': [90,265,434,610,777,925,1077,1192],
@@ -60,7 +60,7 @@ SPECS = {
 def save_json(path, data):
  path.parent.mkdir(parents=True, exist_ok=True)
  text=json.dumps(data, indent=2) + '\n'
- if not path.exists() or path.read_text()!=text:path.write_text(text)
+ if not path.exists() or path.read_text()!=text:path.write_bytes(text.encode('utf-8'))
 
 def components(mask):
  """Eight-connected pixel groups; source matte and detached glow are rejected."""
