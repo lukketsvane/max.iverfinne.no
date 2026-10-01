@@ -1,0 +1,368 @@
+{
+  "schema": "max-art-source-review/v1",
+  "character": "Rattus norvegicus",
+  "design": "Grey-furred adult rat, orange hair, pink tail, magenta-and-gold Ring gear; no hat, cape or weapons.",
+  "requestedSheets": 5,
+  "runtimeIntegrated": true,
+  "sheets": [
+    {
+      "id": "01-grounded-thigh-strikes",
+      "image": "sheets/01-grounded-thigh-strikes.png",
+      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-c652e041-df1b-4c00-9c46-11570245193a.png",
+      "sha256": "090347ccd98b4e343d242095bfc874b568e21b01ac07e99fd8fefd80a614a22b",
+      "bytes": 2008894,
+      "dimensions": [
+        1262,
+        1246
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "visibleCompleteFigures": 64,
+      "wholeBodyComponentsAtAlpha240": 64,
+      "framesByVisualRow": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "sourceRowCentersAtAlpha240": [
+        89,
+        244,
+        400,
+        561,
+        706,
+        883,
+        1053,
+        1196
+      ],
+      "alphaLevels": 256,
+      "transparentPixels": 821910,
+      "opaquePixels": 2484,
+      "partialAlphaPixels": 748058,
+      "foregroundBoundsAtAlpha240": [
+        19,
+        18,
+        1239,
+        1236
+      ],
+      "outerEdgeForegroundAtAlpha240": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visualInspection": "All 64 grey rat figures inspected: no hat, cape or weapons; orange hair, pink tail and magenta/gold ring gear.",
+      "status": "accepted-visual-8x8-source",
+      "limitations": [
+        "Generated source dimensions do not form integer cells.",
+        "Source alpha is graded; complete bodies require native extraction."
+      ],
+      "observedCoverage": [
+        "Guard/idle",
+        "Knee lifts, front/high kicks",
+        "Low seated sweeps",
+        "Horizontal dropkicks",
+        "Split landings and planting"
+      ],
+      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v4-01.png"
+    },
+    {
+      "id": "02-aerial-saltos",
+      "image": "sheets/02-aerial-saltos.png",
+      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-3a49dce8-e854-4aea-be35-a977ab8bc32b.png",
+      "sha256": "f8b556342e9651d3e4851b47c1b3479496c7decc13e45b7ca811ac15470186b9",
+      "bytes": 1970827,
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "visibleCompleteFigures": 64,
+      "wholeBodyComponentsAtAlpha240": 64,
+      "framesByVisualRow": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "sourceRowCentersAtAlpha240": [
+        100,
+        263,
+        428,
+        585,
+        743,
+        897,
+        1051,
+        1180
+      ],
+      "alphaLevels": 256,
+      "transparentPixels": 833475,
+      "opaquePixels": 1089,
+      "partialAlphaPixels": 737952,
+      "foregroundBoundsAtAlpha240": [
+        29,
+        33,
+        1227,
+        1240
+      ],
+      "outerEdgeForegroundAtAlpha240": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visualInspection": "All 64 grey rat figures inspected: no hat, cape or weapons; orange hair, pink tail and magenta/gold ring gear.",
+      "status": "accepted-visual-8x8-source",
+      "limitations": [
+        "Generated source dimensions do not form integer cells.",
+        "Source alpha is graded; complete bodies require native extraction."
+      ],
+      "observedCoverage": [
+        "Forward/backward aerial rotations",
+        "Hand-supported cartwheels",
+        "Jumping knees",
+        "Aerial leg attacks and recovery"
+      ],
+      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v4-02.png"
+    },
+    {
+      "id": "03-sweeps-and-split-planting",
+      "image": "sheets/03-sweeps-and-split-planting.png",
+      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-db02bda0-73f5-4e67-b08a-1f5565bd2c78.png",
+      "sha256": "f6c09ce2c9f17bc07f188178f1eb0cb25f5819f8d91a44ce1bcf2cd6b594505f",
+      "bytes": 1808350,
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "visibleCompleteFigures": 64,
+      "wholeBodyComponentsAtAlpha240": 64,
+      "framesByVisualRow": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "sourceRowCentersAtAlpha240": [
+        118,
+        275,
+        439,
+        598,
+        751,
+        907,
+        1057,
+        1192
+      ],
+      "alphaLevels": 256,
+      "transparentPixels": 888181,
+      "opaquePixels": 1474,
+      "partialAlphaPixels": 682861,
+      "foregroundBoundsAtAlpha240": [
+        34,
+        54,
+        1218,
+        1237
+      ],
+      "outerEdgeForegroundAtAlpha240": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visualInspection": "All 64 grey rat figures inspected: no hat, cape or weapons; orange hair, pink tail and magenta/gold ring gear.",
+      "status": "accepted-visual-8x8-source",
+      "limitations": [
+        "Generated source dimensions do not form integer cells.",
+        "Source alpha is graded; complete bodies require native extraction."
+      ],
+      "observedCoverage": [
+        "Aerial rotations/cartwheels",
+        "Low hand-supported sweep",
+        "Full split planting and recovery"
+      ],
+      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v4-03.png"
+    },
+    {
+      "id": "04-high-kicks-and-knee-combos",
+      "image": "sheets/04-high-kicks-and-knee-combos.png",
+      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-3f314c73-e3f8-4b2c-8432-c7dca0de3589.png",
+      "sha256": "b382cec77cbb897da55b8d61eb0696704b092ae10a7ba9e688d52136b1f62d47",
+      "bytes": 2099472,
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "visibleCompleteFigures": 64,
+      "wholeBodyComponentsAtAlpha240": 64,
+      "framesByVisualRow": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "sourceRowCentersAtAlpha240": [
+        101,
+        257,
+        415,
+        574,
+        730,
+        878,
+        1025,
+        1176
+      ],
+      "alphaLevels": 256,
+      "transparentPixels": 816020,
+      "opaquePixels": 2231,
+      "partialAlphaPixels": 754265,
+      "foregroundBoundsAtAlpha240": [
+        43,
+        32,
+        1205,
+        1234
+      ],
+      "outerEdgeForegroundAtAlpha240": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visualInspection": "All 64 grey rat figures inspected: no hat, cape or weapons; orange hair, pink tail and magenta/gold ring gear.",
+      "status": "accepted-visual-8x8-source",
+      "limitations": [
+        "Generated source dimensions do not form integer cells.",
+        "Source alpha is graded; complete bodies require native extraction."
+      ],
+      "observedCoverage": [
+        "High kicks",
+        "Jumping knees",
+        "Low sweeps",
+        "Horizontal kicks and full split recovery"
+      ],
+      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v4-04.png"
+    },
+    {
+      "id": "05-movement-and-ring-animation-cycles",
+      "image": "sheets/05-movement-and-ring-animation-cycles.png",
+      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-6b2c4622-49ef-49ce-ab1b-4d5b98ff2303.png",
+      "sha256": "0a712911ddef2b43f4135f2326c88c45e4332a77fe344509d095b460631d41f8",
+      "bytes": 1718486,
+      "dimensions": [
+        1265,
+        1244
+      ],
+      "grid": [
+        8,
+        8
+      ],
+      "visibleCompleteFigures": 64,
+      "wholeBodyComponentsAtAlpha240": 64,
+      "framesByVisualRow": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "sourceRowCentersAtAlpha240": [
+        102,
+        254,
+        417,
+        600,
+        747,
+        885,
+        1029,
+        1148
+      ],
+      "alphaLevels": 256,
+      "transparentPixels": 946297,
+      "opaquePixels": 3532,
+      "partialAlphaPixels": 623831,
+      "foregroundBoundsAtAlpha240": [
+        38,
+        44,
+        1228,
+        1204
+      ],
+      "outerEdgeForegroundAtAlpha240": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "visualInspection": "All 64 grey rat figures inspected: no hat, cape or weapons; orange hair, pink tail and magenta/gold ring gear.",
+      "status": "accepted-visual-8x8-source",
+      "limitations": [
+        "Generated source dimensions do not form integer cells.",
+        "Source alpha is graded; complete bodies require native extraction."
+      ],
+      "observedCoverage": [
+        "Strut walk",
+        "Run",
+        "Hip check",
+        "Split stomp",
+        "Seated leg scissors",
+        "Salto",
+        "Prone floor recovery",
+        "Victory flex"
+      ],
+      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v4-05.png"
+    }
+  ],
+  "drafts": [],
+  "acceptedCount": 5,
+  "totalFrames": 320,
+  "runtimePack": "assets/characters-v2/rattle-norvegicus-pink",
+  "compatibilitySkin": "moss-pink",
+  "uniformNativeScale": 0.17,
+  "runtimeRegistration": {
+    "cell": [
+      32,
+      32
+    ],
+    "anchor": [
+      16,
+      31
+    ],
+    "clips": 25,
+    "paletteColors": 16,
+    "alpha": "binary",
+    "transparentRgb": [
+      0,
+      0,
+      0
+    ]
+  },
+  "sourceCaveat": "Unchanged image_gen originals have graded alpha and noninteger visual grids. The deterministic compiler extracts complete figures and packs 128 selected native poses; source images do not ship in the game build."
+}

@@ -158,7 +158,11 @@ test('cosmetic loadouts remain class-scoped, persist and participate in session 
   assert.deepEqual(validLoadout(pink), pink);
   assert.equal(writeLoadout(storage, pink), true); assert.deepEqual(readLoadout(storage), pink);
   assert.deepEqual(validLoadout({ ...pink, classId: 'mech' }), { classId: 'mech', skinId: 'tide', difficulty: 'hard' });
-  assert.deepEqual(validLoadout({ ...pink, skinId: 'forged' }), { ...pink, skinId: 'moss' });
+  assert.deepEqual(validLoadout({ ...pink, skinId: 'forged' }), pink);
+  assert.deepEqual(validLoadout({ classId: 'runner', difficulty: 'hard' }), pink);
+  assert.deepEqual(validLoadout({ classId: 'moss', difficulty: 'hard' }), pink);
+  const black = { ...pink, skinId: 'moss' };
+  assert.equal(writeLoadout(storage, black), true); assert.deepEqual(readLoadout(storage), black);
   assert.equal(validLoadout({ ...pink, classId: 'sligo' }), null);
   assert.equal(sameLoadout(pink, { ...pink }), true); assert.equal(sameLoadout(pink, { ...pink, skinId: 'moss' }), false);
 });
@@ -170,16 +174,16 @@ test('portrait double-click cycles once, single clicks preserve choice and other
     const portrait = m.w.document.querySelector('[data-class-id="runner"]');
     for (const detail of [1, 2]) portrait.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail, clientX: 80, clientY: 90 }));
     portrait.dispatchEvent(new m.w.MouseEvent('dblclick', { bubbles: true, cancelable: true, detail: 2 }));
-    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'runner', skinId: 'moss-pink', difficulty: 'medium' });
-    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
-    assert.match(portrait.querySelector('img').src, /rattle-norvegicus-pink\/main\.png$/);
-    assert.match(m.w.document.querySelector('.max-outfit-hint').textContent, /Pink & gold/);
+    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'runner', skinId: 'moss', difficulty: 'medium' });
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus\/main\.png$/);
+    assert.match(portrait.querySelector('img').src, /rattle-norvegicus\/main\.png$/);
+    assert.match(m.w.document.querySelector('.max-outfit-hint').textContent, /Black & gold/);
     m.click('Rattus norvegicus'); m.click('Mycel'); m.click('Rattus norvegicus');
-    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss');
     assert.equal(m.w.document.querySelector('[data-skin-id]'), null);
     assert.equal(m.classIds().length, 5);
     m.click('Back'); m.click('Play');
-    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus\/main\.png$/);
   } finally { m.dom.window.close(); }
 });
 
@@ -214,7 +218,7 @@ test('portrait gestures reject separated taps and cannot take an occupied charac
     for (const [time, x] of [[0, 20], [400, 20], [410, 80]]) {
       now = time; portrait.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail: 1, clientX: x, clientY: 20 }));
     }
-    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss');
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
   } finally { m.dom.window.close(); }
   const occupied = await menu(undefined, { sharedStatus: { active: true, players: 1, taken: ['runner'], difficulty: 'hard', mine: null } });
   try {
@@ -248,11 +252,13 @@ test('Play silently enters the one shared running garden and carries character p
     const name = m.w.document.querySelector('.max-character-name');
     assert.equal(name.textContent, 'Rattus norvegicus');
     assert.equal(name.dataset.long, 'true');
-    assert.match(m.w.document.querySelector('.max-character-stage img').src, /characters-v2\/rattle-norvegicus\/main\.png$/);
-    assert.match(m.w.document.querySelector('.max-class-detail').textContent, /rat-masked pro wrestler/);
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /characters-v2\/rattle-norvegicus-pink\/main\.png$/);
+    assert.match(m.w.document.querySelector('.max-outfit-hint').textContent, /Ring gear/);
+    assert.match(m.w.document.querySelector('[data-class-id="runner"]').getAttribute('aria-description'), /^Ring gear\./);
+    assert.match(m.w.document.querySelector('.max-class-detail').textContent, /rat pro wrestler/);
     m.click('easy difficulty'); m.click('Play'); await m.settle();
     assert.equal(m.beginCount,1);assert.equal(m.active,true);
-    assert.deepEqual(JSON.parse(JSON.stringify(m.begun.selection)), { classId:'runner', skinId:'moss', difficulty:'easy' });
+    assert.deepEqual(JSON.parse(JSON.stringify(m.begun.selection)), { classId:'runner', skinId:'moss-pink', difficulty:'easy' });
     assert.equal(m.begun.host,true);assert.equal(m.begun.room.state,'playing');
     assert.equal(m.w.document.querySelector('.max-menu').hidden,true);
   } finally { m.dom.window.close(); }

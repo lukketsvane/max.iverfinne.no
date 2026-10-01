@@ -18,7 +18,7 @@ test('the complete result scene draws a native saved-class sprite and restores l
    assert.doesNotThrow(()=>g.drawResultScene({width:150,height:324,getContext(){return context;}},null,{mode,classId}));
    assert.deepEqual([g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)],before);
   }
-  for(const [classId,skinId,skin] of [['runner','moss-pink','moss-pink'],['runner','missing-costume','moss'],['mech','moss-pink','tide']]){
+  for(const [classId,skinId,skin] of [['runner','moss-pink','moss-pink'],['runner','moss','moss'],['runner','missing-costume','moss-pink'],['mech','moss-pink','tide']]){
    expected.push([skin,'main']);
    g.drawResultScene({width:150,height:324,getContext(){return context;}},null,{mode,classId,skinId});
    assert.deepEqual([g.ctx,g.IW,g.IH,g.ANCHOR,g.camX,g.camY,JSON.stringify(g.P)],before);

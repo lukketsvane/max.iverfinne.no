@@ -1,0 +1,60 @@
+{
+  "tool": "built-in image_gen",
+  "character": "Rattus norvegicus",
+  "variant": "Grey rat Ring gear",
+  "request": "Five 8x8 wrestling sheets. Adult female anthropomorphic grey rat, orange hair, pink tail, magenta/gold ring gear, muscular hips and thighs, no hat, cape or weapons. Combine native frames and make Ring gear the default.",
+  "transparent_background": true,
+  "sheets": [
+    {
+      "number": 1,
+      "name": "grounded-thigh-strikes",
+      "output": "exec-c652e041-df1b-4c00-9c46-11570245193a.png",
+      "refs": [
+        "exec-27d25fb0-2599-4511-a534-6b9bb4ae1049.png",
+        "28AAFD33-948C-4B37-8931-7554947CB7B1/1-Photo-1.jpg"
+      ],
+      "prompt": "Use image 1 as the exact animation-layout template and image 2 as the new character design reference. Replace every character in image 1 with an adult female anthropomorphic rat professional wrestler named Rattus norvegicus, closer to image 2: grey fur over her whole body, clearly rat-shaped long muzzle, rounded pink-inner ears, whiskers, long flexible hairless pink rat tail, vivid orange rope-like hair, powerful muscular hourglass physique, broader hips, fuller glutes and thick strong thighs. Give her bold glamorous magenta-and-gold wrestling gear: opaque magenta athletic bra, minimal high-cut opaque magenta competition briefs with gold edging, bare abdomen, magenta boots and round gold-edged magenta knee pads, gold wrist cuffs. Show a confident flamboyant professional wrestling attitude. Keep all 64 full-body animation figures from image 1 in the EXACT same eight rows and eight columns, preserving each pose and its position, all splits, crouches, knee strikes, kicks and recoveries. Crisp chunky videogame pixel art with dark outlines and flat limited-color shading, matching image 2. Bare head and uncovered shoulders; NO hat, NO cape, NO coat, NO weapons. Transparent background, separated cells with empty gutters and outer margins, no labels. Fully drawn boots, tail and limbs in every cell. This is a sports animation sheet."
+    },
+    {
+      "number": 2,
+      "name": "aerial-saltos",
+      "output": "exec-3a49dce8-e854-4aea-be35-a977ab8bc32b.png",
+      "refs": [
+        "exec-a1a98f5a-7abf-4b0b-8347-40dc10dbed5a.png",
+        "exec-c652e041-df1b-4c00-9c46-11570245193a.png"
+      ],
+      "prompt": "Edit image 1, the eight-by-eight aerial wrestling animation layout, so every pose uses EXACTLY the adult female anthropomorphic rat wrestler in image 2: grey fur on the entire body, long rat muzzle, pink inner ears, whiskers, flexible long pink tail, vivid orange rope-like hair, muscular hourglass figure with broad hips, full glutes and thick powerful thighs. Match her magenta-and-gold opaque athletic bra, high-cut opaque magenta competition briefs with gold trim, gold cuffs, magenta boots and gold-edged magenta knee pads. Keep the exposed midriff, bare head, bare shoulders, no cape and no hat. Preserve all 64 full-body sprites from image 1 in EXACTLY eight rows and eight columns and the same pose order, with the original aerial leaps, forward saltos, inverted flips, cartwheels, kicks, splits and landings. Crisp chunky pixel art, dark outlines, flat limited-color shading like image 2. Transparent background with wide empty gutters; scale each figure slightly smaller if necessary so boots and tails never touch neighboring cells or the canvas edges. No weapons, clothing hanging from shoulders, headwear, props or text."
+    },
+    {
+      "number": 3,
+      "name": "sweeps-and-split-planting",
+      "output": "exec-db02bda0-73f5-4e67-b08a-1f5565bd2c78.png",
+      "refs": [
+        "exec-0fcd4a9f-294b-42d9-a341-d9ebf497a12a.png",
+        "exec-c652e041-df1b-4c00-9c46-11570245193a.png"
+      ],
+      "prompt": "Edit image 1, the sweeps and split-planting videogame animation layout. Replace her design with exactly the fictional adult female anthropomorphic rat professional wrestler from image 2: whole body grey fur, long rat muzzle, pink-inner round ears, whiskers, long hairless pink tail, orange rope-like hair, strong muscular hourglass build with broad hips, full glutes, thick thighs. Match the magenta opaque athletic bra, high-cut magenta opaque wrestling briefs edged in gold, bare abdomen, gold wrist cuffs, magenta boots and round gold-edged magenta knee pads. Use confident glamorous wrestling stage presence and image 2's chunky pixel-art style with dark outlines and limited-color shading. Keep ALL 64 full-body sprites in exactly EIGHT rows and EIGHT columns, retain image 1's exact pose order and all leg sweeps, handstands, dropkicks, low split planting and recovery poses. No cape, no hat, no coat, no weapons, no props or lettering. Transparent background, generous empty cell gutters and outside margins; reduce individual sprite sizes slightly if needed so every limb, tail and boot stays complete and no adjacent poses touch. Change only character design, keep the entire 8x8 animation layout."
+    },
+    {
+      "number": 4,
+      "name": "high-kicks-and-knee-combos",
+      "output": "exec-3f314c73-e3f8-4b2c-8432-c7dca0de3589.png",
+      "refs": [
+        "exec-ea2cfbbf-7c9d-4b72-99c5-cd0097d1c31e.png",
+        "exec-c652e041-df1b-4c00-9c46-11570245193a.png"
+      ],
+      "prompt": "Edit image 1, the high kicks and knee-combination videogame animation sheet, to use the EXACT fictional adult female rat professional wrestler from image 2. Whole body covered in grey rat fur, long pointed rat muzzle, rounded pink-inner ears, whiskers, long flexible hairless pink rat tail, vivid orange rope-like hair, muscular hourglass figure with broader hips, fuller glutes and thick strong thighs. Costume: opaque magenta athletic bra and high-cut opaque magenta wrestling briefs with gold edging, bare abdomen, gold wrist cuffs, gold-edged magenta round knee pads and magenta wrestling boots. Same crisp chunky pixel style, dark outlines and limited flat-color shading as image 2. Preserve ALL 64 original full-body poses from image 1 in EXACTLY eight rows and eight columns with identical pose order: standing guard, knee raises, high kicks, knee attacks, acrobatics, splits and landings. No hat, cape, coat, weapons, props or lettering. Transparent background; generous completely empty gutters around each sprite, outer margins and complete tails, limbs and boots. If needed make each sprite slightly smaller to avoid any overlap. Keep the complete 8x8 sports animation layout."
+    },
+    {
+      "number": 5,
+      "name": "walk-run-scissors-and-recovery",
+      "output": "exec-6b2c4622-49ef-49ce-ab1b-4d5b98ff2303.png",
+      "refs": [
+        "exec-ca7efae9-0d89-4d67-94a1-60c6586dc2e2.png"
+      ],
+      "prompt": "Create ONE new videogame sprite sheet featuring exactly the fictional adult female anthropomorphic rat professional wrestler Rattus norvegicus shown in the reference. Use the same grey fur over her entire body, long rat-shaped muzzle, round pink-inner ears, whiskers, long flexible hairless pink rat tail, vivid orange rope-like hair, broad muscular hips, very full strong glutes and thick powerful thighs. Keep her glamorous magenta-and-gold ring costume: opaque magenta athletic bra, high-cut opaque magenta wrestling briefs with gold edges, bare midriff, gold wrist cuffs, magenta boots and round gold-edged magenta knee pads. Bare head, bare shoulders, NO HAT, NO CAPE, NO COAT, NO WEAPONS. Crisp chunky pixel art with strong dark outlines and flat limited-color shading. EXACTLY 64 separated full-body sprites arranged in EXACTLY EIGHT ROWS and EIGHT COLUMNS. Each row is one animation of EIGHT sequential frames, read left to right: ROW 1 a confident strutting WALK cycle facing right, alternating feet with hip movement; ROW 2 a fast RUN cycle right with alternating planted and airborne stride; ROW 3 a powerful side-on HIP-CHECK attack with rear three-quarter view, wind-up then thrust then recovery; ROW 4 a SPLIT STOMP, crouch then jump with legs spread, broad full split landing with boots pointing opposite directions, recover; ROW 5 floor LEG-SCISSOR wrestling move, seated then extend legs, cross and uncross boots then recover; ROW 6 a FORWARD SALTO, crouch, leap, tuck, completely upside down, rotate, land and stand; ROW 7 FLOOR RECOVERY, start prone, push up to hands, kneel, squat, stand; ROW 8 confident VICTORY TAUNT, back three-quarter pose then turn and flex both arms. Keep sports movement readable and body proportions consistent. No opponents or props, no labels or letters. Transparent background. All 64 poses must be fully drawn with no cropping and wide EMPTY gutters between cells. Fit each entire tail and boot inside its own cell. Equal cell sizes with generous outside margins.",
+      "repairPrompt": "Repair the layout of this videogame sprite sheet while preserving its character design and all other animation rows. There must be exactly EIGHT ROWS and exactly EIGHT SPRITES PER ROW, 64 total. The fourth row from the top currently has only seven figures and two split figures are too wide. Replace ONLY that fourth row with eight smaller, fully separate full-body split-stomp frames in eight equal cells: 1 standing guard, 2 deep crouch, 3 jumping up with knees bent, 4 airborne full horizontal split with arms lifted, 5 full split landing with hands touching floor and legs extended left and right, 6 same full split with hands raised slightly, 7 squat recovery, 8 standing guard. Keep both boots and the entire tail within each cell with generous EMPTY TRANSPARENT gutters; shrink these figures to fit, never crop them. Also ensure transparent gutters between all existing figures elsewhere, leaving their poses intact. Preserve the fictional adult female grey-furred rat professional wrestler, long muzzle, pink rat ears and tail, orange hair, muscular wide hips and thighs, magenta-and-gold opaque bra and high-cut competition briefs, magenta boots, gold-trim magenta knee pads and gold wristbands. No hat, cape, coat or weapons. Keep remaining seven rows in their exact order: walk, run, hipcheck, then repaired splitstomp, then legscissors, salto, prone recovery, victory. Crisp pixel-art sports animation sheet on transparent background, no text.",
+      "paddingPrompt": "Layout correction ONLY for this complete 64-pose videogame animation sheet. Retain every existing rat wrestler pose and its outfit. Repack the figures into a spacious regular EIGHT by EIGHT grid, keeping the same 64 poses in the exact same order. Each pose must be SMALLER, approximately 70 percent of its current size, and centered in its own equal-size cell. Leave a wide band of fully EMPTY TRANSPARENT pixels on every side of every pose and around the outside of the sheet. The widest split pose must fit entirely within ONE cell with visible transparent space on both sides of both boots. The prone figure at row SEVEN column ONE must be reconstructed with her complete left boot and tail visible, then placed away from the left canvas edge. Its whole body fits inside its own cell. Ensure NO two sprites touch anywhere, including tails, boots and orange hair. Preserve all eight rows and eight columns, 64 full figures, the grey rat fur, long muzzle, pink ears/tail, orange hair, muscular wide hips/thighs, magenta/gold opaque bra and high-cut competition briefs, knee pads and boots. No hat, no cape, no weapons. Preserve crisp pixel-art style. Transparent background, no lettering or objects. Prioritize generous empty gutters over large figure size."
+    }
+  ]
+}

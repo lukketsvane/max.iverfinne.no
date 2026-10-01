@@ -1,19 +1,45 @@
 # Original character artwork, 2026-09-27
 
-The owner's pink-and-gold costume attachment is preserved unchanged as
-`source/rattus-pink-gold-v1.png`, pinned by SHA-256 in `source/provenance.json`.
-It is a supplied opaque 1254×1254 PNG with seven visual rows of eight figures,
-not an image_gen output produced during this import. Runtime sibling pack
-`rattle-norvegicus-pink` has the runner cosmetic key `moss-pink`. Deterministic
-near-white matte removal, whole-figure extraction, one fixed 0.175
-nearest-neighbour reduction and a sixteen-colour pink/gold palette produce its
-native sheets. Two vertically joined walk/run drawings are excluded, and no
-missing pixels are drawn. Its right-facing movement comes from source rows
-1/3; wrestling borrows real horizontal and inverted poses from rows 4/5.
-Interaction row 2 columns 3–6 hold the complete source row 5 column 2 splits
-through sow hit frame 6. Column 7 matches the stand clip's starting crouch.
-Every frame retains the original foot registration and animation timing.
-The base outfit and Cairn/Mycel runtime files remain unchanged.
+On 2026-10-01 the owner selected five final grey-furred rat wrestling sheets
+for default Ring gear, `rattle-norvegicus-pink` / `moss-pink`. The adult rat
+has orange hair, a pink tail, fuller muscular hips/thighs, magenta/gold bra,
+briefs and boots, and no hat, cape or weapons. The immutable image_gen masters
+`source/rattus-ring-v4-01.png` through `-05.png` each contain 64 separable
+complete bodies in a visual 8×8 layout. Their exact final prompts are in
+`source/rattus-ring-v4-prompts.json`; `source/provenance.json` pins raw bytes
+by SHA-256, so the native build needs no separate candidate gallery.
+
+The compiler measures whole connected figures at alpha 240, rejecting cropped
+source edges. It uses one fixed 0.170 nearest-neighbour reduction across all
+five sources: the widest source body is 186 pixels, fitting 32 native pixels
+without individual resizing. The separate sixteen-colour palette preserves
+grey fur, orange hair and magenta/gold gear. Native alpha is binary, with zero
+RGB under transparency. Integer foot registration rejects oversized or
+top-clipped poses before packing. All base black/gold, Cairn and Mycel runtime
+PNG/atlas bytes remain unchanged.
+
+| Native row, zero-based | Final source mapping |
+| --- | --- |
+| Main 0, idle | Sheet 01 row 0 guards |
+| Main 1/2, walk/run | Sheet 05 rows 0/1 authored cycles |
+| Main 3, look/victory | Sheet 05 row 7 |
+| Main 4, jump/climb | Sheet 04 row 2 high knees |
+| Main 5, impact/recovery | Sheet 03 row 7 full splits; sheet 05 crouch/kneel/rise |
+| Main 6, salto | Sheet 02 row 0 forward rotation |
+| Main 7, stretch | Sheet 05 row 4 leg-scissors warm-up |
+| Interaction 2, planting | Sheet 01 guard/crouch/hands down; row 7 columns 1/2 hold splits at native columns 3–6 |
+| Interaction 5, dropkick/descent | Sheet 01 row 5 coil/leap/horizontal kick/recover; sheet 05 row 3 leap/wide splits/impact |
+| Interaction 7, sit/rest | Sheet 05 row 6 in reverse recovery order, ending at complete prone column 0 |
+
+Interaction row 2 column 7 matches stand’s starting crouch, so planting rises
+without dipping. Both complete magenta boots remain visible through sow hit
+frame 6. The 128 cells preserve anchor (16,31), 32×32 registration and all 25
+original frame sequences, fps, loops and hit/pour markers.
+`registration.json` records the exact selected master and source cell.
+Care borrows hand-supported reaches and raised-arm poses; no garden tools,
+lantern, sword or other weapon is drawn. Earlier owner-supplied and base
+masters stay preserved with their provenance. The optional candidate galleries
+remain outside the compiler’s required source inputs.
 
 `rattle-pink-sheets-1x.png` / `rattle-pink-sheets-4x.png` show both actual native
 sheets. `pink-planting-1x.png` / `pink-planting-4x.png` show the planting sequence
@@ -32,18 +58,18 @@ and pinned alongside the new sources.
 `source/provenance.json` pins those files and continues to retain the earlier
 rat-wizard, wrestling and retired Kestrel sources.
 
-Both supplied sheets have eight visual rows and eight poses per row, but their
+Both base-outfit sheets have eight visual rows and eight poses per row, but their
 1254-pixel dimensions do not form integer cells. The final row is clipped;
 some final-row figures also touch the figures above. The compiler selects whole
 connected figures by measured row centers and nominal columns, rejects joined
 figures taller than a source row, and never uses source row 7. Complete source
-poses from rows 0–6 retain their boots, hands, hat and wide legs without drawing
+poses from rows 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“6 retain their boots, hands, hat and wide legs without drawing
 missing pixels. One fixed 0.175 nearest-neighbour reduction applies to both
 masters, followed by the existing sixteen-colour palette and binary alpha.
 Pixels under transparency have RGB zero. A registration assertion rejects any
 pose taller than its original foot position, so no hat is cropped above a cell.
 
-All runtime drawings now use the revised black-and-gold athletic ring gear,
+Base-outfit runtime drawings use the revised black-and-gold athletic ring gear,
 short navy/gold cape, rat mask, auburn hair and green hat. Idle uses complete
 combat row 0 guard poses, omitting its jab columns. Walk uses movement row 1
 weight shifts; run uses movement row 4. All face right before the existing
@@ -55,13 +81,13 @@ Wrestling cells retain the runtime contract:
 
 | Runtime cells | Selected source cells, zero-based |
 | --- | --- |
-| Main row 6, salto | Combat row 5, columns 0–7 |
-| Interaction row 5, columns 0–3, dropkick | Combat row 4, columns 0, 1, 3, 6 |
-| Interaction row 5, columns 4–7, splits descent | Combat row 6, columns 4, 1, 2, 3 |
+| Main row 6, salto | Combat row 5, columns 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“7 |
+| Interaction row 5, columns 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“3, dropkick | Combat row 4, columns 0, 1, 3, 6 |
+| Interaction row 5, columns 4ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“7, splits descent | Combat row 6, columns 4, 1, 2, 3 |
 | Main row 5, impact/recovery | Combat (6,1), (6,2), (6,5), (6,6); movement (0,1), (0,2), (0,3); combat (0,0) |
 | Interaction row 2, planting | Combat (0,0); movement (0,1); combat (6,4), (6,1), (6,2), (6,3), (6,2); movement (0,0) |
 
-Planting columns 3–6 hold the full wide splits through the existing sow hit
+Planting columns 3ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“6 hold the full wide splits through the existing sow hit
 frame 6. Column 7 recovers to the same low crouch as interaction row 0 column 3,
 so the following stand clip rises without dipping. All 25 original clip frame
 sequences, fps, loops and hit/pour markers remain unchanged.
@@ -116,6 +142,6 @@ Review artifacts:
 - `animations-4x.gif`: movement, care and signature attack playback.
 - `registration.json`: original cell foot registration used for all 384 cells.
 
-The supplied Mech, Pølge and Sligo character sheets are unchanged. Runtime
+The supplied Mech, PÃƒÆ’Ã‚Â¸lge and Sligo character sheets are unchanged. Runtime
 loader and menu portraits use `assets/characters-v2/`; only native runtime PNGs
 and atlas JSON ship. Old Max recolours remain archival source files in the repo.

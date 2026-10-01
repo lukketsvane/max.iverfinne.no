@@ -15,7 +15,7 @@
   serial++;playing=false;latest=[];root.replaceChildren();frames=[];document.querySelector('#log').textContent='';
   const count=+document.querySelector('#count').value,classes=[document.querySelector('#first').value,document.querySelector('#second').value],difficulty=document.querySelector('#difficulty').value,style=document.querySelector('#style').value;
   if(count===2&&classes[0]===classes[1]){document.querySelector('#log').textContent='Vel to ulike klassar.';return;}
-  const room={host:ids[0],mode:'high-tide',members:classes.slice(0,count).map((classId,i)=>({id:ids[i],slot:i+1,name:i?'TEST 2':'TEST 1',classId,skin:({mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'})[classId],difficulty}))};
+  const room={host:ids[0],mode:'high-tide',members:classes.slice(0,count).map((classId,i)=>({id:ids[i],slot:i+1,name:i?'TEST 2':'TEST 1',classId,skin:({mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'})[classId],difficulty}))};
   for(let i=0;i<count;i++){
    const panel=document.createElement('section');panel.className='player';panel.innerHTML='<strong>Spelar '+(i+1)+' · '+classes[i]+'</strong><div class="input"></div><div class="status">Lastar…</div>';
    const inputs=panel.querySelector('.input'),keys=[['Venstre','ArrowLeft'],['Høgre','ArrowRight'],['Hopp','ArrowUp'],['Stell',' '],['Skyt','fire'],['Evne','e'],['1','1'],['2','2'],['3','3']];

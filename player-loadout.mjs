@@ -4,7 +4,7 @@ export const CLASS_IDS = Object.freeze(['mech', 'runner', 'bulwark', 'herbalist'
 export const HIDDEN_CLASS_IDS = Object.freeze(['sligo']);
 export const ALL_CLASS_IDS = Object.freeze([...CLASS_IDS, ...HIDDEN_CLASS_IDS]);
 export const DIFFICULTY_IDS = Object.freeze(['easy', 'medium', 'hard', 'insane']);
-export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss', bulwark: 'ember', herbalist: 'moon', polge: 'polge', sligo: 'sligo' });
+export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss-pink', bulwark: 'ember', herbalist: 'moon', polge: 'polge', sligo: 'sligo' });
 export const CLASS_OUTFITS = Object.freeze(Object.fromEntries(ALL_CLASS_IDS.map(id => [id, Object.freeze(id === 'runner' ? ['moss', 'moss-pink'] : [CLASS_SKINS[id]])])));
 export const DEFAULT_LOADOUT = Object.freeze({ classId: 'mech', skinId: CLASS_SKINS.mech, difficulty: 'medium' });
 

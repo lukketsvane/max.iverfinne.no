@@ -110,7 +110,7 @@
       });};
     }
     if(${custom}){
-      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${circuit?circuitSeed:reviewSeed};
+      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${circuit?circuitSeed:reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
       if(${layout}&&${params.has('expedition')}){var ex=stageLayout().expedition;P.x=ex.start.x;P.y=ex.start.y;if(${params.has('summit')}){P.x=ex.summit.x;P.y=ex.summit.y;P.platform=ex.nodes[2].platformId;}}
