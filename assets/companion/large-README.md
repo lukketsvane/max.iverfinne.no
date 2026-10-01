@@ -1,7 +1,7 @@
 # MAX — watering robot: native pixel assets
 
 Start with `sprites/rover_idle_left.png` (45 × 31 pixels), or the aligned animation sheets in `atlases/`.
-`preview.html` is a self-contained, offline animation inspector. It is not a game implementation.
+Use `/review.html` to inspect the integrated companion. Native sheets, frame metadata and original preview images remain intact.
 
 ## What is in this pack
 

@@ -1,12 +1,10 @@
-# Four cosmetic Max skins
+# Native player packs and compatibility artwork
 
 Pølge is an additional playable pack using the same cell, anchor, palette limit
-and clip/event contract. Its supplied poses and deterministic generator are
+and clip/event contract. Its supplied poses and source provenance are
 documented in `docs/asset-review/polge-v1/README.md`.
 
-Moss (pointed hood/satchel), Tide (round rain hood/collar), Ember
-(headband/ribbon) and Moon (short cape/cap). Selection is cosmetic and independent
-of build paths. Delivered for the main developer's review in issue #10.
+Tide is Mech's runtime art. Pølge and Sligo have their own packs here. Rattus, Cairn and Mycel use `assets/characters-v2/`. The earlier Moss, Ember and Moon sheets remain source references; appearance is fixed by the selected character.
 
 ![Native frames enlarged exactly 4x](preview/contact-4x.png)
 ![Animation preview](preview/animations-4x.gif)
@@ -40,23 +38,16 @@ preserved as cells but are not referenced by the original named animations.
 are integer enlargements of the exported PNGs, not generated concept images.
 Preview labels are for review only and are not game UI assets.
 
-Generated masters were conditioned on both original Max sheets. Native source
-reductions and full prompts/master hashes are in `source/`. Run
-`python scripts/build-native-art.py` from the repository root to reproduce the
-exports with Pillow and numpy; run `python scripts/verify-native-art.py` to
-check frame, palette, alpha and animation contracts. No generator is needed
-for game builds. `native-art.mjs` now loads these sheets for the selected
-cosmetic skin in solo and co-op play, with original Max as a loading/failure
-fallback. The production build copies runtime PNGs and JSON. Use
-`review.html?mode=native-skins&portrait=1` to compare all five Max appearances
-in the actual game renderer at their native foot registration.
+## Current authoring and integration
+
+Native runtime sheets are edited in [Figma frame 160:2](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2); follow [docs/figma.md](../../docs/figma.md). Original reductions, prompts, master hashes and registration data remain as provenance. The import/packing generator was retired after integration.
+
+Appearance belongs to the character. The build ships Tide for Mech, Pølge's own sheets and Sligo's sheets. Rattus, Cairn and Mycel use `assets/characters-v2/`; the older Moss, Ember and Moon sheets are historical references. `native-art.mjs` retains original Max as a loading/failure fallback.
 
 ## Sligo, the easter egg
 
 `sligo/` is a fifth pack under the same contract: Max Sligo Neverdahl, a pink
-one-eyed tardigrade. `python3 scripts/build-sligo.py` builds it from the
-owner's sheet in `docs/asset-review/sligo-v1/`, whose README gives the row use,
-the interaction poses and the review. It is not in `manifest.json` or the game
-yet. Sligo stands 24px tall and 13–15px wide. Where the original body bottom is
+one-eyed tardigrade. Its original source sheet is in `docs/asset-review/sligo-v1/`, whose README gives the row use,
+the interaction poses and the review. It is integrated as the hidden Sligo character. Sligo stands 24px tall and 13–15px wide. Where the original body bottom is
 a cell's last row (walk, stretch, run 2 and 5), its feet stand one pixel higher
 so no cell touches its edge.

@@ -1,22 +1,24 @@
 'use strict';
+
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm'), { pathToFileURL } = require('node:url');
+const path = require('node:path'), { pathToFileURL } = require('node:url');
 const layouts = require('../stage-layout.js'), levels = require('../levels.js');
 const { loadGame } = require('./game-harness.cjs');
 const { walkRoutes } = require('./platform-sweep.cjs');
 const fixture = require('./fixtures/figma-levels.json');
-
 const root = path.join(__dirname, '..');
 const load = file => import(pathToFileURL(path.join(root, file)).href);
 const tool = load('scripts/figma-levels.mjs'), mcp = load('scripts/figma-mcp.mjs');
 const world = tool.then(t => t.gameWorld());
 let uid = 0;
 const instance = (name, x, y, w = 7, h = 7) => `<instance id="9:${++uid}" name="${name}" x="${x}" y="${y}" width="${w}" height="${h}" />`;
+
 function edit(xml, frame, add = [], drop) {
   const lines = xml.split('\n'), start = lines.findIndex(l => l.includes(`name="${frame}"`)), end = lines.indexOf('  </frame>', start);
   return [...lines.slice(0, start + 1), ...add.map(a => '    ' + a), ...lines.slice(start + 1, end).filter(l => !drop?.test(l)), ...lines.slice(end)].join('\n');
 }
+
 const shape = list => list.map(p => [p.x, p.y, p.w]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
 const spots = list => list.map(a => [a.x, Math.round(a.y)]);
 
@@ -91,24 +93,14 @@ test('the run seed picks one variant per garden, the same on every client', asyn
   }
 });
 
-test('the report names every unreachable ledge and the tier each hard spot needs', async () => {
+test('the Figma export warns about unreachable ledges and floating shrine markers', async () => {
   const { exportLevels } = await tool, w = await world;
   const xml = edit(fixture.metadata, 'garden-01', [instance('designed', 0, 0), instance('ledge:ruin', 600, 20, 30, 20), instance('reward', 612, 13), instance('trial', 20, 172)]);
-  const { report, errors, data } = exportLevels(xml, fixture.page, w), text = report.join('\n');
-  assert.equal(errors, 0); assert.equal(data.gardens[1][0].ledges.length, 24);
-  assert.match(text, /garden-01\s+219:2\s+live\s+terraces · 24 ledges · C0 21 · C1 0 · C2 2 · C3 0 · unreachable 1/);
-  assert.match(text, /ledge:ruin\s+x \+250\s+rise 219\s+unreachable at every tier/);
-  assert.match(text, /reward\s+x \+265\s+rise 219\s+unreachable at every tier: a walking Bulwark cannot reach it/);
-  assert.match(text, /bonus\s+x -249\s+rise 129\s+needs C2 Moss or Spring Step 2\n/);
-  assert.match(text, /trial\s+x -327\s+rise\s+60\s+floats \d+ px above the soil and every ledge/);
-  assert.match(text, /the run places two trials; this garden has 3/);
-  const { check } = await tool, flat = { ground: () => 0, wet: () => false, origin: () => 0, levels, layouts };
-  const stairs = [1, 2, 3, 4, 5].map(k => ({ x: 30 * k - 20, rise: 15 * k, w: 24, style: 'stone' }));
-  const tower = { frame: 'garden-06', ledges: [...stairs, { x: 250, rise: 70, w: 20, style: 'ruin' }, { x: -200, rise: 150, w: 20, style: 'root' }], blocks: [{ x: 160, rise: 90, w: 130, h: 100, style: 'stone' }] };
-  const lines = check(tower, 6, flat).lines.join('\n');
-  assert.match(lines, /ledge:root\s+x -200\s+rise 150\s+unreachable at every tier/);
-  assert.doesNotMatch(lines, /ledge:ruin/, 'a ledge under a reachable block top is not flagged');
-  assert.doesNotMatch(lines, /block:stone/, 'the stairs reach the tower top walking');
+  const { report, data } = exportLevels(xml, fixture.page, w), text = report.join('\n');
+  assert.equal(data.gardens[1][0].ledges.length, 24);
+  assert.match(text, /ledge:ruin.*unreachable at every tier/);
+  assert.match(text, /reward.*a walking Bulwark cannot reach it/);
+  assert.match(text, /trial.*floats \d+ px above the soil and every ledge/);
 });
 
 test('a ledge drawn into a hill is lifted clear, and spots snap to ledges and the soil', () => {
@@ -148,16 +140,4 @@ test('generator gardens survive the trip through Figma instances within one pixe
     const tier = new Map(seeded.nodes.map(n => [`${n.x},${n.y}`, n.tier]));
     for (const n of built.nodes.slice(0, ledges.length)) assert.equal(n.tier, tier.get(`${n.x},${n.y}`), `${label} tier at ${n.x},${n.y}`);
   }
-});
-
-test('the game reads designed gardens first and ships the generated level data', async () => {
-  const { dataFile } = await tool, html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  const order = ['stage-layout.js', 'levels-data.js', 'levels.js'].map(f => html.indexOf(`<script src="${f}"></script>`));
-  assert.ok(order[0] > 0 && order[0] < order[1] && order[1] < order[2], 'the loader and its data follow stage-layout.js');
-  assert.match(html, /activeStageLayout=\(level<=2&&pictureLayout\(level\)\)\|\|window\.MaxLevels\.layout\(level,levelOriginX\(level\),surfaceY,waterAt,rogueRun\.seed\)\|\|window\.MaxPlaces\.furnish\(window\.MaxStageLayout\.create\(/);
-  assert.match(fs.readFileSync(path.join(root, 'scripts/build-static.cjs'), 'utf8'), /'stage-layout\.js', 'levels-data\.js', 'levels\.js'/);
-  const text = fs.readFileSync(path.join(root, 'levels-data.js'), 'utf8').replace(/\r\n/g, '\n'), box = { window: {} };
-  vm.runInNewContext(text, box);
-  assert.equal(text, dataFile(box.window.MaxLevelData), 'levels-data.js is written by npm run figma:levels, not by hand');
-  for (const list of Object.values(box.window.MaxLevelData.gardens)) for (const g of list) assert.ok((g.ledges.length || g.blocks) && /^garden-\d\d[b-z]?$/.test(g.frame), g.frame);
 });

@@ -1,5 +1,6 @@
 # Guardian motion expansion
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 The sixteen newer garden guardians now have four authored drawings for each of
 eight actions: idle, move, windup, attack, recover, vulnerable, hurt and death.
 Their previous eight-pose sheets repeated single drawings through most actions.
@@ -39,7 +40,7 @@ boss collapses. Corpse-only presentation can finish after victory freezes time.
 `guardian-motion-review.html` exercises all eight actions through the game's
 renderer without accounts, saved progress or live rooms. The browser regression
 checks it in Chromium and WebKit, alongside all twenty real boss arenas and both
-planted-bomb classes. `scripts/preview-guardian-motion.cjs` exports the accompanying
+planted-bomb classes. [historical preview-guardian-motion.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/preview-guardian-motion.cjs) exports the accompanying
 four-times enlarged contact animation directly from native source frames.
 
 The contact animation is an art review, with equal time per drawing; the game

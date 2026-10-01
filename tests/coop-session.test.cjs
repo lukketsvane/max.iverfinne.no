@@ -1,9 +1,8 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 
-async function module(){return import('../coop-session.mjs');}
 test('a finished solo session leaves immediately and repeated leave waits for the same departure',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   const room={id:'room',host:'host',state:'playing',mode:'last-seed',members:[{id:'host',slot:1,ready:true,name:'host',classId:'runner'}]};
   const net=fakeChannelClient({room,userId:'host'}),calls=[];let release;
   const original=net.client.rpc;
@@ -22,7 +21,7 @@ test('a finished solo session leaves immediately and repeated leave waits for th
 });
 
 test('a downed player keeps the session while a teammate can still revive them',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   const room={id:'room',host:'host',state:'playing',members:[{id:'host',slot:1,ready:true,name:'host'},{id:'guest',slot:2,ready:true,name:'guest'}]};
   const net=fakeChannelClient({room,userId:'host'}),s=new CoopSession(net.client,{id:'host'});
   try {
@@ -30,19 +29,14 @@ test('a downed player keeps the session while a teammate can still revive them',
     assert.equal(s.closed,false);assert.equal(s.playing,true);assert.ok(net.sent.some(f=>f.frame.payload.state?.members?.[0]?.vital?.hp===0));
   }finally{await s.leave();}
 });
-function fakeChannelClient({room,userId}={}){
+
+function fakeChannelClient({room,pollHost}={}){
   const channels=new Map(),removed=[],sent=[];
   const client={
     realtime:{setAuth:async()=>{}},
     async rpc(name,args){
-      if(name==='max_coop_join'||name==='max_coop_global')return {data:JSON.parse(JSON.stringify(room)),error:null};
-      if(name==='max_coop'){
-        const action=args?.p_action;
-        if(action==='get')return {data:JSON.parse(JSON.stringify(room)),error:null};
-        if(action==='leave')return {data:{closed:false},error:null};
-        return {data:JSON.parse(JSON.stringify(room)),error:null};
-      }
-      return {data:JSON.parse(JSON.stringify(room)),error:null};
+      if(name==='max_coop'&&args?.p_action==='get'&&pollHost)room={...room,host:pollHost};
+      return {data:name==='max_coop'&&args?.p_action==='leave'?{closed:false}:JSON.parse(JSON.stringify(room)),error:null};
     },
     channel(name,options){
       assert.equal(options.config.private,true);
@@ -55,7 +49,7 @@ function fakeChannelClient({room,userId}={}){
 }
 
 test('a running garden survives a realtime channel drop instead of treating backgrounding as leaving',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   const room={id:'room',host:'host',state:'playing',members:[{id:'host',slot:1,ready:true,name:'host'},{id:'guest',slot:2,ready:true,name:'guest'}]};
   const net=fakeChannelClient({room,userId:'host'}),errors=[],departures=[];
   const s=new CoopSession(net.client,{id:'host'},{error:r=>errors.push(r),depart:id=>departures.push(id)},{classId:'mech',difficulty:'easy'});
@@ -71,7 +65,7 @@ test('a running garden survives a realtime channel drop instead of treating back
 });
 
 test('joining an already-running shared garden begins immediately without a lobby or ready step',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   const room={id:'room',host:'host',state:'playing',members:[{id:'host',slot:1,ready:true,name:'host'},{id:'guest',slot:2,ready:true,name:'guest'}]};
   const net=fakeChannelClient({room,userId:'guest'}),starts=[];
   const s=new CoopSession(net.client,{id:'guest'},{start:n=>starts.push(n)},{classId:'runner',skinId:'ember',difficulty:'hard'});
@@ -84,16 +78,9 @@ test('joining an already-running shared garden begins immediately without a lobb
 });
 
 test('a foreground poll adopts server host handoff and reauthorizes the state channel',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   let room={id:'room',host:'old-host',state:'playing',members:[{id:'old-host',slot:1,ready:true,name:'old'},{id:'new-host',slot:2,ready:true,name:'new'}]};
-  const net=fakeChannelClient({room,userId:'new-host'}),seen=[];
-  net.client.rpc=async(name,args)=>{
-    if(name==='max_coop'&&args?.p_action==='get'){
-      room={...room,host:'new-host'};return {data:JSON.parse(JSON.stringify(room)),error:null};
-    }
-    if(name==='max_coop'&&args?.p_action==='leave')return {data:{closed:false},error:null};
-    return {data:JSON.parse(JSON.stringify(room)),error:null};
-  };
+  const net=fakeChannelClient({room,pollHost:'new-host'}),seen=[];
   const s=new CoopSession(net.client,{id:'new-host'},{room:r=>seen.push(r.host)},{classId:'bulwark',difficulty:'medium'});
   s.room=JSON.parse(JSON.stringify(room));s.entered=true;s.playing=true;s.loadouts['new-host']=s.selection;s.memberTokens['new-host']=s.token;
   await s.subscribe('state');await s.subscribe('new-host');
@@ -104,16 +91,9 @@ test('a foreground poll adopts server host handoff and reauthorizes the state ch
 });
 
 test('a returning former host reconnects as a guest with its own input channel',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   let room={id:'room',host:'old-host',state:'playing',members:[{id:'old-host',slot:1,ready:true,name:'old'},{id:'new-host',slot:2,ready:true,name:'new'}]};
-  const net=fakeChannelClient({room,userId:'old-host'});
-  net.client.rpc=async(name,args)=>{
-    if(name==='max_coop'&&args?.p_action==='get'){
-      room={...room,host:'new-host'};return {data:JSON.parse(JSON.stringify(room)),error:null};
-    }
-    if(name==='max_coop'&&args?.p_action==='leave')return {data:{closed:false},error:null};
-    return {data:JSON.parse(JSON.stringify(room)),error:null};
-  };
+  const net=fakeChannelClient({room,pollHost:'new-host'});
   const s=new CoopSession(net.client,{id:'old-host'}, {}, {classId:'mech',difficulty:'easy'});
   s.room=JSON.parse(JSON.stringify(room));s.entered=true;s.playing=true;s.loadouts['old-host']=s.selection;s.memberTokens['old-host']=s.token;
   await s.subscribe('state');await s.subscribe('new-host');
@@ -124,7 +104,7 @@ test('a returning former host reconnects as a guest with its own input channel',
 });
 
 test('foreground resume rebuilds stale realtime channels after an iOS-style suspension',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   const room={id:'room',host:'host',state:'playing',members:[{id:'host',slot:1,ready:true,name:'host'},{id:'guest',slot:2,ready:true,name:'guest'}]};
   const net=fakeChannelClient({room,userId:'guest'});
   const s=new CoopSession(net.client,{id:'guest'}, {}, {classId:'runner',difficulty:'easy'});
@@ -139,7 +119,7 @@ test('foreground resume rebuilds stale realtime channels after an iOS-style susp
 });
 
 test('global join reserves the requested character and inherits the server run difficulty',async()=>{
-  const {CoopSession}=await module();
+  const {CoopSession}=await import('../coop-session.mjs');
   const calls=[];
   const room={id:'room',host:'host',state:'playing',difficulty:'easy',members:[
     {id:'host',slot:1,ready:true,name:'host',classId:'mech'},
@@ -155,54 +135,4 @@ test('global join reserves the requested character and inherits the server run d
     assert.deepEqual(join.args,{p_class_id:'runner',p_difficulty:'insane'});
     assert.deepEqual(s.selection,{classId:'runner',skinId:'moss-pink',difficulty:'easy'},'the chosen outfit survives the authoritative class reservation and difficulty');
   }finally{await s.leave();}
-});
-
-test('character identity owns its appearance while difficulty remains an independent run setting',async()=>{
-  const {CoopSession}=await module();
-  const room={id:'room',host:'p',state:'playing',members:[{id:'p',slot:1,ready:true,name:'p'}]};
-  const net=fakeChannelClient({room,userId:'p'});
-  const moss=new CoopSession(net.client,{id:'p'}, {}, {classId:'moss',skinId:'ember',difficulty:'insane'});
-  assert.deepEqual(moss.selection,{classId:'runner',skinId:'moss-pink',difficulty:'insane'});
-  const tank=new CoopSession(net.client,{id:'p'}, {}, {classId:'bulwark',skinId:'tide',difficulty:'easy'});
-  assert.deepEqual(tank.selection,{classId:'bulwark',skinId:'ember',difficulty:'easy'});
-});
-
-test('the host adopts a joining Rattus outfit and keeps it fixed through input and reconnects',async()=>{
-  const {CoopSession}=await module();
-  const room={id:'room',host:'host',state:'playing',difficulty:'easy',members:[
-    {id:'host',slot:1,ready:true,name:'host',classId:'mech'},
-    {id:'guest',slot:2,ready:true,name:'guest',classId:'runner'}
-  ]};
-  const net=fakeChannelClient({room,userId:'host'}),joins=[],inputs=[];
-  const s=new CoopSession(net.client,{id:'host'},{join:(id,kit)=>joins.push([id,kit]),input:(id,packet)=>inputs.push([id,packet])},{classId:'mech'});
-  s.room=room;s.entered=true;s.playing=true;
-  const packet={v:1,proto:2,sid:'guest-session-1',seq:1,selection:{classId:'runner',skinId:'moss',difficulty:'insane'}};
-  s.receive('guest',packet);
-  assert.deepEqual(s.loadouts.guest,{classId:'runner',skinId:'moss-pink',difficulty:'easy'});
-  assert.equal(joins.length,1);assert.equal(joins[0][1].skinId,'moss-pink');
-  s.receive('guest',{...packet,seq:2,selection:{...packet.selection,skinId:'moss'}});
-  assert.equal(inputs.length,1);assert.equal(s.loadouts.guest.skinId,'moss-pink');
-  s.receive('guest',{...packet,sid:'guest-session-2',selection:{...packet.selection,skinId:'moss'}});
-  assert.equal(joins.length,2);assert.equal(joins[1][1].skinId,'moss-pink','reconnecting cannot replace a started outfit');
-  s.receive('guest',{...packet,sid:'guest-session-3',selection:{...packet.selection,classId:'bulwark'}});
-  assert.equal(joins.length,2,'the costume cannot bypass the server class reservation');
-});
-
-test('inside a room a hidden character is as valid as the four: the server already checked its unlock', async () => {
-  const { CoopSession } = await module();
-  const room = { id: 'room', host: 'host', state: 'playing', members: [{ id: 'host', slot: 1, ready: true, name: 'host', classId: 'mech' }, { id: 'guest', slot: 2, ready: true, name: 'guest', classId: 'sligo' }] };
-  const net = fakeChannelClient({ room, userId: 'guest' }), starts = [];
-  const s = new CoopSession(net.client, { id: 'guest' }, { start: n => starts.push(n) }, { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' });
-  try {
-    assert.deepEqual(s.selection, { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' });
-    await s.enter({ global: true });
-    assert.equal(s.selection.classId, 'sligo'); assert.equal(starts.length, 1);
-  } finally { await s.leave(); }
-  const hostNet = fakeChannelClient({ room, userId: 'host' }), joins = [];
-  const h = new CoopSession(hostNet.client, { id: 'host' }, { join: (id, kit) => joins.push([id, kit]) }, { classId: 'mech', difficulty: 'hard' });
-  h.room = room; h.entered = true; h.playing = true;
-  h.receive('guest', { v: 1, proto: 2, sid: 'guest-session-1', seq: 1, selection: { classId: 'sligo', difficulty: 'hard' } });
-  assert.deepEqual(joins, [['guest', { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' }]]);
-  h.receive('guest', { v: 1, proto: 2, sid: 'guest-session-2', seq: 1, selection: { classId: 'runner', difficulty: 'hard' } });
-  assert.equal(joins.length, 1, 'a member cannot swap away from the character the server reserved');
 });

@@ -1,5 +1,6 @@
 # Enemy roles and Hollow Crown
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Native transparent sprites for the roles implemented in `run-director.inc.js`.
 This pack is an art handoff, with no changes to collisions, attacks or balance.
 
@@ -53,7 +54,7 @@ Previews are exported native PNGs enlarged exactly 4×; the 1× contact sheet is
 also included. Boss frames were extracted individually to correct a nonuniform
 generated grid; extended roots were fitted to 32px cells. Packing records and
 full prompts/master hashes are in `source/`. The source reductions are retained
-so `python scripts/build-native-art.py` reproduces final PNG/JSON/GIF files.
+so [historical build-native-art.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-native-art.py) reproduces final PNG/JSON/GIF files.
 
 `native-art.mjs` now imports these runtime sheets through the production build.
 `drawRoleEnemy` preserves primitive fallback art, health lights, healing links,

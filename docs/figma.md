@@ -25,23 +25,6 @@ Figma names each stored image by the SHA-1 of its bytes, so the manifest records
 
 The 15 PNGs inlined as `data:image/png` URIs in `index.html` are preserved byte for byte in frame **398:2 "LEGACY INLINE ART — native runtime sources"** on References page `162:2`. They predate the file-based production workflow and are pinned by hash in `tests/figma-assets.test.cjs`. New art goes into `assets/` and 160:2, never into a data URI.
 
-## Waiting for Figma
-
-`assets/figma-pending.json` lists runtime art that is not yet in Figma, pinned by SHA-1. The art was built from the owner's uploads while the agent environment could not reach Figma's image upload host (`mcp.figma.com`).
-
-`tests/figma-assets.test.cjs` lets the runtime load these files. It checks that each one:
-
-- matches its pin byte for byte;
-- follows the pixel rules;
-- is loaded by the runtime;
-- is not also a production layer.
-
-To finish an entry:
-
-1. Put the PNG in the production section.
-2. Run `npm run figma:manifest`.
-3. Remove the entry from the list. The test fails while a path is in both.
-
 ## Map
 
 The live file was inspected on 1 October 2026. All 632 production PNGs matched the repository and manifest by source SHA-1, native dimensions and node ID; all 15 legacy inline PNGs matched their reference layers by SHA-1. The unchanged `figma:check` reported 632 MATCH and zero problems against an authenticated connector capture taken at 07:42 UTC. Its production page is `10:2`; the native source frame is `160:2`. The former Draft page `0:1` and production section `52:2` are gone. The `draft` key in the sync configuration now refers to the References page `162:2`.
@@ -92,18 +75,13 @@ The repository contracts are binding and win over anything in the Figma workbenc
 
 Contracts to read: `README.md` → *Pixel-art contract*; `assets/max-skins-v1/README.md`, `assets/enemies-v1/README.md`, `assets/rat-enemies-v1/README.md`, `assets/boss-milestones-v1/README.md`, `assets/native/README.md`, `assets/companion/README.txt`, `assets/companion/large-README.md`, `assets/results-native/`, `assets/expansion/`; before touching the Mech companion, `docs/asset-review/watering-robot/selection.md`.
 
-## Generated packs
+## Native authoring
 
-These packs are written by scripts from pack sources, not drawn as sheets:
+Frame 160:2 is now the editable native master for every runtime PNG, including packs originally produced by generators. Edit the source layer at native 1×, preserve the pack palette and atlas registration, then use `figma:pull` and `figma:manifest`. These packs use the same hash, dimension, palette, alpha and resize validation as all other assets.
 
-| Sheets | Source | Generator |
-| --- | --- | --- |
-| `assets/max-skins-v1/{moss,tide,ember,moon}/main.png`, `interaction.png` | `assets/max-skins-v1/source/*.png` | `python scripts/build-native-art.py` |
-| `assets/max-skins-v1/sligo/main.png`, `interaction.png` (the easter-egg skin) | `docs/asset-review/sligo-v1/source.png` | `python3 scripts/build-sligo.py` |
-| `assets/enemies-v1/*/sprites.png` (incl. Hollow Crown) | `assets/enemies-v1/source/*.png` | `python scripts/build-native-art.py` |
-| `assets/rat-enemies-v1/*/sprites.png` (indexed, plus `frames/*.png`) | `assets/rat-enemies-v1/source-poses.json` | `python scripts/build-rat-assets.py` |
+The one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active.
 
-For these the pack source and its generator come first. A change goes into the source, the generator is rerun (it also rewrites `atlas.json`, frames and previews), `npm test` passes, and then the generated PNG is placed into the Figma layer. Until then `figma:check` reports REPO-CHANGED; afterwards MANIFEST-STALE, which `figma:pull` records without downloading anything. `figma:pull` refuses to download Figma pixels into these packs: an edit made in Figma has to be carried back into the source by hand.
+All new runtime art must be in the Figma production frame before it can pass the offline tests. There is no pending-art exception.
 
 ## Tools
 
@@ -133,7 +111,7 @@ Figma caps MCP tool calls per day; once spent it answers "Rate limit exceeded, p
 | Status | Meaning | Fix |
 | --- | --- | --- |
 | MATCH | Figma = repo = manifest | none |
-| DRIFT | Figma changed | `figma:pull` (generated packs: carry it into the source) |
+| DRIFT | Figma changed | `figma:pull` |
 | NEW-IN-FIGMA | a path-named layer not in the manifest | `figma:pull` |
 | MISSING-IN-REPO | the repo file is gone | `figma:pull` restores it, or move the layer out of 160:2 |
 | MANIFEST-STALE | bytes agree, manifest entry is old (moved, re-created) | `figma:pull` |
@@ -142,15 +120,15 @@ Figma caps MCP tool calls per day; once spent it answers "Rate limit exceeded, p
 | REMOVED-FROM-FIGMA | the layer left 160:2 | remove the runtime use, then `figma:manifest` |
 | REJECTED | the layer or its pixels break a rule; the listed problems say which, the status it would have had is in brackets | fix it; nothing is pulled |
 
-A layer is REJECTED when it is off the integer grid, has not exactly one image fill, has anything drawn over or inside it, differs in size from its PNG, or has a name that is not a posix path inside `assets/`. A download is REJECTED when it is not a PNG, differs from the Figma hash or the layer size, differs from the current repo size (without `--allow-resize`), has partial alpha, colour under alpha 0 or colours outside the pack palette, is an exact k× upscale, or targets a generated pack.
+A layer is REJECTED when it is off the integer grid, has not exactly one image fill, has anything drawn over or inside it, differs in size from its PNG, or has a name that is not a posix path inside `assets/`. A download is REJECTED when it is not a PNG, differs from the Figma hash or the layer size, differs from the current repo size (without `--allow-resize`), has partial alpha, colour under alpha 0 or colours outside the pack palette, is an exact k× upscale,.
 
 ## Draft → production
 
-1. Choose the target first: the pack, its README and `atlas.json` (cell size, anchor, palette), and whether it is a generated pack.
+1. Choose the target first: the pack, its README and `atlas.json` (cell size, anchor, palette).
 2. Draw or process the asset in a Draft section at native 1× in that pack's cell size, anchor and palette, following the rules and the export check above. A master grid in 396:19 is a starting frame only. Source JPEGs stay on the References page.
 3. `npm run figma:drafts` to see the candidates and their flags.
-4. Integrate it in the repo following the pack README: atlas JSON, loader, tests, the exact repository path. For a generated pack, change its source and rerun its generator here.
-5. In Figma, export the finished sheet as PNG at 1× (for a generated pack: take the generated PNG from the repo) and place it as the only image fill of a rectangle in the right group frame of 160:2 (dropping the PNG onto the canvas creates exactly that), at the PNG's size, on integer coordinates, named with the exact repository path. To replace an existing asset, replace the image fill of its layer. To revive an archived asset, integrate it against its pack contract, move its layer into the correct production group and preserve its exact repository path.
+4. Integrate it in the repo following the pack README: atlas JSON, loader, tests, the exact repository path.
+5. In Figma, export the finished sheet as PNG at 1× and place it as the only image fill of a rectangle in the right group frame of 160:2 (dropping the PNG onto the canvas creates exactly that), at the PNG's size, on integer coordinates, named with the exact repository path. To replace an existing asset, replace the image fill of its layer. To revive an archived asset, integrate it against its pack contract, move its layer into the correct production group and preserve its exact repository path.
 6. `npm run figma:pull -- --dry-run`, then `npm run figma:pull`.
 7. `npm run figma:manifest`.
 8. `npm test` and `npm run build`; `npm run figma:check` reports all MATCH. Commit the PNG, the manifest and the runtime change together: the runtime test fails if either side lands alone.

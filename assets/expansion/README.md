@@ -1,5 +1,6 @@
 # Native pixel sprites for MAX FUGLESPRENGER
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Nine transparent PNG sheets; 432 registered frame/state slots. These are the
 asset files, not screenshots of sprite sheets. No labels, grid lines, glow
 backgrounds or reference figures are baked into them.
@@ -53,7 +54,7 @@ seed states repeat intentionally; 432 slots does not mean 432 unique drawings.
 
 ## Drawing
 
-Load [sprites.js](sprites.js), then:
+Load [sprites.js](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/assets/expansion/sprites.js), then:
 
 ```js
 const pack = await MaxExpansionSprites.load('./assets/expansion/');
@@ -67,8 +68,7 @@ pack.drawDrone(ctx, 'carry_flight', elapsedSeconds, droneX, droneY,
 1 (as authored) and -1 (mirrored). The adapter validates frame ranges and PNG
 sizes, snaps world-minus-camera coordinates once, and draws equal source and
 destination rectangles. One-shots hold their final frame. Static states never
-advance automatically. [preview.html](preview.html) is an isolated atlas bench;
-serve the repository root over HTTP to open it.
+advance automatically. The older atlas-only HTML bench was retired. Use the current isolated `/review.html` fixtures and the Figma native masters.
 
 ## Source and verification
 
@@ -79,7 +79,7 @@ game. The audited renderer snapshot is commit
 `cca0f5c46ca2a2e55bdae52569984f44499d4b11`. Original game artwork is not replaced.
 These exports are not cut from the generated illustrated presentation boards.
 
-Run `node --test tests/expansion-assets.test.cjs` from the repository root.
+Run [historical expansion-assets.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/expansion-assets.test.cjs) from the repository root.
 The tests decode the PNGs, check SHA-256 hashes, binary alpha, exact grids,
 constant wheel contact, clip ranges, integer 1:1 drawing, mirrored origins,
 water timing and plant/claw registration. [checksums.json](checksums.json)

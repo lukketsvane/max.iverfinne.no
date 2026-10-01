@@ -1,5 +1,6 @@
 # Rattus norvegicus, Cairn, Mycel
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Three original characters replace the old Moss, Ember and Moon Max recolours.
 Rattus norvegicus occupies the runner slot. The sole active Rattus outfit is
 Ring gear, `rattle-norvegicus-pink`, with saved cosmetic key `moss-pink`.
@@ -57,9 +58,9 @@ hit timing, range, damage and multiplayer authority.
 Mycel PNGs and atlases retain their previous bytes. Retired runtime artwork is
 not copied to the build; review sources and historical proofs are archives.
 
-Run `python scripts/build-characters-v2.py` to reproduce the native PNGs,
+Run [historical build-characters-v2.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-characters-v2.py) to reproduce the native PNGs,
 atlases, registration log, contact sheets and integer animation previews.
 Generated source images are never copied to the game build. Figma production
 synchronization is recorded in `assets/figma-manifest.json`; files awaiting
-import are pinned in `assets/figma-pending.json`. Byte-matching synchronized
+import are pinned in the retired pending-art list. Byte-matching synchronized
 files do not recreate pending entries.

@@ -1,5 +1,6 @@
 # Coast backdrop — behind the Railway Ruins
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 The owner's three backdrop layers for the mill-and-railway scene (1672×941, transparent, generated pixel art):
 
 - `mountains.png`: far mountains and a small crescent moon;
@@ -8,7 +9,7 @@ The owner's three backdrop layers for the mill-and-railway scene (1672×941, tra
 
 ## Build
 
-`scripts/build-coast-layers.py` (Pillow, numpy, scipy) brings each layer to native pixels at 1/4, like the Railway Ruins in front of them. It sets them on the night layers' 180-row grid, where row 140 is the ground line:
+[historical build-coast-layers.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-coast-layers.py) (Pillow, numpy, scipy) brings each layer to native pixels at 1/4, like the Railway Ruins in front of them. It sets them on the night layers' 180-row grid, where row 140 is the ground line:
 
 - the sea's horizon sits at row 100;
 - the mountains stand on the horizon;

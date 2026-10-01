@@ -1,5 +1,6 @@
 # Sligo tissue mutations
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 80 poses selected from the owner's `Untitled(1).zip` (334 assets). Unchanged
 source cuts live in `source.zip`; each runtime frame records its filename in
 `assets/max-skins-v1/sligo/mutations.json`.
@@ -13,7 +14,7 @@ source cuts live in `source.zip`; each runtime frame records its filename in
 | fall | 16 | Falling: the head grows a fleshy canopy |
 | rise | 9 | Jumping: long tissue legs |
 
-`python scripts/build-sligo-mutations.py` applies one shared 0.75 scale to
+[historical build-sligo-mutations.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-sligo-mutations.py) applies one shared 0.75 scale to
 all source cuts, then snaps colour to the existing Sligo specials palette.
 The 512×640 atlas has 8×10 exact 64×64 cells, anchor (32,63), binary alpha
 and clean transparent pixels. Tissue extensions keep their relative size;

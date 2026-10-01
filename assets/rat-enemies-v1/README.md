@@ -40,15 +40,7 @@ the red eye was preserved on the native grid. Detached hurt stars were omitted.
 The other variants are palette substitutions of the same isolated geometry,
 not 114 additional independently drawn poses.
 
-`source-poses.json` stores the final isolated indexed pixels. Rebuild all
-PNG/JSON files with Python's standard library:
-
-```sh
-python3 scripts/build-rat-assets.py
-node --test tests/rat-assets.test.cjs tests/rat-enemies.test.cjs
-npm test
-npm run build
-```
+`source-poses.json` preserves the original isolated indexed pixels. The existing native sheets are now edited in [Figma frame 160:2](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Preserve this pack's palette, cell geometry, anchor and clip timing. Follow [docs/figma.md](../../docs/figma.md); `npm test`, `npm run build` and `npm run figma:check` validate delivery.
 
 ## Runtime behaviour
 

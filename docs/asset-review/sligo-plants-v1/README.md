@@ -1,5 +1,6 @@
 # Sligo's plants — the cord and the cap
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Max Sligo Neverdahl, the hidden pink tardigrade, grows only two plants, both like umbilical cords. The owner painted them as exploded views, the same layout as the existing plants: the stem line beside the plant, the stem slices spread apart, the head above and the root below.
 
 - `cord-source.png`: ten pink cords (2 × 5). Each has a trunk of stacked boxes, a coiling cord with small curls on top and tentacle roots. The background is transparent, with a noisy red halo in the half-transparent fringe.
@@ -7,7 +8,7 @@ Max Sligo Neverdahl, the hidden pink tardigrade, grows only two plants, both lik
 
 ## Build
 
-`scripts/build-sligo-plants.py` (Pillow, numpy, scipy) cuts every piece from the paintings and brings it to native pixels. It uses the premultiplied box filter and cuts alpha hard at half. Everything under half alpha goes, and with it the halo and the glow, and so do specks under 40 px.
+[historical build-sligo-plants.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-sligo-plants.py) (Pillow, numpy, scipy) cuts every piece from the paintings and brings it to native pixels. It uses the premultiplied box filter and cuts alpha hard at half. Everything under half alpha goes, and with it the halo and the glow, and so do specks under 40 px.
 
 | Plant | Stem slices | Flower heads | Blooms | Roots |
 | --- | --- | --- | --- | --- |
@@ -36,4 +37,4 @@ The pixel rules all live in the script:
 
 ## Figma
 
-These files are not in Figma yet. `assets/figma-pending.json` pins them. See `docs/figma.md`, "Waiting for Figma".
+These files are not in Figma yet. the retired pending-art list pins them. See `docs/figma.md`, "Waiting for Figma".

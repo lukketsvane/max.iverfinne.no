@@ -1,5 +1,6 @@
 # Raider drone — native sprite handoff
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 This is the **moss-covered drone with the yellow cross and hanging claw** selected by the user, extracted from `raider_drone_boss_sprite_sheet.png`. It is not a new boss design or the later four-boss presentation board.
 
 ## Files
@@ -55,10 +56,6 @@ This commit is **art and handoff only**. Nothing is imported into gameplay or ad
 
 When integrating, keep the real stolen plant ID/state, host-authoritative co-op damage and theft, and the current timer-driven attack tells. Restore the actual stolen plant when rescued; do not infer run contents from the generic payload pixels. The main developer owns collision, attack schedules, rewards, progression and final approval in the current game.
 
-```sh
-python docs/asset-review/raider-drone-v1/export_frames.py --check-only
-python docs/asset-review/raider-drone-v1/export_frames.py
-node --test tests/raider-drone-assets.test.cjs
-```
+Historical source: [export_frames.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/docs/asset-review/raider-drone-v1/export_frames.py), [raider-drone-assets.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/raider-drone-assets.test.cjs). Current validation: `npm test` and `npm run build`.
 
 Pillow is the export script's only dependency. The Node test is dependency-free and checks the existing atlas adapter. The supplied scale preview is a comparison strip, not a gameplay screenshot. This asset has not been play-tested as a boss.

@@ -1,5 +1,6 @@
 # Original character artwork, 2026-09-27
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 On 2026-10-01 the owner selected five final grey-furred rat wrestling sheets
 for default Ring gear, `rattle-norvegicus-pink` / `moss-pink`. The adult rat
 has orange hair, a pink tail, fuller muscular hips/thighs, magenta/gold bra,
@@ -73,7 +74,7 @@ and `planting-4x.png` show its complete native planting frames. Previews remain
 outside runtime assets and Figma production sources.
 
 Figma synchronization is recorded in `assets/figma-manifest.json`; any files
-awaiting import remain pinned in `assets/figma-pending.json`. The initial
+awaiting import remain pinned in the retired pending-art list. The initial
 Rattus replacement used that pending workflow while access was unavailable.
 The compiler leaves byte-matching synchronized PNGs out of the pending list.
 
@@ -91,7 +92,7 @@ Some large Cairn punch drawings touch in the master; explicit cell windows
 separate those poses. Runtime sheets are complete native animations rather than
 upscaled source illustrations or static repeated stand-ins.
 
-`scripts/build-characters-v2.py` is the authoritative source compiler. It uses
+[historical build-characters-v2.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-characters-v2.py) is the authoritative source compiler. It uses
 nearest-neighbour reduction, sixteen-colour palettes, binary alpha, connected
 body extraction, fixed cells and original foot registration. No generated
 background, alpha fringe, colour under alpha zero or fractional pixel reaches

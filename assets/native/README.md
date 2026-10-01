@@ -35,7 +35,7 @@ The companion JSON files specify exact pixel rectangles, frame order, timing,
 looping, anchors and per-pose nozzle positions. The atlas rows are packing rows;
 **read the animation lists, rather than assuming one animation per row.**
 The downloadable ZIP includes every individual frame under `frames/`; running
-`python scripts/native-assets/build.py` regenerates those individual PNGs too.
+The original exporter is preserved in Git history.
 
 ## Robot contract
 
@@ -55,51 +55,8 @@ The rig uses fixed 8px/6px arm segments, with joint positions quantised to pixel
 Some hold/reverse poses intentionally repeat; 48 frames is not a claim of 48
 independently drawn characters. Spray is separate and registered to `emitter`.
 
-## Canvas integration
+## Runtime and authoring
 
-Load `assets/native/runtime.js` before the main game script. Await:
+`companion.js` owns the live companion's movement, watering and upgrades. `scripts/build-companion.cjs` reads the existing native frame metadata and emits its runtime animation catalogue. The old standalone `MaxNativeSprites` adapter and candidate atlas bench were retired after integration; use `/review.html` for current-engine comparisons with isolated storage.
 
-```js
-const native = await new MaxNativeSprites().load('assets/native/');
-```
-
-Inside the existing renderer, after camera positioning and before post-lighting:
-
-```js
-const pose = native.drawRover(ctx, {
-  x: robot.x - camX,
-  y: surfaceY(robot.x) - camY,
-  animation: robot.animation,
-  seconds: robot.animationTime,
-  facing: robot.face // -1 left, +1 right
-});
-if (robot.animation === 'water') {
-  native.drawSpray(ctx, pose.emitter, robot.animationTime, robot.face);
-}
-```
-
-These are **art-pixel coordinates**, not CSS pixels. Do not multiply by SCALE or
-DPR here; `resize()` already controls presentation. The loader disables smoothing
-only for its draw and restores canvas state afterwards. It rejects missing sheets,
-invalid rectangles, unknown states and invalid coordinates.
-
-## Preview and scope
-
-Serve the repository and open `/native-assets.html`. The page reads the actual
-`index.html`, inserts one render hook in an isolated iframe, and supplies explicit
-test plants. It uses the original terrain, player, plant renderer, crow and
-post-lighting. The fixture has its own in-memory storage, not the player's saves.
-`index.html` is unchanged. The source hook fails explicitly if its target changes.
-
-This is an **asset and renderer integration**, not a finished autonomous watering
-feature. Pathfinding, terrain collision, water consumption, unlocking and gameplay
-balance are intentionally not added. The preview animation does not award growth
-or change the player's run. Main and the live game are not modified by this branch.
-
-## Build and checks
-
-`python scripts/native-assets/build.py` regenerates all PNG/JSON/frame files
-(requires Pillow). `npm test` runs the existing game tests plus the native asset
-contract tests. `npm run build` includes the isolated preview and sprite files.
-`validation.json` records pixel-level build checks. Browser proof images and the
-browser test report are included in the downloadable package, under `previews/native`.
+Edit native masters in [Figma frame 160:2](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2), preserving these anchors, frame rectangles, palette and binary transparency. Follow [docs/figma.md](../../docs/figma.md), then run `npm test`, `npm run build` and `npm run figma:check`. Source PNGs, metadata and historical export evidence remain intact.

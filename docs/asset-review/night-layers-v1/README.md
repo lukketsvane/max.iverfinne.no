@@ -1,11 +1,12 @@
 # Night layers: ten parallax layers, sky to terrain
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 `source.png` is the owner's labelled layer sheet (1536×1024). It has ten numbered rows of cells: 1 sky, 2 stars,
 3 moon, 4 far clouds, 5 far mountains, 6 mid mountains, 7 forest, 8 ruins silhouette, 9 foreground trees and
 10 terrain. Rows 1–8 are each one panorama, cut into 13 cells over a baked sky. Rows 9 and 10 are loose sprites
 with their own alpha. `preview.png` shows all ten stacked, at 2×.
 
-`scripts/build-night-layers.py` turns each row into one 180 px tall layer at the sheet's own pixel scale:
+[historical build-night-layers.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-night-layers.py) turns each row into one 180 px tall layer at the sheet's own pixel scale:
 
 - the panorama's cells are joined and its ends crossfaded so it wraps;
 - the baked sky is keyed out, stars against their local median;
@@ -26,7 +27,7 @@ Only one moon is kept: the full moon with its cloud wisps.
 Odd gardens without a biome backdrop (1, 3, 5, 7 and 9) draw the ten layers from one top, back to front, each
 wrapping sideways at its own rate (`NIGHT_LAYERS` in `index.html`). The moon stays 70% across the view. On a
 tall screen the stars repeat up the sky. The even gardens and the Crown keep the Sanctuary backdrop. Until all
-ten layers load, the old sky and hills stand in. `tests/backdrop.test.cjs` covers the layers, the gardens and
+ten layers load, the old sky and hills stand in. [historical backdrop.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/backdrop.test.cjs) covers the layers, the gardens and
 the tiling.
 
 In Figma the runtime layers are in frame `15 NIGHT — production` (`346:2`) on the production page. Each layer

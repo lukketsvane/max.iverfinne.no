@@ -1,5 +1,6 @@
 # Sunken Sanctuary — split parts
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Concept sheet from the owner (`source.jpg`, 1536×1024, generated pixel art), cut into its loose parts for the Figma **References** page.
 
 - `source.jpg`: the sheet as received.
@@ -7,7 +8,7 @@ Concept sheet from the owner (`source.jpg`, 1536×1024, generated pixel art), cu
 - `parts/<group>/<nn-name>.png`: 170 parts at the sheet's own 1× scale, in 24 groups that follow the sheet's panels (tiles, structures, flora, props, enemies, fx, palette). Each binary-alpha part keeps at most 64 colours, which drops the JPEG noise and is visually unchanged.
 - `parts.json`: every part's group, name, file, source box (`x`, `y`, `w`, `h`), alpha mode and clown colour.
 
-Rebuild with `python3 scripts/split-concept-sheet.py docs/asset-review/sunken-sanctuary-v1` (Pillow, numpy, scipy; pyoxipng optional).
+Rebuild with [historical split-concept-sheet.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/split-concept-sheet.py) (Pillow, numpy, scipy; pyoxipng optional).
 
 ## How the cut works
 
@@ -19,7 +20,7 @@ The clown mask that came with the sheet does not register with it: its layout an
 
 - The sheet is a JPEG, so parts carry compression noise and far more colours than a pack palette allows.
 - Glow parts (`fx/lights`, `fx/particles`, the wisps and the candelabra) keep a soft halo alpha; every other part has binary alpha. Runtime art needs binary alpha and a pack palette (`docs/figma.md`).
-- The level illustration at the top is one connected scene, so it is not split. It is garden 2 in the game: `scripts/build-sunken-sanctuary.py` paints out its labels, adds an entrance tunnel on the soil line and traces its rock into collision (`assets/levels-v1/sunken-sanctuary.png`, `levels-v1/sunken-sanctuary.js`).
+- The level illustration at the top is one connected scene, so it is not split. It is garden 2 in the game: [historical build-sunken-sanctuary.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-sunken-sanctuary.py) paints out its labels, adds an entrance tunnel on the soil line and traces its rock into collision (`assets/levels-v1/sunken-sanctuary.png`, `levels-v1/sunken-sanctuary.js`).
 
 ## Figma
 

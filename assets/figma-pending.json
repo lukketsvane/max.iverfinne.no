@@ -1,4 +1,0 @@
-{
-  "reason": "Runtime art awaiting its Figma production layer is pinned by SHA-1. Put each PNG in the production frame, run npm run figma:manifest and remove its verified pin here.",
-  "files": []
-}

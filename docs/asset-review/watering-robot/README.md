@@ -1,5 +1,6 @@
 # Watering robot: candidate review, not production integration
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 **Decision: pending. This robot is optional. Other robot assets may be better.**
 
 The user requested a GIF-only ZIP and a handoff on main so the main developer
@@ -12,7 +13,7 @@ The GIF-only download was provided separately in the conversation.
 - [Concrete PR #5 / PR #6 comparison](COMPARISON.md): two native candidates,
   different anchors and adapter APIs, with no winner selected. Read this before
   choosing an asset pack or merging either branch.
-- [Atlas inspection page](index.html): all eight existing animations, both
+- [Atlas inspection page](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/docs/asset-review/watering-robot/index.html): all eight existing animations, both
   directions, integer enlargement and pause. This is an atlas bench, not a
   gameplay screenshot or an autonomous watering simulation.
 - [Rover PNG](native/rover.png) and [JSON](native/rover.json): 256 x 192 sheet,
@@ -20,7 +21,7 @@ The GIF-only download was provided separately in the conversation.
 - [Water FX](native/water-fx.png) and [JSON](native/water-fx.json): 16 frames.
 - [Props](native/props.png) and [JSON](native/props.json): eight frames.
 - [Optional icons](native/ui.png) and [JSON](native/ui.json): eight frames.
-- [Palette](native/palette.json) and [drawing adapter](native/runtime.js).
+- [Palette](native/palette.json) and [drawing adapter](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/docs/asset-review/watering-robot/native/runtime.js).
 
 Native files are reused byte-for-byte from draft
 [PR #5](https://github.com/lukketsvane/max.iverfinne.no/pull/5), source commit
@@ -31,7 +32,7 @@ index.html, package files or build script over current main.
 
 Serve the repository root with a static server, for example
 `python -m http.server 8765`, and open
-`http://localhost:8765/docs/asset-review/watering-robot/index.html`.
+[historical index.html](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/docs/asset-review/watering-robot/index.html).
 This review does not need the production build, credentials or saved games.
 The adapter must receive this folder's explicit base URL when used elsewhere;
 its historical default `assets/native/` is not the path staged here.

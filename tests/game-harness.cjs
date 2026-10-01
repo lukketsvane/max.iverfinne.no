@@ -1,55 +1,45 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
-  'bossEvent',
   'classShots', 'classFighters',
-  'soloSligo', 'sligoMeat', 'sligoPendingSwap',
-  'tSec',
-  'bossSeen', 'parts', 'shake',
-  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'seedCollected', 'seedDust', 'gardenStats',
-  'gardenScore', 'gardenPower', 'gardenFeverT', 'gardenCombo', 'gardenComboT',
-  'gardenWave', 'gardenRaidT', 'gardenRaidActive', 'gardenRaidSpawn',
-  'gardenRaidGrace', 'raidLostStart', 'gardenBossSpawned', 'floatKrek',
-  'task', 'heldDown', 'heldSpace', 'gardenPress', 'swipeDown', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'soloCrew', 'IW', 'IH', 'SCALE', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused', 'runActive',
-  'PICTURE_ART', 'SANCTUARY_BG', 'NIGHT_BG', 'CAVERN_BG', 'activeStageLayout', 'placeView', 'mouse', 'queuedThrow', 'padAx', 'bombCoolMax', 'charge', 'tunnels', 'swans', 'coop', 'heldUp', 'heldL', 'heldR', 'heldRun', 'dodgeBuf', 'bombs', 'feathers', 'bombCool', 'krekSpawnT', 'blastScore', 'warp',
-  'runExpedition', 'runLoot', 'runEncounters', 'runHazards', 'stageWeather', 'pickupNotice', 'FINAL_WAVE', 'RUN_STAGES', 'booms', 'crows',
-  'wonders', 'wonderRun', 'secrets', 'secretClock', 'fireflies', 'secretMeteors', 'smallFauna', 'secretOwlEyes', 'secretTint', 'BOSS_FONT', 'worldBanner', 'ctx',
-  'sligoTrail', 'trailSelf', 'plantAtlasReady',
-  'GRAV', 'JUMP_V', 'ACC', 'WALK_V', 'RUN_V',
+  'sligoMeat', 'sligoPendingSwap',
+  'parts',
+  'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'gardenStats',
+  'gardenScore',
+  'gardenWave', 'gardenRaidT', 'gardenRaidActive',
+  'floatKrek',
+  'task', 'heldDown', 'heldSpace', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused',
+  'activeStageLayout', 'charge', 'coop', 'heldUp', 'heldR', 'dodgeBuf', 'bombs', 'feathers', 'bombCool', 'krekSpawnT',
+  'runLoot', 'runEncounters', 'runHazards', 'booms',
+  'ctx',
+  'WALK_V',
 ];
 const functionNames = [
-  'gardenBossSpec','initBossEvent','interactBossEvent','gardenBossDefeated','updateGardenGuardian','drawBossEvent','blastFeedback','drawCharge','ladderAt','beginLadder','updateLadder','ladderInput','drawLadders',
-  'NIGHT_RELAY','RELAY_LOCKS','RELAY_LEDGES','RELAY_WISPS','relayProfile','relayActors','relayHeld','relayAt','relayBeam','relayCheckpoint','relayConstrain','resetNightRelay','nightRelayLayout','updateNightRelay','finishNightRelay','drawNightRelay','drawNightRelayHud','nightRelayMode','relicRunMode',
-  'highTidePods','HIGH_TIDE_GATES','highTideMapPoint','highTideRoutePoint','highTideHeart','highTideTip','highTideBoons','highTideSpawnBoss','highTideSpawnPest','updateHighTideEnemies','highTideBossDefeated',
-  'HIGH_TIDE','highTideMode','singleSeedMode','highTideProfile','highTidePlant','highTideCarer','highTideLayout','highTideAtSummit','updateHighTide','updateHighTideClimb','drawHighTideWorld','drawHighTideWater','drawHighTideHud',
-  'lastSeedMode','seedVital','seedDown','seedActors','resetLastSeed','startLastSeed','damageGardener','updateLastSeed','lastSeedEnemy','drawLastSeedHud',
-  'combatFx','classPrimary','polgePunch','polgeFlurry','classAttackCooldown','classSkillCooldown','updateClassCombat','drawClassShots','combatObjectives','boxerDodge',
-  'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap', 'drawSligoColony', 'sligoCompanionAt',
-  'drawRoster', 'drawTeamArrows', 'drawMouseReticle', 'mouseAt', 'aimAssist', 'mouseAim', 'chargeStart', 'chargeRelease', 'updateCharge', 'chargePoint', 'autoTarget', 'runStats', 'runCheckpoint', 'finalizeRogueRun', 'canBurrow', 'startBurrow', 'updateBurrow', 'burrowErupt', 'swanThanks', 'blastBird', 'pollPads', 'resize', 'updateWonders', 'rollWonders', 'wonderBlast', 'wonderTap', 'wonderTapIndex', 'wonderTapHost', 'wonderLog', 'drawWonders', 'drawWonderAir', 'wonderStarPos', 'WONDERS', 'markWonder', 'unlockAudio', 'setEffectsVolume', 'sfx', 'classStrikeCue', 'skillReadyCue', 'socialTone', 'effectVoice', 'runCue', 'guardianCue', 'chime', 'blastTone', 'listenRun', 'RUN_CUES',
-  'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopFrame', 'coopDepart', 'coopAvatar', 'coopMarker', 'stopCoop', 'runIsPaused',
-  'grantRogueXP', 'offerRogueChoice', 'chooseRoguePerk', 'perkChoices',
-  'readInput', 'crouchGardenAction', 'requestClimb', 'taskSteer', 'updateHands', 'clearRunInput', 'updateCompanion', 'ensureCompanion', 'ensureCrew', 'spawnLooseSeeds', 'spawnExitSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'drawResultPlant', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
-  'updatePlayer', 'physics', 'doJump', 'requestDodge', 'throwBomb', 'launchBomb', 'drawBombs', 'drawSligoAction', 'drawSligoSeed', 'highGround', 'updateBombs', 'explode', 'makeKrek', 'updateKrek', 'staggerKrek', 'waterAt',
-  'waterGardenPlot', 'waterGardenPlotTick', 'harvestGardenPlot', 'saveGarden',
-  'frame', 'gardenBackdrop', 'sanctuaryBackdrop', 'drawSanctuaryLayer', 'nightGarden', 'nightBackdrop', 'drawNightLayers', 'cavernGarden', 'cavernBackdrop', 'drawCavernLayers', 'surfaceY', 'terrainY', 'updateGarden', 'updateGardenFun', 'updateSeedPickups', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel', 'raidPressure', 'setMenuPaused',
-  'initExpedition', 'interactExpedition', 'updateExpedition', 'expeditionBlast', 'drawExpedition', 'dropRunItem', 'updateRunLoot', 'initRunStage', 'interactEncounter', 'updateEncounters', 'updateStageWeather', 'damagePest', 'addRunHazard', 'updateRunHazards', 'updateHazardContact', 'makeHollowCrown', 'updateEnemyRole', 'updateHollowCrown', 'levelCleared', 'emptyTraits', 'enemyKind',
-  'sporeAt', 'sporeAim', 'hazardPosition', 'throwAuto',
-  'ownClass', 'classProtection', 'biteGarden', 'coopWithMember', 'refillCompanion', 'eachCompanion',
-  'stageLayout', 'pictureLayout', 'levelSpots', 'digSpots', 'digBlast', 'pickupShown', 'drawSpots', 'drawSeedPickups', 'updatePlace', 'placeTaken', 'drawPlatforms', 'drawPlaceVeils', 'drawPlaceBanner', 'wonderPerch', 'playerSupportY', 'playerSupportId', 'playerWetAt', 'levelOriginX',
-  'makeStageBoss', 'updateStageBoss', 'stageCombatProfile', 'waveEnemyKind', 'raidBudget', 'safeEnemyPosition', 'updatePestDive', 'cancelPestDive', 'encounterFloor', 'spawnEncounterGuard', 'pickKrekTarget', 'collectSeed',
-  'runTimeThreat', 'runDurabilityScale', 'runDamageScale', 'runPlayerPower', 'runRewardScale', 'runReward', 'grantRogueLevel', 'openingRaidT', 'burstKrek', 'runRaidLimit', 'runRaidInterval', 'runPatrolLimit', 'runPatrolInterval',
-  'isRat', 'makeRat', 'ratFloor', 'ratMove', 'ratJumpToward', 'updateRat', 'predictRat', 'cancelRatAttack', 'ratStats', 'enemyDistance', 'drawKrek', 'bombHitsBird',
-  'plantClimbAt', 'plantClimbHeight', 'canPlantClimb', 'beginClimb', 'updateClimb', 'jumpFromPlant', 'startWarp',
-  'runHudBoons', 'runHudIconPosition', 'drawTinyBoon', 'levelTallyLayout', 'drawRunHud',
-  'useClassSkill', 'mossSlam', 'dispatchTargets', 'herbalistBloom', 'braceShove', 'bracedMember',
-  'sligoTun', 'endTun', 'curledMember', 'plantProtection', 'SLIGO_KINDS', 'seedKindFor', 'sligoKindFor', 'plantGardenSeed',
-  'updateSligoTrail', 'drawSligoTrail', 'drawPlayer', 'sligoFx', 'SLIGO_FX', 'sligoBursts', 'SLIGO_EVO', 'sligoEvo', 'drawSligoEvo', 'sligoEvoImg', 'pathRanks', 'coopCleanAvatar', 'trailFollow', 'trailTracker', 'TRAIL_CAP', 'TRAIL_LIFE', 'TRAIL_FADE', 'TRAIL_INK', 'drawClassAuras', 'drawSkillPip', 'touchKind', 'drawClassAuras', 'drawSkillPip', 'exitStalk', 'drawExitCue', 'drawGardenScene', 'galleryPlant', 'PLANT_FEATURES', 'PLANT_TIER', 'auraAt', 'pestSlow', 'updateBerries', 'enemyUnlocked', 'plantFalls', 'drawSpritePlant', 'SPRITE_PLANTS', 'gardenKindFor', 'drawGrowingFigmaPlant', 'GARDEN_FIG_FORMS', 'liveBoss', 'drawBossBar', 'levelCleared', 'BOSS_NAMES', 'plantCollection', 'drawBirdPest', 'drawKrek', 'pestBird', 'PEST_BIRDS', 'drawSongbird', 'SONGBIRD', 'drawBooms', 'drawCompanion', 'drawRunHazards',
-  'secretHash', 'secretEventFor', 'secretEvent', 'updateSecrets', 'drawSecretBanner', 'drawSecretSky', 'drawSecretGround', 'drawSecretAir',
-  'secretStarLive', 'secretStarPos', 'grantWish', 'catchWish', 'secretPop', 'rebalanceEcology', 'plantGold', 'goldHarvest', 'drawHedgehog', 'secretDay', 'drawSecretDay', 'secretLogoTap', 'secretSkin', 'drawWorldBanner',
+  'drawCharge',
+  'RELAY_LOCKS', 'relayProfile', 'relayBeam', 'updateNightRelay', 'nightRelayMode',
+  'highTidePods', 'HIGH_TIDE_GATES', 'highTideRoutePoint', 'highTideTip', 'highTideBoons', 'highTideSpawnBoss', 'updateHighTideEnemies', 'highTideBossDefeated',
+  'HIGH_TIDE', 'highTideMode', 'highTideProfile', 'highTidePlant', 'updateHighTide',
+  'lastSeedMode', 'seedVital', 'seedDown', 'seedActors', 'damageGardener', 'updateLastSeed', 'lastSeedEnemy',
+  'classSkillCooldown', 'updateClassCombat', 'boxerDodge',
+  'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap',
+  'chargeStart', 'chargeRelease', 'updateCharge', 'finalizeRogueRun', 'setEffectsVolume',
+  'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopDepart', 'coopAvatar', 'stopCoop',
+  'chooseRoguePerk',
+  'readInput', 'crouchGardenAction', 'requestClimb', 'ensureCompanion', 'spawnLooseSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
+  'updatePlayer', 'doJump', 'requestDodge', 'throwBomb', 'updateBombs', 'makeKrek', 'updateKrek', 'waterAt',
+  'harvestGardenPlot', 'saveGarden',
+  'frame', 'surfaceY', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel',
+  'initRunStage', 'interactEncounter', 'updateEncounters', 'damagePest', 'makeHollowCrown', 'levelCleared',
+  'biteGarden',
+  'stageLayout', 'pictureLayout', 'levelOriginX',
+  'collectSeed',
+  'beginClimb',
+  'useClassSkill', 'mossSlam', 'braceShove',
+  'SLIGO_KINDS', 'plantGardenSeed',
+  'drawGardenScene', 'plantFalls', 'liveBoss', 'plantCollection',
 ];
 const exposure = `\nglobalThis.game = {${functionNames.join(',')}};\n` +
   stateNames.map(name => `Object.defineProperty(game, '${name}', {
@@ -165,22 +155,4 @@ function plot(overrides = {}) {
   };
 }
 
-function fakeAudio(h) {
-  const contexts = [], param = () => ({ value: 0, points: [], events: [], setValueAtTime(v, t) { this.value = v; this.points.push(v); this.events.push({ type: 'set', value: v, time: t }); }, exponentialRampToValueAtTime(v, t) { this.value = v; this.points.push(v); this.events.push({ type: 'exponential', value: v, time: t }); } });
-  h.window.AudioContext = class {
-    constructor() { Object.assign(this, { state: 'suspended', currentTime: 0, sampleRate: 22050, destination: { kind: 'destination' }, nodes: [] }); contexts.push(this); }
-    resume() { if (this.state !== 'closed') this.state = 'running'; return Promise.resolve(); }
-    suspend() { this.state = 'suspended'; return Promise.resolve(); }
-    close() { this.state = 'closed'; return Promise.resolve(); }
-    node(kind, parts) { const n = { kind, outputs: [], connect(to) { this.outputs.push(to); }, disconnect() {}, start(time, offset = 0) { this.startTime = time; this.offset = offset; }, stop(time) { this.stopTime = time; }, ...parts }; this.nodes.push(n); return n; }
-    createOscillator() { return this.node('osc', { type: 'sine', frequency: param() }); }
-    createGain() { return this.node('gain', { gain: param() }); }
-    createBiquadFilter() { return this.node('filter', { Q: param(), frequency: param() }); }
-    createDynamicsCompressor() { return this.node('compressor', { threshold: param(), knee: param(), ratio: param(), attack: param(), release: param() }); }
-    createBufferSource() { return this.node('noise', {}); }
-    createBuffer(channels, length, sampleRate) { const data = Array.from({ length: channels }, () => new Float32Array(length)); return { sampleRate, length, getChannelData: channel => data[channel] }; }
-  };
-  return contexts;
-}
-
-module.exports = { loadGame, plot, fakeAudio };
+module.exports = { loadGame, plot };
