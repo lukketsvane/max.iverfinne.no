@@ -17,11 +17,11 @@ server.listen(8796,'127.0.0.1',async()=>{
   await page.waitForFunction(()=>document.querySelector('#status').dataset.state);
   const game=page.frames().find(f=>f!==page.mainFrame());activeGame=game;activePage=page;
   const loaded=await game.evaluate(()=>window.MaxNativeArt.load());assert.deepEqual(loaded.failed,[]);
-  
+
   await game.evaluate(()=>window.__rattusReview.park());
   console.log(engineName,"start",await game.evaluate(()=>window.__rattusReview.debug));
   await key(game,'ArrowRight',true);
-  await game.waitForFunction(()=>window.__rattusReview.player.motionName==='walk');
+  await game.waitForFunction(()=>window.__rattusReview.player.motionName==='walk'&&Math.abs(window.__rattusReview.player.vx)>=59);
   await page.locator('iframe').screenshot({path:out+'/'+engineName+'-game-walk.png'});
   await key(game,'Shift',true);
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='run');

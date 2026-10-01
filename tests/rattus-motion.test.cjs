@@ -9,6 +9,9 @@ test('Rattus movement cancels idle immediately, brakes, and keeps planting separ
  p.vx=0;update(p,1/60);assert.equal(p.motionName,'brake');
  p.st='task';p.anim='sow';update(p,1/60);assert.equal(p.motionName,'');
  p.st='free';p.anim='walk';p.vx=30;update(p,1/60);assert.equal(p.motionName,'walk');
+ p.vx=60;update(p,1/30);assert.equal(p.motionName,'walk');
+ p.vx=96;update(p,1/30,2);assert.equal(p.motionName,'walk');
+ p.vx=176;update(p,1/30,2);assert.equal(p.motionName,'run');
  p.grounded=false;p.vy=-80;update(p,1/60);assert.equal(p.motionName,'pounce');
 });
 test('all 25 Figma clips keep their variable timing, loop boundary and native anchor',async()=>{
