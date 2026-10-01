@@ -729,7 +729,9 @@
     { "path": "assets/rattus-motion/uppercut.png", "nodeId": "558:13537", "group": "player-characters", "width": 512, "height": 40, "sha1": "13b0e8b98d2808a4bd3fa2e2bb80db2d42bd33aa" },
     { "path": "assets/rattus-motion/walk.png", "nodeId": "558:13528", "group": "player-characters", "width": 512, "height": 40, "sha1": "929add9d8ac1d973ef6851f503697e904184533c" },
     { "path": "assets/results-native/sprites/font-5x7.png", "nodeId": "389:436", "group": "ui,-boons-&-results", "width": 96, "height": 32, "sha1": "972d11f3bcb444d13d8b748fd56585bd8f0d53bb" },
-    { "path": "assets/tiles-v1/sanctuary.png", "nodeId": "340:3", "group": "environment", "width": 128, "height": 75, "sha1": "8b0552caf2119b1ce407f92d45fc0c09128fccbf" }
+    { "path": "assets/tiles-v1/sanctuary.png", "nodeId": "340:3", "group": "environment", "width": 128, "height": 75, "sha1": "8b0552caf2119b1ce407f92d45fc0c09128fccbf" },
+    { "path": "assets/yeet-encounter-v1/cat.png", "nodeId": "582:13528", "group": "enemies", "width": 128, "height": 64, "sha1": "45ecb7f5fd293bdc3b487ca33f57536ed41dfb13" },
+    { "path": "assets/yeet-encounter-v1/yeet.png", "nodeId": "574:13527", "group": "enemies", "width": 256, "height": 128, "sha1": "8783ddf7b17f7387965f42c1cf977e573ffde224" }
   ],
   "unused": [
     { "path": "assets/characters-v2/kestrel/interaction.png", "nodeId": "386:11", "section": "451:8", "width": 256, "height": 256, "sha1": "90a2fd10dc1a46e0f29ec406f282a662e825aa37", "status": "unused" },
