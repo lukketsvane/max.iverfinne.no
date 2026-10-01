@@ -1,0 +1,51 @@
+name: Prepare verified Yeet release
+on:
+  push:
+    branches: [codex/yeet-release-20261001]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore existing native Figma source and register production layer
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 2 'https://www.figma.com/api/mcp/asset/b368fbdc-8d55-4a3d-9dab-77c42a3f1bd6/c56f1.png' -o assets/yeet-encounter-v1/01-encounter.png
+          python3 - <<'PY'
+          import hashlib,json,pathlib,re,struct
+          p=pathlib.Path('assets/yeet-encounter-v1/01-encounter.png')
+          data=p.read_bytes()
+          assert hashlib.sha1(data).hexdigest()=='2a175fc79a0e2ae9a065cb82d0d4b4607e7d8d91'
+          assert struct.unpack('>II',data[16:24])==(256,256)
+          f=pathlib.Path('assets/figma-manifest.json');raw=f.read_text()
+          start=re.search(r'(?m)^  "production":\s*(\[)',raw).start(1)
+          entries,length=json.JSONDecoder().raw_decode(raw[start:])
+          assert not any(e['path']==str(p) for e in entries)
+          entries.append(dict(path=str(p),nodeId='527:13518',group='enemies',width=256,height=256,sha1=hashlib.sha1(data).hexdigest()))
+          entries.sort(key=lambda e:e['path'])
+          lines=['    { '+', '.join(json.dumps(k)+': '+json.dumps(v,ensure_ascii=False) for k,v in e.items())+' }' for e in entries]
+          f.write_text(raw[:start]+'[\n'+',\n'.join(lines)+'\n  ]'+raw[start+length:])
+          PY
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Publish only verified game changes
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          base=be1d7bada5c29ea48b3c5d02652387a15122bd92
+          test "$(git rev-parse origin/main)" = "$base"
+          git rm .github/workflows/yeet-release.yml
+          git add yeet.inc.js tests/yeet.test.cjs assets/yeet-encounter-v1 assets/figma-manifest.json
+          tree=$(git write-tree)
+          sha=$(git -c user.name='Iver Finne' -c user.email='41840333+lukketsvane@users.noreply.github.com' commit-tree "$tree" -p "$base" -m 'Fix Yeet native sprites, westbound encounter and co-op lifecycle')
+          git push origin "$sha:refs/heads/codex/yeet-ready-20261001"
+          echo "Verified release: $sha" >> "$GITHUB_STEP_SUMMARY"
