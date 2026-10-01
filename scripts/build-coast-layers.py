@@ -31,9 +31,8 @@ SOURCE = ROOT / 'docs/asset-review/coast-layers-v1'
 OUT = ROOT / 'assets/coast-v1'
 H = 180
 NIGHT = np.array([13., 32, 73])
-# name: (rows moved down on the grid, colours, haze towards the night, mirrored pair)
 LAYERS = {'mountains': (57, 10, 0.0, True), 'sea': (16, 16, 0.0, True), 'ruins': (-24, 12, 0.3, False)}
-SPECK = 20                     # opaque parts smaller than this go (the crescent moon)
+SPECK = 20
 
 
 def native(path, f=4):

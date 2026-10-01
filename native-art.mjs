@@ -1,20 +1,13 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 
-// Presentation only: atlas animation never changes an attack, collision or heal.
 const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
-// Persisted skin/class keys are network compatibility identifiers. These three
-// characters have wholly original anatomy and no longer load the Max recolours.
 const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
 function playerPath(skin, sheet = 'main') {
   const character = CHARACTER_ART[skin];
-  // Assemble the final leaf separately so static runtime discovery does not
-  // mistake archival source/preview PNGs for live sheets.
   const directory = character ? `assets/characters-v2/${character}/` : `assets/max-skins-v1/${skin}/`;
   return directory + (sheet === 'interaction' ? 'interaction.png' : 'main.png');
 }
 function playerRow(skin, sheet, row, animation) {
-  // The original contract shares sow and toss. New characters have a dedicated
-  // attack row in the otherwise unused interaction cells, so tending stays calm.
   return CHARACTER_ART[skin] && sheet === 'interaction' && animation === 'toss' ? 5 : row;
 }
 function playerCell(skin, player) {
@@ -26,8 +19,6 @@ function playerCell(skin, player) {
   if (player.rattleMove === 'splits') return player.pounce === 2 ? { sheet: 'interaction', row: 5, column: 4 + Math.min(3, Math.floor(clock * 4 / .16)) } : { sheet: 'main', row: 5, column: Math.min(7, Math.floor(clock * 8 / .45)) };
   return null;
 }
-// A hidden character's pack loads the first time someone plays it; until it has loaded,
-// or if it is missing, the original Max stands in.
 const ON_DEMAND = Object.freeze(['sligo']);
 const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
 const RATS = Object.freeze(['common', 'black', 'albino', 'plague']);
@@ -47,8 +38,6 @@ export function createNativeArt() {
   function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function renderTime() { return typeof performance !== 'undefined' ? performance.now() / 1000 : 0; }
   function clockFor(enemy, time) {
-    // `ph` is already a stable per-enemy seed in host snapshots. A WeakMap alone
-    // would restart guest animations whenever a fresh snapshot replaces objects.
     const key = Number.isFinite(enemy.ph) ? `${idFor(enemy)}:${enemy.ph}` : null;
     let clock = key ? clocks.get(key) : anonymousClocks.get(enemy);
     if (!clock || time < clock.last - .5) {
@@ -79,8 +68,6 @@ export function createNativeArt() {
         ((enemy.bite || 0) > clock.bite + .05 || enemy.stolen && !clock.stolen)) clock.releasedAt = time;
     if (enemy.boss && clock.exposed > 0 && !(enemy.exposed > 0)) clock.recoveredAt = time;
     if (enemy.boss && clock.attackT > 0 && !(enemy.attackT > 0)) clock.recoveredAt = time;
-    // A snapshot can arrive after the short damage flash has faded. The health
-    // edge still starts the local recoil, and repeated hits restart it cleanly.
     if (enemy.boss && (enemy.flash > clock.flash || enemy.hp < clock.hp)) clock.hitAt = time;
     if (enemy.boss && (enemy.windup > 0 || enemy.exposed > 0 || enemy.attackT > 0)) clock.hitAt = -Infinity;
     let name, progress;
@@ -90,15 +77,12 @@ export function createNativeArt() {
       name = (enemy.boss ? phase : '') + 'windup';
       progress = 1 - enemy.windup / (enemy.tell || (enemy.boss ? 1.4 : .95));
     } else if (enemy.boss && enemy.exposed > 0) {
-      // The cyan window must remain visible for the complete gameplay timer.
       name = phase + 'vulnerable';
     } else if (enemy.boss && enemy.attackT > 0) {
       name = phase + 'attack';
       progress = 1 - enemy.attackT / (enemy.attackDuration || .5);
     } else if (enemy.flash > 0 || enemy.boss && time - clock.hitAt < .3) {
       name = (enemy.boss ? phase : '') + 'hurt';
-      // Boss recoil gets enough time for its authored poses. Amber windups,
-      // active attacks and the complete cyan damage window always take priority.
       progress = enemy.boss && Number.isFinite(clock.hitAt) ? (time - clock.hitAt) / .3 : 1 - Math.min(1, enemy.flash);
     } else if (enemy.boss) {
       const recovery = time - clock.recoveredAt;
@@ -164,8 +148,6 @@ export function createNativeArt() {
     if (demand[id] || !ON_DEMAND.includes(id) || typeof fetch !== 'function') return;
     demand[id] = loadAtlas(`assets/max-skins-v1/${id}/atlas.json`).then(atlas => {
       atlases[id] = atlas;
-      // Saved results can be the first place Sligo appears. Refresh that scene
-      // when its deferred pack arrives, just as for the eager character packs.
       announceReady({ loaded: [id], failed: [] });
     }, () => {});
   }
@@ -200,8 +182,6 @@ export function createNativeArt() {
   }
   function drawDefeated(ctx, time, cameraX, cameraY) {
     const now = renderTime();
-    // Winning freezes the simulation clock. The final collapse still finishes
-    // behind the result overlay; this clock never advances live enemy attacks.
     const elapsed = death => Math.max(time - death.at, now - death.renderedAt);
     deaths = deaths.filter(death => time >= death.at && elapsed(death) < death.duration);
     for (const death of deaths) {

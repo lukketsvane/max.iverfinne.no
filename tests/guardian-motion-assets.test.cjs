@@ -26,7 +26,6 @@ test('master extraction keeps a connected strike whole when it crosses a nominal
     const top = row * 45 + 10 + (row === 3 && col === 1 ? 6 : 0);
     for (let y = top; y < top + 15; y++) for (let x = col * 50 + 20; x < col * 50 + 31; x++) mark(x,y);
   }
-  // The first strike reaches past x=50, but stays separate from the next body.
   for (let x = 31; x < 74; x++) mark(x,3 * 45 + 12);
   const layout = motionCells({info: {width,height}, data}, 'test');
   assert.equal(layout.cells.length, 32);
@@ -38,8 +37,6 @@ test('master extraction keeps a connected strike whole when it crosses a nominal
   assert.equal(layout.registration.rowBaselines.length, 8);
 });
 
-// These assertions guard the user's visible request: every new guardian gets
-// newly authored motion, not an atlas inflated by duplicate or shifted images.
 test('all sixteen guardian designs have four authored poses in every animation state', async () => {
   const {decode} = await pngTools;
   assert.equal(roster.length, 16);

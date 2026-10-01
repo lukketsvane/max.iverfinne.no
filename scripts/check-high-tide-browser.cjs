@@ -1,4 +1,3 @@
-// Isolated review pages only: never signs in or joins a live game.
 const assert=require('node:assert/strict');
 const {spawn}=require('node:child_process');
 const fs=require('node:fs');
@@ -30,8 +29,6 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
     else{
      const iframe=page.frames().find(f=>f!==page.mainFrame());
      await page.locator('iframe').screenshot({path:`browser-review/${name}-${scene}-before.png`});
-     // WebKit does not transfer keyboard focus after the canvas prevents a
-     // pointer's default action. The shipped game runs in the top frame.
      await iframe.evaluate(()=>window.focus());
      assert.equal(await iframe.evaluate(()=>document.hasFocus()),true);
      if(zone===-2)await iframe.locator('#stage').tap({position:{x:195,y:540}});

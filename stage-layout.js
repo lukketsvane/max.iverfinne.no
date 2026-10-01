@@ -24,7 +24,6 @@
     layout.platforms.forEach(function (p) {
       if (p.y < y0 - 1e-7 || p.y > y1 + 1e-7) return;
       var t = dy > 1e-8 ? (p.y - y0) / dy : 0, x = x0 + (x1 - x0) * t;
-      // Walking off a lip must fall; the previous contact is not a new landing.
       if (t <= 1e-7 && !inside(p, x1, FOOT)) return;
       if (t < fraction && inside(p, x, FOOT)) { best = p; fraction = t; }
     });
@@ -64,7 +63,6 @@
     [-1, 1].forEach(function (side, routeIndex) {
       var path = [], previous = null;
       shape.x.forEach(function (offset, i) {
-        // Different stages and opposite routes keep distinct width/gap rhythms.
         var center = origin + side * offset;
         var width = shape.width[i] + ((variant + i + routeIndex) % 2) * 2;
         width = i ? Math.max(18, width - 6 - variant * 4) : Math.max(32, width - variant * 2);
@@ -72,7 +70,6 @@
         if (!previous) {
           var floor = groundMinimum(center, width);
           y = Math.floor(floor) - shape.rise[i];
-          // A first ledge over a pond remains within one jump from the bank.
           if (wet && wet(center)) y = Math.min(y, Math.floor(ground(origin)) - 15);
         } else {
           var previousX=previous.x+previous.w/2;
@@ -80,8 +77,6 @@
           var gap=7+Math.floor((stage-1)*7/19),distance=separated?(previous.w+width)/2+gap:Math.min(34,Math.abs(offset-shape.x[i-1]));
           center=previousX+direction*distance;
           y = previous.y - shape.rise[i];
-          // Selected hops have genuine air between the foot spans. Narrower
-          // late shelves and larger gaps add precision without extra jump power.
           var clearance=Math.floor(groundMinimum(center,width))-6;
           if (y > clearance && previous.y-clearance>19) {
             center=previousX-direction*distance;
@@ -94,21 +89,15 @@
         }
         previous = make(stage + ':' + routeIndex + ':' + i, center, y, width, side, false); path.push(previous);
       });
-      // Late terraces gain a taller end; other silhouettes retain their distinct
-      // arches, returning branches, columns and alternating ascent.
       if (kind === 'terraces' && variant) for (var extra = 0; extra < variant; extra++) {
         previous = make(stage + ':' + routeIndex + ':v' + extra, previous.x + previous.w / 2 + side * (extra % 2 ? -30 : 32), previous.y - 17, Math.max(18,34-variant*4), side, false); path.push(previous);
       }
       var summit = path.reduce(function (a, b) { return b.y < a.y ? b : a; });
       var first = path[0], startX = first.x + first.w / 2;
       var start = { x: startX, y: ground(startX) };
-      // A sloping floor can sit far below the centre of a horizontal shelf.
-      // Launch from its highest dry footing, still beneath the visible lip.
       for (var launchX = first.x + 2; launchX <= first.x + first.w - 2; launchX += 2) {
         if ((!wet || !wet(launchX)) && ground(launchX) < start.y) start = { x: launchX, y: ground(launchX) };
       }
-      // First ledges are one-way, so a player can jump straight up from below.
-      // For a pond launch, use the nearest dry point toward the central garden.
       if (wet && wet(start.x)) {
         for (var step = 0; step < 80 && wet(start.x); step++) start.x -= side * 2;
         start.y = ground(start.x);
@@ -116,8 +105,6 @@
       layout.routes.push({ id: routeIndex, side: side, start: start, platformIds: path.map(function (p) { return p.id; }) });
       layout.rewards.push(anchor(summit, side));
       layout.trials.push(anchor(path[Math.floor(path.length / 2)], side));
-      // These visibly separated perches reward an improved jump or Moss's
-      // mobility; neither core trial nor its feather requires this shortcut.
       var bonus = make(stage + ':' + routeIndex + ':bonus', summit.x + summit.w / 2 + side * 26, summit.y - 32, 28, side, true);
       layout.bonuses.push(anchor(bonus, side));
     });
@@ -311,8 +298,6 @@
     best.nodes = tiers(best, ground, wet); best.seed = seed;
     return best;
   }
-  // Ledges and rock drawn from the Sanctuary tile atlas (tiles.js): mossy stone
-  // strips, plank ledges on legs, ruin lintels and nine-sliced rock with vines.
   function drawTiles(ctx, layout, cx, cy, width, height, tiles) {
     var img = tiles.img, P = tiles.pieces;
     function blit(name, x, y, w, h, ox, oy) {
@@ -343,7 +328,7 @@
     }
     var flora = ['flora.flowers', 'flora.mushrooms', 'flora.ferns'];
     layout.platforms.forEach(function (p, index) {
-      if (p.place) return; // a garden place draws its own rock
+      if (p.place) return;
       var x = Math.round(p.x - cx), y = Math.round(p.y - cy), w = Math.round(p.w), hash = (p.x * 73856093 ^ p.y * 19349663) >>> 0;
       if (p.solid) {
         if (layout.art && !p.draw) return;
@@ -355,9 +340,8 @@
         if (w >= 30 && hash % 5 === 1) { var f = flora[hash % 3], F = P[f]; blit(f, x + 4 + (hash >>> 3) % Math.max(1, w - F[2] - 8), y - F[3] + 2); }
         return;
       }
-      if (layout.art && p.art) return; // the picture already draws its bridges and rungs
+      if (layout.art && p.art) return;
       if (x + w < -12 || x > width + 12 || y > height + 30 || y + 30 < 0) return;
-      // frost and ember gardens keep their own snow and ember ledges (MaxPlaces.ledgeArt)
       var biome = root.MaxPlaces && root.MaxPlaces.biome && root.MaxPlaces.biome(layout.stage), art = biome && root.MaxPlaces.ledgeArt && root.MaxPlaces.ledgeArt(p, layout.stage);
       if (art) {
         ctx.drawImage(art.canvas, x + art.dx, y + art.dy);
@@ -392,7 +376,7 @@
         ctx.fillStyle = colors.moss; for (var km = 2; km < p.w - 3; km += 5) { ctx.fillRect(x + km, y - 1, 3, 1); if ((km + index) % 4 === 0) ctx.fillRect(x + km + 1, y + 1, 1, 2 + (km % 3)); }
         return;
       }
-      if (layout.art && p.art) return; // the picture already draws its bridges and rungs
+      if (layout.art && p.art) return;
       if (x + p.w < -4 || x > width + 4 || y > height + 8 || y + p.depth < -12) return;
       var art = root.MaxPlaces && root.MaxPlaces.ledgeArt && root.MaxPlaces.ledgeArt(p, layout.stage);
       if (art) {

@@ -1,5 +1,3 @@
-/* High Tide: explore the authored gardens, nourish one motherplant, defeat five
-   guardians. The host owns every timer, pickup, boss and care outcome. */
 var HIGH_TIDE={height:1370,startHeight:24,reach:36,period:40,warning:5,surge:5,growth:8};
 var HIGH_TIDE_GATES=[312,572,848,1128,1370];
 var HIGH_TIDE_ZONES=['VERKSTADHAGEN','VASSARKADEN','VINTERHAGEN','MAANEARKIVET','KLOKKEHAGEN'];
@@ -54,7 +52,7 @@ function startHighTide(p){
   if(!highTideMode()||rogueRun.survival.started)return;
   var s=rogueRun.survival;s.started=true;s.plantId=p.id;s.height=HIGH_TIDE.startHeight;s.phase='opening';
   p.tideVine=true;p.tideHeight=s.height;p.growth=.1;p.moisture=.8;p.health=1;p.stalk=false;
-  gardenSeeds=0;runElapsed=0;recordGardenPlant(p);showRound('HIGH TIDE','Stell. Utforsk. Forsvar.',2200);
+  gardenSeeds=0;runElapsed=0;recordGardenPlant(p);
 }
 function highTideHead(a){return a.p.y-((a.member?a.member.classId:rogueRun.classId)==='sligo'?Math.max(3,sligoHeight(a.p)):18);}
 function highTideStemDistance(x,y){var s=rogueRun.survival,q=highTideRoutePoint(Math.max(0,Math.min(s.height,s.base-y)));return Math.hypot(q.x-x,q.y-y);}
@@ -95,7 +93,7 @@ function highTideBossDefeated(k){
   s.waterY=Math.min(s.base+70,s.waterY+90);runHazards=[];floatKrek=floatKrek.filter(function(e){return !e.tide;});
   var p=highTidePlant();if(p){p.health=clamp01(p.health+.22);p.moisture=clamp01(p.moisture+.25);p.pulse=2;}
   seedActors().forEach(function(a){if(a.v.hp>0)a.v.hp=Math.min(100,a.v.hp+25);});
-  grantRogueLevel();showRound(s.bosses===5?'KRONA ER OPEN':'HAGEN ER FRI','',1800);puff(k.x,k.y,18,1);
+  grantRogueLevel();puff(k.x,k.y,18,1);
 }
 function highTideEnemyTarget(k){
   var living=seedActors().filter(function(a){return a.v.hp>0;});
@@ -120,8 +118,6 @@ function updateHighTideBoss(k,dt){
   if(k.bossId==='moon-moth'&&k.attack%3===0){var tip=highTideTip();k.healing=true;k.healX=tip.x;k.healY=tip.y;k.windup=k.tell=1.5;return;}
   var power=.55+k.tideIndex*.08,type=k.bossId==='mossback'?'root':'spore';
   highTideStrike(k,a.p.x,a.p.y,11,power,k.tell,type);
-  // Fixed telegraphs leave a full walking/jumping escape; later guardians layer
-  // flanking attacks and sap-feeders rather than unannounced contact damage.
   if(k.tideIndex>0){for(var side=-1;side<=1;side+=2)highTideStrike(k,a.p.x+side*35,a.p.y,9,power*.7,k.tell+.25,type);}
   if(k.tideIndex===4&&k.phase===3)seedActors().forEach(function(other){if(other.id!==a.id&&other.v.hp>0)highTideStrike(k,other.p.x,other.p.y,10,power,k.tell+.35,'spore');});
   if(k.tideIndex>=2&&k.attack%2===0)highTideStrike(k,a.p.x,a.p.y,10,0,k.tell+.55,'gust');
@@ -131,7 +127,7 @@ function updateHighTideBoss(k,dt){
 function updateHighTideEnemies(dt){
   if(!highTideMode()||coopGuest()||runIsPaused()||rogueRun.ended||!rogueRun.survival.started)return;
   var s=rogueRun.survival,p=highTidePlant();if(!p)return;
-  updatePolge(dt);highTideSpawnBoss();s.enemyClock-=dt;
+  highTideSpawnBoss();s.enemyClock-=dt;
   if(s.rest<=0&&s.elapsed>16&&s.enemyClock<=0&&floatKrek.filter(function(k){return k.tide&&!k.boss;}).length<Math.min(4,1+s.bosses)){
     highTideSpawnPest();s.enemyClock=Math.max(9,18-s.bosses*1.5)/highTideProfile().enemy;
   }
@@ -139,7 +135,6 @@ function updateHighTideEnemies(dt){
     if(k.burn>0){k.burn=Math.max(0,k.burn-dt);if(damagePest(k,(k.burnRate||.2)*dt,k.x-20))return;}
     if(k.glue>0)k.glue=Math.max(0,k.glue-dt);
     if(k.boss){updateHighTideBoss(k,dt);return;}
-    if(polgeLure(k,dt))return;
     if(k.flee>0){k.flee-=dt;k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt;k.y-=8*dt;return;}
     var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
     var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
@@ -158,8 +153,6 @@ function updateHighTide(dt){
     var since=Math.max(0,s.elapsed-profile.grace),phase=since%HIGH_TIDE.period;s.cycle=Math.floor(since/HIGH_TIDE.period);
     s.phase=s.rest>0?'rest':s.elapsed<profile.grace?'opening':phase>=HIGH_TIDE.period-HIGH_TIDE.surge?'surge':phase>=HIGH_TIDE.period-HIGH_TIDE.surge-HIGH_TIDE.warning?'warning':'rise';
     if(s.elapsed>profile.grace&&s.rest<=0){var floor=s.base-highTideGate()+80;
-      // The guardian's arena remains playable. This ceiling depends only on the
-      // unlocked district, never on a player's location or claimed progress.
       s.waterY=Math.min(s.waterY,Math.max(floor,s.waterY-step*(profile.speed+Math.min(240,since)*profile.acceleration)*(s.phase==='surge'?1.6:1)*(s.calm>0?.4:1)));
     }
     var actors=seedActors(),carers=actors.filter(highTideCarer),care=carers.reduce(function(sum,a){return sum+highTideCareRate(a);},0);
@@ -169,8 +162,6 @@ function updateHighTide(dt){
     p.moisture=clamp01(p.moisture+step*(care*.18-.016*Math.pow(.7,perks.water||0)));
     p.health=clamp01(p.health+step*(care*.035+(p.moisture>.2?.005*(perks.regen||0):0)-(p.moisture<=0?.008:0)));
     if(p.health<=0){finishHighTide(false);return;}
-    // A watered motherplant grows while the team explores. Care replenishes
-    // water and health; holding Tend cannot bypass the guardian's growth gate.
     var growth=(1+.35*(perks.growth||0))*(s.growthRush>0?2:1);
     if(s.height<highTideGate()&&p.moisture>.05)s.growthRush=Math.max(0,(s.growthRush||0)-step);
     if(p.moisture>.05&&p.health>.05)s.height=Math.min(highTideGate(),s.height+step*HIGH_TIDE.growth*profile.growth*growth*(p.moisture<.2?.4:1));
@@ -208,8 +199,6 @@ function finalizeHighTide(won){
   rogueRun.recordId=saved.record.id;rogueRun.recordSaved=saved.persisted;
 }
 
-// Travel at a bounded speed along the curved stem, including its horizontal
-// stretches. Vertical-only speed made the opening bend outrun coop validation.
 function highTideClimbHeight(height,distance,ceiling){
   var route=highTideRoute(),h=Math.max(0,Math.min(height,ceiling));
   for(var i=0;i<route.length&&distance>0&&h<ceiling;i++){

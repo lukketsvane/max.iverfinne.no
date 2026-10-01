@@ -51,8 +51,6 @@ function rollWonders(){
     if(ultra<1/50)wonders.pz='well';else if(ultra<1/50+1/80)wonders.pz='crown';else if(ultra<1/50+1/80+1/120)wonders.pz='clover';
     else if(wonderRoll(2)<.7)wonders.pz=WONDER_PUZZLES[Math.floor(wonderRoll(3)*WONDER_PUZZLES.length)];
   }
-  // A hand-made garden's puzzle spot always holds a puzzle, and only one that works
-  // wherever the spot stands (a painted floor may be far above the soil).
   var L=stageLayout(),spot=levelSpots(L,'puzzle')[0],door=levelSpots(L,'door')[0];
   if(spot&&!boss&&(!wonders.pz||SPOT_UNFIT.indexOf(wonders.pz)>=0))wonders.pz=SPOT_PUZZLES[Math.floor(wonderRoll(3)*SPOT_PUZZLES.length)];
   var perch=wonderPerch(0);
@@ -66,7 +64,6 @@ function rollWonders(){
   wonders.eny=surfaceY(wonders.enx);wonders.enh=wonders.enx;wonders.ena=20+Math.round(wonderRoll(11)*40);
   wonders.enf=Math.round(dryX(wonders.enx+(wonderRoll(12)<.5?-1:1)*170));wonders.enq=['bomb','plant','still'][Math.floor(wonderRoll(13)*3)];
   wonders.gate='';wonders.gt=0;var gp=door||wonderPerch(1)||perch;
-  // A designer's door always opens onto a secret garden; elsewhere one garden in five has a gate.
   if(gp&&w>=2&&w<=18&&!boss&&!wonders.special&&(door||wonderRoll(14)<.2)){
     var pool=WONDER_LEVELS.filter(function(id){return id!=='rush'||w%5===2||w%5===3;});
     wonders.gate=pool[Math.floor(wonderRoll(15)*pool.length)];wonders.gx=gp.x;wonders.gy=gp.y;
@@ -127,7 +124,6 @@ function updatePuzzle(dt){
 function wonderStarPos(i){return {x:Math.round(IW*(.18+.64*wonderRoll(30+i))),y:Math.round(safeTopArt()+14+IH*.16*wonderRoll(40+i))};}
 function wonderTapIndex(wx,wy){
   var sx=wx-camX,sy=wy-camY;
-  // The nearest untapped star takes the tap: two stars can land within reach of one finger.
   if(wonders.pz==='stars'&&!wonders.pzd&&wonders.pzt>0){var best=-1,bd=14;for(var i=0;i<3;i++){var q=wonderStarPos(i),d=Math.hypot(sx-q.x,sy-q.y);if(!(wonders.pzs&1<<i)&&d<bd){best=i;bd=d;}}if(best>=0)return best;}
   if(wonders.pz==='clover'&&!wonders.pzd&&Math.hypot(wx-wonders.pzx,wy-wonders.pzy+2)<10)return 9;
   return -1;
@@ -161,7 +157,7 @@ function updateMeeting(dt){
   var e=wonders.en,x=wonders.enx;if(!e||wonders.end||wonders.t<(e==='flock'?wonders.ena:0))return;
   if(e==='trader'){
     wonderHold.en=wonderStill(x,wonders.eny,12)&&gardenSeeds>=3?(wonderHold.en||0)+dt:0;
-    if(wonderHold.en>=1.5){gardenSeeds-=3;updateGardenHud();meetDone(0,1);}
+    if(wonderHold.en>=1.5){gardenSeeds-=3;meetDone(0,1);}
   }else if(e==='fledgling'){
     var near=null,nd=14;runPlayers().forEach(function(a){var d=Math.abs(a.p.x-x);if(d<nd&&Math.abs(a.p.y-wonders.eny)<30){near=a;nd=d;}});
     if(near||wonders.ens){wonders.ens=1;var t=null,td=1e9;runPlayers().forEach(function(a){var d=Math.abs(a.p.x-x);if(d<td){td=d;t=a;}});if(t&&td>8)x+=Math.sign(t.p.x-x)*Math.min(td-8,60*dt);}

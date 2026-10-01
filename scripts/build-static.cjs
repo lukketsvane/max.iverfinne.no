@@ -1,12 +1,16 @@
 'use strict';
 
-const { copyFileSync, cpSync, mkdirSync, rmSync, existsSync, readFileSync, writeFileSync } = require('node:fs');
-const { join } = require('node:path');
+const { cpSync, mkdirSync, rmSync, existsSync, readFileSync, writeFileSync } = require('node:fs');
+const { dirname, join } = require('node:path');
 const { buildSync } = require('esbuild');
 
 const root = join(__dirname, '..');
 const output = join(root, 'dist');
-const files = ['index.html', 'run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
+const copy = file => {
+  mkdirSync(dirname(join(output, file)), { recursive: true });
+  cpSync(join(root, file), join(output, file), { recursive: true });
+};
+const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -22,32 +26,16 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
-for (const file of files) copyFileSync(join(root, file), join(output, file));
-writeFileSync(join(output, 'index.html'), readFileSync(join(root, 'index.html'), 'utf8')
-  .replace('/* MAX_SLIGO_LIFE */', readFileSync(join(root, 'sligo-life.inc.js'), 'utf8'))
-  .replace('/* MAX_POLGE */', readFileSync(join(root, 'polge.inc.js'), 'utf8'))
-  .replace('/* MAX_LAST_SEED */', readFileSync(join(root, 'last-seed.inc.js'), 'utf8'))
-  .replace('/* MAX_HIGH_TIDE */', readFileSync(join(root, 'high-tide.inc.js'), 'utf8'))
-  .replace('/* MAX_NIGHT_RELAY */', readFileSync(join(root, 'night-relay.inc.js'), 'utf8'))
-  .replace('/* MAX_COOP_GAME */', readFileSync(join(root, 'coop-game.inc.js'), 'utf8'))
-  .replace('/* MAX_RUN_DIRECTOR */', readFileSync(join(root, 'run-director.inc.js'), 'utf8'))
-  .replace('/* MAX_RAT_ENEMIES */', readFileSync(join(root, 'rat-enemies.inc.js'), 'utf8'))
-  .replace('/* MAX_SECRETS */', readFileSync(join(root, 'secrets.inc.js'), 'utf8')).replace('/* MAX_WONDERS */', readFileSync(join(root, 'wonders.inc.js'), 'utf8')));
+for (const file of files) copy(file);
+writeFileSync(join(output, 'index.html'), require('./game-source.cjs')());
 require('./build-companion.cjs')(output);
-cpSync(join(root, 'assets/audio'), join(output, 'assets/audio'), { recursive: true });
-cpSync(join(root, 'icons'), join(output, 'icons'), { recursive: true });
-for (const d of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, d))) cpSync(join(root, d), join(output, d), { recursive: true });
-cpSync(join(root, 'assets/biomes-v1'), join(output, 'assets/biomes-v1'), { recursive: true });
-cpSync(join(root, 'assets/boon-symbols-v1'), join(output, 'assets/boon-symbols-v1'), { recursive: true });
-mkdirSync(join(output, 'assets/district-props-v1'), { recursive: true });
-for (const file of ['props.png','props.json','landmarks.png','landmarks.json']) copyFileSync(join(root,'assets/district-props-v1',file),join(output,'assets/district-props-v1',file));
-cpSync(join(root, 'assets/plants-v1'), join(output, 'assets/plants-v1'), { recursive: true });
-cpSync(join(root, 'assets/garden-view-v1'), join(output, 'assets/garden-view-v1'), { recursive: true });
-cpSync(join(root, 'assets/tiles-v1'), join(output, 'assets/tiles-v1'), { recursive: true });
-cpSync(join(root, 'assets/backdrop-v1'), join(output, 'assets/backdrop-v1'), { recursive: true });
-cpSync(join(root, 'assets/night-v1'), join(output, 'assets/night-v1'), { recursive: true });
-cpSync(join(root, 'assets/cavern-v1'), join(output, 'assets/cavern-v1'), { recursive: true });
-copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
+for (const file of [
+  'assets/audio', 'icons', 'assets/biomes-v1', 'assets/boon-symbols-v1', 'assets/plants-v1',
+  'assets/garden-view-v1', 'assets/tiles-v1', 'assets/backdrop-v1', 'assets/night-v1',
+  'assets/cavern-v1', 'manifest.webmanifest',
+]) copy(file);
+for (const file of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, file))) copy(file);
+for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
 for (const [pack, ids, sheets] of [
   ['max-skins-v1', ['tide', 'polge'], ['atlas.json', 'main.png', 'interaction.png']],
   ['characters-v2', ['rattle-norvegicus-pink', 'cairn', 'mycel'], ['atlas.json', 'main.png', 'interaction.png']],
@@ -55,24 +43,18 @@ for (const [pack, ids, sheets] of [
   ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown'], ['atlas.json', 'sprites.png']],
 ]) {
   for (const id of ids) {
-    const directory = join(output, 'assets', pack, id);
-    mkdirSync(directory, { recursive: true });
-    for (const file of sheets) copyFileSync(join(root, 'assets', pack, id, file), join(directory, file));
+    for (const file of sheets) copy(join('assets', pack, id, file));
   }
   const packManifest = JSON.parse(readFileSync(join(root, 'assets', pack, 'manifest.json'), 'utf8'));
   const shippedIds = pack === 'max-skins-v1' ? ids.concat('sligo') : ids;
   packManifest.assets = shippedIds.map(id => ({ id, manifest: id + '/atlas.json' }));
   writeFileSync(join(output, 'assets', pack, 'manifest.json'), JSON.stringify(packManifest, null, 2) + '\n');
 }
-// Sligo's pack and its specials (the tun's sac and its burst) ship with the game.
-mkdirSync(join(output, 'assets/max-skins-v1/sligo'), { recursive: true });
-for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png', 'specials.json', 'brood.png', 'brood.json', 'evergreen.png', 'evergreen.json', 'chain.png', 'chain.json']) copyFileSync(join(root, 'assets/max-skins-v1/sligo', file), join(output, 'assets/max-skins-v1/sligo', file));
-const milestoneDirectory = join(output, 'assets/boss-milestones-v1/native');
-cpSync(join(root, 'assets/garden-guardians-v1/native'), join(output, 'assets/garden-guardians-v1/native'), { recursive: true });
-mkdirSync(milestoneDirectory, { recursive: true });
+for (const file of ['atlas.json', 'main.png', 'interaction.png', 'specials.png', 'specials.json', 'brood.png', 'brood.json', 'evergreen.png', 'evergreen.json', 'chain.png', 'chain.json']) copy('assets/max-skins-v1/sligo/' + file);
+copy('assets/garden-guardians-v1/native');
 for (const id of ['05-mossback', '10-bellkeeper', '15-moon-moth']) {
   for (const extension of ['json', 'png']) {
-    copyFileSync(join(root, 'assets/boss-milestones-v1/native', id + '.' + extension), join(milestoneDirectory, id + '.' + extension));
+    copy('assets/boss-milestones-v1/native/' + id + '.' + extension);
   }
 }
 buildSync({
@@ -85,7 +67,6 @@ buildSync({
   define: { __MAX_SUPABASE_CONFIG__: JSON.stringify(config), __MAX_RELIC_REVIEW__: 'false' },
 });
 
-// The isolated visual fixture has no connected account client.
 buildSync({
   entryPoints: [join(root, 'game-menu.mjs')], outfile: join(output, 'game-menu-review.js'),
   bundle: true, minify: true, format: 'iife', target: ['safari15', 'es2020'],

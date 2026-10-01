@@ -1,5 +1,3 @@
-// Planning data only. Every edge is measured in a separate physics fixture;
-// the playtest itself must traverse it using ordinary input, without warping.
 const fs=require('node:fs');
 const {loadGame}=require('../tests/game-harness.cjs');
 const g=loadGame().game;g.resetRogueRun('ROUTES',{mode:'high-tide',classId:'bulwark'});

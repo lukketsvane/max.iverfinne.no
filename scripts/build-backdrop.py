@@ -18,7 +18,6 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / 'docs/asset-review/sanctuary-backdrop-v1'
 OUT = ROOT / 'assets/backdrop-v1'
 SIZE = (320, 180)
-# layer: colours, haze towards the night sky
 LAYERS = {'sky': (16, 0), 'band': (12, 0), 'mountains': (16, 0), 'ruins': (12, 0), 'forest': (24, 0.2)}
 NIGHT = np.array([18, 24, 58])
 

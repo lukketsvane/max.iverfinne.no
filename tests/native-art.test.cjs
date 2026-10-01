@@ -283,14 +283,13 @@ test('rat corpses use a one-shot with an empty terminal frame and are removed wi
 });
 
 test('Sligo\'s pack loads on demand, never with the others, and until it loads the original Max stands in', async () => {
-  const { art, status, requests } = await nativeArt('/sligo/');   // Sligo's sheets fail to load here
+  const { art, status, requests } = await nativeArt('/sligo/');
   assert.equal(status.loaded.length, 33); assert.equal(requests.some(url => url.includes('/sligo/')), false);
   assert.equal(art.playerImage('sligo', 'main'), null); assert.equal(art.playerImage('sligo', 'interaction'), null);
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.equal(requests.filter(url => url.endsWith('max-skins-v1/sligo/atlas.json')).length, 1, 'asked for once');
   assert.equal(art.playerImage('sligo', 'main'), null, 'a missing pack keeps the original Max');
   assert.equal(requests.filter(url => url.includes('/sligo/')).length, 1, 'and is not asked for again every frame');
-  // With a pack in place (the moss sheets stand in for it here) Sligo draws from its own folder.
   const packed = await nativeArt('', { '/assets/max-skins-v1/sligo/atlas.json': 'assets/max-skins-v1/moss/atlas.json' });
   assert.equal(packed.art.playerImage('sligo', 'main'), null);
   await new Promise(resolve => setTimeout(resolve, 20));

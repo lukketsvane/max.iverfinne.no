@@ -46,7 +46,6 @@ N4 = np.array([[0, 1, 0], [1, 1, 1], [0, 1, 0]], bool)
 N8 = np.ones((3, 3), bool)
 
 
-# ------------------------------------------------------------------ the paintings
 def load(name):
     """The painting with its background gone. Both paintings carry an alpha
     mask; the red halo and the glow live in the half-transparent fringe, so
@@ -136,7 +135,6 @@ def cut(src, cx, yb, w, h, fx, fy=None, keep=None, drop=(), lines=(100, 180)):
     return Cut(np.clip(rgb, 0, 255), al >= 0.5, dark, bright)
 
 
-# ------------------------------------------------------------------ colour
 def band_colours(src, box, edges):
     """A ramp from the painting: the median colour of each luminance band
     (edges are quantiles) of the opaque pixels in box, dark to light."""
@@ -162,7 +160,6 @@ def shade(k, ramp, dark_at=0.4, bright_at=0.35):
     return np.where(k.op, idx, -1)
 
 
-# ------------------------------------------------------------------ pixel rules
 def clean_mask(op, min_size=3):
     """No orphan pixels: specks under min_size go (the body always stays) and
     single-pixel holes are filled."""
@@ -264,26 +261,22 @@ def finish(idx, outlined=True):
     return orphans(idx)
 
 
-# ------------------------------------------------------------------ the cord (kind 25)
 FLESH_LINES = (100, 178)
 
 
 def cord_pieces(cord):
     ramp = band_colours(cord, (150, 25, 1690, 840), [0, .04, .2, .45, .72, .93, 1])
     stems, heads, blooms, roots = [], [], [], []
-    # stem slices: one box of the trunk each, from the neck above it to the neck below
     for cx, top, foot, rows in [(556, 213, 244, 8), (557.5, 667.5, 703.5, 9), (556, 244, 274, 8),
                                 (1259, 666, 701, 9), (900.5, 702, 737.5, 9), (556, 274, 305, 8)]:
         k = cut(cord, cx, foot, 9, rows, 3.93, (foot - top) / rows, lines=FLESH_LINES)
         k.op = symmetric(clean_mask(k.op))
         stems.append(trim(finish(shade(k, ramp))))
-    # flower heads: the coiled top, the loop, the knot and the hook
     for k in [cut(cord, 556, 178, 21, 26, 6, drop=[rect(597, 136, 640, 215)], lines=FLESH_LINES),
               cut(cord, 1259, 585, 19, 22, 6, lines=FLESH_LINES),
               cut(sheared(cord, 30, 150, 0, 17), 222, 150, 19, 20, 6, lines=FLESH_LINES)]:
         k.op = clean_mask(k.op)
         heads.append(trim(finish(shade(k, ramp))))
-    # blooms: the small curls that leave the cord, base on the left
     for k in [cut(cord, 944, 232, 17, 15, 5, drop=[rect(880, 150, 906, 240)], lines=FLESH_LINES),
               cut(cord, 928, 302, 9, 8, 5, drop=[rect(880, 250, 907, 310)], lines=FLESH_LINES),
               cut(cord, 958, 648, 11, 13, 5, drop=[rect(900, 560, 933, 650)], lines=FLESH_LINES),
@@ -291,15 +284,13 @@ def cord_pieces(cord):
               cut(cord, 1652, 672, 13, 8, 5, drop=[rect(1590, 600, 1622, 680)], lines=FLESH_LINES)]:
         k.op = clean_mask(k.op)
         blooms.append(trim(finish(shade(k, ramp)), keep_centre=False))
-    # roots: the tentacles
     for cx, foot in [(224, 402), (561, 402), (902, 838)]:
-        k = cut(cord, cx, foot, 17, 12, 8, lines=FLESH_LINES)   # 12 rows: the gallery shows 12 under the soil
+        k = cut(cord, cx, foot, 17, 12, 8, lines=FLESH_LINES)
         k.op = clean_mask(k.op)
         roots.append(trim(finish(shade(k, ramp))))
     return ramp, stems, heads, blooms, roots
 
 
-# ------------------------------------------------------------------ the cap (kind 26)
 CAP_LINES, COIL_LINES, ROOT_LINES = (52, 120), (62, 160), (45, 100)
 COIL_WIN = {'v2': (785, 95), 'v3': (1240, 95), 'v4': (320, 410), 'v5': (785, 410), 'v6': (1245, 405),
             'v7': (316, 735), 'v9': (1240, 745)}
@@ -309,11 +300,11 @@ def cap_pieces(cap):
     capr = band_colours(cap, (250, 340, 405, 420), [0, .04, .2, .45, .72, .93, 1])
     coil = band_colours(cap, (270, 740, 365, 920), [0, .04, .2, .45, .72, .93, 1])
     root = band_colours(cap, (1180, 925, 1335, 992), [0, .1, .35, .65, .9, 1])
-    coil[0] = capr[0] = root[0]           # one dark line for the whole plant
+    coil[0] = capr[0] = root[0]
     pal = np.concatenate([coil, capr[1:], root[1:4]])
     CO, CA, RO = list(range(6)), [0] + list(range(6, 11)), [0] + list(range(11, 14))
     stems, heads, blooms, roots = [], [], [], []
-    join = np.array([0, 2, 3, 5, 3, 2, 0])      # the vertical passage every slice starts and ends on
+    join = np.array([0, 2, 3, 5, 3, 2, 0])
     for var, r0, r1 in [('v7', 23, 34), ('v6', 2, 11), ('v9', 3, 17), ('v3', 17, 32), ('v5', 6, 14), ('v4', 12, 32)]:
         cx, top = COIL_WIN[var]
         ya, yb = top + 5 * r0, top + 5 * (r1 + 1)
@@ -337,7 +328,7 @@ def cap_pieces(cap):
         idx = finish(shade(k, coil))
         blooms.append(trim(np.where(idx >= 0, np.array(CO)[idx.clip(0)], -1), keep_centre=False))
     for cx, foot in [(1255, 990), (327, 320), (300, 985)]:
-        k = cut(cap, cx, foot, 23, 11, 6, drop=[rect(cx - 90, foot - 300, cx - 55, foot + 5)], lines=ROOT_LINES)   # not the stem line beside it
+        k = cut(cap, cx, foot, 23, 11, 6, drop=[rect(cx - 90, foot - 300, cx - 55, foot + 5)], lines=ROOT_LINES)
         k.op = clean_mask(k.op)
         idx = finish(shade(k, root[:4]))
         roots.append(trim(np.where(idx >= 0, np.array(RO)[idx.clip(0)], -1)))

@@ -1,7 +1,4 @@
 'use strict';
-// Audition the production Web Audio schedules offline, without a browser or a
-// second sound recipe. Oscillators/noise/filter automation come from fakeAudio.
-// We render before the live compressor: peak measurements are conservative.
 const fs = require('node:fs');
 const path = require('node:path');
 const { loadGame, fakeAudio } = require('../tests/game-harness.cjs');

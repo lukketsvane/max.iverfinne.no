@@ -8,8 +8,6 @@ const { JSDOM } = require('jsdom');
 const root = path.join(__dirname, '..');
 const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 
-// Run the generated fixture hook inside the existing real-game VM. This checks
-// the review page against changing runtime APIs without exporting them to users.
 async function scene(mode, classId, params = {}) {
   const query = new URLSearchParams({ mode, ...params, portrait: '' });
   if (classId) query.set('class', classId);
@@ -18,16 +16,12 @@ async function scene(mode, classId, params = {}) {
   await outer.window.eval(outer.window.document.querySelector('script').textContent);
   const doc = new JSDOM(outer.window.document.querySelector('iframe').srcdoc);
   const main = [...doc.window.document.querySelectorAll('script')].find(script => script.textContent.includes('MAX_REVIEW_FIXTURE_START')).textContent;
-  const hook = main.slice(main.indexOf('/* MAX_REVIEW_FIXTURE_START */'), main.indexOf('/* MAX_REVIEW_FIXTURE_END */'));
+  const hook = main.slice(main.indexOf('"MAX_REVIEW_FIXTURE_START";'), main.indexOf('"MAX_REVIEW_FIXTURE_END";'));
   const modeValue = outer.window.document.getElementById('fixture').value;
   const className = outer.window.document.getElementById('review-class').selectedOptions[0].textContent;
   const layoutModes = Array.from(outer.window.document.querySelectorAll('#fixture option'), option => option.value).filter(value => value.startsWith('layout'));
   outer.window.close(); doc.window.close();
   let harness = read('tests/game-harness.cjs');
-  // This VM also constructs the selected review world and populates its scene.
-  // The full suite runs many physics workers concurrently; VM timeouts measure
-  // wall time, including that CPU contention. Keep a finite fixture-only budget
-  // while preserving the ordinary game harness's two-second startup guard.
   const startupOptions="{ filename: 'index.html', timeout: 2000 }";
   assert.ok(harness.includes(startupOptions),'review startup must retain a bounded VM execution');
   harness=harness.replace(startupOptions,"{ filename: 'index.html', timeout: 10000 }");

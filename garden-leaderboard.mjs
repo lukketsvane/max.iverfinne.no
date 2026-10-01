@@ -1,9 +1,6 @@
-// Only a player's explicitly published, completed bouquet is public. Checkpoints
-// and this device's other finished runs are never uploaded by this adapter.
 const PAGE_SIZE = 20;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const CLASSES = new Set(['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']);
-// Kinds 0-24 plus Sligo's two cords (25 and 26), as max_garden_private.valid_plants allows.
 const MAX_KIND = 26;
 
 function clone(value) { return JSON.parse(JSON.stringify(value)); }
@@ -18,7 +15,6 @@ function validatePlants(plants) {
         typeof plant.stalk !== 'boolean') throw new Error('This bouquet contains an invalid plant record.');
     ids.add(plant.id);
   }
-  // Reject a public upload that cannot fit; never trim the original local run.
   if (plants.length > 20000 || new TextEncoder().encode(JSON.stringify(plants)).length > 4 * 1024 * 1024) {
     throw new Error('This complete bouquet is too large to publish. Every plant remains in your local garden.');
   }
@@ -74,8 +70,6 @@ export function createLeaderboard(client, currentIdentity, ready = () => true) {
     async submit(run) {
       const who = currentIdentity();
       if (!client || !ready() || !who) throw new Error('Sign in to add your bouquet.');
-      // Ownership is captured when the run starts/finishes. Signing in later
-      // never silently claims a guest run or a different account's garden.
       if (!run || run.ownerId !== who.id) {
         throw new Error(run?.ownerId ? 'This run belongs to another player.' : 'Sign in before growing a run to publish its bouquet.');
       }

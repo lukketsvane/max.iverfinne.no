@@ -23,7 +23,7 @@ Figma names each stored image by the SHA-1 of its bytes, so the manifest records
 - every production PNG has binary alpha, RGB 0 under alpha 0, only its pack's palette (`atlas.json` / `<name>.json` `palette`), and is not an exact k× upscale;
 - every production atlas `opaqueBounds` matches the pixels of its sheet.
 
-Not covered yet: the 16 images inlined as `data:image/png` URIs in `index.html` (terrain sheets, backgrounds, plant and NPC atlases, crow, swan, garden, ants, soil). They predate the Figma file and are pinned by hash in `tests/figma-assets.test.cjs`, so a new or changed inline image fails the test. New art goes into `assets/` and 160:2, never into a data URI; moving the pinned ones into 160:2 is open work.
+The 15 PNGs inlined as `data:image/png` URIs in `index.html` are preserved byte for byte in frame **398:2 "LEGACY INLINE ART — native runtime sources"** on References page `162:2`. They predate the file-based production workflow and are pinned by hash in `tests/figma-assets.test.cjs`. New art goes into `assets/` and 160:2, never into a data URI.
 
 ## Waiting for Figma
 
@@ -44,7 +44,7 @@ To finish an entry:
 
 ## Map
 
-The live file was inspected on 30 September 2026. Its production page is `10:2`; the native source frame is `160:2`. The former Draft page `0:1` and production section `52:2` are gone. The `draft` key in the sync configuration now refers to the References page `162:2`.
+The live file was inspected on 1 October 2026. All 632 production PNGs matched the repository and manifest by source SHA-1, native dimensions and node ID; all 15 legacy inline PNGs matched their reference layers by SHA-1. The unchanged `figma:check` reported 632 MATCH and zero problems against an authenticated connector capture taken at 07:42 UTC. Its production page is `10:2`; the native source frame is `160:2`. The former Draft page `0:1` and production section `52:2` are gone. The `draft` key in the sync configuration now refers to the References page `162:2`.
 
 | Node | Frame | Role |
 | --- | --- | --- |
@@ -61,6 +61,7 @@ The live file was inspected on 30 September 2026. Its production page is `10:2`;
 | 396:2 | PIXEL ART WORKBENCH — source contracts | References page |
 | 396:3 / 396:12 | RULES / EXPORT CHECK | current workbench rules |
 | 396:19 / 396:25 | MASTER GRIDS / PALETTE | examples; pack contracts win |
+| 398:2 | LEGACY INLINE ART — native runtime sources | exact originals of the 15 inline runtime PNGs |
 
 The active Rattus norvegicus sheets are `437:3` (main) and `437:4` (interaction), both 256×256 at native 1×. The earlier outfit layers `425:3` / `425:4` are retired in archive `425:2`, outside production. The level-design page is `382:2`. Earlier node maps remain in Git history.
 

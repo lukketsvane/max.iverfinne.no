@@ -69,7 +69,7 @@ def main():
     a = np.array(Image.open(SRC).convert('RGBA'))
     rows, solid = frames(a)
     first = rows[0][0]
-    ours = np.array(Image.open(SKIN).convert('RGBA'))[:32, :32, 3] > 0   # the skin's first idle cell
+    ours = np.array(Image.open(SKIN).convert('RGBA'))[:32, :32, 3] > 0
     scale = height(ours) / height(solid[first[1]:first[3], first[0]:first[2]])
     cells = [native(a, solid, b, scale) for r in rows for b in r]
     strip = np.zeros((CELL, CELL * len(cells), 4), np.uint8)

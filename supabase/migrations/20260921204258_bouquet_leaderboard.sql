@@ -1,6 +1,3 @@
--- Recovered unfinished migration, hardened before its first deployment.
--- A public entry is the complete plant array from an explicitly submitted run.
--- These are player-submitted records, not server-verified gameplay/anti-cheat.
 create schema max_garden_private;
 revoke all on schema max_garden_private from public, anon, authenticated;
 grant usage on schema max_garden_private to authenticated;
@@ -24,7 +21,6 @@ begin
        or abs((p->>'seed')::numeric) > 1000000000000
        or (p->>'growth')::numeric not between 0 and 1000000 then return false; end if;
   end loop;
-  -- One indexed aggregate, rather than repeatedly scanning a growing ID array.
   return item_count = (select count(distinct (value->>'id')::bigint) from jsonb_array_elements(plants));
 exception when others then return false;
 end;
@@ -32,7 +28,6 @@ $$;
 
 create function max_garden_private.growth(plants jsonb)
 returns bigint language sql immutable set search_path = '' as $$
-  -- Match the game's Math.floor(growth * 1000) on unchanged IEEE-754 values.
   select coalesce(sum(floor((value->>'growth')::double precision * 1000)::bigint), 0)::bigint
   from jsonb_array_elements(plants)
 $$;
@@ -59,9 +54,6 @@ create policy "Published bouquets are public" on public.max_garden_scores
 create index max_garden_scores_order on public.max_garden_scores
   (growth desc, plant_count desc, finished_at asc, user_id asc);
 
--- Remember every submitted run's owner and exact payload, even when it was not
--- a new personal best. A retry cannot rewrite an old run or give it to someone
--- else. Only the digest is retained here; public best rows retain every plant.
 create table max_garden_private.submissions (
   run_id uuid primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -72,9 +64,6 @@ create index max_garden_submissions_owner on max_garden_private.submissions(user
 alter table max_garden_private.submissions enable row level security;
 revoke all on max_garden_private.submissions from public, anon, authenticated;
 
--- A narrowly granted private definer is necessary to read authoritative Auth
--- names and maintain append-only receipts. The public wrapper stays INVOKER.
--- Clients get no direct write privilege on either table.
 create function max_garden_private.submit(
   p_owner_id uuid, p_run_id uuid, p_plants jsonb, p_world integer,
   p_seconds numeric, p_won boolean, p_wave integer, p_class_id text
@@ -89,8 +78,6 @@ begin
   if me is null or p_owner_id is distinct from me then
     raise exception 'This garden must be published by its player.' using errcode = '42501';
   end if;
-  -- Read the current account, not editable user_metadata or a stale JWT email.
-  -- Deleted and anonymous Auth users cannot publish under a registered name.
   select split_part(u.email, '@', 1) into player_username from auth.users u
     where u.id = me and u.deleted_at is null and not coalesce(u.is_anonymous, false)
       and u.email ~ '^[a-z0-9][a-z0-9_-]{2,23}@players[.]max[.]invalid$';

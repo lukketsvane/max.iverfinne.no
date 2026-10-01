@@ -2,7 +2,6 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { loadGame } = require('./game-harness.cjs');
 
-// Ballistic aiming belongs to Sligo; Mech places bombs and the four native kits use direct attacks.
 function padded(classId = 'sligo') {
   const h = loadGame(), g = h.game, state = { buttons: Array.from({ length: 17 }, () => ({ pressed: false, value: 0 })), axes: [0, 0, 0, 0] };
   h.window.navigator = { getGamepads: () => [state] };

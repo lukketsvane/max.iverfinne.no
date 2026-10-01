@@ -20,8 +20,6 @@ function bossStep(g,k,dt){
 test('all twenty cyan openings begin after their volley and fit a reaction plus a planted fuse at 30, 60 and 120 Hz',()=>{
   for(const hz of [30,60,120])for(let stage=1;stage<=20;stage++){
     const {g,k}=arena(stage),dt=1/hz;
-    // The last phase has the longest volleys. Preserve enough health for a
-    // ground charge so the damage opportunity can be inspected after impact.
     k.hp=k.maxHp*.3;k.phase=3;
     for(let tick=0;tick<hz*8&&!(k.exposed>0);tick++)bossStep(g,k,dt);
     assert.ok(k.exposed>2.5,`${stage} at ${hz} Hz opens a full fuse window`);

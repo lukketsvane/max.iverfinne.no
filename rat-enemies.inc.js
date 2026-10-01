@@ -1,5 +1,3 @@
-/* Ground rats. Included in the game closure; damage/spawns remain host-owned.
-   Coordinates match other enemies: x/y are the torso centre, foot is y + 8. */
 var RAT_KIND=8,RAT_FOOT=8;
 var RAT_STATS={
   common:{speed:27,hp:0,damage:.62},
@@ -21,7 +19,6 @@ function makeRat(side,elite,variant){
   var x=center+side*(110+Math.random()*40),k={kind:RAT_KIND,ratVariant:variant,x:x,y:ratFloor(x)-RAT_FOOT,vx:0,vy:0,face:-side,ph:ph,
     target:null,attackTarget:null,bite:.45,windup:0,think:0,flee:0,flash:0,lampCooldown:0,elite:!!elite,queen:false,raid:false,pressure:raidPressure(),
     ratState:'idle',ratStateT:0,ratGrounded:true,ratPlatform:'',ratJumpCool:.2,ratWarning:0};
-  // The safety test uses the final ground/water height, never the flying-pest spawn height.
   var players=runPlayers(),left=Math.min.apply(null,players.map(function(a){return a.p.x;}))-90,right=Math.max.apply(null,players.map(function(a){return a.p.x;}))+90;
   if(players.some(function(a){return Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<72;}))k.x=side<0?left:right;
   k.y=ratFloor(k.x)-RAT_FOOT;
@@ -77,8 +74,6 @@ function ratJumpToward(k,x,y){
     }
   }
   if(!chosen){
-    // From the ground, approach a real route entry instead of waiting directly
-    // below an unreachable summit. The level generator guarantees those starts.
     if(!k.ratPlatform&&y<foot-10&&layout.routes.length){
       var route=layout.routes.reduce(function(a,b){return Math.abs(a.start.x-x)+Math.abs(a.start.x-k.x)<Math.abs(b.start.x-x)+Math.abs(b.start.x-k.x)?a:b;});
       k.ratNavX=route.start.x;
@@ -96,7 +91,6 @@ function ratTarget(k){
     var d=Math.abs(p.x-k.x)+Math.abs(surfaceY(p.x)-foot)*2;
     if(d<score){score=d;plant=p;}
   });
-  // Trial rats defend their elevated route; garden rats gnaw the actual plants.
   if(plant)return {x:plant.x,y:surfaceY(plant.x),plant:plant};
   var player=null,distance=Infinity;
   runPlayers().forEach(function(a){
@@ -111,7 +105,6 @@ function finishRatBite(k){
   var foot=k.y+RAT_FOOT,hit=Math.abs(k.x-k.ratAimX)<21&&Math.abs(foot-k.ratAimY)<14;
   var warning=runHazards.find(function(h){return h.id===k.ratWarning;});
   if(!hit){cancelRatAttack(k);return;}
-  // The visual clip never triggers this. This transition is run once by the host.
   if(warning){warning.tell=.025;warning.total=Math.max(.025,warning.total);warning.life=.25;}
   var p=gardenPlots.find(function(p){return p.id===k.ratTargetId;});
   if(p&&!p.dead&&p.health>0&&Math.abs(p.x-k.x)<21&&Math.abs(surfaceY(p.x)-foot)<14)biteGarden(k,p,raidPressure());
@@ -164,7 +157,6 @@ function updateRat(k,dt){
   ratState(k,!k.ratGrounded?'jump':Math.abs(k.vx)>3?(speed>27?'run':'walk'):'idle');
 }
 function predictRat(k,dt){
-  // Guests extrapolate only a short gap between host snapshots, with real footing.
   var elapsed=k.ratPrediction||0,step=Math.min(dt,Math.max(0,.12-elapsed));k.ratPrediction=elapsed+dt;
   if(step>0)ratMove(k,k.vx||0,step);
 }
@@ -190,6 +182,5 @@ function drawRatHazard(h,x,y){
 }
 function enemyDistance(k,x,y){
   if(!isRat(k))return Math.hypot(k.x-x,k.y-y);
-  // The tail and transparent cell padding are not a damage hitbox.
   return Math.hypot(Math.max(0,Math.abs(k.x-x)-9),Math.max(0,Math.abs(k.y-y)-6));
 }

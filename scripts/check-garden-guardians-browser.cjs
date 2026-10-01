@@ -1,4 +1,3 @@
-// CI-only browser regression; isolated fixtures never join a live room.
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {spawn}=require('node:child_process'),{webkit,chromium}=require('playwright');
 const port=8782,base=`http://127.0.0.1:${port}`;
@@ -45,8 +44,6 @@ async function checkCircuit(page,engineName,errors){
  assert.equal(withdrawn.boonOpen,false);assert.equal(withdrawn.ended,false);assert.ok(withdrawn.away>=4);
  assert.equal(JSON.stringify(withdrawn.geometry),geometry);
  await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-withdrawn.png`});
- // Other court families use the same state machine; inspect their own native
- // landmarks without repeating the full combat sequence for each seed.
  for(const [seed,family] of [[8,'arch'],[3,'pump']]){
   await page.goto(base+'/review.html?mode=circuit&portrait=1&seed='+seed);await ready();
   const variant=await observation();assert.equal(variant.geometry.family,family);assert.equal(variant.active,false);
@@ -122,8 +119,6 @@ async function checkCircuit(page,engineName,errors){
    assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
    }
    }
-   // Attack through the parent review control, then use the real keyboard for
-   // the special. Cumulative real effects avoid short-frame races.
    for(const [classId,primary] of [['runner','dropkick'],['bulwark','cleave'],['herbalist','spore'],['polge','jab']]){
     await page.goto(base+'/review.html?mode=class-kits&portrait=1&class='+classId);
     await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});

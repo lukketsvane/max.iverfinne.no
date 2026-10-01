@@ -24,8 +24,6 @@ test('all twenty live encounters warn and expose the same guardian on both clien
  for(let stage=1;stage<=20;stage++){
   const {clients,sync}=party(pairs[(stage-1)%pairs.length]),host=clients[0].game,guest=clients[1].game;
   if(stage>1)host.enterLevel(stage);
-  // Isolated arena: a grown, watered plant and no ambient raid. All boss
-  // timing, objectives and attacks then run through normal frame simulation.
   host.gardenPlots=[plot({id:1,x:host.bossEvent.courtX-35,moisture:1,growth:.8})];
   host.gardenRaidT=host.krekSpawnT=9999;
   Object.assign(host.P,{x:host.bossEvent.x,y:host.bossEvent.y,st:'free',grounded:true,wet:false,vx:0,vy:0});
@@ -59,8 +57,6 @@ test('a guest buffered planted bomb is accepted once despite duplicate packets a
  host.gardenPlots=[plot({id:1,x:host.P.x+90,moisture:1})];host.gardenRaidT=host.krekSpawnT=9999;
  host.bombs=[0,1].map(i=>({owner:ids[1],perks:{planted:true},planted:true,sligo:false,x:guest.P.x+i*4,y:guest.P.y-2,vx:0,vy:0,st:'planted',supportY:guest.P.y,fuse:.2,fuseMax:2,t:1.8,hop:0,spin:0}));
  sync();guest.bombCool=0;guest.chargeStart('key');guest.chargeRelease();assert.ok(guest.queuedThrow);
- // The nearly-free slot becomes available on the authority and arrives over
- // the wire. Replayed input must never spend an additional slot.
  for(let frame=0;frame<15;frame++){
   clients[0].tick(1000/30);sync();clients[1].tick(1000/30);
   const packet={avatar:copy(guest.coopAvatar()),actions:copy(pending)};

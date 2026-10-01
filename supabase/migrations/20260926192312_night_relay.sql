@@ -1,6 +1,3 @@
--- Add one public, co-op-only artifact room. The first member may wait for a
--- partner. The authoritative engine requires two fresh members to start/advance.
--- No privileges, authentication rules or existing rooms are changed.
 alter table max_coop_private.rooms drop constraint if exists rooms_mode_check;
 alter table max_coop_private.rooms add constraint rooms_mode_check
   check (mode in ('garden','last-seed','high-tide','night-relay'));

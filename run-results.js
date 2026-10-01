@@ -1,4 +1,3 @@
-/* Finished gardens are snapshots, never resumable game checkpoints. */
 (function () {
   'use strict';
   var KEY = 'max-finished-gardens-v1', pending = {}, lastError = '';
@@ -42,7 +41,6 @@
       records.push(record); pending[record.id] = record;
     }
     var persisted = false;
-    // A full archive is retained. Storage failure never deletes an older run or a plant.
     if (!lastError) {
       try { window.localStorage.setItem(KEY, JSON.stringify({ version: 1, runs: records })); pending = {}; persisted = true; }
       catch (_) { lastError = 'This garden is available now, but this browser could not save it. Keep this tab open to retain it.'; }
@@ -55,10 +53,6 @@
     get: function (id) { var found = read().find(function (record) { return record.id === id; }); return found ? copy(found) : null; },
     status: function () { return { persisted: !Object.keys(pending).length && !lastError, error: lastError }; }
   };
-}());
-
-(function () {
-  'use strict';
   var PAGE_SIZE = 24, RECORD_PAGE_SIZE = 6;
   var panel, title, subtitle, header, footer, scene, bouquet, collection, gallery, previous, next, pageLabel;
   var details, retry, recordsButton, menuButton, inspectButton, empty, recordsView, recordsList, recordsPrevious, recordsNext, recordsLabel, storageNotice;
@@ -70,14 +64,14 @@
   font.src = 'assets/results-native/sprites/font-5x7.png';
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
   function count(n, fallback) { return typeof n === 'number' && Number.isFinite(n) ? Math.max(0, Math.floor(n)) : fallback; }
-  function clonePlants(plants) { return JSON.parse(JSON.stringify(Array.isArray(plants) ? plants : [])); }
   function summary(record) {
-    var seconds = count(record.seconds, 0);
-    if (record.mode === 'night-relay') return 'Night Relay · ' + count(record.wave, 0) + '/3 locks · ' + count(record.passes, 0) + ' handoffs · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + ' · ' + count(record.light, 0) + '% light';
-    if (record.mode === 'high-tide') return 'High Tide · ' + (record.won ? 'Escaped' : 'Drowned') + ' · ' + count(record.ascent, 0) + '/'+count(record.goal,480)+' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
-    if (record.mode === 'last-seed') return 'Last Seed · Wave ' + count(record.wave, 0) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0') + ' · Plant alive ' + Math.floor(count(record.plantSeconds, 0)) + 's';
-    return record.plants.length + (record.plants.length === 1 ? ' plant' : ' plants') + ' · World ' + count(record.world, 1) + ' · ' + Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
+    var seconds = count(record.seconds, 0), elapsed = Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
+    if (record.mode === 'night-relay') return 'Night Relay · ' + count(record.wave, 0) + '/3 locks · ' + count(record.passes, 0) + ' handoffs · ' + elapsed + ' · ' + count(record.light, 0) + '% light';
+    if (record.mode === 'high-tide') return 'High Tide · ' + (record.won ? 'Escaped' : 'Drowned') + ' · ' + count(record.ascent, 0) + '/'+count(record.goal,480)+' · ' + elapsed;
+    if (record.mode === 'last-seed') return 'Last Seed · Wave ' + count(record.wave, 0) + ' · ' + elapsed + ' · Plant alive ' + count(record.plantSeconds, 0) + 's';
+    return record.plants.length + (record.plants.length === 1 ? ' plant' : ' plants') + ' · World ' + count(record.world, 1) + ' · ' + elapsed;
   }
+  function onlinePageSize() { return window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.pageSize || 20; }
   function paintLabel(entry) {
     if (!font.complete || !font.naturalWidth) return;
     var c = entry.canvas, x = c.getContext('2d'); if (!x) return;
@@ -247,14 +241,14 @@
       open.append(c, text); open.addEventListener('click', function () { showSaved(record); }); item.appendChild(open); recordsList.appendChild(item);
       visibleRecords.push({ canvas: c, record: record });
     });
-    recordsPrevious.parentNode.hidden = remote ? !onlineOffset && records.length < (window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.pageSize || 20) : records.length <= RECORD_PAGE_SIZE;
-    recordsPrevious.disabled = onlineLoading || (remote ? onlineOffset === 0 : recordPage === 0); recordsNext.disabled = onlineLoading || (remote ? records.length < (window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.pageSize || 20) : end >= records.length);
+    recordsPrevious.parentNode.hidden = remote ? !onlineOffset && records.length < onlinePageSize() : records.length <= RECORD_PAGE_SIZE;
+    recordsPrevious.disabled = onlineLoading || (remote ? onlineOffset === 0 : recordPage === 0); recordsNext.disabled = onlineLoading || (remote ? records.length < onlinePageSize() : end >= records.length);
     recordsLabel.textContent = remote ? records.length ? 'Gardens ' + (onlineOffset + 1) + '–' + (onlineOffset + records.length) : 'No more gardens' : records.length ? 'Gardens ' + (start + 1) + '–' + end + ' of ' + records.length : 'No saved gardens';
     var status = window.MaxRunRecords.status(); storageNotice.textContent = status.error || (status.persisted ? '' : 'This garden is available in this tab, but has not been saved by this browser.'); storageNotice.hidden = !storageNotice.textContent;
     redraw();
   }
   function changeRecordPage(direction) {
-    if (recordSource === 'online') { loadOnline(Math.max(0, onlineOffset + direction * (window.MaxGardenLeaderboard && window.MaxGardenLeaderboard.pageSize || 20))); return; }
+    if (recordSource === 'online') { loadOnline(Math.max(0, onlineOffset + direction * onlinePageSize())); return; }
     recordPage += direction; renderRecords(); recordsView.scrollTop = 0;
   }
   function selectSource(source) {
@@ -319,7 +313,7 @@
   function show(options) {
     options = options || {}; prepare(options);
     run = options.recordId && window.MaxRunRecords.get(options.recordId);
-    if (!run) run = { mode: options.mode, ascent: options.ascent, goal: options.goal, classId: options.classId, skinId: options.skinId, plantSeconds: options.plantSeconds, plants: clonePlants(options.plants), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
+    if (!run) run = { mode: options.mode, ascent: options.ascent, goal: options.goal, classId: options.classId, skinId: options.skinId, plantSeconds: options.plantSeconds, plants: copy(Array.isArray(options.plants) ? options.plants : []), world: options.world, wave: options.wave, seconds: options.seconds, won: !!options.won };
     originRun = run; originPage = page = 0; showBouquet(false);
   }
   function showRecords(options) { prepare(options); run = originRun = null; page = originPage = 0; openRecords(); layout(); return true; }

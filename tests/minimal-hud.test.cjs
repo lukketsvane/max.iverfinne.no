@@ -16,7 +16,7 @@ test('garden stage is rendered as compact tally groups right-aligned beside the 
 test('each active boon is one tiny HUD icon with its rank as stacks, eight per row, without counting Mech’s starter rover',()=>{
   const g=loadGame().game;g.resetRogueRun('test',{classId:'mech'});
   assert.deepEqual(JSON.parse(JSON.stringify(g.runHudBoons())),[]);
-  g.rogueRun.perks.robot=3; // two earned Companion ranks beyond the starter rover
+  g.rogueRun.perks.robot=3;
   g.rogueRun.perks.growth=5;
   g.rogueRun.perks.bark=4;
   const boons=JSON.parse(JSON.stringify(g.runHudBoons()));

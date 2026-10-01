@@ -1,7 +1,3 @@
-// Easter eggs are unlocked by typing a name. One device key keeps the eggs typed on this
-// device and, per account, the list the server last returned (public.max_my_unlocks), so a
-// signed-in player sees their unlocks at once and offline. The server decides who may join
-// the shared garden as a hidden character (max_coop_private.global_join).
 export const EGG_KEY = 'max-easter-eggs-v1';
 export const EGGS = Object.freeze({
   sligo: Object.freeze({ name: 'Max Sligo Neverdahl', phrases: Object.freeze(['sligo', 'maxsligoneverdahl']), reveal: 'MAX SLIGO NEVERDAHL AWAKES' }),
@@ -10,13 +6,11 @@ export const EGGS = Object.freeze({
 const IDS = Object.keys(EGGS);
 const clean = list => Array.isArray(list) ? IDS.filter(id => list.includes(id)) : [];
 
-// Case, spaces and punctuation never matter: "Max Sligo-Neverdahl!" is maxsligoneverdahl.
 export function phraseKey(text) { return String(text ?? '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
 export function eggForPhrase(text) {
   const key = phraseKey(text);
   return key ? IDS.find(id => EGGS[id].phrases.includes(key)) || null : null;
 }
-// An account whose username is an egg's phrase has that egg too.
 export function eggForUsername(name) { return typeof name === 'string' && name !== 'Guest' ? eggForPhrase(name) : null; }
 
 export function createEasterEggs(storage, { onChange } = {}) {
@@ -47,15 +41,11 @@ export function createEasterEggs(storage, { onChange } = {}) {
     if (error) throw error;
     return Array.isArray(data) ? data : [];
   }
-  // The eggs of the signed-in account show while it is signed in; phrases typed here always do.
   function setUser(id) { userId = id || null; changed(); }
   function unlockLocal(id) {
     if (!IDS.includes(id) || state.local.includes(id)) return false;
     state.local = clean([...state.local, id]); write(); changed(); return true;
   }
-  // Load the account's unlocks, then send the ones typed on this device (or named by its
-  // username) that the server does not have yet. Without the migration, or offline, the
-  // local unlocks still show; the server refuses a hidden character at join time.
   async function sync(client, user, username) {
     if (!client || !user?.id) return list();
     const named = eggForUsername(username);
@@ -67,7 +57,6 @@ export function createEasterEggs(storage, { onChange } = {}) {
     } catch {}
     return list();
   }
-  // Make sure the server has this egg for the current player before it plays the character.
   async function ensure(client, user, id) {
     if (!client || !user?.id || !IDS.includes(id) || !list().includes(id)) return false;
     if ((state.accounts[user.id] || []).includes(id)) return true;

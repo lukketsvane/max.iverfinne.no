@@ -42,7 +42,6 @@ UNDER = ROOT / 'docs/asset-review/underground-kits-v1'
 CELL = 3
 RUNG = 17
 
-# sheet kit: (sheet file, 1/f, {piece: box in source pixels})
 SHEETS = {
     'machinery': (RAIL / 'machinery.png', 8, {
         'wheel': (66, 66, 882, 888), 'crank': (1242, 108, 186, 222), 'press-frame': (1014, 282, 168, 588),
@@ -62,7 +61,6 @@ SHEETS = {
         'rubble-large': (116, 824, 444, 144), 'rubble-mid': (692, 860, 332, 108), 'rubble-small': (1184, 912, 240, 56)}),
 }
 
-# pack kit: (atlas folder, frame key prefix, fill keyed holes with this colour or None, {piece: frame number})
 PACKS = {
     'mill': (RAIL / 'mill-scene', 'B07C3D03-8D5E-4531-B6DC-41483A5A24DE-', None, {
         'planter-wide': '050', 'planter-pink': '051', 'planter-blue': '052', 'planter-mixed': '053',

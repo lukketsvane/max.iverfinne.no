@@ -1,7 +1,3 @@
-// Breadth-first search over the real game physics through a picture level:
-// every spot a walking, unupgraded Bulwark (the C0 tier) can stand on, from the
-// soil on either side of the art. Reports which markers he touches, spots he
-// cannot leave, and whether he can cross the picture both ways.
 const HZ = 60, DT = 1 / HZ, ACTIONS = [];
 for (const dir of [-1, 1]) for (const dur of [.08, .2, .45, 1.2]) ACTIONS.push({ walk: dir, dur });
 for (const dir of [-1, 0, 1]) for (const hold of [.1, .22, 1]) ACTIONS.push({ jump: dir, hold });
@@ -70,8 +66,6 @@ function explorePicture(g, L, classId = 'bulwark', limit = 12000) {
 
 module.exports = { explorePicture };
 
-// node tests/picture-sweep.cjs [class] [garden] [out.json]: explore a picture level
-// from the command line while designing it.
 if (require.main === module) {
   const [cls = 'bulwark', garden = '1', out] = process.argv.slice(2);
   const g = require('./game-harness.cjs').loadGame({ __pictures: true }).game;

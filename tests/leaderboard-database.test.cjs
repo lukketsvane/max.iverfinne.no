@@ -35,7 +35,6 @@ test('global bouquets preserve entire runs while publication enforces account ow
     await db.exec(fs.readFileSync(path.join(migrationDir, '20260923110000_twenty_plant_kinds.sql'), 'utf8'));
     async function as(id) {
       await db.exec('reset role; set role authenticated;');
-      // Deliberately misleading JWT claims must not supply names/authorization.
       await db.query("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claims',$2,false)",
         [id, JSON.stringify({ email: 'forged@players.max.invalid', user_metadata: { username: 'iver' } })]);
     }
@@ -62,7 +61,6 @@ test('global bouquets preserve entire runs while publication enforces account ow
       assert.deepEqual((await db.query('select * from public.max_garden_scores')).rows[0], before);
       await assert.rejects(submit(alice, plants(74)), { code: '22023' });
       await assert.rejects(submit(alice, original, runId, { seconds: 139 }), { code: '22023' });
-      // A non-winning run is immutable too, even though the leaderboard never showed it.
       await assert.rejects(submit(alice, plants(74), secondId), { code: '22023' });
     });
 

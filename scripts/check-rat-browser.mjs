@@ -1,6 +1,3 @@
-// Optional browser acceptance: npm run build; npm install --no-save playwright;
-// npx playwright install chromium; node scripts/check-rat-browser.mjs
-// Uses only local compiled files and isolated review data. No production writes.
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {readFile,mkdir,writeFile,stat} from 'node:fs/promises';
@@ -31,8 +28,6 @@ try{
       window.__ratDraws=[];
       const original=CanvasRenderingContext2D.prototype.drawImage;
       CanvasRenderingContext2D.prototype.drawImage=function(...args){
-        // Measure sprite draws onto the real game canvas. Atlas-sized offscreen
-        // flash-cache construction uses drawImage(image,0,0), not sprite cells.
         if(this.canvas.id==='c'&&String(args[0]?.src).includes('/rat-enemies-v1/')&&window.__ratDraws.length<3000)
           window.__ratDraws.push({src:args[0].src,args:args.slice(1),smooth:this.imageSmoothingEnabled,transform:Array.from(this.getTransform().toFloat64Array())});
         return original.apply(this,args);

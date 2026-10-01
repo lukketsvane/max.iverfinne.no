@@ -51,7 +51,6 @@ test('host health cannot be forged, a teammate must hold Tend nearby for three s
   for(let i=0;i<20;i++)g.updateLastSeed(.1);assert.ok(hp.revive>1.9&&hp.hp===0);
   g.heldSpace=false;g.updateLastSeed(.1);assert.equal(hp.revive,0);
   g.heldSpace=true;for(let i=0;i<31;i++)g.updateLastSeed(.1);sync();assert.ok(q.seedVital().hp>=50);assert.equal(q.seedDown(),false);
-  // The guest can revive the host too, using fresh network input.
   g.heldSpace=false;g.seedVital().shield=0;g.damageGardener(g.coop.members[ids[0]],100);sync();
   q.P.x=g.P.x;q.P.y=g.P.y;q.heldSpace=true;
   for(let i=0;i<65;i++){h.advance(100);send();g.updateLastSeed(.1);}sync();assert.ok(g.seedVital().hp>0);

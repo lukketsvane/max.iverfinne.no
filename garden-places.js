@@ -1,22 +1,7 @@
 (function (root) {
   'use strict';
-  // Every garden has one place of its own to explore: a hut, a hollow tree, a
-  // drowned chapel. It is drawn on a 6 px grid, one character per cell, with
-  // the bottom row standing on the garden floor. The run seed only chooses its
-  // side and footing, so each garden keeps its identity from run to run.
-  //
-  //   #  rock: solid, walls stop Max and its top is walkable
-  //   =  a one-way ledge along the top of the cell
-  //   %  a false wall: drawn as rock, but Max walks through it
-  //   $  a seed cache resting on the floor of the cell
-  //   _  back wall, |  a pillar behind Max
-  //   !  lantern, v  vines, *  crystals, t  tuft, m  glowing mushroom
-  //
-  // Designs face the garden from its right: they are mirrored on the left.
   var CELL = 6, RAMP = 8;
   var PLACES = [null];
-  // Palettes follow the alpine references: outlined slate, bright moss, blue flowers.
-  // shade: mortar, dark, body, light, highlight.
   var STYLES = {
     stone: { shade: ['#161c26', '#252d3a', '#323c4b', '#46526a', '#617089'], line: '#0c1017', moss: ['#2f4a26', '#4c7430', '#86b243'], back: ['#10151d', '#161d27'], wood: false },
     ruin: { shade: ['#191b24', '#2a2c38', '#383b49', '#505567', '#6d7387'], line: '#0d0e14', moss: ['#2f4a26', '#4c7430', '#86b243'], back: ['#121319', '#191b23'], wood: false, ashlar: true },
@@ -25,8 +10,6 @@
     crown: { shade: ['#1b1a22', '#2c2a36', '#3b3846', '#56526a', '#76708a'], line: '#0d0c12', moss: ['#343f2a', '#55663a', '#b9a261'], back: ['#131219', '#1a1822'], wood: false, ashlar: true }
   };
   var FLOWER = ['#3f7fd0', '#72b6ff', '#d6eeff'];
-  // Gardens 11-15 are frost and 16-19 ember (see gardenBackdrop in index.html): their
-  // stone wears snow or ember moss instead of green moss, and their flowers follow.
   var CAPS = {
     frost: { moss: ['#6f8597', '#b7cad8', '#eef6fb'], flower: ['#7fb0d8', '#bfe3ff', '#ffffff'] },
     ember: { moss: ['#4a261a', '#8f3a1c', '#dd7a33'], flower: ['#b8452a', '#f08a3c', '#ffd27a'] }
@@ -40,7 +23,6 @@
   }
   function at(rows, c, r) { return r >= 0 && r < rows.length && c >= 0 && c < rows[0].length ? rows[r][c] : '.'; }
   function massive(ch) { return ch === '#' || ch === '%'; }
-  // Horizontal runs merged down through identical rows: few, whole rectangles.
   function rects(rows, test) {
     var out = [], open = {};
     rows.forEach(function (row, r) {
@@ -76,7 +58,6 @@
     layout.platforms.forEach(function (p) { d = Math.max(d, side > 0 ? p.x + p.w - o : o - p.x); });
     return d;
   }
-  // Steps down from the footing to the soil outside, one cell at a time.
   function ramp(ground, floor, edge, dir) {
     var steps = [], top = floor, x = edge;
     for (var k = 0; k <= RAMP; k++) {
@@ -91,7 +72,6 @@
   }
   function site(layout, ground, wet, width, side) {
     var o = layout.origin, near = Math.max(150, extent(layout, side) + 24), best = null;
-    // Near the routes when the soil allows; past a pond when it must.
     for (var off = 0; off <= 480; off += CELL) {
       var a = side > 0 ? o + near + off : o - near - off - width, b = a + width, dry = true, top = Infinity, low = -Infinity, x;
       for (x = a - 30 - RAMP * CELL; x <= b + 30 + RAMP * CELL && dry; x += 2) if (wet && wet(x)) dry = false;
@@ -99,10 +79,8 @@
       for (x = a; x <= b; x++) { var g = ground(x); top = Math.min(top, g); low = Math.max(low, g); }
       var floor = Math.floor(top), left = ramp(ground, floor, a, -1), right = ramp(ground, floor, b, 1);
       if (!left || !right) continue;
-      // Ramps included, the place keeps clear of every route ledge.
       var inner = side > 0 ? a - left.length * CELL - o : o - b - right.length * CELL;
       if (inner < extent(layout, side) + 12) continue;
-      // Soil more than two cells above the floor at a door would wall Max in.
       var rise = Math.max(0, floor - ground(a - 1), floor - ground(b + 1));
       if (rise > 2 * CELL) continue;
       var score = (left.length + right.length) * 4 + (low - top) / 3 + rise + off / 16 + (off > 156 ? 12 : 0);
@@ -110,11 +88,6 @@
     }
     return best;
   }
-  /* ------------------------------------------------------------- blooms */
-  // A bounce bloom grows on dry, flat soil straight under a route ledge that a
-  // plain jump cannot reach (26-44 px up). Jump or drop onto it and it springs
-  // Max 52 px high, through the one-way ledge and onto it: a shortcut up a
-  // route, never the only way. Walking across it does nothing.
   var BLOOM = { w: 10, v: 212, low: 26, high: 44 };
   function blooms(layout, ground, wet) {
     var out = [], b = layout.place && layout.place.bounds;
@@ -193,15 +166,13 @@
     layout.place = { name: place.name, stage: stage, side: side, style: style, x: left, y: top, w: width, h: H * CELL, floor: s.floor, rows: rows, veils: veils, groups: veils.reduce(function (n, v) { return Math.max(n, v.group + 1); }, 0), caches: caches, decor: decor, soil: { x: x0, y: soil }, bounds: { x: x0, y: top - CELL, w: x1 - x0, h: s.floor - top + CELL } };
     return layout;
   }
-  // A cache is secret when a false wall stands between it and the open air.
-  // A cache is secret when its room is sealed except through a false wall.
   function sealed(rows, c0, r0) {
     var seen = {}, stack = [[c0, r0]], veil = false;
     while (stack.length) {
       var q = stack.pop(), key = q[0] + ',' + q[1];
       if (seen[key]) continue; seen[key] = true;
       var ch = at(rows, q[0], q[1]);
-      if (q[1] >= rows.length) continue; // the footing
+      if (q[1] >= rows.length) continue;
       if (q[0] < 0 || q[1] < 0 || q[0] >= rows[0].length || ch === '.') return false;
       if (ch === '%') { veil = true; continue; }
       if (ch === '#' || ch === '=') continue;
@@ -216,9 +187,6 @@
     return -1;
   }
 
-  /* ------------------------------------------------------------ drawing */
-  // A pixel shader baked once per garden: stones or wood grain, outlines on
-  // open faces, moss caps that drip, flowers on top and vines under overhangs.
   function rgb(hex) { return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
   function texture(st, wx, wy) {
     if (st.wood) {
@@ -241,7 +209,7 @@
     var dressed = dress(STYLES[p.style] || STYLES.stone, p.stage), st = dressed.st, rows = p.rows, sx = p.soil.x, soil = p.soil.y, W = soil.length, top = p.y - 2 * CELL;
     var H = Math.max.apply(null, soil) - top + 2, ox = p.x - sx, oy = p.y - top, ids = groups(rows);
     var bases = layout.platforms.filter(function (q) { return q.place && q.solid && /:p(f|r\d+)$/.test(q.id); });
-    var mask = new Uint8Array(W * H); // 0 air, 1 rock, 2 veil, 3 back wall, 4 pillar
+    var mask = new Uint8Array(W * H);
     for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
       var wx = sx + x, wy = top + y, k = 0;
       if (wy >= soil[x]) continue;
@@ -270,7 +238,6 @@
       if (m === 2 && (hash(wx2 >> 1, wy2 >> 2) % 9 === 0) && tx > 1) tx = 1;
       put(x, y, shade[tx]);
     }
-    // Moss tufts and flowers above open tops, vines below overhangs.
     for (x = 0; x < W; x++) for (y = 1; y < H - 1; y++) {
       if (!mine(x, y) || !solid(x, y)) continue;
       var wxx = sx + x, hh = hash(wxx, 37);
@@ -298,11 +265,6 @@
     }
     return { canvas: cv, x: sx, y: top };
   }
-  /* -------------------------------------------------------------- ledges */
-  // Route ledges wear the same materials as the places: terraces and crossings
-  // are mossy cobble with a rocky underside, ruins are ashlar with broken
-  // pillar stubs, canopy is a leafy branch and switchbacks a root with hanging
-  // strands. The top row is the walking surface (p.y), exactly as before.
   function ledgePixels(p, stage) {
     var dressed = dress(STYLES[p.style] || STYLES.stone, stage), st = dressed.st, wood = !!st.wood;
     var depth = Math.max(3, p.depth | 0), W = p.w + 2, H = depth + 14, ox = 1, oy = 3, mask = new Uint8Array(W * H);
@@ -408,7 +370,6 @@
   }
   function add(place) { PLACES.push(Object.freeze(place)); }
 
-  /* ------------------------------------------------------------- places */
   add({ name: 'Shepherd Hut', style: 'stone', rows: [
     '..........######............',
     '........###____###..........',

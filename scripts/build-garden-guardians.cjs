@@ -1,6 +1,4 @@
 'use strict';
-// Mechanical registration, palette reduction and atlas packing only. Every
-// creature pose comes from image_gen; this script never invents animation poses.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -67,8 +65,6 @@ function atlasFromSource(id, source, motion) {
     placeTile(rgba, width, tile, col * 32, row * 32);
     frames.push({sheet: 'sprites', rect: [col * 32, row * 32, 32, 32], anchor: [16,31], opaqueBounds: bounds(tile)});
   }
-  // Keep all four authored collapse poses. The extra transparent terminal frame
-  // finishes death without erasing the last drawing from the checked-in source.
   if (motion) frames.push({sheet: 'sprites', rect: [0,256,32,32], anchor: [16,31], opaqueBounds: null});
   const animations = Object.fromEntries(STATES.map((name, i) => [name, {
     frames: Array.from({length: columns}, (_, j) => i * columns + j).concat(motion && name === 'death' ? [32] : []),
@@ -90,8 +86,6 @@ function opaqueSpans(mask, target, label) {
     else spans.at(-1)[1] = i + 1;
   }
   if (spans.length < target) throw Error(`${label}: found only ${spans.length} separated groups; expected ${target}.`);
-  // Detached seeds or wisps may add an internal empty scanline. Keep the widest
-  // separators between the intended rows/columns, joining only the smaller gaps.
   while (spans.length > target) {
     let closest = 0;
     for (let i = 1; i < spans.length - 1; i++) if (spans[i + 1][0] - spans[i][1] < spans[closest + 1][0] - spans[closest][1]) closest = i;
@@ -110,8 +104,6 @@ function motionCells(raw, id) {
   for (let row = 0; row < 8; row++) {
     const [top,bottom] = rowSpans[row], rh = bottom - top, seen = new Uint8Array(width * rh), queue = new Int32Array(width * rh);
     const groups = Array.from({length: 4}, () => []);
-    // A swipe or limb may cross an imaginary grid line. Assign whole connected
-    // shapes to a column, so those drawings are never sliced through the body.
     for (let sy = top; sy < bottom; sy++) for (let sx = 0; sx < width; sx++) {
       const start = (sy - top) * width + sx;
       if (seen[start] || rgba[(sy * width + sx) * 4 + 3] < 128) continue;
@@ -161,8 +153,6 @@ async function importMaster(input, motion, sharp) {
   const union = [Math.ceil(gridW), Math.ceil(gridH), 0, 0];
   let maxW = 0, maxH = 0;
   for (let i = 0; !motion && i < columns * rows; i++) {
-    // Image-generation output sizes need not divide by the requested grid.
-    // Adjacent rounded edges partition every source pixel exactly once.
     const col = i % columns, row = Math.floor(i / columns);
     const sx = Math.round(col * gridW), sy = Math.round(row * gridH);
     const cw = Math.round((col + 1) * gridW) - sx, ch = Math.round((row + 1) * gridH) - sy;
@@ -176,8 +166,6 @@ async function importMaster(input, motion, sharp) {
     union[2] = Math.max(union[2], box[2]); union[3] = Math.max(union[3], box[3]);
     maxW = Math.max(maxW, box[2] - box[0]); maxH = Math.max(maxH, box[3] - box[1]);
   }
-  // One scale per creature, fixed column origins and a baseline shared by all
-  // four drawings of a state. Layout gaps between generated rows are not motion.
   const scale = motion ? layout.scale : Math.min(28 / maxW, 29 / maxH);
   const width = motion ? 128 : 256, height = motion ? 256 : 32, native = Buffer.alloc(width * height * 4);
   for (let i = 0; i < cells.length; i++) {

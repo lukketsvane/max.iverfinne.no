@@ -1,6 +1,3 @@
--- Pølge is an open character, not an extra player slot. Apply after the Sligo migration.
--- This transaction preserves the live RPC bodies, auth checks, grants and room rules.
--- Unexpected live definitions abort the entire migration rather than being overwritten.
 begin;
 
 do $migration$
@@ -16,7 +13,7 @@ begin
   ] loop
     definition := pg_get_functiondef(signature::regprocedure);
     if strpos(definition, 'p_class_id not in ' || new_list) > 0 then
-      continue; -- Safe to run this migration again.
+      continue;
     end if;
     if (length(definition)-length(replace(definition, 'p_class_id not in ' || old_list, '')))
        <> length('p_class_id not in ' || old_list) then

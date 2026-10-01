@@ -1,5 +1,3 @@
-// Large finished gardens travel as one logical snapshot. Fragmentation never
-// exposes a partial garden, acknowledges an incomplete frame, or truncates it.
 const MAX_WIRE_BYTES = 60000;
 const MAX_FRAME_BYTES = 4 * 1024 * 1024;
 const MAX_INPUT_BYTES = 12000;
@@ -26,8 +24,6 @@ function envelope(seq, index, count, total, data, sid) {
   return { v: 1, kind: FRAGMENT_KIND, seq, sid, index, count, total, data };
 }
 function safeEnd(text, start, end) {
-  // Keep a literal Unicode surrogate pair together. The byte lengths of the
-  // individual fragments then add up to the original JSON's UTF-8 length.
   if (end < text.length && end > start && text.charCodeAt(end - 1) >= 0xd800 &&
       text.charCodeAt(end - 1) <= 0xdbff && text.charCodeAt(end) >= 0xdc00 &&
       text.charCodeAt(end) <= 0xdfff) return end - 1;
@@ -44,8 +40,6 @@ export function encodeFrame(packet) {
   const chunks = [];
   for (let start = 0; start < text.length;) {
     let end = safeEnd(text, start, Math.min(text.length, start + 24000));
-    // Size the actual JSON envelope, including the quotes and backslashes
-    // escaped a second time when the JSON fragment becomes a string field.
     while (bytes(JSON.stringify(envelope(packet.seq, MAX_PARTS - 1, MAX_PARTS, total, text.slice(start, end), packet.sid))) > MAX_WIRE_BYTES) {
       end = safeEnd(text, start, start + Math.floor((end - start) * .8));
       if (end <= start) throw new RangeError('Could not encode the co-op frame.');
@@ -79,7 +73,6 @@ export class CoopFrameReceiver {
     for (const entry of this.senders.values()) {
       if (entry.pending && now - entry.pending.started >= FRAGMENT_TTL_MS) {
         entry.pending = null;
-        // Keep latest: delayed fragments cannot restart an expired frame.
       }
     }
   }

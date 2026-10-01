@@ -3,7 +3,7 @@ import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
-import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, CLASS_OUTFITS, readLoadout, writeLoadout } from './player-loadout.mjs';
+import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
 import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
 import { hasFullDiscovery, relicCollection, drawRelicStone } from './relics.mjs';
@@ -24,16 +24,14 @@ let game, overlay, card, user = null, busy = false, opened = false, screen = 'ho
 let sessionReady = !client;
 let status;
 let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
-let session = null, loginDestination = null, lobbyVersion = '';
+let session = null;
 let leavingSession = null;
 let liveSettings = false, settingsButton;
 let selectedMode = 'garden', focusedRelic = null, relicTargets;
 let invitedRoom = null, inviteState = null;
-// Hidden characters show only once unlocked; the game reads the same list (the plant gallery).
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
 window.MaxEasterEggs = { has: eggs.has, list: eggs.list, allDiscovered: () => hasFullDiscovery(user) };
 let selected = readLoadout(window.localStorage, eggs.list());
-const selectedOutfits = { [selected.classId]: selected.skinId };
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
 const onlinePlayers = client ? new OnlinePlayers(client, () => renderPlayers()) : null;
 
@@ -273,8 +271,6 @@ function gardenGestures() {
   const tap = (x, y) => {
     const now = performance.now(), repeated = lastTap && now - lastTap.t < 400 && Math.hypot(x - lastTap.x, y - lastTap.y) < 24;
     lastTap = { x, y, t: now };
-    // A double tap opens the landscape; its second tap must not close a note
-    // that the first tap just opened.
     if (repeated) { if (!inGarden) enterGarden(); return; }
     gardenTap(x, y);
   };
@@ -304,7 +300,6 @@ function gardenGestures() {
     if (!d.moved) { if (elapsed < 450) tap(e.clientX, e.clientY); return; }
     lastTap = null;
     if (d.home) {
-      // Swiping up scrolls down into the garden, like the wheel shortcut.
       if (d.touch && dy < -80 && -dy > Math.abs(dx) * 1.3 && elapsed < 700) enterGarden();
       return;
     }
@@ -329,8 +324,6 @@ function gardenGestures() {
     if (inGarden) {
       e.preventDefault();
       if (e.ctrlKey) { wheelPinch = Math.max(0, wheelPinch + e.deltaY); if (wheelPinch > 40) { wheelPinch = 0; if (scene.focus >= 0 || focusedRelic) unfocusPlant(); else exitGarden(); } return; }
-      // Consume the rest of the entry gesture so momentum does not carry the
-      // first visible plants and stones straight off screen.
       if (now < wheelEntryUntil) { wheelEntryUntil = now + 180; return; }
       scene.target = null; scene.vel = 0;
       scene.scroll = Math.max(-12, Math.min(scene.max + 12, scene.scroll + (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit / sceneSize().px));
@@ -338,8 +331,6 @@ function gardenGestures() {
       wheelDown = 0;
       e.preventDefault(); wheelPinch = Math.min(0, wheelPinch + e.deltaY); if (wheelPinch < -40) { wheelPinch = 0; enterGarden(); }
     } else {
-      // Let a short screen scroll its menu first. Small or sideways wheel
-      // movements are not requests to leave the menu.
       if (overlay.scrollTop + overlay.clientHeight < overlay.scrollHeight - 2 || e.deltaY <= 0 || Math.abs(e.deltaX) > e.deltaY) { wheelDown = 0; return; }
       e.preventDefault();
       wheelDown = (now - wheelTime < 250 ? wheelDown : 0) + e.deltaY * unit; wheelTime = now;
@@ -348,34 +339,16 @@ function gardenGestures() {
   }, { passive: false });
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
-function characterSkin(id) { return selectedOutfits[id] || CLASS_SKINS[id] || 'moss-pink'; }
-function outfitName() { return 'Ring gear'; }
-function cycleOutfit(id) {
-  if (!opened || screen !== 'play' || busy || session?.playing || liveSettings) return;
-  if ((sharedStatus.taken || []).includes(id) && id !== sharedStatus.mine) return;
-  const outfits = CLASS_OUTFITS[id];
-  if (!outfits || outfits.length < 2) return;
-  selectMax({ classId: id, skinId: outfits[(outfits.indexOf(characterSkin(id)) + 1) % outfits.length] });
-}
-function outfitGestures(node, id) {
-  let last = null;
-  node.addEventListener('click', event => {
+function characterSkin(id) { return CLASS_SKINS[id] || 'moss-pink'; }
+function characterChoice(node, id) {
+  node.addEventListener('click', () => {
     if (node.disabled || !opened || busy || screen !== 'play' || session?.playing || liveSettings) return;
-    const classId = id || selected.classId;
-    if (id) selectMax({ classId });
-    if (event.detail === 0) { last = null; return; }
-    const now = performance.now();
-    if (last && last.classId === classId && now - last.time <= 350 && Math.hypot(event.clientX - last.x, event.clientY - last.y) <= 24) {
-      event.preventDefault(); last = null; cycleOutfit(classId);
-    } else last = { classId, time: now, x: event.clientX, y: event.clientY };
+    selectMax({ classId: id });
   });
   node.addEventListener('keydown', event => {
-    if (!event.repeat && (event.shiftKey || !id) && (event.key === 'Enter' || event.key === ' ')) {
-      event.preventDefault(); last = null; cycleOutfit(id || selected.classId);
-    }
+    if (!event.repeat && event.shiftKey && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
   });
 }
-// The open characters, then any hidden one this player has unlocked.
 function visibleClassIds() { return [...CLASS_IDS, ...HIDDEN_CLASS_IDS.filter(id => eggs.has(id))]; }
 function characterImage(id) {
   const replacement = { moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' }[id];
@@ -384,18 +357,15 @@ function characterImage(id) {
 function skinPreview(id) {
   const frame = el('span', undefined, 'max-skin-preview'); frame.setAttribute('aria-hidden', 'true');
   const image = el('img'); image.alt = ''; image.draggable = false;
-  // A pack that has not shipped yet shows nothing rather than a broken image.
   image.addEventListener('error', () => { image.style.visibility = 'hidden'; });
   image.addEventListener('load', () => { image.style.visibility = ''; });
   image.src = characterImage(id);
   frame.append(image); return frame;
 }
-// Pixel text word by word, so a long line wraps on a narrow screen.
 function pixelWords(node, text, scale) {
   text.split(' ').forEach((word, i) => { if (i) node.append(' '); node.append(pixelText(el('span', undefined, 'max-pixel-word'), word, scale, 0)); });
   return node;
 }
-// A long name (Max Sligo Neverdahl) is drawn a size smaller so it fits the detail header.
 function characterName(node, info) {
   node.replaceChildren(); delete node.dataset.long;
   const text = info.fullName || info.name;
@@ -404,10 +374,9 @@ function characterName(node, info) {
 }
 function chooseMax() {
   const hero = el('div', undefined, 'max-character-hero');
-  const stage = el('div', undefined, 'max-character-stage'); stage.append(skinPreview(characterSkin(selected.classId))); outfitGestures(stage);
+  const stage = el('div', undefined, 'max-character-stage'); stage.tabIndex = -1; stage.style.touchAction = 'manipulation'; stage.append(skinPreview(characterSkin(selected.classId)));
   const intro = el('div', undefined, 'max-character-intro');
   intro.append(el('p', '', 'max-character-name'), el('p', '', 'max-class-detail'));
-  const outfit = el('p', '', 'max-outfit-hint'); outfit.id = 'max-outfit-hint'; outfit.setAttribute('aria-live', 'polite'); intro.append(outfit);
   hero.append(stage, intro); card.append(hero);
 
   const characters = el('fieldset', undefined, 'max-role-picker');
@@ -432,17 +401,14 @@ function roleChoices(grid) {
   const ids = visibleClassIds();
   grid.replaceChildren(); grid.dataset.count = String(ids.length);
   for (const id of ids) {
-    const choice = el('button', '', 'max-role-choice'); choice.type = 'button'; choice.dataset.classId = id; outfitGestures(choice, id);
-    // The card shows the character alone; its name is only read out.
+    const choice = el('button', '', 'max-role-choice'); choice.type = 'button'; choice.dataset.classId = id; characterChoice(choice, id);
     choice.setAttribute('aria-label', classInfo(id).name);
     choice.append(skinPreview(characterSkin(id)));
     grid.append(choice);
   }
 }
-// An unlock arrived (typed, or loaded after sign-in) or went away with an account.
 function unlocksChanged() {
   selected = readLoadout(window.localStorage, eggs.list());
-  selectedOutfits[selected.classId] = selected.skinId;
   const grid = screen === 'play' && card?.querySelector('.max-role-grid');
   if (grid) { roleChoices(grid); updateSelection(); updatePlayReady(); }
   refreshRelicTargets();
@@ -450,7 +416,6 @@ function unlocksChanged() {
 function selectMax(change) {
   selected = { ...selected, ...change };
   if (change.classId && !change.skinId) selected.skinId = characterSkin(change.classId);
-  selectedOutfits[selected.classId] = selected.skinId;
   writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
 }
 function updateSelection() {
@@ -473,10 +438,7 @@ function updateSelection() {
     option.disabled = occupied;
     option.setAttribute('aria-disabled', String(occupied));
     option.setAttribute('aria-pressed', String(option.dataset.classId === selected.classId));
-    const outfit = CLASS_OUTFITS[option.dataset.classId]?.length > 1;
-    option.title = occupied ? 'Already playing' : outfit ? 'Double-tap to change outfit · Shift+Enter on keyboard' : '';
-    if (outfit) option.setAttribute('aria-description', outfitName(characterSkin(option.dataset.classId)) + '. Double-tap or press Shift+Enter to change outfit.');
-    else option.removeAttribute('aria-description');
+    option.title = occupied ? 'Already playing' : '';
     const image = option.querySelector('img');
     if (image) image.src = characterImage(characterSkin(option.dataset.classId));
   }
@@ -497,20 +459,6 @@ function updateSelection() {
   if (name) characterName(name, classInfo(selected.classId));
   const heroImage = card.querySelector('.max-character-stage img');
   if (heroImage) heroImage.src = characterImage(selected.skinId);
-  const outfit = card.querySelector('.max-outfit-hint'), stage = card.querySelector('.max-character-stage');
-  const hasOutfits = CLASS_OUTFITS[selected.classId]?.length > 1;
-  if (outfit) { outfit.hidden = !hasOutfits; outfit.textContent = hasOutfits ? outfitName(selected.skinId) + ' · Double-tap sprite to change' : ''; }
-  if (stage) {
-    stage.tabIndex = hasOutfits ? 0 : -1;
-    stage.style.touchAction = 'manipulation';
-    if (hasOutfits) { stage.setAttribute('role', 'button'); stage.setAttribute('aria-label', 'Change ' + classInfo(selected.classId).name + ' outfit'); stage.setAttribute('aria-describedby', 'max-outfit-hint'); stage.setAttribute('aria-keyshortcuts', 'Enter Space Shift+Enter Shift+Space'); }
-    else { stage.removeAttribute('role'); stage.removeAttribute('aria-label'); stage.removeAttribute('aria-describedby'); stage.removeAttribute('aria-keyshortcuts'); }
-  }
-}
-function selectionSummary() {
-  const summary = el('div', undefined, 'max-selection-summary');
-  summary.append(skinPreview(selected.skinId), el('p', classInfo(selected.classId).name + ' · ' + selected.difficulty.toUpperCase()));
-  card.append(summary);
 }
 function readInvite() {
   const params = new URL(window.location.href).searchParams, id = params.get('join'), mode = params.get('mode') || 'garden';
@@ -568,8 +516,6 @@ async function ensurePlayIdentity() {
     const { data, error } = await client.auth.signInAnonymously();
     if (!error && data?.user) { setUser(data.user); return data.user; }
   } catch {}
-  // Hosted anonymous Auth may be disabled. Fall back to a device-local,
-  // non-PII account so Play still has zero sign-in friction.
   const key = 'max-auto-player-v1';
   let guest;
   try { guest = JSON.parse(window.localStorage.getItem(key) || 'null'); } catch {}
@@ -592,7 +538,6 @@ async function joinSharedGarden() {
   try {
     await leavingSession; leavingSession = null;
     await ensurePlayIdentity();
-    // A hidden character joins only once the server has its unlock (typed here while signed out).
     if (HIDDEN_CLASS_IDS.includes(selected.classId)) await eggs.ensure(client, user, selected.classId);
     await refreshSharedStatus();
     if (invitedRoom && inviteState !== 'ready') throw new Error(inviteState === 'expired' ? 'This session has ended.' : 'Could not check invite. Try Play again.');
@@ -612,7 +557,6 @@ function updatePlayReady() {
   if (screen !== 'play') return;
   const taken = new Set(sharedStatus.taken || []);
   const noCharacter = visibleClassIds().every(id => taken.has(id) && id !== sharedStatus.mine);
-  // Four players fill the garden even when a fifth character is still free.
   const full = !!sharedStatus.active && Number(sharedStatus.players || 0) >= 4 && !sharedStatus.mine;
   const checking = inviteState === 'loading', expired = inviteState === 'expired', failed = inviteState === 'error';
   for (const action of card.querySelectorAll('.max-play-actions > button')) action.disabled = !sessionReady || noCharacter || full || checking || expired;
@@ -629,7 +573,7 @@ async function enterRoom(code) {
   if (busy || session) return;
   busy = true; message('Connecting…');
   const candidate = new CoopSession(client, user, {
-    room: room => { game.coopRoster?.(room); if (opened && !candidate.playing && session === candidate) lobby(room); },
+    room: room => game.coopRoster?.(room),
     start: network => {
       opened = false; overlay.hidden = true; exitGarden(); stopScene();
       settingsButton.hidden = false;
@@ -646,48 +590,17 @@ async function enterRoom(code) {
     },
   }, { ...selected, mode: selectedMode });
   session = candidate;
-  try { await candidate.enter(code); if (!candidate.playing) { lobbyVersion = ''; lobby(candidate.room); } }
+  try {
+    await candidate.enter(code);
+    if (!candidate.playing) { await candidate.leave(); throw new Error('Could not enter the running garden. Try Play again.'); }
+  }
   catch (error) { if (session === candidate) session = null; message(joinRefusal(error), true); }
   finally { busy = false; }
 }
-// The server refuses a hidden character it has no unlock for (or before the migration exists).
 function joinRefusal(error) {
   const text = error?.message || 'Could not join the garden.';
   if (!HIDDEN_CLASS_IDS.includes(selected.classId) || !/available character|rejected this character/i.test(text)) return text;
   return 'The shared garden has not let ' + classInfo(selected.classId).name + ' in yet. Choose another character and press Play.';
-}
-function lobby(room) {
-  const version = JSON.stringify([room.code, room.members, room.state, session?.canReady, session?.canStart]);
-  if (screen === 'lobby' && lobbyVersion === version) return;
-  lobbyVersion = version; page('lobby', 'Garden ' + room.members.length + ' / 4');
-  const invite = el('p', room.code, 'max-room-code'); invite.setAttribute('aria-label', 'Room code ' + room.code); card.append(invite);
-  for (const member of room.members) {
-    const row = el('div', undefined, 'max-room-player');
-    row.dataset.slot = member.slot;
-    if (member.skinId) row.append(skinPreview(member.skinId));
-    const copy = el('div', undefined, 'max-room-player-copy');
-    copy.append(el('strong', member.name + (member.id === user.id ? ' · You' : '')),
-      el('span', member.selectionReady ? classInfo(member.classId).name + (member.difficulty ? ' · ' + member.difficulty.toUpperCase() : '') : 'Receiving selection…'),
-      el('span', member.ready && member.selectionReady ? 'Ready' : 'Waiting', 'max-room-ready'));
-    row.append(copy); card.append(row);
-  }
-  const me = room.members.find(p => p.id === user.id);
-  if (room.host === user.id) {
-    const start = button('Start', () => roomAction(() => session.start(), 'Gathering your team…'), 'primary');
-    start.disabled = !session.canStart; card.append(start);
-  } else {
-    const ready = button(me?.ready ? 'Ready ✓' : 'Ready', () => roomAction(() => session.ready(!me?.ready)), 'primary');
-    ready.disabled = !session.canReady; card.append(ready);
-  }
-  card.append(status, button('Leave', async () => {
-    const old = session; session = null; await old?.leave(); together();
-  }, 'subtle'));
-}
-async function roomAction(action, pending = '') {
-  if (busy) return; busy = true;
-  if (pending) message(pending);
-  try { await action(); } catch (error) { message(error.message, true); }
-  finally { busy = false; }
 }
 function nextVolume(value) {
   const levels = [1, .75, .5, .25, 0], current = levels.findIndex(v => Math.abs(v - value) < .03);
@@ -705,7 +618,6 @@ function inviteControl() {
   const selectLink = () => { field.hidden = false; field.focus(); field.select(); field.setSelectionRange(0, field.value.length); };
   const invite = button('Invite', async () => {
     invite.disabled = true; let copied = false;
-    // Call directly from the tap: iOS requires a user gesture for clipboard access.
     try { await navigator.clipboard.writeText(url.href); copied = true; } catch {
       selectLink();
       try { copied = document.execCommand('copy'); } catch {}
@@ -721,14 +633,14 @@ function inviteControl() {
 }
 function settings() {
   page('settings', 'Settings');
-  const music = game.musicVolume?.() ?? 1, effects = game.effectsVolume?.() ?? 1;
-  const musicButton = button(volumeLabel('Music', music), () => { game.setMusicVolume?.(nextVolume(music)); settings(); });
-  const effectsButton = button(volumeLabel('Effects', effects), () => { game.setEffectsVolume?.(nextVolume(effects)); settings(); });
-  musicButton.setAttribute('aria-label', 'Music volume ' + Math.round(music * 100) + ' percent');
-  effectsButton.setAttribute('aria-label', 'Effects volume ' + Math.round(effects * 100) + ' percent');
   if (liveSettings && session?.playing && !session.closed) card.append(inviteControl());
-  card.append(musicButton, effectsButton, button('Controls', help));
-  if (!liveSettings && user && playerName(user) !== 'Guest') {
+  for (const name of ['Music', 'Effects']) {
+    const value = game[name.toLowerCase() + 'Volume']?.() ?? 1;
+    const control = button(volumeLabel(name, value), () => { game['set' + name + 'Volume']?.(nextVolume(value)); settings(); });
+    control.setAttribute('aria-label', name + ' volume ' + Math.round(value * 100) + ' percent'); card.append(control);
+  }
+  card.append(button('Controls', help));
+  if (!liveSettings && signedInUser()) {
     if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords()));
     card.append(button(playerName(user) + ' · Account', account));
   }
@@ -796,7 +708,6 @@ function login(create = false) {
   passLabel.append(pass);
   const submit = el('button', create ? 'Create account and sign in' : 'Sign in', 'primary'); submit.type = 'submit';
   form.append(nameLabel, passLabel, submit);
-  // Typing a hidden character's name wakes it at once. The name is a spell, never a sign-in.
   name.addEventListener('input', () => { const egg = eggForPhrase(name.value); if (egg) unlockEgg(egg); });
   form.addEventListener('submit', async event => {
     event.preventDefault(); if (busy) return;
@@ -811,7 +722,7 @@ function login(create = false) {
       if (error) throw error;
       if (!data.session) throw { code: 'confirmation_enabled' };
       setUser(data.session.user);
-      const next = loginDestination; loginDestination = null; if (next) next(); else account();
+      account();
     } catch (error) { message(accountError(error), true); }
     finally { busy = false; submit.disabled = false; }
   });
@@ -853,14 +764,10 @@ function account() {
   back();
 }
 function open() {
-  // Results can finish above live Settings. Returning to the menu must replace
-  // that overlay once the run has ended, even though a menu is already open.
   if ((opened && !liveSettings) || !game || game.canOpenMenu?.() === false) return;
   opened = true; liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true; game.pause(true); overlay.hidden = false; home(); startScene();
 }
 function close() {
-  // Run ownership is captured at beginRun. Wait for a remembered account (or
-  // the confirmed absence of one) before letting a new run start.
   if (!sessionReady) { updatePlayReady(); return; }
   if (session) { void session.leave(); session = null; }
   opened = false; exitGarden(); stopScene(); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId, mode: selectedMode }); game.pause(false);
@@ -870,7 +777,7 @@ function attach(bridge) {
   if (game) return;
   game = bridge;
   window.MaxRunStats = run => { if (client) void client.from('max_run_stats').insert({ run }).then(() => {}, () => {}); };
-  window.MaxGardenLeaderboard = createLeaderboard(client, () => user && playerName(user) !== 'Guest' ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
+  window.MaxGardenLeaderboard = createLeaderboard(client, () => signedInUser() ? { id: user.id, name: playerName(user) } : null, () => sessionReady);
   window.MaxSoundtrack = createSoundtrack({ enabled: (game.musicVolume?.() ?? 1) > 0, volume: game.musicVolume?.() ?? 1 });
   overlay = el('section', undefined, 'max-menu'); overlay.hidden = true; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'max-menu-title');
   card = el('div', undefined, 'max-menu-card');
@@ -911,8 +818,6 @@ function attach(bridge) {
   document.body.append(overlay);
   if (!document.hidden) onlinePlayers?.start();
   window.addEventListener('keydown', event => { if (event.key === 'Escape' && !opened) openSettings(); });
-  // This branch is removed from the production bundle. The visual-review bundle
-  // uses in-memory storage and an isolated, synthetic account, never live Auth.
   if (typeof __MAX_RELIC_REVIEW__ !== 'undefined' && __MAX_RELIC_REVIEW__ && window.__relicReview) {
     setUser({ id: 'relic-review', email: 'lukketsvane@players.max.invalid' });
     open(); enterGarden();
@@ -943,15 +848,11 @@ if (client) {
   client.auth.onAuthStateChange((_event, authSession) => {
     const changed = !sessionReady || authSession?.user?.id !== user?.id;
     setUser(authSession?.user || null); sessionReady = true;
-    // Never await Supabase calls from its auth callback (the SDK holds a lock).
     if (changed) setTimeout(() => {
-      // Load the account's easter eggs and send the ones typed on this device; an account
-      // named after a hidden character has it too.
       if (user) void eggs.sync(client, user, playerName(user));
       if (!opened) return;
       if (screen === 'play') updatePlayReady();
       else if (screen === 'home') home();
-      else if (screen === 'together' && !session) together();
       else if (screen === 'account' || screen === 'login') account();
     }, 0);
   });

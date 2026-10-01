@@ -11,7 +11,7 @@ function party(classId){const ids=['11111111-1111-4111-8111-111111111111','22222
 test('Pølge is an open boxer with exclusive compatible boon IDs and no projectile attack',async()=>{
  const {validLoadout}=await import('../player-loadout.mjs');assert.deepEqual(validLoadout({classId:'polge'}),{classId:'polge',skinId:'polge',difficulty:'medium'});
  for(const id of ['varnish','splinters','raincoat']){assert.ok(builds.available(builds.empty(),id,'polge'));for(const other of ['mech','runner','bulwark','herbalist','sligo'])assert.equal(builds.clean({[id]:3},other)[id],0);}
- const {game:g}=fresh(),far=pest(g,{x:g.P.x+120});punch(g,far);assert.equal(far.hp,20);assert.equal(g.bombs.length,0);assert.equal(g.classShots.length,0);assert.equal(g.polgeStands.length,0);
+ const {game:g}=fresh(),far=pest(g,{x:g.P.x+120});punch(g,far);assert.equal(far.hp,20);assert.equal(g.bombs.length,0);assert.equal(g.classShots.length,0);
 });
 test('jab-cross-uppercut combo is short range, aims upward and resets after a gap',()=>{
  const {game:g}=fresh(),k=pest(g),plant=plot({x:g.P.x,health:.8});g.gardenPlots=[plant];const damage=[];

@@ -1,4 +1,3 @@
-// The supplied bitmap alphabet, with a real text fallback and accessible label.
 const font = new Image();
 font.src = 'assets/results-native/sprites/font-5x7.png';
 export function pixelText(node, text, scale = 3, spacing = 1) {

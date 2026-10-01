@@ -1,4 +1,3 @@
--- One private checkpoint per player. Client-authored runs are not leaderboard scores.
 create table public.max_game_saves (
   user_id uuid primary key references auth.users(id) on delete cascade,
   snapshot jsonb not null,
@@ -25,8 +24,6 @@ create policy "Update own garden" on public.max_game_saves
 for update to authenticated using ((select auth.uid()) = user_id)
 with check ((select auth.uid()) = user_id);
 
--- SECURITY INVOKER preserves RLS. The expected user also prevents a pending save
--- from crossing accounts if another browser tab changes the Supabase session.
 create function public.save_max_game(p_user_id uuid, p_snapshot jsonb, p_expected_revision integer)
 returns jsonb
 language plpgsql

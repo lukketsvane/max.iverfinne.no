@@ -37,11 +37,8 @@ OUT = ROOT / 'assets/night-v1'
 CLEAN = ROOT / 'docs/asset-review/night-layers-v1/layers'
 H = 180
 ROW_TOPS = [7, 102, 195, 296, 393, 486, 590, 694, 800, 901]
-# layer: colours
 COLOURS = {'01-sky': 12, '02-stars': 6, '03-moon': 12, '04-clouds': 12, '05-mountains-far': 10,
            '06-mountains-mid': 14, '07-ruins': 14, '08-forest': 14, '09-trees': 24, '10-terrain': 24}
-# the game's copies: 640 wide, fewer colours in the busiest layers, and the
-# trees and terrain hazed towards the night at the foot of the forest
 RUNTIME_W = 640
 RUNTIME_COLOURS = {'06-mountains-mid': 10, '07-ruins': 10, '08-forest': 10, '09-trees': 16, '10-terrain': 16}
 HAZE = {'09-trees': 0.35, '10-terrain': 0.45}
@@ -148,7 +145,6 @@ def stars(width=None):
 
 def moon(width=None):
     width = width or 1260
-    # the full moon with its cloud wisps, alone in the strip
     c = A[196:290, 751:850, :3]
     L = lum(c)
     m = L - np.percentile(L, 20, axis=1)[:, None] > 26
@@ -197,7 +193,6 @@ def sprites(r, bottom, overlap, width=None):
 
 def encode(rgb, m, n):
     if not m.all():
-        # transparent pixels take their nearest opaque colour so they spend no palette entries
         _, (iy, ix) = ndimage.distance_transform_edt(~m, return_indices=True)
         rgb = rgb[iy, ix]
     q = Image.fromarray(rgb.clip(0, 255).astype(np.uint8)).quantize(n, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE)

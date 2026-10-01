@@ -1,5 +1,4 @@
 'use strict';
-// Mechanical contact animation of authored native frames. No art is redrawn.
 const fs=require('node:fs'),path=require('node:path'),sharp=require('sharp');
 const root=path.join(__dirname,'..'),pack=path.join(root,'assets/garden-guardians-v1');
 const ids=JSON.parse(fs.readFileSync(path.join(pack,'manifest.json'))).assets.map(a=>a.id);

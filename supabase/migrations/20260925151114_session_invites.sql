@@ -1,5 +1,3 @@
--- Expose the shared room identifier so an invitation can be checked before Play.
--- The roster still contains only the same public names and character choices.
 do $status$
 declare definition text; anchor constant text := '''active'',true,';
 begin
@@ -12,9 +10,6 @@ begin
   end if;
 end $status$;
 
--- An invitation reserves a character through the ordinary shared join, including
--- its mode/character unlock checks, player limit and inherited difficulty.
--- Both checks and the join share its lock; a stale link never creates a new run.
 create or replace function max_coop_private.global_join(p_class_id text, p_difficulty text, p_mode text, p_room uuid)
 returns jsonb language plpgsql security definer set search_path = '' as $function$
 declare current_status jsonb; joined jsonb;

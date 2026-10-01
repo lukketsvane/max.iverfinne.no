@@ -1,5 +1,3 @@
-/* Robots only move water (or charge) out of a finite tank: no XP, score,
- * growth or passive healing. The Mech's dispatch is the one paid exception. */
 (function (root) {
   'use strict';
   var TIERS = [
@@ -45,7 +43,6 @@
       if (Math.abs(dx) > r) { drive(tx - (dx < 0 ? -1 : 1) * (r - 2), dt, env, fast); return false; }
       s.face = dx < 0 ? -1 : 1; return true;
     }
-    // Idle robots trail Max in a line; a dry one comes right up to him to be refilled.
     function home(dt, env, dry) {
       var x = env.safeX(env.player.x - env.player.face * (dry ? 12 + s.slot * 8 : 25 + s.tier * 7 + s.slot * 13));
       if (Math.abs(s.x - x) > 8) drive(x, dt, env); else pose(dry ? 'empty' : 'idle');
@@ -56,7 +53,6 @@
     function bitten(p, env) {
       return (env.pests || []).some(function (k) { return (k.target === p || k.attackTarget === p) && Math.abs(k.x - p.x) < 24; });
     }
-    // Driest and weakest first, discounted by the drive and by what the tank can actually give.
     function pick(env) {
       var t = spec(), best = null, top = -Infinity;
       env.plants.forEach(function (p) {
@@ -81,7 +77,6 @@
       var a = Math.min(t.rate * dt, s.water, FULL - p.moisture);
       p.moisture += a; p.pulse = Math.max(p.pulse || 0, .2); s.water = Math.max(0, s.water - a);
     }
-    // The pest about to bite matters most; a sentry holds off at arm's length instead of driving under it.
     function prey(env) {
       var best = null, top = -Infinity;
       (env.pests || []).forEach(function (k) {
@@ -145,7 +140,6 @@
         if (env.paused || !(dt = Math.max(0, Math.min(.05, num(dt, 0))))) return;
         s.tier = rank(env.tier); s.clock += dt; s.cool = Math.max(0, s.cool - dt); s.zapT = Math.max(0, s.zapT - dt);
         if (env.transport) { stop(s.dispatchT > 0); return pose('packed'); }
-        // Rejoin only after leaving the visible garden. Never work remotely.
         if (Math.abs(s.x - env.player.x) > 180 || s.state === 'packed') {
           stop(s.dispatchT > 0);
           var join = env.safeX(env.player.x - env.player.face * (22 + s.tier * 7 + s.slot * 13));
@@ -166,7 +160,6 @@
       .then(function (list) { return Promise.all(list.map(function (e) {
         return new Promise(function (ok, fail) { var im = new Image(); im.onload = function () { e.image = im; ok(e); }; im.onerror = fail; im.src = e.src; });
       })); }).then(function (list) { art = {}; list.forEach(function (e) { art[e.name] = e; }); });
-    // A missing image must not stop a player's run. Reload will retry the assets.
     artPromise.catch(function () {}); return artPromise;
   }
   function frameFor(clip, seconds) {

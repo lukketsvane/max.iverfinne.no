@@ -2,8 +2,6 @@
   'use strict';
   var paths=['Cultivator','Warden','Vanguard'];
   var perks=[
-    // Stable class and legacy Pølge IDs keep shared-room saves compatible.
-    // Every branch changes that character's own attack or skill.
     {id:'needle',name:'Heavy boots',desc:'Kicks and splits stomps deal 25% more damage per rank',path:2,max:3,classId:'runner'},
     {id:'fletching',name:'Wide stance',desc:'Kicks reach 3 px farther and splits stomps 4 px farther per rank',path:1,max:3,classId:'runner'},
     {id:'tailwind',name:'Ring tempo',desc:'12% faster skill recovery per rank',path:0,max:3,classId:'runner'},
@@ -77,11 +75,6 @@
   }
   function hash(text){var h=2166136261;for(var i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
   function roller(seed){return function(){seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
-  // One choice carries the player's build forward. A newly unlocked signature
-  // takes priority; otherwise, advance a signature they have begun investing in
-  // or offer another rank of an owned boon. The other two slots explore other
-  // paths, so committing to a build does not lock the rest of the garden away.
-  // Mech's free starter rover is not an investment the player chose.
   function continuation(p,pool,classId,mode){
     function invested(id){return Math.max(0,(p[id]||0)-(id==='robot'&&(classId||'mech')==='mech'?1:0));}
     var progress={},best=0;
@@ -114,9 +107,6 @@
       if(!next.length)next=pool.filter(function(q){return q.classId&&q.classId!=='mech'&&!q.needs;});
       if(next.length)out.push(draw(next));
     }
-    // The opening shows two different class verbs. Their order, their pairing,
-    // and the third general option still depend on the shared run seed. Later
-    // offers preserve the player's chosen continuation instead of forcing it.
     var spent=Object.keys(p).reduce(function(n,id){return n+p[id];},0)-((classId||'mech')==='mech'?Math.min(1,p.robot):0);
     var early=spent<=1&&pool.some(function(q){return q.classId&&q.classId!=='mech';});
     var focus=out.length?out[0].path:null;

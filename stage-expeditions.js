@@ -1,8 +1,5 @@
-/* Optional vertical districts. Geometry is seed-stable and uses the same native
-   ledges as the garden. No item, class skill or spring is required to enter. */
 (function(root){
   'use strict';
-  // title, route silhouette, interaction, reward, local guards, hidden keepsake
   var stages=[
     ['The Lost Seed Lift','switch','relay','dew',[0,2],'A tiny watering can'],
     ['Signalbox Nine','spine','bells','embers',[2,0],'The last train ticket'],
@@ -26,10 +23,6 @@
     ['Above the Hollow Crown','spine','relay','embers',[5,2],'A crown for the gardener']
   ];
   var patterns={switch:[0,1],spine:[0,1,2,3,2,1],arch:[0,1,2,1],braid:[0,1,0,1,2,3,2,1]};
-  // Short authored phrases have an arrival, a traversal rhythm and a broad
-  // landing. The run composes two different phrases, never a shuffled cloud
-  // of ledges. Column neighbours stay 44px apart; the narrowest pair leaves
-  // an 18px gap, reachable by the slowest unupgraded walking character.
   var motifs=[
     {id:'broken-viaduct',name:'Broken Viaduct',lanes:[0,1,2,3,2,1],widths:[42,28,28,46,32,44],rises:[18,18,16,14,18,18]},
     {id:'folded-stair',name:'Folded Stair',lanes:[0,1,0,1,2,3],widths:[38,28,40,28,32,48],rises:[18,16,18,18,16,18]},
@@ -67,9 +60,6 @@
       var from=b.x+b.w/2<a.x+a.w/2?a.x+3:a.x+a.w-3,to=Math.max(b.x+3,Math.min(b.x+b.w-3,from));
       return p.x<=Math.max(from,to)+3&&p.x+p.w>=Math.min(from,to)-3;
     }
-    // A clearance inequality alone misses a one-way shelf crossed while
-    // returning downhill. Replay ordinary walking jumps against the actual
-    // landing sweep before publishing a loop, including the fast high jumper.
     function lands(a,b,all,speed,jump,control,hz){
       var side=Math.sign(b.x+b.w/2-a.x-a.w/2),start=side>0?a.x+a.w-3:a.x+3;
       var target=Math.max(b.x+3,Math.min(b.x+b.w-3,start)),local={platforms:all.filter(function(p){return p.x<Math.max(start,target)+48&&p.x+p.w>Math.min(start,target)-48&&p.y>=Math.min(a.y,b.y)-48&&p.y<=Math.max(a.y,b.y)+4;})};
@@ -108,12 +98,8 @@
         added.push(p);return p;
       }
       for(var i=1;i<=3;i++)out.push(make('out'+i,i*48,fork.y-lift*i/4,36));
-      // Fixed inner lip and an offset return row keep the downward route
-      // clear of the upper shelf, even for Kestrel's higher variable jump.
       var courtOffset=172+design.width/2,floor=make('court',courtOffset,fork.y-lift,design.width);floor.depth=9;floor.rest=true;out.push(floor);back.push(floor);
       for(var i=1;i<count;i++){
-        // Keep a real gap beside the rejoin; overlapping lower shelves
-        // would force a player to land back on the upper starting platform.
         var last=-44*inset+(rejoin.w+36)/2+8,offset=136+(last-136)*(i-1)/(count-2);
         back.push(make('back'+i,offset,floor.y-(rise-lift)*i/count,36));
       }
@@ -146,14 +132,13 @@
     if(L.expedition||L.stage<1||L.stage>20)return L;
     var d=stages[L.stage-1],seed=L.seed>>>0,side=L.picture?-1:((seed^L.stage)&1?1:-1),pattern=patterns[d[1]],edge=L.origin+side*65;
     L.platforms.forEach(function(p){edge=side>0?Math.max(edge,p.x+p.w):Math.min(edge,p.x);});
-    // A dry, level launch outside the painted scene and the existing routes.
     var x=Math.round(edge+side*136),best=null;
     for(var s=0;s<240;s+=4){
       var cx=x+side*s,lo=Infinity,hi=-Infinity,dry=true;
       for(var z=-16;z<=16;z+=2){var y=ground(cx+z);lo=Math.min(lo,y);hi=Math.max(hi,y);if(wet&&wet(cx+z))dry=false;}
       if(dry&&hi-lo<=4){best={x:cx,y:Math.floor(lo)};break;}
     }
-    if(!best){ // Wide ponds still have a dry bank; never put an entrance in water.
+    if(!best){
       for(var s=0;s<2000;s+=4){var cx=x+side*s;if(!wet||!wet(cx)){best={x:cx,y:Math.floor(ground(cx))};break;}}
     }
     best=best||{x:x,y:Math.floor(ground(x))};
@@ -168,19 +153,13 @@
       p.section=section;p.lane=lane;route.push(p.id);path.push(p);return p;
     }
     function node(p){nodes.push({x:p.x+p.w/2,y:p.y,platformId:p.id});p.rest=true;}
-    // Keep the entrance and its first seven steps stable: guardian lookouts
-    // depend on these dry, reachable lower landings. Only the upper district
-    // is recomposed. Pictures, normal routes and guardian courts are untouched.
     for(var i=0;i<7;i++){var p=step(pattern[i%pattern.length],16,36,'approach');if(i===5)node(p);}
     [first,second].forEach(function(which){
       var motif=motifs[which],mirror=lane>1,lanes=motif.lanes.map(function(c){return mirror?3-c:c;}),start=route.length;
-      // A short connecting stair joins the phrase without teleporting sideways.
       while(Math.abs(lanes[0]-lane)>1)step(lane+Math.sign(lanes[0]-lane),18,36,motif.id);
       lanes.forEach(function(next,j){
         if(next===lane&&j===0)return;
         var width=motif.widths[j],rise=motif.rises[j];
-        // Broad rests alternate with precise gaps. Late gardens add a little
-        // height, while every single ascent remains below the C0 ceiling.
         if(L.stage>10&&rise<18)rise++;
         var p=step(next,rise,width,motif.id);
         if(j===lanes.length-1)p.depth=8;
@@ -189,10 +168,6 @@
       node(path[path.length-1]);
       sections.push({id:motif.id,name:motif.name,from:route[start],to:route[route.length-1]});
     });
-    // The three cache routes deliberately leave the main ascent at its outer
-    // edges. Each can be climbed back both ways; a miss returns to the soil.
-    // Their rhythms differ: a broad refuge, a narrow precision spur and a
-    // gallery. The final nook retains the existing once-per-run keepsake.
     var used=[],roomOffset=Math.floor(random()*roomKinds.length),steps=path.length;
     [4,Math.floor(steps/2)+1,steps-2].forEach(function(want,r){
       var choices=[];

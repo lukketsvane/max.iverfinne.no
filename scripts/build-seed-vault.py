@@ -36,12 +36,12 @@ ART = 'assets/levels-v1/seed-vault.png'
 DATA = 'levels-v1/seed-vault.js'
 GARDEN = 1
 W, H = 557, 314
-GROUND = 253                    # the lowest floor is the garden's soil
-FRAME = 16                      # the painted cave around the vault: darker than this, reached from an edge
-SPECK = 24                      # opaque bits smaller than this left alone by the cut go too
+GROUND = 253
+FRAME = 16
+SPECK = 24
 
 sys.path.insert(0, str(ROOT / 'scripts'))
-import kitlib  # noqa: E402
+import kitlib
 
 
 def rungs(x, w, top, bottom):
@@ -50,20 +50,20 @@ def rungs(x, w, top, bottom):
 
 
 LEDGES = [
-    (2, 123, 165),              # the upper floor on the left, the keepers' door and the rover
-    (28, 187, 167),             # the middle floor on the left, under the tanks
-    (197, 171, 31), (228, 174, 105), (333, 171, 32),   # stone block, ice bridge, stone block
-    (365, 183, 15),             # a step down off the bridge
-    (380, 197, 160),            # the middle floor on the right
-    (327, 147, 218),            # the upper floor on the right
-    (375, 78, 170),             # the top deck by the lit door
-    (263, 234, 33),             # the pedestal in the frozen pool
+    (2, 123, 165),
+    (28, 187, 167),
+    (197, 171, 31), (228, 174, 105), (333, 171, 32),
+    (365, 183, 15),
+    (380, 197, 160),
+    (327, 147, 218),
+    (375, 78, 170),
+    (263, 234, 33),
 ]
-LEDGES += rungs(122, 14, 123, 187)      # ladder: upper left to middle left
-LEDGES += rungs(75, 14, 187, GROUND)    # ladder: middle left to the soil
-LEDGES += rungs(436, 14, 147, 197)      # ladder: upper right to middle right
-LEDGES += rungs(454, 14, 197, GROUND)   # ladder: middle right to the soil
-LADDER = ('bridges/tall-ladder', 537, 147 - 99)   # the kit ladder up to the top deck
+LEDGES += rungs(122, 14, 123, 187)
+LEDGES += rungs(75, 14, 187, GROUND)
+LEDGES += rungs(436, 14, 147, 197)
+LEDGES += rungs(454, 14, 197, GROUND)
+LADDER = ('bridges/tall-ladder', 537, 147 - 99)
 LEDGES += rungs(LADDER[1] - 3, 24, 78, 147)
 LADDERS = [(129, 123, 187, 14), (82, 187, GROUND, 14),
            (443, 147, 197, 14), (461, 197, GROUND, 14), (546, 78, 147, 18)]

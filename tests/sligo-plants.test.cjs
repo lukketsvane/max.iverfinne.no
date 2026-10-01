@@ -9,7 +9,6 @@ const families = JSON.parse('[' + html.match(/^PA\.fam\.push\((\{"dir":"sligo-co
 const PIECES = { s: 'stem', f: 'flower', b: 'bloom', r: 'root' };
 const files = fam => Object.entries(PIECES).flatMap(([key, name]) => fam[key].map((r, i) => ({ r, file: `assets/plants-v1/${fam.dir}/${name}-${String(i + 1).padStart(2, '0')}.png` })));
 
-// A 2D context that keeps every drawImage and fillRect as a box in canvas pixels.
 function recorder() {
   const ops = [], stack = [];
   let t = { x: 0, y: 0, sx: 1, sy: 1 };
@@ -26,7 +25,6 @@ function recorder() {
     clearRect() {},
   };
 }
-// The game with every plant piece loaded at its real size and canvases that record.
 function game() {
   const h = loadGame(), g = h.game;
   g.resetRogueRun('test', { classId: 'mech', skinId: 'original' });

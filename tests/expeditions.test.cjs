@@ -17,7 +17,6 @@ test('all twenty districts have deterministic distinct identities, tall routes a
     assert.ok(E.nodes.every(n=>g.playerSupportId(n.x,n.y)===n.platformId));
     const routes=[{start:E.start,platformIds:E.path}];
     walkRoutes(g,{...L,routes},[30,60,120][stage%3],'expedition');
-    // Branches and their return hops use actual collision and unupgraded movement.
     g.rogueRun.classId=g.P.classId='bulwark';
     for(const r of E.rooms){
       const a=L.platforms.find(p=>p.id===r.from),b=L.platforms.find(p=>p.id===r.platformId),c=L.platforms.find(p=>p.id===r.secret.platformId);
@@ -63,7 +62,6 @@ test('keepsakes require a quiet visit, pay once, and remain stateful after host 
   stand(g,E.rooms[2].secret);g.P.vx=20;g.updateExpedition(3);assert.equal(g.runExpedition.egg,false);
   g.P.vx=0;const count=g.seedPickups.length;g.updateExpedition(2.1);assert.equal(g.runExpedition.egg,true);assert.ok(g.seedPickups.length>count);
   const after=g.seedPickups.length;g.updateExpedition(3);assert.equal(g.seedPickups.length,after);
-  // Snapshot scalar state, not a client-only puzzle: the replacement host cannot repay it.
   const clone=fresh(13).game;clone.runExpedition=JSON.parse(JSON.stringify(g.runExpedition));stand(clone,clone.stageLayout().expedition.rooms[2].secret);
   const before=clone.seedPickups.length;clone.updateExpedition(3);assert.equal(clone.seedPickups.length,before);
 });

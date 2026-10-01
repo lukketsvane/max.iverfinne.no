@@ -84,13 +84,10 @@ def components(mask):
  return sorted(result,key=len,reverse=True)
 
 def reduce_pose(cell, spec):
- # One fixed source-to-native scale per character, no per-frame stretch.
  native=cell.resize((round(cell.width*spec['scale']),round(cell.height*spec['scale'])),NEAREST)
  a=np.array(native);mask=a[:,:,3]>=210
  groups=components(mask)
  assert groups, 'empty source pose'
- # Keep the authored body and significant disconnected limb/tool pixels; reject
- # single-pixel reduction dust, stray glows and neighbouring projectile-only art.
  mask[:]=False
  for group in groups if spec.get('keepParts') else groups[:1]:
   for x,y in group: mask[y,x]=True
@@ -105,8 +102,6 @@ def row_poses(image, bounds, spec, joined=False):
  row=image.crop((0,bounds[0],image.width,bounds[1])).convert('RGBA')
  a=np.array(row); groups=components(a[:,:,3]>=210)[:8]
  if joined:
-  # Cairn's generated punch drawings overlap into one connected mass. Its
-  # reviewed cell boundaries separate the successive complete-body poses.
   return [reduce_pose(row.crop((round(c*image.width/8),0,round((c+1)*image.width/8),row.height)),spec) for c in range(8)]
  assert len(groups)==8
  groups.sort(key=lambda g:sum(x for x,y in g)/len(g))
@@ -177,7 +172,6 @@ def main():
    for row,poseset in enumerate(rows):
     for col,pose in enumerate(poseset):
      ref=original[sheet][row*8+col]['bodyBounds']
-     # Foot position is identical to the matching original gameplay cell.
      bottom=ref[3] if ref else 31
      tile=register(pose,bottom)
      out.paste(tile,(col*32,row*32))
@@ -216,7 +210,6 @@ def main():
  save_json(PACK/'manifest.json',{'schema':'max-native-pack/v1','id':'characters-v2','assets':manifest})
  save_json(REVIEW/'registration.json',registration);save_json(SOURCE/'provenance.json',provenance)
  preview(assets)
- # Preserve pending entries owned by other generators/agents.
  pendingPath=ROOT/'assets/figma-pending.json';pending=json.loads(pendingPath.read_text())
  production={f['path']:f['sha1'] for f in json.loads((ROOT/'assets/figma-manifest.json').read_text())['production']}
  position=next((i for i,f in enumerate(pending['files']) if f['path'].replace('\\','/').startswith('assets/characters-v2/')),len(pending['files']))

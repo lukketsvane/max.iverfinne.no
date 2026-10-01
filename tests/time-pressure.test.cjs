@@ -43,8 +43,6 @@ test('clearing all three waves opens travel but continues denser and faster patr
     assert.ok(g.floatKrek.every(k=>k.kind<3),'stage one keeps to small birds however long it runs');
   }
   assert.deepEqual(densities,[4,10,17,24]);
-  // Each fill loop ends with a blocked attempt; measure the director's actual
-  // schedule from the first successful spawn in a fresh scene instead.
   const actual=[0,300,600,1200].map(seconds=>{const {game:g}=scene(seconds);g.updateKrek(.001);return g.krekSpawnT;});
   assert.ok(actual[0]>6);assert.ok(actual[1]<1.3);assert.ok(actual[2]<.6);assert.ok(actual[3]<.25);
   assert.ok(actual.every((n,i)=>!i||n<actual[i-1]));

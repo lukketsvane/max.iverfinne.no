@@ -1,15 +1,8 @@
--- Easter eggs, and Sligo (Max Sligo Neverdahl), the hidden fifth character.
--- Written against the hosted project's live definitions read on 2026-09-24, which are ahead
--- of the older files in this folder. Every statement can run inside the one transaction a
--- migration is applied in, and meets objects that already exist without failing.
 
--- The hosted rooms and members already have these columns: they were added outside the
--- recorded history. The guards only give a database built from these files the same shape.
 alter table max_coop_private.rooms add column if not exists difficulty text not null default 'medium'
   check (difficulty in ('easy','medium','hard','insane'));
 alter table max_coop_private.members add column if not exists class_id text;
 
--- The catalogue. Only the definer functions below read it, so the secret stays out of the API.
 create table if not exists public.max_easter_eggs (
   id text primary key check (id ~ '^[a-z][a-z0-9_-]{1,31}$'),
   name text not null check (char_length(name) between 1 and 64)
@@ -20,7 +13,6 @@ insert into public.max_easter_eggs(id, name) values ('sligo', 'Max Sligo Neverda
   on conflict (id) do update set name = excluded.name;
 comment on table public.max_easter_eggs is 'Hidden things a player unlocks by typing a name. Read by max_my_unlocks, max_unlock and global_join only.';
 
--- Who has unlocked what. Players read their own rows; only max_unlock writes.
 create table if not exists public.max_unlocks (
   user_id uuid not null references auth.users(id) on delete cascade,
   egg_id text not null references public.max_easter_eggs(id),
@@ -35,8 +27,6 @@ create policy "Players read their own unlocks" on public.max_unlocks
   for select to authenticated using ((select auth.uid()) = user_id);
 comment on table public.max_unlocks is 'Easter eggs each player has unlocked. No client writes: public.max_unlock records them.';
 
--- Accounts that have every egg, including eggs added later. The owner's account is found
--- by its email, never by a written-in id.
 create schema if not exists max_egg_private;
 revoke all on schema max_egg_private from public, anon, authenticated;
 create table if not exists max_egg_private.all_access (
@@ -51,7 +41,6 @@ insert into public.max_unlocks(user_id, egg_id)
   select a.user_id, e.id from max_egg_private.all_access a cross join public.max_easter_eggs e
   on conflict (user_id, egg_id) do nothing;
 
--- Every catalogue egg for an all-access account, otherwise the account's own rows; none for no user.
 create or replace function max_egg_private.unlocked(p_user uuid)
 returns text[] language sql stable set search_path = '' as $$
   select coalesce(array_agg(e.id order by e.id), '{}'::text[])
@@ -67,8 +56,6 @@ returns text[] language sql stable security definer set search_path = '' as $$
   select max_egg_private.unlocked(auth.uid());
 $$;
 
--- The phrase is normalised to lowercase letters only: "Max Sligo-Neverdahl!" unlocks Sligo
--- for the caller, anonymous device players too. Anything else changes nothing.
 create or replace function public.max_unlock(p_phrase text)
 returns text[] language plpgsql security definer set search_path = '' as $$
 declare
@@ -88,7 +75,6 @@ revoke all on function public.max_unlock(text) from public;
 grant execute on function public.max_my_unlocks() to anon, authenticated;
 grant execute on function public.max_unlock(text) to anon, authenticated;
 
--- Five characters. Four players still share one garden (members_slot_check is unchanged).
 alter table max_coop_private.members drop constraint if exists members_class_id_check;
 alter table max_coop_private.members add constraint members_class_id_check
   check (class_id is null or class_id = any (array['mech','runner','bulwark','herbalist','sligo']));
@@ -96,7 +82,6 @@ alter table public.max_garden_scores drop constraint if exists max_garden_scores
 alter table public.max_garden_scores add constraint max_garden_scores_class_id_check
   check (class_id = any (array['mech','runner','bulwark','herbalist','sligo']));
 
--- The live join, unchanged except that it knows Sligo and admits Sligo only with the unlock.
 create or replace function max_coop_private.global_join(p_class_id text, p_difficulty text)
  returns jsonb
  language plpgsql
@@ -175,7 +160,6 @@ end $function$;
 revoke all on function max_coop_private.global_join(text,text) from public, anon;
 grant execute on function max_coop_private.global_join(text,text) to authenticated;
 
--- The live bouquet submit, unchanged except that a Sligo run may be published.
 create or replace function max_garden_private.submit(p_owner_id uuid, p_run_id uuid, p_plants jsonb, p_world integer, p_seconds numeric, p_won boolean, p_wave integer, p_class_id text)
  returns jsonb
  language plpgsql
@@ -231,7 +215,6 @@ begin
 end;
 $function$;
 
--- The live plant check, unchanged except for Sligo's two cords: kinds 0 to 26.
 create or replace function max_garden_private.valid_plants(plants jsonb)
  returns boolean
  language plpgsql
@@ -255,7 +238,6 @@ begin
        or abs((p->>'seed')::numeric) > 1000000000000
        or (p->>'growth')::numeric not between 0 and 1000000 then return false; end if;
   end loop;
-  -- One indexed aggregate, rather than repeatedly scanning a growing ID array.
   return item_count = (select count(distinct (value->>'id')::bigint) from jsonb_array_elements(plants));
 exception when others then return false;
 end;

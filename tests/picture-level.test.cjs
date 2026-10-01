@@ -4,7 +4,6 @@ const fs = require('node:fs'), path = require('node:path'), { pathToFileURL } = 
 const { loadGame } = require('./game-harness.cjs');
 const { explorePicture } = require('./picture-sweep.cjs');
 
-// Where the railway scene sits in the art and the soil row (scripts/build-railway-ruins.py SX, SY, GROUND).
 const RAIL = { sx: 300, sy: 32, soil: 200 };
 function ruins(classId = 'mech') {
   const g = loadGame({ __pictures: true }).game; g.resetRogueRun('test', { classId }); g.rogueRun.world = 2; g.activeStageLayout = null; g.floatKrek = [];
@@ -82,8 +81,6 @@ function sanctuary(classId = 'mech') {
   return { g, L: g.activeStageLayout = g.pictureLayout(21) };
 }
 
-// Jump from where Max stands toward a floor at art coordinates (tx, ty), steering
-// onto it and trying shorter jumps too, as the platform sweep does.
 function hop(g, L, tx, ty, tol = 1.5, hz = 60) {
   const start = { ...g.P };
   for (const releaseAt of [.08, .14, .18, .24, Infinity]) {

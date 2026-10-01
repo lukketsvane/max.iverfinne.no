@@ -55,8 +55,6 @@
   if(circuit)help.textContent='Choose either gift altar with ↓ / Space. Amber marks show where each keeper arrives. Defend the terrace to earn your chosen gift, or leave the terrace to withdraw. B punch · E flurry · X dodge · ↑ jump.';
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu'||mode==='relic-garden',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
-  // Install storage before the first external script, so the game, result
-  // archive and menu preferences all share the same isolated fixture store.
   const setup='<script>'+`(function(){
     window.__relicReview=${mode==='relic-garden'};
     const entries=new Map();
@@ -72,7 +70,7 @@
     window.addEventListener('error',function(event){parent.postMessage({type:'max-review-error',serial:${serial},message:event.message||'Fixture failed to load.'},${JSON.stringify(location.origin)});});
   }());`+'<'+'/script>';
   const hook=`
-    /* MAX_REVIEW_FIXTURE_START */
+    "MAX_REVIEW_FIXTURE_START";
     window.addEventListener('message',function(event){
       if(event.source!==parent||event.origin!==${JSON.stringify(location.origin)}||!event.data||event.data.serial!==${serial}||event.data.type!=='max-review-input')return;
       if(['ArrowLeft','ArrowRight','ArrowUp',' ','b','x','e','1','2','3'].indexOf(event.data.key)<0)return;
@@ -242,7 +240,7 @@
         parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }
-    /* MAX_REVIEW_FIXTURE_END */
+    "MAX_REVIEW_FIXTURE_END";
   `;
   let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">'+setup)
    .replace('<script src="game-menu.js" defer><'+'/script>',menu?'<script src="game-menu-review.js" defer><'+'/script>':'')

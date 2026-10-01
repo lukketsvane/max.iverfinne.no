@@ -1,7 +1,5 @@
 const assert=require('node:assert/strict');
 
-// Let each advertised arrival resolve before clearing it. Completion tests
-// should exercise the real staged wave rather than deleting its queue.
 function clearShrineGuards(g,e){
   for(let tick=0;tick<1600&&(e.guardsRemaining||g.floatKrek.some(k=>k.eventId===e.id));tick++){
     g.updateEncounters(.05);

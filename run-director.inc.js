@@ -1,8 +1,4 @@
-/* Run-only exploration, mixed encounters and twenty guardian fights.
-   Included in the game closure. Nothing here writes a resumable run. */
 var RUN_STAGES=20,runLoot=[],runEncounters=[],runHazards=[],runDropId=0,hazardId=0,bossEvent=null,guardianView={key:'',found:false};
-// Every stage has a different creature and combat kit. The four milestone
-// guardians keep their authored moves and native animations.
 var GARDEN_BOSSES=[
   ['sprout-sentinel','SPROUT SENTINEL','roots'],['dew-duke','DEW DUKE','leap'],
   ['thorn-duelist','THORN DUELIST','dash'],['spore-oracle','SPORE ORACLE','spores'],
@@ -30,20 +26,16 @@ function initBossEvent(){
   if(relicRunMode()){bossEvent=null;return;}
   var sites=stageLayout().guardianSites,index=guardianSiteIndex(rogueRun.seed,worldLevel()),site=sites[index];
   bossEvent={stage:worldLevel(),siteId:site.id,siteIndex:index,x:site.x,y:site.y,courtX:site.courtX,courtY:site.courtY,courtLeft:site.courtLeft,courtRight:site.courtRight,status:'ready',startedAt:0};
-  // One shared planting reserve per garden, even when the entry seeds were
-  // spent elsewhere. The ordinary pickup acknowledgement owns collection.
   var id='guardian:'+worldLevel()+':seeds';
   if(!coopGuest()&&!seedCollected[id]&&!seedPickups.some(function(q){return q.id===id;}))seedPickups.push({id:id,guardianCache:true,x:site.x,y:site.y-6,amount:2,fall:false,ph:worldLevel()});
 }
 function interactBossEvent(){
   if(relicRunMode()||!bossEvent||bossEvent.stage!==worldLevel()||bossEvent.status!=='ready'||Math.abs(P.x-bossEvent.x)>16||Math.abs(P.y-bossEvent.y)>6||!P.grounded||P.wet||rogueRun.ended)return false;
-  if(!guardianGardenPlant()){nudgeGardenHint('GROW A PLANT BY THE SHRINE BEFORE WAKING THE GUARDIAN');return false;}
+  if(!guardianGardenPlant()){return false;}
   if(coopGuest())return coopAction('encounter');
-  // Optional trials must be finished first. This avoids stacking an unfinished
-  // defence objective under a player-triggered boss.
-  if(runEncounters.some(function(e){return e.active&&!e.done;})){nudgeGardenHint('FINISH YOUR TRIAL FIRST');return true;}
+  if(runEncounters.some(function(e){return e.active&&!e.done;})){return true;}
   if(liveBoss())return true;
-  if(floatKrek.length>=MAX_ACTIVE_ENEMIES){nudgeGardenHint('CLEAR SOME PESTS BEFORE WAKING THE GUARDIAN');return true;}
+  if(floatKrek.length>=MAX_ACTIVE_ENEMIES){return true;}
   var k=makeStageBoss(worldLevel());
   k.courtX=bossEvent.courtX;k.courtY=bossEvent.courtY;k.courtLeft=bossEvent.courtLeft;k.courtRight=bossEvent.courtRight;
   var spawnX=guardianAimX(k,dryX(k.courtX+(worldLevel()%2?1:-1)*76)),offset=k.bossId==='mossback'?8:13;
@@ -52,19 +44,17 @@ function interactBossEvent(){
   bossEvent.status='active';bossEvent.startedAt=runElapsed;
   gardenRaidActive=true;gardenBossSpawned=true;gardenWave=FINAL_WAVE;
   rogueRun.raidRemaining=0;rogueRun.raidTotal=1;
-  floatKrek.push(k);nudgeGardenHint(k.bossName+' · '+(guardianTip(k)||'AMBER: DODGE · CYAN: ATTACK'));
-  updateGardenHud();return true;
+  floatKrek.push(k);
+  return true;
 }
 function gardenBossDefeated(k){
   if(relicRunMode()||!k.boss||k.guardianStage!==worldLevel()||rogueRun.bossDefeated)return;
   rogueRun.bossDefeated=true;
   if(bossEvent)bossEvent.status='defeated';
-  // A victory has a clear release: no delayed boss strike or abandoned adds.
   runHazards=runHazards.filter(function(h){return h.guardianStage!==worldLevel();});
   floatKrek.forEach(function(q){if(q.guardianAdd===worldLevel()){q.raid=false;staggerKrek(q,30);}});
   gardenPlots.forEach(function(p){if(!p.dead){p.health=clamp01(p.health+.22);p.moisture=clamp01(p.moisture+.3);p.pulse=1.7;}});
   rogueMeta.petals=(rogueMeta.petals|0)+1;
-  nudgeGardenHint('GUARDIAN DEFEATED · CHOOSE A BOON · CLIMB YOUR PLANT');
   levelCleared();
 }
 function drawBossEvent(t){
@@ -74,8 +64,6 @@ function drawBossEvent(t){
   if(guardianView.key!==key)guardianView={key:key,found:false};
   if(x>=-9&&x<=IW+9&&y>=0&&y<=IH+24&&Math.hypot(P.x-bossEvent.x,P.y-bossEvent.y)<90)guardianView.found=true;
   var ready=bossEvent.status==='ready',readyPlant=!!guardianGardenPlant(),ink=ready?'#e0b54f':'#536448',core=ready&&readyPlant?'#77bbb9':'#657668';
-  // Once found, a small seedbed in the actual court makes a raised shrine's
-  // "plant below" instruction concrete. It never points to an unseen shrine.
   if(ready&&guardianView.found&&(Math.abs(bossEvent.courtX-bossEvent.x)>8||bossEvent.courtY-bossEvent.y>24)){
     var cx=Math.round(bossEvent.courtX-camX),cy=Math.round(bossEvent.courtY-camY);
     if(cx>=-12&&cx<=IW+12&&cy>=0&&cy<=IH+8){
@@ -128,7 +116,6 @@ function waveEnemyKind(index){
 }
 function safeEnemyPosition(k,x,y){
   var chosen=null,best=-1,players=runPlayers();
-  // Opposite approaches stay reachable, but never materialise on a teammate.
   for(var i=0;i<9;i++){
     var dx=i?Math.ceil(i/2)*44*(i%2?1:-1):0,cx=x+dx,cy=y+surfaceY(cx)-surfaceY(x),distance=Infinity;
     players.forEach(function(a){distance=Math.min(distance,Math.hypot(cx-a.p.x,cy-(a.p.y-12)));});
@@ -191,26 +178,21 @@ function initRunStage(){
   if(worldLevel()>1)runCheckpoint();
   runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
-  // Each teammate has one feather to find. Leaving it behind is a time tradeoff.
   var players=runPlayers(),layout=typeof stageLayout==='function'?stageLayout():null;
   players.forEach(function(a,i){
     var route=layout&&layout.rewards&&layout.rewards[i%layout.rewards.length],x=route?route.x+(i>1?6:0):dryX(origin+side*(112+i*15));
     dropRunItem('feathers',x,route?route.y-12:surfaceY(x)-20,a.member&&a.member.id);
   });
-  // The opposite elevated route earns a small shared planting reserve.
   var seedRoute=layout&&layout.rewards&&layout.rewards[layout.rewards.length-1],seedId='route:'+w;
   seedPickups=seedPickups.filter(function(q){return !q.routeReward&&!q.placeCache;});
   if(seedRoute&&!seedCollected[seedId])seedPickups.push({id:seedId,routeReward:true,x:seedRoute.x,y:seedRoute.y-6,amount:Math.max(1,seedCount(2)),fall:false,ph:w});
-  // The garden's own place hides its caches; a secret one, behind a false wall, holds more.
   (layout&&layout.place?layout.place.caches:[]).forEach(function(c,i){var id='cache:'+w+':'+i;if(!seedCollected[id])seedPickups.push({id:id,placeCache:true,x:c.x,y:c.y-6,amount:Math.max(1,seedCount(c.secret?3:2)),fall:false,ph:w+i});});
-  // A designer's secret spot holds a cache that shows itself only up close; soil a blast already dug keeps its seeds.
   levelSpots(layout,'secret').forEach(function(s,i){var id='secret:'+w+':'+i;if(!seedCollected[id])seedPickups.push({id:id,placeCache:true,hidden:true,x:s.x,y:s.y-6,amount:Math.max(1,seedCount(3)),fall:false,ph:w*3+i});});
   digSpots().forEach(function(d){if(d.dug&&!seedCollected[d.id+':s'])seedPickups.push(digSeeds(d));});
   if(w>=3&&layout&&layout.bonuses&&layout.bonuses.length){
     var bonus=layout.bonuses[(w-1)%layout.bonuses.length];
     players.forEach(function(a,i){dropRunItem(w%2?'embers':'dew',bonus.x+(i-(players.length-1)/2)*4,bonus.y-12,a.member&&a.member.id);});
   }
-  // Two routes, one trial: choosing a reward spends time, not another menu.
   for(var i=0;i<2;i++){
     var type=w<4?['nest','rain','cache'][(w-1+i)%3]:['relay','loom','echo','nest','rain','cache'][(w-4+i)%6],route=layout&&layout.trials&&layout.trials[i],x=route?route.x:dryX(origin+side*(i?1:-1)*126);
     var goal=layout&&layout.rewards&&layout.rewards.slice().sort(function(a,b){return Math.abs(b.x-x)-Math.abs(a.x-x);})[0];
@@ -226,8 +208,6 @@ function encounterPresent(e,a){
   if(seedDown(a.member)||a.member&&a.member.vital&&a.member.vital.hp<=0)return false;
   var p=a.p,floor=encounterFloor(e);
   if(Math.abs(p.x-e.x)<180&&Math.abs(p.y-floor)<64)return true;
-  // Fetching the relay drop is participation, even on the opposite route.
-  // Include the dry ground approach between its two real destinations.
   return e.type==='relay'&&p.x>Math.min(e.x,e.goalX)-60&&p.x<Math.max(e.x,e.goalX)+60&&p.y>Math.min(floor,e.goalY)-48&&p.y<=surfaceY(p.x)+6;
 }
 function warnEncounterGuard(e){
@@ -235,7 +215,6 @@ function warnEncounterGuard(e){
   var i=e.guardIndex||0,side=i%2?1:-1,kind=waveEnemyKind(i+1),floor=encounterFloor(e),L=stageLayout(),best=null,score=-Infinity;
   if(e.type==='cache'&&enemyUnlocked(5)&&i===0)kind=5;
   if(e.type==='rain'&&enemyUnlocked(4)&&i===0)kind=4;
-  // These are flying sentries; grounded rats keep their normal route AI.
   if(kind===RAT_KIND)kind=1;
   var players=runPlayers().filter(function(a){return !seedDown(a.member);});
   for(var d=-88;d<=88;d+=8){
@@ -253,8 +232,6 @@ function spawnEncounterGuard(e){
   if(coopGuest()||!e.active||!e.ingress||e.ingressT>0||!e.guardsRemaining||floatKrek.length>=MAX_ACTIVE_ENEMIES)return false;
   if(floatKrek.filter(function(k){return k.eventId===e.id;}).length>=2+Math.floor(coopSize()/2))return false;
   var k=makeKrek(e.ingressSide,false,e.ingressKind);
-  // Use the advertised point exactly. A player can contest that point during
-  // the warning; silently moving the arrival would invalidate that choice.
   k.x=e.ingressX;k.y=e.ingressY;k.vx=k.vy=0;k.bite=.8;
   k.eventId=e.id;k.eventX=e.x;k.eventY=encounterFloor(e);k.trialGuard=true;
   floatKrek.push(k);e.guardIndex=(e.guardIndex||0)+1;e.guardsRemaining--;e.ingress=false;e.guardSpawn=.45;return true;
@@ -271,7 +248,6 @@ function interactEncounter(){
   e.age=0;e.away=0;e.carrier='';e.chargeA=e.chargeB=0;e.note=e.id%3;
   runEncounters.forEach(function(other){if(other!==e)other.locked=true;});
   e.guardsRemaining=encounterGuardCount(e);e.guardIndex=0;e.guardSpawn=0;warnEncounterGuard(e);
-  if(objectiveEncounter(e))nudgeGardenHint(encounterTip(e));
   return true;
 }
 function completeEncounter(e){
@@ -281,14 +257,13 @@ function completeEncounter(e){
   runPlayers().forEach(function(a,i){var x=e.x+(i-(coopSize()-1)/2)*8;dropRunItem(type,x,encounterFloor(e)-13,a.member&&a.member.id);});
   if(e.type==='rain'||e.type==='loom')gardenPlots.forEach(function(p){if(!p.dead){p.moisture=1;p.health=clamp01(p.health+.28);p.pulse=1.7;}});
   spawnLooseSeeds(e.x,encounterFloor(e)-16,e.cost,true);spawnLooseSeeds(e.x,encounterFloor(e)-16,1);grantRogueXP(runReward(4));
-  if(objectiveEncounter(e)){floatKrek.forEach(function(k){if(k.eventId===e.id)staggerKrek(k,5);});nudgeGardenHint('TRIAL COMPLETE · COLLECT YOUR UPGRADE');}
+  if(objectiveEncounter(e)){floatKrek.forEach(function(k){if(k.eventId===e.id)staggerKrek(k,5);});}
 }
 function failEncounter(e,withdrawn){
   e.active=false;e.done=true;e.failed=true;e.withdrawn=!!withdrawn;e.carrier='';e.guardsRemaining=0;e.ingress=false;
   runHazards=runHazards.filter(function(h){return h.trialId!==e.id||h.tell<=0;});
   floatKrek.forEach(function(k){if(k.eventId===e.id){k.eventId=0;k.trialGuard=false;k.raid=false;staggerKrek(k,5);}});
   runEncounters.forEach(function(other){if(other!==e&&!other.done)other.locked=false;});
-  nudgeGardenHint(withdrawn?'TRIAL LEFT · OTHER ROUTE OPEN':'TRIAL FADED · THE GUARDIAN IS READY');
 }
 function updateEncounterGuard(k,dt){
   if(!k.trialGuard)return false;
@@ -297,8 +272,6 @@ function updateEncounterGuard(k,dt){
   var floor=encounterFloor(e),near=runPlayers().filter(function(a){return !seedDown(a.member)&&Math.abs(a.p.x-e.x)<140&&Math.abs(a.p.y-floor)<40;});
   near.sort(function(a,b){return Math.hypot(a.p.x-k.x,a.p.y-k.y)-Math.hypot(b.p.x-k.x,b.p.y-k.y);});
   var p=near.length?near[0].p:null;
-  // Hold the landing instead of chasing a plant on another floor. Both close
-  // fighters can reach these sentries without needing flight or a ranged boon.
   if(k.windup>0){k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);return true;}
   var ranged=k.kind===4||k.kind===9,side=k.x<(p?p.x:e.x)?-1:1;
   var x=Math.max(e.x-70,Math.min(e.x+70,(p?p.x:e.x)+side*(ranged?32:18))),y=Math.max(floor-26,Math.min(floor-10,(p?p.y:floor)-12));
@@ -316,26 +289,20 @@ function updateEncounters(dt){
   runEncounters.forEach(function(e){
     if(!e.active)return;
     e.age=(e.age||0)+dt;
-    // Every optional trial has an exit. A guard that wandered off must never
-    // hold the mandatory altar shut for the rest of the run.
     if(e.age>75){failEncounter(e,false);return;}
     var present=runPlayers().some(function(a){return encounterPresent(e,a);});
-    if(!present&&!e.away)nudgeGardenHint('LEAVING TRIAL · RETURN WITHIN 4 SECONDS');
     e.away=present?0:(e.away||0)+dt;
     if(e.away>=4){failEncounter(e,true);return;}
     if(e.ingress){e.ingressT=Math.max(0,e.ingressT-dt);if(e.ingressT<=0)spawnEncounterGuard(e);}
     else {e.guardSpawn=Math.max(0,(e.guardSpawn||0)-dt);if(e.guardsRemaining>0&&e.guardSpawn<=0)warnEncounterGuard(e);}
     if(objectiveEncounter(e)){updateObjectiveEncounter(e,dt);return;}
     var defended=!e.guardsRemaining&&!floatKrek.some(function(k){return k.eventId===e.id;});
-    // Clearing the fight earns a quick finish instead of another idle wait.
-    // Somebody must still return to the shrine to claim its charged reward.
     if(runPlayers().some(function(a){var height=a.p.y-encounterFloor(e);return !seedDown(a.member)&&Math.abs(a.p.x-e.x)<78&&height>=-28&&height<6;}))e.progress=Math.min(e.duration,e.progress+dt*(defended?4:1));
     if(e.progress>=e.duration&&defended)completeEncounter(e);
   });
 }
 function objectiveEncounter(e){return e.type==='relay'||e.type==='loom'||e.type==='echo';}
 function encounterReward(e){return {nest:'feathers',rain:'dew',cache:'embers',relay:'feathers',loom:'dew',echo:'embers'}[e.type];}
-function encounterTip(e){return {relay:'DEW RELAY · FETCH THE DROP AND BRING IT BACK',loom:'RAIN LOOM · TEND BOTH SEEDBEDS',echo:'ECHO NEST · HIT THE CYAN EGG'}[e.type]||'TEND TO START';}
 function carrierPlayer(id){return runPlayers().find(function(a){return (a.member?a.member.id:'solo')===id&&!seedDown(a.member);});}
 function updateObjectiveEncounter(e,dt){
   e.hitCool=Math.max(0,(e.hitCool||0)-dt);
@@ -373,15 +340,9 @@ function updateStageWeather(dt){
     if(w.type==='drought'){p.moisture=Math.max(0,p.moisture-dt*.009);}
   });
 }
-// The global attempt clock powers every living enemy, including one spawned
-// several minutes ago. Resistance preserves its damage history: time never
-// heals hp or resets a boss phase, and travelling cannot reset the multiplier.
 function runTimeThreat(){return Math.pow(1+Math.max(0,runElapsed)*difficultyProfile().pressure/180,1.7);}
 function runDurabilityScale(k){var d=difficultyProfile(),clock=1+.65*(runTimeThreat()-1);return d.durability*(k&&k.guardianStage?Math.sqrt(clock):clock);}
 function runDamageScale(){var d=difficultyProfile();if(highTideMode())return d.damage*(1+.08*rogueRun.survival.bosses);return d.damage*(1+(worldLevel()-1)*.14*.065)*(1+.45*(runTimeThreat()-1));}
-// Risk of Rain rules for the team's side of the clock. Every level adds a fifth of
-// base damage to every hit the team lands, and kill rewards grow with the same
-// clock that toughens the pests, so levels keep coming while kills get slower.
 function runPlayerPower(){return 1+.2*Math.max(0,(rogueRun.level|0)-1);}
 function runRewardScale(){return Math.sqrt(1+.65*(runTimeThreat()-1));}
 function runReward(base){return Math.max(1,Math.round(base*runRewardScale()));}
@@ -408,7 +369,6 @@ function damagePest(k,amount,x,build){
   }
   if(k.boss&&k.exposed>0)factor*=2;
   k.hp-=amount*factor*runPlayerPower()/runDurabilityScale(k);k.flash=1;
-  // Moon Moth's restorative channel is a deliberate interrupt opportunity.
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;if(k.guardianStage&&!k.tideBoss)openGuardian(k,3.4);else{k.windup=0;k.exposed=k.guardianStage?2.2:1.4;k.cool=k.exposed+.8;}}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
   if(!k.boss&&!frontal&&(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
@@ -471,8 +431,7 @@ function updateHazardContact(){
 }
 function updateRunDirector(dt){
   if(nightRelayMode())return;
-  if(highTideMode()){updateRunLoot();updateRunHazards(dt);return;}
-  if(lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
+  if(highTideMode()||lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
   updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateRunHazards(dt);
 }
 function dewDodge(){
@@ -543,7 +502,6 @@ function updateEnemyRole(k,dt){
   }
   if(k.kind===6){
     var friend=null,fd=110;
-    // Support moths help attackers without forming a mutual healing loop.
     floatKrek.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(q!==k&&!q.boss&&q.kind!==6&&q.hp>0&&q.hp<q.maxHp&&d<fd){friend=q;fd=d;}});
     k.healing=false;
     if(friend){
@@ -574,7 +532,6 @@ function updateEnemyRole(k,dt){
     return true;
   }
 
-  // Thorn caster: keeps distance and seeds clearly warned root eruptions.
   if(k.kind===9){
     var rootTarget=pickKrekTarget(k),rootAnchor=rootTarget?rootTarget.x:P.x;
     if(k.windup>0){k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);return true;}
@@ -587,7 +544,6 @@ function updateEnemyRole(k,dt){
     moveEnemyTo(k,rootAnchor+(k.x<rootAnchor?-1:1)*58,surfaceY(rootAnchor)-30,dt,13);
     return true;
   }
-  // Dew leech: drains moisture rather than raw health and restores itself.
   if(k.kind===10){
     var driest=null,dry=2;
     gardenPlots.forEach(function(p){if(!p.dead&&p.health>0&&p.moisture<dry){dry=p.moisture;driest=p;}});
@@ -601,7 +557,6 @@ function updateEnemyRole(k,dt){
     }
     return true;
   }
-  // Rammer: a slow armored pest that telegraphs a straight garden charge.
   if(k.kind===11){
     if(k.chargeT>0){
       var chargeStep=Math.min(dt,k.chargeT);k.x+=k.chargeV*chargeStep;k.y=surfaceY(k.x)-11;k.chargeT=Math.max(0,k.chargeT-dt);
@@ -643,7 +598,6 @@ function makeStageBoss(stage){
   resetGuardianNodes(k);
   return k;
 }
-function guardianTip(k){return {shell:'BREAK THE SHELL OR GET BEHIND IT',wick:'SNUFF THE THREE WICKS',spindle:'CUT BOTH SILK ANCHORS',orchard:'HIT THE CYAN FRUIT',echo:'HIT DURING THE ECHO TO SILENCE IT',ferry:'CARRY DEW INTO THE HULL',choir:'SILENCE ALL THREE VOICES',engine:'BREAK THE ORBITING SEEDS'}[k.pattern]||'';}
 function guardianAimX(k,x){return Number.isFinite(k.courtLeft)&&Number.isFinite(k.courtRight)?Math.max(k.courtLeft+8,Math.min(k.courtRight-8,x)):x;}
 function guardianTarget(k){
   if(!Number.isFinite(k.courtX))return pickKrekTarget(k);
@@ -656,8 +610,6 @@ function guardianPlayers(k){
   var local=players.filter(function(a){return Math.abs(a.p.x-k.courtX)<192;});return local.length?local:players;
 }
 function guardianRecovery(k){
-  // A cyan opening includes time to recognise it, approach and place a full
-  // two-second fuse. Harder fights narrow the reaction, never remove it.
   k.exposed=({easy:3.2,medium:2.75,hard:2.5,insane:2.35}[rogueRun.difficulty]||2.75);
   k.vx=k.vy=0;k.cool=k.exposed+.7*(k.life>60?.55:1);
 }
@@ -673,7 +625,6 @@ function openGuardian(k,seconds){
 }
 function guardianCoreHit(k){
   openGuardian(k,3.4);
-  // Objective damage goes through the normal death/reward path exactly once.
   damagePest(k,k.maxHp*.08*runDurabilityScale(k)/(2*runPlayerPower()),k.x);
   chime([523,784,1047],.07,.025);
 }
@@ -706,8 +657,6 @@ function guardianBlast(x,y,r){
   if(coopGuest()||relicRunMode())return;
   floatKrek.slice().forEach(function(k){if(!k.guardianStage||k.hp<=0||!k.nodes||k.exposed>0)return;
     var hits=k.nodes.filter(function(n){return n.hp>0&&n.kind!=='ferry'&&Math.hypot(n.x-x,n.y-y)<r+4;});
-    // The nearest fruit is the deliberate target; a wide blast cannot both
-    // punish a correct hit and solve a different pod in the same explosion.
     if(k.pattern==='orchard')hits.sort(function(a,b){return Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y);}).splice(1);
     hits.forEach(function(n){n.hp=0;n.quiet=7;puff(n.x,n.y,6,.5);
       if(n.kind==='orchard'){if(n.ripe){k.nodes.forEach(function(q){q.hp=0;});guardianCoreHit(k);}else{summonBossGuard(k,0,n.index);guardianHazard(k,'root',n.x,9,1.3,.5);}}
@@ -742,50 +691,71 @@ function summonBossGuard(k,kind,index){
 function guardianHazard(k,type,x,r,tell,power,y){
   x=guardianAimX(k,x);
   var floor=y==null?surfaceY(x):y;
-  // Clamping a line against a court edge must not pile several damaging
-  // strikes under one marker. A later beat is retained once the earlier
-  // contact has cleared, so deliberately staggered patterns still repeat.
   if(Number.isFinite(k.courtX)&&runHazards.some(function(h){return h.guardianOwner===k.ph&&h.type===type&&Math.abs(h.x-x)<1&&Math.abs(h.y-floor)<1&&Math.abs(h.tell-tell)<.5;}))return;
   var h=addRunHazard(type,x,r,tell,power,k.x,k.y,y);
   if(h){
     h.guardianStage=k.guardianStage;h.guardianOwner=k.ph;
-    // Cyan starts after the final strike has finished, including its contact
-    // lifetime. This scalar clock also survives a host handoff mid-volley.
     if(k.windup>0||k.attackT>0||k.settleT>0){
       var remaining=k.windup>0?k.windup+(k.attackDuration||.35):Math.max(0,k.attackT||0);
       k.settleT=Math.max(k.settleT||0,tell+h.life-remaining+.08);
     }
   }
 }
-function updateGardenGuardian(k,dt){
+function updateBossCombat(k,dt,mode){
+  var crown=mode==='crown',patterned=mode==='guardian';
   var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
-  if(phase>k.phase){k.phase=phase;if(k.guardianStage>=4)summonBossGuard(k,k.pattern==='spores'?4:1,phase);}
+  if(phase>k.phase){
+    k.phase=phase;
+    if(patterned){if(k.guardianStage>=4)summonBossGuard(k,k.pattern==='spores'?4:1,phase);}
+    else for(var i=0;i<(crown?phase+1:3);i++)summonBossGuard(k,crown?(phase===3?5:2):k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,i);
+  }
   k.life=(k.life||0)+dt;k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
-  updateGuardianNodes(k,dt);if(k.hp<=0)return;
-  if(k.attackT>0){
+  var rage=k.life>60?.6:1,moth=k.bossId==='moon-moth';
+  if(patterned){updateGuardianNodes(k,dt);if(k.hp<=0)return null;}
+  if(k.guardianStage&&(crown||moth)&&k.exposed>0)k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,dt*12);
+  if(k.attackT>0&&(!crown||k.guardianStage)){
     var step=Math.min(dt,k.attackT);k.attackT=Math.max(0,k.attackT-dt);
-    if(k.pattern==='leap'){
+    if(crown)k.vx=k.vy=0;
+    else if(k.pattern==='leap'){
       var f=1-k.attackT/k.attackDuration;
       k.x=k.fromX+(k.landX-k.fromX)*f;k.y=surfaceY(k.x)-13-Math.sin(f*Math.PI)*48;
-    }else if(k.pattern==='dash'||k.pattern==='charge'){
-      k.x=guardianAimX(k,k.x+k.chargeV*step);k.y=surfaceY(k.x)-13;k.vx=k.chargeV;
+    }else if(k.pattern==='dash'||k.pattern==='charge'||k.bossId==='mossback'){
+      k.x=guardianAimX(k,k.x+k.chargeV*step);k.y=surfaceY(k.x)-(k.bossId==='mossback'?8:13);k.vx=k.chargeV;
     }
-    if(!k.attackT){k.vx=k.vy=0;if(!(k.settleT>0))guardianRecovery(k);}
-    return;
+    if(k.guardianStage&&moth)k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,step*12);
+    if(!k.attackT){
+      k.vx=k.vy=0;
+      if(patterned||k.guardianStage){if(!(k.settleT>0))guardianRecovery(k);}
+      else{k.exposed=k.bossId==='mossback'?1.2:1;k.cool=(2.2-(k.phase-1)*.35)*rage;}
+    }
+    return null;
   }
   if(k.windup>0){
     k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
-    if(!k.windup){k.attackT=k.attackDuration;k.fromX=k.x;}
-    return;
+    if(!k.windup){
+      if(crown&&!k.guardianStage){k.exposed=1.2;k.cool=(2.6-(k.phase-1)*.4)*rage;}
+      else{
+        if(patterned)k.fromX=k.x;
+        else if(!crown){
+          if(k.healing){healPest(floatKrek.find(function(q){return q.ph===k.healTarget&&q!==k&&!q.boss;}),1.4);k.healing=false;}
+          k.attackDuration=k.bossId==='mossback'?.42:.35;
+        }
+        k.attackT=k.attackDuration;
+      }
+    }
+    return null;
   }
-  if(guardianSettles(k,dt))return;
+  if((patterned||k.guardianStage)&&guardianSettles(k,dt))return null;
   k.cool-=dt;
-  var target=guardianTarget(k),anchor=guardianAimX(k,target?target.x:Number.isFinite(k.courtX)?k.courtX:P.x),players=guardianPlayers(k),a=players[k.attack%players.length].p;
-  // Keep all new bosses in planting range; elevated routes remain useful for
-  // dodging, but Mech's ground charges can always hit a recovery window.
-  if(k.exposed<=0)moveEnemyTo(k,guardianAimX(k,anchor+(k.attack%2?-30:30)),surfaceY(anchor)-13,dt,18+k.remix*2);
+  var target=guardianTarget(k),anchor=guardianAimX(k,target?target.x:Number.isFinite(k.courtX)?k.courtX:P.x);
+  var spread=patterned?30:crown?42:52,offset=patterned?13:crown?26:k.bossId==='mossback'?8:moth?40:13,speed=patterned?18+k.remix*2:crown?12:moth?24:15;
+  if(k.exposed<=0)moveEnemyTo(k,guardianAimX(k,anchor+(k.attack%2?-spread:spread)),surfaceY(anchor)-offset,dt,speed);
   else k.vx=k.vy=0;
-  if(k.cool>0||k.exposed>0)return;
+  return k.cool>0||k.exposed>0?null:anchor;
+}
+function updateGardenGuardian(k,dt){
+  var anchor=updateBossCombat(k,dt,'guardian');if(anchor===null)return;
+  var players=guardianPlayers(k),a=players[k.attack%players.length].p;
   if(k.nodes&&k.nodes.every(function(n){return n.hp<=0;}))resetGuardianNodes(k);
   k.attack++;k.tell=k.windup=(rogueRun.difficulty==='easy'?1.45:1.15);k.attackDuration=.42;k.settleT=0;
   var aim=guardianAimX(k,k.attack%2?anchor:Math.max(anchor-96,Math.min(anchor+96,a.x))),dir=aim<k.x?-1:1;
@@ -804,8 +774,6 @@ function updateGardenGuardian(k,dt){
     for(var i=-1-extra;i<=1+extra;i++)guardianHazard(k,'spore',aim+i*30,9,k.tell+Math.abs(i)*.12,power*.7);
     if(k.remix&&k.attack%3===0)summonBossGuard(k,4,k.attack);
   }else if(k.pattern==='web'){
-    // Outside-in paired lines leave an explicit safe centre. The follow-up
-    // targets that centre only after a second, independently visible tell.
     for(var side=-1;side<=1;side+=2)guardianHazard(k,'root',aim+side*34,12,k.tell,power);
     if(k.phase>1||k.remix)guardianHazard(k,'root',aim,12,k.tell+.7,power*.8);
   }else if(k.pattern==='pincer'){
@@ -815,7 +783,6 @@ function updateGardenGuardian(k,dt){
     for(var i=0;i<3+k.remix;i++)guardianHazard(k,'spore',aim+(i-1)*27,10,k.tell+i*.18,power*.75);
     if(k.phase>1)guardianHazard(k,'root',k.x,17,k.tell+.35,power);
   }else if(k.pattern==='shell'){
-    // Staggered shards advance from its front, leaving the rear open.
     for(var i=0;i<3+k.phase;i++)guardianHazard(k,'root',k.x+dir*(18+i*17),7,k.tell+i*.22,power*.65);
   }else if(k.pattern==='wick'){
     (k.nodes||[]).forEach(function(n,i){if(n.hp>0)guardianHazard(k,'spore',a.x+(i-1)*24,9,k.tell+i*.28,power*.65);});
@@ -828,8 +795,6 @@ function updateGardenGuardian(k,dt){
     guardianHazard(k,'root',Number.isFinite(k.echoX)?k.echoX:a.x,13,k.tell,power,Number.isFinite(k.echoY)?k.echoY:a.y);
     guardianHazard(k,'spore',a.x,10,k.tell+.5,power*.7,a.y);
   }else if(k.pattern==='ferry'){
-    // Broad oar sweeps alternate banks. Carrying dew through the safe bank
-    // ends the attack early and opens the hull for the other player.
     for(var i=1;i<=3;i++)guardianHazard(k,'root',k.x+dir*i*23,9,k.tell+i*.18,power*.65);
   }else if(k.pattern==='choir'){
     (k.nodes||[]).forEach(function(n,i){if(n.hp>0)guardianHazard(k,'spore',aim+(i-1)*30,8,k.tell+i*.36,power*.65);});
@@ -839,39 +804,11 @@ function updateGardenGuardian(k,dt){
 }
 function updateStageBoss(k,dt){
   if(k.pattern&&k.pattern!=='milestone'){updateGardenGuardian(k,dt);return;}
-  var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
-  if(phase>k.phase){k.phase=phase;for(var add=0;add<3;add++)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,add);}
-  k.life=(k.life||0)+dt;var rage=k.life>60?.6:1;
-  k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
-  // A successful bait (or interrupted heal) brings the moth within reach of
-  // planted bombs. Its recovery lasts a full fuse, even during the enrage.
-  if(k.guardianStage&&k.bossId==='moon-moth'&&k.exposed>0)k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,dt*12);
-  if(k.attackT>0){
-    var step=Math.min(dt,k.attackT);k.attackT=Math.max(0,k.attackT-dt);
-    if(k.bossId==='mossback'){k.x=guardianAimX(k,k.x+k.chargeV*step);k.y=surfaceY(k.x)-8;k.vx=k.chargeV;}
-    if(k.guardianStage&&k.bossId==='moon-moth')k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,step*12);
-    if(!k.attackT){k.vx=k.vy=0;if(k.guardianStage){if(!(k.settleT>0))guardianRecovery(k);}else{k.exposed=k.bossId==='mossback'?1.2:1;k.cool=(2.2-(k.phase-1)*.35)*rage;}}
-    return;
-  }
-  if(k.windup>0){
-    k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
-    if(!k.windup){
-      if(k.healing){healPest(floatKrek.find(function(q){return q.ph===k.healTarget&&q!==k&&!q.boss;}),1.4);k.healing=false;}
-      k.attackDuration=k.bossId==='mossback'?.42:.35;k.attackT=k.attackDuration;
-    }
-    return;
-  }
-  if(k.guardianStage&&guardianSettles(k,dt))return;
-  k.cool-=dt;
-  var target=guardianTarget(k),anchor=guardianAimX(k,target?target.x:Number.isFinite(k.courtX)?k.courtX:P.x),offset=k.bossId==='mossback'?8:k.bossId==='moon-moth'?40:13;
-  if(k.exposed<=0)moveEnemyTo(k,guardianAimX(k,anchor+(k.attack%2?-52:52)),surfaceY(anchor)-offset,dt,k.bossId==='moon-moth'?24:15);
-  else k.vx=k.vy=0;
-  if(k.cool>0||k.exposed>0)return;
+  var anchor=updateBossCombat(k,dt,'milestone');if(anchor===null)return;
   k.attack++;k.tell=k.windup=k.guardianStage&&rogueRun.difficulty==='easy'?1.4:k.bossId==='mossback'?1:.95;k.attackDuration=k.bossId==='mossback'?.42:.35;k.settleT=0;
   if(k.attack%4===0)summonBossGuard(k,k.bossId==='mossback'?1:k.bossId==='bellkeeper'?4:5,k.attack);
   if(k.bossId==='mossback'){
     var dir=anchor<k.x?-1:1;k.face=dir;k.chargeV=dir*118;
-    // Three distinct root markers leave spaces that a jump or higher route clears.
     for(var i=0;i<3;i++)guardianHazard(k,'root',k.x+dir*(22+i*23),10,k.tell,.75);
   }else if(k.bossId==='bellkeeper'){
     guardianHazard(k,'spore',anchor,13,k.tell,.85);
@@ -887,31 +824,7 @@ function updateStageBoss(k,dt){
   }
 }
 function updateHollowCrown(k,dt){
-  var phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
-  if(phase>k.phase){
-    k.phase=phase;
-    for(var i=0;i<=phase;i++)summonBossGuard(k,phase===3?5:2,i);
-  }
-  k.life=(k.life||0)+dt;var rage=k.life>60?.6:1;
-  k.flee=0;k.exposed=Math.max(0,k.exposed-dt);
-  if(k.guardianStage&&k.exposed>0)k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,dt*12);
-  if(k.guardianStage&&k.attackT>0){
-    k.vx=k.vy=0;k.attackT=Math.max(0,k.attackT-dt);
-    if(!k.attackT&&!(k.settleT>0))guardianRecovery(k);
-    return;
-  }
-  if(k.windup>0){
-    k.vx=k.vy=0;
-    k.windup=Math.max(0,k.windup-dt);
-    if(k.windup===0){if(k.guardianStage)k.attackT=k.attackDuration;else{k.exposed=1.2;k.cool=(2.6-(k.phase-1)*.4)*rage;}}
-    return;
-  }
-  if(k.guardianStage&&guardianSettles(k,dt))return;
-  k.cool-=dt;
-  var target=guardianTarget(k),anchor=guardianAimX(k,target?target.x:Number.isFinite(k.courtX)?k.courtX:P.x);
-  if(k.exposed<=0)moveEnemyTo(k,guardianAimX(k,anchor+(k.attack%2?-42:42)),surfaceY(anchor)-26,dt,12);
-  else k.vx=k.vy=0;
-  if(k.cool>0||k.exposed>0)return;
+  var anchor=updateBossCombat(k,dt,'crown');if(anchor===null)return;
   k.attack++;k.tell=k.guardianStage&&rogueRun.difficulty==='easy'?1.45:1.15;k.windup=k.tell;k.attackDuration=.35;k.settleT=0;
   if(k.attack%4===0)summonBossGuard(k,5,k.attack);
   var count=k.phase,pattern=k.attack%3;
@@ -1069,8 +982,6 @@ function drawPickupNotice(dt){
   ctx.restore();
 }
 
-/* The optional upper district is a second commitment, independent of the two
-   mutually exclusive shrines. Scalar state travels in the host snapshot. */
 var runExpedition=null;
 var districtProps=loadImg('assets/district-props-v1/props.png'),districtLandmarks=loadImg('assets/district-props-v1/landmarks.png');
 function drawDistrictProp(name,lit,x,y){
@@ -1097,7 +1008,6 @@ function circuitPresent(p,C,margin){
 }
 function circuitTell(e,C){
   var a=C.arena,spots=[a.x+9,a.x+a.w-9],players=runPlayers().filter(function(q){return !seedDown(q.member);});
-  // Pick a flank once, then show the exact arrival point for the full warning.
   spots.sort(function(x,y){function distance(cx){return Math.min.apply(null,players.map(function(q){return Math.hypot(cx-q.p.x,a.y-13-(q.p.y-12));}));}return distance(y)-distance(x);});
   e.circuitSpawnX=spots[0];e.circuitSpawnY=a.y-13;e.circuitTell=1.35;
   var kinds=C.family==='bell'?[2,0,9]:C.family==='arch'?[0,2,4]:[0,2,5];
@@ -1110,7 +1020,7 @@ function interactCircuit(e,E){
   if(e.circuitActive||e.circuitDone||e.circuitFailed)return true;
   e.circuitChoice=choice;e.circuitActive=true;e.circuitAge=0;e.circuitAway=0;
   e.circuitQueued=2+(worldLevel()>=8?1:0)+(coopSize()>2?1:0);e.circuitSerial=0;
-  circuitTell(e,C);nudgeGardenHint('CLEAR THE TERRACE TO CLAIM YOUR GIFT');
+  circuitTell(e,C);
   return true;
 }
 function updateCircuit(e,E,dt){
@@ -1121,7 +1031,7 @@ function updateCircuit(e,E,dt){
     e.circuitActive=false;e.circuitFailed=true;e.circuitQueued=0;e.circuitTell=0;
     runHazards=runHazards.filter(function(h){return h.circuitStage!==worldLevel()||h.tell<=0;});
     floatKrek.forEach(function(k){if(k.eventId===id){k.eventId=0;k.circuit=false;k.expedition=false;staggerKrek(k,5);}});
-    if(present)nudgeGardenHint('TERRACE RESTS - FOLLOW THE LOOP ONWARD');return;
+    return;
   }
   if(e.circuitQueued>0&&floatKrek.length<MAX_ACTIVE_ENEMIES){
     e.circuitTell=Math.max(0,e.circuitTell-dt);
@@ -1140,7 +1050,6 @@ function updateCircuit(e,E,dt){
     var gift=C.choices[e.circuitChoice];
     runPlayers().forEach(function(q,i){dropRunItem(gift.item,gift.x+(i-(coopSize()-1)/2)*4,gift.y-12,q.member&&q.member.id);});
     spawnLooseSeeds(C.focus.x,C.arena.y-13,2);grantRogueXP(runReward(3));
-    nudgeGardenHint('TERRACE CLEAR - YOUR GIFT IS READY');
   }
 }
 function interactExpedition(){
@@ -1160,7 +1069,6 @@ function expeditionBlast(x,y){
   if(coopGuest()||!e||!E||e.done||!(E.mode==='bells'||E.mode==='salvage'))return;
   for(var i=0;i<E.nodes.length;i++){
     var n=E.nodes[i];if(e.mask&(1<<i)||Math.hypot(x-n.x,y-(n.y-10))>22)continue;
-    // Bells have a visible one/two/three pip order. A wrong note is harmless.
     if(E.mode==='bells'&&e.mask!==(1<<i)-1){chime([165],.08,.018);return;}
     expeditionWake(i);e.mask|=1<<i;puff(n.x,n.y-12,8,.5);return;
   }
@@ -1171,7 +1079,6 @@ function updateExpedition(dt){
   e.glow=Math.max(0,e.glow-dt);
   if(e.watch>=0&&!(e.mask&(1<<e.watch))){
     var n=E.nodes[e.watch],present=runPlayers().some(function(a){return expeditionNear(a.p,n,24)&&a.p.grounded;});
-    // Leaving is always possible; returning resumes the hold without another fee.
     if(present)e.charge=Math.min(6,e.charge+dt);
     if(e.charge>=6){e.mask|=1<<e.watch;e.watch=-1;e.charge=0;chime([659,880],.06,.02);}
   }
@@ -1215,8 +1122,6 @@ function updateCircuitGuard(k,dt){
   players.sort(function(a,b){return Math.hypot(a.p.x-k.x,a.p.y-k.y)-Math.hypot(b.p.x-k.x,b.p.y-k.y);});
   var p=players[0]&&players[0].p,a=C.arena,target=p||C.focus;
   if(k.windup>0){k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);return true;}
-  // Low keepers remain in punching range. Raised perches offer a flank, and
-  // leaving the circuit never drags its encounter into the guardian court.
   var ranged=k.kind===4||k.kind===9,side=k.x<target.x?-1:1;
   var x=Math.max(a.x+6,Math.min(a.x+a.w-6,target.x+side*(ranged?31:13))),y=Math.max(a.top+8,Math.min(a.y-12,target.y-12));
   moveEnemyTo(k,x,y,dt,ranged?15:22);
@@ -1236,7 +1141,6 @@ function expeditionText(text,x,y,color){
 function drawExpedition(t){
   var E=stageLayout().expedition,e=runExpedition;if(!E||!e)return;
   var entryX=Math.round(E.start.x-camX),entryY=Math.round(E.start.y-camY);
-  // Signpost and upward trail lights advertise a place worth investigating.
   var origin=levelOriginX(worldLevel());
   for(var wx=origin+E.side*80;E.side*(E.start.x-wx)>35;wx+=E.side*64){
     var sx=Math.round(wx-camX),sy=Math.round(surfaceY(wx)-camY);if(sx<-5||sx>IW+5||waterAt(wx))continue;
