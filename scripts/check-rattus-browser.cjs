@@ -2,6 +2,7 @@ const fs=require('node:fs'),http=require('node:http'),path=require('node:path'),
 const {chromium,webkit}=require('playwright');
 const root=path.resolve(__dirname,'../dist'),results=[];
 const out=path.resolve('rattus-browser-review');fs.mkdirSync(out,{recursive:true});
+const key=async(frame,value,down)=>frame.evaluate(({value,down})=>window.dispatchEvent(new KeyboardEvent(down?'keydown':'keyup',{key:value,bubbles:true,cancelable:true})),{value,down});
 const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.png':'image/png','.css':'text/css'};
 const server=http.createServer((req,res)=>{const p=path.join(root,new URL(req.url,'http://localhost').pathname);try{res.setHeader('Content-Type',types[path.extname(p)]||'application/octet-stream');res.end(fs.readFileSync(p.endsWith('/')?p+'index.html':p));}catch{res.writeHead(404);res.end();}});
 server.listen(8796,'127.0.0.1',async()=>{
@@ -16,29 +17,29 @@ server.listen(8796,'127.0.0.1',async()=>{
   await page.waitForFunction(()=>document.querySelector('#status').dataset.state);
   const game=page.frames().find(f=>f!==page.mainFrame());activeGame=game;activePage=page;
   const loaded=await game.evaluate(()=>window.MaxNativeArt.load());assert.deepEqual(loaded.failed,[]);
-  await game.locator("canvas").click({position:{x:12,y:12}});
+  
   await game.evaluate(()=>window.__rattusReview.park());
   console.log(engineName,"start",await game.evaluate(()=>window.__rattusReview.debug));
-  await page.keyboard.down('ArrowRight');
+  await key(game,'ArrowRight',true);
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='walk');
   await page.locator('iframe').screenshot({path:out+'/'+engineName+'-game-walk.png'});
-  await page.keyboard.down('Shift');
+  await key(game,'Shift',true);
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='run');
   await page.locator('iframe').screenshot({path:out+'/'+engineName+'-game-run.png'});
-  await page.keyboard.up('ArrowRight');await page.keyboard.up('Shift');
+  await key(game,'ArrowRight',false);await key(game,'Shift',false);
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='brake');
-  results.push('Keyboard walk, sprint and release-to-brake');
+  results.push('Keyboard handlers: walk, sprint and release-to-brake');
   await game.evaluate(()=>window.__rattusReview.park());
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='kneel-down',null,{timeout:6000});
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='kneel');
   await page.locator('iframe').screenshot({path:out+'/'+engineName+'-game-kneel.png'});
-  await page.keyboard.down('ArrowLeft');await game.waitForFunction(()=>window.__rattusReview.player.motionName==='walk');await page.keyboard.up('ArrowLeft');
+  await key(game,'ArrowLeft',true);await game.waitForFunction(()=>window.__rattusReview.player.motionName==='walk');await key(game,'ArrowLeft',false);
   results.push('Bored idle after 3.5 s, immediate movement cancellation, left-facing render');
-  await page.keyboard.press('ArrowUp');await game.waitForFunction(()=>window.__rattusReview.player.motionName==='pounce');
+  await key(game,'ArrowUp',true);await key(game,'ArrowUp',false);await game.waitForFunction(()=>window.__rattusReview.player.motionName==='pounce');
   await game.waitForFunction(()=>window.__rattusReview.player.grounded);
-  await page.keyboard.press('b');await game.waitForFunction(()=>window.__rattusReview.player.rattlePose>0);
+  await key(game,'b',true);await key(game,'b',false);await game.waitForFunction(()=>window.__rattusReview.player.rattlePose>0);
   await page.locator('iframe').screenshot({path:out+'/'+engineName+'-game-attack.png'});
-  results.push('Jump, landing and real attack input');
+  results.push('Jump, landing and attack input handlers');
   const evidence=await game.evaluate(()=>{
    const r=window.__rattusReview;r.pause();let checked=0;
    for(const name of ['walk','run','brake','pounce','guard','kneel-down','kneel','rest','rise','uppercut','rising-kick','turning-kick','double-knee','lunge-punch','jab-cross','sweep','parry','tail-whip','palm-strike','tail-cartwheel','split-kick','swarm-transform','handstand','dive','rat-call']){
@@ -63,7 +64,7 @@ server.listen(8796,'127.0.0.1',async()=>{
    const members=ids.map((id,i)=>({id,slot:i+1,classId:i?'runner':'mech'}));
    window.__rattusReview.begin({host:isHost,user:{id:ids[isHost?0:1]},room:{id:'rattus-review',host:ids[0],members},action(){return true;},tick(){},fail(reason){throw Error(reason);}});
   },{ids,isHost});
-  await page.bringToFront();await game.locator("canvas").click({position:{x:12,y:12}});await page.keyboard.down('ArrowRight');await page.keyboard.down('Shift');
+  await page.bringToFront();await key(game,'ArrowRight',true);await key(game,'Shift',true);
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='run');
   for(let i=0;i<3;i++){
    const avatar=await game.evaluate(()=>window.__rattusReview.avatar());
@@ -71,7 +72,7 @@ server.listen(8796,'127.0.0.1',async()=>{
    assert.equal(remote.motionName,avatar.motionName);assert.equal(remote.motionTime,avatar.motionTime);
   }
   await hostPage.locator('iframe').screenshot({path:out+'/'+engineName+'-two-players.png'});
-  await page.keyboard.up('ArrowRight');await page.keyboard.up('Shift');
+  await key(game,'ArrowRight',false);await key(game,'Shift',false);
   results.push('Two browser players: guest sprint survives host validation and draws in the host world');
   assert.deepEqual(errors,[]);
   fs.writeFileSync(out+'/'+engineName+'.json',JSON.stringify({results,evidence,errors},null,2));console.log(engineName,JSON.stringify({results,evidence,errors}));await browser.close();browser=null;
