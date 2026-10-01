@@ -4,6 +4,7 @@ const vm = require('node:vm');
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
+  'yeet', 'YEET_SHEET',
   'classShots', 'classFighters', 'runActive', 'pad', 'padAx', 'heldL', 'heldRun', 'lampToggle',
   'sligoMeat', 'sligoPendingSwap',
   'parts',
@@ -18,6 +19,7 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'updateYeet', 'drawYeet', 'yeetSync', 'yeetArt',
   'pollPads', 'configurePad',
   'drawCharge',
   'RELAY_LOCKS', 'relayProfile', 'relayBeam', 'updateNightRelay', 'nightRelayMode',
