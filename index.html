@@ -3578,7 +3578,7 @@ window.addEventListener('max-native-art-ready',function(){if(window.MaxRunResult
 function drawResultScene(canvas,bouquet,resultRun){
   var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY},oldSkin=P.skin;
   var resultClass=resultRun&&resultRun.classId;
-  if(resultClass)P.skin=resultClass==='runner'&&resultRun.skinId==='moss'?'moss':{mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[resultClass]||window.MaxClasses.skin(resultClass);
+  if(resultClass)P.skin={mech:'tide',runner:'moss-pink',moss:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[resultClass]||window.MaxClasses.skin(resultClass);
   try{
     ctx=canvas.getContext('2d');if(!ctx)return;
     IW=canvas.width;IH=canvas.height;ctx.imageSmoothingEnabled=false;

@@ -62,7 +62,7 @@ The live file was inspected on 30 September 2026. Its production page is `10:2`;
 | 396:3 / 396:12 | RULES / EXPORT CHECK | current workbench rules |
 | 396:19 / 396:25 | MASTER GRIDS / PALETTE | examples; pack contracts win |
 
-The Rattus norvegicus sheets are `425:3` (main) and `425:4` (interaction), both 256×256 at native 1×. The level-design page is `382:2`. Earlier node maps remain in Git history.
+The active Rattus norvegicus sheets are `437:3` (main) and `437:4` (interaction), both 256×256 at native 1×. The earlier outfit layers `425:3` / `425:4` are retired in archive `425:2`, outside production. The level-design page is `382:2`. Earlier node maps remain in Git history.
 
 ## Pixel-art rules
 

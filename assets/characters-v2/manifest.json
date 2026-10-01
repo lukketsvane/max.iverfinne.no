@@ -3,10 +3,6 @@
   "id": "characters-v2",
   "assets": [
     {
-      "id": "rattle-norvegicus",
-      "manifest": "rattle-norvegicus/atlas.json"
-    },
-    {
       "id": "rattle-norvegicus-pink",
       "manifest": "rattle-norvegicus-pink/atlas.json"
     },

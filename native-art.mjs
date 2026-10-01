@@ -1,10 +1,10 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 
 // Presentation only: atlas animation never changes an attack, collision or heal.
-const SKINS = Object.freeze(['original', 'moss', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
+const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 // Persisted skin/class keys are network compatibility identifiers. These three
 // characters have wholly original anatomy and no longer load the Max recolours.
-const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
+const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
 function playerPath(skin, sheet = 'main') {
   const character = CHARACTER_ART[skin];
   // Assemble the final leaf separately so static runtime discovery does not
@@ -170,6 +170,7 @@ export function createNativeArt() {
     }, () => {});
   }
   function playerImage(skin, sheet) {
+    if (skin === 'moss') skin = 'moss-pink';
     if (!SKINS.includes(skin)) return null;
     if (!atlases[skin]) loadSkin(skin);
     return atlases[skin]?.images[sheet] || null;

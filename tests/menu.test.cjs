@@ -154,7 +154,7 @@ test('cosmetic loadouts remain class-scoped, persist and participate in session 
   const { validLoadout, sameLoadout, readLoadout, writeLoadout, CLASS_OUTFITS } = await import('../player-loadout.mjs');
   const pink = { classId: 'runner', skinId: 'moss-pink', difficulty: 'hard' }, values = new Map();
   const storage = { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) };
-  assert.deepEqual(CLASS_OUTFITS.runner, ['moss', 'moss-pink']);
+  assert.deepEqual(CLASS_OUTFITS.runner, ['moss-pink']);
   assert.deepEqual(validLoadout(pink), pink);
   assert.equal(writeLoadout(storage, pink), true); assert.deepEqual(readLoadout(storage), pink);
   assert.deepEqual(validLoadout({ ...pink, classId: 'mech' }), { classId: 'mech', skinId: 'tide', difficulty: 'hard' });
@@ -162,39 +162,43 @@ test('cosmetic loadouts remain class-scoped, persist and participate in session 
   assert.deepEqual(validLoadout({ classId: 'runner', difficulty: 'hard' }), pink);
   assert.deepEqual(validLoadout({ classId: 'moss', difficulty: 'hard' }), pink);
   const black = { ...pink, skinId: 'moss' };
-  assert.equal(writeLoadout(storage, black), true); assert.deepEqual(readLoadout(storage), black);
+  assert.equal(writeLoadout(storage, black), true); assert.deepEqual(readLoadout(storage), pink);
+  storage.setItem('max-loadout-v1', JSON.stringify(black));
+  assert.deepEqual(readLoadout(storage), pink); assert.deepEqual(JSON.parse(storage.getItem('max-loadout-v1')), pink);
   assert.equal(validLoadout({ ...pink, classId: 'sligo' }), null);
   assert.equal(sameLoadout(pink, { ...pink }), true); assert.equal(sameLoadout(pink, { ...pink, skinId: 'moss' }), false);
 });
 
-test('portrait double-click cycles once, single clicks preserve choice and other characters keep their roles', async () => {
-  const m = await menu();
+test('legacy Rattus outfits migrate to the sole current design without a skin-switch affordance', async () => {
+  const m = await menu(JSON.stringify({ classId: 'runner', skinId: 'moss', difficulty: 'medium' }));
   try {
     m.click('Play');
     const portrait = m.w.document.querySelector('[data-class-id="runner"]');
     for (const detail of [1, 2]) portrait.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail, clientX: 80, clientY: 90 }));
     portrait.dispatchEvent(new m.w.MouseEvent('dblclick', { bubbles: true, cancelable: true, detail: 2 }));
-    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'runner', skinId: 'moss', difficulty: 'medium' });
-    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus\/main\.png$/);
-    assert.match(portrait.querySelector('img').src, /rattle-norvegicus\/main\.png$/);
-    assert.match(m.w.document.querySelector('.max-outfit-hint').textContent, /Black & gold/);
+    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'runner', skinId: 'moss-pink', difficulty: 'medium' });
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
+    assert.match(portrait.querySelector('img').src, /rattle-norvegicus-pink\/main\.png$/);
+    assert.equal(m.w.document.querySelector('.max-outfit-hint').hidden, true);
+    assert.equal(portrait.title, ''); assert.equal(portrait.getAttribute('aria-description'), null);
     m.click('Rattus norvegicus'); m.click('Mycel'); m.click('Rattus norvegicus');
-    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss');
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
     assert.equal(m.w.document.querySelector('[data-skin-id]'), null);
     assert.equal(m.classIds().length, 5);
     m.click('Back'); m.click('Play');
-    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus\/main\.png$/);
+    assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
   } finally { m.dom.window.close(); }
 });
 
-test('touch click pairs and keyboard can cycle Rattus before Play while her chosen outfit reaches the shared run', async () => {
+test('touch click pairs and keyboard cannot restore retired outfits before or during the shared run', async () => {
   const m = await menu(JSON.stringify({ classId: 'runner', skinId: 'moss-pink', difficulty: 'easy' }), { summaryStarted: true });
   try {
     m.click('Play');
     const stage = m.w.document.querySelector('.max-character-stage'), portrait = m.w.document.querySelector('[data-class-id="runner"]');
-    assert.equal(stage.getAttribute('role'), 'button'); assert.equal(stage.tabIndex, 0);
+    assert.equal(stage.getAttribute('role'), null); assert.equal(stage.tabIndex, -1);
+    assert.equal(stage.getAttribute('aria-keyshortcuts'), null);
     for (let i = 0; i < 2; i++) stage.dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true, detail: 1, clientX: 40, clientY: 50 }));
-    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss');
+    assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
     const key = new m.w.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', shiftKey: true });
     portrait.dispatchEvent(key); assert.equal(key.defaultPrevented, true);
     assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
@@ -253,8 +257,8 @@ test('Play silently enters the one shared running garden and carries character p
     assert.equal(name.textContent, 'Rattus norvegicus');
     assert.equal(name.dataset.long, 'true');
     assert.match(m.w.document.querySelector('.max-character-stage img').src, /characters-v2\/rattle-norvegicus-pink\/main\.png$/);
-    assert.match(m.w.document.querySelector('.max-outfit-hint').textContent, /Ring gear/);
-    assert.match(m.w.document.querySelector('[data-class-id="runner"]').getAttribute('aria-description'), /^Ring gear\./);
+    assert.equal(m.w.document.querySelector('.max-outfit-hint').hidden, true);
+    assert.equal(m.w.document.querySelector('[data-class-id="runner"]').getAttribute('aria-description'), null);
     assert.match(m.w.document.querySelector('.max-class-detail').textContent, /rat pro wrestler/);
     m.click('easy difficulty'); m.click('Play'); await m.settle();
     assert.equal(m.beginCount,1);assert.equal(m.active,true);

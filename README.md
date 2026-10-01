@@ -29,7 +29,7 @@ Unlocked **relic stones** in the collection garden select game modes using the s
 
 ### Characters are exclusive
 
-Five open characters and the hidden Sligo each own a gameplay role. Before Play, double-tap a character sprite to cycle its available cosmetic outfits. Rattus defaults to Ring gear, with Black & gold available as an alternate; an explicitly chosen outfit is remembered and stays fixed during the run. Costumes share the same character slot and abilities. The garden still holds at most four players.
+Five open characters and the hidden Sligo each own a gameplay role. Before Play, double-tap a character sprite to cycle its available cosmetic outfits. Rattus uses only her latest Ring gear; saved earlier outfits migrate to it. Costumes share the same character slot and abilities and stay fixed during the run. The garden still holds at most four players.
 
 | Character | Primary attack | Skill (tap character / E) |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ Five open characters and the hidden Sligo each own a gameplay role. Before Play,
 | Mycel | Spore bolts that chain near living plants | Bloom heals and waters plants, revives a recent fall and strikes nearby pests |
 | Pølge | Jab → cross → uppercut; dodge primes a stronger punch | Freely steer during a rapid close flurry |
 
-Rattus norvegicus defaults to a grey-furred rat wrestler with orange hair, a pink tail, powerful thighs and magenta-and-gold ring gear, without a hat or cape. Her native atlases combine five wrestling source sheets. Cairn is a broad stone creature and Mycel a walking mushroom. Rattus fights with her boots: close dropkicks, airborne saltos and a wide splits stomp. She also lowers into a split while planting, then returns to her guard. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
+Rattus norvegicus defaults to a grey-furred rat wrestler with orange hair, a pink tail, powerful thighs and magenta-and-gold ring gear, without a hat or cape. Her native atlases combine five wrestling source sheets, including a hip-bounce taunt that jumps into a split and a slip-to-prone rest sequence. Cairn is a broad stone creature and Mycel a walking mushroom. Rattus fights with her boots: close dropkicks, airborne saltos and a wide splits stomp. She also lowers into a split while planting, then returns to her guard. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
 
 Pølge is a limbless mannequin boxer and the glue of the pølgevenner. He never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. Every primary, skill and upgrade is validated by the host; projectiles, combo/flurry state and cooldowns survive an authority handoff.
 

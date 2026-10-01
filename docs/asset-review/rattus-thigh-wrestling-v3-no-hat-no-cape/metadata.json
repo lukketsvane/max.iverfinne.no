@@ -272,12 +272,12 @@
     {
       "id": "05-movement-and-ring-animation-cycles",
       "image": "sheets/05-movement-and-ring-animation-cycles.png",
-      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-6b2c4622-49ef-49ce-ab1b-4d5b98ff2303.png",
-      "sha256": "0a712911ddef2b43f4135f2326c88c45e4332a77fe344509d095b460631d41f8",
-      "bytes": 1718486,
+      "generatedSource": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-2cf71511-4611-44c9-bfdb-ad2e147fb0f4.png",
+      "sha256": "06067b53a3c8fee0758c853c2000fc4ddf39c4bc238ffcb890a40419c9a18771",
+      "bytes": 2025649,
       "dimensions": [
         1265,
-        1244
+        1243
       ],
       "grid": [
         8,
@@ -296,24 +296,24 @@
         8
       ],
       "sourceRowCentersAtAlpha240": [
-        102,
-        254,
-        417,
-        600,
-        747,
-        885,
-        1029,
-        1148
+        89,
+        241,
+        402,
+        587,
+        737,
+        871,
+        1023,
+        1153
       ],
       "alphaLevels": 256,
-      "transparentPixels": 946297,
-      "opaquePixels": 3532,
-      "partialAlphaPixels": 623831,
+      "transparentPixels": 806419,
+      "opaquePixels": 2386,
+      "partialAlphaPixels": 763590,
       "foregroundBoundsAtAlpha240": [
-        38,
-        44,
-        1228,
-        1204
+        35,
+        26,
+        1237,
+        1217
       ],
       "outerEdgeForegroundAtAlpha240": [
         0,
@@ -330,14 +330,14 @@
       "observedCoverage": [
         "Strut walk",
         "Run",
-        "Hip check",
-        "Split stomp",
+        "Rear hip check",
+        "Jumping split stomp",
         "Seated leg scissors",
-        "Salto",
-        "Prone floor recovery",
-        "Victory flex"
+        "Tucked salto and landing",
+        "Slip, prone fall and grounded recovery",
+        "Rear hip-bounce taunt, jump, aerial split, floor split and guard"
       ],
-      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v4-05.png"
+      "runtimeSource": "docs/asset-review/characters-v2/source/rattus-ring-v6-05.png"
     }
   ],
   "drafts": [],
@@ -364,5 +364,8 @@
       0
     ]
   },
-  "sourceCaveat": "Unchanged image_gen originals have graded alpha and noninteger visual grids. The deterministic compiler extracts complete figures and packs 128 selected native poses; source images do not ship in the game build."
+  "sourceCaveat": "Unchanged image_gen originals have graded alpha and noninteger visual grids. The deterministic compiler extracts complete figures and packs 128 selected native poses; source images do not ship in the game build.",
+  "activeRuntimeOutfits": 1,
+  "retiredRuntimePack": "rattle-norvegicus",
+  "promptsSha256": "064829baabf7ef70e93a0606607977431f2a3c888508ced21b611b7823d47800"
 }

@@ -50,7 +50,7 @@ cpSync(join(root, 'assets/cavern-v1'), join(output, 'assets/cavern-v1'), { recur
 copyFileSync(join(root, 'manifest.webmanifest'), join(output, 'manifest.webmanifest'));
 for (const [pack, ids, sheets] of [
   ['max-skins-v1', ['tide', 'polge'], ['atlas.json', 'main.png', 'interaction.png']],
-  ['characters-v2', ['rattle-norvegicus', 'rattle-norvegicus-pink', 'cairn', 'mycel'], ['atlas.json', 'main.png', 'interaction.png']],
+  ['characters-v2', ['rattle-norvegicus-pink', 'cairn', 'mycel'], ['atlas.json', 'main.png', 'interaction.png']],
   ['rat-enemies-v1', ['common', 'black', 'albino', 'plague'], ['atlas.json', 'sprites.png']],
   ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown'], ['atlas.json', 'sprites.png']],
 ]) {
