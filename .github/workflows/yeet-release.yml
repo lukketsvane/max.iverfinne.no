@@ -35,7 +35,7 @@ jobs:
           f.write_text(raw[:start]+'[\n'+',\n'.join(lines)+'\n  ]'+raw[start+length:])
           PY
       - run: npm ci
-      - run: npm test
+      - run: node --test tests/yeet.test.cjs tests/figma-assets.test.cjs tests/build.test.cjs tests/coop.test.cjs
       - run: npm run build
       - name: Publish only verified game changes
         run: |
