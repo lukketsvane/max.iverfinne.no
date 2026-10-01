@@ -1,5 +1,3 @@
--- One seamless shared garden. The first player owns authority until a short heartbeat gap,
--- then an active member takes over. Backgrounded PWA members retain their slot for two minutes.
 
 update max_coop_private.rooms set state='closed' where state<>'closed';
 

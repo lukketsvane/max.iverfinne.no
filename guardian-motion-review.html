@@ -16,7 +16,6 @@ body{margin:0;background:#10171c;color:#d7d4b1;font:14px monospace}main{max-widt
 </main>
 <script src="native-art.js"></script>
 <script>
-// Isolated art fixture: no simulation, account, save state or live-room access.
 const ids=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','glass-snail','wick-hermit','frostjaw','spindle-widow','orchard-mimic','tuning-fork','kiln-beetle','ash-ferryman','compost-choir','seed-engine'];
 const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),action=document.querySelector('#action'),status=document.querySelector('#status'),art=window.MaxNativeArt;
 document.querySelector('.names').replaceChildren(...ids.map((id,i)=>{const n=document.createElement('span');n.textContent=(i+1)+'. '+id.replaceAll('-',' ');return n;}));
@@ -42,7 +41,6 @@ function draw(now){
    if(name==='hurt')e.flash=Math.max(.001,1-p);
    if(name==='death')e.hp=0;
    if(name==='recover'){
-    // Set the preceding attack only at each loop boundary, like a host timer.
     if(restart){e.attackT=.01;art.drawEnemy(ctx,e,x,y,elapsed-.01);e.attackT=0;}
    }
    art.drawEnemy(ctx,e,x,y,elapsed);

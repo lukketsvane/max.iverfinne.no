@@ -146,7 +146,6 @@ test('four players collect their own run items; feather jumps, shrine rewards an
   guest.doJump(false);guest.updatePlayer(.12,{axis:0,top:48});guest.doJump(false);guest.updatePlayer(.01,{axis:0,top:48});
   assert.ok(guest.P.airJumpUsed);assert.ok(guest.P.vy<-140);
   assert.equal(guest.pickupNotice.text,'Double jump');
-  // Host validates the interaction at the last accepted avatar position.
   const e=host.runEncounters[0];e.x=member.avatar.x;e.y=host.surfaceY(e.x);
   host.gardenSeeds=4;Object.assign(guest.P,{x:e.x,y:host.surfaceY(e.x),grounded:true,st:'free',wet:false});sync();
   guest.crouchGardenAction();send(1,games[1].pending);sync();

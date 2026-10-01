@@ -26,16 +26,14 @@ ROOT = Path(__file__).resolve().parent.parent
 LEVEL = ROOT / 'docs/asset-review/sligo-specials-v1/level.json'
 SKIN = ROOT / 'assets/max-skins-v1/sligo/main.png'
 OUT = ROOT / 'assets/max-skins-v1/sligo'
-CELL = 40                       # the splash is taller than a skin cell
+CELL = 40
 SHEET = '0856438B'
-# (clip, the sheet's last-row items it takes, in order)
 CLIPS = [
     ('sac', 7, [2, 3, 4, 5]), ('burst', 7, [6, 7, 8, 9]),
     ('throw', 4, [0, 1, 2, 3]), ('lash', 3, list(range(8))),
     ('hurt', 6, [0, 1, 2]), ('float', 5, [2, 3, 4, 5]),
     ('sleep', 7, [0, 1]),
 ]
-# Detached clot and cord tip from the owner's painting, at the same scale as the body.
 PARTS = [(21, 158, 29, 169), (294, 116, 305, 136)]
 
 
@@ -62,7 +60,7 @@ def shapes(a):
         else:
             rows.append([cy, [b]])
     out = []
-    for _, row in rows:   # frames drawn touching each other come out as one wide box: cut it evenly
+    for _, row in rows:
         wide = float(np.median([b[2] - b[0] for b in row]))
         cut = []
         for b in sorted(row):
@@ -97,7 +95,7 @@ def main():
     a = sheet()
     rows, solid = shapes(a)
     idle = rows[0][0]
-    ours = np.array(Image.open(SKIN).convert('RGBA'))[:32, :32, 3] > 0   # the skin's first idle cell
+    ours = np.array(Image.open(SKIN).convert('RGBA'))[:32, :32, 3] > 0
     scale = height(ours) / height(solid[idle[1]:idle[3], idle[0]:idle[2]])
     frames, clips = [], {}
     for clip, row, picks in CLIPS:
@@ -121,8 +119,6 @@ def main():
         h, w = f.shape[:2]
         assert h <= CELL - 1 and w <= CELL - 2, ('frame too big for its cell', k, w, h)
         x, y = k * CELL + CELL // 2 - w // 2, CELL - h
-        # Register action poses by the eye, not the reach of a moving cord.
-        # Eye sits two pixels right of the body anchor in a right-facing pose.
         if 8 <= k <= 26:
             eye = (f[..., 0] < 105) & (f[..., 1] < 65) & (f[..., 2] < 65) & (f[..., 3] > 0)
             if eye.any():
@@ -136,7 +132,6 @@ def main():
     out[out[..., 3] == 0] = 0
     result = Image.fromarray(out, 'RGBA')
     result.save(OUT / 'specials.png', optimize=True)
-    # Review only: exact integer enlargement of the runtime cells, one clip per row.
     from PIL import ImageDraw
     review = Image.new('RGBA', (360, len(clips) * 54), '#202c33')
     draw = ImageDraw.Draw(review)

@@ -1,4 +1,3 @@
-/* Included inside the game closure at build time. No public debug/state API. */
 var coop=null,coopApplying=false,coopActor=null,coopFxId=0,COOP_NO_PERKS=window.MaxBuilds.empty();
 function coopGuest(){return !!(coop&&!coop.host);}
 function coopAction(type,data){return !!(coopGuest()&&coop.network.action(type,Object.assign({},data,{world:worldLevel()})));}
@@ -69,8 +68,6 @@ function coopWithMember(m,fn){
 function coopInput(id,packet){
   if(!coop||!coop.host)return;var m=coop.members[id];if(!m||m.left&&!coopJoin(id,m))return;
   var a=coopCleanAvatar(packet.avatar),now=performance.now(),accepted=false;
-  // The authenticated lobby selection is fixed for the whole run. Inputs carry
-  // presentation data for compatibility, but cannot change an actor's kit.
   if(a){a.classId=m.classId;a.skin=m.skin;if(m.classId!=='runner')a.pounce=0;}
   if(seedDown(m)){a=null;m.last=now;m.reviveHeld=false;}
   if(a&&m.classId==='sligo'){var colony=sligoColony(m);if(a.sligoId!==colony.active)a=null;else a.sligoMass=sligoBody(colony,colony.active).sligoMass;}
@@ -101,8 +98,6 @@ function coopInput(id,packet){
   packet.actions.forEach(function(action){
     if(action&&m.ack==null&&Number.isSafeInteger(action.id)&&action.id>0)m.ack=action.id-1;
     if(!action||action.id!==m.ack+1)return;m.ack=action.id;
-    // Acknowledging an old action removes it from the retry queue without
-    // planting, throwing or travelling again in the newly entered garden.
     if(action.world!=null&&action.world!==worldLevel())return;
     if(seedDown(m))return;
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
@@ -110,7 +105,6 @@ function coopInput(id,packet){
       if(m.classId==='sligo'&&Number.isSafeInteger(action.tag)){
         m.sligoAck=action.tag;var c=sligoColony(m);
         if(!runIsPaused()&&!rogueRun.ended&&action.from===c.active&&sligoSwap(c,action.body,m)){
-          // The guest already switched locally. Only accept movement near the target cell.
           var next=coopCleanAvatar(packet.avatar);
           if(next&&next.world===worldLevel()&&next.sligoId===c.active&&Math.hypot(next.x-m.avatar.x,next.y-m.avatar.y)<36){
             next.classId=m.classId;next.skin=m.skin;next.sligoMass=sligoBody(c,c.active).sligoMass;m.avatar=next;
@@ -152,7 +146,6 @@ function coopInput(id,packet){
       else if(action.type==='throw'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<300){
         if(Number.isSafeInteger(action.attackTag))m.attackTag=action.attackTag;
         var spore=runHazards.find(function(h){return h.id===action.spore&&h.type==='spore'&&h.tell>0&&Math.abs(h.x-P.x)<300;});
-        // Aim at the current host trajectory, rather than a guest's old frame.
         throwBomb(spore?sporeAim(spore):{x:action.x,y:action.y},Number.isFinite(action.power)?action.power:0);
       }
       else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
@@ -182,15 +175,11 @@ function coopDodgeContact(m,now){
   var steps=Math.max(1,Math.ceil(Math.abs(x-d.x))),points=[{x:d.x,y:d.y}],blocked=false;
   for(var i=1;i<=steps;i++){
     var nextX=d.x+(x-d.x)*i/steps,previous=points[points.length-1],nextY=coopSupportY(nextX,previous.y);
-    // A later packet may land on another ledge. Keep every part of this roll
-    // on continuous footing, without sweeping a gap or the soil below it.
     if(nextY===null||playerWetAt(nextX,nextY)){blocked=true;break;}
     points.push({x:nextX,y:nextY});
   }
   var end=points[points.length-1];
   if(!blocked&&distance<=maxDistance&&Math.abs(end.y-a.y)>4){m.dodge=null;return;}
-  // Input arrives less often than physics ticks. Sweep the accepted segment,
-  // bounded to one roll and continuous footing, including a supported edge.
   coopWithMember(m,function(){
     P.dodgeId=d.id;P.dodgeDir=d.dir;
     for(var i=1;i<points.length;i++)dodgeSweep(points[i-1].x,points[i-1].y,points[i].x,points[i].y);
@@ -235,7 +224,7 @@ function coopCapture(){
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
-    secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),polgeStands:[],fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
+    secrets:coopPlain(secrets),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
     difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     expedition:runExpedition?coopPlain(runExpedition):null,bossEvent:bossEvent?coopPlain(bossEvent):null,
     raid:{active:gardenRaidActive,timer:gardenRaidT,remaining:rogueRun.raidRemaining||0,total:rogueRun.raidTotal||0,threat:rogueRun.raidThreat||0,grace:gardenRaidGrace,spawn:gardenRaidSpawn,bossSpawned:gardenBossSpawned},
@@ -257,7 +246,6 @@ function coopState(s){
   if(Array.isArray(s.collected)&&s.collected.length<=20000){seedCollected={};s.collected.forEach(function(k){if(typeof k==='string'&&k.length<=32)seedCollected[k]=1;});}
   if(Number.isFinite(s.dust)&&s.dust>=0&&s.dust<1)seedDust=s.dust;
   sligoMeat=Array.isArray(s.sligoMeat)?s.sligoMeat.slice(0,80).filter(function(q){return q&&['x','y','id','age'].every(function(k){return Number.isFinite(q[k]);});}).map(coopPlain):[];
-  polgeStands=[];
   classFighters=Array.isArray(s.fighters)?s.fighters.slice(0,4).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['combo','window','weave','flurry','next'].every(function(k){return Number.isFinite(q[k]);})&&q.combo>=0&&q.combo<=2&&q.flurry>=0&&q.flurry<=7;}).map(coopPlain):[];
   classShots=Array.isArray(s.shots)?s.shots.slice(0,48).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['needle','spore'].indexOf(q.kind)>=0&&['id','x','y','vx','vy','life','damage','pierce','hits'].every(function(k){return Number.isFinite(q[k]);})&&q.life>0&&q.life<=1.2&&q.damage>=0&&q.damage<=10&&Math.hypot(q.vx,q.vy)<=250;}).map(function(q){return Object.assign(coopPlain(q),{perks:coopPlain(q.perks||{})});}):[];
   classShotId=classShots.reduce(function(n,q){return Math.max(n,q.id);},classShotId);
@@ -273,8 +261,6 @@ function coopState(s){
   stageWeather=s.stageWeather?coopPlain(s.stageWeather):null;rogueRun.bossDefeated=!!s.bossDefeated;
   if(s.secrets&&typeof s.secrets==='object')secretSync(s.secrets);
   if(s.wonders&&typeof s.wonders==='object')wonderSync(s.wonders);
-  // Removed bosses and rats collapse locally, including the final winning
-  // snapshot. A new garden or lost run is cleanup, never another defeat/reward.
   if(previousWorld===s.world&&(!s.ended||s.won)&&window.MaxNativeArt){
     floatKrek.forEach(function(k){if((k.boss||isRat(k))&&!s.pests.some(function(q){return q.kind===k.kind&&q.bossId===k.bossId&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
   }
@@ -349,9 +335,6 @@ function drawCoopPlayers(dt){
   });
   P=original;coopMarker(P,coop.members[coop.me].slot,true);
 }
-// The roster writes at 2/5 of an art pixel per font pixel, which the art canvas cannot hold, so it lives in a
-// small overlay inside the stage at device resolution: one canvas per player (colour dot, underline for you,
-// the name in the 5x7 font at 1:1), scaled up whole with pixelated rendering and redrawn only when it changes.
 var rosterBox=null,rosterKey='',rosterShown=false;
 function hideRoster(){if(rosterBox&&rosterBox.style.display!=='none')rosterBox.style.display='none';rosterKey='';}
 function drawRoster(){
@@ -396,9 +379,6 @@ function drawTeamArrows(){
   return n;
 }
 function coopMarker(p,slot,own){
-  // Sligo begins only six art pixels tall. A fixed Max-height marker made a
-  // living teammate look absent, especially on a phone. Keep the marker just
-  // above the actual body and give tiny Sligo a short team-colour foot line.
   var x=Math.round(p.x-camX),body=p.skin==='sligo'?sligoHeight(p):24;
   var y=Math.round(p.y-camY)-(p.skin==='sligo'?body+5:29);
   ctx.fillStyle=['#e3ce80','#87bccf','#b79bcb','#a4bf87'][slot-1]||'#e3ce80';

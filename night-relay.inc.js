@@ -1,6 +1,3 @@
-/* Night Relay: a two-to-four gardener light heist, not a growing/raid mode.
-   Only authenticated room members count. All objectives, heat, light and health
-   are host-owned; guests send the same held Tend control as the local player. */
 var NIGHT_RELAY={end:1140,reach:25,heat:22,light:150};
 var RELAY_LOCKS=[
   {x:276,pad:174,ph:44,door:262,dh:0,name:'THE LOFT'},
@@ -51,7 +48,7 @@ function relayReturnSeed(penalty){
 function relayTake(a,pass){
   var s=rogueRun.survival;s.carrier=a.id;s.heat=0;s.passArmed=false;
   if(pass){s.passes++;chime([523,784],.06,.035);}
-  if(!s.started){s.started=true;showRound('NIGHT RELAY','Carry the light. Leave no one behind.',2200);}
+  if(!s.started){s.started=true;}
 }
 function relayBeam(b){
   var s=rogueRun.survival,t=(s.elapsed+b.offset)%4.6;
@@ -76,8 +73,6 @@ function updateNightRelay(dt){
   var carrier=actors.find(function(a){return a.id===s.carrier&&a.v.hp>0;});
   if(s.carrier&&!carrier)relayReturnSeed(false);
   s.waiting=actors.length<2;
-  // A missing partner pauses the challenge, not the menu or networking. Clones,
-  // stale avatars and a second tab of the same member never satisfy two players.
   if(s.waiting){s.charge=0;s.exitCharge=0;return;}
   dt=Math.min(dt,.1);s.flash=Math.max(0,s.flash-dt);
   var held=actors.filter(relayHeld);
@@ -100,7 +95,7 @@ function updateNightRelay(dt){
       if(a.v.revive>=3){a.v.hp=55;a.v.shield=3;a.v.revive=0;a.p.st='free';a.p.anim='idle';}
       return;
     }
-    if(Math.hypot(a.p.x-s.x,a.p.y-s.y)>NIGHT_RELAY.light)damageGardener(a.member,5); // soft separation pressure
+    if(Math.hypot(a.p.x-s.x,a.p.y-s.y)>NIGHT_RELAY.light)damageGardener(a.member,5);
     else if(a.v.hurt<=0)a.v.hp=Math.min(100,a.v.hp+dt*2);
     RELAY_BEAMS.forEach(function(b){if(relayBeam(b)===2&&Math.abs(a.p.x-b.x)<b.w/2+3&&a.p.y>s.base-14&&damageGardener(a.member,profile.damage))s.energy=Math.max(0,s.energy-3);});
   });
@@ -115,7 +110,7 @@ function updateNightRelay(dt){
     if(s.charge>=1.4){
       s.stage++;gardenWave=s.stage;s.lastCarrier=carrier.id;s.charge=0;s.heat=0;s.energy=Math.min(100,s.energy+25);s.flash=1.5;
       actors.forEach(function(a){if(a.v.hp>0)a.v.hp=Math.min(100,a.v.hp+35);});
-      chime([392,523,659,784],.07,.045);showRound(s.stage===3?'THE WAY OUT':'LOCK '+s.stage+' / 3','Swap the seed before the next lock.',1800);
+      chime([392,523,659,784],.07,.045);
     }
   }else{
     var left=held.find(function(a){return relayAt(a,1032,0);}),right=held.find(function(a){return relayAt(a,1100,22);});
@@ -133,7 +128,6 @@ function relayRune(x,y,color,active){
 function drawRelayBackdrop(){
   if(!nightRelayMode())return;
   var s=rogueRun.survival;ctx.fillStyle='#080e18';ctx.fillRect(0,0,IW,IH);
-  // Existing cavern and ruin tiles stay on their native pixel grid.
   drawCavernLayers(0,5,Math.round(s.base-camY)-146,0);
   for(var i=-1;i<14;i++){var x=Math.round(i*96-camX*.6),y=Math.round(s.base-camY);ctx.fillStyle='#16202b';ctx.fillRect(x,y-100,9,100);ctx.fillRect(x-3,y-103,15,5);ctx.fillStyle='#0e1722';ctx.fillRect(x+2,y-98,2,96);}
   var gy=Math.round(s.base-camY);ctx.fillStyle='#17242c';ctx.fillRect(0,gy,IW,Math.max(0,IH-gy));ctx.fillStyle='#50615e';ctx.fillRect(0,gy,IW,2);
@@ -162,7 +156,6 @@ function drawNightRelay(t){
 function drawRelayDarkness(){
   if(!nightRelayMode()||!runActive)return;
   var s=rogueRun.survival,cx=s.x-camX,cy=s.y-camY-16;
-  // Stepped translucent rings, not a black blindfold: the route always reads.
   for(var y=0;y<IH;y+=12)for(var x=0;x<IW;x+=12){var d=Math.hypot(x+6-cx,y+6-cy);if(d<65)continue;ctx.fillStyle=d>160?'rgba(3,7,16,.46)':d>110?'rgba(3,7,16,.26)':'rgba(3,7,16,.12)';ctx.fillRect(x,y,12,12);}
 }
 function drawNightRelayHud(){

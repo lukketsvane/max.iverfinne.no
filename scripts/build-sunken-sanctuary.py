@@ -23,27 +23,25 @@ ART = 'assets/levels-v1/sunken-sanctuary.png'
 DATA = 'levels-v1/sunken-sanctuary.js'
 GARDEN = 21
 W, H = 1536, 540
-GROUND = 490  # the tunnel floor and the lowest walkable floor sit on the garden's soil
-TUNNEL = (0, 535, 465, GROUND)  # x0, x1, y0, y1
+GROUND = 490
+TUNNEL = (0, 535, 465, GROUND)
 CELL = 3
 
-# Labels and legend baked into the sheet: (x0, y0, x1, y1).
 LABELS = [
-    (28, 8, 312, 84),      # title block
-    (58, 104, 110, 162),   # SPAWN
-    (372, 172, 472, 214),  # THE OLD BRIDGE
-    (726, 194, 802, 234),  # THE HEART
-    (360, 352, 470, 394),  # ROOTED CAVERNS
-    (724, 432, 804, 474),  # THE DEPTHS
-    (1078, 402, 1180, 444),  # FLOODED HALLS
-    (1256, 142, 1346, 184),  # BROKEN SPIRE
-    (1412, 326, 1494, 370),  # THE GROTTO
-    (1476, 92, 1520, 154),   # EXIT
-    (14, 436, 166, 526),   # legend
-    (1326, 490, 1528, 526),  # footnote
+    (28, 8, 312, 84),
+    (58, 104, 110, 162),
+    (372, 172, 472, 214),
+    (726, 194, 802, 234),
+    (360, 352, 470, 394),
+    (724, 432, 804, 474),
+    (1078, 402, 1180, 444),
+    (1256, 142, 1346, 184),
+    (1412, 326, 1494, 370),
+    (1476, 92, 1520, 154),
+    (14, 436, 166, 526),
+    (1326, 490, 1528, 526),
 ]
 
-# Open air: the sky above the top outline and every chamber, as polygons.
 SKY = [(0, 0), (1536, 0), (1536, 14), (1506, 18), (1505, 150), (1462, 150), (1456, 118), (1430, 116),
        (1380, 124), (1340, 184), (1298, 186), (1295, 222), (1265, 222), (1262, 194), (1250, 190),
        (1140, 190), (1124, 205), (1120, 212), (1118, 252), (1032, 252), (1030, 212), (1003, 208),
@@ -76,11 +74,7 @@ CHAMBERS = {
     'spring room': [(1382, 190), (1500, 190), (1500, 230), (1382, 230)],
     'spring fall': [(1430, 116), (1455, 116), (1455, 192), (1430, 192)],
 }
-# The colonnade floor under the ruins stands in the depths.
 ROCK_IN_AIR = [[(888, 368), (1000, 368), (1000, 412), (888, 412)]]
-# One-way ledges, never drawn: the bridges and root shelf the art already
-# shows, root steps up from the tunnel into the rooted caverns, the rungs of
-# the rope ladder up to the middle hall, and a stone out of the depths.
 LEDGES = [(376, 228, 62), (1032, 212, 86), (472, 466, 86), (490, 443, 26), (470, 420, 22),
           (324, 410, 14), (324, 392, 14), (324, 374, 14), (324, 356, 14), (324, 338, 14), (324, 321, 14),
           (322, 307, 18), (984, 474, 18)]
@@ -113,7 +107,7 @@ def paint_tunnel(rgb):
     shade = np.linspace(0.8, 1.2, y1 - y0)[:, None, None]
     fill = np.array([16, 20, 36], float) * shade + rng.normal(0, 1.0, (y1 - y0, x1 - x0, 3))
     img[y0:y1, x0:x1] = np.clip(fill, 0, 255).astype(np.uint8)
-    rim = rgb[300:312, 20:95].reshape(-1, 3)          # cobbles of the outer cliff
+    rim = rgb[300:312, 20:95].reshape(-1, 3)
     rim = rim[rim.max(1) > 28]
     moss = np.array([[44, 66, 52], [58, 84, 60], [36, 54, 48], [70, 98, 74]])
     depth = np.clip(np.cumsum(rng.integers(-1, 2, x1 - x0)) % 4 + 2, 2, 5)
@@ -123,11 +117,11 @@ def paint_tunnel(rgb):
         if rng.random() < 0.12:
             for y in range(y0 + depth[i], y0 + depth[i] + rng.integers(2, 7)):
                 img[y, x] = moss[rng.integers(len(moss))]
-    floor = rgb[484:494, 566:626]                     # the root hollow's lower floor
+    floor = rgb[484:494, 566:626]
     for x in range(x0, x1, floor.shape[1]):
         n = min(floor.shape[1], x1 - x)
         img[y1 - 4:y1 + 6, x:x + n] = floor[:, :n]
-    lamp = rgb[384:400, 118:132]                      # the lamp in the rooted caverns
+    lamp = rgb[384:400, 118:132]
     for lx in (150, 356):
         spot = img[y1 - 4 - lamp.shape[0]:y1 - 4, lx:lx + lamp.shape[1]]
         lit = lamp.max(2) > 40
@@ -185,7 +179,7 @@ def main():
     (ROOT / ART).parent.mkdir(parents=True, exist_ok=True)
     art.save(ROOT / ART, optimize=True)
     rock = ~air_mask()
-    rock[GROUND:] = False  # the soil below takes over under the ground line
+    rock[GROUND:] = False
     data = {
         'id': 'sunken-sanctuary', 'w': W, 'h': H, 'art': ART, 'entry': {'x': 8, 'y': GROUND},
         'blocks': blocks(rock), 'ledges': [list(l) for l in LEDGES], 'hazards': [],

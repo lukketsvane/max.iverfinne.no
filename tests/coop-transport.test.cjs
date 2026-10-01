@@ -243,8 +243,6 @@ test('real sessions pace a long archive without overlapping transfers and acknow
     assert.ok(sent.length > 1);
     assert.ok(sent.at(-1).at - sent[0].at <= 7000, 'the archive transfer stays inside the connection timeout');
     for (let i = 1; i < sent.length; i++) assert.ok(sent[i].at - sent[i - 1].at >= 49, 'ordinary large frames are paced at twenty fragments a second');
-    // The last fragment can arrive before others; no ack may retire actions
-    // until the missing penultimate fragment completes the logical snapshot.
     const missing = sent.length - 2;
     sent.forEach((message, index) => { if (index !== missing) guest.receive('state', message.payload); });
     assert.equal(received.length, 0); assert.equal(guest.pending.length, 2); assert.equal(guest.lastHost, lastHost);

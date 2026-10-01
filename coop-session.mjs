@@ -1,12 +1,8 @@
 import { DEFAULT_LOADOUT, HIDDEN_CLASS_IDS, sameLoadout, validLoadout as checkLoadout } from './player-loadout.mjs';
 import { encodeFrame, CoopFrameReceiver, COOP_TRANSPORT_LIMITS } from './coop-transport.mjs';
 
-// The server reserves every member's character and refuses a hidden one without its unlock
-// (global_join), so inside a room a hidden character is as valid as the other four.
 const validLoadout = value => checkLoadout(value, HIDDEN_CLASS_IDS);
 
-// One authoritative garden. Private topics bind selections and input to the
-// authenticated sender. A fresh round trip locks every choice before Start.
 const COOP_PROTOCOL = 2;
 const token = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 const validToken = value => typeof value === 'string' && /^[a-zA-Z0-9-]{8,80}$/.test(value);
@@ -66,8 +62,6 @@ export class CoopSession {
       this.room = data;
     } else this.room = await this.rpc(code ? 'join' : 'create', code ? { code: code.trim().toUpperCase() } : {});
     try {
-      // A reload must prove its current selection again, even if its previous
-      // membership was already Ready. No previous loadout is guessed.
       if (!this.host && this.room.state !== 'playing') this.room = await this.rpc('ready', { ready: false });
       else {
         this.loadouts[this.user.id] = this.selection; this.memberTokens[this.user.id] = this.token; this.acknowledged = true;
@@ -198,8 +192,6 @@ export class CoopSession {
         this.preparing.retry = setInterval(() => this.sendLobby(), 500);
         this.sendLobby(); this.preparing.check();
       });
-      // The RPC serializes membership/readiness with Start. A concurrent join
-      // remains unready; a changed selection invalidates the round trip above.
       if (!this.canStart || ids.some(who => tokens[who] !== this.memberTokens[who])) throw new Error('The team changed. Start again.');
       this.room = await this.rpc('start'); await this.syncChannels();
       if (this.closed) return;
@@ -235,8 +227,6 @@ export class CoopSession {
   }
   receive(sender, packet) {
     if (this.closed) return;
-    // Only completed snapshots may advance acknowledgements or the game.
-    // Guest input retains its per-session sequence so a reload starts at one.
     if (sender === 'state') packet = this.frameReceiver.receiveFragment(sender, packet);
     if (this.closed || !packet || packet.v !== 1 || !Number.isSafeInteger(packet.seq) || !validToken(packet.sid)) return;
     if (packet.proto !== COOP_PROTOCOL) { if (sender === 'state' && !this.host) this.fail('MAX was updated. Reload to rejoin the garden.'); return; }
@@ -290,9 +280,6 @@ export class CoopSession {
     this.resuming = true; this.lastHost = Date.now();
     try {
       await this.client.realtime.setAuth();
-      // iOS may freeze a PWA without delivering a clean channel close event.
-      // Rebuild every private channel on foreground so stale sockets can never
-      // strand a player in the shared garden.
       const stale = [...this.channels.values()];
       this.channels.clear();
       await Promise.allSettled(stale.map(channel => this.client.removeChannel(channel)));
@@ -304,7 +291,6 @@ export class CoopSession {
       else await this.subscribe(this.user.id);
       this.notifyRoom(); this.sendLobby();
     } catch (_) {
-      // Keep membership reserved. A later foreground event / poll can retry.
     } finally { this.resuming = false; }
   }
   action(type, data = {}) {
@@ -318,8 +304,6 @@ export class CoopSession {
     if (now - this.lastSend < (this.host ? 100 : 66)) return;
     this.lastSend = now;
     const state = this.host ? capture() : null;
-    // A finished solo run must stop reserving and heartbeating its shared room.
-    // Otherwise Play can reconnect to a dead gardener waiting for a revive.
     if (state?.ended && this.room.members.length === 1) { void this.leave(); return; }
     this.send(this.host ? { lobby: this.lobbyPacket(), state } : { selection: this.selection, avatar, actions: this.pending });
   }
@@ -331,8 +315,6 @@ export class CoopSession {
     catch (error) { this.fail(error.message || 'This garden could not be sent.'); return; }
     const emit = payload => { void channel.send({ type: 'broadcast', event: 'frame', payload }).catch(() => {}); };
     if (frames.length === 1) { emit(frames[0]); return; }
-    // Spread big archives instead of flooding Realtime with a burst. Ordinary
-    // gardens keep 10 Hz; unusually large snapshots get a bounded slower rate.
     const spacing = Math.min(50, 7000 / (frames.length - 1));
     this.sendingState = true; this.nextStateAt = this.lastSend + Math.min(7500, Math.max(100, frames.length * spacing));
     let index = 0;

@@ -61,8 +61,6 @@ def clean(cell, ident, row, boss=False):
    if ident in ['moss','tide','ember','moon']:
     if len(g)>=2:keep+=g
    elif boss:
-    # Keep the floating amber/cyan core inside the trunk; reject an adjacent
-    # frame's disconnected root tip. Death legitimately contains fragments.
     if row==15 or any(10<=x<=23 and 10<=y<=28 for x,y in g):keep+=g
    elif len(g)>=2 or row in [3,6,7]:keep+=g
   mask[:]=False
@@ -86,7 +84,6 @@ def stamp(draw,xy,text,fill='#bccbc1'):
  draw.text(xy,text,fill=fill,font=ImageFont.load_default(size=9))
 
 def previews(pack, assets, is_skin):
- # 1x and exact 4x contact sheets plus a timed animation of the actual PNGs.
  names=list(assets)
  columns=['idle','walk','run','crouch','water','lampHold','rest'] if is_skin else ['idle','move','windup','attack','recover','hurt','special']
  cell=32;slot=46;width=100+len(columns)*slot;height=24+len(names)*50
@@ -173,7 +170,6 @@ def build_enemies():
     tile,body=clean(src.crop((col*sz,row*sz,(col+1)*sz,(row+1)*sz)),ident,row,boss)
     if not boss and ident!='healing-moth' and body:
      tile=shift(tile,sz-body[3])
-    # The authored beetle hurt row has seven poses; return to idle at its end.
     if ident=='shield-beetle' and row==5 and col==7:
      tile=out.crop((0,0,sz,sz))
     if (boss and row==15 and col==7) or (not boss and row==6 and col==7):tile=Image.new('RGBA',(sz,sz))
@@ -187,7 +183,6 @@ def build_enemies():
      row=(phase-1)*5+j
      anims[f'phase{phase}/{name}']={'frames':list(range(row*8,row*8+8)),
       'fps':8/1.4 if name=='windup' else 8,'loop':name in ['idle','vulnerable']}
-    # A hurt flash belongs to the game's damage renderer, not a new timeline.
     anims[f'phase{phase}/hurt']={'frames':[(phase-1)*40+24], 'fps':10,'loop':False}
    anims['death']={'frames':list(range(120,128)),'fps':8,'loop':False}
   else:

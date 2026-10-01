@@ -49,8 +49,6 @@ test('every map has three distinct authored shrine destinations with a nearby dr
       const before=JSON.stringify(L.guardianSites);sites.furnish(L,g.surfaceY,g.waterAt);
       assert.equal(JSON.stringify(L.guardianSites),before,`${label}: repeated furnishing is stable`);
     }
-    // Three safe, distinct destinations are mandatory. A lookout can use its
-    // district's dry bank when that seed has no safe court below a rest ledge.
     assert.ok(stats.raised>raisedBefore,`garden ${stage} offers elevated approaches across its seeds`);
   }
   console.log('Guardian site geometry',JSON.stringify({seedsPerStage:seedCount,...stats}));

@@ -1,5 +1,3 @@
--- Applied to the hosted project on 2026-09-23. The status RPC now names the
--- players in the shared garden and is readable before sign-in.
 create or replace function max_coop_private.status()
  returns jsonb
  language plpgsql

@@ -15,8 +15,6 @@ test('a run seed chooses exactly one of three authored sites in every garden, wi
   for(let stage=1;stage<=20;stage++){
     if(stage>1)g.enterLevel(stage);
     const layout=g.stageLayout(),seen=new Set();assert.equal(layout.guardianSites.length,3);
-    // Hold this authored layout fixed to isolate selection from geometry.
-    // The geometry and all three physical routes have separate replay tests.
     for(let seed=1;seed<=24;seed++){
       g.rogueRun.seed=seed;layout.seed=seed;g.activeStageLayout=layout;
       g.initBossEvent();const first={...g.bossEvent};g.initBossEvent();
@@ -87,7 +85,6 @@ test('every summoned guardian keeps its movement, objectives and warned strikes 
 test('court edges cannot stack a collapsed volley into one marker, while a separate later beat remains',()=>{
   const {g}=game(19),e=g.bossEvent;
   g.gardenPlots=[plot({x:e.courtX,growth:.4})];atShrine(g);g.interactBossEvent();const k=g.liveBoss();
-  // A narrow, fully dry arena makes the original row collide with its edge.
   k.courtLeft=e.courtX-50;k.courtRight=e.courtX+50;k.x=k.courtRight-8;k.y=g.surfaceY(k.x)-13;
   k.pattern='charge';k.phase=3;k.hp=k.maxHp*.3;k.cool=0;k.attack=1;k.windup=0;k.attackT=0;k.settleT=0;
   g.gardenPlots[0].x=k.x;g.P.x=k.x;g.P.y=g.surfaceY(k.x);g.runHazards=[];

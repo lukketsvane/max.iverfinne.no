@@ -179,7 +179,7 @@ test('legacy Rattus outfits migrate to the sole current design without a skin-sw
     assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'runner', skinId: 'moss-pink', difficulty: 'medium' });
     assert.match(m.w.document.querySelector('.max-character-stage img').src, /rattle-norvegicus-pink\/main\.png$/);
     assert.match(portrait.querySelector('img').src, /rattle-norvegicus-pink\/main\.png$/);
-    assert.equal(m.w.document.querySelector('.max-outfit-hint').hidden, true);
+    assert.equal(m.w.document.querySelector('.max-outfit-hint'), null);
     assert.equal(portrait.title, ''); assert.equal(portrait.getAttribute('aria-description'), null);
     m.click('Rattus norvegicus'); m.click('Mycel'); m.click('Rattus norvegicus');
     assert.equal(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skinId, 'moss-pink');
@@ -233,7 +233,7 @@ test('portrait gestures reject separated taps and cannot take an occupied charac
     portrait.dispatchEvent(new occupied.w.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'Enter', shiftKey: true }));
     assert.equal(occupied.w.localStorage.getItem('max-loadout-v1'), before);
     assert.equal(occupied.w.document.querySelector('[data-class-id="mech"]').getAttribute('aria-pressed'), 'true');
-    assert.equal(occupied.w.document.querySelector('.max-outfit-hint').hidden, true);
+    assert.equal(occupied.w.document.querySelector('.max-outfit-hint'), null);
   } finally { occupied.dom.window.close(); }
 });
 
@@ -257,7 +257,7 @@ test('Play silently enters the one shared running garden and carries character p
     assert.equal(name.textContent, 'Rattus norvegicus');
     assert.equal(name.dataset.long, 'true');
     assert.match(m.w.document.querySelector('.max-character-stage img').src, /characters-v2\/rattle-norvegicus-pink\/main\.png$/);
-    assert.equal(m.w.document.querySelector('.max-outfit-hint').hidden, true);
+    assert.equal(m.w.document.querySelector('.max-outfit-hint'), null);
     assert.equal(m.w.document.querySelector('[data-class-id="runner"]').getAttribute('aria-description'), null);
     assert.match(m.w.document.querySelector('.max-class-detail').textContent, /rat pro wrestler/);
     m.click('easy difficulty'); m.click('Play'); await m.settle();
@@ -275,6 +275,21 @@ test('Play still starts seamlessly when hosted anonymous Auth is disabled', asyn
     assert.equal(m.beginCount,1);assert.equal(m.active,true);
     assert.equal(m.w.document.querySelector('input[name="username"]'),null,'automatic device identity never opens the login form');
     assert.ok(m.w.localStorage.getItem('max-auto-player-v1'));
+  } finally { m.dom.window.close(); }
+});
+
+test('an unexpected shared lobby is left cleanly and keeps Play retryable', async () => {
+  const m = await menu(undefined, { rpc: (name, _args, id) => name === 'max_coop_global' ? {
+    data: { id: INVITE_ROOM, code: 'SHARED00001', host: id, state: 'lobby', members: [{ id, slot: 1, ready: true, name: 'max' }] }, error: null,
+  } : null });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 0);
+    assert.equal(m.w.document.querySelector('.max-menu').dataset.screen, 'play');
+    assert.match(m.w.document.querySelector('.max-status').textContent, /Try Play again/);
+    assert.equal(m.w.document.querySelector('.max-play-actions button').disabled, false);
+    assert.ok(m.calls.some(([name, args]) => name === 'max_coop' && args.p_action === 'leave'));
+    assert.ok(![...m.channels.keys()].some(name => name.startsWith('max-coop:')));
   } finally { m.dom.window.close(); }
 });
 
@@ -473,7 +488,6 @@ test('a visible home stone opens directly and the second tap keeps its entry ope
   const m = await menu(undefined, { restoredUser: { id: 'owner', email: 'lukketsvane@players.max.invalid' }, scenes: [] });
   try {
     const overlay = m.w.document.querySelector('.max-menu');
-    // The fixture draws the stone at (30, 120) with five CSS pixels per art pixel.
     gardenTapAt(m, 150, 550);
     assert.equal(overlay.dataset.view, 'garden');
     assert.equal(overlay.dataset.focus, 'relic');

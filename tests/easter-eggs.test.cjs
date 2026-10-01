@@ -7,7 +7,6 @@ function memory(values = {}) {
   const data = new Map(Object.entries(values));
   return { data, getItem: k => data.get(k) ?? null, setItem: (k, v) => data.set(k, String(v)), removeItem: k => data.delete(k) };
 }
-// A Supabase client whose RPCs answer like the migration: the phrase check, per-user rows.
 function server({ owner = null, broken = false } = {}) {
   const rows = new Map(), calls = [];
   let who = null;

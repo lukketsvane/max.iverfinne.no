@@ -53,45 +53,28 @@ ROOT = Path(__file__).resolve().parent.parent
 REVIEW = ROOT / 'docs/asset-review/sligo-v1'
 SKINS = ROOT / 'assets/max-skins-v1'
 OUT = SKINS / 'sligo'
-SCALE = 8.0                  # source pixels per game pixel: Sligo stands half as tall as Max (the owner asked)
+SCALE = 8.0
 CELL = 32
-LOWEST = CELL - 2            # the lowest row a frame may use; row 31 stays clear
-CANVAS = 48                  # working canvas, larger than a cell
-RIM = 2.5                    # the source outline: body pixels this close to the edge
-CREASE_DEPTH = 12            # a crease pixel is this much darker (luma) than the body round it
-CREASE_SHARE = .3            # a game pixel this much crease draws as crease
+LOWEST = CELL - 2
+CANVAS = 48
+RIM = 2.5
+CREASE_DEPTH = 12
+CREASE_SHARE = .3
 EIGHT = np.ones((3, 3), bool)
 CROSS = ndimage.generate_binary_structure(2, 1)
 NEAREST = Image.Resampling.NEAREST
 
-# Left-facing profiles in the loops that play while the player stands or walks
-# (idle 5 and 7, walk 7): mirrored, so Sligo faces the way the player faces.
-# The fidgets keep the owner's turns (look ends facing left, stretch turns
-# about) and so do the back views (idle 6, walk 6), as drawn.
 MIRROR = {(0, 5), (0, 7), (1, 7)}
 
-# interaction.png, cell for cell: the main-sheet pose (row, col) each cell
-# shows, or (row, col, 'm') for its mirror image. See the README.
 STAND, CROUCH, CURL = (0, 0), (5, 0), (4, 6)
 INTERACTION = [
-    # crouch 0-3 (stand plays it back): the landing row run backwards;
-    # squat 4-7 stays low and alert
     [STAND, (5, 4), (5, 2), (5, 1), (5, 1), (6, 0), (6, 1), (6, 0)],
-    # dig: lean in, nose to the soil on the hit (3), again, back to a crouch
     [STAND, (5, 4), (5, 2), (5, 3), (6, 3), (5, 3), (5, 1), CROUCH],
-    # sow: lean, reach (toss throws on 2), bend low, sow on 6, crouch
     [STAND, (5, 4), (4, 3), (5, 2), (5, 3), (6, 4), (5, 3), CROUCH],
-    # water: lean over the plant; 2-5 pour and loop while held
     [STAND, (5, 4), (5, 5), (2, 6), (5, 5), (2, 6), (5, 4), STAND],
-    # pick: bend, reach down, pick on 3, come up
     [(5, 4), (5, 2), (5, 3), (6, 4), (5, 3), (5, 1), (5, 4), STAND],
-    # not used by any clip (Max carries a crate here): the walk, as on main
     [(1, c, 'm') if (1, c) in MIRROR else (1, c) for c in range(8)],
-    # lampUp 0-3 turns to face out, lampHold 4-7 looks out (the lantern's glow
-    # sits on its face), lampDn plays 0-3 back
     [STAND, (3, 2), (3, 3), (3, 4), (3, 4), (7, 7), (7, 7), (3, 4)],
-    # sit 0-5 curls up (a tardigrade rests as a tun), rest 6-7 breathes,
-    # unsit plays it back; the curl leaves the lantern's place beside it clear
     [STAND, (5, 4), (5, 1), (6, 0), CURL, CROUCH, CROUCH, CURL],
 ]
 
@@ -147,7 +130,6 @@ def clean(rgba, labels, ident, box, margin=12):
     inside = weight >= .5
     depth = ndimage.distance_transform_edt(inside)
     rim = inside & (depth <= RIM) & ~eye
-    # creases: body pixels darker than the body round them
     luma = rgb @ np.array([.299, .587, .114])
     inner = inside & (depth > RIM + .5) & ~ndimage.binary_dilation(eye, iterations=2)
     local = ndimage.gaussian_filter(luma * inner, 3) / np.maximum(ndimage.gaussian_filter(inner * 1.0, 3), 1e-6)
@@ -202,18 +184,12 @@ def native(creature, mirror, eye_colour, glint_colour):
         opaque = parts == keep
     opaque = ndimage.binary_fill_holes(opaque)
     edge = opaque & ~ndimage.binary_erosion(opaque, CROSS, border_value=0)
-    # The creases: a game pixel whose body is at least CREASE_SHARE crease
-    # takes the creases' colour, so the segments still read.
     crease_colour, crease_cover = mean(layers['crease'])
     lines = opaque & ~edge & (crease_cover >= CREASE_SHARE * cover)
     colour[lines] = crease_colour[lines]
-    # The outline: a game pixel on the silhouette takes the colour of the
-    # outline band inside it, not its mix with the body behind.
     rim_colour, rim_cover = mean(layers['rim'])
     outline = edge & (rim_cover > 0)
     colour[outline] = rim_colour[outline]
-    # The eye: a game pixel at least half eye is the eye's own dark, and the
-    # highlight is the one pixel it covers most.
     _, eye_cover = mean(layers['eye'])
     colour[opaque & (eye_cover >= .5 * cover)] = eye_colour
     shine = wy @ layers['glint'] @ wx.T / area
@@ -331,8 +307,6 @@ def previews(manifest, images):
     """Contact sheets at 1x and exactly 4x, and every clip playing at 4x."""
     tide = json.loads((SKINS / 'tide/atlas.json').read_text())
     tide_images = {k: Image.open(SKINS / 'tide' / v['image']).convert('RGBA') for k, v in tide['sheets'].items()}
-    # Top: the tide skin and Sligo in the same clips (frame 3 of each), on
-    # one soil line. Below: both sheets cell by cell, each cell's row 31 marked.
     columns = ['idle', 'walk', 'run', 'rise', 'fall', 'land', 'crouch', 'dig', 'sow', 'water', 'pick', 'lampHold', 'rest']
     slot, pitch, margin = 40, CELL + 2, 52
     sheet_w = 8 * pitch
@@ -384,9 +358,6 @@ def previews(manifest, images):
             frame.alpha_composite(tile(pics, data, clip['frames'][step]), (x + 10, y + 3))
             text(draw, (x + 3, y + 37), name)
         frames.append(frame.convert('RGB'))
-    # One palette for every frame (the art, the ground line and the labels
-    # have few colours); each frame after the first keeps only the pixels that
-    # changed (index 255 is transparent), then 4x: small and exact.
     strip = Image.new('RGB', (frames[0].width, frames[0].height * len(frames)))
     for i, frame in enumerate(frames):
         strip.paste(frame, (0, i * frame.height))

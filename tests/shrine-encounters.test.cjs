@@ -33,8 +33,6 @@ test('trial ingress warns for the full interval and arrives at that exact reacha
 test('successive arrivals alternate wide landing flanks and a bounded wave leaves time to clear space',()=>{
   for(const seed of [1,73,328]){
     const {g,e}=trial('polge',1,{seed,prepare(g,e){
-      // Configure the landing before activation advertises its first arrival.
-      // Changing it afterward must never move an already promised spawn.
       const support=g.stageLayout().platforms.find(p=>p.id===g.playerSupportId(e.x,e.y));
       Object.assign(support,{x:e.x-100,w:200});
     }}),warningX=e.ingressX,warningY=e.ingressY;

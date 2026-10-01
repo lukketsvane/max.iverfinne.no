@@ -50,7 +50,6 @@ def main():
                 if eye.any():
                     x = (index % 8) * 64 + 34 - int(round(np.nonzero(eye)[1].mean()))
                     assert (index % 8) * 64 < x and x + w < (index % 8 + 1) * 64
-            # Preserve the source silhouette; snap colours to the existing Sligo ramp.
             rgb = frame[..., :3].astype(np.int32)
             distance = ((rgb[..., None, :] - palette.astype(np.int32)) ** 2).sum(-1)
             frame[..., :3] = palette[distance.argmin(-1)]

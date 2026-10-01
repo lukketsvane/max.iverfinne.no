@@ -36,7 +36,7 @@ from PIL import Image
 from scipy import ndimage
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import kitlib  # noqa: E402
+import kitlib
 
 ROOT = Path(__file__).resolve().parent.parent
 REVIEW = ROOT / 'docs/asset-review/railway-ruins-v1'
@@ -45,23 +45,20 @@ DATA = 'levels-v1/railway-ruins.js'
 GARDEN = 2
 
 W, H = 1080, 224
-GROUND = 200                 # the garden's soil in art rows; the scene's court sits on it
-SX, SY = 300, 32             # where the scene's top-left lands; its soil (row 168) meets GROUND
+GROUND = 200
+SX, SY = 300, 32
 SCENE_SOIL, SCENE_ROWS = 168, 192
 
-# ---------------------------------------------------------------- the pieces
-# ---------------------------------------------------------------- the scene
 def scene():
     """The railway scene at 1/4 with its sky cleared down to the upper floor."""
     src = Image.open(REVIEW / 'source.png').convert('RGB')
     n = np.array(src.resize((384, 216), Image.BOX)).astype(int)[:SCENE_ROWS]
     lum = (n * [0.3, 0.59, 0.11]).sum(-1)
     dark = lum < 16
-    dark[95:] = False                                  # never below the upper floor
+    dark[95:] = False
     lab, _ = ndimage.label(dark)
     sky = np.isin(lab, [i for i in np.unique(lab[0]) if i])
     solid = ~sky
-    # specks left floating in the sky go too
     blobs, _ = ndimage.label(solid, structure=np.ones((3, 3)))
     sizes = ndimage.sum(np.ones_like(blobs), blobs, range(1, blobs.max() + 1))
     for i, s in enumerate(sizes, 1):
@@ -70,33 +67,23 @@ def scene():
     return np.dstack([n, np.where(solid, 255, 0)]).astype(np.uint8)
 
 
-# The scene's own floors, in scene pixels. The court is a surface profile down
-# to the soil; its ramps are 1:1 so Max walks them both ways.
 COURT = [(-12, 168), (-1, 157), (37, 157), (38, 160), (95, 160), (96, 168), (100, 168), (103, 165), (120, 165),
          (123, 168), (167, 168), (184, 151), (210, 151), (214, 155), (240, 155), (246, 161), (250, 163),
          (281, 163), (291, 153), (325, 153), (327, 155), (339, 167), (365, 167), (366, 165), (381, 165), (384, 168)]
 TERRACE = [(0, 93), (40, 93), (44, 99), (112, 99), (115, 93), (160, 94), (160, 117), (0, 117)]
 SCENE_LEDGES = [(150, 94, 116), (276, 94, 108), (172, 86, 11), (189, 88, 25), (128, 84, 14)]
-SCENE_LEDGES += [(221, y, 14) for y in (138, 121, 104)]                       # the vine off the bridge
-SCENE_LEDGES += [(338, y, 20) for y in (150, 133, 116, 77, 60)] + [(334, 43, 28)]  # rungs up the lift tower
+SCENE_LEDGES += [(221, y, 14) for y in (138, 121, 104)]
+SCENE_LEDGES += [(338, y, 20) for y in (150, 133, 116, 77, 60)] + [(334, 43, 28)]
 LADDERS = [(SX + 228, SY + 94, SY + 155, 14),
            (SX + 348, SY + 43, SY + 167, 20), (909, 101, GROUND, 18),
-           (172, 133, GROUND, 14, 0)]  # visible return ladder beside the mill's stone stair
+           (172, 133, GROUND, 14, 0)]
 
 
-# ---------------------------------------------------------------- the garden
-# (piece, x, y of its top-left in art pixels, role, flip). Roles:
-#   deck   one-way ledge along the widest opaque row near the top
-#   tops   one-way ledges along the piece's top edge wherever it runs level
-#   stair  solid rock under the piece's top edge (steps of 6 px or less)
-#   ladder one-way rungs every 17 px from the soil up to the top
-#   back / decor  nothing to stand on (back is drawn behind the scene)
 def at_soil(h, sink=0):
     return GROUND - h + sink
 
 
 PLACE = [
-    # west: the mill race, the pier and the stair up to the station
     ('machinery/wheel', 70, at_soil(111, 30), 'back', False),
     ('machinery/crank', 200, at_soil(37), 'decor', False),
     ('stone/rubble-mid', 4, at_soil(27, 2), 'decor', False),
@@ -106,7 +93,6 @@ PLACE = [
     ('mill/lamp-post', 170, at_soil(49), 'decor', False),
     ('stone/pillar-tall', 286, at_soil(127), 'back', False),
     ('mill/planter-mixed', 250, 116, 'decor', False),
-    # east: the colonnade, the ladder, the mossy heights and the long slope down
     ('stone/arch-large', 700, at_soil(51), 'back', False),
     ('stone/pillar-mid', 772, at_soil(94), 'tops', False),
     ('stone/lintel-mid', 700, 146, 'deck', False),

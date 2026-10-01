@@ -1,9 +1,5 @@
 (function(root){
   'use strict';
-  // Each row is a level design, not a random coordinate roll: a ground court
-  // under one route, a raised rest on the other, and the landmark's approach.
-  // The seeded layout may bend a route or mirror its landmark; the identity
-  // and approach of each destination stay the same.
   var designs=[null,
     ['Ice bridge bank','Tank gallery','Eastern seed store'],
     ['Mill yard','Station balcony','Eastern gate'],
@@ -72,8 +68,6 @@
     return path.map(function(p,i){return {p:p,i:i};}).filter(function(v){return v.i>=2;}).sort(function(a,b){return Math.abs(a.i-at)-Math.abs(b.i-at)||b.i-a.i;});
   }
   function clearShrine(L,p,x){
-    // A designed trial is an authored landmark; choose another rest rather
-    // than relocating the artist's interaction marker.
     if(L.designed&&(L.trials||[]).some(function(t){return Math.abs(t.x-x)<22&&Math.abs(t.y-p.y)<7;}))return false;
     return p.w>=32&&x-p.x>=12&&p.x+p.w-x>=12&&!L.platforms.some(function(q){return q!==p&&q.x<x+11&&q.x+q.w>x-11&&q.y<p.y&&q.y+(q.solid?q.h||6:4)>p.y-27;});
   }
@@ -88,8 +82,6 @@
       return Object.assign({x:raised?x:c.courtX,y:raised?p.y:c.courtY,platformId:raised?p.id:null,route:side,routePlatform:p.id},c);
     }
     if(!raised){
-      // A crossing may finish over water. Its court belongs on the outer dry
-      // bank of that same route, not back beside the entrance.
       var path=routePath(L,side),end=path.reduce(function(a,p){return side*center(p)>side*a?center(p):a;},L.origin+side*160);
       for(var d=0;d<=520;d+=4){var c=court(L,ground,wet,end+side*d);if(c&&Math.abs(c.courtX-L.origin)>=160)return Object.assign({x:c.courtX,y:c.courtY,platformId:null,route:side,routePlatform:path.length?path[path.length-1].id:null},c);}
     }
@@ -99,15 +91,11 @@
     function separate(c){return Math.abs(c.courtX-L.origin)>=160&&!(others||[]).some(function(s){return s&&Math.abs(s.courtX-c.courtX)<128;});}
     var p=L.place;
     if(p){
-      // Stand outside the foundation, never inside a secret wall or atop the
-      // cache. Both approaches connect to the place's tested entrance ramps.
       for(var flank=0;flank<2;flank++){
         var side=flank?p.side:-p.side,edge=side<0?p.bounds.x:p.bounds.x+p.bounds.w;
         for(var off=56;off<=260;off+=4){var c=court(L,ground,wet,edge+side*off);if(c&&separate(c))return Object.assign({x:c.courtX,y:c.courtY,platformId:null,landmark:p.name},c);}
       }
     }
-    // Designed gardens without a place use their far route gate, still an
-    // authored approach rather than a spawn-relative random coordinate.
     var ends=L.routes.map(function(r){var ps=routePath(L,r.side);return {side:r.side,x:ps.reduce(function(a,p){return r.side*center(p)>r.side*a?center(p):a;},L.origin)};});
     for(var i=0;i<ends.length;i++)for(var off=100;off<=360;off+=4){var c=court(L,ground,wet,ends[i].x+ends[i].side*off);if(c&&separate(c))return Object.assign({x:c.courtX,y:c.courtY,platformId:null,landmark:'Outer route gate'},c);}
     return null;
@@ -124,8 +112,6 @@
       if(Math.abs(x-L.origin)<160||(others||[]).some(function(s){return s&&Math.abs(s.courtX-x)<160;}))continue;
       var c=court(L,ground,wet,x);if(c)return Object.assign({x:c.courtX,y:c.courtY,platformId:null,landmark:'Outer district court'},c);
     }
-    // The production terrain always has dry banks. Retain a complete metadata
-    // shape for externally supplied layouts too, without stopping game entry.
     var x=L.origin+side*(720+(others||[]).length*240),y=groundAt(L,ground,x);
     return {x:x,y:y,platformId:null,courtX:x,courtY:y,courtLeft:x-50,courtRight:x+50,unverified:true};
   }

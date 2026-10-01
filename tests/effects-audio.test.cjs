@@ -202,8 +202,6 @@ test('a guest hears a single fuse and each boss transition through 100 ms snapsh
   const boss = host.g.makeStageBoss(8); boss.x = host.g.P.x + 35; boss.y = host.g.P.y; host.g.floatKrek = [boss];
   sync(); guest.g.listenRun(); const initial = guest.ac.nodes.length;
   for (let packet = 0; packet < 5; packet++) {
-    // Local rendering advances the guest's clock, but the bomb age is the
-    // most recent authoritative snapshot until the next packet arrives.
     for (let frame = 0; frame < 6; frame++) { guest.g.tSec += 1 / 60; guest.ac.currentTime += 1 / 60; guest.g.listenRun(); }
     host.g.tSec += .1; for (const bomb of host.g.bombs) { bomb.t += .1; bomb.fuse -= .1; }
     sync(); guest.g.listenRun();

@@ -1,5 +1,3 @@
-// Breadth-first search over the real game physics: every spot a walking,
-// unupgraded Bulwark (the C0 tier) can stand on in and around a garden place.
 const HZ = 60, DT = 1 / HZ, ACTIONS = [];
 for (const dir of [-1, 1]) for (const dur of [.08, .2, .45]) ACTIONS.push({ walk: dir, dur });
 for (const dir of [-1, 0, 1]) for (const hold of [.1, .22, 1]) ACTIONS.push({ jump: dir, hold });
@@ -46,7 +44,6 @@ function explore(g, layout) {
     }
     edges.set(key(s), out);
   }
-  // Every spot Max reaches leads back out, and each side reaches the other.
   const back = new Map();
   for (const [a, out] of edges) for (const k of out) { if (!back.has(k)) back.set(k, []); back.get(k).push(a); }
   function toward(side) {

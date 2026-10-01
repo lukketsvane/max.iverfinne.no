@@ -1,5 +1,3 @@
-/* Last Seed changes the garden's rules; rendering, physics, characters and combat
-   remain the main game's. Only the host advances health, waves and revives. */
 function lastSeedMode(){return rogueRun.mode==='last-seed';}
 function seedVital(member){
   var owner=member||(!coop?rogueRun:coop.members[coop.me]);
@@ -7,8 +5,6 @@ function seedVital(member){
 }
 function seedDown(member){return relicRunMode()&&seedVital(member).hp<=0;}
 function seedActors(){return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m),v:seedVital(m),id:m.id};}):[{member:null,p:P,v:seedVital(null),id:'solo'}];}
-// A gardening tap is queued until hands consume it. Climbing bypasses hands,
-// so continuous tide care must read held controls, never the queued tap.
 function seedHeld(){return !!(heldDown||heldSpace||swipeDown||(!highTideMode()&&gardenPress));}
 function seedReviveTarget(actor){
   if(!lastSeedMode()||actor.v.hp<=0)return null;
@@ -30,7 +26,6 @@ function startLastSeed(plant){
   if(!lastSeedMode()||rogueRun.survival.started)return;
   var s=rogueRun.survival;s.started=true;s.rest=3;s.plantId=plant.id;
   gardenSeeds=0;runElapsed=0;plant.moisture=.8;
-  showRound('LAST SEED','Protect the plant. Keep each other alive.',2400);
 }
 function damageGardener(member,amount){
   if(!relicRunMode()||coopGuest()||rogueRun.ended)return false;
@@ -41,8 +36,6 @@ function damageGardener(member,amount){
   v.hp=Math.max(0,v.hp-amount*(guarded?.35:1));v.shield=.85;v.hurt=4;v.revive=0;
   if(!member||member.id===coop.me){P.hurt=.4;shake=Math.max(shake,2);}
   if(v.hp===0){
-    // Keep a fallen climber where their partner can reach them. The ground
-    // fallback is far below the authored High Tide platforms.
     if(!isolatedRelicMode())a.y=playerSupportY(a.x,a.y);a.grounded=true;
     a.vx=a.vy=0;a.anim='rest';a.frame=0;a.st='rest';a.bracing=a.curled=false;a.tun=a.brace=0;a.lampLit=0;
     if(member){member.braceUntil=member.tunUntil=0;member.reviveHeld=false;member.dodge=null;}
@@ -58,7 +51,6 @@ function updateLastSeed(dt){
   if(plant)s.plantTime+=dt;else s.withered=true;
   actors.forEach(function(a){
     if(a.v.hp>0){
-      // The living plant is the team's healing station, especially between waves.
       if(plant&&a.v.hurt<=0&&plant.moisture>.15&&Math.hypot(a.p.x-plant.x,a.p.y-surfaceY(plant.x))<44)a.v.hp=Math.min(100,a.v.hp+dt*(gardenRaidActive?2:9)*plant.health);
       return;
     }
@@ -81,7 +73,6 @@ function updateLastSeed(dt){
     if(s.rest>0)return;
     s.wave++;gardenWave=s.wave;gardenRaidActive=s.active=true;
     s.remaining=Math.min(120,4+s.wave*2+Math.max(0,actors.length-1)*3);s.spawn=0;
-    showRound('WAVE '+s.wave,s.withered?'The plant is gone. Stay together.':'',1800);
   }
   s.spawn-=dt;
   if(s.remaining>0&&s.spawn<=0&&floatKrek.length<Math.min(MAX_ACTIVE_ENEMIES,5+Math.floor(s.wave/2)+actors.length)){
@@ -97,7 +88,6 @@ function updateLastSeed(dt){
     grantRogueLevel();
     if(plant){plant.health=clamp01(plant.health+.1);plant.moisture=clamp01(plant.moisture+.12);plant.pulse=1.5;}
     if(s.wave%3===0)seedActors().filter(function(a){return a.v.hp>0;}).forEach(function(a){dropRunItem(s.wave%2?'dew':'embers',a.p.x,a.p.y-10,a.member&&a.member.id);});
-    showRound('WAVE CLEARED','Tend. Heal. Revive.',1800);
   }
 }
 function lastSeedEnemy(k,dt){
@@ -105,7 +95,6 @@ function lastSeedEnemy(k,dt){
   var actors=seedActors().filter(function(a){return a.v.hp>0;}),target=null,distance=Infinity;
   actors.forEach(function(a){var d=Math.hypot(a.p.x-k.x,a.p.y-12-k.y);if(d<distance){target=a;distance=d;}});
   if(!target)return true;
-  // Every enemy can hurt a gardener up close; ordinary birds actively hunt too.
   if((k.kind>=3||!k.hunt)&&distance<13&&k.bite<=0){damageGardener(target.member,18*runDamageScale());k.bite=1;}
   if(!k.hunt&&gardenPlots.some(function(p){return !p.dead;}))return false;
   if(k.kind>=3&&gardenPlots.some(function(p){return !p.dead;}))return false;
@@ -126,7 +115,6 @@ function seedVitalFrom(value){
 function drawLastSeedHud(){
   if(!lastSeedMode()||!runActive||rogueRun.ended)return;
   var v=seedVital(null),s=rogueRun.survival,y=safeTopArt()+3;
-  // Existing native bitmap font and sprites; health and revive bars sit by players.
   function text(str,x,y){if(!ready(runPixelFont))return;for(var i=0;i<str.length;i++){var n=str.charCodeAt(i)-32;ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,Math.round(x+i*6),Math.round(y),5,7);}}
   text(!s.started?'PLANT YOUR ONLY SEED':'WAVE '+s.wave+'  '+Math.floor(runElapsed/60)+':'+String(Math.floor(runElapsed%60)).padStart(2,'0'),8,y);
   var plant=gardenPlots.find(function(p){return !p.dead;});

@@ -1,4 +1,3 @@
-/* MAX FUGLESPRENGER native 1x sprite adapter. No game rules or global state. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -73,7 +72,6 @@
       ctx.imageSmoothingEnabled = false;
       ctx.translate(p.x, p.y);
       if (face < 0) ctx.scale(-1, 1);
-      // Both rectangles have IDENTICAL dimensions. No per-sprite or per-frame zoom.
       ctx.drawImage(images[name], r.x, r.y, r.w, r.h,
         -s.origin[0], -s.origin[1], r.w, r.h);
       ctx.restore();
@@ -94,7 +92,6 @@
     function drawRobot(ctx, clip, seconds, x, y, camera = {}, face = 1) {
       const f = draw(ctx, 'watering_robot', clip, seconds, x, y, camera, face);
       if (clip === 'water') {
-        // The first water row and robot watering row were authored in lockstep.
         const water = sheet('water_fx').clips.watering_arc.frames[f.position];
         drawFrame(ctx, 'water_fx', water, x, y, camera, face);
       }

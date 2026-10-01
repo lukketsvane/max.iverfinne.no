@@ -5,7 +5,6 @@ import json
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-# One ink, deliberately different silhouettes. Dots are transparent pixels.
 GLYPHS = {
     'needle': ['.......##','......##.','.....##..','....##...','...##....','..##.....','.##......','##.......','#........'],
     'fletching': ['#.......#','.##...##.','..##.##..','...###...','....#....','...###...','..##.##..','.##...##.','#.......#'],

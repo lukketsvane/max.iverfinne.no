@@ -33,15 +33,12 @@ def cut_frames(a, name):
     for row in range(ROWS):
         for col in range(COLS):
             x0, x1 = round(col*w/COLS), round((col+1)*w/COLS)
-            # Generated rows have unequal whitespace. Cut in their actual clear
-            # gutters so a tall crest never leaks into its neighbour's pose.
             boundaries = [0, 230, 475, h] if name == 'evergreen' else [0, 225, 451, h]
             y0, y1 = boundaries[row:row+2]
             f = a[y0:y1, x0:x1].copy()
             mask = f[..., 3] >= 160
             labels, count = ndimage.label(mask, structure=np.ones((3, 3)))
             sizes = np.bincount(labels.ravel()); sizes[0] = 0
-            # Drop isolated antialiasing debris; retain every substantive source part.
             keep = np.flatnonzero(sizes >= max(12, sizes.max()*.001))
             mask &= np.isin(labels, keep)
             ys, xs = np.nonzero(mask)
@@ -55,7 +52,6 @@ def cut_frames(a, name):
 
 def native(f, scale):
     h, w = f.shape[:2]
-    # Premultiplied BOX reduction keeps dark outlines without background fringes.
     rgb = f[..., :3].astype(float) * f[..., 3:4] / 255
     premult = np.dstack([rgb, f[..., 3]]).astype(np.uint8)
     p = np.array(Image.fromarray(premult).resize((round(w*scale), round(h*scale)), Image.Resampling.BOX))
@@ -106,7 +102,6 @@ def build(name):
 def main():
     for name in ['evergreen', 'chain']:
         build(name)
-    # Merge only our paths into the established pending-art list.
     pending_path = ROOT/'assets/figma-pending.json'
     pending = json.loads(pending_path.read_text())
     for name in ['evergreen', 'chain']:

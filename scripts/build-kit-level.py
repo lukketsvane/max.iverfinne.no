@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import kitlib  # noqa: E402
+import kitlib
 
 
 def build(spec_path):

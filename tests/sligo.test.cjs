@@ -35,7 +35,6 @@ function marks(g) {
   return out;
 }
 const slime = m => m.shape <= 3, clot = m => m.shape >= 4 && m.shape <= 9;
-// A canvas that records what the trail paints.
 function recorder() {
   const calls = [], ctx = { fillStyle: '', globalAlpha: 1, fillRect(x, y, w, h) { calls.push({ x, y, w, h, ink: this.fillStyle, alpha: this.globalAlpha }); } };
   return { ctx, calls };

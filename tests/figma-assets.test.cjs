@@ -12,7 +12,6 @@ const bytes = p => fs.readFileSync(path.join(root, p));
 const sha1 = b => crypto.createHash('sha1').update(b).digest('hex');
 const nodeId = /^\d+:\d+$/, hash = /^[0-9a-f]{40}$/;
 const production = manifest.production.map(e => e.path);
-// Runtime art waiting for its Figma layer (docs/figma.md, "Waiting for Figma"): pinned by SHA-1.
 const waiting = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-pending.json'), 'utf8'));
 const pending = waiting.files.map(e => e.path);
 const INLINE = {

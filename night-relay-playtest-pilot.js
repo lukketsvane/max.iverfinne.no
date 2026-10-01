@@ -1,4 +1,3 @@
-/* Input-only pilot shared by the VM and isolated two-browser fixture. */
 (function(root){
  function createRelayPilot(g,key,slot){
   var down={},clock=0,phase='waiting',jumps=0,wasStage=-1,meetReady=0,routeKey='',routeAt=0;
@@ -29,12 +28,10 @@
     while(routeAt<route.length&&p.grounded&&h>=route[routeAt][1]-3&&Math.abs(p.x-route[routeAt][0])<29)routeAt++;
     if(routeAt<route.length)goal=route[routeAt];
    }
-   // Walk off an unwanted one-way ledge before taking a lower route.
    if(p.grounded&&h>goal[1]+5){var floor=g.stageLayout().platforms.find(function(q){return Math.abs(q.y-p.y)<4&&p.x>=q.x-3&&p.x<=q.x+q.w+3;});if(floor)goal=[goal[0]<p.x?floor.x-12:floor.x+floor.w+12,goal[1]];}
    var dx=goal[0]-p.x,axis=Math.abs(dx)>4?(dx<0?-1:1):0;
    if(tend)axis=0;
    var wantJump=!tend&&p.grounded&&goal[1]>h+5&&Math.abs(dx)<32;
-   // Floor strips pulse visibly. Jump over them on the lower route.
    if(!wantJump&&p.grounded&&h<5&&axis>0&&[352,458,686,748,996].some(function(x){return x-p.x>7&&x-p.x<25;}))wantJump=true;
    if(wantJump&&!down.ArrowUp)jumps++;
    press('ArrowLeft',axis<0);press('ArrowRight',axis>0);press('ArrowUp',wantJump||!p.grounded&&p.vy<0);press('ArrowDown',tend);

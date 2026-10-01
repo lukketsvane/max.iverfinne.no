@@ -129,8 +129,6 @@ test('patrols, queued trial guards and raids share the same active cap in solo a
       assert.ok(g.floatKrek.length<=24,'all three sources share the global cap');
       assert.ok(guards.length<=guardCap,'a shrine cannot exceed its own staged wave cap');
     }
-    // A raid may fill a freed patrol slot while the first shrine arrival is
-    // still being advertised. The completed warning must wait, not drop guards.
     const patrol=g.floatKrek[0];g.damagePest(patrol,1e9,patrol.x-patrol.face*20);
     for(let tick=0;tick<28;tick++)step();
     assert.ok(g.floatKrek.some(k=>k.raid));assert.equal(g.floatKrek.length,24);

@@ -1,4 +1,3 @@
--- Mode is a room rule. Main Play and Last Seed each have one shared garden.
 alter table max_coop_private.rooms add column if not exists mode text not null default 'garden' check (mode in ('garden','last-seed'));
 insert into public.max_easter_eggs(id,name) values ('relic-last-seed','Last Seed') on conflict(id) do nothing;
 CREATE OR REPLACE FUNCTION max_coop_private.global_join(p_class_id text, p_difficulty text, p_mode text)
@@ -126,7 +125,6 @@ create or replace function public.max_coop_status(p_mode text)
 returns jsonb language sql stable security definer set search_path='' as $$ select max_coop_private.status(p_mode); $$;
 revoke all on function public.max_coop_status(text) from public;
 grant execute on function public.max_coop_status(text) to anon,authenticated;
--- Keep mode on polling and host handoff. Accept the checked-in and live response shapes.
 do $patch$
 declare d text;
   response_anchor text := '''state'',''playing'',';
@@ -142,14 +140,11 @@ begin
    if strpos(d,'''classId'',m.class_id')=0 then
      d:=replace(d,'''ready'',true,','''ready'',true,''classId'',m.class_id,');
    end if;
-   -- Code-based legacy joins have no character selection or mode entitlement.
    d:=replace(d,join_anchor,
      'if r.mode=''last-seed'' then raise exception ''Choose Last Seed from the mode selector.'' using errcode=''42501''; end if; '||join_anchor);
    execute d;
  end if;
 end $patch$;
--- Older hosted lobby RPCs are not in every historical checkout. Keep them scoped
--- to ordinary gardens so they cannot bypass the new mode's unlock and class checks.
 do $legacy$
 declare d text; anchor text:='delete from max_coop_private.members where room_id=r.id and user_id<>r.host';
 begin

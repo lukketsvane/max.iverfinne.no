@@ -1,5 +1,3 @@
-/* Native 1x asset loader. Coordinates are ART pixels after subtracting camX/Y.
-   No canvas resizing, no simulation, no globals modified, no per-sprite scale. */
 (function(root){
 'use strict';
 const validNumber=n=>typeof n==='number'&&Number.isFinite(n);

@@ -5,8 +5,6 @@ const root=path.join(__dirname,'../assets/expansion');
 const api=require(path.join(root,'sprites.js'));
 const manifest=api.expand(JSON.parse(fs.readFileSync(path.join(root,'manifest.json'),'utf8')));
 const checksums=JSON.parse(fs.readFileSync(path.join(root,'checksums.json'),'utf8'));
-// The delivered files are deterministic indexed PNGs: 8 bits, filter 0,
-// standard PLTE/tRNS, no interlace or colour profiles. No npm dependency.
 function png(name){
  const b=fs.readFileSync(path.join(root,name));assert.equal(b.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
  let w,h,depth,type,palette,alpha,parts=[];

@@ -1,5 +1,3 @@
-// Two independent clients, normal keyboard input and the actual frame loop.
-// Observes game state to choose keys; never sets position, damage or rewards.
 const {loadGame}=require('../tests/game-harness.cjs');
 const navigation=require('./shrine-playtest-navigation.cjs');
 const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
@@ -8,8 +6,6 @@ function run({difficulty='medium',seconds=240,latency=100,classes=['mech','herba
  const room={mode:'garden',host:ids[0],members:classes.map((classId,i)=>({id:ids[i],slot:i+1,classId,difficulty}))};
  const copy=x=>JSON.parse(JSON.stringify(x));
  clients.forEach((h,i)=>{h.game.beginCoop({room,user:{id:ids[i]},host:i===0,action(type,data){actions[i].push({...data,type,id:++seq[i]});return true;},tick(avatar,capture){if(now-sent[i]<66)return;sent[i]=now;queue.push({at:now+latency,from:i,type:i?'input':'state',data:copy(i?{avatar,actions:actions[i]}:capture())});}});h.game.sheet2Ready=true;});
- // Optional isolated arena setup. No stage jump is performed during play;
- // the report labels these fixtures separately from a run beginning at 1.
  if(startStage>1){clients[0].game.enterLevel(startStage);clients[1].game.coopState(copy(clients[0].game.coopCapture()));}
  if(prepare){prepare(clients);clients[1].game.coopState(copy(clients[0].game.coopCapture()));}
  const navigators=clients.map((h,i)=>navigation(h,seed+i,pictures));
@@ -39,8 +35,6 @@ function run({difficulty='medium',seconds=240,latency=100,classes=['mech','herba
    }else{goal=p.x;tend=Math.abs(a.x-goal)<10;attack=!!boss&&p.health>.9&&time%3<1;}
    const urgent=g.runHazards.find(h=>h.tell>0&&h.tell<.35&&Math.abs(a.x-h.x)<h.r+3&&Math.abs(a.y-h.y)<20);
    if(urgent){jump=true;tend=false;if(frame%12===0)pulse(i,'x');}
-   // Jumping away from a warning can land on a low one-way ledge above the
-   // plant. Walk off its end before tending; holding Tend up there does nothing.
    if(!navTarget&&a.st!=='climb'&&a.st!=='float'){
     if(e&&a.y<g.surfaceY(a.x)-12)navTarget={x:p?p.x:e.courtX,y:g.surfaceY(p?p.x:e.courtX)};
     if(descent[i]!=null&&a.grounded&&Math.abs(a.y-g.surfaceY(a.x))<4)descent[i]=null;
@@ -53,8 +47,6 @@ function run({difficulty='medium',seconds=240,latency=100,classes=['mech','herba
    let axis=Math.abs(goal-a.x)>4?Math.sign(goal-a.x):0;
    stuck[i]=axis&&a.grounded&&previousX[i]!=null&&Math.abs(a.x-previousX[i])<.25?stuck[i]+1:0;previousX[i]=a.x;
    if(stuck[i]>10&&frame%18<6){jump=true;tend=false;}
-   // Moss may grab a mature stem while evading. Descend again before placing
-   // ground charges; an ordinary traversal climb is not an exit climb.
    let down=a.st==='climb'&&!g.climb?.exit&&g.rogueRun.clearedWorld!==g.rogueRun.world;
    const nav=navTarget?navigators[i].step(navTarget,1/30):null;if(!navTarget)navigators[i].clear();
    if(nav){if(nav.newAction){key(i,'ArrowUp',false);key(i,'ArrowDown',false);}axis=nav.axis;jump=nav.up;down=nav.down;tend=attack=false;}

@@ -30,8 +30,6 @@ async function fixture() {
   assert.equal(scripts[0].src, '', 'the storage bootstrap must run before every external script');
   assert.equal(scripts[1].getAttribute('src'), 'assets/results-native/code/max-bouquet.js');
   w.eval(scripts[0].textContent);
-  // These are the real external files, evaluated without rewriting their
-  // storage access. The production game also uses the same window property.
   w.eval(read('run-results.js'));
   return { dom, w, scripts, hostStorage, hostArchive, hostLoadout, get hostAccess() { return hostAccess; } };
 }

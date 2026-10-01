@@ -1,4 +1,3 @@
--- An expected save conflict is HTTP 409, not a server/transaction failure.
 create or replace function public.save_max_game(p_user_id uuid, p_snapshot jsonb, p_expected_revision integer)
 returns jsonb
 language plpgsql

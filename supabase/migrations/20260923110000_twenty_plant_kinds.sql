@@ -17,7 +17,6 @@ begin
        or abs((p->>'seed')::numeric) > 1000000000000
        or (p->>'growth')::numeric not between 0 and 1000000 then return false; end if;
   end loop;
-  -- One indexed aggregate, rather than repeatedly scanning a growing ID array.
   return item_count = (select count(distinct (value->>'id')::bigint) from jsonb_array_elements(plants));
 exception when others then return false;
 end;

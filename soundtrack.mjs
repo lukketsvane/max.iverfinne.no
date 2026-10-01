@@ -3,8 +3,6 @@ export const SOUNDTRACK = Object.freeze([
   { title: 'Concierto De Aranjuez', artist: 'Jim Hall', src: 'assets/audio/concierto-de-aranjuez.m4a' },
 ]);
 
-// One streamed element survives menus, retries and track changes. Never decode
-// the entire 25-minute playlist into mobile memory or block starting a run.
 export function createSoundtrack({ enabled = true, volume = 1, host = window } = {}) {
   const doc = host.document;
   let audio, context, gain, source, started = false, away = false, disposed = false;
@@ -20,7 +18,6 @@ export function createSoundtrack({ enabled = true, volume = 1, host = window } =
     audio.src = SOUNDTRACK[track].src;
     audio.addEventListener('ended', next);
     audio.addEventListener('error', unavailable);
-    // GainNode also works on iOS, where element.volume is not controllable.
     const AC = host.AudioContext || host.webkitAudioContext;
     try {
       if (AC) {
@@ -33,7 +30,6 @@ export function createSoundtrack({ enabled = true, volume = 1, host = window } =
   function play() {
     if (!allowed() || failed.size === SOUNDTRACK.length) return;
     prepare();
-    // Both calls stay synchronous inside the input event for iOS activation.
     if (context && context.state !== 'running') quietly(context.resume());
     if (pending || !audio.paused) return;
     const token = ++attempt; pending = true;
@@ -46,7 +42,6 @@ export function createSoundtrack({ enabled = true, volume = 1, host = window } =
         if (token !== attempt) return;
         pending = false;
         if (error?.name === 'NotSupportedError') unavailable();
-        // Permission/interruption failures wait for the next gesture.
       });
     } catch (_) { pending = false; }
   }
@@ -74,7 +69,6 @@ export function createSoundtrack({ enabled = true, volume = 1, host = window } =
   function visibility() { if (doc.hidden) stop(); else play(); }
   function pagehide() { away = true; stop(); }
   function pageshow() { away = false; play(); }
-  // Capture sees menu inputs even when their handlers stop propagation.
   const gestures = ['pointerdown', 'pointerup', 'keydown'];
   gestures.forEach(type => doc.addEventListener(type, unlock, { capture: true, passive: true }));
   doc.addEventListener('visibilitychange', visibility);

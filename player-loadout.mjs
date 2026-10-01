@@ -1,6 +1,4 @@
-// Character and difficulty are selected before a new run.
 export const CLASS_IDS = Object.freeze(['mech', 'runner', 'bulwark', 'herbalist', 'polge']);
-// Hidden characters are easter eggs (easter-eggs.mjs): each is picked only once its egg is unlocked.
 export const HIDDEN_CLASS_IDS = Object.freeze(['sligo']);
 export const ALL_CLASS_IDS = Object.freeze([...CLASS_IDS, ...HIDDEN_CLASS_IDS]);
 export const DIFFICULTY_IDS = Object.freeze(['easy', 'medium', 'hard', 'insane']);
@@ -8,9 +6,6 @@ export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss-pink', bu
 export const CLASS_OUTFITS = Object.freeze(Object.fromEntries(ALL_CLASS_IDS.map(id => [id, Object.freeze([CLASS_SKINS[id]])])));
 export const DEFAULT_LOADOUT = Object.freeze({ classId: 'mech', skinId: CLASS_SKINS.mech, difficulty: 'medium' });
 
-// `unlocked` lists the easter eggs this player has. A hidden character that is not in it is
-// no character at all, so a stored or forged Sligo falls back to the default. Inside a room
-// the server has already checked the unlock (global_join), so room code passes HIDDEN_CLASS_IDS.
 export function validLoadout(value, unlocked = []) {
   const classId = value?.classId === 'moss' ? 'runner' : value?.classId;
   const open = CLASS_IDS.includes(classId) || HIDDEN_CLASS_IDS.includes(classId) && Array.isArray(unlocked) && unlocked.includes(classId);

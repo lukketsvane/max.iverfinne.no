@@ -1,7 +1,4 @@
 'use strict';
-// Sligo evolves like Eevee (SLIGO_EVO in index.html): the first path capstone it takes is its stone,
-// and more ranks on that path grow it. The Cultivator line is the owner's brood sheet
-// (scripts/build-sligo-evolution.py); Evergreen and Chain have their own generated native pose strips.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -43,7 +40,6 @@ test('Evergreen and Chain grow through all three forms and carry the exact line 
   for (const [stone, line] of [['evergreen', 1], ['chain', 2]]) {
     const g = fresh(); give(g, { [stone]: 1 });
     assert.equal(g.sligoEvo(), line*4+1, stone+' starts at stage one');
-    // Use the path catalogue rather than assuming a boon remains on a particular path.
     const pathPerks = builds.perks.filter(p => p.path === line && p.id !== stone && !p.classId);
     give(g, { [pathPerks[0].id]: 4, [pathPerks[1].id]: 3 });
     assert.equal(g.sligoEvo(), line*4+2, stone+' develops at eight ranks');

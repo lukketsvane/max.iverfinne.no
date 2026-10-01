@@ -1,5 +1,3 @@
-/* Sligo's colony belongs to one player, never to extra co-op slots. The host
-   owns food, mass, divisions and AI; only the selected body's movement is local. */
 var SLIGO_LIFE={nativeHeight:12,maxHeight:24*1.75,startMass:.25,minMass:.0625,maxMass:12.25,meatMass:.6,maxDivisions:4,holdMs:480};
 var sligoImageHeights=new WeakMap();
 var soloSligo=null,sligoMeat=[],sligoMeatId=0,sligoSwapTag=0,sligoPendingSwap=0;
@@ -46,7 +44,6 @@ function sligoFeed(c,b,amount){
   b.sligoMass/=2;c.divisions++;
   var child=Object.assign({},b,{sligoId:c.divisions+1,vx:-18*b.face,vy:-32,grounded:false,platform:null,st:'free',anim:'rise',frame:0,clock:0,tun:0,curled:false,skillCool:0,dodgeT:0,throwPose:0,bombCool:.8,splitT:.45});
   b.splitT=.45;c.bodies.push(child);
-  // Leave the controlled body's movement intact. The new cell peels away.
   sligoBursts.push({x:Math.round(b.x),y:Math.round(b.y),t:sligoTrail.clock});
   if(sligoBursts.length>8)sligoBursts.shift();
 }
@@ -96,7 +93,6 @@ function sligoCompanionAt(x,y){
 }
 function holdSligoTouch(t){
   if(!t||!t.sligo||t.swapped||t.dragged||t.jumped||t.low||performance.now()-t.t0<SLIGO_LIFE.holdMs)return false;
-  // Bind the hold to the body touched, even as it walks. A drag cancels it.
   if(!requestSligoSwap(t.sligo))return false;t.swapped=true;return true;
 }
 function sligoAI(c,b,lead,m,dt){
@@ -125,7 +121,6 @@ function sligoAI(c,b,lead,m,dt){
   b.wet=playerWetAt(b.x,b.y);b.st='free';
   b.anim=b.throwPose>0?'toss':!b.grounded?(b.vy<0?'rise':'fall'):Math.abs(b.vx)>3?'walk':'idle';
   b.clock=(b.clock||0)+dt;b.frame=Math.floor(b.clock*ANIM[b.anim].fps)%ANIM[b.anim].f.length;
-  // Fight close threats, retaining enough flesh to keep growing between fights.
   var enemy=b.sligoMass>.85&&!b.bombCool&&floatKrek.find(function(k){return k.hp>0&&Math.hypot(k.x-b.x,k.y-b.y)<100;});
   var owner=m?m.id:'';
   if(enemy&&bombs.filter(function(q){return q.owner===owner;}).length<2){
@@ -207,13 +202,10 @@ function drawSligoColony(){
   if(rogueRun.classId==='sligo'){
     var c=sligoColony(sligoMember()),x=Math.round(P.x-camX),y=Math.round(P.y-camY)-sligoHeight(P)-5;
     rect(x-2,y,5,1,'#e3ce80');rect(x,y+1,1,2,'#e3ce80');
-    // Four small dots show the colony's shared division budget.
     if(c.bodies.length>1)for(var i=0;i<4;i++)rect(x-5+i*3,y-3,2,1,i<c.divisions?'#dc7470':'#4a3036');
   }
 }
 
-// Size is a gameplay property. Destinations and foot anchors are whole art
-// pixels; atlas cells stay unchanged, with smoothing disabled at every size.
 function sligoSourceHeight(im,sx,sy,cell){
   var cache=sligoImageHeights.get(im);if(!cache){cache={};sligoImageHeights.set(im,cache);}
   var key=sx+':'+sy+':'+cell;if(cache[key])return cache[key];

@@ -1,4 +1,3 @@
-// Optional native art adapter. Importing this module changes no game state.
 export async function loadAtlas(url) {
   const manifestURL = new URL(url, document.baseURI);
   const response = await fetch(manifestURL);
@@ -13,7 +12,6 @@ export async function loadAtlas(url) {
   return { manifest, images: Object.fromEntries(entries) };
 }
 
-// Pass state-local elapsed seconds, or progress 0..1 for game-owned tells.
 export function sampleFrame(manifest, name, seconds = 0, progress) {
   const clip = manifest.animations[name];
   if (!clip) throw new Error(`Unknown animation: ${name}`);
@@ -28,8 +26,6 @@ export function sampleFrame(manifest, name, seconds = 0, progress) {
   return manifest.frames[clip.frames[step]];
 }
 
-// x/y are the desired foot/hover anchor in the native game canvas.
-// Mirror around pixel centres, preserving the anchor pixel in either facing.
 export function drawAtlas(ctx, atlas, name, seconds, x, y, { facing = 1, progress } = {}) {
   const frame = sampleFrame(atlas.manifest, name, seconds, progress);
   const [sx, sy, w, h] = frame.rect;

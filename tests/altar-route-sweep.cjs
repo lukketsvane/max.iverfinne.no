@@ -1,6 +1,3 @@
-// Goal-directed search through the real unupgraded Bulwark physics. Search
-// branches restore previously reached states; accepted paths are replayed from
-// the actual level entrance without position writes between their actions.
 const HZ=60,DT=1/HZ;
 const copy=value=>JSON.parse(JSON.stringify(value));
 function capture(g){return {p:copy(g.P),jumpBuf:g.jumpBuf,heldUp:!!g.heldUp,heldDown:!!g.heldDown};}

@@ -1,5 +1,3 @@
-/* Review-only input driver. It reads observations and presses normal keys.
-   It never grants health, rewards, damage, movement, or progression. */
 (function(root){
  function create(g,send,graph,options){
   options=options||{};let time=0,nextJump=0,jumpUntil=0,care=false,target=null,edge=null,edgeAt=0,goalAt=0,held={},phase='start';
@@ -67,7 +65,6 @@
     else{axis=Math.abs(q.x-a.x)>4?Math.sign(q.x-a.x):0;if(nearStem&&Math.abs(a.x-q.x)<7&&a.vy>=0){axis=0;jump();}}
    }
    if(urgent&&options.dodge!==false){phase='evade';tend=false;axis=a.x<=urgent.x?-1:1;jump();edge=null;}
-   // A second gardener can revive through exactly the same Tend input.
    const friend=g.seedActors().find(b=>b.v.hp<=0&&Math.hypot(b.p.x-a.x,b.p.y-a.y)<22&&b.p.y-18<s.waterY);
    if(friend&&!urgent){axis=0;tend=true;phase='revive';}
    key('ArrowLeft',axis<0);key('ArrowRight',axis>0);key(' ',tend);

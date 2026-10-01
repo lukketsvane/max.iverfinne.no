@@ -18,7 +18,6 @@ SOURCE = ROOT / 'docs/asset-review/sanctuary-tiles-v1/source.png'
 PNG = 'assets/tiles-v1/sanctuary.png'
 COLOURS = 64
 
-# Source boxes on the sheet, at sheet scale: x, y, w, h.
 SHEET = {
     'mossy block': (17, 18, 73, 48),
     'big block': (531, 76, 85, 109),
@@ -68,11 +67,9 @@ def pieces(src):
         crop[crop[..., 3] < 128] = 0
         part[name] = half(crop)
     out = {}
-    # Stone ledge: the mossy block's cap and upper rock over its bottom rim, 14 rows.
     b = part['mossy block']
     strip = np.concatenate([b[0:10], b[-4:]], 0)
     out['ledge.stone.left'], out['ledge.stone.mid'], out['ledge.stone.right'] = strip[:, :6], seamless_x(strip[:, 6:30]), strip[:, 30:]
-    # Rock: nine slices of the big block.
     r = part['big block']
     rows, cols = (slice(0, 8), slice(8, 50), slice(50, 54)), (slice(0, 5), slice(5, 37), slice(37, 42))
     for rn, rs in zip(('top', 'mid', 'bottom'), rows):
@@ -83,14 +80,11 @@ def pieces(src):
             if rn == 'mid':
                 tile = seamless_y(tile)
             out[f'rock.{rn}.{cn}'] = tile
-    # Wood ledge: the bench's plank with the tops of its legs as brackets.
     w = part['bench']
     out['ledge.wood.left'], out['ledge.wood.mid'], out['ledge.wood.right'] = w[:10, :11], seamless_x(w[:6, 11:34]), w[:10, 34:]
-    # Ruin ledge: the arch's lintel and capitals.
     a = part['arch']
     lintel = a[5:14]
     out['ledge.ruin.left'], out['ledge.ruin.mid'], out['ledge.ruin.right'] = lintel[:, :10], seamless_x(lintel[:, 10:54]), lintel[:, 54:]
-    # Vines that hang under rock, and flora for ledge tops.
     out['vines'] = part['hanging moss'][9:33]
     for name in ('blue flowers', 'violet mushrooms', 'glow ferns'):
         f = part[name]

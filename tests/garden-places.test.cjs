@@ -132,7 +132,6 @@ test('no seed roots in rock, loose world seeds rise out of it, and wonder perche
   let checked = 0;
   for (const stage of [3, 6, 9, 13, 16, 19]) {
     const { game, L } = run(stage), p = L.place;
-    // Soil a few pixels under the footing: a seed dropped there would sprout inside the rock.
     const x = Array.from({ length: p.w }, (_, i) => p.x + i).find(x => layouts.inRock(L, x, game.surfaceY(x) - 3) && !layouts.inRock(L, x - 6, game.surfaceY(x - 6) - 3) && !game.waterAt(x) && !game.waterAt(x - 6));
     if (x !== undefined) {
       Object.assign(game.P, { x: x - 6, y: game.surfaceY(x - 6), face: 1, grounded: true, st: 'free', wet: false });

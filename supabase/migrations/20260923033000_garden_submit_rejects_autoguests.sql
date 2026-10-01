@@ -1,5 +1,3 @@
--- Applied to the hosted project on 2026-09-23. Device fallback accounts
--- (autoguest_*) are guests and cannot publish bouquets; their rows go.
 CREATE OR REPLACE FUNCTION max_garden_private.submit(p_owner_id uuid, p_run_id uuid, p_plants jsonb, p_world integer, p_seconds numeric, p_won boolean, p_wave integer, p_class_id text)
  RETURNS jsonb
  LANGUAGE plpgsql

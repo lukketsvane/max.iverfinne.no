@@ -72,7 +72,6 @@ def build():
     for name in ('main', 'interaction'):
         file = OUT / (name+'.png')
         pending['files'].append(dict(path=str(file.relative_to(ROOT)), sha1=hashlib.sha1(file.read_bytes()).hexdigest(), width=256, height=256, note='Owner mannequin poses; scripts/build-polge.py. Figma desktop unavailable.'))
-    # Native UI glyph masters: a varnish tin, flying splinters, and a raincoat.
     symbols = {
         'varnish': ['.........','..#####..','..#...#..','...###...','..#####..','..#.#.#..','..#.#.#..','..#####..','.........'],
         'splinters': ['.........','.#...#...','..#..#.#.','...#..#..','.##.#....','....#.#..','..#..#...','.#....#..','.........'],

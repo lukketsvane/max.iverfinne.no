@@ -1,4 +1,3 @@
-/* The menu shares the game's night palette and native bitmap alphabet. */
 .max-menu,.max-live-settings{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#eee9ce;box-sizing:border-box}
 .max-menu[hidden],.max-menu [hidden],.max-live-settings[hidden]{display:none!important}
 .max-menu{--ink:#eee9ce;--muted:#a8bec0;--gold:#dfd293;--line:#79938c55;position:fixed;z-index:70;inset:0;display:flex;align-items:safe center;justify-content:center;isolation:isolate;overflow:auto;overscroll-behavior:contain;padding:max(28px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));background:#080e20}
@@ -40,7 +39,6 @@
 .max-credit-links a:last-child{margin-top:20px}
 .max-credit-links a:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 
-/* Title screen: one primary action, with the garden left open around it. */
 .max-menu[data-screen="home"]{padding:0;overflow:auto;align-items:flex-start}
 .max-menu[data-screen="home"]::before{background:linear-gradient(90deg,#050d1cb3,#07132040 48%,transparent 78%),linear-gradient(0deg,#040b180d,transparent 55%)}
 .max-menu[data-screen="home"] .max-menu-card{width:100%;min-height:100%;border:0;padding:0;background:none;box-shadow:none;pointer-events:none}
@@ -63,7 +61,6 @@
 .max-menu .max-home-players{position:fixed;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 22px));margin:0;padding:0 12px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 16px;max-height:20vh;overflow:auto}
 .max-menu .max-home-players p{margin:0}
 
-/* Character selection is a part of the landscape, not a second framed modal. */
 .max-menu[data-screen="play"]::before{background:linear-gradient(90deg,#061220ed,#071523bc 55%,#080f2060),linear-gradient(0deg,#06101bb3,transparent 72%)}
 .max-menu[data-screen="play"] .max-menu-card{display:grid;grid-template-columns:180px minmax(0,1fr);column-gap:40px;align-items:start;width:min(100%,710px);padding:28px 12px;border:0;background:none;box-shadow:none}
 .max-menu[data-screen="play"] .max-menu-header{grid-column:1/-1;margin:0 0 28px;padding-right:70px}
@@ -75,7 +72,6 @@
 .max-character-stage .max-skin-preview img{width:768px;height:768px}
 .max-menu .max-character-name{margin:0 0 14px;color:var(--gold);font-size:21px;line-height:1.2}
 .max-menu .max-class-detail{max-width:230px;margin:0;font-size:11px;line-height:1.7;color:#b6ccca}
-.max-menu .max-outfit-hint{margin:8px 0 0;font-size:9px;line-height:1.5;color:var(--gold)}
 .max-menu fieldset{min-width:0;margin:0 0 24px;padding:0;border:0}
 .max-menu legend{padding:0;margin:0 0 12px;color:#9eb8b7;font-size:10px;letter-spacing:.15em;line-height:1.3}
 .max-role-picker,.max-skin-picker,.max-play-actions,.max-menu[data-screen="play"] .max-status{grid-column:2}
@@ -96,15 +92,7 @@
 .max-skin-preview img{display:block;width:512px;height:512px;max-width:none;image-rendering:pixelated}
 .max-play-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:2px}
 .max-menu .max-play-actions>button{margin:0;min-height:52px}
-.max-menu .max-selection-summary{display:flex;align-items:center;gap:14px;margin:0 0 20px}
-.max-menu .max-selection-summary p{margin:0;color:#dce4ce}
-.max-room-code{letter-spacing:.25em;color:var(--gold);user-select:all;font-size:20px}
-.max-menu .max-room-player{display:flex;align-items:center;gap:8px;min-height:68px;margin:0 0 12px;padding-left:10px;border-left:3px solid #dfd293;text-align:left}
-.max-room-player[data-slot="2"]{border-color:#87bccf}.max-room-player[data-slot="3"]{border-color:#b79bcb}.max-room-player[data-slot="4"]{border-color:#a4bf87}
-.max-room-player-copy{min-width:0;display:flex;flex-direction:column;gap:3px;line-height:1.4;font-size:11px}
-.max-room-player-copy strong{color:#e6e6cf;overflow-wrap:anywhere}.max-room-player-copy>span{color:#bbcccb}.max-room-player-copy .max-room-ready{font-size:10px;color:#cbd6a7}
 
-/* Live settings never replace or freeze the active world. */
 .max-live-settings{position:fixed;z-index:42;left:max(4px,env(safe-area-inset-left));bottom:max(4px,env(safe-area-inset-bottom));width:44px;height:44px;border:0;padding:14px;background:none;opacity:.6;touch-action:manipulation;color:#d8dfcd;cursor:pointer}
 .max-live-settings svg{width:16px;height:16px;fill:currentColor}.max-live-settings:hover,.max-live-settings:focus-visible{opacity:1}
 .max-menu[data-live="true"]{background:#03080e2e}
@@ -206,8 +194,6 @@
 .max-menu .max-role-choice:disabled .max-role-ability{color:#71807c}
 .max-difficulty-picker[data-locked="true"]{opacity:.72}
 .max-difficulty-picker[data-locked="true"] .max-difficulty-choice:disabled{opacity:.52;cursor:default}
-/* A fifth, hidden character: in two columns it lies flat across a whole row; landscape phones
-   wide enough for three cards of "Herbalist" use three columns and keep the old height. */
 .max-menu .max-role-grid[data-count="5"] .max-role-choice:nth-child(5){grid-column:1/-1;flex-direction:row;align-items:center;justify-content:center;gap:12px;min-height:52px;padding-top:8px;padding-bottom:8px}
 .max-role-grid[data-count="5"] .max-role-choice:nth-child(5) .max-role-ability{margin-left:auto}
 @media(max-height:540px) and (min-aspect-ratio:4/3) and (max-width:639px){
@@ -255,7 +241,6 @@
 .max-menu .max-garden-note .max-garden-rarity{margin:-4px 0 0;opacity:.55}
 .max-menu .max-garden-note .max-garden-feature{color:#e8cf7a}
 
-/* Collection stones select modes of the main game. */
 .max-menu .max-garden-relic-target{position:absolute;display:block;min-height:44px;width:44px;margin:0;padding:0;border:0;background:transparent;box-shadow:none;transform:translate(-50%,-100%);color:transparent}
 .max-menu .max-garden-relic-target:focus-visible{outline:1px solid #b5d4b6;outline-offset:3px}
 .max-menu .max-garden-relic-target[hidden]{display:none}

@@ -4,7 +4,6 @@ const fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib'),
 const dir=path.join(__dirname,'../docs/asset-review/raider-drone-v1');
 const manifest=JSON.parse(fs.readFileSync(path.join(dir,'atlas.json')));
 const report=JSON.parse(fs.readFileSync(path.join(dir,'validation.json')));
-// Decode the committed indexed PNGs (8-bit indices) with all five PNG filters.
 function decode(name){
  const b=fs.readFileSync(path.join(dir,name));assert.equal(b.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
  let w,h,palette,alpha=Buffer.alloc(256,255),idat=[];

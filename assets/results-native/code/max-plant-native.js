@@ -1,7 +1,3 @@
-/* Source renderer copied from max.iverfinne.no at cca0f5c46ca2a2e55bdae52569984f44499d4b11.
- * Original drawing functions are unchanged. The wrapper freezes weather and uses
- * the same 64x80 / (32,65) result presentation as drawResultPlant in the game.
- */
 (function(root){ 'use strict';
 root.MaxPlantNative = {create: function(atlas){
 var plantAtlas=atlas,plantAtlasReady=true,ctx,IH=80,ANCHOR=52;
@@ -59,7 +55,7 @@ function plantHeight(p){
   return Math.round(Math.min(top,PLANT_MATURE_H+(top-PLANT_MATURE_H)*clamp01((g-1)/(G_TOP-1))));
 }
 
-function plantLean(p,h,t){                                     // whole-pixel lean of the stem h px up
+function plantLean(p,h,t){
   var flip=((p.kind+(p.seed|0))&1)!==0,q=Math.min(1,h/52),phase=t*(.52+h1(p.seed)*.35)+p.seed*.07;
   var sway=Math.sin(phase+h*.012)*Math.min(2.6,1.15*q*q*(1+h/160));
   var wind=worldWeather.wind*.48*q,hit=p.hit*Math.sin(t*28)*2*q,wilt=(1-p.health)*2.4*q*(flip?-1:1);
@@ -67,7 +63,7 @@ function plantLean(p,h,t){                                     // whole-pixel le
   return Math.round(sway+wind+hit+wilt);
 }
 
-function stemRuns(p,sx,gy,topY,t){                             // [x, top, height] runs of the stem line
+function stemRuns(p,sx,gy,topY,t){
   var runs=[],y0=Math.min(gy,IH+2),y1=Math.max(topY,-3),cx=null,start=y0,y;
   for(y=y0;y>=y1;y--){
     var x=sx+plantLean(p,gy-y,t);
@@ -94,7 +90,6 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
   var stalk=!!p.stalk,H=Math.min(plantHeight(p),maxHeight||Infinity),topY=stalk?Math.min(gy-H,-4):gy-H,cols=PLANT_STEM[form.fi];
   var head=(!stalk&&fam.f.length&&g>.5)?fam.f[imod(Math.floor(g*2)+form.off,fam.f.length)]:null;
 
-  // 1. the stem: one unbroken line from the soil to the top
   var runs=stemRuns(p,sx,gy,topY,t);
   if(stalk){
     var pulse=.5+.5*Math.sin(t*3.1+p.seed);
@@ -102,7 +97,6 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     for(var gi=0;gi<runs.length;gi+=3){ctx.fillStyle='rgba(206,226,150,'+(.05+.05*pulse).toFixed(3)+')';ctx.fillRect(runs[gi]-2,runs[gi+1],5,runs[gi+2]);}
     ctx.globalCompositeOperation='source-over';
     paintRuns(runs,-1,cols[2]);paintRuns(runs,0,cols[1]);paintRuns(runs,1,cols[0]);
-    // a vine twisting round the stalk
     ctx.fillStyle=cols[2];
     var v0=Math.max(0,Math.ceil((gy-3-(IH+2))/4));
     for(var vy=gy-3-v0*4;vy>Math.max(topY,-4);vy-=4){
@@ -113,7 +107,6 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     paintRuns(runs,0,cols[1]);paintRuns(runs,1,cols[0]);
   }
 
-  // 2. the Figma stem pieces, hung along the stem
   var limit=stalk?-16:topY+(head?Math.max(2,head[3]-5):1);
   var yb=gy+1,gap=form.fi===4?3:0,stemY=[],j=0;
   while(j<600){
@@ -130,11 +123,9 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     stemY.push(yb-r[3]*.55);yb-=r[3]+gap;j++;
   }
 
-  // 3. the flower head sits on the tip of the stem; a bud before it opens
   if(head)figmaSeg(head,sx+plantLean(p,H,t),topY+Math.min(3,head[3]-2),flip);
   else if(!stalk){ctx.fillStyle=cols[2];ctx.fillRect(sx+plantLean(p,H,t),topY-1,2,2);}
 
-  // 4. ripe plants fill out with more blooms along the lower stem
   if(!stalk&&g>1.05&&fam.f.length&&stemY.length){
     var fullness=Math.min(6,1+Math.floor((g-1)*2.2)),span=Math.max(1,Math.floor(stemY.length*.8));
     for(var k=0;k<fullness;k++){
@@ -144,7 +135,6 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     }
   }
 
-  // 5. seed pods say "ripe" without any text
   if(g>=1&&p.health>.45){
     var pods=Math.min(3,1+Math.floor((g-1)/1.25));
     for(var z=0;z<pods;z++){
@@ -154,7 +144,6 @@ function drawGrowingFigmaPlant(p,sx,gy,t,maxHeight){
     }
   }
 
-  // 6. a beanstalk calls: motes and chevrons of light run up it
   if(stalk){
     var climbing=climb&&climb.p===p,span2=Math.max(60,gy-Math.max(topY,-4));
     ctx.globalCompositeOperation='lighter';

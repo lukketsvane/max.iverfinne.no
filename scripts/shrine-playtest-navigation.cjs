@@ -1,5 +1,3 @@
-// A test pilot may know a destination, but reaches it only by keyboard input.
-// Planning runs in a separate VM; no live client's position/state is rewritten.
 const {loadGame}=require('../tests/game-harness.cjs');
 const {searchAltar}=require('../tests/altar-route-sweep.cjs');
 const copy=value=>JSON.parse(JSON.stringify(value));

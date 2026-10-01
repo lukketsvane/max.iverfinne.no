@@ -33,8 +33,8 @@ CAVE = ROOT / 'docs/asset-review/cavern-layers-v1'
 COAST = ROOT / 'docs/asset-review/coast-layers-v1'
 OUT = ROOT / 'assets/cavern-v1'
 H = 180
-SHORE = 104                    # the lake's far shore on the grid
-DARK = np.array([5., 7, 14])   # the cavern's own dark
+SHORE = 104
+DARK = np.array([5., 7, 14])
 
 
 def native(img, f=4):
@@ -78,7 +78,7 @@ def strip(sheet, top, bottom):
     ceiling's stalactites) and what stands on its foot."""
     rgb, op = native(sheet.crop((0, top, sheet.width, bottom)))
     h = op.shape[0]
-    cut = min(range(h // 6, h * 2 // 3), key=lambda r: op[r].mean())   # the emptiest row between them
+    cut = min(range(h // 6, h * 2 // 3), key=lambda r: op[r].mean())
     hang = op.copy()
     hang[cut:] = False
     return rgb, hang, op & ~hang
@@ -97,13 +97,13 @@ def layers():
     rgb, hang, stand = strip(sheet, 14, 159)
     yield 'ceiling', finish(*grid(rgb, hang, 0), 10, haze=0.2)
     cave = foot(rgb, stand, SHORE - 4)
-    line, line_top, line_rest = strip(sheet, 180, 286)          # a line of ruins, nothing hanging
+    line, line_top, line_rest = strip(sheet, 180, 286)
     ruin = foot(line, line_top | line_rest, SHORE + 1)
     rgb, op = cave[0].copy(), cave[1].copy()
     rgb[ruin[1]], op[ruin[1]] = ruin[0][ruin[1]], True
     yield 'horizon', finish(rgb, op, 12, haze=0.25)
     sea_rgb, sea_op = native(Image.open(COAST / 'sea.png'))
-    sea_op[:80] = False                              # the clouds and sky: underground there are none
+    sea_op[:80] = False
     yield 'lake', finish(*grid(sea_rgb, sea_op, SHORE - 84), 16, haze=0.35)
     ruins_rgb, ruins_op = native(Image.open(COAST / 'ruins.png'))
     yield 'ruins', finish(*grid(ruins_rgb, ruins_op, -24), 12, pair=False, haze=0.55)

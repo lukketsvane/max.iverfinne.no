@@ -38,8 +38,6 @@ test('all twenty selected shrine sites agree after snapshot, late join and autho
 test('the selected shrine seed cache is shared once through duplicate claims, late join and handoff',()=>{
  const {room,clients,pending,sync}=party(8),host=clients[0].game,guest=clients[1].game,id='guardian:8:seeds';
  const cache=host.seedPickups.find(q=>q.id===id);assert.ok(cache);assert.equal(cache.amount,2);
- // Isolated pickup fixture. Actual entrance-to-shrine travel is separately
- // replayed by guardian-site-reach tests; this checks network transactions.
  Object.assign(guest.P,{x:cache.x,y:cache.y+6,st:'free',grounded:true,vx:0,vy:0,platform:guest.playerSupportId(cache.x,cache.y+6),wet:false});
  host.coop.members[ids[1]].trust=true;
  guest.updateSeedPickups(1/60);const action=pending.find(a=>a.type==='pickup-seed'&&a.seedId===id);assert.ok(action);

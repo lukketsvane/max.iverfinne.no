@@ -2,8 +2,6 @@ const assert = require('node:assert/strict');
 
 function launch(g, target, hz = 60) {
   const start = { ...g.P };
-  // Players can release Up to shorten a jump; Moss need not overshoot a
-  // neighbouring shelf simply because its full jump can reach the one above.
   for (const releaseAt of [.08, .14, .18, .24, Infinity]) {
     Object.assign(g.P, start, { vx: 0, vy: 0, wet: false, st: 'free' });
     g.doJump(true); g.heldUp = true;

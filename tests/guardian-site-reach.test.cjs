@@ -8,8 +8,6 @@ for(const seed of [1,260926])test(`all sixty shrine sites are reached and left b
  for(let stage=1;stage<=20;stage++){
   g.resetRogueRun('QA',{classId:'bulwark'});g.rogueRun.seed=seed;g.activeStageLayout=null;
   if(stage>1)g.enterLevel(stage);else g.initRunStage();
-  // Entering a later garden uses the ordinary floating arrival; neutral
-  // physical simulation brings the test to its real entrance footing.
   for(let frame=0;frame<480&&!g.P.grounded;frame++)g.updatePlayer(1/60,{axis:0,top:48});
   assert.equal(g.P.grounded,true,`garden ${stage}: entrance lands`);
   const L=g.stageLayout(),entrance=capture(g),sites=L.guardianSites;

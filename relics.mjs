@@ -1,4 +1,3 @@
-// Relics open alternate rules in the same shared garden engine.
 export const RELICS = Object.freeze([
   Object.freeze({ id: 'night-relay', name: 'Night Relay', open: true, minPlayers: 2, note: '2–4 players. Steal the light. Pass it before it burns. One holds the switch, one carries the seed. Nobody gets left behind.', color: '#e4bb77' }),
   Object.freeze({ id: 'high-tide', name: 'High Tide', open: true, note: 'Ei morplante. Fem hagar. Stell planta, finn oppgraderingar og slå vaktarane før floa tek deg.', color: '#73afbd' }),

@@ -1,4 +1,3 @@
--- Ephemeral invitations and membership only. Runs are never saved here.
 create schema if not exists max_coop_private;
 revoke all on schema max_coop_private from public, anon;
 grant usage on schema max_coop_private to authenticated;
@@ -40,7 +39,6 @@ begin
     raise exception 'Invalid room request.' using errcode = 'PT400';
   end if;
   if p_action = 'create' then
-    -- A new attempt replaces this player's previous membership, never resumes it.
     update max_coop_private.rooms set state = 'closed' where host = me and state <> 'closed';
     delete from max_coop_private.members where user_id = me;
     insert into max_coop_private.rooms(host) values (me) returning * into r;
@@ -61,7 +59,6 @@ begin
     end if;
     if p_action = 'join' then
       if r.state <> 'lobby' then raise exception 'This run has already started.' using errcode = 'PT409'; end if;
-      -- Serialize joins on the room row, so a fifth player cannot take a slot.
       delete from max_coop_private.members where room_id = r.id and user_id <> r.host and heartbeat < now() - interval '25 seconds';
       if not exists (select 1 from max_coop_private.members where room_id = r.id and user_id = me) then
         select s::smallint into place from generate_series(1,4) s where not exists
@@ -110,7 +107,6 @@ $$;
 revoke all on function public.max_coop(text,jsonb) from public, anon;
 grant execute on function public.max_coop(text,jsonb) to authenticated;
 
--- Sender identity comes from a private channel's authorization, not its payload.
 create function max_coop_private.channel_allowed(topic text, writing boolean)
 returns boolean language plpgsql stable security definer set search_path = '' as $$
 declare bits text[] := string_to_array(topic, ':'); r max_coop_private.rooms; me uuid := auth.uid();

@@ -1,7 +1,3 @@
-/* Native 1x bouquet compositor. No generated concept image is used as a sprite.
- * Supply the game's existing drawResultPlant callback; records are rogueRun.garden.
- * Every plant is retained. Long runs produce additional bundles of 24 plants.
- */
 (function(root){
 'use strict';
 var W=96,H=96,AX=48,AY=91,CAPACITY=24;
@@ -39,23 +35,18 @@ function render(canvas,plants,options){
     return {bundle:page,bundleCount:groups.length,plantCount:0,visibleIds:[],anchor:[AX,AY]};
   }
   var stamp=canvas.ownerDocument.createElement('canvas');stamp.width=64;stamp.height=96;
-  // Draw the outer stems first, centre stems last; all frame data retain their IDs.
   var placement=group.map(function(record,i){
     var u=group.length===1?0:(i/(group.length-1)*2-1);
     return {record:record,index:i,spread:Math.round(u*Math.min(20,4+group.length))};
   }).sort(function(a,b){return Math.abs(b.spread)-Math.abs(a.spread)||a.index-b.index;});
   placement.forEach(function(item){
     var sp=stamp.getContext('2d');sp.setTransform(1,0,0,1,0,0);sp.clearRect(0,0,64,96);
-    // Extra headroom protects flower heads extending above the old result canvas.
     sp.translate(0,12);options.drawPlant(stamp,item.record);sp.setTransform(1,0,0,1,0,0);
-    // Scanline shearing uses whole-pixel translations. Never scale or rotate a leaf.
-    // Rows >=78 contain the old result baseline/roots and are intentionally excluded.
     for(var sy=0;sy<78;sy++){
       var q=Math.min(1,(77-sy)/65);
       var dx=AX-32+Math.round(item.spread*q+SWAY[frame]*q*q);
       ctx.drawImage(stamp,0,sy,64,1,dx,2+sy,64,1);
     }
-    // The bundle's gathered stem ends meet a common, frame-stable grounding anchor.
     var end=Math.round(item.spread*.22),start=Math.round(item.spread*.07);
     for(var y=78;y<AY;y++){
       var k=(y-78)/(AY-79),x=AX+Math.round(start+(end-start)*k);

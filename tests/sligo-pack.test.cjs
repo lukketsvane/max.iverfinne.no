@@ -1,6 +1,4 @@
 'use strict';
-// Max Sligo Neverdahl, the easter-egg skin (scripts/build-sligo.py): the pack's
-// pixel and atlas contract. The game does not load the pack yet.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto'), fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
@@ -26,7 +24,6 @@ function cell(sheet, index) {
   }
   return opaque;
 }
-// The clips as the game itself defines them in index.html.
 function gameClips() {
   const html = read('index.html').toString('utf8'), out = {};
   for (const [name, sheet] of [['ANIM', 'main'], ['ANIM2', 'interaction']]) {

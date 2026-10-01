@@ -26,8 +26,6 @@ def write_json(path,value):
 
 def source_cell(image,row,col):
  y0,y1=ROW_BOUNDS[row]
- # The pump's broad foundation crosses the source's nominal first column.
- # Measured landmark cuts retain it without leaking a fragment into the arch.
  edges=[0,394,750,1086] if row==3 else [0,362,724,1086,1448]
  raw=image.crop((edges[col],y0,edges[col+1],y1)).convert('RGBA')
  a=np.array(raw);a[a[:,:,3]<210]=0
@@ -42,7 +40,6 @@ def native_cell(source,scale,size,anchor):
  distance=((a[:,:,:3].astype(np.int32)[:,:,None,:]-palette[None,None,:,:])**2).sum(axis=3)
  a[:,:,:3]=palette[distance.argmin(axis=2)];a[:,:,3]=mask.astype(np.uint8)*255;a[~mask,:3]=0
  small=Image.fromarray(a)
- # Centre the planted base, not an asymmetrical lamp head or opening pod lid.
  foot=np.where(mask[-min(3,small.height):].any(axis=0))[0]
  cx=round((int(foot.min())+int(foot.max()))/2) if len(foot) else small.width//2
  x=max(0,min(size[0]-small.width,anchor[0]-cx))
@@ -71,8 +68,6 @@ def main():
  for index,name in enumerate(NAMES):
   row=index//2;column=(index%2)*2
   pair=[source_cell(master,row,column+state) for state in range(2)]
-  # Both states use exactly the same reduction; opening a pod never changes its
-  # body scale. A 2 px side and 3 px top margin remains inside every 32 px cell.
   scale=min(28/max(im.width for im in pair),29/max(im.height for im in pair));scales[name]=scale
   props[name]=[native_cell(im,scale,(32,32),(16,31)) for im in pair]
  names=[name+'/'+state for state in ['idle','lit'] for name in NAMES]

@@ -1,7 +1,4 @@
-// Authoritative native attacks. Class IDs remain stable for saved runs and room reservations.
-// Pølge's old stand-ins are retired; these names allow older snapshots/reviews to clear safely.
-var polgeStands=[],classShots=[],classFighters=[],classShotId=0,classPestId=0;
-function polgeStandin(){return false;}function polgePlace(){return false;}function polgeBurst(){}function polgeLure(){return false;}function drawPolgeStands(){}function updatePolge(){polgeStands=[];}
+var classShots=[],classFighters=[],classShotId=0,classPestId=0;
 function nativeAttackClass(){return ['runner','bulwark','herbalist','polge'].indexOf(ownClass().id)>=0;}
 function classSkillCooldown(){return ownClass().skillCd*Math.pow(.88,ownClass().id==='runner'?(rogueRun.perks.tailwind||0):0);}
 function fighterState(){var owner=skillOwner(),q=classFighters.find(function(f){return f.owner===owner;});if(!q){q={owner:owner,world:worldLevel(),combo:0,window:0,weave:0,flurry:0,next:0};classFighters.push(q);}return q;}

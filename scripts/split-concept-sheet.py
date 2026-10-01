@@ -21,14 +21,13 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage as ndi
 try:
-    import oxipng                # optional: pip install pyoxipng, lossless
+    import oxipng
 except ImportError:
     oxipng = None
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else 'docs/asset-review/sunken-sanctuary-v1')
-MAP = (0, 0, 1536, 541)          # the level illustration: kept whole
-THRESHOLD = 16                   # max channel distance from the panel
-# panel columns: x0, x1, sections (group, top y, grouping dilation)
+MAP = (0, 0, 1536, 541)
+THRESHOLD = 16
 PANELS = [
  (4, 310, [('tiles/terrain', 592, 1), ('tiles/background', 696, 1), ('tiles/water', 810, 1), ('tiles/overgrowth', 914, 1)]),
  (317, 569, [('structures/ruins', 592, 1), ('structures/bridges-platforms', 734, 1), ('structures/ladders-chains', 902, 1)]),
@@ -40,14 +39,11 @@ PANELS = [
  (1331, 1532, [('fx/particles', 785, 5), ('fx/ambient-elements', 851, 1)]),
 ]
 PANEL_BOTTOM = {836: 913, 1103: 913, 1331: 913}
-# the stalactite column at the right edge of the terrain block runs past the
-# BACKGROUND heading
 TERRAIN_COLUMN = (278, 300, 740)
 WATERFALLS = [(1338, 1377), (1377, 1420), (1420, 1451), (1451, 1522)], (590, 672), 34
 PALETTE_Y = (966, 1004)
 PALETTE = [('sky-bg', 846, 904), ('terrain', 916, 985), ('ruins', 996, 1053), ('plants', 1065, 1113),
            ('water', 1124, 1182), ('lights', 1190, 1240), ('accent', 1251, 1312)]
-# headings, captions and the title block (x0, y0, x1, y1)
 TEXT = [(10, 552, 160, 572), (10, 578, 70, 593), (10, 681, 86, 696), (10, 796, 54, 810), (10, 899, 86, 914),
  (322, 552, 420, 572), (322, 578, 362, 593), (322, 718, 444, 734), (322, 887, 426, 902),
  (580, 552, 704, 572), (580, 578, 670, 593), (580, 717, 627, 732), (580, 810, 664, 826), (580, 893, 698, 909),
@@ -57,7 +53,7 @@ TEXT = [(10, 552, 160, 572), (10, 578, 70, 593), (10, 681, 86, 696), (10, 796, 5
  (1336, 770, 1399, 785), (1336, 836, 1447, 851), (841, 924, 992, 942), (841, 949, 1320, 966), (1336, 915, 1532, 1019)]
 BORDERS = [(0, 4, 0, 1024), (310, 317, 0, 1024), (569, 576, 0, 1024), (829, 836, 0, 1024),
            (1096, 1103, 0, 914), (1324, 1331, 0, 1024), (1532, 1536, 0, 1024)]
-GLOW = {'fx/lights', 'fx/particles'}          # always soft
+GLOW = {'fx/lights', 'fx/particles'}
 GLOW_IF_BRIGHT = {'enemies/flying-ambient', 'props/crates-barrels-lamps'}
 NAMES = {
  'tiles/background': ['mountains-small', 'mountains-wide', 'mountains-ridge', 'gothic-window', 'gothic-window-lit', 'carved-pillar', 'pedestal'],
@@ -101,7 +97,7 @@ for x0, y0, x1, y1 in TEXT: fg[y0:y1, x0:x1] = False
 lab, _ = ndi.label(fg)
 for i, s in enumerate(ndi.find_objects(lab)):
     h, w = s[0].stop - s[0].start, s[1].stop - s[1].start
-    if h <= 5 and w > 50: fg[s][lab[s] == i + 1] = False       # panel rules
+    if h <= 5 and w > 50: fg[s][lab[s] == i + 1] = False
 
 def fill_small_holes(m, most=10):
     holes = ndi.binary_fill_holes(m) & ~m
@@ -119,7 +115,6 @@ def components(mask, grow):
         if s is None: continue
         m = gl == i + 1
         out.append(dict(m=m, area=int(m.sum()), box=(s[1].start, s[0].start, s[1].stop, s[0].stop)))
-    # a fragment mostly inside a part at least four times its size joins it
     out.sort(key=lambda c: -c['area'])
     changed = True
     while changed:
@@ -144,9 +139,6 @@ def add(group, mask, name=None):
     y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
     parts.append(dict(group=group, name=name, mask=mask[y0:y1, x0:x1], x=int(x0), y=int(y0), w=int(x1 - x0), h=int(y1 - y0)))
 
-# Each panel column splits as a whole, so a part that runs past the next
-# heading stays in one piece; it belongs to the section its middle is in.
-# Sections that group looser parts (grow > 1) are split again on their own.
 seen = np.zeros((H, W), bool)
 for x0, x1, sections in PANELS:
     tops = [s[1] for s in sections]
@@ -171,7 +163,6 @@ for x0, x1, sections in PANELS:
         for c in components(band, grow):
             if c['area'] >= (6 if group.startswith('fx/') else 25): add(group, fill_small_holes(c['m']))
 
-# waterfalls share one dark backdrop: a stricter threshold, cut at the gaps
 cuts, (wy0, wy1), strict = WATERFALLS
 for x0, x1 in cuts:
     m = np.zeros((H, W), bool)
@@ -180,7 +171,6 @@ for x0, x1 in cuts:
     sizes = ndi.sum(m, lab, range(1, n + 1))
     add('fx/waterfalls', fill_small_holes(np.isin(lab, [k + 1 for k, s in enumerate(sizes) if s >= 3])))
 
-# palette swatches: solid rectangles, inset past the JPEG edge ring
 py0, py1 = PALETTE_Y
 rows = np.where(fg[py0:py1, 846:1312].mean(1) > 0.6)[0]
 sy0, sy1 = py0 + rows.min(), py0 + rows.max() + 1
@@ -206,7 +196,6 @@ def cut(p, glow):
         rgba[..., :3] = np.where(p['mask'][..., None], src[p['y']:p['y'] + p['h'], p['x']:p['x'] + p['w']], 0)
         rgba[..., 3] = p['mask'] * 255
         return rgba
-    # soft halo: alpha from the distance to the panel, colour un-premultiplied
     pad = 3
     x0, y0, h, w = p['x'] - pad, p['y'] - pad, p['h'] + 2 * pad, p['w'] + 2 * pad
     m = np.zeros((h, w), bool); m[pad:pad + p['h'], pad:pad + p['w']] = p['mask']
@@ -266,7 +255,6 @@ for group in ORDER:
                              alpha='soft' if glow else 'binary', clown='#%02x%02x%02x' % tuple(int(v) for v in colour)))
 (ROOT / 'parts.json').write_text(json.dumps(dict(source='source.jpg', map=dict(zip('xywh', (MAP[0], MAP[1], MAP[2] - MAP[0], MAP[3] - MAP[1]))),
                                                  parts=manifest), indent=1) + '\n')
-# one flat colour per part: a palette image, exact while the sheet has at most 254 parts
 Image.fromarray(clown).quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(ROOT / 'clown-mask.png', optimize=True)
 if oxipng: oxipng.optimize(ROOT / 'clown-mask.png', level=6)
 print(len(manifest), 'parts')

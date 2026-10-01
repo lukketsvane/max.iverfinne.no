@@ -31,7 +31,6 @@ for obj in level['objects']:
 target = ROOT / 'assets/levels-v1/high-tide.png'
 scene.save(target, optimize=True)
 
-# Authoring names retain the route category and garden number, but never ship as UI.
 platforms = []
 for obj in level['objects']:
     if obj['kind'] != 'platform':

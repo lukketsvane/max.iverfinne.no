@@ -12,7 +12,6 @@ function draw(c,p){native.drawPlant(c,p,0);}
 var files=[],meta={version:1,scale:1,alpha:'binary',sheets:{},samples:{}};
 async function add(name,c){harden(c);files.push({name:name,bytes:await png(c)});}
 
-// The actual game plant renderer, at the existing result size and grounding point.
 var stages=[.06,.3,.65,1.3,2.3],plants=canvas(9*64,5*96),pc=plants.getContext('2d');
 meta.sheets['plants-growth.png']={width:576,height:480,cell:[64,96],columns:9,rows:5,anchor:[32,77],frames:[]};
 for(var r=0;r<5;r++)for(var k=0;k<9;k++){
@@ -48,7 +47,6 @@ for(var f=0;f<8;f++){
 }
 await add('sprites/bouquet-reveal.png',reveal);
 
-// Exercise real variable run sizes, including overflow and a zero-plant round.
 var checks=[0,1,24,25,73].map(function(n){
  var rec=records(n),groups=MaxBouquet.chunks(rec),seen=[];
  groups.forEach(function(_,i){var c=canvas(96,96),r=MaxBouquet.render(c,rec,{drawPlant:draw,bundle:i});seen=seen.concat(r.visibleIds);});
@@ -60,7 +58,6 @@ files.push({name:'metadata/rendered.json',bytes:new TextEncoder().encode(JSON.st
 document.getElementById('gallery').append(plants,still,sway,reveal);
 status.textContent='Ready: 45 plant states, 8 bouquets, 32 sway frames, 8 reveal frames. All five retention checks passed.';
 
-// Small dependency-free ZIP writer (stored entries, CRC-32), for exact PNG export.
 function crc32(bytes){var c=-1;for(var i=0;i<bytes.length;i++){c^=bytes[i];for(var b=0;b<8;b++)c=(c>>>1)^((c&1)?0xedb88320:0);}return (c^-1)>>>0;}
 function header(len){var b=new Uint8Array(len);return {b:b,v:new DataView(b.buffer)};}
 function zip(items){var out=[],central=[],offset=0,centralSize=0;
