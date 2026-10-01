@@ -11,7 +11,8 @@ function scene(stage = 1) {
   g.rogueRun.world = stage; g.activeStageLayout = null; g.runActive = true;
   Object.assign(g.P, { x: g.levelOriginX(stage), st: 'free', grounded: true, vx: 0, vy: 0 });
   g.P.y = g.surfaceY(g.P.x);
-  Object.assign(g.YEET_SHEET, { complete: true, naturalWidth: 256, naturalHeight: 256 });
+  Object.assign(g.YEET_SHEET, { complete: true, naturalWidth: 256, naturalHeight: 128 });
+  Object.assign(h.images.find(i => i.src.endsWith('/cat.png')), { complete: true, naturalWidth: 128, naturalHeight: 64 });
   return h;
 }
 function step(g, seconds) { for (let i = 0; i < seconds * 60; i++) g.updateYeet(1 / 60); }
@@ -36,15 +37,18 @@ test('walking left reaches Yeet in all twenty gardens, including boss gardens', 
   }
 });
 
-test('the trigger waits for sprites and a grounded westbound player', () => {
-  const { game: g } = scene();
+test('the trigger waits for both sprites and a grounded westbound player', () => {
+  const h = scene(), g = h.game;
   g.P.x = -259; g.P.y = g.surfaceY(g.P.x); step(g, 1);
   assert.equal(g.yeet.phase, 'idle');
   g.P.x = -300; g.P.grounded = false; step(g, 1);
   assert.equal(g.yeet.phase, 'idle');
   g.P.grounded = true; g.YEET_SHEET.complete = false; step(g, 10);
   assert.equal(g.yeet.phase, 'idle');
-  g.YEET_SHEET.complete = true; g.P.y = g.surfaceY(g.P.x); g.updateYeet(1 / 60);
+  g.YEET_SHEET.complete = true;
+  const cat = h.images.find(i => i.src.endsWith('/cat.png'));
+  cat.complete = false; step(g, 1); assert.equal(g.yeet.phase, 'idle');
+  cat.complete = true; g.P.y = g.surfaceY(g.P.x); g.updateYeet(1 / 60);
   assert.equal(g.yeet.phase, 'arrive');
 });
 
@@ -90,23 +94,20 @@ test('a remote player can trigger Yeet; snapshots preserve the cat and completio
   assert.equal(guest.yeet.phase, 'done');
 });
 
-test('existing art is matted once, then Yeet and cat are drawn separately at native integer scale without a screen flash', () => {
+test('separate transparent PNGs render at native integer scale without runtime matting or a screen flash', () => {
   const { game: g } = scene(); encounter(g);
-  const pixels = new Uint8ClampedArray([245,245,245,255,237,203,160,255,17,21,29,255]);
   const draws = [], transforms = [], fills = [];
-  let reads = 0;
-  g.ctx.getImageData = () => { reads++; return { data: pixels }; };
-  g.ctx.putImageData = () => {};
+  g.ctx.getImageData = () => { throw Error('sprites must already be transparent'); };
   g.ctx.drawImage = (...args) => draws.push(args);
   g.ctx.translate = (...args) => transforms.push(args);
   g.ctx.fillRect = (...args) => fills.push(args);
   g.yeet.phase = 'flash'; g.yeet.t = .5;
   g.drawYeet(.5); g.drawYeet(.6);
-  assert.equal(reads, 1);
-  assert.deepEqual([...pixels], [0,0,0,0,237,203,160,255,17,21,29,255]);
-  const sprites = draws.filter(args => args.length === 9);
-  assert.equal(sprites.length, 4);
-  for (const args of sprites) { assert.equal(args[3], args[7]); assert.equal(args[4], args[8]); assert.ok(args.slice(1).every(Number.isInteger)); }
+  assert.equal(draws.length, 4);
+  assert.notEqual(draws[0][0], draws[1][0]);
+  assert.match(draws[0][0].src, /\/yeet\.png$/); assert.match(draws[1][0].src, /\/cat\.png$/);
+  assert.equal(draws[0][3], 32); assert.equal(draws[1][3], 16);
+  for (const args of draws) { assert.equal(args[3], args[7]); assert.equal(args[4], args[8]); assert.ok(args.slice(1).every(Number.isInteger)); }
   assert.notDeepEqual(transforms[0], transforms[1]);
   assert.equal(fills.length, 0);
 });
@@ -117,5 +118,26 @@ test('Yeet remains wired into the built game and shared snapshot', () => {
   assert.doesNotMatch(built, /"MAX_YEET";/);
   assert.match(built, /updateYeet\(dt\)/); assert.match(built, /drawYeet\(tSec\)/);
   assert.match(coop, /yeet:coopPlain\(yeet\)/); assert.match(coop, /yeetSync\(s\.yeet\)/);
-  assert.ok(existsSync(join(root, 'assets/yeet-encounter-v1/01-encounter.png')));
+  for (const name of ['yeet', 'cat']) assert.ok(existsSync(join(root, `assets/yeet-encounter-v1/${name}.png`)));
+  assert.doesNotMatch(readFileSync(join(root, 'yeet.inc.js'), 'utf8'), /01-encounter\.png|getImageData|YEET_CUT/);
+});
+
+test('all 64 isolated frames preserve native registration, binary alpha and palette', async () => {
+  const { decode, artProblems } = await import('../scripts/figma-sync.mjs');
+  const atlas = JSON.parse(readFileSync(join(root, 'assets/yeet-encounter-v1/atlas.json')));
+  for (const [name, size, min, max] of [['yeet', 32, 140, 230], ['cat', 16, 35, 60]]) {
+    const file = `assets/yeet-encounter-v1/${name}.png`, bytes = readFileSync(join(root, file));
+    assert.deepEqual(artProblems(file, bytes), []);
+    const { width, height, rgba } = decode(bytes); assert.equal(width, size * 8); assert.equal(height, size * 4);
+    for (let frame = 0; frame < 32; frame++) {
+      const f = atlas.frames[`${name}-${frame}`]; assert.equal(f.sheet, name); let count = 0;
+      for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+        const i = ((f.rect[1] + y) * width + f.rect[0] + x) * 4;
+        if (!rgba[i + 3]) continue;
+        count++; assert.equal(rgba[i + 3], 255);
+        assert.ok(x > 0 && x < size - 1 && y > 0 && y < size - 1, `${name} ${frame} clips`);
+      }
+      assert.ok(count >= min && count <= max, `${name} ${frame} contains ${count} pixels`);
+    }
+  }
 });
