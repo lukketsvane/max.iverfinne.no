@@ -27,6 +27,7 @@ let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, g
 let session = null;
 let leavingSession = null;
 let liveSettings = false, settingsButton;
+let controllerCapture = null;
 let selectedMode = 'garden', focusedRelic = null, relicTargets;
 let invitedRoom = null, inviteState = null;
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
@@ -49,6 +50,7 @@ function message(text, error = false) {
   status.textContent = text; status.dataset.error = String(error); status.hidden = false;
 }
 function page(name, title) {
+  if (name !== 'controller') controllerCapture = null;
   screen = name; overlay.dataset.screen = name; card.replaceChildren();
   const header = el('header', undefined, 'max-menu-header');
   header.append(el('p', 'THE WILD GARDEN', 'max-menu-kicker'));
@@ -640,6 +642,7 @@ function settings() {
     control.setAttribute('aria-label', name + ' volume ' + Math.round(value * 100) + ' percent'); card.append(control);
   }
   card.append(button('Controls', help));
+  card.append(button('Map Joy-Con (L)', controllerSetup));
   if (!liveSettings && signedInUser()) {
     if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords()));
     card.append(button(playerName(user) + ' · Account', account));
@@ -653,6 +656,7 @@ function openSettings() {
   game.clearInput?.(); settings();
 }
 function dismissSettings() {
+  controllerCapture = null;
   liveSettings = false; opened = false; overlay.hidden = true; delete overlay.dataset.live;
   game.clearInput?.();
   settingsButton.focus({ preventScroll: true });
@@ -678,12 +682,59 @@ function help() {
     ['EXPLORE', 'Find the amber guardian shrine: each garden chooses one of three locations. Explore for seeds and upgrades on the way. Establish a living plant beside its clearing, then use Grow at the shrine when ready. Defeat every garden’s boss, choose a boon and climb your exit plant. Time strengthens enemies. The Hollow Crown awaits in garden 20.'],
     ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J or B to aim with the move keys, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 upgrade · Esc menu'],
     ['MOUSE', 'Click the game once to lock the mouse inside it; Esc frees it and opens the menu. The bright cross is your aim; the guide shows your attack direction or reach. Click to attack there. Mech can hold to charge a wider, harder bomb. Right click dodges toward the cross, middle click uses the skill. Boon cards can be clicked, or press 1, 2 or 3.'],
-    ['CONTROLLER', 'Stick moves; push farther to run. A light stick tilt aims; full aim reach needs only three-quarter tilt. A jump · B / Y grow · stick click dodge · hold X or ZR to aim with the right stick (or the left on a single Joy-Con) and release to attack · LB skill · LT lamp · RB run · − refill · + menu. Menus: stick / D-pad navigate, hold to repeat, A confirm, B back. When a boon is offered, flick the right stick to a card and press A.'],
+    ['JOY-CON (L)', 'Hold it horizontally, stick on the left. Bottom face button (printed ←): jump / confirm. Right (↓): grow / back. Left (↑) or SR: attack while moving; hold to charge, release to attack. Top (→): class skill. SL: dodge. Hold ZL and use the stick to aim precisely, release to attack. Stick up / down climbs ladders; down + bottom plants. Three-quarter stick travel runs. L refills the rover, or swaps Sligo bodies. Stick click: lamp, or Sligo swap. Capture: lamp when available. Minus: settings. Top opens an offered boon; stick chooses, bottom confirms, right returns to play. Use Map Joy-Con (L) if your buttons or directions differ.'],
+    ['CONTROLLER', 'Stick moves; push farther to run. A light stick tilt aims; full aim reach needs only three-quarter tilt. A jump · B / Y grow · stick click dodge · hold X or ZR to aim with the right stick and release to attack · LB skill · LT lamp · RB run · − refill · + menu. Menus: stick / D-pad navigate, hold to repeat, A confirm, B back. When a boon is offered, flick the right stick to a card and press A.'],
     ['ATTACKS', 'Pølge boxes: jab, cross, uppercut. Cairn cleaves nearby pests. Rattus norvegicus dropkicks nearby pests and uses a salto kick in the air. Mycel chains spores beside living plants. Mech plants two-second bombs; Sligo throws flesh. The bar above your character shows attack recovery.'],
     ['BUILDS', 'Class mutations change your attacks and skills. Combine the named prerequisites to unlock signature abilities. Each new choice can develop your build or open another direction.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
   card.append(button('Back', settings, 'subtle'));
+}
+function controllerSetup() {
+  page('controller', 'Joy-Con (L)');
+  card.append(el('p', 'Hold the controller horizontally with the stick on the left. Release each control between steps. Skip buttons your device does not expose.'));
+  const prompt = el('p', 'Centre the stick and release every button.'); prompt.setAttribute('role', 'status'); card.append(prompt);
+  const steps = [['right', 'Move the stick right'], ['left', 'Move the stick left'], ['up', 'Move the stick up'], ['down', 'Move the stick down'],
+    [0, 'Press the bottom face button (←)'], [1, 'Press the right face button (↓)'], [2, 'Press the left face button (↑)'], [3, 'Press the top face button (→)'],
+    [4, 'Press SL'], [5, 'Press SR'], [6, 'Press ZL'], [8, 'Press L'], [10, 'Click the stick'], [9, 'Press Minus'], [16, 'Press Capture']];
+  const state = controllerCapture = { prompt, steps, index: 0, id: null, centre: null, ready: false, config: { buttons: {}, directions: {} } };
+  const skip = button('Skip unavailable button', () => {
+    if (controllerCapture !== state || state.index < 4) return;
+    state.config.buttons[steps[state.index][0]] = -1; nextControllerStep(state);
+  }); skip.hidden = true; state.skip = skip; card.append(skip);
+  card.append(button('Use automatic layout', () => { const info = game.controllerInfo?.(); if (info) game.configureController?.(info.id, null); settings(); }, 'subtle'));
+  card.append(button('Back', settings, 'subtle'));
+}
+function nextControllerStep(state) {
+  state.index++; state.ready = false;
+  if (state.index === state.steps.length) {
+    game.configureController?.(state.id, state.config); controllerCapture = null;
+    state.prompt.textContent = 'Layout saved for this controller.'; state.skip.hidden = true; return;
+  }
+  state.skip.hidden = state.index < 4;
+  state.prompt.textContent = 'Release, then: ' + state.steps[state.index][1] + ' (' + (state.index + 1) + ' / ' + state.steps.length + ').';
+}
+function captureController(gp) {
+  const state = controllerCapture; if (!state) return false;
+  const values = gp.buttons.map(b => Math.max(b.value || 0, b.pressed ? 1 : 0));
+  if (state.id && state.id !== gp.id) return true;
+  if (!state.centre) {
+    if (values.some(v => v > .2) || gp.axes.some(a => Number.isFinite(a) && Math.abs(a) <= 1 && Math.abs(a) > .22)) return true;
+    state.id = gp.id; state.centre = gp.axes.slice(); state.ready = true; state.prompt.textContent = state.steps[0][1] + ' (1 / ' + state.steps.length + ').'; return true;
+  }
+  const moved = gp.axes.map((a, i) => Number.isFinite(a) && Math.abs(a) <= 1 ? a - state.centre[i] : 0);
+  if (!values.some(v => v > .2) && !moved.some(v => Math.abs(v) > .22)) { state.ready = true; return true; }
+  if (!state.ready) return true;
+  const key = state.steps[state.index][0], axis = moved.findIndex(v => Math.abs(v) >= .55), pressed = values.findIndex(v => v >= .55);
+  if (typeof key === 'string') {
+    if (axis < 0 && pressed < 0) return true;
+    state.config.directions[key] = axis >= 0 ? { axis, sign: Math.sign(moved[axis]), centre: state.centre[axis] } : { button: pressed };
+  } else {
+    if (pressed < 0) return true;
+    if (Object.values(state.config.buttons).includes(pressed) || Object.values(state.config.directions).some(d => d.button === pressed)) { state.prompt.textContent = 'That control is already mapped. Release, then: ' + state.steps[state.index][1] + '.'; state.ready = false; return true; }
+    state.config.buttons[key] = pressed;
+  }
+  nextControllerStep(state); return true;
 }
 function credits() {
   page('credits', 'MAX');
@@ -831,7 +882,7 @@ function replay() {
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; overlay.hidden = false; game.pause(true); play(selectedMode); startScene();
 }
-window.MaxGameMenu = { attach, open, replay, ownsInput: () => false };
+window.MaxGameMenu = { attach, open, replay, ownsInput: () => false, isOpen: () => opened, captureController };
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { onlinePlayers?.stop(); clearTimeout(playersTimer); return; }
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();

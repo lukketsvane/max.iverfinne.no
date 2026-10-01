@@ -13,7 +13,7 @@ const compiled = build({
 }).then(r => r.outputFiles[0].text);
 const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, summaryStarted = false, url = 'https://max.iverfinne.no' } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, summaryStarted = false, controller = {}, url = 'https://max.iverfinne.no' } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url, runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
@@ -76,6 +76,7 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     beginCoop(network) { active = true; beginCount++; begun = { selection: { ...network.selection }, host: network.host, room: { ...network.room } }; },
     coopRoster() {}, coopState() {}, coopInput() {}, coopDepart() {}, coopJoin() {}, stopCoop() { active = false; },
     exitRun() { active = false; }, clearInput() {}, musicVolume: () => music, effectsVolume: () => effects, setMusicVolume: value => { music = value; }, setEffectsVolume: value => { effects = value; },
+    ...controller,
   };
   if (scenes) {
     w.HTMLCanvasElement.prototype.getContext = function() { return new Proxy({ canvas:this }, { get:(target,key)=>key in target?target[key]:()=>{} }); };
@@ -96,6 +97,41 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   const classIds = () => [...w.document.querySelectorAll('[data-class-id]')].map(n => n.dataset.classId);
   return { w, dom, click, settle, pauses, calls, signIns, type, classIds, channels, emit, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
 }
+
+test('Joy-Con calibration captures one control per release and saves the physical layout', async () => {
+  const saved = [], m = await menu(undefined, { controller: { configureController: (id, config) => saved.push([id, config]) } });
+  try {
+    m.click('Settings'); m.click('Map Joy-Con (L)');
+    const gp = { id: 'Joy-Con (L) Gamepad', axes: [0, 0, 0, 0], buttons: [] };
+    const report = (pressed = [], axes = [0, 0, 0, 0]) => {
+      gp.axes = axes; gp.buttons = Array.from({ length: 17 }, (_, i) => ({ value: Number(pressed.includes(i)), pressed: pressed.includes(i) }));
+      assert.equal(m.w.MaxGameMenu.captureController(gp), true);
+    };
+    report(); report([15]);
+    const prompt = m.w.document.querySelector('[data-screen="controller"] [role="status"]');
+    const first = prompt.textContent; report([15]); assert.equal(prompt.textContent, first);
+    for (const b of [14, 12, 13, 0, 2, 1, 3, 4, 5, 6, 8, 10, 9]) { report(); report([b]); }
+    m.click('Skip unavailable button');
+    assert.equal(saved.length, 1); assert.equal(saved[0][0], gp.id);
+    assert.deepEqual(JSON.parse(JSON.stringify(saved[0][1].directions)), { right: { button: 15 }, left: { button: 14 }, up: { button: 12 }, down: { button: 13 } });
+    assert.equal(saved[0][1].buttons[1], 2); assert.equal(saved[0][1].buttons[2], 1); assert.equal(saved[0][1].buttons[16], -1);
+    assert.match(prompt.textContent, /Layout saved/); assert.equal(m.w.MaxGameMenu.captureController(gp), false);
+    m.click('Back'); m.click('Controls'); assert.match(m.w.document.body.textContent, /JOY-CON \(L\)/);
+  } finally { m.dom.window.close(); }
+});
+
+test('live settings advertise input ownership and a bubbled Back returns to gameplay', async () => {
+  const m = await menu();
+  try {
+    assert.equal(m.w.MaxGameMenu.isOpen(), true);
+    m.click('Play'); m.click('Play'); await m.settle(); assert.equal(m.w.MaxGameMenu.isOpen(), false);
+    m.w.dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape' }));
+    assert.equal(m.w.MaxGameMenu.isOpen(), true);
+    m.click('Controls');
+    m.w.document.querySelector('.max-menu button').dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    assert.equal(m.w.MaxGameMenu.isOpen(), false); assert.equal(m.active, true);
+  } finally { m.dom.window.close(); }
+});
 
 test('character owns appearance and difficulty is the only separate run choice', async () => {
   const m = await menu();

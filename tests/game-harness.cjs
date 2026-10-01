@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
-  'classShots', 'classFighters',
+  'classShots', 'classFighters', 'runActive', 'pad', 'padAx', 'heldL', 'heldRun', 'lampToggle',
   'sligoMeat', 'sligoPendingSwap',
   'parts',
   'rogueRun', 'rogueMeta', 'gardenPlots', 'gardenSeeds', 'gardenStats',
@@ -18,6 +18,7 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'pollPads', 'configurePad',
   'drawCharge',
   'RELAY_LOCKS', 'relayProfile', 'relayBeam', 'updateNightRelay', 'nightRelayMode',
   'highTidePods', 'HIGH_TIDE_GATES', 'highTideRoutePoint', 'highTideTip', 'highTideBoons', 'highTideSpawnBoss', 'updateHighTideEnemies', 'highTideBossDefeated',
