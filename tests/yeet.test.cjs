@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { readFileSync } = require('node:fs');
+const { readFileSync, existsSync } = require('node:fs');
 const { join } = require('node:path');
 const root = join(__dirname, '..');
 
@@ -12,6 +12,9 @@ test('Yeet is a guaranteed westbound encounter and is wired into runtime', () =>
   assert.match(yeet, /yeetStart\(west\)/);
   assert.match(yeet, /phase='flash'/);
   assert.match(yeet, /phase='flee'/);
+  assert.match(yeet, /assets\/yeet-encounter-v1\/01-encounter\.png/);
+  assert.match(yeet, /ctx\.drawImage\(YEET_SHEET/);
+  assert.ok(existsSync(join(root, 'assets/yeet-encounter-v1/01-encounter.png')));
   assert.match(html, /"MAX_YEET";/);
   assert.match(html, /updateYeet\(dt\)/);
   assert.match(html, /drawYeet\(tSec\)/);
