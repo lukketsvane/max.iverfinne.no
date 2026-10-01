@@ -5560,6 +5560,7 @@ function drawVignette() {
 "MAX_RUN_DIRECTOR";
 "MAX_RAT_ENEMIES";
 "MAX_SECRETS";
+"MAX_YEET";
 "MAX_WONDERS";
 
 var last = 0, tSec = 0, stepAcc = 0;
@@ -5628,6 +5629,7 @@ function frame(now) {
   if(!runIsPaused())updateHazardContact();
   if(!runIsPaused())listenRun();
   if(!runIsPaused()&&!relicRunMode())updateSecrets(dt);
+  if(!runIsPaused()&&!relicRunMode())updateYeet(dt);
   if(!runIsPaused()&&!relicRunMode())updateWonders(dt);
   if(!runIsPaused())updatePlace(dt);
   }
@@ -5707,6 +5709,7 @@ function frame(now) {
   }
   drawKrek(tSec);
   drawRunHazards(tSec);
+  drawYeet(tSec);
   drawSecretAir(tSec);
   drawWonderAir();
   drawBirdBlasts();
