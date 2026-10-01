@@ -3211,6 +3211,7 @@ function updateGarden(dt){
     }
     if(p.health<=.01&&plantFalls(p))p.hit=1;
   }
+  if(rogueRun.clearedWorld===worldLevel()&&!exitStalk())levelCleared();
   gardenComboT=Math.max(0,gardenComboT-dt);if(gardenComboT<=0)gardenCombo=0;
   gardenFeverT=Math.max(0,gardenFeverT-dt);
   gardenSaveT+=dt;if(gardenSaveT>5){gardenSaveT=0;saveGarden();}
@@ -3429,12 +3430,13 @@ function makeStalk(p){
 }
 function levelCleared(){
   if(singleSeedMode())return;
-  var w=worldLevel();if(rogueRun.clearedWorld===w||liveBoss()||!rogueRun.bossDefeated)return;
+  var w=worldLevel(),cleared=rogueRun.clearedWorld===w;if(liveBoss()||!rogueRun.bossDefeated||cleared&&exitStalk())return;
   if(w===RUN_STAGES){if(rogueRun.bossDefeated)winRogueRun();return;}
-  rogueRun.clearedWorld=w;gardenRaidActive=false;
   var best=null,bs=-1;
-  for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead)continue;var local=guardianCourtPlant(p,bossEvent);var s=p.growth+p.health*2+(local?1000:0);if(s>bs){bs=s;best=p;}}
+  for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.dead||p.health<=0)continue;var local=guardianCourtPlant(p,bossEvent);var s=p.growth+p.health*2+(local?1000:0);if(s>bs){bs=s;best=p;}}
   if(best){best.growth=Math.max(best.growth,G_TOP);makeStalk(best);}
+  if(cleared)return;
+  rogueRun.clearedWorld=w;gardenRaidActive=false;
   gardenScore+=1500+w*250;
   for(i=0;i<36;i++)parts.push({x:P.x+(Math.random()-.5)*45,y:P.y-12-Math.random()*45,vx:(Math.random()-.5)*18,vy:-8-Math.random()*18,l:1.2+Math.random()*1.8,m:1.2,c:i&1?'238,222,132':'171,206,135'});
   spawnLooseSeeds(P.x,P.y-22,2);swanThanks(w);saveGarden();

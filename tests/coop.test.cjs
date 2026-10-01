@@ -4,10 +4,10 @@ const { loadGame, plot } = require('./game-harness.cjs');
 const {clearShrineGuards}=require('./shrine-helpers.cjs');
 const ids = [1,2,3,4].map(i => `${i}`.repeat(8)+'-'+`${i}`.repeat(4)+'-4'+`${i}`.repeat(3)+'-8'+`${i}`.repeat(3)+'-'+`${i}`.repeat(12));
 
-function team(classes=[]) {
-  const members = ids.map((id,i) => ({id, slot:i+1, ready:true,classId:classes[i]||'mech'}));
+function team(classes=[],count=4) {
+  const peers=ids.slice(0,count),members = peers.map((id,i) => ({id, slot:i+1, ready:true,classId:classes[i]||'mech'}));
   const room = {id:'room',host:ids[0],members};
-  const games = ids.map(id => {
+  const games = peers.map(id => {
     const h=loadGame(); const pending=[];
     const network={host:id===ids[0],user:{id},room,action(type,data={}){pending.push({id:pending.length+1,type,...data});return true;},tick(){},fail(reason){throw Error(reason);}};
     h.game.beginCoop(network); return {...h,network,pending};
@@ -59,6 +59,24 @@ test('world changes carry every player and the actual shared bouquet',()=>{
   host.gardenPlots=[plot({growth:2.3,seed:719})];host.saveGarden();host.enterLevel(2);sync();
   games.forEach(h=>{assert.equal(h.game.rogueRun.world,2);assert.equal(h.game.rogueRun.garden[0].seed,719);assert.equal(h.game.P.st,'float');});
   host.endRogueRun();sync();games.forEach(h=>assert.equal(h.game.rogueRun.ended,true));
+});
+
+test('a surviving plant takes over a lost exit without repeating victory rewards or skipping the climb',()=>{
+  const {games,sync}=team(['mech','herbalist'],2),host=games[0].game;
+  games[0].tick(16);
+  const x=host.P.x,first=plot({id:71,x,growth:.5}),backup=plot({id:72,x:x+24,growth:.2});
+  host.gardenPlots=[first,backup];host.floatKrek=[];host.rogueRun.bossDefeated=true;
+  host.levelCleared();assert.equal(first.stalk,true);assert.ok(!backup.stalk);
+  const seeds=host.seedPickups.length,level=host.rogueRun.level;
+  host.plantFalls(first);host.gardenRaidT=host.krekSpawnT=9999;games[0].tick(16);sync();
+  assert.equal(backup.stalk,true);assert.equal(host.rogueRun.world,1);
+  assert.equal(host.seedPickups.length,seeds);assert.equal(host.rogueRun.level,level);
+  games.forEach(h=>assert.equal(h.game.gardenPlots.find(p=>p.id===72).stalk,true));
+  const score=host.gardenScore;games[0].tick(16);assert.equal(host.gardenScore,score);
+  Object.assign(host.P,{x:backup.x,y:host.surfaceY(backup.x),st:'free',grounded:true,wet:false});
+  assert.equal(host.requestClimb(backup,true),true);
+  for(let i=0;i<1500&&host.rogueRun.world===1;i++)host.updatePlayer(1/120,{axis:0,top:48});
+  assert.equal(host.rogueRun.world,2);sync();games.forEach(h=>assert.equal(h.game.rogueRun.world,2));
 });
 
 test('defeating the final boss delivers a single shared victory to all four players',()=>{
