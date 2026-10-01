@@ -886,7 +886,7 @@ function animate(dt) {
     if (P.frame < a.f.length - 1) P.frame++;
     else if (a.loop) P.frame = 0; else P.done = true;
   }
-  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt);
+  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt,ownClass().speed*(1+.06*(rogueRun.perks.stride||0))*(P.wet?.5:1));
 }
 
 var parts = [];

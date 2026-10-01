@@ -1,9 +1,9 @@
 const strikes = ['lunge-punch', 'jab-cross', 'uppercut', 'rising-kick', 'sweep', 'tail-whip', 'palm-strike', 'split-kick'];
 const aerial = ['turning-kick', 'double-knee', 'tail-cartwheel', 'handstand'];
 
-export function updateRattusMotion(p, dt) {
+export function updateRattusMotion(p, dt, speedScale = 1.25) {
   if (p.skin !== 'moss-pink' && p.skin !== 'moss') return;
-  const speed = Math.abs(p.vx), free = p.st === 'free';
+  const speed = Math.abs(p.vx) / Math.max(.1, speedScale), free = p.st === 'free';
   const idle = free && p.grounded && speed < 3 && !p.rattlePose && !p.pounce && !p.throwPose && !p.dodgeT;
   p.motionIdle = idle ? (p.motionIdle || 0) + dt : 0;
   let name = '', rate = 1, time;
