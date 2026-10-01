@@ -32,7 +32,7 @@ require('./build-companion.cjs')(output);
 for (const file of [
   'assets/audio', 'icons', 'assets/biomes-v1', 'assets/boon-symbols-v1', 'assets/plants-v1',
   'assets/garden-view-v1', 'assets/tiles-v1', 'assets/backdrop-v1', 'assets/night-v1',
-  'assets/cavern-v1', 'assets/rattus-motion', 'manifest.webmanifest',
+  'assets/cavern-v1', 'assets/rattus-motion', 'assets/yeet-encounter-v1', 'manifest.webmanifest',
 ]) copy(file);
 for (const file of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, file))) copy(file);
 for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
