@@ -1,7 +1,8 @@
 export const SERVER = process.env.FIGMA_MCP_URL || 'http://127.0.0.1:3845/mcp';
 export const FIGMA = {
   fileKey: 'TC0PHGMTCMR6im4hb3CSbF', fileName: 'max.iverfinne.no max fuglesprenger',
-  url: 'https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF', pages: { production: '10:2', draft: '162:2' },
+  url: 'https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF', pages: { production: '10:2', draft: '10:2' },
+  productionSections: ['451:2', '451:3', '451:4', '451:5', '451:6', '451:7'],
 };
 export const OFFLINE = `Cannot reach the Figma Dev Mode MCP server at ${SERVER}.
   1. Open the Figma desktop app (the browser version has no local server).

@@ -886,6 +886,7 @@ function animate(dt) {
     if (P.frame < a.f.length - 1) P.frame++;
     else if (a.loop) P.frame = 0; else P.done = true;
   }
+  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt);
 }
 
 var parts = [];
@@ -4321,7 +4322,7 @@ function updateHands(dt, inp) {
     if (low && !move) { P.st = 'toCrouch'; setAnim('crouch'); P.squatT = 0; break; }
     if (!move && Math.abs(P.vx) < 2) {
       P.still += dt;
-      if (P.still > 7 && !P.lampBlock) { P.st = 'lampUp'; setAnim('lampUp'); }
+      if (P.still > 7 && !P.lampBlock && ownClass().id!=='runner') { P.st = 'lampUp'; setAnim('lampUp'); }
     } else P.still = 0;
     break;
 
@@ -5494,6 +5495,7 @@ function drawPlayer() {
   if (secretTint && P === secretOwnP) img = secretSkin(img);
   var dx = px - CELL / 2, dy = py - CELL + 1;
   function sprite() {
+    if(window.MaxNativeArt&&window.MaxNativeArt.drawPlayerMotion&&window.MaxNativeArt.drawPlayerMotion(ctx,P,px,py,secretTint&&P===secretOwnP?secretSkin:null))return;
     if(P.skin==='sligo'&&(drawSligoEvo(P,px,py,bodyScale)||drawSligoAction(P,px,py,bodyScale)))return;
     if(P.skin==='sligo'){
       ctx.save();ctx.translate(px,py);if(P.face<0)ctx.scale(-1,1);

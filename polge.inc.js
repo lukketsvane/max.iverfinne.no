@@ -30,7 +30,7 @@ function classPrimary(target){
     else if(kit==='polge')polgePunch(aim,false);
   }
   bombCool=bombCoolMax=classAttackCooldown();task=null;holdWater=null;P.still=0;P.throwPose=.2;
-  if(ownClass().id==='runner'){P.rattleMove=P.grounded?'dropkick':'salto';P.rattlePose=.28;P.rattleClock=0;}
+  if(ownClass().id==='runner'){P.motionCombo=((P.motionCombo||0)+1)%8;P.rattleMove=P.grounded?'dropkick':'salto';P.rattlePose=.28;P.rattleClock=0;}
   if(!climb&&P.st!=='ladder')P.st='free';
   if(sheet2Ready){setAnim('toss');P.frame=ANIM.toss.hit;}
   return true;
