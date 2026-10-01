@@ -48,16 +48,27 @@ function enemy(overrides = {}) {
 function lastSprite(calls) { return calls.filter(call => call[0] === 'drawImage').at(-1); }
 
 test('native assets load once, independent failures keep the other skins and enemies usable', async () => {
-  const { art, status, requests, events } = await nativeArt('/rattle-norvegicus/interaction.png');
-  assert.deepEqual([...status.failed], ['moss']); assert.equal(status.loaded.length, 33);
+  const { art, status, requests, events } = await nativeArt('/rattle-norvegicus-pink/interaction.png');
+  assert.deepEqual([...status.failed], ['moss-pink']); assert.equal(status.loaded.length, 32);
   assert.equal(art.playerImage('moss', 'main'), null, 'a half-loaded player pair must keep the original fallback');
   assert.match(art.playerImage('tide', 'interaction').src, /tide\/interaction.png$/);
   assert.match(art.playerImage('ember', 'main').src, /cairn\/main.png$/);
-  assert.match(art.playerImage('moss-pink', 'main').src, /rattle-norvegicus-pink\/main.png$/);
+  assert.equal(art.playerImage('moss-pink', 'main'), null);
   for (const id of ['original', '__proto__', 'runner', null]) assert.equal(art.playerImage(id, 'main'), null);
   const { ctx } = context(); assert.equal(art.drawEnemy(ctx, enemy({ kind: 1 }), 1, 1, 0), false);
-  assert.equal((await art.load()).loaded.length, 33); assert.equal(requests.length, 34);
+  assert.equal((await art.load()).loaded.length, 32); assert.equal(requests.length, 33);
   assert.equal(events.length, 1); assert.equal(events[0].type, 'max-native-art-ready');
+});
+
+test('legacy Rattus skin keys share the sole current atlas without requesting retired assets', async () => {
+  const { art, requests } = await nativeArt();
+  assert.equal(art.skins.includes('moss'), false); assert.equal(art.skins.includes('moss-pink'), true);
+  for (const sheet of ['main', 'interaction']) {
+    assert.equal(art.playerImage('moss', sheet), art.playerImage('moss-pink', sheet));
+    assert.equal(art.playerPath('moss', sheet), art.playerPath('moss-pink', sheet));
+  }
+  assert.equal(requests.filter(url => url.includes('/rattle-norvegicus-pink/')).length, 1);
+  assert.equal(requests.some(url => url.includes('/rattle-norvegicus/')), false);
 });
 
 test('native movement clocks begin at frame zero and continue across co-op snapshot objects', async () => {
@@ -143,13 +154,13 @@ test('the actual player renderer uses each selected sheet while retaining origin
     surfaceY: () => 40, waterAt: () => null, drawCanopy() {}, secretTint: false,
   };
   vm.runInNewContext(drawPlayer, sandbox); sandbox.drawPlayer();
-  assert.match(lastSprite(calls)[1].src, /rattle-norvegicus\/main.png$/);
+  assert.match(lastSprite(calls)[1].src, /rattle-norvegicus-pink\/main.png$/);
   assert.deepEqual(lastSprite(calls).slice(2), [32, 0, 32, 32, 4, 9, 32, 32]);
   for (const skin of ['moss', 'moss-pink']) for (const [move, sheetName, column, row] of [['dropkick', 'interaction', 3, 5], ['salto', 'main', 6, 6], ['splits', 'interaction', 7, 5]]) {
     sandbox.P.skin = skin;
     Object.assign(sandbox.P, { rattleMove: move, rattlePose: .2, rattleClock: .23, pounce: move === 'splits' ? 2 : 0 });
     const before = JSON.stringify(sandbox.P); sandbox.drawPlayer();
-    assert.match(lastSprite(calls)[1].src, new RegExp('rattle-norvegicus' + (skin === 'moss-pink' ? '-pink' : '') + '/' + sheetName + '\\.png$'));
+    assert.match(lastSprite(calls)[1].src, new RegExp('rattle-norvegicus-pink/' + sheetName + '\\.png$'));
     assert.deepEqual(lastSprite(calls).slice(2), [column * 32, row * 32, 32, 32, 4, 9, 32, 32]);
     assert.equal(JSON.stringify(sandbox.P), before, 'wrestling sprites never change movement or hit state');
   }
@@ -194,7 +205,7 @@ test('Rattus planting follows the real sow timer locally and through guest avata
       remote.game.gardenPlots = []; remote.game.gardenSeeds = 3; remote.game.runEncounters = [];
     }
     const x = g.P.x, y = g.P.y, frames = new Set();
-    assert.equal(g.P.skin, skin); assert.equal(g.rogueRun.skinId, skin);
+    assert.equal(g.P.skin, 'moss-pink'); assert.equal(g.rogueRun.skinId, 'moss-pink');
     assert.equal(g.crouchGardenAction(), true, mode);
     for (let step = 0; step < 160; step++) {
       h.advance(1000 / 120); g.updatePlayer(1 / 120, { axis: 0, top: 48 });
@@ -203,7 +214,7 @@ test('Rattus planting follows the real sow timer locally and through guest avata
       if (g.P.anim === 'sow') {
         frames.add(g.P.frame); calls.length = 0; g.drawPlayer();
         const draw = calls.at(-1);
-        assert.match(draw[0].src, new RegExp('rattle-norvegicus' + (skin === 'moss-pink' ? '-pink' : '') + '/interaction\\.png$'), `${mode} uses the selected Rattus interaction sheet`);
+        assert.match(draw[0].src, /rattle-norvegicus-pink\/interaction\.png$/, `${mode} uses the current Rattus interaction sheet`);
         assert.deepEqual(draw.slice(1), [g.P.frame * 32, 64, 32, 32, Math.round(x - g.camX) - 16, Math.round(y - g.camY) - 31, 32, 32]);
         if (mode !== 'guest' && g.P.frame < 6) assert.equal(g.gardenPlots.length, 0, 'the seed is not planted before the sow marker');
       }
@@ -214,7 +225,7 @@ test('Rattus planting follows the real sow timer locally and through guest avata
         if (actor.anim === 'sow') {
           const own = remote.game.P; remote.game.P = actor; calls.length = 0; remote.game.drawPlayer(); remote.game.P = own;
           assert.equal(calls.at(-1)[1], actor.frame * 32); assert.equal(calls.at(-1)[2], 64, 'the host draws the guest’s actual sow frame');
-          assert.equal(actor.skin, skin, 'host authority retains the reserved outfit');
+          assert.equal(actor.skin, 'moss-pink', 'host authority migrates the retired outfit');
         }
       }
     }
@@ -273,7 +284,7 @@ test('rat corpses use a one-shot with an empty terminal frame and are removed wi
 
 test('Sligo\'s pack loads on demand, never with the others, and until it loads the original Max stands in', async () => {
   const { art, status, requests } = await nativeArt('/sligo/');   // Sligo's sheets fail to load here
-  assert.equal(status.loaded.length, 34); assert.equal(requests.some(url => url.includes('/sligo/')), false);
+  assert.equal(status.loaded.length, 33); assert.equal(requests.some(url => url.includes('/sligo/')), false);
   assert.equal(art.playerImage('sligo', 'main'), null); assert.equal(art.playerImage('sligo', 'interaction'), null);
   await new Promise(resolve => setTimeout(resolve, 20));
   assert.equal(requests.filter(url => url.endsWith('max-skins-v1/sligo/atlas.json')).length, 1, 'asked for once');

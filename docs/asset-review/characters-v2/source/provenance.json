@@ -85,10 +85,18 @@
       "sha256": "b382cec77cbb897da55b8d61eb0696704b092ae10a7ba9e688d52136b1f62d47"
     },
     "recovery": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v6-05.png",
+      "sha256": "06067b53a3c8fee0758c853c2000fc4ddf39c4bc238ffcb890a40419c9a18771"
+    },
+    "prompts": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v6-prompts.json",
+      "sha256": "064829baabf7ef70e93a0606607977431f2a3c888508ced21b611b7823d47800"
+    },
+    "recovery-v4": {
       "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-05.png",
       "sha256": "0a712911ddef2b43f4135f2326c88c45e4332a77fe344509d095b460631d41f8"
     },
-    "prompts": {
+    "prompts-v4": {
       "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-prompts.json",
       "sha256": "81e08a8ae778d51aa96150518255c0fdfe8c9780353fece8bb269f91eb2cf92c"
     }

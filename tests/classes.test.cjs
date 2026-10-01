@@ -52,22 +52,22 @@ test('class selection is validated, independent of skin, and retry restores only
   assert.equal(g.rogueRun.classId, 'mech'); assert.equal(g.P.skin, 'original');
 });
 
-test('Rattus defaults to her latest outfit while explicit alternatives survive retries and host snapshots', () => {
+test('Rattus legacy outfits migrate to her sole current design through retries and host snapshots', () => {
   const g = loadGame().game;
   g.resetRogueRun('test', { classId: 'runner' });
   assert.equal(g.P.skin, 'moss-pink'); assert.equal(g.rogueRun.skinId, 'moss-pink');
   g.resetRogueRun('test', { classId: 'runner', skinId: 'moss' }); g.resetRogueRun();
-  assert.equal(g.P.skin, 'moss'); assert.equal(g.rogueRun.skinId, 'moss');
+  assert.equal(g.P.skin, 'moss-pink'); assert.equal(g.rogueRun.skinId, 'moss-pink');
   for (const skinId of [undefined, 'moss']) {
     const room = { host: ids[0], members: ids.slice(0, 2).map((id, i) => ({ id, slot: i + 1 })) };
     const loadouts = { [ids[0]]: { classId: 'mech', skinId: 'tide' }, [ids[1]]: { classId: 'runner', skinId } };
     const players = ids.slice(0, 2).map(id => {
       const h = loadGame(); h.game.beginCoop({ room, loadouts, user: { id }, host: id === ids[0], action() { return true; }, tick() {} }); return h.game;
     });
-    const [host, guest] = players, expected = skinId || 'moss-pink';
+    const [host, guest] = players, expected = 'moss-pink';
     guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
     assert.equal(host.coop.members[ids[1]].skin, expected); assert.equal(guest.P.skin, expected);
-    host.coopInput(ids[1], { avatar: { ...guest.coopAvatar(), skin: expected === 'moss' ? 'moss-pink' : 'moss' }, actions: [] });
+    host.coopInput(ids[1], { avatar: { ...guest.coopAvatar(), skin: 'moss' }, actions: [] });
     assert.equal(host.coop.members[ids[1]].skin, expected); assert.equal(host.coop.members[ids[1]].avatar.skin, expected);
   }
 });
@@ -156,7 +156,7 @@ test('forged or legacy robot perks cannot create, restore or keep a non-Mech com
 
 test('the host fixes four independent classes and skins, with owned rovers and no client class switching', () => {
   const { players, sync, send } = party(), host = players[0].game; sync();
-  players.forEach((p, i) => { assert.equal(p.game.rogueRun.classId, classes.all[i].id); assert.equal(p.game.P.skin, ['moon', 'tide', 'ember', 'moss'][i]); });
+  players.forEach((p, i) => { assert.equal(p.game.rogueRun.classId, classes.all[i].id); assert.equal(p.game.P.skin, ['moon', 'tide', 'ember', 'moss-pink'][i]); });
   assert.deepEqual(Array.from(host.coopCapture().robots, r => r.owner), [ids[0]]);
   send(1, { classId: 'herbalist', skin: 'moon' });
   const runner = host.coop.members[ids[1]]; assert.equal(runner.classId, 'runner'); assert.equal(runner.avatar.classId, 'runner'); assert.equal(runner.avatar.skin, 'tide');

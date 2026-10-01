@@ -1,0 +1,59 @@
+{
+  "tool": "built-in image_gen",
+  "character": "Rattus norvegicus",
+  "variant": "Grey rat Ring gear",
+  "request": "Five 8x8 wrestling sheets. Grey rat Ring gear is the sole active costume; the fifth source adds comedic slip recovery and a hip-bounce, jump and splits taunt. No hat, cape or weapons.",
+  "transparent_background": true,
+  "sheets": [
+    {
+      "number": 1,
+      "name": "grounded-thigh-strikes",
+      "output": "exec-c652e041-df1b-4c00-9c46-11570245193a.png",
+      "refs": [
+        "exec-27d25fb0-2599-4511-a534-6b9bb4ae1049.png",
+        "28AAFD33-948C-4B37-8931-7554947CB7B1/1-Photo-1.jpg"
+      ],
+      "prompt": "Use image 1 as the exact animation-layout template and image 2 as the new character design reference. Replace every character in image 1 with an adult female anthropomorphic rat professional wrestler named Rattus norvegicus, closer to image 2: grey fur over her whole body, clearly rat-shaped long muzzle, rounded pink-inner ears, whiskers, long flexible hairless pink rat tail, vivid orange rope-like hair, powerful muscular hourglass physique, broader hips, fuller glutes and thick strong thighs. Give her bold glamorous magenta-and-gold wrestling gear: opaque magenta athletic bra, minimal high-cut opaque magenta competition briefs with gold edging, bare abdomen, magenta boots and round gold-edged magenta knee pads, gold wrist cuffs. Show a confident flamboyant professional wrestling attitude. Keep all 64 full-body animation figures from image 1 in the EXACT same eight rows and eight columns, preserving each pose and its position, all splits, crouches, knee strikes, kicks and recoveries. Crisp chunky videogame pixel art with dark outlines and flat limited-color shading, matching image 2. Bare head and uncovered shoulders; NO hat, NO cape, NO coat, NO weapons. Transparent background, separated cells with empty gutters and outer margins, no labels. Fully drawn boots, tail and limbs in every cell. This is a sports animation sheet."
+    },
+    {
+      "number": 2,
+      "name": "aerial-saltos",
+      "output": "exec-3a49dce8-e854-4aea-be35-a977ab8bc32b.png",
+      "refs": [
+        "exec-a1a98f5a-7abf-4b0b-8347-40dc10dbed5a.png",
+        "exec-c652e041-df1b-4c00-9c46-11570245193a.png"
+      ],
+      "prompt": "Edit image 1, the eight-by-eight aerial wrestling animation layout, so every pose uses EXACTLY the adult female anthropomorphic rat wrestler in image 2: grey fur on the entire body, long rat muzzle, pink inner ears, whiskers, flexible long pink tail, vivid orange rope-like hair, muscular hourglass figure with broad hips, full glutes and thick powerful thighs. Match her magenta-and-gold opaque athletic bra, high-cut opaque magenta competition briefs with gold trim, gold cuffs, magenta boots and gold-edged magenta knee pads. Keep the exposed midriff, bare head, bare shoulders, no cape and no hat. Preserve all 64 full-body sprites from image 1 in EXACTLY eight rows and eight columns and the same pose order, with the original aerial leaps, forward saltos, inverted flips, cartwheels, kicks, splits and landings. Crisp chunky pixel art, dark outlines, flat limited-color shading like image 2. Transparent background with wide empty gutters; scale each figure slightly smaller if necessary so boots and tails never touch neighboring cells or the canvas edges. No weapons, clothing hanging from shoulders, headwear, props or text."
+    },
+    {
+      "number": 3,
+      "name": "sweeps-and-split-planting",
+      "output": "exec-db02bda0-73f5-4e67-b08a-1f5565bd2c78.png",
+      "refs": [
+        "exec-0fcd4a9f-294b-42d9-a341-d9ebf497a12a.png",
+        "exec-c652e041-df1b-4c00-9c46-11570245193a.png"
+      ],
+      "prompt": "Edit image 1, the sweeps and split-planting videogame animation layout. Replace her design with exactly the fictional adult female anthropomorphic rat professional wrestler from image 2: whole body grey fur, long rat muzzle, pink-inner round ears, whiskers, long hairless pink tail, orange rope-like hair, strong muscular hourglass build with broad hips, full glutes, thick thighs. Match the magenta opaque athletic bra, high-cut magenta opaque wrestling briefs edged in gold, bare abdomen, gold wrist cuffs, magenta boots and round gold-edged magenta knee pads. Use confident glamorous wrestling stage presence and image 2's chunky pixel-art style with dark outlines and limited-color shading. Keep ALL 64 full-body sprites in exactly EIGHT rows and EIGHT columns, retain image 1's exact pose order and all leg sweeps, handstands, dropkicks, low split planting and recovery poses. No cape, no hat, no coat, no weapons, no props or lettering. Transparent background, generous empty cell gutters and outside margins; reduce individual sprite sizes slightly if needed so every limb, tail and boot stays complete and no adjacent poses touch. Change only character design, keep the entire 8x8 animation layout."
+    },
+    {
+      "number": 4,
+      "name": "high-kicks-and-knee-combos",
+      "output": "exec-3f314c73-e3f8-4b2c-8432-c7dca0de3589.png",
+      "refs": [
+        "exec-ea2cfbbf-7c9d-4b72-99c5-cd0097d1c31e.png",
+        "exec-c652e041-df1b-4c00-9c46-11570245193a.png"
+      ],
+      "prompt": "Edit image 1, the high kicks and knee-combination videogame animation sheet, to use the EXACT fictional adult female rat professional wrestler from image 2. Whole body covered in grey rat fur, long pointed rat muzzle, rounded pink-inner ears, whiskers, long flexible hairless pink rat tail, vivid orange rope-like hair, muscular hourglass figure with broader hips, fuller glutes and thick strong thighs. Costume: opaque magenta athletic bra and high-cut opaque magenta wrestling briefs with gold edging, bare abdomen, gold wrist cuffs, gold-edged magenta round knee pads and magenta wrestling boots. Same crisp chunky pixel style, dark outlines and limited flat-color shading as image 2. Preserve ALL 64 original full-body poses from image 1 in EXACTLY eight rows and eight columns with identical pose order: standing guard, knee raises, high kicks, knee attacks, acrobatics, splits and landings. No hat, cape, coat, weapons, props or lettering. Transparent background; generous completely empty gutters around each sprite, outer margins and complete tails, limbs and boots. If needed make each sprite slightly smaller to avoid any overlap. Keep the complete 8x8 sports animation layout."
+    },
+    {
+      "number": 5,
+      "name": "movement-and-ring-animation-cycles",
+      "output": "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-2cf71511-4611-44c9-bfdb-ad2e147fb0f4.png",
+      "refs": [
+        "C:/Users/Iver/.codex/generated_images/01a0f335-2c95-7be0-bd50-bbf18c1a7192/exec-6b2c4622-49ef-49ce-ab1b-4d5b98ff2303.png"
+      ],
+      "prompt": "Use case: precise-object-edit.\nAsset type: production reference sprite sheet for an adult female anthropomorphic rat pro wrestler named Rattus norvegicus.\nInput image 1 is the exact edit target. Preserve her fully grey-furred rat anatomy, long pointed rat muzzle, round pink ears, whiskers, long curled pink tail, fiery orange rope-like hair, magenta and gold opaque athletic bra and high-cut briefs, gold wristbands, magenta knee pads and wrestling boots. Preserve the bold arcade pixel-art style, coherent scale and palette. Fuller voluptuous muscular hips, glutes and powerful thighs, adult athletic physique. No hat, cape, sword, weapon or human face.\nMake exactly 64 complete separate figures in a strict 8-column by 8-row grid on actual transparent background. Every cell has one complete figure, including the whole tail, hair and both boots, with generous transparent gutters and outer margins. No figures touching cell borders. No lettering, grid lines, shadows, props or opponents.\nRows 1 through 6: preserve the existing eight-frame motion sequences and their order: walking, running, rear three-quarter hip-check, jumping split stomp and split landing, seated leg-scissor kick, tucked somersault and safe landing.\nReplace row 7 with an eight-frame comedic slip and recovery: (1) upright balance lost with arms out, (2) boot slipping forward and torso leaning back, (3) seated slip landing, (4) lying flat prone, (5) palms pushing torso up, (6) kneeling, (7) rising squat, (8) standing guard. Keep the complete figure inside each cell.\nReplace row 8 with an eight-frame confident twerk-to-split ring taunt, nonexplicit athletic dance, rear three-quarter view for the first four frames: (1) knees bent and hands on hips, (2) lower squat hips raised, (3) hips bouncing lower, (4) hips bouncing higher, (5) turning front and springing upward, (6) aerial wide horizontal split, (7) low full split hold on the ground, (8) upright guard recovery. Opaque athletic gear remains fully covering intimate areas throughout. Strong readable silhouettes, animated rat tail and hair secondary motion. Preserve a consistent adult rat character throughout all 64 frames.",
+      "version": "rattus-ring-v6-movement"
+    }
+  ]
+}

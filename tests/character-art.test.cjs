@@ -11,7 +11,7 @@ const original = json('assets/max-skins-v1/source/original-poses.json');
 
 test('creature packs and Ring gear preserve native registration and gameplay markers with changing movement poses', async () => {
   const { decode, artProblems } = await import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
-  for (const [id, skin] of [['rattle-norvegicus', 'moss'], ['rattle-norvegicus-pink', 'moss-pink'], ['cairn', 'ember'], ['mycel', 'moon']]) {
+  for (const [id, skin] of [['rattle-norvegicus-pink', 'moss-pink'], ['cairn', 'ember'], ['mycel', 'moon']]) {
     const directory = `assets/characters-v2/${id}/`, atlas = json(directory + 'atlas.json');
     assert.equal(atlas.compatibilitySkin, skin);
     assert.deepEqual(atlas.cell, [32, 32]); assert.deepEqual(atlas.anchor, [16, 31]);
@@ -57,7 +57,7 @@ test('hat-free planting holds complete splits with both boots through the sow hi
   const folder = 'assets/characters-v2/rattle-norvegicus-pink/';
   const atlas = json(folder + 'atlas.json');
   const registration = json('docs/asset-review/characters-v2/registration.json')['rattle-norvegicus-pink'];
-  assert.equal(atlas.variantOf, 'rattle-norvegicus');
+  assert.equal(atlas.variantOf, undefined);
   assert.equal(atlas.animations.sow.hit, 6);
   const image = decode(fs.readFileSync(path.join(root, folder + 'interaction.png')));
   for (const column of [3, 4, 5, 6]) {
@@ -88,7 +88,16 @@ test('Ring gear combines five hat-free cape-free masters with readable inversion
   const folder = 'assets/characters-v2/rattle-norvegicus-pink/';
   const atlas = json(folder + 'atlas.json');
   const registration = json('docs/asset-review/characters-v2/registration.json')['rattle-norvegicus-pink'];
-  assert.deepEqual([...new Set(registration.map(frame => frame.sourceFile))].sort(), Array.from({ length: 5 }, (_, i) => `rattus-ring-v4-0${i + 1}.png`));
+  assert.deepEqual([...new Set(registration.map(frame => frame.sourceFile))].sort(), [...Array.from({ length: 4 }, (_, i) => `rattus-ring-v4-0${i + 1}.png`), 'rattus-ring-v6-05.png']);
+  for (let column = 0; column < 8; column++) {
+    assert.equal(registration[24 + column].sourceFile, 'rattus-ring-v6-05.png');
+    assert.deepEqual(registration[24 + column].sourceCell, [7, column]);
+  }
+  for (const index of [124, 125, 126, 127]) {
+    assert.equal(registration[index].sourceFile, 'rattus-ring-v6-05.png');
+    assert.deepEqual(registration[index].sourceCell, [6, 3]);
+  }
+  for (const index of [43, 44, 45, 46, 47]) assert.equal(registration[index].sourceFile, 'rattus-ring-v4-01.png');
   assert.ok(!atlas.palette.includes('#193a28') && !atlas.palette.includes('#4f7545'));
   const dimensions = index => {
     const [x, y, right, bottom] = atlas.frames[index].opaqueBounds;
@@ -111,6 +120,16 @@ test('Ring gear combines five hat-free cape-free masters with readable inversion
     return sum / count;
   };
   assert.ok(hairHeight(52) > hairHeight(48) + 5);
+});
+
+test('retired Rattus artwork is absent from runtime packs and the remaining pack is independent', () => {
+  const manifest = json('assets/characters-v2/manifest.json');
+  assert.deepEqual(manifest.assets.map(asset => asset.id), ['rattle-norvegicus-pink', 'cairn', 'mycel']);
+  for (const file of ['main.png', 'interaction.png', 'atlas.json']) {
+    assert.equal(fs.existsSync(path.join(root, 'assets/characters-v2/rattle-norvegicus', file)), false);
+  }
+  assert.equal(json('assets/characters-v2/rattle-norvegicus-pink/atlas.json').variantOf, undefined);
+  assert.equal(json('docs/asset-review/characters-v2/registration.json')['rattle-norvegicus'], undefined);
 });
 
 test('generated creature source masters remain pinned to their documented provenance', () => {

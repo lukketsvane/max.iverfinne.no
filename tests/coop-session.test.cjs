@@ -176,7 +176,7 @@ test('the host adopts a joining Rattus outfit and keeps it fixed through input a
   const net=fakeChannelClient({room,userId:'host'}),joins=[],inputs=[];
   const s=new CoopSession(net.client,{id:'host'},{join:(id,kit)=>joins.push([id,kit]),input:(id,packet)=>inputs.push([id,packet])},{classId:'mech'});
   s.room=room;s.entered=true;s.playing=true;
-  const packet={v:1,proto:2,sid:'guest-session-1',seq:1,selection:{classId:'runner',skinId:'moss-pink',difficulty:'insane'}};
+  const packet={v:1,proto:2,sid:'guest-session-1',seq:1,selection:{classId:'runner',skinId:'moss',difficulty:'insane'}};
   s.receive('guest',packet);
   assert.deepEqual(s.loadouts.guest,{classId:'runner',skinId:'moss-pink',difficulty:'easy'});
   assert.equal(joins.length,1);assert.equal(joins[0][1].skinId,'moss-pink');

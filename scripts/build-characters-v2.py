@@ -11,48 +11,18 @@ PACK = ROOT / 'assets/characters-v2'
 REVIEW = SOURCE.parent
 NEAREST = Image.Resampling.NEAREST
 SPECS = {
- 'rattle-norvegicus': {
-  'skin': 'moss', 'class': 'runner', 'scale': .175, 'keepParts': True,
-  'palette': ['0b1017','101932','253459','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','b63330','247bad','52cde5'],
-  'sources': {'movement': 'rattus-movement-v3.png', 'combat': 'rattus-combat-v3.png'},
-  'prompts': 'rattus-wrestler-v3-prompts.json',
-  'sourceRowCenters': {
-   'movement': [90,264,437,609,775,933,1084,1206],
-   'combat': [90,265,434,610,777,925,1077,1192],
-  },
-  'main': [
-   [('combat',0,c) for c in [0,1,4,5,6,7,6,1]],
-   [('movement',1,c) for c in range(8)],
-   [('movement',4,c) for c in range(8)],
-   [('combat',0,0),('movement',1,0),('movement',1,1),('movement',1,2),('movement',1,4),('movement',1,6),('combat',0,6),('combat',0,7)],
-   [('combat',3,c) for c in [0,1,2,3,2,1,0,7]],
-   [('combat',6,1),('combat',6,2),('combat',6,5),('combat',6,6),('movement',0,1),('movement',0,2),('movement',0,3),('combat',0,0)],
-   [('combat',5,c) for c in range(8)],
-   [('movement',1,c) for c in range(8)],
-  ],
-  'interaction': [
-   [('combat',0,0),('movement',0,3),('movement',0,1),('movement',0,0),('movement',0,0),('movement',0,1),('movement',0,2),('movement',0,0)],
-   [('movement',0,c) for c in [4,3,2,1,0,1,3,4]],
-   [('combat',0,0),('movement',0,1),('combat',6,4),('combat',6,1),('combat',6,2),('combat',6,3),('combat',6,2),('movement',0,0)],
-   [('movement',1,c) for c in range(8)],
-   [('movement',0,4),('movement',0,3),('movement',0,2),('movement',2,1),('movement',0,2),('movement',0,1),('movement',0,3),('movement',0,4)],
-   [('combat',4,c) for c in [0,1,3,6]] + [('combat',6,c) for c in [4,1,2,3]],
-   [('combat',1,c) for c in [0,3,4,5,4,5,4,3]],
-   [('movement',0,c) for c in [3,1,0,1,2,1,0,2]],
-  ],
- },
  'rattle-norvegicus-pink': {
   'skin': 'moss-pink', 'class': 'runner', 'scale': .17, 'keepParts': True, 'sourceAlpha': 240,
-  'variantOf': 'rattle-norvegicus', 'sourceLabel': 'five image_gen grey-rat magenta-and-gold ring-gear sheets, no hat or cape',
+  'sourceLabel': 'five image_gen grey-rat magenta-and-gold ring-gear sheets, no hat or cape',
   'palette': ['0b1017','362f3d','586369','a3acaf','d7c8cb','9d7336','efd17e','8b174b','cf1769','ed5599','ffc0c7','3b1e18','9f3b1f','df763a','f59945','ce6f89'],
-  'sources': {'ground': 'rattus-ring-v4-01.png', 'aerial': 'rattus-ring-v4-02.png', 'sweep': 'rattus-ring-v4-03.png', 'kicks': 'rattus-ring-v4-04.png', 'recovery': 'rattus-ring-v4-05.png'},
-  'prompts': 'rattus-ring-v4-prompts.json',
+  'sources': {'ground': 'rattus-ring-v4-01.png', 'aerial': 'rattus-ring-v4-02.png', 'sweep': 'rattus-ring-v4-03.png', 'kicks': 'rattus-ring-v4-04.png', 'recovery': 'rattus-ring-v6-05.png'},
+  'prompts': 'rattus-ring-v6-prompts.json',
   'sourceRowCenters': {
    'ground': [89,244,400,561,706,883,1053,1196],
    'aerial': [100,263,428,585,743,897,1051,1180],
    'sweep': [118,275,439,598,751,907,1057,1192],
    'kicks': [101,257,415,574,730,878,1025,1176],
-   'recovery': [102,254,417,600,747,885,1029,1148],
+   'recovery': [89,241,402,587,737,871,1023,1153],
   },
   'main': [
    [('ground',0,c) for c in range(8)],
@@ -60,7 +30,7 @@ SPECS = {
    [('recovery',1,c) for c in range(8)],
    [('recovery',7,c) for c in range(8)],
    [('kicks',2,c) for c in [0,1,2,3,4,5,6,7]],
-   [('sweep',7,1),('sweep',7,2),('recovery',3,6),('recovery',6,3),('recovery',6,5),('recovery',6,4),('recovery',0,0),('ground',0,0)],
+   [('sweep',7,1),('sweep',7,2),('recovery',3,6),('ground',7,0),('ground',3,2),('ground',3,6),('ground',0,0),('ground',0,0)],
    [('aerial',0,c) for c in range(8)],
    [('recovery',4,c) for c in range(8)],
   ],
@@ -72,7 +42,7 @@ SPECS = {
    [('sweep',3,c) for c in [0,1,5,3,4,2,6,7]],
    [('ground',5,c) for c in [1,2,3,5]] + [('recovery',3,c) for c in [2,3,4,5]],
    [('ground',0,0),('ground',6,1),('ground',6,2),('ground',0,7),('ground',6,1),('ground',6,2),('ground',6,1),('ground',6,2)],
-   [('recovery',6,c) for c in [4,5,3,2,1,0,0,0]],
+   [('recovery',6,c) for c in [7,0,1,2,3,3,3,3]],
   ],
  },
  'cairn': {
@@ -233,7 +203,6 @@ def main():
    'presentation':{'attack':{'sheet':'interaction','row':5,'frames':[0,1,2,2,1]},'source':'image_gen original creature artwork'}}
   if 'sources' in spec:
    atlas['presentation']['source']=spec.get('sourceLabel',atlas['presentation']['source'])
-   if 'variantOf' in spec:atlas['variantOf']=spec['variantOf']
    atlas['presentation']['wrestling']={
     'dropkick':{'sheet':'interaction','row':5,'frames':[0,1,2,3]},
     'salto':{'sheet':'main','row':6,'frames':list(range(8))},
@@ -259,7 +228,7 @@ def main():
    path=file.relative_to(ROOT).as_posix();sha1=hashlib.sha1(file.read_bytes()).hexdigest()
    if production.get(path)==sha1:continue
    generated.append({'path':path,'sha1':sha1,'width':256,'height':256,
-    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. '+('Owner-supplied source retained' if SPECS[ident].get('variantOf') else 'Generated source and full prompts retained')+'; awaiting Figma production synchronization.'})
+    'note':f'{ident.replace("-", " ").title()} original creature {sheet} poses; scripts/build-characters-v2.py. Generated source and full prompts retained; awaiting Figma production synchronization.'})
  pending['files'][position:position]=generated
  save_json(pendingPath,pending)
  print(f'Built {len(SPECS)} native character packs: {len(SPECS)*128} cells, {len(SPECS)*25} clips, {len(SPECS)*2} 256x256 sheets.')
@@ -275,11 +244,10 @@ def preview(assets):
   planting.paste(tile,(col*32,0),tile)
  ImageDraw.Draw(planting).text((3,35),'pink planting / splits',fill='#d5d0bb')
  planting.save(REVIEW/'pink-planting-1x.png');planting.resize((1024,192),NEAREST).save(REVIEW/'pink-planting-4x.png')
- assets={ident:a for ident,a in assets.items() if not SPECS[ident].get('variantOf')}
  rattle=Image.new('RGBA',(256,512))
- for i,sheet in enumerate(['main','interaction']):rattle.paste(assets['rattle-norvegicus']['images'][sheet],(0,i*256))
+ for i,sheet in enumerate(['main','interaction']):rattle.paste(pink['images'][sheet],(0,i*256))
  rattle.save(REVIEW/'rattle-sheets-1x.png');rattle.resize((1024,2048),NEAREST).save(REVIEW/'rattle-sheets-4x.png')
- a=assets['rattle-norvegicus'];moves=a['manifest']['presentation']['wrestling']
+ a=pink;moves=a['manifest']['presentation']['wrestling']
  planting=Image.new('RGB',(256,48),'#1b2431')
  for col in range(8):
   tile=a['images']['interaction'].crop((col*32,64,col*32+32,96))

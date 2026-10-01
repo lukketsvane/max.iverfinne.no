@@ -5,7 +5,7 @@ export const HIDDEN_CLASS_IDS = Object.freeze(['sligo']);
 export const ALL_CLASS_IDS = Object.freeze([...CLASS_IDS, ...HIDDEN_CLASS_IDS]);
 export const DIFFICULTY_IDS = Object.freeze(['easy', 'medium', 'hard', 'insane']);
 export const CLASS_SKINS = Object.freeze({ mech: 'tide', runner: 'moss-pink', bulwark: 'ember', herbalist: 'moon', polge: 'polge', sligo: 'sligo' });
-export const CLASS_OUTFITS = Object.freeze(Object.fromEntries(ALL_CLASS_IDS.map(id => [id, Object.freeze(id === 'runner' ? ['moss', 'moss-pink'] : [CLASS_SKINS[id]])])));
+export const CLASS_OUTFITS = Object.freeze(Object.fromEntries(ALL_CLASS_IDS.map(id => [id, Object.freeze([CLASS_SKINS[id]])])));
 export const DEFAULT_LOADOUT = Object.freeze({ classId: 'mech', skinId: CLASS_SKINS.mech, difficulty: 'medium' });
 
 // `unlocked` lists the easter eggs this player has. A hidden character that is not in it is
@@ -23,7 +23,11 @@ export function sameLoadout(a, b) {
   return !!a && !!b && a.classId === b.classId && a.skinId === b.skinId && a.difficulty === b.difficulty;
 }
 export function readLoadout(storage, unlocked = []) {
-  try { return validLoadout(JSON.parse(storage.getItem('max-loadout-v1')), unlocked) || { ...DEFAULT_LOADOUT }; }
+  try {
+    const stored = JSON.parse(storage.getItem('max-loadout-v1')), loadout = validLoadout(stored, unlocked) || { ...DEFAULT_LOADOUT };
+    if (stored?.skinId === 'moss' && loadout.classId === 'runner') writeLoadout(storage, loadout, unlocked);
+    return loadout;
+  }
   catch { return { ...DEFAULT_LOADOUT }; }
 }
 export function writeLoadout(storage, value, unlocked = []) {

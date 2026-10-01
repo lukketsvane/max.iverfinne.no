@@ -348,8 +348,8 @@ function gardenGestures() {
   }, { passive: false });
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
-function characterSkin(id) { return selectedOutfits[id] || CLASS_SKINS[id] || 'moss'; }
-function outfitName(id) { return id === 'moss-pink' ? 'Ring gear' : 'Black & gold'; }
+function characterSkin(id) { return selectedOutfits[id] || CLASS_SKINS[id] || 'moss-pink'; }
+function outfitName() { return 'Ring gear'; }
 function cycleOutfit(id) {
   if (!opened || screen !== 'play' || busy || session?.playing || liveSettings) return;
   if ((sharedStatus.taken || []).includes(id) && id !== sharedStatus.mine) return;
@@ -378,7 +378,7 @@ function outfitGestures(node, id) {
 // The open characters, then any hidden one this player has unlocked.
 function visibleClassIds() { return [...CLASS_IDS, ...HIDDEN_CLASS_IDS.filter(id => eggs.has(id))]; }
 function characterImage(id) {
-  const replacement = { moss: 'rattle-norvegicus', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' }[id];
+  const replacement = { moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' }[id];
   return replacement ? 'assets/characters-v2/' + replacement + '/main.png' : 'assets/max-skins-v1/' + id + '/main.png';
 }
 function skinPreview(id) {
@@ -476,6 +476,7 @@ function updateSelection() {
     const outfit = CLASS_OUTFITS[option.dataset.classId]?.length > 1;
     option.title = occupied ? 'Already playing' : outfit ? 'Double-tap to change outfit · Shift+Enter on keyboard' : '';
     if (outfit) option.setAttribute('aria-description', outfitName(characterSkin(option.dataset.classId)) + '. Double-tap or press Shift+Enter to change outfit.');
+    else option.removeAttribute('aria-description');
     const image = option.querySelector('img');
     if (image) image.src = characterImage(characterSkin(option.dataset.classId));
   }
