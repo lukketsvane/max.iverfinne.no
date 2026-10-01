@@ -24,4 +24,4 @@ the incoming bouquet compositor. Production verification is recorded in the
 integration pull request. These fixtures use in-memory saves and no account UI.
 
 The old draft PR #5 is not merged. Its historical build and index are not used.
-The main-branch review folder remains intact for comparison with other artwork.
+The source PNGs and comparison records remain intact. The earlier standalone candidate adapter and atlas bench were retired; `/review.html` is the current-engine comparison.

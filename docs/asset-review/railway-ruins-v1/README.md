@@ -1,5 +1,6 @@
 # Railway Ruins — garden 2
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 The owner's railway scene and kit sheets, built into garden 2 at Max's scale.
 
 ## Sources
@@ -23,7 +24,7 @@ It uses a premultiplied box filter with hard alpha at half, then one 255-colour 
 
 ## Build
 
-`scripts/build-railway-ruins.py` (Pillow, numpy, scipy):
+[historical build-railway-ruins.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-railway-ruins.py) (Pillow, numpy, scipy):
 
 - **Scene.** Downscales the scene to 384×192 and clears its dark sky, flood-filled from the top, down to the upper floor. The station, the viaduct and the lift tower stand against the garden's own night sky; the undercroft below the viaduct stays.
 - **Kit pieces.** Cuts every kit piece from its sheet by a box in source pixels (`PIECES`, `MILL`) and places them west and east of the scene (`PLACE`). Each placement has a role:
@@ -49,16 +50,13 @@ It uses a premultiplied box filter with hard alpha at half, then one 255-colour 
   - `levels-v1/railway-ruins.js`;
   - `placements.json`, every placed piece with its box, which the Figma section mirrors.
 
-Rebuild with `python3 scripts/build-railway-ruins.py`. For a preview with rock, ledges, markers and every spot a walking Bulwark reaches, run:
+Rebuild with [historical build-railway-ruins.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-railway-ruins.py). For a preview with rock, ledges, markers and every spot a walking Bulwark reaches, run:
 
-```sh
-node tests/picture-sweep.cjs bulwark 1 reach.json
-python3 scripts/build-railway-ruins.py --preview preview.png --reach reach.json
-```
+Historical source: [build-railway-ruins.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-railway-ruins.py), [picture-sweep.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/picture-sweep.cjs). Current validation: `npm test` and `npm run build`.
 
 ## Reach
 
-`tests/picture-sweep.cjs` searches the level with the real game physics as a walking, unupgraded Bulwark from the soil on both sides. Every marker must be reached, Max must cross both ways, and no spot may strand him (`tests/picture-level.test.cjs`).
+[historical picture-sweep.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/picture-sweep.cjs) searches the level with the real game physics as a walking, unupgraded Bulwark from the soil on both sides. Every marker must be reached, Max must cross both ways, and no spot may strand him ([historical picture-level.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/picture-level.test.cjs)).
 
 ## Figma
 

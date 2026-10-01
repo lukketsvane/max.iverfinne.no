@@ -134,7 +134,7 @@ co-op, original artwork and soundtrack remain integrated.
   fixture isolation.
 - `npm run build`: passed; the static production bundle includes the layout
   module and three adopted milestone PNG/JSON pairs.
-- `python3 scripts/verify-native-art.py`: **1,088 cells and 176 clips passed**,
+- [historical verify-native-art.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/verify-native-art.py): **1,088 cells and 176 clips passed**,
   validating binary alpha, fixed palettes, bounds, anchors and original gameplay
   markers. Runtime PNGs total 247,769 bytes.
 - `git diff --check`: passed.

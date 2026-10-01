@@ -1,5 +1,6 @@
 # MAX — native boss sprites ready for integration
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 **Four packed native sheets, four atlas manifests and 256 isolated PNG frames**
 for **max.iverfinne.no**, covering boss designs for levels 5, 10, 15 and 20.
 Every isolated frame matches its packed sheet cell exactly. Delivery checks
@@ -22,7 +23,7 @@ exposure. These 32×32 cells are drawn at the same native scale as Max.
 The alternative 64-frame Crown remains a reference; the final boss keeps the
 existing 128-frame atlas and its three phases. The unchanged manifests and
 validation report describe the original asset delivery, before this runtime
-adoption. `scripts/verify-native-art.py` also validates the three adopted sheets
+adoption. [historical verify-native-art.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/verify-native-art.py) also validates the three adopted sheets
 against their isolated PNG frames and colour-signal contracts.
 
 | Level | ID | Sheet / atlas | Design |
@@ -40,25 +41,9 @@ against their isolated PNG frames and colour-signal contracts.
 
 ![Original Max and the four bosses at the same exact 4× native scale](preview/scale-contact-4x.png)
 
-## Preview
+## Preview and authoring
 
-Open [viewer-standalone.html](viewer-standalone.html). Its four PNG sheets are embedded,
-so it needs no server, network connection or neighbouring files. Choose a state,
-play or pause, scrub its eight frames, change the preview speed, or switch the
-background. Every boss is displayed at the same integer **4× or 6×** scale.
-The optional full-sheet view uses an exact **2×** enlargement and scrolls on
-small screens. Downloads preserve the native PNG bytes.
-
-[viewer.html](viewer.html) uses relative `native/` paths. The standalone version
-embeds the same PNG bytes unchanged. The user ZIP includes `embed-viewer.mjs`
-to regenerate it with `node embed-viewer.mjs`; the repository handoff needs only
-the ready viewer files.
-
-The `preview/` folder also contains exact 4× full-sheet PNGs and complete
-64-frame GIF sequences at 6× scale. Each GIF lasts eight seconds; alternating
-120/130 ms frame durations represent 8 fps within GIF's centisecond timing.
-The scale contact uses boss frames 0, 21 and 44 for idle, windup and vulnerable.
-Original Max's idle frame is repeated as a size reference in each row.
+Use the current game's isolated `/review.html` boss fixtures and [Figma frame 160:2](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). The two standalone viewers were retired after integration. Native PNG/JSON, individual frames, exact 4× contact sheets and 6× animation GIFs remain available in this pack.
 
 ## Frame contract
 

@@ -100,11 +100,11 @@ variation is part of the supplied poses and keeps the same anchor. The new
 64-frame Crown appearance remains a reference: garden 20 retains the existing
 128-frame Crown atlas and all three visual phases.
 
-Validation: `scripts/verify-native-art.py` checks all 1,088 cells and 176 clips,
+Validation: [historical verify-native-art.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/verify-native-art.py) checks all 1,088 cells and 176 clips,
 including palettes, alpha, bounds, foot registration and original hit/pour
 markers. For the milestone sheets it also compares every packed cell with its
 isolated PNG and checks that amber/cyan signals occur in their intended rows.
-`tests/native-art.test.cjs` checks loading failure isolation, original
+[historical native-art.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/native-art.test.cjs) checks loading failure isolation, original
 fallback, exact source frames/native scale, co-op animation continuity,
 timer-driven tells and attacks, milestone identities, Crown phases/exposure,
 specials and death cleanup.

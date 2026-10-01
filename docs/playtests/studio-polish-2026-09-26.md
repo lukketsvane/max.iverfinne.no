@@ -25,13 +25,7 @@ streamed soundtrack remain part of that loop.
 
 ## Reproducing checks
 
-```sh
-npm test
-npm run build
-node scripts/playtest-garden-guardians.cjs
-node scripts/render-effects-preview.cjs
-node scripts/check-garden-guardians-browser.cjs
-```
+Historical source: [playtest-garden-guardians.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/playtest-garden-guardians.cjs), [render-effects-preview.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/render-effects-preview.cjs). Current validation: `npm test` and `npm run build`.
 
 The browser check requires installed Playwright Chromium and WebKit browsers.
 It exercises all twenty boss warnings, planted bombs, every animation action,
@@ -75,20 +69,11 @@ one fixed pilot and seed. They do not isolate one mechanic or measure enjoyment.
 Reproduce the three intermediate after-runs from commit `6a55e15` (the current
 shrines deliberately require more exploration):
 
-```sh
-node - <<'NODE'
-const {run}=require('./scripts/playtest-garden-guardians.cjs');
-for (const spec of [
-  {difficulty:'easy',classes:['mech','herbalist'],latency:100},
-  {difficulty:'medium',classes:['mech','herbalist'],latency:100},
-  {difficulty:'medium',classes:['runner','herbalist'],latency:250},
-]) console.log(JSON.stringify(run({...spec,seed:260926,limit:3,seconds:240})));
-NODE
-```
+Historical source: [playtest-garden-guardians.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/playtest-garden-guardians.cjs). Current validation: `npm test` and `npm run build`.
 
 ## Encounter, input and authority checks
 
-`tests/studio-coop-qa.test.cjs` runs all twenty guardians through the actual
+[historical studio-coop-qa.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/studio-coop-qa.test.cjs) runs all twenty guardians through the actual
 paired frame loop in explicitly isolated arenas. The rotating pairs are Mech /
 Herbalist, Moss / Bulwark, Pølge / Herbalist, and Sligo / Mech. Every guardian
 reached an amber warning, a real attack and cyan recovery on both clients;
@@ -130,7 +115,7 @@ actual entrance without position changes between actions. Both production
 picture maps are loaded. The new mill ladder fixes the Railway's awkward
 return from its 41-pixel east rock face.
 
-`tests/guardian-site-coop.test.cjs` confirms the chosen site through ordinary
+[historical guardian-site-coop.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/guardian-site-coop.test.cjs) confirms the chosen site through ordinary
 snapshots, late joining and authority handoff in all 20 gardens. A duplicated
 guest seed-cache claim awards the two shared seeds once and cannot respawn
 after handoff. All 19 non-final gardens still require a guest to physically
@@ -157,12 +142,8 @@ successful cooperation, not a claim of complete-campaign or human playtesting.
 
 Reproduce the elevated continuous story (also the current pilot default):
 
-```sh
-node scripts/playtest-garden-guardians.cjs --seed=11 --difficulty=medium --limit=1 --latency=100
-```
+Historical source: [playtest-garden-guardians.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/playtest-garden-guardians.cjs). Current validation: `npm test` and `npm run build`.
 
 Exercise both production picture maps with the soil-shrine selection:
 
-```sh
-node scripts/playtest-garden-guardians.cjs --seed=4 --easy --limit=2 --latency=100
-```
+Historical source: [playtest-garden-guardians.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/playtest-garden-guardians.cjs). Current validation: `npm test` and `npm run build`.

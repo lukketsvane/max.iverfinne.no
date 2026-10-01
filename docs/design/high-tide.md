@@ -73,4 +73,4 @@ på staden og kan reddast, utan å bli flytta til botnen av kartet.
 `playtest.html` opnar to isolerte motorar med vanleg input og 100 ms forseinking
 kvar veg. Ingen konto, lagring eller offentleg lobby blir brukt. Dei valfrie
 pilotane trykkjer berre dei vanlege tastane. Knappane over kvart bilete tek over
-manuelt. `scripts/playtest-high-tide.cjs` køyrer same inputpilot ved 30 Hz.
+manuelt. [historical playtest-high-tide.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/playtest-high-tide.cjs) køyrer same inputpilot ved 30 Hz.

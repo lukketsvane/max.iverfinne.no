@@ -5,7 +5,7 @@ Mech and Moss place stationary bombs with a two-second fuse.
 
 ## Input-driven two-player iterations
 
-`node scripts/playtest-garden-guardians.cjs` runs two independent clients through
+[historical playtest-garden-guardians.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/playtest-garden-guardians.cjs) runs two independent clients through
 the real frame loop, sends keyboard input and exchanges authoritative snapshots
 with 100 ms simulated latency. It never writes player position, damage or rewards.
 It uses generated layouts in the VM harness; this is not a substitute for browser

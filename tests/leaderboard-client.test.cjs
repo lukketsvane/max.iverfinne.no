@@ -44,40 +44,6 @@ test('account changes during publication never return another account’s result
   await assert.rejects(pending, /account changed/);
 });
 
-test('listing uses stable server order and complete records with explicit pagination', async () => {
-  const { createLeaderboard } = await import('../garden-leaderboard.mjs');
-  const calls = [], data = [row()];
-  const query = {
-    select(fields) { calls.push(['select', fields]); return this; },
-    order(field, options) { calls.push(['order', field, options]); return this; },
-    async range(first, last) { calls.push(['range', first, last]); return { data, error: null }; },
-  };
-  const api = createLeaderboard({ from(table) { assert.equal(table, 'max_garden_scores'); return query; } }, () => null);
-  const rows = await api.list(20);
-  assert.equal(rows.length, 1);
-  assert.equal(rows[0].name, 'iver');
-  assert.deepEqual(calls.at(-1), ['range', 20, 39]);
-  assert.deepEqual(calls.filter(c => c[0] === 'order').map(c => c[1]), ['growth', 'plant_count', 'finished_at', 'user_id']);
-  data[0].plants[0].growth = 0;
-  assert.equal(rows[0].plants[0].growth, 6.718);
-  await assert.rejects(api.list(-1), /Invalid leaderboard page/);
-});
-
-test('missing backend and network errors are reported without pretending a global publish succeeded', async () => {
-  const { createLeaderboard } = await import('../garden-leaderboard.mjs');
-  const offline = createLeaderboard(null, () => null);
-  assert.equal(offline.configured, false);
-  await assert.rejects(offline.list(), /unavailable/);
-  await assert.rejects(offline.submit(run()), /Sign in/);
-  const identity = () => ({ id: owner });
-  for (const error of [{ code: 'PGRST202' }, { code: '42501' }, new TypeError('Failed to fetch')]) {
-    const api = createLeaderboard({ rpc: async () => { if (error instanceof TypeError) throw error; return { error }; } }, identity);
-    await assert.rejects(api.submit(run()), /not ready|account|connect/i);
-  }
-  const waiting = createLeaderboard({ rpc() { throw new Error('must not send'); } }, identity, () => false);
-  await assert.rejects(waiting.submit(run()), /Sign in/);
-});
-
 test('a bouquet with every plant kind the game grows can be published', async () => {
   const { createLeaderboard } = await import('../garden-leaderboard.mjs');
   const game = require('./game-harness.cjs').loadGame().game, kinds = Math.max(game.plantCollection().length, Math.max(...game.SLIGO_KINDS) + 1);

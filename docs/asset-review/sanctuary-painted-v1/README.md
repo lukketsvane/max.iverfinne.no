@@ -1,5 +1,6 @@
 # Sanctuary tiles — painted sheet
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 The owner's painted tile sheet (`source.png`, 1536×1024, transparent background) cut into its loose parts:
 `parts/<group>/<nn>.png` with `parts.json` (groups in `groups.json`: ruins and wood, lights and props, water,
 stone, branches, tiles and ground flora). Rebuild with

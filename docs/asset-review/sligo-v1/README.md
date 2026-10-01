@@ -1,5 +1,6 @@
 # Max Sligo Neverdahl — the easter-egg skin
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 The owner asked for a fifth character, an easter egg called **Max Sligo Neverdahl** (Sligo for short, pack id `sligo`), and sent its sprite sheet to build it from. This folder keeps that sheet and the review of what was built from it.
 
 ![Both sheets and Sligo beside the tide skin, exactly 4x](contact-4x.png)
@@ -24,7 +25,7 @@ The sheet came out of an image generator with its background removed. A red and 
 
 ## Build
 
-`python3 scripts/build-sligo.py` (Pillow, numpy, scipy, no randomness) writes:
+[historical build-sligo.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-sligo.py) (Pillow, numpy, scipy, no randomness) writes:
 
 - `assets/max-skins-v1/sligo/`: `main.png`, `interaction.png` and `atlas.json`;
 - this folder: `contact-1x.png`, `contact-4x.png`, `animations-4x.gif` and `registration.json`.
@@ -46,7 +47,7 @@ The build works in these steps:
   - each frame is centred on x=16;
   - its lowest row stands on the original Max frame's body bottom (`assets/max-skins-v1/source/original-poses.json`), so feet stand on the soil and jump frames keep their lift.
 
-  In 18 cells that bottom is the cell's last row: the whole walk row, run 2 and 5, and the whole stretch row. There Sligo stands one pixel higher, so no cell is touched at its edge. `scripts/verify-native-art.py` compares feet exactly, so it reports these 18 cells. A frame that would overflow its cell stops the build: the fix is a smaller scale for every frame, never a crop.
+  In 18 cells that bottom is the cell's last row: the whole walk row, run 2 and 5, and the whole stretch row. There Sligo stands one pixel higher, so no cell is touched at its edge. [historical verify-native-art.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/verify-native-art.py) compares feet exactly, so it reports these 18 cells. A frame that would overflow its cell stops the build: the fix is a smaller scale for every frame, never a crop.
 
 `registration.json` records the scale, the palette, each creature's box in `source.png`, and the pose, mirror, feet and size of every cell.
 
@@ -78,5 +79,5 @@ This is the art pack only:
 
 - `assets/max-skins-v1/manifest.json` still lists the four skins.
 - `native-art.mjs` (`SKINS`), `max-classes.js` (`skin()`) and `scripts/build-static.cjs` know only those four.
-- `tests/sligo-pack.test.cjs` checks the pack's contract.
-- **Figma.** `main.png` is pinned in `assets/figma-pending.json`, because the menu's `assets/max-skins-v1/<id>/main.png` counts it as loaded. `interaction.png` joins that list when the game loads the pack.
+- [historical sligo-pack.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/sligo-pack.test.cjs) checks the pack's contract.
+- **Figma.** `main.png` is pinned in the retired pending-art list, because the menu's `assets/max-skins-v1/<id>/main.png` counts it as loaded. `interaction.png` joins that list when the game loads the pack.

@@ -1,5 +1,6 @@
 # Garden guardians — native 1×
 
+Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Sixteen generated boss designs join Mossback, Bellkeeper, Moon Moth and Hollow
 Crown. The main garden has 20 distinct configured guardians, one per stage.
 `run-director.inc.js` owns attacks, phases and rewards; art never applies damage.
@@ -39,36 +40,11 @@ attack or its damage. Recovery and hurt have their own drawings, and the four
 collapse poses finish before the transparent death frame. Amber is confined to
 windup; cyan is confined to vulnerability.
 
-## Import and reproduce
+## Native authoring
 
-Sharp is required for authoring. Import one generated master and repack:
+Edit the existing native sheets in [Figma frame 160:2](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Preserve the palette, frame rectangles, anchor, clip timing and gameplay tells, then follow [docs/figma.md](../../docs/figma.md). The master-import and repacking generator has been retired; its [source remains in Git history](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-garden-guardians.cjs).
 
-```sh
-node scripts/build-garden-guardians.cjs --motion-import --id=sprout-sentinel
-```
-
-Omit `--id` to import every available motion record. A record has this shape:
-
-```json
-{"id":"sprout-sentinel","source":"/absolute/generated/master.png","prompt":"Full generation prompt","grid":[4,8]}
-```
-
-Reproduce all runtime atlases from the checked-in native sources, without the
-large generated masters:
-
-```sh
-node scripts/build-garden-guardians.cjs
-```
-
-The generator also updates the contact sheet, manifests and exact pending
-Figma byte pins. Only run one importer at a time. A selected `--id` restricts
-master import, while the final repack includes the full roster.
-
-The original eight-pose sources remain in `source/<id>.png`, with their original
-prompts in `prompts.json`. `--import` reimports those original masters. Creatures
-with no motion source retain the old 256×256 fallback atlas: eight authored
-poses repeated across held rows, honestly distinct from the new 32-pose motion
-sheets. An existing motion source always takes precedence during packing.
+Original eight-pose and motion sources, prompts, provenance, contact sheets and native atlases remain intact. The current-engine guardian motion review remains available at `/guardian-motion-review.html`.
 
 ## Palette and Figma
 
@@ -77,5 +53,5 @@ purple, frost and kiln accents. New runtime PNGs must be placed in the game's
 Figma production section. The sheets live in groups `366:2` and `369:2` inside
 current production frame `160:2`; `figma.json` records their nodes and successful
 byte-for-byte readback. Until legacy source section `52:2` and the global
-manifest are reconciled, `assets/figma-pending.json` pins the exact bytes per the
+manifest are reconciled, the retired pending-art list pins the exact bytes per the
 documented workflow. This does not claim a passing global `figma:check`.
