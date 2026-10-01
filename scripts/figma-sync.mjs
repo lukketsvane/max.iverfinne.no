@@ -7,7 +7,7 @@ import { inflateSync } from 'node:zlib';
 import { FIGMA, FigmaError, all, connect, download, metadata, tool, toolCalls, unxml } from './figma-mcp.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE = '160:2', RULES = { pixelArt: '396:3', exportCheck: '396:12' }, GRIDS = '396:19', PALETTE = '396:25';
+const SOURCE = FIGMA.pages.production, RULES = { pixelArt: '396:3', exportCheck: '396:12' }, GRIDS = '396:19', PALETTE = '396:25';
 const PULLABLE = ['DRIFT', 'NEW-IN-FIGMA', 'MISSING-IN-REPO', 'MANIFEST-STALE'];
 const HINTS = {
   DRIFT: 'Figma changed the image → npm run figma:pull',
@@ -114,7 +114,7 @@ async function hashes(nodes, scopes, doubt) {
 const topLevel = n => { while (n.parent.parent?.id) n = n.parent; return n; };
 const byNode = (a, b) => { const [p, q] = [a.nodeId ?? a.id, b.nodeId ?? b.id].map(s => s.split(':').map(Number)); return p[0] - q[0] || p[1] - q[1]; };
 const byPath = (a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0;
-const groupOf = name => name.replace(/^\d+\s*/, '').split(' — ')[0].trim().toLowerCase().replace(/\s+/g, '-');
+const groupOf = name => name.replace(/^.*RUNTIME\s*\/\s*/, '').replace(/^\d+\s*/, '').split(' — ')[0].trim().toLowerCase().replace(/\s+/g, '-');
 const kindOf = n => n.id === SOURCE ? 'production' : /UNUSED/.test(n.name) ? 'unused' : /^ARCHIVE/.test(n.name) ? 'archive'
   : /WORKBENCH/.test(n.name) ? 'workbench' : /DO NOT EXPORT/.test(n.name) ? 'reference' : 'draft';
 async function pool(items, fn, width = 4) {
@@ -123,7 +123,7 @@ async function pool(items, fn, width = 4) {
 }
 
 function assetLayers(section) {
-  const nodes = [...all(section)], png = n => n.type !== 'text' && /\.png$/i.test(n.name), layers = nodes.filter(png);
+  const nodes = [...all(section)], png = n => n.type === 'rectangle' && safePath(n.name), layers = nodes.filter(png);
   const up = n => { const out = []; for (let p = n.parent; p !== section; p = p.parent) out.push(p); return out; };
   const box = n => up(n).reduce(([x0, y0, x1, y1], p) => [x0 + p.x, y0 + p.y, x1 + p.x, y1 + p.y], [n.x, n.y, n.x + n.width, n.y + n.height]);
   const holders = new Set(layers.flatMap(up)), strays = nodes.filter(n => n.type !== 'text' && !png(n) && !holders.has(n)).map(n => [n, box(n)]);
@@ -153,7 +153,12 @@ async function withImages(layers) {
 }
 async function sourceSection() {
   const section = await metadata(SOURCE);
-  if (!['section', 'frame'].includes(section.type)) throw new FigmaError(`Node ${SOURCE} is a ${section.type}, not the production frame. Is ${FIGMA.fileName} the active tab?`);
+  if (!['canvas', 'page'].includes(section.type)) throw new FigmaError(`Node ${SOURCE} is not the production page. Is ${FIGMA.fileName} the active tab?`);
+  section.children = FIGMA.productionSections.map(id => {
+    const node = section.children.find(n => n.id === id);
+    if (!node || node.type !== 'section') throw new FigmaError(`Production section ${id} is missing.`);
+    return node;
+  });
   return section;
 }
 const entryOf = l => ({ path: l.path, nodeId: l.nodeId, group: l.group, width: l.width, height: l.height, sha1: l.sha1 });
@@ -221,16 +226,15 @@ function format(value) {
 const writeManifest = m => writeFileSync(join(root, MANIFEST), format(m));
 
 async function buildManifest() {
-  const pages = await Promise.all([metadata(FIGMA.pages.production), metadata(FIGMA.pages.draft)]);
+  const pages = await Promise.all([...new Set(Object.values(FIGMA.pages))].map(metadata));
   const find = id => pages.flatMap(p => [p, ...all(p)]).find(n => n.id === id);
-  const section = find(SOURCE);
-  if (!['section', 'frame'].includes(section?.type)) throw new FigmaError(`Production frame ${SOURCE} not found. Is ${FIGMA.fileName} the active tab?`);
-  const inSource = new Set(all(section));
+  const section = await sourceSection();
+  const inSource = new Set([...all(section)].map(n => n.id));
   const layers = await withImages(assetLayers(section));
   for (const l of layers) if (l.sha1 && l.sha1 !== repoSha(l.path)) l.problems.push(repoSha(l.path) ? 'Figma image ≠ repo file: npm run figma:check, then figma:pull or update the layer' : 'repo file missing: npm run figma:pull');
-  const named = pages.flatMap(p => [...all(p)]).filter(n => !inSource.has(n) && n !== section && n.type !== 'text' && /^[\w.-]+(\/[\w.-]+)+\.png$/i.test(n.name))
+  const named = pages.flatMap(p => [...all(p)]).filter(n => !inSource.has(n.id) && n.type === 'rectangle' && /^[\w.-]+(\/[\w.-]+)+\.png$/i.test(n.name))
     .map(n => ({ path: n.name, nodeId: n.id, section: topLevel(n).id, width: n.width, height: n.height }));
-  const refs = [...all(pages[0])].filter(n => n.type !== 'text' && n.type !== 'section' && n.parent.type === 'section')
+  const refs = [...all(pages[0])].filter(n => n.type === 'rectangle' && n.parent.type === 'section' && !inSource.has(n.id))
     .map(n => ({ nodeId: n.id, name: n.name, section: n.parent.id, width: n.width, height: n.height }));
   const found = new Map([
     ...await hashes(named, [...new Set(named.map(n => n.section))], unconfirmed),
@@ -263,7 +267,7 @@ async function buildManifest() {
       production: layers.map(entryOf).sort(byPath),
       unused: named.map(n => ({ ...n, sha1: one(n.nodeId), status: 'unused' })).sort(byPath),
       reference: refs.sort(byNode).map(n => ({ ...n, sha1: one(n.nodeId), status: 'reference' })),
-      draftSections: pages[1].children.filter(n => n.type === 'section').sort(byNode).map(n => ({ nodeId: n.id, name: n.name, kind: kindOf(n) })),
+      draftSections: pages[0].children.filter(n => n.type === 'section' && !FIGMA.productionSections.includes(n.id)).sort(byNode).map(n => ({ nodeId: n.id, name: n.name, kind: kindOf(n) })),
     },
     layers,
   };

@@ -19,6 +19,12 @@ export function sampleFrame(manifest, name, seconds = 0, progress) {
   let step;
   if (Number.isFinite(progress)) {
     step = Math.min(count - 1, Math.floor(Math.max(0, Math.min(1, progress)) * count));
+  } else if (clip.durations) {
+    const duration = clip.durations.reduce((sum, value) => sum + value, 0);
+    let time = Math.max(0, Number.isFinite(seconds) ? seconds : 0);
+    time = clip.loop ? time % duration : Math.min(time, duration);
+    step = 0;
+    while (step < count - 1 && time >= clip.durations[step]) time -= clip.durations[step++];
   } else {
     step = Math.floor(Math.max(0, Number.isFinite(seconds) ? seconds : 0) * clip.fps);
     step = clip.loop ? step % count : Math.min(step, count - 1);

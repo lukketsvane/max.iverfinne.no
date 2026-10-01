@@ -1,4 +1,5 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
+import { updateRattusMotion } from './rattus-motion.mjs';
 
 const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
@@ -125,6 +126,7 @@ export function createNativeArt() {
   function load() {
     if (loading) return loading;
     const files = SKINS.slice(1).filter(id => !ON_DEMAND.includes(id)).map(id => [id, CHARACTER_ART[id] ? `assets/characters-v2/${CHARACTER_ART[id]}/atlas.json` : `assets/max-skins-v1/${id}/atlas.json`])
+      .concat([['rattus-motion', 'assets/rattus-motion/atlas.json']])
       .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
@@ -132,7 +134,7 @@ export function createNativeArt() {
     loading = Promise.allSettled(files.map(async ([id, url]) => {
       const atlas = await loadAtlas(url);
       atlases[id] = atlas;
-      if (!SKINS.includes(id)) flashes[id] = flashAtlas(atlas);
+      if (!SKINS.includes(id) && id !== 'rattus-motion') flashes[id] = flashAtlas(atlas);
       return id;
     })).then(results => {
       const status = {
@@ -188,7 +190,14 @@ export function createNativeArt() {
       drawAtlas(ctx, death.atlas, 'death', elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
     }
   }
-  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawEnemy, enemyDefeated, drawDefeated, reset };
+  function drawPlayerMotion(ctx, player, x, y, tint) {
+    const atlas = atlases['rattus-motion'];
+    if (!atlas || !['moss', 'moss-pink'].includes(player.skin) || !atlas.manifest.animations[player.motionName]) return false;
+    const art = tint ? { manifest: atlas.manifest, images: Object.fromEntries(Object.entries(atlas.images).map(([key, image]) => [key, tint(image)])) } : atlas;
+    drawAtlas(ctx, art, player.motionName, player.motionTime, x, y, { facing: player.face });
+    return true;
+  }
+  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion: updateRattusMotion, drawEnemy, enemyDefeated, drawDefeated, reset };
 }
 
 if (typeof window !== 'undefined') {

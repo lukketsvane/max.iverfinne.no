@@ -85,8 +85,9 @@ const found = () => cached ??= runtime();
 test('figma manifest names the file, the source-of-truth section, the rules and one entry per production asset', () => {
   assert.equal(manifest.fileKey, 'TC0PHGMTCMR6im4hb3CSbF');
   assert.equal(manifest.url, 'https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF');
-  assert.deepEqual(manifest.pages, { production: '10:2', draft: '162:2' });
-  assert.equal(manifest.sourceOfTruth.section, '160:2');
+  assert.deepEqual(manifest.pages, { production: '10:2', draft: '10:2' });
+  assert.equal(manifest.sourceOfTruth.section, '10:2');
+  assert.deepEqual(manifest.sourceOfTruth.groups.map(g => g.nodeId), manifest.productionSections);
   const groups = manifest.sourceOfTruth.groups.map(g => g.group);
   assert.ok(manifest.rules.pixelArt.lines.includes('Use solid pixels or binary transparency'));
   assert.ok(manifest.rules.exportCheck.lines.length > 0 && manifest.rules.masterGrids.length > 0);

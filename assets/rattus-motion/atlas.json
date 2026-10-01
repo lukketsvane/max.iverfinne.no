@@ -1,0 +1,4380 @@
+{
+  "schema": "max-native-atlas/v1",
+  "id": "rattus-motion",
+  "cell": [
+    64,
+    40
+  ],
+  "anchor": [
+    32,
+    39
+  ],
+  "palette": [
+    "#0b1017",
+    "#362f3d",
+    "#586369",
+    "#a3acaf",
+    "#d7c8cb",
+    "#9d7336",
+    "#efd17e",
+    "#8b174b",
+    "#cf1769",
+    "#ed5599",
+    "#ffc0c7",
+    "#3b1e18",
+    "#9f3b1f",
+    "#df763a",
+    "#f59945",
+    "#ce6f89"
+  ],
+  "sheets": {
+    "walk": {
+      "image": "walk.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "run": {
+      "image": "run.png",
+      "size": [
+        448,
+        40
+      ]
+    },
+    "brake": {
+      "image": "brake.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "pounce": {
+      "image": "pounce.png",
+      "size": [
+        448,
+        40
+      ]
+    },
+    "kneel-down": {
+      "image": "kneel-down.png",
+      "size": [
+        320,
+        40
+      ]
+    },
+    "kneel": {
+      "image": "kneel.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "rest": {
+      "image": "rest.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "rise": {
+      "image": "rise.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "rising-kick": {
+      "image": "rising-kick.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "turning-kick": {
+      "image": "turning-kick.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "double-knee": {
+      "image": "double-knee.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "sweep": {
+      "image": "sweep.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "parry": {
+      "image": "parry.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "tail-whip": {
+      "image": "tail-whip.png",
+      "size": [
+        576,
+        40
+      ]
+    },
+    "split-kick": {
+      "image": "split-kick.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "swarm-transform": {
+      "image": "swarm-transform.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "handstand": {
+      "image": "handstand.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "dive": {
+      "image": "dive.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "guard": {
+      "image": "guard.png",
+      "size": [
+        256,
+        40
+      ]
+    },
+    "uppercut": {
+      "image": "uppercut.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "lunge-punch": {
+      "image": "lunge-punch.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "jab-cross": {
+      "image": "jab-cross.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "palm-strike": {
+      "image": "palm-strike.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "tail-cartwheel": {
+      "image": "tail-cartwheel.png",
+      "size": [
+        512,
+        40
+      ]
+    },
+    "rat-call": {
+      "image": "rat-call.png",
+      "size": [
+        512,
+        40
+      ]
+    }
+  },
+  "frames": [
+    {
+      "sheet": "walk",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        23,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        25,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "walk",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        24,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        15,
+        23,
+        43,
+        39
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        22,
+        47,
+        38
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        10,
+        21,
+        49,
+        33
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        12,
+        22,
+        41,
+        38
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        25,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "run",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        25,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        23,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        23,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        23,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        24,
+        44,
+        40
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        25,
+        45,
+        39
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        23,
+        45,
+        40
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        25,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "brake",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        25,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        22,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        15,
+        23,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        25,
+        47,
+        39
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        8,
+        20,
+        50,
+        31
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        11,
+        23,
+        46,
+        40
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        24,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "pounce",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        24,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel-down",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        25,
+        15,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel-down",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        19,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel-down",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        20,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel-down",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        24,
+        19,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel-down",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        19,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        20,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        20,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        20,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        20,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        20,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        20,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        20,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "kneel",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        20,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        22,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        22,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        22,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        22,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        22,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        23,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        22,
+        38,
+        39
+      ]
+    },
+    {
+      "sheet": "rest",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        22,
+        38,
+        39
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        21,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        21,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        21,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        22,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        20,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        19,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        19,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "rise",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        19,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        23,
+        48,
+        40
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        18,
+        44,
+        40
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        16,
+        44,
+        40
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        13,
+        43,
+        39
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        13,
+        46,
+        39
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        13,
+        46,
+        40
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        16,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "rising-kick",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        19,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        18,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        23,
+        45,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        18,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        17,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        17,
+        44,
+        36
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        19,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        25,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "turning-kick",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        18,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        22,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        19,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        19,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        18,
+        42,
+        38
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        44,
+        38
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        19,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        24,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "double-knee",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        19,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        15,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        22,
+        48,
+        39
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        21,
+        48,
+        39
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        15,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        15,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        15,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        15,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "sweep",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        15,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        18,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        18,
+        43,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        17,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        16,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        15,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "parry",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "tail-whip",
+      "rect": [
+        0,
+        0,
+        96,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        18,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-whip",
+      "rect": [
+        96,
+        0,
+        96,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        22,
+        74,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-whip",
+      "rect": [
+        192,
+        0,
+        96,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        19,
+        45,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-whip",
+      "rect": [
+        288,
+        0,
+        96,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        13,
+        80,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-whip",
+      "rect": [
+        384,
+        0,
+        96,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        13,
+        19,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-whip",
+      "rect": [
+        480,
+        0,
+        96,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        18,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        22,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        23,
+        45,
+        40
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        15,
+        22,
+        46,
+        39
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        16,
+        47,
+        40
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        17,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "split-kick",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        17,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        25,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        22,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        28,
+        45,
+        39
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        29,
+        44,
+        39
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        19,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        21,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        16,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "swarm-transform",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        15,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        18,
+        39,
+        38
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        22,
+        42,
+        38
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        14,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        14,
+        38,
+        40
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        17,
+        45,
+        40
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        16,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        22,
+        43,
+        38
+      ]
+    },
+    {
+      "sheet": "handstand",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        18,
+        40,
+        38
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        27,
+        39,
+        39
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        23,
+        41,
+        38
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        22,
+        42,
+        32
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        24,
+        41,
+        38
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        26,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        25,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        21,
+        39,
+        40
+      ]
+    },
+    {
+      "sheet": "dive",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        21,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "guard",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        15,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "guard",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        15,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "guard",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        15,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "guard",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        25,
+        15,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        22,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        8,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        8,
+        38,
+        36
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        11,
+        43,
+        32
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        15,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        19,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "uppercut",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        22,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        22,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        14,
+        23,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        13,
+        21,
+        41,
+        38
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        16,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        14,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        14,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        15,
+        41,
+        38
+      ]
+    },
+    {
+      "sheet": "lunge-punch",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        15,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        14,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        15,
+        45,
+        39
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        15,
+        44,
+        39
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        15,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        18,
+        42,
+        40
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        16,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        14,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "jab-cross",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        15,
+        40,
+        39
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        17,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        22,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        22,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        20,
+        44,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        21,
+        49,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        19,
+        44,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        17,
+        23,
+        43,
+        40
+      ]
+    },
+    {
+      "sheet": "palm-strike",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        17,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        17,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        23,
+        44,
+        39
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        15,
+        45,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        15,
+        16,
+        51,
+        40
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        22,
+        56,
+        39
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        16,
+        23,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        18,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "tail-cartwheel",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        21,
+        17,
+        41,
+        39
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        0,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        20,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        64,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        20,
+        21,
+        47,
+        40
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        128,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        19,
+        40,
+        40
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        192,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        18,
+        41,
+        40
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        256,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        19,
+        20,
+        44,
+        40
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        320,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        23,
+        23,
+        42,
+        39
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        384,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        18,
+        21,
+        47,
+        40
+      ]
+    },
+    {
+      "sheet": "rat-call",
+      "rect": [
+        448,
+        0,
+        64,
+        40
+      ],
+      "anchor": [
+        32,
+        39
+      ],
+      "opaqueBounds": [
+        22,
+        21,
+        39,
+        40
+      ]
+    }
+  ],
+  "animations": {
+    "walk": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": true
+    },
+    "run": {
+      "frames": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "fps": 13.46153846153846,
+      "durations": [
+        0.075,
+        0.065,
+        0.07,
+        0.09,
+        0.065,
+        0.07,
+        0.085
+      ],
+      "loop": true
+    },
+    "brake": {
+      "frames": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "fps": 11.940298507462687,
+      "durations": [
+        0.055,
+        0.055,
+        0.06,
+        0.075,
+        0.11,
+        0.11,
+        0.085,
+        0.12
+      ],
+      "loop": false
+    },
+    "pounce": {
+      "frames": [
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "fps": 11.764705882352942,
+      "durations": [
+        0.07,
+        0.065,
+        0.085,
+        0.13,
+        0.08,
+        0.065,
+        0.1
+      ],
+      "loop": false
+    },
+    "kneel-down": {
+      "frames": [
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "fps": 9.25925925925926,
+      "durations": [
+        0.09,
+        0.09,
+        0.11,
+        0.11,
+        0.14
+      ],
+      "loop": false
+    },
+    "kneel": {
+      "frames": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "fps": 5.555555555555555,
+      "durations": [
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18
+      ],
+      "loop": true
+    },
+    "rest": {
+      "frames": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "fps": 5.555555555555555,
+      "durations": [
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18,
+        0.18
+      ],
+      "loop": true
+    },
+    "rise": {
+      "frames": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58
+      ],
+      "fps": 9.090909090909092,
+      "durations": [
+        0.11,
+        0.11,
+        0.11,
+        0.11,
+        0.11,
+        0.11,
+        0.11,
+        0.11
+      ],
+      "loop": false
+    },
+    "rising-kick": {
+      "frames": [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "turning-kick": {
+      "frames": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "double-knee": {
+      "frames": [
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "sweep": {
+      "frames": [
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "parry": {
+      "frames": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "tail-whip": {
+      "frames": [
+        99,
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "split-kick": {
+      "frames": [
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "swarm-transform": {
+      "frames": [
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "handstand": {
+      "frames": [
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "dive": {
+      "frames": [
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "guard": {
+      "frames": [
+        137,
+        138,
+        139,
+        140
+      ],
+      "fps": 4.761904761904762,
+      "durations": [
+        0.21,
+        0.21,
+        0.21,
+        0.21
+      ],
+      "loop": true
+    },
+    "uppercut": {
+      "frames": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "lunge-punch": {
+      "frames": [
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "jab-cross": {
+      "frames": [
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "palm-strike": {
+      "frames": [
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "tail-cartwheel": {
+      "frames": [
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    },
+    "rat-call": {
+      "frames": [
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188
+      ],
+      "fps": 10,
+      "durations": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "loop": false
+    }
+  }
+}

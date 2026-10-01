@@ -1,0 +1,34 @@
+name: Rattus animation browser review
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths:
+      - 'rattus-motion.mjs'
+      - 'native-art.mjs'
+      - 'assets/native-atlas.mjs'
+      - 'assets/rattus-motion/**'
+      - 'index.html'
+      - 'coop-game.inc.js'
+      - 'polge.inc.js'
+      - 'scripts/check-rattus-browser.cjs'
+      - '.github/workflows/rattus-review.yml'
+permissions:
+  contents: read
+jobs:
+  animation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps chromium webkit
+      - run: node scripts/check-rattus-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rattus-animation-review
+          path: rattus-browser-review/
