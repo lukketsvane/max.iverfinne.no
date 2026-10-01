@@ -42,30 +42,37 @@ SPECS = {
   ],
  },
  'rattle-norvegicus-pink': {
-  'skin': 'moss-pink', 'class': 'runner', 'scale': .175, 'keepParts': True, 'matte': True,
-  'variantOf': 'rattle-norvegicus', 'sourceLabel': 'owner-supplied pink-and-gold costume sheet',
-  'palette': ['0b1017','101932','586369','a3acaf','f3e7ca','9d7336','efd17e','193a28','4f7545','9f3b1f','df763a','edc191','7f2346','bd3b69','ef609a','ffc0c7'],
-  'sources': {'sheet': 'rattus-pink-gold-v1.png'},
-  'sourceRowCenters': {'sheet': [98,266,436,607,776,940,1153]},
+  'skin': 'moss-pink', 'class': 'runner', 'scale': .17, 'keepParts': True, 'sourceAlpha': 240,
+  'variantOf': 'rattle-norvegicus', 'sourceLabel': 'five image_gen grey-rat magenta-and-gold ring-gear sheets, no hat or cape',
+  'palette': ['0b1017','362f3d','586369','a3acaf','d7c8cb','9d7336','efd17e','8b174b','cf1769','ed5599','ffc0c7','3b1e18','9f3b1f','df763a','f59945','ce6f89'],
+  'sources': {'ground': 'rattus-ring-v4-01.png', 'aerial': 'rattus-ring-v4-02.png', 'sweep': 'rattus-ring-v4-03.png', 'kicks': 'rattus-ring-v4-04.png', 'recovery': 'rattus-ring-v4-05.png'},
+  'prompts': 'rattus-ring-v4-prompts.json',
+  'sourceRowCenters': {
+   'ground': [89,244,400,561,706,883,1053,1196],
+   'aerial': [100,263,428,585,743,897,1051,1180],
+   'sweep': [118,275,439,598,751,907,1057,1192],
+   'kicks': [101,257,415,574,730,878,1025,1176],
+   'recovery': [102,254,417,600,747,885,1029,1148],
+  },
   'main': [
-   [('sheet',0,c) for c in range(8)],
-   [('sheet',1,c) for c in range(8)],
-   [('sheet',3,c) for c in [0,1,3,5,6,7,6,1]],
-   [('sheet',0,c) for c in range(8)],
-   [('sheet',3,0),('sheet',3,1),('sheet',4,2),('sheet',4,3),('sheet',4,2),('sheet',4,1),('sheet',4,6),('sheet',0,0)],
-   [('sheet',5,2),('sheet',5,5),('sheet',5,6),('sheet',4,1),('sheet',4,6),('sheet',4,7),('sheet',0,1),('sheet',0,0)],
-   [('sheet',3,1),('sheet',4,2),('sheet',4,4),('sheet',5,3),('sheet',5,4),('sheet',4,5),('sheet',4,6),('sheet',0,0)],
-   [('sheet',0,c) for c in range(8)],
+   [('ground',0,c) for c in range(8)],
+   [('recovery',0,c) for c in range(8)],
+   [('recovery',1,c) for c in range(8)],
+   [('recovery',7,c) for c in range(8)],
+   [('kicks',2,c) for c in [0,1,2,3,4,5,6,7]],
+   [('sweep',7,1),('sweep',7,2),('recovery',3,6),('recovery',6,3),('recovery',6,5),('recovery',6,4),('recovery',0,0),('ground',0,0)],
+   [('aerial',0,c) for c in range(8)],
+   [('recovery',4,c) for c in range(8)],
   ],
   'interaction': [
-   [('sheet',0,0),('sheet',4,7),('sheet',4,6),('sheet',4,1),('sheet',4,1),('sheet',4,6),('sheet',4,7),('sheet',4,1)],
-   [('sheet',4,7),('sheet',4,6),('sheet',4,1),('sheet',6,3),('sheet',6,2),('sheet',4,1),('sheet',4,6),('sheet',4,7)],
-   [('sheet',0,0),('sheet',4,1),('sheet',5,6),('sheet',5,2),('sheet',5,2),('sheet',5,2),('sheet',5,2),('sheet',4,1)],
-   [('sheet',1,c) for c in range(8)],
-   [('sheet',4,7),('sheet',4,6),('sheet',4,1),('sheet',6,3),('sheet',6,2),('sheet',4,1),('sheet',4,6),('sheet',4,7)],
-   [('sheet',4,0),('sheet',4,2),('sheet',4,3),('sheet',4,6),('sheet',5,6),('sheet',5,2),('sheet',5,2),('sheet',5,5)],
-   [('sheet',0,2),('sheet',6,2),('sheet',6,7),('sheet',6,2),('sheet',6,7),('sheet',0,3),('sheet',0,4),('sheet',0,1)],
-   [('sheet',4,1),('sheet',4,6),('sheet',6,3),('sheet',6,4),('sheet',6,5),('sheet',6,6),('sheet',4,6),('sheet',4,7)],
+   [('ground',0,0),('ground',3,6),('ground',3,2),('ground',7,0),('ground',7,0),('ground',7,6),('ground',3,2),('ground',7,0)],
+   [('sweep',3,c) for c in range(8)],
+   [('ground',0,0),('ground',3,2),('ground',7,0),('ground',7,1),('ground',7,2),('ground',7,1),('ground',7,2),('ground',7,0)],
+   [('ground',3,c) for c in [0,2,1,3,4,5,6,7]],
+   [('sweep',3,c) for c in [0,1,5,3,4,2,6,7]],
+   [('ground',5,c) for c in [1,2,3,5]] + [('recovery',3,c) for c in [2,3,4,5]],
+   [('ground',0,0),('ground',6,1),('ground',6,2),('ground',0,7),('ground',6,1),('ground',6,2),('ground',6,1),('ground',6,2)],
+   [('recovery',6,c) for c in [4,5,3,2,1,0,0,0]],
   ],
  },
  'cairn': {
@@ -155,7 +162,7 @@ def rattle_poses(spec):
   pixels=np.array(Image.open(SOURCE/file).convert('RGBA'));found={}
   if spec.get('matte'):
    pixels[np.min(pixels[:,:,:3],axis=2)>=235]=0
-  for group in components(pixels[:,:,3]>=210):
+  for group in components(pixels[:,:,3]>=spec.get('sourceAlpha',210)):
    if len(group)<1000:continue
    xs,ys=zip(*group)
    if max(ys)-min(ys)+1>185:continue
@@ -167,7 +174,7 @@ def rattle_poses(spec):
   used={(r,c) for sheet in ['main','interaction'] for cells in spec[sheet] for source,r,c in cells if source==name}
   for row,col in used:
    group=found[row,col];xs,ys=zip(*group)
-   assert row<7 and min(xs)>0 and min(ys)>0 and max(xs)<pixels.shape[1]-1 and max(ys)<pixels.shape[0]-1, f'{name} cropped source cell {(row,col)}'
+   assert min(xs)>0 and min(ys)>0 and max(xs)<pixels.shape[1]-1 and max(ys)<pixels.shape[0]-1, f'{name} cropped source cell {(row,col)}'
    selected=np.zeros_like(pixels)
    for x,y in group:selected[y,x]=pixels[y,x]
    cell=Image.fromarray(selected);cell=cell.crop(cell.getbbox())

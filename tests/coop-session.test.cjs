@@ -78,7 +78,7 @@ test('joining an already-running shared garden begins immediately without a lobb
   try{
     await s.enter({id:'room'});
     assert.equal(s.playing,true);assert.equal(starts.length,1);assert.equal(s.canReady,false);
-    assert.deepEqual(s.selection,{classId:'runner',skinId:'moss',difficulty:'hard'});
+    assert.deepEqual(s.selection,{classId:'runner',skinId:'moss-pink',difficulty:'hard'});
     assert.ok(net.sent.some(x=>x.name==='max-coop:room:guest'),'late joiner immediately publishes its character selection');
   }finally{await s.leave();}
 });
@@ -162,7 +162,7 @@ test('character identity owns its appearance while difficulty remains an indepen
   const room={id:'room',host:'p',state:'playing',members:[{id:'p',slot:1,ready:true,name:'p'}]};
   const net=fakeChannelClient({room,userId:'p'});
   const moss=new CoopSession(net.client,{id:'p'}, {}, {classId:'moss',skinId:'ember',difficulty:'insane'});
-  assert.deepEqual(moss.selection,{classId:'runner',skinId:'moss',difficulty:'insane'});
+  assert.deepEqual(moss.selection,{classId:'runner',skinId:'moss-pink',difficulty:'insane'});
   const tank=new CoopSession(net.client,{id:'p'}, {}, {classId:'bulwark',skinId:'tide',difficulty:'easy'});
   assert.deepEqual(tank.selection,{classId:'bulwark',skinId:'ember',difficulty:'easy'});
 });

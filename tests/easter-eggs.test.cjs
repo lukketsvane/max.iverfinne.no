@@ -100,7 +100,7 @@ test('a Sligo loadout is only valid when Sligo is unlocked; otherwise it falls b
   assert.equal(validLoadout({ classId: 'sligo', difficulty: 'hard' }), null);
   assert.equal(validLoadout({ classId: 'sligo' }, ['moth']), null);
   assert.deepEqual(validLoadout({ classId: 'sligo', difficulty: 'hard' }, ['sligo']), { classId: 'sligo', skinId: 'sligo', difficulty: 'hard' });
-  assert.deepEqual(validLoadout({ classId: 'moss' }), { classId: 'runner', skinId: 'moss', difficulty: 'medium' });
+  assert.deepEqual(validLoadout({ classId: 'moss' }), { classId: 'runner', skinId: 'moss-pink', difficulty: 'medium' });
   const storage = memory({ 'max-loadout-v1': JSON.stringify({ classId: 'sligo', skinId: 'sligo', difficulty: 'easy' }) });
   assert.deepEqual(readLoadout(storage), { ...DEFAULT_LOADOUT }, 'another device, or no unlock, never starts as Sligo');
   assert.deepEqual(readLoadout(storage, ['sligo']), { classId: 'sligo', skinId: 'sligo', difficulty: 'easy' });

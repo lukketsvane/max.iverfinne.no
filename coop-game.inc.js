@@ -13,7 +13,7 @@ function coopCleanAvatar(a){
 }
 function beginCoop(network){
   var selection=network.loadouts&&network.loadouts[network.user.id]||network.room.members.find(function(m){return m.id===network.user.id;})||{};
-  var hostSelection=network.loadouts&&network.loadouts[network.room.host]||selection;coop=null;resetRogueRun('NEW RUN',{classId:window.MaxClasses.clean(selection.classId||selection.class_id),skinId:window.MaxClasses.skin(selection.skinId||selection.skin_id||selection.skin),difficulty:hostSelection.difficulty||'medium',mode:network.room.mode||network.mode});companion=null;
+  var hostSelection=network.loadouts&&network.loadouts[network.room.host]||selection;coop=null;resetRogueRun('NEW RUN',{classId:window.MaxClasses.clean(selection.classId||selection.class_id),skinId:window.MaxClasses.skin(selection.skinId||selection.skin_id||selection.skin,selection.classId||selection.class_id),difficulty:hostSelection.difficulty||'medium',mode:network.room.mode||network.mode});companion=null;
   coop={network:network,host:network.host,me:network.user.id,members:{},ui:'',world:1};
   network.room.members.forEach(function(m){var x=levelOriginX(1)+(m.slot-1)*12;coop.members[m.id]=coopMember(m.id,m.slot,network.loadouts&&network.loadouts[m.id]||m,{x:x,y:surfaceY(x)});});
   var me=coop.members[coop.me];rogueRun.classId=me.classId;P.classId=me.classId;rogueRun.skinId=P.skin=me.skin;rogueRun.perks=me.perks;rogueRun.traits=me.traits;
@@ -22,7 +22,7 @@ function beginCoop(network){
 }
 function stopCoop(){coop=null;runActive=false;rogueRun.ended=true;rogueRun.choice=null;clearRunInput();if(perkMenu)perkMenu.style.display='none';}
 function coopMember(id,slot,kit,avatar){
-  var classId=window.MaxClasses.clean(kit.classId||kit.class_id),skin=window.MaxClasses.skin(kit.skinId||kit.skin_id||kit.skin);
+  var classId=window.MaxClasses.clean(kit.classId||kit.class_id),skin=window.MaxClasses.skin(kit.skinId||kit.skin_id||kit.skin,classId);
   return {id:id,slot:slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],owed:0,round:0,ack:0,last:performance.now(),cool:0,dodgeUntil:0,skillUntil:0,braceUntil:0,braceX:0,tunUntil:0,tunX:0,airTop:null,landAt:0,
     avatar:Object.assign(coopAvatar(),{classId:classId,skin:skin},avatar),left:false};
 }

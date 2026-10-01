@@ -52,6 +52,26 @@ test('class selection is validated, independent of skin, and retry restores only
   assert.equal(g.rogueRun.classId, 'mech'); assert.equal(g.P.skin, 'original');
 });
 
+test('Rattus defaults to her latest outfit while explicit alternatives survive retries and host snapshots', () => {
+  const g = loadGame().game;
+  g.resetRogueRun('test', { classId: 'runner' });
+  assert.equal(g.P.skin, 'moss-pink'); assert.equal(g.rogueRun.skinId, 'moss-pink');
+  g.resetRogueRun('test', { classId: 'runner', skinId: 'moss' }); g.resetRogueRun();
+  assert.equal(g.P.skin, 'moss'); assert.equal(g.rogueRun.skinId, 'moss');
+  for (const skinId of [undefined, 'moss']) {
+    const room = { host: ids[0], members: ids.slice(0, 2).map((id, i) => ({ id, slot: i + 1 })) };
+    const loadouts = { [ids[0]]: { classId: 'mech', skinId: 'tide' }, [ids[1]]: { classId: 'runner', skinId } };
+    const players = ids.slice(0, 2).map(id => {
+      const h = loadGame(); h.game.beginCoop({ room, loadouts, user: { id }, host: id === ids[0], action() { return true; }, tick() {} }); return h.game;
+    });
+    const [host, guest] = players, expected = skinId || 'moss-pink';
+    guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
+    assert.equal(host.coop.members[ids[1]].skin, expected); assert.equal(guest.P.skin, expected);
+    host.coopInput(ids[1], { avatar: { ...guest.coopAvatar(), skin: expected === 'moss' ? 'moss-pink' : 'moss' }, actions: [] });
+    assert.equal(host.coop.members[ids[1]].skin, expected); assert.equal(host.coop.members[ids[1]].avatar.skin, expected);
+  }
+});
+
 test('Moss keeps its agile movement and shorter dodge recovery at every supported frame rate', () => {
   for (const hz of [30, 60, 120]) {
     const states = ['mech', 'runner', 'bulwark'].map(id => {

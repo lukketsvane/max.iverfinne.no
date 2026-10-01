@@ -67,6 +67,30 @@
     "sheet": {
       "path": "docs/asset-review/characters-v2/source/rattus-pink-gold-v1.png",
       "sha256": "71d32adebc7bf2d6b7ed633baabb62f69bfecce4dcdd25641f8a21c8622a4202"
+    },
+    "ground": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-01.png",
+      "sha256": "090347ccd98b4e343d242095bfc874b568e21b01ac07e99fd8fefd80a614a22b"
+    },
+    "aerial": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-02.png",
+      "sha256": "f8b556342e9651d3e4851b47c1b3479496c7decc13e45b7ca811ac15470186b9"
+    },
+    "sweep": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-03.png",
+      "sha256": "f6c09ce2c9f17bc07f188178f1eb0cb25f5819f8d91a44ce1bcf2cd6b594505f"
+    },
+    "kicks": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-04.png",
+      "sha256": "b382cec77cbb897da55b8d61eb0696704b092ae10a7ba9e688d52136b1f62d47"
+    },
+    "recovery": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-05.png",
+      "sha256": "0a712911ddef2b43f4135f2326c88c45e4332a77fe344509d095b460631d41f8"
+    },
+    "prompts": {
+      "path": "docs/asset-review/characters-v2/source/rattus-ring-v4-prompts.json",
+      "sha256": "81e08a8ae778d51aa96150518255c0fdfe8c9780353fece8bb269f91eb2cf92c"
     }
   }
 }

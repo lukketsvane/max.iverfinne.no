@@ -1419,7 +1419,7 @@
         0,
         0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1430,7 +1430,7 @@
         0,
         1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1441,7 +1441,7 @@
         0,
         2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1452,7 +1452,7 @@
         0,
         3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1463,7 +1463,7 @@
         0,
         4
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1474,7 +1474,7 @@
         0,
         5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1485,7 +1485,7 @@
         0,
         6
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1496,7 +1496,7 @@
         0,
         7
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "main",
@@ -1504,10 +1504,10 @@
       "column": 0,
       "footBottom": 32,
       "sourceCell": [
-        1,
+        0,
         0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
@@ -1515,10 +1515,10 @@
       "column": 1,
       "footBottom": 32,
       "sourceCell": [
-        1,
+        0,
         1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
@@ -1526,1044 +1526,1044 @@
       "column": 2,
       "footBottom": 32,
       "sourceCell": [
-        1,
+        0,
         2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
       "row": 1,
-      "column": 3,
-      "footBottom": 32,
-      "sourceCell": [
-        1,
-        3
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 1,
-      "column": 4,
-      "footBottom": 32,
-      "sourceCell": [
-        1,
-        4
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 1,
-      "column": 5,
-      "footBottom": 32,
-      "sourceCell": [
-        1,
-        5
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 1,
-      "column": 6,
-      "footBottom": 32,
-      "sourceCell": [
-        1,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 1,
-      "column": 7,
-      "footBottom": 32,
-      "sourceCell": [
-        1,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 0,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 2,
-      "footBottom": 32,
-      "sourceCell": [
-        3,
-        3
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 3,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        5
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 5,
-      "footBottom": 32,
-      "sourceCell": [
-        3,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 2,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 0,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 1,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 2,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 3,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        3
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        4
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 5,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        5
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 6,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 3,
-      "column": 7,
-      "footBottom": 30,
-      "sourceCell": [
-        0,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 0,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 2,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 3,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        3
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 5,
-      "footBottom": 30,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 4,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 0,
-      "footBottom": 30,
-      "sourceCell": [
-        5,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        5
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 2,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 3,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 5,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 5,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 0,
-      "footBottom": 31,
-      "sourceCell": [
-        3,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 2,
-      "footBottom": 30,
-      "sourceCell": [
-        4,
-        4
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 3,
-      "footBottom": 30,
-      "sourceCell": [
-        5,
-        3
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        4
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 5,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        5
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 6,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 7,
-      "column": 0,
-      "footBottom": 32,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 7,
-      "column": 1,
-      "footBottom": 32,
-      "sourceCell": [
-        0,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 7,
-      "column": 2,
-      "footBottom": 32,
-      "sourceCell": [
-        0,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "main",
-      "row": 7,
       "column": 3,
       "footBottom": 32,
       "sourceCell": [
         0,
         3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
-      "row": 7,
+      "row": 1,
       "column": 4,
       "footBottom": 32,
       "sourceCell": [
         0,
         4
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
-      "row": 7,
+      "row": 1,
       "column": 5,
       "footBottom": 32,
       "sourceCell": [
         0,
         5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
-      "row": 7,
+      "row": 1,
       "column": 6,
       "footBottom": 32,
       "sourceCell": [
         0,
         6
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "main",
-      "row": 7,
+      "row": 1,
       "column": 7,
       "footBottom": 32,
       "sourceCell": [
         0,
         7
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 0,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 2,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 3,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 5,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 0,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 0,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 2,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 3,
-      "footBottom": 31,
-      "sourceCell": [
-        6,
-        3
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        6,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 5,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 1,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        7
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
+      "sheet": "main",
       "row": 2,
-      "column": 0,
-      "footBottom": 31,
-      "sourceCell": [
-        0,
-        0
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 1,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 2,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        6
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 3,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 4,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 5,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 6,
-      "footBottom": 31,
-      "sourceCell": [
-        5,
-        2
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 2,
-      "column": 7,
-      "footBottom": 31,
-      "sourceCell": [
-        4,
-        1
-      ],
-      "sourceFile": "rattus-pink-gold-v1.png"
-    },
-    {
-      "sheet": "interaction",
-      "row": 3,
       "column": 0,
       "footBottom": 31,
       "sourceCell": [
         1,
         0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 1,
       "footBottom": 31,
       "sourceCell": [
         1,
         1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 2,
-      "footBottom": 31,
+      "footBottom": 32,
       "sourceCell": [
         1,
         2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 3,
       "footBottom": 31,
       "sourceCell": [
         1,
         3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 4,
       "footBottom": 31,
       "sourceCell": [
         1,
         4
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 5,
-      "footBottom": 31,
+      "footBottom": 32,
       "sourceCell": [
         1,
         5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 6,
       "footBottom": 31,
       "sourceCell": [
         1,
         6
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 3,
+      "sheet": "main",
+      "row": 2,
       "column": 7,
       "footBottom": 31,
       "sourceCell": [
         1,
         7
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
+      "sheet": "main",
+      "row": 3,
+      "column": 0,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 1,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 2,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 3,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 5,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 6,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 3,
+      "column": 7,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
       "row": 4,
       "column": 0,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        7
+        2,
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-04.png"
     },
     {
-      "sheet": "interaction",
+      "sheet": "main",
       "row": 4,
       "column": 1,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        6
+        2,
+        1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-04.png"
     },
     {
-      "sheet": "interaction",
+      "sheet": "main",
       "row": 4,
       "column": 2,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        1
+        2,
+        2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-04.png"
     },
     {
-      "sheet": "interaction",
+      "sheet": "main",
       "row": 4,
+      "column": 3,
+      "footBottom": 31,
+      "sourceCell": [
+        2,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-04.png"
+    },
+    {
+      "sheet": "main",
+      "row": 4,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        2,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-04.png"
+    },
+    {
+      "sheet": "main",
+      "row": 4,
+      "column": 5,
+      "footBottom": 30,
+      "sourceCell": [
+        2,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-04.png"
+    },
+    {
+      "sheet": "main",
+      "row": 4,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        2,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-04.png"
+    },
+    {
+      "sheet": "main",
+      "row": 4,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        2,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-04.png"
+    },
+    {
+      "sheet": "main",
+      "row": 5,
+      "column": 0,
+      "footBottom": 30,
+      "sourceCell": [
+        7,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "main",
+      "row": 5,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "main",
+      "row": 5,
+      "column": 2,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 5,
       "column": 3,
       "footBottom": 31,
       "sourceCell": [
         6,
         3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 4,
+      "sheet": "main",
+      "row": 5,
       "column": 4,
       "footBottom": 31,
       "sourceCell": [
         6,
-        2
+        5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 4,
+      "sheet": "main",
+      "row": 5,
       "column": 5,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        1
+        6,
+        4
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 4,
+      "sheet": "main",
+      "row": 5,
       "column": 6,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        6
+        0,
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
-      "sheet": "interaction",
-      "row": 4,
+      "sheet": "main",
+      "row": 5,
       "column": 7,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        7
+        0,
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
-      "sheet": "interaction",
-      "row": 5,
+      "sheet": "main",
+      "row": 6,
       "column": 0,
       "footBottom": 31,
+      "sourceCell": [
+        0,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 2,
+      "footBottom": 30,
+      "sourceCell": [
+        0,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 3,
+      "footBottom": 30,
+      "sourceCell": [
+        0,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 5,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 6,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-02.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 0,
+      "footBottom": 32,
       "sourceCell": [
         4,
         0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 1,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 2,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 3,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 4,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 5,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 6,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "main",
+      "row": 7,
+      "column": 7,
+      "footBottom": 32,
+      "sourceCell": [
+        4,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-05.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 0,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 2,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 3,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 5,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 0,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 0,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 2,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 3,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 5,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 1,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 0,
+      "footBottom": 31,
+      "sourceCell": [
+        0,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 2,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 3,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 5,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 2,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        7,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 0,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 2,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 3,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 5,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 3,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 0,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        0
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 1,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 2,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        5
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 3,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        3
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 4,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        4
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 5,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 6,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        6
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 4,
+      "column": 7,
+      "footBottom": 31,
+      "sourceCell": [
+        3,
+        7
+      ],
+      "sourceFile": "rattus-ring-v4-03.png"
+    },
+    {
+      "sheet": "interaction",
+      "row": 5,
+      "column": 0,
+      "footBottom": 31,
+      "sourceCell": [
+        5,
+        1
+      ],
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2571,10 +2571,10 @@
       "column": 1,
       "footBottom": 31,
       "sourceCell": [
-        4,
+        5,
         2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2582,10 +2582,10 @@
       "column": 2,
       "footBottom": 31,
       "sourceCell": [
-        4,
+        5,
         3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2593,10 +2593,10 @@
       "column": 3,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        6
+        5,
+        5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2604,10 +2604,10 @@
       "column": 4,
       "footBottom": 31,
       "sourceCell": [
-        5,
-        6
+        3,
+        2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2615,10 +2615,10 @@
       "column": 5,
       "footBottom": 31,
       "sourceCell": [
-        5,
-        2
+        3,
+        3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2626,10 +2626,10 @@
       "column": 6,
       "footBottom": 31,
       "sourceCell": [
-        5,
-        2
+        3,
+        4
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2637,10 +2637,10 @@
       "column": 7,
       "footBottom": 31,
       "sourceCell": [
-        5,
+        3,
         5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2649,9 +2649,9 @@
       "footBottom": 30,
       "sourceCell": [
         0,
-        2
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2660,9 +2660,9 @@
       "footBottom": 31,
       "sourceCell": [
         6,
-        2
+        1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2671,9 +2671,9 @@
       "footBottom": 31,
       "sourceCell": [
         6,
-        7
+        2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2681,10 +2681,10 @@
       "column": 3,
       "footBottom": 31,
       "sourceCell": [
-        6,
-        2
+        0,
+        7
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2693,9 +2693,9 @@
       "footBottom": 31,
       "sourceCell": [
         6,
-        7
+        1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2703,10 +2703,10 @@
       "column": 5,
       "footBottom": 31,
       "sourceCell": [
-        0,
-        3
+        6,
+        2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2714,10 +2714,10 @@
       "column": 6,
       "footBottom": 31,
       "sourceCell": [
-        0,
-        4
+        6,
+        1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2725,10 +2725,10 @@
       "column": 7,
       "footBottom": 31,
       "sourceCell": [
-        0,
-        1
+        6,
+        2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-01.png"
     },
     {
       "sheet": "interaction",
@@ -2736,10 +2736,10 @@
       "column": 0,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        1
+        6,
+        4
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2747,10 +2747,10 @@
       "column": 1,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        6
+        6,
+        5
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2761,7 +2761,7 @@
         6,
         3
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2770,9 +2770,9 @@
       "footBottom": 31,
       "sourceCell": [
         6,
-        4
+        2
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2781,9 +2781,9 @@
       "footBottom": 31,
       "sourceCell": [
         6,
-        5
+        1
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2792,9 +2792,9 @@
       "footBottom": 31,
       "sourceCell": [
         6,
-        6
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2802,10 +2802,10 @@
       "column": 6,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        6
+        6,
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     },
     {
       "sheet": "interaction",
@@ -2813,10 +2813,10 @@
       "column": 7,
       "footBottom": 31,
       "sourceCell": [
-        4,
-        7
+        6,
+        0
       ],
-      "sourceFile": "rattus-pink-gold-v1.png"
+      "sourceFile": "rattus-ring-v4-05.png"
     }
   ],
   "cairn": [

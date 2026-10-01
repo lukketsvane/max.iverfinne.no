@@ -349,7 +349,7 @@ function gardenGestures() {
 }
 function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return selectedOutfits[id] || CLASS_SKINS[id] || 'moss'; }
-function outfitName(id) { return id === 'moss-pink' ? 'Pink & gold' : 'Black & gold'; }
+function outfitName(id) { return id === 'moss-pink' ? 'Ring gear' : 'Black & gold'; }
 function cycleOutfit(id) {
   if (!opened || screen !== 'play' || busy || session?.playing || liveSettings) return;
   if ((sharedStatus.taken || []).includes(id) && id !== sharedStatus.mine) return;

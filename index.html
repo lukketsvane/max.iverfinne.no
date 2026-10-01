@@ -3420,7 +3420,7 @@ function runStats(won){
 }
 function resetRogueRun(reason,selection){
   polgeStands=[];classShots=[];classFighters=[];
-  selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||P.skin),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');
+  selection=selection||{};var classId=window.MaxClasses.clean(selection.classId||rogueRun.classId),skin=window.MaxClasses.skin(selection.skinId||selection.skin||(selection.classId&&classId==='runner'?null:P.skin),classId),difficulty=['easy','medium','hard','insane'].indexOf(selection.difficulty)>=0?selection.difficulty:(rogueRun.difficulty||'medium');
   runActive=true;menuPaused=false;
   if(!rogueRun.finalized&&gardenWave>0)finalizeRogueRun(false);
   gardenPlots.length=0;floatKrek.length=0;seedPickups.length=0;seedCollected={};
@@ -3578,7 +3578,7 @@ window.addEventListener('max-native-art-ready',function(){if(window.MaxRunResult
 function drawResultScene(canvas,bouquet,resultRun){
   var old={ctx:ctx,w:IW,h:IH,a:ANCHOR,x:camX,y:camY},oldSkin=P.skin;
   var resultClass=resultRun&&resultRun.classId;
-  if(resultClass)P.skin=resultClass==='runner'&&resultRun.skinId==='moss-pink'?'moss-pink':{mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[resultClass]||window.MaxClasses.skin(resultClass);
+  if(resultClass)P.skin=resultClass==='runner'&&resultRun.skinId==='moss'?'moss':{mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[resultClass]||window.MaxClasses.skin(resultClass);
   try{
     ctx=canvas.getContext('2d');if(!ctx)return;
     IW=canvas.width;IH=canvas.height;ctx.imageSmoothingEnabled=false;

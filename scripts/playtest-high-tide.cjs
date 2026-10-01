@@ -5,7 +5,7 @@ const graph=JSON.parse(fs.readFileSync('high-tide-playtest-routes.json'));
 const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
 function run({classes=['mech'],style='explore',difficulty='medium',seconds=480,latency=100,observe}){
  const clients=classes.map(()=>loadGame()),queue=[],actions=classes.map(()=>[]),seq=classes.map(()=>0),lastSent=classes.map(()=>-1e3);let now=0;
- const room={mode:'high-tide',host:ids[0],members:classes.map((classId,i)=>({id:ids[i],slot:i+1,classId,skin:{mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[classId],difficulty}))};
+ const room={mode:'high-tide',host:ids[0],members:classes.map((classId,i)=>({id:ids[i],slot:i+1,classId,skin:{mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[classId],difficulty}))};
  const copy=x=>JSON.parse(JSON.stringify(x));
  if(classes.length>1)clients.forEach((h,i)=>h.game.beginCoop({room,user:{id:ids[i]},host:i===0,
   action(type,data){actions[i].push({...data,type,id:++seq[i]});return true;},

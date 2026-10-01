@@ -3,7 +3,7 @@ const pilot=require('../night-relay-playtest-pilot.js');
 const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
 function run({classes=['mech','herbalist'],difficulty='medium',seconds=200,latency=100,fps=30,handoffAt=0,observe}={}){
  const clients=classes.map(()=>loadGame()),queue=[],actions=classes.map(()=>[]),seq=classes.map(()=>0),sent=classes.map(()=>-1000);let now=0,authority=0;
- const room={mode:'night-relay',host:ids[0],members:classes.map((classId,i)=>({id:ids[i],slot:i+1,classId,skin:{mech:'tide',runner:'moss',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[classId],difficulty}))};
+ const room={mode:'night-relay',host:ids[0],members:classes.map((classId,i)=>({id:ids[i],slot:i+1,classId,skin:{mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'}[classId],difficulty}))};
  const copy=x=>JSON.parse(JSON.stringify(x));
  clients.forEach((h,i)=>h.game.beginCoop({room,user:{id:ids[i]},host:i===0,
   action(type,data){actions[i].push({...data,type,id:++seq[i]});return true;},
