@@ -5,13 +5,11 @@ const {loadGame}=require('./game-harness.cjs');
 function ready(){const h=loadGame();h.game.resetRogueRun('test',{classId:'polge',skinId:'polge'});h.game.floatKrek=[];h.game.runHazards=[];return h;}
 function target(g){const k=Object.assign(g.makeKrek(1,false,0),{x:g.P.x+12,y:g.P.y-12,hp:30,maxHp:30,scout:false,raid:true});g.floatKrek.push(k);return k;}
 
-test('C and touch Clinch use the same close attack while Space keeps tending',()=>{
- for(const touch of [false,true]){const h=ready(),g=h.game,k=target(g);g.updatePolgeControls();assert.equal(h.elements.get('polgeControls').hidden,false);
-  if(touch)h.elements.get('polgeClinch').listeners.click[0]();else h.key('keydown','c');
+test('C retains the close Clinch attack while Space keeps tending',()=>{
+  const h=ready(),g=h.game,k=target(g);h.key('keydown','c');
   assert.ok(k.hp<30);assert.equal(g.fighterState().clinchCool,4);assert.equal(g.bombs.length,0);assert.equal(g.classShots.length,0);
   h.key('keydown',' ');assert.equal(g.heldSpace,true);h.key('keyup',' ');assert.equal(g.heldSpace,false);
   g.P.secondaryCool=4;g.resetRogueRun('again',{classId:'polge'});assert.equal(g.P.secondaryCool,0);
- }
 });
 
 test('Pølge slip remains steerable, travels at most 24px and cannot cross solid rock at supported rates',()=>{

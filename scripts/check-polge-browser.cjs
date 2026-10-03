@@ -22,6 +22,7 @@ ctx.drawImage=function(image){
 };
 window.__polgeBrowser={
   get player(){return P;},get fighter(){return fighterState();},get enemies(){return floatKrek;},get plots(){return gardenPlots;},get coop(){return coop;},get canvas(){return cv;},
+  touchPoint:function(self){var r=cv.getBoundingClientRect(),p=self?{x:P.x-P.face*6,y:P.y-20}:floatKrek[0];if(self&&(touchKind(p.x,p.y)!=='max'||krekAt(p.x,p.y,6)))throw Error('Self-tap fixture must land on clear upper character body');return {x:(p.x-camX)*r.width/IW,y:(p.y-camY)*r.height/IH};},
   get state(){return {player:{x:P.x,y:P.y,grounded:P.grounded,wet:P.wet,st:P.st,skin:P.skin,dodgeT:P.dodgeT,dodgeCool:P.dodgeCool,skillCool:P.skillCool},fighter:Object.assign({},fighterState()),attackCool:bombCool,bombs:bombs.length,shots:classShots.length,fx:polgeBrowserFx.slice(),bodies:Object.assign({},polgeBrowserBodies),targets:floatKrek.map(function(k){return {x:k.x,y:k.y,hp:k.hp};}),plants:gardenPlots.map(function(p){return {x:p.x,health:p.health,moisture:p.moisture};}),hazards:runHazards.map(function(h){return Object.assign({},h);})};},
   begin:beginCoop,capture:coopCapture,stateIn:coopState,input:coopInput,avatar:coopAvatar,
   arrange:function(kind){
@@ -66,7 +67,7 @@ async function testKit(page,game,engineName,upgraded){
   for(const expected of ['jab','cross','uppercut']){
     await game.waitForFunction(()=>window.__polgeBrowser.state.attackCool<=0);
     await game.evaluate(()=>window.__polgeBrowser.close());
-    const before=await state(game);await press(page,game,'b');
+    const before=await state(game);if(upgraded&&expected==='jab')await game.locator('#c').tap({position:await game.evaluate(()=>window.__polgeBrowser.touchPoint(false))});else await press(page,game,'b');
     await game.waitForFunction(kind=>window.__polgeBrowser.state.fx.some(f=>f.kind===kind),expected);
     // Acceptance is synchronous, while the native body is drawn on the next
     // animation frame. Preserve that frame before the next input changes pose.
@@ -76,15 +77,14 @@ async function testKit(page,game,engineName,upgraded){
   }
   let s=await state(game);assert.equal(s.fighter.rhythm,3);assert.ok(damage[2]>damage[0]*2);
   assert.deepEqual(s.fx.map(f=>f.kind),['jab','cross','uppercut']);
-  results.push('Real B input: jab, cross, uppercut, three confirmed Rhythm and stronger finisher');
+  results.push((upgraded?'Canvas threat tap and real B inputs':'Real B input')+': jab, cross, uppercut, three confirmed Rhythm and stronger finisher');
   await game.evaluate(()=>{window.__polgeBrowser.close();window.__polgeBrowser.clearFx();});
   const beforeClinch=await state(game);
-  if(upgraded)await game.getByRole('button',{name:'Clinch break (C)',exact:true}).tap();
-  else await press(page,game,'c');
+  await press(page,game,'c');
   await game.waitForFunction(()=>window.__polgeBrowser.state.fx.some(f=>f.kind==='clinch'));
   s=await state(game);assert.equal(s.fighter.rhythm,2);assert.ok(s.fighter.clinchCool>3);assert.ok(s.targets[0].hp<beforeClinch.targets[0].hp);
   await page.locator('iframe').screenshot({path:path.join(output,engineName+'-'+label+'-clinch.png')});
-  results.push((upgraded?'Touch Clinch button':'Real C input')+': clinch spends one Rhythm, damages close enemy and starts cooldown');
+  results.push('Real C input: clinch spends one Rhythm, damages close enemy and starts cooldown');
 
   await game.evaluate(()=>window.__polgeBrowser.arrange('empty'));
   await press(page,game,'b');await game.waitForFunction(()=>window.__polgeBrowser.state.attackCool<=0);
@@ -113,14 +113,14 @@ async function testKit(page,game,engineName,upgraded){
   results.push('Authentic sentry warning: timed X avoids real contact and one landed B consumes counter');
 
   await game.evaluate(()=>{window.__polgeBrowser.arrange('near');window.__polgeBrowser.plantHere();});
-  const plantBefore=(await state(game)).plants[0];await press(page,game,'e');
+  const plantBefore=(await state(game)).plants[0];if(upgraded)await game.locator('#c').tap({position:await game.evaluate(()=>window.__polgeBrowser.touchPoint(true))});else await press(page,game,'e');
   await game.waitForFunction(()=>window.__polgeBrowser.state.fx.some(f=>f.kind==='finisher'),{},{timeout:2500});
   s=await state(game);assert.equal(s.fx.filter(f=>f.kind==='flurry').length,upgraded?9:6);assert.equal(s.fx.filter(f=>f.kind==='finisher').length,1);
   assert.equal(s.fighter.flurry,0);assert.ok(s.targets[0].hp<100);
   if(upgraded)assert.ok(s.plants[0].health>plantBefore.health+.1,'landed Second wind cares for nearby plant');
   else assert.ok(s.plants[0].health<plantBefore.health+.03,'base skill leaves only normal passive plant recovery');
   await page.locator('iframe').screenshot({path:path.join(output,engineName+'-'+label+'-finish.png')});
-  results.push('Accepted E flurry has bounded pulses and one finish'+(upgraded?'; landed Second wind restores plant':''));
+  results.push((upgraded?'Canvas character tap':'Accepted E')+' flurry has bounded pulses and one finish'+(upgraded?'; landed Second wind restores plant':''));
 
   await game.evaluate(()=>window.__polgeBrowser.arrange('moving'));
   const origin=(await state(game)).player.x;await press(page,game,'e');
@@ -136,9 +136,9 @@ async function testKit(page,game,engineName,upgraded){
   results.push('ArrowRight steers accepted flurry; every later pulse stays at current body; no bomb or projectile');
   if(upgraded){
     await game.evaluate(()=>window.__polgeBrowser.arrange('empty'));
-    await game.getByRole('button',{name:'Slip and counter (X)',exact:true}).tap();
+    await game.evaluate(()=>{const stage=document.getElementById('stage'),x=innerWidth*.5,y=innerHeight*.5;for(const [type,dx] of [['pointerdown',0],['pointermove',60],['pointerup',60]])stage.dispatchEvent(new PointerEvent(type,{pointerId:77,pointerType:'touch',clientX:x+dx,clientY:y,bubbles:true,cancelable:true}));});
     await game.waitForFunction(()=>window.__polgeBrowser.player.dodgeT>0);
-    assert.equal((await state(game)).fighter.counter,0);results.push('Touch Slip button starts legal ground movement without inventing counter');
+    assert.equal((await state(game)).fighter.counter,0);results.push('Canvas horizontal-flick events start legal ground Slip without inventing counter');
   }
   const bodies=(await state(game)).bodies;
   for(const kind of ['jab','cross','uppercut','clinch','flurry','finisher','slip']){
@@ -189,10 +189,8 @@ let base;
       for(const [viewport,width,height] of [['desktop',1000,650],['phone',390,844],['small',320,568]]){
         await page.locator('#viewport').selectOption(viewport);
         await game.waitForFunction(({width,height})=>innerWidth===width&&innerHeight===height,{width,height});
-        const view=await game.evaluate(()=>({width:innerWidth,height:innerHeight,smoothing:window.__polgeBrowser.canvas.getContext('2d').imageSmoothingEnabled,skin:window.__polgeBrowser.player.skin,buttons:Array.from(document.querySelectorAll('#polgeControls button')).map(b=>{var r=b.getBoundingClientRect();return {label:b.getAttribute('aria-label'),left:r.left,right:r.right,top:r.top,bottom:r.bottom,visible:!b.closest('[hidden]')};})}));
-        assert.equal(view.skin,'polge');assert.equal(view.smoothing,false);assert.equal(view.buttons.length,2);
-        assert.ok(view.buttons.every(b=>b.visible&&b.left>=0&&b.right<=width&&b.top>=0&&b.bottom<=height),'touch buttons fit '+viewport);
-        assert.ok(view.buttons.every(b=>b.bottom-b.top>=48),'coarse-pointer touch buttons are at least 48 px high');
+        const view=await game.evaluate(()=>({width:innerWidth,height:innerHeight,smoothing:window.__polgeBrowser.canvas.getContext('2d').imageSmoothingEnabled,skin:window.__polgeBrowser.player.skin,actionControls:document.querySelectorAll('#polgeControls,#mechControls,#rattusControls,#cairnControls').length}));
+        assert.equal(view.skin,'polge');assert.equal(view.smoothing,false);assert.equal(view.actionControls,0,'gameplay has no action control DOM at '+viewport);
         await page.locator('iframe').screenshot({path:path.join(output,engineName+'-'+viewport+'.png')});visuals.push(view);
       }
       await page.locator('#viewport').selectOption('phone');

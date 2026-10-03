@@ -120,10 +120,8 @@ function drawLastSeedHud(){
   if(!lastSeedMode()||!runActive||rogueRun.ended)return;
   var v=seedVital(null),s=rogueRun.survival,y=safeTopArt()+3;
   function text(str,x,y){if(!ready(runPixelFont))return;for(var i=0;i<str.length;i++){var n=str.charCodeAt(i)-32;ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,Math.round(x+i*6),Math.round(y),5,7);}}
-  text(!s.started?'PLANT YOUR ONLY SEED':'WAVE '+s.wave+'  '+Math.floor(runElapsed/60)+':'+String(Math.floor(runElapsed%60)).padStart(2,'0'),8,y);
-  var plant=gardenPlots.find(function(p){return !p.dead;});
-  if(s.started)text(plant?'PLANT '+Math.ceil(plant.health*100)+'%':'PLANT LOST',8,y+10);
-  if(v.hp<=0)text('DOWN - WAIT FOR REVIVE',8,y+20);
-  else if(seedReviveNearby())text('HOLD TEND TO REVIVE',8,y+20);
+  if(s.started)text('W'+s.wave+' '+Math.floor(runElapsed/60)+':'+String(Math.floor(runElapsed%60)).padStart(2,'0'),8,y);
+  else if(v.hp>0)drawGuideLabel('PLANT',P.x-camX,P.y-camY-43,'#a7c68c');
+  if(v.hp>0&&seedReviveNearby())drawGuideLabel('HOLD TEND',P.x-camX,P.y-camY-48,'#dca977');
   seedActors().forEach(function(a){var x=Math.round(a.p.x-camX)-9,py=Math.round(a.p.y-camY)-37;ctx.fillStyle='#152028';ctx.fillRect(x-1,py-1,20,4);ctx.fillStyle=a.v.hp<=0?'#dca977':'#9fdbbf';ctx.fillRect(x,py,Math.round(18*(a.v.hp>0?a.v.hp/100:a.v.revive/3)),2);if(a.v.hp<=0){ctx.fillStyle='#dca977';ctx.fillRect(x+7,py-7,5,1);ctx.fillRect(x+9,py-9,1,5);}});
 }

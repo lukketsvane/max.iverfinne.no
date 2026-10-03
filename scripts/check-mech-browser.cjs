@@ -26,6 +26,7 @@ ctx.drawImage=function(image){
 window.__mechBrowser={
   get player(){return P;},get engineer(){return engineerState();},get enemies(){return floatKrek;},get plots(){return gardenPlots;},get coop(){return coop;},get canvas(){return cv;},get crew(){return ensureCrew();},
   get controller(){return {tend:heldSpace,down:heldDown,press:gardenPress,single:!!pad.single,work:!!pad.work,connected:!!lastPad};},
+  touchPoint:function(self){var r=cv.getBoundingClientRect(),p=self?{x:P.x,y:P.y-3}:floatKrek[0]||{x:P.x+24,y:P.y-12};return {x:(p.x-camX)*r.width/IW,y:(p.y-camY)*r.height/IH};},
   get state(){return {paused:runIsPaused(),ended:rogueRun.ended,input:readInput(),focus:document.hasFocus(),hidden:document.hidden,player:{x:P.x,y:P.y,vx:P.vx,vy:P.vy,grounded:P.grounded,wet:P.wet,st:P.st,skin:P.skin,dodgeT:P.dodgeT,dodgeCool:P.dodgeCool,skillCool:P.skillCool},engineer:Object.assign({},engineerState()),attackCool:bombCool,bombs:bombs.map(function(b){return {owner:b.owner,x:b.x,y:b.y,planted:b.planted,fuse:b.fuse,fuseMax:b.fuseMax};}),fx:mechBrowserFx.slice(),water:mechBrowserWater.slice(),bodies:Object.assign({},mechBrowserBodies),rovers:ensureCrew().map(function(b){return {kind:b.state.kind,x:b.state.x,water:b.state.water,targetX:b.state.targetX,targetId:b.state.target&&b.state.target.id,dispatchT:b.state.dispatchT,pourT:b.state.pourT,recalling:b.state.recalling,refill:b.state.refill,state:b.state.state};}),targets:floatKrek.map(function(k){return {x:k.x,y:k.y,hp:k.hp,wet:k.mechWet||0,wetBonus:k.mechWetBonus||0,windup:k.windup||0};}),plants:gardenPlots.map(function(p){return {id:p.id,x:p.x,health:p.health,moisture:p.moisture};}),roverFrames:mechBrowserRoverFrames.slice(-80)};},
   begin:beginCoop,capture:coopCapture,stateIn:coopState,input:coopInput,avatar:coopAvatar,roster:coopRoster,
   reviewSeed:function(){rogueRun.seed=1;rogueRun.next=1000000000;},
@@ -126,12 +127,10 @@ async function checkOverload(page,game,engine,results){
   results.push('Real E requires three charges, plants the .4 s windup, resolves once and prioritizes real rover water for 4 s');
 }
 async function checkTouch(page,game,results){
-  await game.evaluate(()=>{window.__mechBrowser.arrange('empty');window.__mechBrowser.forgetBody('bomb');});await game.locator('#mechPrimary').tap();await game.waitForFunction(()=>window.__mechBrowser.state.bombs.length===1);await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.bomb);
-  await game.evaluate(()=>{window.__mechBrowser.arrange('fan');window.__mechBrowser.forgetBody('fan');});await game.locator('#mechFan').tap();await game.waitForFunction(()=>window.__mechBrowser.engineer.fanT>0);await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.fan);
-  await game.evaluate(()=>{window.__mechBrowser.arrange('utility');window.__mechBrowser.forgetBody('utility');});await game.locator('#mechUtility').tap();await game.waitForFunction(()=>window.__mechBrowser.state.rovers.some(r=>r.dispatchT>0||r.pourT>0));await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.utility);
-  await game.evaluate(()=>{window.__mechBrowser.arrange('overload');window.__mechBrowser.forgetBody('overload');});await game.locator('#mechSpecial').tap();await game.waitForFunction(()=>window.__mechBrowser.engineer.overloadWindup>0);await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.overload);
+  await game.evaluate(()=>{window.__mechBrowser.arrange('fan');window.__mechBrowser.forgetBody('bomb');});await game.locator('#c').tap({position:await game.evaluate(()=>window.__mechBrowser.touchPoint(false))});await game.waitForFunction(()=>window.__mechBrowser.state.bombs.length===1);await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.bomb);
+  await game.evaluate(()=>{window.__mechBrowser.arrange('overload');window.__mechBrowser.forgetBody('overload');});await game.locator('#c').tap({position:await game.evaluate(()=>window.__mechBrowser.touchPoint(true))});await game.waitForFunction(()=>window.__mechBrowser.engineer.overloadWindup>0);await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.overload);
   await game.evaluate(()=>window.__mechBrowser.arrange('empty'));await press(page,game,'x');await game.waitForFunction(()=>window.__mechBrowser.player.dodgeT>0);await game.waitForFunction(()=>!!window.__mechBrowser.state.bodies.dodge);
-  results.push('All four touch slots invoke real actions; X retains the universal ground dodge');
+  results.push('Canvas threat tap plants a real bomb and character tap starts Overload; retained keyboard/controller inputs cover Fan and Rover; X retains the universal ground dodge');
 }
 async function checkController(page,game,engine,results){
   for(const single of [false,true]){
@@ -181,8 +180,8 @@ async function checkPair(context,page,guest,engine,results){
     const page=await context.newPage();activePage=page;await page.goto(base+'/review.html?mode=mech');const game=await ready(page);activeGame=game;const visuals=[],results=[];
     for(const [viewport,width,height] of [['desktop',1000,650],['phone',390,844],['small',320,568]]){
       await page.locator('#viewport').selectOption(viewport);await game.waitForFunction(({width,height})=>innerWidth===width&&innerHeight===height,{width,height});
-      const view=await game.evaluate(()=>({width:innerWidth,height:innerHeight,skin:window.__mechBrowser.player.skin,smoothing:window.__mechBrowser.canvas.getContext('2d').imageSmoothingEnabled,buttons:Array.from(document.querySelectorAll('#mechControls button')).map(b=>{const r=b.getBoundingClientRect();return {id:b.id,label:b.getAttribute('aria-label'),left:r.left,right:r.right,top:r.top,bottom:r.bottom,visible:!b.closest('[hidden]')};})}));
-      assert.equal(view.skin,'tide');assert.equal(view.smoothing,false);assert.equal(view.buttons.length,4);assert.ok(view.buttons.every(b=>b.visible&&b.left>=0&&b.right<=width&&b.top>=0&&b.bottom<=height&&b.bottom-b.top>=48),'four coarse-pointer controls fit '+viewport);await snapshot(page,engineName,viewport);visuals.push(view);
+      const view=await game.evaluate(()=>({width:innerWidth,height:innerHeight,skin:window.__mechBrowser.player.skin,smoothing:window.__mechBrowser.canvas.getContext('2d').imageSmoothingEnabled,actionControls:document.querySelectorAll('#polgeControls,#mechControls,#rattusControls,#cairnControls').length}));
+      assert.equal(view.skin,'tide');assert.equal(view.smoothing,false);assert.equal(view.actionControls,0,'gameplay has no action control DOM at '+viewport);await snapshot(page,engineName,viewport);visuals.push(view);
     }
     await page.locator('#viewport').selectOption('phone');
     await checkBomb(page,game,engineName,results);await checkCircuit(page,game,engineName,results);await checkFan(page,game,engineName,results);await checkWet(page,game,results);await checkUtility(page,game,engineName,results);await checkOverload(page,game,engineName,results);await checkTouch(page,game,results);

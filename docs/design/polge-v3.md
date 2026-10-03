@@ -42,14 +42,15 @@ into a traveling fist, bomb, autonomous decoy or projectile.
 | Action | Keyboard | Touch | Controller |
 | --- | --- | --- | --- |
 | Primary | B | Tap a threat or the normal attack gesture | Existing attack input |
-| Clinch | C | Clinch button | View/minus, button 8 |
-| Slip | X | Slip button or existing dodge flick | Existing dodge: standard stick click 10/11; horizontal Joy-Con left shoulder 4 |
+| Clinch | C | — | View/minus, button 8 |
+| Slip | X | Quick horizontal flick | Existing dodge: standard stick click 10/11; horizontal Joy-Con left shoulder 4 |
 | Flurry | E | Tap Pølge | Existing special: standard left shoulder 4; horizontal Joy-Con top face 3 |
 | Tend / plant / harvest | Space or ↓ | Drag down | Existing Tend input |
 
 Threat taps keep their ordinary priority, including a threat overlapping the
-character. Exit climbing keeps its normal tap-to-climb behavior. Clinch and Slip
-are separate touch buttons so they do not consume tending gestures. Settings,
+character. Exit climbing keeps its normal tap-to-climb behavior. Gameplay has
+no on-screen action buttons; Clinch requires keyboard or controller input. Slip
+uses the existing canvas dodge flick. Settings,
 boon selection and controller input release keep the shared game's existing
 rules; they never stop the world clock.
 

@@ -161,11 +161,10 @@ function drawRelayDarkness(){
 function drawNightRelayHud(){
   if(!nightRelayMode()||!runActive||rogueRun.ended)return;
   var s=rogueRun.survival,y=safeTopArt()+3,id=coop&&coop.me,v=seedVital(),hint;
-  highTideText('NIGHT RELAY',7,y);highTideText(s.stage+'/3',IW-25,y);
-  hint=s.waiting?'WAITING FOR A PARTNER':!s.started?'TEND BESIDE THE LIGHT':v.hp<=0?'DOWN - PARTNER CAN REVIVE':s.flash>1.5?'TOO HOT - LIGHT RETURNED':s.stage===3?'BOTH EXIT RUNES - HOLD TEND':s.carrier===s.lastCarrier&&s.lastCarrier?'SWAP THE LIGHT':s.heat>relayProfile().heat*.72?'TOO HOT - BOTH HOLD TEND':s.carrier===id?'GOLD RUNE - HOLD TEND':s.carrier?'BLUE RUNE - HOLD TEND':'TEND TO PICK UP LIGHT';
-  var maxChars=Math.max(10,Math.floor((IW-14)/6)),lines=[''];
-  hint.split(' ').forEach(function(word){var i=lines.length-1;if(lines[i].length+word.length+1>maxChars)lines.push(word);else lines[i]+=(lines[i]?' ':'')+word;});
-  lines.forEach(function(line,i){highTideText(line,7,y+18+i*9);});
-  var w=IW-14;ctx.fillStyle='#27313c';ctx.fillRect(7,y+10,w,2);ctx.fillStyle=s.energy<25?'#e39877':'#e9cb86';ctx.fillRect(7,y+10,Math.round(w*s.energy/100),2);
+  for(var lock=0;lock<3;lock++){ctx.fillStyle=lock<s.stage?'#e9cb86':'#405363';ctx.fillRect(7+lock*6,y+2,4,3);}
+  hint=s.waiting?'PARTNER':!s.started?'TEND':v.hp<=0?'REVIVE':s.flash>1.5?'LIGHT RESET':s.stage===3?'EXIT: TEND':s.carrier===s.lastCarrier&&s.lastCarrier?'PASS LIGHT':s.heat>relayProfile().heat*.72?'COOL: TEND':s.carrier===id?'GOLD: TEND':s.carrier?'BLUE: TEND':'TEND';
+  var local={p:P,v:v},target=s.stage<3?RELAY_LOCKS[s.stage]:null,near=target?relayAt(local,s.carrier===id?target.door:target.pad,s.carrier===id?target.dh:target.ph,26):Math.abs(P.x-1032)<26||Math.abs(P.x-1100)<26;
+  if(s.waiting||v.hp<=0||s.flash>1.5||s.heat>relayProfile().heat*.72||!s.carrier&&Math.hypot(P.x-s.x,P.y-s.y)<26||near)highTideText(hint,7,y+17);
+  var w=32;ctx.fillStyle='#27313c';ctx.fillRect(7,y+9,w,2);ctx.fillStyle=s.energy<25?'#e39877':'#e9cb86';ctx.fillRect(7,y+9,Math.round(w*s.energy/100),2);
   if(s.stage<3){var g=RELAY_LOCKS[s.stage],target=s.carrier===id?g.door:g.pad,dx=target-P.x;if(Math.abs(dx)>IW*.38)highTideText(dx>0?'>':'<',dx>0?IW-12:5,Math.round(IH*.5));}
 }

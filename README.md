@@ -47,7 +47,7 @@ Cairn is a living stone guardian. Every third confirmed sweep or a truly reduced
 
 Max is a trap gardener and water engineer. Actual useful care or a bomb that interrupts a threat to a living plant builds up to three **Circuit**, with one shared four-second reward gate. **Fan** (C) spends one charge on a close forward mist that slows pests and sets up one stronger delayed primary blast. **Rover** (V) dispatches a watering robot to reachable soil within 96 px, or recalls it on foot. **Overload** (E / tap Max) spends three charges on a planted ring, then prioritizes threatened plants for four seconds. Fan irrigation debits exactly .04 from one available owned water rover; Overload priority spends the remaining reserve. Tend and X dodge remain separate. The original Tide body and all robot art are preserved. See [Max's complete kit](docs/design/mech-v3.md) for timings, controls, water conservation and existing upgrades.
 
-Pølge is a limbless mannequin boxer and the glue of the pølgevenner. Confirmed jab, cross and uppercut contacts build up to three Rhythm beats; misses keep the current combo step. **Clinch** (C or the touch button) makes room at close range. **Slip** (X or the touch button) is a short ground weave: avoiding an actual warned attack primes one stronger primary for 1.1 seconds. Tap Pølge / E to unleash six close punches and an uppercut finish, with an extra punch for each spent beat. Steer throughout the flurry; every hit follows his current position and respects solid walls.
+Pølge is a limbless mannequin boxer and the glue of the pølgevenner. Confirmed jab, cross and uppercut contacts build up to three Rhythm beats; misses keep the current combo step. **Clinch** (C) makes room at close range. **Slip** (X or a quick horizontal flick) is a short ground weave: avoiding an actual warned attack primes one stronger primary for 1.1 seconds. Tap Pølge / E to unleash six close punches and an uppercut finish, with an extra punch for each spent beat. Steer throughout the flurry; every hit follows his current position and respects solid walls.
 
 Pølge never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. The host validates his combo, Rhythm, clinch, genuine counters, flurry contacts and cooldowns, and carries them through an authority handoff. His native body sheets and silhouette are preserved. See [Pølge's complete kit](docs/design/polge-v3.md) for timings, controls and upgrades.
 
@@ -75,16 +75,18 @@ After a confirmed physical ascent, a short native-pixel upward view handoff join
 
 ### Input and items
 
+Gameplay uses canvas gestures without on-screen action buttons. C/V class actions, Shovel burrowing and lantern toggling require keyboard or controller input; there are no replacement touch gestures for them.
+
 - Touch drag left/right: move.
 - Swipe up: jump.
-- Rattus norvegicus: B / threat tap kicks; hold C / Latch and release to retain actual velocity; hold V / Driving for .2–.6 seconds, then release to kick or drag out to cancel; E / Stomp starts one landing attack. Controller View/minus (8) latches, left trigger (6) drives and left shoulder (4) stomps; horizontal single controllers use View/minus (8), stick click (10) and top face (3). Swipe up beside a climbable plant to attach; swipe up again to leap between plants; drag down to descend. A tap on the held stem climbs faster.
+- Rattus norvegicus: B / threat tap kicks; hold C for Tail latch and release to retain actual velocity; hold V for Driving for .2–.6 seconds, then release to kick; E / tap Rattus starts one Stomp landing attack. Controller View/minus (8) latches, left trigger (6) drives and left shoulder (4) stomps; horizontal single controllers use View/minus (8), stick click (10) and top face (3). Swipe up beside a climbable plant to attach; swipe up again to leap between plants; drag down to descend. A tap on the held stem climbs faster.
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
-- X: dodge.
-- Max: B plants a bomb; C / touch Fan spends one Circuit; V / touch Rover dispatches or recalls; E / touch Overload spends three Circuit. Controller View/minus (8) uses Fan, left trigger (6) dispatches and left shoulder (4) overloads; horizontal single controllers use View/minus (8), stick click (10) and top face (3).
-- Cairn: B / threat tap sweeps; C / Stone spends one Strata; V / Brace defends and can counter an actual frontal strike; E / Ridge spends three Strata after valid placement. Controller C8/V6/E4, horizontal single C8/V10/E3. Moving, jumping or dodging releases Brace. A solo owned Shovel burrows with Down+E, controller Tend+Special or its touch glyph.
-- Pølge: C / touch Clinch makes room; X / touch Slip weaves through a warned attack. Controller View/minus (button 8) clinches; his skill and dodge retain the existing controller mapping.
-- Tap Max / E: class skill. A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a tap on Max throws at a pest near the finger, or boosts a stem climb. A brace refuses while you steer. Interrupted committed Rattus motion retains its spent Momentum and accepted cooldown.
+- X or a quick horizontal flick: dodge.
+- Max: B plants a bomb; C / Fan spends one Circuit; V / Rover dispatches or recalls; E / tap Max uses Overload and spends three Circuit. Controller View/minus (8) uses Fan, left trigger (6) dispatches and left shoulder (4) overloads; horizontal single controllers use View/minus (8), stick click (10) and top face (3).
+- Cairn: B / threat tap sweeps; C / Stone spends one Strata; V / Brace defends and can counter an actual frontal strike; E / tap Cairn uses Ridge and spends three Strata after valid placement. Controller C8/V6/E4, horizontal single C8/V10/E3. Moving, jumping or dodging releases Brace. A solo owned Shovel burrows with Down+E or controller Tend+Special.
+- Pølge: C / Clinch makes room; X / horizontal flick uses Slip through a warned attack. Controller View/minus (button 8) clinches; his skill and dodge retain the existing controller mapping.
+- Tap your character / E: class skill (Max Overload, Rattus Stomp, Cairn Ridge, Mycel Bloom, Pølge Flurry, Sligo Tun). A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a character tap throws at a pest near the finger, or boosts a stem climb. Interrupted committed Rattus motion retains its spent Momentum and accepted cooldown.
 - R or tap a nearby Max rover: refill; any grounded, stationary teammate can help. Max, Rattus and Cairn can also hold controller Tend and press their secondary (button 8), on standard and horizontal single controllers; the chord suppresses garden action while held.
 - L: lantern. Max, Rattus and Cairn use controller Home (16), or hold Tend + Utility (standard left trigger 6 / horizontal single stick click 10) when Home is reserved by the device; the chord suppresses garden action.
 - Sligo: hold an AI clone for half a second to swap; Q / left trigger cycles bodies.
@@ -118,7 +120,7 @@ Twenty campaign profiles give each garden a distinct traversal rhythm. Seeded si
 
 Gardens 3–19 now build enclosing chambers around their actual routes and upper districts. Broken masonry arches, textured piers, lamp recesses and attached side rooms connect the climb to the ground. Each garden has a large world-space landmark: buried aqueducts, mycelium, a frozen seed wheel, rib vaults, shafts and ruined machinery. Room surfaces carry chipped stone, bark, lichen, frost or rusty pipework. The architecture follows the rolled geometry without adding collision surfaces; all native source images retain their original size. See [campaign chambers](docs/design/campaign-chambers.md) and [the complete vertical stack](review/crown-ascent/).
 
-The local guide follows actual run state: discover the amber shrine, grow its court plant, tend the shrine, defeat its guardian, then physically climb the living exit. It reveals a direction only after the shrine has been discovered. Entrance signs distinguish the route roles and cache detours. Bitmap labels wrap within narrow phone viewports.
+Wayfinding uses small arrows and trail markers, with directions revealed after shrine discovery. Short interaction cues appear beside the shrine when needed. Permanent objective paragraphs, route/cache labels, place titles and large arrival numbers are absent; only compact run indicators remain. Teammate names sit small at the bottom and disappear when playing alone.
 
 Every garden has three deliberately placed guardian-shrine destinations away from the entrance. Each run chooses one, so finding the amber shrine is part of exploring the map. A shared two-seed cache waits there. Grow a living plant near its soil court, gather upgrades along the routes, and use Tend at the shrine when ready. Some shrines require climbing to a lookout; their guardian wakes in the nearby court below. The fight and its objectives stay at that court. The guardian must fall before the exit plant opens. Victory awards a boon and seeds, restores some plant health and water, and cancels outstanding boss strikes. The exit prefers a living plant beside the court, and the team still has to physically climb it. Three optional preparation raids offer extra experience and a boon; defeating them alone does not clear the garden.
 
@@ -140,8 +142,8 @@ acts follow the final-boss rhythm of Risk of Rain 2: a maul duel, a lunar
 reinforcement and seal interlude, an empowered return with shockwaves and tall
 energy lanes, then a wounded, weaponless last stand with needles and returning
 orbs. Breaking the final cores weakens its temporary power; player upgrades
-remain intact. Body, hazards, phase instructions and the nearby gardener stay
-readable on phones. See [the encounter design](docs/design/hollow-crown.md).
+remain intact. A thin health bar, four phase pips and three seal/core dots leave
+the body, hazards and nearby gardener clear on phones. See [the encounter design](docs/design/hollow-crown.md).
 
 Cyan begins after the guardian's entire volley has landed and cleared. Every guardian gives enough time to react and plant a two-second bomb: 3.2 seconds on Easy, 2.75 on Medium, 2.5 on Hard and 2.35 on Insane. Moon Moth and Hollow Crown descend within ground-bomb reach during recovery. Solving a boss's special objective grants a longer opening; enrage shortens the gap before the next attack without taking that opening away.
 
@@ -347,8 +349,8 @@ One horizontal Joy-Con (L) is detected automatically, with the stick on the left
 | Top face button, printed → | Class skill; focus an offered boon, then use the stick and bottom to choose |
 | SL | Dodge; cancels a held attack |
 | ZL | Hold and use the stick to aim precisely; release to attack; Max keeps moving while charging its planted bomb |
-| L | Refill a nearby rover for other classes; Max uses Fan (hold Tend + L to refill) and Pølge uses Clinch; Sligo cycles bodies |
-| Stick click | Max dispatches/recalls; other classes use lantern; Sligo cycles bodies |
+| L | Max Fan, Rattus Tail latch, Cairn Stone, Pølge Clinch; hold Tend + L to refill; Sligo cycles bodies |
+| Stick click | Max dispatches/recalls, Rattus Driving, Cairn Brace; hold Tend + stick click for their lantern; Mycel/Pølge use lantern and Sligo cycles bodies |
 | Home / Capture | Lantern when the browser exposes this button |
 | Minus | Settings |
 

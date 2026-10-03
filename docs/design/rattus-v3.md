@@ -67,20 +67,22 @@ locks steering. Matched release/cancel remains available for its own start.
 
 | Action | Keyboard | Touch | Standard controller | Horizontal single controller |
 | --- | --- | --- | --- | --- |
-| Primary | B / threat aim | Threat tap / Attack | Existing primary | Existing primary |
-| Tail latch | Hold C, release | Hold Latch, release | Hold View/minus (8) | Hold View/minus (8) |
-| Driving | Hold V, release | Hold Driving; drag out cancels | Hold left trigger (6) | Hold stick click (10) |
-| Stomp | E | Stomp / character tap | Left shoulder (4) | Top face (3) |
+| Primary | B / threat aim | Tap a threat | Existing primary | Existing primary |
+| Tail latch | Hold C, release | — | Hold View/minus (8) | Hold View/minus (8) |
+| Driving | Hold V, release | — | Hold left trigger (6) | Hold stick click (10) |
+| Stomp | E | Tap Rattus | Left shoulder (4) | Top face (3) |
 | Tend | Space / down | Drag down | Existing Tend | Existing Tend |
-| Dodge | X | Existing dodge gesture/control | Existing stick click (10/11) | Existing left shoulder (4) |
+| Dodge | X | Quick horizontal flick | Existing stick click (10/11) | Existing left shoulder (4) |
 | Refill nearby rover | R | Tap a nearby rover | Hold Tend + Latch (8) | Hold Tend + Latch (8) |
-| Lantern | L | Existing lantern control | Home (16), or hold Tend + Utility (6) | Home (16), or hold Tend + Utility (10) |
+| Lantern | L | — | Home (16), or hold Tend + Utility (6) | Home (16), or hold Tend + Utility (10) |
 
 Refill/lantern chords suppress garden work while held. They do not start a
 latch or Driving charge. Normal jump, sprint, mature-plant climbing, separate
-gardening and Sligo's own Q/left-trigger exchange keep their roles. Touch can
-move/aim while another pointer holds an action; drag-out, pointercancel,
-blur and released controls cancel an uncommitted charge.
+gardening and Sligo's own Q/left-trigger exchange keep their roles. Gameplay
+has no on-screen action buttons. Tail latch, Driving and lantern require
+keyboard or controller input; touch retains canvas movement, attack, Stomp,
+gardening, dodge, refill and plant climbing. Blur and released controls cancel
+an uncommitted charge.
 
 ## Existing upgrades
 
