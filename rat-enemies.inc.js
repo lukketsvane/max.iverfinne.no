@@ -34,9 +34,10 @@ function ratMove(k,speed,dt){
   var layout=stageLayout(),left=dt;
   while(left>1e-8){
     var step=Math.min(left,1/120);left-=step;
-    var x0=k.x,y0=k.y+RAT_FOOT;
+    var x0=k.x,y0=k.y+RAT_FOOT,before={x:k.x,y:k.y,vx:k.vx,vy:k.vy,grounded:!!k.ratGrounded&&k.vy>=-.01};
+    var cairnGround={grounded:before.grounded,supportId:k.ratPlatform||'ground',foot:RAT_FOOT,bodyRadius:9};
     k.vx=approach(k.vx,speed,360*step);
-    k.x+=k.vx*step*mechWetFactor(k);
+    k.x+=k.vx*step*mechWetFactor(k)*cairnPestSlow(k,cairnGround);
     if(k.ratGrounded&&k.vy<-.01)k.ratGrounded=false;
     if(k.ratGrounded){
       var platform=k.ratPlatform?window.MaxStageLayout.support(layout,k.ratPlatform,k.x):null;
@@ -50,6 +51,10 @@ function ratMove(k,speed,dt){
       if(landing&&landing.y<=floor){k.y=landing.y-RAT_FOOT;k.vy=0;k.ratGrounded=true;k.ratPlatform=landing.id;k.ratNavX=null;}
       else if(foot>=floor){k.y=floor-RAT_FOOT;k.vy=0;k.ratGrounded=true;k.ratPlatform='';k.ratNavX=null;}
       else k.y=foot-RAT_FOOT;
+    }
+    if(before.grounded&&k.ratGrounded){
+      var accepted=cairnPestStep(k,before,{x:k.x,y:k.y,vx:k.vx,vy:k.vy,grounded:true},cairnGround);
+      k.x=accepted.x;k.y=accepted.y;k.vx=accepted.vx;k.vy=accepted.vy;
     }
   }
   k.ratWet=!!waterAt(k.x)&&Math.abs(k.y+RAT_FOOT-ratFloor(k.x))<2&&!k.ratPlatform;
@@ -110,7 +115,7 @@ function finishRatBite(k){
   if(p&&!p.dead&&p.health>0&&Math.abs(p.x-k.x)<21&&Math.abs(surfaceY(p.x)-foot)<14)biteGarden(k,p,raidPressure());
   if(k.ratVariant==='plague'){
     var poison=enemyHazard(k,'rat-plague',k.ratAimX,14,.7,.55,k.x,foot,k.ratAimY);
-    if(poison)poison.life=.5;
+    if(poison){cairnTagHazard(poison,k,'hazard',true);poison.life=.5;}
   }
   k.ratWarning=0;k.ratTargetId=0;
   if(Math.abs(k.x-P.x)<160)chime([720,490],.035,.012);
@@ -143,7 +148,7 @@ function updateRat(k,dt){
     k.face=dx<0?-1:1;k.ratAimX=target.x;k.ratAimY=target.y;k.ratTargetId=target.plant?target.plant.id:0;
     beginEnemyWarning(k);k.tell=k.windup=.6;ratState(k,'windup');k.vx=k.vy=0;
     var warning=enemyHazard(k,'rat-bite',target.x,12,.86,0,k.x,k.y,target.y);
-    if(warning)k.ratWarning=warning.id;
+    if(warning){cairnTagHazard(warning,k,'strike');k.ratWarning=warning.id;}
     return;
   }
   ratJumpToward(k,target.x,target.y);

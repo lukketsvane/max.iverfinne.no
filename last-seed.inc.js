@@ -27,15 +27,16 @@ function startLastSeed(plant){
   var s=rogueRun.survival;s.started=true;s.rest=3;s.plantId=plant.id;
   gardenSeeds=0;runElapsed=0;plant.moisture=.8;
 }
-function damageGardener(member,amount,warning){
+function damageGardener(member,amount,warning,contact){
   if(!relicRunMode()||coopGuest()||rogueRun.ended)return false;
   var v=seedVital(member),a=member?coopMemberAvatar(member):P;
   var remote=member&&member.id!==coop.me;
   if(v.hp<=0||v.shield>0)return false;
   if(gardenerDodging(member,a)){polgeAvoidedWarning(member,warning);return false;}
   if(remote?curledMember(member,a):a.tun>0)return false;
-  var guarded=member?bracedMember(member,a):a.brace>0;
+  var guarded=bracedMember(member,a);
   amount=rattusAbsorbLastSeedDamage(member,amount*(guarded?.35:1));
+  if(contact)cairnStrike(member,contact);
   v.hp=Math.max(0,v.hp-amount);v.shield=.85;v.hurt=4;v.revive=0;
   if(!member||member.id===coop.me){P.hurt=.4;shake=Math.max(shake,2);}
   if(v.hp===0){
@@ -98,14 +99,14 @@ function lastSeedEnemy(k,dt){
   var actors=seedActors().filter(function(a){return a.v.hp>0;}),target=null,distance=Infinity;
   actors.forEach(function(a){var d=Math.hypot(a.p.x-k.x,a.p.y-12-k.y);if(d<distance){target=a;distance=d;}});
   if(!target)return true;
-  if((k.kind>=3||!k.hunt)&&distance<13&&k.bite<=0){damageGardener(target.member,18*runDamageScale());k.bite=1;}
+  if((k.kind>=3||!k.hunt)&&distance<13&&k.bite<=0){if(!(k.windup>0||k.attackT>0||k.divePhase>0||k.chargeT>0))cairnBeginAttack(k);damageGardener(target.member,18*runDamageScale(),null,cairnContact(k,{kind:'strike',pointX:target.p.x,pointY:target.p.y-12,accepted:true}));k.bite=1;}
   if(!k.hunt&&gardenPlots.some(function(p){return !p.dead;}))return false;
   if(k.kind>=3&&gardenPlots.some(function(p){return !p.dead;}))return false;
   var tx=target.p.x,ty=target.p.y-12,dx=tx-k.x,dy=ty-k.y,d=Math.hypot(dx,dy);
   k.target=null;k.face=dx<0?-1:1;
   if(k.windup>0){
     k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
-    if(!k.windup){if(d<18)damageGardener(target.member,(k.elite?30:18)*runDamageScale(),polgeEnemyWarning(k,true));k.bite=.9;}
+    if(!k.windup){if(d<18)damageGardener(target.member,(k.elite?30:18)*runDamageScale(),polgeEnemyWarning(k,true),cairnContact(k,{kind:'strike',pointX:target.p.x,pointY:target.p.y-12,accepted:true}));k.bite=.9;}
   }else if(d>10){
     var wet=mechWetFactor(k),speed=(k.kind===2?32:24)*(1+Math.min(1.2,gardenWave*.035))*pestSlow(k)/wet;
     k.vx=dx/d*speed;k.vy=dy/d*speed;k.x+=k.vx*dt*wet;k.y+=k.vy*dt*wet;

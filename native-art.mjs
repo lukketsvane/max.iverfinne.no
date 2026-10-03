@@ -1,5 +1,6 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 import { updateRattusMotion } from './rattus-motion.mjs';
+import { updateCairnMotion } from './cairn-motion.mjs';
 import { crownPose, crownClip, crownGuardPose } from './hollow-crown-art.mjs';
 
 const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
@@ -13,6 +14,7 @@ function playerRow(skin, sheet, row, animation) {
   return CHARACTER_ART[skin] && sheet === 'interaction' && animation === 'toss' ? 5 : row;
 }
 function playerCell(skin, player) {
+  if (skin === 'ember' && player && player.cairnMotionCell) return player.cairnMotionCell;
   if ((skin !== 'moss' && skin !== 'moss-pink') || !player || player.anim === 'sow' || !(player.rattlePose > 0 || player.pounce > 0)) return null;
   const clock = Math.max(0, Number.isFinite(player.rattleClock) ? player.rattleClock : 0);
   const frame = Math.min(7, Math.floor(clock * 8 / .28));
@@ -216,13 +218,25 @@ export function createNativeArt() {
     return deaths.reduce((remaining, death) => death.crown ? Math.max(remaining, death.duration - Math.max(0, now - death.renderedAt)) : remaining, 0);
   }
   function drawPlayerMotion(ctx, player, x, y, tint) {
+    if (player.skin === 'ember' && player.cairnMotionCell) {
+      const pose = player.cairnMotionCell, image = atlases.ember?.images[pose.sheet];
+      if (!image) return false;
+      ctx.save(); ctx.imageSmoothingEnabled = false; ctx.translate(Math.round(x), Math.round(y));
+      if (pose.face < 0) { ctx.translate(1, 0); ctx.scale(-1, 1); }
+      ctx.drawImage(tint ? tint(image) : image, pose.column * 32, pose.row * 32, 32, 32, -16, -31, 32, 32);
+      ctx.restore(); return true;
+    }
     const atlas = atlases['rattus-motion'];
     if (!atlas || !['moss', 'moss-pink'].includes(player.skin) || !atlas.manifest.animations[player.motionName]) return false;
     const art = tint ? { manifest: atlas.manifest, images: Object.fromEntries(Object.entries(atlas.images).map(([key, image]) => [key, tint(image)])) } : atlas;
     drawAtlas(ctx, art, player.motionName, player.motionTime, x, y, { facing: player.face });
     return true;
   }
-  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion: updateRattusMotion, drawEnemy, drawCrownEffect, crownDeathRemaining, enemyDefeated, drawDefeated, reset };
+  function updatePlayerMotion(player, dt, speedScale, context) {
+    updateRattusMotion(player, dt, speedScale, context);
+    updateCairnMotion(player, dt, speedScale, context);
+  }
+  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion, drawEnemy, drawCrownEffect, crownDeathRemaining, enemyDefeated, drawDefeated, reset };
 }
 
 if (typeof window !== 'undefined') {

@@ -6,6 +6,7 @@ const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
   'ascentPresentation', 'ascentFrame', 'ascentLive', 'worldCovered',
   'rattusSerial',
+  'cairnSerial', 'cairnAttackSerial',
   'mechEventId', 'soloCrew',
   'yeet', 'YEET_SHEET',
   'classShots', 'classFighters', 'runActive', 'pad', 'padAx', 'heldL', 'heldRun', 'lampToggle',
@@ -23,6 +24,8 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'cairnRootedGround', 'cairnPrimary', 'cairnPrimaryWorld', 'cairnPrimaryInterval', 'cairnStone', 'cairnStoneWorld', 'cairnBrace', 'cairnBraceWorld', 'cairnReleaseBrace', 'cairnReleaseBraceWorld', 'cairnBreakwater', 'cairnBreakwaterWorld', 'cairnInterrupt', 'cairnProtection', 'cairnReducedBite', 'cairnStrike', 'cairnBeginAttack', 'cairnTagHazard', 'cairnContact', 'cairnConsumeAttack', 'cairnSourceFamily', 'updateCairnCombat', 'cairnPatchPoint', 'cairnSupportPoint', 'cairnSupportRoute', 'coopCairnSource', 'coopCairnSourceFamilies', 'coopCairnValidate',
+  'cairnState', 'cairnPeek', 'cairnCaptureState', 'cairnRestoreState', 'cairnRebaseClocks', 'cairnRefreshClocks', 'cairnWetBody', 'cairnWetPoint', 'cairnCancelMotion', 'cairnPhasePolicy', 'cairnBraceActive', 'cairnShortenBrace', 'cairnRidgePlacement', 'cairnPestGround', 'cairnPestSlow', 'cairnPestStep', 'cairnPolicy', 'cairnMotionContext', 'cairnInputAim', 'useCairnBurrow', 'updateCairnControls', 'classProtection', 'plantProtection', 'bracedMember', 'rootAbsorb', 'highTideDamagePlant', 'predictRat',
   'rememberAscentFrame', 'beginAscentPresentation', 'prepareAscentPresentation', 'drawAscentPresentation', 'cancelAscentPresentation', 'ascentPresentationOffset', 'screenToWorld', 'resize',
   'rattusDirectionalAnchorAim',
   'rattusWetBody', 'rattusWetPoint',

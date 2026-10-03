@@ -85,12 +85,21 @@
   #rattusControls button:disabled{color:#887583;border-color:#59404c}
   #rattusControls button:focus-visible{outline:2px solid #efd17e;outline-offset:2px}
   @media(hover:hover) and (pointer:fine){#rattusControls{bottom:12px}#rattusControls button{min-height:34px;font-size:10px}}
+  #cairnControls{position:fixed;z-index:25;right:max(12px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(2,82px);gap:6px}
+  #cairnControls[hidden],#cairnControls [hidden]{display:none}
+  #cairnStrata{grid-column:1/-1;color:#c4c996;text-align:right;font:11px/1.3 ui-monospace,monospace;pointer-events:none}
+  #cairnControls button{min-height:48px;border:1px solid #758b83;border-radius:2px;background:rgba(18,24,26,.9);color:#c4c996;font:11px/1.3 ui-monospace,monospace;touch-action:none;cursor:pointer}
+  #cairnControls button:disabled{color:#6f7871;border-color:#424e46}
+  #cairnControls button:focus-visible{outline:2px solid #c4c996;outline-offset:2px}
+  #cairnShovel{grid-column:1/-1}
+  @media(hover:hover) and (pointer:fine){#cairnControls{bottom:12px}#cairnControls button{min-height:34px;font-size:10px}}
 </style>
 <div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="perkMenu" aria-live="polite"></div>
 <div id="polgeControls" hidden aria-label="Pølge combat"><button id="polgeClinch" type="button" aria-label="Clinch break (C)">Clinch · C</button><button id="polgeSlip" type="button" aria-label="Slip and counter (X)">Slip · X</button></div>
 <div id="mechControls" hidden aria-label="Max combat"><span id="mechCircuit" class="circuit" role="status" aria-live="polite">Circuit 0/3</span><button id="mechPrimary" type="button" aria-label="Plant bomb (B)">Bomb · B</button><button id="mechFan" type="button" aria-label="Irrigation fan (C)">Fan · C</button><button id="mechUtility" type="button" aria-label="Rover dispatch or recall (V)">Rover · V</button><button id="mechSpecial" type="button" aria-label="Floodgate overload (E)">Overload · E</button></div>
 <div id="rattusControls" hidden aria-label="Rattus combat"><span id="rattusMomentum" role="meter" aria-label="Momentum" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">Momentum 0/100</span><button id="rattusPrimary" type="button" aria-label="Boot combination (B)">Boots · B</button><button id="rattusSecondary" type="button" aria-label="Tail latch (C)">Tail · C</button><button id="rattusUtility" type="button" aria-label="Driving dropkick (V)">Drive · V</button><button id="rattusSpecial" type="button" aria-label="Splits stomp (E)">Stomp · E</button></div>
+<div id="cairnControls" hidden aria-label="Cairn combat"><span id="cairnStrata" role="meter" aria-label="Strata" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0">Strata 0/3</span><button id="cairnPrimary" type="button" aria-label="Three-Stone Rhythm (B)">Sweep · B</button><button id="cairnSecondary" type="button" aria-label="Loose Stone (C)">Stone · C</button><button id="cairnUtility" type="button" aria-label="Brace and Answer (V)">Brace · V</button><button id="cairnSpecial" type="button" aria-label="Garden Breakwater (E)">Ridge · E</button><button id="cairnShovel" hidden type="button" aria-label="Owned shovel: burrow or erupt (Down and E)">Shovel · ↓E</button></div>
 <script>
 (function () {
 "use strict";
@@ -328,9 +337,10 @@ function ladderInput(){
   return v;
 }
 function beginLadder(direction){
-  if(mechPlanted()||rattusPolicy().blockClimb)return false;
+  if(mechPlanted()||rattusPolicy().blockClimb||cairnPolicy().blockClimb)return false;
   if(runIsPaused()||seedDown()||P.ladderRegrab>0||P.tun>0||P.st==='float'||P.st==='burrow'||climb||warp)return false;
   var q=ladderAt(P.x,P.y);if(!q||direction<0&&P.y<=q.top+1||direction>0&&P.y>=q.bottom-1)return false;
+  if(ownClass().id==='bulwark')cairnInterrupt('ladder');
   P.ladderId=q.id;P.st='ladder';P.x=q.x;P.vx=P.vy=0;P.grounded=false;P.platform=null;P.coyote=0;P.held=false;P.land=0;P.brace=0;P.dodgeT=0;P.airJumpUsed=false;
   task=holdWater=null;jumpBuf=0;gardenPress=false;cancelPounce();setAnim('climb');return true;
 }
@@ -405,7 +415,8 @@ var touches = {}, moveId = null;
 var rattusHeldC=false,rattusHeldV=false,rattusHeldUI=0;
 
 function doJump(variable) {
-  if(mechPlanted()||rattusPolicy().blockJump)return false;
+  if(mechPlanted()||rattusPolicy().blockJump||cairnPolicy().blockJump)return false;
+  if(cairnPolicy().releaseOnJump)cairnReleaseBrace(true);
   if(P&&P.brace>0)P.brace=0;
   if(P&&P.tun>0)endTun();
   if(P&&P.st==='climb'&&climb){if(climb.exit)climbBoost();else jumpFromPlant(variable);return;}
@@ -416,7 +427,7 @@ function doJump(variable) {
   }
   jumpBuf = 0.14; jumpVariable = variable;
 }
-function requestDodge(direction) { if(mechPlanted()||rattusPolicy().blockDodge)return false;dodgeBuf = .12; dodgeDirection = direction || readInput().axis || P.face; }
+function requestDodge(direction) { if(mechPlanted()||rattusPolicy().blockDodge||cairnPolicy().blockDodge)return false;dodgeBuf = .12; dodgeDirection = direction || readInput().axis || P.face; }
 
 window.addEventListener('keydown', function (e) {
   var k = e.key;
@@ -490,6 +501,7 @@ function padNavigate(dx,dy,list){
 }
 function padEscape(){var target=document.activeElement,dialog=padButtons()[0];if(!target||!target.closest||!target.closest('[role="dialog"],dialog'))target=dialog&&dialog.closest('[role="dialog"],dialog')||window;target.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));}
 function releasePad(){
+  if(P&&ownClass().id==='bulwark'&&pad.cairnControlled)cairnInterrupt('controller-released');
   if(pad.classC)releaseClassSecondary(true);if(pad.classV)releaseClassUtility(true);
   if(pad.b[14])heldL=false;if(pad.b[15])heldR=false;if(pad.jump)heldUp=false;if(pad.down)heldDown=false;if(pad.work)heldSpace=false;if(pad.run)heldRun=false;
   if(charge&&charge.src==='pad')charge=null;
@@ -527,9 +539,9 @@ function pollPads(){
   }else{
     if(!single&&choice&&choice.length&&U&&!pad.U)padMove(1,choice);
     if(!single&&choice&&choice.length&&!charge){var fx=gp.axes[2]||0,fy=gp.axes[3]||0,f=fx<-.35?0:fx>.35?2:fy<-.35?1:-1;if(f>=0&&f<choice.length&&choice[f]!==document.activeElement)padFocus(choice[f]);}
-    var utilityButton=single?10:6,hasUtility=['mech','runner'].indexOf(rogueRun.classId)>=0;
-    var rawWork=!!(b[1]||(single?b[0]&&D:b[3])),refillChord=rawWork&&!!b[8],lanternChord=rawWork&&hasUtility&&!!b[utilityButton],work=rawWork&&!refillChord&&!lanternChord,jump=!!b[0]&&!D&&!work;
-    if(refillChord||lanternChord){gardenPress=false;task=holdWater=null;}
+    var utilityButton=single?10:6,hasUtility=['mech','runner','bulwark'].indexOf(rogueRun.classId)>=0;
+    var rawWork=!!(b[1]||(single?b[0]&&D:b[3])),refillChord=rawWork&&!!b[8],lanternChord=rawWork&&hasUtility&&!!b[utilityButton],shovelChord=rawWork&&rogueRun.classId==='bulwark'&&!!b[single?3:4],work=rawWork&&!refillChord&&!lanternChord&&!shovelChord,jump=!!b[0]&&!D&&!work;
+    if(refillChord||lanternChord||shovelChord){gardenPress=false;task=holdWater=null;}
     if(!single&&hit(0)&&choice&&choice.indexOf(document.activeElement)>=0)document.activeElement.click();
     else if(hit(0)&&jump){doJump(true);padRumble(20,.12);}
     if(!!b[14]!==!!was[14])heldL=!!b[14];if(!!b[15]!==!!was[15])heldR=!!b[15];
@@ -537,7 +549,7 @@ function pollPads(){
     var shoot=!!(b[2]||(single?b[5]||b[6]:b[7]));if(shoot&&!pad.shoot)chargeStart('pad');
     var aiming=charge&&charge.src==='pad';
     pad.ladderY=aiming&&(!single||b[6])?0:U?-1:D?1:0;
-    var down=D&&!aiming&&!refillChord&&!lanternChord&&(!single||work);if(down!==!!pad.down){heldDown=down;if(down)gardenPress=true;}pad.down=down;
+    var down=D&&!aiming&&!refillChord&&!lanternChord&&!shovelChord&&(!single||work);if(down!==!!pad.down){heldDown=down;if(down)gardenPress=true;}pad.down=down;
     if(work!==!!pad.work){heldSpace=work;if(work&&!aiming)gardenPress=true;}pad.work=work;
     var run=!single&&!!b[5];if(run!==!!pad.run)heldRun=run;pad.run=run;
     if(aiming){
@@ -545,7 +557,9 @@ function pollPads(){
       else{var aim=padAim(gp.axes[2]||0,gp.axes[3]||0);if(aim){charge.ax=aim.x;charge.ay=aim.y;charge.rs=true;charge.lock=false;}else if(!charge.rs){aim=padAim(ax,ay);charge.ax=aim?aim.x:(b[15]?1:0)-(b[14]?1:0);charge.ay=aim?aim.y:b[12]?-1:b[13]?1:0;}}
     }
     if(!shoot&&pad.shoot&&charge&&charge.src==='pad')chargeRelease();pad.shoot=shoot;pad.precise=single&&!!b[6];
+    if(rogueRun.classId==='bulwark'&&(shoot||b[8]&&!refillChord||b[utilityButton]&&!lanternChord||b[single?3:4]))pad.cairnControlled=true;
     var runnerPad=rogueRun.classId==='runner',classC=runnerPad&&!!b[8]&&!refillChord,classV=runnerPad&&!!b[utilityButton]&&!lanternChord;
+    pad.cairnAim=rogueRun.classId==='bulwark'?padAim(single?ax:gp.axes[2]||0,single?ay:gp.axes[3]||0):null;
     pad.rattusAim=runnerPad?padAim(single?ax:gp.axes[2]||0,single?ay:gp.axes[3]||0):null;
     if(classC&&!pad.classC)useClassSecondary();else if(!classC&&pad.classC)releaseClassSecondary(refillChord);
     if(classV&&!pad.classV)useClassUtility();else if(!classV&&pad.classV)releaseClassUtility(lanternChord);
@@ -553,15 +567,15 @@ function pollPads(){
     if(lanternChord&&!pad.lanternChord)lampToggle=true;pad.lanternChord=lanternChord;
     if(single){
       if(hit(4)&&!work){if(charge&&charge.src==='pad')charge=null;requestDodge();padRumble(30,.2);}
-      if(hit(3)&&useClassSkill())padRumble(45,.3);
-      if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='sligo')cycleSligo();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech')useClassSecondary();else if(!runnerPad)refillCompanion();}
-      if(hit(10)&&rogueRun.classId==='mech'&&!lanternChord)useClassUtility();
-      if(hit(16)||hit(10)&&['sligo','mech','runner'].indexOf(rogueRun.classId)<0)lampToggle=true;
+      if(hit(3)&&(shovelChord?useCairnBurrow():rogueRun.classId==='bulwark'?cairnBreakwater():useClassSkill()))padRumble(45,.3);
+      if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='sligo')cycleSligo();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech'||rogueRun.classId==='bulwark')useClassSecondary();else if(!runnerPad)refillCompanion();}
+      if(hit(10)&&(rogueRun.classId==='mech'||rogueRun.classId==='bulwark')&&!lanternChord)useClassUtility();
+      if(hit(16)||hit(10)&&['sligo','mech','runner','bulwark'].indexOf(rogueRun.classId)<0)lampToggle=true;
       if(hit(10)&&rogueRun.classId==='sligo')cycleSligo();
     }else{
       if((hit(10)||hit(11))&&!D&&!work&&!aiming)requestDodge();
       if(hit(6)&&rogueRun.classId==='sligo')cycleSligo();
-      if(hit(4))useClassSkill();if(hit(6)&&rogueRun.classId==='mech'&&!lanternChord)useClassUtility();else if(hit(6)&&!hasUtility&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(16)&&hasUtility)lampToggle=true;if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech')useClassSecondary();else if(!runnerPad)refillCompanion();}
+      if(hit(4)){if(shovelChord)useCairnBurrow();else if(rogueRun.classId==='bulwark')cairnBreakwater();else useClassSkill();}if(hit(6)&&(rogueRun.classId==='mech'||rogueRun.classId==='bulwark')&&!lanternChord)useClassUtility();else if(hit(6)&&!hasUtility&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(16)&&hasUtility)lampToggle=true;if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech'||rogueRun.classId==='bulwark')useClassSecondary();else if(!runnerPad)refillCompanion();}
     }
     if(hit(9))padEscape();
     if(b.some(Boolean)||Math.abs(ax)>.12||Math.abs(ay)>.12||pad.rattusAim){rattusWake();unlockAudio();}
@@ -764,6 +778,7 @@ function approach(value, target, amount) { return value < target ? Math.min(targ
 function startDodge() {
   if(mechPlanted()||rattusPolicy().blockDodge||P.dodgeCool>0||P.pounce||P.tun>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
   if(ownClass().id==='polge'&&!boxerDodge())return false;
+  if(ownClass().id==='bulwark')cairnInterrupt('dodge');
   P.dodgeT=ownClass().id==='polge'?.18:DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;P.slipDistance=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;P.brace=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
@@ -816,13 +831,15 @@ function updatePlayer(dt, inp) {
     if(P.pounce||P.rattlePose>0)P.rattleClock+=step;
     P.rattlePose=Math.max(0,P.rattlePose-step);
     if(!P.pounce&&!P.rattlePose)P.rattleMove='';
-    if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
+    if(ownClass().id==='bulwark'){if(inp.axis&&cairnPolicy().releaseOnMove)cairnReleaseBrace(true);}
+    else if(P.brace>0){P.brace=Math.max(0,P.brace-step);if(inp.axis||!P.grounded||P.wet||climb||Math.abs(P.x-P.braceX)>6)P.brace=0;}
     if(P.tun>0){var tunLeft=P.tun-step;if(tunLeft<=1e-6||!P.grounded||P.wet||climb||P.st==='float'||Math.abs(P.x-P.tunX)>6)endTun();else P.tun=tunLeft;}
     P.hurt=Math.max(0,(P.hurt||0)-step);
     if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
     var planted=mechPlanted();if(planted){P.vx=0;jumpBuf=0;dodgeBuf=0;gardenPress=false;task=holdWater=null;}
     var runnerPolicy=rattusPolicy();if(runnerPolicy.blockTend){gardenPress=false;task=holdWater=null;}if(runnerPolicy.blockJump)jumpBuf=0;if(runnerPolicy.blockDodge)dodgeBuf=0;if(runnerPolicy.phase==='recovery'&&P.grounded)P.vx=0;
-    var held=P.tun>0||planted||runnerPolicy.lockSteer?{axis:0,top:inp.top}:inp;
+    var stonePolicy=cairnPolicy();if(stonePolicy.blockTend){gardenPress=false;task=holdWater=null;}if(stonePolicy.blockJump)jumpBuf=0;if(stonePolicy.lockSteer)P.vx=0;
+    var held=P.tun>0||planted||runnerPolicy.lockSteer||stonePolicy.lockSteer?{axis:0,top:inp.top}:inp;
     if(P.st==='free'&&!held.axis&&ladderInput())beginLadder(ladderInput());
     updateHands(step,taskSteer(held));
     if(P.st==='burrow')updateBurrow(step,inp);
@@ -924,7 +941,7 @@ function physics(dt, inp) {
     rattusMovement(rattusMember(),before,after,dt,observation);
     if(observation.landing)rattusLanding(rattusMember(),{id:P.platform||'ground',y:P.y},before,after,observation);
   }
-  if(!P.grounded&&P.st==='free'&&!warp&&!P.pounce&&!rattusPolicy().blockClimb&&canPlantClimb(rogueRun.classId)&&(!highTideMode()||!inp.axis&&heldUp)){
+  if(!P.grounded&&P.st==='free'&&!warp&&!P.pounce&&!rattusPolicy().blockClimb&&!cairnPolicy().blockAutocatch&&canPlantClimb(rogueRun.classId)&&(!highTideMode()||!inp.axis&&heldUp)){
     var catchPlant=plantClimbAt(P.x,P.y,7);
     if(catchPlant&&(!P.climbRegrab||catchPlant.id!==P.climbIgnoreId))beginClimb(catchPlant,false);
   }
@@ -965,7 +982,7 @@ function animate(dt) {
     if (P.frame < a.f.length - 1) P.frame++;
     else if (a.loop) P.frame = 0; else P.done = true;
   }
-  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt,ownClass().speed*(1+.06*(rogueRun.perks.stride||0))*(P.wet?.5:1),rattusMotionContext());
+  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt,ownClass().speed*(1+.06*(rogueRun.perks.stride||0))*(P.wet?.5:1),ownClass().id==='bulwark'?cairnMotionContext():rattusMotionContext());
   P.rattusInputPulse=Math.max(0,(P.rattusInputPulse||0)-dt);
 }
 
@@ -2541,19 +2558,13 @@ function drawCompanion(){
     window.MaxCompanion.draw(ctx,s,s.x-camX,surfaceY(s.x)-camY);
   });
 }
-function bracedMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.bracing:P.brace>0;return performance.now()<(m.braceUntil||0)&&Math.abs(a.x-(m.braceX||0))<=6;}
+function bracedMember(m,a){if((m?m.classId:ownClass().id)==='bulwark')return cairnBraceActive(m,a);if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.bracing:P.brace>0;return performance.now()<(m.braceUntil||0)&&Math.abs(a.x-(m.braceX||0))<=6;}
 function curledMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.curled:P.tun>0;return performance.now()<(m.tunUntil||0)&&Math.abs(a.x-(m.tunX||0))<=6;}
-function classProtection(plant){
-  var protection=0;
-  function guard(avatar,classId,braced,curled){var kit=window.MaxClasses.get(classId);if(kit.protection&&avatar.grounded&&!avatar.wet&&Math.abs(avatar.x-plant.x)<=(braced?kit.braceRadius:kit.radius)&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,braced?kit.braceProtection:kit.protection);
-    if(curled&&kit.tunRadius&&Math.abs(avatar.x-plant.x)<=kit.tunRadius&&Math.abs(avatar.y-surfaceY(plant.x))<24)protection=Math.max(protection,kit.tunProtection);}
-  if(coop)coopMembers().forEach(function(m){var a=coopMemberAvatar(m);guard(a,m.classId,bracedMember(m,a),curledMember(m,a));});else guard(P,rogueRun.classId,bracedMember(null,P),curledMember(null,P));
-  eachSligo(function(c){c.bodies.forEach(function(b){if(b.sligoId!==c.active&&b.tun>0&&b.grounded&&!b.wet)guard(b,'sligo',false,true);});});
-  return 1-protection;
-}
-function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
+function classProtection(plant,context){return cairnProtection(plant,context||{kind:'hazard',pointX:plant.x,pointY:surfaceY(plant.x)}).multiplier;}
+function plantProtection(plant,bite,context){return classProtection(plant,context||{kind:bite?'bite':'hazard',pointX:plant.x,pointY:surfaceY(plant.x)})*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
 function useClassSecondary(){
   if(runIsPaused()||seedDown())return false;
+  if(ownClass().id==='bulwark'){var stone=cairnStone(cairnInputAim());if(!stone)P.skillDenied=.2;return stone;}
   if(ownClass().id==='runner'){var aim=rattusInputAim();if(!pad.rattusAim&&!(mouse.seen&&mouse.locked))aim=rattusDirectionalAnchorAim(aim)||aim;var latch=rattusLatch(aim);if(!latch)P.skillDenied=.2;return latch;}
   if(ownClass().id==='mech'){var fan=mechFan();if(!fan)P.skillDenied=.2;return fan;}
   if(ownClass().id!=='polge')return false;
@@ -2564,6 +2575,13 @@ function useClassSecondary(){
 }
 function mechPlanted(){return ownClass().id==='mech'&&(P.mechWindup>0||typeof engineerState==='function'&&engineerState().overloadWindup>0);}
 function rattusPolicy(member){return (member?member.classId:ownClass().id)==='runner'&&typeof rattusPhasePolicy==='function'?rattusPhasePolicy(member):{};}
+function cairnPolicy(member){return (member?member.classId:ownClass().id)==='bulwark'&&typeof cairnPhasePolicy==='function'?cairnPhasePolicy(member):{};}
+function cairnInputAim(){var aim=pad.cairnAim;return aim?{x:P.x+aim.x*96,y:P.y-12+aim.y*55}:rattusInputAim();}
+function cairnMotionContext(member){
+  member=member||(coop&&P.evoKey&&coop.members[P.evoKey])||(coop&&(coopActor||coop.members[coop.me]));
+  var own=!member||!coop||member.id===coop.me;if(own)P.motionInput=rattusInputActive()||!!pad.cairnAim;
+  return {cairn:cairnPeek(member)||{},phasePolicy:cairnPolicy(member),inputActive:own?P.motionInput:!!P.motionInput||Math.abs(P.vx)>3||Math.abs(P.vy)>3||P.st!=='free'};
+}
 function rattusBoundMovement(before,motion,dt){
   var limit=Math.min(motion.maxDistance,motion.remainingPath),finalX=P.x,finalY=P.y,grounded=P.grounded,platformId=P.platform,layout=stageLayout(),lo=0,hi=1;
   if(!Number.isFinite(limit))return;
@@ -2603,6 +2621,7 @@ function releaseClassSecondary(cancel){return ownClass().id==='runner'?rattusRel
 function releaseClassUtility(cancel){return ownClass().id==='runner'?(cancel?rattusDrivingCancel():rattusDrivingRelease(rattusInputAim())):false;}
 function useClassUtility(){
   if(runIsPaused()||seedDown())return false;
+  if(ownClass().id==='bulwark'){var brace=cairnPolicy().phase==='brace'?cairnReleaseBrace(false):cairnBrace();if(!brace)P.skillDenied=.2;return brace;}
   var ok=ownClass().id==='mech'?mechDispatch():ownClass().id==='runner'?rattusDrivingStart(rattusInputAim()):false;
   if(!ok)P.skillDenied=.2;return ok;
 }
@@ -2668,11 +2687,39 @@ function updateRattusControls(){
   rattusUtilityButton.textContent=policy.hasCharge?'Drive · release':v>0?'Drive '+v.toFixed(1)+'s':'Drive · V';
   rattusSpecialButton.textContent=e>0?'Stomp '+e.toFixed(1)+'s':'Stomp · E';
 }
+var cairnControls=document.getElementById('cairnControls'),cairnStrata=document.getElementById('cairnStrata'),cairnPrimaryButton=document.getElementById('cairnPrimary'),cairnSecondaryButton=document.getElementById('cairnSecondary'),cairnUtilityButton=document.getElementById('cairnUtility'),cairnSpecialButton=document.getElementById('cairnSpecial'),cairnShovelButton=document.getElementById('cairnShovel');
+function bindCairnTap(button,action){
+  var cancelled=false;
+  button.addEventListener('pointerdown',function(e){cancelled=false;e.stopPropagation();});
+  button.addEventListener('pointermove',function(e){if(!e.buttons&&e.pointerType==='mouse')return;var r=button.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)cancelled=true;});
+  button.addEventListener('pointercancel',function(){cancelled=true;});
+  button.addEventListener('click',function(e){e.stopPropagation();if(cancelled){cancelled=false;e.preventDefault();return;}unlockAudio();action();});
+  button.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){if(!e.repeat)cancelled=false;e.stopPropagation();if(e.repeat)e.preventDefault();}});
+  button.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter')e.stopPropagation();});
+}
+bindCairnTap(cairnPrimaryButton,throwAuto);bindCairnTap(cairnSecondaryButton,useClassSecondary);bindCairnTap(cairnUtilityButton,useClassUtility);bindCairnTap(cairnSpecialButton,function(){var ok=cairnBreakwater();if(!ok)P.skillDenied=.2;});bindCairnTap(cairnShovelButton,useCairnBurrow);
+function useCairnBurrow(){
+  if(ownClass().id!=='bulwark'||coop||runIsPaused()||seedDown()||!rogueRun.shovel)return false;
+  if(P.st==='burrow'){burrowErupt();return true;}
+  var policy=cairnPolicy();if(policy.blockPrimary||policy.blockRidge)return false;
+  if(P.dodgeT>0||!canBurrow(true))return false;
+  cairnCancelMotion(null,'burrow');task=holdWater=null;gardenPress=false;P.autoIdlePose=false;P.still=0;P.lampLit=0;return startBurrow();
+}
+function updateCairnControls(){
+  var visible=runActive&&!rogueRun.ended&&rogueRun.classId==='bulwark'&&!runIsPaused()&&!(window.MaxGameMenu&&window.MaxGameMenu.isOpen&&window.MaxGameMenu.isOpen());
+  cairnControls.hidden=!visible;if(!visible)return;
+  var q=cairnCaptureState(cairnPeek()||{}),policy=cairnPolicy(),down=seedDown(),plates=q.strata||0,available=plates-(q.ridgeReserved||0),b=Math.max(q.primaryCool||0,bombCool||0),c=Math.max(q.stoneCool||0,P.secondaryCool||0),v=Math.max(q.utilityCool||0,P.utilityCool||0),e=Math.max(q.specialCool||0,P.skillCool||0),braced=policy.phase==='brace';
+  cairnStrata.textContent='Strata '+plates+'/3'+(braced&&!q.parryConsumed&&q.braceAge<.28?' · parry':'');cairnStrata.setAttribute('aria-valuenow',String(plates));
+  cairnPrimaryButton.disabled=down||policy.blockPrimary||b>0;cairnSecondaryButton.disabled=down||policy.blockStone||c>0||available<1;cairnUtilityButton.disabled=down||!braced&&(policy.blockBrace||v>0);cairnSpecialButton.disabled=down||policy.blockRidge||e>0||available<3;
+  cairnPrimaryButton.textContent=b>0?'Sweep '+b.toFixed(1)+'s':'Sweep · B';cairnSecondaryButton.textContent=c>0?'Stone '+c.toFixed(1)+'s':'Stone · C';cairnSecondaryButton.title=available<1?'Needs 1 Strata':'Loose Stone';cairnUtilityButton.textContent=braced?'Release · V':v>0?'Brace '+v.toFixed(1)+'s':'Brace · V';cairnSpecialButton.textContent=q.ridgePhase===1?'Ridge · set':e>0?'Ridge '+e.toFixed(1)+'s':'Ridge · E';cairnSpecialButton.title=available<3?'Needs 3 Strata':'Garden Breakwater';
+  cairnShovelButton.hidden=!!coop||!rogueRun.shovel;cairnShovelButton.disabled=down||P.st!=='burrow'&&(P.dodgeT>0||!canBurrow(true)||policy.blockPrimary||policy.blockRidge);cairnShovelButton.textContent=P.st==='burrow'?'Shovel · erupt':'Shovel · ↓E';
+}
 function useClassSkill(){
   if(seedDown())return false;
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if(kit.id==='mech'){ok=mechOverload();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
   if(kit.id==='runner'){ok=rattusStomp();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
+  if(kit.id==='bulwark'){ok=heldDown?useCairnBurrow():cairnBreakwater();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
   if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
     ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():kit.skill==='flurry'?polgeFlurry():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
@@ -2685,6 +2732,7 @@ function skillRing(x,y,r,cue){
 }
 function coopClassSkill(action,m,now){
   var kit=ownClass();
+  if(kit.id==='bulwark')return cairnBreakwaterWorld(action.skillTag);
   if(kit.id==='mech')return mechOverloadWorld();
   if(kit.skill==='flurry')return polgeFlurryWorld();
   if(!P.grounded||P.wet)return false;
@@ -2757,12 +2805,7 @@ function landPounce(){P.pounce=0;}
 function mossSlam(x,y,drop){return false;}
 
 function parryable(x,y){var r=window.MaxClasses.get('bulwark').braceRadius;return floatKrek.some(function(k){return k.windup>0&&enemyDistance(k,x,y-12)<r;});}
-function bulwarkBrace(){
-  if(!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0||readInput().axis)return false;
-  var kit=ownClass(),parry=parryable(P.x,P.y);
-  if(coopGuest()){if(!coopAction('skill',{x:P.x,y:P.y,tag:++P.braceTag,skillTag:(P.skillTag=(P.skillTag||0)+1)}))return false;}else braceShove(P.x,P.y);
-  P.brace=kit.braceTime;P.braceX=P.x;P.skillCool=parry?kit.parryCd:kit.skillCd;skillCue(parry?'parry':'brace',0);return true;
-}
+function bulwarkBrace(){return cairnBrace();}
 function sligoTun(){
   if(P.tun>0||!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0)return false;
   var kit=ownClass();
@@ -2772,29 +2815,17 @@ function sligoTun(){
   skillCue('tun',0);return true;
 }
 function endTun(){if(!(P.tun>0))return;P.tun=0;P.skillCool=classSkillCooldown();}
-function braceShove(x,y){
-  var b=combatBuild();
-  if(b.sanctuary)combatRestore(x,y,64,.15,.12);
-  var r=window.MaxClasses.get('bulwark').braceRadius,n=0;
-  floatKrek.slice().forEach(function(k){
-    var d=enemyDistance(k,x,y-12);
-    if(k.windup>0&&d<r){n++;k.flash=1;if(!damagePest(k,(k.windup<.16?3:2)*(1+.25*(b.counter||0)),x,b)&&!k.boss){staggerKrek(k,1.6);k.fleeFromX=x;k.vx=(k.x<x?-1:1)*120;k.vy=-30;}}
-    else if(!k.boss&&d<26){staggerKrek(k,.75);k.vx=(k.x<x?-1:1)*97.5;k.vy=-15;k.flash=.6;}
-  });
-  if(b.bedrock)floatKrek.slice().forEach(function(k){if(enemyDistance(k,x,y-12)<r)combatDamage(k,.4*b.bedrock,x,b);});
-  if(n&&b.aftershock)cairnCleave({x:x+P.face*26,y:y-12});
-  combatObjectives(x,y-12,26);
-  skillRing(x,y,n?r:26,n?'parry':'brace');
-  return n;
-}
+// Old proximity callers cannot manufacture a Brace contact.
+function braceShove(x,y){return false;}
 function braceAbsorber(h){
   if(!['root','crown-maul','crown-wave'].includes(h.type)||!(h.power>0))return null;
   return runPlayers().find(function(a){var kit=window.MaxClasses.get(a.member?a.member.classId:rogueRun.classId);return kit.skill==='brace'&&bracedMember(a.member,a.p)&&Math.abs(h.x-a.p.x)<=kit.braceRadius&&Math.abs(h.y-(highTideMode()?a.p.y:surfaceY(a.p.x)))<24;})||null;
 }
 function rootAbsorb(h){
+  if(h.absorbed)return true;
   var holder=braceAbsorber(h);if(!holder)return false;
   h.absorbed=1;
-  if(!holder.member||holder.member.id===coop.me)P.brace=Math.max(0,P.brace-1);else holder.member.braceUntil-=1000;
+  cairnShortenBrace(holder.member,1);
   skillRing(h.x,h.y,h.r,'absorb');skillCue('absorb',Math.abs(h.x-P.x));return true;
 }
 function bloomReach(p){if(highTideMode()&&p.tideVine)return highTideNearPlant({p:P,v:seedVital(coopActor),member:coopActor});return Math.abs(p.x-P.x)<=ownClass().bloomRadius&&Math.abs(surfaceY(p.x)-P.y)<24;}
@@ -2822,6 +2853,7 @@ function herbalistBloom(){
 function drawClassAuras(){
   runPlayers().forEach(function(a){
     var kit=window.MaxClasses.get(a.member?a.member.classId:rogueRun.classId),p=a.p;
+    if(kit.id==='bulwark')return;
     if(kit.id==='mech'){
       var engineer=engineerState(a.member||null);
       if(engineer.priorityT>0&&engineer.priorityWorld===worldLevel()){
@@ -2842,11 +2874,107 @@ function drawClassAuras(){
     ctx.globalAlpha=1;
   });
 }
+function drawCairnCombat(time){
+  if(typeof cairnPeek!=='function'||typeof cairnCaptureState!=='function')return;
+  var owners=coop?coopMembers().filter(function(m){return m.classId==='bulwark';}):rogueRun.classId==='bulwark'?[null]:[];
+  time=Number.isFinite(time)?time:0;
+  function pixel(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h);}
+  function groundMarks(x,y,r,color,alpha,step){
+    ctx.save();ctx.globalAlpha*=alpha;
+    for(var d=-r;d<=r;d+=step){
+      var point=cairnSupportPoint(x+d,y,null);
+      if(!point||Math.hypot(d,point.y-y)>r+.01)continue;
+      pixel(x+d-camX,point.y-camY-1,d===-r||d===r?2:1,1,color);
+    }
+    ctx.restore();
+  }
+  ctx.save();ctx.imageSmoothingEnabled=false;
+  owners.forEach(function(member){
+    var actor=cairnActor(member),raw=cairnPeek(member),q=cairnCaptureState(raw);
+    if(!actor||member&&member.avatar&&member.avatar.world!==worldLevel())return;
+    if(cairnRootedGround(actor,member)){
+      var braced=cairnBraceActive(member,actor);
+      groundMarks(actor.x,actor.y,braced?64:48,braced?'#5facb3':'#788143',braced?.45:.2,braced?4:6);
+      if(braced&&!q.parryConsumed&&q.braceAge<.28){
+        var face=q.braceFace<0?-1:1,bx=Math.round(actor.x-camX)+face*15,by=Math.round(actor.y-camY)-18;
+        ctx.save();ctx.globalAlpha*=.75;
+        pixel(bx,by,1,8,'#f5b846');pixel(bx-(face<0?0:2),by,3,1,'#f6e3bd');pixel(bx-(face<0?0:2),by+7,3,1,'#f5b846');
+        ctx.restore();
+      }
+    }
+    if(q.stoneWorld===worldLevel()&&q.stonePhase===1){
+      var sx=Math.round(q.stoneX-camX),sy=Math.round(q.stoneY-camY);
+      if(sx>-8&&sx<IW+8&&sy>-8&&sy<IH+8){
+        ctx.save();ctx.globalAlpha*=.4;
+        for(var trail=1;trail<=2;trail++){
+          var back=trail*.025;
+          if(q.stoneAge<back)continue;
+          pixel(q.stoneX-q.stoneVX*back-camX,q.stoneY-q.stoneVY*back+60*back*back-camY,1,1,'#aea69d');
+        }
+        ctx.restore();
+        pixel(sx-2,sy-3,4,6,'#131823');pixel(sx-3,sy-1,6,3,'#131823');
+        pixel(sx-2,sy-2,4,4,'#696a79');pixel(sx-1,sy-2,2,1,'#aea69d');pixel(sx+1,sy,1,2,'#344258');pixel(sx-2,sy+1,1,1,'#788143');
+      }
+    }
+    if(q.stoneWorld===worldLevel()&&q.stonePhase===2&&q.patchT>0){
+      ctx.save();ctx.globalAlpha*=Math.min(.65,q.patchT/.6);
+      for(var grit=-24;grit<=24;grit+=3){
+        var support=cairnSupportPoint(q.patchX+grit,q.patchY,null),gy=support?support.y:q.patchY;
+        if(Math.hypot(grit,gy-q.patchY)>24)continue;
+        var gx=Math.round(q.patchX+grit-camX),py=Math.round(gy-camY);
+        pixel(gx,py-1,grit%6?1:2,1,grit%2?'#696a79':'#aea69d');
+        if(Math.abs(grit)<20&&grit%6===0)pixel(gx+1,py-3,1,1,'#858797');
+      }
+      ctx.restore();
+    }
+    if(q.ridgeWorld!==worldLevel()||!(q.ridgePhase===1||q.ridgePhase===2&&q.ridgeWardT>0))return;
+    var rx=Math.round(q.ridgeX-camX),ry=Math.round(q.ridgeY-camY);
+    if(rx<-82||rx>IW+82||ry<-70||ry>IH+20)return;
+    if(q.ridgePhase===1){
+      ctx.save();ctx.globalAlpha*=.25+.2*(1-Math.min(1,q.ridgeWindup/.5));
+      for(var mark=-32;mark<32;mark+=4)pixel(rx+mark,ry-1,2,1,'#f5b846');
+      pixel(rx-32,ry-16,1,3,'#f5b846');pixel(rx-32,ry-16,4,1,'#f5b846');
+      pixel(rx+31,ry-16,1,3,'#f5b846');pixel(rx+28,ry-16,4,1,'#f5b846');
+      for(var plate=-1;plate<=1;plate++)pixel(rx+plate*7-2,ry-4,4,2,'#aea69d');
+      ctx.restore();return;
+    }
+    var blocking=q.ridgeBlockT>0;
+    ctx.save();ctx.globalAlpha*=Math.min(1,q.ridgeWardT/.8);
+    if(blocking){
+      pixel(rx-32,ry-8,64,8,'#222b3b');pixel(rx-32,ry-1,64,1,'#131823');
+      for(var rock=0;rock<8;rock++){
+        var left=rx-32+rock*8,height=rock%3===1?16:rock%3===2?13:15;
+        pixel(left,ry-height,8,height-1,'#131823');pixel(left+1,ry-height+1,6,height-3,rock%2?'#4b5062':'#696a79');
+        pixel(left+1,ry-height+1,5,1,rock%2?'#858797':'#aea69d');pixel(left+5,ry-height+4,1,Math.max(1,height-7),'#344258');
+        pixel(left+1,ry-3,3,2,'#4c5030');if(rock%2===0)pixel(left+2,ry-4,2,1,'#788143');
+      }
+      pixel(rx-31,ry-13,1,5,'#f5b846');pixel(rx+30,ry-13,1,5,'#f5b846');
+    }else{
+      // At two seconds the raised obstruction visibly crumbles. Only the
+      // fixed green ward and low stones remain; no apparent player platform.
+      for(var rubble=-30;rubble<=30;rubble+=5){
+        var tall=rubble%10===0?3:2;
+        pixel(rx+rubble,ry-tall,3,tall,'#344258');pixel(rx+rubble,ry-tall,2,1,'#858797');
+        if(rubble%10===0)pixel(rx+rubble+1,ry-1,2,1,'#788143');
+      }
+      for(var seed=-2;seed<=2;seed++){
+        var lift=3+(Math.floor(time*3)+seed+2)%2;
+        ctx.save();ctx.globalAlpha*=.45;
+        pixel(rx+seed*11,ry-lift-2,1,1,'#788143');ctx.restore();
+      }
+    }
+    ctx.restore();
+    groundMarks(q.ridgeX,q.ridgeY,48,'#788143',Math.min(.38,q.ridgeWardT*.25),4);
+  });
+  ctx.restore();
+}
+
 function drawSkillPip(){
   if(!runActive||rogueRun.ended)return;
   var kit=ownClass(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
   if(kit.id==='polge'){var q=fighterState();for(var beat=0;beat<3;beat++){ctx.fillStyle=beat<(q.rhythm||0)?'#efd17e':'#755b51';ctx.fillRect(x-2+beat*3,y+3,2,2);}if(q.counter>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-29,13,1);}}
   if(kit.id==='mech'){var engineer=engineerState();for(var cell=0;cell<3;cell++){ctx.fillStyle=cell<engineer.charge?'#80d1b1':'#354d51';ctx.fillRect(x-2+cell*3,y+3,2,2);}}
+  if(kit.id==='bulwark'){var stone=cairnPeek()||{};for(var plate=0;plate<3;plate++){ctx.fillStyle=plate<stone.strata?(stone.ridgeReserved?'#d0bd82':'#8eb6b8'):'#394749';ctx.fillRect(x-2+plate*3,y+3,2,2);}}
   if(kit.id==='runner'){var wrestler=wrestlerState();ctx.fillStyle='#59404c';ctx.fillRect(x-4,y+3,13,2);ctx.fillStyle='#efd17e';ctx.fillRect(x-4,y+3,Math.round(13*wrestler.momentum/100),2);if(lastSeedMode()&&wrestler.barrier>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-30,Math.round(13*wrestler.barrier/16),1);}}
   ctx.fillStyle='rgba(236,232,220,.22)';ctx.fillRect(x,y,5,1);
   if(P.skillDenied>0){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
@@ -2919,6 +3047,7 @@ function recordGardenPlant(p){
   if(p.tideVine){found.tideVine=true;found.tideHeight=Math.max(found.tideHeight||0,p.tideHeight||0);}
 }
 function clearRunInput(){
+  if(P&&ownClass().id==='bulwark')cairnInterrupt('input-cleared');
   if(P&&ownClass().id==='runner'&&typeof rattusCancelMotion==='function'){releaseClassSecondary(true);releaseClassUtility(true);rattusCancelMotion(rattusMember(),'input-cleared');}
   heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;charge=null;queuedThrow=null;padAx=0;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
   rattusHeldC=rattusHeldV=false;rattusHeldUI=0;
@@ -3745,7 +3874,7 @@ function plantClimbAt(x,y,range){
   });return best;
 }
 function requestClimb(p,exitRequested){
-  if(mechPlanted()||rattusPolicy().blockClimb)return false;
+  if(mechPlanted()||rattusPolicy().blockClimb||cairnPolicy().blockClimb)return false;
   if(highTideMode())return !!(p&&p.tideVine&&!seedDown()&&beginClimb(p,false));
   if(!p||p.dead||p.health<=0||gardenPlots.indexOf(p)<0||P.st==='float'||warp)return false;
   var moss=canPlantClimb(rogueRun.classId);
@@ -3771,10 +3900,11 @@ function spawnExitSeeds(p){
   }
 }
 function beginClimb(p,exitMode){
-  if(rattusPolicy().blockClimb)return false;
+  if(rattusPolicy().blockClimb||cairnPolicy().blockClimb)return false;
   if(!p||p.dead||p.health<=0||gardenPlots.indexOf(p)<0||warp||P.st==='climb'||P.st==='float')return false;
   if(exitMode){if(!p.stalk||rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES||!P.grounded||playerWetAt(P.x,P.y)||Math.abs(P.y-surfaceY(p.x))>4||Math.abs(P.x-p.x)>=9)return false;}
   else if(!canPlantClimb(rogueRun.classId)||plantClimbAt(P.x,P.y,10)!==p)return false;
+  if(ownClass().id==='bulwark')cairnInterrupt('climb');
   task=null;holdWater=null;climbGoal=null;jumpBuf=0;
   var gy=surfaceY(p.x);
   climb={p:p,plantId:p.id,exit:!!exitMode,side:P.x<=p.x?-1:1,v:30,t:0,boost:0,gy:gy,ph:0,downArmed:false,reachedTop:false,travelQueued:false};
@@ -4159,9 +4289,10 @@ function makeKrek(side,elite,kind){
 }
 function staggerKrek(k,time){if(k.boss)return;if(isRat(k)){cancelRatAttack(k);ratState(k,'hurt');}if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.draining=false;k.chargeT=0;k.bite=.35;}
 function biteGarden(k,p,pressure){
-  var prot=classProtection(p),dmg=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*plantProtection(p,true);
-  if(prot<1)p.guard=.35;
+  var context={kind:'bite',pointX:p.x,pointY:surfaceY(p.x),plantId:p.id,accepted:true},defense=cairnProtection(p,context),raw=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.85,auraAt(p.x,'shelter'))*Math.pow(.78,rogueRun.perks.shield||0),before={health:p.health,rawDamage:raw},dmg=raw*defense.multiplier;
+  if(defense.multiplier<1)p.guard=.35;
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
+  cairnReducedBite(defense,cairnContact(k,context),before,{health:p.health});
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
   var thorn=rogueRun.perks.bramble||0;if(thorn){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.3*thorn);}
   if(plantMature(p)){var own=plantFeature(p);if(own==='thorns'){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.4);}else if(own==='bind'&&!k.boss)k.glue=Math.max(k.glue||0,1.2);}
@@ -4229,7 +4360,7 @@ function updateKrek(dt){
       if(k.windup>0){
         k.windup=Math.max(0,k.windup-dt);
         if(k.windup===0){biteGarden(k,p,pressure);k.attackTarget=null;k.bite=k.kind===2?.65:(k.kind===1?1.1:.8);}
-      }else if(k.bite<=0){k.tell=k.kind===5?.85:k.kind===2?.42:(k.kind===1?.58:.5);k.windup=k.tell;k.attackTarget=p;}
+      }else if(k.bite<=0){cairnBeginAttack(k);k.tell=k.kind===5?.85:k.kind===2?.42:(k.kind===1?.58:.5);k.windup=k.tell;k.attackTarget=p;}
     }
   }
 }
@@ -4495,7 +4626,8 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
-  if(mechPlanted()||rattusPolicy().blockTend)return false;
+  if(mechPlanted()||rattusPolicy().blockTend||cairnPolicy().blockTend)return false;
+  if(cairnPolicy().phase==='brace')cairnReleaseBrace(true);
   if(nightRelayMode())return false;
   if(seedDown(coopActor)||seedReviveNearby())return false;
   if(P.tun>0)return false;
@@ -4532,12 +4664,16 @@ function crouchGardenAction() {
 }
 
 function poseExit() {
+  P.autoIdlePose=false;
   if (P.st === 'lamp' || P.st === 'lampUp') { P.st = 'lampDn'; setAnim('lampDn'); }
   else if (P.st === 'rest' || P.st === 'toSit') { P.st = 'unsit'; setAnim('unsit'); }
   else if (P.st === 'squat' || P.st === 'toCrouch') { P.st = 'toStand'; setAnim('stand'); }
 }
 
 function updateHands(dt, inp) {
+  if(P.autoIdlePose&&!['lampUp','lamp','lampDn','toSit','rest','unsit'].includes(P.st))P.autoIdlePose=false;
+  var stonePolicy=cairnPolicy();if(stonePolicy.blockTend){task=holdWater=null;gardenPress=false;return;}
+  if(stonePolicy.phase==='brace'&&(heldDown||heldSpace||swipeDown||gardenPress))cairnReleaseBrace(true);
   if(rattusPolicy().blockTend){task=holdWater=null;gardenPress=false;if(P.st!=='float'&&P.st!=='climb'&&P.st!=='ladder')P.st='free';return;}
   if(mechPlanted()){task=holdWater=null;gardenPress=false;lampToggle=false;P.st='free';P.lampLit=0;return;}
   if(nightRelayMode()){
@@ -4554,21 +4690,24 @@ function updateHands(dt, inp) {
 
   if (lampToggle) {
     lampToggle = false;
+    P.autoIdlePose=false;
     if (P.st === 'lamp' || P.st === 'lampUp') { P.lampBlock = true; poseExit(); }
     else if (P.st === 'free' && P.grounded && !P.wet) { P.st = 'lampUp'; setAnim('lampUp'); P.lampBlock = false; }
   }
   if (jumpBuf > 0) {
     task = null;
+    P.autoIdlePose=false;
     if (P.st !== 'free') { P.st = 'free'; P.still = 0; }
     return;
   }
-  if (!P.grounded || P.wet) { if (P.st !== 'free') P.st = 'free'; task = null; holdWater=null; return; }
+  if (!P.grounded || P.wet) { P.autoIdlePose=false;if (P.st !== 'free') P.st = 'free'; task = null; holdWater=null; return; }
   if(P.st==='watering'){
     if(!holdWater||!holdWater.p||holdWater.p.dead||move||Math.abs(P.y-surfaceY(holdWater.p.x))>12){P.st='free';holdWater=null;setAnim('idle');return;}
     P.vx=0;P.face=holdWater.p.x>=P.x?1:-1;if(P.anim!=='waterHold')setAnim('waterHold');
     waterGardenPlotTick(holdWater.p,dt);return;
   }
-  if (move) { P.still = 0; P.lampBlock = false; P.st='free'; P.throwPose=0; }
+  if (move) { P.autoIdlePose=false;P.still = 0; P.lampBlock = false; P.st='free'; P.throwPose=0; }
+  if(low||task||holdWater)P.autoIdlePose=false;
 
   switch (P.st) {
   case 'free':
@@ -4583,7 +4722,7 @@ function updateHands(dt, inp) {
     if (low && !move) { P.st = 'toCrouch'; setAnim('crouch'); P.squatT = 0; break; }
     if (!move && Math.abs(P.vx) < 2) {
       P.still += dt;
-      if (P.still > 7 && !P.lampBlock && ownClass().id!=='runner') { P.st = 'lampUp'; setAnim('lampUp'); }
+      if (P.still > 7 && !P.lampBlock && ownClass().id!=='runner') { P.autoIdlePose=true;P.st = 'lampUp'; setAnim('lampUp'); }
     } else P.still = 0;
     break;
 
@@ -4617,7 +4756,7 @@ function updateHands(dt, inp) {
   case 'toStand': case 'unsit': case 'lampDn':
     if (P.done) {
       if (P.st === 'lampDn' && !move && !task && !P.lampBlock && P.still > 20) { P.st = 'toSit'; setAnim('sit'); }
-      else P.st = 'free';
+      else {P.autoIdlePose=false;P.st = 'free';}
     }
     break;
   case 'toSit':
@@ -4806,7 +4945,7 @@ function autoTarget() {
 }
 
 var charge=null,lastPad=null;
-function chargeStart(src){if(charge||runIsPaused()||rattusPolicy().blockPrimary||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;queuedThrow=null;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
+function chargeStart(src){if(charge||runIsPaused()||rattusPolicy().blockPrimary||cairnPolicy().blockPrimary||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;queuedThrow=null;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
 function targetPoint(a){return a.o?{x:a.o.x,y:a.o.y-(a.kind==='krek'?0:6),o:a}:{x:a.x,y:a.y,s:a};}
 function aimAssist(dx,dy){
   var x0=P.x,y0=P.y-12,d=Math.hypot(dx,dy)||1,best=null,bs=1e9;dx/=d;dy/=d;
@@ -4846,7 +4985,8 @@ function chargeRelease(){
   return ok;
 }
 function drawNativeAim(target,cool){
-  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,id=ownClass().id,melee=['runner','polge','bulwark'].indexOf(id)>=0,reach=melee?(id==='runner'?(P.grounded?34:24)+3*(rogueRun.perks.fletching||0):id==='polge'?(fighterState().window>0&&fighterState().combo===1?(rogueRun.perks.haymaker?36:24):fighterState().window>0&&fighterState().combo===0?20:18):38+6*(rogueRun.perks.fault||0)):Math.min(160,length);
+  var cairnAimState=ownClass().id==='bulwark'?cairnCaptureState(cairnPeek()||{}):null,cairnReach=cairnAimState?((cairnAimState.comboT>0&&cairnAimState.combo===2?36:32)+6*Math.min(3,rogueRun.perks.fault||0)):0;
+  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,id=ownClass().id,melee=['runner','polge','bulwark'].indexOf(id)>=0,reach=melee?(id==='runner'?(P.grounded?34:24)+3*(rogueRun.perks.fletching||0):id==='polge'?(fighterState().window>0&&fighterState().combo===1?(rogueRun.perks.haymaker?36:24):fighterState().window>0&&fighterState().combo===0?20:18):cairnReach):Math.min(160,length);
   ctx.fillStyle=cool?'#6d7690':ownClass().id==='herbalist'?'#80d1b1':'#e6bf69';
   for(var aimStep=8;aimStep<=reach;aimStep+=5)ctx.fillRect(Math.round(P.x+dx/length*aimStep-camX),Math.round(P.y-12+dy/length*aimStep-camY),1,1);
   var tx=Math.round(P.x+dx/length*reach-camX),ty=Math.round(P.y-12+dy/length*reach-camY);ctx.fillRect(tx-2,ty,5,1);ctx.fillRect(tx,ty-2,1,5);
@@ -5291,7 +5431,7 @@ var CLASS_STRIKE_CUES={
 };
 function classStrikeCue(kind,dist,combo){
   try{
-    kind=({clinch:'cross',finisher:'uppercut',kestrel:'needle',runner:'cleave',dropkick:'cleave','driving-dropkick':'cleave','tail-whip':'cross','splits-stomp':'cleave','splits-wave':'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
+    kind=({clinch:'cross',finisher:'uppercut',kestrel:'needle',runner:'cleave',dropkick:'cleave','driving-dropkick':'cleave','tail-whip':'cross','splits-stomp':'cleave','splits-wave':'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave','cairn-sweep':'cleave','cairn-reverse':'cleave','cairn-knuckle':'cleave','cairn-stone':'cleave','cairn-grit':'cleave','cairn-brace':'cleave','cairn-counter':'parry','cairn-bedrock':'cleave','cairn-aftershock':'cleave','cairn-ridge-warn':'cleave','cairn-ridge':'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
     if(kind==='polge')kind=['jab','cross','uppercut'][Math.max(0,Math.min(2,Math.floor(Number(combo)||0)))];
     var kit=CLASS_STRIKE_CUES[kind];if(!kit)return;
     var v=effectVoice('strike:'+kind,kit.life,kit.space,kind==='parry'?2:1,dist);if(!v)return;
@@ -5840,6 +5980,7 @@ function drawVignette() {
 "MAX_POLGE";
 "MAX_MECH";
 "MAX_RATTUS";
+"MAX_CAIRN";
 "MAX_LAST_SEED";
 "MAX_HIGH_TIDE";
 "MAX_NIGHT_RELAY";
@@ -6058,6 +6199,7 @@ function frame(now) {
   if(!runIsPaused())updatePlayer(dt, inp);
   if(!runIsPaused())updateMechCombat(dt);
   if(!runIsPaused())updateRattusCombat(dt);
+  if(!runIsPaused())updateCairnCombat(dt);
   if(!runIsPaused())updateSligoLife(dt);
   if(!runIsPaused())updateSligoTrail(dt);
   if(!runIsPaused())updateWarp(dt);
@@ -6197,7 +6339,7 @@ function frame(now) {
   drawWater(tSec);
   drawPondDeco(false);
   }
-  drawClassAuras();
+  drawClassAuras();drawCairnCombat(tSec);
   drawParts();
   if(!isolatedRelicMode()){
   drawCrows();
@@ -6212,7 +6354,7 @@ function frame(now) {
   drawBirdBlasts();
   drawCompanion();
   if(crownLayer){drawPlaceVeils();drawCrownForeground(tSec);}
-  updatePolgeControls();updateMechControls();updateRattusControls();P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
+  updatePolgeControls();updateMechControls();updateRattusControls();updateCairnControls();P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
   if(!crownLayer){drawPlaceVeils();drawCrownForeground(tSec);}
   drawTeamArrows();drawMouseReticle();
   drawPickupNotice(dt);
