@@ -24,8 +24,11 @@ pillar, volley, summon/kneel and actual armored death. The `intermission` alias
 holds real kneeling poses, and `empowered` holds an upright returning king.
 Wounded row 5 and both chimera death rows genuinely collapse and end empty.
 
-The active native PNGs are being imported as exact bytes into the configured
-Figma runtime bosses section `451:4` on page `10:2`. Current authority, source
-node IDs and capture evidence belong in `assets/crown-ascendant-v1/provenance.json`
-only after actual authenticated verification. Preparation and archived scripts
-are not synchronization.
+The active native PNGs were imported as exact bytes into configured Figma
+runtime bosses section `451:4`, frame `619:13527`, on page `10:2`. Actual source
+rectangles `619:13529` through `619:13531`, hashes, native bounds and remote PNG
+byte audits are pinned in `assets/crown-ascendant-v1/provenance.json`. The
+[authenticated capture](../crown-secondpass/figma-capture.json) and
+[ordinary comparison](../crown-secondpass/figma-comparison.json) reported
+665 MATCH and zero problems on 3 October 2026. Figma is now the native master;
+the generated source audit grants no continuing local exception.

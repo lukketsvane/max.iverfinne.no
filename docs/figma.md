@@ -1,10 +1,8 @@
 # Figma: the source of runtime art
 
-The established runtime PNG files live in one Figma file and are mirrored byte
-for byte in this repository. The explicitly authorized new Hollow Crown pack
-has a pinned local generated source while its authenticated Figma import and
-fresh source comparison are being completed; see
-the narrow exception below.
+The runtime PNG masters live in one Figma file and are mirrored byte for byte
+in this repository. This includes the three Hollow Crown Ascendant sheets,
+whose actual native sources and authenticated comparison are recorded below.
 
 - File: **max.iverfinne.no max fuglesprenger** (team cells.garden), <https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF>, key `TC0PHGMTCMR6im4hb3CSbF`.
 - Link: `assets/figma-manifest.json` (generated), `scripts/figma-sync.mjs` (the tool), `tests/figma-assets.test.cjs` (offline guard).
@@ -30,7 +28,7 @@ The 15 PNGs inlined as `data:image/png` URIs in `index.html` are preserved byte 
 
 ## Map
 
-The live file was captured on 1 October 2026 for the Rattus integration. All 660 production PNGs matched by source SHA-1, native dimensions and node ID: 660 MATCH, zero problems. The connector capture covered the actual runtime hierarchy, archived layers and source contracts. The comparison used the normal sync tool through a local capture replay, not a desktop session.
+The live file was captured through the authenticated connector on 3 October 2026 at 09:47:38 UTC. The unchanged `figma:manifest` and `figma:check` commands reported **665 production PNGs, 665 MATCH, zero problems**, with 17 unused source layers. The capture covers the actual configured runtime hierarchy, native dimensions, node IDs and image hashes. Comparison ran through a local capture replay, not a desktop session. [Capture](asset-review/crown-secondpass/figma-capture.json) and [comparison](asset-review/crown-secondpass/figma-comparison.json) preserve the evidence.
 
 | Node | Role |
 | --- | --- |
@@ -46,8 +44,26 @@ The live file was captured on 1 October 2026 for the Rattus integration. All 660
 | 398:2 | Legacy inline originals |
 | 548:13527 | Rattus animation studio, 25 clips |
 | 558:13527 | Rattus runtime strips |
+| 619:13527 | Hollow Crown Ascendant native masters |
 
 Rattus retains the 256×256 main and interaction sources at `437:3` and `437:4` for tending, planting, climbing, menus and results. The new motion pack has its own documented cells and anchor in `assets/rattus-motion/README.md`. Production and drafts now share page `10:2`; the level-design page is `508:11825`. Older page/frame IDs remain in Git history.
+
+The authenticated pre-import audit found 662 production masters; all retained
+their source IDs, bytes, native dimensions and local registration. The Crown
+adds exactly three masters. The outer boss section moved to a clear area at
+`(13096,294)` and expanded to `840×2940`; its earlier three boss sheets retained
+their native local coordinates. Seventeen unused source layers are recorded,
+including ten existing staged Yeet images outside the production sections.
+
+The [second-pass ascent board](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=607-14028)
+on page `508:11825` contains all twenty editable seed-1 scene instances, with
+stage 1 at the bottom and stage 20 at the top. Its 1,569 route-tag instances and
+rounded terrain vectors use actual runtime coordinates at native scale, with a
+shared horizontal origin. Existing authored Seed Vault and Railway Ruins
+masters remain unchanged. The board is a review composition, with no `designed`
+marker; it does not silently override live campaign geometry. The full rendered
+worlds are also available in `review/crown-ascent/`; these review captures are
+not native runtime source assets.
 
 ## Pixel-art rules
 
@@ -82,34 +98,29 @@ The configured runtime sections are now the editable native masters for every ru
 
 The older one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active. The explicitly requested Crown creation pipeline was added on 3 October; it reproduces candidates into a separate directory and refuses to overwrite synchronized Figma masters.
 
-New runtime art normally enters the Figma production frame before it passes
-the offline tests. The user explicitly requested generated sprite sheets and
-a fully implemented Hollow Crown on 3 October 2026. That instruction authorizes **only**
-`assets/crown-ascendant-v1/boss.png`, `effects.png` and `chimera.png` to use a local generated
-source pending authenticated import and verification. Other established Figma
-production PNG masters remain unchanged. The silver-king second pass preserves
-all five earlier generated originals and the prior native exports in its source
-audit directory.
+New runtime art enters the Figma production sections before it passes the
+offline tests. The user's 3 October request authorized generating a complete
+Hollow Crown. Its approved silver-king native sheets are now actual Figma
+masters in `451:4`, frame `619:13527`: boss `619:13529`, effects `619:13530` and
+chimeras `619:13531`. All three actual image hashes, PNG byte hashes and native
+bounds match the repository. The temporary local source exception is closed.
 
-This is not a general pending-art bypass. `scripts/generated-art-contract.mjs`
-restricts the exception to those three exact paths and verifies immutable original
-source hashes, native export SHA-1/SHA-256, atlas/recipe/source-map pins, 192 frame rectangles,
-fixed anchors, measured opaque bounds, pack palette, binary alpha, clean
-transparency and native scale. `provenance.json` states `origin: local-generated`
-and `figma.status: pending-import`, with no invented Figma layer IDs. A passing
-offline test does not claim a Figma MATCH for this pack. The approved native
-bytes are frozen for import into `451:4`; a fresh authenticated capture and the
-ordinary sync workflow are required to promote them to production sources.
-The prior unexecuted import script in `prior-pass/` contains the earlier artwork
-and is historical evidence only.
+`provenance.json` records `origin: figma-native-master` and
+`figma.status: synchronized`. `scripts/generated-art-contract.mjs` verifies
+the five unchanged generated originals, prior-pass archive, native export
+SHA-1/SHA-256, atlas/recipe/source-map pins, all 192 frame rectangles, fixed
+anchors, measured opaque bounds, 24-color palette, binary alpha and native scale.
+It also parses the pinned authenticated capture and comparison, requiring the
+three actual production rectangles and byte audits to match the ordinary
+manifest and exports. It returns no local generated entries; all three sheets
+use standard Figma production coverage.
 
-After actual source verification, `origin: figma-native-master` and
-`figma.status: synchronized` replace pending authority. The same audit guard
-then requires all three actual source node IDs, native bounds and image hashes
-to match the ordinary manifest, pins the authenticated capture, and returns no
-local generated entries. All three runtime sheets then follow the standard
-Figma production guard. Generated originals, mappings and the previous-pass
-archive remain immutable provenance; they do not grant an ongoing exception.
+The second-pass originals remain in `source/pass2/`; earlier originals and
+native exports remain preserved in the Crown source review directory. The
+unexecuted prior-pass import script contains older artwork and is historical
+evidence only. Native edits now follow the ordinary Figma workflow; the creation
+recipe reproduces a separate review candidate and never replaces synchronized
+masters.
 
 ## Tools
 

@@ -1,0 +1,62 @@
+{
+  "builtSourceSha256": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+  "artSha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3",
+  "files": [
+    {
+      "phase": 1,
+      "kind": "desktop",
+      "file": "act-1.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-hammer-warning.png",
+      "sha256": "59bbc37e66fb1b5ca23ace62feca06472cb25ec8e02bb52b131837748dce8799"
+    },
+    {
+      "phase": 1,
+      "kind": "phone",
+      "file": "act-1-phone.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-act-1-phone.png",
+      "sha256": "ed5499666ae717dee1a7793dd701a6514361073bf8ad18eb72c562785ff9c359"
+    },
+    {
+      "phase": 2,
+      "kind": "desktop",
+      "file": "act-2.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-act-2.png",
+      "sha256": "f664ee10fa120595485dbcc5a8167eea77fc7cb51f97ffae3bc827cd23065131"
+    },
+    {
+      "phase": 2,
+      "kind": "phone",
+      "file": "act-2-phone.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-act-2-phone.png",
+      "sha256": "0460df43ba3027c18e0be1a57c39a7404cfc7b08e073513380c3444ca718f601"
+    },
+    {
+      "phase": 3,
+      "kind": "desktop",
+      "file": "act-3.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-lanes.png",
+      "sha256": "b133d7d8ac2e47602027afb36cfa03a84d3362bf8d3faa672511f3810a9ceb01"
+    },
+    {
+      "phase": 3,
+      "kind": "phone",
+      "file": "act-3-phone.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-act-3-phone.png",
+      "sha256": "20a8533b95536a8dc1933b10f8ec6fde712021441cd6b66a2bd7b87aa1296572"
+    },
+    {
+      "phase": 4,
+      "kind": "desktop",
+      "file": "act-4.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-wounded.png",
+      "sha256": "dd8941f5c2508914afe5f00d1a86ef53c5bd5a9c3c7e8472723745cfb52182cc"
+    },
+    {
+      "phase": 4,
+      "kind": "phone",
+      "file": "act-4-phone.png",
+      "source": "/workspace/scratch/crown-secondpass-review/game/chromium-act-4-phone.png",
+      "sha256": "81eba1eaa76c890ea56ded99bb134f70a13aa5db3c5ffeb166c1a6bd37a8c02e"
+    }
+  ]
+}

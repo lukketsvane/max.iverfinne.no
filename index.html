@@ -161,6 +161,7 @@ var stage = document.getElementById('stage');
 var cv = document.getElementById('c');
 var ctx = cv.getContext('2d', { alpha: false });
 var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
+var crownCompactScale = false;
 
 
 var lastVW = 0, lastVH = 0;
@@ -171,6 +172,7 @@ function resize() {
   var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr);
   var desk = !!(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches);
   SCALE = Math.max(2, Math.round(Math.min(dw, dh) / (desk ? 220 : 150)));
+  if(crownCompactScale)SCALE=Math.max(1,Math.min(SCALE,Math.floor(dh/200)||1));
   IW = Math.ceil(dw / SCALE); IH = Math.ceil(dh / SCALE);
   if (cv.width !== IW) cv.width = IW;
   if (cv.height !== IH) cv.height = IH;
@@ -5739,6 +5741,11 @@ function crownSceneCourt(){
   return {centre:centre,left:Number.isFinite(e.courtLeft)?e.courtLeft:centre-112,right:Number.isFinite(e.courtRight)?e.courtRight:centre+112,y:surfaceY(centre)};
 }
 function crownPresentationBoss(){return floatKrek.find(function(k){return k.bossId==='hollow-crown'&&k.hp>0;})||null;}
+function updateCrownCanvasScale(){
+  var active=!worldCovered&&worldLevel()===RUN_STAGES&&!relicRunMode()&&!!(crownResultPresentation||!rogueRun.ended&&crownPresentationBoss());
+  if(active===crownCompactScale)return;
+  crownCompactScale=active;resize();
+}
 function crownHeaderBottom(){return safeTopArt()+25;}
 // The broad court gets one stable composition; phones still keep both bodies in view.
 function crownFightCamera(tx,ty){
@@ -5913,6 +5920,7 @@ function frame(now) {
   last = now;
   if (dt > 0.05) dt = 0.05;
   pollPads();
+  updateCrownCanvasScale();
   if (window.innerWidth !== lastVW || window.innerHeight !== lastVH) resize();
   if ((window.scrollY || window.scrollX) && window.scrollTo) window.scrollTo(0, 0);
   if (dt < 0) dt = 0;
@@ -5984,6 +5992,7 @@ function frame(now) {
     if (stepAcc > 10.2) { stepAcc = 0; if (P.wet) ripple(P.x, waterAt(P.x).level, 'ring'); else if (Math.random() < 0.7) stepDust(); }
   } else stepAcc = 0;
 
+  updateCrownCanvasScale();
   var look = Math.max(-26,Math.min(26,P.vx*.30));
   var tx = P.x - IW * 0.5 + look, ty = P.y - climbAnchor();
   var crownCamera=crownFightCamera(tx,ty);tx=crownCamera.x;ty=crownCamera.y;

@@ -86,14 +86,20 @@ node scripts/build-crown-art.mjs docs/asset-review/crown-ascendant-v1/recipe.jso
 
 ## Figma status
 
-**Local generated source; pending authenticated Figma verification.** The
-approved native PNGs are frozen while their authenticated import into
-file `TC0PHGMTCMR6im4hb3CSbF`, page `10:2`, runtime bosses section `451:4`
-is completed. `provenance.json` records the current authority and verification
-status. An import is promoted only after actual source node IDs, native
-dimensions, image hashes and a fresh ordinary Figma comparison have passed.
-After promotion, these three PNGs use the same Figma production guard as every
-other runtime sheet; the generated originals remain an audit trail.
+**Synchronized Figma native masters.** These exact PNG bytes are stored in
+file `TC0PHGMTCMR6im4hb3CSbF`, page `10:2`, runtime bosses section `451:4`,
+frame `619:13527`. Boss, effects and chimera source rectangles are
+`619:13529`, `619:13530` and `619:13531`, respectively. Their actual image
+hashes, remote PNG byte hashes and native dimensions match the repository.
+
+The authenticated capture at 09:47:38 UTC on 3 October 2026 and unchanged
+`figma:manifest` / `figma:check` workflow reported **665 MATCH, zero problems**.
+[Capture](../../docs/asset-review/crown-secondpass/figma-capture.json) and
+[comparison](../../docs/asset-review/crown-secondpass/figma-comparison.json)
+are pinned in `provenance.json`. The three PNGs now use standard Figma production
+coverage, without a local source exception. Edit these native masters in Figma
+and preserve their palette, cells and anchors; generated originals remain an
+immutable audit trail.
 
 The previous unexecuted import script is preserved in `prior-pass/` and
 contains only the first-pass bytes. It is historical evidence, not an import

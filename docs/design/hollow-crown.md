@@ -91,3 +91,10 @@ only the bounded breaches in 18–19 reveal dawn.
 memory storage. It offers ordinary playable controls and separately labeled
 act/pose demonstrations for inspection. Review hooks are scoped to the review
 fixture and are absent from the production game.
+
+`review/crown-ascent/` stitches all twenty world-only game captures vertically,
+with garden 1 at the bottom and the radioactive sunrise at the top. The viewer
+supports native size and fit modes. Its metadata records exact seed, world bounds
+and capture source; these review images never replace editable routes or sprite
+masters. The complete editable Figma stack is
+[607:14028](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=607-14028).

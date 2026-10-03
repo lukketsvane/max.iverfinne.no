@@ -31,6 +31,10 @@ export function generatedArtProblems(repository = root) {
   if (!figma || figma.fileKey !== 'TC0PHGMTCMR6im4hb3CSbF' || figma.pageId !== '10:2' || figma.sectionId !== '451:4') fail('Figma source file, page or section is missing');
   if (synchronized) {
     const manifest = JSON.parse(readFileSync(join(repository, 'assets/figma-manifest.json')));
+    const captureBytes = figma.capture?.path && existsSync(join(repository, figma.capture.path)) ? readFileSync(join(repository, figma.capture.path)) : null;
+    const capture = captureBytes ? JSON.parse(captureBytes) : null;
+    if (!captureBytes || sha(captureBytes) !== figma.capture?.sha256 || capture?.format !== 'max-figma-connector-capture/v1' || capture.fileKey !== figma.fileKey || capture.other?.page?.id !== figma.pageId || capture.capturedAt !== figma.capture?.capturedAt) fail('authenticated Figma capture identity or source pin is missing or changed');
+    const capturedRows = capture?.sections?.filter(section => section.section?.id === figma.sectionId).flatMap(section => section.rows) ?? [];
     if (manifest.fileKey !== figma.fileKey || !manifest.productionSections?.includes(figma.sectionId)) fail('Figma production manifest does not cover this source section');
     if (!equal(figma.assets?.map(entry => entry.path), LOCAL_GENERATED_PATHS)) fail('all three actual Figma source nodes are required');
     for (const source of figma.assets ?? []) {
@@ -38,9 +42,16 @@ export function generatedArtProblems(repository = root) {
       const output = provenance.outputs?.find(entry => entry.path === source.path);
       if (!entry || !output || !equal([source.nodeId, source.imageHash, source.width, source.height], [entry.nodeId, entry.sha1, entry.width, entry.height]) || !equal([source.imageHash, source.width, source.height], [output.sha1, output.width, output.height])) fail(`${source.path}: actual Figma node differs from manifest or native export`);
       if (![source.x, source.y, source.width, source.height].every(Number.isInteger)) fail(`${source.path}: Figma source geometry must remain native integers`);
+      const rows = capturedRows.filter(row => row[0] === source.nodeId && row[3] === source.path);
+      if (rows.length !== 1 || rows[0][2] !== 'RECTANGLE' || !equal(rows[0].slice(4, 8), [source.x, source.y, source.width, source.height]) || !equal(rows[0][8], [source.imageHash])) fail(`${source.path}: captured production rectangle differs from its native source proof`);
+      const audits = capture?.crownByteAudit?.filter(entry => entry.path === source.path) ?? [];
+      const audit = audits[0];
+      if (audits.length !== 1 || !audit || !output || !equal([audit.nodeId, audit.imageHash, audit.sha256, audit.width, audit.height, audit.x, audit.y, audit.fillCount], [source.nodeId, source.imageHash, output.sha256, source.width, source.height, source.x, source.y, 1]) || audit.byteLength !== readFileSync(join(repository, source.path)).length) fail(`${source.path}: authenticated PNG byte audit differs from the native export`);
     }
-    if (!figma.capture?.path || !figma.capture?.sha256 || !figma.capture?.capturedAt || sha(readFileSync(join(repository, figma.capture.path))) !== figma.capture.sha256) fail('authenticated Figma capture pin is missing or changed');
-    if (figma.comparison?.status !== 'MATCH' || figma.comparison?.problems !== 0) fail('authenticated native source comparison did not pass');
+    if (figma.comparison?.status !== 'MATCH' || figma.comparison?.problems !== 0 || figma.comparison?.captureSha256 !== figma.capture?.sha256 || !equal(figma.comparison?.nodeIds, figma.assets?.map(entry => entry.nodeId))) fail('authenticated native source comparison does not cover this capture and these three source nodes');
+    const comparisonBytes = figma.comparison?.path && existsSync(join(repository, figma.comparison.path)) ? readFileSync(join(repository, figma.comparison.path)) : null;
+    const comparison = comparisonBytes ? JSON.parse(comparisonBytes) : null;
+    if (!comparisonBytes || sha(comparisonBytes) !== figma.comparison?.sha256 || comparison?.format !== 'max-figma-production-comparison/v1' || comparison.fileKey !== figma.fileKey || comparison.capture !== figma.capture?.path || comparison.captureSha256 !== figma.capture?.sha256 || comparison.capturedAt !== figma.capture?.capturedAt || comparison.problems !== 0 || comparison.match !== comparison.production || comparison.match !== figma.comparison?.matches || !equal(comparison.crownNodes, figma.comparison?.nodeIds) || !equal(comparison.crownByteAudit, capture?.crownByteAudit)) fail('ordinary Figma comparison evidence differs from the authenticated source capture');
   } else if (provenance.origin !== 'local-generated' || figma?.status !== 'pending-import' || 'nodeId' in (figma ?? {}) || figma?.assets?.length) fail('pending Figma status must contain no source-node synchronization claim');
   if (!provenance.sourceFiles?.length) fail('immutable generated sources are missing');
   if (provenance.sourceFiles?.length !== 5) fail('all five original generated banks are required');
