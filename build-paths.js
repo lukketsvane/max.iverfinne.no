@@ -2,11 +2,11 @@
   'use strict';
   var paths=['Cultivator','Warden','Vanguard'];
   var perks=[
-    {id:'needle',name:'Heavy boots',desc:'Kicks and splits stomps deal 25% more damage per rank',path:2,max:3,classId:'runner'},
-    {id:'fletching',name:'Wide stance',desc:'Kicks reach 3 px farther and splits stomps 4 px farther per rank',path:1,max:3,classId:'runner'},
-    {id:'tailwind',name:'Ring tempo',desc:'12% faster skill recovery per rank',path:0,max:3,classId:'runner'},
-    {id:'crosswind',name:'Crowd crush',desc:'Each additional pest caught in a kick takes 25% more damage',path:2,max:1,classId:'runner',needs:{needle:1,fletching:1}},
-    {id:'updraft',name:'Flying press',desc:'Airborne kicks deal 25% more damage; splits stomps reach 12 px farther',path:0,max:1,classId:'runner',needs:{tailwind:2,spring:1}},
+    {id:'needle',name:'Heavy boots',desc:'Each rank adds 25% kick and stomp damage, and 10% primary knockback',path:2,max:3,classId:'runner'},
+    {id:'fletching',name:'Wide stance',desc:'Kicks reach 3 px farther and stomps 4 px farther per rank; stomp radius caps at 54 px',path:1,max:3,classId:'runner'},
+    {id:'tailwind',name:'Ring tempo',desc:'Skill and Driving recovery shorten 12% per rank; charge builds 8% faster and Momentum fades 8% slower',path:0,max:3,classId:'runner'},
+    {id:'crosswind',name:'Crowd crush',desc:'Extra pests in a primary kick take 25% more damage; a full-Momentum stomp adds one small second wave',path:2,max:1,classId:'runner',needs:{needle:1,fletching:1}},
+    {id:'updraft',name:'Flying press',desc:'Airborne primary kicks deal 25% more damage; stomp reach rises 12 px. A grapple into a Driving hit primes one 20% stronger stomp',path:0,max:1,classId:'runner',needs:{tailwind:2,spring:1}},
     {id:'fault',name:'Fault line',desc:'Cleaves reach 6 px farther per rank',path:2,max:3,classId:'bulwark'},
     {id:'counter',name:'Reprisal',desc:'Parries punish pests 25% harder per rank',path:1,max:3,classId:'bulwark'},
     {id:'bedrock',name:'Stone pulse',desc:'Brace deals 0.4 more damage per rank',path:0,max:3,classId:'bulwark'},

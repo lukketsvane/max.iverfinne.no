@@ -28,6 +28,7 @@ function combatDamage(k,amount,x,build){return damagePest(k,amount*(1+.12*(build
 function combatAim(target){var a=target&&target.o||target||{x:P.x+P.face*100,y:P.y-12};if(a.spore){var h=runHazards.find(function(h){return h.id===a.spore&&h.type==='spore'&&h.tell>0;});if(h){var point=hazardPosition(h),speed=ownClass().id==='runner'?230:140;for(var i=0;i<4;i++)point=hazardPosition(h,Math.hypot(point.x-P.x,point.y-(P.y-13))/speed);return {x:point.x,y:point.y,spore:h.id};}}return {x:Number.isFinite(a.x)?a.x:P.x+P.face*100,y:Number.isFinite(a.y)?a.y:P.y-12};}
 function classPrimary(target){
   if(runIsPaused()||seedDown(coopActor)||bombCool>0||P.tun>0||P.pounce||warp||P.st==='float'||(climb&&climb.exit))return false;
+  if(ownClass().id==='runner'&&rattusPhasePolicy().lockPrimary)return false;
   if(ownClass().id==='polge'&&fighterState().flurry>0)return false;
   var aim=combatAim(target);if(Math.abs(aim.x-P.x)>1)P.face=aim.x>P.x?1:-1;
   if(coopGuest()){P.attackTag=(P.attackTag||0)+1;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:aim.spore||0,attackTag:P.attackTag}))return false;}
@@ -44,16 +45,7 @@ function classPrimary(target){
   if(sheet2Ready){setAnim('toss');P.frame=ANIM.toss.hit;}
   return true;
 }
-function rattleKick(aim){
-  var b=combatBuild(),air=!P.grounded,r=(air?24:18)+3*(b.fletching||0),c=air?{x:P.x,y:P.y-12}:meleeCenter(aim,16),hit=0;
-  floatKrek.slice().sort(function(a,d){return enemyDistance(a,c.x,c.y)-enemyDistance(d,c.x,c.y);}).forEach(function(k){
-    if(enemyDistance(k,c.x,c.y)>r||!combatLineClear(P.x,P.y-12,k.x,k.y))return;
-    var damage=(air?1.1:1)*(1+.25*(b.needle||0))*(air&&b.updraft?1.25:1)*(1+(b.crosswind?.25*hit:0));hit++;
-    if(!combatDamage(k,damage,P.x,b)&&!k.boss){staggerKrek(k,air?.55:.4);k.vx=(air?(k.x<P.x?-1:1):P.face)*75;k.vy=air?-60:-25;}
-  });
-  combatObjectives(c.x,c.y,r);combatFx(air?'salto':'dropkick',c.x,c.y,r,P.face);
-  return hit;
-}
+function rattleKick(aim){return rattusPrimaryWorld(aim);}
 function sporeShot(aim){
   var b=combatBuild(),a=Math.atan2(aim.y-(P.y-13),aim.x-P.x);
   classShots.push({id:++classShotId,owner:skillOwner(),world:worldLevel(),kind:'spore',x:P.x+Math.cos(a)*6,y:P.y-13+Math.sin(a)*6,vx:Math.cos(a)*140,vy:Math.sin(a)*140,tx:aim.x,ty:aim.y,life:1.15,damage:1.05*(1+.2*(b.ferment||0)),pierce:0,hit:'',hits:0,perks:b});
@@ -238,7 +230,10 @@ function drawCombatStrike(b,x,y){
     ctx.globalAlpha=1;return;
   }
   if(b.t>.2)return;var alpha=1-b.t/.2,color=b.strike==='spore'?'#80d1b1':b.strike==='cleave'?'#cba877':b.strike==='needle'?'#e6bf69':'#eed2b5';ctx.globalAlpha=alpha;ctx.fillStyle=color;
-  if(b.strike==='mist'){ctx.fillStyle='#80d1b1';for(var arc=0;arc<2;arc++)for(var dot=0;dot<11;dot++){var a=(dot/10-.5)*1.2,r=b.r*(.32+arc*.3+b.t*1.4);ctx.fillRect(x+Math.round(Math.cos(a)*r*(b.face||1)),y+Math.round(Math.sin(a)*r),1,1);}}
+  if(b.strike==='tail-whip'){ctx.fillStyle='#a46681';var tailX=Number.isFinite(b.tx)?b.tx-camX:x+(b.face||1)*b.r,tailY=Number.isFinite(b.ty)?b.ty-camY:y,tailLength=Math.hypot(tailX-x,tailY-y);for(var tail=0;tail<=tailLength;tail+=2){var along=tail/Math.max(1,tailLength);ctx.fillRect(Math.round(x+(tailX-x)*along),Math.round(y+(tailY-y)*along),1,1);}}
+  else if(b.strike==='driving-dropkick'){ctx.fillStyle='#efd17e';for(var trail=0;trail<5;trail++)ctx.fillRect(x-(b.face||1)*(trail*4+2),y-2+trail%2,3,1);}
+  else if(b.strike==='splits-wave'){ctx.fillStyle='#efd17e';for(var dot=0;dot<32;dot++){var a=dot*Math.PI/16,r=b.r*Math.min(1,.7+b.t*2);ctx.fillRect(x+Math.round(Math.cos(a)*r),y+Math.round(Math.sin(a)*r*.25),1,1);}}
+  else if(b.strike==='mist'){ctx.fillStyle='#80d1b1';for(var arc=0;arc<2;arc++)for(var dot=0;dot<11;dot++){var a=(dot/10-.5)*1.2,r=b.r*(.32+arc*.3+b.t*1.4);ctx.fillRect(x+Math.round(Math.cos(a)*r*(b.face||1)),y+Math.round(Math.sin(a)*r),1,1);}}
   else if(b.strike==='overload'){ctx.fillStyle='#80d1b1';for(var dot=0;dot<48;dot++){var a=dot*Math.PI/24,r=b.r*Math.min(1,.7+b.t*2);ctx.fillRect(x+Math.round(Math.cos(a)*r),y+Math.round(Math.sin(a)*r),dot%3?1:2,1);}}
   else if(['dropkick','salto','splits'].indexOf(b.strike)>=0){ctx.fillStyle='#efd17e';var span=Math.round(b.r*(.45+b.t*2));for(var i=0;i<12;i++){var angle=b.strike==='splits'?i/11*Math.PI:Math.PI*2*i/12;ctx.fillRect(x+Math.round(Math.cos(angle)*span),y+Math.round(Math.sin(angle)*span*(b.strike==='splits'?.25:1)),2,1);}}
   else if(['jab','cross','uppercut','clinch','flurry','finisher'].indexOf(b.strike)>=0){var r=Math.round(b.strike==='uppercut'||b.strike==='finisher'?10:7);ctx.fillRect(x-r,y-3,r*2,6);ctx.fillRect(x-r+2,y-5,r*2-4,2);ctx.fillRect(x-r+2,y+3,r*2-4,2);ctx.fillStyle='#755b51';ctx.fillRect(x+(b.face<0?-3:1),y-4,1,8);}

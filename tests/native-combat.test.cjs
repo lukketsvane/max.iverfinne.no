@@ -12,8 +12,8 @@ test('three replacement classes have distinct native primary attacks and never f
 });
 test('Rattus compatible boots, stance, crowd crush, tempo and flying press ranks change wrestling attacks',()=>{
  const {game:g}=fresh('runner'),a=pest(g,25),b=pest(g,30);Object.assign(g.rogueRun.perks,{needle:2,crosswind:1});fire(g,a);assert.ok(a.hp<30&&b.hp<a.hp,'each additional pest in the same kick takes more damage');
- const far=pest(g,39);g.rogueRun.perks.fletching=2;fire(g,far);assert.ok(far.hp<30);g.rogueRun.perks.tailwind=2;assert.ok(g.classSkillCooldown()<5);
- g.floatKrek=[];const rear=pest(g,-46);g.mossSlam(g.P.x,g.P.y,80);assert.equal(rear.hp,30);g.rogueRun.perks.updraft=1;g.mossSlam(g.P.x,g.P.y,80);assert.ok(rear.hp<30);assert.equal(g.classShots.length,0);
+ const far=pest(g,39);g.rogueRun.perks.fletching=2;fire(g,far);assert.ok(far.hp<30);g.rogueRun.perks.tailwind=2;assert.equal(g.classSkillCooldown(),8*Math.pow(.88,2));
+ const impacts=[0,1].map(rank=>{const h=fresh('runner'),out=h.game,rear=pest(out,-50);out.rogueRun.perks.fletching=2;out.rogueRun.perks.updraft=rank;assert.equal(out.useClassSkill(),true);assert.equal(rear.hp,30,'activation has no impact');for(let i=0;i<156;i++){h.advance(1000/120);out.updatePlayer(1/120,{axis:0,top:88});out.updateRattusCombat(1/120);}assert.equal(out.wrestlerState().stompConsumed,1);assert.equal(out.classShots.length,0);return rear.hp;});assert.equal(impacts[0],30);assert.ok(impacts[1]<30);
 });
 test('Cairn fault extends cleave, parry builds retaliate, and sanctuary restores plants',()=>{
  const {game:g}=fresh('bulwark'),far=pest(g,51);fire(g,far);assert.equal(far.hp,30);g.rogueRun.perks.fault=3;fire(g,far);assert.ok(far.hp<30);
