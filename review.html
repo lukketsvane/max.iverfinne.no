@@ -15,7 +15,7 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Glass Snail','Wick Hermit','Bellkeeper','Frostjaw','Spindle Widow','Orchard Mimic','Tuning Fork','Moon Moth','Kiln Beetle','Ash Ferryman','Compost Choir','Seed Engine'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','mech','last-seed','high-tide','boons','class-kits','circuit');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','mech','runner','last-seed','high-tide','boons','class-kits','circuit');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Class combat',[['class-kits','Class kits · primary and special']]);
@@ -26,6 +26,7 @@
  group('Sligo',[['sligo-life','Sligo · Eat and grow'],['sligo-colony','Sligo · AI and control swap']]);
  group('Pølge',[['polge','Pølge · Rhythm, clinch and counter']]);
  group('Max',[['mech','Max · Circuit, mist and rover dispatch']]);
+ group('Rattus',[['runner','Rattus · Momentum, tail latch and Driving kick']]);
  group('Relics',[['relic-garden','Relics · Game mode stones']]);
  group('Plant traversal',[['plant-climb','Rattus norvegicus · Growing plant climb']]);
  group('Campaign climb',layouts.map(world=>['layout'+world,'Garden '+world+' · '+window.MaxStageLayout.profile(world).title]));
@@ -38,7 +39,7 @@
  const requestedSeed=Number.parseInt(params.get('seed'),10),reviewSeed=params.has('authored')?'undefined':Number.isFinite(requestedSeed)?requestedSeed>>>0:1;
  const circuitSeed=Number.isFinite(requestedSeed)?requestedSeed>>>0:73;
  let current=modeLabels.has(reviewMode)?reviewMode:'results',fixtureSerial=0;
- classChooser.value=['mech','runner','bulwark','herbalist','polge','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':current==='plant-climb'?'runner':current==='circuit'?'polge':'mech';
+ classChooser.value=['mech','runner','bulwark','herbalist','polge','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':['plant-climb','runner'].includes(current)?'runner':current==='circuit'?'polge':'mech';
  const viewport=document.getElementById('viewport'),viewports={desktop:[1000,650],phone:[390,844],small:[320,568],landscape:[844,390],compact:[568,320]};
  function resize(name){viewport.value=name;[frame.width,frame.height]=viewports[name];}
  resize(params.has('portrait')?'phone':'desktop');
@@ -51,18 +52,20 @@
   status.removeAttribute('data-guardian');combatStatus.hidden=true;combatStatus.textContent='';
   const circuit=mode==='circuit',custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
-  const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):8):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
+  const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):8):mode==='runner'?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):6):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
   if(mode.startsWith('sligo-'))classChooser.value='sligo';
   if(mode==='polge')classChooser.value='polge';
   if(mode==='mech')classChooser.value='mech';
+  if(mode==='runner')classChooser.value='runner';
   classChooser.disabled=!custom;
-  document.querySelectorAll('#review-input [data-key]').forEach(button=>{const key=button.dataset.key,label=key==='c'?(classChooser.value==='mech'?'Fan':classChooser.value==='polge'?'Clinch':'Secondary'):key==='v'&&classChooser.value==='mech'?'Rover':'Utility';button.textContent=label;button.setAttribute('aria-label','Game '+label);});
+  document.querySelectorAll('#review-input [data-key]').forEach(button=>{const key=button.dataset.key,label=key==='c'?(classChooser.value==='mech'?'Fan':classChooser.value==='polge'?'Clinch':classChooser.value==='runner'?'Latch (hold)':'Secondary'):classChooser.value==='mech'?'Rover':classChooser.value==='runner'?'Driving (hold)':'Utility';button.textContent=label;button.setAttribute('aria-label','Game '+label);});
   help.textContent=mode.startsWith('sligo-')?'Harvest the red cords with ↓ / Space; walk over meat to eat. B throws flesh and shrinks you. Hold a clone for half a second, Q, or left trigger to swap. Four divisions per run.':rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Rattus norvegicus can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diver, seed thief, spore caster, shield beetle, healing moth, thorn caster, dew leech and rammer. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
   if(circuit)help.textContent='Choose either gift altar with ↓ / Space. Amber marks show where each keeper arrives. Defend the terrace to earn your chosen gift, or leave the terrace to withdraw. B punch · E flurry · X dodge · ↑ jump.';
   if(mode==='polge')help.textContent='B: jab → cross → uppercut. Confirmed hits build 0–3 Rhythm; misses keep the current combo step. C / touch Clinch: make room at close range. X / touch Slip: weave through an amber warned attack, then B for one stronger counter. E / tap Pølge: moving close flurry. Trial sentries use their real warnings and attacks; reset after defeating them. '+(params.get('boons')==='1'?'All Pølge boons enabled; a landed flurry finish can restore the damaged plants.':'Base kit, no boons. Add &boons=1 to compare the upgraded build.');
   if(mode==='mech')help.textContent='B: plant a bomb with its full two-second fuse. Real Tend / Space and ordinary rover care build 0–3 Circuit, at most one beat every four seconds. C / Mist spends one beat on a forward fan; V / Dispatch sends the rover to reachable soil or recalls it on foot; E / Overload spends three beats on one planted ring and four seconds of threatened-plant priority. X remains dodge. The close keepers use their real warnings and attacks. '+(params.get('boons')==='1'?'Existing rover, Guard bot and bomb branches enabled.':'Base kit, no chosen boons. Add &boons=1 for the existing upgraded build.');
+  if(mode==='runner')help.textContent='Run / Shift plus movement earns Momentum from real travel. B kicks. Hold C / Latch toward a living stem, real ledge or pest; release keeps actual velocity. Hold V / Driving for .2–.6 seconds, then release to kick; drag out to cancel. E spends Momentum on one actual splits-stomp landing. X dodge and Space Tend stay separate. Mature plants and nearby natural ledges are legal anchors; sentries use real warnings. No Momentum is granted by this scene. '+(params.get('boons')==='1'?'All five existing wrestler boons enabled.':'Base kit. Add &boons=1 to compare the complete build.');
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu'||mode==='relic-garden',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   const setup='<script>'+`(function(){
@@ -83,7 +86,8 @@
     "MAX_REVIEW_FIXTURE_START";
     window.addEventListener('message',function(event){
       if(event.source!==parent||event.origin!==${JSON.stringify(location.origin)}||!event.data||event.data.serial!==${serial}||event.data.type!=='max-review-input')return;
-      if(['ArrowLeft','ArrowRight','ArrowUp',' ','b','c','v','x','e','1','2','3'].indexOf(event.data.key)<0)return;
+      if(['ArrowLeft','ArrowRight','ArrowUp','Shift',' ','b','c','v','x','e','1','2','3'].indexOf(event.data.key)<0)return;
+      if(event.data.cancel){window.dispatchEvent(new Event('blur'));return;}
       window.dispatchEvent(new KeyboardEvent(event.data.down?'keydown':'keyup',{key:event.data.key,bubbles:true,cancelable:true}));
     });
     menuPaused=false;runActive=${gameplay};rogueRun.next=1000000000;rogueRun.ended=false;rogueRun.choice=null;rogueRun.perks.robot=${tier};
@@ -172,6 +176,15 @@
         [-16,16,38].forEach(function(dx,i){var k=makeKrek(dx<0?-1:1,false,0);k.scout=false;k.x=P.x+dx;k.y=P.y-12;k.vx=k.vy=0;k.hp=k.maxHp=12;k.trialGuard=true;k.eventId=boxingTrial.id;k.eventX=P.x;k.eventY=P.y;k.bite=1.8+i*.7;floatKrek.push(k);});
         gardenPlots.forEach(function(p){p.health=.55;p.moisture=.4;});
       }
+      if(${mode==='runner'}){
+        if(${params.get('boons')==='1'}){rogueRun.perks.needle=3;rogueRun.perks.fletching=3;rogueRun.perks.tailwind=3;rogueRun.perks.crosswind=1;rogueRun.perks.updraft=1;rogueRun.perks.spring=1;}
+        // Real mature plants, existing stage ledges and sentries provide legal
+        // anchors and landings. Movement and contacts earn the entire meter.
+        var wrestlingTrial={id:903,x:P.x,y:P.y,type:'cache',cost:0,active:true,done:false,locked:false,progress:0,duration:75,guardsRemaining:0,age:0,away:0};
+        runEncounters=[wrestlingTrial];runLoot=[];runHazards=[];
+        [-24,22,60].forEach(function(dx,i){var k=makeKrek(dx<0?-1:1,false,i===2?5:0);k.combatId=++classPestId;k.scout=false;k.x=P.x+dx;k.y=surfaceY(k.x)-12;k.vx=k.vy=0;k.hp=k.maxHp=24;k.trialGuard=true;k.eventId=wrestlingTrial.id;k.eventX=P.x;k.eventY=P.y;k.bite=1.5+i*.7;floatKrek.push(k);});
+        gardenPlots.forEach(function(p){p.growth=1.5;p.health=.8;p.moisture=.55;});
+      }
       if(${circuit}){
         var reviewCircuit=stageLayout().expedition&&stageLayout().expedition.circuit;
         if(!reviewCircuit)throw new Error('This stage and seed have no circuit terrace.');
@@ -232,7 +245,7 @@
     if(${mode==='high-tide'&&params.has('still')}){menuPaused=true;}
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
     if(${gameplay}){
-      var reviewStateClock=0,reviewFrame=frame,reviewCombat={strikes:{},cues:{},bombPeak:0,shotPeak:0,lastFx:0};
+      var reviewStateClock=0,reviewFrame=frame,reviewCombat={strikes:{},cues:{},fx:[],bombPeak:0,shotPeak:0,lastFx:0};
       var reviewCircuitLog={warnings:[],arrivals:[],rewards:[],guardPeak:0,lastArrival:0};
       frame=function(now){
         // Read before simulation so even the first warning frame is measured.
@@ -246,7 +259,7 @@
         reviewFrame(now);
         // Observe every frame, before the slower status publication, so browser
         // checks never depend on catching a short-lived projectile or fist pose.
-        booms.forEach(function(b){if(!(b.id>reviewCombat.lastFx))return;reviewCombat.lastFx=b.id;if(b.strike)reviewCombat.strikes[b.strike]=(reviewCombat.strikes[b.strike]||0)+1;if(b.cue)reviewCombat.cues[b.cue]=(reviewCombat.cues[b.cue]||0)+1;});
+        booms.forEach(function(b){if(!(b.id>reviewCombat.lastFx))return;reviewCombat.lastFx=b.id;if(b.strike)reviewCombat.strikes[b.strike]=(reviewCombat.strikes[b.strike]||0)+1;if(b.cue)reviewCombat.cues[b.cue]=(reviewCombat.cues[b.cue]||0)+1;reviewCombat.fx.push({id:b.id,owner:b.owner||'',kind:b.strike||b.cue||'',x:b.x,y:b.y,r:b.r});if(reviewCombat.fx.length>96)reviewCombat.fx.shift();});
         reviewCombat.bombPeak=Math.max(reviewCombat.bombPeak,bombs.length);reviewCombat.shotPeak=Math.max(reviewCombat.shotPeak,classShots.length);
         if(${circuit}&&runExpedition){
           var e=runExpedition,guards=floatKrek.filter(function(k){return k.eventId===2000+worldLevel();});
@@ -265,7 +278,10 @@
           parent.postMessage({type:'max-circuit-observation',serial:${serial},geometry:C,seed:rogueRun.seed,world:worldLevel(),classId:rogueRun.classId,player:{x:P.x,y:P.y,grounded:P.grounded,platformId:P.platform},active:e.circuitActive,choice:e.circuitChoice,done:e.circuitDone,failed:e.circuitFailed,queued:e.circuitQueued,spawned:e.circuitSerial,age:e.circuitAge,away:e.circuitAway,tell:e.circuitTell,warning:{x:e.circuitSpawnX,y:e.circuitSpawnY,kind:e.circuitKind},guards:floatKrek.filter(function(k){return k.eventId===2000+worldLevel();}).map(function(k){return {x:k.x,y:k.y,kind:k.kind};}),log:reviewCircuitLog,propsReady:ready(districtProps)&&ready(districtLandmarks),loot:runLoot.map(function(q){return {id:q.id,type:q.type,x:q.x,y:q.y};}),traits:rogueRun.traits,boonOpen:!!rogueRun.choice,ended:rogueRun.ended},${JSON.stringify(location.origin)});
         }
         var reviewCanvasBounds=cv.getBoundingClientRect(),observedFighter=classFighters.find(function(q){return q.owner===skillOwner();}),observedEngineer=coop&&coop.members[coop.me]?coop.members[coop.me].engineer:rogueRun.engineer,observedCrew=coop&&coop.members[coop.me]?coop.members[coop.me].crew||[]:soloCrew||[];
-        parent.postMessage({type:'max-guardian-observation',serial:${serial},combat:{classId:rogueRun.classId,strikes:reviewCombat.strikes,cues:reviewCombat.cues,bombPeak:reviewCombat.bombPeak,shotPeak:reviewCombat.shotPeak,shotsCreated:classShotId,skillCool:P.skillCool,attackCool:bombCool,grounded:P.grounded,brace:P.brace,pounce:P.pounce,dodgeCool:P.dodgeCool||0,dodgeT:P.dodgeT||0,fighter:observedFighter?Object.assign({},observedFighter):null,engineer:observedEngineer?Object.assign({},observedEngineer):null,rovers:observedCrew.map(function(b){var r=b.state;return {owner:r.owner||'',slot:r.slot,kind:r.kind,dx:r.x-P.x,water:r.water,targetId:r.target&&r.target.id||r.targetId||0,dispatchT:r.dispatchT,pourT:r.pourT,refill:r.refill,refillerId:b.refiller||r.refillerId||'',recalling:r.recalling||0,state:r.state};}),targets:floatKrek.map(function(k){return {dx:Math.round(k.x-P.x),dy:Math.round(k.y-(P.y-12)),hp:k.hp,windup:k.windup||0,boss:!!k.boss,mechWet:k.mechWet||0,mechWetBonus:k.mechWetBonus||0};}),warnings:runHazards.filter(function(h){return h.tell>0;}).map(function(h){return {id:h.id,type:h.type,tell:h.tell};}),plants:gardenPlots.map(function(p){return {id:p.id,dx:p.x-P.x,health:p.health,moisture:p.moisture};})},shrine:bossEvent,entrance:{x:observedLayout.origin,y:surfaceY(observedLayout.origin)},sites:observedLayout.guardianSites||[],ladders:observedLayout.ladders||[],motion:P.st,playerY:P.y,view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
+        var observedWrestler=rogueRun.classId==='runner'?(coop&&coop.members[coop.me]?coop.members[coop.me].wrestler:rogueRun.wrestler):null;
+        var observedWrestling=observedWrestler&&typeof rattusCaptureWrestler==='function'?rattusCaptureWrestler(observedWrestler):null;
+        var observedPolicy=rogueRun.classId==='runner'&&typeof rattusPhasePolicy==='function'?rattusPhasePolicy():null;
+        parent.postMessage({type:'max-guardian-observation',serial:${serial},combat:{classId:rogueRun.classId,strikes:reviewCombat.strikes,cues:reviewCombat.cues,fx:reviewCombat.fx,wrestler:observedWrestling,phasePolicy:observedPolicy,motionName:P.motionName||'',motionTime:P.motionTime||0,motionIdle:P.motionIdle||0,bombPeak:reviewCombat.bombPeak,shotPeak:reviewCombat.shotPeak,shotsCreated:classShotId,skillCool:P.skillCool,attackCool:bombCool,grounded:P.grounded,brace:P.brace,pounce:P.pounce,dodgeCool:P.dodgeCool||0,dodgeT:P.dodgeT||0,fighter:observedFighter?Object.assign({},observedFighter):null,engineer:observedEngineer?Object.assign({},observedEngineer):null,rovers:observedCrew.map(function(b){var r=b.state;return {owner:r.owner||'',slot:r.slot,kind:r.kind,dx:r.x-P.x,water:r.water,targetId:r.target&&r.target.id||r.targetId||0,dispatchT:r.dispatchT,pourT:r.pourT,refill:r.refill,refillerId:b.refiller||r.refillerId||'',recalling:r.recalling||0,state:r.state};}),surfaces:observedLayout.platforms.filter(function(p){return Math.abs(p.x-P.x)<=120;}).map(function(p){return {id:p.id,x:p.x,y:p.y,w:p.w,h:p.h||0,solid:!!p.solid};}),targets:floatKrek.map(function(k){return {id:k.combatId||0,kind:k.kind,x:k.x,y:k.y,heavy:!!(k.boss||k.queen||k.elite||k.kind===5||k.kind===11),dx:Math.round(k.x-P.x),dy:Math.round(k.y-(P.y-12)),hp:k.hp,windup:k.windup||0,boss:!!k.boss,mechWet:k.mechWet||0,mechWetBonus:k.mechWetBonus||0};}),warnings:runHazards.filter(function(h){return h.tell>0;}).map(function(h){return {id:h.id,type:h.type,tell:h.tell};}),plants:gardenPlots.map(function(p){return {id:p.id,x:p.x,y:surfaceY(p.x),height:plantClimbHeight(p),mature:plantClimbReady(p),live:!p.dead&&p.health>0,dx:p.x-P.x,health:p.health,moisture:p.moisture};})},shrine:bossEvent,entrance:{x:observedLayout.origin,y:surfaceY(observedLayout.origin)},sites:observedLayout.guardianSites||[],ladders:observedLayout.ladders||[],motion:P.st,playerY:P.y,view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
         parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),campaign:window.MaxStageLayout.profile(worldLevel()).title,atmosphere:campaignAtmosphere(worldLevel()),objective:levelGuideObjective(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }
@@ -285,9 +301,10 @@
   if(data.type==='max-guardian-observation'){
    status.dataset.guardian=JSON.stringify(data);
    const c=data.combat,f=c&&c.fighter;
-   combatStatus.hidden=!c||!['polge','mech'].includes(c.classId);
+   combatStatus.hidden=!c||!['polge','mech','runner'].includes(c.classId);
    if(c&&c.classId==='polge')combatStatus.textContent='Rhythm '+(f&&f.rhythm||0)+'/3 · '+['jab','cross','uppercut'][f&&f.window>0?(f.combo+1)%3:0]+' next · counter '+(f&&f.counter>0?f.counter.toFixed(1)+' s':'waiting')+' · clinch '+Math.max(0,f&&f.clinchCool||0).toFixed(1)+' s · slip '+Math.max(0,f&&f.utilityCool||0).toFixed(1)+' s · flurry '+((f&&f.flurryBeats||0)+(f&&f.flurryFinish||0))+' strikes left · skill '+Math.max(0,c.skillCool).toFixed(1)+' s · '+c.warnings.length+' warned attacks · '+c.targets.length+' targets';
    if(c&&c.classId==='mech'){const q=c.engineer||{},rovers=c.rovers||[];combatStatus.textContent='Circuit '+(q.charge||0)+'/3 · reward gate '+Math.max(0,q.rewardCool||0).toFixed(1)+' s · mist '+Math.max(0,q.fanCool||0).toFixed(1)+' s · dispatch '+Math.max(0,q.utilityCool||0).toFixed(1)+' s · overload '+Math.max(0,q.specialCool||0).toFixed(1)+' s · priority '+Math.max(0,q.priorityT||0).toFixed(1)+' s · rover water '+rovers.filter(r=>r.kind==='water').reduce((n,r)=>n+r.water,0).toFixed(2)+' · '+c.targets.filter(k=>k.mechWet>0).length+' Wet targets';}
+   if(c&&c.classId==='runner'){const q=c.wrestler||{},policy=c.phasePolicy||{};combatStatus.textContent='Momentum '+Math.round(q.momentum||0)+'/100 · '+(policy.phase||'none')+' · latch '+Math.max(0,q.latchCool||0).toFixed(1)+' s · Driving '+Math.max(0,q.utilityCool||0).toFixed(1)+' s / hold '+Math.max(0,q.driveHold||0).toFixed(2)+' s · stomp '+Math.max(0,q.specialCool||0).toFixed(1)+' s · traction '+Math.max(0,q.tractionT||0).toFixed(1)+' s · barrier '+Math.round(q.barrier||0)+' · '+(c.motionName||'native care')+' · '+c.targets.length+' targets';}
    return;
   }
   if(data.type!=='max-review-state')return;
@@ -301,12 +318,26 @@
  viewport.onchange=()=>resize(viewport.value);
  document.getElementById('rotate').onclick=()=>{resize(frame.width==='390'?'desktop':'phone');show(current);};
  const input=document.getElementById('review-input');
- for(const [label,key,toggle] of [['Left','ArrowLeft',true],['Right','ArrowRight',true],['Jump','ArrowUp'],['Tend',' ',true],['Attack','b'],['Secondary','c'],['Utility','v'],['Dodge','x'],['Skill','e'],['Boon 1','1'],['Boon 2','2'],['Boon 3','3']]){
+ function reviewKey(key,down,cancel=false){frame.contentWindow.postMessage({type:'max-review-input',serial:fixtureSerial,key,down,cancel},location.origin);if(cancel)input.querySelectorAll('[aria-pressed]').forEach(b=>b.setAttribute('aria-pressed','false'));}
+ for(const [label,key,toggle] of [['Left','ArrowLeft',true],['Right','ArrowRight',true],['Run','Shift',true],['Jump','ArrowUp'],['Tend',' ',true],['Attack','b'],['Secondary','c'],['Utility','v'],['Dodge','x'],['Skill','e'],['Boon 1','1'],['Boon 2','2'],['Boon 3','3']]){
   const b=document.createElement('button');b.type='button';if(key==='c'||key==='v')b.dataset.key=key;b.textContent=label;b.setAttribute('aria-label','Game '+label);
-  if(toggle)b.setAttribute('aria-pressed','false');
-  b.onclick=()=>{const down=!toggle||b.getAttribute('aria-pressed')!=='true';if(toggle)b.setAttribute('aria-pressed',String(down));
-   frame.contentWindow.postMessage({type:'max-review-input',serial:fixtureSerial,key,down},location.origin);
-   if(!toggle)setTimeout(()=>frame.contentWindow.postMessage({type:'max-review-input',serial:fixtureSerial,key,down:false},location.origin),80);
+  if(toggle||key==='c'||key==='v')b.setAttribute('aria-pressed','false');
+  let active=false,pointer=null;
+  const held=()=>classChooser.value==='runner'&&(key==='c'||key==='v');
+  function start(){if(active)return;active=true;b.setAttribute('aria-pressed','true');reviewKey(key,true);}
+  function finish(cancel){if(!active)return;active=false;pointer=null;b.setAttribute('aria-pressed','false');reviewKey(key,false,cancel);}
+  b.style.touchAction='none';
+  b.onpointerdown=event=>{if(!held()||event.button!==0)return;event.preventDefault();pointer=event.pointerId;b.setPointerCapture(pointer);start();};
+  b.onpointermove=event=>{if(!active||event.pointerId!==pointer)return;const r=b.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)finish(true);};
+  b.onpointerup=event=>{if(!active||event.pointerId!==pointer)return;event.preventDefault();finish(false);};
+  b.onpointercancel=b.onlostpointercapture=()=>finish(true);
+  b.onkeydown=event=>{if(held()&&[' ','Enter'].includes(event.key)){event.preventDefault();if(!event.repeat)start();}};
+  b.onkeyup=event=>{if(held()&&[' ','Enter'].includes(event.key)){event.preventDefault();finish(false);}};
+  b.onblur=()=>finish(true);
+  b.onclick=event=>{if(held()){if(event.detail===0){if(active)finish(false);else start();}return;}
+   const down=!toggle||b.getAttribute('aria-pressed')!=='true';if(toggle)b.setAttribute('aria-pressed',String(down));
+   reviewKey(key,down);
+   if(!toggle)setTimeout(()=>reviewKey(key,false),80);
   };input.appendChild(b);
  }
  show(current);

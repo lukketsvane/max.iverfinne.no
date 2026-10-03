@@ -5,6 +5,7 @@ const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
   'ascentPresentation', 'ascentFrame', 'ascentLive', 'worldCovered',
+  'rattusSerial',
   'mechEventId', 'soloCrew',
   'yeet', 'YEET_SHEET',
   'classShots', 'classFighters', 'runActive', 'pad', 'padAx', 'heldL', 'heldRun', 'lampToggle',
@@ -23,6 +24,10 @@ const stateNames = [
 ];
 const functionNames = [
   'rememberAscentFrame', 'beginAscentPresentation', 'prepareAscentPresentation', 'drawAscentPresentation', 'cancelAscentPresentation', 'ascentPresentationOffset', 'screenToWorld', 'resize',
+  'rattusDirectionalAnchorAim',
+  'rattusWetBody', 'rattusWetPoint',
+  'wrestlerState', 'rattusCaptureWrestler', 'rattusRestoreWrestler', 'rattusPrimaryWorld', 'rattusLatchStartWorld', 'rattusLatchReleaseWorld', 'rattusDrivingStartWorld', 'rattusDrivingReleaseWorld', 'rattusDrivingCancelWorld', 'rattusStompWorld', 'rattusMotionIntent', 'rattusPhasePolicy', 'rattusMovement', 'rattusLanding', 'rattusCancelMotion', 'rattusKnockbackFactor', 'rattusAbsorbLastSeedDamage', 'updateRattusCombat', 'rattusSelectAnchor', 'rattusRefreshMotion', 'rattusRebaseMotion', 'rattusRebaseHold', 'rattusStompRadius', 'rattusLatch', 'rattusReleaseLatch', 'rattusDrivingStart', 'rattusDrivingRelease', 'rattusDrivingCancel', 'rattusStomp', 'rattusPolicy', 'rattusMotionContext', 'rattusInputActive', 'rattusWake', 'rattusInputAim', 'updateRattusControls', 'releaseClassSecondary', 'releaseClassUtility', 'clearRunInput',
+  'coopRunnerCorrect', 'coopRunnerValidate', 'coopRunnerObserve', 'coopRunnerKind', 'coopRunnerCleanCorrection',
   'engineerState', 'mechFan', 'mechFanWorld', 'mechOverload', 'mechOverloadWorld', 'updateMechCombat', 'mechCircuitCare', 'mechCaptureEngineer', 'mechRestoreEngineer', 'mechApplyWet', 'mechWetFactor', 'mechUpdateWet', 'mechPrimaryContext', 'mechBombThreat', 'mechBombInterrupted', 'mechBombReward', 'mechWetBonus', 'mechPlanted', 'updateMechControls', 'useClassUtility',
   'ensureCrew', 'updateCompanion', 'companionEnv', 'dispatchWorld', 'dispatchTargets', 'dispatchReady', 'mechDispatch', 'mechFanWater', 'waterGardenPlot', 'waterGardenPlotTick', 'launchBomb', 'explode', 'pestSlow', 'moveEnemyTo', 'updatePestDive', 'ratMove', 'updateHighTideBoss',
   'levelGuideObjective', 'guideLines', 'drawGuideLabel', 'drawGuideStack', 'drawLevelGuide',

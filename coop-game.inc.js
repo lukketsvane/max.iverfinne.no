@@ -3,12 +3,12 @@ function coopGuest(){return !!(coop&&!coop.host);}
 function coopAction(type,data){return !!(coopGuest()&&coop.network.action(type,Object.assign({},data,{world:worldLevel()})));}
 function coopMembers(){return coop?Object.values(coop.members).filter(function(m){return !m.left;}):[];}
 function coopSize(){return coop?coopMembers().length:1;}
-function coopAvatar(){return {world:worldLevel(),classId:rogueRun.classId,skin:P.skin,x:P.x,y:P.y,vx:P.vx,vy:P.vy,face:P.face,anim:P.anim,frame:P.frame,st:P.st,pounce:rogueRun.classId==='runner'?P.pounce||0:0,rattleMove:P.pounce===1?'salto':P.pounce===2?'splits':P.rattlePose>0?P.rattleMove:'',rattlePose:P.rattlePose||0,rattleClock:P.rattleClock||0,motionName:P.motionName||'',motionTime:P.motionTime||0,ladderId:P.st==='ladder'?P.ladderId:null,grounded:P.grounded,wet:!!P.wet,dodging:P.dodgeT>0,lampLit:P.lampLit,exitClimb:!!(climb&&climb.exit),bracing:P.brace>0,curled:P.tun>0,sligoId:P.sligoId||1,sligoMass:sligoMass(P),evo:sligoEvo(),reviveHeld:lastSeedMode()&&seedHeld(),tideTend:highTideMode()&&seedHeld(),relayTend:nightRelayMode()&&!!(heldDown||heldSpace||swipeDown),gardenTend:!relicRunMode()&&P.st!=='ladder'&&!!(heldDown||heldSpace||swipeDown)};}
+function coopAvatar(){return {world:worldLevel(),classId:rogueRun.classId,skin:P.skin,x:P.x,y:P.y,vx:P.vx,vy:P.vy,face:P.face,anim:P.anim,frame:P.frame,st:P.st,pounce:rogueRun.classId==='runner'?P.pounce||0:0,rattleMove:P.pounce===1?'salto':P.pounce===2?'splits':P.rattlePose>0?P.rattleMove:'',rattlePose:P.rattlePose||0,rattleClock:P.rattleClock||0,motionName:P.motionName||'',motionTime:P.motionTime||0,motionInput:!!P.motionInput,ladderId:P.st==='ladder'?P.ladderId:null,grounded:P.grounded,wet:!!P.wet,dodging:P.dodgeT>0,lampLit:P.lampLit,exitClimb:!!(climb&&climb.exit),bracing:P.brace>0,curled:P.tun>0,sligoId:P.sligoId||1,sligoMass:sligoMass(P),evo:sligoEvo(),reviveHeld:lastSeedMode()&&seedHeld(),tideTend:highTideMode()&&seedHeld(),relayTend:nightRelayMode()&&!!(heldDown||heldSpace||swipeDown),gardenTend:!relicRunMode()&&P.st!=='ladder'&&!!(heldDown||heldSpace||swipeDown)};}
 function coopMemberAvatar(m){return (coopActor?m.id===coopActor.id:m.id===coop.me)?P:m.avatar;}
 function coopCleanAvatar(a){
   if(!a||!['x','y','vx','vy','world'].every(function(k){return Number.isFinite(a[k])&&Math.abs(a[k])<1e7;})||!Object.hasOwn(ANIM,a.anim))return null;
   if(Math.abs(a.vx)>180||Math.abs(a.vy)>500)return null;
-  return {world:a.world|0,classId:window.MaxClasses.clean(a.classId),skin:window.MaxClasses.skin(a.skin),x:a.x,y:a.y,vx:a.vx,vy:a.vy,face:a.face<0?-1:1,anim:a.anim,frame:Math.max(0,Math.min(15,a.frame|0)),st:['free','float','climb','ladder','burrow','task','watering','squat','lamp','rest','toCrouch','toStand','lampUp','lampDn','toSit','unsit'].indexOf(a.st)>=0?a.st:'free',pounce:window.MaxClasses.clean(a.classId)==='runner'?Math.max(0,Math.min(2,a.pounce|0)):0,rattleMove:['dropkick','salto','splits'].indexOf(a.rattleMove)>=0?a.rattleMove:'',rattlePose:Math.max(0,Math.min(.45,+a.rattlePose||0)),rattleClock:Math.max(0,Math.min(10,+a.rattleClock||0)),motionName:typeof a.motionName==='string'&&/^[a-z-]{1,24}$/.test(a.motionName)?a.motionName:'',motionTime:Math.max(0,Math.min(3600,+a.motionTime||0)),ladderId:typeof a.ladderId==='string'?a.ladderId.slice(0,64):null,grounded:!!a.grounded,wet:!!a.wet,dodging:typeof a.dodging==='boolean'?a.dodging:undefined,lampLit:Math.max(0,Math.min(1,+a.lampLit||0)),exitClimb:!!a.exitClimb,bracing:!!a.bracing,curled:!!a.curled,sligoId:Math.max(1,Math.min(5,a.sligoId|0)),sligoMass:sligoMass(a),evo:Math.max(0,Math.min(15,a.evo|0)),reviveHeld:!!a.reviveHeld,tideTend:!!a.tideTend,relayTend:!!a.relayTend,gardenTend:!!a.gardenTend};
+  return {world:a.world|0,classId:window.MaxClasses.clean(a.classId),skin:window.MaxClasses.skin(a.skin),x:a.x,y:a.y,vx:a.vx,vy:a.vy,face:a.face<0?-1:1,anim:a.anim,frame:Math.max(0,Math.min(15,a.frame|0)),st:['free','float','climb','ladder','burrow','task','watering','squat','lamp','rest','toCrouch','toStand','lampUp','lampDn','toSit','unsit'].indexOf(a.st)>=0?a.st:'free',pounce:window.MaxClasses.clean(a.classId)==='runner'?Math.max(0,Math.min(2,a.pounce|0)):0,rattleMove:['dropkick','salto','splits'].indexOf(a.rattleMove)>=0?a.rattleMove:'',rattlePose:Math.max(0,Math.min(.45,+a.rattlePose||0)),rattleClock:Math.max(0,Math.min(10,+a.rattleClock||0)),motionName:typeof a.motionName==='string'&&/^[a-z-]{1,24}$/.test(a.motionName)?a.motionName:'',motionTime:Math.max(0,Math.min(3600,+a.motionTime||0)),motionInput:!!a.motionInput,ladderId:typeof a.ladderId==='string'?a.ladderId.slice(0,64):null,grounded:!!a.grounded,wet:!!a.wet,dodging:typeof a.dodging==='boolean'?a.dodging:undefined,lampLit:Math.max(0,Math.min(1,+a.lampLit||0)),exitClimb:!!a.exitClimb,bracing:!!a.bracing,curled:!!a.curled,sligoId:Math.max(1,Math.min(5,a.sligoId|0)),sligoMass:sligoMass(a),evo:Math.max(0,Math.min(15,a.evo|0)),reviveHeld:!!a.reviveHeld,tideTend:!!a.tideTend,relayTend:!!a.relayTend,gardenTend:!!a.gardenTend};
 }
 function beginCoop(network){
   var selection=network.loadouts&&network.loadouts[network.user.id]||network.room.members.find(function(m){return m.id===network.user.id;})||{};
@@ -36,6 +36,7 @@ function coopPlace(m){if(nightRelayMode()){relayPlace(m);return;}if(highTideMode
 function coopRoster(room){
   if(!coop)return;
   var wasHost=coop.host;coop.host=room.host===coop.me;coop.network.room=room;
+  if(wasHost&&!coop.host)coopMembers().forEach(function(m){if(m.classId==='runner')m.runnerAckTags={attackTag:m.attackTag||0,secondaryTag:m.secondaryTag||0,utilityTag:m.utilityTag||0,skillTag:m.skillTag||0};});
   if(!coop.host)return;
   Object.keys(coop.members).forEach(function(id){if(!room.members.some(function(p){return p.id===id;}))coopDepart(id);});
   room.members.forEach(function(p){var kit=coop.network.loadouts&&coop.network.loadouts[p.id];if(!coop.members[p.id]&&kit&&kit.classId)coopJoin(p.id,kit);});
@@ -47,9 +48,24 @@ function coopPromote(){
   classShotId=Math.max(classShotId,top(classShots,'id'))+1000;classPestId=Math.max(classPestId,top(floatKrek,'combatId'))+1000;
   coopFxId=Math.max(coopFxId,top(booms,'id'))+1000;seedPickupUid=Math.max(seedPickupUid,top(seedPickups,'uid'))+1000;
   runDropId=Math.max(runDropId,top(runLoot,'id'))+1000;hazardId=Math.max(hazardId,top(runHazards,'id'))+1000;
+  if(typeof rattusSerial==='number'){var wrestlers=coopMembers().map(function(m){return m.wrestler||{};});['latchSerial','driveSerial','stompSerial','consumedLandingSerial','followupSerial','grappleSerial'].forEach(function(k){rattusSerial=Math.max(rattusSerial,top(wrestlers,k));});['rattusDriveEvent','rattusStompEvent','rattusFollowupEvent'].forEach(function(k){rattusSerial=Math.max(rattusSerial,top(floatKrek,k));});rattusSerial=Math.min(1e9,rattusSerial+1000);}
   if(typeof mechEventId==='number')mechEventId=Math.max(mechEventId,top(bombs,'mechEvent'),top(coopMembers().map(function(m){return m.engineer||{};}),'fanSerial'),top(coopMembers().map(function(m){return m.engineer||{};}),'overloadSerial'),top(coopMembers().map(function(m){return m.engineer||{};}),'rewardEvent'))+1000;
   rogueRun.nextPlantId=Math.max(rogueRun.nextPlantId,top(rogueRun.garden,'id'),top(gardenPlots,'id'))+1000;
-  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;if(!m.dodge||!m.dodge.boxer||m.dodge.world!==worldLevel()||m.dodge.expires<=now)m.dodge=null;m.trust=true;coopNextChoice(m);});
+  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;if(!m.dodge||!m.dodge.boxer||m.dodge.world!==worldLevel()||m.dodge.expires<=now)m.dodge=null;m.trust=true;m.runnerObserved=null;if(m.classId==='runner'){rattusRebaseHold(m,now);rattusRebaseMotion(m,now);}coopNextChoice(m);});
+  var own=coop.members[coop.me];
+  if(own&&own.classId==='runner'){
+    var accepted=coopCleanAvatar(own.avatar);
+    if(accepted&&accepted.world===worldLevel())Object.assign(P,{x:accepted.x,y:accepted.y,vx:accepted.vx,vy:accepted.vy,grounded:accepted.grounded,st:accepted.st,pounce:wrestlerState(own).stompPhase===1||wrestlerState(own).stompPhase===2?wrestlerState(own).stompPhase:0,platform:playerSupportId(accepted.x,accepted.y)});
+    P.rattusMotionObserved=P.rattusCancelledCasts=null;
+    var latch=P.rattusLatchInput,drive=P.rattusDriveInput;
+    if(latch&&(latch.phase==='release'||latch.phase==='cancel')){rattusLatchReleaseWorld(latch.startTag,latch.phase==='cancel');own.secondaryTag=Math.max(own.secondaryTag||0,latch.tag||0);}
+    if(drive&&(drive.phase==='release'||drive.phase==='cancel')){
+      if(drive.phase==='release'&&Number.isFinite(drive.aimX)&&Number.isFinite(drive.aimY)&&Math.hypot(drive.aimX-P.x,drive.aimY-P.y)<=300)rattusDrivingReleaseWorld({x:drive.aimX,y:drive.aimY},drive.startTag,now);
+      else rattusDrivingCancelWorld(drive.startTag);
+      own.utilityTag=Math.max(own.utilityTag||0,drive.tag||0);
+    }
+    P.rattusLatchInput=P.rattusDriveInput=P.rattusStompInput=null;
+  }
   coop.ui='';coopShowChoices();
 }
 function coopDepart(id){if(coop&&coop.host&&id!==coop.me){delete coop.members[id];classShots=classShots.filter(function(q){return q.owner!==id;});classFighters=classFighters.filter(function(q){return q.owner!==id;});}}
@@ -58,7 +74,7 @@ function coopWithMember(m,fn){
   var oldP=P,oldClass=rogueRun.classId,oldPerks=rogueRun.perks,oldTraits=rogueRun.traits,oldTask=task,oldWater=holdWater,oldCool=bombCool,oldActor=coopActor,oldClimb=climb,oldWarp=warp;
   if(!coopActor)coop.members[coop.me].avatar=coopAvatar();
   try{
-    P=Object.assign({},oldP,m.avatar,{st:['polge','mech'].indexOf(m.classId)>=0&&m.avatar.st==='float'?'float':'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,dodgeCool:0,secondaryCool:0,utilityCool:0,mechWindup:0,mechFanT:0,throwPose:0,brace:0,pounce:0,skillCool:0,skillPose:0,
+    P=Object.assign({},oldP,m.avatar,{st:m.classId==='runner'?m.avatar.st:['polge','mech'].indexOf(m.classId)>=0&&m.avatar.st==='float'?'float':'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,dodgeCool:0,secondaryCool:0,utilityCool:0,mechWindup:0,mechFanT:0,rattusLatchInput:null,rattusDriveInput:null,rattusStompInput:null,rattusMotionObserved:null,rattusCancelledCasts:null,throwPose:0,brace:0,pounce:m.classId==='runner'&&m.wrestler&&m.wrestler.stompWorld===worldLevel()&&(m.wrestler.stompPhase===1||m.wrestler.stompPhase===2)?m.wrestler.stompPhase:0,skillCool:0,skillPose:0,
       tun:curledMember(m,m.avatar)?(m.tunUntil-performance.now())/1000:0,tunX:m.tunX||0});
     P.platform=playerSupportId(P.x,P.y);P.wet=playerWetAt(P.x,P.y);
     P.grounded=!!P.grounded&&coopSupportY(P.x,P.y)!==null&&!P.wet;
@@ -66,9 +82,80 @@ function coopWithMember(m,fn){
     return fn();
   }finally{m.cool=performance.now()+Math.max(0,bombCool)*1000;P=oldP;rogueRun.classId=oldClass;rogueRun.perks=oldPerks;rogueRun.traits=oldTraits;task=oldTask;holdWater=oldWater;bombCool=oldCool;coopActor=oldActor;climb=oldClimb;warp=oldWarp;}
 }
+// Runner motion is a host accepted cast, not a pounce/velocity claim in an avatar.
+function coopRunnerKind(m){var q=wrestlerState(m),world=worldLevel();return q.drivePhase===2&&q.driveWorld===world?'drive':q.stompPhase>0&&q.stompPhase<3&&q.stompWorld===world?'stomp':q.latchPhase&&q.latchWorld===world&&!q.latchLight?'latch':'walk';}
+function coopRunnerCorrect(m,avatar,reason){
+  var a=coopCleanAvatar(avatar||m.avatar);if(!a||a.world!==worldLevel())return false;
+  a.classId=m.classId;a.skin=m.skin;m.avatar=a;
+  var serial=Math.min(1e9,(m.runnerCorrection&&m.runnerCorrection.serial||0)+1);
+  m.runnerCorrection={serial:serial,world:a.world,x:a.x,y:a.y,vx:a.vx,vy:a.vy,grounded:a.grounded,st:a.st};
+  m.runnerObserved=reason==='accepted-cast'?{world:worldLevel(),clock:performance.now()}:null;return true;
+}
+function coopRunnerCleanCorrection(raw){
+  if(!raw||!Number.isSafeInteger(raw.serial)||raw.serial<=0||raw.serial>1e9||raw.world!==worldLevel()||!['x','y','vx','vy'].every(function(k){return Number.isFinite(raw[k])&&Math.abs(raw[k])<1e7;})||Math.abs(raw.vx)>180||Math.abs(raw.vy)>500)return null;
+  return {serial:raw.serial,world:raw.world,x:raw.x,y:raw.y,vx:raw.vx,vy:raw.vy,grounded:!!raw.grounded,st:['free','float','climb','ladder'].indexOf(raw.st)>=0?raw.st:'free'};
+}
+function coopRunnerSweep(before,after){
+  var layout=stageLayout(),steps=Math.max(1,Math.ceil(Math.hypot(after.x-before.x,after.y-before.y)/2)),previous=before;
+  for(var i=1;i<=steps;i++){
+    var next={x:before.x+(after.x-before.x)*i/steps,y:before.y+(after.y-before.y)*i/steps},hit=window.MaxStageLayout.solid(layout,previous.x,previous.y,next.x,next.y);
+    if(hit&&(Math.abs(hit.x-next.x)>.6||Math.abs(hit.y-next.y)>.6))return false;
+    previous=next;
+  }
+  return true;
+}
+function coopRunnerValidate(m,a,now){
+  rattusRefreshMotion(m,now);
+  if(rattusWetBody(m.avatar,m))rattusCancelMotion(m,'water');
+  var q=wrestlerState(m),kind=coopRunnerKind(m),before=m.avatar,policy=rattusPhasePolicy(m),distance=Math.hypot(a.x-before.x,a.y-before.y);
+  if(policy.lockLadder&&(a.st==='climb'||a.st==='ladder'||a.exitClimb))return false;
+  if(kind==='walk')return true;
+  if(a.st!=='free'||!coopRunnerSweep(before,a))return false;
+  var floor=highTideMode()?rogueRun.survival.base+110:surfaceY(a.x),crossed=a.y>=before.y?window.MaxStageLayout.landing(stageLayout(),before.x,before.y,a.x,a.y):null;
+  if(a.y>floor+1||crossed&&a.y>crossed.y+1)return false;
+  var intent=rattusMotionIntent(m,0);
+  if(!intent||intent.kind==='none'||intent.world!==worldLevel())return false;
+  if(kind==='latch'||kind==='drive'){
+    var travel=kind==='latch'?q.latchTravel:q.driveTravel,age=kind==='latch'?q.latchAge:q.driveAge,limit=kind==='latch'?96:q.driveLimit;
+    if(travel+distance>Math.min(limit,180*age+1)+1e-6)return false;
+    var elapsed=Math.max(0,Math.min(.5,(now-(m.runnerObserved&&m.runnerObserved.clock||m.last))/1000));
+    if(distance>180*elapsed+1e-6)return false;
+    if(distance>.01){var dot=(a.x-before.x)*intent.vx+(a.y-before.y)*intent.vy,clippedFloor=intent.vy>0&&a.grounded&&Math.abs(a.y-before.y)<1&&coopSupportY(a.x,a.y)!==null;if(dot<-.01||!clippedFloor&&Math.abs((a.x-before.x)*intent.vy-(a.y-before.y)*intent.vx)>distance*180*.35+1)return false;}
+  }else{
+    var up=Math.max(0,before.y-a.y),age=q.stompAge,peak=Math.min(age,Math.max(0,-q.stompLaunchVY/GRAV)),rise=Math.min(q.stompRiseLimit,Math.max(0,-q.stompLaunchVY*peak-.5*GRAV*peak*peak));
+    if(q.stompAirStart&&up>.01||q.stompPhase===2&&up>.5||q.stompRiseUsed+up>Math.min(q.stompRiseLimit,rise+1)+1e-6||a.y<q.stompOriginY-rise-1||a.y-q.apexY>500*age+1||Math.abs(a.x-q.stompOriginX)>180*age+1)return false;
+    var launch=q.stompAirStart?320:q.stompLaunchVY,terminal=Math.max(0,(340-launch)/GRAV),flight=Math.min(age,terminal),trajectory=q.stompOriginY+launch*flight+.5*GRAV*flight*flight+340*Math.max(0,age-terminal),support=coopSupportY(a.x,a.y);
+    // A correction can resume an already accepted descent later than its launch
+    // clock. Its real next segment must not be rewound to the old global curve.
+    if(q.stompPhase===1&&(support===null||Math.abs(a.y-support)>.5)&&a.y<Math.min(floor,trajectory)-2)return false;
+    var elapsed=Math.max(0,(now-(m.runnerObserved&&m.runnerObserved.clock||m.last))/1000);
+    if(Math.abs(a.y-before.y)>500*elapsed+1||Math.abs(a.x-before.x)>180*elapsed+1)return false;
+  }
+  return true;
+}
+function coopRunnerObserve(m,before,after,now){
+  var kind=coopRunnerKind(m),q=wrestlerState(m),serial=kind==='latch'?q.latchSerial:kind==='drive'?q.driveSerial:kind==='stomp'?q.stompSerial:0;
+  var previous=m.runnerObserved,dt=previous&&previous.world===worldLevel()?Math.max(0,Math.min(.5,(now-previous.clock)/1000)):kind!=='walk'?Math.max(0,Math.min(.5,(now-m.last)/1000)):0;
+  m.runnerObserved={world:worldLevel(),clock:now};
+  var distance=Math.hypot(after.x-before.x,after.y-before.y),sprint=kind==='walk'&&!m.dodge&&after.st==='free'&&after.grounded&&!after.wet&&dt>0&&distance<=180*dt+.25&&Math.abs(after.x-before.x)/dt>.8*RUN_V*window.MaxClasses.get(m.classId).speed*(1+.06*(m.perks.stride||0));
+  // The accepted cast and its validated real segment retain contact authority
+  // after a rejected packet resets observation. Ordinary placement/walk does not.
+  var context={source:'network',kind:kind,world:worldLevel(),serial:serial,clock:now,sprinting:sprint,corrected:!previous&&kind==='walk',canContact:!!previous||kind!=='walk'&&dt>0,supportId:playerSupportId(after.x,after.y)};
+  var observedBefore=before,observedAfter=after;
+  if(kind==='stomp'){
+    observedBefore=Object.assign({},before,{grounded:Math.abs(before.y-playerSupportY(before.x,before.y))<=.5});
+    observedAfter=Object.assign({},after,{grounded:Math.abs(after.y-playerSupportY(after.x,after.y))<=.5});
+  }
+  coopWithMember(m,function(){rattusMovement(m,observedBefore,observedAfter,dt,context);
+    if(kind==='stomp'&&!observedBefore.grounded&&observedAfter.grounded&&after.y>=before.y&&coopSupportY(after.x,after.y)!==null){
+      var platform=window.MaxStageLayout.landing(stageLayout(),before.x,before.y,after.x,after.y),floor=highTideMode()?rogueRun.survival.base+110:surfaceY(after.x),landing=platform&&platform.y<floor?platform:{id:null,y:floor};
+      if(Math.abs(after.y-landing.y)<=1&&rattusLanding(m,landing,observedBefore,observedAfter,Object.assign({},context,{landing:true}))){m.avatar.pounce=0;m.avatar.grounded=true;m.avatar.vy=0;coopRunnerCorrect(m,m.avatar,'accepted-cast');}
+    }
+  });
+}
 function coopInput(id,packet){
   if(!coop||!coop.host)return;var m=coop.members[id];if(!m||m.left&&!coopJoin(id,m))return;
-  var a=coopCleanAvatar(packet.avatar),now=performance.now(),accepted=false;
+  var a=coopCleanAvatar(packet.avatar),now=performance.now(),accepted=false,before=m.avatar;
   if(a){a.classId=m.classId;a.skin=m.skin;if(m.classId!=='runner')a.pounce=0;}
   if(a&&m.classId==='mech'){
     var planted=engineerState(m);
@@ -92,14 +179,18 @@ function coopInput(id,packet){
   }
   if(a&&a.world===worldLevel()){
     var elapsed=Math.min(.5,Math.max(.066,(now-m.last)/1000));
-    if(m.trust||Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24){
-      if(nightRelayMode())relayConstrain(a);a.wet=playerWetAt(a.x,a.y);a.grounded=a.grounded&&coopSupportY(a.x,a.y)!==null&&!a.wet;
+    var runnerValid=m.classId!=='runner'||coopRunnerValidate(m,a,now);
+    if(runnerValid&&(m.trust||Math.abs(a.x-m.avatar.x)<180*elapsed+18&&Math.abs(a.y-m.avatar.y)<500*elapsed+24)){
+      if(nightRelayMode())relayConstrain(a);a.wet=playerWetAt(a.x,a.y);if(m.classId==='runner')a.wet=rattusWetBody(a,m);a.grounded=a.grounded&&coopSupportY(a.x,a.y)!==null&&!a.wet;
+      if(m.classId==='runner'&&m.trust)m.runnerObserved=null;
       m.avatar=a;m.reviveHeld=!!a.reviveHeld;m.trust=false;accepted=true;
+      if(m.classId==='runner'){if(a.wet){rattusCancelMotion(m,'water');coopRunnerCorrect(m,m.avatar,'accepted-cast');}else coopRunnerObserve(m,before,a,now);}
       if(!a.grounded||a.st==='climb'){m.airTop=m.airTop==null?a.y:Math.min(m.airTop,a.y);m.landAt=0;}
       else{if(!m.landAt)m.landAt=now;if(now-m.landAt>800)m.airTop=null;}
       if(m.braceUntil&&(!a.bracing||!a.grounded||a.wet||Math.abs(a.x-m.braceX)>6))m.braceUntil=0;
       if(m.tunUntil&&(!a.curled||!a.grounded||a.wet||Math.abs(a.x-m.tunX)>6)){if(now<m.tunUntil)m.skillUntil=Math.min(m.skillUntil||0,now+window.MaxClasses.get(m.classId).skillCd*1000);m.tunUntil=0;}
     }
+    else if(m.classId==='runner')coopRunnerCorrect(m,m.avatar,'rejected-path');
     m.last=now;
   }
   if(!Array.isArray(packet.actions)||packet.actions.length>16)return;
@@ -107,6 +198,11 @@ function coopInput(id,packet){
     if(action&&m.ack==null&&Number.isSafeInteger(action.id)&&action.id>0)m.ack=action.id-1;
     if(!action||action.id!==m.ack+1)return;m.ack=action.id;
     var mechTag=m.classId==='mech'&&({throw:'attackTag',secondary:'secondaryTag',utility:'utilityTag',skill:'skillTag'})[action.type];
+    var runnerTag=m.classId==='runner'&&({throw:'attackTag',secondary:'secondaryTag',utility:'utilityTag',skill:'skillTag'})[action.type];
+    if(runnerTag){
+      if(!Number.isSafeInteger(action[runnerTag])||action[runnerTag]<=0||action[runnerTag]>1e9||action[runnerTag]<=(m[runnerTag]||0))return;
+      m[runnerTag]=action[runnerTag];
+    }
     if(mechTag&&!(action.type==='throw'&&action.attackTag==null)){
       if(!Number.isSafeInteger(action[mechTag])||action[mechTag]<=0||action[mechTag]<=(m[mechTag]||0))return;
       m[mechTag]=action[mechTag];
@@ -151,7 +247,17 @@ function coopInput(id,packet){
       if(seed&&Math.abs(seed.x-actor.x)<14&&Math.abs(seed.y-(actor.y-6))<26)collectSeed(seed);
       return;
     }
-    if(action.type==='throw'&&m.classId==='runner'&&m.avatar.pounce>0)return;
+    if(m.classId==='runner'){
+      var runnerPolicy=rattusPhasePolicy(m),lifecycle=(action.type==='secondary'||action.type==='utility')&&(action.phase==='release'||action.phase==='cancel');
+      if(runnerTag&&(!lifecycle&&!accepted||m.avatar.st==='float'||m.avatar.exitClimb||action.world!==worldLevel()))return;
+      if(action.type==='throw'&&runnerPolicy.lockPrimary||action.type==='dodge'&&runnerPolicy.lockDodge||['grow','refill','encounter'].indexOf(action.type)>=0&&runnerPolicy.lockTend)return;
+      if(action.type==='secondary'&&action.phase==='start'&&runnerPolicy.lockLatch||action.type==='utility'&&action.phase==='start'&&runnerPolicy.lockDriveStart||action.type==='skill'&&runnerPolicy.lockStomp)return;
+      if(['secondary','utility','skill'].indexOf(action.type)>=0){
+        if(['start','release','cancel'].indexOf(action.phase)<0||action.type==='skill'&&action.phase!=='start')return;
+        if(lifecycle&&(!Number.isSafeInteger(action.startTag)||action.startTag<=0||action.startTag>1e9))return;
+        if((!lifecycle||action.type==='utility'&&action.phase==='release')&&(!Number.isFinite(action.x)||!Number.isFinite(action.y)||Math.hypot(action.x-m.avatar.x,action.y-m.avatar.y)>(action.type==='skill'?36:300)))return;
+      }
+    }
     if(m.classId==='mech'&&action.type==='dodge'&&engineerState(m).overloadWindup>0)return;
     if(mechTag&&(!accepted||m.avatar.st==='float'||m.avatar.exitClimb||action.type!=='throw'&&m.avatar.st==='climb'||action.type!=='throw'&&action.world!==worldLevel()))return;
     if(m.classId==='polge'){
@@ -163,7 +269,14 @@ function coopInput(id,packet){
       }
     }
     coopWithMember(m,function(){
-      if(action.type==='grow')crouchGardenAction();
+      if(m.classId==='runner'&&['secondary','utility','skill'].indexOf(action.type)>=0){
+        var changed=false;
+        if(action.type==='secondary')changed=action.phase==='start'?rattusLatchStartWorld({x:action.x,y:action.y},action.secondaryTag):rattusLatchReleaseWorld(action.startTag,action.phase==='cancel');
+        else if(action.type==='utility')changed=action.phase==='start'?rattusDrivingStartWorld({x:action.x,y:action.y},action.utilityTag,now):action.phase==='release'?rattusDrivingReleaseWorld({x:action.x,y:action.y},action.startTag,now):rattusDrivingCancelWorld(action.startTag);
+        else changed=rattusStompWorld(action.skillTag);
+        if(changed){m.skillUntil=now+wrestlerState(m).specialCool*1000;if(action.phase!=='start'||action.type==='skill')coopRunnerCorrect(m,m.avatar,'accepted-cast');else m.runnerObserved={world:worldLevel(),clock:now};}
+      }
+      else if(action.type==='grow')crouchGardenAction();
       else if(action.type==='encounter')interactEncounter();
       else if(action.type==='refill')refillCompanion();
       else if(action.type==='throw'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<300){
@@ -289,10 +402,11 @@ function coopRobot(state,m,slot){
   return out;
 }
 function coopCapture(){
-  var members=coopMembers().map(function(m){var engineer=m.classId==='mech'?mechCaptureEngineer(engineerState(m)):null;return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,airTop:m.id===coop.me&&P.pounce?Math.min(P.y,P.pounce===2?P.pounceY:P.y):m.airTop,landAgo:m.landAt?Math.min(1,(performance.now()-m.landAt)/1000):null,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,secondaryTag:m.secondaryTag||0,utilityTag:m.utilityTag||0,engineer:engineer,dodgeTag:m.id===coop.me?(P.dodgeId||0):(m.dodgeTag||0),dodgePath:coopCaptureSlip(m),attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:engineer?engineer.specialCool:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
+  if(coop&&coop.host)coop.snapshotRevision=Math.min(1e9,(coop.snapshotRevision||0)+1);
+  var members=coopMembers().map(function(m){var engineer=m.classId==='mech'?mechCaptureEngineer(engineerState(m)):null,wrestler=m.classId==='runner'?rattusCaptureWrestler(wrestlerState(m)):null;return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,airTop:m.id===coop.me&&P.pounce?Math.min(P.y,P.pounce===2?P.pounceY:P.y):m.airTop,landAgo:m.landAt?Math.min(1,(performance.now()-m.landAt)/1000):null,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,secondaryTag:m.secondaryTag||0,utilityTag:m.utilityTag||0,engineer:engineer,wrestler:wrestler,runnerCorrection:m.classId==='runner'?coopRunnerCleanCorrection(m.runnerCorrection):null,dodgeTag:m.id===coop.me?(P.dodgeId||0):(m.dodgeTag||0),dodgePath:coopCaptureSlip(m),attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:engineer?engineer.specialCool:wrestler?wrestler.specialCool:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id,roverId:m.id+':'+bot.state.slot},coopPlain(bot.state),{targetId:bot.state.target&&bot.state.target.id||bot.state.targetId||0,refillerId:bot.refiller||bot.state.refillerId||''}));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
-  return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
+  return {revision:coop&&coop.snapshotRevision||0,mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
     secrets:coopPlain(secrets),yeet:coopPlain(yeet),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
     difficulty:rogueRun.difficulty,seed:rogueRun.seed,ascender:rogueRun.ascenderId||'',ended:rogueRun.ended,won:runWon,cleared:rogueRun.clearedWorld||0,bossDefeated:!!rogueRun.bossDefeated,
     expedition:runExpedition?coopPlain(runExpedition):null,bossEvent:bossEvent?coopPlain(bossEvent):null,
@@ -305,7 +419,11 @@ function coopCapture(){
 function coopState(s){
   if(!coop||coop.host||!s||!Number.isInteger(s.world)||s.world<1||s.world>RUN_STAGES||!Array.isArray(s.members)||s.members.length>4)return;
   if(!['plants','garden','seedsOnGround','pests','bombs','birds','fauna'].every(function(k){return Array.isArray(s[k])&&s[k].length<=(k==='garden'?20000:200)&&s[k].every(function(o){return o&&typeof o==='object';});}))return;
+  var revision=Number.isSafeInteger(s.revision)&&s.revision>=0&&s.revision<=1e9?s.revision:null;
+  if(revision!==null&&revision<(coop.snapshotRevision||0))return;
+  if(s.members.some(function(q){var m=q&&coop.members[q.id],known=m&&m.runnerAckTags;return known&&m.classId==='runner'&&window.MaxClasses.clean(q.classId)==='runner'&&['attackTag','secondaryTag','utilityTag','skillTag'].some(function(k){return !Number.isSafeInteger(q[k])||q[k]<(known[k]||0)||q[k]>1e9;});}))return;
   if(s.mode&&s.mode!==rogueRun.mode)return;
+  if(revision!==null)coop.snapshotRevision=revision;
   if(relicRunMode()&&s.survival){rogueRun.survival=coopPlain(s.survival);gardenRaidActive=lastSeedMode()&&!!s.survival.active;gardenRaidT=lastSeedMode()?s.survival.rest:0;}
   var previousSeed=rogueRun.seed,previousCleared=rogueRun.clearedWorld;
   if(Number.isInteger(s.seed))rogueRun.seed=s.seed>>>0;
@@ -336,13 +454,13 @@ function coopState(s){
   if(previousWorld===s.world&&(!s.ended||s.won)&&window.MaxNativeArt){
     floatKrek.forEach(function(k){if((k.boss||isRat(k))&&!s.pests.some(function(q){return q.kind===k.kind&&q.bossId===k.bossId&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
   }
-  floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(Array.isArray(k.nodes))out.nodes=k.nodes.slice(0,6).filter(function(n){return n&&Number.isFinite(n.x)&&Number.isFinite(n.y)&&Number.isFinite(n.hp);}).map(coopPlain);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});out.attackTarget=gardenPlots.find(function(p){return p.id===k.attackTargetId&&!p.dead;});out.mechWet=Number.isFinite(k.mechWet)?Math.max(0,Math.min(2,k.mechWet)):0;out.mechWetBonus=out.mechWet>0&&k.mechWetBonus===1?1:0;out.mechFanWetEvent=Number.isSafeInteger(k.mechFanWetEvent)&&k.mechFanWetEvent>=0&&k.mechFanWetEvent<=1e9?k.mechFanWetEvent:0;return out;});
+  floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(Array.isArray(k.nodes))out.nodes=k.nodes.slice(0,6).filter(function(n){return n&&Number.isFinite(n.x)&&Number.isFinite(n.y)&&Number.isFinite(n.hp);}).map(coopPlain);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});out.attackTarget=gardenPlots.find(function(p){return p.id===k.attackTargetId&&!p.dead;});out.mechWet=Number.isFinite(k.mechWet)?Math.max(0,Math.min(2,k.mechWet)):0;out.mechWetBonus=out.mechWet>0&&k.mechWetBonus===1?1:0;['rattusDriveEvent','rattusStompEvent','rattusFollowupEvent'].forEach(function(field){out[field]=Number.isSafeInteger(k[field])&&k[field]>=0&&k[field]<=1e9?k[field]:0;});out.mechFanWetEvent=Number.isSafeInteger(k.mechFanWetEvent)&&k.mechFanWetEvent>=0&&k.mechFanWetEvent<=1e9?k.mechFanWetEvent:0;return out;});
   bombs=s.bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});});crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
   worldWeather=coopPlain(s.weather||{});gardenStats=coopPlain(s.stats||{});gardenSeeds=s.seeds;gardenScore=s.score;gardenWave=s.wave;runElapsed=s.elapsed;tSec=s.time;
   if(Array.isArray(s.effects)&&s.effects.length<=30){
     s.effects.forEach(function(e){if(e.id>coopFxId){coopFxId=e.id;var d=Math.hypot(e.x-P.x,e.y-(P.y-10));if(e.strike){if((!Number.isFinite(e.t)||e.t<.3)&&typeof classStrikeCue==='function')classStrikeCue(e.strike,d,e.combo);}else if(e.cue){if(e.owner!==coop.me)skillCue(e.cue,d);}else if(!e.poof&&!e.ring&&(!Number.isFinite(e.t)||e.t<.4)){sfx('boom',d);blastFeedback(e);}}});booms=s.effects.map(coopPlain);
   }
-  var ids=[],placed=null;
+  var ids=[],placed=null,runnerCorrected=null;
   s.members.forEach(function(q){
     if(typeof q.id!=='string'||!/^[0-9a-f-]{36}$/.test(q.id)||q.slot<1||q.slot>4)return;
     if(!coop.members[q.id])coop.members[q.id]=coopMember(q.id,q.slot,q,{});
@@ -353,11 +471,12 @@ function coopState(s){
     if(q.id===coop.me)Object.keys(traits).forEach(function(type){if(traits[type]>(m.traits&&m.traits[type]||0))traitNotice(type,traits[type]);});
     m.traits=traits;applySligo(m,q);
     if(relicRunMode()&&q.vital){var wasDown=seedVital(m).hp<=0;m.vital=seedVitalFrom(q.vital);if(q.id===coop.me&&wasDown&&m.vital.hp>0){P.st='free';setAnim('idle');}if(q.id===coop.me&&m.vital.hp<=0){P.x=a.x;P.y=a.y;}}
-    if(Number.isSafeInteger(q.attackTag))m.attackTag=q.attackTag;
-    if(Number.isSafeInteger(q.skillTag))m.skillTag=q.skillTag;
-    if(Number.isSafeInteger(q.secondaryTag)&&q.secondaryTag>=0)m.secondaryTag=q.secondaryTag;
-    if(Number.isSafeInteger(q.utilityTag)&&q.utilityTag>=0)m.utilityTag=q.utilityTag;
+    if(Number.isSafeInteger(q.attackTag)&&q.attackTag>=0&&q.attackTag<=1e9)m.attackTag=q.attackTag;
+    if(Number.isSafeInteger(q.skillTag)&&q.skillTag>=0&&q.skillTag<=1e9)m.skillTag=q.skillTag;
+    if(Number.isSafeInteger(q.secondaryTag)&&q.secondaryTag>=0&&q.secondaryTag<=1e9)m.secondaryTag=q.secondaryTag;
+    if(Number.isSafeInteger(q.utilityTag)&&q.utilityTag>=0&&q.utilityTag<=1e9)m.utilityTag=q.utilityTag;
     if(m.classId==='mech')m.engineer=mechRestoreEngineer(q.engineer,m);
+    if(m.classId==='runner'){m.runnerAckTags={attackTag:m.attackTag||0,secondaryTag:m.secondaryTag||0,utilityTag:m.utilityTag||0,skillTag:m.skillTag||0};m.wrestler=rattusRestoreWrestler(q.wrestler,m);rattusRebaseHold(m);rattusRebaseMotion(m);}
     if(Number.isSafeInteger(q.dodgeTag)&&q.dodgeTag>=0)m.dodgeTag=q.dodgeTag;
     if(Number.isFinite(q.skillLeft))m.skillUntil=performance.now()+Math.max(0,Math.min(30,q.skillLeft))*1000;
     if(Number.isFinite(q.attackLeft))m.cool=performance.now()+Math.max(0,Math.min(5,q.attackLeft))*1000;
@@ -387,6 +506,18 @@ function coopState(s){
         }
       }
     }
+    if(m.classId==='runner'){
+      var wrestler=m.wrestler;m.skillUntil=performance.now()+wrestler.specialCool*1000;
+      var correction=coopRunnerCleanCorrection(q.runnerCorrection),oldCorrection=m.runnerCorrection&&m.runnerCorrection.serial||0;
+      if(correction&&correction.serial>=oldCorrection){m.runnerCorrection=correction;if(q.id===coop.me&&correction.serial>oldCorrection)runnerCorrected=correction;}
+      m.avatar=a;
+      if(q.id===coop.me){
+        ['attackTag','secondaryTag','utilityTag','skillTag'].forEach(function(k){P[k]=Math.max(P[k]||0,m[k]||0);});
+        if(q.secondaryTag===(P.secondaryTag||0)){P.secondaryCool=Math.min(P.secondaryCool||0,wrestler.latchCool);if(P.rattusLatchInput&&P.rattusLatchInput.tag<=q.secondaryTag)P.rattusLatchInput=null;}
+        if(q.utilityTag===(P.utilityTag||0)){P.utilityCool=Math.min(P.utilityCool||0,wrestler.utilityCool);if(P.rattusDriveInput&&P.rattusDriveInput.tag<=q.utilityTag)P.rattusDriveInput=null;}
+        if(q.skillTag===(P.skillTag||0)){P.skillCool=Math.min(P.skillCool||0,wrestler.specialCool);if(P.rattusStompInput&&P.rattusStompInput.tag<=q.skillTag)P.rattusStompInput=null;}
+      }
+    }
     if(q.id!==coop.me){m.avatar=a;m.place=q.place|0;}
     else if((q.place|0)!==(m.place|0)){m.place=q.place|0;placed=a;}
     else if(P.brace>0&&q.braceTag===P.braceTag)P.brace=Math.min(P.brace,Math.max(0,+q.braceLeft||0));
@@ -414,6 +545,7 @@ function coopState(s){
     started=false;
   }
   if(placed){task=climb=warp=holdWater=null;Object.assign(P,{x:placed.x,y:placed.y,vx:0,vy:0,st:'free',grounded:placed.grounded,platform:null});setAnim('idle');}
+  if(runnerCorrected&&!placed&&previousWorld===s.world){task=climb=warp=holdWater=null;var correctedStomp=wrestlerState(coop.members[coop.me]).stompPhase;Object.assign(P,{x:runnerCorrected.x,y:runnerCorrected.y,vx:runnerCorrected.vx,vy:runnerCorrected.vy,grounded:runnerCorrected.grounded,st:runnerCorrected.st,pounce:correctedStomp===1||correctedStomp===2?correctedStomp:0,platform:playerSupportId(runnerCorrected.x,runnerCorrected.y)});P.rattusMotionObserved=P.rattusCancelledCasts=null;coop.members[coop.me].runnerObserved=null;}
   var mine=coop.members[coop.me];rogueRun.classId=P.classId=mine.classId;rogueRun.skinId=P.skin=mine.skin;rogueRun.perks=mine.perks;rogueRun.traits=mine.traits;
   rogueRun.ended=!!s.ended;runWon=!!s.won;coopShowChoices();
   if(rogueRun.ended&&!wasEnded){finalizeRogueRun(runWon);clearRunInput();showRunResult();}
@@ -429,7 +561,8 @@ function drawCoopPlayers(dt){
     if(m.id===coop.me)return;var a=m.avatar;
     if(!m.draw||Math.hypot(a.x-m.draw.x,a.y-m.draw.y)>160)m.draw=Object.assign({},a);
     var x=m.draw.x+(a.x-m.draw.x)*Math.min(1,dt*18),y=m.draw.y+(a.y-m.draw.y)*Math.min(1,dt*18);
-    m.draw=Object.assign({},a,{x:x,y:y,evoKey:m.id});P=m.draw;drawPlayer();coopMarker(P,m.slot,false);
+    var nativeMotion={motionIdle:m.draw.motionIdle,motionSpeed:m.draw.motionSpeed,motionName:m.draw.motionName,motionTime:m.draw.motionTime};
+    m.draw=Object.assign({},a,m.classId==='runner'?nativeMotion:{},{x:x,y:y,evoKey:m.id});P=m.draw;if(m.classId==='runner'&&window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt,window.MaxClasses.get(m.classId).speed*(1+.06*(m.perks.stride||0))*(P.wet?.5:1),rattusMotionContext(m));drawPlayer();coopMarker(P,m.slot,false);
   });
   P=original;coopMarker(P,coop.members[coop.me].slot,true);
 }
