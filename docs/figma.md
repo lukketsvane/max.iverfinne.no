@@ -1,6 +1,9 @@
 # Figma: the source of runtime art
 
-The game's runtime PNG files live in one Figma file and are mirrored byte for byte in this repository.
+The established runtime PNG files live in one Figma file and are mirrored byte
+for byte in this repository. The explicitly authorized new Hollow Crown pack
+has a pinned local generated source while its Figma import is blocked; see
+the narrow exception below.
 
 - File: **max.iverfinne.no max fuglesprenger** (team cells.garden), <https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF>, key `TC0PHGMTCMR6im4hb3CSbF`.
 - Link: `assets/figma-manifest.json` (generated), `scripts/figma-sync.mjs` (the tool), `tests/figma-assets.test.cjs` (offline guard).
@@ -78,7 +81,24 @@ The configured runtime sections are now the editable native masters for every ru
 
 The one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active.
 
-All new runtime art must be in the Figma production frame before it can pass the offline tests. There is no pending-art exception.
+New runtime art normally enters the Figma production frame before it passes
+the offline tests. The user explicitly requested generated sprite sheets and
+a fully implemented Hollow Crown on 3 October 2026 while the connector required
+reauthentication. That instruction authorizes **only**
+`assets/crown-ascendant-v1/boss.png`, `effects.png` and `chimera.png` to use a local generated
+source pending import. All existing Figma production entries and image hashes
+remain unchanged.
+
+This is not a general pending-art bypass. `scripts/generated-art-contract.mjs`
+restricts the exception to those three exact paths and verifies immutable original
+source hashes, native export SHA-1/SHA-256, atlas/recipe/source-map pins, 192 frame rectangles,
+fixed anchors, measured opaque bounds, pack palette, binary alpha, clean
+transparency and native scale. `provenance.json` states `origin: local-generated`
+and `figma.status: pending-import`, with no invented Figma layer IDs. A passing
+offline test does not claim a Figma MATCH for this pack. The prepared
+`docs/asset-review/crown-ascendant-v1/import.use-figma.js` imports the exact bytes
+into `451:4` after reconnection; a fresh authenticated capture and the ordinary
+sync workflow are still needed to promote it to a Figma production source.
 
 ## Tools
 

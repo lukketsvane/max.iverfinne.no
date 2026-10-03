@@ -120,6 +120,14 @@ Bosses telegraph attacks in amber and expose themselves in cyan for double damag
 | 16–19 | Kiln Beetle, Ash Ferryman, Compost Choir, Seed Engine |
 | 20 | Hollow Crown |
 
+Hollow Crown is a large native bone-armored king with a massive maul. Its four
+acts follow the final-boss rhythm of Risk of Rain 2: a maul duel, a lunar
+reinforcement and seal interlude, an empowered return with shockwaves and tall
+energy lanes, then a wounded, weaponless last stand with needles and returning
+orbs. Breaking the final cores weakens its temporary power; player upgrades
+remain intact. Body, hazards, phase instructions and the nearby gardener stay
+readable on phones. See [the encounter design](docs/design/hollow-crown.md).
+
 Cyan begins after the guardian's entire volley has landed and cleared. Every guardian gives enough time to react and plant a two-second bomb: 3.2 seconds on Easy, 2.75 on Medium, 2.5 on Hard and 2.35 on Insane. Moon Moth and Hollow Crown descend within ground-bomb reach during recovery. Solving a boss's special objective grants a longer opening; enrage shortens the gap before the next attack without taking that opening away.
 
 Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts do not stack the shake. Planted bombs show their actual upgraded reach, and a short input buffer accepts an attack released just before a reload or bomb slot becomes ready.
@@ -296,6 +304,14 @@ Runtime art is native-resolution pixel art.
 - Do not replace existing runtime art with generated presentation-board imagery.
 
 See `assets/` and the relevant pack READMEs before changing sprite registration.
+
+The user-requested Hollow Crown Ascendant pack adds a tall native bone-armored
+king and a separate wounded, weaponless form. Its 128×96 cells preserve the
+maul arcs at native body scale; they are not enlarged in game. Original generated
+sources, reproducible import recipe and pinned exports accompany the pack.
+Figma import is pending connector reauthentication, as explicitly recorded in
+[the art-source contract](docs/figma.md) and
+[the pack README](assets/crown-ascendant-v1/README.md).
 
 ## Handoff
 

@@ -1,0 +1,92 @@
+{
+  "format": "max-generated-art/v1",
+  "pack": "crown-ascendant-v1",
+  "origin": "local-generated",
+  "authorization": "User explicitly requested generated sprite sheets and a fully implemented final boss on 2026-10-03.",
+  "generator": "OpenAI imagegen",
+  "sourceFiles": [
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/main.png",
+      "sha256": "3b763c6d99b0f1c973bff64ef2935516cd1f37d694bd14aa2e631777f625a2ea",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+      "sha256": "57a426b812abaa8e85157543d85a4b316bb5d299df043792cecea879799c9048",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+      "sha256": "c4c954c2e784ea05924260afa6cf24e2c906c04751d998cf40a38f3658406eec",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+      "sha256": "be53fe4755fbf4d19b86dec03dc4b4e8ba875f67c77534eac79a04e13ca79310",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+      "sha256": "f5d76968e23f535a539646a24dd39ae71b7b5bcfb7e11d8c59ca36afe4a76644",
+      "width": 1214,
+      "height": 1295
+    }
+  ],
+  "outputs": [
+    {
+      "path": "assets/crown-ascendant-v1/boss.png",
+      "width": 768,
+      "height": 1728,
+      "sha1": "9385485338e13d0ac79164ad6e1d946dc924119c",
+      "sha256": "3811a9a1990c8530049200bd02d0ef83d91c0f2f4d6f093d6367fbd4369a2d84"
+    },
+    {
+      "path": "assets/crown-ascendant-v1/effects.png",
+      "width": 288,
+      "height": 288,
+      "sha1": "bba0440c147156392d816f9725eb1566a4226bf7",
+      "sha256": "7da93b9802ff7887a91f27b6f5428572ddcd68efb6970ace12050da493d84f1f"
+    },
+    {
+      "path": "assets/crown-ascendant-v1/chimera.png",
+      "width": 384,
+      "height": 384,
+      "sha1": "9c823d6147f1ee95cacf327135e82d5de531a72c",
+      "sha256": "f7c7808ae56e9301e6f436d98ec8cab7ef5791a0a834a87103381b1ea313bd7d"
+    }
+  ],
+  "atlas": {
+    "path": "assets/crown-ascendant-v1/atlas.json",
+    "sha256": "d5d8ae3e6fffbc58dd5b219e3ce24b8e7a597267885eb0784def5cce1d0014cb"
+  },
+  "recipe": {
+    "path": "docs/asset-review/crown-ascendant-v1/recipe.json",
+    "sha256": "d723fbcd6c10f6d03a1a2b58e1616d8d27096c3af22692ccf61a1f8bf1eeb179"
+  },
+  "frameSources": {
+    "path": "docs/asset-review/crown-ascendant-v1/frame-sources.json",
+    "sha256": "108604e4dadddc181051ad9fc52cce9c6e82df0091c9d736208726f95cd96ef5"
+  },
+  "importer": "scripts/build-crown-art.mjs",
+  "processing": [
+    "explicit frame crop extraction",
+    "connected sprite isolation where adjacent source rectangles overlap",
+    "fixed scale per source bank with explicit foot registration translations",
+    "nearest-neighbor sampling",
+    "alpha threshold 128",
+    "24-color palette quantization without dithering",
+    "zero RGB under transparent pixels",
+    "transparent final death cells"
+  ],
+  "figma": {
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "10:2",
+    "sectionId": "451:4",
+    "status": "pending-import",
+    "blocker": "Figma connector requires reauthentication; no remote node IDs or synchronization claim."
+  }
+}

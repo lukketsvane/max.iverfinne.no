@@ -27,6 +27,13 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 11. **Native pixel art only at runtime.** Preserve 1:1 pixels, integer registration, atlas anchors and no smoothing.
 12. **No resumable reload checkpoint.** Reload starts a new local attempt. Finished records can persist; PWA reconnect is a separate realtime behavior.
 
+The 3 October 2026 request explicitly authorizes generated Hollow Crown sprite
+sheets. `assets/crown-ascendant-v1/` has a narrow local-generated source contract
+while Figma requires reauthentication: three pinned PNGs, immutable source hashes,
+all 192 registered native frames and no remote synchronization claim. See its
+README and `docs/figma.md`. Preserve every established Figma production pin;
+other artwork still follows the normal Figma authoring workflow.
+
 ## Current multiplayer model
 
 `night-relay.inc.js` adds Night Relay, a public 2–4 player light heist. It uses
@@ -136,7 +143,7 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - The campaign starts in the deepest vaults and climbs toward sunrise. Gardens 1–17 stay underground; the first limited dawn breaches are high above the routes in 18–19. Garden 20 emerges into a radioactive hellscape for the Hollow Crown. Gardens 1 and 2 retain the authored Seed Vault and Railway Ruins; the other gardens use seeded or live Figma geometry.
 - Generated gardens draw their ledges and rock from the Sanctuary tile atlas: `tiles.js` and `assets/tiles-v1/` (built by [historical build-tiles.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-tiles.py) from `docs/asset-review/sanctuary-tiles-v1/`), passed to `MaxStageLayout.draw`; stone ledges are mossy strips with flora, branch and root ledges are planks, ruin ledges are lintels, rock is nine-sliced. Frost and ember gardens keep their baked snow and ember ledges (`MaxPlaces.ledgeArt`), and until the atlas loads the baked ledges stand in. Garden places and pictures keep their own art.
 - `campaign-atmosphere.inc.js` renders native cavern layers through Garden 19, even during partial image loading. Mineral haze differentiates underground chapters; only 18–19 have a bounded roof aperture. No outdoor moon, stars or exit-cloud effects appear before the surface. All existing PNG sources remain unchanged.
-- Garden 20 uses a stepped sunrise, the approved native ember ridge layers, green fallout motes and mineral fissures. Fallout is visual only. The final boss retains its tested mechanics, telegraphs and exposure windows. Legacy night/Sanctuary functions remain available outside the campaign renderer.
+- Garden 20 uses a stepped sunrise, the approved native ember ridge layers, green fallout motes and mineral fissures. Fallout is visual only. Its Hollow Crown now has four acts, a large armored maul silhouette, lunar adds and seals, empowered lanes and waves, and a wounded weaponless orb/needle stand. `hollow-crown.inc.js` owns flat replicated combat state; `hollow-crown-art.mjs` maps authoritative timers to the separate native body banks. Recovery still waits for every owned strike and preserves the planted-bomb exposure windows. High Tide keeps its separate guardian gate protocol. See `docs/design/hollow-crown.md`. Legacy night/Sanctuary functions remain available outside the campaign renderer.
 - A garden drawn in Figma replaces the generated one when its frame carries a `designed` instance: `stageLayout()` asks `MaxLevels.layout` (`levels.js`, data in `levels-data.js` from `npm run figma:levels`) before `MaxStageLayout.create`. A designed layout adds `designed`, `frame`, `spots` (dig, secret, puzzle and door are live, see Garden places; start is not read yet) and `decor`. Its routes and tiers come from the stage-layout reach rules. See `docs/design/figma-levels.md`.
 
 ## Garden places

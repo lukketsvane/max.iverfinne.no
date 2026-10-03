@@ -8,6 +8,7 @@ const { buildSync } = require('esbuild');
 const root = path.join(__dirname, '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-manifest.json'), 'utf8'));
 const sync = import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
+const generated = import(pathToFileURL(path.join(root, 'scripts/generated-art-contract.mjs')).href);
 const bytes = p => fs.readFileSync(path.join(root, p));
 const sha1 = b => crypto.createHash('sha1').update(b).digest('hex');
 const nodeId = /^\d+:\d+$/, hash = /^[0-9a-f]{40}$/;
@@ -120,11 +121,14 @@ test('every production entry is a posix path inside assets/ whose PNG equals the
   }
 });
 
-test('every PNG file the runtime loads or the build ships is known to Figma, so new runtime art cannot bypass it', async t => {
+test('runtime PNGs belong to Figma or the one explicitly authorized, source-pinned Crown pack', async t => {
   const { loaded, shipped } = await found(), unused = manifest.unused.map(e => e.path);
+  const { generatedArtEntries, generatedArtProblems } = await generated;
+  assert.deepEqual(generatedArtProblems(), [], 'local generated source/export/native contract');
+  const local = generatedArtEntries().map(entry => entry.path);
   assert.ok(loaded.length >= 20);
-  assert.deepEqual(loaded.filter(p => !production.includes(p)), [], 'runtime art without a Figma production layer (docs/figma.md)');
-  assert.deepEqual(shipped.filter(p => !production.includes(p) && !unused.includes(p)), [], 'shipped PNG unknown to Figma (docs/figma.md)');
+  assert.deepEqual(loaded.filter(p => !production.includes(p) && !local.includes(p)), [], 'runtime art without a Figma layer or the source-pinned Crown exception (docs/figma.md)');
+  assert.deepEqual(shipped.filter(p => !production.includes(p) && !unused.includes(p) && !local.includes(p)), [], 'shipped PNG has no art source contract (docs/figma.md)');
   const idle = production.filter(p => !loaded.includes(p));
   if (idle.length) t.diagnostic(`Figma production layers the runtime does not load: ${idle.join(', ')}`);
 });

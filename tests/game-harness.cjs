@@ -39,6 +39,8 @@ const functionNames = [
   'harvestGardenPlot', 'saveGarden',
   'frame', 'surfaceY', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel',
   'initRunStage', 'interactEncounter', 'updateEncounters', 'damagePest', 'makeHollowCrown', 'levelCleared',
+  'updateHollowCrown', 'crownEnterPhase', 'hollowCrownDamage', 'crownBeginAttack', 'crownWave', 'crownLaneVolley', 'crownOrbitVolley',
+  'guardianBlast', 'updateRunHazards', 'updateHazardContact', 'runHazardTouches', 'interactBossEvent', 'guardianRecovery', 'enemyDistance',
   'biteGarden',
   'stageLayout', 'pictureLayout', 'levelOriginX',
   'collectSeed',

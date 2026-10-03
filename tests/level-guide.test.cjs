@@ -41,6 +41,27 @@ test('cleared guide targets only a living physical exit and disappears outside n
   g.rogueRun.ended = false; g.runActive = false; assert.equal(g.levelGuideObjective(), null);
 });
 
+test('final encounter guide reveals the current act and a living nearby seal to late joiners', () => {
+  const { game: g } = setup();
+  g.rogueRun.world = 20; g.bossEvent = { stage: 20, status: 'active', courtX: 100, courtY: 0 };
+  g.P.x = 90;
+  const boss = { bossId: 'hollow-crown', guardianStage: 20, hp: 70, x: 120, y: -32, crownStage: 1, nodes: [] };
+  g.floatKrek = [boss];
+  assert.equal(g.levelGuideObjective().text, 'DEFEAT THE HOLLOW CROWN');
+  boss.crownStage = 2; boss.nodes = [{ x: 88, y: -9, hp: 0 }, { x: 70, y: -9, hp: 1 }, { x: 140, y: -9, hp: 1 }];
+  let q = g.levelGuideObjective();
+  assert.equal(q.text, 'BREAK THE CROWN SEALS'); assert.equal(q.label, 'SEAL'); assert.equal(q.target.x, 70);
+  assert.equal(boss.nodes[0].x, 88, 'local guidance cannot reorder the replicated objectives');
+  boss.crownStage = 3;
+  assert.match(g.levelGuideObjective().text, /DODGE PILLARS/);
+  boss.crownStage = 4;
+  assert.match(g.levelGuideObjective().text, /SHATTER CORES/);
+  boss.nodes.forEach(n => { n.hp = 0; });
+  assert.equal(g.levelGuideObjective().text, 'FINISH THE HOLLOW CROWN');
+  boss.hp = 0;
+  assert.equal(g.levelGuideObjective().text, 'DEFEAT THE GUARDIAN', 'a defeated body cannot leave an old act instruction');
+});
+
 test('objective and long district labels fit narrow phones at either viewport edge', () => {
   const { game: g } = setup();
   for (const width of [106, 130, 180, 320]) {

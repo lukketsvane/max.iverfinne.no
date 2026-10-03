@@ -1,5 +1,11 @@
 # Enemy roles and Hollow Crown
 
+The four small enemy roles in this pack remain active. On 3 October 2026 the
+final Crown adopted the larger four-act
+[Crown Ascendant pack](../crown-ascendant-v1/README.md). The 32×32, three-phase
+Crown sheet documented below is preserved unchanged as the previous source;
+its dimensions and registration do not constrain the new 128×96 native bank.
+
 Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Native transparent sprites for the roles implemented in `run-director.inc.js`.
 This pack is an art handoff, with no changes to collisions, attacks or balance.
