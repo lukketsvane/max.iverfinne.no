@@ -32,10 +32,10 @@ function tap(h, wx, wy, ms = 60) {
 test('tapping Max fires the class skill and never bombs his own feet', () => {
   for (const kit of classes.all) {
     const h = fresh(kit.id), g = h.game, p = plot({ id: 1, x: g.P.x + 10, health: .5, moisture: .3 }); g.gardenPlots = [p];
-    if (kit.id === 'mech') Object.assign(g.ensureCompanion().state, { x: g.P.x - 20, water: 1 });
+    if (kit.id === 'mech') { Object.assign(g.ensureCompanion().state, { x: g.P.x - 20, water: 1 }); g.engineerState().charge = 3; }
     tap(h, g.P.x, g.P.y - 3);
     assert.equal(g.bombs.length, 0, kit.id);
-    if (kit.id === 'mech') { assert.ok(g.companion.state.dispatchT > 0); assert.equal(g.P.skillCool, 8); }
+    if (kit.id === 'mech') { assert.equal(g.companion.state.dispatchT, 0); assert.equal(g.engineerState().charge, 0); assert.equal(g.engineerState().overloadWindup, .4); assert.equal(g.P.skillCool, 18); }
     if (kit.id === 'runner') assert.equal(g.P.pounce, 1);
     if (kit.id === 'bulwark') { assert.equal(g.P.brace, 3); assert.equal(g.P.skillCool, 10); }
     if (kit.id === 'herbalist') { assert.ok(Math.abs(p.health - .745) < 1e-9); assert.equal(g.P.skillCool, 12); }
@@ -74,7 +74,7 @@ test('a Mech guest dispatches its own rover through the host; other classes’ f
   const owner = host.coop.members[ids[1]], bot = host.ensureCompanion(owner), A = plot({ id: 1, x: owner.avatar.x + 60, health: .5 });
   host.gardenPlots = [A]; sync();
   assert.ok(players[1].game.companion);
-  assert.equal(players[1].game.useClassSkill(), true); assert.equal(players[1].game.P.skillCool, 8);
+  assert.equal(players[1].game.useClassUtility(), true); assert.equal(players[1].game.P.utilityCool, 8); assert.equal(players[1].game.P.skillCool, 0);
   send(1);
   assert.equal(bot.state.target, A); assert.equal(bot.state.water, .35); assert.equal(host.companion, null); assert.equal(host.rogueRun.classId, 'runner');
   const tank = host.coop.members[ids[2]];

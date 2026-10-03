@@ -503,7 +503,7 @@ function moveEnemyTo(k,x,y,dt,speed){
   var dx=x-k.x,dy=y-k.y,d=Math.hypot(dx,dy);k.face=dx<0?-1:1;
   if(d<3){k.vx=k.vy=0;return d;}
   var sp=speed*(1+raidPressure()*.035)*Math.pow(.86,(coop?coopTeamPerks():rogueRun.perks).slow||0)*(k.glue>0?.2:1);
-  k.vx+=(dx/d*sp-k.vx)*Math.min(1,dt*3);k.vy+=(dy/d*sp-k.vy)*Math.min(1,dt*3);k.x+=k.vx*dt;k.y+=k.vy*dt;return d;
+  k.vx+=(dx/d*sp-k.vx)*Math.min(1,dt*3);k.vy+=(dy/d*sp-k.vy)*Math.min(1,dt*3);var wet=mechWetFactor(k);k.x+=k.vx*dt*wet;k.y+=k.vy*dt*wet;return d;
 }
 function cancelPestDive(k){
   if(k.diveHazard){runHazards=runHazards.filter(function(h){return h.id!==k.diveHazard||h.tell<=0;});}
@@ -522,7 +522,7 @@ function updatePestDive(k,dt){
     return true;
   }
   if(k.divePhase===2){
-    var step=Math.min(dt,k.diveT);k.x+=k.vx*step;k.y+=k.vy*step;k.diveT=Math.max(0,k.diveT-dt);k.attackT=k.diveT;
+    var step=Math.min(dt,k.diveT),wet=mechWetFactor(k);k.x+=k.vx*step*wet;k.y+=k.vy*step*wet;k.diveT=Math.max(0,k.diveT-dt);k.attackT=k.diveT;
     if(!k.diveT){k.divePhase=0;k.diveCool=3.8;k.vx*=.2;k.vy=-12;k.bite=.65;}
     return true;
   }
@@ -547,7 +547,7 @@ function updateEnemyRole(k,dt){
   if(updatePestDive(k,dt))return true;
   if(k.kind===3){
     if(k.stolen){
-      k.face=k.escape||1;k.vx=k.face*36*(1+raidPressure()*.035);k.x+=k.vx*dt;
+      k.face=k.escape||1;k.vx=k.face*36*(1+raidPressure()*.035);k.x+=k.vx*dt*mechWetFactor(k);
       if(Math.abs(k.x-k.stoleAt)>260){floatKrek.splice(floatKrek.indexOf(k),1);}return true;
     }
     var seed=null,sd=180;seedPickups.forEach(function(q){var d=Math.hypot(q.x-k.x,q.y-k.y);if(!q.sky&&d<sd){sd=d;seed=q;}});
@@ -621,7 +621,7 @@ function updateEnemyRole(k,dt){
   }
   if(k.kind===11){
     if(k.chargeT>0){
-      var chargeStep=Math.min(dt,k.chargeT);k.x+=k.chargeV*chargeStep;k.y=surfaceY(k.x)-11;k.chargeT=Math.max(0,k.chargeT-dt);
+      var chargeStep=Math.min(dt,k.chargeT);k.x+=k.chargeV*chargeStep*mechWetFactor(k);k.y=surfaceY(k.x)-11;k.chargeT=Math.max(0,k.chargeT-dt);
       if(!k.chargeT){k.vx=0;k.bite=2.4;}return true;
     }
     var ramTarget=pickKrekTarget(k);if(!ramTarget)return false;
@@ -782,9 +782,11 @@ function updateBossCombat(k,dt,mode){
     if(crown)k.vx=k.vy=0;
     else if(k.pattern==='leap'){
       var f=1-k.attackT/k.attackDuration;
-      k.x=k.fromX+(k.landX-k.fromX)*f;k.y=surfaceY(k.x)-13-Math.sin(f*Math.PI)*48;
+      if(!Number.isFinite(k.attackMove))k.attackMove=Math.max(0,k.attackDuration-k.attackT-step);
+      k.attackMove=Math.min(k.attackDuration,k.attackMove+step*mechWetFactor(k));
+      k.x=k.fromX+(k.landX-k.fromX)*k.attackMove/k.attackDuration;k.y=surfaceY(k.x)-13-Math.sin(f*Math.PI)*48;
     }else if(k.pattern==='dash'||k.pattern==='charge'||k.bossId==='mossback'){
-      k.x=guardianAimX(k,k.x+k.chargeV*step);k.y=surfaceY(k.x)-(k.bossId==='mossback'?8:13);k.vx=k.chargeV;
+      k.x=guardianAimX(k,k.x+k.chargeV*step*mechWetFactor(k));k.y=surfaceY(k.x)-(k.bossId==='mossback'?8:13);k.vx=k.chargeV;
     }
     if(k.guardianStage&&moth)k.y+=(surfaceY(k.x)-13-k.y)*Math.min(1,step*12);
     if(!k.attackT){
@@ -804,7 +806,7 @@ function updateBossCombat(k,dt,mode){
           if(k.healing){healPest(floatKrek.find(function(q){return q.ph===k.healTarget&&q!==k&&!q.boss;}),1.4);k.healing=false;}
           k.attackDuration=k.bossId==='mossback'?.42:.35;
         }
-        k.attackT=k.attackDuration;
+        k.attackT=k.attackDuration;k.attackMove=0;
       }
     }
     return null;
