@@ -68,6 +68,9 @@ async function testKit(page,game,engineName,upgraded){
     await game.evaluate(()=>window.__polgeBrowser.close());
     const before=await state(game);await press(page,game,'b');
     await game.waitForFunction(kind=>window.__polgeBrowser.state.fx.some(f=>f.kind===kind),expected);
+    // Acceptance is synchronous, while the native body is drawn on the next
+    // animation frame. Preserve that frame before the next input changes pose.
+    await game.waitForFunction(kind=>!!window.__polgeBrowser.state.bodies[kind],expected);
     const after=await state(game);damage.push(before.targets[0].hp-after.targets[0].hp);
     assert.ok(after.targets[0].hp<before.targets[0].hp,expected+' is confirmed contact');
   }
