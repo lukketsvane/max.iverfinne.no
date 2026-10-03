@@ -10,7 +10,7 @@ Earlier chapters now enclose the upper routes with rock vaults, steel braces, fr
 
 Authenticated Figma capture and ordinary comparison are preserved in `docs/asset-review/crown-secondpass/`. All **665 production PNGs MATCH**, zero problems: the previous 662 pins plus three exact new Crown masters. The new source frame is `619:13527`; source rectangles are `619:13529`, `619:13530` and `619:13531`. Direct remote PNG byte audits match native SHA-1, SHA-256, dimensions and registration. The provenance guard parses the actual capture and comparison rather than trusting their status labels. The temporary local generated-source exception is closed.
 
-The editable twenty-scene Figma stack is `607:14028`, top20/bottom1. Its 1,569 route instances match the real seed1 platform snapshot. Existing authored level1/2 masters are preserved. Review imagery and editable geometry keep separate source roles.
+The editable twenty-scene Figma stack is `607:14028`, top20/bottom1. Its 1,549 route tags and twenty scene instances match the real seed1 platform snapshot. Existing authored level1/2 masters are preserved. Review imagery and editable geometry keep separate source roles. All twenty world-art layers contain 30,186 editable native operations from the actual game draw trace and 18 authenticated source images. Decorative grain and unrecoverable cached-canvas calls are explicitly omitted; glow uses a screen approximation.
 
 ## Local verification
 
