@@ -4,6 +4,7 @@ const vm = require('node:vm');
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
+  'ascentPresentation', 'ascentFrame', 'ascentLive', 'worldCovered',
   'mechEventId', 'soloCrew',
   'yeet', 'YEET_SHEET',
   'classShots', 'classFighters', 'runActive', 'pad', 'padAx', 'heldL', 'heldRun', 'lampToggle',
@@ -21,6 +22,7 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'rememberAscentFrame', 'beginAscentPresentation', 'prepareAscentPresentation', 'drawAscentPresentation', 'cancelAscentPresentation', 'ascentPresentationOffset', 'screenToWorld', 'resize',
   'engineerState', 'mechFan', 'mechFanWorld', 'mechOverload', 'mechOverloadWorld', 'updateMechCombat', 'mechCircuitCare', 'mechCaptureEngineer', 'mechRestoreEngineer', 'mechApplyWet', 'mechWetFactor', 'mechUpdateWet', 'mechPrimaryContext', 'mechBombThreat', 'mechBombInterrupted', 'mechBombReward', 'mechWetBonus', 'mechPlanted', 'updateMechControls', 'useClassUtility',
   'ensureCrew', 'updateCompanion', 'companionEnv', 'dispatchWorld', 'dispatchTargets', 'dispatchReady', 'mechDispatch', 'mechFanWater', 'waterGardenPlot', 'waterGardenPlotTick', 'launchBomb', 'explode', 'pestSlow', 'moveEnemyTo', 'updatePestDive', 'ratMove', 'updateHighTideBoss',
   'levelGuideObjective', 'guideLines', 'drawGuideLabel', 'drawGuideStack', 'drawLevelGuide',
