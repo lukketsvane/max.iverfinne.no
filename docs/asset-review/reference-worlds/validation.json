@@ -26,5 +26,16 @@
   "limitations": [
     "Full screenshot PNGs vary with existing loot bobbing, glow and random sparks. Static geometry and native source identities match the accepted Figma capture.",
     "Generated mushroom and fossil studies are not registered or shipped assets; supported upload was blocked by the network proxy."
-  ]
+  ],
+  "figmaReviewCheck": {
+    "status": "PASS",
+    "stages": 20,
+    "routeTagsPreserved": 1549,
+    "productionPinsUnchanged": 665,
+    "orderedCommands": 68453,
+    "materialComponents": 507,
+    "nativePixelProofs": 7,
+    "evidence": "figma-editable-audit.json",
+    "authority": "Editable review art; registered runtime PNG masters remain authoritative."
+  }
 }
