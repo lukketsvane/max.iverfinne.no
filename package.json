@@ -9,7 +9,8 @@
     "figma:pull": "node scripts/figma-sync.mjs pull",
     "figma:manifest": "node scripts/figma-sync.mjs manifest",
     "figma:drafts": "node scripts/figma-sync.mjs drafts",
-    "figma:levels": "node scripts/figma-levels.mjs"
+    "figma:levels": "node scripts/figma-levels.mjs",
+    "figma:level-drafts": "node scripts/figma-level-drafts.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.116.0"

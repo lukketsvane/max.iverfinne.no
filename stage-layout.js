@@ -11,6 +11,86 @@
   };
   var sequence = ['terraces', 'canopy', 'crossing', 'ruins', 'switchbacks'];
   function theme(stage) { return stage === 20 ? 'crown' : sequence[(Math.max(1, stage | 0) - 1) % sequence.length]; }
+  // The art families remain compatible with their native tiles. Route geometry is
+  // authored per garden: a broad lower expedition and a taller contrasting climb.
+  function route(role, height, width, gap, rests, turn, branch, graphs) {
+    return { role: role, height: height, width: width, gap: gap, rests: rests, turn: turn, branch: branch,
+      graphs: graphs.map(function (graph) { return graph.split(' '); }) };
+  }
+  var CAMPAIGN = [null,
+    ['Seed Vault', 'Find your footing',
+      route('Refuge', [66, 78], [30, 40], [7, 9], [2, 3], .08, .15, ['step rest step', 'step step rest']),
+      route('Lookout', [98, 112], [26, 36], [7, 10], [2, 3], .12, .25, ['step step gallery', 'step rest stack'])],
+    ['Railway Ruins', 'Read the broken path',
+      route('Gallery', [78, 90], [28, 40], [7, 11], [2, 3], .12, .25, ['step rest arch', 'step step gallery']),
+      route('Lookout', [114, 128], [24, 34], [8, 11], [2, 3], .22, .35, ['step stack rest switch', 'step step fork stack'])],
+    ['Broken Aqueduct', 'Cross, then climb',
+      route('Crossing', [70, 84], [30, 42], [8, 12], [2, 3], .08, .2, ['step step promenade rest', 'step step bridge step']),
+      route('Lookout', [112, 126], [24, 34], [8, 12], [2, 3], .14, .3, ['step step pond gallery', 'step step arch stack'])],
+    ['Sunken Chapel', 'Shelter beneath the spire',
+      route('Refuge', [82, 96], [28, 40], [7, 11], [2, 3], .18, .3, ['step rest wall gallery', 'step step gallery arch']),
+      route('Spire', [126, 142], [22, 32], [8, 12], [2, 3], .26, .4, ['step step wall stack', 'step step narrow gallery'])],
+    ['Root Stair', 'Follow the turning roots',
+      route('Gallery', [88, 102], [28, 38], [7, 10], [2, 3], .14, .2, ['step rest gallery', 'step step switch rest']),
+      route('Spine', [136, 150], [22, 32], [7, 11], [2, 3], .2, .3, ['step step switch stack rest', 'step step stack switch gallery'])],
+    ['Cairn Terraces', 'Choose a broad traverse or climb',
+      route('Crossing', [82, 96], [30, 42], [8, 12], [2, 3], .12, .25, ['step step promenade gallery', 'step step rest arch']),
+      route('Lookout', [126, 142], [24, 34], [8, 13], [2, 3], .18, .35, ['step step fork stack gallery', 'step step stack rest switch'])],
+    ['Lantern Roots', 'Climb between the buried lanterns',
+      route('Refuge', [92, 106], [30, 40], [8, 12], [2, 3], .18, .3, ['step step gallery arch', 'step step fork rest']),
+      route('Roots', [144, 158], [22, 32], [8, 13], [2, 3], .3, .45, ['step step switch gallery stack', 'step step stack fork switch'])],
+    ['Silo Stair', 'Catch your breath on the buried bridge',
+      route('Crossing', [88, 102], [30, 42], [9, 13], [2, 3], .1, .2, ['step step bridge gallery', 'step step promenade arch']),
+      route('Spine', [138, 152], [22, 34], [9, 14], [2, 3], .2, .3, ['step step pond stack rest', 'step step hop gallery switch'])],
+    ['Collapsed Tower', 'Explore the broken galleries',
+      route('Gallery', [96, 110], [28, 40], [8, 12], [2, 3], .2, .3, ['step step wall gallery arch', 'step step drop rest gallery']),
+      route('Spire', [152, 166], [22, 30], [8, 13], [2, 3], .28, .4, ['step step narrow stack rest', 'step step wall switch gallery'])],
+    ['Bell Cellar', 'Climb out of the buried works',
+      route('Refuge', [102, 116], [28, 40], [8, 12], [2, 3], .16, .25, ['step step switch gallery rest', 'step step stack rest arch']),
+      route('Spine', [160, 174], [22, 32], [8, 13], [2, 3], .24, .35, ['step step switch stack gallery', 'step step stack switch rest'])],
+    ['Old Quarry', 'Recover on the frozen terraces',
+      route('Refuge', [94, 108], [30, 42], [9, 13], [2, 3], .12, .25, ['step step gallery promenade', 'step step rest arch gallery']),
+      route('Lookout', [148, 162], [22, 34], [10, 14], [2, 3], .22, .4, ['step step fork stack switch', 'step step hop stack gallery'])],
+    ['Weeping Roots', 'Weave through the frozen root chamber',
+      route('Gallery', [102, 116], [28, 40], [9, 13], [2, 3], .2, .35, ['step step arch gallery fork', 'step step gallery switch rest']),
+      route('Roots', [164, 178], [22, 32], [9, 14], [2, 3], .32, .45, ['step step switch stack gallery', 'step step stack fork switch rest'])],
+    ['Twin Shafts', 'Find two different ways upward',
+      route('Crossing', [98, 112], [30, 42], [10, 14], [2, 3], .12, .25, ['step step bridge arch gallery', 'step step pond promenade rest']),
+      route('Spire', [158, 174], [22, 32], [10, 15], [2, 3], .22, .35, ['step step stack hop gallery', 'step step switch wall rest'])],
+    ['Catacomb', 'Move between shelter and exposed ledges',
+      route('Refuge', [106, 120], [28, 40], [9, 13], [2, 3], .22, .3, ['step step drop gallery wall', 'step step wall rest arch']),
+      route('Spire', [172, 186], [20, 30], [9, 14], [2, 3], .3, .45, ['step step narrow switch stack rest', 'step step wall stack gallery'])],
+    ['Fault Steps', 'Rest before the fault-line climb',
+      route('Gallery', [112, 126], [28, 40], [8, 12], [2, 3], .18, .25, ['step step gallery switch arch', 'step step switch rest gallery']),
+      route('Spine', [180, 194], [22, 32], [9, 13], [2, 3], .26, .35, ['step step switch stack switch rest', 'step step stack gallery switch'])],
+    ["Giant's Stair", 'Cross the ash terraces',
+      route('Crossing', [108, 122], [30, 42], [10, 14], [2, 3], .14, .25, ['step step promenade gallery arch', 'step step rest hop gallery']),
+      route('Lookout', [170, 184], [22, 32], [10, 15], [2, 3], .22, .4, ['step step fork stack gallery switch', 'step step stack hop rest'])],
+    ['Reactor Nest', 'Reach the irradiated root chamber',
+      route('Refuge', [116, 130], [28, 40], [9, 13], [2, 3], .22, .35, ['step step arch gallery stack', 'step step fork rest switch']),
+      route('Roots', [186, 200], [20, 30], [10, 14], [2, 3], .32, .45, ['step step switch stack fork rest', 'step step stack gallery switch'])],
+    ['Last Sluice', 'Traverse the last buried spans',
+      route('Crossing', [112, 126], [30, 42], [11, 15], [2, 3], .12, .25, ['step step bridge gallery pond', 'step step promenade arch rest']),
+      route('Spine', [180, 194], [22, 32], [11, 16], [2, 3], .24, .35, ['step step hop stack switch gallery', 'step step pond stack rest'])],
+    ['Surface Breach', 'Prepare at the broken surface gate',
+      route('Refuge', [120, 134], [28, 40], [9, 13], [2, 3], .22, .35, ['step step wall gallery drop rest', 'step step gallery arch wall']),
+      route('Spire', [194, 208], [20, 30], [10, 15], [2, 3], .3, .45, ['step step narrow stack switch gallery', 'step step wall stack rest switch'])],
+    ['Radioactive Dawn', 'Face the Hollow Crown at sunrise',
+      route('Crown West', [140, 160], [24, 40], [9, 14], [2, 3], .2, .3, ['step step gallery switch']),
+      route('Crown East', [140, 160], [24, 40], [9, 14], [2, 3], .2, .3, ['step step stack rest'])]
+  ];
+  var CHAPTERS = ['Deep vaults', 'Buried works', 'Underworld faults'];
+  CAMPAIGN = CAMPAIGN.map(function (entry, stage) {
+    if (!entry) return null;
+    return { id: 'garden-' + stage, stage: stage, title: entry[0], theme: theme(stage), chapter: stage === 20 ? 'Radioactive dawn' : stage >= 18 ? 'Surface breach' : stage >= 16 ? 'Reactor depths' : CHAPTERS[Math.floor((stage - 1) / 5)],
+      focus: entry[1], routes: [entry[2], entry[3]] };
+  });
+  function profile(stage) { return CAMPAIGN[Math.max(1, Math.min(20, stage | 0))]; }
+  function identity(layout) {
+    var p = profile(layout.stage);
+    layout.profileId = p.id; layout.profileTitle = p.title; layout.chapter = p.chapter; layout.focus = p.focus;
+    return layout;
+  }
   function inside(p, x, pad) { return x >= p.x - pad && x <= p.x + p.w + pad; }
   function support(layout, id, x) { return layout.platforms.find(function (p) { return p.id === id && inside(p, x, FOOT); }) || null; }
   function at(layout, x, y, tolerance) {
@@ -49,7 +129,7 @@
   function authored(stage, origin, ground, wet) {
     stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
     var kind = theme(stage), shape = shapes[kind], variant = Math.floor((stage - 1) / 5);
-    var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] };
+    var layout = identity({ id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, authored: true, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] });
     function groundMinimum(center, width) {
       var floor = Infinity, left = Math.round(center) - Math.floor(width / 2);
       for (var x = left; x <= left + width; x++) floor = Math.min(floor, ground(x));
@@ -102,7 +182,7 @@
         for (var step = 0; step < 80 && wet(start.x); step++) start.x -= side * 2;
         start.y = ground(start.x);
       }
-      layout.routes.push({ id: routeIndex, side: side, start: start, platformIds: path.map(function (p) { return p.id; }) });
+      layout.routes.push({ id: routeIndex, side: side, role: profile(stage).routes[routeIndex].role, start: start, platformIds: path.map(function (p) { return p.id; }) });
       layout.rewards.push(anchor(summit, side));
       layout.trials.push(anchor(path[Math.floor(path.length / 2)], side));
       var bonus = make(stage + ':' + routeIndex + ':bonus', summit.x + summit.w / 2 + side * 26, summit.y - 32, 28, side, true);
@@ -143,19 +223,14 @@
     var soil = soilOf(layout, ground, wet), sets = [0, 1, 2, 3].map(function (t) { return reachable(layout, t, ground, wet, soil); });
     return layout.platforms.map(function (p) { var t = 0; while (t < 3 && !sets[t][p.id]) t++; return { x: p.x + Math.floor(p.w / 2), y: p.y, platformId: p.id, tier: t }; });
   }
-  var THEMES = {
-    terraces: { h: [90, 120], gap: [7, 13], w: [26, 40], branch: .35, turn: .15, graphs: [[['step', 'step', 'rest'], ['step', 'hop', 'step', 'rest']], [['step', 'step', 'fork', 'step'], ['step', 'rest', 'step', 'hop']], [['step', 'stack', 'rest'], ['step', 'step', 'stack', 'rest']]] },
-    canopy: { h: [110, 150], gap: [8, 14], w: [20, 34], branch: .5, turn: .35, tall: true, graphs: [[['step', 'switch', 'rest', 'stack'], ['step', 'stack', 'rest', 'switch']], [['step', 'step', 'fork', 'switch'], ['step', 'hop', 'fork', 'rest']], [['step', 'step', 'arch', 'rest'], ['step', 'switch', 'rest', 'step']]] },
-    crossing: { h: [80, 110], gap: [10, 18], w: [22, 36], branch: .3, turn: .1, graphs: [[['step', 'step', 'bridge', 'rest'], ['step', 'step', 'hop', 'rest']], [['step', 'step', 'hop', 'pond', 'rest'], ['step', 'step', 'bridge', 'step']], [['step', 'step', 'pond', 'rest', 'hop'], ['step', 'pond', 'step', 'hop', 'rest']]] },
-    ruins: { h: [100, 140], gap: [8, 14], w: [18, 30], branch: .4, turn: .25, graphs: [[['step', 'step', 'wall', 'rest'], ['step', 'wall', 'rest', 'narrow']], [['step', 'step', 'narrow', 'rest', 'drop'], ['step', 'step', 'rest', 'wall']], [['step', 'drop', 'pond', 'rest', 'wall'], ['step', 'wall', 'rest', 'step']]] },
-    switchbacks: { h: [120, 160], gap: [7, 12], w: [22, 30], branch: .25, turn: .2, graphs: [[['step', 'switch', 'rest'], ['step', 'switch', 'rest', 'switch']], [['step', 'stack', 'switch', 'rest'], ['step', 'switch', 'stack', 'rest']], [['step', 'switch', 'switch', 'rest'], ['step', 'rest', 'switch']]] }
-  };
   var CHUNKS = {
     step: [[0, 'n', 16, 'n']], hop: [[0, 'w', 8, 'n']], rest: [[0, 'n', 12, 'r']], pond: [[0, 'p', 10, 'n']],
     switch: [[1, 'n', 16, 'n'], [1, 'n', 16, 'n']], stack: [[0, 's', 17, 'n'], [1, 's', 17, 'n']],
     arch: [[0, 'n', 15, 'n'], [0, 'n', 3, 'n'], [0, 'n', -9, 'r']], drop: [[0, 'n', -10, 'n'], [0, 'n', 16, 'n'], [0, 'n', 16, 'n']],
     narrow: [[0, 't', 9, 'x'], [0, 't', 9, 'x'], [0, 't', 9, 'x']], bridge: [[0, 'w', 2, 'n'], [0, 'w', 0, 'n'], [0, 'w', 1, 'n']],
-    fork: [[0, 'n', 14, 'r', 'fork']], wall: [[0, 'n', 18, 'x', 'alcove']]
+    fork: [[0, 'n', 14, 'r', 'fork']], wall: [[0, 'n', 18, 'x', 'alcove']],
+    gallery: [[0, 'n', 12, 'r'], [1, 'n', 16, 'n'], [0, 'n', 12, 'r']],
+    promenade: [[0, 'w', 6, 'r'], [0, 'w', 5, 'r']]
   };
   function hash(a, b) { var h = Math.imul((a >>> 0) ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul((b | 0) + 0x632be5ab, 0xc2b2ae35); h = Math.imul(h ^ h >>> 15, 0x2c1b3c6d); return (h ^ h >>> 13) >>> 0; }
   function mulberry(a) { return function () { a = a + 0x6d2b79f5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -176,13 +251,14 @@
     return hops;
   }
   function build(stage, origin, ground, wet, seed, k, high) {
-    var kind = theme(stage), t = THEMES[kind], rand = mulberry(hash(seed, k + 1)), shrink = Math.floor((stage - 1) / 2), wmin = stage < 6 ? 22 : 18;
-    var spread = t.gap[0] + (t.gap[1] - t.gap[0]) * (stage - 1) / 18, graph = t.graphs[(seed + k) % 3], swap = rand() < .5 ? 1 : 0, base = Math.floor(ground(origin)), extras = [];
-    var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] };
+    var kind = theme(stage), design = profile(stage), rand = mulberry(hash(seed, k + 1)), wmin = stage < 6 ? 22 : 18;
+    var swap = rand() < .5 ? 1 : 0, base = Math.floor(ground(origin)), extras = [];
+    var layout = identity({ id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, generated: true, platforms: [], routes: [], rewards: [], trials: [], bonuses: [] });
     function band(lo, hi) { return lo + rand() * (hi - lo); }
     function place(id, x, y, w, side, optional) { x = Math.round(x); w = Math.round(w); return { id: id, x: x, y: Math.round(y), w: w, depth: kind === 'crossing' ? 8 : 5 + ((stage + id.length) % 3), route: side, style: shapes[kind].style, optional: optional, floor: Math.round(ground(x + Math.floor(w / 2))) }; }
     var ok = [-1, 1].every(function (side, r) {
-      var pattern = graph[r ^ swap], target = t.tall ? (r ^ swap ? band(t.h[1] - 12, t.h[1]) : band(t.h[0], t.h[0] + 12)) : band(t.h[0], t.h[1]), heading = side, since = 0, every = 2 + Math.floor(rand() * 3), hard = 0, n = 0, opt = 0;
+      var t = design.routes[r ^ swap], pattern = k < 10 ? t.graphs[hash(seed, r + k * 17) % t.graphs.length] : ['step', 'step', 'gallery', 'stack', 'rest'], target = band(t.height[0], t.height[1]);
+      var spread = band(t.gap[0], t.gap[1]), heading = side, since = 0, every = Math.round(band(t.rests[0], t.rests[1])), hard = 0, n = 0, opt = 0;
       var w0 = Math.round(band(36, 44)), c0 = origin + side * Math.round(band(52, 62)), y0 = Math.floor(floorUnder(ground, c0 - Math.floor(w0 / 2), w0)) - Math.round(band(14, 18));
       if (wet && wet(c0)) y0 = Math.min(y0, base - 15);
       var x0 = c0 - Math.floor(w0 / 2), start = { x: x0 + w0 / 2, y: ground(x0 + w0 / 2) };
@@ -193,7 +269,7 @@
       layout.platforms.push(prev);
       function sound(q) { return clear(q, ground) && bounds(q, origin) && layout.platforms.every(function (p) { return !clash(p, q) && !blocks(p, prev, q); }) && mine.every(function (h) { return !blocks(q, h[0], h[1]); }) && path.slice(0, Math.min(3, path.length - 1)).every(function (p) { return !lure(p, q); }); }
       function extra(cell, q) {
-        var w = Math.max(wmin, Math.round(band(t.w[0], t.w[1])) - shrink), d = Math.round(spread), b;
+        var w = Math.max(wmin, Math.round(band(t.width[0], t.width[1]))), d = Math.round(spread), b;
         if (cell === 'alcove') return extras.push(place(stage + ':' + r + ':o' + (++opt), heading > 0 ? q.x + q.w - 6 : q.x - 18, q.y + 18, 24, side, true));
         extras.push(b = place(stage + ':' + r + ':o' + (++opt), heading < 0 ? q.x + q.w + d : q.x - d - w, q.y - Math.round(band(14, 18)), w, side, true));
         if (rand() < .5) extras.push(place(stage + ':' + r + ':o' + (++opt), heading < 0 ? b.x + b.w + d : b.x - d - w, b.y - 12, w, side, true));
@@ -203,7 +279,7 @@
         if (early && rise < 10) rise = 12 + Math.round(rand() * 4);
         if (early && g !== 's') g = 'n';
         if (g === 's' && rise < 14) g = 'n';
-        var w = wk === 'r' ? Math.round(band(36, 42)) : Math.max(wmin, (wk === 'x' ? t.w[0] + Math.round(rand() * 3) : Math.round(band(t.w[0], t.w[1]))) - shrink);
+        var w = wk === 'r' ? Math.round(band(38, 46)) : Math.max(wmin, wk === 'x' ? t.width[0] + Math.round(rand() * 3) : Math.round(band(t.width[0], t.width[1])));
         var want = g === 's' ? -Math.round(band(8, Math.min(prev.w, w) - 6)) : g === 't' ? 7 + Math.round(rand()) : Math.round(spread + (g === 'w' ? band(3, 6) : band(-2, 2)));
         if (spec[0] && !early) heading = -heading;
         for (var tries = 0; tries < 4; tries++) {
@@ -220,19 +296,20 @@
           var q = place(stage + ':' + r + ':' + path.length, x, y, w, side, false);
           if (prev.y - y > 19 || d > limit(prev.y - y) || !sound(q)) continue;
           hard = d > .8 * limit(prev.y - y) ? hard + 1 : 0;
-          since = w >= 36 ? 0 : since + 1; if (!since) every = 2 + Math.floor(rand() * 3);
+          since = w >= 36 ? 0 : since + 1; if (!since) every = Math.round(band(t.rests[0], t.rests[1]));
+          q.rest = w >= 36;
           layout.platforms.push(q); mine.push([prev, q]); path.push(prev = q);
           if (!early && rand() < (spec[4] ? t.branch : t.branch / 3)) extra(spec[4] || 'fork', q);
           return true;
         }
         return false;
       }
-      while (path.length < 5 || base - prev.y < target && path.length < 14) {
+      while (path.length < 5 || base - prev.y < target && path.length < 18) {
         if (path.length > 3 && rand() < t.turn) heading = -heading;
         if (!CHUNKS[pattern[n++ % pattern.length]].every(hop)) return false;
       }
       var summit = path.reduce(function (a, b) { return b.y < a.y ? b : a; });
-      layout.routes.push({ id: r, side: side, start: start, platformIds: path.map(function (p) { return p.id; }) });
+      layout.routes.push({ id: r, side: side, role: t.role, rhythm: pattern.slice(), start: start, platformIds: path.map(function (p) { return p.id; }) });
       layout.rewards.push(anchor(summit, side)); layout.trials.push(anchor(path[Math.floor(path.length / 2)], side));
       return true;
     });
@@ -288,7 +365,8 @@
     var key = hash(seed, stage), high = stage >= 4 && mulberry(key)() < .35, flat = function () { return 0; }, best = null, score = -Infinity;
     var before = stage > 1 && stage < 20 && build(stage - 1, 0, flat, null, hash(seed, stage - 1), 0, false);
     before = before && signature(before, flat);
-    for (var k = 0; k < 6 && stage < 20; k++) {
+    for (var k = 0; k < 14 && stage < 20; k++) {
+      if (k >= 10 && best) break;
       var candidate = build(stage, origin, ground, wet, key, k, high);
       if (!candidate || !valid(candidate, ground, wet)) continue;
       var value = critic(candidate, ground, before, high);
@@ -405,7 +483,7 @@
       if (p.optional) { ctx.fillStyle = '#c3cdcd'; ctx.fillRect(x + Math.floor(p.w / 2), y - 3, 1, 1); }
     });
   }
-  var api = { solid: solid, inRock: inRock, create: create, theme: theme, landing: landing, support: support, at: at, draw: draw, foot: FOOT, move: MOVE, reach: reach, reachable: reachable };
+  var api = { solid: solid, inRock: inRock, create: create, theme: theme, profile: profile, landing: landing, support: support, at: at, draw: draw, foot: FOOT, move: MOVE, reach: reach, reachable: reachable };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxStageLayout = api;
 })(typeof window === 'object' ? window : globalThis);

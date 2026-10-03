@@ -37,7 +37,8 @@ function actions(g,L,target){
  return out;
 }
 function searchAltar(g,target,{limit=1800}={}){
- const L=g.stageLayout(),start=capture(g),origin=g.levelOriginX(g.rogueRun.world),minX=Math.min(origin,target.x,...L.platforms.map(p=>p.x))-60,maxX=Math.max(origin,target.x,...L.platforms.map(p=>p.x+p.w))+60;
+ // A bare-soil shrine can lie beyond every platform; its return starts there.
+ const L=g.stageLayout(),start=capture(g),origin=g.levelOriginX(g.rogueRun.world),minX=Math.min(origin,target.x,start.p.x,...L.platforms.map(p=>p.x))-60,maxX=Math.max(origin,target.x,start.p.x,...L.platforms.map(p=>p.x+p.w))+60;
  const key=s=>[Math.round(s.p.x/3),Math.round(s.p.y/2),s.p.platform||'',s.p.st==='ladder'?s.p.ladderId:'',Math.round(s.p.vx/10)].join(':');
  const distance=s=>Math.hypot(s.p.x-target.x,(s.p.y-target.y)*1.2)/40;
  const root={state:start,parent:null,action:null,depth:0,rank:distance(start)},queue=[root],seen=new Map([[key(start),0]]);let iterations=0,found=null,nearest=root;

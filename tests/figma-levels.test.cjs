@@ -31,9 +31,15 @@ test('a recorded levels page converts to garden data at one art pixel per Figma 
   assert.deepEqual(garden.ledges[0], { x: -290, rise: 83, w: 39, style: 'stone' });
   assert.deepEqual([garden.reward, garden.seed, garden.trial, garden.bonus], [[{ x: -223, rise: 97 }], [{ x: 95, rise: 123 }], [{ x: -180, rise: 59 }, { x: 140, rise: 76 }], [{ x: -249, rise: 129 }, { x: 121, rise: 155 }]]);
   for (const name of ['garden-01', 'garden-05']) {
-    const stage = +name.slice(-2), origin = w.origin(stage), built = levels.build(gardenOf(frame(name)).garden, stage, origin, w.ground, w.wet, 1), seeded = layouts.create(stage, origin, w.ground, w.wet, 1);
-    assert.deepEqual(shape(built.platforms), shape(seeded.platforms), name + ' rebuilds the seed-1 garden it was drawn from');
-    for (const key of ['rewards', 'trials', 'bonuses']) assert.deepEqual(spots(built[key]), spots(seeded[key]), `${name} ${key}`);
+    // This is an archived Figma capture, not a pin of today's evolving generator.
+    const stage = +name.slice(-2), origin = w.origin(stage), source = gardenOf(frame(name)).garden, built = levels.build(source, stage, origin, w.ground, w.wet, 1);
+    assert.equal(built.platforms.length, source.ledges.length, name + ' retains every recorded ledge');
+    for (const [i, p] of built.platforms.entries()) {
+      assert.deepEqual([p.x, p.w, p.style], [origin + source.ledges[i].x, source.ledges[i].w, source.ledges[i].style]);
+      assert.ok(p.y <= Math.floor(w.ground(origin)) - source.ledges[i].rise, 'terrain may lift a recorded ledge but never lower it');
+    }
+    assert.equal(built.rewards.length, source.reward.length + source.seed.length);
+    assert.equal(built.trials.length, source.trial.length); assert.equal(built.bonuses.length, source.bonus.length);
   }
   const drafts = exportLevels(fixture.metadata, fixture.page, w);
   assert.deepEqual(drafts.data.gardens, {}, 'frames without a designed instance stay generated');
@@ -55,7 +61,7 @@ test('a live frame replaces the generated garden, the run uses its spots, and an
   const { data } = exportLevels(edit(fixture.metadata, 'garden-01', [instance('designed', 0, 0), instance('puzzle', 330, 232), instance('start', 360, 232)]), fixture.page, w);
   const h = loadGame(), g = h.game;
   h.window.MaxLevelData = data; g.resetRogueRun();
-  const layout = g.stageLayout(), designed = layouts.create(1, g.levelOriginX(1), g.surfaceY, g.waterAt, 1);
+  const layout = g.stageLayout(), designed = levels.build(data.gardens[1][0], 1, g.levelOriginX(1), g.surfaceY, g.waterAt, g.rogueRun.seed);
   assert.equal(layout.designed, true); assert.equal(layout.frame, 'garden-01'); assert.equal(layout.seed, g.rogueRun.seed);
   assert.deepEqual(shape(layout.platforms.filter(p => !p.expedition)), shape(designed.platforms));
   assert.notDeepEqual(shape(layout.platforms), shape(layouts.create(1, g.levelOriginX(1), g.surfaceY, g.waterAt, g.rogueRun.seed).platforms));
@@ -75,6 +81,7 @@ test('a live frame replaces the generated garden, the run uses its spots, and an
   assert.equal(generated.designed, undefined);
   const expected = require('../stage-expeditions.js').furnish(require('../garden-places.js').furnish(layouts.create(5, other.game.levelOriginX(5), other.game.surfaceY, other.game.waterAt, other.game.rogueRun.seed), other.game.surfaceY, other.game.waterAt), other.game.surfaceY, other.game.waterAt);
   require('../guardian-sites.js').furnish(expected, other.game.surfaceY, other.game.waterAt);
+  expected.campaign = layouts.profile(5);
   assert.equal(JSON.stringify(generated), JSON.stringify(expected));
 });
 
