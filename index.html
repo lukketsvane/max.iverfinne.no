@@ -114,7 +114,7 @@ function drawNightLayers(from, to, top, bdrop) {
 }
 var CAVERN_LAYERS = [['far', 0.02, 0], ['ceiling', 0.03, 0], ['horizon', 0.05, 1], ['lake', 0.07, 0.9], ['ruins', 0.12, 0.7]], CAVERN_BG = {}, CAVERN_TOP = '#05070e';
 CAVERN_LAYERS.forEach(function (l) { CAVERN_BG[l[0]] = loadImg('assets/cavern-v1/' + l[0] + '.png'); });
-function cavernGarden(world) { world = world || worldLevel(); return world >= 1 && world <= 10; }
+function cavernGarden(world) { world = world || worldLevel(); return world >= 1 && world < 20; }
 function cavernBackdrop(world) { return cavernGarden(world) && CAVERN_LAYERS.every(function (l) { return ready(CAVERN_BG[l[0]]); }); }
 function drawCavernLayers(from, to, top, bdrop) {
   if (!from) { ctx.fillStyle = CAVERN_TOP; ctx.fillRect(0, 0, IW, IH); }
@@ -276,6 +276,7 @@ function stageLayout(){
   if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level<=2&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
   window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
   window.MaxGuardianSites.furnish(activeStageLayout,surfaceY,waterAt);
+  if(!activeStageLayout.campaign&&window.MaxStageLayout.profile)activeStageLayout.campaign=window.MaxStageLayout.profile(level);
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
@@ -2633,7 +2634,7 @@ function drawSkillPip(){
 }
 var EXIT_ARROW=['..#..','.###.','#####','..#..','..#..'];
 function exitStalk(){if(rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES)return null;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.stalk&&!p.dead&&p.health>0)return p;}return null;}
-function drawArrow(x,y,dir,col){ctx.fillStyle=col;for(var r=0;r<5;r++)for(var c=0;c<5;c++){var on=dir==='up'?EXIT_ARROW[r][c]:dir==='left'?EXIT_ARROW[c][4-r]:EXIT_ARROW[4-c][r];if(on==='#')ctx.fillRect(x+c,y+r,1,1);}}
+function drawArrow(x,y,dir,col){ctx.fillStyle=col;for(var r=0;r<5;r++)for(var c=0;c<5;c++){var on=dir==='up'?EXIT_ARROW[r][c]:dir==='down'?EXIT_ARROW[4-r][4-c]:dir==='left'?EXIT_ARROW[c][4-r]:EXIT_ARROW[4-c][r];if(on==='#')ctx.fillRect(x+c,y+r,1,1);}}
 function drawExitCue(t){
   if(!runActive||rogueRun.ended||(climb&&climb.exit))return;
   var p=exitStalk();if(!p)return;
@@ -3661,6 +3662,7 @@ function cloudPuffs(cyl,u,step,rmin,rvar,dy,cols,seed){
   }
 }
 function drawClimbSky(t){
+  if(worldLevel()<20)return;
   if(climb&&!climb.exit)return;
   if(!climb&&!(warp&&!warp.switched))return;
   var base=climb?climb.gy:surfaceY(P.x),cyl=Math.round(base-cloudHeight()-camY);
@@ -3745,6 +3747,8 @@ function drawWorldBanner(t){
   drawLeafIcon(6,y,'#8aa276','#2f4426');
   drawNum(worldLevel(),16,y,2,'#e3e0c0');
   drawSecretBanner(y);
+  var L=stageLayout(),profile=L.campaign||window.MaxStageLayout.profile&&window.MaxStageLayout.profile(worldLevel());
+  if(profile)drawGuideLabel(profile.title,IW/2,y+15,'#d7dca4');
   ctx.globalAlpha=1;
 }
 
@@ -3793,6 +3797,7 @@ function drawRunHud(){
   drawLevelTallies(worldLevel());
   var boons=runHudBoons();
   for(var i=0;i<boons.length;i++){var pos=runHudIconPosition(i);drawTinyBoon(boons[i].id,pos.x,pos.y,boons[i].count);}
+  drawLevelGuide(boons.length);
   drawRoster();
 }
 function difficultyProfile(){
@@ -5558,6 +5563,8 @@ function drawVignette() {
 "MAX_NIGHT_RELAY";
 "MAX_COOP_GAME";
 "MAX_RUN_DIRECTOR";
+"MAX_LEVEL_GUIDE";
+"MAX_CAMPAIGN_ATMOSPHERE";
 "MAX_RAT_ENEMIES";
 "MAX_SECRETS";
 "MAX_YEET";
@@ -5658,6 +5665,7 @@ function frame(now) {
   var bdrop = Math.max(0, Math.round(Math.min(60, IH * 0.15)) - (hy - mh));
   applyBiomePalette(P.x);
   var cavern = cavernBackdrop(), sanctuary = !cavern && sanctuaryBackdrop(), night = !cavern && !sanctuary && nightBackdrop(), stop = hy - 140;
+  if(!drawCampaignBackdrop(tSec,hy,stop,bdrop)){
   if (cavern) drawCavernLayers(0, 3, stop, bdrop); else if (night) drawNightLayers(0, 3, stop, bdrop); else if (sanctuary) drawSanctuarySky(stop); else drawSky(tSec, hy);
   drawBiomeSkyBands(hy);
   if (!sanctuary && !night && !cavern) drawMoon(hy);
@@ -5677,6 +5685,7 @@ function frame(now) {
   }
   drawBiomeBackdrop(tSec, hy);
   drawBiomeTint();
+  }
   drawLandmarkBack(tSec);
   drawGround();
   drawTrailAccents();
@@ -5687,9 +5696,11 @@ function frame(now) {
   drawScorches();
   }
   drawPlatforms(tSec);
+  if(!nightRelayMode()&&!highTideMode())drawCampaignAtmosphere(tSec);
   drawSligoTrail();
   if(!isolatedRelicMode())drawSmartWorld(tSec);
   drawSpots(tSec);drawSeedPickups(tSec);
+  beginGuideLabels();
   drawRunExploration(tSec);
   drawGardenPlots(tSec);drawHighTideWorld(tSec);
   if(!isolatedRelicMode()){
@@ -5730,6 +5741,7 @@ function frame(now) {
   }
   drawBooms();
   if(!isolatedRelicMode())drawVignette();
+  flushGuideLabels();
   drawWarp(tSec);
   drawHighTideWater(tSec);
   drawRelayDarkness();drawNightRelay(tSec);

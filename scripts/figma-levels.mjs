@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { FIGMA, FigmaError, connect, metadataXml, toolCalls, tree } from './figma-mcp.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..'), require = createRequire(import.meta.url);
-export const PAGE = '218:2';
+export const PAGE = '508:11825';
 const DATA = 'levels-data.js', FRAME = /^garden-(0[1-9]|1\d|20)([b-z]?)$/;
 const MARKERS = ['reward', 'seed', 'bonus', 'trial', 'puzzle', 'door', 'dig', 'secret', 'start'], NEEDED = ['reward', 'seed', 'trial'];
 const STYLES = ['stone', 'branch', 'ruin', 'root'], TIERS = ['C0 walking', 'C1 running', 'C2 Moss or Spring Step 2', 'C3 the air jump'];

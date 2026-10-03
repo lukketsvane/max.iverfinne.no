@@ -1,17 +1,12 @@
 # Designing a garden in Figma
 
-The gardens can be drawn in Figma and pushed into the game. The generator in `stage-layout.js` still builds every garden unless a Figma frame is live.
+The gardens can be drawn in Figma and exported into the game. The authored picture levels take precedence in gardens 1–2; other gardens use the seeded generator unless a Figma frame is live. Expeditions and guardian destinations are furnished by the runtime after the base layout is chosen.
 
 ## Where the frames are
 
-- File **max.iverfinne.no max fuglesprenger** (`TC0PHGMTCMR6im4hb3CSbF`), page **levels** (`218:2`).
-- The components live in frame `218:3`.
-- One frame per garden, named `garden-01` … `garden-20`, 700×290. Their node IDs:
-  - 01 `219:2` · 02 `219:300` · 03 `219:616` · 04 `219:938` · 05 `219:1233`
-  - 06 `224:1401` · 07 `224:1639` · 08 `224:1942` · 09 `224:2181` · 10 `224:2463`
-  - 11 `225:2630` · 12 `225:2868` · 13 `225:3227` · 14 `225:3453` · 15 `225:3737`
-  - 16 `226:3913` · 17 `226:4175` · 18 `226:4521` · 19 `226:4723` · 20 `226:5032`
-- Every frame starts as a copy of the garden that seed 1 generates, so a designer starts from a garden that already plays.
+- File **max.iverfinne.no max fuglesprenger** (`TC0PHGMTCMR6im4hb3CSbF`), level-design page [`508:11825`](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=508-11825), as recorded in [the current Figma map](../figma.md). `scripts/figma-levels.mjs` targets this page.
+- Runtime frames are named `garden-01` … `garden-20`; frame size can expand to fit the native layout. Inspect the current page for component and frame IDs before editing. The former page `218:2` and its historical frame IDs remain in the test fixture and Git history, not as current remote pins.
+- `npm run figma:level-drafts` prepares an offline snapshot of all twenty actual seed-1 runtime layouts, including the authored picture levels, places, expeditions and guardian courts. [The prepared source and import instructions](level-review-source/README.md) record the local source hash and compiler limitations. An offline snapshot does not establish Figma synchronization.
 - 1 Figma px = 1 art px. Keep the instances on whole pixels.
 - The locked `terrain` vector and `water` rectangles show the real ground and ponds under that garden. The ground depends only on the stage, not on the run seed. They are reference and are never exported.
 
@@ -35,11 +30,11 @@ The layer name is the tag. Instances keep their component's name, so do not rena
 | `seed` | Centre x, bottom y | The last entry of `layout.rewards`, which holds the seed reserve |
 | `bonus` | Centre x, bottom y | `layout.bonuses`: embers or dew from garden 3 on |
 | `trial` | Centre x, bottom y | `layout.trials`. The run uses the first two, left to right. |
-| `puzzle` `door` `dig` `secret` `start` | Centre x, bottom y | `layout.spots.<tag>` |
-| `decor:<png path>` | Left edge, top edge, width and height | `layout.decor`: `{ src, x, y, w, h }` |
+| `puzzle` `door` `dig` `secret` `start` | Centre x, bottom y | `layout.spots.<tag>`; puzzle, door, dig and secret are used by runtime interactions; start is not used for spawning |
+| `decor:<png path>` | Left edge, top edge, width and height | Exported as `layout.decor`: `{ src, x, y, w, h }`; the generic layout renderer does not draw it |
 | `designed` | Anywhere in the frame | Makes the frame live |
 
-Groups are not read. Put the instances directly in the garden frame. Text, vectors and rectangles are ignored.
+Groups are not read. Put the instances directly in the garden frame. Text is ignored; unrecognized names are ignored. The compiler recognizes tag names on direct children, so keep reference layers clearly named and avoid giving ordinary rectangles or vectors compiler tag names.
 
 ### How positions become world positions
 
@@ -77,7 +72,8 @@ A ledge on or under the top of a block that the player can reach is not reported
 Other modes:
 
 - `npm run figma:levels -- --watch` exports again whenever the page changes. It polls every 3 s after a change and backs off to every 30 s while nothing changes. Press Enter to export at once.
-- `npm run figma:levels -- --from <fixture.json>` exports offline from a recorded page, `{ "page": "218:2", "metadata": "<get_metadata XML>" }`. See `tests/fixtures/figma-levels.json`.
+- `npm run figma:levels -- --from <fixture.json>` exports offline from a recorded page, `{ "page": "<captured page ID>", "metadata": "<get_metadata XML>" }`. The historical `tests/fixtures/figma-levels.json` explicitly uses `218:2`; it remains valid as an offline compiler fixture.
+- `npm run figma:level-drafts -- --seed 2026 --out /tmp/max-level-review` prepares an editable review snapshot and a local Figma plugin without contacting Figma or changing `levels-data.js`. The generated `import.use-figma.js` can also be executed through the connected Figma Plugin API once access is restored.
 
 Each poll is one Dev Mode MCP tool call, and Figma caps those per day. Once the cap is spent, Figma answers "Rate limit exceeded, please try again tomorrow".
 
@@ -99,7 +95,8 @@ A failure names the garden and the ledge. Then run `npm run build` and commit `l
 - `routes`: per side, the shortest C0 path from the soil to that side's reward ledge (or its highest ledge), with the launch point on the soil.
 - `spots` and `decor`.
 
-Still open:
+Designer spots are active: `initRunStage` in `run-director.inc.js` places the hidden cache at `secret`; `digSpots` and `digBlast` in `index.html` use `dig`; `rollWonders` in `wonders.inc.js` uses `puzzle` and `door` when provided. Door availability still follows the runtime stage rules. `start` remains metadata and does not override spawning.
 
-- `layout.spots` (puzzle, door, dig, secret, start) is exported but not yet read. `wonders.inc.js` still rolls its own puzzle, door and shovel spots, and the player still spawns where the run puts them.
-- `layout.decor` is not drawn yet.
+`layout.decor` remains exported metadata and is not drawn by the generic layout renderer. Place ornamentation and authored picture artwork have their own render paths.
+
+The existing level compiler does not encode ladders, place false walls and caches, bounce blooms, guardian courts or expedition objectives. The runtime review import marks them as locked reference annotations and keeps `review-garden-NN` names outside the live frame pattern. Do not rename a complete furnished runtime snapshot and mark it designed without translating its intended base geometry: doing so can lose those interactions and duplicate the runtime expedition furnishing. Preserve the authored picture levels, seeded gameplay and physical exit climb when integrating a reviewed design.

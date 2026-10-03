@@ -11,29 +11,29 @@
     ['The Armoured Belfry','braid','bells','embers',[5,2],'A beetle sized helmet'],
     ['Rootwell Observatory','switch','relay','feathers',[6,2],'A star in a jam jar'],
     ['The Silent Carillon','arch','bells','dew',[4,2],'The bell that says meow'],
-    ['Aurora Scaffold','spine','relay','feathers',[9,2],'A scarf for the aurora'],
-    ['Snowmelt Reservoir','braid','watch','dew',[6,2],'A snowman facing summer'],
-    ['The Frozen Post','switch','salvage','embers',[10,2],'A letter addressed to Max'],
-    ['Windchime Orchard','arch','bells','feathers',[9,2],'The wind knows your name'],
-    ['Moon Moth Roost','braid','watch','dew',[6,2],'A moths bedtime story'],
+    ['Frostline Shaft','spine','relay','feathers',[9,2],'A scarf kept beneath the ice'],
+    ['Thawwater Cistern','braid','watch','dew',[6,2],'A snowman behind the glass'],
+    ['Dead Letter Depot','switch','salvage','embers',[10,2],'A letter addressed to Max'],
+    ['Pressure Chime Vault','arch','bells','feathers',[9,2],'The buried pipes know your name'],
+    ['Pale Moth Chamber','braid','watch','dew',[6,2],'A moths bedtime story'],
     ['Cinder Pumpworks','spine','relay','dew',[4,2],'Tea is still warm'],
-    ['The Ember Library','arch','salvage','embers',[5,2],'Please return before dawn'],
-    ['Furnace Choir','switch','bells','embers',[9,2],'Three notes from home'],
-    ['The Last Weather Station','braid','watch','feathers',[6,2],'Forecast: one more try'],
-    ['Above the Hollow Crown','spine','relay','embers',[5,2],'A crown for the gardener']
+    ['Buried Ember Archive','arch','salvage','embers',[5,2],'Please return before dawn'],
+    ['First Light Gantry','switch','bells','embers',[9,2],'Three notes from home'],
+    ['The Surface Warning Post','braid','watch','feathers',[6,2],'Forecast: radioactive dawn'],
+    ['Dawn Containment Tower','spine','relay','embers',[5,2],'The last clean seed']
   ];
   var patterns={switch:[0,1],spine:[0,1,2,3,2,1],arch:[0,1,2,1],braid:[0,1,0,1,2,3,2,1]};
   var motifs=[
-    {id:'broken-viaduct',name:'Broken Viaduct',lanes:[0,1,2,3,2,1],widths:[42,28,28,46,32,44],rises:[18,18,16,14,18,18]},
-    {id:'folded-stair',name:'Folded Stair',lanes:[0,1,0,1,2,3],widths:[38,28,40,28,32,48],rises:[18,16,18,18,16,18]},
-    {id:'hanging-galleries',name:'Hanging Galleries',lanes:[0,1,2,1,0,1],widths:[46,30,44,28,30,48],rises:[14,18,16,18,18,16]},
-    {id:'needle-crossing',name:'Needle Crossing',lanes:[0,1,2,3,2,3],widths:[40,26,26,40,28,48],rises:[18,16,18,14,18,18]},
-    {id:'crown-steps',name:'Crown Steps',lanes:[0,1,2,1,2,3,2],widths:[40,30,42,28,28,44,48],rises:[18,18,14,18,18,16,18]}
+    {id:'broken-viaduct',name:'Broken Viaduct',lanes:[0,1,2,3,2,1],widths:[52,28,28,58,32,44],rises:[18,18,16,14,18,18],landing:68,rhythm:'crossing'},
+    {id:'folded-stair',name:'Folded Stair',lanes:[0,1,0,1,2,3],widths:[46,28,48,28,32,48],rises:[18,16,18,18,16,18],landing:72,rhythm:'switchback'},
+    {id:'hanging-galleries',name:'Hanging Galleries',lanes:[0,1,2,1,0,1],widths:[58,30,56,28,30,48],rises:[14,18,16,18,18,16],landing:76,rhythm:'gallery'},
+    {id:'needle-crossing',name:'Needle Crossing',lanes:[0,1,2,3,2,3],widths:[44,26,26,48,28,48],rises:[18,16,18,14,18,18],landing:64,rhythm:'precision'},
+    {id:'crown-steps',name:'Crown Steps',lanes:[0,1,2,1,2,3,2],widths:[48,30,54,28,28,56,48],rises:[18,18,14,18,18,16,18],landing:76,rhythm:'ceremonial'}
   ];
   var roomKinds=[
-    {id:'shelter',width:44,nook:40,gap:8,drop:6,rise:16},
-    {id:'needle',width:28,nook:30,gap:14,drop:8,rise:18},
-    {id:'gallery',width:48,nook:36,gap:8,drop:4,rise:18}
+    {id:'shelter',name:'Sheltered Landing',width:64,nook:48,gap:8,drop:8,rise:16,style:'stone'},
+    {id:'needle',name:'Needle Nook',width:32,nook:40,gap:12,drop:8,rise:18,style:'root'},
+    {id:'gallery',name:'Outer Gallery',width:76,nook:56,gap:8,drop:4,rise:18,style:'ruin'}
   ];
   function roll(seed,stage){
     var a=(seed^Math.imul(stage,0x9e3779b9))>>>0;
@@ -97,10 +97,13 @@
         var center=cx+dir*offset,p={id:id+':'+key,x:Math.round(center-w/2),y:Math.round(y),w:w,depth:6,style:design.style,route:E.side,optional:true,expedition:true,circuit:true,floor:Math.round(ground(center))};
         added.push(p);return p;
       }
-      for(var i=1;i<=3;i++)out.push(make('out'+i,i*48,fork.y-lift*i/4,36));
-      var courtOffset=172+design.width/2,floor=make('court',courtOffset,fork.y-lift,design.width);floor.depth=9;floor.rest=true;out.push(floor);back.push(floor);
+      // Keep a walk-off end even when the fork is a broad rest terrace.
+      var outset=Math.max(48,(fork.w+36)/2+8);
+      for(var i=1;i<=3;i++)out.push(make('out'+i,outset+(i-1)*48,fork.y-lift*i/4,36));
+      var courtEdge=Math.max(172,outset+122),courtOffset=courtEdge+design.width/2;
+      var floor=make('court',courtOffset,fork.y-lift,design.width);floor.depth=9;floor.rest=true;out.push(floor);back.push(floor);
       for(var i=1;i<count;i++){
-        var last=-44*inset+(rejoin.w+36)/2+8,offset=136+(last-136)*(i-1)/(count-2);
+        var last=-44*inset+(rejoin.w+36)/2+8,firstBack=136+courtEdge-172,offset=firstBack+(last-firstBack)*(i-1)/(count-2);
         back.push(make('back'+i,offset,floor.y-(rise-lift)*i/count,36));
       }
       back.push(rejoin);
@@ -146,7 +149,7 @@
     var first=Math.floor(random()*motifs.length),second=(first+1+Math.floor(random()*(motifs.length-1)))%motifs.length;
     var items=['feathers','dew','embers'],item=items[(items.indexOf(d[3])+Math.floor(random()*3))%3];
     var E=L.expedition={name:d[0],shape:d[1],mode:d[2],item:item,guards:d[4].slice(),egg:d[5],side:side,start:{x:best.x,y:ground(best.x)},path:route,rooms:rooms,nodes:nodes,sections:sections};
-    function ledge(id,cx,py,w){var p={id:'exp:'+L.stage+':'+id,x:Math.round(cx-w/2),y:Math.round(py),w:w,depth:6,style:L.stage<6?'stone':L.stage<11?'ruin':L.stage<16?'branch':'root',route:side,optional:true,expedition:true,floor:Math.round(ground(cx))};L.platforms.push(p);return p;}
+    function ledge(id,cx,py,w){var p={id:'exp:'+L.stage+':'+id,x:Math.round(cx-w/2),y:Math.round(py),w:w,depth:6,style:L.stage<6?'stone':L.stage<11?'ruin':L.stage<16?'root':'ruin',route:side,optional:true,expedition:true,floor:Math.round(ground(cx))};L.platforms.push(p);return p;}
     function step(next,rise,w,section){
       y-=rise;lane=next;
       var p=ledge(route.length,best.x+side*lane*44,y,w);
@@ -155,7 +158,9 @@
     function node(p){nodes.push({x:p.x+p.w/2,y:p.y,platformId:p.id});p.rest=true;}
     for(var i=0;i<7;i++){var p=step(pattern[i%pattern.length],16,36,'approach');if(i===5)node(p);}
     [first,second].forEach(function(which){
-      var motif=motifs[which],mirror=lane>1,lanes=motif.lanes.map(function(c){return mirror?3-c:c;}),start=route.length;
+      // Early districts teach both motifs without repeating their upper transit beats.
+      var motif=motifs[which],mirror=lane>1,span=L.stage<6?4:motif.lanes.length;
+      var lanes=motif.lanes.slice(0,span).map(function(c){return mirror?3-c:c;}),start=route.length;
       while(Math.abs(lanes[0]-lane)>1)step(lane+Math.sign(lanes[0]-lane),18,36,motif.id);
       lanes.forEach(function(next,j){
         if(next===lane&&j===0)return;
@@ -164,24 +169,35 @@
         var p=step(next,rise,width,motif.id);
         if(j===lanes.length-1)p.depth=8;
       });
-      if(route.length-start<6)step(lane===0?1:lane===3?2:lane-1,18,48,motif.id);
-      node(path[path.length-1]);
-      sections.push({id:motif.id,name:motif.name,from:route[start],to:route[route.length-1]});
+      var minimum=L.stage<6?3:6;
+      while(route.length-start<minimum)step(lane===0?1:lane===3?2:lane-1,18,48,motif.id);
+      if(L.stage<6)while(lane!==0&&lane!==3)step(lane+(lane<2?-1:1),18,40,motif.id);
+      var landing=path[path.length-1],center=landing.x+landing.w/2;
+      landing.w=motif.landing;landing.x=Math.round(center-landing.w/2);landing.depth=9;
+      node(landing);
+      sections.push({id:motif.id,name:motif.name,rhythm:motif.rhythm,from:route[start],to:landing.id,
+        platformIds:route.slice(start),landing:{x:center,y:landing.y,platformId:landing.id},
+        beats:path.slice(start).map(function(p){return {platformId:p.id,kind:p===landing?'rest':p.w>=48?'landing':'traverse'};})});
     });
     var used=[],roomOffset=Math.floor(random()*roomKinds.length),steps=path.length;
     [4,Math.floor(steps/2)+1,steps-2].forEach(function(want,r){
       var choices=[];
-      for(var at=3;at<steps;at++)if((path[at].lane===0||path[at].lane===3)&&used.every(function(other){return Math.abs(path[other].y-path[at].y)>=64;}))choices.push(at);
+      for(var at=3;at<steps;at++)if((path[at].lane===0||path[at].lane===3)&&used.every(function(other){return Math.abs(path[other].y-path[at].y)>=(L.stage<6?48:64);}))choices.push(at);
       choices.sort(function(a,b){return Math.abs(a-want)-Math.abs(b-want)||a-b;});
       var at=choices[0];used.push(at);
       var source=path[at],dir=source.lane===0?-side:side,kind=roomKinds[(r+roomOffset)%roomKinds.length];
       var cx=source.x+source.w/2+dir*((source.w+kind.width)/2+kind.gap);
       var room=ledge('room'+r,cx,source.y+kind.drop,kind.width);
       var nx=cx+dir*((kind.width+kind.nook)/2+kind.gap),nook=ledge('nook'+r,nx,room.y-kind.rise,kind.nook);
-      room.style=nook.style='root';
-      rooms.push({kind:kind.id,from:source.id,platformId:room.id,x:cx,y:room.y,secret:{x:nx,y:nook.y,platformId:nook.id}});
+      room.style=nook.style=kind.style;room.depth=kind.id==='gallery'?9:8;nook.depth=8;
+      var branch={x:source.x+source.w/2,y:source.y,platformId:source.id},outbound=[source.id,room.id,nook.id];
+      rooms.push({kind:kind.id,name:kind.name,from:source.id,platformId:room.id,x:cx,y:room.y,side:dir,
+        branch:branch,returnAnchor:branch,outbound:outbound,return:outbound.slice().reverse(),
+        bounds:{x:Math.min(room.x,nook.x),y:Math.min(room.y,nook.y),w:Math.max(room.x+room.w,nook.x+nook.w)-Math.min(room.x,nook.x),h:Math.max(room.y,nook.y)-Math.min(room.y,nook.y)+8},
+        secret:{x:nx,y:nook.y,platformId:nook.id}});
     });
-    E.summit={x:nodes[2].x,y:nodes[2].y};
+    E.summit={x:nodes[2].x,y:nodes[2].y,platformId:nodes[2].platformId};
+    E.descent=route.slice().reverse();
     E.circuit=circuit(L,E,ground,random);
     return L;
   }
