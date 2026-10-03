@@ -1,0 +1,15 @@
+{
+ "01_terrain_tiles": ["ground-block-large","ground-corner-right","ground-slope-down","ground-block-small","cliff-edge-left","slope-up","slope-step-up","slope-steep","cliff-sliver","ledge-top","ledge-long","ledge-short","ledge-medium","overhang-notch"],
+ "02_ruins_architecture": ["column-capital","column-slim","column-plinth","pillar-broken","banners-pair","banner-small","seated-colossus","aqueduct-arches","wall-segment","wall-post","idol-small"],
+ "03_structures": ["scaffold-platform","ladder","torch-post","windmill-tower","tarp-shelter","lamp-post-small","ladder-platform","plank-beam"],
+ "04_props": ["pedestal-pair","cloth-cot","chest","bench","clay-urn","well-with-pulley","water-pipe"],
+ "05_plants": ["saguaro-tall","barrel-cactus","saguaro-small","dry-shrub-small","dead-bush","palm-tall-with-cactus","palm-short","thorn-bush","dry-grass-tuft"],
+ "06_underground_tiles": ["ceiling-strip","ceiling-strip-2","ceiling-drip","arch-block","wedge","ceiling-corner","brick-column","brick-notch","brick-wall","brick-cap"],
+ "07_underground_props": ["stalactite-cluster","banner-teal","banner-violet","pillar-and-shrine","crystal-shard-pink","crystal-spire","crystal-spire-2","crystal-small","crystal-goblet"],
+ "08_water_fx": ["water-ledge-pipe","water-column","waterfall-wide","waterfall-splash","fountain-basin-double","fountain-basin-single","water-orb","splash-drop","water-drop","droplets"],
+ "09_enemies": ["scorpion","scorpion-2","sand-raptor","vulture","golem","beetle-large","beetle-small","sand-snake","mummy","sand-drift","sand-drift-2","sand-drift-3"],
+ "10_npc_interactables": ["nomad","nomad-child","merchant","spark-star","nomad-2","sand-spirit","trade-chest","camel-and-shrine"],
+ "11_details_small_fx": ["torch-flame","lantern-hanging","lantern-tall","lantern-hook","lantern-small","oil-lamp","plaque-glyph","plaque-scroll","frost-sparkle","ash-scatter","lantern-green","debris-bit","debris-bit-2","bone-scatter","pendant-hanging","pendant-lamp","charm-hanging","glow-orb","glow-orb-double","debris-bit-3","debris-bit-4","skull","rock-ball","dust-mote","dust-mote-2","sparkle-cross","sparkle-bits","dust-burst","dust-cloud","sand-burst","rubble-burst","sparkle-tiny","glow-burst","glow-burst-2","star-flash","star-twinkle"],
+ "12_background_layers": ["mountains-far","dunes-mid","sun","clouds-pair","cloud","dunes-near"],
+ "13_palette_mark": ["palette-strip","mark"]
+}
