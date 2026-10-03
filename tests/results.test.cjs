@@ -103,10 +103,13 @@ test('all game modes save the captured outfit without changing their actual plan
       w.rogueMeta = {}; w.gardenPlots = []; w.gardenWave = 3; w.gardenScore = 99; w.runElapsed = 301.12;
       w.gardenStats = { harvested: 1 }; w.recordGardenPlant = () => {}; w.worldLevel = () => 4;
       w.highTideMode = () => mode === 'high-tide'; w.nightRelayMode = () => mode === 'night-relay'; w.HIGH_TIDE = { height: 480 };
+      w.eval(readFileSync(join(root, 'ascent-presentation.inc.js'), 'utf8'));
+      w.ascentPresentation = {}; w.ascentFrame = {}; w.ascentLive = {};
       w.eval(functionSource('finalizeHighTide', 'high-tide.inc.js'));
       w.eval(functionSource('finalizeNightRelay', 'night-relay.inc.js'));
       w.eval(functionSource('finalizeRogueRun'));
       w.finalizeRogueRun(false);
+      assert.equal(w.ascentPresentation, null); assert.equal(w.ascentFrame, null); assert.equal(w.ascentLive, null);
       const record = w.MaxRunRecords.getAll()[0];
       assert.equal(record.skinId, 'moss-pink'); assert.equal(record.classId, 'runner');
       assert.deepEqual(snapshot(record.plants), mode === 'night-relay' ? [] : plants(2));
