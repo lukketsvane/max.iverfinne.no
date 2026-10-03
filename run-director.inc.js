@@ -850,6 +850,12 @@ function drawRunExploration(t){
   drawBossEvent(t);
   drawGuardianNodes(t);
   drawExpedition(t);
+  var nearestTrial=null,trialDistance=Infinity;
+  runEncounters.forEach(function(e){
+    if(e.active||e.done||e.locked||Math.abs(P.x-e.x)>=48||Math.abs(P.y-encounterFloor(e))>=24)return;
+    var distance=Math.abs(P.x-e.x)+Math.abs(P.y-encounterFloor(e));
+    if(distance<trialDistance){nearestTrial=e;trialDistance=distance;}
+  });
   runEncounters.forEach(function(e){
     var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);if(x<-20||x>IW+20)return;
     ctx.fillStyle=e.locked?'#202827':'#252f30';ctx.fillRect(x-9,y-5,18,5);ctx.fillRect(x-6,y-15,12,10);
@@ -863,14 +869,14 @@ function drawRunExploration(t){
         var guards=(e.guardsRemaining||0)+floatKrek.filter(function(k){return k.eventId===e.id;}).length;
         expeditionText(e.away?'LEAVING '+Math.ceil(4-e.away):guards+' GUARDS LEFT',Math.max(53,Math.min(IW-53,x)),y-37);
       }
-    }else if(!e.done&&!e.locked&&Math.abs(P.x-e.x)<48&&Math.abs(P.y-encounterFloor(e))<24){
+    }else if(e===nearestTrial){
       ctx.fillStyle=gardenSeeds>=e.cost?'#e0d291':'#797b6d';
       for(var c=0;c<e.cost;c++)ctx.fillRect(x-e.cost*2+c*4,y-22,2,2);
       ctx.fillRect(x,y-29,1,3);ctx.fillRect(x-2,y-27,1,1);ctx.fillRect(x+2,y-27,1,1);ctx.fillRect(x-1,y-26,3,1);
       var labelX=Math.max(79,Math.min(IW-79,x)),name={nest:'NEST',rain:'RAIN',cache:'CACHE',relay:'DEW RELAY',loom:'RAIN LOOM',echo:'ECHO NEST'}[e.type];
-      expeditionText(name+' - '+encounterGuardCount(e)+' GUARDS',labelX,y-67);
-      expeditionText(e.cost+' SEED'+(e.cost===1?'':'S')+' / '+{feathers:'JUMP',embers:'ATTACK',dew:'CARE'}[encounterReward(e)],labelX,y-55);
-      expeditionText('TEND - LEAVE TO WITHDRAW',labelX,y-43);
+      drawGuideStack([name+' - '+encounterGuardCount(e)+' GUARDS',
+        e.cost+' SEED'+(e.cost===1?'':'S')+' / '+{feathers:'JUMP',embers:'ATTACK',dew:'CARE'}[encounterReward(e)],
+        'TEND - LEAVE TO WITHDRAW'],labelX,y-32);
     }
   });
   runEncounters.forEach(function(e){if(!e.active||!e.ingress)return;
@@ -1133,12 +1139,10 @@ function updateCircuitGuard(k,dt){
   return true;
 }
 function expeditionText(text,x,y,color){
-  text=text.toUpperCase();x=Math.round(x-text.length*3);y=Math.round(y);
-  if(!runPixelFont.complete||!runPixelFont.naturalWidth)return;
-  ctx.fillStyle=color||'rgba(12,20,22,.9)';ctx.fillRect(x-3,y-2,text.length*6+5,11);
-  for(var i=0;i<text.length;i++){var n=text.charCodeAt(i)-32;if(n>=0&&n<96)ctx.drawImage(runPixelFont,n%16*6,Math.floor(n/16)*8,5,7,x+i*6,y,5,7);}
+  drawGuideLabel(text,x,y,color);
 }
 function drawExpedition(t){
+  drawRouteGuides();
   var E=stageLayout().expedition,e=runExpedition;if(!E||!e)return;
   var entryX=Math.round(E.start.x-camX),entryY=Math.round(E.start.y-camY);
   var origin=levelOriginX(worldLevel());
@@ -1205,13 +1209,18 @@ function drawCircuit(E,e,t){
     var column=C.family==='bell'?2:C.family==='arch'?1:0;
     ctx.drawImage(districtLandmarks,column*48,0,48,64,x-24,y-63,48,64);
   }
+  var nearestChoice=-1,choiceDistance=Infinity;
+  C.choices.forEach(function(q,i){
+    if(!expeditionNear(P,q,13))return;
+    var distance=Math.abs(P.x-q.x)+Math.abs(P.y-q.y);
+    if(distance<choiceDistance){nearestChoice=i;choiceDistance=distance;}
+  });
   C.choices.forEach(function(q,i){
     var qx=Math.round(q.x-camX),qy=Math.round(q.y-camY),chosen=e.circuitChoice===i,lit=chosen&&(e.circuitActive||e.circuitDone);
     if(!drawDistrictProp('altar',lit,qx,qy)){ctx.fillStyle=lit?'#d7dca4':'#425954';ctx.fillRect(qx-7,qy-8,14,8);ctx.fillRect(qx-5,qy-10,10,2);}
     if(!e.circuitFailed&&(!e.circuitActive&&!e.circuitDone||chosen))drawRunItem(q.item,qx,qy-25,false);
-    if(expeditionNear(P,q,13)&&!e.circuitActive&&!e.circuitDone&&!e.circuitFailed){
-      expeditionText({feathers:'Tend: higher jumps',embers:'Tend: stronger hits',dew:'Tend: stronger care'}[q.item],qx,qy-46);
-      expeditionText('Fight, or leave',qx,qy-35);
+    if(i===nearestChoice&&!e.circuitActive&&!e.circuitDone&&!e.circuitFailed){
+      drawGuideStack([{feathers:'Tend: higher jumps',embers:'Tend: stronger hits',dew:'Tend: stronger care'}[q.item],'Fight, or leave'],qx,qy-28);
     }
   });
   if(e.circuitActive){

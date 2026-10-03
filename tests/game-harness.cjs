@@ -16,9 +16,12 @@ const stateNames = [
   'activeStageLayout', 'charge', 'coop', 'heldUp', 'heldR', 'dodgeBuf', 'bombs', 'feathers', 'bombCool', 'krekSpawnT',
   'runLoot', 'runEncounters', 'runHazards', 'booms',
   'ctx',
+  'bossEvent', 'guardianView', 'worldBanner',
   'WALK_V',
 ];
 const functionNames = [
+  'levelGuideObjective', 'guideLines', 'drawGuideLabel', 'drawGuideStack', 'drawLevelGuide',
+  'campaignAtmosphere', 'drawCampaignBackdrop', 'drawCampaignAtmosphere', 'cavernGarden', 'drawClimbSky',
   'updateYeet', 'drawYeet', 'yeetSync', 'yeetArt',
   'pollPads', 'configurePad',
   'drawCharge',
