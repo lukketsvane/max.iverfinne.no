@@ -7,20 +7,20 @@
     ['Eastern chapel approach','Western ruined gallery','Chapel forecourt',1,.72,.64],
     ['Western root basin','Eastern root landing','Root Stair approach',-1,.65,.72],
     ['Eastern terrace foot','Western cairn overlook','Cairn forecourt',1,.72,.68],
-    ['Western lantern clearing','Eastern canopy rest','Lantern Tree approach',-1,.7,.64],
-    ['Eastern bridge bank','Western sky landing','Sky Stair forecourt',1,.75,.58],
+    ['Western lantern chamber','Eastern root rest','Lantern Roots approach',-1,.7,.64],
+    ['Eastern bridge bank','Western silo landing','Silo Stair forecourt',1,.75,.58],
     ['Western tower court','Eastern broken gallery','Collapsed Tower approach',-1,.7,.67],
     ['Eastern bell clearing','Western root balcony','Bell Cellar forecourt',1,.66,.7],
     ['Western frost basin','Eastern quarry overlook','Quarry forecourt',-1,.72,.64],
-    ['Eastern willow clearing','Western branch rest','Willow forecourt',1,.72,.64],
-    ['Western tower bank','Eastern crossing rest','Twin Towers approach',-1,.72,.67],
+    ['Eastern root chamber','Western root rest','Weeping Roots forecourt',1,.72,.64],
+    ['Western shaft bank','Eastern crossing rest','Twin Shafts approach',-1,.72,.67],
     ['Eastern crypt court','Western ruined lookout','Catacomb forecourt',1,.7,.66],
-    ['Western moon basin','Eastern moon landing','Moon Steps forecourt',-1,.75,.7],
+    ['Western fault basin','Eastern fault landing','Fault Steps forecourt',-1,.75,.7],
     ['Eastern ember terrace','Western giant landing','Giant Stair forecourt',1,.72,.7],
-    ['Western nest clearing','Eastern crown branch','Nest Crown approach',-1,.7,.67],
-    ['Eastern sluice bank','Western crossing rest','Sluice Gate forecourt',1,.74,.62],
-    ['Western gate court','Eastern ruined balcony','Gatehouse approach',-1,.72,.67],
-    ['Eastern throne court','Western crown gallery','Throne Vault approach',1,.7,.9]
+    ['Western reactor chamber','Eastern irradiated roots','Reactor Nest approach',-1,.7,.67],
+    ['Eastern sluice bank','Western crossing rest','Last Sluice forecourt',1,.74,.62],
+    ['Western gate court','Eastern ruined balcony','Surface Breach approach',-1,.72,.67],
+    ['Eastern irradiated court','Western crown gallery','Radioactive Dawn approach',1,.7,.9]
   ];
   var pictureSites={
     'seed-vault':[

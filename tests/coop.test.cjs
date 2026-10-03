@@ -64,7 +64,9 @@ test('world changes carry every player and the actual shared bouquet',()=>{
 test('a surviving plant takes over a lost exit without repeating victory rewards or skipping the climb',()=>{
   const {games,sync}=team(['mech','herbalist'],2),host=games[0].game;
   games[0].tick(16);
-  const x=host.P.x,first=plot({id:71,x,growth:.5}),backup=plot({id:72,x:x+24,growth:.2});
+  const x=host.bossEvent.courtX-12,first=plot({id:71,x,growth:.5}),backup=plot({id:72,x:x+24,growth:.2});
+  // Both candidates belong to the guardian court; growth selects the first exit.
+  Object.assign(host.P,{x:first.x,y:host.surfaceY(first.x),st:'free',grounded:true,wet:false});
   host.gardenPlots=[first,backup];host.floatKrek=[];host.rogueRun.bossDefeated=true;
   host.levelCleared();assert.equal(first.stalk,true);assert.ok(!backup.stalk);
   const seeds=host.seedPickups.length,level=host.rogueRun.level;

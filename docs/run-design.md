@@ -25,7 +25,11 @@ The first player starting an empty garden chooses Easy, Medium, Hard or Insane. 
 
 An attempt begins in Garden 1 and ends at the Hollow Crown in Garden 20.
 
-Each normal garden has three finite raids. Time pressure continues to rise throughout the attempt and is not reset by moving to a new garden. Clearing a garden unlocks the upward exit but does not create a permanent safe room; patrols continue.
+Each normal garden has three optional preparation raids and a mandatory guardian at one of three seeded shrine destinations. Grow a plant in its court and tend the shrine to awaken it. Defeating the guardian opens the physical exit. Time pressure continues to rise throughout the attempt and is not reset by moving to a new garden; patrols continue after a clear.
+
+The campaign climbs from deep vaults through buried works and underworld faults. Gardens 1–17 have no outdoor sky. The first small dawn breaches appear high above the routes in gardens 18–19; garden 20 emerges into a radioactive hellscape at sunrise for the Hollow Crown. Exit climbs stay underground before the final emergence.
+
+Each garden has its own campaign profile and two seeded route roles: a broad preparation route and a higher exploration route. Galleries, promenades and rest terraces break up the climbing rhythm. Required destinations remain accessible without movement upgrades. Early upper districts have shorter climbs; later districts have broader summit terraces and distinct cache detours.
 
 The six route families are terraces, canopy, crossings, ruins, switchbacks and the final Crown layout. Platforms are one-way: jump through from below and land while descending.
 
