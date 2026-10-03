@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {spawn}=require('node:child_process'),{webkit,chromium}=require('playwright');
 const port=8782,base=`http://127.0.0.1:${port}`;
-const server=spawn('python3',['-m','http.server',String(port),'--directory','dist'],{stdio:'ignore'});
+const server=spawn('python3',['-m','http.server',String(port),'--directory',process.env.GUARDIANS_REVIEW_DIST||'dist'],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','bellkeeper','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
 async function checkCircuit(page,engineName,errors){
@@ -55,7 +55,7 @@ async function checkCircuit(page,engineName,errors){
  fs.mkdirSync('guardian-browser-review',{recursive:true});
  for(let i=0;i<50;i++){try{if((await fetch(base)).ok)break;}catch{}await pause(100);}
  for(const [engineName,engine] of Object.entries({chromium,webkit})){
-  const browser=await engine.launch({headless:true});
+  const browser=await engine.launch({headless:true,...(engineName==='chromium'&&process.env.GUARDIANS_CHROMIUM_EXECUTABLE?{executablePath:process.env.GUARDIANS_CHROMIUM_EXECUTABLE}:{})});
   try{
    const page=await browser.newPage({viewport:{width:1050,height:1030},deviceScaleFactor:1}),errors=[];
    page.on('pageerror',e=>errors.push(e.message));
@@ -132,7 +132,7 @@ async function checkCircuit(page,engineName,errors){
    assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
    }
    }
-   for(const [classId,primary] of [['runner','dropkick'],['bulwark','cleave'],['herbalist','spore'],['polge','jab']]){
+   for(const [classId,primary] of [['runner','dropkick'],['bulwark','cairn-sweep'],['herbalist','spore'],['polge','jab']]){
     await page.goto(base+'/review.html?mode=class-kits&portrait=1&class='+classId);
     await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
     const game=page.frames().find(f=>f!==page.mainFrame());
@@ -143,7 +143,7 @@ async function checkCircuit(page,engineName,errors){
     assert.equal(observation.combat.classId,classId);assert.equal(observation.combat.bombPeak,0);
     if(classId==='herbalist')assert.ok(observation.combat.shotsCreated>0,'native projectile was created');
     else assert.equal(observation.combat.shotsCreated,0,'melee never creates a projectile');
-    await page.waitForFunction(()=>{const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;return c.grounded&&c.attackCool<=0;},{},{timeout:3000});
+    await page.waitForFunction(()=>{const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;return c.grounded&&c.attackCool<=0&&(c.classId!=='bulwark'||!c.phasePolicy?.blockBrace);},{},{timeout:3000});
     await game.evaluate(()=>window.focus());
     if(classId==='runner'){
      await page.keyboard.down('ArrowUp');
@@ -154,16 +154,36 @@ async function checkCircuit(page,engineName,errors){
      }finally{await page.keyboard.up('ArrowUp');}
      await page.waitForFunction(()=>{const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;return c.grounded&&c.attackCool<=0;},{},{timeout:3000});
     }
-    await page.keyboard.press('e');
-    await page.waitForFunction(id=>{
+    if(classId==='bulwark'){
+     // Brace moved to V; E now requires three genuinely earned Strata. The
+     // dedicated Cairn gate verifies the paid Ridge and all contact budgets.
+     await page.keyboard.press('v');
+     await page.waitForFunction(()=>{
+      const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
+      return c.cairn?.braceT>0&&c.cairn.utilityCool>0&&c.strikes['cairn-brace']>0&&c.cairnMotionCell;
+     },{},{timeout:3000});
+     const beforeRidgeData=await page.locator('#status').getAttribute('data-guardian'),beforeRidge=JSON.parse(beforeRidgeData).combat.cairn;
+     assert.ok(beforeRidge.strata<3,'the native-kit fixture does not prefill Ridge plates');
+     await page.keyboard.press('e');
+     await page.waitForFunction(previous=>document.querySelector('#status').dataset.guardian!==previous,beforeRidgeData,{timeout:2000});
+     const afterRidge=JSON.parse(await page.locator('#status').getAttribute('data-guardian')).combat;
+     assert.ok(afterRidge.cairn.strata>=beforeRidge.strata,'an unaffordable Ridge never debits earned plates');
+     assert.equal(afterRidge.cairn.ridgeSerial,beforeRidge.ridgeSerial,'a denied E never allocates a Ridge');
+     assert.equal(afterRidge.cairn.ridgePhase,0);assert.equal(afterRidge.cairn.ridgeReserved,0);
+     assert.equal(afterRidge.cairn.specialCool,0,'an unaffordable Ridge starts no cooldown');
+     assert.ok(afterRidge.cairnMotionCell,'Brace retains the original native body pose');
+    }else{
+     await page.keyboard.press('e');
+     await page.waitForFunction(id=>{
      const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
-     return c.skillCool>0&&(id==='runner'?c.strikes.splits>0:id==='bulwark'?c.cues.brace>0||c.cues.parry>0:id==='herbalist'?c.cues.bloom>0||c.cues.revive>0:c.strikes.flurry>0);
-    },classId,{timeout:5000});
+     return c.skillCool>0&&(id==='runner'?c.strikes.splits>0:id==='herbalist'?c.cues.bloom>0||c.cues.revive>0:c.strikes.flurry>0);
+     },classId,{timeout:5000});
+    }
     observation=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
     assert.equal(observation.combat.bombPeak,0,'native specials never place bombs');
     if(classId==='polge'||classId==='runner')assert.equal(observation.combat.shotsCreated,0,'close specials stay melee');
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${classId}-native-kit.png`});
-    assert.deepEqual(errors,[]);console.log(engineName,classId,'parent Attack control and keyboard special OK');
+    assert.deepEqual(errors,[]);console.log(engineName,classId,classId==='bulwark'?'parent Attack, keyboard Brace and unpaid Ridge rejection OK':'parent Attack control and keyboard special OK');
    }
    if(process.argv.includes('--native-kits-only'))continue;
    await page.goto(base+'/review.html?mode=boons&portrait=1');
