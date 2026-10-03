@@ -65,7 +65,7 @@ pending paid job into a second delivery.
 | Dodge | X | Existing dodge gesture | Stick click, button 10/11 | Left shoulder, button 4 |
 | Tend / plant / harvest | Space or ↓ | Drag down | Existing Tend input | Existing Tend input |
 | Refill | R | Tap a nearby rover | Hold Tend + press Fan (button 8) | Hold Tend + press Fan (button 8) |
-| Lantern | L | Existing item interaction | Home, button 16 | Home, button 16 |
+| Lantern | L | Existing item interaction | Home (16), or hold Tend + Rover (6) | Home (16), or hold Tend + Rover (10) |
 
 The four dedicated touch slots show Bomb, Fan, Rover and Overload alongside a
 Circuit count. Independent readiness, resource requirements and cast locks
@@ -74,8 +74,9 @@ their ordinary priority, including a threat overlapping the character; exit
 climbing keeps its normal boost interaction.
 
 Any nearby teammate can refill a rover while grounded and still on soil.
-The controller refill chord suppresses garden action while held and leaves
-ordinary Fan input unchanged. Refill lasts 2 s and pauses if the actual
+The controller refill and lantern chords suppress garden action while held
+and leave ordinary Fan/Rover input unchanged. The lantern chord is also
+available when Home is reserved by the device. Refill lasts 2 s and pauses if the actual
 refiller moves away, leaves the soil
 or leaves the party. The job retains that teammate's identity across snapshots
 and host promotion; a missing refiller is not silently replaced by the owner.

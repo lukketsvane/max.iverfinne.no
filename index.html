@@ -78,11 +78,19 @@
   #mechControls button:disabled{color:#728583;border-color:#354d51}
   #mechControls button:focus-visible{outline:2px solid #efd17e;outline-offset:2px}
   @media(hover:hover) and (pointer:fine){#mechControls{bottom:12px}#mechControls button{min-height:34px;font-size:10px}}
+  #rattusControls{position:fixed;z-index:25;right:max(12px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(2,82px);gap:6px}
+  #rattusControls[hidden]{display:none}
+  #rattusMomentum{grid-column:1/-1;color:#efd17e;text-align:right;font:11px/1.3 ui-monospace,monospace;pointer-events:none}
+  #rattusControls button{min-height:48px;border:1px solid #a46681;border-radius:2px;background:rgba(18,24,26,.9);color:#efd17e;font:11px/1.3 ui-monospace,monospace;touch-action:none;cursor:pointer}
+  #rattusControls button:disabled{color:#887583;border-color:#59404c}
+  #rattusControls button:focus-visible{outline:2px solid #efd17e;outline-offset:2px}
+  @media(hover:hover) and (pointer:fine){#rattusControls{bottom:12px}#rattusControls button{min-height:34px;font-size:10px}}
 </style>
 <div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="perkMenu" aria-live="polite"></div>
 <div id="polgeControls" hidden aria-label="Pølge combat"><button id="polgeClinch" type="button" aria-label="Clinch break (C)">Clinch · C</button><button id="polgeSlip" type="button" aria-label="Slip and counter (X)">Slip · X</button></div>
 <div id="mechControls" hidden aria-label="Max combat"><span id="mechCircuit" class="circuit" role="status" aria-live="polite">Circuit 0/3</span><button id="mechPrimary" type="button" aria-label="Plant bomb (B)">Bomb · B</button><button id="mechFan" type="button" aria-label="Irrigation fan (C)">Fan · C</button><button id="mechUtility" type="button" aria-label="Rover dispatch or recall (V)">Rover · V</button><button id="mechSpecial" type="button" aria-label="Floodgate overload (E)">Overload · E</button></div>
+<div id="rattusControls" hidden aria-label="Rattus combat"><span id="rattusMomentum" role="meter" aria-label="Momentum" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">Momentum 0/100</span><button id="rattusPrimary" type="button" aria-label="Boot combination (B)">Boots · B</button><button id="rattusSecondary" type="button" aria-label="Tail latch (C)">Tail · C</button><button id="rattusUtility" type="button" aria-label="Driving dropkick (V)">Drive · V</button><button id="rattusSpecial" type="button" aria-label="Splits stomp (E)">Stomp · E</button></div>
 <script>
 (function () {
 "use strict";
@@ -285,7 +293,7 @@ function pictureLayout(level){
 }
 function pictureLava(){
   var L=stageLayout();if(!L.hazards||!L.hazards.length)return false;
-  for(var i=0;i<L.hazards.length;i++){var h=L.hazards[i];if(P.x>h.x&&P.x<h.x+h.w&&P.y>h.y&&P.y-12<h.y+h.h){P.vy=-190;P.vx=(P.x<h.x+h.w/2?-1:1)*70;P.grounded=false;P.platform=null;shake=Math.min(3,shake+1.2);chime([220,165],.05,.04);return true;}}
+  for(var i=0;i<L.hazards.length;i++){var h=L.hazards[i];if(P.x>h.x&&P.x<h.x+h.w&&P.y>h.y&&P.y-12<h.y+h.h){var resistance=ownClass().id==='runner'?rattusKnockbackFactor():1;if(ownClass().id==='runner')rattusCancelMotion(rattusMember(),'lava');P.vy=-190*resistance;P.vx=(P.x<h.x+h.w/2?-1:1)*70*resistance;P.grounded=false;P.platform=null;shake=Math.min(3,shake+1.2);chime([220,165],.05,.04);return true;}}
   return false;
 }
 function stageLayout(){
@@ -320,7 +328,7 @@ function ladderInput(){
   return v;
 }
 function beginLadder(direction){
-  if(mechPlanted())return false;
+  if(mechPlanted()||rattusPolicy().blockClimb)return false;
   if(runIsPaused()||seedDown()||P.ladderRegrab>0||P.tun>0||P.st==='float'||P.st==='burrow'||climb||warp)return false;
   var q=ladderAt(P.x,P.y);if(!q||direction<0&&P.y<=q.top+1||direction>0&&P.y>=q.bottom-1)return false;
   P.ladderId=q.id;P.st='ladder';P.x=q.x;P.vx=P.vy=0;P.grounded=false;P.platform=null;P.coyote=0;P.held=false;P.land=0;P.brace=0;P.dodgeT=0;P.airJumpUsed=false;
@@ -394,9 +402,10 @@ var heldL = false, heldR = false, heldRun = false, heldUp = false;
 var jumpBuf = 0, jumpVariable = true;
 var dodgeBuf = 0, dodgeDirection = 0;
 var touches = {}, moveId = null;
+var rattusHeldC=false,rattusHeldV=false,rattusHeldUI=0;
 
 function doJump(variable) {
-  if(mechPlanted())return false;
+  if(mechPlanted()||rattusPolicy().blockJump)return false;
   if(P&&P.brace>0)P.brace=0;
   if(P&&P.tun>0)endTun();
   if(P&&P.st==='climb'&&climb){if(climb.exit)climbBoost();else jumpFromPlant(variable);return;}
@@ -407,12 +416,14 @@ function doJump(variable) {
   }
   jumpBuf = 0.14; jumpVariable = variable;
 }
-function requestDodge(direction) { if(mechPlanted())return false;dodgeBuf = .12; dodgeDirection = direction || readInput().axis || P.face; }
+function requestDodge(direction) { if(mechPlanted()||rattusPolicy().blockDodge)return false;dodgeBuf = .12; dodgeDirection = direction || readInput().axis || P.face; }
 
 window.addEventListener('keydown', function (e) {
   var k = e.key;
+  rattusWake();
   if(rogueRun.choice&&/^[123]$/.test(k)){if(!e.repeat&&rogueRun.choice[+k-1])chooseRoguePerk(rogueRun.choice[+k-1].id);e.preventDefault();return;}
   if (runIsPaused()) return;
+  if(k==='c'||k==='C')rattusHeldC=true;if(k==='v'||k==='V')rattusHeldV=true;
   if (k === 'ArrowLeft' || k === 'a' || k === 'A') heldL = true;
   else if (k === 'ArrowRight' || k === 'd' || k === 'D') heldR = true;
   else if (k === 'ArrowUp' || k === 'w' || k === 'W') { if (!heldUp && (!charge||placesBombs())) doJump(true); heldUp = true; }
@@ -442,6 +453,8 @@ window.addEventListener('keyup', function (e) {
   else if (k === 'ArrowDown' || k === 's' || k === 'S') heldDown = false;
   else if (k === ' ') heldSpace = false;
   else if (k === 'l' || k === 'L') lampKey = false;
+  else if (k === 'c' || k === 'C') {rattusHeldC=false;releaseClassSecondary(false);}
+  else if (k === 'v' || k === 'V') {rattusHeldV=false;releaseClassUtility(false);}
   else if ((k === 'b' || k === 'B' || k === 'j' || k === 'J') && charge && charge.src === 'key') chargeRelease();
 });
 var pad={b:[]},padFocusEl=null,padAx=0,padRelicOwned=false;
@@ -477,6 +490,7 @@ function padNavigate(dx,dy,list){
 }
 function padEscape(){var target=document.activeElement,dialog=padButtons()[0];if(!target||!target.closest||!target.closest('[role="dialog"],dialog'))target=dialog&&dialog.closest('[role="dialog"],dialog')||window;target.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));}
 function releasePad(){
+  if(pad.classC)releaseClassSecondary(true);if(pad.classV)releaseClassUtility(true);
   if(pad.b[14])heldL=false;if(pad.b[15])heldR=false;if(pad.jump)heldUp=false;if(pad.down)heldDown=false;if(pad.work)heldSpace=false;if(pad.run)heldRun=false;
   if(charge&&charge.src==='pad')charge=null;
   padAx=0;pad={b:[]};
@@ -513,8 +527,9 @@ function pollPads(){
   }else{
     if(!single&&choice&&choice.length&&U&&!pad.U)padMove(1,choice);
     if(!single&&choice&&choice.length&&!charge){var fx=gp.axes[2]||0,fy=gp.axes[3]||0,f=fx<-.35?0:fx>.35?2:fy<-.35?1:-1;if(f>=0&&f<choice.length&&choice[f]!==document.activeElement)padFocus(choice[f]);}
-    var rawWork=!!(b[1]||(single?b[0]&&D:b[3])),refillChord=rawWork&&!!b[8],work=rawWork&&!refillChord,jump=!!b[0]&&!D&&!work;
-    if(refillChord){gardenPress=false;task=holdWater=null;}
+    var utilityButton=single?10:6,hasUtility=['mech','runner'].indexOf(rogueRun.classId)>=0;
+    var rawWork=!!(b[1]||(single?b[0]&&D:b[3])),refillChord=rawWork&&!!b[8],lanternChord=rawWork&&hasUtility&&!!b[utilityButton],work=rawWork&&!refillChord&&!lanternChord,jump=!!b[0]&&!D&&!work;
+    if(refillChord||lanternChord){gardenPress=false;task=holdWater=null;}
     if(!single&&hit(0)&&choice&&choice.indexOf(document.activeElement)>=0)document.activeElement.click();
     else if(hit(0)&&jump){doJump(true);padRumble(20,.12);}
     if(!!b[14]!==!!was[14])heldL=!!b[14];if(!!b[15]!==!!was[15])heldR=!!b[15];
@@ -522,7 +537,7 @@ function pollPads(){
     var shoot=!!(b[2]||(single?b[5]||b[6]:b[7]));if(shoot&&!pad.shoot)chargeStart('pad');
     var aiming=charge&&charge.src==='pad';
     pad.ladderY=aiming&&(!single||b[6])?0:U?-1:D?1:0;
-    var down=D&&!aiming&&!refillChord&&(!single||work);if(down!==!!pad.down){heldDown=down;if(down)gardenPress=true;}pad.down=down;
+    var down=D&&!aiming&&!refillChord&&!lanternChord&&(!single||work);if(down!==!!pad.down){heldDown=down;if(down)gardenPress=true;}pad.down=down;
     if(work!==!!pad.work){heldSpace=work;if(work&&!aiming)gardenPress=true;}pad.work=work;
     var run=!single&&!!b[5];if(run!==!!pad.run)heldRun=run;pad.run=run;
     if(aiming){
@@ -530,20 +545,26 @@ function pollPads(){
       else{var aim=padAim(gp.axes[2]||0,gp.axes[3]||0);if(aim){charge.ax=aim.x;charge.ay=aim.y;charge.rs=true;charge.lock=false;}else if(!charge.rs){aim=padAim(ax,ay);charge.ax=aim?aim.x:(b[15]?1:0)-(b[14]?1:0);charge.ay=aim?aim.y:b[12]?-1:b[13]?1:0;}}
     }
     if(!shoot&&pad.shoot&&charge&&charge.src==='pad')chargeRelease();pad.shoot=shoot;pad.precise=single&&!!b[6];
+    var runnerPad=rogueRun.classId==='runner',classC=runnerPad&&!!b[8]&&!refillChord,classV=runnerPad&&!!b[utilityButton]&&!lanternChord;
+    pad.rattusAim=runnerPad?padAim(single?ax:gp.axes[2]||0,single?ay:gp.axes[3]||0):null;
+    if(classC&&!pad.classC)useClassSecondary();else if(!classC&&pad.classC)releaseClassSecondary(refillChord);
+    if(classV&&!pad.classV)useClassUtility();else if(!classV&&pad.classV)releaseClassUtility(lanternChord);
+    pad.classC=classC;pad.classV=classV;
+    if(lanternChord&&!pad.lanternChord)lampToggle=true;pad.lanternChord=lanternChord;
     if(single){
       if(hit(4)&&!work){if(charge&&charge.src==='pad')charge=null;requestDodge();padRumble(30,.2);}
       if(hit(3)&&useClassSkill())padRumble(45,.3);
-      if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='sligo')cycleSligo();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech')useClassSecondary();else refillCompanion();}
-      if(hit(10)&&rogueRun.classId==='mech')useClassUtility();
-      if(hit(16)||hit(10)&&['sligo','mech'].indexOf(rogueRun.classId)<0)lampToggle=true;
+      if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='sligo')cycleSligo();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech')useClassSecondary();else if(!runnerPad)refillCompanion();}
+      if(hit(10)&&rogueRun.classId==='mech'&&!lanternChord)useClassUtility();
+      if(hit(16)||hit(10)&&['sligo','mech','runner'].indexOf(rogueRun.classId)<0)lampToggle=true;
       if(hit(10)&&rogueRun.classId==='sligo')cycleSligo();
     }else{
       if((hit(10)||hit(11))&&!D&&!work&&!aiming)requestDodge();
       if(hit(6)&&rogueRun.classId==='sligo')cycleSligo();
-      if(hit(4))useClassSkill();if(hit(6)&&rogueRun.classId==='mech')useClassUtility();else if(hit(6)&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(16)&&rogueRun.classId==='mech')lampToggle=true;if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech')useClassSecondary();else refillCompanion();}
+      if(hit(4))useClassSkill();if(hit(6)&&rogueRun.classId==='mech'&&!lanternChord)useClassUtility();else if(hit(6)&&!hasUtility&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(16)&&hasUtility)lampToggle=true;if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='polge'||rogueRun.classId==='mech')useClassSecondary();else if(!runnerPad)refillCompanion();}
     }
     if(hit(9))padEscape();
-    if(b.some(Boolean))unlockAudio();
+    if(b.some(Boolean)||Math.abs(ax)>.12||Math.abs(ay)>.12||pad.rattusAim){rattusWake();unlockAudio();}
   }
   pad.menu=menu;pad.b=input.b;pad.single=single;pad.L=L;pad.R=R;pad.U=U;pad.D=D;
 }
@@ -579,6 +600,7 @@ function touchKind(wx, wy) {
 
 stage.addEventListener('pointerdown', function (e) {
   if(runIsPaused() || (e.pointerType==='mouse' && e.button!==0)) return;
+  rattusWake();
   unlockAudio();
   try { stage.setPointerCapture(e.pointerId); } catch (err) {}
   var w = e.pointerType==='mouse'?mouseAt(e):screenToWorld(e.clientX,e.clientY);
@@ -740,7 +762,7 @@ function ownClass(){return window.MaxClasses.get(rogueRun.classId);}
 function dodgeRecovery(){return (ownClass().id==='polge'?3.5:DODGE_COOLDOWN*ownClass().dodgeRecovery)*Math.pow(.83,rogueRun.perks.dash||0);}
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
-  if(mechPlanted()||P.dodgeCool>0||P.pounce||P.tun>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
+  if(mechPlanted()||rattusPolicy().blockDodge||P.dodgeCool>0||P.pounce||P.tun>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
   if(ownClass().id==='polge'&&!boxerDodge())return false;
   P.dodgeT=ownClass().id==='polge'?.18:DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;P.slipDistance=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;P.brace=0;
@@ -799,7 +821,8 @@ function updatePlayer(dt, inp) {
     P.hurt=Math.max(0,(P.hurt||0)-step);
     if(dodgeBuf>0){if(!startDodge())dodgeBuf=Math.max(0,dodgeBuf-step);}
     var planted=mechPlanted();if(planted){P.vx=0;jumpBuf=0;dodgeBuf=0;gardenPress=false;task=holdWater=null;}
-    var held=P.tun>0||planted?{axis:0,top:inp.top}:inp;
+    var runnerPolicy=rattusPolicy();if(runnerPolicy.blockTend){gardenPress=false;task=holdWater=null;}if(runnerPolicy.blockJump)jumpBuf=0;if(runnerPolicy.blockDodge)dodgeBuf=0;if(runnerPolicy.phase==='recovery'&&P.grounded)P.vx=0;
+    var held=P.tun>0||planted||runnerPolicy.lockSteer?{axis:0,top:inp.top}:inp;
     if(P.st==='free'&&!held.axis&&ladderInput())beginLadder(ladderInput());
     updateHands(step,taskSteer(held));
     if(P.st==='burrow')updateBurrow(step,inp);
@@ -816,7 +839,8 @@ function updatePlayer(dt, inp) {
 function physics(dt, inp) {
   var layout=stageLayout(),platform=P.platform&&window.MaxStageLayout.support(layout,P.platform,P.x);
   if(P.platform&&!platform&&P.grounded){P.grounded=false;P.coyote=.1;P.platform=null;}
-  var oldX=P.x,oldY=P.y;
+  var oldX=P.x,oldY=P.y,runner=ownClass().id==='runner',before=runner?{x:P.x,y:P.y,vx:P.vx,vy:P.vy,grounded:P.grounded,st:P.st,platform:P.platform}:null;
+  var motion=runner&&typeof rattusMotionIntent==='function'?rattusMotionIntent(rattusMember(),dt):null;
   var wp0 = waterAt(P.x); P.wet = playerWetAt(P.x,P.y);
   if(P.wet)P.dodgeT=0;
   if(P.dodgeT>0){if(ownClass().id==='polge'&&inp.axis)P.dodgeDir=inp.axis;P.face=P.dodgeDir;P.vx=P.dodgeDir*(ownClass().id==='polge'?Math.min(24/.18,Math.max(0,24-(P.slipDistance||0))/dt):DODGE_SPEED);}
@@ -850,17 +874,25 @@ function physics(dt, inp) {
 
   P.vy += GRAV * dt;
   if (P.vy > 340) P.vy = 340;
+  if(motion&&motion.kind==='stomp'&&!P.grounded){
+    var acceptedStomp=rattusPeek(rattusMember()),observedStomp=coopGuest()?P.rattusMotionObserved:null;
+    if(acceptedStomp&&(acceptedStomp.stompPhase===2||observedStomp&&observedStomp.kind==='stomp'&&observedStomp.world===motion.world&&observedStomp.serial===motion.serial&&observedStomp.phase===2)){P.pounce=2;P.vy=Math.max(320,P.vy);}
+  }
   if(P.pounce===1&&P.vy>=0)pounceDive();
   if(P.pounce===2&&Math.random()<dt*40)parts.push({x:P.x+(Math.random()-.5)*6,y:P.y-6-Math.random()*8,vx:(Math.random()-.5)*10,vy:-10-Math.random()*10,l:.4,m:.4,c:'96,128,78'});
   if (P.st === 'float' && P.vy > 30) P.vy = 30;
+  if(motion){if(motion.overrideX)P.vx=motion.vx;if(motion.overrideY)P.vy=motion.vy;}
+  var motionDistance=motion&&(motion.kind==='grapple'||motion.kind==='driving')?Math.min(Number.isFinite(motion.maxDistance)?Math.max(0,motion.maxDistance):Infinity,Number.isFinite(motion.remainingPath)?Math.max(0,motion.remainingPath):Infinity):Infinity;
+  var movingDistance=Math.hypot(P.vx*dt,P.vy*dt);if(movingDistance>motionDistance&&movingDistance>0){P.vx*=motionDistance/movingDistance;P.vy*=motionDistance/movingDistance;}
   P.x += P.vx * dt;
   if(ownClass().id==='polge'&&P.dodgeT>0)P.slipDistance=(P.slipDistance||0)+Math.abs(P.x-oldX);
   P.y += P.vy * dt;
   var rock=window.MaxStageLayout.solid(layout,oldX,oldY,P.x,P.y);
   if(layout.hazards&&layout.hazards.length)pictureLava();
-  if(rock){P.x=rock.x;P.y=rock.y;if(rock.wall)P.vx=0;if(rock.ceil&&P.vy<0)P.vy=0;}
+  if(rock){P.x=rock.x;P.y=rock.y;if(rock.wall)P.vx=0;if(rock.ceil&&P.vy<0)P.vy=0;if(runner&&rock.top)P.platform=rock.top;}
 
   var g = highTideMode()?rogueRun.survival.base+110:surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
+  if(runner&&rock&&rock.top){var rockSupport=window.MaxStageLayout.support(layout,rock.top,P.x);if(rockSupport)g=Math.min(g,rockSupport.y);}
   if(landing&&landing.y<g){g=landing.y;P.platform=landing.id;}
   else if(P.platform&&P.grounded){
     platform=window.MaxStageLayout.support(layout,P.platform,P.x);
@@ -879,12 +911,20 @@ function physics(dt, inp) {
       setAnim('land'); var wl = waterAt(P.x); if (wl&&g>wl.level+1) ripple(P.x, wl.level, 'splash'); else puff(P.x, g, imp > 160 ? 9 : 4, 0.5);
     }
     P.grounded = true; P.airJumpUsed=false; P.y = g; P.vy = 0; P.coyote = 0.1;
-    if(slam)landPounce();else if(P.pounce)P.pounce=0;
+    if(!runner){if(slam)landPounce();else if(P.pounce)P.pounce=0;}
   } else if (P.grounded) {
     P.grounded = false; P.coyote = 0.1;P.platform=null;
   }
   if(!P.grounded)P.dodgeT=0;
-  if(!P.grounded&&P.st==='free'&&!warp&&!P.pounce&&canPlantClimb(rogueRun.classId)&&(!highTideMode()||!inp.axis&&heldUp)){
+  if(runner&&motion&&(motion.kind==='grapple'||motion.kind==='driving'))rattusBoundMovement(before,motion,dt);
+  if(runner&&nightRelayMode())relayConstrain(P);
+  if(runner&&typeof rattusMovement==='function'){
+    var after={x:P.x,y:P.y,vx:P.vx,vy:P.vy,grounded:P.grounded,st:P.st,platform:P.platform},sprinting=!!inp.axis&&inp.top>=RUN_V&&!P.dodgeT&&!P.hurt&&!P.wet;
+    var observation={source:'physics',kind:motion&&motion.kind!=='none'?motion.kind:sprinting?'sprint':'ordinary',world:worldLevel(),serial:motion&&motion.serial||0,clock:performance.now(),sprinting:sprinting,supportId:P.platform||'ground',landing:!before.grounded&&P.grounded,corrected:false,placed:false,canContact:!coopGuest()};
+    rattusMovement(rattusMember(),before,after,dt,observation);
+    if(observation.landing)rattusLanding(rattusMember(),{id:P.platform||'ground',y:P.y},before,after,observation);
+  }
+  if(!P.grounded&&P.st==='free'&&!warp&&!P.pounce&&!rattusPolicy().blockClimb&&canPlantClimb(rogueRun.classId)&&(!highTideMode()||!inp.axis&&heldUp)){
     var catchPlant=plantClimbAt(P.x,P.y,7);
     if(catchPlant&&(!P.climbRegrab||catchPlant.id!==P.climbIgnoreId))beginClimb(catchPlant,false);
   }
@@ -925,7 +965,8 @@ function animate(dt) {
     if (P.frame < a.f.length - 1) P.frame++;
     else if (a.loop) P.frame = 0; else P.done = true;
   }
-  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt,ownClass().speed*(1+.06*(rogueRun.perks.stride||0))*(P.wet?.5:1));
+  if(window.MaxNativeArt&&window.MaxNativeArt.updatePlayerMotion)window.MaxNativeArt.updatePlayerMotion(P,dt,ownClass().speed*(1+.06*(rogueRun.perks.stride||0))*(P.wet?.5:1),rattusMotionContext());
+  P.rattusInputPulse=Math.max(0,(P.rattusInputPulse||0)-dt);
 }
 
 var parts = [];
@@ -2513,6 +2554,7 @@ function classProtection(plant){
 function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
 function useClassSecondary(){
   if(runIsPaused()||seedDown())return false;
+  if(ownClass().id==='runner'){var aim=rattusInputAim();if(!pad.rattusAim&&!(mouse.seen&&mouse.locked))aim=rattusDirectionalAnchorAim(aim)||aim;var latch=rattusLatch(aim);if(!latch)P.skillDenied=.2;return latch;}
   if(ownClass().id==='mech'){var fan=mechFan();if(!fan)P.skillDenied=.2;return fan;}
   if(ownClass().id!=='polge')return false;
   var target=floatKrek.filter(function(k){return enemyDistance(k,P.x,P.y-12)<=20;}).sort(function(a,b){return enemyDistance(a,P.x,P.y-12)-enemyDistance(b,P.x,P.y-12);})[0];
@@ -2521,9 +2563,47 @@ function useClassSecondary(){
   return ok;
 }
 function mechPlanted(){return ownClass().id==='mech'&&(P.mechWindup>0||typeof engineerState==='function'&&engineerState().overloadWindup>0);}
+function rattusPolicy(member){return (member?member.classId:ownClass().id)==='runner'&&typeof rattusPhasePolicy==='function'?rattusPhasePolicy(member):{};}
+function rattusBoundMovement(before,motion,dt){
+  var limit=Math.min(motion.maxDistance,motion.remainingPath),finalX=P.x,finalY=P.y,grounded=P.grounded,platformId=P.platform,layout=stageLayout(),lo=0,hi=1;
+  if(!Number.isFinite(limit))return;
+  function legal(p){return !(layout.platforms||[]).some(function(rock){return rock.solid&&p.x+4>rock.x+1e-7&&p.x-4<rock.x+rock.w-1e-7&&p.y>rock.y+1e-7&&p.y-18<rock.y+rock.h-1e-7;});}
+  function within(p){return Math.hypot(p.x-before.x,p.y-before.y)<=limit+1e-9;}
+  var finalPoint={x:finalX,y:finalY};if(within(finalPoint)&&legal(finalPoint))return;
+  function point(t){if(!t)return {x:before.x,y:before.y};var x=before.x+(finalX-before.x)*t,y=before.y+(finalY-before.y)*t;
+    if(before.grounded&&grounded&&(before.platform||null)===(platformId||null)){var support=platformId&&window.MaxStageLayout.support(layout,platformId,x);y=support?support.y:highTideMode()?rogueRun.survival.base+110:surfaceY(x);}
+    return {x:x,y:y};}
+  var accepted={x:before.x,y:before.y};
+  for(var n=0;n<32;n++){var mid=(lo+hi)/2,p=point(mid);if(within(p)&&legal(p)){lo=mid;accepted=p;}else hi=mid;}
+  // A legal stone step can spend this segment's path on its real rise first.
+  if(grounded&&platformId&&platformId!==before.platform&&finalY<before.y){var rise=Math.min(limit,before.y-finalY),stepPoint={x:before.x,y:before.y-rise};if(legal(stepPoint)&&within(stepPoint)&&Math.hypot(stepPoint.x-before.x,stepPoint.y-before.y)>Math.hypot(accepted.x-before.x,accepted.y-before.y))accepted=stepPoint;}
+  if(!within(accepted)||!legal(accepted))accepted={x:before.x,y:before.y};
+  P.x=accepted.x;P.y=accepted.y;
+  var support=window.MaxStageLayout.at(layout,P.x,P.y,1e-7),floor=highTideMode()?rogueRun.survival.base+110:surfaceY(P.x);
+  P.grounded=!!support||Math.abs(P.y-floor)<1e-7;P.platform=support?support.id:null;
+  if(motion.overrideX&&P.vx)P.vx=(P.x-before.x)/dt;
+  if(motion.overrideY)P.vy=P.grounded?0:(P.y-before.y)/dt;
+}
+function rattusWake(){if(P&&['moss-pink','moss'].indexOf(P.skin)>=0){P.rattusInputPulse=.12;P.motionIdle=0;P.idleT=0;P.fidget=null;}}
+function rattusInputActive(){return !!(heldL||heldR||heldUp||heldDown||heldSpace||heldRun||rattusHeldC||rattusHeldV||rattusHeldUI||charge||moveId!==null||Object.keys(touches).length||pad.b.some(Boolean)||pad.rattusAim||Math.abs(padAx)>.12||P.rattusInputPulse>0);}
+function rattusMotionContext(member){
+  if(['moss-pink','moss'].indexOf(P.skin)<0||typeof rattusPeek!=='function')return undefined;
+  member=member||(coop&&P.evoKey&&coop.members[P.evoKey])||rattusMember();
+  var own=!member||!coop||member.id===coop.me;
+  if(own)P.motionInput=rattusInputActive();
+  return {wrestler:rattusPeek(member)||{},phasePolicy:rattusPolicy(member),inputActive:own?P.motionInput:!!P.motionInput||Math.abs(P.vx)>3||Math.abs(P.vy)>3||P.st!=='free'};
+}
+function rattusInputAim(){
+  if(pad.rattusAim)return {x:P.x+pad.rattusAim.x*100,y:P.y-12+pad.rattusAim.y*100};
+  if(mouse.seen&&mouse.locked)return screenToWorld(mouse.x,mouse.y);
+  var direction=readInput().axis||P.face,vertical=heldUp?-1:heldDown?1:0;
+  return {x:P.x+direction*96,y:P.y-12+vertical*55};
+}
+function releaseClassSecondary(cancel){return ownClass().id==='runner'?rattusReleaseLatch(!!cancel):false;}
+function releaseClassUtility(cancel){return ownClass().id==='runner'?(cancel?rattusDrivingCancel():rattusDrivingRelease(rattusInputAim())):false;}
 function useClassUtility(){
   if(runIsPaused()||seedDown())return false;
-  var ok=ownClass().id==='mech'?mechDispatch():false;
+  var ok=ownClass().id==='mech'?mechDispatch():ownClass().id==='runner'?rattusDrivingStart(rattusInputAim()):false;
   if(!ok)P.skillDenied=.2;return ok;
 }
 var polgeControls=document.getElementById('polgeControls'),polgeClinchButton=document.getElementById('polgeClinch'),polgeSlipButton=document.getElementById('polgeSlip');
@@ -2556,10 +2636,43 @@ function updateMechControls(){
   mechUtilityButton.textContent=utilityCool>0?'Rover '+utilityCool.toFixed(1)+'s':'Rover · V';
   mechSpecialButton.textContent=specialCool>0?'Overload '+specialCool.toFixed(1)+'s':'Overload · E';mechSpecialButton.title=charge<3?'Needs 3 Circuit':'Floodgate overload';
 }
+var rattusControls=document.getElementById('rattusControls'),rattusMomentum=document.getElementById('rattusMomentum'),rattusPrimaryButton=document.getElementById('rattusPrimary'),rattusSecondaryButton=document.getElementById('rattusSecondary'),rattusUtilityButton=document.getElementById('rattusUtility'),rattusSpecialButton=document.getElementById('rattusSpecial');
+rattusPrimaryButton.addEventListener('click',function(){rattusWake();unlockAudio();throwAuto();});
+rattusSpecialButton.addEventListener('click',function(){rattusWake();unlockAudio();useClassSkill();});
+function bindRattusHold(button,start,release){
+  var pointer=null,keyboardHeld=false;
+  function end(e,cancel){if(pointer===null||e&&e.pointerId!==undefined&&e.pointerId!==pointer)return;pointer=null;rattusHeldUI=Math.max(0,rattusHeldUI-1);release(!!cancel);}
+  function endKeyboard(cancel){if(!keyboardHeld)return;keyboardHeld=false;rattusHeldUI=Math.max(0,rattusHeldUI-1);release(!!cancel);}
+  button.addEventListener('pointerdown',function(e){if(pointer!==null||button.disabled||e.button!==undefined&&e.button!==0)return;rattusWake();unlockAudio();pointer=e.pointerId;rattusHeldUI++;try{button.setPointerCapture(pointer);}catch(err){}start();e.preventDefault();});
+  button.addEventListener('pointerup',function(e){end(e,false);});
+  button.addEventListener('pointercancel',function(e){end(e,true);});
+  button.addEventListener('lostpointercapture',function(e){end(e,true);});
+  button.addEventListener('pointermove',function(e){if(pointer!==e.pointerId)return;var r=button.getBoundingClientRect();if(e.clientX<r.left-12||e.clientX>r.right+12||e.clientY<r.top-12||e.clientY>r.bottom+12)end(e,true);});
+  button.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&!e.repeat&&!keyboardHeld){rattusWake();keyboardHeld=true;rattusHeldUI++;start();e.preventDefault();if(e.stopPropagation)e.stopPropagation();}});
+  button.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter'){endKeyboard(false);e.preventDefault();if(e.stopPropagation)e.stopPropagation();}});
+  button.addEventListener('blur',function(){endKeyboard(true);});
+  window.addEventListener('blur',function(){end(null,true);endKeyboard(true);});
+}
+bindRattusHold(rattusSecondaryButton,useClassSecondary,releaseClassSecondary);bindRattusHold(rattusUtilityButton,useClassUtility,releaseClassUtility);
+function updateRattusControls(){
+  var visible=runActive&&!rogueRun.ended&&rogueRun.classId==='runner'&&!runIsPaused()&&!(window.MaxGameMenu&&window.MaxGameMenu.isOpen&&window.MaxGameMenu.isOpen());
+  rattusControls.hidden=!visible;if(!visible)return;
+  var q=wrestlerState(),policy=rattusPolicy(),down=seedDown(),momentum=Math.floor(q.momentum),c=Math.max(q.latchCool,P.secondaryCool||0),v=Math.max(q.utilityCool,P.utilityCool||0),e=Math.max(q.specialCool,P.skillCool||0);
+  rattusMomentum.textContent='Momentum '+momentum+'/100';rattusMomentum.setAttribute('aria-valuenow',String(momentum));
+  rattusPrimaryButton.disabled=down||policy.blockPrimary||bombCool>0;
+  rattusSecondaryButton.disabled=down||!policy.hasLatch&&(c>0||policy.lockLatch);
+  rattusUtilityButton.disabled=down||!policy.hasCharge&&(v>0||policy.lockDriveStart);
+  rattusSpecialButton.disabled=down||e>0||policy.lockStomp||P.dodgeT>0;
+  rattusPrimaryButton.textContent=bombCool>0?'Boots '+bombCool.toFixed(1)+'s':'Boots · B';
+  rattusSecondaryButton.textContent=policy.hasLatch?'Tail · hold':c>0?'Tail '+c.toFixed(1)+'s':'Tail · C';
+  rattusUtilityButton.textContent=policy.hasCharge?'Drive · release':v>0?'Drive '+v.toFixed(1)+'s':'Drive · V';
+  rattusSpecialButton.textContent=e>0?'Stomp '+e.toFixed(1)+'s':'Stomp · E';
+}
 function useClassSkill(){
   if(seedDown())return false;
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if(kit.id==='mech'){ok=mechOverload();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
+  if(kit.id==='runner'){ok=rattusStomp();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
   if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
     ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():kit.skill==='flurry'?polgeFlurry():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
@@ -2631,30 +2744,18 @@ function roverArrive(bot,p){
   skillRing(p.x,gy,26,'arrive');socialTone('water');
 }
 function roverShelters(p){var found=false;eachCompanion(function(bot){if(bot.state.pourT>0&&bot.state.target===p)found=true;});return found;}
-function pounceDive(){P.pounce=2;P.pounceY=P.y;P.vy=320;P.vx*=.3;P.rattleMove='splits';P.rattleClock=0;sfx('swish',0);}
-function cancelPounce(){if(P.pounce){P.pounce=0;P.rattleMove='';P.rattlePose=0;P.skillCool=classSkillCooldown();}}
-function mossPounce(){
-  if(bombCool>0)return false;
-  if(climb){P.climbIgnoreId=climb.p.id;P.climbRegrab=.35;climb=null;climbGoal=null;P.st='free';P.grounded=false;P.platform=null;P.coyote=0;pounceDive();return true;}
-  if(P.grounded&&P.wet)return false;
-  if(P.st!=='free'){task=null;holdWater=null;P.st='free';}
-  if(!P.grounded){pounceDive();return true;}
-  P.pounce=1;P.rattleMove='salto';P.rattleClock=0;P.vy=JUMP_V*ownClass().jump*(1+.06*(rogueRun.perks.spring||0))*featherJump()*1.1;P.grounded=false;P.coyote=0;P.platform=null;P.held=false;P.land=0;jumpBuf=0;
-  setAnim('rise');puff(P.x,P.y,5,.45);return true;
+function pounceDive(){
+  if(ownClass().id!=='runner')return;
+  var q=wrestlerState();if(q.stompPhase!==1&&q.stompPhase!==2){P.pounce=0;return;}
+  if(!coopGuest())q.stompPhase=2;else if(P.rattusMotionObserved)P.rattusMotionObserved.phase=2;P.pounce=2;P.pounceY=q.apexY;P.vy=320;P.vx*=.3;P.rattleMove='splits';P.rattleClock=0;sfx('swish',0);
 }
-function landPounce(){
-  var drop=Math.max(0,Math.min(160,P.y-P.pounceY));P.pounce=0;P.skillCool=classSkillCooldown();P.rattleMove='splits';P.rattlePose=.45;P.rattleClock=0;bombCool=bombCoolMax=Math.max(bombCool,.45);
-  if(playerWetAt(P.x,P.y))return;
-  shake=Math.min(3,shake+1.6);puff(P.x,P.y,9,.5);
-  skillCue('slam',0);
-  if(coopGuest())coopAction('skill',{x:P.x,y:P.y,drop:drop,skillTag:(P.skillTag=(P.skillTag||0)+1)});else mossSlam(P.x,P.y,drop);
-}
-function mossSlam(x,y,drop){
-  var kit=ownClass(),build=Object.assign({},rogueRun.perks,{emberStacks:ownTraits().embers}),r=kit.pounceRadius+4*(build.fletching||0)+(build.updraft?12:0),mult=(1+.12*(build.emberStacks||0))*(1+.25*(build.needle||0))*(1+Math.min(1,drop/kit.pounceDrop));
-  floatKrek.slice().forEach(function(k){if(enemyDistance(k,x,y-12)<r&&combatLineClear(x,y-12,k.x,k.y)&&!damagePest(k,mult,x,build)&&!k.boss){staggerKrek(k,.9);k.vx=(k.x<x?-1:1)*80;k.vy=build.updraft?-85:-40;k.flash=.6;}});
-  combatObjectives(x,y-12,r);
-  combatFx('splits',x,y-5,r,P.face);
-}
+function cancelPounce(){if(ownClass().id==='runner'&&rattusPeek()&&rattusPeek().stompPhase)rattusCancelMotion(undefined,'cancel-pounce');else P.pounce=0;}
+function mossPounce(){return rattusStomp();}
+function landPounce(){P.pounce=0;}
+// Retained for old callers and review links. Damage requires an accepted Stomp
+// and a real support crossing through rattusLanding; x/y/drop are not proof.
+function mossSlam(x,y,drop){return false;}
+
 function parryable(x,y){var r=window.MaxClasses.get('bulwark').braceRadius;return floatKrek.some(function(k){return k.windup>0&&enemyDistance(k,x,y-12)<r;});}
 function bulwarkBrace(){
   if(!P.grounded||P.wet||climb||P.st==='float'||P.dodgeT>0||readInput().axis)return false;
@@ -2746,6 +2847,7 @@ function drawSkillPip(){
   var kit=ownClass(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
   if(kit.id==='polge'){var q=fighterState();for(var beat=0;beat<3;beat++){ctx.fillStyle=beat<(q.rhythm||0)?'#efd17e':'#755b51';ctx.fillRect(x-2+beat*3,y+3,2,2);}if(q.counter>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-29,13,1);}}
   if(kit.id==='mech'){var engineer=engineerState();for(var cell=0;cell<3;cell++){ctx.fillStyle=cell<engineer.charge?'#80d1b1':'#354d51';ctx.fillRect(x-2+cell*3,y+3,2,2);}}
+  if(kit.id==='runner'){var wrestler=wrestlerState();ctx.fillStyle='#59404c';ctx.fillRect(x-4,y+3,13,2);ctx.fillStyle='#efd17e';ctx.fillRect(x-4,y+3,Math.round(13*wrestler.momentum/100),2);if(lastSeedMode()&&wrestler.barrier>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-30,Math.round(13*wrestler.barrier/16),1);}}
   ctx.fillStyle='rgba(236,232,220,.22)';ctx.fillRect(x,y,5,1);
   if(P.skillDenied>0){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
   else if(P.tun>0){var left=Math.round(5*P.tun/kit.tunTime);ctx.fillStyle='rgba(236,232,220,.5)';if(left>0)ctx.fillRect(x,y,left,1);}
@@ -2817,7 +2919,9 @@ function recordGardenPlant(p){
   if(p.tideVine){found.tideVine=true;found.tideHeight=Math.max(found.tideHeight||0,p.tideHeight||0);}
 }
 function clearRunInput(){
+  if(P&&ownClass().id==='runner'&&typeof rattusCancelMotion==='function'){releaseClassSecondary(true);releaseClassUtility(true);rattusCancelMotion(rattusMember(),'input-cleared');}
   heldL=heldR=heldRun=heldUp=heldDown=heldSpace=lampKey=swipeDown=gardenPress=false;charge=null;queuedThrow=null;padAx=0;touches={};moveId=null;holdWater=null;jumpBuf=0;dodgeBuf=0;lampToggle=false;
+  rattusHeldC=rattusHeldV=false;rattusHeldUI=0;
   pad.ladderY=0;
   pad.block=pad.b.slice();pad.jump=pad.down=pad.work=pad.run=pad.shoot=false;
   if(P){P.ladderId=null;P.ladderRegrab=0;if(P.st==='ladder')P.st='free';P.dodgeT=0;P.throwPose=0;P.brace=0;P.pounce=0;P.rattleMove='';P.rattlePose=0;P.rattleClock=0;P.skillPose=0;endTun();}
@@ -3641,7 +3745,7 @@ function plantClimbAt(x,y,range){
   });return best;
 }
 function requestClimb(p,exitRequested){
-  if(mechPlanted())return false;
+  if(mechPlanted()||rattusPolicy().blockClimb)return false;
   if(highTideMode())return !!(p&&p.tideVine&&!seedDown()&&beginClimb(p,false));
   if(!p||p.dead||p.health<=0||gardenPlots.indexOf(p)<0||P.st==='float'||warp)return false;
   var moss=canPlantClimb(rogueRun.classId);
@@ -3667,6 +3771,7 @@ function spawnExitSeeds(p){
   }
 }
 function beginClimb(p,exitMode){
+  if(rattusPolicy().blockClimb)return false;
   if(!p||p.dead||p.health<=0||gardenPlots.indexOf(p)<0||warp||P.st==='climb'||P.st==='float')return false;
   if(exitMode){if(!p.stalk||rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES||!P.grounded||playerWetAt(P.x,P.y)||Math.abs(P.y-surfaceY(p.x))>4||Math.abs(P.x-p.x)>=9)return false;}
   else if(!canPlantClimb(rogueRun.classId)||plantClimbAt(P.x,P.y,10)!==p)return false;
@@ -4390,7 +4495,7 @@ function taskSteer(inp){
 var lampKey=false,heldDown=false,heldSpace=false,lampToggle=false,swipeDown=false,gardenPress=false,holdWater=null;
 
 function crouchGardenAction() {
-  if(mechPlanted())return false;
+  if(mechPlanted()||rattusPolicy().blockTend)return false;
   if(nightRelayMode())return false;
   if(seedDown(coopActor)||seedReviveNearby())return false;
   if(P.tun>0)return false;
@@ -4433,6 +4538,7 @@ function poseExit() {
 }
 
 function updateHands(dt, inp) {
+  if(rattusPolicy().blockTend){task=holdWater=null;gardenPress=false;if(P.st!=='float'&&P.st!=='climb'&&P.st!=='ladder')P.st='free';return;}
   if(mechPlanted()){task=holdWater=null;gardenPress=false;lampToggle=false;P.st='free';P.lampLit=0;return;}
   if(nightRelayMode()){
     task=holdWater=null;gardenPress=false;lampToggle=false;
@@ -4700,7 +4806,7 @@ function autoTarget() {
 }
 
 var charge=null,lastPad=null;
-function chargeStart(src){if(charge||runIsPaused()||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;queuedThrow=null;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
+function chargeStart(src){if(charge||runIsPaused()||rattusPolicy().blockPrimary||P.tun>0||warp||P.st==='float'||(climb&&climb.exit))return false;queuedThrow=null;charge={t:0,src:src,ax:0,ay:0,mx:null,my:null,rs:false,lock:src==='key'||src==='pad'};return true;}
 function targetPoint(a){return a.o?{x:a.o.x,y:a.o.y-(a.kind==='krek'?0:6),o:a}:{x:a.x,y:a.y,s:a};}
 function aimAssist(dx,dy){
   var x0=P.x,y0=P.y-12,d=Math.hypot(dx,dy)||1,best=null,bs=1e9;dx/=d;dy/=d;
@@ -5185,7 +5291,7 @@ var CLASS_STRIKE_CUES={
 };
 function classStrikeCue(kind,dist,combo){
   try{
-    kind=({clinch:'cross',finisher:'uppercut',kestrel:'needle',runner:'cleave',dropkick:'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
+    kind=({clinch:'cross',finisher:'uppercut',kestrel:'needle',runner:'cleave',dropkick:'cleave','driving-dropkick':'cleave','tail-whip':'cross','splits-stomp':'cleave','splits-wave':'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
     if(kind==='polge')kind=['jab','cross','uppercut'][Math.max(0,Math.min(2,Math.floor(Number(combo)||0)))];
     var kit=CLASS_STRIKE_CUES[kind];if(!kit)return;
     var v=effectVoice('strike:'+kind,kit.life,kit.space,kind==='parry'?2:1,dist);if(!v)return;
@@ -5634,6 +5740,12 @@ function drawSligoTrail(){
 
 function drawPlayer() {
   var px = Math.round(P.x - camX), py = Math.round(P.y - camY);
+  if(['moss-pink','moss'].indexOf(P.skin)>=0&&typeof rattusPeek==='function'){
+    var ropeMember=coop&&P.evoKey&&coop.members[P.evoKey]||rattusMember(),rope=rattusPeek(ropeMember);
+    if(rope&&rope.latchPhase&&rope.latchWorld===worldLevel()){
+      var anchor=rattusAnchor(rope,ropeMember);if(anchor){var ropeX=anchor.x-camX,ropeY=anchor.y-camY,ropeLength=Math.hypot(ropeX-px,ropeY-(py-12));ctx.fillStyle='#a46681';for(var segment=0;segment<=ropeLength;segment+=2){var along=segment/Math.max(1,ropeLength);ctx.fillRect(Math.round(px+(ropeX-px)*along),Math.round(py-12+(ropeY-(py-12))*along),1,1);}ctx.fillStyle='#efd17e';ctx.fillRect(Math.round(ropeX)-1,Math.round(ropeY)-1,3,3);}
+    }
+  }
   var bodyScale=P.skin==='sligo'?Math.sqrt(sligoMass(P)):1;
   var wp = waterAt(P.x), L = wp ? Math.round(wp.level - camY) : null;
   if (!wp) {
@@ -5727,6 +5839,7 @@ function drawVignette() {
 "MAX_SLIGO_LIFE";
 "MAX_POLGE";
 "MAX_MECH";
+"MAX_RATTUS";
 "MAX_LAST_SEED";
 "MAX_HIGH_TIDE";
 "MAX_NIGHT_RELAY";
@@ -5944,6 +6057,7 @@ function frame(now) {
   if(!runIsPaused())updateCharge(dt);
   if(!runIsPaused())updatePlayer(dt, inp);
   if(!runIsPaused())updateMechCombat(dt);
+  if(!runIsPaused())updateRattusCombat(dt);
   if(!runIsPaused())updateSligoLife(dt);
   if(!runIsPaused())updateSligoTrail(dt);
   if(!runIsPaused())updateWarp(dt);
@@ -6098,7 +6212,7 @@ function frame(now) {
   drawBirdBlasts();
   drawCompanion();
   if(crownLayer){drawPlaceVeils();drawCrownForeground(tSec);}
-  updatePolgeControls();updateMechControls();P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
+  updatePolgeControls();updateMechControls();updateRattusControls();P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);
   if(!crownLayer){drawPlaceVeils();drawCrownForeground(tSec);}
   drawTeamArrows();drawMouseReticle();
   drawPickupNotice(dt);
