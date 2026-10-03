@@ -319,7 +319,7 @@
       B.rect(cx - 3, y - 17, 15, 25, P.wall); B.rect(cx + 5, y - 22, 4, 7, P.body);
     } else if (stage === 4) {
       var archY = y + 98;
-      B.ring(cx, archY, 109, 106, 15, P.body);
+      B.arch(cx, archY, 109, 106, 15, P.body);
       B.stone(cx - 109, archY, 18, floor - archY, P.body, stage); B.stone(cx + 91, archY, 18, floor - archY, P.body, stage + 1);
       B.polygon([[cx - 37, y + 110], [cx, y + 49], [cx + 38, y + 110], [cx + 38, y + 161], [cx - 37, y + 161]], P.void);
       B.line(cx, y + 54, cx, y + 164, 3, P.edge, .6); B.rect(cx - 31, y + 117, 62, 3, P.edge, .6);
@@ -361,12 +361,12 @@
     } else if (stage === 9) {
       B.stone(cx - 88, y + 17, 34, height - 17, P.body, stage); B.stone(cx + 53, y + 86, 30, height - 86, P.wall, stage + 1);
       B.polygon([[cx - 90, y + 18], [cx - 87, y - 14], [cx - 72, y - 29], [cx - 61, y - 9], [cx - 51, y - 17], [cx - 50, y + 18]], P.body);
-      for (var level = 0; level < 3; level++) { B.ring(cx - 4, y + 58 + level * 65, 69, 41, 7, P.wall); B.rect(cx - 71, y + 58 + level * 65, 10, 47, P.wall); }
+      for (var level = 0; level < 3; level++) { B.arch(cx - 4, y + 58 + level * 65, 69, 41, 7, P.wall); B.rect(cx - 71, y + 58 + level * 65, 10, 47, P.wall); }
       B.vine(cx - 48, y + 52, 79, stage); B.vine(cx + 67, y + 99, 50, stage + 3);
     } else if (stage === 10) {
       B.stone(cx - 94, y + 57, 17, height - 57, P.body, stage); B.stone(cx + 78, y + 57, 17, height - 57, P.body, stage + 1);
-      B.ring(cx, y + 59, 86, 58, 10, P.body); B.rect(cx - 3, y + 34, 6, 30, P.wood);
-      B.polygon([[cx - 24, y + 66], [cx - 19, y + 88], [cx - 34, y + 120], [cx - 42, y + 127], [cx + 44, y + 127], [cx + 34, y + 118], [cx + 19, y + 86], [cx + 22, y + 65]], P.rust, .83);
+      B.arch(cx, y + 59, 86, 58, 10, P.body); B.rect(cx - 3, y + 34, 6, 30, P.wood);
+      B.surface([[cx - 24, y + 66], [cx - 19, y + 88], [cx - 34, y + 120], [cx - 42, y + 127], [cx + 44, y + 127], [cx + 34, y + 118], [cx + 19, y + 86], [cx + 22, y + 65]], stage, ['#3a3129', '#584334', '#796047', '#a1875e', '#b6a171'], 'metal');
       B.rect(cx - 44, y + 125, 89, 7, P.edge, .7); B.line(cx - 13, y + 72, cx - 27, y + 117, 3, P.light, .4); B.rect(cx - 3, y + 131, 5, 19, P.body); B.ellipse(cx, y + 151, 6, 5, P.edge);
     } else if (stage === 11) {
       // The original frozen seed-wheel painting is a verified runtime master.
@@ -440,7 +440,7 @@
       [-1, 1].forEach(function (side) { B.line(cx + side * 83, floor - 91, cx + side * 151, floor - 63, 7, P.body); B.line(cx + side * 151, floor - 63, cx + side * 151, floor - 5, 7, P.body); B.rect(cx + side * 151 - 6, floor - 68, 12, 4, P.rust); });
     } else if (stage === 18) {
       B.stone(cx - 143, y + 8, 25, height - 8, P.body, stage); B.stone(cx + 118, y + 8, 25, height - 8, P.body, stage + 1);
-      B.ring(cx, y + 109, 126, 106, 11, P.body); B.rect(cx - 65, y + 8, 131, 4, P.edge); B.rect(cx - 60, y + 12, 2, height - 34, P.rust); B.rect(cx + 57, y + 12, 2, height - 34, P.rust);
+      B.arch(cx, y + 109, 126, 106, 11, P.body); B.rect(cx - 65, y + 8, 131, 4, P.edge); B.rect(cx - 60, y + 12, 2, height - 34, P.rust); B.rect(cx + 57, y + 12, 2, height - 34, P.rust);
       for (var slat = 0; slat < 5; slat++) { B.rect(cx - 57, y + 41 + slat * 27, 113, 5, P.wall); B.rect(cx - 53, y + 43 + slat * 27, 104, 1, P.edge, .5); }
       B.vine(cx - 97, y + 108, 38, stage);
     } else if (stage === 19) {
