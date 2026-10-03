@@ -1,5 +1,5 @@
 {
-  "builtSourceSha256": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+  "builtSourceSha256": "d99c560b61832e120ff1e08dfad003a9b97a47646c72561a4d96c9a56c2d862f",
   "bossSha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3",
   "game": [
     {
@@ -17,56 +17,60 @@
       "passed": true
     }
   ],
-  "smallPhone": [
-    {
-      "engine": "chromium",
-      "width": 320,
-      "height": 568,
-      "phases": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "captures": 9,
-      "errors": [],
-      "passed": true
-    },
-    {
-      "engine": "webkit",
-      "width": 320,
-      "height": 568,
-      "phases": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "captures": 9,
-      "errors": [],
-      "passed": true
-    }
-  ],
-  "coarseLandscape": [
-    {
-      "engine": "chromium",
-      "coarse": true,
-      "width": 1200,
-      "height": 800,
-      "captures": 3,
-      "errors": [],
-      "passed": true
-    },
-    {
-      "engine": "webkit",
-      "coarse": true,
-      "width": 1200,
-      "height": 800,
-      "captures": 3,
-      "errors": [],
-      "passed": true
-    }
-  ],
+  "supplemental": {
+    "builtSourceSha256": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+    "subsequentDelta": "High Tide only: preserve its fifth guardian health bar; ordinary Crown rendering/camera/scale behavior unchanged.",
+    "smallPhone": [
+      {
+        "engine": "chromium",
+        "width": 320,
+        "height": 568,
+        "phases": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "captures": 9,
+        "errors": [],
+        "passed": true
+      },
+      {
+        "engine": "webkit",
+        "width": 320,
+        "height": 568,
+        "phases": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "captures": 9,
+        "errors": [],
+        "passed": true
+      }
+    ],
+    "coarseLandscape": [
+      {
+        "engine": "chromium",
+        "coarse": true,
+        "width": 1200,
+        "height": 800,
+        "captures": 3,
+        "errors": [],
+        "passed": true
+      },
+      {
+        "engine": "webkit",
+        "coarse": true,
+        "width": 1200,
+        "height": 800,
+        "captures": 3,
+        "errors": [],
+        "passed": true
+      }
+    ]
+  },
   "victories": [
     {
       "engine": "chromium",
@@ -76,7 +80,7 @@
         3,
         4
       ],
-      "elapsed": 11.699499999999983,
+      "elapsed": 8.43300000000003,
       "build": "campaign",
       "level": 20,
       "classId": "bulwark",
@@ -96,7 +100,7 @@
         3,
         4
       ],
-      "elapsed": 19.037999999999986,
+      "elapsed": 9.885999999999981,
       "build": "campaign",
       "level": 20,
       "classId": "bulwark",
