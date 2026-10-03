@@ -69,10 +69,13 @@ test('a surviving plant takes over a lost exit without repeating victory rewards
   Object.assign(host.P,{x:first.x,y:host.surfaceY(first.x),st:'free',grounded:true,wet:false});
   host.gardenPlots=[first,backup];host.floatKrek=[];host.rogueRun.bossDefeated=true;
   host.levelCleared();assert.equal(first.stalk,true);assert.ok(!backup.stalk);
-  const seeds=host.seedPickups.length,level=host.rogueRun.level;
+  const seeds=new Set(host.seedPickups.filter(q=>q.uid).map(q=>q.uid)),level=host.rogueRun.level;
   host.plantFalls(first);host.gardenRaidT=host.krekSpawnT=9999;games[0].tick(16);sync();
   assert.equal(backup.stalk,true);assert.equal(host.rogueRun.world,1);
-  assert.equal(host.seedPickups.length,seeds);assert.equal(host.rogueRun.level,level);
+  // Normal collection or distance culling can remove a pickup during the tick.
+  // A repeated victory grant would create a new loose-seed identity.
+  assert.equal(host.seedPickups.filter(q=>q.uid&&!seeds.has(q.uid)).length,0);
+  assert.equal(host.rogueRun.level,level);
   games.forEach(h=>assert.equal(h.game.gardenPlots.find(p=>p.id===72).stalk,true));
   const score=host.gardenScore;games[0].tick(16);assert.equal(host.gardenScore,score);
   Object.assign(host.P,{x:backup.x,y:host.surfaceY(backup.x),st:'free',grounded:true,wet:false});
