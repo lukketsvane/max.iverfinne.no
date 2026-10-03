@@ -1,8 +1,16 @@
 var classShots=[],classFighters=[],classShotId=0,classPestId=0;
 function nativeAttackClass(){return ['runner','bulwark','herbalist','polge'].indexOf(ownClass().id)>=0;}
 function classSkillCooldown(){return ownClass().skillCd*Math.pow(.88,ownClass().id==='runner'?(rogueRun.perks.tailwind||0):0);}
-function fighterState(){var owner=skillOwner(),q=classFighters.find(function(f){return f.owner===owner;});if(!q){q={owner:owner,world:worldLevel(),combo:0,window:0,weave:0,flurry:0,next:0};classFighters.push(q);}return q;}
-function classAttackCooldown(){return ({runner:.5,bulwark:.72,herbalist:.58,polge:.24}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
+// Fighter values are owner-scoped scalars so an accepted strike and its cooldown
+// continue on the next authority. Art and projectiles never carry combat state.
+function fighterState(owner){
+  if(owner==null)owner=skillOwner();
+  var q=classFighters.find(function(f){return f.owner===owner&&f.world===worldLevel();});
+  if(!q){q={owner:owner,world:worldLevel(),combo:0,window:0,weave:0,flurry:0,next:0};classFighters.push(q);}
+  ['rhythm','rhythmIdle','rhythmDecay','utilityCool','slip','counter','avoidedWarning','clinchCool','flurryBeats','flurryFinish','flurryStep','flurryAge'].forEach(function(k){if(!Number.isFinite(q[k]))q[k]=0;});
+  return q;
+}
+function classAttackCooldown(){return ({runner:.5,bulwark:.72,herbalist:.58,polge:.22}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
 function combatFx(kind,x,y,r,face,combo){
   var q={id:++coopFxId,x:x,y:y,t:0,ring:1,r:r,strike:kind,cue:'strike:'+kind,owner:skillOwner(),face:face||1,combo:combo||0};booms.push(q);
   if(typeof classStrikeCue==='function')classStrikeCue(kind,Math.hypot(x-(coopActor?coop.members[coop.me].avatar.x:P.x),y-(coopActor?coop.members[coop.me].avatar.y:P.y)),combo||0);
@@ -20,6 +28,7 @@ function combatDamage(k,amount,x,build){return damagePest(k,amount*(1+.12*(build
 function combatAim(target){var a=target&&target.o||target||{x:P.x+P.face*100,y:P.y-12};if(a.spore){var h=runHazards.find(function(h){return h.id===a.spore&&h.type==='spore'&&h.tell>0;});if(h){var point=hazardPosition(h),speed=ownClass().id==='runner'?230:140;for(var i=0;i<4;i++)point=hazardPosition(h,Math.hypot(point.x-P.x,point.y-(P.y-13))/speed);return {x:point.x,y:point.y,spore:h.id};}}return {x:Number.isFinite(a.x)?a.x:P.x+P.face*100,y:Number.isFinite(a.y)?a.y:P.y-12};}
 function classPrimary(target){
   if(runIsPaused()||seedDown(coopActor)||bombCool>0||P.tun>0||P.pounce||warp||P.st==='float'||(climb&&climb.exit))return false;
+  if(ownClass().id==='polge'&&fighterState().flurry>0)return false;
   var aim=combatAim(target);if(Math.abs(aim.x-P.x)>1)P.face=aim.x>P.x?1:-1;
   if(coopGuest()){P.attackTag=(P.attackTag||0)+1;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:aim.spore||0,attackTag:P.attackTag}))return false;}
   else{
@@ -59,31 +68,113 @@ function cairnCleave(aim){
   });
   combatObjectives(c.x,c.y,r);combatFx('cleave',c.x,c.y,r,P.face);
 }
+function polgeContact(aim,reach,kind){
+  var c=kind==='uppercut'?{x:P.x+P.face*6,y:P.y-18}:meleeCenter(aim,Math.min(12,reach*.5));
+  var radius=kind==='uppercut'?reach:reach*.65;
+  // Reach is measured from the body, rather than adding a second radius to a
+  // forward aim point. A far tap selects a direction, never a distant hit.
+  return {x:c.x,y:c.y,r:radius,reach:reach,targets:floatKrek.filter(function(k){
+    return k.hp>0&&enemyDistance(k,P.x,P.y-12)<=reach&&enemyDistance(k,c.x,c.y)<=radius&&combatLineClear(P.x,P.y-12,k.x,k.y);
+  }).sort(function(a,b){return enemyDistance(a,c.x,c.y)-enemyDistance(b,c.x,c.y);})};
+}
+function polgeGuarded(k){
+  return k.kind===5&&!k.flee&&(P.x-k.x)*(k.face||1)>=-1||k.guardianStage&&k.exposed<=0&&(k.pattern==='shell'&&(P.x-k.x)*(k.face||1)>=0||['wick','spindle','choir','engine'].indexOf(k.pattern)>=0&&(k.nodes||[]).some(function(n){return n.hp>0;}));
+}
+function polgeRecover(hit,b){
+  if(!hit||!b.raincoat)return;
+  var amount=.2*Math.min(3,b.raincoat);
+  if(coopActor)coopActor.skillUntil=Math.max(performance.now(),(coopActor.skillUntil||0)-amount*1000);
+  P.skillCool=Math.max(0,P.skillCool-amount);
+}
+function polgeRhythmHit(q){q.rhythm=Math.min(3,q.rhythm+1);q.rhythmIdle=q.rhythmDecay=0;}
 function polgePunch(aim,flurry){
-  var q=fighterState(),b=combatBuild();q.combo=q.window>0?(q.combo+1)%3:0;q.window=.95;
-  var upper=q.combo===2,r=upper&&b.haymaker?36:upper?24:18,c=upper?{x:P.x+P.face*8,y:P.y-21}:meleeCenter(aim,13),hit=0;
-  var damage=(upper?1.35*(1+.25*(b.splinters||0)):.62)*(q.weave>0?1.6:1)*(flurry?.7:1);q.weave=0;
-  floatKrek.slice().forEach(function(k){if(enemyDistance(k,c.x,c.y)>r||!combatLineClear(P.x,P.y-12,k.x,k.y))return;hit++;
-    if(!combatDamage(k,damage,P.x,b)&&!k.boss){staggerKrek(k,upper?.7:.25);k.vx=P.face*(upper?65:18);k.vy=upper?-85:-10;}
+  // Kept as a primary verb; the special has its own bounded pulse schedule.
+  if(flurry)return polgeFlurryHit(false);
+  var q=fighterState(),b=combatBuild(),step=q.window>0?(q.combo+1)%3:0;
+  var upper=step===2,kind=upper?'uppercut':step===1?'cross':'jab',reach=upper&&b.haymaker?36:[18,20,24][step],c=polgeContact(aim,reach,kind),hit=0;
+  var suppress=upper?c.targets.find(function(k){return !k.boss;}):null;
+  var damage=[.52,.72,1.1][step]*(upper?1+.25*Math.min(3,b.splinters||0):1)*(q.counter>0?1.5:1);
+  c.targets.forEach(function(k){
+    var wasFlee=k.flee||0,guarded=upper&&b.haymaker&&polgeGuarded(k);hit++;
+    if(!combatDamage(k,damage*(guarded?1.25:1),P.x,b)&&!k.boss){
+      if(upper){if(k===suppress)staggerKrek(k,.6);k.vx=P.face*65;k.vy=b.haymaker?-110:-85;}
+      else if(!(k.windup>0)){k.vx=P.face*(step===1?24:12);k.vy=-10;k.flee=Math.max(wasFlee,Math.min(k.flee||0,.25));}
+    }
   });
-  if(hit&&b.raincoat){var amount=.2*b.raincoat;if(coopActor)coopActor.skillUntil=Math.max(performance.now(),(coopActor.skillUntil||0)-amount*1000);else P.skillCool=Math.max(0,P.skillCool-amount);}
-  P.skillPose=.16;P.skillAnim=upper?'rise':q.combo===1?'toss':'crouch';
-  combatObjectives(c.x,c.y,r);combatFx(upper?'uppercut':q.combo===1?'cross':'jab',c.x,c.y,r,P.face,q.combo);
+  if(hit){q.combo=step;q.window=.95;polgeRhythmHit(q);q.counter=0;}
+  polgeRecover(hit,b);P.skillPose=.16;P.skillAnim=upper?'rise':step===1?'toss':'crouch';
+  combatObjectives(P.x,P.y-12,reach);combatFx(kind,c.x,c.y,c.r,P.face,step);
   return hit;
 }
-function boxerDodge(){if(ownClass().id==='polge'&&!coopGuest()){fighterState().weave=1.1;bombCool=0;}}
+function polgeUtilityReady(){return ownClass().id!=='polge'||fighterState().utilityCool<=0;}
+function boxerDodge(){
+  if(ownClass().id!=='polge')return true;
+  var q=fighterState();if(q.utilityCool>0||q.slip>0)return false;
+  q.utilityCool=dodgeRecovery();q.slip=.18;q.avoidedWarning=0;
+  // Starting a slip is movement only. The host must observe a warned contact
+  // being avoided before the single counter bonus exists.
+  q.weave=0;return true;
+}
+function polgeAvoidedWarning(member,threat){
+  if(coopGuest()||!threat||threat.warned!==true||typeof threat.key!=='string'||!threat.key||threat.key.length>96||seedDown(member))return false;
+  if((member?member.classId:rogueRun.classId)!=='polge')return false;
+  var q=fighterState(member?member.id:undefined);if(q.slip<=0||q.avoidedWarning)return false;
+  q.avoidedWarning=1;q.counter=1.1;if(q.window>0)q.window=.95;return true;
+}
+function polgeClinchWorld(aim){
+  if(ownClass().id!=='polge'||runIsPaused()||seedDown(coopActor)||P.wet||P.st==='float'||P.tun>0||P.pounce||warp||(climb&&climb.exit))return false;
+  var q=fighterState();if(q.clinchCool>0||q.flurry>0)return false;
+  aim=combatAim(aim);if(Math.abs(aim.x-P.x)>1)P.face=aim.x>P.x?1:-1;
+  var c=polgeContact(aim,20,'clinch'),k=c.targets[0];if(!k)return false;
+  var b=combatBuild(),spent=q.rhythm>0?1:0,oldFlee=k.flee||0;
+  if(!combatDamage(k,spent?1:.7,P.x,b)&&!k.boss){staggerKrek(k,.35);k.flee=Math.max(oldFlee,.35);k.vx=P.face*18;k.vy=-10;}
+  q.rhythm=Math.max(0,q.rhythm-spent);q.clinchCool=4;
+  P.skillPose=.24;P.skillAnim='crouch';combatObjectives(P.x,P.y-12,20);combatFx('clinch',k.x,k.y,12,P.face);
+  return true;
+}
+function polgeClinch(target){
+  if(ownClass().id!=='polge'||runIsPaused()||seedDown(coopActor)||P.secondaryCool>0||fighterState().clinchCool>0||P.wet||P.st==='float'||P.tun>0||P.pounce||warp||climb)return false;
+  var aim=combatAim(target);
+  if(coopGuest()){
+    // A local reach check avoids a wasted request, but only the host spends
+    // Rhythm or inflicts damage. The tag protects prediction from stale state.
+    if(!polgeContact(aim,20,'clinch').targets.length)return false;
+    P.secondaryTag=(P.secondaryTag||0)+1;if(!coopAction('secondary',{x:aim.x,y:aim.y,secondaryTag:P.secondaryTag}))return false;
+    P.secondaryCool=4;P.skillPose=.24;P.skillAnim='crouch';return true;
+  }
+  return polgeClinchWorld(aim);
+}
+function polgeFlurryTarget(){
+  return floatKrek.filter(function(k){return k.hp>0&&enemyDistance(k,P.x,P.y-12)<=24&&combatLineClear(P.x,P.y-12,k.x,k.y);}).sort(function(a,b){return enemyDistance(a,P.x,P.y-12)-enemyDistance(b,P.x,P.y-12);})[0];
+}
+function polgeFlurryHit(finish){
+  var target=polgeFlurryTarget();if(target&&Math.abs(target.x-P.x)>1)P.face=target.x>P.x?1:-1;
+  var c=polgeContact(target||{x:P.x+P.face*24,y:P.y-12},24,finish?'uppercut':'flurry'),b=combatBuild(),hit=0;
+  c.targets.forEach(function(k){hit++;combatDamage(k,finish?1.2:.35,P.x,b);});
+  polgeRecover(hit,b);P.skillPose=finish?.24:.12;P.skillAnim=finish?'rise':'toss';
+  combatObjectives(P.x,P.y-12,24);combatFx(finish?'finisher':'flurry',c.x,c.y,c.r,P.face);
+  // Care belongs to a genuine finishing contact, at the current body position.
+  if(finish&&hit&&b.secondwind)combatRestore(P.x,P.y,48,.15,.12);
+  return hit;
+}
 function polgeFlurryWorld(){
-  if(ownClass().id!=='polge'||P.wet||P.st==='float')return false;
-  var q=fighterState();if(q.flurry>0)return false;
-  q.flurry=4+(rogueRun.perks.varnish||0);q.next=0;q.combo=0;q.window=0;
-  combatFx('flurry',P.x,P.y-12,30,P.face);
-  if(rogueRun.perks.secondwind)combatRestore(P.x,P.y,48,.15,.12);
+  if(ownClass().id!=='polge'||runIsPaused()||seedDown(coopActor)||P.wet||P.st==='float')return false;
+  var q=fighterState();if(q.flurry>0||!polgeFlurryTarget())return false;
+  // Acceptance itself is a confirmed close hit: an empty special neither
+  // spends Rhythm nor starts its cooldown. Later pulses follow the moving body.
+  P.skillCool=classSkillCooldown();
+  if(!polgeFlurryHit(false)){P.skillCool=0;return false;}
+  var count=6+Math.min(3,q.rhythm)+Math.min(3,Math.max(0,rogueRun.perks.varnish||0));
+  q.rhythm=0;q.rhythmDecay=0;q.flurry=.95;q.flurryAge=0;q.flurryBeats=count-1;q.flurryFinish=1;q.flurryStep=.84/(count-1);q.next=q.flurryStep;q.combo=0;q.window=0;
   return true;
 }
 function polgeFlurry(){
   if(P.wet||climb||P.st!=='free')return false;
-  if(coopGuest()){P.skillTag=(P.skillTag||0)+1;if(!coopAction('skill',{x:P.x,y:P.y,skillTag:P.skillTag}))return false;}else if(!polgeFlurryWorld())return false;
-  P.skillCool=classSkillCooldown();P.skillPose=.28;P.skillAnim='toss';return true;
+  if(coopGuest()){
+    if(!polgeFlurryTarget())return false;
+    P.skillTag=(P.skillTag||0)+1;if(!coopAction('skill',{x:P.x,y:P.y,skillTag:P.skillTag}))return false;
+  }else if(!polgeFlurryWorld())return false;
+  if(coopGuest())P.skillCool=classSkillCooldown();P.skillPose=.28;P.skillAnim='toss';return true;
 }
 function classShotHit(s,k){
   var b=s.perks||{},base=s.damage*(1+(s.crosswind?.25*s.hits:0));
@@ -104,16 +195,24 @@ function updateClassCombat(dt){
   if(runIsPaused())return;
   var ownerAlive=function(q){return q.world===worldLevel()&&(!coop||coop.members[q.owner]&&!coop.members[q.owner].left);};
   classFighters=classFighters.filter(ownerAlive);classShots=classShots.filter(ownerAlive);
-  if(!coopGuest())classFighters.forEach(function(q){
-    q.window=Math.max(0,q.window-dt);q.weave=Math.max(0,q.weave-dt);q.next-=dt;
-    if(q.flurry<=0||q.next>0)return;
-    var m=coop&&coop.members[q.owner],actor=m?coopMemberAvatar(m):P;
-    if(seedDown(m)||actor.wet||actor.st==='float'){q.flurry=0;return;}
-    function hit(){var target=floatKrek.filter(function(k){return enemyDistance(k,P.x,P.y-12)<52;}).sort(function(a,b){return enemyDistance(a,P.x,P.y-12)-enemyDistance(b,P.x,P.y-12);})[0];
-      if(target&&Math.abs(target.x-P.x)>1)P.face=target.x>P.x?1:-1;
-      polgePunch(target||{x:P.x+P.face*24,y:P.y-12},true);
+  classFighters.forEach(function(q){
+    fighterState(q.owner);q.window=Math.max(0,q.window-dt);if(q.window<=0)q.combo=0;
+    q.weave=0;q.counter=Math.max(0,q.counter-dt);q.utilityCool=Math.max(0,q.utilityCool-dt);q.slip=Math.max(0,q.slip-dt);q.clinchCool=Math.max(0,q.clinchCool-dt);
+    ['counter','utilityCool','slip','clinchCool'].forEach(function(k){if(q[k]<1e-8)q[k]=0;});
+    if(!coopGuest()){
+      var idle=q.rhythmIdle,decay=Math.max(0,dt-Math.max(0,2-idle));q.rhythmIdle=Math.min(2,idle+dt);
+      if(q.rhythm>0){q.rhythmDecay+=decay;while(q.rhythmDecay>=1-1e-8&&q.rhythm>0){q.rhythm--;q.rhythmDecay=Math.max(0,q.rhythmDecay-1);}}
+      else q.rhythmDecay=0;
     }
-    if(m&&m.id!==coop.me)coopWithMember(m,hit);else hit();q.flurry--;q.next+=.12;
+    if(q.flurry<=0)return;
+    var m=coop&&coop.members[q.owner],actor=m?coopMemberAvatar(m):P;
+    if(seedDown(m)||actor.wet||actor.st==='float'){q.flurry=q.flurryBeats=q.flurryFinish=q.next=0;return;}
+    q.flurryAge=Math.min(.95,q.flurryAge+dt);q.flurry=Math.max(0,.95-q.flurryAge);q.next-=dt;
+    if(coopGuest()){q.next=Math.max(0,q.next);return;}
+    function hit(finish){if(m&&m.id!==coop.me)return coopWithMember(m,function(){return polgeFlurryHit(finish);});return polgeFlurryHit(finish);}
+    while(q.flurryBeats>0&&q.next<=1e-8){hit(false);q.flurryBeats--;q.next+=q.flurryStep;}
+    if(q.flurryAge>=.95-1e-8&&q.flurryFinish){hit(true);q.flurry=q.flurryBeats=q.flurryFinish=q.next=0;}
+    q.next=Math.max(0,q.next);
   });
   var steps=Math.max(1,Math.ceil(dt*120-1e-7)),step=dt/steps;
   for(var t=0;t<steps;t++)for(var i=classShots.length-1;i>=0;i--){
@@ -135,7 +234,7 @@ function drawClassShots(){classShots.forEach(function(s){var x=Math.round(s.x-ca
 function drawCombatStrike(b,x,y){
   if(b.t>.2)return;var alpha=1-b.t/.2,color=b.strike==='spore'?'#80d1b1':b.strike==='cleave'?'#cba877':b.strike==='needle'?'#e6bf69':'#eed2b5';ctx.globalAlpha=alpha;ctx.fillStyle=color;
   if(['dropkick','salto','splits'].indexOf(b.strike)>=0){ctx.fillStyle='#efd17e';var span=Math.round(b.r*(.45+b.t*2));for(var i=0;i<12;i++){var angle=b.strike==='splits'?i/11*Math.PI:Math.PI*2*i/12;ctx.fillRect(x+Math.round(Math.cos(angle)*span),y+Math.round(Math.sin(angle)*span*(b.strike==='splits'?.25:1)),2,1);}}
-  else if(['jab','cross','uppercut','flurry'].indexOf(b.strike)>=0){var r=Math.round(b.strike==='uppercut'?10:7);ctx.fillRect(x-r,y-3,r*2,6);ctx.fillRect(x-r+2,y-5,r*2-4,2);ctx.fillRect(x-r+2,y+3,r*2-4,2);ctx.fillStyle='#755b51';ctx.fillRect(x+(b.face<0?-3:1),y-4,1,8);}
+  else if(['jab','cross','uppercut','clinch','flurry','finisher'].indexOf(b.strike)>=0){var r=Math.round(b.strike==='uppercut'||b.strike==='finisher'?10:7);ctx.fillRect(x-r,y-3,r*2,6);ctx.fillRect(x-r+2,y-5,r*2-4,2);ctx.fillRect(x-r+2,y+3,r*2-4,2);ctx.fillStyle='#755b51';ctx.fillRect(x+(b.face<0?-3:1),y-4,1,8);}
   else for(var i=0;i<14;i++){var a=(i/13-.5)*Math.PI,r=b.r*(.35+b.t*3);ctx.fillRect(x+Math.round(Math.cos(a)*r*(b.face||1)),y+Math.round(Math.sin(a)*r),2,2);}
   ctx.globalAlpha=1;
 }

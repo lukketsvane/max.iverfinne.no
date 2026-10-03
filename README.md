@@ -37,11 +37,13 @@ Five open characters and the hidden Sligo each own a gameplay role. Before Play,
 | Rattus norvegicus | Ground dropkick and airborne salto kick | Leaping splits stomp; higher drops hit harder |
 | Cairn | Heavy close cleave; stronger against winding-up pests | Brace and timed parry; burrow where the soil allows |
 | Mycel | Spore bolts that chain near living plants | Bloom heals and waters plants, revives a recent fall and strikes nearby pests |
-| Pølge | Jab → cross → uppercut; dodge primes a stronger punch | Freely steer during a rapid close flurry |
+| Pølge | Jab → cross → uppercut; confirmed contacts build Rhythm | Spend Rhythm in a freely steered close flurry |
 
 Rattus norvegicus defaults to a grey-furred rat wrestler with orange hair, a pink tail, powerful thighs and magenta-and-gold ring gear, without a hat or cape. Her Figma-authored animation bank adds four-legged walking and sprinting, braking, kneeling after 3.5 seconds idle, resting and varied ground and aerial strikes. The 25 clips preserve native body scale, variable pose timing and co-op presentation. Cairn is a broad stone creature and Mycel a walking mushroom. Rattus fights with her boots: close dropkicks, airborne saltos and a wide splits stomp. She also lowers into a split while planting, then returns to her guard. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
 
-Pølge is a limbless mannequin boxer and the glue of the pølgevenner. He never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. Every primary, skill and upgrade is validated by the host; projectiles, combo/flurry state and cooldowns survive an authority handoff.
+Pølge is a limbless mannequin boxer and the glue of the pølgevenner. Confirmed jab, cross and uppercut contacts build up to three Rhythm beats; misses keep the current combo step. **Clinch** (C or the touch button) makes room at close range. **Slip** (X or the touch button) is a short ground weave: avoiding an actual warned attack primes one stronger primary for 1.1 seconds. Tap Pølge / E to unleash six close punches and an uppercut finish, with an extra punch for each spent beat. Steer throughout the flurry; every hit follows his current position and respects solid walls.
+
+Pølge never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. The host validates his combo, Rhythm, clinch, genuine counters, flurry contacts and cooldowns, and carries them through an authority handoff. His native body sheets and silhouette are preserved. See [Pølge's complete kit](docs/design/polge-v3.md) for timings, controls and upgrades.
 
 A hidden character waits to be found: type its name into the Login form. **Sligo** (Max Sligo Neverdahl), the forgotten, defiled zygote drained of his endoplasm by the gluttonous twins JP and IE and starved out of the Triforce, taps Max to curl into a tun for 3 s: it cannot move or throw, nothing knocks it back, and plants within 40 px take half damage; a jump uncurls it and the 9 s cooldown starts then. He survived. He grows only his own two cords and leaves a slime-and-blood trail. He begins at half his previous height (about 6 art pixels). Harvesting either cord drops meat; walking over meat feeds a Sligo. Throws shed real body mass, down to a tiny 3-pixel body that must eat before throwing again. At 42 pixels (1.75× Max’s 24-pixel standing height), a cell divides into two equal-mass bodies. Four divisions are shared across the colony for the run: at most five bodies, one controlled and four AI companions. Companions follow, eat and defend with their own flesh. Hold a companion for 480 ms to exchange control in place, including momentum, size and cooldowns. Q or the left trigger cycles bodies. Throws keep the existing damage and boon rules. His specials sheet supplies throw, tending lash, hurt, floating tendrils and sleep poses.
 
@@ -71,6 +73,7 @@ Rattus norvegicus can also climb ordinary living plants for traversal, but ordin
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.
+- Pølge: C / touch Clinch makes room; X / touch Slip weaves through a warned attack. Controller View/minus (button 8) clinches; his skill and dodge retain the existing controller mapping.
 - Tap Max / E: class skill. A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a tap on Max throws at a pest near the finger, or boosts a stem climb. A Mech rover too low to dispatch refills when tapped over Max. A brace refuses while you steer, and jumping or grabbing a stem out of a pounce spends its cooldown.
 - R or tap nearby Mech rover: refill.
 - L: lantern.
@@ -156,7 +159,7 @@ Boons are a live overlay; the simulation continues underneath them. Each choice 
 - Spring Step — higher jumps.
 - Quick Hands — shorter recovery between attacks; planted bombs keep their two-second fuse.
 
-Every reworked class has three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on combo hits for Pølge. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Mech and Sligo.
+Every reworked class has three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on confirmed hits for Pølge. Pølge's Haymaker extends uppercuts and strengthens them against guards without lifting bosses; Second wind restores plants only when his flurry finish contacts an enemy. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Mech and Sligo.
 
 Mech-only robot boons remain exclusive to Mech. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
 
@@ -227,7 +230,7 @@ Serve the production output locally:
 python -m http.server 8765 --directory dist
 ```
 
-Then open `http://localhost:8765`. Sligo review scenes: `review.html?mode=sligo-life&portrait=1` (birth and meat) and `review.html?mode=sligo-colony&portrait=1` (companions and swapping).
+Then open `http://localhost:8765`. Sligo review scenes: `review.html?mode=sligo-life&portrait=1` (birth and meat) and `review.html?mode=sligo-colony&portrait=1` (companions and swapping). Pølge's base kit is `review.html?mode=polge&portrait=1`; add `&boons=1` for his full build. Its close sentries use real warned attacks, and its observation panel reports combo, Rhythm, counter and cooldown state without changing your saves.
 
 A change is not release-ready unless both `npm test` and `npm run build` pass. The regression suite covers gameplay, co-op transport/session behavior, database rules, native art contracts, mobile controls and review fixtures.
 
