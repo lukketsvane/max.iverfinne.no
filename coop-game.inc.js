@@ -19,7 +19,7 @@ function beginCoop(network){
   P.x=me.avatar.x;P.y=me.avatar.y;P.grounded=true;P.wet=false;started=false;
   if(coop.host)initRunStage();
 }
-function stopCoop(){coop=null;runActive=false;rogueRun.ended=true;rogueRun.choice=null;clearRunInput();if(perkMenu)perkMenu.style.display='none';}
+function stopCoop(){cancelAscentPresentation();coop=null;runActive=false;rogueRun.ended=true;rogueRun.choice=null;clearRunInput();if(perkMenu)perkMenu.style.display='none';}
 function coopMember(id,slot,kit,avatar){
   var classId=window.MaxClasses.clean(kit.classId||kit.class_id),skin=window.MaxClasses.skin(kit.skinId||kit.skin_id||kit.skin,classId);
   return {id:id,slot:slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],owed:0,round:0,ack:0,last:performance.now(),cool:0,dodgeUntil:0,dodgeTag:0,secondaryTag:0,utilityTag:0,skillUntil:0,braceUntil:0,braceX:0,tunUntil:0,tunX:0,airTop:null,landAt:0,
@@ -134,7 +134,7 @@ function coopInput(id,packet){
       var travelActor=(a&&a.world===worldLevel())?a:m.avatar,plant=stalkAt(travelActor.x,travelActor.y,10);
       var above=plant?surfaceY(plant.x)-travelActor.y:-1;
       var reachedTop=!!(plant&&travelActor.st==='climb'&&travelActor.exitClimb&&rogueRun.clearedWorld===worldLevel()&&worldLevel()<RUN_STAGES&&above>=cloudHeight()-10&&above<=cloudHeight()+12);
-      if(reachedTop)enterLevel(worldLevel()+1,id);
+      if(reachedTop)enterLevel(worldLevel()+1,id,true);
       return;
     }
     if(action.type==='pickup-item'&&Number.isSafeInteger(action.pickup)){
@@ -307,8 +307,11 @@ function coopState(s){
   if(!['plants','garden','seedsOnGround','pests','bombs','birds','fauna'].every(function(k){return Array.isArray(s[k])&&s[k].length<=(k==='garden'?20000:200)&&s[k].every(function(o){return o&&typeof o==='object';});}))return;
   if(s.mode&&s.mode!==rogueRun.mode)return;
   if(relicRunMode()&&s.survival){rogueRun.survival=coopPlain(s.survival);gardenRaidActive=lastSeedMode()&&!!s.survival.active;gardenRaidT=lastSeedMode()?s.survival.rest:0;}
+  var previousSeed=rogueRun.seed,previousCleared=rogueRun.clearedWorld;
   if(Number.isInteger(s.seed))rogueRun.seed=s.seed>>>0;
   var previousWorld=worldLevel(),wasEnded=rogueRun.ended;
+  var presentAscent=!!(coop.presentationReady&&performance.now()-coop.presentationAt<1000&&!wasEnded&&!s.ended&&previousCleared===previousWorld&&previousSeed===rogueRun.seed&&
+    s.world===previousWorld+1&&typeof s.ascender==='string'&&s.members.some(function(m){return m&&m.id===s.ascender;}));
   if(previousWorld!==s.world)sligoPendingSwap=0;
   rogueRun.world=s.world;rogueRun.clearedWorld=s.cleared;rogueRun.level=s.level;rogueRun.xp=s.xp;rogueRun.next=s.next;rogueRun.difficulty=['easy','medium','hard','insane'].indexOf(s.difficulty)>=0?s.difficulty:(rogueRun.difficulty||'medium');rogueRun.ascenderId=typeof s.ascender==='string'?s.ascender:'';
   rogueRun.garden=s.garden.map(coopPlain);gardenPlots=s.plants.map(coopPlain);seedPickups=s.seedsOnGround.map(coopPlain);
@@ -390,6 +393,8 @@ function coopState(s){
     else if(P.tun>0&&q.braceTag===P.braceTag){var tunLeft=Math.max(0,+q.tunLeft||0);if(tunLeft>0)P.tun=Math.min(P.tun,tunLeft);else endTun();}
   });
   if(ids.indexOf(coop.me)<0)return;
+  if(previousWorld!==s.world)beginAscentPresentation(previousWorld,s.world,presentAscent);
+  coop.presentationReady=true;coop.presentationAt=performance.now();
   Object.keys(coop.members).forEach(function(id){coop.members[id].left=ids.indexOf(id)<0;});
   if(window.MaxCompanion){
     var robots=Array.isArray(s.robots)?s.robots.slice(0,16):(s.robot?[Object.assign({owner:coop.network.room.host},s.robot)]:[]);
