@@ -1,5 +1,5 @@
 # Twenty-garden ascent review
 
-These are world-only screenshots of the actual seeded game renderer, captured at one native pixel per image pixel. Level 1 is at the bottom and level 20 at the top. The viewer provides native and fit modes. Each image retains its exact world bounds and seed in `metadata.json`; the built-source SHA records the capture snapshot.
+These world-only screenshots use the actual seeded game renderer at one native pixel per image pixel. Level 1 is at the bottom and level 20 at the top. Expanded image bounds include the architecture roofs; the viewer aligns all rows at the same world origin and provides native and fit modes. `metadata.json` records each world bound, actual route geometry, seed, PNG hash and frozen renderer hashes.
 
-These PNGs are review evidence, not runtime sprite masters or live Figma level overrides. The editable Figma ROUTE instances retain the exact platform geometry; its ART review layer shows these registered captures. Boss and all terrain assets retain their separate native source contracts.
+The landmark gallery contains native windows of the implemented architecture, with links to the playable stage review. These captures are review evidence, not runtime sprite masters. The first sky appears at stages 18–19; stage 20 remains the radioactive dawn Crown arena. The boss gallery retains its separate capture provenance.
