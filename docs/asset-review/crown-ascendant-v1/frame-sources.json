@@ -1,0 +1,3266 @@
+[
+  {
+    "id": "boss.idle.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      11,
+      11,
+      166,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.idle.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      200,
+      11,
+      157,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 39,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.idle.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      381,
+      11,
+      161,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 39,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.idle.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      562,
+      11,
+      160,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 38,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.idle.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      742,
+      11,
+      159,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 38,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.idle.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      924,
+      11,
+      156,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 39,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.move.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      23,
+      190,
+      160,
+      165
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.move.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      199,
+      192,
+      171,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.move.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      382,
+      192,
+      166,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 35,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.move.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      562,
+      191,
+      166,
+      164
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.move.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      741,
+      192,
+      171,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.move.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      922,
+      192,
+      161,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.windup.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      16,
+      372,
+      178,
+      162
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.windup.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      213,
+      379,
+      173,
+      155
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 33,
+      "offsetY": 34
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.windup.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      366,
+      364,
+      167,
+      170
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 26,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.windup.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      556,
+      362,
+      157,
+      172
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 27,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.windup.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      758,
+      362,
+      133,
+      172
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.windup.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      758,
+      362,
+      133,
+      172
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.hammer.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      24,
+      539,
+      191,
+      179
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 24
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.hammer.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      206,
+      542,
+      220,
+      175
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 32,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.hammer.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      388,
+      554,
+      217,
+      163
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.hammer.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      595,
+      543,
+      205,
+      174
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 37,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.hammer.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      786,
+      548,
+      282,
+      170
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 30,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.hammer.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      786,
+      548,
+      282,
+      170
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 30,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.leap.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      11,
+      771,
+      176,
+      125
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 46
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.leap.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      201,
+      718,
+      173,
+      173
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 30,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.leap.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      406,
+      718,
+      160,
+      155
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 31,
+      "offsetY": 34
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.leap.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      595,
+      724,
+      155,
+      168
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 31,
+      "offsetY": 29
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.leap.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      778,
+      754,
+      116,
+      137
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 41,
+      "offsetY": 41
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.leap.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      946,
+      772,
+      116,
+      124
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 42,
+      "offsetY": 46
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.slam.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      11,
+      942,
+      179,
+      129
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 44
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.slam.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      201,
+      933,
+      163,
+      138
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 30,
+      "offsetY": 41
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.slam.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      381,
+      958,
+      173,
+      113
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 30,
+      "offsetY": 51
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.slam.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      575,
+      928,
+      160,
+      143
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 39
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.slam.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      746,
+      937,
+      173,
+      134
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 33,
+      "offsetY": 42
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.slam.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      935,
+      906,
+      128,
+      165
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 37,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.recover.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      14,
+      1139,
+      165,
+      114
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 50
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.recover.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      200,
+      1125,
+      173,
+      128
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 45
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.recover.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      397,
+      1098,
+      132,
+      155
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 37,
+      "offsetY": 34
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.recover.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      574,
+      1093,
+      140,
+      160
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 36,
+      "offsetY": 32
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.recover.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      747,
+      1088,
+      146,
+      165
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 33,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.recover.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      928,
+      1080,
+      133,
+      173
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 37,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.exposed.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      29,
+      45,
+      230,
+      227
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 31,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.exposed.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      281,
+      60,
+      236,
+      212
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 30,
+      "offsetY": 32
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.exposed.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      540,
+      49,
+      234,
+      224
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 31,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.exposed.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      792,
+      53,
+      233,
+      219
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 31,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.exposed.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1044,
+      60,
+      229,
+      212
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 30,
+      "offsetY": 32
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.exposed.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1294,
+      57,
+      231,
+      216
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 29,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.pillar.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      30,
+      306,
+      216,
+      242
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 35,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.pillar.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      281,
+      284,
+      221,
+      265
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 35,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.pillar.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      532,
+      325,
+      206,
+      231
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 36,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.pillar.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      775,
+      284,
+      196,
+      268
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 33,
+      "offsetY": 15
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.pillar.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1017,
+      281,
+      202,
+      275
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 31,
+      "offsetY": 13
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.pillar.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1270,
+      278,
+      249,
+      275
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 25,
+      "offsetY": 13
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.volley.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      18,
+      593,
+      224,
+      176
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 29,
+      "offsetY": 43
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.volley.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      271,
+      591,
+      239,
+      179
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 30,
+      "offsetY": 42
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.volley.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      527,
+      587,
+      254,
+      187
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 28,
+      "offsetY": 40
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.volley.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      780,
+      593,
+      258,
+      181
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 29,
+      "offsetY": 41
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.volley.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1066,
+      589,
+      192,
+      187
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 36,
+      "offsetY": 40
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.volley.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1300,
+      585,
+      218,
+      185
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 30,
+      "offsetY": 40
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.summon.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      22,
+      804,
+      230,
+      194
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 30,
+      "offsetY": 37
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.summon.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      277,
+      803,
+      233,
+      196
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 30,
+      "offsetY": 37
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.summon.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      532,
+      802,
+      228,
+      196
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 29,
+      "offsetY": 37
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.summon.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      781,
+      781,
+      239,
+      218
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 27,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.summon.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1049,
+      778,
+      226,
+      221
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 32,
+      "offsetY": 29
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.summon.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/armored.png",
+    "sourceRect": [
+      1294,
+      802,
+      216,
+      197
+    ],
+    "transform": {
+      "scale": 0.3,
+      "offsetX": 29,
+      "offsetY": 37
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.death.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      19,
+      1297,
+      180,
+      138
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 35,
+      "offsetY": 41
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.death.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      207,
+      1261,
+      182,
+      174
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 33,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.death.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      387,
+      1261,
+      182,
+      174
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 32,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.death.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      569,
+      1261,
+      185,
+      174
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 32,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.death.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      755,
+      1261,
+      173,
+      174
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 32,
+      "offsetY": 26
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.death.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/main.png",
+    "sourceRect": [
+      928,
+      1261,
+      157,
+      180
+    ],
+    "transform": {
+      "scale": 0.4,
+      "offsetX": 34,
+      "offsetY": 24
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": true
+  },
+  {
+    "id": "boss.wounded/idle.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      25,
+      46,
+      148,
+      203
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 29
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/idle.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      202,
+      65,
+      148,
+      184
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 39,
+      "offsetY": 35
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/idle.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      382,
+      54,
+      150,
+      195
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/idle.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      557,
+      53,
+      157,
+      196
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/idle.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      739,
+      51,
+      154,
+      198
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 39,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/idle.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      915,
+      61,
+      145,
+      188
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 39,
+      "offsetY": 34
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/move.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      23,
+      266,
+      160,
+      209
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 36,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/move.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      206,
+      268,
+      157,
+      206
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 37,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/move.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      380,
+      279,
+      169,
+      195
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 36,
+      "offsetY": 31
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/move.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      568,
+      276,
+      155,
+      198
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 37,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/move.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      743,
+      281,
+      150,
+      194
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 32
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/move.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      915,
+      287,
+      154,
+      187
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 34
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/volley.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      22,
+      503,
+      177,
+      208
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 34,
+      "offsetY": 27
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/volley.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      207,
+      518,
+      336,
+      198
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 33,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/volley.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      207,
+      518,
+      336,
+      198
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 33,
+      "offsetY": 30
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/volley.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      530,
+      513,
+      357,
+      205
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 27,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/volley.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      530,
+      513,
+      357,
+      205
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 27,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/volley.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      890,
+      530,
+      177,
+      184
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 33,
+      "offsetY": 35
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/drain.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      21,
+      736,
+      168,
+      206
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 37,
+      "offsetY": 28
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/drain.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      194,
+      775,
+      180,
+      167
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 34,
+      "offsetY": 41
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/drain.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      372,
+      798,
+      177,
+      145
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 34,
+      "offsetY": 48
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/drain.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      551,
+      793,
+      206,
+      150
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 31,
+      "offsetY": 46
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/drain.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      753,
+      741,
+      146,
+      202
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 41,
+      "offsetY": 29
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/drain.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      918,
+      779,
+      154,
+      165
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 41
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/hurt.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      28,
+      956,
+      155,
+      225
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 38,
+      "offsetY": 21
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/hurt.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      213,
+      968,
+      176,
+      214
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 37,
+      "offsetY": 25
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/hurt.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      397,
+      988,
+      164,
+      194
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 37,
+      "offsetY": 32
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/hurt.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      568,
+      988,
+      174,
+      194
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 35,
+      "offsetY": 32
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/hurt.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      748,
+      995,
+      174,
+      186
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 35,
+      "offsetY": 34
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/hurt.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      934,
+      1000,
+      132,
+      181
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 42,
+      "offsetY": 36
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/death.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      15,
+      1249,
+      176,
+      180
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 36,
+      "offsetY": 36
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/death.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      200,
+      1208,
+      185,
+      221
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 34,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/death.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      381,
+      1208,
+      186,
+      223
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 33,
+      "offsetY": 22
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/death.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      562,
+      1246,
+      192,
+      185
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 32,
+      "offsetY": 35
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/death.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      750,
+      1208,
+      181,
+      223
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 34,
+      "offsetY": 22
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "boss.wounded/death.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
+    "sourceRect": [
+      932,
+      1208,
+      153,
+      223
+    ],
+    "transform": {
+      "scale": 0.33,
+      "offsetX": 36,
+      "offsetY": 22
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": true
+  },
+  {
+    "id": "effects.impact.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      0,
+      0,
+      209,
+      214
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 6
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.impact.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      209,
+      0,
+      209,
+      214
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 6
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.impact.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      418,
+      0,
+      209,
+      214
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 6
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.impact.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      627,
+      0,
+      209,
+      214
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 6
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.impact.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      836,
+      0,
+      209,
+      214
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 6
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.impact.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      1045,
+      0,
+      209,
+      214
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 6
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.wave.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      0,
+      279,
+      209,
+      133
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.wave.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      209,
+      279,
+      209,
+      133
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.wave.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      418,
+      279,
+      209,
+      133
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.wave.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      627,
+      279,
+      209,
+      133
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.wave.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      836,
+      279,
+      209,
+      133
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.wave.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      1045,
+      279,
+      209,
+      133
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 23
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.column.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      0,
+      408,
+      209,
+      261
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": -2
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.column.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      209,
+      408,
+      209,
+      261
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": -2
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.column.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      418,
+      408,
+      209,
+      261
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": -2
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.column.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      627,
+      408,
+      209,
+      261
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": -2
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.column.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      836,
+      408,
+      209,
+      261
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": -2
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.column.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      1045,
+      408,
+      209,
+      261
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": -2
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.bolt.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      0,
+      684,
+      209,
+      150
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.bolt.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      209,
+      684,
+      209,
+      150
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.bolt.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      418,
+      684,
+      209,
+      150
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.bolt.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      627,
+      684,
+      209,
+      150
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.bolt.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      836,
+      684,
+      209,
+      150
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.bolt.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      1045,
+      684,
+      209,
+      150
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.seal.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      0,
+      869,
+      209,
+      149
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.seal.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      209,
+      869,
+      209,
+      149
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.seal.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      418,
+      869,
+      209,
+      149
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.seal.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      627,
+      869,
+      209,
+      149
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.seal.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      836,
+      869,
+      209,
+      149
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.seal.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      1045,
+      869,
+      209,
+      149
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.break.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      0,
+      1047,
+      209,
+      193
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 9
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.break.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      209,
+      1047,
+      209,
+      193
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 9
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.break.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      418,
+      1047,
+      209,
+      193
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 9
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.break.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      627,
+      1047,
+      209,
+      193
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 9
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.break.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      836,
+      1047,
+      209,
+      193
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 9
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "effects.break.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/effects.png",
+    "sourceRect": [
+      1045,
+      1047,
+      209,
+      193
+    ],
+    "transform": {
+      "scale": 0.2,
+      "offsetX": 3,
+      "offsetY": 9
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/idle.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      20,
+      202,
+      155
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/idle.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      20,
+      202,
+      155
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/idle.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      20,
+      203,
+      155
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/idle.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      20,
+      202,
+      155
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/idle.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      20,
+      202,
+      155
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/idle.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      20,
+      203,
+      155
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/move.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      183,
+      202,
+      156
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/move.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      183,
+      202,
+      156
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/move.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      183,
+      203,
+      156
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/move.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      183,
+      202,
+      156
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/move.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      183,
+      202,
+      156
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/move.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      183,
+      203,
+      156
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/attack.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      350,
+      202,
+      161
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/attack.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      350,
+      202,
+      161
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/attack.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      350,
+      203,
+      161
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 13
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/attack.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      350,
+      202,
+      161
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/attack.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      350,
+      202,
+      161
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 13
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/attack.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      350,
+      203,
+      161
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/death.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      516,
+      216,
+      136
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 7,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/death.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      212,
+      516,
+      243,
+      136
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 4,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/death.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      464,
+      516,
+      306,
+      136
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": -3,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/death.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      775,
+      516,
+      264,
+      136
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 2,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/death.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1041,
+      516,
+      173,
+      136
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 12,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-ground/death.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1041,
+      516,
+      173,
+      136
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 12,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": true
+  },
+  {
+    "id": "chimera.chimera-air/idle.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      663,
+      202,
+      148
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/idle.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      663,
+      202,
+      148
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/idle.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      663,
+      203,
+      148
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/idle.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      663,
+      202,
+      148
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/idle.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      663,
+      202,
+      148
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/idle.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      663,
+      203,
+      148
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/move.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      818,
+      202,
+      135
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 20
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/move.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      818,
+      202,
+      135
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 21
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/move.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      818,
+      203,
+      135
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/move.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      818,
+      202,
+      135
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/move.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      818,
+      202,
+      135
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 20
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/move.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      818,
+      203,
+      135
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/attack.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      955,
+      202,
+      152
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 15
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/attack.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      955,
+      202,
+      152
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 15
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/attack.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      955,
+      203,
+      152
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/attack.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      955,
+      202,
+      152
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/attack.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      955,
+      202,
+      152
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 15
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/attack.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      955,
+      203,
+      152
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 15
+    },
+    "isolateLargestConnectedSprite": true,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/death.0",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      0,
+      1109,
+      202,
+      160
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 15
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/death.1",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      202,
+      1109,
+      202,
+      160
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 13
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/death.2",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      404,
+      1109,
+      203,
+      160
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 16
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/death.3",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      607,
+      1109,
+      202,
+      160
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 14
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/death.4",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      809,
+      1109,
+      202,
+      160
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 18
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": false
+  },
+  {
+    "id": "chimera.chimera-air/death.5",
+    "source": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
+    "sourceRect": [
+      1011,
+      1109,
+      203,
+      160
+    ],
+    "transform": {
+      "scale": 0.23,
+      "offsetX": 9,
+      "offsetY": 19
+    },
+    "isolateLargestConnectedSprite": false,
+    "finalDeathCleared": true
+  }
+]

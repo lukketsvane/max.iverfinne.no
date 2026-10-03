@@ -181,6 +181,7 @@ function drawRatHazard(h,x,y){
   ctx.restore();return true;
 }
 function enemyDistance(k,x,y){
+  if(Number.isFinite(k.bodyHalfW)&&Number.isFinite(k.bodyTop)&&Number.isFinite(k.bodyBottom))return Math.hypot(Math.max(0,Math.abs(k.x-x)-k.bodyHalfW),Math.max(0,k.y-k.bodyTop-y,y-k.y-k.bodyBottom));
   if(!isRat(k))return Math.hypot(k.x-x,k.y-y);
   return Math.hypot(Math.max(0,Math.abs(k.x-x)-9),Math.max(0,Math.abs(k.y-y)-6));
 }

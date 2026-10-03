@@ -1,5 +1,6 @@
 import { loadAtlas, drawAtlas } from './assets/native-atlas.mjs';
 import { updateRattusMotion } from './rattus-motion.mjs';
+import { crownPose, crownClip, crownGuardPose } from './hollow-crown-art.mjs';
 
 const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
@@ -27,7 +28,7 @@ const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bell
 const GUARDIANS = Object.freeze(['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','frostjaw','kiln-beetle','glass-snail','wick-hermit','spindle-widow','orchard-mimic','tuning-fork','ash-ferryman','compost-choir','seed-engine']);
 
 export function createNativeArt() {
-  const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null);
+  const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null), crownOutlines = Object.create(null);
   const clocks = new Map();
   let anonymousClocks = new WeakMap(), deaths = [], loading, sweptAt = 0;
 
@@ -35,8 +36,8 @@ export function createNativeArt() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
   function milestone(enemy) { return !!enemy.boss && (Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
-  function idFor(enemy) { return enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
-  function footOffset(enemy) { return enemy.boss ? enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
+  function idFor(enemy) { return enemy.crownGuard ? 'chimera-' + (enemy.crownGuardKind === 'ground' || enemy.kind === 5 ? 'ground' : 'air') : enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
+  function footOffset(enemy) { return enemy.crownGuard ? 10 : enemy.boss ? enemy.bossId === 'hollow-crown' ? 32 : enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function renderTime() { return typeof performance !== 'undefined' ? performance.now() / 1000 : 0; }
   function clockFor(enemy, time) {
     const key = Number.isFinite(enemy.ph) ? `${idFor(enemy)}:${enemy.ph}` : null;
@@ -55,6 +56,8 @@ export function createNativeArt() {
   }
   function pose(enemy, time) {
     const clock = clockFor(enemy, time);
+    if (enemy.boss && enemy.bossId === 'hollow-crown') return crownPose(enemy, time, clock);
+    if (enemy.crownGuard) return crownGuardPose(enemy, time, clock);
     if (!enemy.boss && enemy.kind === 8) {
       const allowed = ['idle', 'walk', 'run', 'jump', 'windup', 'attack', 'recover', 'hurt'];
       let name = enemy.hp <= 0 ? 'death' : enemy.flee > 0 ? 'hurt' : allowed.includes(enemy.ratState) ? enemy.ratState : 'idle';
@@ -106,13 +109,13 @@ export function createNativeArt() {
     clock.flash = enemy.flash || 0; clock.hp = enemy.hp; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0; clock.attackT = enemy.attackT || 0;
     return { name, seconds: Math.max(0, time - clock.since), progress };
   }
-  function flashAtlas(atlas) {
+  function flashAtlas(atlas, color = '#e6dfbb') {
     const images = Object.fromEntries(Object.entries(atlas.images).map(([key, image]) => {
       const canvas = document.createElement('canvas');
       canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
       const ctx = canvas.getContext('2d');
       ctx.imageSmoothingEnabled = false; ctx.drawImage(image, 0, 0);
-      ctx.globalCompositeOperation = 'source-in'; ctx.fillStyle = '#e6dfbb';
+      ctx.globalCompositeOperation = 'source-in'; ctx.fillStyle = color;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       return [key, canvas];
     }));
@@ -127,7 +130,8 @@ export function createNativeArt() {
     if (loading) return loading;
     const files = SKINS.slice(1).filter(id => !ON_DEMAND.includes(id)).map(id => [id, CHARACTER_ART[id] ? `assets/characters-v2/${CHARACTER_ART[id]}/atlas.json` : `assets/max-skins-v1/${id}/atlas.json`])
       .concat([['rattus-motion', 'assets/rattus-motion/atlas.json']])
-      .concat(Object.values(ENEMIES).concat('hollow-crown').map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
+      .concat(Object.values(ENEMIES).map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
+      .concat([['hollow-crown', 'assets/crown-ascendant-v1/atlas.json']])
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
       .concat(GUARDIANS.map(id => [id, `assets/garden-guardians-v1/native/${id}.json`]));
@@ -135,6 +139,10 @@ export function createNativeArt() {
       const atlas = await loadAtlas(url);
       atlases[id] = atlas;
       if (!SKINS.includes(id) && id !== 'rattus-motion') flashes[id] = flashAtlas(atlas);
+      if (id === 'hollow-crown') {
+        for (const guard of ['chimera-ground', 'chimera-air']) { atlases[guard] = atlas; flashes[guard] = flashes[id]; }
+        for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef', wounded: '#b5a8de' })) crownOutlines[name] = flashAtlas(atlas, color);
+      }
       return id;
     })).then(results => {
       const status = {
@@ -163,7 +171,12 @@ export function createNativeArt() {
     const id = idFor(enemy), atlas = atlases[id];
     if (!atlas) return false;
     const state = pose(enemy, time), footY = Math.round(y + footOffset(enemy));
+    if (id === 'hollow-crown') state.name = crownClip(atlas.manifest, state.name);
     const options = { facing: enemy.face, progress: state.progress };
+    if (id === 'hollow-crown') {
+      const outline = crownOutlines[enemy.exposed > 0 ? 'open' : enemy.windup > 0 ? 'tell' : enemy.crownStage === 4 || enemy.phase === 4 ? 'wounded' : 'dark'];
+      if (outline) for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) drawAtlas(ctx, outline, state.name, state.seconds, x + dx, footY + dy, options);
+    }
     const frame = drawAtlas(ctx, atlas, state.name, state.seconds, x, footY, options);
     if (enemy.flash > 0 && flashes[id]) {
       ctx.save(); ctx.globalAlpha *= Math.min(.7, enemy.flash * .7);
@@ -177,18 +190,30 @@ export function createNativeArt() {
     const clock = clockFor(enemy, time);
     if (clock.defeated) return;
     clock.defeated = true; clock.last = time;
-    const clip = atlas.manifest.animations.death;
-    deaths.push({ atlas, x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
+    const name = enemy.crownGuard ? idFor(enemy) + '/death' : enemy.bossId === 'hollow-crown' && (enemy.crownStage === 4 || enemy.phase === 4) ? crownClip(atlas.manifest, 'wounded/death') : 'death';
+    const clip = atlas.manifest.animations[name];
+    deaths.push({ atlas, name, crown: enemy.bossId === 'hollow-crown', x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
       duration: clip.frames.length / clip.fps });
     if (deaths.length > 32) deaths.shift();
   }
-  function drawDefeated(ctx, time, cameraX, cameraY) {
+  function drawDefeated(ctx, time, cameraX, cameraY, foreground = false) {
     const now = renderTime();
     const elapsed = death => Math.max(time - death.at, now - death.renderedAt);
     deaths = deaths.filter(death => time >= death.at && elapsed(death) < death.duration);
     for (const death of deaths) {
-      drawAtlas(ctx, death.atlas, 'death', elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
+      if (death.crown !== foreground) continue;
+      drawAtlas(ctx, death.atlas, death.name, elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
     }
+  }
+  function drawCrownEffect(ctx, name, seconds, x, y, progress, facing = 1) {
+    const atlas = atlases['hollow-crown'];
+    if (!atlas || !atlas.manifest.animations[name]) return false;
+    drawAtlas(ctx, atlas, name, seconds, x, y, { progress, facing });
+    return true;
+  }
+  function crownDeathRemaining() {
+    const now = renderTime();
+    return deaths.reduce((remaining, death) => death.crown ? Math.max(remaining, death.duration - Math.max(0, now - death.renderedAt)) : remaining, 0);
   }
   function drawPlayerMotion(ctx, player, x, y, tint) {
     const atlas = atlases['rattus-motion'];
@@ -197,7 +222,7 @@ export function createNativeArt() {
     drawAtlas(ctx, art, player.motionName, player.motionTime, x, y, { facing: player.face });
     return true;
   }
-  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion: updateRattusMotion, drawEnemy, enemyDefeated, drawDefeated, reset };
+  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion: updateRattusMotion, drawEnemy, drawCrownEffect, crownDeathRemaining, enemyDefeated, drawDefeated, reset };
 }
 
 if (typeof window !== 'undefined') {

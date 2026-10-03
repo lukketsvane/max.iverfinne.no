@@ -6,7 +6,7 @@ Keep `main` authoritative. Do not merge old asset/gameplay branches wholesale in
 
 Before changing runtime artwork, read the relevant `assets/**/README.md` and preserve native 1:1 pixel registration, integer anchors and disabled smoothing.
 
-For any art change, follow `docs/figma.md`: the configured Figma runtime sections on page 10:2 hold every runtime PNG file, the pack README, `atlas.json` and palette are binding, all packs are edited in their native Figma source layer and exported with their existing atlas, anchors and palette, and `npm run figma:check` must report all MATCH.
+For any art change, follow `docs/figma.md`: the configured Figma runtime sections on page 10:2 hold the established runtime PNG files, the pack README, `atlas.json` and palette are binding, and native Figma source edits must pass `npm run figma:check`. The user's 3 October 2026 generated-sprite instruction authorizes the three pinned PNGs in `assets/crown-ascendant-v1/` to use their documented local generated source while Figma requires reauthentication. Preserve the narrow provenance/native checks and truthful pending-import status; do not extend that exception to other artwork or claim remote synchronization.
 
 Before changing bouquet/results behavior, read `docs/asset-review/bouquet/README.md`. Results must represent the player's actual run and exact plant data.
 
