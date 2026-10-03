@@ -372,13 +372,14 @@ function damagePest(k,amount,x,build){
   k.hp=k.bossId==='hollow-crown'?hollowCrownDamage(k,damage):k.hp-damage;k.flash=1;
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;if(k.guardianStage&&!k.tideBoss)openGuardian(k,3.4);else{k.windup=0;k.exposed=k.guardianStage?2.2:1.4;k.cool=k.exposed+.8;}}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
-  if(!k.boss&&!frontal&&(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
+  if(!(build&&build.cairnExactStagger)&&!k.boss&&!frontal&&(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
   if(k.hp<=0){var i=floatKrek.indexOf(k);if(i>=0)floatKrek.splice(i,1);burstKrek(k);return true;}
   return false;
 }
 function healPest(k,amount){if(k)k.hp=Math.min(k.maxHp,k.hp+amount/runDurabilityScale(k));}
 function beginEnemyWarning(k){
   if(!k.combatId)k.combatId=++classPestId;
+  cairnBeginAttack(k);
   k.warningSerial=(k.warningSerial||0)+1;k.warnedAttack=true;
 }
 function polgeEnemyWarning(k,landed){
@@ -399,7 +400,7 @@ function gardenerDodging(member,a){
 }
 function enemyHazard(k,type,x,r,tell,power,sourceX,sourceY,targetY){
   var h=addRunHazard(type,x,r,tell,power,sourceX,sourceY,targetY);
-  if(h)h.warned=tell>0;
+  if(h){h.warned=tell>0;cairnTagHazard(h,k,'hazard');}
   return h;
 }
 function addRunHazard(type,x,r,tell,power,sourceX,sourceY,targetY){
@@ -438,7 +439,7 @@ function updateRunHazards(dt){
     if(!h.hit){
       h.hit=true;rootAbsorb(h);
       runHazardGardenerContact(h);
-      if(highTideMode()&&h.tide&&!h.absorbed){var mother=highTidePlant(),tip=highTideTip();if(mother&&h.power>0&&Math.abs(tip.x-h.x)<h.r&&Math.abs(tip.y-h.y)<20){highTideDamagePlant(mother,.06*h.power,false);}}
+      if(highTideMode()&&h.tide&&!h.absorbed){var mother=highTidePlant(),tip=highTideTip();if(mother&&h.power>0&&Math.abs(tip.x-h.x)<h.r&&Math.abs(tip.y-h.y)<20){highTideDamagePlant(mother,.06*h.power,false,{source:h,kind:'hazard',pointX:tip.x,pointY:tip.y,accepted:true});}}
       if(!highTideMode()&&!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*plantProtection(p,false));
         p.moisture=Math.max(0,p.moisture-.07);p.hit=1;
@@ -470,9 +471,9 @@ function runHazardGardenerContact(h){
   runPlayers().forEach(function(a){
     if(seedDown(a.member)||!runHazardTouches(h,a.p.x,a.p.y))return;
     if(h.crownOrbit&&(a.p.st==='float'||a.p.st==='climb'&&a.p.exitClimb||a.p===P&&climb&&climb.exit||!spendCrownRingContact(h,a.member)))return;
-    var warning=polgeHazardWarning(h);
-    if(singleSeedMode()&&h.power>0)damageGardener(a.member,24*h.power*runDamageScale(),warning);
-    else if(a.p.st!=='float'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit)&&gardenerDodging(a.member,a.p))polgeAvoidedWarning(a.member,warning);
+    var warning=polgeHazardWarning(h),contact=cairnContact(h,{kind:h.cairnContactKind||'hazard',pointX:a.p.x,pointY:a.p.y-12,accepted:true});
+    if(singleSeedMode()&&h.power>0)damageGardener(a.member,24*h.power*runDamageScale(),warning,contact);
+    else if(a.p.st!=='float'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit)){if(gardenerDodging(a.member,a.p))polgeAvoidedWarning(a.member,warning);else if(!curledMember(a.member,a.p))cairnStrike(a.member,contact);}
   });
 }
 function updateHazardContact(){
@@ -483,8 +484,10 @@ function updateHazardContact(){
       hazardHits[key]=true;
       var member=coop&&coop.members[coop.me],fresh=spendCrownRingContact(h,member);
       if(P.dodgeT>0){if(fresh)polgeAvoidedWarning(member,polgeHazardWarning(h));continue;}
+      cairnStrike(member,cairnContact(h,{kind:h.cairnContactKind||'hazard',pointX:P.x,pointY:P.y-12,accepted:true}));
       if(P.brace>0||P.tun>0)continue;
       var resistance=ownClass().id==='runner'?rattusKnockbackFactor():1;if(ownClass().id==='runner')rattusCancelMotion(rattusMember(),'hazard');
+      if(ownClass().id==='bulwark')cairnCancelMotion(undefined,'hazard');
       P.hurt=2;P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback*resistance;P.vy=-88*ownClass().knockback*resistance;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
@@ -500,6 +503,33 @@ function dewDodge(){
   gardenPlots.forEach(function(p){if(!p.dead&&Math.hypot(P.x-p.x,P.y-surfaceY(p.x))<32){p.moisture=clamp01(p.moisture+.16);p.health=clamp01(p.health+.035);p.pulse=1;}});
   for(var i=0;i<8;i++)parts.push({x:P.x+(Math.random()-.5)*36,y:P.y-6,vx:0,vy:12,l:.4,m:.4,c:'130,202,214'});
 }
+function cairnRamMoveTo(k,x,y,dt,speed){
+  var context={grounded:true,supportId:'ground',foot:11,bodyRadius:7};
+  var before=Object.assign({},k,{grounded:true}),grounded=cairnPestGround(before,context);
+  var grit=grounded?cairnPestSlow(before,context):1;
+  var distance=moveEnemyTo(k,x,y,dt,speed);
+  if(!grounded||!cairnPestGround(k,context))return distance;
+  k.x=before.x+(k.x-before.x)*grit;k.y=before.y+(k.y-before.y)*grit;
+  var accepted=cairnPestStep(k,before,{x:k.x,y:k.y,vx:k.vx,vy:k.vy,grounded:true},context);
+  k.x=accepted.x;k.y=accepted.y;k.vx=accepted.vx;k.vy=accepted.vy;
+  return distance;
+}
+
+// Replace ONLY kind11 charge movement with this sequence; its existing
+// terminal bite/recovery and raw-dt charge countdown remain in the caller.
+function cairnRamChargeStep(k,dt){
+  var step=Math.min(dt,k.chargeT),context={grounded:true,supportId:'ground',foot:11,bodyRadius:7};
+  var before=Object.assign({},k,{grounded:true}),grounded=cairnPestGround(before,context);
+  var grit=grounded?cairnPestSlow(before,context):1;
+  k.x+=k.chargeV*step*mechWetFactor(k);k.y=surfaceY(k.x)-11;
+  if(grounded&&cairnPestGround(k,context)){
+    k.x=before.x+(k.x-before.x)*grit;k.y=surfaceY(k.x)-11;
+    var accepted=cairnPestStep(k,before,{x:k.x,y:k.y,vx:k.vx,vy:k.vy,grounded:true},context);
+    k.x=accepted.x;k.y=accepted.y;k.vx=accepted.vx;k.vy=accepted.vy;
+  }
+  k.chargeT=Math.max(0,k.chargeT-dt);
+}
+
 function moveEnemyTo(k,x,y,dt,speed){
   var dx=x-k.x,dy=y-k.y,d=Math.hypot(dx,dy);k.face=dx<0?-1:1;
   if(d<3){k.vx=k.vy=0;return d;}
@@ -536,6 +566,7 @@ function updatePestDive(k,dt){
   var warning=enemyHazard(k,'gust',target.x,12,1.21,0,k.x,k.y,target.y);
   if(!warning)return false;
   beginEnemyWarning(k);
+  cairnTagHazard(warning,k,'hazard');
   k.diveX=target.x;k.diveY=target.y;k.diveHazard=warning.id;k.divePhase=1;k.tell=k.windup=.85;k.target=null;k.attackTarget=null;k.vx=k.vy=0;
   return true;
 }
@@ -622,7 +653,7 @@ function updateEnemyRole(k,dt){
   }
   if(k.kind===11){
     if(k.chargeT>0){
-      var chargeStep=Math.min(dt,k.chargeT);k.x+=k.chargeV*chargeStep*mechWetFactor(k);k.y=surfaceY(k.x)-11;k.chargeT=Math.max(0,k.chargeT-dt);
+      cairnRamChargeStep(k,dt);
       if(!k.chargeT){k.vx=0;k.bite=2.4;}return true;
     }
     var ramTarget=pickKrekTarget(k);if(!ramTarget)return false;
@@ -637,7 +668,7 @@ function updateEnemyRole(k,dt){
       var ram=enemyHazard(k,'root',ramTarget.x,14,1.0,.72,k.x,k.y,surfaceY(ramTarget.x));k.rootHazard=ram?ram.id:0;
       return true;
     }
-    moveEnemyTo(k,ramTarget.x+(ramDx<0?-45:45),surfaceY(ramTarget.x)-11,dt,10);
+    cairnRamMoveTo(k,ramTarget.x+(ramDx<0?-45:45),surfaceY(ramTarget.x)-11,dt,10);
     return true;
   }
   return false;

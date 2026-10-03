@@ -165,7 +165,7 @@ function updateCrownGuard(k,dt){
     }
     return true;
   }
-  if(moveEnemyTo(k,aim,surfaceY(aim)-(flying?24:10),dt,flying?13:11)<8&&k.bite<=0)k.tell=k.windup=flying?1.0:.9;
+  if(moveEnemyTo(k,aim,surfaceY(aim)-(flying?24:10),dt,flying?13:11)<8&&k.bite<=0){cairnBeginAttack(k);k.tell=k.windup=flying?1.0:.9;}
   k.x=guardianAimX(owner,k.x);return true;
 }
 function crownBeginAttack(k){

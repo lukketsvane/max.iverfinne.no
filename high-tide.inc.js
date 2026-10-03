@@ -75,8 +75,10 @@ function highTideClaimBoons(actors,p){
     s.dewMask|=q.bit;s.growthRush=Math.min(12,(s.growthRush||0)+5);p.moisture=clamp01(p.moisture+.3);p.health=clamp01(p.health+.12);p.pulse=1.5;s.calm=Math.max(s.calm,8);a.v.hp=Math.min(100,a.v.hp+18);a.v.air=highTideProfile().breath;
   });
 }
-function highTideDamagePlant(p,amount,bite){
-  var perks=plantPerks(p);p.health=clamp01(p.health-amount*Math.pow(.78,(bite?perks.shield:perks.bark)||0));p.hit=1;
+function highTideDamagePlant(p,amount,bite,context){
+  var tip=highTideTip(),point=Object.assign({kind:bite?'bite':'hazard',pointX:tip.x,pointY:tip.y,plantId:p.id,accepted:true},context||{}),perks=plantPerks(p),raw=amount*Math.pow(.78,(bite?perks.shield:perks.bark)||0),before={health:p.health,rawDamage:raw},defense=cairnProtection(p,point);
+  p.health=clamp01(p.health-raw*defense.multiplier);p.hit=1;if(defense.multiplier<1)p.guard=.35;
+  if(bite)cairnReducedBite(defense,cairnContact(point.source,point),before,{health:p.health});
 }
 function highTideSpawnBoss(){
   var s=rogueRun.survival;if(s.bossActive||s.bosses>=5||s.height<highTideGate())return;
@@ -109,7 +111,7 @@ function updateHighTideBoss(k,dt){
   var a=highTideEnemyTarget(k);if(!a)return;
   k.phase=k.hp<k.maxHp/3?3:k.hp<k.maxHp*2/3?2:1;k.exposed=Math.max(0,k.exposed-dt);k.flee=0;
   if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step*mechWetFactor(k);k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
-  if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){highTideDamagePlant(p,.07,false);p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
+  if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){var tip=highTideTip();highTideDamagePlant(p,.07,false,{source:k,kind:'drain',pointX:tip.x,pointY:tip.y,accepted:true});p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
   k.cool-=dt;
   var gate=highTideRoutePoint(HIGH_TIDE_GATES[k.tideIndex]);
   if(k.exposed<=0)moveEnemyTo(k,gate.x+(k.attack%2?-44:44),gate.y-(k.bossId==='moon-moth'?40:22),dt,24);
@@ -139,7 +141,7 @@ function updateHighTideEnemies(dt){
     var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
     var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
     k.cool=Math.max(0,k.cool-dt);
-    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){highTideDamagePlant(p,.045,true);p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale(),polgeEnemyWarning(k,true));}k.cool=1.5;}return;}
+    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){highTideDamagePlant(p,.045,true,{source:k,kind:'bite',pointX:target.x,pointY:target.y,accepted:true});p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale(),polgeEnemyWarning(k,true),cairnContact(k,{kind:'strike',pointX:a.p.x,pointY:a.p.y-10,accepted:true}));}k.cool=1.5;}return;}
     if(d<14&&k.cool<=0){k.tell=k.windup=.65;beginEnemyWarning(k);k.vx=k.vy=0;}
   });
 }

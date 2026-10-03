@@ -233,7 +233,7 @@ function drawWonders(t){
   if(wonders.gate&&!wonders.next){var near=Math.abs(P.x-wonders.gx)<60;if(near||blink)wonderDraw('gate',wonders.gx,wonders.gy);}
 }
 var tunnels={w:0,s:[]};
-function canBurrow(){return !!(rogueRun.shovel&&!coop&&P.st==='free'&&P.grounded&&!P.wet&&!P.platform&&!climb&&!warp&&Math.abs(P.y-surfaceY(P.x))<=4&&!waterAt(P.x)&&!parryable(P.x,P.y)&&!floatKrek.some(function(k){return k.hp>0&&Math.abs(k.x-P.x)<40&&Math.abs(k.y-P.y)<40;}));}
+function canBurrow(cairnHands){var pose=P.st==='free'||cairnHands===true&&ownClass().id==='bulwark'&&['toCrouch','squat','toStand','task','watering','toSit','rest','unsit','lampUp','lamp','lampDn'].includes(P.st);return !!(rogueRun.shovel&&!coop&&pose&&P.grounded&&!P.wet&&!P.platform&&!climb&&!warp&&Math.abs(P.y-surfaceY(P.x))<=4&&!waterAt(P.x)&&!parryable(P.x,P.y)&&!floatKrek.some(function(k){return k.hp>0&&Math.abs(k.x-P.x)<40&&Math.abs(k.y-P.y)<40;}));}
 function startBurrow(){
   P.st='burrow';P.vx=P.vy=0;P.y=surfaceY(P.x)+12;P.brace=0;burrowCarve();setAnim('idle');chime([131,98],.08,.05);
   for(var i=0;i<14;i++)parts.push({x:P.x+(Math.random()-.5)*10,y:surfaceY(P.x)-1,vx:(Math.random()-.5)*50,vy:-20-Math.random()*40,l:.6,m:.6,c:'90,70,50'});

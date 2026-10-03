@@ -10,7 +10,7 @@ function fighterState(owner){
   ['rhythm','rhythmIdle','rhythmDecay','utilityCool','slip','counter','avoidedWarning','clinchCool','flurryBeats','flurryFinish','flurryStep','flurryAge'].forEach(function(k){if(!Number.isFinite(q[k]))q[k]=0;});
   return q;
 }
-function classAttackCooldown(){return ({runner:.5,bulwark:.72,herbalist:.58,polge:.22}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
+function classAttackCooldown(){if(ownClass().id==='bulwark')return cairnPrimaryInterval();return ({runner:.5,herbalist:.58,polge:.22}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
 function combatFx(kind,x,y,r,face,combo){
   var q={id:++coopFxId,x:x,y:y,t:0,ring:1,r:r,strike:kind,cue:'strike:'+kind,owner:skillOwner(),face:face||1,combo:combo||0};booms.push(q);
   if(typeof classStrikeCue==='function')classStrikeCue(kind,Math.hypot(x-(coopActor?coop.members[coop.me].avatar.x:P.x),y-(coopActor?coop.members[coop.me].avatar.y:P.y)),combo||0);
@@ -31,6 +31,10 @@ function classPrimary(target){
   if(ownClass().id==='runner'&&rattusPhasePolicy().lockPrimary)return false;
   if(ownClass().id==='polge'&&fighterState().flurry>0)return false;
   var aim=combatAim(target);if(Math.abs(aim.x-P.x)>1)P.face=aim.x>P.x?1:-1;
+  if(ownClass().id==='bulwark'){
+    if(!cairnPrimary(aim))return false;task=null;holdWater=null;P.still=0;P.throwPose=.2;
+    if(!climb&&P.st!=='ladder')P.st='free';if(sheet2Ready){setAnim('toss');P.frame=ANIM.toss.hit;}return true;
+  }
   if(coopGuest()){P.attackTag=(P.attackTag||0)+1;if(!coopAction('throw',{x:aim.x,y:aim.y,spore:aim.spore||0,attackTag:P.attackTag}))return false;}
   else{
     var kit=ownClass().id;
@@ -54,11 +58,7 @@ function sporeShot(aim){
 function combatLineClear(x0,y0,x1,y1){var n=Math.ceil(Math.hypot(x1-x0,y1-y0)/3),L=stageLayout();for(var i=1;i<=n;i++)if(window.MaxStageLayout.inRock(L,x0+(x1-x0)*i/n,y0+(y1-y0)*i/n))return false;return true;}
 function meleeCenter(aim,reach){var dx=aim.x-P.x,dy=aim.y-(P.y-12),d=Math.hypot(dx,dy)||1,r=Math.min(reach,d);while(r>0&&!combatLineClear(P.x,P.y-12,P.x+dx/d*r,P.y-12+dy/d*r))r-=2;return {x:P.x+dx/d*r,y:P.y-12+dy/d*r};}
 function cairnCleave(aim){
-  var b=combatBuild(),r=25+6*(b.fault||0),c=meleeCenter(aim,13);
-  floatKrek.slice().forEach(function(k){if(enemyDistance(k,c.x,c.y)>r||!combatLineClear(P.x,P.y-12,k.x,k.y))return;var parry=k.windup>0;
-    if(!combatDamage(k,1.3*(parry?1.5:1),P.x,b)&&!k.boss){staggerKrek(k,.6);k.vx=(k.x<P.x?-1:1)*60;k.vy=-20;}
-  });
-  combatObjectives(c.x,c.y,r);combatFx('cleave',c.x,c.y,r,P.face);
+  return cairnPrimaryWorld(aim);
 }
 function polgeContact(aim,reach,kind){
   var c=kind==='uppercut'?{x:P.x+P.face*6,y:P.y-18}:meleeCenter(aim,Math.min(12,reach*.5));
@@ -224,13 +224,20 @@ function updateClassCombat(dt){
 }
 function drawClassShots(){classShots.forEach(function(s){var x=Math.round(s.x-camX),y=Math.round(s.y-camY);ctx.fillStyle=s.kind==='needle'?'#e6bf69':'#80d1b1';if(s.kind==='needle'){for(var n=0;n<7;n++)ctx.fillRect(x-Math.round(s.vx/230*n),y-Math.round(s.vy/230*n),1,1);}else{ctx.fillRect(x-2,y-2,5,4);ctx.fillStyle='#f5d895';ctx.fillRect(x-1,y-2,2,1);}});}
 function drawCombatStrike(b,x,y){
+  if(b.strike==='cairn-ridge-warn'){
+    if(b.t>.5)return;ctx.globalAlpha=.25+.3*b.t/.5;ctx.fillStyle='#cba877';for(var mark=-32;mark<=32;mark+=4)ctx.fillRect(x+mark,y+8,2,1);ctx.globalAlpha=1;return;
+  }
   if(b.strike==='overload-tell'){
     if(b.t>.4)return;ctx.fillStyle='#efd17e';ctx.globalAlpha=.22+.28*b.t/.4;
     for(var mark=0;mark<32;mark++){var angle=mark*Math.PI/16;ctx.fillRect(x+Math.round(Math.cos(angle)*b.r),y+Math.round(Math.sin(angle)*b.r),1,1);}
     ctx.globalAlpha=1;return;
   }
   if(b.t>.2)return;var alpha=1-b.t/.2,color=b.strike==='spore'?'#80d1b1':b.strike==='cleave'?'#cba877':b.strike==='needle'?'#e6bf69':'#eed2b5';ctx.globalAlpha=alpha;ctx.fillStyle=color;
-  if(b.strike==='tail-whip'){ctx.fillStyle='#a46681';var tailX=Number.isFinite(b.tx)?b.tx-camX:x+(b.face||1)*b.r,tailY=Number.isFinite(b.ty)?b.ty-camY:y,tailLength=Math.hypot(tailX-x,tailY-y);for(var tail=0;tail<=tailLength;tail+=2){var along=tail/Math.max(1,tailLength);ctx.fillRect(Math.round(x+(tailX-x)*along),Math.round(y+(tailY-y)*along),1,1);}}
+  if(['cairn-sweep','cairn-reverse','cairn-aftershock'].includes(b.strike)){ctx.fillStyle='#cba877';var progress=Math.min(1,b.t/.2),reverse=b.strike==='cairn-reverse';for(var shard=0;shard<12;shard++){var angle=(shard/11-.5)*1.8*(reverse?-1:1),reach=b.r*(.4+.35*progress);ctx.fillRect(x+Math.round(Math.cos(angle)*reach*(b.face||1)),y+Math.round(Math.sin(angle)*reach),shard%3?1:2,1);}}
+  else if(['cairn-knuckle','cairn-ridge'].includes(b.strike)){ctx.fillStyle='#cba877';for(var stone=0;stone<11;stone++){var span=stone/10*b.r*(.5+b.t*2);ctx.fillRect(x+Math.round(span*(b.face||1)),y+12-(stone%3),2,1);}ctx.fillStyle='#798f72';ctx.fillRect(x+(b.face||1)*8,y+8,3,2);}
+  else if(['cairn-brace','cairn-counter','cairn-bedrock'].includes(b.strike)){ctx.fillStyle='#cba877';var radial=b.strike==='cairn-bedrock';for(var chip=0;chip<(radial?24:9);chip++){var angle=radial?chip*Math.PI/12:(chip/8-.5)*1.2,radius=radial?b.r*(.7+b.t):b.strike==='cairn-counter'?24:13;ctx.fillRect(x+Math.round(Math.cos(angle)*radius*(b.face||1)),y+Math.round(Math.sin(angle)*radius),1,1);}}
+  else if(b.strike==='cairn-stone'||b.strike==='cairn-grit'){ctx.fillStyle='#cba877';for(var pebble=0;pebble<7;pebble++)ctx.fillRect(x+Math.round((pebble-3)*(b.strike==='cairn-grit'?3:1)),y+(pebble%2),1,1);}
+  else if(b.strike==='tail-whip'){ctx.fillStyle='#a46681';var tailX=Number.isFinite(b.tx)?b.tx-camX:x+(b.face||1)*b.r,tailY=Number.isFinite(b.ty)?b.ty-camY:y,tailLength=Math.hypot(tailX-x,tailY-y);for(var tail=0;tail<=tailLength;tail+=2){var along=tail/Math.max(1,tailLength);ctx.fillRect(Math.round(x+(tailX-x)*along),Math.round(y+(tailY-y)*along),1,1);}}
   else if(b.strike==='driving-dropkick'){ctx.fillStyle='#efd17e';for(var trail=0;trail<5;trail++)ctx.fillRect(x-(b.face||1)*(trail*4+2),y-2+trail%2,3,1);}
   else if(b.strike==='splits-wave'){ctx.fillStyle='#efd17e';for(var dot=0;dot<32;dot++){var a=dot*Math.PI/16,r=b.r*Math.min(1,.7+b.t*2);ctx.fillRect(x+Math.round(Math.cos(a)*r),y+Math.round(Math.sin(a)*r*.25),1,1);}}
   else if(b.strike==='mist'){ctx.fillStyle='#80d1b1';for(var arc=0;arc<2;arc++)for(var dot=0;dot<11;dot++){var a=(dot/10-.5)*1.2,r=b.r*(.32+arc*.3+b.t*1.4);ctx.fillRect(x+Math.round(Math.cos(a)*r*(b.face||1)),y+Math.round(Math.sin(a)*r),1,1);}}

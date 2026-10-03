@@ -138,12 +138,12 @@ test('native feet, shoulder and body taps all register and a basic Mech bomb hit
 
 test('all close classes can break the Crown seals through their real attack input', () => {
   for (const classId of ['runner', 'bulwark', 'polge', 'herbalist']) {
-    const { g, boss } = encounter('medium', classId); advanceTo(g, boss, 2);
+    const h=encounter('medium',classId),{g,boss}=h; advanceTo(g, boss, 2);
     step(g, boss, 1.6);
     const n = boss.nodes[0];
     Object.assign(g.P, { x: n.x - 12, y: g.surfaceY(n.x - 12), grounded: true, face: 1, st: 'free' });
     g.bombCool = 0; assert.equal(g.throwBomb({ x: n.x, y: n.y }), true, classId);
-    for (let i = 0; i < 120; i++) g.updateClassCombat(1 / 120);
+    for (let i = 0; i < 120; i++) { h.advance(1000/120);g.updateClassCombat(1 / 120);g.updateCairnCombat(1/120); }
     assert.equal(n.hp, 0, classId);
   }
 });
@@ -217,15 +217,16 @@ test('wounded ground pound has moving return orbs, a bounded garden hit and nonl
 
 test('one threshold-crossing real attack cannot consume the Crown objectives it just revealed', () => {
   for (const classId of ['bulwark', 'polge']) for (const width of [100, 170, 224]) {
-    const { g, boss } = encounter('medium', classId);
+    const h=encounter('medium',classId),{g,boss}=h;
     boss.courtLeft = boss.courtX - width / 2; boss.courtRight = boss.courtX + width / 2;
     boss.x = boss.courtX; boss.y = g.surfaceY(boss.x) - 32;
     if (classId === 'bulwark') g.rogueRun.perks.fault = 4;
     function strike() {
+      if(classId==='bulwark'){h.advance(1150);g.updateCairnCombat(.001);}
       Object.assign(g.P, { x: boss.x - 13, y: g.surfaceY(boss.x - 13), st: 'free', grounded: true, face: 1 });
       g.bombCool = 0;
       assert.equal(g.throwBomb({ x: boss.x, y: g.surfaceY(boss.x) - 9 }), true);
-      for (let i = 0; i < 45; i++) g.updateClassCombat(1 / 120);
+      for (let i = 0; i < 45; i++) {h.advance(1000/120);g.updateClassCombat(1 / 120);g.updateCairnCombat(1/120);}
     }
     boss.hp = boss.maxHp * .66 + .1; strike();
     assert.equal(boss.phase, 2, `${classId}/${width}`); assert.ok(boss.nodes.every(n => n.hp === 1));

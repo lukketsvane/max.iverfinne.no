@@ -1,0 +1,66 @@
+name: Cairn combat browser review
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths:
+      - 'index.html'
+      - 'cairn.inc.js'
+      - 'cairn-motion.mjs'
+      - 'polge.inc.js'
+      - 'coop-game.inc.js'
+      - 'run-director.inc.js'
+      - 'rat-enemies.inc.js'
+      - 'last-seed.inc.js'
+      - 'high-tide.inc.js'
+      - 'high-tide-map.js'
+      - 'night-relay.inc.js'
+      - 'wonders.inc.js'
+      - 'secrets.inc.js'
+      - 'sligo-life.inc.js'
+      - 'hollow-crown.inc.js'
+      - 'hollow-crown-art.mjs'
+      - 'ascent-presentation.inc.js'
+      - 'native-art.mjs'
+      - 'assets/native-atlas.mjs'
+      - 'stage-layout.js'
+      - 'garden-places.js'
+      - 'stage-expeditions.js'
+      - 'guardian-sites.js'
+      - 'levels.js'
+      - 'levels-data.js'
+      - 'tiles.js'
+      - 'build-paths.js'
+      - 'max-classes.js'
+      - 'assets/characters-v2/cairn/**'
+      - 'assets/characters-v2/README.md'
+      - 'assets/rat-enemies-v1/**'
+      - 'assets/enemies-v1/**'
+      - 'assets/garden-guardians-v1/**'
+      - 'assets/crown-ascendant-v1/**'
+      - 'review.html'
+      - 'scripts/game-source.cjs'
+      - 'scripts/build-static.cjs'
+      - 'scripts/check-cairn-combat-browser.cjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/cairn-combat-review.yml'
+permissions:
+  contents: read
+jobs:
+  cairn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps chromium webkit
+      - run: node scripts/check-cairn-combat-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cairn-combat-browser-review
+          path: cairn-combat-browser-review/
