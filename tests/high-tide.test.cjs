@@ -43,6 +43,18 @@ test('a recoverable dunk and drowning ignore shields, dodge and the Sligo tun',(
  s.waterY=g.P.y-60;step(g,5);assert.equal(v.hp,0);assert.equal(g.rogueRun.ended,true);g.resetRogueRun('RETRY',{mode:'high-tide'});assert.equal(g.gardenSeeds,1);assert.equal(g.seedDown(),false);
 });
 
+test('High Tide’s fifth Crown guardian retains a visible bar that follows its actual health',()=>{
+ const g=setup().game,p=start(g),s=g.rogueRun.survival;
+ s.bosses=4;s.height=p.tideHeight=g.HIGH_TIDE_GATES[4];stand(g,g.highTideTip());s.waterY=g.P.y+100;g.highTideSpawnBoss();
+ const k=g.liveBoss();assert.equal(k.bossId,'hollow-crown');assert.equal(k.tideBoss,true);
+ const draws=[];g.ctx.fillRect=(x,y,w,h)=>draws.push({color:g.ctx.fillStyle,w,h});k.flash=k.exposed=0;
+ const width=Math.min(g.IW-16,140);
+ for(const fraction of [.5,.25]){
+  draws.length=0;k.hp=k.maxHp*fraction;g.drawBossBar(.05);
+  assert.ok(draws.some(q=>q.color==='#e0b54f'&&q.h===3&&q.w===Math.round(width*fraction)),'the High Tide health fill must track the live final guardian');
+ }
+});
+
 test('guest care requires fresh nearby input; boss state, plant health, tide and claimed upgrades survive authority handoff',()=>{
  const {players:[h,j],room,sync}=pair(),g=h.game,q=j.game;const p=start(g),s=g.rogueRun.survival;p.moisture=.3;p.health=.5;sync();
  const m=g.coop.members[ids[1]];m.trust=true;stand(q,g.highTideRoutePoint(0));q.heldSpace=true;

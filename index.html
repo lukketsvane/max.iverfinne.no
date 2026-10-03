@@ -2790,7 +2790,7 @@ function drawBossBar(dt){
   bossSeen.x=k.x;bossSeen.y=k.y;
   var f=Math.max(0,Math.min(1,k.hp/k.maxHp)),name=k.bossName||BOSS_NAMES[k.bossId]||'BOSS';
   bossSeen.t=Math.max(0,bossSeen.t-dt);bossSeen.ghost=Math.max(f,bossSeen.ghost-dt*.4);
-  if(k.bossId==='hollow-crown')return;
+  if(k.bossId==='hollow-crown'&&!k.tideBoss)return;
   var w=Math.min(IW-16,140),x=Math.round((IW-w)/2),y=bossBarY();
   ctx.fillStyle='rgba(4,8,10,.8)';ctx.fillRect(x-1,y-1,w+2,5);
   ctx.fillStyle='#8c2f22';ctx.fillRect(x,y,Math.round(w*bossSeen.ghost),3);

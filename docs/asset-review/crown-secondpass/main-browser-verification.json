@@ -1,0 +1,670 @@
+{
+  "runtimeSha256": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+  "baseMain": "d97b84b",
+  "integratedHead": "454bce6",
+  "max": {
+    "chromium": {
+      "engine": "chromium",
+      "build": {
+        "index.html": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+        "companion.js": "74c4727f6e878c22da085ab1c9855cc934fbb2009a5824cc27fa2334e23e5acc",
+        "assets/max-skins-v1/tide/main.png": "69012130939aa168e0a538b4146ea8e8b906cf178737fdd6dcf3aa9aa726898f",
+        "assets/max-skins-v1/tide/interaction.png": "2ae6a2b5f4d8c0953effa47e77dccd5c1c9da03626aa8374a5ca4d54c83151da",
+        "assets/max-skins-v1/tide/atlas.json": "20ec7e8f8ce44153a72fd264bbbfe329298f810b1ca801910325d6ba2eacc0e2"
+      },
+      "visuals": [
+        {
+          "width": 1000,
+          "height": 650,
+          "skin": "tide",
+          "smoothing": false,
+          "buttons": [
+            {
+              "id": "mechPrimary",
+              "label": "Plant bomb (B)",
+              "left": 818,
+              "right": 900,
+              "top": 530,
+              "bottom": 578,
+              "visible": true
+            },
+            {
+              "id": "mechFan",
+              "label": "Irrigation fan (C)",
+              "left": 906,
+              "right": 988,
+              "top": 530,
+              "bottom": 578,
+              "visible": true
+            },
+            {
+              "id": "mechUtility",
+              "label": "Rover dispatch or recall (V)",
+              "left": 818,
+              "right": 900,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            },
+            {
+              "id": "mechSpecial",
+              "label": "Floodgate overload (E)",
+              "left": 906,
+              "right": 988,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "skin": "tide",
+          "smoothing": false,
+          "buttons": [
+            {
+              "id": "mechPrimary",
+              "label": "Plant bomb (B)",
+              "left": 208,
+              "right": 290,
+              "top": 724,
+              "bottom": 772,
+              "visible": true
+            },
+            {
+              "id": "mechFan",
+              "label": "Irrigation fan (C)",
+              "left": 296,
+              "right": 378,
+              "top": 724,
+              "bottom": 772,
+              "visible": true
+            },
+            {
+              "id": "mechUtility",
+              "label": "Rover dispatch or recall (V)",
+              "left": 208,
+              "right": 290,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            },
+            {
+              "id": "mechSpecial",
+              "label": "Floodgate overload (E)",
+              "left": 296,
+              "right": 378,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "skin": "tide",
+          "smoothing": false,
+          "buttons": [
+            {
+              "id": "mechPrimary",
+              "label": "Plant bomb (B)",
+              "left": 138,
+              "right": 220,
+              "top": 448,
+              "bottom": 496,
+              "visible": true
+            },
+            {
+              "id": "mechFan",
+              "label": "Irrigation fan (C)",
+              "left": 226,
+              "right": 308,
+              "top": 448,
+              "bottom": 496,
+              "visible": true
+            },
+            {
+              "id": "mechUtility",
+              "label": "Rover dispatch or recall (V)",
+              "left": 138,
+              "right": 220,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            },
+            {
+              "id": "mechSpecial",
+              "label": "Floodgate overload (E)",
+              "left": 226,
+              "right": 308,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "results": [
+        "Real B: move while charging, plant stationary bomb, retain exact 2 s fuse; empty blast earns no Circuit",
+        "Real Tend and actual interrupted plant attacks earn Circuit; ongoing care and bomb defense share the 4 s gate",
+        "Real C: one charge, three forward pulses, Wet, one .04 irrigation debit; behind/far enemies and Circuit remain untouched",
+        "Fan remains steerable and all three contacts follow Max\u2019s current body",
+        "Plant B, then C: Wet grants exactly one 25% bonus to the real delayed primary blast and is consumed",
+        "Real V dispatch reserves water and reaches a plant; ready recall walks home, preserves reserve and respects its cooldown",
+        "Real E requires three charges, plants the .4 s windup, resolves once and prioritizes real rover water for 4 s",
+        "All four touch slots invoke real actions; X retains the universal ground dodge",
+        "Tide body and supplied rover cells keep native 1:1 pixels, integer registration and disabled smoothing",
+        "Actual gamepad polling: Tend + Fan refills on both controller layouts without Circuit/cast/gardening side effects; releasing restores Tend and bare Fan still fires",
+        "Two actual browser players: host accepts tagged B/C/V/E once, guest predictions preserve owner resources, and paid dispatch continues through real authority promotion",
+        "Real B: move while charging, plant stationary bomb, retain exact 2 s fuse; empty blast earns no Circuit",
+        "Real C: one charge, three forward pulses, Wet, one .04 irrigation debit; behind/far enemies and Circuit remain untouched",
+        "Fan remains steerable and all three contacts follow Max\u2019s current body",
+        "Existing bomb branches, three upgraded native rovers and Guard bot preserve the new engineer kit and fixed fuse"
+      ],
+      "errors": []
+    },
+    "webkit": {
+      "engine": "webkit",
+      "build": {
+        "index.html": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+        "companion.js": "74c4727f6e878c22da085ab1c9855cc934fbb2009a5824cc27fa2334e23e5acc",
+        "assets/max-skins-v1/tide/main.png": "69012130939aa168e0a538b4146ea8e8b906cf178737fdd6dcf3aa9aa726898f",
+        "assets/max-skins-v1/tide/interaction.png": "2ae6a2b5f4d8c0953effa47e77dccd5c1c9da03626aa8374a5ca4d54c83151da",
+        "assets/max-skins-v1/tide/atlas.json": "20ec7e8f8ce44153a72fd264bbbfe329298f810b1ca801910325d6ba2eacc0e2"
+      },
+      "visuals": [
+        {
+          "width": 1000,
+          "height": 650,
+          "skin": "tide",
+          "smoothing": false,
+          "buttons": [
+            {
+              "id": "mechPrimary",
+              "label": "Plant bomb (B)",
+              "left": 818,
+              "right": 900,
+              "top": 530,
+              "bottom": 578,
+              "visible": true
+            },
+            {
+              "id": "mechFan",
+              "label": "Irrigation fan (C)",
+              "left": 906,
+              "right": 988,
+              "top": 530,
+              "bottom": 578,
+              "visible": true
+            },
+            {
+              "id": "mechUtility",
+              "label": "Rover dispatch or recall (V)",
+              "left": 818,
+              "right": 900,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            },
+            {
+              "id": "mechSpecial",
+              "label": "Floodgate overload (E)",
+              "left": 906,
+              "right": 988,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "skin": "tide",
+          "smoothing": false,
+          "buttons": [
+            {
+              "id": "mechPrimary",
+              "label": "Plant bomb (B)",
+              "left": 208,
+              "right": 290,
+              "top": 724,
+              "bottom": 772,
+              "visible": true
+            },
+            {
+              "id": "mechFan",
+              "label": "Irrigation fan (C)",
+              "left": 296,
+              "right": 378,
+              "top": 724,
+              "bottom": 772,
+              "visible": true
+            },
+            {
+              "id": "mechUtility",
+              "label": "Rover dispatch or recall (V)",
+              "left": 208,
+              "right": 290,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            },
+            {
+              "id": "mechSpecial",
+              "label": "Floodgate overload (E)",
+              "left": 296,
+              "right": 378,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "skin": "tide",
+          "smoothing": false,
+          "buttons": [
+            {
+              "id": "mechPrimary",
+              "label": "Plant bomb (B)",
+              "left": 138,
+              "right": 220,
+              "top": 448,
+              "bottom": 496,
+              "visible": true
+            },
+            {
+              "id": "mechFan",
+              "label": "Irrigation fan (C)",
+              "left": 226,
+              "right": 308,
+              "top": 448,
+              "bottom": 496,
+              "visible": true
+            },
+            {
+              "id": "mechUtility",
+              "label": "Rover dispatch or recall (V)",
+              "left": 138,
+              "right": 220,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            },
+            {
+              "id": "mechSpecial",
+              "label": "Floodgate overload (E)",
+              "left": 226,
+              "right": 308,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "results": [
+        "Real B: move while charging, plant stationary bomb, retain exact 2 s fuse; empty blast earns no Circuit",
+        "Real Tend and actual interrupted plant attacks earn Circuit; ongoing care and bomb defense share the 4 s gate",
+        "Real C: one charge, three forward pulses, Wet, one .04 irrigation debit; behind/far enemies and Circuit remain untouched",
+        "Fan remains steerable and all three contacts follow Max\u2019s current body",
+        "Plant B, then C: Wet grants exactly one 25% bonus to the real delayed primary blast and is consumed",
+        "Real V dispatch reserves water and reaches a plant; ready recall walks home, preserves reserve and respects its cooldown",
+        "Real E requires three charges, plants the .4 s windup, resolves once and prioritizes real rover water for 4 s",
+        "All four touch slots invoke real actions; X retains the universal ground dodge",
+        "Tide body and supplied rover cells keep native 1:1 pixels, integer registration and disabled smoothing",
+        "Actual gamepad polling: Tend + Fan refills on both controller layouts without Circuit/cast/gardening side effects; releasing restores Tend and bare Fan still fires",
+        "Two actual browser players: host accepts tagged B/C/V/E once, guest predictions preserve owner resources, and paid dispatch continues through real authority promotion",
+        "Real B: move while charging, plant stationary bomb, retain exact 2 s fuse; empty blast earns no Circuit",
+        "Real C: one charge, three forward pulses, Wet, one .04 irrigation debit; behind/far enemies and Circuit remain untouched",
+        "Fan remains steerable and all three contacts follow Max\u2019s current body",
+        "Existing bomb branches, three upgraded native rovers and Guard bot preserve the new engineer kit and fixed fuse"
+      ],
+      "errors": []
+    }
+  },
+  "assertionCorrection": "Conservation counts only actual overload/rover delivery; explicit manual Tend lock stays inside overload warning.",
+  "polge": {
+    "chromium": {
+      "engine": "chromium",
+      "visuals": [
+        {
+          "width": 1000,
+          "height": 650,
+          "smoothing": false,
+          "skin": "polge",
+          "buttons": [
+            {
+              "label": "Clinch break (C)",
+              "left": 832.78125,
+              "right": 913.015625,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            },
+            {
+              "label": "Slip and counter (X)",
+              "left": 921.015625,
+              "right": 988,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "smoothing": false,
+          "skin": "polge",
+          "buttons": [
+            {
+              "label": "Clinch break (C)",
+              "left": 222.78125,
+              "right": 303.015625,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            },
+            {
+              "label": "Slip and counter (X)",
+              "left": 311.015625,
+              "right": 378,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "smoothing": false,
+          "skin": "polge",
+          "buttons": [
+            {
+              "label": "Clinch break (C)",
+              "left": 152.78125,
+              "right": 233.015625,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            },
+            {
+              "label": "Slip and counter (X)",
+              "left": 241.015625,
+              "right": 308,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "kits": [
+        {
+          "label": "base",
+          "results": [
+            "Real B input: jab, cross, uppercut, three confirmed Rhythm and stronger finisher",
+            "Real C input: clinch spends one Rhythm, damages close enemy and starts cooldown",
+            "Whiffs preserve combo; empty skill does not spend cooldown; empty slip gives no counter",
+            "Ground slip refuses while airborne",
+            "Authentic sentry warning: timed X avoids real contact and one landed B consumes counter",
+            "Accepted E flurry has bounded pulses and one finish",
+            "ArrowRight steers accepted flurry; every later pulse stays at current body; no bomb or projectile",
+            "Every strike and slip draws an existing 32 \u00d7 32 native body cell at integer anchors without scaling"
+          ],
+          "damage": [
+            0.5016243181607223,
+            0.692388067784762,
+            1.0557916085876116
+          ]
+        },
+        {
+          "label": "boons",
+          "results": [
+            "Real B input: jab, cross, uppercut, three confirmed Rhythm and stronger finisher",
+            "Touch Clinch button: clinch spends one Rhythm, damages close enemy and starts cooldown",
+            "Whiffs preserve combo; empty skill does not spend cooldown; empty slip gives no counter",
+            "Ground slip refuses while airborne",
+            "Authentic sentry warning: timed X avoids real contact and one landed B consumes counter",
+            "Accepted E flurry has bounded pulses and one finish; landed Second wind restores plant",
+            "ArrowRight steers accepted flurry; every later pulse stays at current body; no bomb or projectile",
+            "Touch Slip button starts legal ground movement without inventing counter",
+            "Every strike and slip draws an existing 32 \u00d7 32 native body cell at integer anchors without scaling"
+          ],
+          "damage": [
+            0.5112182531709664,
+            0.706834227998641,
+            1.8871131415902767
+          ]
+        }
+      ],
+      "pair": "Two browser players: friendly avatar and plants cannot grant Rhythm, counter, clinch or flurry",
+      "errors": []
+    },
+    "webkit": {
+      "engine": "webkit",
+      "visuals": [
+        {
+          "width": 1000,
+          "height": 650,
+          "smoothing": false,
+          "skin": "polge",
+          "buttons": [
+            {
+              "label": "Clinch break (C)",
+              "left": 852,
+              "right": 916,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            },
+            {
+              "label": "Slip and counter (X)",
+              "left": 924,
+              "right": 988,
+              "top": 584,
+              "bottom": 632,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "smoothing": false,
+          "skin": "polge",
+          "buttons": [
+            {
+              "label": "Clinch break (C)",
+              "left": 242,
+              "right": 306,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            },
+            {
+              "label": "Slip and counter (X)",
+              "left": 314,
+              "right": 378,
+              "top": 778,
+              "bottom": 826,
+              "visible": true
+            }
+          ]
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "smoothing": false,
+          "skin": "polge",
+          "buttons": [
+            {
+              "label": "Clinch break (C)",
+              "left": 172,
+              "right": 236,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            },
+            {
+              "label": "Slip and counter (X)",
+              "left": 244,
+              "right": 308,
+              "top": 502,
+              "bottom": 550,
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "kits": [
+        {
+          "label": "base",
+          "results": [
+            "Real B input: jab, cross, uppercut, three confirmed Rhythm and stronger finisher",
+            "Real C input: clinch spends one Rhythm, damages close enemy and starts cooldown",
+            "Whiffs preserve combo; empty skill does not spend cooldown; empty slip gives no counter",
+            "Ground slip refuses while airborne",
+            "Authentic sentry warning: timed X avoids real contact and one landed B consumes counter",
+            "Accepted E flurry has bounded pulses and one finish",
+            "ArrowRight steers accepted flurry; every later pulse stays at current body; no bomb or projectile",
+            "Every strike and slip draws an existing 32 \u00d7 32 native body cell at integer anchors without scaling"
+          ],
+          "damage": [
+            0.512171275874465,
+            0.7079365290155692,
+            1.0800930567127551
+          ]
+        },
+        {
+          "label": "boons",
+          "results": [
+            "Real B input: jab, cross, uppercut, three confirmed Rhythm and stronger finisher",
+            "Touch Clinch button: clinch spends one Rhythm, damages close enemy and starts cooldown",
+            "Whiffs preserve combo; empty skill does not spend cooldown; empty slip gives no counter",
+            "Ground slip refuses while airborne",
+            "Authentic sentry warning: timed X avoids real contact and one landed B consumes counter",
+            "Accepted E flurry has bounded pulses and one finish; landed Second wind restores plant",
+            "ArrowRight steers accepted flurry; every later pulse stays at current body; no bomb or projectile",
+            "Touch Slip button starts legal ground movement without inventing counter",
+            "Every strike and slip draws an existing 32 \u00d7 32 native body cell at integer anchors without scaling"
+          ],
+          "damage": [
+            0.5145173194032964,
+            0.7112337089558309,
+            1.8983586855526795
+          ]
+        }
+      ],
+      "pair": "Two browser players: friendly avatar and plants cannot grant Rhythm, counter, clinch or flurry",
+      "errors": []
+    }
+  },
+  "guardians": {
+    "exitCode": 0,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "log": "/workspace/scratch/crown-secondpass-main-regression/guardians/check.log",
+    "screenshotCount": 224,
+    "reportedChecks": [
+      "chromium circuit native props, Tend commitment, warned ingress, fixed geometry and real-input withdrawal OK",
+      "chromium guardian 1 native art + live warning OK",
+      "chromium guardian 2 native art + live warning OK",
+      "chromium guardian 3 native art + live warning OK",
+      "chromium guardian 4 native art + live warning OK",
+      "chromium guardian 5 native art + live warning OK",
+      "chromium guardian 6 native art + live warning OK",
+      "chromium guardian 7 native art + live warning OK",
+      "chromium guardian 8 native art + live warning OK",
+      "chromium guardian 9 native art + live warning OK",
+      "chromium guardian 10 native art + live warning OK",
+      "chromium guardian 11 native art + live warning OK",
+      "chromium guardian 12 native art + live warning OK",
+      "chromium guardian 13 native art + live warning OK",
+      "chromium guardian 14 native art + live warning OK",
+      "chromium guardian 15 native art + live warning OK",
+      "chromium guardian 16 native art + live warning OK",
+      "chromium guardian 17 native art + live warning OK",
+      "chromium guardian 18 native art + live warning OK",
+      "chromium guardian 19 native art + live warning OK",
+      "chromium guardian 20 native art + live warning OK",
+      "chromium all sixty authored shrine destinations render away from their entrances OK",
+      "chromium all nine authored ladders climb with real Cairn keyboard input OK",
+      "chromium mech charge movement, stationary placement and delayed explosion OK",
+      "chromium runner parent Attack control and keyboard special OK",
+      "chromium bulwark parent Attack control and keyboard special OK",
+      "chromium herbalist parent Attack control and keyboard special OK",
+      "chromium polge parent Attack control and keyboard special OK",
+      "chromium readable live boon choices fit four phone orientations and select OK",
+      "chromium all sixteen guardians animate in all eight actions OK",
+      "webkit circuit native props, Tend commitment, warned ingress, fixed geometry and real-input withdrawal OK",
+      "webkit guardian 1 native art + live warning OK",
+      "webkit guardian 2 native art + live warning OK",
+      "webkit guardian 3 native art + live warning OK",
+      "webkit guardian 4 native art + live warning OK",
+      "webkit guardian 5 native art + live warning OK",
+      "webkit guardian 6 native art + live warning OK",
+      "webkit guardian 7 native art + live warning OK",
+      "webkit guardian 8 native art + live warning OK",
+      "webkit guardian 9 native art + live warning OK",
+      "webkit guardian 10 native art + live warning OK",
+      "webkit guardian 11 native art + live warning OK",
+      "webkit guardian 12 native art + live warning OK",
+      "webkit guardian 13 native art + live warning OK",
+      "webkit guardian 14 native art + live warning OK",
+      "webkit guardian 15 native art + live warning OK",
+      "webkit guardian 16 native art + live warning OK",
+      "webkit guardian 17 native art + live warning OK",
+      "webkit guardian 18 native art + live warning OK",
+      "webkit guardian 19 native art + live warning OK",
+      "webkit guardian 20 native art + live warning OK",
+      "webkit all sixty authored shrine destinations render away from their entrances OK",
+      "webkit all nine authored ladders climb with real Cairn keyboard input OK",
+      "webkit mech charge movement, stationary placement and delayed explosion OK",
+      "webkit runner parent Attack control and keyboard special OK",
+      "webkit bulwark parent Attack control and keyboard special OK",
+      "webkit herbalist parent Attack control and keyboard special OK",
+      "webkit polge parent Attack control and keyboard special OK",
+      "webkit readable live boon choices fit four phone orientations and select OK",
+      "webkit all sixteen guardians animate in all eight actions OK"
+    ]
+  },
+  "highTide": {
+    "exitCode": 0,
+    "engines": [
+      "chromium",
+      "webkit"
+    ],
+    "runtimeSha256": "d99c560b61832e120ff1e08dfad003a9b97a47646c72561a4d96c9a56c2d862f",
+    "log": "/workspace/scratch/crown-secondpass-main-regression/high-tide/check.log",
+    "screenshotCount": 20,
+    "reportedChecks": [
+      "webkit touch OK",
+      "webkit keyboard OK",
+      "webkit guardian-1 OK",
+      "webkit guardian-2 OK",
+      "webkit guardian-3 OK",
+      "webkit guardian-4 OK",
+      "webkit guardian-5 OK",
+      "webkit two clients: progression, sync, manual jump and pause OK",
+      "chromium touch OK",
+      "chromium keyboard OK",
+      "chromium guardian-1 OK",
+      "chromium guardian-2 OK",
+      "chromium guardian-3 OK",
+      "chromium guardian-4 OK",
+      "chromium guardian-5 OK",
+      "chromium two clients: progression, sync, manual jump and pause OK"
+    ],
+    "fifthGuardianHealthBar": "Visually inspected actual Chromium and WebKit screenshots; Crown health bar visible, native boss and High Tide motherplant HUD retained."
+  }
+}

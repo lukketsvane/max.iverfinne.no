@@ -27,7 +27,7 @@ const functionNames = [
   'campaignAtmosphere', 'drawCampaignBackdrop', 'drawCampaignAtmosphere', 'cavernGarden', 'drawClimbSky',
   'updateYeet', 'drawYeet', 'yeetSync', 'yeetArt',
   'pollPads', 'configurePad',
-  'drawCharge',
+  'drawCharge', 'drawBossBar',
   'RELAY_LOCKS', 'relayProfile', 'relayBeam', 'updateNightRelay', 'nightRelayMode',
   'highTidePods', 'HIGH_TIDE_GATES', 'highTideRoutePoint', 'highTideTip', 'highTideBoons', 'highTideSpawnBoss', 'updateHighTideEnemies', 'highTideBossDefeated',
   'HIGH_TIDE', 'highTideMode', 'highTideProfile', 'highTidePlant', 'updateHighTide',
