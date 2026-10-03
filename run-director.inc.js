@@ -38,7 +38,7 @@ function interactBossEvent(){
   if(floatKrek.length>=MAX_ACTIVE_ENEMIES){return true;}
   var k=makeStageBoss(worldLevel());
   k.courtX=bossEvent.courtX;k.courtY=bossEvent.courtY;k.courtLeft=bossEvent.courtLeft;k.courtRight=bossEvent.courtRight;
-  var spawnX=guardianAimX(k,dryX(k.courtX+(worldLevel()%2?1:-1)*76)),offset=k.bossId==='mossback'?8:13;
+  var spawnX=guardianAimX(k,dryX(k.courtX+(worldLevel()%2?1:-1)*76)),offset=k.bossId==='hollow-crown'?32:k.bossId==='mossback'?8:13;
   safeEnemyPosition(k,spawnX,surfaceY(spawnX)-offset);k.x=guardianAimX(k,k.x);k.y=surfaceY(k.x)-offset;k.cool=2.6;
   resetGuardianNodes(k);
   bossEvent.status='active';bossEvent.startedAt=runElapsed;
@@ -368,7 +368,8 @@ function damagePest(k,amount,x,build){
     if(k.pattern==='echo'&&k.windup>0){openGuardian(k,3.4);gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-k.x)<110){p.health=clamp01(p.health+.05);p.moisture=clamp01(p.moisture+.1);}});}
   }
   if(k.boss&&k.exposed>0)factor*=2;
-  k.hp-=amount*factor*runPlayerPower()/runDurabilityScale(k);k.flash=1;
+  var damage=amount*factor*runPlayerPower()/runDurabilityScale(k);
+  k.hp=k.bossId==='hollow-crown'?hollowCrownDamage(k,damage):k.hp-damage;k.flash=1;
   if(k.bossId==='moon-moth'&&k.healing&&k.windup>0){k.healing=false;if(k.guardianStage&&!k.tideBoss)openGuardian(k,3.4);else{k.windup=0;k.exposed=k.guardianStage?2.2:1.4;k.cool=k.exposed+.8;}}
   if(build&&build.emberStacks>=3){k.burn=1.6;k.burnRate=.35;}
   if(!k.boss&&!frontal&&(k.divePhase===1||isRat(k)&&k.windup>0||k.healing||!(k.hitStaggerCooldown>0))){staggerKrek(k,.42);k.hitStaggerCooldown=Math.min(3,Math.max(0,runElapsed)/180);}
@@ -390,7 +391,7 @@ function polgeEnemyWarning(k,landed){
   }
   return {warned:true,key:'enemy:'+k.combatId+':'+k.warningSerial};
 }
-function polgeHazardWarning(h){return h&&h.warned&&h.total>0?{warned:true,key:'hazard:'+h.id}:null;}
+function polgeHazardWarning(h){return h&&h.total>0&&(h.warned||h.guardianStage===20&&Number.isFinite(h.guardianOwner))?{warned:true,key:'hazard:'+(h.crownGroup||h.id)}:null;}
 function gardenerDodging(member,a){
   if(!member||!coop||member.id===coop.me)return a.dodgeT>0;
   var d=member.dodge,now=performance.now();
@@ -428,14 +429,15 @@ function updateRunHazards(dt){
   for(var i=runHazards.length-1;i>=0;i--){
     var h=runHazards[i];
     if(h.tell>0){h.tell=Math.max(0,h.tell-dt);if(!h.tell)rootAbsorb(h);continue;}
+    if(h.crownOrbit){
+      updateCrownOrbitHazard(h,dt);h.life-=dt;
+      if(!singleSeedMode())runHazardGardenerContact(h);
+      if(h.life<=0)runHazards.splice(i,1);
+      continue;
+    }
     if(!h.hit){
       h.hit=true;rootAbsorb(h);
-      if(!h.absorbed)runPlayers().forEach(function(a){
-        if(seedDown(a.member)||Math.abs(a.p.x-h.x)>=h.r||Math.abs(a.p.y-h.y)>=20)return;
-        var warning=polgeHazardWarning(h);
-        if(singleSeedMode()&&h.power>0)damageGardener(a.member,24*h.power*runDamageScale(),warning);
-        else if(a.p.st!=='float'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit)&&gardenerDodging(a.member,a.p))polgeAvoidedWarning(a.member,warning);
-      });
+      runHazardGardenerContact(h);
       if(highTideMode()&&h.tide&&!h.absorbed){var mother=highTidePlant(),tip=highTideTip();if(mother&&h.power>0&&Math.abs(tip.x-h.x)<h.r&&Math.abs(tip.y-h.y)<20){highTideDamagePlant(mother,.06*h.power,false);}}
       if(!highTideMode()&&!h.absorbed&&!rootAbsorb(h))gardenPlots.forEach(function(p){if(h.power>0&&!p.dead&&Math.abs(p.x-h.x)<h.r&&Math.abs(surfaceY(p.x)-h.y)<20){
         p.health=clamp01(p.health-.12*h.power*runDamageScale()*plantProtection(p,false));
@@ -447,18 +449,45 @@ function updateRunHazards(dt){
     h.life-=dt;if(h.life<=0)runHazards.splice(i,1);
   }
 }
+function runHazardTouches(h,x,y){
+  if(h.crownOrbit)return Math.abs(x-h.x)<h.r+3&&y>h.y-4&&y<h.y+24;
+  return Math.abs(x-h.x)<h.r&&(h.height?y>h.y-h.height&&y<h.y+10:Math.abs(y-h.y)<20);
+}
+function spendCrownRingContact(h,member){
+  if(!h.crownOrbit||!h.crownGroup)return true;
+  if(coopGuest())return false;
+  var owner=member?member.id:coop?coop.me:'local',ring=runHazards.filter(function(q){return q.crownGroup===h.crownGroup;});
+  if(!ring.length)return false;
+  for(var i=1;i<=4;i++)if(ring.some(function(q){return q['crownContact'+i]===owner;}))return false;
+  var slot=1;while(slot<=4&&ring[0]['crownContact'+slot])slot++;
+  if(slot>4)return false;
+  // Each string is a single player ID; ordinary scalar hazard snapshots retain
+  // the bounded four-player ledger through a join or authority handoff.
+  ring.forEach(function(q){q['crownContact'+slot]=owner;});return true;
+}
+function runHazardGardenerContact(h){
+  if(h.absorbed)return;
+  runPlayers().forEach(function(a){
+    if(seedDown(a.member)||!runHazardTouches(h,a.p.x,a.p.y))return;
+    if(h.crownOrbit&&(a.p.st==='float'||a.p.st==='climb'&&a.p.exitClimb||a.p===P&&climb&&climb.exit||!spendCrownRingContact(h,a.member)))return;
+    var warning=polgeHazardWarning(h);
+    if(singleSeedMode()&&h.power>0)damageGardener(a.member,24*h.power*runDamageScale(),warning);
+    else if(a.p.st!=='float'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit)&&gardenerDodging(a.member,a.p))polgeAvoidedWarning(a.member,warning);
+  });
+}
 function updateHazardContact(){
   if(seedDown())return;
   for(var i=0;i<runHazards.length;i++){
-    var h=runHazards[i];if(h.tell>0||h.absorbed||hazardHits[h.id]||P.st==='float'||climb&&climb.exit)continue;
-    if(Math.abs(P.x-h.x)<h.r&&Math.abs(P.y-h.y)<20){
-      hazardHits[h.id]=true;
-      if(P.dodgeT>0){polgeAvoidedWarning(coop&&coop.members[coop.me],polgeHazardWarning(h));continue;}
+    var h=runHazards[i],key=h.crownGroup||h.id;if(h.tell>0||h.absorbed||hazardHits[key]||P.st==='float'||climb&&climb.exit)continue;
+    if(runHazardTouches(h,P.x,P.y)){
+      hazardHits[key]=true;
+      var member=coop&&coop.members[coop.me],fresh=spendCrownRingContact(h,member);
+      if(P.dodgeT>0){if(fresh)polgeAvoidedWarning(member,polgeHazardWarning(h));continue;}
       if(P.brace>0||P.tun>0)continue;
       P.hurt=2;P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
-  if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){if(hazardHits[h.id])active[h.id]=true;});hazardHits=active;}
+  if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){var key=h.crownGroup||h.id;if(hazardHits[key])active[key]=true;});hazardHits=active;}
 }
 function updateRunDirector(dt){
   if(nightRelayMode())return;
@@ -514,6 +543,7 @@ function updateEnemyRole(k,dt){
   if(updateEncounterGuard(k,dt))return true;
   if(isRat(k)){updateRat(k,dt);return true;}
   if(k.boss){if(k.finalBoss===false)updateStageBoss(k,dt);else updateHollowCrown(k,dt);return true;}
+  if(k.crownGuard&&k.crownOwner&&updateCrownGuard(k,dt))return true;
   if(updatePestDive(k,dt))return true;
   if(k.kind===3){
     if(k.stolen){
@@ -613,9 +643,9 @@ function updateEnemyRole(k,dt){
 }
 function makeHollowCrown(){
   var k=makeKrek(1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x;
-  safeEnemyPosition(k,x+80,surfaceY(x)-30);k.boss=true;k.finalBoss=true;k.bossId='hollow-crown';k.queen=true;k.raid=true;k.kind=7;
+  safeEnemyPosition(k,x+80,surfaceY(x)-32);k.boss=true;k.finalBoss=true;k.bossId='hollow-crown';k.queen=true;k.raid=true;k.kind=7;
   k.hp=k.maxHp=95+Math.max(0,coopSize()-1)*55+Math.floor(raidPressure()*3);
-  k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;
+  initHollowCrown(k);
   return k;
 }
 function makeStageBoss(stage){
@@ -687,9 +717,10 @@ function updateGuardianNodes(k,dt){
 }
 function guardianBlast(x,y,r){
   if(coopGuest()||relicRunMode())return;
-  floatKrek.slice().forEach(function(k){if(!k.guardianStage||k.hp<=0||!k.nodes||k.exposed>0)return;
+  floatKrek.slice().forEach(function(k){if(!k.guardianStage||k.hp<=0||!k.nodes||k.exposed>0&&k.bossId!=='hollow-crown')return;
     var hits=k.nodes.filter(function(n){return n.hp>0&&n.kind!=='ferry'&&Math.hypot(n.x-x,n.y-y)<r+4;});
     if(k.pattern==='orchard')hits.sort(function(a,b){return Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y);}).splice(1);
+    if(k.bossId==='hollow-crown'){hollowCrownNodeHit(k,hits);return;}
     hits.forEach(function(n){n.hp=0;n.quiet=7;puff(n.x,n.y,6,.5);
       if(n.kind==='orchard'){if(n.ripe){k.nodes.forEach(function(q){q.hp=0;});guardianCoreHit(k);}else{summonBossGuard(k,0,n.index);guardianHazard(k,'root',n.x,9,1.3,.5);}}
     });
@@ -698,6 +729,7 @@ function guardianBlast(x,y,r){
 }
 function drawGuardianNodes(t){
   floatKrek.forEach(function(k){if(!k.guardianStage)return;
+    if(k.bossId==='hollow-crown')return;
     (k.nodes||[]).forEach(function(n){
       if(n.hp<=0&&!(n.kind==='choir'&&n.quiet>0))return;
       var carrier=carrierPlayer(n.carrier),nx=carrier?carrier.p.x:n.x,ny=carrier?carrier.p.y-27:n.y;
@@ -857,20 +889,6 @@ function updateStageBoss(k,dt){
     }
   }
 }
-function updateHollowCrown(k,dt){
-  var anchor=updateBossCombat(k,dt,'crown');if(anchor===null)return;
-  beginEnemyWarning(k);k.attack++;k.tell=k.guardianStage&&rogueRun.difficulty==='easy'?1.45:1.15;k.windup=k.tell;k.attackDuration=.35;k.settleT=0;
-  if(k.attack%4===0)summonBossGuard(k,5,k.attack);
-  var count=k.phase,pattern=k.attack%3;
-  if(pattern===0){
-    var ordered=gardenPlots.filter(function(p){return !p.dead&&(!Number.isFinite(k.courtX)||guardianCourtPlant(p,k));}).slice().sort(function(a,b){return Math.abs(a.x-k.x)-Math.abs(b.x-k.x);});
-    for(var i=0;i<Math.min(count+1,ordered.length);i++)guardianHazard(k,'root',ordered[i].x,11,k.tell+.25,1);
-  }else if(pattern===1){
-    for(var j=-1;j<=1;j++)guardianHazard(k,'spore',anchor+j*(26-count*2),10,k.tell+.25,.8);
-  }else{
-    guardianPlayers(k).forEach(function(a){guardianHazard(k,'root',a.p.x,12,k.tell+.25,.9);});
-  }
-}
 function drawRunItem(type,x,y,bright){
   ctx.fillStyle=bright?'#fbf4cf':type==='embers'?'#dfa462':type==='dew'?'#8ccbd3':'#dcdcca';
   if(type==='feathers'){
@@ -940,6 +958,7 @@ function drawRunExploration(t){
 }
 function drawRunHazards(t){
   runHazards.forEach(function(h){
+    if(/^crown-/.test(h.type)||floatKrek.some(function(k){return k.bossId==='hollow-crown'&&k.ph===h.guardianOwner;}))return;
     var x=Math.round(h.x-camX),y=Math.round(h.y-camY);if(x<-h.r||x>IW+h.r)return;
     if(drawRatHazard(h,x,y))return;
     ctx.fillStyle=h.absorbed?'#8eb6b8':h.tell>0?'#d5ad63':'#d9c7a1';ctx.globalAlpha=h.tell>0?.55:Math.min(1,h.life*3);
@@ -956,6 +975,7 @@ function drawRunHazards(t){
 }
 function drawRoleEnemy(k,x,y,t){
   var native=window.MaxNativeArt&&window.MaxNativeArt.drawEnemy(ctx,k,x,y,t);
+  if(k.bossId==='hollow-crown'){drawCrownBody(k,x,y,t,native);return true;}
   if(isRat(k)){drawRat(k,x,y,t,!!native);return true;}
   if(k.boss){
     var color=k.exposed>0?'#89c5cd':k.windup>0?'#dbad63':'#888a72';

@@ -35,7 +35,16 @@ function levelGuideObjective(){
   var world=worldLevel(),exit=exitStalk();
   if(rogueRun.clearedWorld===world)return {id:'exit',text:climb&&climb.exit?'KEEP CLIMBING UP':'CLIMB THE LIVING EXIT',ink:'#ddd7a0',target:exit?{x:exit.x,y:surfaceY(exit.x)}:null,label:'EXIT'};
   var e=bossEvent;if(!e||e.stage!==world)return null;
-  if(e.status==='active')return {id:'fight',text:'DEFEAT THE GUARDIAN',ink:'#dfba73',target:{x:e.courtX,y:e.courtY},label:'GUARDIAN'};
+  if(e.status==='active'){
+    var boss=floatKrek.find(function(k){return k.bossId==='hollow-crown'&&k.guardianStage===world&&k.hp>0;}),text='DEFEAT THE GUARDIAN',target={x:e.courtX,y:e.courtY},label='GUARDIAN';
+    if(boss){
+      var phase=boss.crownStage||boss.phase||1,nodes=(boss.nodes||[]).filter(function(n){return n.hp>0;});
+      text=phase===2?'BREAK THE CROWN SEALS':phase===3?'JUMP WAVES / DODGE PILLARS':phase===4&&nodes.length?'SHATTER CORES TO WEAKEN CROWN':phase===4?'FINISH THE HOLLOW CROWN':'DEFEAT THE HOLLOW CROWN';
+      if(phase===2&&nodes.length){nodes.sort(function(a,b){return Math.abs(a.x-P.x)-Math.abs(b.x-P.x);});target={x:nodes[0].x,y:nodes[0].y};label='SEAL';}
+      else target={x:boss.x,y:boss.y};
+    }
+    return {id:'fight',text:text,ink:'#dfba73',target:target,label:label};
+  }
   var found=guardianView.key===rogueRun.seed+':'+e.stage+':'+e.siteId&&guardianView.found;
   if(!found)return {id:'discover',text:'EXPLORE FOR THE AMBER SHRINE',ink:'#dfba73',target:null};
   if(!guardianGardenPlant())return {id:'plant',text:'GROW A PLANT IN ITS COURT',ink:'#a7c68c',target:{x:e.courtX,y:e.courtY},label:'COURT'};

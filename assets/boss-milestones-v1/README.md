@@ -20,8 +20,11 @@ runtime PNG/JSON pairs. Attack anticipation and active attacks follow the
 gameplay timers, while the cyan vulnerable row remains visible throughout
 exposure. These 32×32 cells are drawn at the same native scale as Max.
 
-The alternative 64-frame Crown remains a reference; the final boss keeps the
-existing 128-frame atlas and its three phases. The unchanged manifests and
+The alternative 64-frame Crown remains a reference. On 3 October 2026 the
+final boss adopted the larger four-act
+[Crown Ascendant pack](../crown-ascendant-v1/README.md), with separate armored
+and wounded forms. This milestone pack and the previous three-phase Crown
+sources remain unchanged. The unchanged manifests and
 validation report describe the original asset delivery, before this runtime
 adoption. [historical verify-native-art.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/verify-native-art.py) also validates the three adopted sheets
 against their isolated PNG frames and colour-signal contracts.

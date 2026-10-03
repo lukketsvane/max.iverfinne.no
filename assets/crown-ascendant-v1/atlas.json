@@ -1,0 +1,4103 @@
+{
+  "format": "max-native-atlas/v1",
+  "id": "hollow-crown",
+  "version": 1,
+  "nativeScale": 1,
+  "palette": [
+    "#0c1220",
+    "#172235",
+    "#26374b",
+    "#3c5065",
+    "#566d80",
+    "#748b9d",
+    "#98b0bd",
+    "#c4d7df",
+    "#edf5f7",
+    "#272735",
+    "#414255",
+    "#615565",
+    "#875d49",
+    "#b78646",
+    "#e8b65a",
+    "#fff0ae",
+    "#103f4c",
+    "#1b6476",
+    "#299aab",
+    "#55d6df",
+    "#acffff",
+    "#532a40",
+    "#873b4e",
+    "#c96054"
+  ],
+  "sheets": {
+    "boss": {
+      "image": "boss.png",
+      "width": 768,
+      "height": 1728
+    },
+    "effects": {
+      "image": "effects.png",
+      "width": 288,
+      "height": 288
+    },
+    "chimera": {
+      "image": "chimera.png",
+      "width": 384,
+      "height": 384
+    }
+  },
+  "frames": {
+    "boss.idle.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        0,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        51,
+        27,
+        90,
+        95
+      ]
+    },
+    "boss.idle.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        0,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        51,
+        28,
+        90,
+        95
+      ]
+    },
+    "boss.idle.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        0,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        49,
+        28,
+        91,
+        95
+      ]
+    },
+    "boss.idle.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        0,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        50,
+        27,
+        89,
+        95
+      ]
+    },
+    "boss.idle.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        0,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        49,
+        28,
+        91,
+        96
+      ]
+    },
+    "boss.idle.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        0,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        48,
+        28,
+        88,
+        95
+      ]
+    },
+    "boss.move.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        96,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        24,
+        27,
+        87,
+        96
+      ]
+    },
+    "boss.move.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        96,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        21,
+        28,
+        90,
+        96
+      ]
+    },
+    "boss.move.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        96,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        20,
+        27,
+        88,
+        96
+      ]
+    },
+    "boss.move.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        96,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        20,
+        27,
+        89,
+        96
+      ]
+    },
+    "boss.move.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        96,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        24,
+        27,
+        88,
+        96
+      ]
+    },
+    "boss.move.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        96,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        22,
+        28,
+        86,
+        96
+      ]
+    },
+    "boss.windup.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        192,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        36,
+        110,
+        95
+      ]
+    },
+    "boss.windup.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        192,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        36,
+        114,
+        95
+      ]
+    },
+    "boss.windup.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        192,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        28,
+        109,
+        96
+      ]
+    },
+    "boss.windup.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        192,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        26,
+        15,
+        87,
+        96
+      ]
+    },
+    "boss.windup.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        192,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        24,
+        13,
+        87,
+        96
+      ]
+    },
+    "boss.windup.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        192,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        29,
+        8,
+        89,
+        96
+      ]
+    },
+    "boss.hammer.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        288,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        8,
+        94,
+        95
+      ]
+    },
+    "boss.hammer.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        288,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        27,
+        28,
+        121,
+        96
+      ]
+    },
+    "boss.hammer.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        288,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        30,
+        23,
+        119,
+        95
+      ]
+    },
+    "boss.hammer.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        288,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        27,
+        45,
+        110,
+        96
+      ]
+    },
+    "boss.hammer.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        288,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        33,
+        37,
+        112,
+        96
+      ]
+    },
+    "boss.hammer.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        288,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        35,
+        30,
+        100,
+        96
+      ]
+    },
+    "boss.leap.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        384,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        41,
+        112,
+        96
+      ]
+    },
+    "boss.leap.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        384,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        35,
+        9,
+        89,
+        96
+      ]
+    },
+    "boss.leap.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        384,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        32,
+        2,
+        89,
+        95
+      ]
+    },
+    "boss.leap.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        384,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        33,
+        6,
+        95,
+        96
+      ]
+    },
+    "boss.leap.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        384,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        30,
+        15,
+        92,
+        95
+      ]
+    },
+    "boss.leap.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        384,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        26,
+        35,
+        95,
+        95
+      ]
+    },
+    "boss.slam.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        480,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        39,
+        11,
+        90,
+        95
+      ]
+    },
+    "boss.slam.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        480,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        33,
+        27,
+        104,
+        95
+      ]
+    },
+    "boss.slam.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        480,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        33,
+        52,
+        96,
+        96
+      ]
+    },
+    "boss.slam.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        480,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        35,
+        43,
+        100,
+        95
+      ]
+    },
+    "boss.slam.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        480,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        36,
+        29,
+        96,
+        95
+      ]
+    },
+    "boss.slam.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        480,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        43,
+        21,
+        89,
+        96
+      ]
+    },
+    "boss.recover.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        576,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        33,
+        41,
+        100,
+        95
+      ]
+    },
+    "boss.recover.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        576,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        34,
+        97,
+        95
+      ]
+    },
+    "boss.recover.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        576,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        35,
+        22,
+        93,
+        96
+      ]
+    },
+    "boss.recover.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        576,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        39,
+        20,
+        94,
+        95
+      ]
+    },
+    "boss.recover.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        576,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        46,
+        20,
+        91,
+        96
+      ]
+    },
+    "boss.recover.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        576,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        45,
+        17,
+        91,
+        95
+      ]
+    },
+    "boss.exposed.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        672,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        36,
+        30,
+        89,
+        95
+      ]
+    },
+    "boss.exposed.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        672,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        28,
+        92,
+        96
+      ]
+    },
+    "boss.exposed.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        672,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        41,
+        36,
+        94,
+        96
+      ]
+    },
+    "boss.exposed.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        672,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        38,
+        93,
+        96
+      ]
+    },
+    "boss.exposed.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        672,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        40,
+        35,
+        94,
+        96
+      ]
+    },
+    "boss.exposed.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        672,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        45,
+        22,
+        87,
+        95
+      ]
+    },
+    "boss.pillar.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        768,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        49,
+        28,
+        92,
+        96
+      ]
+    },
+    "boss.pillar.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        768,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        43,
+        32,
+        94,
+        95
+      ]
+    },
+    "boss.pillar.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        768,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        29,
+        92,
+        95
+      ]
+    },
+    "boss.pillar.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        768,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        41,
+        28,
+        90,
+        95
+      ]
+    },
+    "boss.pillar.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        768,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        44,
+        28,
+        90,
+        95
+      ]
+    },
+    "boss.pillar.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        768,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        47,
+        28,
+        90,
+        95
+      ]
+    },
+    "boss.volley.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        864,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        47,
+        30,
+        86,
+        96
+      ]
+    },
+    "boss.volley.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        864,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        44,
+        30,
+        98,
+        96
+      ]
+    },
+    "boss.volley.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        864,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        44,
+        31,
+        91,
+        96
+      ]
+    },
+    "boss.volley.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        864,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        29,
+        98,
+        95
+      ]
+    },
+    "boss.volley.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        864,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        43,
+        30,
+        100,
+        96
+      ]
+    },
+    "boss.volley.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        864,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        47,
+        30,
+        88,
+        96
+      ]
+    },
+    "boss.summon.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        960,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        47,
+        28,
+        90,
+        95
+      ]
+    },
+    "boss.summon.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        960,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        30,
+        92,
+        95
+      ]
+    },
+    "boss.summon.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        960,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        36,
+        41,
+        99,
+        95
+      ]
+    },
+    "boss.summon.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        960,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        44,
+        49,
+        98,
+        96
+      ]
+    },
+    "boss.summon.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        960,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        41,
+        97,
+        96
+      ]
+    },
+    "boss.summon.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        960,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        55,
+        97,
+        95
+      ]
+    },
+    "boss.death.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1056,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        39,
+        43,
+        102,
+        95
+      ]
+    },
+    "boss.death.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1056,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        30,
+        57,
+        95,
+        95
+      ]
+    },
+    "boss.death.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1056,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        33,
+        69,
+        103,
+        96
+      ]
+    },
+    "boss.death.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1056,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        34,
+        78,
+        109,
+        96
+      ]
+    },
+    "boss.death.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1056,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        34,
+        82,
+        109,
+        95
+      ]
+    },
+    "boss.death.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1056,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": null
+    },
+    "boss.wounded/idle.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1152,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        46,
+        28,
+        82,
+        95
+      ]
+    },
+    "boss.wounded/idle.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1152,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        47,
+        29,
+        82,
+        95
+      ]
+    },
+    "boss.wounded/idle.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1152,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        47,
+        28,
+        82,
+        95
+      ]
+    },
+    "boss.wounded/idle.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1152,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        46,
+        30,
+        83,
+        95
+      ]
+    },
+    "boss.wounded/idle.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1152,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        45,
+        29,
+        82,
+        96
+      ]
+    },
+    "boss.wounded/idle.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1152,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        45,
+        30,
+        81,
+        95
+      ]
+    },
+    "boss.wounded/move.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1248,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        39,
+        86,
+        95
+      ]
+    },
+    "boss.wounded/move.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1248,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        39,
+        41,
+        90,
+        95
+      ]
+    },
+    "boss.wounded/move.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1248,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        42,
+        92,
+        95
+      ]
+    },
+    "boss.wounded/move.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1248,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        44,
+        96,
+        95
+      ]
+    },
+    "boss.wounded/move.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1248,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        39,
+        48,
+        97,
+        95
+      ]
+    },
+    "boss.wounded/move.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1248,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        49,
+        92,
+        96
+      ]
+    },
+    "boss.wounded/volley.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1344,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        41,
+        36,
+        85,
+        95
+      ]
+    },
+    "boss.wounded/volley.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1344,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        34,
+        109,
+        96
+      ]
+    },
+    "boss.wounded/volley.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1344,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        40,
+        35,
+        97,
+        96
+      ]
+    },
+    "boss.wounded/volley.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1344,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        40,
+        35,
+        95,
+        95
+      ]
+    },
+    "boss.wounded/volley.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1344,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        34,
+        101,
+        96
+      ]
+    },
+    "boss.wounded/volley.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1344,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        41,
+        37,
+        82,
+        95
+      ]
+    },
+    "boss.wounded/drain.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1440,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        41,
+        43,
+        84,
+        96
+      ]
+    },
+    "boss.wounded/drain.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1440,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        45,
+        85,
+        96
+      ]
+    },
+    "boss.wounded/drain.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1440,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        37,
+        46,
+        87,
+        96
+      ]
+    },
+    "boss.wounded/drain.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1440,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        42,
+        49,
+        90,
+        95
+      ]
+    },
+    "boss.wounded/drain.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1440,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        40,
+        46,
+        87,
+        96
+      ]
+    },
+    "boss.wounded/drain.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1440,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        41,
+        43,
+        86,
+        95
+      ]
+    },
+    "boss.wounded/hurt.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1536,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        43,
+        37,
+        88,
+        95
+      ]
+    },
+    "boss.wounded/hurt.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1536,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        38,
+        37,
+        87,
+        95
+      ]
+    },
+    "boss.wounded/hurt.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1536,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        39,
+        44,
+        84,
+        95
+      ]
+    },
+    "boss.wounded/hurt.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1536,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        40,
+        57,
+        89,
+        95
+      ]
+    },
+    "boss.wounded/hurt.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1536,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        34,
+        54,
+        92,
+        95
+      ]
+    },
+    "boss.wounded/hurt.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1536,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        44,
+        35,
+        83,
+        95
+      ]
+    },
+    "boss.wounded/death.0": {
+      "sheet": "boss",
+      "rect": [
+        0,
+        1632,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        40,
+        58,
+        88,
+        95
+      ]
+    },
+    "boss.wounded/death.1": {
+      "sheet": "boss",
+      "rect": [
+        128,
+        1632,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        26,
+        66,
+        100,
+        95
+      ]
+    },
+    "boss.wounded/death.2": {
+      "sheet": "boss",
+      "rect": [
+        256,
+        1632,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        28,
+        67,
+        98,
+        95
+      ]
+    },
+    "boss.wounded/death.3": {
+      "sheet": "boss",
+      "rect": [
+        384,
+        1632,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        19,
+        75,
+        111,
+        95
+      ]
+    },
+    "boss.wounded/death.4": {
+      "sheet": "boss",
+      "rect": [
+        512,
+        1632,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": [
+        23,
+        76,
+        100,
+        91
+      ]
+    },
+    "boss.wounded/death.5": {
+      "sheet": "boss",
+      "rect": [
+        640,
+        1632,
+        128,
+        96
+      ],
+      "anchor": [
+        64,
+        95
+      ],
+      "opaqueBounds": null
+    },
+    "effects.impact.0": {
+      "sheet": "effects",
+      "rect": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        11,
+        24,
+        37,
+        45
+      ]
+    },
+    "effects.impact.1": {
+      "sheet": "effects",
+      "rect": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        23,
+        38,
+        45
+      ]
+    },
+    "effects.impact.2": {
+      "sheet": "effects",
+      "rect": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        6,
+        16,
+        41,
+        45
+      ]
+    },
+    "effects.impact.3": {
+      "sheet": "effects",
+      "rect": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        5,
+        13,
+        42,
+        47
+      ]
+    },
+    "effects.impact.4": {
+      "sheet": "effects",
+      "rect": [
+        192,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        5,
+        12,
+        44,
+        47
+      ]
+    },
+    "effects.impact.5": {
+      "sheet": "effects",
+      "rect": [
+        240,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        6,
+        25,
+        42,
+        45
+      ]
+    },
+    "effects.wave.0": {
+      "sheet": "effects",
+      "rect": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        35,
+        36,
+        45
+      ]
+    },
+    "effects.wave.1": {
+      "sheet": "effects",
+      "rect": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        5,
+        28,
+        40,
+        45
+      ]
+    },
+    "effects.wave.2": {
+      "sheet": "effects",
+      "rect": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        4,
+        29,
+        44,
+        46
+      ]
+    },
+    "effects.wave.3": {
+      "sheet": "effects",
+      "rect": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        5,
+        26,
+        44,
+        46
+      ]
+    },
+    "effects.wave.4": {
+      "sheet": "effects",
+      "rect": [
+        192,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        4,
+        25,
+        45,
+        47
+      ]
+    },
+    "effects.wave.5": {
+      "sheet": "effects",
+      "rect": [
+        240,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        3,
+        31,
+        41,
+        46
+      ]
+    },
+    "effects.column.0": {
+      "sheet": "effects",
+      "rect": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        10,
+        24,
+        39,
+        46
+      ]
+    },
+    "effects.column.1": {
+      "sheet": "effects",
+      "rect": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        13,
+        39,
+        46
+      ]
+    },
+    "effects.column.2": {
+      "sheet": "effects",
+      "rect": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        6,
+        4,
+        42,
+        46
+      ]
+    },
+    "effects.column.3": {
+      "sheet": "effects",
+      "rect": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        5,
+        4,
+        44,
+        46
+      ]
+    },
+    "effects.column.4": {
+      "sheet": "effects",
+      "rect": [
+        192,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        5,
+        41,
+        46
+      ]
+    },
+    "effects.column.5": {
+      "sheet": "effects",
+      "rect": [
+        240,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        14,
+        39,
+        46
+      ]
+    },
+    "effects.bolt.0": {
+      "sheet": "effects",
+      "rect": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        15,
+        37,
+        34,
+        44
+      ]
+    },
+    "effects.bolt.1": {
+      "sheet": "effects",
+      "rect": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        7,
+        36,
+        36,
+        47
+      ]
+    },
+    "effects.bolt.2": {
+      "sheet": "effects",
+      "rect": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        7,
+        35,
+        39,
+        44
+      ]
+    },
+    "effects.bolt.3": {
+      "sheet": "effects",
+      "rect": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        11,
+        35,
+        41,
+        45
+      ]
+    },
+    "effects.bolt.4": {
+      "sheet": "effects",
+      "rect": [
+        192,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        8,
+        35,
+        41,
+        47
+      ]
+    },
+    "effects.bolt.5": {
+      "sheet": "effects",
+      "rect": [
+        240,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        6,
+        36,
+        40,
+        46
+      ]
+    },
+    "effects.seal.0": {
+      "sheet": "effects",
+      "rect": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        12,
+        38,
+        46
+      ]
+    },
+    "effects.seal.1": {
+      "sheet": "effects",
+      "rect": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        11,
+        39,
+        46
+      ]
+    },
+    "effects.seal.2": {
+      "sheet": "effects",
+      "rect": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        10,
+        39,
+        46
+      ]
+    },
+    "effects.seal.3": {
+      "sheet": "effects",
+      "rect": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        8,
+        11,
+        39,
+        46
+      ]
+    },
+    "effects.seal.4": {
+      "sheet": "effects",
+      "rect": [
+        192,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        12,
+        39,
+        46
+      ]
+    },
+    "effects.seal.5": {
+      "sheet": "effects",
+      "rect": [
+        240,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        10,
+        12,
+        38,
+        46
+      ]
+    },
+    "effects.break.0": {
+      "sheet": "effects",
+      "rect": [
+        0,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        10,
+        14,
+        37,
+        45
+      ]
+    },
+    "effects.break.1": {
+      "sheet": "effects",
+      "rect": [
+        48,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        9,
+        10,
+        37,
+        45
+      ]
+    },
+    "effects.break.2": {
+      "sheet": "effects",
+      "rect": [
+        96,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        6,
+        7,
+        41,
+        46
+      ]
+    },
+    "effects.break.3": {
+      "sheet": "effects",
+      "rect": [
+        144,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        5,
+        8,
+        44,
+        46
+      ]
+    },
+    "effects.break.4": {
+      "sheet": "effects",
+      "rect": [
+        192,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        8,
+        14,
+        43,
+        45
+      ]
+    },
+    "effects.break.5": {
+      "sheet": "effects",
+      "rect": [
+        240,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        46
+      ],
+      "opaqueBounds": [
+        16,
+        28,
+        32,
+        40
+      ]
+    },
+    "chimera.chimera-ground/idle.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        0,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        11,
+        19,
+        53,
+        48
+      ]
+    },
+    "chimera.chimera-ground/idle.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        0,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        19,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/idle.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        0,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        20,
+        53,
+        47
+      ]
+    },
+    "chimera.chimera-ground/idle.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        0,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        19,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/idle.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        0,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        21,
+        54,
+        48
+      ]
+    },
+    "chimera.chimera-ground/idle.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        0,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        22,
+        54,
+        48
+      ]
+    },
+    "chimera.chimera-ground/move.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        48,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        17,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/move.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        48,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        8,
+        16,
+        56,
+        47
+      ]
+    },
+    "chimera.chimera-ground/move.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        48,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        16,
+        55,
+        48
+      ]
+    },
+    "chimera.chimera-ground/move.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        48,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        15,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/move.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        48,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        17,
+        54,
+        48
+      ]
+    },
+    "chimera.chimera-ground/move.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        48,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        16,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/attack.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        96,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        8,
+        22,
+        55,
+        47
+      ]
+    },
+    "chimera.chimera-ground/attack.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        96,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        24,
+        55,
+        48
+      ]
+    },
+    "chimera.chimera-ground/attack.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        96,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        7,
+        19,
+        58,
+        47
+      ]
+    },
+    "chimera.chimera-ground/attack.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        96,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        20,
+        25,
+        51,
+        47
+      ]
+    },
+    "chimera.chimera-ground/attack.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        96,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        16,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/attack.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        96,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        13,
+        19,
+        51,
+        47
+      ]
+    },
+    "chimera.chimera-ground/death.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        144,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        20,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/death.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        144,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        11,
+        20,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-ground/death.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        144,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        8,
+        27,
+        56,
+        47
+      ]
+    },
+    "chimera.chimera-ground/death.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        144,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        7,
+        32,
+        57,
+        48
+      ]
+    },
+    "chimera.chimera-ground/death.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        144,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        34,
+        55,
+        47
+      ]
+    },
+    "chimera.chimera-ground/death.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        144,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": null
+    },
+    "chimera.chimera-air/idle.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        192,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        13,
+        17,
+        50,
+        47
+      ]
+    },
+    "chimera.chimera-air/idle.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        192,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        14,
+        18,
+        51,
+        47
+      ]
+    },
+    "chimera.chimera-air/idle.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        192,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        13,
+        18,
+        50,
+        48
+      ]
+    },
+    "chimera.chimera-air/idle.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        192,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        15,
+        18,
+        49,
+        47
+      ]
+    },
+    "chimera.chimera-air/idle.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        192,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        14,
+        19,
+        51,
+        47
+      ]
+    },
+    "chimera.chimera-air/idle.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        192,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        14,
+        18,
+        50,
+        47
+      ]
+    },
+    "chimera.chimera-air/move.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        240,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        12,
+        19,
+        53,
+        47
+      ]
+    },
+    "chimera.chimera-air/move.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        240,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        20,
+        54,
+        47
+      ]
+    },
+    "chimera.chimera-air/move.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        240,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        9,
+        21,
+        55,
+        48
+      ]
+    },
+    "chimera.chimera-air/move.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        240,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        10,
+        20,
+        55,
+        47
+      ]
+    },
+    "chimera.chimera-air/move.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        240,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        12,
+        20,
+        52,
+        48
+      ]
+    },
+    "chimera.chimera-air/move.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        240,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        12,
+        19,
+        51,
+        48
+      ]
+    },
+    "chimera.chimera-air/attack.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        288,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        6,
+        18,
+        49,
+        47
+      ]
+    },
+    "chimera.chimera-air/attack.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        288,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        6,
+        20,
+        63,
+        47
+      ]
+    },
+    "chimera.chimera-air/attack.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        288,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        1,
+        18,
+        62,
+        47
+      ]
+    },
+    "chimera.chimera-air/attack.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        288,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        14,
+        21,
+        50,
+        47
+      ]
+    },
+    "chimera.chimera-air/attack.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        288,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        13,
+        20,
+        50,
+        47
+      ]
+    },
+    "chimera.chimera-air/attack.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        288,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        12,
+        19,
+        52,
+        46
+      ]
+    },
+    "chimera.chimera-air/death.0": {
+      "sheet": "chimera",
+      "rect": [
+        0,
+        336,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        12,
+        13,
+        52,
+        46
+      ]
+    },
+    "chimera.chimera-air/death.1": {
+      "sheet": "chimera",
+      "rect": [
+        64,
+        336,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        14,
+        15,
+        53,
+        45
+      ]
+    },
+    "chimera.chimera-air/death.2": {
+      "sheet": "chimera",
+      "rect": [
+        128,
+        336,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        15,
+        15,
+        53,
+        45
+      ]
+    },
+    "chimera.chimera-air/death.3": {
+      "sheet": "chimera",
+      "rect": [
+        192,
+        336,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        18,
+        16,
+        50,
+        47
+      ]
+    },
+    "chimera.chimera-air/death.4": {
+      "sheet": "chimera",
+      "rect": [
+        256,
+        336,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": [
+        16,
+        22,
+        53,
+        46
+      ]
+    },
+    "chimera.chimera-air/death.5": {
+      "sheet": "chimera",
+      "rect": [
+        320,
+        336,
+        64,
+        48
+      ],
+      "anchor": [
+        32,
+        47
+      ],
+      "opaqueBounds": null
+    }
+  },
+  "animations": {
+    "idle": {
+      "frames": [
+        "boss.idle.0",
+        "boss.idle.1",
+        "boss.idle.2",
+        "boss.idle.3",
+        "boss.idle.4",
+        "boss.idle.5"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "move": {
+      "frames": [
+        "boss.move.0",
+        "boss.move.1",
+        "boss.move.2",
+        "boss.move.3",
+        "boss.move.4",
+        "boss.move.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "windup": {
+      "frames": [
+        "boss.windup.0",
+        "boss.windup.1",
+        "boss.windup.2",
+        "boss.windup.3",
+        "boss.windup.4",
+        "boss.windup.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "hammer": {
+      "frames": [
+        "boss.hammer.0",
+        "boss.hammer.1",
+        "boss.hammer.2",
+        "boss.hammer.3",
+        "boss.hammer.4",
+        "boss.hammer.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "leap": {
+      "frames": [
+        "boss.leap.0",
+        "boss.leap.1",
+        "boss.leap.2",
+        "boss.leap.3",
+        "boss.leap.4",
+        "boss.leap.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "slam": {
+      "frames": [
+        "boss.slam.0",
+        "boss.slam.1",
+        "boss.slam.2",
+        "boss.slam.3",
+        "boss.slam.4",
+        "boss.slam.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "recover": {
+      "frames": [
+        "boss.recover.0",
+        "boss.recover.1",
+        "boss.recover.2",
+        "boss.recover.3",
+        "boss.recover.4",
+        "boss.recover.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "exposed": {
+      "frames": [
+        "boss.exposed.0",
+        "boss.exposed.1",
+        "boss.exposed.2",
+        "boss.exposed.3",
+        "boss.exposed.4",
+        "boss.exposed.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "pillar": {
+      "frames": [
+        "boss.pillar.0",
+        "boss.pillar.1",
+        "boss.pillar.2",
+        "boss.pillar.3",
+        "boss.pillar.4",
+        "boss.pillar.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "volley": {
+      "frames": [
+        "boss.volley.0",
+        "boss.volley.1",
+        "boss.volley.2",
+        "boss.volley.3",
+        "boss.volley.4",
+        "boss.volley.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "summon": {
+      "frames": [
+        "boss.summon.0",
+        "boss.summon.1",
+        "boss.summon.2",
+        "boss.summon.3",
+        "boss.summon.4",
+        "boss.summon.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "death": {
+      "frames": [
+        "boss.death.0",
+        "boss.death.1",
+        "boss.death.2",
+        "boss.death.3",
+        "boss.death.4",
+        "boss.death.5"
+      ],
+      "fps": 6,
+      "loop": false
+    },
+    "wounded/idle": {
+      "frames": [
+        "boss.wounded/idle.0",
+        "boss.wounded/idle.1",
+        "boss.wounded/idle.2",
+        "boss.wounded/idle.3",
+        "boss.wounded/idle.4",
+        "boss.wounded/idle.5"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "wounded/move": {
+      "frames": [
+        "boss.wounded/move.0",
+        "boss.wounded/move.1",
+        "boss.wounded/move.2",
+        "boss.wounded/move.3",
+        "boss.wounded/move.4",
+        "boss.wounded/move.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "wounded/volley": {
+      "frames": [
+        "boss.wounded/volley.0",
+        "boss.wounded/volley.1",
+        "boss.wounded/volley.2",
+        "boss.wounded/volley.3",
+        "boss.wounded/volley.4",
+        "boss.wounded/volley.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "wounded/drain": {
+      "frames": [
+        "boss.wounded/drain.0",
+        "boss.wounded/drain.1",
+        "boss.wounded/drain.2",
+        "boss.wounded/drain.3",
+        "boss.wounded/drain.4",
+        "boss.wounded/drain.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "wounded/hurt": {
+      "frames": [
+        "boss.wounded/hurt.0",
+        "boss.wounded/hurt.1",
+        "boss.wounded/hurt.2",
+        "boss.wounded/hurt.3",
+        "boss.wounded/hurt.4",
+        "boss.wounded/hurt.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "wounded/death": {
+      "frames": [
+        "boss.wounded/death.0",
+        "boss.wounded/death.1",
+        "boss.wounded/death.2",
+        "boss.wounded/death.3",
+        "boss.wounded/death.4",
+        "boss.wounded/death.5"
+      ],
+      "fps": 6,
+      "loop": false
+    },
+    "impact": {
+      "frames": [
+        "effects.impact.0",
+        "effects.impact.1",
+        "effects.impact.2",
+        "effects.impact.3",
+        "effects.impact.4",
+        "effects.impact.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "wave": {
+      "frames": [
+        "effects.wave.0",
+        "effects.wave.1",
+        "effects.wave.2",
+        "effects.wave.3",
+        "effects.wave.4",
+        "effects.wave.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "column": {
+      "frames": [
+        "effects.column.0",
+        "effects.column.1",
+        "effects.column.2",
+        "effects.column.3",
+        "effects.column.4",
+        "effects.column.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "bolt": {
+      "frames": [
+        "effects.bolt.0",
+        "effects.bolt.1",
+        "effects.bolt.2",
+        "effects.bolt.3",
+        "effects.bolt.4",
+        "effects.bolt.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "seal": {
+      "frames": [
+        "effects.seal.0",
+        "effects.seal.1",
+        "effects.seal.2",
+        "effects.seal.3",
+        "effects.seal.4",
+        "effects.seal.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "break": {
+      "frames": [
+        "effects.break.0",
+        "effects.break.1",
+        "effects.break.2",
+        "effects.break.3",
+        "effects.break.4",
+        "effects.break.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "chimera-ground/idle": {
+      "frames": [
+        "chimera.chimera-ground/idle.0",
+        "chimera.chimera-ground/idle.1",
+        "chimera.chimera-ground/idle.2",
+        "chimera.chimera-ground/idle.3",
+        "chimera.chimera-ground/idle.4",
+        "chimera.chimera-ground/idle.5"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "chimera-ground/move": {
+      "frames": [
+        "chimera.chimera-ground/move.0",
+        "chimera.chimera-ground/move.1",
+        "chimera.chimera-ground/move.2",
+        "chimera.chimera-ground/move.3",
+        "chimera.chimera-ground/move.4",
+        "chimera.chimera-ground/move.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "chimera-ground/attack": {
+      "frames": [
+        "chimera.chimera-ground/attack.0",
+        "chimera.chimera-ground/attack.1",
+        "chimera.chimera-ground/attack.2",
+        "chimera.chimera-ground/attack.3",
+        "chimera.chimera-ground/attack.4",
+        "chimera.chimera-ground/attack.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "chimera-ground/death": {
+      "frames": [
+        "chimera.chimera-ground/death.0",
+        "chimera.chimera-ground/death.1",
+        "chimera.chimera-ground/death.2",
+        "chimera.chimera-ground/death.3",
+        "chimera.chimera-ground/death.4",
+        "chimera.chimera-ground/death.5"
+      ],
+      "fps": 6,
+      "loop": false
+    },
+    "chimera-air/idle": {
+      "frames": [
+        "chimera.chimera-air/idle.0",
+        "chimera.chimera-air/idle.1",
+        "chimera.chimera-air/idle.2",
+        "chimera.chimera-air/idle.3",
+        "chimera.chimera-air/idle.4",
+        "chimera.chimera-air/idle.5"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "chimera-air/move": {
+      "frames": [
+        "chimera.chimera-air/move.0",
+        "chimera.chimera-air/move.1",
+        "chimera.chimera-air/move.2",
+        "chimera.chimera-air/move.3",
+        "chimera.chimera-air/move.4",
+        "chimera.chimera-air/move.5"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "chimera-air/attack": {
+      "frames": [
+        "chimera.chimera-air/attack.0",
+        "chimera.chimera-air/attack.1",
+        "chimera.chimera-air/attack.2",
+        "chimera.chimera-air/attack.3",
+        "chimera.chimera-air/attack.4",
+        "chimera.chimera-air/attack.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "chimera-air/death": {
+      "frames": [
+        "chimera.chimera-air/death.0",
+        "chimera.chimera-air/death.1",
+        "chimera.chimera-air/death.2",
+        "chimera.chimera-air/death.3",
+        "chimera.chimera-air/death.4",
+        "chimera.chimera-air/death.5"
+      ],
+      "fps": 6,
+      "loop": false
+    },
+    "hurt": {
+      "frames": [
+        "boss.recover.0",
+        "boss.recover.1",
+        "boss.recover.2",
+        "boss.recover.3",
+        "boss.recover.4",
+        "boss.recover.5"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "intermission": {
+      "frames": [
+        "boss.summon.3",
+        "boss.summon.4",
+        "boss.summon.5",
+        "boss.summon.3",
+        "boss.summon.4",
+        "boss.summon.5"
+      ],
+      "fps": 6,
+      "loop": true,
+      "intentionalHold": true
+    },
+    "empowered": {
+      "frames": [
+        "boss.exposed.0",
+        "boss.exposed.1",
+        "boss.exposed.2",
+        "boss.exposed.3",
+        "boss.exposed.4",
+        "boss.exposed.5"
+      ],
+      "fps": 8,
+      "loop": false,
+      "intentionalHold": false
+    }
+  }
+}

@@ -6,7 +6,7 @@ Keep `main` authoritative. Do not merge old asset/gameplay branches wholesale in
 
 Before changing runtime artwork, read the relevant `assets/**/README.md` and preserve native 1:1 pixel registration, integer anchors and disabled smoothing.
 
-For any art change, follow `docs/figma.md`: the configured Figma runtime sections on page 10:2 hold every runtime PNG file, the pack README, `atlas.json` and palette are binding, all packs are edited in their native Figma source layer and exported with their existing atlas, anchors and palette, and `npm run figma:check` must report all MATCH.
+For any art change, follow `docs/figma.md`: the configured Figma runtime sections on page 10:2 hold the runtime PNG masters, the pack README, `atlas.json` and palette are binding, and native Figma source edits must pass `npm run figma:check`. The user-authorized Crown creation pipeline has been imported and verified: its three masters use ordinary Figma production coverage. Preserve its immutable original-source audit, previous-pass archive, native registration and actual authenticated evidence in `provenance.json`; do not treat historical generated sources as an ongoing Figma exception.
 
 Before changing bouquet/results behavior, read `docs/asset-review/bouquet/README.md`. Results must represent the player's actual run and exact plant data.
 

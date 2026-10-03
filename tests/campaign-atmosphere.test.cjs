@@ -132,3 +132,46 @@ test('bonus realms keep their backdrop and isolated relic modes cannot receive c
   ops.length = 0; g.rogueRun.world = 20; g.drawCampaignAtmosphere(1);
   assert.equal(ops.length, 0);
 });
+
+test('underground chapters fill the tall upper climb with different chamber silhouettes', () => {
+  const silhouettes = [];
+  for (const stage of [3, 8, 13, 17]) {
+    const { game: g, ops } = scene(stage);
+    g.IH = 320; g.camY = -100;
+    g.drawCampaignBackdrop(10, 224, 84, 0);
+    const upper = ops.filter(op => op.name === 'fillRect' && op.color !== '#05070e' &&
+      op.args[2] < g.IW && op.args[0] < g.IW && op.args[0] + op.args[2] > 0 &&
+      op.args[1] < 84 && op.args[1] + op.args[3] > 0 && op.args[3] > 3);
+    assert.ok(upper.length > 5, `garden ${stage} upper routes have enclosing architecture`);
+    const signature = upper.map(op => [op.args[2], Math.min(84, op.args[3])].join(':')).sort().join('|');
+    silhouettes.push(signature);
+  }
+  assert.equal(new Set(silhouettes).size, 4, 'chapter identity changes the silhouette, not only its palette');
+});
+
+test('distant shattered ruins leave the central Crown fighting space clear on every viewport', () => {
+  const stone = new Set(['#4a3131', '#201c25', '#3b3339', '#36282d', '#493a3c', '#30262d']);
+  for (const [width, height] of [[130, 280], [320, 180], [540, 320]]) {
+    const { game: g, ops } = scene(20);
+    g.IW = width; g.IH = height; g.camX = -35.25;
+    g.drawCampaignBackdrop(10, Math.round(height * .7), 84, 0);
+    const ruins = ops.filter(op => op.name === 'fillRect' && stone.has(op.color));
+    assert.ok(ruins.length > 5, 'the surface has a shattered civilisation silhouette');
+    for (const op of ruins) assert.ok(op.args[0] + op.args[2] <= Math.floor(width * .25) ||
+      op.args[0] >= Math.ceil(width * .79), 'tall ruined architecture frames the fight');
+  }
+});
+
+test('new chapter geometry remains native and bounded during tall, fractional-camera rendering', () => {
+  for (const stage of [3, 8, 13, 17, 18, 19, 20]) {
+    const { game: g, ops } = scene(stage);
+    g.IW = 540; g.IH = 720; g.camX = -182.7; g.camY = -460.3;
+    g.drawCampaignBackdrop(10.35, 520, 380, 0);
+    const rects = ops.filter(op => op.name === 'fillRect');
+    assert.ok(rects.length < 1500, `garden ${stage} keeps its background primitive budget`);
+    for (const op of rects) {
+      assert.ok(op.args.every(Number.isInteger));
+      assert.ok(op.args[2] > 0 && op.args[3] > 0, 'native geometry has a positive footprint');
+    }
+  }
+});

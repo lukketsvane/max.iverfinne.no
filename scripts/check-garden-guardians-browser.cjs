@@ -65,12 +65,25 @@ async function checkCircuit(page,engineName,errors){
    if(process.argv.includes('--circuit-only'))continue;
    for(let stage=1;stage<=20;stage++){
     await page.goto(base+'/review.html?mode='+(stage===20?'boss':'boss'+stage));
-    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
+    if(stage===20)await page.waitForURL('**/crown-review.html?**');
+    const channel=stage===20?'state':'guardian';
+    await page.waitForFunction(channel=>{
+     const data=document.querySelector('#status')?.dataset[channel];
+     if(!data)return false;
+     const observed=JSON.parse(data);
+     return channel==='guardian'||observed.ready&&observed.summoned&&observed.boss?.guardianStage===20;
+    },channel,{timeout:15000});
     const game=page.frames().find(f=>f!==page.mainFrame());
     const art=await game.evaluate(()=>window.MaxNativeArt.load());assert.deepEqual(art.failed,[]);
-    await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).boss?.windup>0,{},{timeout:10000});
-    const observed=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
+    await page.waitForFunction(channel=>JSON.parse(document.querySelector('#status').dataset[channel]).boss?.windup>0,channel,{timeout:10000});
+    const observed=JSON.parse(await page.locator('#status').getAttribute('data-'+channel));
     assert.equal(observed.boss.id,names[stage-1]);assert.ok(observed.boss.hp>0);
+    if(stage===20){
+     assert.equal(observed.world,20);assert.equal(observed.summoned,true);assert.equal(observed.boss.guardianStage,20);
+     assert.equal(observed.shrine.stage,20);assert.equal(observed.shrine.status,'active');
+     assert.ok(observed.boss.x>=observed.shrine.courtLeft&&observed.boss.x<=observed.shrine.courtRight);
+     assert.ok(observed.art?.clip&&Number.isFinite(observed.art.top),'the real Crown warning draws loaded native artwork');
+    }
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${String(stage).padStart(2,'0')}.png`});
     assert.deepEqual(errors,[]);console.log(engineName,'guardian',stage,'native art + live warning OK');
    }

@@ -1,0 +1,41 @@
+{
+  "format": "max-native-validation/v1",
+  "geometry": true,
+  "binaryAlpha": true,
+  "cleanTransparency": true,
+  "palette": true,
+  "frameCount": 192,
+  "bossFrames": 108,
+  "effectFrames": 36,
+  "chimeraFrames": 48,
+  "fixedAnchors": true,
+  "warnings": [
+    "hammer-4: pixels touch cell edge; inspect for clipping",
+    "hammer-5: pixels touch cell edge; inspect for clipping",
+    "column-3: pixels touch cell edge; inspect for clipping",
+    "chimera-ground/death-2: pixels touch cell edge; inspect for clipping"
+  ],
+  "outputs": [
+    {
+      "path": "assets/crown-ascendant-v1/boss.png",
+      "width": 768,
+      "height": 1728,
+      "sha1": "9385485338e13d0ac79164ad6e1d946dc924119c",
+      "sha256": "3811a9a1990c8530049200bd02d0ef83d91c0f2f4d6f093d6367fbd4369a2d84"
+    },
+    {
+      "path": "assets/crown-ascendant-v1/effects.png",
+      "width": 288,
+      "height": 288,
+      "sha1": "bba0440c147156392d816f9725eb1566a4226bf7",
+      "sha256": "7da93b9802ff7887a91f27b6f5428572ddcd68efb6970ace12050da493d84f1f"
+    },
+    {
+      "path": "assets/crown-ascendant-v1/chimera.png",
+      "width": 384,
+      "height": 384,
+      "sha1": "9c823d6147f1ee95cacf327135e82d5de531a72c",
+      "sha256": "f7c7808ae56e9301e6f436d98ec8cab7ef5791a0a834a87103381b1ea313bd7d"
+    }
+  ]
+}

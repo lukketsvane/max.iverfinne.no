@@ -1,0 +1,43 @@
+{
+  "format": "max-crown-local-verification/v1",
+  "runtimeSha256": "d99c560b61832e120ff1e08dfad003a9b97a47646c72561a4d96c9a56c2d862f",
+  "fullSuite": {
+    "command": "npm test",
+    "tests": 290,
+    "pass": 290,
+    "fail": 0,
+    "skipped": 0,
+    "durationMs": 897728.795905
+  },
+  "build": {
+    "command": "npm run build",
+    "passed": true
+  },
+  "followupSuites": [
+    {
+      "command": "node --test tests/crown-art.test.cjs tests/figma-assets.test.cjs",
+      "pass": 10,
+      "fail": 0,
+      "purpose": "actual authenticated source promotion"
+    },
+    {
+      "command": "node --test tests/coop.test.cjs",
+      "pass": 9,
+      "fail": 0,
+      "purpose": "latest main exit reward regression"
+    },
+    {
+      "command": "node --test tests/figma-assets.test.cjs",
+      "pass": 7,
+      "fail": 0,
+      "purpose": "all runtime art requires ordinary Figma coverage without an exception"
+    },
+    {
+      "command": "node --test tests/high-tide.test.cjs tests/hollow-crown-art.test.cjs tests/level-guide.test.cjs",
+      "pass": 22,
+      "fail": 0,
+      "purpose": "actual final High Tide Crown health bar and preserved campaign presentation"
+    }
+  ],
+  "fullSuiteRuntimeSha256": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe"
+}

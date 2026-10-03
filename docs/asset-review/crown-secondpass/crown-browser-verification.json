@@ -1,0 +1,16 @@
+[
+  {
+    "engine": "chromium",
+    "captures": 19,
+    "actualVictory": true,
+    "errors": [],
+    "passed": true
+  },
+  {
+    "engine": "webkit",
+    "captures": 19,
+    "actualVictory": true,
+    "errors": [],
+    "passed": true
+  }
+]

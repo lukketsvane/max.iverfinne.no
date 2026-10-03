@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hollow Crown · encounter review</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#101923;color:#e0e7e9;font:13px/1.45 monospace}main{padding:12px}h1{margin:0;font-size:20px}p{margin:5px 0 10px;max-width:90em}.controls{display:flex;align-items:end;gap:7px;flex-wrap:wrap;margin:8px 0}label{display:flex;flex-direction:column;gap:3px}button,select{background:#263745;color:inherit;border:1px solid #7d929e;border-radius:0;min-height:38px;padding:7px;font:inherit}button[aria-pressed=true]{background:#72613d}button:focus-visible,select:focus-visible{outline:2px solid #ffcb79;outline-offset:2px}details{margin:8px 0}summary{cursor:pointer;color:#ffcb79}#status{min-height:38px;margin:8px 0;color:#aee0df}iframe{display:block;border:0;outline:1px solid #46545f;background:#101923;margin:auto;max-width:100%}.note{font-size:11px;color:#b1bec6}@media(max-width:480px){main{padding:8px}h1{font-size:17px}button,select{font-size:11px;min-height:38px}.controls{gap:5px}iframe{max-width:none;margin-left:-8px}}</style></head><body><main>
+<h1>Hollow Crown · Garden 20</h1><p>The actual sunrise encounter. Tend the young garden, read the amber warning, jump or dodge, then strike during cyan recovery.</p>
+<div class="controls"><label>Character<select id="class"><option value="mech">Mech</option><option value="runner">Rattus norvegicus</option><option value="bulwark">Cairn</option><option value="herbalist">Mycel</option><option value="polge">Pølge</option><option value="sligo">Sligo</option></select></label><label>Difficulty<select id="difficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option><option value="insane">Insane</option></select></label><label>Viewport<select id="viewport"><option value="desktop">Desktop · 1200 × 800</option><option value="phone">Phone · 390 × 844</option><option value="small">Phone · 320 × 568</option></select></label><button id="new-fight">New playable fight</button><button id="resume">Resume fight</button><button id="pause">Pause review</button></div>
+<details><summary>Phase demonstrations and captures</summary><p class="note">These review buttons reset the isolated fight to an act. They are demonstrations; ordinary play progresses by damage and breaking seals. Capture buttons freeze a real attack frame after its timers advance.</p><div class="controls" id="phases"><button data-phase="1">Demonstrate I · Sovereign</button><button data-phase="2">Demonstrate II · Seals</button><button data-phase="3">Demonstrate III · Ascendant</button><button data-phase="4">Demonstrate IV · Dethroned</button></div><div class="controls" id="captures"><button data-capture="hammer-warning">Capture · hammer warning</button><button data-capture="hammer-slam">Capture · hammer slam</button><button data-capture="leap">Capture · airborne slam</button><button data-capture="lanes">Capture · ascendant lanes</button><button data-capture="wounded">Capture · wounded last stand</button></div></details>
+<p class="note">Memory-only fixture; no account, live room or saved run. Keyboard: ← → move · ↑ jump · B attack · X dodge · E skill · Space tend. Touch controls remain active inside the game.</p><p id="status" role="status">Loading real game…</p><div class="controls" id="inputs" aria-label="Game controls"></div>
+<iframe title="Hollow Crown game" width="1200" height="800" sandbox="allow-scripts allow-same-origin"></iframe>
+</main><script>
+(async()=>{
+ const source=await fetch('index.html').then(r=>r.text()),frame=document.querySelector('iframe'),status=document.querySelector('#status'),params=new URLSearchParams(location.search),origin=location.origin;
+ const classes=document.querySelector('#class'),difficulty=document.querySelector('#difficulty'),viewport=document.querySelector('#viewport'),sizes={desktop:[1200,800],phone:[390,844],small:[320,568]};
+ const allowedClasses=['mech','runner','bulwark','herbalist','polge','sligo'];
+ if(allowedClasses.includes(params.get('class')))classes.value=params.get('class');
+ if(['easy','medium','hard','insane'].includes(params.get('difficulty')))difficulty.value=params.get('difficulty');
+ viewport.value=params.has('portrait')?'phone':Object.hasOwn(sizes,params.get('viewport'))?params.get('viewport'):'desktop';
+ let serial=0;
+ const send=data=>frame.contentWindow.postMessage({...data,serial},origin);
+ function reset(phase=1,capture=''){
+  const fixture=++serial,selectedClass=classes.value,selectedDifficulty=difficulty.value;
+  [frame.width,frame.height]=sizes[viewport.value];status.textContent='Loading real Garden 20…';status.removeAttribute('data-state');
+  document.querySelectorAll('#inputs [aria-pressed]').forEach(b=>b.setAttribute('aria-pressed','false'));
+  const setup='<script>(function(){const values=new Map([["max-fuglesprenger-rogue-intro-v6","1"]]);Object.defineProperty(window,"localStorage",{value:{getItem:key=>values.get(String(key))||null,setItem:(key,value)=>values.set(String(key),String(value)),removeItem:key=>values.delete(String(key)),clear:()=>values.clear()}});window.addEventListener("error",event=>parent.postMessage({type:"crown-error",serial:'+fixture+',message:event.message},'+JSON.stringify(origin)+'));})();<'+'/script>';
+  const hook=`
+    "MAX_REVIEW_FIXTURE_START";
+    const reviewSerial=${fixture},reviewOrigin=${JSON.stringify(origin)};
+    let reviewReady=false,reviewCapture=${JSON.stringify(capture)},reviewStopped=false,reviewFrameCount=0,reviewStateAt=0,reviewSummoned=false;
+    const reviewLog={attackInputs:0,dodges:0,jumps:0,tends:0,strikes:0,shots:0,bombPeak:0,maxJumpHeight:0,dodgeFrames:0,lastFx:0};
+    let reviewArt=null;const reviewNativeRenderer=window.MaxNativeArt.drawEnemy;
+    window.MaxNativeArt.drawEnemy=function(ctx,k,x,y,time){const result=reviewNativeRenderer(ctx,k,x,y,time);if(k.bossId==='hollow-crown'&&result)reviewArt={clip:result.clip,top:result.top};return result;};
+    menuPaused=true;
+    function reviewKey(key,down){window.dispatchEvent(new KeyboardEvent(down?'keydown':'keyup',{key,bubbles:true,cancelable:true}));}
+    window.addEventListener('message',event=>{
+      if(event.source!==parent||event.origin!==reviewOrigin||!event.data||event.data.serial!==reviewSerial)return;
+      const d=event.data;
+      if(d.type==='crown-input'&&['ArrowLeft','ArrowRight','ArrowUp',' ','b','x','e','1','2','3'].includes(d.key)){
+        if(d.down){if(d.key==='b')reviewLog.attackInputs++;if(d.key==='x')reviewLog.dodges++;if(d.key==='ArrowUp')reviewLog.jumps++;if(d.key===' ')reviewLog.tends++;}
+        reviewKey(d.key,d.down);
+      }
+      if(d.type==='crown-pause'){menuPaused=true;reviewStopped=true;clearRunInput();}
+      if(d.type==='crown-resume'&&reviewReady){reviewCapture='';reviewStopped=false;menuPaused=false;clearRunInput();}
+    });
+    function reviewInitialize(){
+      resetRogueRun('CROWN REVIEW',{classId:${JSON.stringify(selectedClass)},difficulty:${JSON.stringify(selectedDifficulty)},skinId:({mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',polge:'polge',sligo:'sligo'})[${JSON.stringify(selectedClass)}]});
+      rogueRun.seed=260926;enterLevel(20);rogueRun.level=${params.get('build')==='campaign'?20:14};rogueRun.next=1000000000;rogueRun.choice=null;rogueRun.ended=false;
+      if(${params.get('build')==='campaign'}){
+        Object.assign(rogueRun.perks,{cadence:3,bark:3,tender:3,water:2,mulch:2,spring:1,dash:2});
+        Object.assign(rogueRun.perks,rogueRun.classId==='bulwark'?{fault:3}:rogueRun.classId==='polge'?{splinters:3,varnish:2,raincoat:1,haymaker:1,secondwind:1}:rogueRun.classId==='runner'?{needle:3,fletching:2}:rogueRun.classId==='herbalist'?{ferment:3,colony:2}:{blast:3});
+      }
+      runActive=true;menuPaused=false;gardenPlots=[];rogueRun.garden=[];floatKrek=[];runEncounters=[];runLoot=[];runHazards=[];bombs=[];gardenSeeds=8;krekSpawnT=gardenRaidT=9999;
+      const e=bossEvent,plant={id:2001,x:e.courtX,kind:3,seed:79,growth:.24,stalk:false,health:1,moisture:.95,pulse:0,hit:0,age:0};
+      gardenPlots.push(plant);recordGardenPlant(plant);rogueRun.nextPlantId=2002;
+      Object.assign(P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false,vx:0,vy:0,platform:playerSupportId(e.x,e.y)});
+      reviewSummoned=interactBossEvent();
+      const k=liveBoss();if(!reviewSummoned||!k||k.guardianStage!==20)throw new Error('Real Garden 20 shrine did not summon its Crown.');
+      const px=e.x;Object.assign(P,{x:px,y:e.y,st:'free',grounded:true,wet:false,vx:0,vy:0,platform:playerSupportId(px,e.y),face:k.x<px?-1:1,coyote:.1});
+      setAnim('idle');started=false;worldBanner=null;clearRunInput();ensureCompanion();
+      if(${phase}>1){k.hp=k.maxHp*(${phase}===2?.66:${phase}===4?.22:.66);crownEnterPhase(k,${phase});}
+      if(reviewCapture){
+        k.crownTransition=0;k.exposed=0;k.cool=0;k.crownState='stalk';
+        k.attack=reviewCapture==='lanes'?3:reviewCapture==='leap'?2:0;crownBeginAttack(k);
+      }
+      camX=P.x-IW*.54;camY=P.y-ANCHOR;last=performance.now();reviewReady=true;
+    }
+    const reviewOriginalFrame=frame;
+    frame=function(now){
+      reviewOriginalFrame(now);reviewFrameCount++;
+      if(!reviewReady)return;
+      booms.forEach(b=>{if(!(b.id>reviewLog.lastFx))return;reviewLog.lastFx=b.id;if(b.strike)reviewLog.strikes++;});
+      reviewLog.shots=Math.max(reviewLog.shots,classShotId);reviewLog.bombPeak=Math.max(reviewLog.bombPeak,bombs.length);
+      reviewLog.maxJumpHeight=Math.max(reviewLog.maxJumpHeight,surfaceY(P.x)-P.y);if(P.dodgeT>0)reviewLog.dodgeFrames++;
+      const k=liveBoss();
+      if(reviewCapture&&!reviewStopped&&k){
+        const freeze=reviewCapture==='hammer-warning'?k.windup>0&&k.windup<k.tell*.5:reviewCapture==='hammer-slam'?k.attackT>0&&k.attackT<k.attackDuration*.6:reviewCapture==='leap'?k.crownMove==='leap'&&k.attackT>0&&k.attackT<k.attackDuration*.6:reviewCapture==='lanes'?k.crownMove==='lanes'&&runHazards.some(h=>h.guardianOwner===k.ph&&h.tell<=0&&h.life<.26&&h.life>.05):reviewCapture==='wounded'?k.phase===4&&k.windup>0&&k.windup<k.tell*.5:false;
+        if(freeze){menuPaused=true;reviewStopped=true;clearRunInput();}
+      }
+      if(now-reviewStateAt<100)return;reviewStateAt=now;
+      const bounds=cv.getBoundingClientRect(),point=(x,y)=>({x:bounds.left+(x-camX)*SCALE,y:bounds.top+(y-camY)*SCALE});
+      const b=k?{id:k.bossId,guardianStage:k.guardianStage,phase:k.phase,state:k.crownState,move:k.crownMove,hp:k.hp,maxHp:k.maxHp,windup:k.windup,attackT:k.attackT,exposed:k.exposed,transition:k.crownTransition,power:k.crownPower,x:k.x,y:k.y,feet:k.y+32,screen:point(k.x,k.y),nodes:(k.nodes||[]).map(n=>({x:n.x,y:n.y,hp:n.hp,kind:n.kind}))}:null;
+      parent.postMessage({type:'crown-state',serial:reviewSerial,state:{ready:reviewReady,summoned:reviewSummoned,paused:menuPaused,capture:reviewCapture,frames:reviewFrameCount,world:worldLevel(),difficulty:rogueRun.difficulty,classId:rogueRun.classId,level:rogueRun.level,build:${params.get('build')==='campaign'?'"campaign"':'"opening"'},elapsed:runElapsed,won:runWon,ended:rogueRun.ended,shrine:bossEvent,player:{x:P.x,y:P.y,screen:point(P.x,P.y),grounded:P.grounded,anim:P.anim,dodge:P.dodgeT,skillCool:P.skillCool},boss:b,hazards:runHazards.map(h=>({type:h.type,x:h.x,tell:h.tell,life:h.life})),plants:gardenPlots.map(p=>({x:p.x,growth:p.growth,health:p.health,dead:!!p.dead})),log:reviewLog,view:{width:innerWidth,height:innerHeight,scale:SCALE,nativeWidth:IW,nativeHeight:IH,smoothing:ctx.imageSmoothingEnabled},art:reviewArt,deathRemaining:window.MaxNativeArt.crownDeathRemaining?window.MaxNativeArt.crownDeathRemaining():0}},reviewOrigin);
+    };
+    window.MaxNativeArt.load().then(result=>{
+      if(result.failed.length)throw new Error('Missing artwork: '+result.failed.join(', '));
+      reviewInitialize();
+    }).catch(error=>parent.postMessage({type:'crown-error',serial:reviewSerial,message:error.message},reviewOrigin));
+    "MAX_REVIEW_FIXTURE_END";
+  `;
+  const html=source.replace('<head>','<head><base href="'+new URL('.',location.href).href+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace('start();\n})();','start();\n'+hook+'})();');
+  if(!html.includes('reviewInitialize()'))throw new Error('Cannot install isolated Crown fixture.');
+  frame.srcdoc=html;
+ }
+ window.addEventListener('message',event=>{
+  const d=event.data;if(event.source!==frame.contentWindow||event.origin!==origin||!d||d.serial!==serial)return;
+  if(d.type==='crown-error'){status.textContent='Fixture error: '+d.message;status.dataset.error=d.message;return;}
+  if(d.type!=='crown-state')return;
+  status.dataset.state=JSON.stringify(d.state);const s=d.state,b=s.boss;
+  status.textContent=s.won?'CROWN DEFEATED · actual victory':s.ended?'Run ended':(s.paused?'Paused review':'Playable fight')+' · '+s.difficulty+' · '+s.classId+' · level '+s.level+(s.build==='campaign'?' campaign build':'')+' · '+(b?'Act '+b.phase+' · '+b.state+(b.move?' / '+b.move:'')+' · '+Math.ceil(b.hp)+'/'+Math.ceil(b.maxHp)+' HP':'Crown departed')+' · garden '+s.plants.filter(p=>!p.dead&&p.health>0).length+' living plant';
+ });
+ for(const [label,key,toggle] of [['Left','ArrowLeft',true],['Right','ArrowRight',true],['Jump','ArrowUp',false],['Tend',' ',true],['Attack','b',false],['Dodge','x',false],['Skill','e',false]]){
+  const button=document.createElement('button');button.textContent=label;button.setAttribute('aria-label','Game '+label);if(toggle)button.setAttribute('aria-pressed','false');
+  button.onclick=()=>{const down=!toggle||button.getAttribute('aria-pressed')!=='true';if(toggle)button.setAttribute('aria-pressed',String(down));send({type:'crown-input',key,down});if(!toggle)setTimeout(()=>send({type:'crown-input',key,down:false}),100);};document.querySelector('#inputs').append(button);
+ }
+ document.querySelector('#new-fight').onclick=()=>reset();document.querySelector('#resume').onclick=()=>send({type:'crown-resume'});document.querySelector('#pause').onclick=()=>send({type:'crown-pause'});
+ classes.onchange=difficulty.onchange=viewport.onchange=()=>reset();
+ document.querySelectorAll('[data-phase]').forEach(b=>b.onclick=()=>reset(Number(b.dataset.phase)));
+ document.querySelectorAll('[data-capture]').forEach(b=>b.onclick=()=>reset(b.dataset.capture==='lanes'?3:b.dataset.capture==='wounded'?4:1,b.dataset.capture));
+ const capture=params.get('capture'),captures=['hammer-warning','hammer-slam','leap','lanes','wounded'];
+ reset(capture==='lanes'?3:capture==='wounded'?4:Math.max(1,Math.min(4,Number(params.get('phase'))||1)),captures.includes(capture)?capture:'');
+})();
+</script></body></html>
