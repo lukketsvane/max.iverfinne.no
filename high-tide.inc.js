@@ -276,10 +276,13 @@ function drawHighTideWorld(t){
 function drawHighTideHud(){
   if(!highTideMode()||!runActive||rogueRun.ended)return;
   var s=rogueRun.survival,p=highTidePlant(),v=seedVital(),y=safeTopArt()+3;
-  highTideText('HIGH TIDE  '+s.bosses+'/5',7,y);
+  // Wave and guardian glyphs carry the mode state without a persistent title.
+  ctx.fillStyle=s.phase==='warning'?'#e0b56e':s.phase==='surge'?'#b2d5cf':'#699fac';
+  for(var wave=0;wave<3;wave++)ctx.fillRect(7+wave*3,y+3+(wave%2),3,1);
+  for(var boss=0;boss<5;boss++){ctx.fillStyle=boss<s.bosses?'#d7dca4':'#405656';ctx.fillRect(21+boss*5,y+3,3,2);}
   var cue=s.cycle+':'+s.phase;if(cue!==tideCue){if(s.phase==='warning')chime([220,277,330],.12,.045);if(s.phase==='surge')chime([165,220],.08,.035);tideCue=cue;}
-  var hint=!s.started?'STELL FOR AA PLANTE':v.hp<=0?'NEDE':s.phase==='warning'?'FLO KJEM':s.phase==='surge'?'FLO':p&&p.moisture<.2?'MORPLANTA TRENG VATN':s.bosses===5?'TIL KRONA':s.bossActive?'FORSVAR MORPLANTA':s.growthRush>0?'VEKSTSPURT':'';
-  if(hint)highTideText(hint,7,y+10);
+  var heart=highTideHeart(),near=Math.hypot(P.x-heart.x,P.y-heart.y)<48;
+  if(v.hp>0&&near&&(!s.started||p&&p.moisture<.2))drawGuideLabel(!s.started?'PLANT':'WATER',heart.x-camX,heart.y-camY-42,'#a7c68c');
   if(p){var x=IW-30;ctx.fillStyle='#14221f';ctx.fillRect(x-1,y,25,8);ctx.fillStyle='#a5c77a';ctx.fillRect(x,y+1,Math.round(p.health*23),2);ctx.fillStyle='#79b8c8';ctx.fillRect(x,y+5,Math.round(p.moisture*23),2);}
   if(v.hp>0&&v.air<highTideProfile().breath-.05){var x=Math.round(P.x-camX)-9,py=Math.round(P.y-camY)-27;ctx.fillStyle='#152028';ctx.fillRect(x-1,py-1,20,3);ctx.fillStyle='#a8dce2';ctx.fillRect(x,py,Math.round(18*v.air/highTideProfile().breath),1);}
 }

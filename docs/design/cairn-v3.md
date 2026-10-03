@@ -128,13 +128,16 @@ IDs, ranks, prerequisites, paths and mode lists are unchanged.
 
 B / threat tap uses Three-Stone Rhythm; C / Stone throws Loose Stone; V / Brace
 starts a stationary brace; E / Ridge or tap Cairn uses Garden Breakwater.
-X remains dodge. Standard controller C8/V6/E4; horizontal single C8/V10/E3.
+X or a quick horizontal flick dodges. Standard controller C8/V6/E4; horizontal single C8/V10/E3.
 Held Tend+C8 refills, Home16 or held Tend+V toggles the lantern; these chords
 suppress garden work. Ordinary tending and lantern L remain available.
+Gameplay has no on-screen action buttons. Stone, Brace, lantern and Shovel
+burrowing require keyboard or controller input; touch retains canvas movement,
+attack, Ridge, gardening, dodge, refill and climbing.
 
 Plain E always selects Ridge. A solo owned Shovel retains its old burrow as
-explicit Down+E, controller Tend+Special, or the visible owned-Shovel touch
-glyph. Dry ordinary-soil, travel and nearby-enemy constraints remain. Underground
+explicit Down+E or controller Tend+Special. Dry ordinary-soil, travel and
+nearby-enemy constraints remain. Underground
 speed is `.8×WALK_V`; jump erupts2damage/radius28. Burrow/cache seeds/eruption
 are world interaction and generate no Strata, counter, guard or exit bypass.
 The Shovel chord accepts an ongoing hand pose even when Down or Tend arrived

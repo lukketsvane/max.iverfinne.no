@@ -35,7 +35,7 @@ test('cleared guide targets only a living physical exit and disappears outside n
   g.rogueRun.clearedWorld = 1;
   g.gardenPlots = [plot({ x: 20, stalk: true, dead: true }), plot({ x: 60, stalk: true })];
   let q = g.levelGuideObjective(); assert.equal(q.id, 'exit'); assert.equal(q.target.x, 60);
-  g.climb = { exit: true }; assert.match(g.levelGuideObjective().text, /KEEP CLIMBING/);
+  g.climb = { exit: true }; assert.equal(g.levelGuideObjective().text, 'CLIMB');
   g.gardenPlots[1].dead = true; assert.equal(g.levelGuideObjective().target, null);
   g.rogueRun.ended = true; assert.equal(g.levelGuideObjective(), null);
   g.rogueRun.ended = false; g.runActive = false; assert.equal(g.levelGuideObjective(), null);
@@ -47,19 +47,19 @@ test('final encounter guide reveals the current act and a living nearby seal to 
   g.P.x = 90;
   const boss = { bossId: 'hollow-crown', guardianStage: 20, hp: 70, x: 120, y: -32, crownStage: 1, nodes: [] };
   g.floatKrek = [boss];
-  assert.equal(g.levelGuideObjective().text, 'DEFEAT THE HOLLOW CROWN');
+  assert.equal(g.levelGuideObjective().text, 'CROWN');
   boss.crownStage = 2; boss.nodes = [{ x: 88, y: -9, hp: 0 }, { x: 70, y: -9, hp: 1 }, { x: 140, y: -9, hp: 1 }];
   let q = g.levelGuideObjective();
-  assert.equal(q.text, 'BREAK THE CROWN SEALS'); assert.equal(q.label, 'SEAL'); assert.equal(q.target.x, 70);
+  assert.equal(q.text, 'BREAK SEALS'); assert.equal(q.label, 'SEAL'); assert.equal(q.target.x, 70);
   assert.equal(boss.nodes[0].x, 88, 'local guidance cannot reorder the replicated objectives');
   boss.crownStage = 3;
-  assert.match(g.levelGuideObjective().text, /DODGE PILLARS/);
+  assert.equal(g.levelGuideObjective().text, 'CROWN');
   boss.crownStage = 4;
-  assert.match(g.levelGuideObjective().text, /SHATTER CORES/);
+  assert.equal(g.levelGuideObjective().text, 'BREAK CORES');
   boss.nodes.forEach(n => { n.hp = 0; });
-  assert.equal(g.levelGuideObjective().text, 'FINISH THE HOLLOW CROWN');
+  assert.equal(g.levelGuideObjective().text, 'CROWN');
   boss.hp = 0;
-  assert.equal(g.levelGuideObjective().text, 'DEFEAT THE GUARDIAN', 'a defeated body cannot leave an old act instruction');
+  assert.equal(g.levelGuideObjective().text, 'GUARDIAN', 'a defeated body cannot leave an old act instruction');
 });
 
 test('objective and long district labels fit narrow phones at either viewport edge', () => {

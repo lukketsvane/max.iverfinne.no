@@ -79,9 +79,10 @@ previous pass and reproducible native export pins are retained. The current
 The court is built around the actual final shrine: a jointed stone floor, broken
 outer pylons and a quiet central fighting space. Existing ledges and planting
 slots keep their physical bounds. Layered scorched ridges and ruined silhouettes
-frame the radioactive sunrise. A compact two-line phase strip keeps instructions
-above the battle, with health on its underline. Camera limits preserve both the
-player and the complete raised hammer, including the leap on a 320-pixel phone.
+frame the radioactive sunrise. A thin health bar, four phase pips and three
+seal/core dots replace the title and instruction strip. Camera limits preserve
+both the player and the complete raised hammer, including the leap on a
+320-pixel phone.
 
 Earlier chapters close the upper climb with rock vaults, buried steel braces,
 frozen shafts and reactor housings. Stages 1–17 retain a sealed underground sky;

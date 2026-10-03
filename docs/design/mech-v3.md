@@ -58,20 +58,20 @@ pending paid job into a second delivery.
 
 | Action | Keyboard | Touch | Standard controller | Horizontal single controller |
 | --- | --- | --- | --- | --- |
-| Bomb | B | Bomb button or normal threat tap | Existing attack input | Existing attack input |
-| Irrigation fan | C | Fan button | View/minus, button 8 | View/minus, button 8 |
-| Dispatch / recall | V | Rover button | Left trigger, button 6 | Stick click, button 10 |
-| Overload | E | Overload button or tap Max | Left shoulder, button 4 | Top face button, button 3 |
-| Dodge | X | Existing dodge gesture | Stick click, button 10/11 | Left shoulder, button 4 |
+| Bomb | B | Tap a threat | Existing attack input | Existing attack input |
+| Irrigation fan | C | — | View/minus, button 8 | View/minus, button 8 |
+| Dispatch / recall | V | — | Left trigger, button 6 | Stick click, button 10 |
+| Overload | E | Tap Max | Left shoulder, button 4 | Top face button, button 3 |
+| Dodge | X | Quick horizontal flick | Stick click, button 10/11 | Left shoulder, button 4 |
 | Tend / plant / harvest | Space or ↓ | Drag down | Existing Tend input | Existing Tend input |
 | Refill | R | Tap a nearby rover | Hold Tend + press Fan (button 8) | Hold Tend + press Fan (button 8) |
-| Lantern | L | Existing item interaction | Home (16), or hold Tend + Rover (6) | Home (16), or hold Tend + Rover (10) |
+| Lantern | L | — | Home (16), or hold Tend + Rover (6) | Home (16), or hold Tend + Rover (10) |
 
-The four dedicated touch slots show Bomb, Fan, Rover and Overload alongside a
-Circuit count. Independent readiness, resource requirements and cast locks
-are visible. Tend and the universal dodge remain separate. Threat taps retain
-their ordinary priority, including a threat overlapping the character; exit
-climbing keeps its normal boost interaction.
+Gameplay has no on-screen action buttons. Fan, dispatch/recall and lantern
+require keyboard or controller input. Touch keeps movement, tending, attack,
+Overload, dodge and refill through the canvas. Threat taps retain their ordinary
+priority, including a threat overlapping the character; exit climbing keeps
+its normal boost interaction.
 
 Any nearby teammate can refill a rover while grounded and still on soil.
 The controller refill and lantern chords suppress garden action while held

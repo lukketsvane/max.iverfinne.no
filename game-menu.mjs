@@ -671,21 +671,21 @@ function help() {
   page('help', 'Controls');
   const rows = [
     ['MOVE', 'Drag left / right.'],
-    ['JUMP', 'Swipe up. Three feathers: return your thumb down, then swipe up again for a second jump.'],
+    ['JUMP', 'Swipe up. With three feathers, lower your thumb and swipe up again to double-jump.'],
     ['DODGE', 'Quick flick left / right.'],
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
-    ['LADDERS', 'Hold Up or Down beside a ladder to climb; release to hold a rung. Move sideways to step off, or hold Up and move to jump off. On touch, hold a vertical drag; on controller, use the stick or D-pad.'],
+    ['LADDERS', 'Hold a vertical drag beside a ladder. Release to hold; move sideways to step off. Keyboard/controller: Up or Down.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['SKILL', 'Tap your character. Pølge unleashes a moving flurry. Rattus norvegicus leaps into a salto and lands a wide splits stomp. Cairn braces and parries. Mycel blooms to heal the garden and strike pests. Mech dispatches the rover.' + (eggs.has('sligo') ? ' Sligo curls into a tun until you jump.' : '')],
-    ['RATTUS NORVEGICUS', 'Climb plants once they reach half of their maximum height, then jump between them. Every character can use a cleared exit stalk.'],
-    ['MECH', 'Mech places bombs at his feet. They stay put and explode after two seconds: plant, retreat, bait pests into the blast. Hold to charge a bigger blast while moving. Only Mech owns watering robots; any nearby teammate can refill one.'],
-    ['EXPLORE', 'Find the amber guardian shrine: each garden chooses one of three locations. Explore for seeds and upgrades on the way. Establish a living plant beside its clearing, then use Grow at the shrine when ready. Defeat every garden’s boss, choose a boon and climb your exit plant. Time strengthens enemies. The Hollow Crown awaits in garden 20.'],
-    ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J or B to aim with the move keys, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 upgrade · Esc menu'],
-    ['MOUSE', 'Click the game once to lock the mouse inside it; Esc frees it and opens the menu. The bright cross is your aim; the guide shows your attack direction or reach. Click to attack there. Mech can hold to charge a wider, harder bomb. Right click dodges toward the cross, middle click uses the skill. Boon cards can be clicked, or press 1, 2 or 3.'],
-    ['JOY-CON (L)', 'Hold it horizontally, stick on the left. Bottom face button (printed ←): jump / confirm. Right (↓): grow / back. Left (↑) or SR: attack while moving; hold to charge, release to attack. Top (→): class skill. SL: dodge. Hold ZL and use the stick to aim precisely, release to attack. Stick up / down climbs ladders; down + bottom plants. Three-quarter stick travel runs. L refills the rover, or swaps Sligo bodies. Stick click: lamp, or Sligo swap. Capture: lamp when available. Minus: settings. Top opens an offered boon; stick chooses, bottom confirms, right returns to play. Use Map Joy-Con (L) if your buttons or directions differ.'],
-    ['CONTROLLER', 'Stick moves; push farther to run. A light stick tilt aims; full aim reach needs only three-quarter tilt. A jump · B / Y grow · stick click dodge · hold X or ZR to aim with the right stick and release to attack · LB skill · LT lamp · RB run · − refill · + menu. Menus: stick / D-pad navigate, hold to repeat, A confirm, B back. When a boon is offered, flick the right stick to a card and press A.'],
-    ['ATTACKS', 'Pølge boxes: jab, cross, uppercut. Cairn cleaves nearby pests. Rattus norvegicus dropkicks nearby pests and uses a salto kick in the air. Mycel chains spores beside living plants. Mech plants two-second bombs; Sligo throws flesh. The bar above your character shows attack recovery.'],
-    ['BUILDS', 'Class mutations change your attacks and skills. Combine the named prerequisites to unlock signature abilities. Each new choice can develop your build or open another direction.'],
+    ['SKILL', 'Tap your character: Max uses Overload; Rattus lands a splits Stomp; Cairn raises a Ridge; Mycel Blooms; Pølge unleashes a moving Flurry.' + (eggs.has('sligo') ? ' Sligo curls into a Tun until you jump.' : '')],
+    ['CLIMB', 'Rattus climbs half-grown plants and jumps between them. Every character can climb a cleared exit stalk. Tap the held stem to climb faster.'],
+    ['MAX', 'Bombs stay at your feet and explode after two seconds. Hold an attack to charge. Tap a nearby rover to refill it; any teammate can help.'],
+    ['EXPLORE', 'Find the amber shrine, grow a plant beside its clearing and tend the shrine. Defeat its guardian, choose a boon and climb the exit plant. Time strengthens enemies.'],
+    ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J / B to aim, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 boon · Esc settings'],
+    ['CLASS ACTIONS', 'Keyboard/controller: C uses Max Fan, Rattus Tail latch, Cairn Stone or Pølge Clinch; V uses Max Rover, Rattus Driving or Cairn Brace. Hold and release Rattus actions. Cairn with a Shovel: Down + E burrows.'],
+    ['MOUSE', 'Click to lock and aim; Esc frees the mouse. Left click attacks, right click dodges, middle click uses your skill. Hold an attack to charge. Click a boon to choose it.'],
+    ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
+    ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
+    ['BUILDS', 'Boons change your attacks and skills. Combine their named prerequisites to unlock signature abilities.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
   card.append(button('Back', settings, 'subtle'));

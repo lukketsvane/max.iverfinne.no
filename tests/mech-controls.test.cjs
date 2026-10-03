@@ -2,17 +2,13 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
 function ready(){const h=loadGame(),g=h.game;g.resetRogueRun('test',{classId:'mech',skinId:'tide'});g.floatKrek=[];g.runHazards=[];g.gardenPlots=[plot({id:1,x:g.P.x+24,health:.7,moisture:.4})];Object.assign(g.ensureCompanion().state,{x:g.P.x,state:'idle',water:1});return h;}
-function input(h,key,id,touch){if(touch)h.elements.get(id).listeners.click[0]();else h.key('keydown',key);}
-
-test('Max keyboard and touch expose independent Fan, Rover and Overload without consuming Tend',()=>{
- for(const touch of [false,true]){
-  const h=ready(),g=h.game;g.engineerState().charge=1;g.updatePolgeControls();g.updateMechControls();assert.equal(h.elements.get('mechControls').hidden,false);assert.equal(h.elements.get('polgeControls').hidden,true);
-  input(h,'c','mechFan',touch);assert.equal(g.engineerState().charge,0);assert.equal(g.engineerState().fanBeats,3);assert.equal(g.P.secondaryCool,6);assert.equal(g.P.skillCool,0);
-  g.updateMechCombat(.82);input(h,'v','mechUtility',touch);assert.ok(g.companion.state.dispatchT>0);assert.equal(g.engineerState().utilityCool,8);assert.equal(g.P.skillCool,0);
-  g.engineerState().charge=3;input(h,'e','mechSpecial',touch);assert.equal(g.engineerState().charge,0);assert.equal(g.engineerState().overloadWindup,.4);assert.equal(g.P.skillCool,18);
+test('Max keyboard retains independent Fan, Rover and Overload without consuming Tend',()=>{
+  const h=ready(),g=h.game;g.engineerState().charge=1;
+  h.key('keydown','c');assert.equal(g.engineerState().charge,0);assert.equal(g.engineerState().fanBeats,3);assert.equal(g.P.secondaryCool,6);assert.equal(g.P.skillCool,0);
+  g.updateMechCombat(.82);h.key('keydown','v');assert.ok(g.companion.state.dispatchT>0);assert.equal(g.engineerState().utilityCool,8);assert.equal(g.P.skillCool,0);
+  g.engineerState().charge=3;h.key('keydown','e');assert.equal(g.engineerState().charge,0);assert.equal(g.engineerState().overloadWindup,.4);assert.equal(g.P.skillCool,18);
   h.key('keydown',' ');assert.equal(g.heldSpace,true);h.key('keyup',' ');assert.equal(g.heldSpace,false);
   g.resetRogueRun('again',{classId:'mech'});assert.equal(g.P.utilityCool,0);assert.equal(g.P.secondaryCool,0);assert.equal(g.P.skillCool,0);assert.equal(g.engineerState().charge,0);
- }
 });
 
 test('the planted overload anticipation blocks movement, jump, dodge, tending and bombs, then releases once',()=>{

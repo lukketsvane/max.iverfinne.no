@@ -68,7 +68,7 @@ function drawBossEvent(t){
     var cx=Math.round(bossEvent.courtX-camX),cy=Math.round(bossEvent.courtY-camY);
     if(cx>=-12&&cx<=IW+12&&cy>=0&&cy<=IH+8){
       rect(cx-10,cy,21,1,'#82725b');rect(cx-8,cy-2,3,2,ink);rect(cx+6,cy-2,3,2,ink);rect(cx-1,cy-3,3,3,core);
-      if(!readyPlant&&Math.abs(P.x-bossEvent.courtX)<40&&Math.abs(P.y-bossEvent.courtY)<25)drawBossWord('PLANT HERE',Math.max(40,Math.min(IW-40,cx)),cy-19,1);
+      if(!readyPlant&&Math.abs(P.x-bossEvent.courtX)<28&&Math.abs(P.y-bossEvent.courtY)<16)drawBossWord('PLANT',Math.max(20,Math.min(IW-20,cx)),cy-19,1);
     }
   }
   if(x<-24||x>IW+24||y<-12||y>IH+35)return;
@@ -79,11 +79,11 @@ function drawBossEvent(t){
     var glint=Math.round(Math.sin(t*2.8)*3);rect(x-8,y-20+glint,1,1,ink);rect(x+8,y-17-glint,1,1,ink);
   }
   if(ready&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32){
-    var trial=runEncounters.some(function(e){return e.active&&!e.done;}),label=!readyPlant?(bossEvent.courtY-bossEvent.y>24?'PLANT BELOW':'GROW A PLANT HERE'):trial?'FINISH YOUR TRIAL':floatKrek.length>=MAX_ACTIVE_ENEMIES?'CLEAR SOME PESTS':'TEND TO SUMMON';
-    drawBossWord(label,Math.max(56,Math.min(IW-56,x)),y-35,1);
+    var trial=runEncounters.some(function(e){return e.active&&!e.done;}),label=!readyPlant?(bossEvent.courtY-bossEvent.y>24?'PLANT BELOW':'PLANT'):trial?'TRIAL ACTIVE':floatKrek.length>=MAX_ACTIVE_ENEMIES?'CLEAR PESTS':'TEND';
+    var courtCue=!readyPlant&&Math.abs(P.x-bossEvent.courtX)<28&&Math.abs(P.y-bossEvent.courtY)<16&&(Math.abs(bossEvent.courtX-bossEvent.x)>8||bossEvent.courtY-bossEvent.y>24);
+    if(!courtCue)drawBossWord(label,Math.max(36,Math.min(IW-36,x)),y-35,1);
     drawArrow(x-2,y-29+Math.round(Math.sin(t*4)),'down',ink);
   }else if(bossEvent.status==='active'&&bossEvent.courtY-bossEvent.y>24&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32){
-    drawBossWord('GUARDIAN BELOW',Math.max(48,Math.min(IW-48,x)),y-35,1);
     drawArrow(x-2,y+3,'down','#e0b54f');
   }
 }
@@ -951,16 +951,18 @@ function drawRunExploration(t){
       ctx.fillStyle='#d1c67f';ctx.fillRect(x-78,y-5,1,4);ctx.fillRect(x+77,y-5,1,4);
       if(Math.abs(P.x-e.x)<85&&Math.abs(P.y-encounterFloor(e))<48){
         var guards=(e.guardsRemaining||0)+floatKrek.filter(function(k){return k.eventId===e.id;}).length;
-        expeditionText(e.away?'LEAVING '+Math.ceil(4-e.away):guards+' GUARDS LEFT',Math.max(53,Math.min(IW-53,x)),y-37);
+        ctx.fillStyle=e.away?'#d99d6b':'#d1c67f';
+        if(e.away)ctx.fillRect(x-9,y-26,Math.round(18*(1-e.away/4)),2);
+        else for(var guard=0;guard<guards;guard++)ctx.fillRect(x-(guards-1)*2+guard*4,y-26,2,2);
       }
     }else if(e===nearestTrial){
       ctx.fillStyle=gardenSeeds>=e.cost?'#e0d291':'#797b6d';
       for(var c=0;c<e.cost;c++)ctx.fillRect(x-e.cost*2+c*4,y-22,2,2);
+      var guardCount=encounterGuardCount(e);ctx.fillStyle='#879793';
+      for(var g=0;g<guardCount;g++)ctx.fillRect(x-(guardCount-1)*2+g*4,y-31,2,2);
       ctx.fillRect(x,y-29,1,3);ctx.fillRect(x-2,y-27,1,1);ctx.fillRect(x+2,y-27,1,1);ctx.fillRect(x-1,y-26,3,1);
-      var labelX=Math.max(79,Math.min(IW-79,x)),name={nest:'NEST',rain:'RAIN',cache:'CACHE',relay:'DEW RELAY',loom:'RAIN LOOM',echo:'ECHO NEST'}[e.type];
-      drawGuideStack([name+' - '+encounterGuardCount(e)+' GUARDS',
-        e.cost+' SEED'+(e.cost===1?'':'S')+' / '+{feathers:'JUMP',embers:'ATTACK',dew:'CARE'}[encounterReward(e)],
-        'TEND - LEAVE TO WITHDRAW'],labelX,y-32);
+      // The altar already displays its reward and seed cost. Keep only the action.
+      expeditionText('TEND',x,y-39);
     }
   });
   runEncounters.forEach(function(e){if(!e.active||!e.ingress)return;
@@ -969,7 +971,7 @@ function drawRunExploration(t){
     ctx.fillRect(x-8,y-9,4,1);ctx.fillRect(x+5,y-9,4,1);ctx.fillRect(x-8,y-9,1,18);ctx.fillRect(x+8,y-9,1,18);
     ctx.fillRect(x-8,y+12,17,1);ctx.fillRect(x-8,y+15,Math.round(17*(1-e.ingressT/1.35)),2);
     var side=e.x>=e.ingressX?1:-1;ctx.fillRect(x+side*13,y,3,1);ctx.fillRect(x+side*15,y-1,1,3);
-    ctx.globalAlpha=1;expeditionText('INCOMING',Math.max(28,Math.min(IW-28,x)),y-23,'#473c25');
+    ctx.globalAlpha=1;
   });
   runEncounters.forEach(function(e){if(!e.active||!objectiveEncounter(e))return;
     var x=Math.round(e.x-camX),y=Math.round(encounterFloor(e)-camY);
@@ -1240,10 +1242,6 @@ function drawExpedition(t){
   ctx.fillStyle='#556d63';ctx.fillRect(entryX-2,entryY-23,2,23);ctx.fillRect(entryX-8,entryY-23,15,7);
   ctx.fillStyle='#ded59f';ctx.fillRect(entryX-1,entryY-21,1,4);ctx.fillRect(entryX-2,entryY-20,3,1);
   drawRunItem(E.item,entryX+12,entryY-14,false);
-  if(Math.abs(P.x-E.start.x)<68&&Math.abs(P.y-E.start.y)<36){
-    var shrineNear=!relicRunMode()&&bossEvent&&bossEvent.stage===worldLevel()&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32;
-    expeditionText(E.name,entryX,entryY-(shrineNear?57:39));
-  }
   E.nodes.forEach(function(n,i){
     var x=Math.round(n.x-camX),y=Math.round(n.y-camY);if(x<-50||x>IW+50||y<-40||y>IH+40)return;
     var lit=e.mask&(1<<i),near=expeditionNear(P,n,26);
@@ -1259,8 +1257,8 @@ function drawExpedition(t){
     for(var j=0;j<=i;j++)ctx.fillRect(x-i*3+j*6,y-31,2,2);
     if(lit){ctx.fillStyle='#d9edaa';ctx.fillRect(x-3,y-11,6,1);ctx.fillRect(x-1,y-13,2,5);}
     if(e.watch===i&&!lit){ctx.fillStyle='#8ccbd3';ctx.fillRect(x-9,y-35,Math.round(e.charge*3),2);}
-    if(near&&!lit)expeditionText(E.mode==='bells'?'Strike in order':E.mode==='salvage'?'Break the seal':E.mode==='watch'?'Tend, then hold':'Tend to light',x,y-47);
-    if(i===2){drawRunItem(E.item,x+12,y-12,false);if(near&&e.mask===7&&!e.done)expeditionText('Defeat the keepers',x,y-47);}
+    if(near&&!lit)expeditionText(E.mode==='bells'?'STRIKE IN ORDER':E.mode==='salvage'?'STRIKE':E.mode==='watch'?'HOLD TEND':'TEND',x,y-43);
+    if(i===2)drawRunItem(E.item,x+12,y-12,false);
   });
   E.rooms.forEach(function(r,i){
     var x=Math.round(r.secret.x-camX),y=Math.round(r.secret.y-camY),near=Math.hypot(P.x-r.secret.x,P.y-r.secret.y)<38;
@@ -1287,7 +1285,6 @@ function drawCircuit(E,e,t){
     ctx.fillStyle='#7faaa0';ctx.fillRect(fx,fy-10,1,10);ctx.fillRect(fx,fy-10,dir*7,2);ctx.fillRect(fx+dir*7,fy-12,1,6);
     if(Math.abs(P.x-(fork.x+fork.w/2))<48&&Math.abs(P.y-fork.y)<22&&!e.circuitDone&&!e.circuitFailed){
       C.choices.forEach(function(q,i){drawRunItem(q.item,fx-8+i*16,fy-20,false);});
-      expeditionText('Detour: choose a gift',fx,fy-40);
     }
   }
   var x=Math.round(C.focus.x-camX),y=Math.round(a.y-camY);
@@ -1307,16 +1304,16 @@ function drawCircuit(E,e,t){
     if(!drawDistrictProp('altar',lit,qx,qy)){ctx.fillStyle=lit?'#d7dca4':'#425954';ctx.fillRect(qx-7,qy-8,14,8);ctx.fillRect(qx-5,qy-10,10,2);}
     if(!e.circuitFailed&&(!e.circuitActive&&!e.circuitDone||chosen))drawRunItem(q.item,qx,qy-25,false);
     if(i===nearestChoice&&!e.circuitActive&&!e.circuitDone&&!e.circuitFailed){
-      drawGuideStack([{feathers:'Tend: higher jumps',embers:'Tend: stronger hits',dew:'Tend: stronger care'}[q.item],'Fight, or leave'],qx,qy-28);
+      expeditionText('TEND',qx,qy-39);
     }
   });
   if(e.circuitActive){
     var remaining=e.circuitQueued+floatKrek.filter(function(k){return k.eventId===2000+worldLevel();}).length;
-    if(circuitPresent(P,C,20))expeditionText(remaining+' keepers remain',x,y-76);
+    if(circuitPresent(P,C,20)){ctx.fillStyle='#d7dca4';for(var keeper=0;keeper<remaining;keeper++)ctx.fillRect(x-(remaining-1)*3+keeper*6,y-69,3,2);}
     if(e.circuitQueued>0){
       var sx=Math.round(e.circuitSpawnX-camX),sy=Math.round(e.circuitSpawnY-camY);
       ctx.fillStyle='#e1b86c';ctx.fillRect(sx-8,sy+12,16,1);ctx.fillRect(sx-8,sy+9,1,3);ctx.fillRect(sx+7,sy+9,1,3);
       ctx.fillRect(sx-1,sy-6,2,7);ctx.fillRect(sx-1,sy+3,2,2);
     }
-  }else if(Math.abs(P.x-C.focus.x)<30&&Math.abs(P.y-a.y)<12){expeditionText(e.circuitFailed?'Terrace rests':e.circuitDone?'Gift claimed':C.name,x,y-76);}
+  }
 }

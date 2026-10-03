@@ -3,21 +3,18 @@ const assert=require('node:assert/strict');
 const {loadGame}=require('./game-harness.cjs');
 function fresh(saved={}){const h=loadGame(saved),g=h.game;g.resetRogueRun('RATTUS',{classId:'runner',skinId:'moss-pink'});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];const L=g.stageLayout();L.platforms=[];L.ladders=[];L.hazards=[];return h;}
 function step(h,time,hz=60,input={axis:0,top:88}){for(let i=0;i<Math.round(time*hz);i++){h.advance(1000/hz);h.game.updatePlayer(1/hz,input);h.game.updateRattusCombat(1/hz);}}
-function event(h,id,type,extra={}){for(const fn of h.elements.get(id).listeners[type]||[])fn({pointerId:9,clientX:30,clientY:30,button:0,preventDefault(){},...extra});}
 function pad(h,single){h.document.querySelectorAll=()=>[];const gp={id:single?'Joy-Con (L) Gamepad':'Xbox Wireless Controller',mapping:'standard',connected:true,index:0,buttons:[],axes:[0,0,0,0]};h.window.navigator={getGamepads:()=>[gp]};return buttons=>{gp.buttons=Array.from({length:17},(_,i)=>({pressed:buttons.includes(i),value:Number(buttons.includes(i))}));h.game.pollPads();};}
 
-test('keyboard and touch require a real held dropkick and cancellation spends nothing',()=>{
- for(const touch of [false,true]){
-  const h=fresh(),g=h.game,q=g.wrestlerState();q.momentum=60;g.updateRattusControls();assert.equal(h.elements.get('rattusControls').hidden,false);
-  if(touch)event(h,'rattusUtility','pointerdown');else h.key('keydown','v');assert.equal(q.drivePhase,1);
-  h.advance(150);if(touch)event(h,'rattusUtility','pointerup');else h.key('keyup','v');assert.equal(q.drivePhase,0);assert.equal(q.momentum,60);assert.equal(q.utilityCool,0);
-  if(touch)event(h,'rattusUtility','pointerdown');else h.key('keydown','v');h.advance(600);
-  if(touch)event(h,'rattusUtility','pointerup');else h.key('keyup','v');assert.equal(q.drivePhase,2);assert.equal(q.momentum,15);assert.equal(q.utilityCool,5);assert.equal(g.throwBomb({x:g.P.x+20,y:g.P.y-12}),false,'committed movement blocks even a queued primary release');
+test('keyboard requires a real held dropkick and cancellation spends nothing',()=>{
+  const h=fresh(),g=h.game,q=g.wrestlerState();q.momentum=60;
+  h.key('keydown','v');assert.equal(q.drivePhase,1);
+  h.advance(150);h.key('keyup','v');assert.equal(q.drivePhase,0);assert.equal(q.momentum,60);assert.equal(q.utilityCool,0);
+  h.key('keydown','v');h.advance(600);
+  h.key('keyup','v');assert.equal(q.drivePhase,2);assert.equal(q.momentum,15);assert.equal(q.utilityCool,5);assert.equal(g.throwBomb({x:g.P.x+20,y:g.P.y-12}),false,'committed movement blocks even a queued primary release');
   const x=g.P.x;step(h,.7);assert.ok(q.driveTravel<=80+1e-7);assert.ok(Math.abs(g.P.x-x)<=80+1e-7);assert.equal(q.drivePhase,0);
   const cancel=fresh();cancel.game.wrestlerState().momentum=60;
-  if(touch){event(cancel,'rattusUtility','pointerdown');cancel.advance(400);event(cancel,'rattusUtility','pointercancel');}else{cancel.key('keydown','v');cancel.advance(400);cancel.emit('blur');}
+  cancel.key('keydown','v');cancel.advance(400);cancel.emit('blur');
   assert.equal(cancel.game.wrestlerState().drivePhase,0);assert.equal(cancel.game.wrestlerState().momentum,60);assert.equal(cancel.game.wrestlerState().utilityCool,0);
- }
 });
 
 test('real physics earns sprint Momentum at every frame rate and resolves exactly one stomp landing',()=>{
@@ -59,9 +56,9 @@ test('any input immediately wakes Rattus and balanced keys remain active without
  const h=fresh(),g=h.game;g.P.motionIdle=8;h.key('keydown','z');assert.equal(g.P.motionIdle,0);assert.equal(g.rattusMotionContext().inputActive,true);h.key('keydown','ArrowLeft');h.key('keydown','ArrowRight');step(h,1);assert.equal(g.readInput().axis,0);assert.equal(g.rattusMotionContext().inputActive,true);assert.equal(g.wrestlerState().momentum,0);
 });
 
-test('held C stays input-active after a missed latch, and focused held-button blur cancels uncommitted V',()=>{
+test('held C stays input-active after a missed latch, and window blur cancels uncommitted V',()=>{
  const h=fresh(),g=h.game;h.key('keydown','c');step(h,5);assert.equal(g.rattusMotionContext().inputActive,true);assert.equal(g.wrestlerState().momentum,0);h.key('keyup','c');step(h,.2);assert.equal(g.rattusMotionContext().inputActive,false);
- const button=h.elements.get('rattusUtility');for(const fn of button.listeners.keydown)fn({key:'Enter',repeat:false,preventDefault(){}});assert.equal(g.wrestlerState().drivePhase,1);h.advance(400);for(const fn of button.listeners.blur)fn();assert.equal(g.wrestlerState().drivePhase,0);assert.equal(g.wrestlerState().utilityCool,0);assert.equal(g.rattusInputActive(),true,'brief waking input pulse remains cosmetic');step(h,.2);assert.equal(g.rattusInputActive(),false);
+ h.key('keydown','v');assert.equal(g.wrestlerState().drivePhase,1);h.advance(400);h.emit('blur');assert.equal(g.wrestlerState().drivePhase,0);assert.equal(g.wrestlerState().utilityCool,0);step(h,.2);assert.equal(g.rattusInputActive(),false);
 });
 
 test('a short solid step cannot project a bounded Driving path into rock',()=>{

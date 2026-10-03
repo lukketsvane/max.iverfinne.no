@@ -654,21 +654,23 @@ var rosterBox=null,rosterKey='',rosterShown=false;
 function hideRoster(){if(rosterBox&&rosterBox.style.display!=='none')rosterBox.style.display='none';rosterKey='';}
 function drawRoster(){
   if(!coop)return 0;
-  var list=coopMembers().slice().sort(function(a,b){return a.slot-b.slot;}),room=coop.network&&coop.network.room&&coop.network.room.members||[];
+  var list=coopMembers().slice().sort(function(a,b){return a.slot-b.slot;}),count=list.length,room=coop.network&&coop.network.room&&coop.network.room.members||[];
+  if(list.length<2){hideRoster();return list.length;}
+  list=list.filter(function(m){return m.id!==coop.me;});
   var rows=list.map(function(m){var info=room.find(function(q){return q.id===m.id;});return {name:String(info&&info.name||'P'+m.slot).toUpperCase().slice(0,10),ink:['#e3ce80','#87bccf','#b79bcb','#a4bf87'][m.slot-1]||'#e3ce80',me:m.id===coop.me};});
   rosterShown=true;
   try{rosterOverlay(rows);}catch(e){}
-  return list.length;
+  return count;
 }
 function rosterOverlay(rows){
   if(!ready(BOSS_FONT))return;
-  var dpr=window.devicePixelRatio||1,f=Math.max(1,Math.round(SCALE*2/5)),r=cv.getBoundingClientRect();
+  var dpr=window.devicePixelRatio||1,f=Math.max(dpr,Math.round(SCALE/4)),r=cv.getBoundingClientRect();
   if(safeBottomPx==null)bossBarY();
   var key=f+'|'+dpr+'|'+Math.round(r.left)+'|'+(safeBottomPx||0)+'|'+rows.map(function(q){return q.name+q.ink+(q.me?1:0);}).join(',');
   if(!rosterBox){rosterBox=document.createElement('div');rosterBox.setAttribute('aria-hidden','true');(stage||document.body).appendChild(rosterBox);}
   rosterBox.style.display='flex';
   if(key===rosterKey)return;rosterKey=key;
-  rosterBox.style.cssText='position:absolute;display:flex;flex-direction:column;align-items:flex-start;pointer-events:none;left:'+Math.round(r.left+4*r.width/Math.max(1,IW))+'px;bottom:'+((safeBottomPx||0)+48)+'px;gap:'+(2*f/dpr)+'px';
+  rosterBox.style.cssText='position:absolute;display:flex;flex-direction:column;align-items:flex-start;pointer-events:none;left:'+Math.round(r.left+4*r.width/Math.max(1,IW))+'px;bottom:'+((safeBottomPx||0)+8)+'px;gap:'+(2*f/dpr)+'px';
   rosterBox.replaceChildren();
   rows.forEach(function(q){
     var c=document.createElement('canvas'),w=6+q.name.length*6-1,g;c.width=w;c.height=7;
