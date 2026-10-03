@@ -1,0 +1,112 @@
+{
+  "builtSourceSha256": "05169d7e494ebb9f389a6c5efc280284bb476a5564053f1e41f3a78b7c50aafe",
+  "bossSha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3",
+  "game": [
+    {
+      "engine": "chromium",
+      "captures": 19,
+      "actualVictory": true,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "engine": "webkit",
+      "captures": 19,
+      "actualVictory": true,
+      "errors": [],
+      "passed": true
+    }
+  ],
+  "smallPhone": [
+    {
+      "engine": "chromium",
+      "width": 320,
+      "height": 568,
+      "phases": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "captures": 9,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "engine": "webkit",
+      "width": 320,
+      "height": 568,
+      "phases": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "captures": 9,
+      "errors": [],
+      "passed": true
+    }
+  ],
+  "coarseLandscape": [
+    {
+      "engine": "chromium",
+      "coarse": true,
+      "width": 1200,
+      "height": 800,
+      "captures": 3,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "engine": "webkit",
+      "coarse": true,
+      "width": 1200,
+      "height": 800,
+      "captures": 3,
+      "errors": [],
+      "passed": true
+    }
+  ],
+  "victories": [
+    {
+      "engine": "chromium",
+      "phases": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "elapsed": 11.699499999999983,
+      "build": "campaign",
+      "level": 20,
+      "classId": "bulwark",
+      "won": true,
+      "plants": [
+        {
+          "health": 1,
+          "dead": false
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "phases": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "elapsed": 19.037999999999986,
+      "build": "campaign",
+      "level": 20,
+      "classId": "bulwark",
+      "won": true,
+      "plants": [
+        {
+          "health": 1,
+          "dead": false
+        }
+      ]
+    }
+  ]
+}

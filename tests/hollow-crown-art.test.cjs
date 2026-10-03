@@ -62,6 +62,7 @@ test('real shrine arrival and a rapid airborne maul keep both bodies visible bel
     assert.equal(g.interactBossEvent(), true);
     const boss = g.liveBoss();
     assert.ok(Math.abs(boss.x - g.P.x) >= 70, 'use the real distant spawn rather than moving the player beside the boss');
+    h.tick(1);
     g.IW = width; g.IH = height; g.ANCHOR = height * .75; g.worldBanner = 0;
     h.tick(16);
     const x = boss.x - g.camX, playerX = g.P.x - g.camX;
@@ -74,6 +75,38 @@ test('real shrine arrival and a rapid airborne maul keep both bodies visible bel
     assert.ok(boss.y - g.camY - 61 >= 25, 'camera easing cannot carry the airborne maul through the header at width ' + width);
     assert.ok(g.P.y - g.camY + 9 <= height - 2, 'framing the airborne boss keeps the complete grounded gardener visible at width ' + width);
   }
+});
+
+test('the actual summon gives shallow Crown views enough native height and restores normal zoom on exit', () => {
+  const { loadGame, plot } = require('./game-harness.cjs');
+  const h = loadGame({ __randomSeed: 4242 }), g = h.game;
+  Object.assign(h.window, { innerWidth: 1200, innerHeight: 800 }); h.emit('resize');
+  assert.equal(g.IH, 160, 'ordinary coarse-pointer desktop keeps its existing pixel zoom');
+  g.resetRogueRun('test', { classId: 'mech', difficulty: 'medium' });
+  g.rogueRun.seed = 260926; g.enterLevel(20);
+  const e = g.bossEvent;
+  g.gardenPlots = [plot({ id: 2001, x: e.courtX, growth: .3 })]; g.floatKrek = [];
+  Object.assign(g.P, { x: e.x, y: e.y, st: 'free', grounded: true, wet: false });
+  const terrain = JSON.stringify(g.activeStageLayout);
+  assert.equal(g.interactBossEvent(), true); h.tick(16);
+  assert.equal(g.IH, 200); assert.equal(g.IW, 300);
+  assert.equal(h.elements.get('c').style.width, '1200px', 'the entire canvas uses integer zoom without stretching source cells');
+  assert.equal(JSON.stringify(g.activeStageLayout), terrain, 'framing cannot regenerate any real route or platform');
+  const boss = g.liveBoss();
+  Object.assign(boss, { crownState: 'attack', crownMove: 'leap', crownTransition: 0, cool: 0, windup: 0,
+    attackDuration: .68, attackT: .35, fromX: boss.x, landX: g.P.x, exposed: 0 });
+  h.tick(32);
+  assert.ok(boss.y - g.camY - 61 >= 25, 'the peak maul clears the HUD in the formerly shallow view');
+  assert.ok(g.P.y - g.camY + 9 <= g.IH - 2, 'the grounded gardener remains fully visible');
+  const positions = [g.P.x, g.P.y, boss.x, boss.y];
+  Object.assign(h.window, { innerWidth: 844, innerHeight: 390 }); h.emit('resize');
+  assert.ok(g.IH >= 200, 'landscape rotation retains space for the full leap');
+  assert.deepEqual([g.P.x, g.P.y, boss.x, boss.y], positions, 'resize cannot move either actor');
+  let menu; h.window.MaxGameMenu = { attach(api) { menu = api; } }; h.emit('max-menu-ready');
+  menu.exitRun(); menu.setCovered(true); h.tick(16);
+  assert.equal(g.IH, 130, 'the actual covered menu exit restores ordinary integer zoom');
+  menu.beginRun({ classId: 'mech', difficulty: 'medium' }); menu.setCovered(false); h.tick(16);
+  assert.equal(g.IH, 130, 'a fresh ordinary run retains normal zoom');
 });
 
 test('large Crown draws unscaled native cells on the real feet and leaves combat state unchanged', async () => {

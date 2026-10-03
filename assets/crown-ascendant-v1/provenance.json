@@ -1,7 +1,7 @@
 {
   "format": "max-generated-art/v1",
   "pack": "crown-ascendant-v1",
-  "origin": "local-generated",
+  "origin": "figma-native-master",
   "authorization": "User explicitly requested generated sprite sheets and a fully implemented final boss on 2026-10-03.",
   "generator": "OpenAI imagegen",
   "sourceFiles": [
@@ -86,11 +86,59 @@
     "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
     "pageId": "10:2",
     "sectionId": "451:4",
-    "status": "pending-import",
-    "blocker": "Root-approved native master bytes are frozen; authenticated Figma import and comparison are in progress."
+    "holderId": "619:13527",
+    "status": "synchronized",
+    "assets": [
+      {
+        "path": "assets/crown-ascendant-v1/boss.png",
+        "nodeId": "619:13529",
+        "imageHash": "225fbcdcb82465979bb55068af9838e15f4926a4",
+        "width": 768,
+        "height": 1728,
+        "x": 16,
+        "y": 92
+      },
+      {
+        "path": "assets/crown-ascendant-v1/effects.png",
+        "nodeId": "619:13530",
+        "imageHash": "b0ed31aa9ee3b8a54d2d476602c86269a09463d4",
+        "width": 288,
+        "height": 288,
+        "x": 16,
+        "y": 1836
+      },
+      {
+        "path": "assets/crown-ascendant-v1/chimera.png",
+        "nodeId": "619:13531",
+        "imageHash": "815ba10e775e5357264be8b5960e8524f4ae5597",
+        "width": 384,
+        "height": 384,
+        "x": 16,
+        "y": 2140
+      }
+    ],
+    "capture": {
+      "path": "docs/asset-review/crown-secondpass/figma-capture.json",
+      "sha256": "9bd293eccd4564076de0b2889ad14564269175a0f629802239e26ed58b7f1e95",
+      "capturedAt": "2026-10-03 09:47:38 UTC"
+    },
+    "comparison": {
+      "path": "docs/asset-review/crown-secondpass/figma-comparison.json",
+      "sha256": "034f7ba4687effddf0ee59c3e339960eab9da4c14d38512fc457c4e9aaed8b60",
+      "status": "MATCH",
+      "matches": 665,
+      "problems": 0,
+      "captureSha256": "9bd293eccd4564076de0b2889ad14564269175a0f629802239e26ed58b7f1e95",
+      "nodeIds": [
+        "619:13529",
+        "619:13530",
+        "619:13531"
+      ]
+    }
   },
   "previousPass": {
     "path": "docs/asset-review/crown-ascendant-v1/prior-pass/provenance.json",
     "sha256": "eecd496ef04d69d01266ad8977765f5fa82d7785491946c3ece54aff5073b576"
-  }
+  },
+  "generatedOrigin": "local-generated"
 }
