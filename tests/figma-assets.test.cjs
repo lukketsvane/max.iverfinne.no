@@ -121,14 +121,14 @@ test('every production entry is a posix path inside assets/ whose PNG equals the
   }
 });
 
-test('runtime PNGs belong to Figma or the one explicitly authorized, source-pinned Crown pack', async t => {
+test('every runtime PNG belongs to Figma production and the synchronized Crown has no local exception', async t => {
   const { loaded, shipped } = await found(), unused = manifest.unused.map(e => e.path);
   const { generatedArtEntries, generatedArtProblems } = await generated;
-  assert.deepEqual(generatedArtProblems(), [], 'local generated source/export/native contract');
-  const local = generatedArtEntries().map(entry => entry.path);
+  assert.deepEqual(generatedArtProblems(), [], 'immutable Crown sources and authenticated native Figma contract');
+  assert.deepEqual(generatedArtEntries(), [], 'all three Crown masters are verified Figma production assets');
   assert.ok(loaded.length >= 20);
-  assert.deepEqual(loaded.filter(p => !production.includes(p) && !local.includes(p)), [], 'runtime art without a Figma layer or the source-pinned Crown exception (docs/figma.md)');
-  assert.deepEqual(shipped.filter(p => !production.includes(p) && !unused.includes(p) && !local.includes(p)), [], 'shipped PNG has no art source contract (docs/figma.md)');
+  assert.deepEqual(loaded.filter(p => !production.includes(p)), [], 'runtime art without a Figma production layer (docs/figma.md)');
+  assert.deepEqual(shipped.filter(p => !production.includes(p) && !unused.includes(p)), [], 'shipped PNG has no Figma source contract (docs/figma.md)');
   const idle = production.filter(p => !loaded.includes(p));
   if (idle.length) t.diagnostic(`Figma production layers the runtime does not load: ${idle.join(', ')}`);
 });
@@ -137,7 +137,7 @@ test('inline data-URI images in runtime code are the pinned ones that predate Fi
   const { inline } = await found(), sheets = new Set(manifest.production.map(e => e.sha1));
   assert.ok(inline.length > 0);
   assert.deepEqual(inline.filter(i => i.type !== 'png' || !(i.sha1 in INLINE || sheets.has(i.sha1))), [],
-    'new or changed inline image: add it to Figma production frame 160:2 as a file under assets/ (docs/figma.md)');
+    'new or changed inline image: add it to the configured Figma runtime sections as a file under assets/ (docs/figma.md)');
 });
 
 test('production PNGs follow the native pixel rules: binary alpha, clean transparency, pack palette, 1× scale', async () => {
