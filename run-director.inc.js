@@ -453,10 +453,23 @@ function runHazardTouches(h,x,y){
   if(h.crownOrbit)return Math.abs(x-h.x)<h.r+3&&y>h.y-4&&y<h.y+24;
   return Math.abs(x-h.x)<h.r&&(h.height?y>h.y-h.height&&y<h.y+10:Math.abs(y-h.y)<20);
 }
+function spendCrownRingContact(h,member){
+  if(!h.crownOrbit||!h.crownGroup)return true;
+  if(coopGuest())return false;
+  var owner=member?member.id:coop?coop.me:'local',ring=runHazards.filter(function(q){return q.crownGroup===h.crownGroup;});
+  if(!ring.length)return false;
+  for(var i=1;i<=4;i++)if(ring.some(function(q){return q['crownContact'+i]===owner;}))return false;
+  var slot=1;while(slot<=4&&ring[0]['crownContact'+slot])slot++;
+  if(slot>4)return false;
+  // Each string is a single player ID; ordinary scalar hazard snapshots retain
+  // the bounded four-player ledger through a join or authority handoff.
+  ring.forEach(function(q){q['crownContact'+slot]=owner;});return true;
+}
 function runHazardGardenerContact(h){
   if(h.absorbed)return;
   runPlayers().forEach(function(a){
     if(seedDown(a.member)||!runHazardTouches(h,a.p.x,a.p.y))return;
+    if(h.crownOrbit&&(a.p.st==='float'||a.p.st==='climb'&&a.p.exitClimb||a.p===P&&climb&&climb.exit||!spendCrownRingContact(h,a.member)))return;
     var warning=polgeHazardWarning(h);
     if(singleSeedMode()&&h.power>0)damageGardener(a.member,24*h.power*runDamageScale(),warning);
     else if(a.p.st!=='float'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit)&&gardenerDodging(a.member,a.p))polgeAvoidedWarning(a.member,warning);
@@ -468,7 +481,8 @@ function updateHazardContact(){
     var h=runHazards[i],key=h.crownGroup||h.id;if(h.tell>0||h.absorbed||hazardHits[key]||P.st==='float'||climb&&climb.exit)continue;
     if(runHazardTouches(h,P.x,P.y)){
       hazardHits[key]=true;
-      if(P.dodgeT>0){polgeAvoidedWarning(coop&&coop.members[coop.me],polgeHazardWarning(h));continue;}
+      var member=coop&&coop.members[coop.me],fresh=spendCrownRingContact(h,member);
+      if(P.dodgeT>0){if(fresh)polgeAvoidedWarning(member,polgeHazardWarning(h));continue;}
       if(P.brace>0||P.tun>0)continue;
       P.hurt=2;P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback;P.vy=-88*ownClass().knockback;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }

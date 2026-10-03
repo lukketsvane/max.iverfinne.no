@@ -160,3 +160,36 @@ test('Crown moving orbs award a guest counter only after the host accepts the ac
     if(accepted){guest.coopState(JSON.parse(JSON.stringify(g.coopCapture())));assert.ok(guest.fighterState(ids[1]).counter>0);}
   }
 });
+
+test('taking a Crown ring hit spends its warning, so a later real slip cannot farm a counter',()=>{
+  const {game:g}=fresh(),h=crownOrbs(g);
+  Object.assign(g.P,{x:h.x,y:g.surfaceY(h.x),grounded:true,st:'free',wet:false});
+  g.updateHazardContact();assert.equal(g.P.hurt,2);
+  Object.assign(g.P,{x:h.x,y:g.surfaceY(h.x),grounded:true,st:'free',vx:0,vy:0});
+  slip(g);g.updateRunHazards(1/120);g.updateHazardContact();
+  assert.equal(g.fighterState().counter,0);
+  assert.ok(g.runHazards.filter(h=>h.crownOrbit).every(h=>h.crownContact1==='local'));
+});
+
+test('a guest ring hit stays spent for its later accepted slip and after authority handoff',()=>{
+  for(const handoff of [false,true]){
+    const {host:g,guest,ids,send}=pair(),h=crownOrbs(g),member=g.coop.members[ids[1]];
+    guest.coopState(JSON.parse(JSON.stringify(g.coopCapture())));
+    Object.assign(guest.P,{x:h.x,y:g.surfaceY(h.x),st:'free',grounded:true,wet:false});
+    member.avatar=guest.coopAvatar();
+    guest.updateHazardContact();assert.equal(guest.P.hurt,2);
+    assert.ok(guest.coopCapture().hazards.filter(h=>h.crownOrbit).every(h=>!h.crownContact1),'guest physics cannot write the authoritative ledger');
+    send();g.updateRunHazards(1/120);
+    assert.equal(g.fighterState(ids[1]).counter,0);
+    const snapshot=JSON.parse(JSON.stringify(g.coopCapture()));
+    assert.ok(snapshot.hazards.filter(h=>h.crownOrbit).every(h=>h.crownContact1===ids[1]));
+    guest.coopState(snapshot);
+    if(handoff)guest.coopRoster({...guest.coop.network.room,host:ids[1]});
+    const current=guest.runHazards.find(h=>h.crownOrbit);
+    Object.assign(guest.P,{x:current.x,y:guest.surfaceY(current.x),st:'free',grounded:true,vx:0,vy:0});
+    slip(guest);
+    if(handoff)guest.updateRunHazards(1/120);
+    else{send();assert.ok(member.dodge);g.updateRunHazards(1/120);}
+    assert.equal((handoff?guest:g).fighterState(ids[1]).counter,0);
+  }
+});
