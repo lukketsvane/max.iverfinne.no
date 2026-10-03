@@ -1,0 +1,47 @@
+name: Max engineer browser review
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths:
+      - 'index.html'
+      - 'mech.inc.js'
+      - 'polge.inc.js'
+      - 'companion.js'
+      - 'coop-game.inc.js'
+      - 'run-director.inc.js'
+      - 'high-tide.inc.js'
+      - 'last-seed.inc.js'
+      - 'rat-enemies.inc.js'
+      - 'max-classes.js'
+      - 'native-art.mjs'
+      - 'assets/max-skins-v1/tide/**'
+      - 'assets/companion/**'
+      - 'assets/native/rover*'
+      - 'assets/native/water-fx*'
+      - 'review.html'
+      - 'build-paths.js'
+      - 'scripts/game-source.cjs'
+      - 'scripts/build-static.cjs'
+      - 'scripts/build-companion.cjs'
+      - 'scripts/check-mech-browser.cjs'
+      - '.github/workflows/mech-review.yml'
+permissions:
+  contents: read
+jobs:
+  engineer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps chromium webkit
+      - run: node scripts/check-mech-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mech-engineer-review
+          path: mech-browser-review/

@@ -4,6 +4,7 @@ const vm = require('node:vm');
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
+  'mechEventId', 'soloCrew',
   'yeet', 'YEET_SHEET',
   'classShots', 'classFighters', 'runActive', 'pad', 'padAx', 'heldL', 'heldRun', 'lampToggle',
   'sligoMeat', 'sligoPendingSwap',
@@ -12,7 +13,7 @@ const stateNames = [
   'gardenScore',
   'gardenWave', 'gardenRaidT', 'gardenRaidActive',
   'floatKrek',
-  'task', 'heldDown', 'heldSpace', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused',
+  'task', 'heldDown', 'heldSpace', 'gardenPress', 'sheet2Ready', 'jumpBuf', 'climb', 'companion', 'IW', 'IH', 'ANCHOR', 'camX', 'camY', 'seedPickups', 'runElapsed', 'runWon', 'holdWater', 'P', 'last', 'menuPaused',
   'activeStageLayout', 'charge', 'coop', 'heldUp', 'heldR', 'dodgeBuf', 'bombs', 'feathers', 'bombCool', 'krekSpawnT',
   'runLoot', 'runEncounters', 'runHazards', 'booms',
   'ctx',
@@ -20,6 +21,8 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'engineerState', 'mechFan', 'mechFanWorld', 'mechOverload', 'mechOverloadWorld', 'updateMechCombat', 'mechCircuitCare', 'mechCaptureEngineer', 'mechRestoreEngineer', 'mechApplyWet', 'mechWetFactor', 'mechUpdateWet', 'mechPrimaryContext', 'mechBombThreat', 'mechBombInterrupted', 'mechBombReward', 'mechWetBonus', 'mechPlanted', 'updateMechControls', 'useClassUtility',
+  'ensureCrew', 'updateCompanion', 'companionEnv', 'dispatchWorld', 'dispatchTargets', 'dispatchReady', 'mechDispatch', 'mechFanWater', 'waterGardenPlot', 'waterGardenPlotTick', 'launchBomb', 'explode', 'pestSlow', 'moveEnemyTo', 'updatePestDive', 'ratMove', 'updateHighTideBoss',
   'levelGuideObjective', 'guideLines', 'drawGuideLabel', 'drawGuideStack', 'drawLevelGuide',
   'campaignAtmosphere', 'drawCampaignBackdrop', 'drawCampaignAtmosphere', 'cavernGarden', 'drawClimbSky',
   'updateYeet', 'drawYeet', 'yeetSync', 'yeetArt',

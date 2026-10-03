@@ -33,7 +33,7 @@ Five open characters and the hidden Sligo each own a gameplay role. Before Play,
 
 | Character | Primary attack | Skill (tap character / E) |
 | --- | --- | --- |
-| Mech | Stationary bombs, fixed two-second fuse | Dispatch the watering rover |
+| Max | Stationary bombs, fixed two-second fuse | Spend three Circuit on Floodgate Overload |
 | Rattus norvegicus | Ground dropkick and airborne salto kick | Leaping splits stomp; higher drops hit harder |
 | Cairn | Heavy close cleave; stronger against winding-up pests | Brace and timed parry; burrow where the soil allows |
 | Mycel | Spore bolts that chain near living plants | Bloom heals and waters plants, revives a recent fall and strikes nearby pests |
@@ -41,13 +41,15 @@ Five open characters and the hidden Sligo each own a gameplay role. Before Play,
 
 Rattus norvegicus defaults to a grey-furred rat wrestler with orange hair, a pink tail, powerful thighs and magenta-and-gold ring gear, without a hat or cape. Her Figma-authored animation bank adds four-legged walking and sprinting, braking, kneeling after 3.5 seconds idle, resting and varied ground and aerial strikes. The 25 clips preserve native body scale, variable pose timing and co-op presentation. Cairn is a broad stone creature and Mycel a walking mushroom. Rattus fights with her boots: close dropkicks, airborne saltos and a wide splits stomp. She also lowers into a split while planting, then returns to her guard. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
 
+Max is a trap gardener and water engineer. Actual useful care or a bomb that interrupts a threat to a living plant builds up to three **Circuit**, with one shared four-second reward gate. **Fan** (C) spends one charge on a close forward mist that slows pests and sets up one stronger delayed primary blast. **Rover** (V) dispatches a watering robot to reachable soil within 96 px, or recalls it on foot. **Overload** (E / tap Max) spends three charges on a planted ring, then prioritizes threatened plants for four seconds. Fan irrigation debits exactly .04 from one available owned water rover; Overload priority spends the remaining reserve. Tend and X dodge remain separate. The original Tide body and all robot art are preserved. See [Max's complete kit](docs/design/mech-v3.md) for timings, controls, water conservation and existing upgrades.
+
 Pølge is a limbless mannequin boxer and the glue of the pølgevenner. Confirmed jab, cross and uppercut contacts build up to three Rhythm beats; misses keep the current combo step. **Clinch** (C or the touch button) makes room at close range. **Slip** (X or the touch button) is a short ground weave: avoiding an actual warned attack primes one stronger primary for 1.1 seconds. Tap Pølge / E to unleash six close punches and an uppercut finish, with an extra punch for each spent beat. Steer throughout the flurry; every hit follows his current position and respects solid walls.
 
 Pølge never creates a bomb or projectile. Close strikes can interrupt threats and break the same seals, soil and guardian objectives as other attacks. His old stand-ins have been retired. The host validates his combo, Rhythm, clinch, genuine counters, flurry contacts and cooldowns, and carries them through an authority handoff. His native body sheets and silhouette are preserved. See [Pølge's complete kit](docs/design/polge-v3.md) for timings, controls and upgrades.
 
 A hidden character waits to be found: type its name into the Login form. **Sligo** (Max Sligo Neverdahl), the forgotten, defiled zygote drained of his endoplasm by the gluttonous twins JP and IE and starved out of the Triforce, taps Max to curl into a tun for 3 s: it cannot move or throw, nothing knocks it back, and plants within 40 px take half damage; a jump uncurls it and the 9 s cooldown starts then. He survived. He grows only his own two cords and leaves a slime-and-blood trail. He begins at half his previous height (about 6 art pixels). Harvesting either cord drops meat; walking over meat feeds a Sligo. Throws shed real body mass, down to a tiny 3-pixel body that must eat before throwing again. At 42 pixels (1.75× Max’s 24-pixel standing height), a cell divides into two equal-mass bodies. Four divisions are shared across the colony for the run: at most five bodies, one controlled and four AI companions. Companions follow, eat and defend with their own flesh. Hold a companion for 480 ms to exchange control in place, including momentum, size and cooldowns. Q or the left trigger cycles bodies. Throws keep the existing damage and boon rules. His specials sheet supplies throw, tending lash, hurt, floating tendrils and sleep poses.
 
-Only one connected player may occupy each character. If Mech is already playing, Mech is disabled/greyed for the next player, and the same rule applies to every other character. The database also reserves the character so two clients cannot race into the same role.
+Only one connected player may occupy each character. If Max is already playing, Max is disabled/greyed for the next player, and the same rule applies to every other character. The database also reserves the character so two clients cannot race into the same role.
 
 ### Difficulty belongs to the run
 
@@ -73,10 +75,11 @@ Rattus norvegicus can also climb ordinary living plants for traversal, but ordin
 - Drag down / Space: tend, harvest or plant when in reach.
 - Tap a threat / B: throw/defend.
 - X: dodge.
+- Max: B plants a bomb; C / touch Fan spends one Circuit; V / touch Rover dispatches or recalls; E / touch Overload spends three Circuit. Controller View/minus (8) uses Fan, left trigger (6) dispatches and left shoulder (4) overloads; horizontal single controllers use View/minus (8), stick click (10) and top face (3).
 - Pølge: C / touch Clinch makes room; X / touch Slip weaves through a warned attack. Controller View/minus (button 8) clinches; his skill and dodge retain the existing controller mapping.
-- Tap Max / E: class skill. A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a tap on Max throws at a pest near the finger, or boosts a stem climb. A Mech rover too low to dispatch refills when tapped over Max. A brace refuses while you steer, and jumping or grabbing a stem out of a pounce spends its cooldown.
-- R or tap nearby Mech rover: refill.
-- L: lantern.
+- Tap Max / E: class skill. A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a tap on Max throws at a pest near the finger, or boosts a stem climb. A brace refuses while you steer, and jumping or grabbing a stem out of a pounce spends its cooldown.
+- R or tap a nearby Max rover: refill; any grounded, stationary teammate can help. Max can also hold controller Tend and press Fan (button 8), on standard and horizontal single controllers; the chord suppresses garden action while held.
+- L: lantern; Max uses controller Home (16).
 - Sligo: hold an AI clone for half a second to swap; Q / left trigger cycles bodies.
 - Shift: run on keyboard.
 
@@ -127,7 +130,7 @@ Cyan begins after the guardian's entire volley has landed and cleared. Every gua
 
 Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts do not stack the shake. Planted bombs show their actual upgraded reach, and a short input buffer accepts an attack released just before a reload or bomb slot becomes ready.
 
-The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Mech bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Mech can move while charging. Rattus norvegicus kicks nearby targets and uses a radial salto kick in the air; Cairn and Pølge show their close attack reach. Mycel fires aimed spores. Sligo retains aimed flesh throws.
+The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Max bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Max can move while charging. Rattus norvegicus kicks nearby targets and uses a radial salto kick in the air; Cairn and Pølge show their close attack reach. Mycel fires aimed spores. Sligo retains aimed flesh throws.
 
 New boss objectives reward tactics: crack Glass Snail’s front or flank it, snuff Wick Hermit’s wicks, cut Spindle Widow’s silk anchors, find Orchard Mimic’s cyan fruit, interrupt Tuning Fork’s echo, carry dew into Ash Ferryman, silence all Compost Choir voices, and break Seed Engine’s orbiting seeds. These actions open longer damage windows; ordinary attacks still work.
 
@@ -159,9 +162,9 @@ Boons are a live overlay; the simulation continues underneath them. Each choice 
 - Spring Step — higher jumps.
 - Quick Hands — shorter recovery between attacks; planted bombs keep their two-second fuse.
 
-Every reworked class has three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on confirmed hits for Pølge. Pølge's Haymaker extends uppercuts and strengthens them against guards without lifting bosses; Second wind restores plants only when his flurry finish contacts an enemy. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Mech and Sligo.
+The close and spore fighters have three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on confirmed hits for Pølge. Pølge's Haymaker extends uppercuts and strengthens them against guards without lifting bosses; Second wind restores plants only when his flurry finish contacts an enemy. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Max and Sligo. Max keeps every existing robot, Guard bot, harvest and bomb upgrade; the new base abilities add no prerequisite boon.
 
-Mech-only robot boons remain exclusive to Mech. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
+Max-only robot boons remain exclusive to Max. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
 
 Run pickups include feathers, embers and dew. They are collected in-world and belong to the current attempt. A run keeps its full plant archive across all twenty gardens and builds the result bouquet from those exact plants.
 
@@ -202,7 +205,7 @@ The project deliberately remains a small static game rather than a framework app
 - `wonders.inc.js` — per-run puzzles, chance encounters and hidden doors to special gardens, with a found list (see `docs/design/secrets.md`).
 - `build-paths.js` — boon definitions and choice rules.
 - `max-classes.js` / `player-loadout.mjs` — character rules and persisted selection.
-- `companion.js` — Mech watering robot.
+- `companion.js` — Max watering robot.
 - `sligo-life.inc.js` — Sligo body mass, meat, division, AI and control swapping.
 - `soundtrack.mjs` — streamed soundtrack and music volume.
 - `native-art.mjs` — native enemy/boss artwork integration.
@@ -230,7 +233,7 @@ Serve the production output locally:
 python -m http.server 8765 --directory dist
 ```
 
-Then open `http://localhost:8765`. Sligo review scenes: `review.html?mode=sligo-life&portrait=1` (birth and meat) and `review.html?mode=sligo-colony&portrait=1` (companions and swapping). Pølge's base kit is `review.html?mode=polge&portrait=1`; add `&boons=1` for his full build. Its close sentries use real warned attacks, and its observation panel reports combo, Rhythm, counter and cooldown state without changing your saves.
+Then open `http://localhost:8765`. Max's base kit is `review.html?mode=mech&portrait=1`; add `&boons=1` for the preserved upgraded branches. Its plants and live enemies allow Circuit, conserved irrigation, Wet and rover jobs to be observed using normal controls. Sligo review scenes: `review.html?mode=sligo-life&portrait=1` (birth and meat) and `review.html?mode=sligo-colony&portrait=1` (companions and swapping). Pølge's base kit is `review.html?mode=polge&portrait=1`; add `&boons=1` for his full build. Its close sentries use real warned attacks, and its observation panel reports combo, Rhythm, counter and cooldown state without changing your saves.
 
 A change is not release-ready unless both `npm test` and `npm run build` pass. The regression suite covers gameplay, co-op transport/session behavior, database rules, native art contracts, mobile controls and review fixtures.
 
@@ -318,10 +321,10 @@ One horizontal Joy-Con (L) is detected automatically, with the stick on the left
 | Left face button, printed ↑, or SR | Attack while moving; hold to charge, release to attack |
 | Top face button, printed → | Class skill; focus an offered boon, then use the stick and bottom to choose |
 | SL | Dodge; cancels a held attack |
-| ZL | Hold and use the stick to aim precisely; release to attack; Mech keeps moving while charging its planted bomb |
-| L | Refill a nearby rover; Sligo cycles bodies |
-| Stick click | Lantern; Sligo cycles bodies |
-| Capture | Lantern when the browser exposes this button |
+| ZL | Hold and use the stick to aim precisely; release to attack; Max keeps moving while charging its planted bomb |
+| L | Refill a nearby rover for other classes; Max uses Fan (hold Tend + L to refill) and Pølge uses Clinch; Sligo cycles bodies |
+| Stick click | Max dispatches/recalls; other classes use lantern; Sligo cycles bodies |
+| Home / Capture | Lantern when the browser exposes this button |
 | Minus | Settings |
 
 Settings → Map Joy-Con (L) learns the physical stick directions and buttons and saves the layout for that device. Unsupported buttons can be skipped. WebKit's nonstandard face aliases and analog D-pad stick values are normalized. Motion sensors are outside the browser Gamepad API, so this layout uses buttons and stick input.

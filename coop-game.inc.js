@@ -22,7 +22,7 @@ function beginCoop(network){
 function stopCoop(){coop=null;runActive=false;rogueRun.ended=true;rogueRun.choice=null;clearRunInput();if(perkMenu)perkMenu.style.display='none';}
 function coopMember(id,slot,kit,avatar){
   var classId=window.MaxClasses.clean(kit.classId||kit.class_id),skin=window.MaxClasses.skin(kit.skinId||kit.skin_id||kit.skin,classId);
-  return {id:id,slot:slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],owed:0,round:0,ack:0,last:performance.now(),cool:0,dodgeUntil:0,dodgeTag:0,secondaryTag:0,skillUntil:0,braceUntil:0,braceX:0,tunUntil:0,tunX:0,airTop:null,landAt:0,
+  return {id:id,slot:slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],owed:0,round:0,ack:0,last:performance.now(),cool:0,dodgeUntil:0,dodgeTag:0,secondaryTag:0,utilityTag:0,skillUntil:0,braceUntil:0,braceX:0,tunUntil:0,tunX:0,airTop:null,landAt:0,
     avatar:Object.assign(coopAvatar(),{classId:classId,skin:skin},avatar),left:false};
 }
 function coopJoin(id,kit){
@@ -47,6 +47,7 @@ function coopPromote(){
   classShotId=Math.max(classShotId,top(classShots,'id'))+1000;classPestId=Math.max(classPestId,top(floatKrek,'combatId'))+1000;
   coopFxId=Math.max(coopFxId,top(booms,'id'))+1000;seedPickupUid=Math.max(seedPickupUid,top(seedPickups,'uid'))+1000;
   runDropId=Math.max(runDropId,top(runLoot,'id'))+1000;hazardId=Math.max(hazardId,top(runHazards,'id'))+1000;
+  if(typeof mechEventId==='number')mechEventId=Math.max(mechEventId,top(bombs,'mechEvent'),top(coopMembers().map(function(m){return m.engineer||{};}),'fanSerial'),top(coopMembers().map(function(m){return m.engineer||{};}),'overloadSerial'),top(coopMembers().map(function(m){return m.engineer||{};}),'rewardEvent'))+1000;
   rogueRun.nextPlantId=Math.max(rogueRun.nextPlantId,top(rogueRun.garden,'id'),top(gardenPlots,'id'))+1000;
   Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;if(!m.dodge||!m.dodge.boxer||m.dodge.world!==worldLevel()||m.dodge.expires<=now)m.dodge=null;m.trust=true;coopNextChoice(m);});
   coop.ui='';coopShowChoices();
@@ -57,7 +58,7 @@ function coopWithMember(m,fn){
   var oldP=P,oldClass=rogueRun.classId,oldPerks=rogueRun.perks,oldTraits=rogueRun.traits,oldTask=task,oldWater=holdWater,oldCool=bombCool,oldActor=coopActor,oldClimb=climb,oldWarp=warp;
   if(!coopActor)coop.members[coop.me].avatar=coopAvatar();
   try{
-    P=Object.assign({},oldP,m.avatar,{st:m.classId==='polge'&&m.avatar.st==='float'?'float':'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,dodgeCool:0,secondaryCool:0,throwPose:0,brace:0,pounce:0,skillCool:0,skillPose:0,
+    P=Object.assign({},oldP,m.avatar,{st:['polge','mech'].indexOf(m.classId)>=0&&m.avatar.st==='float'?'float':'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,dodgeCool:0,secondaryCool:0,utilityCool:0,mechWindup:0,mechFanT:0,throwPose:0,brace:0,pounce:0,skillCool:0,skillPose:0,
       tun:curledMember(m,m.avatar)?(m.tunUntil-performance.now())/1000:0,tunX:m.tunX||0});
     P.platform=playerSupportId(P.x,P.y);P.wet=playerWetAt(P.x,P.y);
     P.grounded=!!P.grounded&&coopSupportY(P.x,P.y)!==null&&!P.wet;
@@ -69,6 +70,13 @@ function coopInput(id,packet){
   if(!coop||!coop.host)return;var m=coop.members[id];if(!m||m.left&&!coopJoin(id,m))return;
   var a=coopCleanAvatar(packet.avatar),now=performance.now(),accepted=false;
   if(a){a.classId=m.classId;a.skin=m.skin;if(m.classId!=='runner')a.pounce=0;}
+  if(a&&m.classId==='mech'){
+    var planted=engineerState(m);
+    if(planted.overloadWindup>0&&planted.overloadWorld===worldLevel()){
+      if(!a.grounded||a.wet||Math.hypot(a.x-planted.overloadX,a.y-planted.overloadY-12)>4)a=null;
+      else{a.x=planted.overloadX;a.y=planted.overloadY+12;a.vx=a.vy=0;}
+    }
+  }
   if(seedDown(m)){a=null;m.last=now;m.reviveHeld=false;}
   if(a&&m.classId==='sligo'){var colony=sligoColony(m);if(a.sligoId!==colony.active)a=null;else a.sligoMass=sligoBody(colony,colony.active).sligoMass;}
   if(a&&a.st==='climb'){
@@ -98,6 +106,11 @@ function coopInput(id,packet){
   packet.actions.forEach(function(action){
     if(action&&m.ack==null&&Number.isSafeInteger(action.id)&&action.id>0)m.ack=action.id-1;
     if(!action||action.id!==m.ack+1)return;m.ack=action.id;
+    var mechTag=m.classId==='mech'&&({throw:'attackTag',secondary:'secondaryTag',utility:'utilityTag',skill:'skillTag'})[action.type];
+    if(mechTag&&!(action.type==='throw'&&action.attackTag==null)){
+      if(!Number.isSafeInteger(action[mechTag])||action[mechTag]<=0||action[mechTag]<=(m[mechTag]||0))return;
+      m[mechTag]=action[mechTag];
+    }
     if(action.world!=null&&action.world!==worldLevel())return;
     if(seedDown(m))return;
     if(action.type==='boon'){coopChoose(id,action.boon,action.round);return;}
@@ -139,6 +152,8 @@ function coopInput(id,packet){
       return;
     }
     if(action.type==='throw'&&m.classId==='runner'&&m.avatar.pounce>0)return;
+    if(m.classId==='mech'&&action.type==='dodge'&&engineerState(m).overloadWindup>0)return;
+    if(mechTag&&(!accepted||m.avatar.st==='float'||m.avatar.exitClimb||action.type!=='throw'&&m.avatar.st==='climb'||action.type!=='throw'&&action.world!==worldLevel()))return;
     if(m.classId==='polge'){
       var tagKey=({throw:'attackTag',secondary:'secondaryTag',dodge:'dodgeTag',skill:'skillTag'})[action.type];
       if(tagKey){
@@ -159,6 +174,12 @@ function coopInput(id,packet){
       else if(action.type==='secondary'&&m.classId==='polge'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<64){
         polgeClinchWorld({x:action.x,y:action.y});
       }
+      else if(action.type==='secondary'&&m.classId==='mech'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<300){
+        mechFanWorld({x:action.x,y:action.y});
+      }
+      else if(action.type==='utility'&&m.classId==='mech'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<=36){
+        dispatchWorld();
+      }
       else if(action.type==='dodge'&&(m.classId==='polge'||now>=m.dodgeUntil)&&P.grounded&&!P.wet){
         var x=action.x==null?P.x:action.x,y=action.y==null?P.y:action.y,dir=action.direction==null?P.face:action.direction;
         var boxer=m.classId==='polge',duration=boxer?.18:DODGE_TIME;
@@ -172,7 +193,7 @@ function coopInput(id,packet){
       else if(action.type==='skill'){
         if(Number.isSafeInteger(action.skillTag))m.skillTag=action.skillTag;
         if(Number.isSafeInteger(action.tag))m.braceTag=action.tag;
-        if(Number.isFinite(action.x)&&Number.isFinite(action.y)&&now>=(m.skillUntil||0)-250&&Math.hypot(action.x-P.x,action.y-P.y)<=36&&coopClassSkill(action,m,now))m.skillUntil=Math.max(now,m.tunUntil||0)+(P.skillCool>0?P.skillCool:classSkillCooldown())*1000;
+        if(Number.isFinite(action.x)&&Number.isFinite(action.y)&&(m.classId==='mech'||now>=(m.skillUntil||0)-250)&&Math.hypot(action.x-P.x,action.y-P.y)<=36&&coopClassSkill(action,m,now))m.skillUntil=Math.max(now,m.tunUntil||0)+(P.skillCool>0?P.skillCool:classSkillCooldown())*1000;
       }
     });
   });
@@ -251,9 +272,25 @@ function coopCleanSlip(q,m,a,fighter){
   if(!q||m.classId!=='polge'||!fighter||fighter.slip<=0||q.world!==worldLevel()||q.tag!==m.dodgeTag||!Number.isSafeInteger(q.id)||q.id<=0||!['x','y','progress','left'].every(function(k){return Number.isFinite(q[k]);})||(q.dir!==1&&q.dir!==-1)||q.progress<0||q.progress>24||q.left<=0||q.left>.18||Math.hypot(q.x-a.x,q.y-a.y)>4||!a.grounded||a.wet||coopSupportY(q.x,q.y)===null)return null;
   return {id:q.id,world:q.world,x:q.x,y:q.y,origin:q.x,progress:q.progress,dir:q.dir,boxer:true,tag:q.tag,expires:performance.now()+Math.min(q.left,fighter.slip)*1000};
 }
+function coopRobot(state,m,slot){
+  if(!state||!Number.isFinite(state.x)||Math.abs(state.x)>=1e7)return null;
+  slot=Number.isInteger(state.slot)?state.slot:slot;
+  var kinds=crewKinds(m.perks);if(slot<0||slot>=Math.min(4,kinds.length)||state.kind!==kinds[slot])return null;
+  var id=m.id+':'+slot;if(state.roverId!=null&&state.roverId!==id)return null;
+  var tier=Math.max(0,Math.min(3,(m.perks.robot||1)-1)),capacity=window.MaxCompanion.tiers[tier].capacity;
+  var out={owner:m.id,roverId:id,kind:kinds[slot],slot:slot,tier:tier,x:state.x,face:state.face<0?-1:1,state:['idle','drive','deploy','water','retract','empty','refill','packed'].indexOf(state.state)>=0?state.state:'idle'};
+  var limits={clock:3600,water:capacity,refill:2,dispatchT:4,pourT:3,cool:1.5,zapT:.2};
+  Object.keys(limits).forEach(function(k){out[k]=Number.isFinite(state[k])?Math.max(0,Math.min(limits[k],state[k])):0;});
+  out.recalling=state.recalling===1?1:0;
+  out.targetId=Number.isSafeInteger(state.targetId)&&state.targetId>0?state.targetId:0;
+  out.targetX=Number.isFinite(state.targetX)&&Math.abs(state.targetX)<1e7?state.targetX:0;
+  out.refillerId=typeof state.refillerId==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(state.refillerId)?state.refillerId:'';
+  out.zapDX=Number.isFinite(state.zapDX)?Math.max(-40,Math.min(40,state.zapDX)):0;out.zapDY=Number.isFinite(state.zapDY)?Math.max(-100,Math.min(100,state.zapDY)):0;
+  return out;
+}
 function coopCapture(){
-  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,airTop:m.id===coop.me&&P.pounce?Math.min(P.y,P.pounce===2?P.pounceY:P.y):m.airTop,landAgo:m.landAt?Math.min(1,(performance.now()-m.landAt)/1000):null,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,secondaryTag:m.secondaryTag||0,dodgeTag:m.id===coop.me?(P.dodgeId||0):(m.dodgeTag||0),dodgePath:coopCaptureSlip(m),attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
-  eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
+  var members=coopMembers().map(function(m){var engineer=m.classId==='mech'?mechCaptureEngineer(engineerState(m)):null;return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,airTop:m.id===coop.me&&P.pounce?Math.min(P.y,P.pounce===2?P.pounceY:P.y):m.airTop,landAgo:m.landAt?Math.min(1,(performance.now()-m.landAt)/1000):null,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,secondaryTag:m.secondaryTag||0,utilityTag:m.utilityTag||0,engineer:engineer,dodgeTag:m.id===coop.me?(P.dodgeId||0):(m.dodgeTag||0),dodgePath:coopCaptureSlip(m),attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:engineer?engineer.specialCool:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
+  eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id,roverId:m.id+':'+bot.state.slot},coopPlain(bot.state),{targetId:bot.state.target&&bot.state.target.id||bot.state.targetId||0,refillerId:bot.refiller||bot.state.refillerId||''}));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
     secrets:coopPlain(secrets),yeet:coopPlain(yeet),wonders:coopPlain(wonders),sligoMeat:sligoMeat.map(coopPlain),fighters:classFighters.map(coopPlain),shots:classShots.slice(-48).map(function(s){return Object.assign(coopPlain(s),{perks:coopPlain(s.perks||{})});}),
@@ -262,7 +299,7 @@ function coopCapture(){
     raid:{active:gardenRaidActive,timer:gardenRaidT,remaining:rogueRun.raidRemaining||0,total:rogueRun.raidTotal||0,threat:rogueRun.raidThreat||0,grace:gardenRaidGrace,spawn:gardenRaidSpawn,bossSpawned:gardenBossSpawned},
     loot:runLoot.map(coopPlain),encounters:runEncounters.map(coopPlain),hazards:runHazards.map(coopPlain),stageWeather:stageWeather?coopPlain(stageWeather):null,
     plants:gardenPlots.map(coopPlain),garden:rogueRun.garden.map(coopPlain),seedsOnGround:seedPickups.slice(0,180).map(coopPlain),collected:Object.keys(seedCollected),dust:seedDust,
-    pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0,nodes:(k.nodes||[]).slice(0,6).map(coopPlain)});}),bombs:bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});}),
+    pests:floatKrek.map(function(k){return Object.assign(coopPlain(k),{targetId:k.target&&k.target.id||0,attackTargetId:k.attackTarget&&k.attackTarget.id||0,nodes:(k.nodes||[]).slice(0,6).map(coopPlain)});}),bombs:bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});}),
     birds:crows.map(coopPlain),fauna:smallFauna.map(coopPlain),effects:booms.slice(-30).map(coopPlain),weather:coopPlain(worldWeather),robots:robots,robot:companion?coopPlain(companion.state):null,members:members,acks:acks};
 }
 function coopState(s){
@@ -296,7 +333,7 @@ function coopState(s){
   if(previousWorld===s.world&&(!s.ended||s.won)&&window.MaxNativeArt){
     floatKrek.forEach(function(k){if((k.boss||isRat(k))&&!s.pests.some(function(q){return q.kind===k.kind&&q.bossId===k.bossId&&q.ph===k.ph;}))window.MaxNativeArt.enemyDefeated(k,s.time);});
   }
-  floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(Array.isArray(k.nodes))out.nodes=k.nodes.slice(0,6).filter(function(n){return n&&Number.isFinite(n.x)&&Number.isFinite(n.y)&&Number.isFinite(n.hp);}).map(coopPlain);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});return out;});
+  floatKrek=s.pests.map(function(k){var out=coopPlain(k);if(Array.isArray(k.nodes))out.nodes=k.nodes.slice(0,6).filter(function(n){return n&&Number.isFinite(n.x)&&Number.isFinite(n.y)&&Number.isFinite(n.hp);}).map(coopPlain);if(isRat(out))out.ratPrediction=0;out.target=gardenPlots.find(function(p){return p.id===k.targetId;});out.attackTarget=gardenPlots.find(function(p){return p.id===k.attackTargetId&&!p.dead;});out.mechWet=Number.isFinite(k.mechWet)?Math.max(0,Math.min(2,k.mechWet)):0;out.mechWetBonus=out.mechWet>0&&k.mechWetBonus===1?1:0;out.mechFanWetEvent=Number.isSafeInteger(k.mechFanWetEvent)&&k.mechFanWetEvent>=0&&k.mechFanWetEvent<=1e9?k.mechFanWetEvent:0;return out;});
   bombs=s.bombs.map(function(b){return Object.assign(coopPlain(b),{perks:coopPlain(b.perks||{})});});crows=s.birds.map(coopPlain);smallFauna=s.fauna.map(coopPlain);
   worldWeather=coopPlain(s.weather||{});gardenStats=coopPlain(s.stats||{});gardenSeeds=s.seeds;gardenScore=s.score;gardenWave=s.wave;runElapsed=s.elapsed;tSec=s.time;
   if(Array.isArray(s.effects)&&s.effects.length<=30){
@@ -316,12 +353,14 @@ function coopState(s){
     if(Number.isSafeInteger(q.attackTag))m.attackTag=q.attackTag;
     if(Number.isSafeInteger(q.skillTag))m.skillTag=q.skillTag;
     if(Number.isSafeInteger(q.secondaryTag)&&q.secondaryTag>=0)m.secondaryTag=q.secondaryTag;
+    if(Number.isSafeInteger(q.utilityTag)&&q.utilityTag>=0)m.utilityTag=q.utilityTag;
+    if(m.classId==='mech')m.engineer=mechRestoreEngineer(q.engineer,m);
     if(Number.isSafeInteger(q.dodgeTag)&&q.dodgeTag>=0)m.dodgeTag=q.dodgeTag;
     if(Number.isFinite(q.skillLeft))m.skillUntil=performance.now()+Math.max(0,Math.min(30,q.skillLeft))*1000;
     if(Number.isFinite(q.attackLeft))m.cool=performance.now()+Math.max(0,Math.min(5,q.attackLeft))*1000;
     m.airTop=Number.isFinite(q.airTop)&&Math.abs(q.airTop)<1e7?q.airTop:null;
     m.landAt=Number.isFinite(q.landAgo)&&q.landAgo>=0&&q.landAgo<.8?performance.now()-q.landAgo*1000:0;
-    if(q.id===coop.me&&['runner','bulwark','herbalist','polge'].indexOf(m.classId)>=0){
+    if(q.id===coop.me&&['runner','bulwark','herbalist','polge','mech'].indexOf(m.classId)>=0){
       if(q.attackTag===(P.attackTag||0)&&Number.isFinite(q.attackLeft))bombCool=Math.min(bombCool,Math.max(0,q.attackLeft));
       if(q.skillTag===(P.skillTag||0)&&Number.isFinite(q.skillLeft))P.skillCool=Math.min(P.skillCool,Math.max(0,q.skillLeft));
     }
@@ -333,6 +372,18 @@ function coopState(s){
       if(q.id===coop.me&&q.secondaryTag===(P.secondaryTag||0))P.secondaryCool=Math.min(P.secondaryCool||0,fighter?fighter.clinchCool:0);
       if(q.id===coop.me&&q.dodgeTag===(P.dodgeId||0))P.dodgeCool=Math.min(P.dodgeCool||0,fighter?fighter.utilityCool:0);
     }
+    if(m.classId==='mech'){
+      var engineer=m.engineer;m.skillUntil=performance.now()+engineer.specialCool*1000;
+      if(q.id===coop.me){
+        ['attackTag','secondaryTag','utilityTag','skillTag'].forEach(function(k){P[k]=Math.max(P[k]||0,m[k]||0);});
+        if(q.secondaryTag===(P.secondaryTag||0)){P.secondaryCool=Math.min(P.secondaryCool||0,engineer.fanCool);P.mechFanT=engineer.fanT;}
+        if(q.utilityTag===(P.utilityTag||0))P.utilityCool=Math.min(P.utilityCool||0,engineer.utilityCool);
+        if(q.skillTag===(P.skillTag||0)){
+          P.skillCool=Math.min(P.skillCool||0,engineer.specialCool);P.mechWindup=engineer.overloadWindup;
+          P.mechWindupX=engineer.overloadX;P.mechWindupY=engineer.overloadY+12;
+        }
+      }
+    }
     if(q.id!==coop.me){m.avatar=a;m.place=q.place|0;}
     else if((q.place|0)!==(m.place|0)){m.place=q.place|0;placed=a;}
     else if(P.brace>0&&q.braceTag===P.braceTag)P.brace=Math.min(P.brace,Math.max(0,+q.braceLeft||0));
@@ -343,9 +394,9 @@ function coopState(s){
   if(window.MaxCompanion){
     var robots=Array.isArray(s.robots)?s.robots.slice(0,16):(s.robot?[Object.assign({owner:coop.network.room.host},s.robot)]:[]);
     coopMembers().forEach(function(m){
-      var mine=robots.filter(function(r){return r&&r.owner===m.id;}).slice(0,4);
+      var mine=robots.filter(function(r){return r&&r.owner===m.id;}).slice(0,4).map(function(r,i){return coopRobot(r,m,i);}).filter(function(r){return !!r;}).sort(function(a,b){return a.slot-b.slot;}).filter(function(r,i,list){return !list.slice(0,i).some(function(other){return other.slot===r.slot;});});
       if(!mine.length||!m.perks.robot||!window.MaxClasses.canHaveRobot(m.classId)){m.companion=null;m.crew=[];return;}
-      m.crew=mine.map(function(state,i){var bot=m.crew&&m.crew[i]&&m.crew[i].state.kind===state.kind?m.crew[i]:window.MaxCompanion.create(state,m.avatar.x,Math.max(0,m.perks.robot-1),state.kind);Object.assign(bot.state,coopPlain(state),{slot:i});return bot;});
+      m.crew=mine.map(function(state){var old=m.crew&&m.crew.find(function(b){return b.state.slot===state.slot&&b.state.kind===state.kind;}),bot=old||window.MaxCompanion.create(state,m.avatar.x,Math.max(0,m.perks.robot-1),state.kind);Object.assign(bot.state,coopPlain(state));bot.state.target=gardenPlots.find(function(p){return !p.dead&&(state.targetId?p.id===state.targetId:state.dispatchT+state.pourT>0&&p.x===state.targetX);})||null;bot.refiller=state.refillerId||null;return bot;});
       m.companion=m.crew[0];
     });
     companion=coop.members[coop.me].companion||null;
