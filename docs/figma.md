@@ -57,13 +57,18 @@ including ten existing staged Yeet images outside the production sections.
 
 The [second-pass ascent board](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=607-14028)
 on page `508:11825` contains all twenty editable seed-1 scene instances, with
-stage 1 at the bottom and stage 20 at the top. Its 1,569 route-tag instances and
+stage 1 at the bottom and stage 20 at the top. Its 1,549 route-tag instances and
 rounded terrain vectors use actual runtime coordinates at native scale, with a
 shared horizontal origin. Existing authored Seed Vault and Railway Ruins
 masters remain unchanged. The board is a review composition, with no `designed`
 marker; it does not silently override live campaign geometry. The full rendered
 worlds are also available in `review/crown-ascent/`; these review captures are
-not native runtime source assets.
+not native runtime source assets. All twenty scenes now have editable world-art
+layers reconstructed from actual native renderer calls: 30,186 operations using
+18 authenticated existing image hashes, with exact crop registration and terrain
+pattern phase. The layer omits tiny decorative grain and 510 unrecoverable cached
+canvas draws; additive glow uses a screen approximation. The game captures retain
+the complete rendered pixels. ROUTE remains available as a geometry toggle.
 
 ## Pixel-art rules
 
