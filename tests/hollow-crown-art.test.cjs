@@ -30,6 +30,16 @@ test('all fourth-act combat states select the distinct wounded bank', async () =
   for (const [fields, name] of cases) assert.equal(crownPose({ ...k, ...fields }, 100, {}).name, name);
 });
 
+test('the second act holds kneeling poses and the third act rises into its empowered form', async () => {
+  const { crownPose } = await import('../hollow-crown-art.mjs');
+  const dormant = { hp: 1, phase: 2, crownStage: 2, crownState: 'intermission' };
+  assert.equal(crownPose(dormant, 100, {}).name, 'intermission');
+  const returned = { hp: 100, phase: 3, crownStage: 3, crownState: 'transition', crownTransition: .75, crownTransitionTotal: 1.5 };
+  const pose = crownPose(returned, 100, {});
+  assert.equal(pose.name, 'empowered'); assert.equal(pose.progress, .5);
+  assert.equal(crownPose({ ...returned, crownState: 'recover', crownTransition: 0, exposed: 3 }, 5000, {}).name, 'empowered');
+});
+
 test('native Chimera attack ends before its gameplay cooldown and does not hide walking', async () => {
   const { crownGuardPose } = await import('../hollow-crown-art.mjs');
   const k = { hp: 4, kind: 5, crownGuard: true, crownGuardKind: 'ground', windup: 1, tell: 1, bite: 0, vx: 12 }, clock = {};
@@ -40,9 +50,9 @@ test('native Chimera attack ends before its gameplay cooldown and does not hide 
   assert.equal(crownGuardPose(k, 12, clock).name, 'chimera-ground/move');
 });
 
-test('real shrine arrival frames the boss and player together on a narrow phone and clears the guide', () => {
+test('real shrine arrival and a rapid airborne maul keep both bodies visible below the compact HUD', () => {
   const { loadGame, plot } = require('./game-harness.cjs');
-  for (const width of [131, 250, 360]) {
+  for (const [width, height] of [[107, 190], [131, 282], [250, 280], [300, 200], [360, 280]]) {
     const h = loadGame({ __randomSeed: 4242 }), g = h.game;
     g.resetRogueRun('test', { classId: 'mech', difficulty: 'medium' });
     g.rogueRun.seed = 260926; g.enterLevel(20);
@@ -52,13 +62,17 @@ test('real shrine arrival frames the boss and player together on a narrow phone 
     assert.equal(g.interactBossEvent(), true);
     const boss = g.liveBoss();
     assert.ok(Math.abs(boss.x - g.P.x) >= 70, 'use the real distant spawn rather than moving the player beside the boss');
-    g.IW = width; g.IH = 280; g.ANCHOR = 210; g.worldBanner = 0;
+    g.IW = width; g.IH = height; g.ANCHOR = height * .75; g.worldBanner = 0;
     h.tick(16);
     const x = boss.x - g.camX, playerX = g.P.x - g.camX;
     assert.ok(x - boss.bodyHalfW >= 0 && x + boss.bodyHalfW <= width, 'whole boss body remains visible at width ' + width);
     assert.ok(playerX >= 8 && playerX <= width - 8, 'the player stays visible at width ' + width);
-    const header = 15 + g.guideLines(g.levelGuideObjective().text, width - 8).length * 9;
-    assert.ok(boss.y - g.camY - 39 >= header, 'head is below the live instruction at width ' + width);
+    assert.ok(boss.y - g.camY - 55 >= 25, 'the raised maul clears the compact header at width ' + width);
+    Object.assign(boss, { crownState: 'attack', crownMove: 'leap', crownTransition: 0, cool: 0, windup: 0,
+      attackDuration: .68, attackT: .35, fromX: boss.x, landX: g.P.x, exposed: 0 });
+    h.tick(32);
+    assert.ok(boss.y - g.camY - 61 >= 25, 'camera easing cannot carry the airborne maul through the header at width ' + width);
+    assert.ok(g.P.y - g.camY + 9 <= height - 2, 'framing the airborne boss keeps the complete grounded gardener visible at width ' + width);
   }
 });
 

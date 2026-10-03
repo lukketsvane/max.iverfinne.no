@@ -6,34 +6,34 @@
   "generator": "OpenAI imagegen",
   "sourceFiles": [
     {
-      "path": "docs/asset-review/crown-ascendant-v1/source/main.png",
-      "sha256": "3b763c6d99b0f1c973bff64ef2935516cd1f37d694bd14aa2e631777f625a2ea",
-      "width": 1086,
-      "height": 1448
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/main.png",
+      "sha256": "ffa45ed37fb945332acfab5c51311cca8b3e63b811f4a5684db7a07edaf5217f",
+      "width": 1024,
+      "height": 1536
     },
     {
-      "path": "docs/asset-review/crown-ascendant-v1/source/armored.png",
-      "sha256": "57a426b812abaa8e85157543d85a4b316bb5d299df043792cecea879799c9048",
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/armored.png",
+      "sha256": "6de803753c99be533872e98bfd349e35e76347fc6f403f0f872f7a8b2dc67f15",
       "width": 1536,
       "height": 1024
     },
     {
-      "path": "docs/asset-review/crown-ascendant-v1/source/wounded.png",
-      "sha256": "c4c954c2e784ea05924260afa6cf24e2c906c04751d998cf40a38f3658406eec",
-      "width": 1086,
-      "height": 1448
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/wounded.png",
+      "sha256": "ec46510f444c2f21b5e1c978f7130727a6ee19dccda6a0a9b2b592ecba839ccd",
+      "width": 1448,
+      "height": 1086
     },
     {
-      "path": "docs/asset-review/crown-ascendant-v1/source/effects.png",
-      "sha256": "be53fe4755fbf4d19b86dec03dc4b4e8ba875f67c77534eac79a04e13ca79310",
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/effects.png",
+      "sha256": "d6e405f0bfdee9d96baac083e731374c2da6e99ac359a0fdfeac0da206c4cd30",
       "width": 1254,
       "height": 1254
     },
     {
-      "path": "docs/asset-review/crown-ascendant-v1/source/chimera.png",
-      "sha256": "f5d76968e23f535a539646a24dd39ae71b7b5bcfb7e11d8c59ca36afe4a76644",
-      "width": 1214,
-      "height": 1295
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/chimera.png",
+      "sha256": "cbfe87483880c708ee408d4fcea941925afdde0c47917d3496546642b42fbd50",
+      "width": 1254,
+      "height": 1254
     }
   ],
   "outputs": [
@@ -41,35 +41,35 @@
       "path": "assets/crown-ascendant-v1/boss.png",
       "width": 768,
       "height": 1728,
-      "sha1": "9385485338e13d0ac79164ad6e1d946dc924119c",
-      "sha256": "3811a9a1990c8530049200bd02d0ef83d91c0f2f4d6f093d6367fbd4369a2d84"
+      "sha1": "225fbcdcb82465979bb55068af9838e15f4926a4",
+      "sha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3"
     },
     {
       "path": "assets/crown-ascendant-v1/effects.png",
       "width": 288,
       "height": 288,
-      "sha1": "bba0440c147156392d816f9725eb1566a4226bf7",
-      "sha256": "7da93b9802ff7887a91f27b6f5428572ddcd68efb6970ace12050da493d84f1f"
+      "sha1": "b0ed31aa9ee3b8a54d2d476602c86269a09463d4",
+      "sha256": "320366528e0cc10c68fb6693b73b663c27f707fcca14c9eab02d8b715066c131"
     },
     {
       "path": "assets/crown-ascendant-v1/chimera.png",
       "width": 384,
       "height": 384,
-      "sha1": "9c823d6147f1ee95cacf327135e82d5de531a72c",
-      "sha256": "f7c7808ae56e9301e6f436d98ec8cab7ef5791a0a834a87103381b1ea313bd7d"
+      "sha1": "815ba10e775e5357264be8b5960e8524f4ae5597",
+      "sha256": "ad1ad6661a98799c072ca04a7d33702d3d1204679e99e0fbad2363f8e9cf5fc1"
     }
   ],
   "atlas": {
     "path": "assets/crown-ascendant-v1/atlas.json",
-    "sha256": "d5d8ae3e6fffbc58dd5b219e3ce24b8e7a597267885eb0784def5cce1d0014cb"
+    "sha256": "e8d94f966c739ef8e73cbbba83a2904e98469244346a86c7f52f5f8d9ffc0e5b"
   },
   "recipe": {
     "path": "docs/asset-review/crown-ascendant-v1/recipe.json",
-    "sha256": "d723fbcd6c10f6d03a1a2b58e1616d8d27096c3af22692ccf61a1f8bf1eeb179"
+    "sha256": "9ed7550d6cfd70249666ef26a959c669372e25d9c2b3d1d0f28dd06813f0ca33"
   },
   "frameSources": {
     "path": "docs/asset-review/crown-ascendant-v1/frame-sources.json",
-    "sha256": "108604e4dadddc181051ad9fc52cce9c6e82df0091c9d736208726f95cd96ef5"
+    "sha256": "7bae8f8f2d3dadf28fba6acd95c7abb08be102dae6befd5e33f5e7e060e91bb3"
   },
   "importer": "scripts/build-crown-art.mjs",
   "processing": [
@@ -87,6 +87,10 @@
     "pageId": "10:2",
     "sectionId": "451:4",
     "status": "pending-import",
-    "blocker": "Figma connector requires reauthentication; no remote node IDs or synchronization claim."
+    "blocker": "Root-approved native master bytes are frozen; authenticated Figma import and comparison are in progress."
+  },
+  "previousPass": {
+    "path": "docs/asset-review/crown-ascendant-v1/prior-pass/provenance.json",
+    "sha256": "eecd496ef04d69d01266ad8977765f5fa82d7785491946c3ece54aff5073b576"
   }
 }

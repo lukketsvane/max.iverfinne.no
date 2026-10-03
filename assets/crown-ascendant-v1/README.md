@@ -1,12 +1,14 @@
 # Hollow Crown — Ascendant native art
 
-An original, tall, bone-armored king with a three-pronged crown, a hollow cyan
-core and a great two-handed maul. Its wounded form has lost the maul and much of
-its armor. The user explicitly requested generated sprite sheets and a complete
+An original, tall silver moon king with a faceless crown, a narrow waist, long
+limbs, a hollow cyan core and an oversized rectangular two-handed maul. Its
+wounded form has lost the maul and much of its armor. The user explicitly
+requested generated sprite sheets and a complete
 final boss on 3 October 2026. The game presents this boss at the radioactive
 surface sunrise in garden 20.
 
-The sprite body is roughly 60–76 native pixels tall beside a roughly 24-pixel
+The standing armored body is roughly 68 native pixels tall, and the wounded
+body roughly 67, beside a roughly 24-pixel
 player. Transparent padding and weapon arcs are not body size. The runtime
 never enlarges this boss separately from the game canvas.
 
@@ -37,13 +39,19 @@ center individual frames at runtime.
 | 7 | `exposed` | Loop throughout the damage window |
 | 8 | `pillar` | Raise the energy pillars |
 | 9 | `volley` | Release aimed bolts |
-| 10 | `summon` | Command the summoned guardians |
+| 10 | `summon` | Stand, lower the maul and kneel for the guardian interlude |
 | 11 | `death` | Clamp; last cell is transparent |
 | 12–17 | `wounded/idle`, `wounded/move`, `wounded/volley`, `wounded/drain`, `wounded/hurt`, `wounded/death` | Separate weaponless form; last death cell is transparent |
 
+The `intermission` alias loops only the final three genuine kneeling poses of
+`summon`. `empowered` plays the six upright `exposed` poses and holds its last
+pose for the third-act return and exposure. These aliases select existing
+frames; they do not inflate the 192 authored frame count. `hurt` selects
+`recover` in the armored form.
+
 Effects rows are `impact`, `wave`, `column`, `bolt`, `seal` and `break`. Every
-clip has six source frames. Repeated frames are intentional pose holds where
-the generated source supplies fewer distinct poses. Warning, damage, recovery
+clip selects six frames. Repeated alias frames are intentional pose holds.
+Warning, damage, recovery
 and exposure remain simulation events; image frames never determine damage.
 Chimera rows are ground `idle`, `move`, `attack`, `death`, followed by the same
 four flying clips, keyed `chimera-ground/...` and `chimera-air/...`.
@@ -52,13 +60,15 @@ run at 10 fps and idle clips at 6 fps.
 
 ## Source and reproducibility
 
-The original generated PNGs are preserved unchanged in
-`docs/asset-review/crown-ascendant-v1/source/`. `recipe.json` and
+The five active generated PNG originals are preserved unchanged in
+`docs/asset-review/crown-ascendant-v1/source/pass2/`. The first-pass originals
+remain unchanged in `source/`, and the previous native exports, mappings and
+provenance are archived in `prior-pass/`. `recipe.json` and
 `frame-sources.json` record exact source rectangles, integer translations and
 fixed scale within each bank. `scripts/build-crown-art.mjs` uses nearest-neighbor
 sampling, a declared 24-color palette and binary alpha threshold 128. Transparent
 RGB is zeroed. This is the creation of a new native master, not a rescale of any
-existing runtime sheet. Every previous asset remains byte-for-byte unchanged.
+existing runtime sheet. Other established runtime PNGs remain unchanged.
 Where adjacent generated poses have overlapping rectangles, connected-sprite
 isolation removes neighboring poses without cutting the intended sprite. Explicit
 translations register each pose's feet; a source bank never changes scale between
@@ -67,24 +77,24 @@ frames. Detached projectile art belongs to the effects sheet.
 `provenance.json` pins original SHA-256 hashes, native output SHA-1/SHA-256
 hashes and atlas/recipe/source-map hashes. `validation.json` records geometry and
 pixel checks. The offline guard checks those pins, every opaque bound, all 192
-frames and all four transparent death endings. Rebuild with:
+frames and all four transparent death endings. Reproduce a candidate in a
+separate directory, preserving the active native masters:
 
 ```sh
-node scripts/build-crown-art.mjs docs/asset-review/crown-ascendant-v1/recipe.json
-node scripts/crown-figma-import.mjs
+node scripts/build-crown-art.mjs docs/asset-review/crown-ascendant-v1/recipe.json --output-root /tmp/crown-reproduction
 ```
 
 ## Figma status
 
-**Local generated source; pending Figma import.** The existing connector
-requires reauthentication. No remote node ID or synchronization is claimed.
-The narrow, explicit source exception in `docs/figma.md` applies only to this
-pack's three pinned PNGs and preserves all existing Figma checks.
+**Local generated source; pending authenticated Figma verification.** The
+approved native PNGs are frozen while their authenticated import into
+file `TC0PHGMTCMR6im4hb3CSbF`, page `10:2`, runtime bosses section `451:4`
+is completed. `provenance.json` records the current authority and verification
+status. An import is promoted only after actual source node IDs, native
+dimensions, image hashes and a fresh ordinary Figma comparison have passed.
+After promotion, these three PNGs use the same Figma production guard as every
+other runtime sheet; the generated originals remain an audit trail.
 
-The prepared `import.use-figma.js` places these exact native bytes in file
-`TC0PHGMTCMR6im4hb3CSbF`, page `10:2`, runtime bosses section `451:4`. Once the
-connection is restored, load the `figma-use` skill, inspect the current section,
-execute the script and verify its returned hashes and dimensions. Capture the
-actual remote hierarchy and run the normal `figma:manifest` / `figma:check`
-workflow. Only that evidence permits replacing pending status with a Figma
-production source.
+The previous unexecuted import script is preserved in `prior-pass/` and
+contains only the first-pass bytes. It is historical evidence, not an import
+script for the active silver king.

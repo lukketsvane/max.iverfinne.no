@@ -28,11 +28,12 @@ Do not begin by rewriting the architecture. This is a deliberately compact stati
 12. **No resumable reload checkpoint.** Reload starts a new local attempt. Finished records can persist; PWA reconnect is a separate realtime behavior.
 
 The 3 October 2026 request explicitly authorizes generated Hollow Crown sprite
-sheets. `assets/crown-ascendant-v1/` has a narrow local-generated source contract
-while Figma requires reauthentication: three pinned PNGs, immutable source hashes,
-all 192 registered native frames and no remote synchronization claim. See its
-README and `docs/figma.md`. Preserve every established Figma production pin;
-other artwork still follows the normal Figma authoring workflow.
+sheets. `assets/crown-ascendant-v1/` contains the second-pass tall silver king,
+three native sheets and 192 registered frames. Its provenance pins all five
+unchanged generated originals and the previous-pass archive, and records actual
+Figma authority and capture evidence. Once synchronized, the three masters use
+ordinary Figma production coverage without a local exception. See its README
+and `docs/figma.md`; preserve every other established production PNG pin.
 
 ## Current multiplayer model
 

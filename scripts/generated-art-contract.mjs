@@ -1,5 +1,6 @@
-// The one explicitly authorized local source exception. This is not a generic
-// bypass for runtime PNGs and does not alter the Figma production manifest.
+// Audit the generated Crown originals, native registration and exact exports.
+// An unsynchronized pack has one narrow local exception; a synchronized pack
+// must instead match the ordinary Figma production manifest.
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -14,30 +15,56 @@ const equal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 export function generatedArtEntries(repository = root) {
   if (!existsSync(join(repository, provenancePath))) return [];
-  return JSON.parse(readFileSync(join(repository, provenancePath), 'utf8')).outputs;
+  const provenance = JSON.parse(readFileSync(join(repository, provenancePath), 'utf8'));
+  return provenance.origin === 'local-generated' && provenance.figma?.status === 'pending-import' ? provenance.outputs : [];
 }
 
 export function generatedArtProblems(repository = root) {
   const out = [], fail = problem => out.push(problem);
   if (!existsSync(join(repository, provenancePath))) return LOCAL_GENERATED_PATHS.some(path => existsSync(join(repository, path))) ? ['generated PNG without provenance'] : [];
   const provenance = JSON.parse(readFileSync(join(repository, provenancePath), 'utf8'));
-  if (provenance.format !== 'max-generated-art/v1' || provenance.origin !== 'local-generated' || provenance.generator !== 'OpenAI imagegen') fail('generated source identity is missing');
+  const synchronized = provenance.origin === 'figma-native-master' && provenance.figma?.status === 'synchronized';
+  if (provenance.format !== 'max-generated-art/v1' || !['local-generated', 'figma-native-master'].includes(provenance.origin) || provenance.generator !== 'OpenAI imagegen' || synchronized && provenance.generatedOrigin !== 'local-generated') fail('generated source identity is missing');
   if (!provenance.authorization?.includes('2026-10-03') || !provenance.authorization?.includes('explicitly requested')) fail('explicit authorization is missing');
-  if (!equal(provenance.outputs?.map(entry => entry.path), LOCAL_GENERATED_PATHS)) fail('only the three authorized Crown PNGs may use this contract');
+  if (!equal(provenance.outputs?.map(entry => entry.path), LOCAL_GENERATED_PATHS)) fail('only the three authorized Crown PNGs may use this audit contract');
   const figma = provenance.figma;
-  if (!figma || figma.fileKey !== 'TC0PHGMTCMR6im4hb3CSbF' || figma.pageId !== '10:2' || figma.sectionId !== '451:4' || figma.status !== 'pending-import' || 'nodeId' in figma) fail('pending Figma status must be truthful and contain no invented source node ID');
+  if (!figma || figma.fileKey !== 'TC0PHGMTCMR6im4hb3CSbF' || figma.pageId !== '10:2' || figma.sectionId !== '451:4') fail('Figma source file, page or section is missing');
+  if (synchronized) {
+    const manifest = JSON.parse(readFileSync(join(repository, 'assets/figma-manifest.json')));
+    if (manifest.fileKey !== figma.fileKey || !manifest.productionSections?.includes(figma.sectionId)) fail('Figma production manifest does not cover this source section');
+    if (!equal(figma.assets?.map(entry => entry.path), LOCAL_GENERATED_PATHS)) fail('all three actual Figma source nodes are required');
+    for (const source of figma.assets ?? []) {
+      const entry = manifest.production.find(entry => entry.path === source.path);
+      const output = provenance.outputs?.find(entry => entry.path === source.path);
+      if (!entry || !output || !equal([source.nodeId, source.imageHash, source.width, source.height], [entry.nodeId, entry.sha1, entry.width, entry.height]) || !equal([source.imageHash, source.width, source.height], [output.sha1, output.width, output.height])) fail(`${source.path}: actual Figma node differs from manifest or native export`);
+      if (![source.x, source.y, source.width, source.height].every(Number.isInteger)) fail(`${source.path}: Figma source geometry must remain native integers`);
+    }
+    if (!figma.capture?.path || !figma.capture?.sha256 || !figma.capture?.capturedAt || sha(readFileSync(join(repository, figma.capture.path))) !== figma.capture.sha256) fail('authenticated Figma capture pin is missing or changed');
+    if (figma.comparison?.status !== 'MATCH' || figma.comparison?.problems !== 0) fail('authenticated native source comparison did not pass');
+  } else if (provenance.origin !== 'local-generated' || figma?.status !== 'pending-import' || 'nodeId' in (figma ?? {}) || figma?.assets?.length) fail('pending Figma status must contain no source-node synchronization claim');
   if (!provenance.sourceFiles?.length) fail('immutable generated sources are missing');
   if (provenance.sourceFiles?.length !== 5) fail('all five original generated banks are required');
   for (const source of provenance.sourceFiles ?? []) {
-    if (!/^docs\/asset-review\/crown-ascendant-v1\/source\/[\w-]+\.png$/.test(source.path)) { fail('source is outside this pack'); continue; }
+    if (!/^docs\/asset-review\/crown-ascendant-v1\/source\/(?:pass2\/)?[\w-]+\.png$/.test(source.path)) { fail('source is outside this pack'); continue; }
     const bytes = readFileSync(join(repository, source.path)), image = decode(bytes);
     if (sha(bytes) !== source.sha256) fail(`${source.path}: original source changed`);
     if (!equal([image.width, image.height], [source.width, source.height])) fail(`${source.path}: source dimensions changed`);
+  }
+  if (provenance.previousPass) {
+    const previous = provenance.previousPass;
+    if (previous.path !== 'docs/asset-review/crown-ascendant-v1/prior-pass/provenance.json' || sha(readFileSync(join(repository, previous.path))) !== previous.sha256) fail('previous-pass provenance changed');
+    const archive = JSON.parse(readFileSync(join(repository, previous.path)));
+    for (const source of archive.sourceFiles ?? []) if (sha(readFileSync(join(repository, source.path))) !== source.sha256) fail(`${source.path}: prior generated original changed`);
+    for (const exportPin of [...archive.outputs, archive.atlas, archive.recipe, archive.frameSources]) {
+      const path = join(dirname(previous.path), exportPin.path.split('/').at(-1));
+      if (sha(readFileSync(join(repository, path))) !== exportPin.sha256) fail(`${path}: archived prior export changed`);
+    }
   }
   if (provenance.atlas?.path !== 'assets/crown-ascendant-v1/atlas.json') fail('atlas must belong to this pack');
   const atlasBytes = readFileSync(join(repository, 'assets/crown-ascendant-v1/atlas.json'));
   if (sha(atlasBytes) !== provenance.atlas?.sha256) fail('atlas differs from its source pin');
   const atlas = JSON.parse(atlasBytes);
+  if (atlas.palette?.length !== 24 || new Set(atlas.palette).size !== 24 || atlas.palette.some(color => !/^#[0-9a-f]{6}$/.test(color))) fail('the shared native palette must contain exactly 24 unique colors');
   for (const [contract, filename] of [['recipe', 'recipe.json'], ['frameSources', 'frame-sources.json']]) {
     const expected = 'docs/asset-review/crown-ascendant-v1/' + filename;
     if (provenance[contract]?.path !== expected || sha(readFileSync(join(repository, expected))) !== provenance[contract]?.sha256) fail(`${contract}: source mapping differs from pin`);
@@ -56,7 +83,9 @@ export function generatedArtProblems(repository = root) {
     const bytes = readFileSync(join(repository, entry.path)), image = decode(bytes);
     if (sha(bytes, 'sha1') !== entry.sha1 || sha(bytes) !== entry.sha256) fail(`${entry.path}: native output differs from pinned export`);
     if (!equal([image.width, image.height], [entry.width, entry.height])) fail(`${entry.path}: pinned dimensions differ`);
-    out.push(...artProblems(entry.path, bytes).map(problem => `${entry.path}: ${problem}`));
+    out.push(...artProblems(repository === root ? entry.path : 'assets/none/crown-candidate.png', bytes).map(problem => `${entry.path}: ${problem}`));
+    const colors = new Set(atlas.palette.map(color => parseInt(color.slice(1), 16)));
+    for (let at = 0; at < image.rgba.length; at += 4) if (image.rgba[at + 3] && !colors.has(image.rgba.readUIntBE(at, 3))) { fail(`${entry.path}: pixel outside declared palette`); break; }
     const sheet = Object.entries(atlas.sheets).find(([, value]) => entry.path.endsWith('/' + value.image));
     if (!sheet || !equal([sheet[1].width, sheet[1].height], [image.width, image.height])) fail(`${entry.path}: atlas geometry differs`);
     else images[sheet[0]] = image;

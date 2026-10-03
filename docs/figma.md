@@ -2,7 +2,8 @@
 
 The established runtime PNG files live in one Figma file and are mirrored byte
 for byte in this repository. The explicitly authorized new Hollow Crown pack
-has a pinned local generated source while its Figma import is blocked; see
+has a pinned local generated source while its authenticated Figma import and
+fresh source comparison are being completed; see
 the narrow exception below.
 
 - File: **max.iverfinne.no max fuglesprenger** (team cells.garden), <https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF>, key `TC0PHGMTCMR6im4hb3CSbF`.
@@ -70,7 +71,7 @@ Export check, verbatim from 396:12:
 
 The repository contracts are binding and win over anything in the Figma workbench:
 
-- **Cell size and anchor** come from the pack README and its `atlas.json`. The master grids in 396:19 (16×16, 32×32, 48×32, 64×96 and 128×128) are size examples only and do not define anchors. Known mismatches: rats are 48×32 at anchor 28,28; role enemies 16×16 at 8,15; bosses and the Hollow Crown 32×32 cells; the robot 48×40 at 24,36; the large rover 80×48 at 40,44; the starter rover 32×32 at 16,31.
+- **Cell size and anchor** come from the pack README and its `atlas.json`. The master grids in 396:19 (16×16, 32×32, 48×32, 64×96 and 128×128) are size examples only and do not define anchors. Known mismatches: rats are 48×32 at anchor 28,28; role enemies 16×16 at 8,15; legacy bosses use 32×32 cells; the Ascendant Hollow Crown uses 128×96 at 64,95, its effects 48×48 at 24,46 and chimeras 64×48 at 32,47; the robot 48×40 at 24,36; the large rover 80×48 at 40,44; the starter rover 32×32 at 16,31.
 - **Colours** come from the pack's own palette (`atlas.json` / `<name>.json` `palette`, pack README). The palette frame 396:25 (copied into the manifest as `rules.palette`) is a picking aid for new art, not a rule; none of the current sheets is limited to it.
 
 Contracts to read: `README.md` → *Pixel-art contract*; `assets/max-skins-v1/README.md`, `assets/enemies-v1/README.md`, `assets/rat-enemies-v1/README.md`, `assets/boss-milestones-v1/README.md`, `assets/native/README.md`, `assets/companion/README.txt`, `assets/companion/large-README.md`, `assets/results-native/`, `assets/expansion/`; before touching the Mech companion, `docs/asset-review/watering-robot/selection.md`.
@@ -79,15 +80,16 @@ Contracts to read: `README.md` → *Pixel-art contract*; `assets/max-skins-v1/RE
 
 The configured runtime sections are now the editable native masters for every runtime PNG, including packs originally produced by generators. Edit the source layer at native 1×, preserve the pack palette and atlas registration, then use `figma:pull` and `figma:manifest`. These packs use the same hash, dimension, palette, alpha and resize validation as all other assets.
 
-The one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active.
+The older one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active. The explicitly requested Crown creation pipeline was added on 3 October; it reproduces candidates into a separate directory and refuses to overwrite synchronized Figma masters.
 
 New runtime art normally enters the Figma production frame before it passes
 the offline tests. The user explicitly requested generated sprite sheets and
-a fully implemented Hollow Crown on 3 October 2026 while the connector required
-reauthentication. That instruction authorizes **only**
+a fully implemented Hollow Crown on 3 October 2026. That instruction authorizes **only**
 `assets/crown-ascendant-v1/boss.png`, `effects.png` and `chimera.png` to use a local generated
-source pending import. All existing Figma production entries and image hashes
-remain unchanged.
+source pending authenticated import and verification. Other established Figma
+production PNG masters remain unchanged. The silver-king second pass preserves
+all five earlier generated originals and the prior native exports in its source
+audit directory.
 
 This is not a general pending-art bypass. `scripts/generated-art-contract.mjs`
 restricts the exception to those three exact paths and verifies immutable original
@@ -95,10 +97,19 @@ source hashes, native export SHA-1/SHA-256, atlas/recipe/source-map pins, 192 fr
 fixed anchors, measured opaque bounds, pack palette, binary alpha, clean
 transparency and native scale. `provenance.json` states `origin: local-generated`
 and `figma.status: pending-import`, with no invented Figma layer IDs. A passing
-offline test does not claim a Figma MATCH for this pack. The prepared
-`docs/asset-review/crown-ascendant-v1/import.use-figma.js` imports the exact bytes
-into `451:4` after reconnection; a fresh authenticated capture and the ordinary
-sync workflow are still needed to promote it to a Figma production source.
+offline test does not claim a Figma MATCH for this pack. The approved native
+bytes are frozen for import into `451:4`; a fresh authenticated capture and the
+ordinary sync workflow are required to promote them to production sources.
+The prior unexecuted import script in `prior-pass/` contains the earlier artwork
+and is historical evidence only.
+
+After actual source verification, `origin: figma-native-master` and
+`figma.status: synchronized` replace pending authority. The same audit guard
+then requires all three actual source node IDs, native bounds and image hashes
+to match the ordinary manifest, pins the authenticated capture, and returns no
+local generated entries. All three runtime sheets then follow the standard
+Figma production guard. Generated originals, mappings and the previous-pass
+archive remain immutable provenance; they do not grant an ongoing exception.
 
 ## Tools
 

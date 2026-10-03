@@ -1,8 +1,8 @@
 # Hollow Crown at radioactive dawn
 
 The twentieth garden opens onto the radioactive surface at sunrise. Hollow
-Crown is the final encounter: a large pale armored king, an unmistakable stone
-maul and a hollow energy core. Its native body is roughly three times a
+Crown is the final encounter: a tall, slender silver king, a faceless crown
+helmet, an unmistakable block maul and thin cyan seams. Its native body is roughly three times a
 gardener's height. The fight remains at the discovered shrine's actual court;
 the garden and its living plants remain the stakes.
 
@@ -28,14 +28,17 @@ Sources: [Mithrix mechanics and appearance](https://riskofrain2.wiki.gg/wiki/Mit
 [contemporary fight guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2203124722).
 The wiki text was retrieved through a public text reader; its original model
 image downloads were unavailable. The artwork is an interpretation of the
-documented appearance, with Hollow Crown's root and containment motifs.
+documented appearance, with Hollow Crown's containment motifs. The second art
+pass replaces the broad bone creature with a narrow waist, long legs, a smaller
+helmet and a clean hammer silhouette. The wounded bank loses the weapon and
+uses a visibly damaged stance; both armored and wounded deaths actually collapse.
 
 ## Four acts
 
 | Act | Appearance and play |
 | --- | --- |
 | Crown duel | Armored king stalks gardeners, winds up the maul, strikes or follows with a second swing, and leaps into a grounded impact with outward, jumpable shockwaves. |
-| Containment break | The king stops attacking. Lunar root sentries and flying crown wisps guard three visible breakable seals. Breaking the seals earns a safe opening on the return. A bounded interlude cannot stall the run. |
+| Containment break | The king kneels and stops attacking. Plated lunar sentries and flying chimeras guard three visible breakable seals. Breaking the seals earns a safe opening on the return. A bounded interlude cannot stall the run. |
 | Dawn sovereign | The armored king returns with an empowered core. Learned maul and leap attacks combine with needle volleys and alternating tall energy lanes. Gaps require lateral movement; low waves require jumps. |
 | Hollow king | Armor breaks and the hammer disappears. A slow wounded king uses needles and a kneeling orb cast. Three breakable cores hold its temporary power. Breaking them reduces that pressure and earns another cyan opening; the player's build stays intact. |
 
@@ -68,10 +71,21 @@ target. Defeat uses the existing final-victory and actual-run result path.
 ## Art source and review
 
 The [Crown Ascendant pack](../../assets/crown-ascendant-v1/README.md) contains
-the armored and wounded animations, lunar constructs and combat effects, with
-generated-source provenance and reproducible native export pins. Its remote
-Figma import is pending connector reauthentication; local validation does not
-claim remote synchronization. Existing Figma production art remains unchanged.
+the armored and wounded animations, matching lunar constructs and filled cyan
+combat effects: 192 native frames in three sheets. The original generated sources,
+previous pass and reproducible native export pins are retained. The current
+[Figma source contract](../figma.md) records synchronization and native registration.
+
+The court is built around the actual final shrine: a jointed stone floor, broken
+outer pylons and a quiet central fighting space. Existing ledges and planting
+slots keep their physical bounds. Layered scorched ridges and ruined silhouettes
+frame the radioactive sunrise. A compact two-line phase strip keeps instructions
+above the battle, with health on its underline. Camera limits preserve both the
+player and the complete raised hammer, including the leap on a 320-pixel phone.
+
+Earlier chapters close the upper climb with rock vaults, buried steel braces,
+frozen shafts and reactor housings. Stages 1–17 retain a sealed underground sky;
+only the bounded breaches in 18–19 reveal dawn.
 
 `crown-review.html` runs the real twentieth-garden shrine encounter with isolated
 memory storage. It offers ordinary playable controls and separately labeled

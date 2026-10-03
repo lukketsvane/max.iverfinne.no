@@ -9,6 +9,7 @@ import { generatedArtEntries, generatedArtProblems } from './generated-art-contr
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const problems = generatedArtProblems();
 if (problems.length) throw Error(problems.join('\n'));
+if (JSON.parse(readFileSync(join(root, 'assets/crown-ascendant-v1/provenance.json'))).figma.status === 'synchronized') throw Error('The Crown native masters are already synchronized. Use the ordinary Figma native authoring workflow.');
 const assets = generatedArtEntries().map(entry => ({ ...entry, base64: readFileSync(join(root, entry.path)).toString('base64') }));
 if (assets.length !== 3) throw Error('All three source-pinned native sheets must exist before preparing the import');
 const script = `// Pending import into TC0PHGMTCMR6im4hb3CSbF, page 10:2 / runtime bosses 451:4.
