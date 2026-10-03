@@ -67,6 +67,8 @@ A player must physically climb the cleared exit plant to its top and reach the n
 
 Rattus norvegicus can also climb ordinary living plants for traversal, but ordinary plant climbing never skips uncleared stages.
 
+After a confirmed physical ascent, a short native-pixel upward view handoff joins the two gardens through a dark masonry seam. This is local presentation only: the simulation, pressure clock and shared stage advance immediately, while the HUD stays fixed. Late joins and unrelated stage jumps do not replay an ascent. Reduced-motion preferences keep the direct entry.
+
 ### Input and items
 
 - Touch drag left/right: move.
