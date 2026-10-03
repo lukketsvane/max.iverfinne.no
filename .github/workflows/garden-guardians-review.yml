@@ -5,13 +5,19 @@ on:
     paths:
       - 'index.html'
       - 'run-director.inc.js'
+      - 'hollow-crown.inc.js'
+      - 'hollow-crown-art.mjs'
       - 'guardian-sites.js'
       - 'levels-v1/**'
       - 'review.html'
+      - 'crown-review.html'
       - 'guardian-motion-review.html'
       - 'native-art.mjs'
       - 'assets/garden-guardians-v1/**'
+      - 'assets/crown-ascendant-v1/**'
       - 'scripts/check-garden-guardians-browser.cjs'
+      - 'scripts/check-crown-browser.cjs'
+      - 'scripts/build-static.cjs'
       - '.github/workflows/garden-guardians-review.yml'
   workflow_dispatch:
 permissions:
@@ -29,9 +35,13 @@ jobs:
       - run: npm install --no-save playwright@latest
       - run: npx playwright install --with-deps webkit chromium
       - run: node scripts/check-garden-guardians-browser.cjs
+      - run: node scripts/check-crown-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: garden-guardians-browser-review
-          path: guardian-browser-review/*.png
+          path: |
+            guardian-browser-review/*.png
+            crown-browser-review/*.png
+            crown-browser-review/*.json
           if-no-files-found: ignore
