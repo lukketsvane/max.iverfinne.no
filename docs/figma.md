@@ -55,20 +55,39 @@ adds exactly three masters. The outer boss section moved to a clear area at
 their native local coordinates. Seventeen unused source layers are recorded,
 including ten existing staged Yeet images outside the production sections.
 
-The [second-pass ascent board](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=607-14028)
-on page `508:11825` contains all twenty editable seed-1 scene instances, with
-stage 1 at the bottom and stage 20 at the top. Its 1,549 route-tag instances and
-rounded terrain vectors use actual runtime coordinates at native scale, with a
-shared horizontal origin. Existing authored Seed Vault and Railway Ruins
-masters remain unchanged. The board is a review composition, with no `designed`
-marker; it does not silently override live campaign geometry. The full rendered
-worlds are also available in `review/crown-ascent/`; these review captures are
-not native runtime source assets. All twenty scenes now have editable world-art
-layers reconstructed from actual native renderer calls: 30,186 operations using
-18 authenticated existing image hashes, with exact crop registration and terrain
-pattern phase. The layer omits tiny decorative grain and 510 unrecoverable cached
-canvas draws; additive glow uses a screen approximation. The game captures retain
-the complete rendered pixels. ROUTE remains available as a geometry toggle.
+The [editable ascent board](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=607-14028)
+on page `508:11825` contains the same twenty seed-1 scene components and instances,
+with stage 1 at the bottom and stage 20 at the top. Its refreshed `3428×10647`
+composition shows the actual room architecture, native materials and stage landmarks.
+Levels 1–17 remain underground; only 18–19 have small surface apertures, before
+the complete radioactive sunrise and Crown court at 20.
+
+All twenty actual Figma scene audits passed on 3 October 2026 at 13:22 UTC:
+**68,453 ordered drawing commands in 173 batches**, using 17 authenticated existing
+PNG hashes and 507 editable cached-material components containing 6,953 palette
+vectors. Decorative grain and all 510 cached-canvas draws are retained. Disjoint
+integer rectangle packing preserves native coverage and drawing order. Four cached
+material exports and three palette-vector exports matched their native pixels at 1×.
+The audit also checked all 665 production PNG pins and 1,862 unit transforms.
+
+The 1,549 route-tag instances retain their IDs and local geometry; the ROUTE layers
+contain 1,849 children in total. Their frames move together by `(62,90)` at stages
+3–19 and `(62,0)` elsewhere, keeping the expanded roofs inside a `3044`-pixel scene
+envelope with shared origin `1621`. All original WORLD, scene, row and card IDs
+remain in place. Authored Seed Vault and Railway Ruins masters remain unchanged.
+ROUTE is available as a geometry toggle. This review board adds no `designed`
+markers and does not replace live collision geometry or the authoritative PNG masters.
+
+The editable drawing sample uses accepted renderer `733345a8`, architecture
+`0757edfb` and rooms `23fa6dca`. Current renderer `9ec63b38` has identical static
+geometry, architecture operations and all PNG/cached-RGBA source identities.
+Whole-panorama pixel equality is not claimed: its dynamic loot/glow/spark phase
+differs at 926 of 16,390,242 pixels, and 239 additive-light operations use SCREEN
+in Figma. Full current game captures remain available in `review/crown-ascent/`.
+These captures are review evidence, separate from runtime art authority.
+[Editable audit and native export proof](asset-review/reference-worlds/figma-editable-audit.json)
+and [current-renderer equivalence](asset-review/reference-worlds/equivalence-audit.json)
+record the actual bindings, source hashes and limits.
 
 ## Pixel-art rules
 

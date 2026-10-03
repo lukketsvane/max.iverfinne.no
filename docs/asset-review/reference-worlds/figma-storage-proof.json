@@ -1,0 +1,54 @@
+{
+  "readOnly": true,
+  "opacity": {
+    "nodeId": "670:56260",
+    "commandIndex": 159,
+    "original": 0.43734450335119623,
+    "actual": 0.437344491481781,
+    "expectedFloat32": 0.437344491481781,
+    "exactStoredFloat32Match": true,
+    "qOriginal": 437345,
+    "qStored": 437344
+  },
+  "image": {
+    "wrapperId": "666:54985",
+    "wrapperBlendMode": "NORMAL",
+    "leafId": "666:54986",
+    "leafType": "RECTANGLE",
+    "leafBlendMode": "PASS_THROUGH",
+    "leafOpacity": 1,
+    "leafFills": [
+      {
+        "type": "IMAGE",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "scaleMode": "FILL",
+        "scalingFactor": 1,
+        "rotation": 0,
+        "filters": {
+          "exposure": 0,
+          "contrast": 0,
+          "saturation": 0,
+          "temperature": 0,
+          "tint": 0,
+          "highlights": 0,
+          "shadows": 0
+        },
+        "imageTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "imageHash": "ac428272886079de8396edd33cb21e5678f55281"
+      }
+    ]
+  }
+}

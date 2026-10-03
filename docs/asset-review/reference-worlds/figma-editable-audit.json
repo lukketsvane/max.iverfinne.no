@@ -1,0 +1,2641 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "readOnlyLiveAudit": true,
+  "capturedAtUtc": "2026-10-03T13:22:04Z",
+  "captureClockSource": "caller supplied actual tool-clock time after all final live audits",
+  "evidencePreparedAtUtc": "2026-10-03T13:16:13Z",
+  "actualResultRecordedWindowUtc": {
+    "first": "2026-10-03T13:14:22.790638Z",
+    "last": "2026-10-03T13:22:04.249841Z",
+    "method": "filesystem write timestamps of actual returned stage audit JSONs; not tool-call start timestamps"
+  },
+  "figma": {
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "508:11825",
+    "boardId": "607:14028",
+    "sourceContainerId": "607:14034",
+    "materialContainerId": "658:54963"
+  },
+  "registration": {
+    "sharedOriginX": 1621,
+    "sceneWidth": 3044,
+    "boardNativeBounds": [
+      3428,
+      10647
+    ],
+    "sceneCount": 20,
+    "originalRouteTags": 1549,
+    "allOriginalRouteChildren": 1849,
+    "oldBatchFramesHidden": 68,
+    "originalSceneIdsPreserved": true
+  },
+  "sourcePins": {
+    "acceptedBuiltSourceSha256": "733345a853ba7c4915f60595f898572887365e946715fbea09367b27d6ca9796",
+    "currentBuiltSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
+    "rendererRecipes": {
+      "campaign-architecture.js": "0757edfb4ae390a0b60e7c8805db69f6bbf7ce336a02c2cd8107d16a63d2894f",
+      "garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+    },
+    "runtimeSourceCommitAtFreshCapture": "afd718f8cb471c3afd835e30495aa5eee739f0a7",
+    "nativeProductionPinsChecked": 665,
+    "nativeProductionPinIdsSha256": "f47e914f70bdec2ef8c960ac1b12ec79d9f5b6c89ddfb67fe9e333237edc84b1",
+    "nativeProductionPinsUnchanged": true,
+    "actualReferencedPngSources": [
+      {
+        "sourceId": 507,
+        "imageHash": "ac428272886079de8396edd33cb21e5678f55281",
+        "size": [
+          836,
+          180
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 508,
+        "imageHash": "f3d5f25eaa5f680edec8852278e2d399a3a59fca",
+        "size": [
+          836,
+          180
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 509,
+        "imageHash": "bbd911253d37e34e0bab10ba265df0619fe264c9",
+        "size": [
+          836,
+          180
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 510,
+        "imageHash": "ac1f03e2af2dbacc582de9c5582abd2f01a7f20a",
+        "size": [
+          836,
+          180
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 511,
+        "imageHash": "a1761f9853812bd450b4b6c0a1f0f2520b0dae61",
+        "size": [
+          418,
+          180
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 512,
+        "imageHash": "374d81e834887109e7f6ea248ed9ac7e17a233be",
+        "size": [
+          12,
+          12
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 513,
+        "imageHash": "e6d08c7809d1994f2d0a9e255eb183d60ea4e35e",
+        "size": [
+          128,
+          27
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 514,
+        "imageHash": "4f24b5aba23bb0fe9a62fddad86fc204f316c73c",
+        "size": [
+          256,
+          98
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 515,
+        "imageHash": "f53f24e98d5ec8dbbdb4e9d87fdc2cb1590cb09f",
+        "size": [
+          557,
+          314
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 516,
+        "imageHash": "8b0552caf2119b1ce407f92d45fc0c09128fccbf",
+        "size": [
+          128,
+          75
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 517,
+        "imageHash": "4832a061399826ba62f00b8b29f71fcd990af736",
+        "size": [
+          192,
+          64
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 518,
+        "imageHash": "1dac33281c47b5467ff3cd25259b1f08a26dc5de",
+        "size": [
+          1080,
+          224
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 519,
+        "imageHash": "954d2111e384d797cf66c0ceb33c82126a5c04da",
+        "size": [
+          616,
+          320
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 520,
+        "imageHash": "eb162f8a27e89e4c659cdd701bf2791601cf101f",
+        "size": [
+          144,
+          64
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 521,
+        "imageHash": "c5775fb3b2566f1590321b8c4f73ef7ba8511bda",
+        "size": [
+          249,
+          19
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 522,
+        "imageHash": "400e76ae602166cd908eac29decdd17a007bf985",
+        "size": [
+          249,
+          22
+        ],
+        "match": true
+      },
+      {
+        "sourceId": 523,
+        "imageHash": "225fbcdcb82465979bb55068af9838e15f4926a4",
+        "size": [
+          768,
+          1728
+        ],
+        "match": true
+      }
+    ],
+    "materialComponents": "figma-material-sources.json",
+    "materialRegistrySha256": "2eedad1d210b35c8264abfc82cea85d65c8c494e800c9db6a3ba66b7e8c11fac",
+    "actualSourceCoverageSha256": "95250581ee219b735dc47968b26e0807c589090d3a6b05e9129ecfd370352656",
+    "materialRegistryFileSha256": "26a61d2ebfef1f2321174cf769049512031183d37b0aac1d1e76a5f2e5903526"
+  },
+  "authority": {
+    "behavior": "Current main, passing tests and root README.md remain behavior authority. This Levels-page review adds no designed markers or collision overrides.",
+    "runtimeProducer": [
+      "index.html",
+      "scripts/game-source.cjs",
+      "scripts/build-static.cjs",
+      "campaign-architecture.js",
+      "garden-places.js"
+    ],
+    "producerContract": "scripts/game-source.cjs expands the current index.html MAX_* include recipes; the static build emits dist/index.html. Accepted 733 and fresh 9ec built outputs are separately pinned.",
+    "nativePngAuthority": "Configured production page 10:2 sections 451:2\u2013451:7 remain runtime PNG masters; binding asset README, palette and atlas registration contracts remain unchanged. Native vectors here reconstruct cached recipe output as review evidence.",
+    "authoredSources": "Authored gardens 1\u20132 and registered Crown PNG masters retain original sources, IDs and native registration."
+  },
+  "validation": {
+    "worldBatches": 173,
+    "checkedCreatedNodeIds": 83906,
+    "actualFinalAuditSha256": "9dbad4fe5af70aaf07f34362c9c2fbec5f0bb5396eb9a796c96462ffbca37e59",
+    "independentCrossStageAudit": {
+      "passed": true,
+      "sha256": "9dbad4fe5af70aaf07f34362c9c2fbec5f0bb5396eb9a796c96462ffbca37e59"
+    },
+    "independentCrossStageAuditSha256": "9dbad4fe5af70aaf07f34362c9c2fbec5f0bb5396eb9a796c96462ffbca37e59",
+    "normalizationSupplement": {
+      "sha256": "830c1b17cd19d699d5840406793c93801232f679f25727789792a9647cae43ad",
+      "readOnly": true,
+      "rawTraceAndBatchAlphasChanged": false,
+      "float32BoundaryCommands": 112,
+      "wrapperAndPaintFieldsStillChecked": true
+    },
+    "normalizationSupplementSha256": "830c1b17cd19d699d5840406793c93801232f679f25727789792a9647cae43ad",
+    "readOnlyAuditPlanSha256": "cd15f8b503881f3b5aed97d56f2893c1688ac3a41296f15e27d81bc96419b93b",
+    "packedManifestSha256": "dfa517a9b6acb022ca8032fee0b77f87ecb76a700eed55826ad282d41a29003e",
+    "counts": {
+      "commands": 68453,
+      "solid": 34412,
+      "vector": 18761,
+      "tile": 3964,
+      "png": 10806,
+      "canvas": 510,
+      "screenApprox": 239
+    },
+    "batchColumns": [
+      "batch",
+      "frameId",
+      "commands",
+      "createdNodeIdCount",
+      "semanticSha256",
+      "createdNodeIdsSha256"
+    ],
+    "nativeGeometryPrecision": "Integer geometry; unchanged one-millionth descriptor precision. Expected opacity uses actual IEEE754 Float32 storage before quantization. Raw trace alpha is retained.",
+    "nativeLeafDefaults": "PNG/TILE RECT leaf PASS_THROUGH is preserved; composite is assigned to clipping FRAME, with NORMAL IMAGE paint for source-over.",
+    "storageProof": "figma-storage-proof.json",
+    "storageProofSha256": "4bd7fbfd3f32d05b6cdce67a3dd6570080967795bf5c660d5fad4f28f69c5fdf",
+    "ancestorBasisSupplement": {
+      "path": "figma-ancestor-basis-audit.json",
+      "sha256": "58300618857beb4df1ff82579f51381eff88e184620485c0c1b97124e451800d",
+      "checked": 1862,
+      "passed": true
+    }
+  },
+  "nativePixelProbes": {
+    "cachedMaterials": 4,
+    "solidPaletteVectors": 3,
+    "nativeScale": 1,
+    "differingChannels": 0,
+    "probes": [
+      {
+        "kind": "cached-material",
+        "nodeId": "659:54983",
+        "nativeSize": [
+          168,
+          195
+        ],
+        "differingChannels": 0,
+        "path": "cache-parity-659-54983.png",
+        "sha256": "d94756a9fb1a2fdfb82fd92250219a2bde79795b4947190faf2453734d85df62"
+      },
+      {
+        "kind": "cached-material",
+        "nodeId": "659:54991",
+        "nativeSize": [
+          168,
+          195
+        ],
+        "differingChannels": 0,
+        "path": "cache-parity-659-54991.png",
+        "sha256": "c13246798a3d25337927e803fef4cfe72d7096abf612b18fc20af27cec55d4c9"
+      },
+      {
+        "kind": "cached-material",
+        "nodeId": "661:55484",
+        "nativeSize": [
+          128,
+          96
+        ],
+        "differingChannels": 0,
+        "path": "cache-parity-661-55484.png",
+        "sha256": "20fc100f3339f645529c96c840ec318280117199a804c03ed85306a5f8129c0f"
+      },
+      {
+        "kind": "cached-material",
+        "nodeId": "661:55487",
+        "nativeSize": [
+          98,
+          23
+        ],
+        "differingChannels": 0,
+        "path": "cache-parity-661-55487.png",
+        "sha256": "3d6d75b9c7c3b15805c7f65d1e2258dcf7e24c5ecfa5d0ec97107bec08746782"
+      },
+      {
+        "kind": "solid-palette",
+        "nodeId": "666:54992",
+        "nativeSize": [
+          242,
+          296
+        ],
+        "differingChannels": 0,
+        "path": "native-palette-666-54992.png",
+        "sha256": "f5cbf8c643e77eab6f17586772caecdfff499c0706ff720e6ddd957039fc9301"
+      },
+      {
+        "kind": "solid-palette",
+        "nodeId": "666:54994",
+        "nativeSize": [
+          200,
+          11
+        ],
+        "differingChannels": 0,
+        "path": "native-palette-666-54994.png",
+        "sha256": "8565902059bc81a74cd27bed0af0ae9059909dcf58759d17535ef409053608ad"
+      },
+      {
+        "kind": "solid-palette",
+        "nodeId": "666:55308",
+        "nativeSize": [
+          33,
+          1
+        ],
+        "differingChannels": 0,
+        "path": "native-palette-666-55308.png",
+        "sha256": "8c75c194716bf66ae1bfa4b15c6007e8a29b64f23ff1babe3060a560511e4eba"
+      }
+    ],
+    "scope": "Seven actual 1x exports are zero-difference probes; all 507 component framebuffers were not exported or compared."
+  },
+  "wholeBoardScreenshot": {
+    "path": "figma-reference-world-stack.png",
+    "sha256": "96f2b355f6d2076ec4524957c73d92819e8e2221a7ca11fe818a07aa6d68fcb8",
+    "imageSize": [
+      515,
+      1598
+    ],
+    "role": "Actual whole-board Figma screenshot for visual inspection; native board geometry and screenshot raster dimensions are separate."
+  },
+  "limits": {
+    "wholePanoramaPixelMatchClaimed": false,
+    "additiveComposite": "Canvas lighter maps to the explicitly declared Figma SCREEN approximation.",
+    "dynamicCaptureEquivalence": {
+      "path": "equivalence-audit.json",
+      "sha256": "c4f4560811f5b6cfeb5243cd75be1481d6dc85eda30e125c280d3b9faf43d8d9",
+      "geometryAndArchitectureMatch": true,
+      "nativeSourceIdentitiesMatch": true,
+      "allFramebuffersEqual": false,
+      "allNormalizedDrawsEqual": false,
+      "changedNativePixels": 926,
+      "nativePixelsCompared": 16390242,
+      "cause": "Existing randomized loot/cache glow phases and campfire sparks; accepted snapshot is immutable."
+    },
+    "largeRawTraceOrSvgArchivePublished": false
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "ids": {
+        "worldId": "628:20738",
+        "refreshId": "658:54964",
+        "componentId": "609:25536",
+        "routeId": "609:25538",
+        "rowId": "609:25836",
+        "cardId": "609:25837",
+        "instanceId": "609:25843"
+      },
+      "worldNativeBounds": [
+        1066,
+        0,
+        1247,
+        474
+      ],
+      "sceneSize": [
+        3044,
+        474
+      ],
+      "routeLocalBounds": [
+        62,
+        0,
+        2920,
+        474
+      ],
+      "counts": {
+        "commands": 1759,
+        "solid": 783,
+        "vector": 337,
+        "tile": 110,
+        "png": 529,
+        "canvas": 0,
+        "screenApprox": 5
+      },
+      "batches": [
+        [
+          1,
+          "666:54983",
+          470,
+          588,
+          "9176e6a4f76def0c26e9b465c4b7ee8c054b6c24d3aaf7a4b687770714a1762c",
+          "fa527de5e9841913f2c40bc7173c17d3b6b637a0370880f7c5aa73667aa2eee0"
+        ],
+        [
+          2,
+          "670:54983",
+          312,
+          596,
+          "5f1f963353ad2e9c8518b8f44a8e04ba93ceae927be5ca8dd2a88a2f0fee445c",
+          "8c5d32ede99589c5f2495a86a4b15683fdc5995f014217679eb2597a2b8eb858"
+        ],
+        [
+          3,
+          "670:55579",
+          361,
+          521,
+          "eb04d2926cbdbcb533aac27a862ad72f06e4b01a4d0002454882ab59673dc0a1",
+          "099ca854638696ed4fde07a38c86d3d10e3edb824ce3837e83bb10ff3004ffb1"
+        ],
+        [
+          4,
+          "670:56100",
+          297,
+          298,
+          "0561b5ff5df0df5602c358fe3bdb7dc5fd6d61e9ef8ea634002146ebfc8122ec",
+          "cbd8acc1b04701d5bcacf3bebc143447e12803a57ba1f5f099d04ce6457f233e"
+        ],
+        [
+          5,
+          "670:56398",
+          319,
+          400,
+          "9421c35904106eedfd59d41f9627a1895cfcbd4cc28fd99f34b69db0c195894d",
+          "1691f28258fa4edfb54ad4d7f186de6e1564476b3f07078e46886d54f95ee5ce"
+        ]
+      ],
+      "checkedCreatedNodeIds": 2403,
+      "preservedTagCount": 58,
+      "preservedTagIdsSha256": "ae019d891682b740dfb11c2e50d29a3931a7a014f7cf8e8371e847e6f0b22f80",
+      "actualResultSha256": "f967ca027729be2cc4b6c9b3e96e3bfbc475f4b5ba2383b388097362dee18cec",
+      "readOnlyAuditCodeSha256": "94de6addcbf16f55dff0bdf257c6d5c08eb46511b3a648955469cc5d18ce5619"
+    },
+    {
+      "stage": 2,
+      "ids": {
+        "worldId": "628:20737",
+        "refreshId": "658:54965",
+        "componentId": "609:24573",
+        "routeId": "609:24575",
+        "rowId": "609:25051",
+        "cardId": "609:25052",
+        "instanceId": "609:25058"
+      },
+      "worldNativeBounds": [
+        1068,
+        0,
+        1719,
+        408
+      ],
+      "sceneSize": [
+        3044,
+        408
+      ],
+      "routeLocalBounds": [
+        62,
+        0,
+        2920,
+        408
+      ],
+      "counts": {
+        "commands": 1961,
+        "solid": 1051,
+        "vector": 238,
+        "tile": 43,
+        "png": 629,
+        "canvas": 0,
+        "screenApprox": 5
+      },
+      "batches": [
+        [
+          1,
+          "670:56798",
+          340,
+          397,
+          "b0462b61978c5eab9b4745f002df9507e3ecfd13b3e38d983cd638a619725f77",
+          "b6a85b1757d6d4c95dbbd9905bddade374dc657342d2ea8268997ef3e123ee6b"
+        ],
+        [
+          2,
+          "670:57195",
+          46,
+          70,
+          "7ec1d68a66cbb2763b1e8b7cd78766e8e98b74b6fc8e7db4145ed29c7a02618b",
+          "4054e2b4bd540b3160e01f81b433ec6cc3fcf4f2e3cc582655957a6d1358c4f8"
+        ],
+        [
+          3,
+          "670:57265",
+          546,
+          1055,
+          "8f1f3baf1e9ab4190ec104bbd9a0f857a3036e9f47e1fb5d1bb82d780228fd7f",
+          "9d96b0c04f8424aa4e3bba85b0ebadd9c51478a491c6e46be4523052e6ec52f6"
+        ],
+        [
+          4,
+          "670:58320",
+          297,
+          298,
+          "4fd2527338f083776e7b17e96364a52079dc43852563217f3757b4d5285995ba",
+          "ed0c02c82200fb42dbd32d95d5e90f8ceadc6f0a64cd198335be478777b8d79d"
+        ],
+        [
+          5,
+          "670:58618",
+          296,
+          297,
+          "6983031ad989a5b310128e57a93beaf36b2c0f84469458a113a35b6c1556d044",
+          "c680244a0d0a6d70cc56e28adcc2f715ad485aaefa49932fe2fe6f43788d2b35"
+        ],
+        [
+          6,
+          "670:58915",
+          352,
+          432,
+          "a9d06c6207b5bfcccb5478c2af6860d37065bb0a52c8cbc25cd1a9d32ad236a6",
+          "f5e658c6752b02d12ea936378f98ea2b4f40fff47989b4d96387592c21f6cecc"
+        ],
+        [
+          7,
+          "670:59347",
+          84,
+          91,
+          "8cf0eb5f2fad2f7a55fa9b55b29e7a2c0416e47865c423cb23b7a25c4e7809a6",
+          "2ee8006f860d66d3a025fd60d64cf1c3a728372796f876e28d84e3771333ef03"
+        ]
+      ],
+      "checkedCreatedNodeIds": 2640,
+      "preservedTagCount": 115,
+      "preservedTagIdsSha256": "2a2b59349913148f7d3d8b5d159d23f471d223ade92277885c6fb1605590e729",
+      "actualResultSha256": "e5d75df8a2613213aed2f7bb1961ba38bebca6438d5d7726dcd8984dfde207cc",
+      "readOnlyAuditCodeSha256": "7a51ec9efb0bff08936fdb8c510ce9683f514c95813ce201f57d65ed0a77a552"
+    },
+    {
+      "stage": 3,
+      "ids": {
+        "worldId": "628:20736",
+        "refreshId": "658:54966",
+        "componentId": "609:23956",
+        "routeId": "609:23958",
+        "rowId": "609:24261",
+        "cardId": "609:24262",
+        "instanceId": "609:24268"
+      },
+      "worldNativeBounds": [
+        32,
+        0,
+        2009,
+        465
+      ],
+      "sceneSize": [
+        3044,
+        465
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        375
+      ],
+      "counts": {
+        "commands": 4248,
+        "solid": 2151,
+        "vector": 1152,
+        "tile": 293,
+        "png": 650,
+        "canvas": 2,
+        "screenApprox": 11
+      },
+      "batches": [
+        [
+          1,
+          "670:59438",
+          405,
+          455,
+          "f2e09c1ed5d2c78cd6d044aafe0e4a9f24f47973e08ee3c6c0632667517f4faa",
+          "52d8856587fe1f8662365f543e14c3d578b773b251d2b39e541aa09935c02f76"
+        ],
+        [
+          2,
+          "670:59893",
+          504,
+          555,
+          "73d0686c6366d3f7eacb2a7c101805cc62744d852015564905cccd7ff8eb1556",
+          "dd490ddc99a6172dd35d4c9408a8f4b10080682bc9eb24b546a91ba1b053a013"
+        ],
+        [
+          3,
+          "670:60448",
+          675,
+          723,
+          "608fdfdf3f1539ba07a01876c3e558ed95732032ec3ab33384a07f5d5a3ba234",
+          "73bfefc19d1fa96cf946d9760b7709cc7e1d39411061370c9504790c5cd29820"
+        ],
+        [
+          4,
+          "670:61171",
+          398,
+          520,
+          "f57a47ed5a6485d4397f29922391a14e82947616775aa48a05d15e78cfab8634",
+          "733af7ba1279caa6e9d8e80b8cffa1f9586ab8064742b98b40fa5ae2d651e321"
+        ],
+        [
+          5,
+          "670:61691",
+          534,
+          713,
+          "9cce2171d0d7cdc11a99d5d0ec2bc83e94a31e3cc4d68ea21392202b3e17bce5",
+          "70662c435e1f80816721c22821120d07c466121fc9058f0ed37e2bb7784200d2"
+        ],
+        [
+          6,
+          "670:62404",
+          361,
+          657,
+          "e04b69c9800de641db93f8697958994af2a794a1040b4bc64958d8e3fdc2b526",
+          "a16ade69155861441171a8238d68faa49b67b1bc53c3ab8ffcedcc4bd9f8cbe7"
+        ],
+        [
+          7,
+          "670:63061",
+          297,
+          298,
+          "86d43c060efb4ceb84b49bbdc50b133ff59c483cff0d153cd61a5c4b3cbfb0e8",
+          "d7a3f88950f0a7d8888354f6625936c8a8a88f20008b139c27f77ddd73bfac41"
+        ],
+        [
+          8,
+          "670:63359",
+          296,
+          297,
+          "e9d401945cc359c3ebd5e1575cb74b0704575c5d06b0c1efffbcffc6ab764de2",
+          "8a42571d110d10b8d3e9fcf46473200fe05e574f1608480d4acd1c8bc1e59fd8"
+        ],
+        [
+          9,
+          "670:63656",
+          294,
+          295,
+          "4cec62a778a4316977f829f7996104b7b4280d6c0f62ac182fbd170c7d5be885",
+          "bd26b29977386b9b006ad1bed7da3391701b976ef770de476ede92f7cca2bcc1"
+        ],
+        [
+          10,
+          "670:63951",
+          484,
+          690,
+          "17451a60ff9156c45c49d2c6e23aa11d198372250dbca734161dc345d47c2c4a",
+          "abc3994b66127f250cb6a45637fa30a15b851580831e42a6f45a4f47974eb862"
+        ]
+      ],
+      "checkedCreatedNodeIds": 5203,
+      "preservedTagCount": 71,
+      "preservedTagIdsSha256": "5808c6662b61f38ec200f9d2ce0b8f149b330331fc06de3d1ac4039a0b5a34df",
+      "actualResultSha256": "bd835801b10d874f535f142c718579c8f5e32d93257714969d0699f37601619b",
+      "readOnlyAuditCodeSha256": "92cfb148cf22b6af74764c201402c8d7f53bf18e9bd357c43b0ce9895fca0515"
+    },
+    {
+      "stage": 4,
+      "ids": {
+        "worldId": "628:20735",
+        "refreshId": "658:54967",
+        "componentId": "609:23375",
+        "routeId": "609:23377",
+        "rowId": "609:23662",
+        "cardId": "609:23663",
+        "instanceId": "609:23669"
+      },
+      "worldNativeBounds": [
+        980,
+        0,
+        1472,
+        486
+      ],
+      "sceneSize": [
+        3044,
+        486
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        359
+      ],
+      "counts": {
+        "commands": 3303,
+        "solid": 1722,
+        "vector": 867,
+        "tile": 159,
+        "png": 552,
+        "canvas": 3,
+        "screenApprox": 16
+      },
+      "batches": [
+        [
+          1,
+          "670:64662",
+          385,
+          422,
+          "f87cc0f297a14b58d8e2eef815372492538a75cf15b6a30c9cd667183a865d3e",
+          "46efaa0007a266f0848f09ca287fc9217f4be695936df4cf23d2fe5d95538132"
+        ],
+        [
+          2,
+          "670:65084",
+          577,
+          630,
+          "10c3cb03b8d9210149681f2cc2653804c3361237614a6f3c4a650f867d74406a",
+          "988a8b0cac536ab847b38787600d2385442bdefb5e7fa331dfdab2240a15a939"
+        ],
+        [
+          3,
+          "670:65714",
+          552,
+          607,
+          "51b2c53b16d20fc493ea27cd669e9ee77faaea1a741645b741c01be5d5db655b",
+          "f77b0fa7faec2d4e6fe11a346f9e49da31725217a60b81bf7db37e50573d1865"
+        ],
+        [
+          4,
+          "670:66321",
+          409,
+          546,
+          "d69f8b7822bb61e7af63b50fb1820638782677cb828cfe6bafdabc41d6967def",
+          "34661c1fa83cb7132195b56e9bf072a418476d6f8b08374b2d800f6e66a16a0c"
+        ],
+        [
+          5,
+          "670:66867",
+          401,
+          694,
+          "348f718edbed4ef51f1291123f1e30c5758cc21327bd214b9a7107c9af2afa6a",
+          "03cb98ad96f4dd7acb4cc26fb3de0f8f95b65eef75d025384c8593db5dc1df7b"
+        ],
+        [
+          6,
+          "670:67561",
+          297,
+          298,
+          "f189f1fcaefcf9468516aa3b2d6271d469c3944a2a470f58610e5de5faa14cee",
+          "259ab9451ecee493776f9af69a1bc973ebaf2bed62ac9d35bb1b4f0c5d175b25"
+        ],
+        [
+          7,
+          "670:67859",
+          295,
+          296,
+          "a8bff78c64ef0fd10613ec1fb101f249aed56fa6f9c8ddc3716cf6633f9adc1b",
+          "882ecdfddf5136482ed69729be0dc90b41f75b9491e23bbb1c9d76e6cfccd2ca"
+        ],
+        [
+          8,
+          "670:68155",
+          387,
+          532,
+          "5f179866d0c09ea364458f37f1599246729612d820297b9d75200c1e4be20334",
+          "91b567f59f3a07d5cfb4576b6d19c6f5b1eff19e81fa2f2233da019d03d9a8fe"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4025,
+      "preservedTagCount": 65,
+      "preservedTagIdsSha256": "37ba71053160611d8814cbfdfdced73c0943174ec5dddd58d30cd62ebf94cbe8",
+      "actualResultSha256": "1c57bea680155db52b87d4f22331b04711bd5bf03005afd5f74f57073fc41e2b",
+      "readOnlyAuditCodeSha256": "4e0485d40a59ff770ca3b0b6b83355cdccf44fc6edf469c88300ae852c96c2d9"
+    },
+    {
+      "stage": 5,
+      "ids": {
+        "worldId": "628:20734",
+        "refreshId": "658:54968",
+        "componentId": "609:22780",
+        "routeId": "609:22782",
+        "rowId": "609:23074",
+        "cardId": "609:23075",
+        "instanceId": "609:23081"
+      },
+      "worldNativeBounds": [
+        1008,
+        0,
+        1277,
+        496
+      ],
+      "sceneSize": [
+        3044,
+        496
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        366
+      ],
+      "counts": {
+        "commands": 3044,
+        "solid": 1557,
+        "vector": 836,
+        "tile": 111,
+        "png": 538,
+        "canvas": 2,
+        "screenApprox": 11
+      },
+      "batches": [
+        [
+          1,
+          "670:68719",
+          395,
+          439,
+          "0a67fe4f8fd9d639e28f8b73778d5b85a6ad36d54386344cc87429631ed868bc",
+          "e296d334c5eb81e165ef8a4bd0cc294b11b330a92cbfe75fff7ebfb1635d3287"
+        ],
+        [
+          2,
+          "670:69158",
+          598,
+          651,
+          "60214314077dcb93977ca5abd056839b172e8a7d8ef8b30493aa8bff6f219d15",
+          "7b391df2b1096936a66ee1f4fa70e84c6cf89c258ab26bc0e455b7c20ff9d9af"
+        ],
+        [
+          3,
+          "670:69809",
+          144,
+          145,
+          "3a89b90a3e6036d2481b0c349343144c4293a97e9f2ae3df44d8e70317924d69",
+          "3813f6b293f5377941b1929bc0149188d0b9296878a559af1b3f0e516715599e"
+        ],
+        [
+          4,
+          "670:69954",
+          81,
+          84,
+          "37b701b701ec21681e62880f5fc8d7471888879b34dd820b4406b0b5b92ef292",
+          "3278e035a22bf20dbe0bea511080a573a42d7424b86e6f9ca4101b841be1cef0"
+        ],
+        [
+          5,
+          "670:70038",
+          559,
+          691,
+          "f0fa542987bf557738dcab40c2f95c85eb9a2cfd6770980c52feb3af19e0bf98",
+          "5830ad06b219a6915d17dd437868bd97fd5cecc4899c98724446a2800b627f4c"
+        ],
+        [
+          6,
+          "670:70729",
+          292,
+          538,
+          "b6c08fbd712879675478b5902d6fc4fa1135ec6ac26e9c6b7e305c6cdcab56e2",
+          "d51188d269c1724b5acb8d0d0d4d7516dd08c158e9725ab8970eb318c11e1a90"
+        ],
+        [
+          7,
+          "670:71267",
+          276,
+          284,
+          "9d9cef505e30127254f25dd55f88eeedfcb23a324d0f55342de602e318224231",
+          "969c6862733f3660b114eb817fd8f999307a7a5f2f624bdc7cb89474a9cf5ff6"
+        ],
+        [
+          8,
+          "670:71551",
+          296,
+          297,
+          "717a2ce9ef0eae366aa7efb8bdf1ff2a583a9d6faab0424d12c8f869947e3f10",
+          "6f6b60d80c1493252d5249ecd5e3fb7f154427e03bcae2cb72b0e17607eea72f"
+        ],
+        [
+          9,
+          "670:71848",
+          403,
+          575,
+          "582426cf852b456a0eaa7de78dc25ac3fbb0fcca18b489bca4bfe6e8889d1993",
+          "07b5f163b7c69c1343dd0c5b9cc5c5adcc1925ae4499402fdadfc37841944e68"
+        ]
+      ],
+      "checkedCreatedNodeIds": 3704,
+      "preservedTagCount": 67,
+      "preservedTagIdsSha256": "37cdd7932426178b42a04b06fabf5812f4b7c271a10d4a942bf3e695c81fe3b9",
+      "actualResultSha256": "661b5c29b1ab159dfdd335a5a03e3c4d789b893ddbd0a8824a544bc921c848b9",
+      "readOnlyAuditCodeSha256": "ce4bccbb2ab7979c6c0b9b2aecc7a5468185fc47d03092c3cd839cd9897478dd"
+    },
+    {
+      "stage": 6,
+      "ids": {
+        "worldId": "628:20733",
+        "refreshId": "658:54969",
+        "componentId": "609:22113",
+        "routeId": "609:22115",
+        "rowId": "609:22443",
+        "cardId": "609:22444",
+        "instanceId": "609:22450"
+      },
+      "worldNativeBounds": [
+        1201,
+        0,
+        1600,
+        544
+      ],
+      "sceneSize": [
+        3044,
+        544
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        412
+      ],
+      "counts": {
+        "commands": 3515,
+        "solid": 1849,
+        "vector": 854,
+        "tile": 142,
+        "png": 668,
+        "canvas": 2,
+        "screenApprox": 13
+      },
+      "batches": [
+        [
+          1,
+          "670:72452",
+          408,
+          449,
+          "0fa842c19db90316c16681ea8cd9c141266253928e2f25733dbdbf07ed47764d",
+          "46f6495d192aff3e60aa634b64929af2ed4087d6dd6753d71242a9a604d089ba"
+        ],
+        [
+          2,
+          "670:72901",
+          549,
+          608,
+          "69e8c19ced9aed529c4a58c469e18c7ce174e2f5d39a5a59fc696e547483d9c8",
+          "e303fe597ae11d79a48d94a2db7a7d975dffd5b181e6cccbb1ca61e9ea84389b"
+        ],
+        [
+          3,
+          "670:73509",
+          623,
+          695,
+          "f95590475045f5c5858590e719f19a7402953445cfd0f83a41dda295a1573ee9",
+          "2418405ac22deff8893130af2b8e3406568545576370e5ea68818898b1d3600b"
+        ],
+        [
+          4,
+          "670:74204",
+          238,
+          318,
+          "1a26e1fd7a29cb533c2e6a9964a0bb50d7fecc07935582db895e76315365ca81",
+          "15042fa84740784409429499ae21339f89b6df763ad84cb100d0093db6e951bc"
+        ],
+        [
+          5,
+          "670:74522",
+          480,
+          845,
+          "b0b70325d9cd89b091e4728f3718d71d0befa6f54ea6cfd664dcf46c3be55921",
+          "198112f6ee43222e69b8cd3739a6c809134aa0ee7d70363085332a6cf2d9343c"
+        ],
+        [
+          6,
+          "670:75367",
+          305,
+          306,
+          "1fcfd74e14dfcfa847fc208e95318dfc8ad0ae5a80be3485c507f99635865da2",
+          "577768031baf30fd768ea8155ba9478e1814cf0feacf6885c93426091be96cb7"
+        ],
+        [
+          7,
+          "670:75673",
+          296,
+          297,
+          "395e1b19d0273417299c62d58a27886f79961fc58840721ffc7295634e1743d8",
+          "6a2878e6691dadc5aa6e087f064684db304671dd480bd7620378845160f58492"
+        ],
+        [
+          8,
+          "670:75970",
+          402,
+          556,
+          "aab08552ca02ab081a0ca5507ff3c735b55a734067a835e47898531a31346752",
+          "3f6064916f6ef0cbabbfa424125265494c9cf9bd592cf2eecc562b4c72c49cee"
+        ],
+        [
+          9,
+          "670:76526",
+          214,
+          262,
+          "b126847e3beeb6af94778c896eab086474ef272770ef3055c18265116b16e2af",
+          "9c48b2c17c1fc143bef4e295accddbff022b83b804ed5e1c8de0f1b3a19ae269"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4336,
+      "preservedTagCount": 76,
+      "preservedTagIdsSha256": "087f5088c00886d9851678c07615225c6b8780f52838c12269d33716938cf3e3",
+      "actualResultSha256": "3625d208c9cd41ac8aaa646dd5a84172c490cdced2f007746d3f0a3f7582318f",
+      "readOnlyAuditCodeSha256": "ab012db31d603bd66ded9c27d200ad926fd736aaa2727701fb0ca0b02cbd3a53"
+    },
+    {
+      "stage": 7,
+      "ids": {
+        "worldId": "628:20732",
+        "refreshId": "658:54970",
+        "componentId": "609:21426",
+        "routeId": "609:21428",
+        "rowId": "609:21766",
+        "cardId": "609:21767",
+        "instanceId": "609:21773"
+      },
+      "worldNativeBounds": [
+        398,
+        0,
+        1643,
+        527
+      ],
+      "sceneSize": [
+        3044,
+        527
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        417
+      ],
+      "counts": {
+        "commands": 3513,
+        "solid": 1708,
+        "vector": 1024,
+        "tile": 163,
+        "png": 616,
+        "canvas": 2,
+        "screenApprox": 9
+      },
+      "batches": [
+        [
+          1,
+          "670:76814",
+          402,
+          444,
+          "9d29e98ab77c4a642d3a6dac36157b3e70f154d975f991a73c5954b427095e11",
+          "8ba282bf367bf3b60537f153e3b2ad0f0ec14b3870d4f640225730eec277ac83"
+        ],
+        [
+          2,
+          "670:77258",
+          508,
+          572,
+          "af6baeefbb994c0099a4f668f98eda6afc36194134c2566c622102b94137dede",
+          "9e31c59ecb63e29b15a48985895910789fe35bb9fa1bb4a50c3a2c81055ce85f"
+        ],
+        [
+          3,
+          "670:77830",
+          307,
+          308,
+          "d608852959a19199517ac4e476d43515dae80d5077505af7bd61cdce161f9fa7",
+          "f901fd7514d467eec1ec70814249e9d8d3cc2dfe31ccf54a53150ede91c18346"
+        ],
+        [
+          4,
+          "670:78138",
+          449,
+          528,
+          "0b287d22a611287fea2dc57f042008459fed9bb688252df72fcd69cd2e25f8fb",
+          "950a0eea3441e67c91d5e40bf54f4f906729d126c39c0e06dc7f267be3082ac6"
+        ],
+        [
+          5,
+          "670:78666",
+          332,
+          444,
+          "ef140ab8f27384e96e46d216463c65a9ae691336f3ccfc14fb67c1338de14068",
+          "cf0c95b764d8e24fb3335de0565ac80db885ecaa28312caae333cac628e1f185"
+        ],
+        [
+          6,
+          "670:79110",
+          404,
+          676,
+          "9582bb928adb832fb6e2d0b3353b73e91de5e18a1101fc97257f2d079cce596c",
+          "a1e0588ca1f1e86d866485260488348a1716d3e89598cc730156080b29ac7802"
+        ],
+        [
+          7,
+          "670:79786",
+          297,
+          298,
+          "840d4298c6e8ef8e931521618318b9b3c3ec66138cd9888cd4ef9abb89dec551",
+          "1501cd40402176b1e69cd85700d1f986cf44332d2f1bad920d2273258dd23845"
+        ],
+        [
+          8,
+          "670:80084",
+          301,
+          314,
+          "6e4ae500027e54f0a68c9a7e7631ed1cf0de4e5880fd9032781a0de8f926ad08",
+          "c1b6f64e018ec08c6cd031dd533c2e2e7d20c321cadaf66ed984d2141c3a7756"
+        ],
+        [
+          9,
+          "670:80398",
+          513,
+          719,
+          "0ced2d004e685cde020e4b7370c930b824c811a6f161d12bbdf3e4fce299ea0d",
+          "408091f99284ed14057d1eb8dff26aa0614a810289c616c050457aa3dc2f9367"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4303,
+      "preservedTagCount": 79,
+      "preservedTagIdsSha256": "908db0f73df47c5a719a76b9a1581d6c86f55109adc9d09fa69161058bfe676d",
+      "actualResultSha256": "715b72649ab7e149f062d6242aec1472da6233d340844cd651759ef08e0bdb67",
+      "readOnlyAuditCodeSha256": "597ea3663951a58942cba0f1d6581aba9522f932d037f67eab011c2e69940321"
+    },
+    {
+      "stage": 8,
+      "ids": {
+        "worldId": "628:20731",
+        "refreshId": "658:54971",
+        "componentId": "609:20787",
+        "routeId": "609:20789",
+        "rowId": "609:21103",
+        "cardId": "609:21104",
+        "instanceId": "609:21110"
+      },
+      "worldNativeBounds": [
+        1201,
+        0,
+        1811,
+        532
+      ],
+      "sceneSize": [
+        3044,
+        532
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        409
+      ],
+      "counts": {
+        "commands": 3875,
+        "solid": 1907,
+        "vector": 1042,
+        "tile": 236,
+        "png": 686,
+        "canvas": 4,
+        "screenApprox": 15
+      },
+      "batches": [
+        [
+          1,
+          "670:81143",
+          383,
+          424,
+          "eafbdec350bbc85221b0ffa96523697bacf4e1d54b413b5c426711c4b57b69b5",
+          "7db1ad8b339e70e4a99f112fb53ac733e30c38f6508945fe38640042760eab5c"
+        ],
+        [
+          2,
+          "670:81567",
+          542,
+          598,
+          "4033386f662dc84d52d475ef5f8211c6ea4f7fd23da780540fb740fe6ae39dd6",
+          "3334d11a4ef86e6cbca089a024848579a66a624edb16e232b957ecdf6b96980a"
+        ],
+        [
+          3,
+          "670:82165",
+          670,
+          735,
+          "6537f86e2e049fe52566f10ce8b32627a7a81cb7b043af4a0d9dc889343a2605",
+          "fc8bba009638e4f828d1e1d185c1e32c8943deb36d240105ab8fa959887a31c4"
+        ],
+        [
+          4,
+          "670:82900",
+          435,
+          581,
+          "36cab570b0e330402f48f87a3c9252828475b1abace006b36dd0236041187556",
+          "efcc4691a1db344beb3a4395d75096ea13f389271c662d1971cc6bca394f60a5"
+        ],
+        [
+          5,
+          "670:83481",
+          467,
+          760,
+          "ef21d30647e6d7a95da32ac22cf6417f30721eeae91581dc073ba1b34a7dd94e",
+          "88ef4ae8d3ad04ef044558e31b03d856c390665ff66a95d784b1b2bb98364778"
+        ],
+        [
+          6,
+          "670:84241",
+          321,
+          453,
+          "e58a4a93fd41a007dd6e993ec23a3ba0d94a56793e52f985a6add7ce14650f40",
+          "1056ec69bde7e63ab3bcc9fe9336408e6b19c5e39e9d7272fac173a782e9fee7"
+        ],
+        [
+          7,
+          "670:84694",
+          296,
+          297,
+          "d59e5caf2acb8bc14de9b1bef0cdce985ee070ee23cd8ddecd2bc1a4bb50d088",
+          "c4faabbdee2dd558e6e473b6c2f1bbabe35c4046aabdad3dbe0e0898f785f6ff"
+        ],
+        [
+          8,
+          "670:84991",
+          313,
+          348,
+          "99bd16a8570053232b622b56b2776095b3625336a71c2d3087d62d8053bacbf9",
+          "6c76b268f5213a950bb107af194d187bf897c6def04f6c4d71a1620b631d1773"
+        ],
+        [
+          9,
+          "670:85339",
+          448,
+          614,
+          "62d9e43a0795503926afc5bc2faf0c54b1bacbb6ef79cc11a6c814614d88cc67",
+          "90c63988d60dba8e28d259fff14fa802f6239116fc3b179f2092b54b0773d29c"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4810,
+      "preservedTagCount": 71,
+      "preservedTagIdsSha256": "d9480972da620a3da4cab8f418bc0a59f99c2fca1fa9abc118887dc3c40b8d4a",
+      "actualResultSha256": "61f1f34e617f13ede53200dba9634816381b72879ae17613a7012459ea55e253",
+      "readOnlyAuditCodeSha256": "67bd3f03e5dad3bd699dc6f9941339950f6e069ab95292abfd839251cb0c0434"
+    },
+    {
+      "stage": 9,
+      "ids": {
+        "worldId": "628:20730",
+        "refreshId": "658:54972",
+        "componentId": "609:20142",
+        "routeId": "609:20144",
+        "rowId": "609:20461",
+        "cardId": "609:20462",
+        "instanceId": "609:20468"
+      },
+      "worldNativeBounds": [
+        728,
+        0,
+        1313,
+        568
+      ],
+      "sceneSize": [
+        3044,
+        568
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        433
+      ],
+      "counts": {
+        "commands": 3665,
+        "solid": 1795,
+        "vector": 1050,
+        "tile": 223,
+        "png": 595,
+        "canvas": 2,
+        "screenApprox": 7
+      },
+      "batches": [
+        [
+          1,
+          "670:85994",
+          370,
+          413,
+          "433115a056d6e783b583ce8aed3b65ac63feb2843237fb3704b897f60cfe2565",
+          "abbf62b21af3a64f7a98fb67678805ebda36785b01d0933ba60bd1d51f461cbe"
+        ],
+        [
+          2,
+          "670:86407",
+          556,
+          615,
+          "57424f358f597801d03f91366dc6fb53e01c127647babee90a0545686a51d5a4",
+          "051e3b062da23140d591047915890cd66bdd17f853a682f92466e26161c5960d"
+        ],
+        [
+          3,
+          "670:87022",
+          798,
+          857,
+          "1a0228c6d726ad20eb70e9aaf08f7e5c2b64801101a3885bf4cde2a09539f939",
+          "37c14a2f0aa741e2e515c77916b25c4037f1bd8fbf1693d09a543bea0f47d681"
+        ],
+        [
+          4,
+          "670:87879",
+          496,
+          664,
+          "42040f7cb15e23f6655f49219a64c050adffab844401c8292921f93cd0eac1f7",
+          "0ca788caf0649f56afba8c49f917858e00ad3f844a70f91c308b97aa63aae689"
+        ],
+        [
+          5,
+          "670:88543",
+          476,
+          822,
+          "02b9627e2e3cef984ee8f6b2380ba288f5be2c4518c23b808d6822973fa11f29",
+          "86957ee1dfbd13548cffd4986380639849e02da0599c6e841976adeaa43d2ab3"
+        ],
+        [
+          6,
+          "670:89365",
+          290,
+          291,
+          "b8dbcd185d8a1ed8cbea951a53bbbb40e5ef8517466d36725f919089b0a293dc",
+          "d345d70e94778e433dcc6be9a723078c53cca70e71e8f15a48af7b610578ed29"
+        ],
+        [
+          7,
+          "670:89656",
+          296,
+          297,
+          "76a3eedf0f5f468732681fee057c082741299baf3adbc65caee371e40a8bfcb0",
+          "78773a573892ce504fe09521b5f8cf0573120fdf55e12d0e25bdc2abe53a05b4"
+        ],
+        [
+          8,
+          "670:89953",
+          383,
+          534,
+          "a76b35742397d4a76f1400fea60f0d2a2b5f7f396a34bcd4dd38c291b2e87f63",
+          "052482ea99a8cc456585b5bbf41984f493caf3832ad14dc41e097f7e57d3a8c4"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4493,
+      "preservedTagCount": 73,
+      "preservedTagIdsSha256": "b2294dea97143f2710dd9b503c0f73b7f5c0221704d83c9d1ec1b5b78e7ee2fd",
+      "actualResultSha256": "93b8e697d72a6ffdddab56da90bee9950d879bebf6f121ecc1d3d8ebceff2202",
+      "readOnlyAuditCodeSha256": "97dc5accb881673427460dc180f4b9e3235bc58b4185420cd4632adc4a08f290"
+    },
+    {
+      "stage": 10,
+      "ids": {
+        "worldId": "628:20729",
+        "refreshId": "658:54973",
+        "componentId": "609:19373",
+        "routeId": "609:19375",
+        "rowId": "609:19754",
+        "cardId": "609:19755",
+        "instanceId": "609:19761"
+      },
+      "worldNativeBounds": [
+        952,
+        0,
+        1618,
+        561
+      ],
+      "sceneSize": [
+        3044,
+        561
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        434
+      ],
+      "counts": {
+        "commands": 3758,
+        "solid": 1879,
+        "vector": 1009,
+        "tile": 181,
+        "png": 687,
+        "canvas": 2,
+        "screenApprox": 15
+      },
+      "batches": [
+        [
+          1,
+          "670:90513",
+          395,
+          445,
+          "473fd8d805c6dd78fc301a7fb28071544e7fa745d2e27d8112d26444d737bad4",
+          "c40ceca0075bfa2a4cbae292d75bf3713d5adb0b0c1967ce2ed4a7b00bfa9945"
+        ],
+        [
+          2,
+          "670:90958",
+          513,
+          558,
+          "26424b0e0a361706a39534b15e08d78b1a08bcb17a2197c518c7918883724adf",
+          "0ac2a54304b9cdaeb13e338d138e42150375b684986f1bc5be2fafa891dcfd36"
+        ],
+        [
+          3,
+          "670:91516",
+          695,
+          766,
+          "7777fa5dec9f0d111d2c50d6f64551d31bbc99057ae873938a6ce28f2170bd5e",
+          "fc3f4e840681beed5b971dbb96889b4278938d69e6e68b3539decb9e829df3e0"
+        ],
+        [
+          4,
+          "670:92282",
+          304,
+          401,
+          "c23f6e3a21d668af4ffd9675de7e01044084bcb1f58e408b5ce293730f721ea6",
+          "fbb31c9f733c65c198d5d980f23bcbf192f6f91ea28db912f1d85e98187624a9"
+        ],
+        [
+          5,
+          "670:92683",
+          465,
+          698,
+          "65530cb77f097986ca8d8683dda18074d508467fe5d11ad04dcda5e8aefc0201",
+          "d2ab1d6de359d6430b3fbaacae16b915766d2ddb24cea750371fedec45fb265a"
+        ],
+        [
+          6,
+          "670:93381",
+          351,
+          534,
+          "01f3969d5a1b44bf2e700fdbde8a740b41bb9f9150c91ed944dfbde4dcab9e39",
+          "7c0e5d5b5e42fd8979c16b91da282f2e2b7c7e2b40466db8cb59bf72233ec746"
+        ],
+        [
+          7,
+          "670:93915",
+          297,
+          298,
+          "21116ce2ce8825e098d2593160db65de37614f16b29f3fac99979d317d372aaa",
+          "cfd8af0090aba6f69f352dea8fcaca93b943dda38c947fbb3685716fe6375054"
+        ],
+        [
+          8,
+          "670:94213",
+          294,
+          295,
+          "615d35167a74857b9a500f15a9d960d921e7220da0f7db2f3daf89e4c791713a",
+          "a412ad1a9f39eb7466b3ee9f5011a440b9aa0588a50410e0090716bc5191ac51"
+        ],
+        [
+          9,
+          "670:94508",
+          444,
+          642,
+          "d0504624edbce3b4262af408c505099b1e8454dc35c167bc9bf2611550de9163",
+          "2146c788297a2f76420f6f1160b214b0d75fa8923516e263e6eea48ca43ffb44"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4637,
+      "preservedTagCount": 93,
+      "preservedTagIdsSha256": "72a649edeed9166346584ef4bd05fa5a934f4462cd0299c56a3d84fa27b54f8d",
+      "actualResultSha256": "7634a0341ea140c353d196c06ab303989db245d76401227a3fc8a0551e1df3bf",
+      "readOnlyAuditCodeSha256": "2a3d60b1f71af9db0ca6acc7c56978aaf209e0fb4d703a9522078020dc2a0e95"
+    },
+    {
+      "stage": 11,
+      "ids": {
+        "worldId": "628:20728",
+        "refreshId": "658:54974",
+        "componentId": "609:18750",
+        "routeId": "609:18752",
+        "rowId": "609:19058",
+        "cardId": "609:19059",
+        "instanceId": "609:19065"
+      },
+      "worldNativeBounds": [
+        780,
+        0,
+        1563,
+        545
+      ],
+      "sceneSize": [
+        3044,
+        545
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        423
+      ],
+      "counts": {
+        "commands": 3557,
+        "solid": 1795,
+        "vector": 998,
+        "tile": 214,
+        "png": 504,
+        "canvas": 46,
+        "screenApprox": 15
+      },
+      "batches": [
+        [
+          1,
+          "670:95182",
+          418,
+          457,
+          "6e092065e5695594d50e6bc4eb74f597bc488de6a98d882c377205628dc3971e",
+          "453aac16d3baf3342ca63659df991220605cbda76e9c6eca2a6e7e3ba39bdccd"
+        ],
+        [
+          2,
+          "670:95639",
+          523,
+          583,
+          "4c8a154ad812f1c9445ed90a4e8c631eb5cedc83302aa8d5af4059382ed59c4f",
+          "f62f23254062dd1e055b0f0d77e801b8abda1dbac59ca5a53b4760295ea7dcd0"
+        ],
+        [
+          3,
+          "670:96222",
+          669,
+          755,
+          "b578adfb7a78e021d7d6b4ef1d5c0c040f3f14c33705f8b35d7f2e156e690de7",
+          "020595344dae49e3b153f2f925eb3b228513ddf07fd1331ecefd2fbf34b8cf92"
+        ],
+        [
+          4,
+          "670:96977",
+          465,
+          621,
+          "0e02b2b1fae5bf4365efdb349541068edf7c031d02ccc91aa7843336fff94e11",
+          "ae200c0367bee8ddc78d340fb6ef04b05f4233eaae6cd57b9cc400ed07c0e24c"
+        ],
+        [
+          5,
+          "670:97598",
+          465,
+          836,
+          "28aae7d046d40fdb8737570a046fb5d75e3db6478d4627ad109cf4a763ecf44f",
+          "638da95dc2318ed79a3753067a9312db9f5786b7bae3901545966c2bd403d103"
+        ],
+        [
+          6,
+          "670:98434",
+          290,
+          291,
+          "f175cbe6f94ec29df9c0af9c051ed849c65bbd76e82e84539f47441737bcb6c1",
+          "1f2f10591d177b06743308b2271d4e70d9fad302d9c609c9aa92039ef597f8fc"
+        ],
+        [
+          7,
+          "670:98725",
+          296,
+          297,
+          "6ebbbbf44a4817dfb836e63fdecd0df5c3e0f8617227456cba0dc82d77e7a650",
+          "747064091848e5393799b76ca0e21861dbdecfc8e540971265bc894a0f475afb"
+        ],
+        [
+          8,
+          "670:99022",
+          386,
+          442,
+          "1dd7f0b8a16d1af2a6b476be482353a5bf713d565e5caf8920840f2d2bbfaed4",
+          "333e54fb2bd89f6a08a5eb7aaf43bed364f0f82200ea9027f5c120313c74c108"
+        ],
+        [
+          9,
+          "670:100128",
+          45,
+          48,
+          "6a3b9449191db182c70064347bec97aa2debcee347e5f5f03c92a22d47593e6f",
+          "91a6e59237710a189270e63dee611309bd90f9c077d040f1dddab41c9a68408b"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4330,
+      "preservedTagCount": 68,
+      "preservedTagIdsSha256": "eced89e1f4c15a766fb1d734dfb58a56d73a2b8074c3d5da76bbda87d83feb8f",
+      "actualResultSha256": "01e643f98383d4f17066ae119c573e3c92153296bc276dd85044c66425b89f3b",
+      "readOnlyAuditCodeSha256": "189b9c41177b44f57e54ce534ee8225665f738eb0e01e00129bc4dc4cf033713"
+    },
+    {
+      "stage": 12,
+      "ids": {
+        "worldId": "628:20727",
+        "refreshId": "658:54975",
+        "componentId": "609:18113",
+        "routeId": "609:18115",
+        "rowId": "609:18428",
+        "cardId": "609:18429",
+        "instanceId": "609:18435"
+      },
+      "worldNativeBounds": [
+        1201,
+        0,
+        1439,
+        528
+      ],
+      "sceneSize": [
+        3044,
+        528
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        406
+      ],
+      "counts": {
+        "commands": 3161,
+        "solid": 1669,
+        "vector": 883,
+        "tile": 129,
+        "png": 430,
+        "canvas": 50,
+        "screenApprox": 11
+      },
+      "batches": [
+        [
+          1,
+          "670:100183",
+          394,
+          442,
+          "211fbef8017c1f4ee1d227bea22e5914e72295f44f0579c31753934dbc4ef6d3",
+          "ec5d9fbc1d74e29aa766747d2c0eb057d6ee2f3a04fab100e84d25d92cce65b8"
+        ],
+        [
+          2,
+          "670:100625",
+          508,
+          558,
+          "6bcf6b502cca9b270f6deb6ba7cc834347d54d7a40a14a2b5b3df2c2ab5daa57",
+          "e59c10d8b7a73bfb4469df9c82b5f8a72bf552d6aaaa4f5b9d9a61bccd2895ad"
+        ],
+        [
+          3,
+          "670:101183",
+          691,
+          754,
+          "f4ee75b62b50aff9832791c2015609fe18ae6953b6c035b7a84e3bb38aefc8ca",
+          "b5fbec311773f107731718e9a1f5e5b9c6256b36e3595f819a1fa190ecc0cbda"
+        ],
+        [
+          4,
+          "670:101937",
+          275,
+          368,
+          "c8a16c24b0ca4e4b6d5d61d130125cd73762222d95b07383f3e0882c0ea85f95",
+          "f4336b96533fbca4fc48497f31f207a128a3097d8b49e897a9e5715ab0ea2781"
+        ],
+        [
+          5,
+          "670:102305",
+          426,
+          710,
+          "141860434b4d53f1220ac9bff0ac9438e7ac1d1c6f4da86bacf9d669e34fd9e8",
+          "4b66489d2709471ca39571945cef4903e8a09a125ac7c26ecd4dfad64f40fca4"
+        ],
+        [
+          6,
+          "670:103015",
+          297,
+          298,
+          "5511888c51093e9e8409ff10e21616a8a6a2c6b26d7a4f482bf2c656b67a2ecd",
+          "bdb0cde3686c762fcfa7051e68538c61277653d3713f1c669ddacfa33e6105d8"
+        ],
+        [
+          7,
+          "670:103313",
+          385,
+          444,
+          "fa16c53e8dc3531d39d2b2e0539c1de4bcc3376c31ddbb1799b6442ec301c6ba",
+          "02f1eca44c18e9b41b6c1da4bf2b6db9ba3f236001dd57ee0feb27c4e37cef46"
+        ],
+        [
+          8,
+          "670:104474",
+          185,
+          204,
+          "d381a01c263a3ad8885cf75669a3357df21960885fe1ddcf7027a075f73fe861",
+          "b35c067245d1bcff5084b08315eda11d53b316ccd0e0637b9e20ba9f4bb168fc"
+        ]
+      ],
+      "checkedCreatedNodeIds": 3778,
+      "preservedTagCount": 70,
+      "preservedTagIdsSha256": "39eee3058c056641764586fcb3b0e8d9391cdd79a20d8220d26dd7a92b4beca6",
+      "actualResultSha256": "0fdaeae1ab02e180a996ab8edd612206bebb628f2178b0b6878cb2dc8f835659",
+      "readOnlyAuditCodeSha256": "c8620ce1a4dc6a88680ea4284363df14bdfea059399bda40c920ad9cd1575931"
+    },
+    {
+      "stage": 13,
+      "ids": {
+        "worldId": "628:20726",
+        "refreshId": "658:54976",
+        "componentId": "609:17428",
+        "routeId": "609:17430",
+        "rowId": "609:17767",
+        "cardId": "609:17768",
+        "instanceId": "609:17774"
+      },
+      "worldNativeBounds": [
+        978,
+        0,
+        1765,
+        525
+      ],
+      "sceneSize": [
+        3044,
+        525
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        431
+      ],
+      "counts": {
+        "commands": 3795,
+        "solid": 1940,
+        "vector": 1082,
+        "tile": 271,
+        "png": 452,
+        "canvas": 50,
+        "screenApprox": 19
+      },
+      "batches": [
+        [
+          1,
+          "670:104685",
+          379,
+          430,
+          "d43b4bfd1297404c86e46da7cef77182e1badf49c6ffcc6eba47f530ea79eaa9",
+          "c80bcf463d4956f1e07e4afc98ae9ebe5a8e852c07ac2ee810c1a2b1e5902389"
+        ],
+        [
+          2,
+          "670:105115",
+          532,
+          591,
+          "56186ef03d306b47d6f3493661372e2c3fa0385e1ce6ae3ed38338913dd02abb",
+          "b2e8fe2cbf5620d4033b094f3d47f7b53618611150b56a27cdbe5b731f5b307a"
+        ],
+        [
+          3,
+          "670:105706",
+          705,
+          774,
+          "e193835871f971b3adff7c7d14e43a2d277d121b7c615d26a5b29688e5710554",
+          "2a8a1232c3628517f3f8dcf8c0a02f84581664e05e9eb4a6c83fd5c57f7ae619"
+        ],
+        [
+          4,
+          "670:106480",
+          491,
+          655,
+          "50a2f1fb4d693e8a2ee33db6b6d95a7e0a5cd8189d5a428d3e6395e702f86ca1",
+          "dd9e3aa1242b74f160b44947c9af0d398e8760519380ea91dcf5ec6b971f8a9a"
+        ],
+        [
+          5,
+          "670:107135",
+          495,
+          794,
+          "e61b6d1bee43d0f17beeb8cdc727c4e9fe5c3eb029cd5847ec59d5a43d90bb79",
+          "cf8f879dababc3860b3b87ed2a7de85c229dd949143a2a58830110c7e3c097bf"
+        ],
+        [
+          6,
+          "670:107929",
+          284,
+          345,
+          "998d68782501f994122ef9c69ad202dada03a8063382bd65a6f86e2c3958e905",
+          "980610687a6c68d8d000de51988c73c6ff22718e26de2c95f2882675c016d921"
+        ],
+        [
+          7,
+          "670:108274",
+          297,
+          298,
+          "eee2ac6f2ad9061c48c44df2d1d4e731c486446ea9790e892ddf5ce3f1deee05",
+          "88d62999f5ae76bccb1d433e5e7550824f8b91e2172af17756959320ea334498"
+        ],
+        [
+          8,
+          "670:108572",
+          305,
+          325,
+          "6ca08086aa18b8eccac83db10a206074355ff8368e18c9ff5cd780c2f8a425fb",
+          "d823917f09af97d52b1508c37bc1f9a0e21b6c6069e1fd6f2c501f9c3d94676e"
+        ],
+        [
+          9,
+          "670:109151",
+          307,
+          365,
+          "4566e8c3e051559d1ddb367daaed22838ed1276ff79d5bd86c345060e2096d8e",
+          "0b3f6429d7d2db23ff5db632fa95882d1b5eab7e1af65ee291d0d7cbb06acefa"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4577,
+      "preservedTagCount": 78,
+      "preservedTagIdsSha256": "1085eb616f7d49d4bdd20b7d1f371fb945d0e338c7d8339a9a250fe2e1aaa334",
+      "actualResultSha256": "734b6a926dd980b227b00159c9cfb6881c1878fd058c53398343e8e96a3f0190",
+      "readOnlyAuditCodeSha256": "a344eba4c418d51790ba6bd20e723953f29ef87f2c73b04fc8f6ec727f9391c3"
+    },
+    {
+      "stage": 14,
+      "ids": {
+        "worldId": "628:20725",
+        "refreshId": "658:54977",
+        "componentId": "609:16669",
+        "routeId": "609:16671",
+        "rowId": "609:17045",
+        "cardId": "609:17046",
+        "instanceId": "609:17052"
+      },
+      "worldNativeBounds": [
+        577,
+        0,
+        1913,
+        539
+      ],
+      "sceneSize": [
+        3044,
+        539
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        426
+      ],
+      "counts": {
+        "commands": 4113,
+        "solid": 1982,
+        "vector": 1293,
+        "tile": 267,
+        "png": 509,
+        "canvas": 62,
+        "screenApprox": 14
+      },
+      "batches": [
+        [
+          1,
+          "670:109985",
+          371,
+          420,
+          "6f97ddfa43b849dd56e3ac58b6fe61889cb975d05a2bde8f3c9312885b2c96e7",
+          "0f1d87207eb49655076c60a577860d60074d78ce3247b35a9b7feb81ddadc27a"
+        ],
+        [
+          2,
+          "670:110405",
+          495,
+          545,
+          "113ac4c682ec8baef0f54a1bac54c3879bd916457b894dab321c114be39140a9",
+          "1e6ef65f2ce84aea56ef11d1fff28d2a8b813b2b6088f845ec8e5ddd43a5b52c"
+        ],
+        [
+          3,
+          "670:110950",
+          401,
+          409,
+          "d46c6316840d019e856bbf55b0e1e597f0172e785d5c8b347d8ae68d9e82bdde",
+          "599a3a513383737f754fb934e20ce461363bb26380f79b92a37b9fbf54941e73"
+        ],
+        [
+          4,
+          "670:111359",
+          356,
+          382,
+          "25e638861b18a02f67ffdf1963a0d8efb392602d0802b9a6339b46ac9788a579",
+          "64eaa960f0559584426d4a2f7e600adf6780c7a7e85a720e237b21c497ac7cc2"
+        ],
+        [
+          5,
+          "670:111741",
+          357,
+          463,
+          "1036a11aedb00ac57f158a9b13f1f4c52788e02858f50f08786439350df811d4",
+          "089f651509fb8470ccc0099242a03681f4473c91adf285e19a6fb93feb0f39ba"
+        ],
+        [
+          6,
+          "670:112204",
+          476,
+          636,
+          "fe7b6bff24f73bd1be5beaad7c75ef94ec1e6b4ee654a37a106d8fa130efeed8",
+          "edf9bd2f47982d92910e2e1739d7328dcaf6099033605fe5d949d1dc923c078b"
+        ],
+        [
+          7,
+          "670:112840",
+          459,
+          810,
+          "e015789a8be51f1c359573de3701b31f9674db0430eaf04b28c530a72d05ba1d",
+          "5947bb67162f093140d512d0bdb00a2db8bd5a9ffe284b23b49f59d49496e0bd"
+        ],
+        [
+          8,
+          "670:113650",
+          297,
+          298,
+          "ae6a670662ef6fb3cc75dd33d0fc58fff640bda4caba35b9497c6cedee70e333",
+          "5941d77cbc26550dae40ee2875eaa341f8178cd52ebf240ce90fbadcd996ad16"
+        ],
+        [
+          9,
+          "670:113948",
+          295,
+          296,
+          "d05fe37b343e1f770c8525363ac0c35b2e53b5406f4d59358a3f4b96c572ea64",
+          "c171411e600f136466c3e457f0f7a272d81ea7ca15b79d29821ab403c05c90ab"
+        ],
+        [
+          10,
+          "670:114244",
+          414,
+          488,
+          "f132a8b2e1e95eaf414b4c10aca89aa3f637d5876f88475586be544aea120ca0",
+          "f0f4ccdcf346df1d1c46066a1c0579ab0df3f9bf26d35ba49e3e98abd113b65b"
+        ],
+        [
+          11,
+          "670:115590",
+          192,
+          215,
+          "17fd42d3fcd03e43ce7148f143430554963db0362543f6ff53be32340f66a459",
+          "6cafc32062c0ff017fcd7ebeed1271fe12069bdaa92ed5d462151d4a07390397"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4962,
+      "preservedTagCount": 90,
+      "preservedTagIdsSha256": "0ee849adf97a72e47aa34eabaa6c75e852bf80a8823c9f0210557b626465719b",
+      "actualResultSha256": "840988c06ce3fe1ac9de5f7de1b6268e71fd5ea0b29f342bce7ea4dcaa916e5c",
+      "readOnlyAuditCodeSha256": "ac46006b39b7b8ef82af6dfe6d61e14682b3aa6c323c883e94b4bb87dfcb66d5"
+    },
+    {
+      "stage": 15,
+      "ids": {
+        "worldId": "628:20724",
+        "refreshId": "658:54978",
+        "componentId": "609:16020",
+        "routeId": "609:16022",
+        "rowId": "609:16341",
+        "cardId": "609:16342",
+        "instanceId": "609:16348"
+      },
+      "worldNativeBounds": [
+        820,
+        0,
+        1568,
+        534
+      ],
+      "sceneSize": [
+        3044,
+        534
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        417
+      ],
+      "counts": {
+        "commands": 3582,
+        "solid": 1794,
+        "vector": 1057,
+        "tile": 234,
+        "png": 446,
+        "canvas": 51,
+        "screenApprox": 9
+      },
+      "batches": [
+        [
+          1,
+          "670:115824",
+          398,
+          446,
+          "fd8e04623ba529f40f866961a5e40cc79661cd35a6b70d2fda463698e869295e",
+          "4425e4abee7e92111b922d61ce2df27f04e8350df77f3c512e06ef91510a1682"
+        ],
+        [
+          2,
+          "670:116270",
+          518,
+          575,
+          "26ed234f56613698d65ab90bc1e48b149f530e2d72b7746519ea6d92e06e1c15",
+          "422fdf9168ea472c8de6b8662d5c16ea0878fb3d062cdd162d2fbefcbc0fd2d2"
+        ],
+        [
+          3,
+          "670:116845",
+          700,
+          776,
+          "9b0abf52ba5ca3a60b2968caf9323c8c03c9b894b861a3ddc982873a1ff4ee75",
+          "d0b173976d8f07ae9b32cdf4d8013cce56778ffd2132d3273c97819251af1168"
+        ],
+        [
+          4,
+          "670:117621",
+          430,
+          574,
+          "2ba7b2edeb24cbdb951dad538eaf893b6c2de9dc1e62008496524de1da0b8df7",
+          "61c797510916caa77d91d542d625f605ea178836c5007f5db3e5a2a6ee7385b9"
+        ],
+        [
+          5,
+          "670:118195",
+          471,
+          809,
+          "4372887bef44fed0e24174864d4ab5cb2344c76f84c87f8f5a622875ef3a23c4",
+          "0c6e70f8742cdbcecab43ef6f809dc4e98365af7df53d01d9dd4c75d327e3c36"
+        ],
+        [
+          6,
+          "670:119004",
+          284,
+          285,
+          "b4de25c9e76045fc8a54d8f5f9d45c6124749e40212b72e092077f649eb163e1",
+          "e2868b57e169c6fa56683b3316a9e95a0642bd4a049abba1e25e6e0d4953a9c7"
+        ],
+        [
+          7,
+          "670:119289",
+          296,
+          297,
+          "cfbe5d18a90234dcddc5fb3a732cfd2b3455e4845f3ade403d90f2bacafe9cad",
+          "4368b0c7daebea64e4244f8197d82e403b095fd4c14797aa367d8950a0a25a44"
+        ],
+        [
+          8,
+          "670:119586",
+          398,
+          459,
+          "eac5c4970f0f53686c065ece974b13a8761ac5e9b8a8ec798c1f5c46e5983db4",
+          "63bf221e555004e3741e6f1798f31cf46316d0f74ba2195952429a5d40c19015"
+        ],
+        [
+          9,
+          "670:120747",
+          87,
+          101,
+          "030cbdb602e0dd54c8f48d51436978f8579e8b3fab81bbd54395c56c183bcd36",
+          "1e63b4293c937af8d0e9fa819b3798f85b44ad6ce2221a4c11003df09e5e903b"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4322,
+      "preservedTagCount": 72,
+      "preservedTagIdsSha256": "d9a3c5b1758f5bbf29b61a06da05951047e3f31190c46b3a0c5eae589ccb62fd",
+      "actualResultSha256": "addc3adc476a4a572c60223c08a9519d41f78d67d7cd9f12c1c16a7bd646142d",
+      "readOnlyAuditCodeSha256": "9b2866bfa367fa2a21d0e8c31c090221595c1766fb3ee48234e6d3d98d90425f"
+    },
+    {
+      "stage": 16,
+      "ids": {
+        "worldId": "628:20723",
+        "refreshId": "658:54979",
+        "componentId": "609:15397",
+        "routeId": "609:15399",
+        "rowId": "609:15705",
+        "cardId": "609:15706",
+        "instanceId": "609:15712"
+      },
+      "worldNativeBounds": [
+        847,
+        0,
+        1610,
+        535
+      ],
+      "sceneSize": [
+        3044,
+        535
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        406
+      ],
+      "counts": {
+        "commands": 3626,
+        "solid": 1934,
+        "vector": 945,
+        "tile": 170,
+        "png": 527,
+        "canvas": 50,
+        "screenApprox": 11
+      },
+      "batches": [
+        [
+          1,
+          "670:120853",
+          388,
+          434,
+          "ea420d1fdfa5d5e44cfca627de2e57c043b984eadc20bd2a801734c0a6e88fdb",
+          "6ddf052323a5ad51fc86ea3ecf33c6374027a0c23cd780af3b0fed2c6aa104d3"
+        ],
+        [
+          2,
+          "670:121287",
+          519,
+          562,
+          "8db0e93249c12d9b52583d6c710a473bb6653c0f84a1898459bdedb7e89dddc9",
+          "9f0c66dceff8fae6600769c2a57ab0ab622f096aeef47d585743404e6792c58f"
+        ],
+        [
+          3,
+          "670:121849",
+          608,
+          651,
+          "149e04711372964f5fb84c8c8db9183abcac740b6fb556c39632ae957d9a5e92",
+          "ca7e5db6d438837c357b366d25638d2b144370f810af620798602dde2a548034"
+        ],
+        [
+          4,
+          "670:122500",
+          411,
+          527,
+          "530b83d707bb93f2bfbeb9ad5b26ec8a9bd4c348707d1d7fdbbddf246a274562",
+          "9a397a1e0c024e88e2404c35426bf3e1bfe84a0244035f0ea717a5a4ad15104c"
+        ],
+        [
+          5,
+          "670:123027",
+          356,
+          520,
+          "0344728ef0cea8d5fd05c5653005ab396542bf6c2464b38fa8c98fac1c9a0157",
+          "6c375583eb8a6b302097967c23ecf2f1ade7ec7c43737e88e11b875bac8f6ea7"
+        ],
+        [
+          6,
+          "670:123547",
+          423,
+          700,
+          "e4df9f6b8232e79232682cc079ac2e8fabccaf45c75806c13daaa00641a6bf2e",
+          "92fe7ae60e6dbea4675244a0297c5cabd482ae968cd779f172a297b5b1b3586f"
+        ],
+        [
+          7,
+          "670:124247",
+          297,
+          298,
+          "dadd15efb08a21d90f6bf62178a53e62e8636991ab2905f81211deca3a4c4d41",
+          "bb7763f68f3c22b7ed917059d5e8e91448fc3a40b6690860e7d9d92a81fc0db8"
+        ],
+        [
+          8,
+          "670:124545",
+          295,
+          296,
+          "c7f558120669cd31c1c571e7f15189229644d808732cb25acd8b123ad4b7102e",
+          "7b11c3294826da99c3f7e5e506bd4d1eb1bc881053eb6beda3cc53009d57f2d4"
+        ],
+        [
+          9,
+          "670:124841",
+          329,
+          394,
+          "2197912962b05d858399639b990e269fecea884e9757c5dff082dc61e93bb775",
+          "a19308231e76dc68207b4f18af0edf8c33431d92551ece487f4f675a00b26038"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4382,
+      "preservedTagCount": 69,
+      "preservedTagIdsSha256": "feb853c8e33c5e453d27fcc08a578339c8f53575896f3726438c05fd088900cb",
+      "actualResultSha256": "f981308899666ef9403dcea7f71d716b0d77242894e68e5d5acc824a90e8880e",
+      "readOnlyAuditCodeSha256": "255a4128c869d7b93d76794853dbd7bf03e52f2539782bb551efd2120b2eec47"
+    },
+    {
+      "stage": 17,
+      "ids": {
+        "worldId": "628:20722",
+        "refreshId": "658:54980",
+        "componentId": "608:16131",
+        "routeId": "608:16133",
+        "rowId": "608:16463",
+        "cardId": "608:16464",
+        "instanceId": "608:16470"
+      },
+      "worldNativeBounds": [
+        508,
+        0,
+        1533,
+        538
+      ],
+      "sceneSize": [
+        3044,
+        538
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        417
+      ],
+      "counts": {
+        "commands": 3618,
+        "solid": 1831,
+        "vector": 1097,
+        "tile": 229,
+        "png": 408,
+        "canvas": 53,
+        "screenApprox": 12
+      },
+      "batches": [
+        [
+          1,
+          "670:126044",
+          382,
+          432,
+          "44a9b6c9aba8db323d335c2ab26ef7fb691fa35d07c64d3edd181fdf91ae523c",
+          "18779d711e83d22e28dc6959b8e685df85aa05f7f9e88bba7e121f5a3e35316d"
+        ],
+        [
+          2,
+          "670:126476",
+          509,
+          567,
+          "b07287be42283b81f055db8c8290921ca90595befe44be357ba830a26a96d5b1",
+          "4f11feaaee9b2745a5e7a234bb54b5f99e415887051ef3a8b463deaf43db63b8"
+        ],
+        [
+          3,
+          "670:127043",
+          325,
+          326,
+          "8d17f5783b241a468a6f6c4cedea08dc48e19ac1f749268d5150f829fdec7090",
+          "8b1b58efb8be5126b920d7dd4f04ab8c0e61269adab25096ab0230319a23aa9e"
+        ],
+        [
+          4,
+          "670:127369",
+          388,
+          416,
+          "87c076c988bcb07369dfe1b34ec2676c547840efbb2e15548cb7b6ce45b722b4",
+          "8f6b09f8e01875c85b203470842e17b9e28e7ddd821622ab21035c4de4a85ddb"
+        ],
+        [
+          5,
+          "670:127785",
+          458,
+          593,
+          "bc41f4c8a0cb3e7d72435704357e501fa637a70c265d45466ca1473f9c4f29af",
+          "5379f2917aad33d33f0a159ecceef5c6d79d49c662ddb251dfb04fbd28ced5b9"
+        ],
+        [
+          6,
+          "670:128378",
+          491,
+          773,
+          "e2577faa731a0c4ef3f7cbeaf45ccd50871ae29cc0e51edd56ce8f009a24638c",
+          "c9be21e215237db852dc1905dba3d62924e66cba0373eb0b70370df6a5a52682"
+        ],
+        [
+          7,
+          "670:129151",
+          294,
+          357,
+          "f269ca6c63720629a7c54f005430f2ee563cd72cda941ccf1a7320203ac890d8",
+          "b85d2b9cf41275593abb1e60e8964e433108032945cd8a54ebfe41f7115f6243"
+        ],
+        [
+          8,
+          "670:129508",
+          296,
+          297,
+          "fcb39a8dc706df2c00cb8569ab694b7d3298156325e282b939a75efa0ceb4e8f",
+          "a7818aacf2c73c1f5bce590da02139c78483a0c20648a4ebeb7fa92c2a167257"
+        ],
+        [
+          9,
+          "670:129805",
+          416,
+          479,
+          "d7f82b91b8454d3a292d9330e44c6e401828f5cccce6e5fc8c4d97d677ccf727",
+          "19455a3ca330c8adcd6413fc89302b0988ccbf89b0ce23048f7589715a094f99"
+        ],
+        [
+          10,
+          "670:131080",
+          59,
+          78,
+          "b6f6f1da86112bfee73722f6a44104b4f840f0c6165d822bc8a0ddc28e7506da",
+          "5f0b74cfafcbbfac07006c0a287694e0a22a43e0263e953b5c5b43d9a90f31cf"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4318,
+      "preservedTagCount": 77,
+      "preservedTagIdsSha256": "7df3cbf1570dfaddaf225b0a68a2daa5c94eb66c37983fa9cd7b54424a55faab",
+      "actualResultSha256": "86eeceb2fc78422ae997c454bbce9e0188133c719ba7e3e2185587143723615b",
+      "readOnlyAuditCodeSha256": "a4529cc81f39f3a8b005ef99e7b8f95c76403651cc7d47f1d2a661da07ce97e4"
+    },
+    {
+      "stage": 18,
+      "ids": {
+        "worldId": "628:20721",
+        "refreshId": "658:54981",
+        "componentId": "608:15360",
+        "routeId": "608:15362",
+        "rowId": "608:15742",
+        "cardId": "608:15743",
+        "instanceId": "608:15749"
+      },
+      "worldNativeBounds": [
+        947,
+        0,
+        1698,
+        550
+      ],
+      "sceneSize": [
+        3044,
+        550
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        426
+      ],
+      "counts": {
+        "commands": 4413,
+        "solid": 2113,
+        "vector": 1306,
+        "tile": 359,
+        "png": 569,
+        "canvas": 66,
+        "screenApprox": 19
+      },
+      "batches": [
+        [
+          1,
+          "670:131165",
+          392,
+          446,
+          "6328a7725b59e66b9550221b4e1ca5304033c11671090787a31e3b25f8fc36e1",
+          "4aaca2483c43d35548d2a9a3f0ad0a4b4b43eb6c1cded7138aac69cd8afb4f08"
+        ],
+        [
+          2,
+          "670:131611",
+          470,
+          515,
+          "d4d38762e034e3bc48c2b3be512f805bdd53dd954bf11cdaf21686c7156e8d7c",
+          "77a4e62692c2132c83e2e6263868c9fca4a8dbfe731fc80c20a36c3991041d6f"
+        ],
+        [
+          3,
+          "670:132126",
+          790,
+          856,
+          "7e99b9dec18a6e24acd1179f0da9fe895c37d1e102bef25e40bd97e5c550d026",
+          "6fdc1347b26a9bbb80b1a7f3870ab8eb284c41ca468c085dbc2260b965913818"
+        ],
+        [
+          4,
+          "670:132982",
+          572,
+          740,
+          "2c5a72c5b5dc1b13818b7da8614a119839670bd2b6badd1ef85fb54c20ce09fa",
+          "8264a7c266130ecba8463cce8a57f8c37aab2f45d57bb05859202a909875e055"
+        ],
+        [
+          5,
+          "670:133722",
+          549,
+          733,
+          "5fd66af05660205abc980d1d666fae6b9ad08c8f24126fce998948836062e63f",
+          "a5e733bf9ffba134b4d9274174175eccb30a5b8bfa074d5df3ee92a2ef408a8d"
+        ],
+        [
+          6,
+          "670:134455",
+          501,
+          891,
+          "6150eedafba8acdb0d7a405acfedad4042ae009daac34bf4bde19d268e71cfef",
+          "60e0c3e0874a972432c2435a3748ad3fdc1e0fda6ec7af6dac0f6e543387723a"
+        ],
+        [
+          7,
+          "670:135346",
+          260,
+          261,
+          "2a0c0661af41b4d93d6da4a2e0e9cdf9a135d6950addaa5219e6abce098ca56a",
+          "0320ddb99c03f927e344310fa2aff28988624100c417807b7e93a6410576e6af"
+        ],
+        [
+          8,
+          "670:135607",
+          296,
+          297,
+          "1576a72c3d29d5e86267f6c8b50794fc250f803a491d1aa522027ee056cd11d9",
+          "179e12e028bafd7a38add13fd19f88749c4c413c978be9af94bf7fd4aaabe8ae"
+        ],
+        [
+          9,
+          "670:135904",
+          378,
+          448,
+          "11f1b98059ba243236437241b1fe7f9e17434bb419f118e8efea4102f3e60297",
+          "69d2620604e5daf1fa3271da6f1721e713d7015690651e9c28e217cad36dd03f"
+        ],
+        [
+          10,
+          "670:137344",
+          205,
+          230,
+          "43b445056281f2a40b618044f8bb8003cf824cc8b8d4d785ff61a672d94c61ca",
+          "dc27b1679b1facf6a0cea1322d18d3e3c39b45806757676920142f85d37a4797"
+        ]
+      ],
+      "checkedCreatedNodeIds": 5417,
+      "preservedTagCount": 92,
+      "preservedTagIdsSha256": "80f2ce86fd1b83671eae867e8067298ecdd658fc4bac9417fd2c84a9ef6cf468",
+      "actualResultSha256": "2c2f72be99128804b7c95068802a8213fb630f909b7d0ace2e7e8a3ec44e9e1f",
+      "readOnlyAuditCodeSha256": "060049dc08272357858f2b1fd2206d50d3f94dc5f73d002b254442c024570101"
+    },
+    {
+      "stage": 19,
+      "ids": {
+        "worldId": "628:20720",
+        "refreshId": "658:54982",
+        "componentId": "608:14591",
+        "routeId": "608:14593",
+        "rowId": "608:14972",
+        "cardId": "608:14973",
+        "instanceId": "608:14979"
+      },
+      "worldNativeBounds": [
+        838,
+        0,
+        1697,
+        537
+      ],
+      "sceneSize": [
+        3044,
+        537
+      ],
+      "routeLocalBounds": [
+        62,
+        90,
+        2920,
+        416
+      ],
+      "counts": {
+        "commands": 3978,
+        "solid": 1989,
+        "vector": 1172,
+        "tile": 264,
+        "png": 497,
+        "canvas": 56,
+        "screenApprox": 15
+      },
+      "batches": [
+        [
+          1,
+          "670:137581",
+          394,
+          448,
+          "973f21abc2a1daebea1222735c2ef03b877b9082bbcfb97351d01d7615ac1ab0",
+          "81b75c1e7a4d5e3fd67390fe0fd6815496054d1e1116ecb6fe69051efe4a97b1"
+        ],
+        [
+          2,
+          "670:138029",
+          469,
+          505,
+          "98f0b1eca0990aae6357d16db87499a4975c2578256e70db4d3eec27bcae2f65",
+          "abe02ffe7f0a9dda474bbc660b71032deedda25fd9ba0d318e4b8f7aac38c8f5"
+        ],
+        [
+          3,
+          "670:138534",
+          710,
+          766,
+          "6faa7e979f34f3763a9d5eead2f284b3743e9e7cacf80e2ccb8f1811e48b472b",
+          "756a8bbeb68b156d8c11877959b8fccff3148c8fe7683b20598a054753442c7d"
+        ],
+        [
+          4,
+          "670:139300",
+          441,
+          552,
+          "c7f26d64ad20580902878f9dedead23c9c9bf6ea3c648f08136cf163b809b0c3",
+          "ad0d9bf887d9d022df7c7b6d77d61773d1594eb5d0d8f1e5f9fe7b7a2c26bd94"
+        ],
+        [
+          5,
+          "670:139852",
+          540,
+          721,
+          "b26abfda6fafc05c38376f2c864770b246b3813b27e848dd05b9c18790136574",
+          "d7a2c30d54ce8872ff243917b1c8d304eb97f960bad8adc1bb5c5a299cbb8e24"
+        ],
+        [
+          6,
+          "670:140573",
+          377,
+          685,
+          "8d2ffc6e3314bf614d271d2277ea076dd384eb45b84b9cc6b60a1a2a227c3731",
+          "be0c26f3548e050d31d9f6fede3ddf08ecc35aae0810a288517ec4c1d4fd7f0f"
+        ],
+        [
+          7,
+          "670:141258",
+          297,
+          298,
+          "ee1d3c1594abf05f601dfd8727dde4e2bebcce7df3e670a61a1b922cf2da2269",
+          "89a802930dfe7e09f564354c0064abfda0c42ca0de06897303910ca4f5d4fa13"
+        ],
+        [
+          8,
+          "670:141556",
+          296,
+          297,
+          "56631671e0d36091148c2f3250135ec88ec1603fe0ec4a5fc220367ea30eb5f2",
+          "0768bc7905ffa3016342f9facf73eee61ba576124108bf05c814df49cd75bf0b"
+        ],
+        [
+          9,
+          "670:141853",
+          397,
+          462,
+          "d555e419684d804a3758eda5f8bce86e8a36b5c2471c60ae713e771f5abb87a6",
+          "fb40333e2da54e729b3aaafdad5bfd078f1630de1306c724541880b082190dc5"
+        ],
+        [
+          10,
+          "670:143182",
+          57,
+          71,
+          "c612de19cdb20730c96b30e9e9a53793cf9eef5bef0bb2001b8f324355dbe548",
+          "84f390c760db0f4672bda1ed301edb0e73f42c1e4380f9d9989475cf7ce19a6e"
+        ]
+      ],
+      "checkedCreatedNodeIds": 4805,
+      "preservedTagCount": 92,
+      "preservedTagIdsSha256": "d2dd396ce864c802b59a3ac00d7e44cde8dd191d2fe8a0e62730da41f308f25a",
+      "actualResultSha256": "ecf8756581384442710d1f1cb2a5d5033a1b3988be00ea5a326f1a1bf6b70a0e",
+      "readOnlyAuditCodeSha256": "c01a26aecf8cf7e4e943474831e395223ce8bfb487545b4c468a9524561b5586"
+    },
+    {
+      "stage": 20,
+      "ids": {
+        "worldId": "628:20719",
+        "refreshId": "658:54983",
+        "componentId": "608:14028",
+        "routeId": "608:14030",
+        "rowId": "608:14306",
+        "cardId": "608:14307",
+        "instanceId": "608:14313"
+      },
+      "worldNativeBounds": [
+        1325,
+        0,
+        1268,
+        413
+      ],
+      "sceneSize": [
+        3044,
+        413
+      ],
+      "routeLocalBounds": [
+        62,
+        0,
+        2920,
+        413
+      ],
+      "counts": {
+        "commands": 1969,
+        "solid": 963,
+        "vector": 519,
+        "tile": 166,
+        "png": 314,
+        "canvas": 7,
+        "screenApprox": 7
+      },
+      "batches": [
+        [
+          1,
+          "670:143260",
+          386,
+          498,
+          "a2430236585e82ca7cc114b728f5b37f1f12e650055bdb77db6030a1ee56cb46",
+          "0a9b1af4901be553890b44798a9f505ad78c1b92a6c299084662ea813aa6fca8"
+        ],
+        [
+          2,
+          "670:143758",
+          399,
+          628,
+          "2b74ab5afc978e32b45c85cfeab1d804854d5c3bf06f74d9e7e513aa67877dbc",
+          "9378b5497be335b49830bf17b2ac177f636cf1004216c6b5ea7d2e326e6c8ae2"
+        ],
+        [
+          3,
+          "670:144386",
+          297,
+          298,
+          "adaddee24fa27c8013b5014504489f6b8e044305e7b9dfd4497a243f4bd6f7e4",
+          "35a1f78f34b60cae2dfe8a04124d920ae6d852786ff214bb82f9498c6ef75b6b"
+        ],
+        [
+          4,
+          "670:144684",
+          355,
+          428,
+          "63afc9930ea4b7b46b6aeb52497fb4ab14ae6a17d370a413bb5af4c24e129e17",
+          "e1eb94fae8735c3423e7f0a716bd98ab62fed0f2992b5a35df1e962432312f54"
+        ],
+        [
+          5,
+          "670:145112",
+          532,
+          609,
+          "f0273f4b49414ec28116f706928f055611d07410cdf5098b4724407e91e92073",
+          "01e3a29ecb6500150b4609b1133cddf4ebc597eec97f2f8eeba036108faef02a"
+        ]
+      ],
+      "checkedCreatedNodeIds": 2461,
+      "preservedTagCount": 73,
+      "preservedTagIdsSha256": "ab39bd0f1ead08d0ff315375d9b794b7b906aa283f3021c4c3753436d11412a2",
+      "actualResultSha256": "f370b749711538eda3ad3df36c4cfcd903e33fbe43a62b0185ec70b5afaf6869",
+      "readOnlyAuditCodeSha256": "fcc4ab083b6d9de36c7f9e6e675f00729599e9a41a7098f98040224c017d0afe"
+    }
+  ]
+}
