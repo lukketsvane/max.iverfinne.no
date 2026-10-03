@@ -86,10 +86,17 @@ test('a surviving plant takes over a lost exit without repeating victory rewards
 
 test('defeating the final boss delivers a single shared victory to all four players',()=>{
   const {games,sync}=team(),host=games[0].game;
-  host.enterLevel(20);host.P.st='free';host.gardenPlots=[plot({x:host.P.x})];
-  const boss=host.makeHollowCrown();host.floatKrek=[boss];sync();
+  host.enterLevel(20);const e=host.bossEvent;
+  Object.assign(host.P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false});host.gardenPlots=[plot({id:201,x:e.courtX})];host.floatKrek=[];
+  assert.equal(host.interactBossEvent(),true);const boss=host.liveBoss();sync();
   assert.equal(games[1].game.floatKrek[0].boss,true);
   assert.equal(games[1].game.floatKrek[0].maxHp,boss.maxHp);
+  host.damagePest(boss,10000,boss.x);assert.equal(boss.phase,2);assert.equal(host.runWon,false);
+  for(let i=0;i<200;i++)host.updateHollowCrown(boss,1/120);
+  boss.nodes.slice().forEach(n=>host.guardianBlast(n.x,n.y,12));assert.equal(boss.phase,3);
+  for(let i=0;i<200;i++)host.updateHollowCrown(boss,1/120);
+  host.damagePest(boss,10000,boss.x);assert.equal(boss.phase,4);assert.equal(host.runWon,false);
+  for(let i=0;i<200;i++)host.updateHollowCrown(boss,1/120);
   host.damagePest(boss,10000,boss.x);sync();sync();
   games.forEach(h=>{assert.equal(h.game.runWon,true);assert.equal(h.game.rogueMeta.wins,1);assert.equal(h.game.rogueRun.choice,null);});
 });

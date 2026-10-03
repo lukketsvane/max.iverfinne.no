@@ -9,6 +9,8 @@
 <script src="stage-layout.js"></script>
 <script>
 (async function(){
+ const crownParams=new URLSearchParams(location.search);
+ if(['boss','native-crown','final-boss'].includes(crownParams.get('mode'))){crownParams.delete('mode');location.replace('crown-review.html?'+crownParams.toString());return;}
  const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status'),combatStatus=document.getElementById('combat-status');
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Glass Snail','Wick Hermit','Bellkeeper','Frostjaw','Spindle Widow','Orchard Mimic','Tuning Fork','Moon Moth','Kiln Beetle','Ash Ferryman','Compost Choir','Seed Engine'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
@@ -41,6 +43,7 @@
  function resize(name){viewport.value=name;[frame.width,frame.height]=viewports[name];}
  resize(params.has('portrait')?'phone':'desktop');
  function show(mode){
+  if(['boss','native-crown','final-boss'].includes(mode)){const crownParams=new URLSearchParams(location.search);crownParams.delete('mode');crownParams.set('class',classChooser.value);if(viewport.value==='phone')crownParams.set('portrait','1');location.assign('crown-review.html?'+crownParams.toString());return;}
   current=mode;chooser.value=mode;const serial=++fixtureSerial;
   document.querySelectorAll('#review-input button[aria-pressed]').forEach(button=>button.setAttribute('aria-pressed','false'));
   status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');

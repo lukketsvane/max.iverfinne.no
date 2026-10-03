@@ -10,7 +10,7 @@ const copy = file => {
   mkdirSync(dirname(join(output, file)), { recursive: true });
   cpSync(join(root, file), join(output, file), { recursive: true });
 };
-const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
+const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'crown-review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -27,6 +27,7 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
 for (const file of files) copy(file);
+copy('review/crown-ascent');
 writeFileSync(join(output, 'index.html'), require('./game-source.cjs')());
 require('./build-companion.cjs')(output);
 for (const file of [
@@ -34,6 +35,7 @@ for (const file of [
   'assets/garden-view-v1', 'assets/tiles-v1', 'assets/backdrop-v1', 'assets/night-v1',
   'assets/cavern-v1', 'assets/rattus-motion', 'assets/yeet-encounter-v1', 'manifest.webmanifest',
 ]) copy(file);
+for (const file of ['boss.png', 'effects.png', 'chimera.png', 'atlas.json', 'README.md']) copy('assets/crown-ascendant-v1/' + file);
 for (const file of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, file))) copy(file);
 for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
 for (const [pack, ids, sheets] of [

@@ -1,6 +1,8 @@
 # Figma: the source of runtime art
 
-The game's runtime PNG files live in one Figma file and are mirrored byte for byte in this repository.
+The runtime PNG masters live in one Figma file and are mirrored byte for byte
+in this repository. This includes the three Hollow Crown Ascendant sheets,
+whose actual native sources and authenticated comparison are recorded below.
 
 - File: **max.iverfinne.no max fuglesprenger** (team cells.garden), <https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF>, key `TC0PHGMTCMR6im4hb3CSbF`.
 - Link: `assets/figma-manifest.json` (generated), `scripts/figma-sync.mjs` (the tool), `tests/figma-assets.test.cjs` (offline guard).
@@ -26,7 +28,7 @@ The 15 PNGs inlined as `data:image/png` URIs in `index.html` are preserved byte 
 
 ## Map
 
-The live file was captured on 1 October 2026 for the Rattus integration. All 660 production PNGs matched by source SHA-1, native dimensions and node ID: 660 MATCH, zero problems. The connector capture covered the actual runtime hierarchy, archived layers and source contracts. The comparison used the normal sync tool through a local capture replay, not a desktop session.
+The live file was captured through the authenticated connector on 3 October 2026 at 09:47:38 UTC. The unchanged `figma:manifest` and `figma:check` commands reported **665 production PNGs, 665 MATCH, zero problems**, with 17 unused source layers. The capture covers the actual configured runtime hierarchy, native dimensions, node IDs and image hashes. Comparison ran through a local capture replay, not a desktop session. [Capture](asset-review/crown-secondpass/figma-capture.json) and [comparison](asset-review/crown-secondpass/figma-comparison.json) preserve the evidence.
 
 | Node | Role |
 | --- | --- |
@@ -42,8 +44,31 @@ The live file was captured on 1 October 2026 for the Rattus integration. All 660
 | 398:2 | Legacy inline originals |
 | 548:13527 | Rattus animation studio, 25 clips |
 | 558:13527 | Rattus runtime strips |
+| 619:13527 | Hollow Crown Ascendant native masters |
 
 Rattus retains the 256×256 main and interaction sources at `437:3` and `437:4` for tending, planting, climbing, menus and results. The new motion pack has its own documented cells and anchor in `assets/rattus-motion/README.md`. Production and drafts now share page `10:2`; the level-design page is `508:11825`. Older page/frame IDs remain in Git history.
+
+The authenticated pre-import audit found 662 production masters; all retained
+their source IDs, bytes, native dimensions and local registration. The Crown
+adds exactly three masters. The outer boss section moved to a clear area at
+`(13096,294)` and expanded to `840×2940`; its earlier three boss sheets retained
+their native local coordinates. Seventeen unused source layers are recorded,
+including ten existing staged Yeet images outside the production sections.
+
+The [second-pass ascent board](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=607-14028)
+on page `508:11825` contains all twenty editable seed-1 scene instances, with
+stage 1 at the bottom and stage 20 at the top. Its 1,549 route-tag instances and
+rounded terrain vectors use actual runtime coordinates at native scale, with a
+shared horizontal origin. Existing authored Seed Vault and Railway Ruins
+masters remain unchanged. The board is a review composition, with no `designed`
+marker; it does not silently override live campaign geometry. The full rendered
+worlds are also available in `review/crown-ascent/`; these review captures are
+not native runtime source assets. All twenty scenes now have editable world-art
+layers reconstructed from actual native renderer calls: 30,186 operations using
+18 authenticated existing image hashes, with exact crop registration and terrain
+pattern phase. The layer omits tiny decorative grain and 510 unrecoverable cached
+canvas draws; additive glow uses a screen approximation. The game captures retain
+the complete rendered pixels. ROUTE remains available as a geometry toggle.
 
 ## Pixel-art rules
 
@@ -67,7 +92,7 @@ Export check, verbatim from 396:12:
 
 The repository contracts are binding and win over anything in the Figma workbench:
 
-- **Cell size and anchor** come from the pack README and its `atlas.json`. The master grids in 396:19 (16×16, 32×32, 48×32, 64×96 and 128×128) are size examples only and do not define anchors. Known mismatches: rats are 48×32 at anchor 28,28; role enemies 16×16 at 8,15; bosses and the Hollow Crown 32×32 cells; the robot 48×40 at 24,36; the large rover 80×48 at 40,44; the starter rover 32×32 at 16,31.
+- **Cell size and anchor** come from the pack README and its `atlas.json`. The master grids in 396:19 (16×16, 32×32, 48×32, 64×96 and 128×128) are size examples only and do not define anchors. Known mismatches: rats are 48×32 at anchor 28,28; role enemies 16×16 at 8,15; legacy bosses use 32×32 cells; the Ascendant Hollow Crown uses 128×96 at 64,95, its effects 48×48 at 24,46 and chimeras 64×48 at 32,47; the robot 48×40 at 24,36; the large rover 80×48 at 40,44; the starter rover 32×32 at 16,31.
 - **Colours** come from the pack's own palette (`atlas.json` / `<name>.json` `palette`, pack README). The palette frame 396:25 (copied into the manifest as `rules.palette`) is a picking aid for new art, not a rule; none of the current sheets is limited to it.
 
 Contracts to read: `README.md` → *Pixel-art contract*; `assets/max-skins-v1/README.md`, `assets/enemies-v1/README.md`, `assets/rat-enemies-v1/README.md`, `assets/boss-milestones-v1/README.md`, `assets/native/README.md`, `assets/companion/README.txt`, `assets/companion/large-README.md`, `assets/results-native/`, `assets/expansion/`; before touching the Mech companion, `docs/asset-review/watering-robot/selection.md`.
@@ -76,9 +101,31 @@ Contracts to read: `README.md` → *Pixel-art contract*; `assets/max-skins-v1/RE
 
 The configured runtime sections are now the editable native masters for every runtime PNG, including packs originally produced by generators. Edit the source layer at native 1×, preserve the pack palette and atlas registration, then use `figma:pull` and `figma:manifest`. These packs use the same hash, dimension, palette, alpha and resize validation as all other assets.
 
-The one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active.
+The older one-time import, extraction, packing and preview generators were retired on 1 October 2026. Their source is retained in [Git history](https://github.com/lukketsvane/max.iverfinne.no/tree/050bc6ce0e31f0d37139297973822224d58a0be8/scripts). Original owner uploads, provenance, contact sheets, JSON atlases and every production PNG remain in the repository. The production build and Figma level compiler remain active. The explicitly requested Crown creation pipeline was added on 3 October; it reproduces candidates into a separate directory and refuses to overwrite synchronized Figma masters.
 
-All new runtime art must be in the Figma production frame before it can pass the offline tests. There is no pending-art exception.
+New runtime art enters the Figma production sections before it passes the
+offline tests. The user's 3 October request authorized generating a complete
+Hollow Crown. Its approved silver-king native sheets are now actual Figma
+masters in `451:4`, frame `619:13527`: boss `619:13529`, effects `619:13530` and
+chimeras `619:13531`. All three actual image hashes, PNG byte hashes and native
+bounds match the repository. The temporary local source exception is closed.
+
+`provenance.json` records `origin: figma-native-master` and
+`figma.status: synchronized`. `scripts/generated-art-contract.mjs` verifies
+the five unchanged generated originals, prior-pass archive, native export
+SHA-1/SHA-256, atlas/recipe/source-map pins, all 192 frame rectangles, fixed
+anchors, measured opaque bounds, 24-color palette, binary alpha and native scale.
+It also parses the pinned authenticated capture and comparison, requiring the
+three actual production rectangles and byte audits to match the ordinary
+manifest and exports. It returns no local generated entries; all three sheets
+use standard Figma production coverage.
+
+The second-pass originals remain in `source/pass2/`; earlier originals and
+native exports remain preserved in the Crown source review directory. The
+unexecuted prior-pass import script contains older artwork and is historical
+evidence only. Native edits now follow the ordinary Figma workflow; the creation
+recipe reproduces a separate review candidate and never replaces synchronized
+masters.
 
 ## Tools
 

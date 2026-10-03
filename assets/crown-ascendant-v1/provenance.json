@@ -1,0 +1,144 @@
+{
+  "format": "max-generated-art/v1",
+  "pack": "crown-ascendant-v1",
+  "origin": "figma-native-master",
+  "authorization": "User explicitly requested generated sprite sheets and a fully implemented final boss on 2026-10-03.",
+  "generator": "OpenAI imagegen",
+  "sourceFiles": [
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/main.png",
+      "sha256": "ffa45ed37fb945332acfab5c51311cca8b3e63b811f4a5684db7a07edaf5217f",
+      "width": 1024,
+      "height": 1536
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/armored.png",
+      "sha256": "6de803753c99be533872e98bfd349e35e76347fc6f403f0f872f7a8b2dc67f15",
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/wounded.png",
+      "sha256": "ec46510f444c2f21b5e1c978f7130727a6ee19dccda6a0a9b2b592ecba839ccd",
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/effects.png",
+      "sha256": "d6e405f0bfdee9d96baac083e731374c2da6e99ac359a0fdfeac0da206c4cd30",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "path": "docs/asset-review/crown-ascendant-v1/source/pass2/chimera.png",
+      "sha256": "cbfe87483880c708ee408d4fcea941925afdde0c47917d3496546642b42fbd50",
+      "width": 1254,
+      "height": 1254
+    }
+  ],
+  "outputs": [
+    {
+      "path": "assets/crown-ascendant-v1/boss.png",
+      "width": 768,
+      "height": 1728,
+      "sha1": "225fbcdcb82465979bb55068af9838e15f4926a4",
+      "sha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3"
+    },
+    {
+      "path": "assets/crown-ascendant-v1/effects.png",
+      "width": 288,
+      "height": 288,
+      "sha1": "b0ed31aa9ee3b8a54d2d476602c86269a09463d4",
+      "sha256": "320366528e0cc10c68fb6693b73b663c27f707fcca14c9eab02d8b715066c131"
+    },
+    {
+      "path": "assets/crown-ascendant-v1/chimera.png",
+      "width": 384,
+      "height": 384,
+      "sha1": "815ba10e775e5357264be8b5960e8524f4ae5597",
+      "sha256": "ad1ad6661a98799c072ca04a7d33702d3d1204679e99e0fbad2363f8e9cf5fc1"
+    }
+  ],
+  "atlas": {
+    "path": "assets/crown-ascendant-v1/atlas.json",
+    "sha256": "e8d94f966c739ef8e73cbbba83a2904e98469244346a86c7f52f5f8d9ffc0e5b"
+  },
+  "recipe": {
+    "path": "docs/asset-review/crown-ascendant-v1/recipe.json",
+    "sha256": "9ed7550d6cfd70249666ef26a959c669372e25d9c2b3d1d0f28dd06813f0ca33"
+  },
+  "frameSources": {
+    "path": "docs/asset-review/crown-ascendant-v1/frame-sources.json",
+    "sha256": "7bae8f8f2d3dadf28fba6acd95c7abb08be102dae6befd5e33f5e7e060e91bb3"
+  },
+  "importer": "scripts/build-crown-art.mjs",
+  "processing": [
+    "explicit frame crop extraction",
+    "connected sprite isolation where adjacent source rectangles overlap",
+    "fixed scale per source bank with explicit foot registration translations",
+    "nearest-neighbor sampling",
+    "alpha threshold 128",
+    "24-color palette quantization without dithering",
+    "zero RGB under transparent pixels",
+    "transparent final death cells"
+  ],
+  "figma": {
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "10:2",
+    "sectionId": "451:4",
+    "holderId": "619:13527",
+    "status": "synchronized",
+    "assets": [
+      {
+        "path": "assets/crown-ascendant-v1/boss.png",
+        "nodeId": "619:13529",
+        "imageHash": "225fbcdcb82465979bb55068af9838e15f4926a4",
+        "width": 768,
+        "height": 1728,
+        "x": 16,
+        "y": 92
+      },
+      {
+        "path": "assets/crown-ascendant-v1/effects.png",
+        "nodeId": "619:13530",
+        "imageHash": "b0ed31aa9ee3b8a54d2d476602c86269a09463d4",
+        "width": 288,
+        "height": 288,
+        "x": 16,
+        "y": 1836
+      },
+      {
+        "path": "assets/crown-ascendant-v1/chimera.png",
+        "nodeId": "619:13531",
+        "imageHash": "815ba10e775e5357264be8b5960e8524f4ae5597",
+        "width": 384,
+        "height": 384,
+        "x": 16,
+        "y": 2140
+      }
+    ],
+    "capture": {
+      "path": "docs/asset-review/crown-secondpass/figma-capture.json",
+      "sha256": "9bd293eccd4564076de0b2889ad14564269175a0f629802239e26ed58b7f1e95",
+      "capturedAt": "2026-10-03 09:47:38 UTC"
+    },
+    "comparison": {
+      "path": "docs/asset-review/crown-secondpass/figma-comparison.json",
+      "sha256": "034f7ba4687effddf0ee59c3e339960eab9da4c14d38512fc457c4e9aaed8b60",
+      "status": "MATCH",
+      "matches": 665,
+      "problems": 0,
+      "captureSha256": "9bd293eccd4564076de0b2889ad14564269175a0f629802239e26ed58b7f1e95",
+      "nodeIds": [
+        "619:13529",
+        "619:13530",
+        "619:13531"
+      ]
+    }
+  },
+  "previousPass": {
+    "path": "docs/asset-review/crown-ascendant-v1/prior-pass/provenance.json",
+    "sha256": "eecd496ef04d69d01266ad8977765f5fa82d7785491946c3ece54aff5073b576"
+  },
+  "generatedOrigin": "local-generated"
+}

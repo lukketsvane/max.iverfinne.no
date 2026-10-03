@@ -1,0 +1,59 @@
+{
+  "format": "max-figma-production-comparison/v1",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "capture": "docs/asset-review/crown-secondpass/figma-capture.json",
+  "captureSha256": "9bd293eccd4564076de0b2889ad14564269175a0f629802239e26ed58b7f1e95",
+  "capturedAt": "2026-10-03 09:47:38 UTC",
+  "method": "Unchanged scripts/figma-sync.mjs through local MCP replay of authenticated current Figma node hierarchy and image hashes; local image bytes are served only after matching captured SHA-1.",
+  "commands": [
+    "npm run figma:manifest",
+    "npm run figma:check"
+  ],
+  "production": 665,
+  "match": 665,
+  "problems": 0,
+  "unused": 17,
+  "crownNodes": [
+    "619:13529",
+    "619:13530",
+    "619:13531"
+  ],
+  "crownByteAudit": [
+    {
+      "path": "assets/crown-ascendant-v1/boss.png",
+      "nodeId": "619:13529",
+      "imageHash": "225fbcdcb82465979bb55068af9838e15f4926a4",
+      "sha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3",
+      "byteLength": 125070,
+      "width": 768,
+      "height": 1728,
+      "x": 16,
+      "y": 92,
+      "fillCount": 1
+    },
+    {
+      "path": "assets/crown-ascendant-v1/effects.png",
+      "nodeId": "619:13530",
+      "imageHash": "b0ed31aa9ee3b8a54d2d476602c86269a09463d4",
+      "sha256": "320366528e0cc10c68fb6693b73b663c27f707fcca14c9eab02d8b715066c131",
+      "byteLength": 13438,
+      "width": 288,
+      "height": 288,
+      "x": 16,
+      "y": 1836,
+      "fillCount": 1
+    },
+    {
+      "path": "assets/crown-ascendant-v1/chimera.png",
+      "nodeId": "619:13531",
+      "imageHash": "815ba10e775e5357264be8b5960e8524f4ae5597",
+      "sha256": "ad1ad6661a98799c072ca04a7d33702d3d1204679e99e0fbad2363f8e9cf5fc1",
+      "byteLength": 21908,
+      "width": 384,
+      "height": 384,
+      "x": 16,
+      "y": 2140,
+      "fillCount": 1
+    }
+  ]
+}

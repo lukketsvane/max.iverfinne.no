@@ -1,0 +1,65 @@
+{
+  "builtSourceSha256": "d99c560b61832e120ff1e08dfad003a9b97a47646c72561a4d96c9a56c2d862f",
+  "results": [
+    {
+      "engine": "chromium",
+      "phone": false,
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "fitWidth": 1280,
+      "nativeWidth": 3160,
+      "images": 20,
+      "galleryImages": 8,
+      "links": true,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "engine": "chromium",
+      "phone": true,
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "fitWidth": 320,
+      "nativeWidth": 3160,
+      "images": 20,
+      "galleryImages": 8,
+      "links": true,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "engine": "webkit",
+      "phone": false,
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "fitWidth": 1280,
+      "nativeWidth": 3160,
+      "images": 20,
+      "galleryImages": 8,
+      "links": true,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "engine": "webkit",
+      "phone": true,
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "fitWidth": 320,
+      "nativeWidth": 3160,
+      "images": 20,
+      "galleryImages": 8,
+      "links": true,
+      "errors": [],
+      "passed": true
+    }
+  ]
+}
