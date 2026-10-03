@@ -9,33 +9,28 @@
   "effectFrames": 36,
   "chimeraFrames": 48,
   "fixedAnchors": true,
-  "warnings": [
-    "hammer-4: pixels touch cell edge; inspect for clipping",
-    "hammer-5: pixels touch cell edge; inspect for clipping",
-    "column-3: pixels touch cell edge; inspect for clipping",
-    "chimera-ground/death-2: pixels touch cell edge; inspect for clipping"
-  ],
+  "warnings": [],
   "outputs": [
     {
       "path": "assets/crown-ascendant-v1/boss.png",
       "width": 768,
       "height": 1728,
-      "sha1": "9385485338e13d0ac79164ad6e1d946dc924119c",
-      "sha256": "3811a9a1990c8530049200bd02d0ef83d91c0f2f4d6f093d6367fbd4369a2d84"
+      "sha1": "225fbcdcb82465979bb55068af9838e15f4926a4",
+      "sha256": "d28c01c21c677abef1f2d449cb8a1e3920ede39ad532bbda9209916ecf9070f3"
     },
     {
       "path": "assets/crown-ascendant-v1/effects.png",
       "width": 288,
       "height": 288,
-      "sha1": "bba0440c147156392d816f9725eb1566a4226bf7",
-      "sha256": "7da93b9802ff7887a91f27b6f5428572ddcd68efb6970ace12050da493d84f1f"
+      "sha1": "b0ed31aa9ee3b8a54d2d476602c86269a09463d4",
+      "sha256": "320366528e0cc10c68fb6693b73b663c27f707fcca14c9eab02d8b715066c131"
     },
     {
       "path": "assets/crown-ascendant-v1/chimera.png",
       "width": 384,
       "height": 384,
-      "sha1": "9c823d6147f1ee95cacf327135e82d5de531a72c",
-      "sha256": "f7c7808ae56e9301e6f436d98ec8cab7ef5791a0a834a87103381b1ea313bd7d"
+      "sha1": "815ba10e775e5357264be8b5960e8524f4ae5597",
+      "sha256": "ad1ad6661a98799c072ca04a7d33702d3d1204679e99e0fbad2363f8e9cf5fc1"
     }
   ]
 }

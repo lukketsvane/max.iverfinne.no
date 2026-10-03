@@ -123,7 +123,7 @@ Bosses telegraph attacks in amber and expose themselves in cyan for double damag
 | 16–19 | Kiln Beetle, Ash Ferryman, Compost Choir, Seed Engine |
 | 20 | Hollow Crown |
 
-Hollow Crown is a large native bone-armored king with a massive maul. Its four
+Hollow Crown is a tall native silver king with a faceless helmet and massive maul. Its four
 acts follow the final-boss rhythm of Risk of Rain 2: a maul duel, a lunar
 reinforcement and seal interlude, an empowered return with shockwaves and tall
 energy lanes, then a wounded, weaponless last stand with needles and returning
@@ -308,12 +308,12 @@ Runtime art is native-resolution pixel art.
 
 See `assets/` and the relevant pack READMEs before changing sprite registration.
 
-The user-requested Hollow Crown Ascendant pack adds a tall native bone-armored
+The user-requested Hollow Crown Ascendant pack adds a slender native silver
 king and a separate wounded, weaponless form. Its 128×96 cells preserve the
 maul arcs at native body scale; they are not enlarged in game. Original generated
 sources, reproducible import recipe and pinned exports accompany the pack.
-Figma import is pending connector reauthentication, as explicitly recorded in
-[the art-source contract](docs/figma.md) and
+All 192 body, chimera and effects frames keep fixed native registration. Current
+Figma synchronization is recorded in [the art-source contract](docs/figma.md) and
 [the pack README](assets/crown-ascendant-v1/README.md).
 
 ## Handoff

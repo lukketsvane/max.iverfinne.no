@@ -37,8 +37,16 @@ test('Crown, effects and both chimeras have real animation poses and complete de
   }
 });
 
-test('the generated pack pins every immutable source and native output without claiming a Figma import', async () => {
+test('the Crown pack pins immutable originals and native exports under its recorded source authority', async () => {
   const { generatedArtProblems, generatedArtEntries, LOCAL_GENERATED_PATHS } = await import(pathToFileURL(join(root, 'scripts/generated-art-contract.mjs')).href);
   assert.deepEqual(generatedArtProblems(), []);
-  assert.deepEqual(generatedArtEntries().map(entry => entry.path), LOCAL_GENERATED_PATHS);
+  const provenance = JSON.parse(readFileSync(join(root, 'assets/crown-ascendant-v1/provenance.json')));
+  assert.deepEqual(provenance.outputs.map(entry => entry.path), LOCAL_GENERATED_PATHS);
+  if (provenance.figma.status === 'synchronized') {
+    assert.equal(provenance.origin, 'figma-native-master');
+    assert.deepEqual(generatedArtEntries(), [], 'synchronized masters use ordinary Figma coverage, without a local exception');
+  } else {
+    assert.equal(provenance.origin, 'local-generated');
+    assert.deepEqual(generatedArtEntries().map(entry => entry.path), LOCAL_GENERATED_PATHS);
+  }
 });

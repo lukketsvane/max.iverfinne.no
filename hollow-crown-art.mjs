@@ -5,9 +5,9 @@ export function crownPose(enemy, time, clock) {
   let name = 'idle', progress;
   if (enemy.hp <= 0) name = 'death';
   else if (enemy.crownState === 'arrival' || enemy.crownState === 'transition') {
-    name = wounded ? 'drain' : 'summon';
+    name = wounded ? 'drain' : stage === 3 ? 'empowered' : 'idle';
     if (enemy.crownTransition > 0) progress = 1 - enemy.crownTransition / (enemy.crownTransitionTotal || 1.5);
-  } else if (enemy.crownState === 'intermission') name = 'summon';
+  } else if (enemy.crownState === 'intermission') name = wounded ? 'idle' : 'intermission';
   else if (enemy.windup > 0) {
     name = wounded && enemy.crownMove === 'orbs' ? 'drain' : 'windup';
     progress = 1 - enemy.windup / (enemy.tell || 1.4);
@@ -16,7 +16,7 @@ export function crownPose(enemy, time, clock) {
     name = move === 'orbs' ? 'drain' : move === 'lanes' ? 'pillar' : move === 'volley' || move === 'barrage' ? 'volley' :
       move === 'leap' ? enemy.attackT > (enemy.attackDuration || 1) * .35 ? 'leap' : 'slam' : 'hammer';
     progress = 1 - enemy.attackT / (enemy.attackDuration || .5);
-  } else if (enemy.exposed > 0) name = 'exposed';
+  } else if (enemy.exposed > 0) name = stage === 3 ? 'empowered' : 'exposed';
   else if (enemy.flash > 0) name = 'hurt';
   else if (enemy.crownState === 'recover') name = 'recover';
   else if (Math.hypot(enemy.vx || 0, enemy.vy || 0) > 2) name = 'move';
