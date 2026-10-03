@@ -106,8 +106,8 @@ function lastSeedEnemy(k,dt){
     k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
     if(!k.windup){if(d<18)damageGardener(target.member,(k.elite?30:18)*runDamageScale(),polgeEnemyWarning(k,true));k.bite=.9;}
   }else if(d>10){
-    var speed=(k.kind===2?32:24)*(1+Math.min(1.2,gardenWave*.035))*pestSlow(k);
-    k.vx=dx/d*speed;k.vy=dy/d*speed;k.x+=k.vx*dt;k.y+=k.vy*dt;
+    var wet=mechWetFactor(k),speed=(k.kind===2?32:24)*(1+Math.min(1.2,gardenWave*.035))*pestSlow(k)/wet;
+    k.vx=dx/d*speed;k.vy=dy/d*speed;k.x+=k.vx*dt*wet;k.y+=k.vy*dt*wet;
   }else if(k.bite<=0){beginEnemyWarning(k);k.tell=.55;k.windup=k.tell;k.vx=k.vy=0;}
   return true;
 }

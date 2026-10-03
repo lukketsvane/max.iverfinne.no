@@ -6,14 +6,14 @@
     { art: 'robot', capacity: 1.6, speed: 29, rate: .13, reach: 18, search: 80, dispatch: 140 },
     { art: 'large', capacity: 2.4, speed: 34, rate: .16, reach: 23, search: 100, dispatch: 160 }
   ];
-  var DISPATCH_COST = .25, FULL = .78, THIRSTY = .45, TOPUP = .6, ZAP = { range: 40, cost: .08, cool: 1.5 };
+  var DISPATCH_COST = .25, DISPATCH_RANGE = 96, FULL = .78, THIRSTY = .45, TOPUP = .6, ZAP = { range: 40, cost: .08, cool: 1.5 };
   function num(n, d) { return typeof n === 'number' && Number.isFinite(n) ? n : d; }
   function rank(n) { return Math.max(0, Math.min(TIERS.length - 1, num(n, 0) | 0)); }
-  function live(p, env) { return !!p && !p.dead && env.plants.indexOf(p) >= 0; }
+  function live(p, env) { return !!p && !p.dead && num(p.health, 1) > 0 && env.plants.indexOf(p) >= 0; }
   function passable(env, a, b) {
     for (var n = Math.max(1, Math.ceil(Math.abs(b - a) / 2)), last = env.ground(a), i = 0; i <= n; i++) {
       var x = a + (b - a) * i / n, y = env.ground(x);
-      if (env.wet(x - 3) || env.wet(x + 3) || Math.abs(y - last) > 3) return false;
+      if (env.wet(x - 3) || env.wet(x + 3) || Math.abs(y - last) > 3 || env.blocked && env.blocked(x, y)) return false;
       last = y;
     }
     return true;
@@ -24,12 +24,13 @@
       x: num(saved.x, x - 20), face: saved.face === -1 ? -1 : 1,
       water: Math.max(0, Math.min(TIERS[tier].capacity, num(saved.water, TIERS[tier].capacity))),
       refill: Math.max(0, Math.min(2, num(saved.refill, 0))),
-      target: null, targetX: 0, dispatchT: 0, pourT: 0, cool: 0, zapT: 0, zapDX: 0, zapDY: 0 };
+      target: null, targetId: 0, targetX: 0, dispatchT: 0, pourT: 0, recalling: 0, cool: 0, zapT: 0, zapDX: 0, zapDY: 0 };
     function spec() { return TIERS[s.tier]; }
     function pose(name) { if (s.state !== name) { s.state = name; s.clock = 0; } }
+    function target(p) { s.target = p; s.targetId = p && p.id || 0; if (p) s.targetX = p.x; return p; }
     function stop(refund) {
       if (refund) s.water = Math.min(spec().capacity, s.water + DISPATCH_COST);
-      s.dispatchT = s.pourT = 0; s.target = null;
+      s.dispatchT = s.pourT = s.recalling = 0; target(null);
     }
     function drive(to, dt, env, fast) {
       var dx = to - s.x;
@@ -45,7 +46,7 @@
     }
     function home(dt, env, dry) {
       var x = env.safeX(env.player.x - env.player.face * (dry ? 12 + s.slot * 8 : 25 + s.tier * 7 + s.slot * 13));
-      if (Math.abs(s.x - x) > 8) drive(x, dt, env); else pose(dry ? 'empty' : 'idle');
+      if (Math.abs(s.x - x) > 8) drive(x, dt, env); else { s.recalling = 0; pose(dry ? 'empty' : 'idle'); }
     }
     function claimed(p, env) {
       return (env.crew || []).some(function (o) { return o !== s && (o.target === p || o.dispatchT + o.pourT > 0 && o.targetX === p.x); });
@@ -53,29 +54,38 @@
     function bitten(p, env) {
       return (env.pests || []).some(function (k) { return (k.target === p || k.attackTarget === p) && Math.abs(k.x - p.x) < 24; });
     }
+    function priority(p, env) {
+      var q = env.priority;
+      return !!q && Math.hypot(p.x - q.x, env.ground(p.x) - q.y) <= q.r && (env.threatened ? env.threatened(p) : bitten(p, env));
+    }
     function pick(env) {
       var t = spec(), best = null, top = -Infinity;
       env.plants.forEach(function (p) {
-        var d = Math.abs(p.x - s.x);
-        if (p.dead || p.moisture >= (d <= t.reach + 4 ? TOPUP : THIRSTY) || Math.abs(p.x - env.player.x) > t.search || claimed(p, env) || !passable(env, s.x, p.x)) return;
-        var need = FULL - p.moisture, v = Math.min(1, s.water / need) * (need + (1 - num(p.health, 1)) / 2) - d / (t.speed * 12) - (bitten(p, env) ? .5 : 0);
+        var d = Math.abs(p.x - s.x), preferred = priority(p, env);
+        if (!live(p, env) || p.moisture >= (preferred ? FULL : d <= t.reach + 4 ? TOPUP : THIRSTY) || !preferred && Math.abs(p.x - env.player.x) > t.search || claimed(p, env) || !passable(env, s.x, p.x)) return;
+        var need = FULL - p.moisture, v = (preferred ? 100 : 0) + Math.min(1, s.water / need) * (need + (1 - num(p.health, 1)) / 2) - d / (t.speed * 12) - (bitten(p, env) ? .5 : 0);
         if (v > top) { top = v; best = p; }
       });
       return best;
     }
     function water(dt, env) {
       var t = spec(), p = s.target;
-      if (!live(p, env) || p.moisture >= FULL || Math.abs(p.x - env.player.x) > t.search || s.water <= .001) {
-        if (p && (s.state === 'water' || s.state === 'deploy')) { s.target = null; return pose('retract'); }
-        p = s.target = s.water > .001 ? pick(env) : null;
+      if (env.priority && s.water > .001) {
+        var preferred = pick(env);
+        if (preferred !== p && preferred && priority(preferred, env)) { p = target(preferred); pose('idle'); }
+      }
+      if (!live(p, env) || p.moisture >= FULL || !priority(p, env) && Math.abs(p.x - env.player.x) > t.search || s.water <= .001) {
+        if (p && (s.state === 'water' || s.state === 'deploy')) { target(null); return pose('retract'); }
+        p = target(s.water > .001 ? pick(env) : null);
       }
       if (!p) return home(dt, env, s.water <= .001);
       if (!reach(p.x, t.reach, dt, env)) return;
-      if (!passable(env, s.x, p.x)) { s.target = null; return pose('idle'); }
+      if (!passable(env, s.x, p.x)) { target(null); return pose('idle'); }
       if (s.state === 'deploy') { if (s.clock >= .6) pose('water'); return; }
       if (s.state !== 'water') return pose('deploy');
       var a = Math.min(t.rate * dt, s.water, FULL - p.moisture);
       p.moisture += a; p.pulse = Math.max(p.pulse || 0, .2); s.water = Math.max(0, s.water - a);
+      if (a > 0 && env.onWater) env.onWater(p, a, env.priority ? 'overload' : 'rover');
     }
     function prey(env) {
       var best = null, top = -Infinity;
@@ -105,7 +115,7 @@
       if (!(s.refill = Math.max(0, s.refill - dt))) { s.water = spec().capacity; pose('idle'); }
     }
     function runDispatch(dt, env) {
-      var p = s.target || (s.target = env.plants.find(function (q) { return !q.dead && q.x === s.targetX; }) || null);
+      var p = s.target || target(env.plants.find(function (q) { return s.targetId ? q.id === s.targetId : q.x === s.targetX; }) || null);
       if (!live(p, env)) { stop(s.dispatchT > 0); return pose('retract'); }
       if (s.pourT > 0) {
         p.health = Math.min(1, p.health + (env.pourHeal || 0) * Math.min(dt, s.pourT));
@@ -117,7 +127,9 @@
       if (!passable(env, s.x, p.x)) { stop(true); return pose('idle'); }
       if (s.state !== 'deploy') return pose('deploy');
       if (s.clock < .3) return;
+      var delivered = Math.max(0, 1 - p.moisture);
       s.dispatchT = 0; s.pourT = 3; p.moisture = 1; p.pulse = Math.max(p.pulse || 0, 1.2); pose('water');
+      if (delivered > 0 && env.onWater) env.onWater(p, delivered, env.priority ? 'overload' : 'rover');
       if (env.onArrive) env.onArrive(p);
     }
     return {
@@ -129,25 +141,35 @@
         stop(s.dispatchT > 0); if (!s.refill) s.refill = 2;
         pose('refill'); return true;
       },
+      reachable: function (p, env) { return live(p, env) && passable(env, s.x, p.x); },
+      recall: function (env) {
+        if (s.kind !== 'water' || s.state === 'packed' || s.refill > 0 || s.recalling) return false;
+        var x = env.safeX(env.player.x - env.player.face * (25 + s.tier * 7 + s.slot * 13));
+        if (!(s.dispatchT + s.pourT > 0) && Math.abs(s.x - x) <= 8) return false;
+        stop(s.dispatchT > 0); s.recalling = 1; pose('drive'); return true;
+      },
       dispatch: function (ranked, env) {
         if (s.kind !== 'water' || s.state === 'packed' || s.refill > 0 || s.dispatchT + s.pourT > 0 || s.water < DISPATCH_COST - 1e-9) return null;
-        var p = ranked.find(function (q) { return live(q, env) && Math.abs(q.x - env.player.x) <= spec().dispatch && passable(env, s.x, q.x); });
+        var p = ranked.find(function (q) { return live(q, env) && Math.hypot(q.x - env.player.x, env.ground(q.x) - num(env.player.y, env.ground(q.x))) <= DISPATCH_RANGE && passable(env, s.x, q.x); });
         if (!p) return null;
-        s.water -= DISPATCH_COST; s.target = p; s.targetX = p.x; s.dispatchT = 4; s.pourT = 0; pose('drive');
+        s.water -= DISPATCH_COST; target(p); s.dispatchT = 4; s.pourT = s.recalling = 0; pose('drive');
         return p;
       },
       tick: function (dt, env) {
         if (env.paused || !(dt = Math.max(0, Math.min(.05, num(dt, 0))))) return;
         s.tier = rank(env.tier); s.clock += dt; s.cool = Math.max(0, s.cool - dt); s.zapT = Math.max(0, s.zapT - dt);
-        if (env.transport) { stop(s.dispatchT > 0); return pose('packed'); }
-        if (Math.abs(s.x - env.player.x) > 180 || s.state === 'packed') {
-          stop(s.dispatchT > 0);
+        if (env.transport) { stop(s.dispatchT > 0); s.x = env.player.x; return pose('packed'); }
+        if (s.state === 'packed') {
+          // Packed equipment follows the actual carrier; active jobs never do.
+          s.x = env.player.x;
+          if (env.player.grounded === false || env.wet(s.x - 3) || env.wet(s.x + 3)) return;
           var join = env.safeX(env.player.x - env.player.face * (22 + s.tier * 7 + s.slot * 13));
-          if (!env.wet(join - 3) && !env.wet(join + 3)) s.x = join;
+          if (passable(env, env.player.x, join)) s.x = join;
           pose('idle');
         }
         if (s.refill > 0) return charge(dt, env);
         if (s.dispatchT + s.pourT > 0) return runDispatch(dt, env);
+        if (s.recalling) return home(dt, env, s.water <= .001);
         if (s.state === 'retract' && s.clock < .55) return;
         (s.kind === 'sentry' ? guard : water)(dt, env);
       }
@@ -197,7 +219,7 @@
     ctx.drawImage(art.spray.image, d.x, d.y, d.w, d.h, -14, 0, d.w, d.h);
     ctx.restore();
   }
-  var api = { create: create, tiers: TIERS, dispatchCost: DISPATCH_COST, zap: ZAP, draw: draw, loadArt: loadArt, frameFor: frameFor };
+  var api = { create: create, tiers: TIERS, dispatchCost: DISPATCH_COST, dispatchRange: DISPATCH_RANGE, zap: ZAP, draw: draw, loadArt: loadArt, frameFor: frameFor };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.MaxCompanion = api;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -36,7 +36,7 @@ function ratMove(k,speed,dt){
     var step=Math.min(left,1/120);left-=step;
     var x0=k.x,y0=k.y+RAT_FOOT;
     k.vx=approach(k.vx,speed,360*step);
-    k.x+=k.vx*step;
+    k.x+=k.vx*step*mechWetFactor(k);
     if(k.ratGrounded&&k.vy<-.01)k.ratGrounded=false;
     if(k.ratGrounded){
       var platform=k.ratPlatform?window.MaxStageLayout.support(layout,k.ratPlatform,k.x):null;
