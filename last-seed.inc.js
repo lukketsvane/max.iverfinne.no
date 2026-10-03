@@ -35,7 +35,8 @@ function damageGardener(member,amount,warning){
   if(gardenerDodging(member,a)){polgeAvoidedWarning(member,warning);return false;}
   if(remote?curledMember(member,a):a.tun>0)return false;
   var guarded=member?bracedMember(member,a):a.brace>0;
-  v.hp=Math.max(0,v.hp-amount*(guarded?.35:1));v.shield=.85;v.hurt=4;v.revive=0;
+  amount=rattusAbsorbLastSeedDamage(member,amount*(guarded?.35:1));
+  v.hp=Math.max(0,v.hp-amount);v.shield=.85;v.hurt=4;v.revive=0;
   if(!member||member.id===coop.me){P.hurt=.4;shake=Math.max(shake,2);}
   if(v.hp===0){
     if(!isolatedRelicMode())a.y=playerSupportY(a.x,a.y);a.grounded=true;

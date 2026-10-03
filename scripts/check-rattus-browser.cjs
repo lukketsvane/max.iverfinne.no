@@ -34,7 +34,7 @@ server.listen(8796,'127.0.0.1',async()=>{
   await game.waitForFunction(()=>window.__rattusReview.player.motionName==='kneel');
   await page.locator('iframe').screenshot({path:out+'/'+engineName+'-game-kneel.png'});
   await key(game,'ArrowLeft',true);await game.waitForFunction(()=>window.__rattusReview.player.motionName==='walk');await key(game,'ArrowLeft',false);
-  results.push('Bored idle after 3.5 s, immediate movement cancellation, left-facing render');
+  results.push('Bored idle after 4 s of input silence, immediate movement cancellation, left-facing render');
   await key(game,'ArrowUp',true);await key(game,'ArrowUp',false);await game.waitForFunction(()=>window.__rattusReview.player.motionName==='pounce');
   await game.waitForFunction(()=>window.__rattusReview.player.grounded);
   await key(game,'b',true);await key(game,'b',false);await game.waitForFunction(()=>window.__rattusReview.player.rattlePose>0);

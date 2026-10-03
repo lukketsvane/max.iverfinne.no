@@ -1,0 +1,49 @@
+name: Rattus combat browser review
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths:
+      - 'index.html'
+      - 'rattus.inc.js'
+      - 'rattus-motion.mjs'
+      - 'coop-game.inc.js'
+      - 'run-director.inc.js'
+      - 'high-tide.inc.js'
+      - 'last-seed.inc.js'
+      - 'rat-enemies.inc.js'
+      - 'hollow-crown.inc.js'
+      - 'hollow-crown-art.mjs'
+      - 'ascent-presentation.inc.js'
+      - 'max-classes.js'
+      - 'native-art.mjs'
+      - 'assets/native-atlas.mjs'
+      - 'stage-layout.js'
+      - 'build-paths.js'
+      - 'assets/rattus-motion/**'
+      - 'assets/crown-ascendant-v1/**'
+      - 'assets/characters-v2/rattle-norvegicus-pink/**'
+      - 'review.html'
+      - 'scripts/game-source.cjs'
+      - 'scripts/build-static.cjs'
+      - 'scripts/check-rattus-combat-browser.cjs'
+      - '.github/workflows/rattus-combat-review.yml'
+permissions:
+  contents: read
+jobs:
+  wrestler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps chromium webkit
+      - run: node scripts/check-rattus-combat-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rattus-combat-review
+          path: rattus-combat-browser-review/

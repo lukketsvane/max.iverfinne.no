@@ -12,11 +12,14 @@ the source for tending, planting, climbing, menus and result portraits.
 
 The atlas records each frame's actual bounds and each pose's duration.
 Walk and sprint run on all fours and follow travel speed. A stop from a
-run plays braking. After 3.5 seconds idle, Rattus kneels, rests, performs
-her rat-call and transformation fidgets, and rises. Movement cancels the
-idle immediately. Ground and air strikes vary their presentation while
-preserving the existing validated damage, reach and cooldowns. The rat
-fidgets are cosmetic and do not spawn combat allies.
+run plays braking. After four seconds of grounded, free input silence,
+Rattus kneels, rests, performs her rat-call and transformation fidgets, and
+rises. Any input, including held controls against a wall, cancels idle
+immediately. Accepted latch, Driving and stomp phases read the existing
+tail, guard, kick, dive and crouch poses without advancing combat clocks.
+Ground and air boot strikes vary their presentation; gameplay owns validated
+damage, reach and cooldowns. The rat fidgets are cosmetic and do not spawn
+combat allies.
 
 Animation name and time travel in the existing co-op avatar snapshot.
 Both local and remote players use the same native renderer and anchor.
