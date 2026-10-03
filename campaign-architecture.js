@@ -1,0 +1,545 @@
+(function (root) {
+  'use strict';
+
+  // World-space scenery. A chamber is composed around the actual generated
+  // footing and expedition, never around a second decorative platform map.
+  // Rectangles and atlas crops are also the native editable Figma recipe.
+  var cache = typeof WeakMap === 'function' ? new WeakMap() : null;
+  var sources = {};
+  function sourceImage(src) {
+    var im = sources[src];
+    if (!im && typeof root.Image === 'function') { im = new root.Image(); im.src = src; sources[src] = im; }
+    return im;
+  }
+  var NAMES = [null, null, null, 'buried-aqueduct', 'chapel-vault', 'root-shell',
+    'quarry-cut', 'mycelium-cathedral', 'counterweight-hoist', 'broken-tower',
+    'buried-carillon', 'frozen-seed-wheel', 'root-glass-cistern', 'twin-shafts',
+    'ancient-rib-vault', 'fault-monolith', 'magnetic-crane', 'reactor-heart',
+    'last-sluice-aperture', 'broken-conservatory'];
+
+  function hash(a, b) {
+    var h = Math.imul((a | 0) ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul((b | 0) + 0x632be5ab, 0xc2b2ae35);
+    h = Math.imul(h ^ h >>> 15, 0x2c1b3c6d); return (h ^ h >>> 13) >>> 0;
+  }
+  function palette(stage) {
+    if (stage >= 16) return { void: '#0b1015', recess: '#10191c', wall: '#182125', body: '#28302c', edge: '#41483d', light: '#61634b', moss: '#384833', wood: '#3d3025', rust: '#65513b', glow: '#97956b', frost: '#556965' };
+    if (stage >= 11) return { void: '#08101a', recess: '#101c29', wall: '#182838', body: '#2a3e4d', edge: '#455d69', light: '#6d8792', moss: '#344b49', wood: '#343838', rust: '#5a5145', glow: '#a4bfc2', frost: '#7597a5' };
+    if (stage >= 6) return { void: '#0b1118', recess: '#121d25', wall: '#1b2a31', body: '#2b3b3e', edge: '#455650', light: '#667868', moss: '#39503d', wood: '#44382a', rust: '#62513e', glow: '#94bba1', frost: '#648082' };
+    return { void: '#0b1019', recess: '#131c28', wall: '#202b39', body: '#303a48', edge: '#495462', light: '#707768', moss: '#3d503b', wood: '#44372a', rust: '#625140', glow: '#b49b68', frost: '#6d8691' };
+  }
+  function bbox(ps, floor) {
+    var b = { x: Infinity, y: Infinity, right: -Infinity, bottom: floor };
+    ps.forEach(function (p) { b.x = Math.min(b.x, p.x); b.y = Math.min(b.y, p.y); b.right = Math.max(b.right, p.x + p.w); b.bottom = Math.max(b.bottom, p.y + (p.h || p.depth || 6)); });
+    if (!ps.length) return { x: 0, y: floor - 180, right: 0, bottom: floor };
+    return b;
+  }
+  function empty(stage) {
+    return { stage: stage, ops: [], rooms: [], footings: [], landmark: null,
+      bounds: { x: 0, y: 0, w: 0, h: 0 }, source: 'native-world-geometry', version: 1 };
+  }
+  function makeBuilder(scene, P) {
+    var part = 'chamber';
+    function rect(x, y, w, h, color, alpha) {
+      x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h);
+      if (!(w > 0 && h > 0) || !Number.isFinite(x + y + w + h)) return;
+      var a = alpha == null ? 1 : alpha, last = scene.ops[scene.ops.length - 1];
+      if (last && last.kind === 'rect' && last.part === part && last.color === color && last.alpha === a && last.x === x && last.w === w && last.y + last.h === y) { last.h += h; return; }
+      if (last && last.kind === 'rect' && last.part === part && last.color === color && last.alpha === a && last.y === y && last.h === h && last.x + last.w === x) { last.w += w; return; }
+      scene.ops.push({ kind: 'rect', part: part, x: x, y: y, w: w, h: h, color: color, alpha: a });
+    }
+    function line(x0, y0, x1, y1, width, color, alpha) {
+      x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+      if (y0 === y1) { rect(Math.min(x0, x1), y0 - Math.floor(width / 2), Math.abs(x1 - x0) + 1, width, color, alpha); return; }
+      if (width > 1) {
+        // Rasterize a beam once instead of stamping overlapping squares at
+        // every pixel. The result stays integer-native and culls cheaply.
+        var length = Math.max(1, Math.hypot(x1 - x0, y1 - y0)), nx = -(y1 - y0) * width / (length * 2), ny = (x1 - x0) * width / (length * 2);
+        polygon([[x0 + nx, y0 + ny], [x1 + nx, y1 + ny], [x1 - nx, y1 - ny], [x0 - nx, y0 - ny]], color, alpha);
+        if (y0 === y1) rect(Math.min(x0, x1), y0 - Math.floor(width / 2), Math.abs(x1 - x0) + 1, width, color, alpha);
+        return;
+      }
+      var dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1, dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1, err = dx + dy, limit = dx - dy + 2;
+      for (var n = 0; n < limit; n++) {
+        rect(x0 - Math.floor(width / 2), y0 - Math.floor(width / 2), width, width, color, alpha);
+        if (x0 === x1 && y0 === y1) break;
+        var e = err * 2; if (e >= dy) { err += dy; x0 += sx; } if (e <= dx) { err += dx; y0 += sy; }
+      }
+    }
+    function polygon(points, color, alpha) {
+      var top = Math.ceil(Math.min.apply(null, points.map(function (p) { return p[1]; }))), bottom = Math.floor(Math.max.apply(null, points.map(function (p) { return p[1]; })));
+      for (var y = top; y < bottom; y++) {
+        var hit = [];
+        for (var i = 0, j = points.length - 1; i < points.length; j = i++) {
+          var a = points[i], b = points[j];
+          if ((a[1] <= y && b[1] > y) || (b[1] <= y && a[1] > y)) hit.push(a[0] + (y - a[1]) * (b[0] - a[0]) / (b[1] - a[1]));
+        }
+        hit.sort(function (a, b) { return a - b; });
+        for (var k = 0; k + 1 < hit.length; k += 2) { var x = Math.ceil(hit[k]); rect(x, y, Math.floor(hit[k + 1]) - x + 1, 1, color, alpha); }
+      }
+    }
+    function ellipse(cx, cy, rx, ry, color, alpha) {
+      cx = Math.round(cx); cy = Math.round(cy); rx = Math.round(rx); ry = Math.round(ry);
+      for (var y = -ry; y <= ry; y++) { var half = Math.floor(rx * Math.sqrt(Math.max(0, 1 - y * y / (ry * ry)))); rect(cx - half, cy + y, half * 2 + 1, 1, color, alpha); }
+    }
+    function ring(cx, cy, rx, ry, thick, color, alpha) {
+      cx = Math.round(cx); cy = Math.round(cy); rx = Math.round(rx); ry = Math.round(ry);
+      for (var y = -ry; y <= ry; y++) {
+        var outer = Math.floor(rx * Math.sqrt(Math.max(0, 1 - y * y / (ry * ry))));
+        var inner = Math.abs(y) < ry - thick ? Math.floor((rx - thick) * Math.sqrt(Math.max(0, 1 - y * y / ((ry - thick) * (ry - thick))))) : -1;
+        if (inner < 0) rect(cx - outer, cy + y, outer * 2 + 1, 1, color, alpha);
+        else { rect(cx - outer, cy + y, outer - inner, 1, color, alpha); rect(cx + inner + 1, cy + y, outer - inner, 1, color, alpha); }
+      }
+    }
+    function arch(cx, cy, rx, ry, thick, color, alpha) {
+      for (var sector = 0; sector < 28; sector++) {
+        var a = Math.PI + sector * Math.PI / 28, b = Math.PI + (sector + 1) * Math.PI / 28, chip = hash(sector, Math.round(cx)) % 4;
+        var points = [[cx + Math.cos(a) * rx, cy + Math.sin(a) * ry], [cx + Math.cos(b) * (rx - chip), cy + Math.sin(b) * (ry - chip)],
+          [cx + Math.cos(b) * (rx - thick), cy + Math.sin(b) * (ry - thick)], [cx + Math.cos(a) * (rx - thick), cy + Math.sin(a) * (ry - thick)]];
+        polygon(points, sector % 5 === 1 ? P.edge : color, alpha);
+        var angle = (a + b) / 2, mx = Math.round(cx + Math.cos(angle) * (rx - thick / 2)), my = Math.round(cy + Math.sin(angle) * (ry - thick / 2));
+        rect(mx - 3, my - 1, 5, 2, sector % 3 ? P.wall : P.light, .38);
+        if (sector % 3 === 0) rect(mx + 2, my + 2, 3, 1, P.void, .7);
+      }
+    }
+    function stone(x, y, w, h, shade, salt) {
+      rect(x, y, w, h, shade || P.body);
+      rect(x, y, 2, h, P.edge, .6); rect(x + w - 3, y, 3, h, P.void, .5);
+      for (var row = 9; row < h - 3; row += 11) {
+        var slip = (Math.floor(row / 11) & 1) * 8;
+        rect(x + 2, y + row, Math.max(1, w - 5), 1, P.void, .55);
+        for (var col = 8 + slip; col < w - 3; col += 19) rect(x + col, y + row - 8, 1, 8, P.void, .4);
+        var seed = hash(row + salt, Math.round(x));
+        if (w > 12 && seed % 3 === 0) rect(x + 4 + seed % (w - 8), y + row - 5, 2 + seed % 3, 1, P.edge, .55);
+      }
+      // These are crops of the existing native masonry master, not enlarged
+      // prop sprites. Alternating crop registration avoids a wallpaper stripe.
+      for (var blockY = 3; blockY < h - 4; blockY += 36) {
+        crop('rock.mid.mid', x + 2, y + blockY, Math.min(26, w - 4), Math.min(32, h - blockY - 2), hash(blockY, salt) % 3, hash(salt, blockY) % 4, .32);
+      }
+    }
+    function vine(x, y, length, salt) {
+      for (var k = 0; k < length; k += 3) {
+        var slip = Math.floor(k / 17) & 1;
+        rect(x + slip, y + k, 1, Math.min(3, length - k), P.moss, .85);
+        if (k % 9 === 0) rect(x + (hash(k, salt) & 1 ? 1 : -2), y + k + 1, 2, 1, P.edge, .45);
+      }
+    }
+    function crop(piece, x, y, w, h, ox, oy, alpha) {
+      scene.ops.push({ kind: 'tile', part: part, piece: piece, x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h), ox: ox | 0, oy: oy | 0, alpha: alpha == null ? 1 : alpha });
+    }
+    function image(src, source, x, y, alpha) {
+      sourceImage(src);
+      scene.ops.push({ kind: 'image', part: part, src: src, crop: source.slice(), x: Math.round(x), y: Math.round(y), w: source[2], h: source[3], alpha: alpha == null ? 1 : alpha });
+    }
+    function lamp(x, y, salt) {
+      rect(x - 5, y - 3, 11, 19, P.void, .85);
+      rect(x - 7, y - 5, 15, 3, P.body); rect(x - 5, y - 4, 11, 1, P.edge, .6);
+      rect(x - 3, y, 7, 12, P.wood); rect(x - 2, y + 2, 5, 7, '#9d7746', .8);
+      rect(x, y + 3, 2, 5, '#e4bb75'); rect(x - 1, y + 5, 1, 3, '#b38a51');
+      rect(x - 4, y + 11, 9, 2, P.body); vine(x + 9, y + 4, 12 + salt % 9, salt);
+    }
+    function weather(points, salt, colors, density) {
+      var left = Math.floor(Math.min.apply(null, points.map(function (p) { return p[0]; }))), right = Math.ceil(Math.max.apply(null, points.map(function (p) { return p[0]; })));
+      var top = Math.floor(Math.min.apply(null, points.map(function (p) { return p[1]; }))), bottom = Math.ceil(Math.max.apply(null, points.map(function (p) { return p[1]; })));
+      function inside(x, y) {
+        var value = false;
+        for (var i = 0, j = points.length - 1; i < points.length; j = i++) {
+          var a = points[i], b = points[j];
+          if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) value = !value;
+        }
+        return value;
+      }
+      for (var y = top + 3; y < bottom - 3; y += 7) for (var x = left + 2; x < right - 3; x += 9) {
+        var value = hash(x + salt * 29, y - salt * 13);
+        if (value % 5 >= (density || 2)) continue;
+        var px = x + value % 5, py = y + (value >>> 3) % 3, w = 2 + (value >>> 5) % 7, h = 1 + (value >>> 8) % 3;
+        if (!inside(px, py) || !inside(px + w, py + h)) continue;
+        rect(px, py, w, h, colors[value % colors.length], .43);
+        if (value % 4 === 0 && inside(px + 2, py + h + 1)) rect(px + 1, py + h, Math.max(1, w - 2), 1, colors[(value + 1) % colors.length], .3);
+      }
+    }
+    function surface(points, salt, colors, material) {
+      // Original material shader, evaluated directly on the native pixel grid.
+      // Wide coherent patches and small chips follow the authored silhouette;
+      // this is not a traced image or a bitmap-to-vector conversion.
+      var top = Math.ceil(Math.min.apply(null, points.map(function (p) { return p[1]; }))), bottom = Math.floor(Math.max.apply(null, points.map(function (p) { return p[1]; })));
+      for (var y = top; y < bottom; y += 2) {
+        var hit = [];
+        for (var i = 0, j = points.length - 1; i < points.length; j = i++) { var a = points[i], b = points[j]; if ((a[1] <= y && b[1] > y) || (b[1] <= y && a[1] > y)) hit.push(a[0] + (y - a[1]) * (b[0] - a[0]) / (b[1] - a[1])); }
+        hit.sort(function (a, b) { return a - b; });
+        for (var k = 0; k + 1 < hit.length; k += 2) {
+          var left = Math.ceil(hit[k]), right = Math.floor(hit[k + 1]), run = left, lastColor = null;
+          for (var x = left; x <= right + 3; x += 3) {
+            var coarse = hash(Math.floor(x / 11), Math.floor(y / 9) + salt), fine = hash(Math.floor(x / 3) + salt, Math.floor(y / 2));
+            var u = (x - left) / Math.max(1, right - left), v = (y - top) / Math.max(1, bottom - top), shade;
+            if (material === 'cap') shade = Math.floor(2.5 + (1 - v) * 1.4 - u * .8) + (coarse % 5 === 0 ? 1 : coarse % 4 === 0 ? -1 : 0);
+            else if (material === 'bark') { var groove = Math.floor(x - y * .13 + Math.sin(y / 19) * 4) % 9; shade = groove < 2 ? 1 : groove < 5 ? 3 : 2; if (u < .18) shade++; if (coarse % 4 === 0) shade--; }
+            else shade = u < .2 ? 4 : u < .57 ? 3 : u < .81 ? 2 : 1;
+            if (fine % 17 === 0) shade--; if (fine % 29 === 0) shade++;
+            var color = x > right ? null : colors[Math.max(0, Math.min(colors.length - 1, shade))];
+            if (color !== lastColor) { if (lastColor) rect(run, y, Math.min(x, right + 1) - run, Math.min(2, bottom - y), lastColor); run = x; lastColor = color; }
+          }
+        }
+      }
+    }
+    return { rect: rect, line: line, polygon: polygon, ellipse: ellipse, ring: ring, arch: arch, stone: stone, vine: vine, crop: crop, image: image, lamp: lamp,
+      weather: weather, surface: surface,
+      part: function (name) { part = name; } };
+  }
+
+  function chamber(B, room, P, salt) {
+    var x = room.x, y = room.y, w = room.w, h = room.h, rim = 20, rise = Math.min(Math.floor(h * .58), Math.floor(w * .42), 142);
+    // The recess is not a floor: its lower edge disappears under actual soil.
+    B.rect(x, y + rise, w, h - rise, P.recess, .34);
+    B.arch(x + w / 2, y + rise, w / 2 + 11, rise + 11, rim, P.body, .92);
+    B.stone(x - 12, y + rise - 3, rim + 2, h - rise + 3, P.wall, salt);
+    B.stone(x + w - 10, y + rise - 3, rim + 2, h - rise + 3, P.wall, salt + 2);
+    // Voussoirs follow a single broad arch rather than repeating screen columns.
+    for (var a = 0; a <= 16; a++) {
+      var angle = Math.PI + a * Math.PI / 16, ax = Math.round(x + w / 2 + Math.cos(angle) * (w / 2 - 4)), ay = Math.round(y + rise + Math.sin(angle) * (rise - 4));
+      B.rect(ax - 3, ay - 2, 7, 5, a % 3 ? P.body : P.edge, .72);
+      if (a % 2 === 1) { B.vine(ax, ay + 4, 18 + hash(a, salt) % 34, salt); B.vine(ax + 4, ay + 7, 9 + hash(a + 1, salt) % 19, salt + 4); }
+    }
+    // Far-wall masonry lives in irregular patches, leaving the room legible.
+    for (var band = y + rise + 19; band < y + h - 14; band += 31) {
+      var seed = hash(band, salt), bx = x + 24 + seed % Math.max(1, w - 92), bw = Math.min(56, x + w - 20 - bx);
+      B.rect(bx, band, bw, 1, P.body, .45);
+      B.rect(bx + 16, band - 9, 1, 9, P.body, .35);
+      if (seed % 3 === 0) B.rect(bx + bw - 7, band + 2, 5, 1, P.edge, .25);
+    }
+  }
+  function supports(B, scene, layout, ground, P) {
+    var ps = scene.footings, tops = {};
+    ps.forEach(function (p, index) {
+      // Only real ledges receive a visible bracket. A full rear pier is reserved
+      // for a broad rest, with its base on the real ground profile.
+      var x = p.x, y = p.y + Math.max(4, p.depth || 6), w = p.w;
+      B.part('footing:' + p.id);
+      B.rect(x + 3, y, Math.max(1, w - 6), 2, P.body, .95);
+      if (w >= 54 || p.rest) {
+        var center = Math.round(x + w / 2), floor = Math.round(ground(center)), key = Math.floor(center / 48);
+        if (!tops[key] && floor - y >= 20) {
+          tops[key] = true;
+          B.stone(center - 7, y + 2, 14, floor - y - 2, P.wall, index);
+          B.polygon([[center - 17, y], [center + 17, y], [center + 7, y + 11], [center - 7, y + 11]], P.body);
+        }
+      } else if (index % 3 === 0) {
+        var side = p.route > 0 ? -1 : 1, pivot = side > 0 ? x + 4 : x + w - 5;
+        B.line(pivot, y + 1, pivot + side * 10, y + 15, 3, P.wall);
+        B.line(pivot, y + 1, pivot + side * 10, y + 15, 1, P.edge, .45);
+      }
+      if (!p.optional && index % 4 === 2 && w >= 26) B.crop('vines', x + 7, y + 1, Math.min(14, w - 10), 17, hash(index, layout.stage) % 24, 0, .58);
+      if (p.rest || w >= 54 && index % 3 === 1) B.lamp(x + (p.route > 0 ? w - 9 : 9), p.y - 22, index);
+    });
+  }
+  function ribs(B, x, y, width, height, P) {
+    var count = 8, dx = width / (count - 1);
+    for (var i = 0; i < count; i++) {
+      var top = y + Math.abs(i - 3) * 5, xx = Math.round(x + i * dx), tilt = i < 4 ? -1 : 1, long = height - Math.abs(i - 3) * 10;
+      var points = [[xx - 3, top], [xx + 11, top + 3], [xx + tilt * 15 + 16, top + long * .2], [xx + tilt * 25 + 15, top + long * .4], [xx + tilt * 27 + 10, top + long * .61], [xx + tilt * 22 + 5, top + long * .82], [xx + tilt * 13 - 4, top + long], [xx + tilt * 8 - 10, top + long - 8], [xx + tilt * 17 - 5, top + long * .8], [xx + tilt * 17 - 2, top + long * .6], [xx + tilt * 16 - 2, top + long * .39], [xx + tilt * 10 - 4, top + long * .19]];
+      B.polygon(points, P.body);
+      B.surface(points, 14 + i, ['#263a40', '#455453', '#68766c', '#8d9682', '#b6b89a'], 'bone');
+      B.line(xx + 3, top + 6, xx + tilt * 13 + 6, top + long * .23, 2, '#bec2a6', .66);
+      B.line(xx + tilt * 13 + 6, top + long * .23, xx + tilt * 21 + 4, top + long * .48, 2, '#a5ad92', .6);
+      B.line(xx + tilt * 17 + 4, top + long * .71, xx + tilt * 11 - 3, top + long * .93, 1, '#b0b79e', .56);
+      B.line(xx + tilt * 18 + 8, top + long * .51, xx + tilt * 18 + 2, top + long * .54, 1, P.recess, .9);
+      B.rect(xx + tilt * 17 + 6, top + long * .5, 3, 3, P.recess, .8);
+      B.rect(xx + tilt * 14 + 1, top + long * .7, 2, 2, P.recess, .8);
+      if (i % 2) B.vine(xx + tilt * 15 + 8, top + long * .58, 30 + i * 2, i);
+    }
+    B.line(x - 18, y + 4, x + width + 21, y + 19, 8, P.body);
+    for (var k = 0; k < width; k += 16) { B.rect(x + k, y + Math.floor(k * 15 / width) - 1, 8, 5, P.edge, .8); B.rect(x + k + 6, y + Math.floor(k * 15 / width) + 2, 2, 4, P.void, .8); }
+  }
+  function wheel(B, x, y, radius, P, frozen) {
+    B.ellipse(x, y, radius + 13, radius + 13, P.void);
+    B.ring(x, y, radius + 10, radius + 10, 5, P.body);
+    B.ring(x, y, radius, radius, 9, P.edge, .8);
+    B.ring(x, y, radius - 11, radius - 11, 3, P.body);
+    for (var weather = 0; weather < 82; weather++) {
+      var phase = weather * Math.PI * 2 / 82, wx = Math.round(x + Math.cos(phase) * (radius - 4)), wy = Math.round(y + Math.sin(phase) * (radius - 4));
+      B.rect(wx - 2, wy - 1, 3 + weather % 3, 2, weather % 4 ? P.body : P.light, weather % 4 ? .75 : .42);
+      if (weather % 7 === 1) B.rect(wx, wy + 2, 2, 3, P.void, .5);
+    }
+    var spokes = radius > 110 ? 12 : 8;
+    for (var i = 0; i < spokes; i++) {
+      var a = i * Math.PI * 2 / spokes, ex = Math.round(x + Math.cos(a) * (radius - 11)), ey = Math.round(y + Math.sin(a) * (radius - 11));
+      B.line(x, y, ex, ey, 7, P.body);
+      B.line(x - 1, y - 1, ex - 1, ey - 1, 1, P.edge, .65);
+      B.rect(ex - 2, ey - 2, 4, 4, P.edge);
+      var mx = Math.round(x + Math.cos(a + .16) * (radius * .64)), my = Math.round(y + Math.sin(a + .16) * (radius * .64));
+      B.rect(mx - 3, my - 5, 6, 9, P.wood, .8); B.rect(mx - 2, my - 4, 3, 2, P.glow, .6);
+    }
+    B.ellipse(x, y, 17, 17, P.wall); B.ring(x, y, 15, 15, 3, P.edge); B.rect(x - 4, y - radius - 26, 8, radius * 2 + 52, P.body);
+    B.rect(x - 1, y - radius - 26, 2, radius * 2 + 52, P.edge, .55);
+    if (frozen) {
+      for (var n = -radius; n <= radius; n += 17) { var top = y - Math.floor(Math.sqrt(Math.max(0, radius * radius - n * n))); B.rect(x + n, top, 3, 8 + hash(n, radius) % 13, P.frost, .72); B.rect(x + n + 1, top + 3, 1, 15 + hash(n, 2) % 9, P.light, .65); }
+    }
+    B.ellipse(x, y, 7, 7, P.void); B.rect(x - 2, y - 2, 4, 4, P.rust);
+  }
+  function fungus(B, x, floor, P) {
+    var crown = floor - 194;
+    var stem = [[x - 31, floor], [x - 14, floor - 25], [x - 9, floor - 61], [x - 1, floor - 91], [x + 17, floor - 117], [x + 22, crown + 31], [x + 18, crown + 17], [x + 42, crown + 11], [x + 49, crown + 31], [x + 40, floor - 114], [x + 30, floor - 78], [x + 26, floor - 45], [x + 37, floor - 21], [x + 53, floor]];
+    B.surface(stem, 71, ['#253335', '#414b42', '#5b6655', '#7b8369', '#a1a488'], 'bark');
+    B.line(x - 14, floor - 7, x + 4, floor - 64, 3, '#91997a', .75);
+    B.line(x + 4, floor - 64, x + 21, floor - 105, 2, '#b0b397', .7);
+    B.line(x + 21, floor - 105, x + 30, crown + 31, 2, '#959c7f', .65);
+    var cap = [], under = [];
+    for (var edge = -126; edge <= 126; edge += 9) { var v = edge / 127, arc = Math.sqrt(Math.max(0, 1 - v * v)), chip = hash(edge, 7) % 3; cap.push([x + edge, crown + 33 - arc * 60 + edge * .07 + chip]); }
+    for (var edge = 126; edge >= -126; edge -= 9) cap.push([x + edge, crown + 33 + 15 * Math.sqrt(Math.max(0, 1 - edge * edge / (127 * 127))) + edge * .07]);
+    B.surface(cap, 7, ['#163239', '#24454a', '#345d5b', '#49786d', '#6a9180'], 'cap');
+    for (var edge = -126; edge <= 126; edge += 9) under.push([x + edge, crown + 33 + edge * .07]);
+    for (var edge = 126; edge >= -126; edge -= 9) under.push([x + edge, crown + 35 + 18 * Math.sqrt(Math.max(0, 1 - edge * edge / (127 * 127))) + edge * .07]);
+    B.polygon(under, '#142e35');
+    for (var i = -9; i <= 9; i++) {
+      var ex = x + i * 13, ey = crown + 34 + i * 1.05, bend = x + 25 + i * 4;
+      B.line(ex, ey, bend, crown + 48 + i * .25, 1, i % 3 ? '#517b70' : '#82a293', .75);
+    }
+    for (var n = 0; n < 19; n++) { var xx = x - 99 + n * 11, yy = crown + 7 - Math.sqrt(Math.max(0, 1 - (xx - x) * (xx - x) / (116 * 116))) * 23 + hash(n, 7) % 18; B.rect(xx, yy, 3 + n % 3, 2, '#91ae93', .72); B.rect(xx + 1, yy + 2, 2 + n % 2, 1, '#35534e'); }
+    for (var root = -1; root <= 1; root += 2) {
+      B.polygon([[x + 9, floor - 27], [x + root * 38, floor - 16], [x + root * 78, floor - 9], [x + root * 91, floor - 2], [x + root * 43, floor - 6], [x + root * 17, floor]], '#4e5e4c');
+      B.line(x + root * 16, floor - 17, x + root * 64, floor - 7, 2, '#819271', .6);
+    }
+    // Filaments occupy soil behind the true floor; glowing root paths are
+    // fine decoration and never imply another traversable horizontal shelf.
+    for (var k = -1; k <= 1; k += 2) {
+      B.line(x + k * 6, floor - 7, x + k * 67, floor - 26, 2, P.moss, .8);
+      B.line(x + k * 67, floor - 26, x + k * 141, floor - 13, 1, P.glow, .45);
+      B.line(x + k * 67, floor - 26, x + k * 87, floor - 53, 1, P.glow, .35);
+    }
+  }
+  function landmark(B, scene, layout, ground, P) {
+    var stage = layout.stage | 0, main = scene.footings.filter(function (p) { return !p.expedition; }), bb = bbox(main, ground(layout.origin)), cx = Math.round(layout.origin + (stage % 2 ? 34 : -22)), floor = Math.round(ground(cx));
+    var height = Math.max(168, Math.min(258, floor - bb.y + 42)), y = floor - height;
+    scene.landmark = { id: NAMES[stage], x: cx, y: y, floor: floor, native: true, decoration: true };
+    B.part('landmark:' + NAMES[stage]);
+    if (stage === 3) {
+      for (var a = -1; a <= 1; a++) { var ax = cx + a * 118; B.stone(ax - 11, y + 79, 22, floor - y - 79, P.body, a); B.ring(ax + 59, y + 86, 61, 67, 10, P.edge, .76); B.rect(ax + 7, y + 83, 104, floor - y - 83, P.recess); B.vine(ax + 14, y + 111, 36 + a * 4, a); }
+      B.stone(cx - 134, y + 7, 275, 17, P.body, stage);
+      B.rect(cx - 125, y + 23, 251, 3, P.edge, .7);
+      B.rect(cx - 3, y - 17, 15, 25, P.wall); B.rect(cx + 5, y - 22, 4, 7, P.body);
+    } else if (stage === 4) {
+      var archY = y + 98;
+      B.ring(cx, archY, 109, 106, 15, P.body);
+      B.stone(cx - 109, archY, 18, floor - archY, P.body, stage); B.stone(cx + 91, archY, 18, floor - archY, P.body, stage + 1);
+      B.polygon([[cx - 37, y + 110], [cx, y + 49], [cx + 38, y + 110], [cx + 38, y + 161], [cx - 37, y + 161]], P.void);
+      B.line(cx, y + 54, cx, y + 164, 3, P.edge, .6); B.rect(cx - 31, y + 117, 62, 3, P.edge, .6);
+      B.rect(cx - 3, y + 72, 6, 9, P.glow, .55); B.vine(cx + 73, y + 99, 58, stage);
+    } else if (stage === 5) {
+      var burl = [], inner = [];
+      for (var b = 0; b <= 40; b++) { var angle = b * Math.PI * 2 / 40, chip = hash(b, stage) % 7; burl.push([cx + 6 + Math.cos(angle) * (169 - chip), floor - 90 + Math.sin(angle) * (120 - chip)]); }
+      for (var b = 40; b >= 0; b--) { var angle = b * Math.PI * 2 / 40; inner.push([cx + 6 + Math.cos(angle) * 125, floor - 69 + Math.sin(angle) * 85]); }
+      B.surface(burl.concat(inner), 51, ['#222e2c', '#394337', '#515a43', '#6c7351', '#89916c'], 'bark');
+      // Deep radial bark fissures and knotted branch ribs replace the former
+      // concentric wire rings. Their fragmented outline is an organic mass.
+      for (var root = 0; root < 9; root++) {
+        var angle = Math.PI + root * Math.PI / 8, ox = Math.round(cx + 6 + Math.cos(angle) * 157), oy = Math.round(floor - 90 + Math.sin(angle) * 108);
+        var ix = Math.round(cx + 6 + Math.cos(angle + .12) * 130), iy = Math.round(floor - 75 + Math.sin(angle + .12) * 89);
+        B.line(ox, oy, ix, iy, 2, '#202c2a', .9); B.line(ox - 2, oy - 1, ix - 2, iy - 1, 1, '#8c9873', .65);
+        if (root % 2) { B.ellipse(ox - 3, oy + 6, 8, 5, '#344131'); B.ring(ox - 3, oy + 6, 6, 4, 1, '#7a8660', .7); }
+      }
+      B.polygon([[cx - 147, floor - 75], [cx - 163, floor - 56], [cx - 177, floor - 34], [cx - 205, floor - 14], [cx - 180, floor - 8], [cx - 156, floor - 24], [cx - 133, floor - 57]], '#435139');
+      B.line(cx - 155, floor - 59, cx - 192, floor - 17, 3, '#76825c', .8);
+      B.polygon([[cx + 139, floor - 86], [cx + 155, floor - 68], [cx + 165, floor - 37], [cx + 192, floor - 18], [cx + 168, floor - 8], [cx + 143, floor - 30], [cx + 126, floor - 65]], '#435139');
+      B.line(cx + 144, floor - 67, cx + 176, floor - 20, 3, '#6d7956', .8);
+      B.vine(cx - 31, floor - 164, 70, stage); B.vine(cx + 66, floor - 155, 43, stage + 1);
+    } else if (stage === 6 || stage === 15) {
+      var tilt = stage === 15 ? 36 : 10;
+      B.polygon([[cx - 111, floor], [cx - 89, y + 14], [cx - 47, y - 12], [cx - 22, y + 34], [cx + tilt, floor]], P.body);
+      B.polygon([[cx + 29, floor], [cx + 16, y + 58], [cx + 53, y + 21], [cx + 91, y + 10], [cx + 146, floor]], P.wall);
+      B.line(cx - 43, y + 27, cx - 19, floor - 26, 3, P.edge, .65);
+      for (var cut = 0; cut < 5; cut++) B.line(cx - 83 + cut * 3, y + 62 + cut * 27, cx - 31 + cut * 7, y + 51 + cut * 28, 2, P.recess);
+      if (stage === 15) { B.line(cx + 1, y + 37, cx + 31, floor - 20, 3, P.frost, .8); B.line(cx + 5, y + 82, cx + 52, y + 94, 1, P.frost, .65); }
+      else { B.line(cx - 102, y + 32, cx + 113, y + 45, 2, P.wood); B.rect(cx + 94, y + 42, 3, 38, P.rust); B.rect(cx + 88, y + 78, 16, 8, P.body); }
+    } else if (stage === 7) fungus(B, cx - 9, floor - 1, P);
+    else if (stage === 8) {
+      B.stone(cx - 117, y + 22, 20, floor - y - 22, P.body, stage); B.stone(cx + 93, y + 22, 20, floor - y - 22, P.body, stage + 2);
+      B.rect(cx - 123, y + 17, 242, 9, P.wood); B.line(cx - 93, y + 26, cx - 58, y + 73, 5, P.wood); B.line(cx + 92, y + 26, cx + 57, y + 73, 5, P.wood);
+      B.ring(cx - 63, y + 28, 16, 16, 4, P.rust); B.ring(cx + 58, y + 28, 16, 16, 4, P.rust);
+      B.rect(cx - 65, y + 44, 2, height - 92, P.edge, .8); B.rect(cx + 57, y + 44, 2, height - 105, P.edge, .8);
+      B.stone(cx - 79, floor - 57, 29, 47, P.wall, stage); B.rect(cx - 80, floor - 54, 31, 3, P.rust, .65);
+      B.rect(cx + 37, floor - 69, 43, 6, P.wood, .8); B.line(cx + 37, floor - 69, cx + 58, floor - 105, 1, P.edge); B.line(cx + 80, floor - 69, cx + 58, floor - 105, 1, P.edge);
+    } else if (stage === 9) {
+      B.stone(cx - 88, y + 17, 34, height - 17, P.body, stage); B.stone(cx + 53, y + 86, 30, height - 86, P.wall, stage + 1);
+      B.polygon([[cx - 90, y + 18], [cx - 87, y - 14], [cx - 72, y - 29], [cx - 61, y - 9], [cx - 51, y - 17], [cx - 50, y + 18]], P.body);
+      for (var level = 0; level < 3; level++) { B.ring(cx - 4, y + 58 + level * 65, 69, 41, 7, P.wall); B.rect(cx - 71, y + 58 + level * 65, 10, 47, P.wall); }
+      B.vine(cx - 48, y + 52, 79, stage); B.vine(cx + 67, y + 99, 50, stage + 3);
+    } else if (stage === 10) {
+      B.stone(cx - 94, y + 57, 17, height - 57, P.body, stage); B.stone(cx + 78, y + 57, 17, height - 57, P.body, stage + 1);
+      B.ring(cx, y + 59, 86, 58, 10, P.body); B.rect(cx - 3, y + 34, 6, 30, P.wood);
+      B.polygon([[cx - 24, y + 66], [cx - 19, y + 88], [cx - 34, y + 120], [cx - 42, y + 127], [cx + 44, y + 127], [cx + 34, y + 118], [cx + 19, y + 86], [cx + 22, y + 65]], P.rust, .83);
+      B.rect(cx - 44, y + 125, 89, 7, P.edge, .7); B.line(cx - 13, y + 72, cx - 27, y + 117, 3, P.light, .4); B.rect(cx - 3, y + 131, 5, 19, P.body); B.ellipse(cx, y + 151, 6, 5, P.edge);
+    } else if (stage === 11) {
+      // The original frozen seed-wheel painting is a verified runtime master.
+      // Its 230×171 core is reused at exactly the original pixel size; the
+      // surrounding new route is independent and its floors remain truthful.
+      B.image('assets/levels-v1/seed-vault.png', [170, 0, 230, 171], cx - 113, floor - 210, .9);
+      B.stone(cx - 122, floor - 209, 12, 202, P.wall, stage);
+      B.stone(cx + 110, floor - 210, 14, 205, P.wall, stage + 1);
+      B.rect(cx - 2, floor - 49, 5, 46, P.body); B.rect(cx - 1, floor - 47, 1, 40, P.edge, .55);
+      B.lamp(cx - 124, floor - 137, stage); B.lamp(cx + 125, floor - 73, stage + 1);
+    }
+    else if (stage === 12) {
+      [-1, 0, 1].forEach(function (side) {
+        var gx = cx + side * 81, top = y + 22 + Math.abs(side) * 13;
+        B.rect(gx - 31, top, 62, height - 31, P.wall); B.rect(gx - 26, top + 7, 52, height - 43, '#1d3440');
+        B.rect(gx - 27, top + 8, 2, height - 45, P.frost, .58); B.rect(gx + 24, top + 8, 1, height - 45, P.frost, .32);
+        B.rect(gx - 35, top, 71, 6, P.body); B.rect(gx - 35, floor - 12, 71, 8, P.body);
+        B.line(gx + 5, floor - 16, gx - 8, top + 27, 4, P.moss, .85);
+        for (var twig = 0; twig < 4; twig++) { var yy = top + 43 + twig * 31; B.line(gx - 3, yy, gx + (twig & 1 ? -15 : 18), yy - 15, 2, P.moss, .85); B.rect(gx + (twig & 1 ? -16 : 16), yy - 17, 4, 3, P.frost, .5); }
+      });
+    } else if (stage === 13) {
+      [-1, 1].forEach(function (side) { var sx = cx + side * 77; B.stone(sx - 21, y - 4, 42, height + 4, P.wall, side); B.rect(sx - 13, y + 7, 26, height - 13, P.void); B.rect(sx - 10, y + 11, 3, height - 17, P.edge, .55); for (var joint = 23; joint < height; joint += 52) { B.rect(sx - 24, y + joint, 48, 6, P.body); B.rect(sx - 16, y + joint + 1, 3, 2, P.rust); B.rect(sx + 13, y + joint + 1, 3, 2, P.rust); } });
+      B.line(cx - 57, y + 60, cx + 55, y + 89, 3, P.wood); B.line(cx - 57, y + 159, cx + 55, y + 139, 3, P.wood);
+    } else if (stage === 14) {
+      var bone = { body: '#3d4a49', edge: '#69766e', light: '#9a9e8d', recess: P.recess, void: P.void, moss: P.moss };
+      ribs(B, cx - 207, floor - 192, 358, 170, bone);
+      var skull = [[cx + 155, floor - 172], [cx + 177, floor - 179], [cx + 205, floor - 172], [cx + 229, floor - 159], [cx + 263, floor - 146], [cx + 284, floor - 128], [cx + 294, floor - 109], [cx + 277, floor - 108], [cx + 267, floor - 120], [cx + 232, floor - 123], [cx + 226, floor - 99], [cx + 202, floor - 94], [cx + 181, floor - 103], [cx + 164, floor - 115]];
+      B.surface(skull, 141, ['#263a40', '#455453', '#68766c', '#8d9682', '#b6b89a'], 'bone');
+      B.line(cx + 172, floor - 172, cx + 204, floor - 161, 2, '#c0bfa1', .7);
+      B.line(cx + 205, floor - 160, cx + 242, floor - 144, 2, '#a7af94', .7);
+      B.polygon([[cx + 183, floor - 151], [cx + 199, floor - 155], [cx + 210, floor - 142], [cx + 203, floor - 127], [cx + 188, floor - 123], [cx + 178, floor - 136]], '#182b34');
+      B.line(cx + 183, floor - 153, cx + 198, floor - 157, 2, '#99a98c', .8);
+      B.line(cx + 210, floor - 143, cx + 205, floor - 129, 2, '#566b60');
+      B.polygon([[cx + 268, floor - 134], [cx + 277, floor - 127], [cx + 281, floor - 119], [cx + 274, floor - 121]], '#233740');
+      var jaw = [[cx + 195, floor - 98], [cx + 223, floor - 103], [cx + 254, floor - 101], [cx + 284, floor - 93], [cx + 292, floor - 87], [cx + 272, floor - 82], [cx + 238, floor - 85], [cx + 212, floor - 82], [cx + 191, floor - 91]];
+      B.surface(jaw, 142, ['#263a40', '#455453', '#68766c', '#8d9682', '#b6b89a'], 'bone');
+      for (var tooth = 0; tooth < 10; tooth++) B.polygon([[cx + 232 + tooth * 5, floor - 121 + tooth], [cx + 235 + tooth * 5, floor - 120 + tooth], [cx + 233 + tooth * 5, floor - 112 + tooth]], '#9ba78e');
+      B.line(cx + 218, floor - 113, cx + 212, floor - 125, 1, P.recess);
+      B.vine(cx + 181, floor - 101, 35, stage); B.vine(cx + 210, floor - 92, 27, stage + 2);
+    } else if (stage === 16) {
+      B.stone(cx - 149, floor - 92, 21, 92, P.wall, stage); B.stone(cx + 119, floor - 91, 23, 91, P.wall, stage + 1);
+      [-1, 1].forEach(function (side) {
+        var arm = [[cx + side * 126, floor - 84], [cx + side * 135, floor - 164], [cx + side * 116, floor - 203], [cx + side * 74, floor - 213], [cx + side * 42, floor - 194], [cx + side * 47, floor - 170], [cx + side * 69, floor - 172], [cx + side * 84, floor - 188], [cx + side * 109, floor - 174], [cx + side * 103, floor - 89]];
+        B.surface(arm, 160 + side, ['#2b2927', '#484234', '#66553d', '#857049', '#a08b65'], 'bone');
+        B.line(cx + side * 116, floor - 93, cx + side * 123, floor - 165, 2, '#b09a70', .68);
+        B.line(cx + side * 123, floor - 165, cx + side * 109, floor - 193, 2, '#a09168', .72);
+        B.line(cx + side * 108, floor - 194, cx + side * 82, floor - 201, 2, '#a09168', .72);
+        B.polygon([[cx + side * 43, floor - 194], [cx + side * 64, floor - 188], [cx + side * 61, floor - 168], [cx + side * 46, floor - 171]], '#6e7972');
+        B.line(cx + side * 48, floor - 191, cx + side * 49, floor - 174, 2, '#acb5a4', .85);
+        for (var rivet = 0; rivet < 5; rivet++) {
+          var rx = cx + side * (rivet < 3 ? 115 + rivet * 2 : 116 - (rivet - 2) * 15), ry = floor - 108 - rivet * 22;
+          B.rect(rx - 3, ry - 3, 6, 6, '#303733'); B.rect(rx - 2, ry - 2, 4, 4, '#788475'); B.rect(rx - 1, ry - 1, 2, 2, '#babca5');
+          B.rect(rx + side * 5, ry + 7, 4, 2, '#29332e', .8);
+        }
+        B.weather(arm, 163 + side, ['#323930', '#797043', '#a39a72'], 3);
+      });
+      B.line(cx - 66, floor - 188, cx - 3, floor - 173, 2, P.edge); B.line(cx - 3, floor - 173, cx + 67, floor - 188, 2, P.edge); B.rect(cx - 3, floor - 171, 6, 68, P.body); B.ring(cx, floor - 95, 16, 12, 4, P.edge); B.rect(cx - 24, floor - 83, 48, 10, P.wall);
+    } else if (stage === 17) {
+      wheel(B, cx + 2, floor - 130, 101, P, false);
+      for (var panel = 0; panel < 12; panel++) {
+        var angle = panel * Math.PI / 6, a = angle + .04, b = angle + Math.PI / 6 - .04, ox = cx + 2, oy = floor - 130;
+        var plate = [[ox + Math.cos(a) * 115, oy + Math.sin(a) * 115], [ox + Math.cos(b) * 115, oy + Math.sin(b) * 115], [ox + Math.cos(b) * 96, oy + Math.sin(b) * 96], [ox + Math.cos(a) * 96, oy + Math.sin(a) * 96]];
+        B.surface(plate, 170 + panel, ['#1e2b27', '#344236', '#4b5a47', '#657358', '#879172'], 'bone');
+        var boltX = Math.round(ox + Math.cos(angle + Math.PI / 12) * 106), boltY = Math.round(oy + Math.sin(angle + Math.PI / 12) * 106);
+        B.rect(boltX - 3, boltY - 3, 6, 6, '#14221e'); B.rect(boltX - 2, boltY - 2, 4, 4, '#86937d'); B.rect(boltX - 1, boltY - 1, 2, 2, '#bcc4a0');
+        if (panel % 3 === 1) B.rect(boltX + 5, boltY - 4, 3, 2, '#8b783d');
+      }
+      B.ring(cx + 2, floor - 130, 57, 57, 7, P.moss); B.ring(cx + 2, floor - 130, 31, 31, 4, P.glow, .55); B.ellipse(cx + 2, floor - 130, 16, 16, P.wall);
+      for (var slot = -1; slot <= 1; slot++) { B.rect(cx - 8, floor - 135 + slot * 6, 20, 4, '#344432'); B.rect(cx - 6, floor - 134 + slot * 6, 15, 2, '#a9b38b', .85); }
+      B.line(cx - 31, floor - 161, cx - 18, floor - 153, 3, '#7b8870'); B.line(cx + 21, floor - 110, cx + 30, floor - 97, 3, '#7b8870');
+      [-1, 1].forEach(function (side) { B.line(cx + side * 83, floor - 91, cx + side * 151, floor - 63, 7, P.body); B.line(cx + side * 151, floor - 63, cx + side * 151, floor - 5, 7, P.body); B.rect(cx + side * 151 - 6, floor - 68, 12, 4, P.rust); });
+    } else if (stage === 18) {
+      B.stone(cx - 143, y + 8, 25, height - 8, P.body, stage); B.stone(cx + 118, y + 8, 25, height - 8, P.body, stage + 1);
+      B.ring(cx, y + 109, 126, 106, 11, P.body); B.rect(cx - 65, y + 8, 131, 4, P.edge); B.rect(cx - 60, y + 12, 2, height - 34, P.rust); B.rect(cx + 57, y + 12, 2, height - 34, P.rust);
+      for (var slat = 0; slat < 5; slat++) { B.rect(cx - 57, y + 41 + slat * 27, 113, 5, P.wall); B.rect(cx - 53, y + 43 + slat * 27, 104, 1, P.edge, .5); }
+      B.vine(cx - 97, y + 108, 38, stage);
+    } else if (stage === 19) {
+      B.line(cx - 155, floor - 17, cx - 116, floor - 198, 5, P.body); B.line(cx + 147, floor - 19, cx + 109, floor - 176, 5, P.body);
+      B.line(cx - 116, floor - 198, cx - 37, floor - 236, 5, P.body); B.line(cx - 37, floor - 236, cx + 52, floor - 224, 5, P.body); B.line(cx + 52, floor - 224, cx + 109, floor - 176, 5, P.body);
+      B.line(cx - 36, floor - 230, cx - 11, floor - 24, 3, P.edge, .75);
+      B.line(cx - 119, floor - 152, cx + 115, floor - 136, 3, P.body); B.line(cx - 140, floor - 89, cx + 130, floor - 85, 3, P.body);
+      B.polygon([[cx - 111, floor - 190], [cx - 52, floor - 211], [cx - 45, floor - 166], [cx - 105, floor - 153]], '#29413d', .62);
+      B.polygon([[cx + 12, floor - 205], [cx + 51, floor - 211], [cx + 93, floor - 177], [cx + 28, floor - 171]], '#29413d', .62);
+      for (var pole = 0; pole < 4; pole++) B.vine(cx - 94 + pole * 51, floor - 166 + pole * 3, 55 + pole * 9, pole);
+    }
+  }
+
+  function buildScene(layout, ground, wet) {
+    var stage = layout && layout.stage | 0;
+    // The first two authored pictures and Crown are intentionally left intact.
+    if (!layout || stage < 3 || stage > 19 || typeof ground !== 'function') return empty(stage);
+    var ps = (layout.platforms || []).filter(function (p) { return !p.place && !p.solid && (!layout.art || !p.art); });
+    var geometry = ps.reduce(function (value, p) { return (value ^ hash(p.x * 17 + p.w * 3, p.y * 11 + (p.depth || 0))) >>> 0; }, 0);
+    var stamp = ps.length + ':' + geometry + ':' + layout.seed;
+    var found = cache && cache.get(layout);
+    if (found && found.stamp === stamp && found.ground === ground) return found.scene;
+    var origin = Math.round(layout.origin || 0), floor = Math.round(ground(origin)), bb = bbox(ps, floor), P = palette(stage), scene = empty(stage);
+    scene.footings = ps.map(function (p) { return { id: p.id, x: Math.round(p.x), y: Math.round(p.y), w: Math.round(p.w), depth: p.depth | 0, route: p.route | 0, rest: !!p.rest, optional: !!p.optional, expedition: !!p.expedition }; });
+    scene.bounds = { x: Math.min(origin - 420, bb.x - 70), y: bb.y - 126, w: Math.max(origin + 420, bb.right + 70) - Math.min(origin - 420, bb.x - 70), h: floor - bb.y + 210 };
+    var B = makeBuilder(scene, P), bounds = scene.bounds;
+    B.rect(bounds.x, bounds.y, bounds.w, bounds.h, P.void, .24);
+    // Broad negative space and a solid enclosing roof give the foreground
+    // ledges room to read. Native rock teeth break the chamber silhouette.
+    var main = ps.filter(function (p) { return !p.expedition; }), mb = bbox(main, floor), mx = Math.min(origin - 318, mb.x - 39), mr = Math.max(origin + 318, mb.right + 39);
+    var room = { id: 'main-vault', x: origin - 144, y: mb.y - 43, w: 288, h: floor - mb.y + 54 };
+    scene.rooms.push(room); chamber(B, room, P, stage);
+    [-1, 1].forEach(function (side) {
+      var route = main.filter(function (p) { return p.route === side; }), rb = bbox(route, floor), left = side < 0 ? mx : origin + 111, right = side < 0 ? origin - 112 : mr;
+      var bay = { id: 'route-bay-' + side, x: left, y: rb.y - 51, w: right - left, h: Math.round(ground((left + right) / 2)) - rb.y + 61 };
+      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19);
+    });
+    if (layout.place && layout.place.bounds) {
+      var pb = layout.place.bounds, wing = { id: 'place-wing', x: pb.x - 26, y: pb.y - 34, w: pb.w + 52, h: pb.h + 44 };
+      var oldRight = bounds.x + bounds.w; bounds.x = Math.min(bounds.x, wing.x - 28);
+      bounds.w = Math.max(oldRight, wing.x + wing.w + 28) - bounds.x;
+      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97);
+      B.lamp(pb.x + 12, pb.y - 18, stage + 97);
+    }
+    var exp = ps.filter(function (p) { return p.expedition; });
+    if (exp.length) {
+      var eb = bbox(exp, floor), ef = Math.round(ground((eb.x + eb.right) / 2)), er = { id: 'expedition-vault', x: eb.x - 37, y: eb.y - 60, w: eb.right - eb.x + 74, h: ef - eb.y + 68 };
+      scene.rooms.push(er); chamber(B, er, P, stage + 53);
+      // Upper rest rooms have a recess anchored to their own true landing.
+      (layout.expedition.rooms || []).forEach(function (r, i) {
+        var q = { id: 'landing-' + i, x: r.bounds.x - 9, y: r.bounds.y - 46, w: r.bounds.w + 18, h: 52 + r.bounds.h };
+        scene.rooms.push(q); B.part('landing:' + i); B.arch(q.x + q.w / 2, q.y + 35, q.w / 2 + 3, 36, 9, P.body, .85);
+        B.stone(q.x - 4, q.y + 35, 9, Math.round(ground(q.x)) - q.y - 35, P.wall, stage + i);
+        B.stone(q.x + q.w - 4, q.y + 35, 9, Math.round(ground(q.x + q.w)) - q.y - 35, P.wall, stage + i + 1);
+        B.lamp(q.x + (r.side > 0 ? 9 : q.w - 9), q.y + 14, stage + i);
+      });
+      // Slim old service conduits connect real rest heights in the tall vault.
+      B.part('expedition-services');
+      var sx = Math.round((eb.x + eb.right) / 2 + (layout.expedition.side || 1) * 88);
+      B.rect(sx, eb.y - 26, 3, ef - eb.y + 26, stage >= 16 ? P.rust : P.wall);
+      exp.filter(function (p) { return p.rest; }).forEach(function (p, i) { B.line(sx, p.y + 17, p.x + p.w / 2, p.y + 25, 2, P.body); B.rect(sx - 2, p.y + 15, 7, 3, P.edge, .6); });
+    }
+    B.part('roof');
+    for (var x = bounds.x; x < bounds.x + bounds.w; x += 12) {
+      var near = ps.filter(function (p) { return p.x + p.w > x - 60 && p.x < x + 72; }), top = near.length ? Math.min.apply(null, near.map(function (p) { return p.y; })) - 84 : mb.y - 79;
+      var tooth = 8 + hash(Math.floor(x / 12), stage) % 19;
+      B.rect(x, bounds.y, Math.min(12, bounds.x + bounds.w - x), Math.max(1, top - bounds.y - tooth), P.void);
+      B.rect(x, top - tooth - 1, Math.min(12, bounds.x + bounds.w - x), 4, P.wall, .75);
+      if (hash(x, stage) % 7 === 0) B.rect(x + 3, top - tooth + 2, 3, 9, P.wall);
+    }
+    landmark(B, scene, layout, ground, P);
+    supports(B, scene, layout, ground, P);
+    scene.palette = P;
+    if (cache) cache.set(layout, { stamp: stamp, ground: ground, scene: scene });
+    return scene;
+  }
+
+  function draw(ctx, layout, camX, camY, width, height, t, tiles, ground, wet) {
+    var scene = buildScene(layout, ground, wet);
+    if (!scene.ops.length) return scene;
+    var cx = Math.round(camX), cy = Math.round(camY), readyTiles = tiles && tiles.img && tiles.img.complete && tiles.img.naturalWidth > 0 && tiles.pieces;
+    ctx.save(); ctx.imageSmoothingEnabled = false;
+    for (var i = 0; i < scene.ops.length; i++) {
+      var op = scene.ops[i], x = op.x - cx, y = op.y - cy;
+      if (x + op.w <= 0 || y + op.h <= 0 || x >= width || y >= height) continue;
+      ctx.globalAlpha = op.alpha;
+      if (op.kind === 'rect') { ctx.fillStyle = op.color; ctx.fillRect(x, y, op.w, op.h); }
+      else if (op.kind === 'image') {
+        var im = sourceImage(op.src);
+        if (im && im.complete && im.naturalWidth) ctx.drawImage(im, op.crop[0], op.crop[1], op.crop[2], op.crop[3], x, y, op.w, op.h);
+      } else if (readyTiles) {
+        var p = tiles.pieces[op.piece]; if (!p) continue;
+        var w = Math.min(op.w, p[2] - op.ox), h = Math.min(op.h, p[3] - op.oy);
+        if (w > 0 && h > 0) ctx.drawImage(tiles.img, p[0] + op.ox, p[1] + op.oy, w, h, x, y, w, h);
+      }
+    }
+    ctx.restore(); return scene;
+  }
+  var api = { draw: draw, buildScene: buildScene, palette: palette, landmarks: NAMES.slice(), version: 1 };
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.MaxCampaignArchitecture = api;
+})(typeof window === 'object' ? window : globalThis);

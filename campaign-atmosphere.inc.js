@@ -132,7 +132,9 @@ function drawCampaignCavern(stop, bdrop, atmosphere) {
   ctx.fillStyle = CAVERN_TOP; ctx.fillRect(0, 0, IW, IH);
   var far = CAVERN_BG.far;
   if (campaignCanvasReady(far)) drawCampaignTile(far, .02, stop + far.naturalHeight);
-  drawCampaignChamber(atmosphere, Math.round(stop + 145 + bdrop));
+  if(atmosphere.stage<3||atmosphere.stage>19||!window.MaxCampaignArchitecture){
+    drawCampaignChamber(atmosphere, Math.round(stop + 145 + bdrop));
+  }
   // Partial image loading must never expose the old outdoor fallback.
   for (var n = 1; n < CAVERN_LAYERS.length; n++) {
     var layer = CAVERN_LAYERS[n], im = CAVERN_BG[layer[0]];

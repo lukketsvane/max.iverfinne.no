@@ -136,9 +136,11 @@ test('bonus realms keep their backdrop and isolated relic modes cannot receive c
 test('underground chapters fill the tall upper climb with different chamber silhouettes', () => {
   const silhouettes = [];
   for (const stage of [3, 8, 13, 17]) {
-    const { game: g, ops } = scene(stage);
+    const { game: g, window, ops } = scene(stage);
     g.IH = 320; g.camY = -100;
     g.drawCampaignBackdrop(10, 224, 84, 0);
+    window.MaxCampaignArchitecture.draw(g.ctx, g.activeStageLayout, g.camX, g.camY,
+      g.IW, g.IH, 10, g.TILES, () => 224, () => null);
     const upper = ops.filter(op => op.name === 'fillRect' && op.color !== '#05070e' &&
       op.args[2] < g.IW && op.args[0] < g.IW && op.args[0] + op.args[2] > 0 &&
       op.args[1] < 84 && op.args[1] + op.args[3] > 0 && op.args[3] > 3);

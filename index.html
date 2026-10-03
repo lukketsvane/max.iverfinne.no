@@ -8,6 +8,7 @@
 <script src="stage-layout.js"></script>
 <script src="tiles.js"></script>
 <script src="garden-places.js"></script>
+<script src="campaign-architecture.js"></script>
 <script src="stage-expeditions.js"></script>
 <script src="guardian-sites.js"></script>
 <script src="levels-v1/seed-vault.js"></script>
@@ -6041,6 +6042,11 @@ function frame(now) {
   drawBiomeTint();
   }
   drawLandmarkBack(tSec);
+  if(!isolatedRelicMode()&&window.MaxCampaignArchitecture){
+    window.MaxCampaignArchitecture.draw(ctx,stageLayout(),camX,camY,IW,IH,tSec,TILES,surfaceY,waterAt);
+    var roomAtmosphere=campaignAtmosphere();
+    if(roomAtmosphere.glimpse)drawCampaignBreach(tSec,roomAtmosphere);
+  }
   drawGround();
   drawTrailAccents();
   drawSoil();

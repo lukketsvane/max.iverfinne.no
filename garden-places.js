@@ -11,11 +11,12 @@
   };
   var FLOWER = ['#3f7fd0', '#72b6ff', '#d6eeff'];
   var CAPS = {
-    frost: { moss: ['#6f8597', '#b7cad8', '#eef6fb'], flower: ['#7fb0d8', '#bfe3ff', '#ffffff'] },
-    ember: { moss: ['#4a261a', '#8f3a1c', '#dd7a33'], flower: ['#b8452a', '#f08a3c', '#ffd27a'] }
+    frost: { moss: ['#6f8597', '#b7cad8', '#eef6fb'], flower: ['#7fb0d8', '#bfe3ff', '#ffffff'], fitting: ['#4c3020', '#9c6334', '#d79c54'] },
+    ember: { moss: ['#293d32', '#50614a', '#809267'], flower: ['#9c6334', '#d79c54', '#e9c774'], fitting: ['#263b3e', '#497075', '#91aaa3'] }
   };
+  var LAMP = ['#4c3020', '#9c6334', '#e9c774'], MYCELIUM = ['#31595b', '#659a92', '#9ac4b5'];
   function biome(stage) { stage = stage | 0; return stage >= 16 && stage <= 19 ? 'ember' : stage >= 11 && stage <= 15 ? 'frost' : null; }
-  function dress(st, stage) { var c = CAPS[biome(stage)]; if (!c) return { st: st, flower: FLOWER }; var o = {}; for (var k in st) o[k] = st[k]; o.moss = c.moss; return { st: o, flower: c.flower }; }
+  function dress(st, stage) { var c = CAPS[biome(stage)]; if (!c) return { st: st, flower: FLOWER, fitting: LAMP }; var o = {}; for (var k in st) o[k] = st[k]; o.moss = c.moss; return { st: o, flower: c.flower, fitting: c.fitting }; }
   function hash(a, b) { var h = Math.imul((a >>> 0) ^ 0x9e3779b9, 0x85ebca6b) ^ Math.imul((b | 0) + 0x632be5ab, 0xc2b2ae35); h = Math.imul(h ^ h >>> 15, 0x2c1b3c6d); return (h ^ h >>> 13) >>> 0; }
   function shape(place, mirror) {
     var w = place.rows.reduce(function (m, r) { return Math.max(m, r.length); }, 0);
@@ -188,7 +189,7 @@
   }
 
   function rgb(hex) { return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
-  function texture(st, wx, wy) {
+  function crownTexture(st, wx, wy) {
     if (st.wood) {
       var band = Math.floor(wx / 4), grain = hash(band, 91), lx = wx - band * 4;
       if (lx === 0) return 1;
@@ -202,6 +203,30 @@
     if (ry === 1 && rx < sw - 2) return h & 1 ? 4 : 3;
     if (rx === 1) return 3;
     return (hash(wx * 31 + wy, 13) & 15) === 0 ? 1 : (h & 3) === 0 && ry > 2 ? 3 : 2;
+  }
+  function texture(st, wx, wy, crown) {
+    // The final arena keeps its approved material pixels and review captures.
+    if (crown) return crownTexture(st, wx, wy);
+    if (st.wood) {
+      var band = Math.floor(wx / 7), grain = hash(band, 91), bend = Math.floor(wy / 9), lx = ((wx + (hash(band, bend) & 1)) % 7 + 7) % 7;
+      var gy = ((wy + (grain & 15)) % 28 + 28) % 28;
+      if (lx === 0) return 0;
+      if (lx === 1) return gy < 18 ? 3 : 1;
+      // A few connected knots and broken bark strips, rather than pixel noise.
+      if (gy >= 11 && gy <= 15 && lx >= 3 && lx <= 5) return gy === 11 || gy === 15 || lx === 3 || lx === 5 ? 1 : 0;
+      return lx === 6 || gy === 23 && lx < 4 ? 1 : 2;
+    }
+    var row = Math.floor(wy / 8), ry = wy - row * 8, sw = st.ashlar ? 16 : 12 + hash(row, 5) % 7;
+    var off = st.ashlar ? (row & 1) * 8 : hash(row * 3 + 1, 7) % sw, col = Math.floor((wx + off) / sw), rx = wx + off - col * sw, h = hash(col * 131 + row, 11);
+    if (ry === 0 || rx === 0) return 0;
+    if (ry === 7 || rx === sw - 1) return 1;
+    if (ry === 1 && rx < sw - 2) return h & 1 ? 3 : 4;
+    if (rx === 1) return ry < 5 ? 3 : 1;
+    var fracture = 2 + Math.floor((rx + (h & 3)) / 4) % 3;
+    if (h % 5 === 0 && rx >= 3 && rx < sw - 3 && ry === fracture) return 0;
+    if (h % 5 === 0 && rx >= 3 && rx < sw - 3 && ry === fracture + 1) return 1;
+    if (h % 7 === 0 && ry === 2 && rx > sw - 5) return 1;
+    return h % 4 === 0 && ry > 3 ? 3 : 2;
   }
   function bake(layout, veilGroup) {
     var p = layout.place, doc = root.document;
@@ -222,22 +247,48 @@
     }
     function solid(x, y) { if (x < 0 || x >= W || y < 0 || y >= H) return false; var k = mask[y * W + x]; return k === 1 || k === 2; }
     function mine(x, y) { var k = mask[y * W + x]; if (veilGroup == null) return k !== 2; if (k !== 2) return false; var c = Math.floor((x - ox) / CELL), r = Math.floor((y - oy) / CELL); return ids[r] && ids[r][c] === veilGroup; }
-    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), back = st.back.map(rgb), flower = dressed.flower.map(rgb);
+    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), back = st.back.map(rgb), flower = dressed.flower.map(rgb), fitting = dressed.fitting.map(rgb), fungus = MYCELIUM.map(rgb), warm = LAMP.map(rgb), skin = biome(p.stage);
     function put(x, y, col) { if (x < 0 || x >= W || y < 0 || y >= H) return; var o = (y * W + x) * 4; out[o] = col[0]; out[o + 1] = col[1]; out[o + 2] = col[2]; out[o + 3] = 255; }
     function open(x, y) { return !solid(x, y) && (x < 0 || x >= W || y < 0 || y >= H || mask[y * W + x] !== 1 && mask[y * W + x] !== 2) && (y >= H || y < 0 || x < 0 || x >= W || top + y < soil[x]); }
     for (y = 0; y < H; y++) for (x = 0; x < W; x++) {
       var m = mask[y * W + x], wx2 = sx + x, wy2 = top + y;
       if (!m || !mine(x, y)) continue;
-      if (m === 3) { var t = texture(st, wx2, wy2); put(x, y, t === 0 ? back[0] : back[1]); continue; }
+      if (m === 3) {
+        var t = texture(st, wx2, wy2, p.stage === 20), panelX = (wx2 % 48 + 48) % 48, panelY = (wy2 % 36 + 36) % 36, bg = t === 0 ? back[0] : back[1];
+        if (p.stage === 20) { put(x, y, bg); continue; }
+        // Recessed wall bays remain behind the original open room mask.
+        if (panelX === 0 || panelX === 47 || panelY === 0 || panelY === 35) bg = back[0];
+        if (skin && panelX >= 21 && panelX <= 23) bg = fitting[panelX === 22 ? 1 : 0];
+        if (skin && panelX >= 20 && panelX <= 24 && panelY === 18) bg = fitting[panelX === 22 ? 2 : 0];
+        if ((p.stage === 7 || p.stage === 12) && panelX === 30 + Math.floor(panelY / 6)) bg = fungus[panelY % 6 === 0 ? 1 : 0];
+        if ((p.stage === 7 || p.stage === 12) && panelY >= 12 && panelY <= 18 && panelX === 32 - (panelY - 12)) bg = fungus[0];
+        put(x, y, bg); continue;
+      }
       if (m === 4) { var px = (x - ox) - Math.floor((x - ox) / CELL) * CELL; put(x, y, px === 0 || px === 5 ? back[0] : px === 1 ? shade[3] : px === 4 ? shade[1] : shade[2]); continue; }
       var depth = 0; while (depth < 6 && solid(x, y - depth - 1)) depth++;
       var drip = hash(wx2, 23) % 6 === 0 ? 2 + hash(wx2, 29) % 4 : 0;
       if (depth < 6 && open(x, y - depth - 1) && depth < 2 + drip) { put(x, y, depth === 0 ? moss[2] : depth === 1 ? moss[1] : moss[0]); continue; }
       if (open(x - 1, y) || open(x + 1, y) || open(x, y + 1) || open(x, y - 1)) { put(x, y, line); continue; }
-      var tx = texture(st, wx2, wy2);
+      var tx = texture(st, wx2, wy2, p.stage === 20);
       if (m === 2 && (hash(wx2 >> 1, wy2 >> 2) % 9 === 0) && tx > 1) tx = 1;
-      put(x, y, shade[tx]);
+      var material = shade[tx], blockX = Math.floor(wx2 / 22), blockY = Math.floor(wy2 / 18), lx = wx2 - blockX * 22, ly = wy2 - blockY * 18;
+      // Weathering occurs in quiet connected patches, leaving mortar readable.
+      if (p.stage !== 20 && !skin && tx > 1 && hash(blockX, blockY) % 8 === 1 && Math.abs(lx - 8) + Math.abs(ly - 6) * 2 < 6) material = moss[lx === 8 && ly === 6 ? 1 : 0];
+      if (skin === 'ember' && tx > 1 && hash(blockX, blockY) % 5 === 1 && ly > 4 && ly < 10 && lx > 6 && lx < 12) material = warm[lx === 7 ? 1 : 0];
+      put(x, y, material);
     }
+    if (veilGroup == null && p.stage !== 20) p.decor.forEach(function (d) {
+      if (d.ch !== '!') return;
+      var nx = d.x - sx + 2, ny = d.y - top + 3;
+      // A small stepped lamp alcove uses only existing back-wall pixels.
+      for (var ry = -6; ry <= 6; ry++) for (var rx = -4; rx <= 4; rx++) {
+        var ax = nx + rx, ay = ny + ry;
+        if (ax < 0 || ax >= W || ay < 0 || ay >= H || mask[ay * W + ax] !== 3 || Math.abs(rx) === 4 && ry < -4) continue;
+        var rim = Math.abs(rx) === 4 || ry === -6 || ry === 6;
+        put(ax, ay, rim ? shade[1] : back[0]);
+        if (rx === -3 && ry >= -3 && ry <= 3) put(ax, ay, warm[0]);
+      }
+    });
     for (x = 0; x < W; x++) for (y = 1; y < H - 1; y++) {
       if (!mine(x, y) || !solid(x, y)) continue;
       var wxx = sx + x, hh = hash(wxx, 37);
@@ -246,15 +297,22 @@
         if (hh % 19 === 0 && open(x, y - 2) && open(x, y - 3)) { put(x, y - 1, moss[0]); put(x, y - 2, flower[1]); put(x - 1, y - 2, flower[0]); put(x + 1, y - 2, flower[0]); put(x, y - 3, flower[2]); }
       }
       if (open(x, y + 1) && hh % 7 === 1 && y > 0 && solid(x, y - 1)) {
-        var len = 3 + hash(wxx, 41) % 9;
-        for (var k2 = 1; k2 <= len && open(x, y + k2); k2++) { put(x, y + k2, moss[k2 % 3 === 0 ? 1 : 0]); if (k2 % 3 === 2) put(x + (k2 & 4 ? 1 : -1), y + k2, moss[1]); }
+        var len = 3 + hash(wxx, 41) % 9, icy = skin === 'frost', roots = p.stage === 7 || p.stage === 12;
+        if (p.stage === 20) {
+          for (var crownK = 1; crownK <= len && open(x, y + crownK); crownK++) { put(x, y + crownK, moss[crownK % 3 === 0 ? 1 : 0]); if (crownK % 3 === 2) put(x + (crownK & 4 ? 1 : -1), y + crownK, moss[1]); }
+          continue;
+        }
+        for (var k2 = 1; k2 <= len && open(x, y + k2); k2++) {
+          put(x, y + k2, roots ? k2 === len ? fungus[1] : shade[k2 % 2 ? 1 : 2] : icy ? moss[k2 < 4 ? 2 : 1] : moss[k2 % 3 === 0 ? 1 : 0]);
+          if (!icy && k2 % 3 === 2 && open(x + (k2 & 4 ? 1 : -1), y + k2)) put(x + (k2 & 4 ? 1 : -1), y + k2, roots ? fungus[0] : moss[1]);
+        }
       }
     }
     var cv = doc.createElement('canvas'); cv.width = W; cv.height = H;
     var g = cv.getContext && cv.getContext('2d'); if (!g || !g.putImageData) return null;
     g.putImageData(new root.ImageData(out, W, H), 0, 0);
     if (veilGroup == null) {
-      var pal = { moss: st.moss[1], line: st.line };
+      var pal = { moss: st.moss[1], line: st.line, shade: st.shade, back: st.back, fitting: dressed.fitting, flower: dressed.flower, stage: p.stage };
       rows.forEach(function (row, r) { for (var c = 0; c < row.length; c++) if (row[c] === '=') {
         var lx = ox + c * CELL, ly = oy + r * CELL, first = at(rows, c - 1, r) !== '=', last = at(rows, c + 1, r) !== '=';
         g.fillStyle = st.line; g.fillRect(lx, ly, CELL, 4); g.fillStyle = st.shade[st.wood ? 3 : 2]; g.fillRect(lx + (first ? 1 : 0), ly + 1, CELL - (first ? 1 : 0) - (last ? 1 : 0), 2);
@@ -266,7 +324,7 @@
     return { canvas: cv, x: sx, y: top };
   }
   function ledgePixels(p, stage) {
-    var dressed = dress(STYLES[p.style] || STYLES.stone, stage), st = dressed.st, wood = !!st.wood;
+    var dressed = dress(STYLES[p.style] || STYLES.stone, stage), st = dressed.st, wood = !!st.wood, skin = biome(stage);
     var depth = Math.max(3, p.depth | 0), W = p.w + 2, H = depth + 14, ox = 1, oy = 3, mask = new Uint8Array(W * H);
     function set(x, y) { if (x >= 0 && x < W && y >= 0 && y < H) mask[y * W + x] = 1; }
     for (var x = 0; x < p.w; x++) {
@@ -277,7 +335,7 @@
       for (var y = 0; y < bottom; y++) set(ox + x, oy + y);
     }
     if (p.style === 'ruin') [4, p.w - 9].forEach(function (x0, i) { if (x0 < 2 || x0 + 4 > p.w - 2) return; for (var y = depth; y < depth + (i ? 7 : 10) - hash(p.x + x0, 61) % 3; y++) for (var x = 0; x < 4; x++) set(ox + x0 + x, oy + y); });
-    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), flower = dressed.flower.map(rgb);
+    var out = new Uint8ClampedArray(W * H * 4), shade = st.shade.map(rgb), line = rgb(st.line), moss = st.moss.map(rgb), flower = dressed.flower.map(rgb), fitting = dressed.fitting.map(rgb), warm = LAMP.map(rgb), fungus = MYCELIUM.map(rgb);
     function solid(x, y) { return x >= 0 && x < W && y >= 0 && y < H && mask[y * W + x] === 1; }
     function put(x, y, col) { if (x < 0 || x >= W || y < 0 || y >= H) return; var o = (y * W + x) * 4; out[o] = col[0]; out[o + 1] = col[1]; out[o + 2] = col[2]; out[o + 3] = 255; }
     for (var y2 = 0; y2 < H; y2++) for (var x2 = 0; x2 < W; x2++) {
@@ -286,7 +344,12 @@
       var drip = hash(wx2, 23) % 6 === 0 ? 1 + hash(wx2, 29) % 3 : 0;
       if (top < 2 + drip && !solid(x2, y2 - top - 1) && (top <= 1 || solid(x2, y2 - 1))) { put(x2, y2, top === 0 ? moss[2] : top === 1 ? moss[1] : moss[0]); continue; }
       if (!solid(x2 - 1, y2) || !solid(x2 + 1, y2) || !solid(x2, y2 + 1)) { put(x2, y2, line); continue; }
-      put(x2, y2, shade[texture(st, wx2, wy2)]);
+      var face = shade[texture(st, wx2, wy2, stage === 20)], bay = (wx2 % 24 + 24) % 24;
+      // A narrow conduit and its clamps are painted inside the existing slab.
+      if (skin && top === 3 && x2 > 3 && x2 < W - 4) face = fitting[1];
+      if (skin && top >= 2 && top <= 4 && bay === 3 && x2 > 3 && x2 < W - 4) face = fitting[top === 2 ? 2 : 0];
+      if (skin === 'ember' && top > 4 && bay >= 8 && bay <= 12) face = warm[bay === 8 ? 1 : 0];
+      put(x2, y2, face);
     }
     for (x2 = 1; x2 < W - 1; x2++) {
       if (!solid(x2, oy)) continue;
@@ -301,7 +364,10 @@
       var wx4 = p.x - ox + x2, hv = hash(wx4, 41), strand = p.style === 'root' ? hv % 5 === 1 : hv % 9 === 1;
       if (!strand) continue;
       var len = p.style === 'root' ? 3 + hv % 6 : 2 + hv % 5;
-      for (var k = 1; k <= len && yb + k < H; k++) put(x2 + (p.style === 'root' && k > 2 && hv & 2 ? 1 : 0), yb + k, p.style === 'root' ? (k === len ? line : shade[k % 2 ? 2 : 1]) : moss[k % 3 === 0 ? 1 : 0]);
+      for (var k = 1; k <= len && yb + k < H; k++) {
+        var tip = (stage === 7 || stage === 12) && k === len, icicle = skin === 'frost';
+        put(x2 + (!icicle && p.style === 'root' && k > 2 && hv & 2 ? 1 : 0), yb + k, tip ? fungus[1] : icicle ? moss[k < 3 ? 2 : 1] : p.style === 'root' ? (k === len ? line : shade[k % 2 ? 2 : 1]) : moss[k % 3 === 0 ? 1 : 0]);
+      }
     }
     return { data: out, w: W, h: H, x: p.x - ox, y: p.y - oy };
   }
@@ -325,6 +391,29 @@
     return at(rows, c - 1, r) === '_' || at(rows, c + 1, r) === '_' || at(rows, c, r - 1) === '_';
   }
   function ornament(g, ch, c, r, ox, oy, rows, pal) {
+    if (pal.stage === 20) return crownOrnament(g, ch, c, r, ox, oy, rows, pal);
+    var x = ox + c * CELL, y = oy + r * CELL;
+    if (ch === 'v') {
+      for (var k = 0; k < 3; k++) {
+        var n = 5 + ((c * 5 + k * 3 + r) % 10), fungi = pal.stage === 7 || pal.stage === 12;
+        g.fillStyle = fungi ? pal.shade[1] : '#2f4a26'; g.fillRect(x + 1 + k * 2, y, 1, n);
+        for (var vy = 2 + k % 2; vy < n; vy += 4) { g.fillStyle = fungi ? MYCELIUM[0] : pal.moss; g.fillRect(x + k * 2 + (vy % 8 < 4 ? 0 : 2), y + vy, 2, 1); }
+        if (fungi) { g.fillStyle = MYCELIUM[1]; g.fillRect(x + 1 + k * 2, y + n - 1, 1, 1); }
+      }
+    }
+    else if (ch === 't') { g.fillStyle = pal.moss; g.fillRect(x + 1, y + 3, 1, 3); g.fillRect(x + 3, y + 1, 1, 5); g.fillRect(x + 5, y + 4, 1, 2); g.fillRect(x, y + 3, 1, 1); g.fillRect(x + 4, y + 2, 1, 1); g.fillStyle = pal.flower[1]; g.fillRect(x + 3, y, 1, 1); }
+    else if (ch === 'm') { g.fillStyle = MYCELIUM[0]; g.fillRect(x + 2, y + 2, 1, 4); g.fillStyle = MYCELIUM[1]; g.fillRect(x, y + 2, 5, 1); g.fillStyle = MYCELIUM[2]; g.fillRect(x + 1, y + 1, 3, 1); g.fillStyle = pal.line; g.fillRect(x + 1, y + 3, 1, 1); g.fillRect(x + 3, y + 3, 1, 1); }
+    else if (ch === '*') { g.fillStyle = pal.flower[0]; g.fillRect(x + 1, y + 2, 1, 4); g.fillRect(x + 3, y, 1, 6); g.fillRect(x + 4, y + 3, 1, 3); g.fillStyle = pal.flower[2]; g.fillRect(x + 3, y + 1, 1, 2); }
+    else if (ch === '!') {
+      var hung = massive(at(rows, c, r - 1)) || at(rows, c, r - 1) === '=';
+      g.fillStyle = pal.line; if (hung) g.fillRect(x + 2, y - 1, 1, 2); else g.fillRect(x + 2, y + 5, 1, 1);
+      g.fillStyle = pal.line; g.fillRect(x, y + 1, 5, 5);
+      g.fillStyle = '#3a3a36'; g.fillRect(x + 1, y + 1, 3, 1); g.fillRect(x + 1, y + 5, 3, 1);
+      g.fillStyle = LAMP[1]; g.fillRect(x + 1, y + 2, 1, 3); g.fillRect(x + 3, y + 2, 1, 3);
+      g.fillStyle = LAMP[2]; g.fillRect(x + 2, y + 2, 1, 3);
+    }
+  }
+  function crownOrnament(g, ch, c, r, ox, oy, rows, pal) {
     var x = ox + c * CELL, y = oy + r * CELL;
     if (ch === 'v') { for (var k = 0; k < 3; k++) { var n = 3 + ((c * 5 + k * 3 + r) % 7); g.fillStyle = '#2f4a26'; g.fillRect(x + 1 + k * 2, y, 1, n); g.fillStyle = pal.moss; g.fillRect(x + (k & 1 ? 2 : 0) + k * 2, y + n - 2, 1, 1); } }
     else if (ch === 't') { g.fillStyle = pal.moss; g.fillRect(x + 1, y + 4, 1, 2); g.fillRect(x + 3, y + 3, 1, 3); g.fillRect(x + 5, y + 4, 1, 2); g.fillStyle = '#72b6ff'; g.fillRect(x + 3, y + 2, 1, 1); }
