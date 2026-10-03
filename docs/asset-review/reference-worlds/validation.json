@@ -1,0 +1,30 @@
+{
+  "runtimeSourceCommit": "afd718f8cb471c3afd835e30495aa5eee739f0a7",
+  "builtSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
+  "tests": {
+    "command": "npm test",
+    "passed": 370,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 796669.42892,
+    "scope": "Complete suite on the current merged main runtime before documentation-only commits."
+  },
+  "build": {
+    "command": "npm run build",
+    "passed": true
+  },
+  "nativeSourceCheck": {
+    "command": "npm run figma:check",
+    "matched": 665,
+    "problems": 0,
+    "method": "Replay of authenticated source capture; this check is not a new live export of all PNG masters."
+  },
+  "browserEvidence": "browser-verification.json",
+  "captureEvidence": "capture-metadata.json",
+  "artifactHashesChecked": 44,
+  "figmaStaticSourceEquivalence": "equivalence-audit.json",
+  "limitations": [
+    "Full screenshot PNGs vary with existing loot bobbing, glow and random sparks. Static geometry and native source identities match the accepted Figma capture.",
+    "Generated mushroom and fossil studies are not registered or shipped assets; supported upload was blocked by the network proxy."
+  ]
+}

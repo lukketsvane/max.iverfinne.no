@@ -1,0 +1,337 @@
+{
+  "verifiedAtUtc": "2026-10-03T12:47:16.841457+00:00",
+  "runtimeSourceCommit": "afd718f8cb471c3afd835e30495aa5eee739f0a7",
+  "builtSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
+  "rendererRecipes": {
+    "campaign-architecture.js": "0757edfb4ae390a0b60e7c8805db69f6bbf7ce336a02c2cd8107d16a63d2894f",
+    "garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+  },
+  "reviewUi": {
+    "tests": "Actual clicks on desktop and pointer taps on 320 px phones. Verified default fit, native 1:1 view centered on the common origin, return to fit, level 1/20 anchors, 20 world images, eight landmark images, eight boss images, and playable landmark/Crown links. No horizontal overflow or console/HTTP failures. Desktop landmark images stay at their native 540 px width.",
+    "cases": [
+      {
+        "engine": "chromium",
+        "phone": false,
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "fitWidth": 1280,
+        "nativeWidth": 3220,
+        "worldImages": 20,
+        "landmarkImages": 8,
+        "bossImages": 8,
+        "actualPlayableStage": 7,
+        "links": true,
+        "errors": [],
+        "passed": true
+      },
+      {
+        "engine": "chromium",
+        "phone": true,
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "fitWidth": 320,
+        "nativeWidth": 3220,
+        "worldImages": 20,
+        "landmarkImages": 8,
+        "bossImages": 8,
+        "actualPlayableStage": 7,
+        "links": true,
+        "errors": [],
+        "passed": true
+      },
+      {
+        "engine": "webkit",
+        "phone": false,
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "fitWidth": 1280,
+        "nativeWidth": 3220,
+        "worldImages": 20,
+        "landmarkImages": 8,
+        "bossImages": 8,
+        "actualPlayableStage": 7,
+        "links": true,
+        "errors": [],
+        "passed": true
+      },
+      {
+        "engine": "webkit",
+        "phone": true,
+        "viewport": {
+          "width": 320,
+          "height": 568
+        },
+        "fitWidth": 320,
+        "nativeWidth": 3220,
+        "worldImages": 20,
+        "landmarkImages": 8,
+        "bossImages": 8,
+        "actualPlayableStage": 7,
+        "links": true,
+        "errors": [],
+        "passed": true
+      }
+    ]
+  },
+  "ordinaryMovement": {
+    "scope": "Current Cairn walking and jumping at levels 7, 11, 14, 18 and 20; actual renderer and player observation on desktop and a 390\u00d7844 game viewport. No authored collision geometry or source PNG assets changed.",
+    "cases": [
+      {
+        "engine": "chromium",
+        "phone": false,
+        "actualGameViewport": {
+          "width": 1000,
+          "height": 650,
+          "nativeW": 334,
+          "nativeH": 217
+        },
+        "stages": [
+          {
+            "stage": 7,
+            "normalWalkDelta": 13,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 7,
+              "zone": "buried-works",
+              "label": "Buried works",
+              "depth": 13,
+              "surface": false,
+              "glimpse": false,
+              "exposure": 0,
+              "fallout": 0
+            }
+          },
+          {
+            "stage": 11,
+            "normalWalkDelta": 9,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 11,
+              "zone": "underworld-faults",
+              "label": "Underworld faults",
+              "depth": 9,
+              "surface": false,
+              "glimpse": false,
+              "exposure": 0,
+              "fallout": 0
+            }
+          },
+          {
+            "stage": 14,
+            "normalWalkDelta": 8,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 14,
+              "zone": "underworld-faults",
+              "label": "Underworld faults",
+              "depth": 6,
+              "surface": false,
+              "glimpse": false,
+              "exposure": 0,
+              "fallout": 0
+            }
+          },
+          {
+            "stage": 18,
+            "normalWalkDelta": 7,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 18,
+              "zone": "surface-breach",
+              "label": "Surface breach",
+              "depth": 2,
+              "surface": false,
+              "glimpse": true,
+              "exposure": 0.12,
+              "fallout": 0.21000000000000002
+            }
+          },
+          {
+            "stage": 20,
+            "normalWalkDelta": 10,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 20,
+              "zone": "radioactive-dawn",
+              "label": "Radioactive dawn",
+              "depth": 0,
+              "surface": true,
+              "glimpse": false,
+              "exposure": 1,
+              "fallout": 1
+            }
+          }
+        ],
+        "nativeArtDecodes": true,
+        "nearestPixelDrawing": true,
+        "playerInViewport": true,
+        "errors": [],
+        "passed": true
+      },
+      {
+        "engine": "chromium",
+        "phone": true,
+        "actualGameViewport": {
+          "width": 390,
+          "height": 844,
+          "nativeW": 130,
+          "nativeH": 282
+        },
+        "stages": [
+          {
+            "stage": 7,
+            "normalWalkDelta": 11,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 7,
+              "zone": "buried-works",
+              "label": "Buried works",
+              "depth": 13,
+              "surface": false,
+              "glimpse": false,
+              "exposure": 0,
+              "fallout": 0
+            }
+          },
+          {
+            "stage": 11,
+            "normalWalkDelta": 14,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 11,
+              "zone": "underworld-faults",
+              "label": "Underworld faults",
+              "depth": 9,
+              "surface": false,
+              "glimpse": false,
+              "exposure": 0,
+              "fallout": 0
+            }
+          },
+          {
+            "stage": 14,
+            "normalWalkDelta": 11,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 14,
+              "zone": "underworld-faults",
+              "label": "Underworld faults",
+              "depth": 6,
+              "surface": false,
+              "glimpse": false,
+              "exposure": 0,
+              "fallout": 0
+            }
+          },
+          {
+            "stage": 18,
+            "normalWalkDelta": 9,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 18,
+              "zone": "surface-breach",
+              "label": "Surface breach",
+              "depth": 2,
+              "surface": false,
+              "glimpse": true,
+              "exposure": 0.12,
+              "fallout": 0.21000000000000002
+            }
+          },
+          {
+            "stage": 20,
+            "normalWalkDelta": 13,
+            "normalJumpPassed": true,
+            "classId": "bulwark",
+            "atmosphere": {
+              "stage": 20,
+              "zone": "radioactive-dawn",
+              "label": "Radioactive dawn",
+              "depth": 0,
+              "surface": true,
+              "glimpse": false,
+              "exposure": 1,
+              "fallout": 1
+            }
+          }
+        ],
+        "nativeArtDecodes": true,
+        "nearestPixelDrawing": true,
+        "playerInViewport": true,
+        "errors": [],
+        "passed": true
+      }
+    ]
+  },
+  "initial733StartupRetry": {
+    "scope": "Historical preliminary 733 run before the concurrent main merge.",
+    "observation": "The first phone stage 7 readiness check timed out; the identical isolated URL and the complete stable 733 repeat passed. No runtime code changed for the retry. The final 9ec UI and movement cases passed on their first run."
+  },
+  "bossGalleryCaptureProducerSha256": "d99c560b61832e120ff1e08dfad003a9b97a47646c72561a4d96c9a56c2d862f",
+  "artifactSha256": {
+    "review/crown-ascent/README.md": "9a8392214c88919642d6316348d3984e78e683846ef1411889072ba4d387a7f3",
+    "review/crown-ascent/boss/act-1-phone.png": "1ef82e9fa769fadf79ead7fc79ff6e68016da78c50c0dcae2d555bf09835c257",
+    "review/crown-ascent/boss/act-1.png": "0ab8068f70cb7a8cc2c3d0dccb14e3f1c2df02cacac49a70eff5be6f4dcd00f4",
+    "review/crown-ascent/boss/act-2-phone.png": "a33b0358b7a43c3a2bab4d4922144be1163f1abe50f306acf8af8a553b310230",
+    "review/crown-ascent/boss/act-2.png": "ce00b9ba27c16524ee0fa7f908adef4ee02d765778628917c8329f679e61a3b4",
+    "review/crown-ascent/boss/act-3-phone.png": "7135a5d902158281962cb589d298fc0877c1d197a6ab89a0acea9360bc980ddc",
+    "review/crown-ascent/boss/act-3.png": "47a90e5efeb636f6018d39ab9199fc3e433420ab76963c57e21a857e27174f12",
+    "review/crown-ascent/boss/act-4-phone.png": "0b8da15288b3f0dbb63a8b890b2d89f5b3ef35b81870ee12a4f2871f431145b9",
+    "review/crown-ascent/boss/act-4.png": "86c8a83dc0119a317369323bb23b1cc2bd1172f567246782f401cfcfe6d268b2",
+    "review/crown-ascent/boss/index.html": "62075ea87c0c4a47da9702c7c3b388b28e8361bd6713bc9fa1a688883780ce08",
+    "review/crown-ascent/boss/metadata.json": "7473b8eadd1afb990752b0ecf8281ee595cac4a2e94fa62729965f22f1675555",
+    "review/crown-ascent/boss/showcase.png": "cb61047b30d83e26521396e37f4535528707e545431c02aee0c84af0da37b6de",
+    "review/crown-ascent/index.html": "c6e22792fd95f8fa9d0f66587af48d776a8d3cf73397b60b59b60d764a72334b",
+    "review/crown-ascent/landmarks/index.html": "c1baf6762e72846db482ac8b2b071c7878c546c882863d220fd33abc4cd549d9",
+    "review/crown-ascent/landmarks/level-03.png": "73b293ccc0513099329fc2de64f1414412f3c16e1751dd56eaa4ea9673c3686f",
+    "review/crown-ascent/landmarks/level-05.png": "61394e02b979fc98ee7c29b3778cee67f411057eca154555de5470dbdfd7d7bc",
+    "review/crown-ascent/landmarks/level-07.png": "72602d357efa0eaeccbc89399d56b213b7cf119647e11a1877e29de534b7a56d",
+    "review/crown-ascent/landmarks/level-11.png": "850e6f8f765596f0bbdb18c4b17a54a1f39bdb8260af422146f7200ac0d7890e",
+    "review/crown-ascent/landmarks/level-14.png": "a258df0c3fa81b350990c9636cada2e7592bd65a1327d9be79bfc819649f0db2",
+    "review/crown-ascent/landmarks/level-16.png": "179b708e28be4702408872f8164f27e6b4f68d9f463fe9ded4ee4b9cc04e4af5",
+    "review/crown-ascent/landmarks/level-17.png": "6b6e28446e327d1535f181a7c5c505848012ff14df36e166a803a2374f70a7cd",
+    "review/crown-ascent/landmarks/level-18.png": "554db8fb885e0d63d3a4a44586994a7ef89ab71f80094b2e4343809c9949f0cb",
+    "review/crown-ascent/landmarks/metadata.json": "79718d1540d3e09d1830efe22bb9770ee274e4fc2bb5652dc444b6f51b7f813b",
+    "review/crown-ascent/level-01.png": "5bcc456d11db0cf2bf18faabffd07cdfe0fbe3ca63ac9fc7d7879432fa414781",
+    "review/crown-ascent/level-02.png": "e45f5c8eda39d286c6261f28eeb96d53487bb75dcef6d35ca5f52af9723cf920",
+    "review/crown-ascent/level-03.png": "30eddb402623e8bf43378bececb353d8db69e7453a0cccc486559352e9108182",
+    "review/crown-ascent/level-04.png": "0ffe0d522dd4d4b6fd1e048a5073ae058ebcff5a011813ac775491901fe1ebde",
+    "review/crown-ascent/level-05.png": "7f39a0ca0cfdadbcdb05035ff0c0c403d1861488dab2c8b2619824c85dda1b7e",
+    "review/crown-ascent/level-06.png": "4355002c58dd34af41579aea8c43294959d3ec9f3dda3e5b910253094df4c4b6",
+    "review/crown-ascent/level-07.png": "35d6c2825df4da705de09395178fdde98fa47d8d6f772bb0026678e616782ac1",
+    "review/crown-ascent/level-08.png": "5d3bbf49ead49c09a6820da1eb5084501b35b0f7d0e73bbcea9878a7e65ffe4a",
+    "review/crown-ascent/level-09.png": "bf0b5c438d414c94ac936836b35f797851d31463339a949df9ddd98934bee7f1",
+    "review/crown-ascent/level-10.png": "2535d6c125067aa03709ee965370bea4e0c84693a2b386ad445ffc2f670cfff4",
+    "review/crown-ascent/level-11.png": "bd3a7a25d40acd5f7677c01668a08370291c3ffa5bc014589858dbec197ba1c5",
+    "review/crown-ascent/level-12.png": "17949cade71e1cc88cdda0ddb190abe4e735f198344cf2331f6dbf4aa065f666",
+    "review/crown-ascent/level-13.png": "5e7e322614ac6ecee0cb3593b7d80b653c067b9c0b7b4049a10e82199cf8b2e9",
+    "review/crown-ascent/level-14.png": "c6d224e4690a3f601942b0509ed80f97b689e860e5e15d17442a5b1e607f9dd8",
+    "review/crown-ascent/level-15.png": "a483dfa649c276af769db95005e793115b042b0d32d2f5698ee04600250baeee",
+    "review/crown-ascent/level-16.png": "ecdb0a90e0aa7b8d21ed4835fa4c3e71c335243258b166f2979ac9994013fc91",
+    "review/crown-ascent/level-17.png": "426ec7576171dae521adc086d73d296b5ecb997a0bfac03f28480b2b4e68e87d",
+    "review/crown-ascent/level-18.png": "e9cf5f2f88802ab824b2b2a1b96a094b8138e17bd26f56908bb1ba1df9541ee6",
+    "review/crown-ascent/level-19.png": "0443a2c4dcc43f9a8121e49b1878b78f8f5b89cfb9bba309b0bb65646c77f868",
+    "review/crown-ascent/level-20.png": "bea448dee5df8ba19d76c01b8f9d8884d7c4914ef72cfc916276276959af36eb",
+    "review/crown-ascent/metadata.json": "77daf405fc99a4750a0a16fe3a41829d3896f8f5d9a0d59193a42c4103831ce9"
+  },
+  "scratchReviewScreenshots": "/workspace/scratch/reference-worlds/final-main/review-browser",
+  "scratchOrdinaryScreenshots": "/workspace/scratch/reference-worlds/final-main/ordinary-browser",
+  "wholeVerticalStackScreenshot": "/workspace/scratch/reference-worlds/final-main/review-browser/whole-vertical-stack-fit.png",
+  "suiteResult": "PASS",
+  "rawTracePublished": false
+}

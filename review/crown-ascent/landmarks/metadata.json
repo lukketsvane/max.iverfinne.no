@@ -1,15 +1,15 @@
 {
   "seed": 1,
   "clipStateCaptured": false,
-  "sourceRoot": "/workspace/scratch/reference-worlds/final-heroes",
+  "sourceRoot": "/workspace/scratch/reference-worlds/final-main/heroes",
   "assetRoot": "/workspace/max.iverfinne.no",
-  "snapshotPath": "/workspace/scratch/reference-worlds/final-heroes/source-snapshot.json",
-  "builtSourcePath": "/workspace/scratch/reference-worlds/final-heroes/built-source.html",
-  "captureSourcePath": "/workspace/scratch/reference-worlds/final-heroes/panorama-capture.html",
+  "snapshotPath": "/workspace/scratch/reference-worlds/final-main/heroes/source-snapshot.json",
+  "builtSourcePath": "/workspace/scratch/reference-worlds/final-main/heroes/built-source.html",
+  "captureSourcePath": "/workspace/scratch/reference-worlds/final-main/heroes/panorama-capture.html",
   "capturedCanvasFailures": [],
   "capturedClipFailures": [],
   "snapshotSha256": "f9fc115114a9988fd3d9ee4af03b47baeb5bf3eec5c882e1595e5584b9213e46",
-  "builtSourceSha256": "733345a853ba7c4915f60595f898572887365e946715fbea09367b27d6ca9796",
+  "builtSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
   "errors": [],
   "gardens": [
     {
@@ -1826,7 +1826,7 @@
         }
       ],
       "path": "level-07.png",
-      "sha256": "730d36e6a9fe46bb3b31abb2155d869bf93f80c0107b3dcf06f6242ccc8b282b",
+      "sha256": "72602d357efa0eaeccbc89399d56b213b7cf119647e11a1877e29de534b7a56d",
       "playablePath": "../../../review.html?mode=layout7&class=bulwark&seed=1&site=1"
     },
     {
@@ -2405,7 +2405,7 @@
         }
       ],
       "path": "level-11.png",
-      "sha256": "4ede26acee29722636992d216ef0e49429a4f6d81ed12274a20088504af90108",
+      "sha256": "850e6f8f765596f0bbdb18c4b17a54a1f39bdb8260af422146f7200ac0d7890e",
       "playablePath": "../../../review.html?mode=layout11&class=bulwark&seed=1&site=1"
     },
     {
@@ -3157,7 +3157,7 @@
         }
       ],
       "path": "level-14.png",
-      "sha256": "8f442a98fdd9684f094a8020e543c347b42455bc797ca82fefc21bc10735f99a",
+      "sha256": "a258df0c3fa81b350990c9636cada2e7592bd65a1327d9be79bfc819649f0db2",
       "playablePath": "../../../review.html?mode=layout14&class=bulwark&seed=1&site=1"
     },
     {
@@ -3734,7 +3734,7 @@
         }
       ],
       "path": "level-16.png",
-      "sha256": "37e8781b840c3ca207000f3771975d308c1e9a9ce9812cc2e083d7c4b6456984",
+      "sha256": "179b708e28be4702408872f8164f27e6b4f68d9f463fe9ded4ee4b9cc04e4af5",
       "playablePath": "../../../review.html?mode=layout16&class=bulwark&seed=1&site=1"
     },
     {
@@ -5123,7 +5123,7 @@
         }
       ],
       "path": "level-18.png",
-      "sha256": "8bbc6676d39c8270e7093d59ca791bc8c2511623b5b41727901016646838ce78",
+      "sha256": "554db8fb885e0d63d3a4a44586994a7ef89ab71f80094b2e4343809c9949f0cb",
       "playablePath": "../../../review.html?mode=layout18&class=bulwark&seed=1&site=1"
     }
   ],

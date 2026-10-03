@@ -1,15 +1,15 @@
 {
   "seed": 1,
   "clipStateCaptured": true,
-  "sourceRoot": "/workspace/scratch/reference-worlds/final",
+  "sourceRoot": "/workspace/scratch/reference-worlds/final-main",
   "assetRoot": "/workspace/max.iverfinne.no",
-  "snapshotPath": "/workspace/scratch/reference-worlds/final/source-snapshot.json",
-  "builtSourcePath": "/workspace/scratch/reference-worlds/final/built-source.html",
-  "captureSourcePath": "/workspace/scratch/reference-worlds/final/panorama-capture.html",
+  "snapshotPath": "/workspace/scratch/reference-worlds/final-main/source-snapshot.json",
+  "builtSourcePath": "/workspace/scratch/reference-worlds/final-main/built-source.html",
+  "captureSourcePath": "/workspace/scratch/reference-worlds/final-main/panorama-capture.html",
   "capturedCanvasFailures": [],
   "capturedClipFailures": [],
   "snapshotSha256": "f9fc115114a9988fd3d9ee4af03b47baeb5bf3eec5c882e1595e5584b9213e46",
-  "builtSourceSha256": "733345a853ba7c4915f60595f898572887365e946715fbea09367b27d6ca9796",
+  "builtSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
   "errors": [],
   "gardens": [
     {
@@ -374,17 +374,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-01-draws.json",
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-01-draws.json",
       "traceCount": 7350,
       "traceCounts": {
         "fillRect": 6789,
         "drawImage": 561
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-01-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-01-architecture.json",
       "architectureRecipeSha256": "45cf38e703d26bd6b53dd94bbd300f98a051b0592f79d66bdb486100b808b81f",
       "path": "level-01.png",
-      "sha256": "5605cf83aeaeb319ee860e01bd049a528b0d86e85eb352dccd522b6164a3c29c",
-      "traceSha256": "ed208abc0e1b0eb91f2b5c25672f4c9b3fc792a744e40646ed936d9de3a32aea",
+      "sha256": "5bcc456d11db0cf2bf18faabffd07cdfe0fbe3ca63ac9fc7d7879432fa414781",
+      "traceSha256": "5d884ca5ec97432d95f0808df5855d4cf5a8b91391336c6de29483da20a641e0",
       "unknownDrawSources": 0
     },
     {
@@ -1202,17 +1202,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-02-draws.json",
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-02-draws.json",
       "traceCount": 9973,
       "traceCounts": {
         "fillRect": 9310,
         "drawImage": 663
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-02-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-02-architecture.json",
       "architectureRecipeSha256": "a35574bb3ca012b0e4d79dd68efc0e0957630abfdacb284e6d9efad9a4f2f67c",
       "path": "level-02.png",
-      "sha256": "eecef47a2e156aff224be0793bc4945cb9f2c52012b4b8e3738b97911d64d377",
-      "traceSha256": "69fe2a92ac84c2b68feb33cf68ceb9612a834b41aea52ac8cee7f40d5ab9967d",
+      "sha256": "e45f5c8eda39d286c6261f28eeb96d53487bb75dcef6d35ca5f52af9723cf920",
+      "traceSha256": "1245bc6e8d62d3aff619c8ad90cbbdeb643da3d9cbe77c5f6a8a2d7c0544cda1",
       "unknownDrawSources": 0
     },
     {
@@ -1813,17 +1813,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-03-draws.json",
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-03-draws.json",
       "traceCount": 17265,
       "traceCounts": {
         "fillRect": 16585,
         "drawImage": 680
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-03-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-03-architecture.json",
       "architectureRecipeSha256": "5bf5e77ea616de12e57bccdd85ce05d25c5d254744a27d802180570dc39750bc",
       "path": "level-03.png",
-      "sha256": "080c515c781db23d7270391f81b87b1f4f809dfc8b50e0a1ef6177c220a3adb8",
-      "traceSha256": "f42a7803853fc759d42448463cb221b0cf57c4abb77d30190236cc4b01a12bcb",
+      "sha256": "30eddb402623e8bf43378bececb353d8db69e7453a0cccc486559352e9108182",
+      "traceSha256": "9b9ec575876343c5582091adbcaa70d3edcd0e788cb1509ad9ab95a4ca91ac90",
       "unknownDrawSources": 0
     },
     {
@@ -2376,17 +2376,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-04-draws.json",
-      "traceCount": 13618,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-04-draws.json",
+      "traceCount": 13619,
       "traceCounts": {
-        "fillRect": 13043,
+        "fillRect": 13044,
         "drawImage": 575
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-04-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-04-architecture.json",
       "architectureRecipeSha256": "2aa5659481af0250c3a0e667c9fc4dfa6ca299d02e8d6e337161c17c5f498fd9",
       "path": "level-04.png",
-      "sha256": "1e925223417dd2b3ec30154b3d2a333c548ea234fd3276ba5fa57e7eae7c52f5",
-      "traceSha256": "e7097772416afcd2465207aa2049ddc49c6f10df1009954e9e2805160a661428",
+      "sha256": "0ffe0d522dd4d4b6fd1e048a5073ae058ebcff5a011813ac775491901fe1ebde",
+      "traceSha256": "cb86966e9613035f3e51f3c57c023000fa429d4f6fde87d60ed22c5fe8b570fd",
       "unknownDrawSources": 0
     },
     {
@@ -2944,17 +2944,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-05-draws.json",
-      "traceCount": 17316,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-05-draws.json",
+      "traceCount": 17318,
       "traceCounts": {
-        "fillRect": 16751,
+        "fillRect": 16753,
         "drawImage": 565
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-05-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-05-architecture.json",
       "architectureRecipeSha256": "42086c1b12076f710d3cbdc489b2827058405ebcfc2aaf52ab78bc29c53172db",
       "path": "level-05.png",
       "sha256": "7f39a0ca0cfdadbcdb05035ff0c0c403d1861488dab2c8b2619824c85dda1b7e",
-      "traceSha256": "de860f28ee74a424c01c3737b382a9d36380c92878a4f0100948a125f857e9ba",
+      "traceSha256": "189cfab05f2b2220b34c8f30c14a0e12a2e767956ccad6c64d862a1f66e6f5b9",
       "unknownDrawSources": 0
     },
     {
@@ -3568,17 +3568,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-06-draws.json",
-      "traceCount": 14516,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-06-draws.json",
+      "traceCount": 14517,
       "traceCounts": {
-        "fillRect": 13826,
+        "fillRect": 13827,
         "drawImage": 690
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-06-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-06-architecture.json",
       "architectureRecipeSha256": "ffd1dfba68ab712877aa8dd1b4733e71ba1efc5d89339a9cb9ddaf98b165d9fb",
       "path": "level-06.png",
-      "sha256": "8e49be636cda1d5ae525920ee2ef465480361bc31b49f3b6d77bd63ff4960488",
-      "traceSha256": "f508bf1f1f20c981c3e561e80065c8f3cf106de895627d696acb67c576952e89",
+      "sha256": "4355002c58dd34af41579aea8c43294959d3ec9f3dda3e5b910253094df4c4b6",
+      "traceSha256": "1c7788f17ecc99b3f5624b272314de06991649968dc23277a96544a5abf58b67",
       "unknownDrawSources": 0
     },
     {
@@ -4218,17 +4218,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-07-draws.json",
-      "traceCount": 17419,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-07-draws.json",
+      "traceCount": 17420,
       "traceCounts": {
-        "fillRect": 16774,
+        "fillRect": 16775,
         "drawImage": 645
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-07-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-07-architecture.json",
       "architectureRecipeSha256": "a33cb9723216d3743623d7c167b075bc0f488cab8f769848663d1c869479696e",
       "path": "level-07.png",
-      "sha256": "b5c7eb70f31a3f1cee8fc88a98b3939613035837e90e221f7204fe68238f9ed9",
-      "traceSha256": "d11fc7d64eeabe172aa7c33f7c18896d35d178a9f6fa3d33f45602138dfec071",
+      "sha256": "35d6c2825df4da705de09395178fdde98fa47d8d6f772bb0026678e616782ac1",
+      "traceSha256": "d30782d976d481350adcff063ce91b6e970c88e4ad4d7cd7a641c5565c7d071e",
       "unknownDrawSources": 0
     },
     {
@@ -4826,17 +4826,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-08-draws.json",
-      "traceCount": 16295,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-08-draws.json",
+      "traceCount": 16296,
       "traceCounts": {
-        "fillRect": 15573,
+        "fillRect": 15574,
         "drawImage": 722
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-08-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-08-architecture.json",
       "architectureRecipeSha256": "dbe7a725452c1b4e7574ec66f2b0dfc0b63873733b66b5b4a0a698a96bfc3364",
       "path": "level-08.png",
-      "sha256": "e8f0ddd73e76c3b6af7da14e0b67697b8e685961c3f3926b54edae3db8af1fa0",
-      "traceSha256": "4141c73d407b254776064dcfc293d022d8afc73e7701b2fcee135594a2703458",
+      "sha256": "5d3bbf49ead49c09a6820da1eb5084501b35b0f7d0e73bbcea9878a7e65ffe4a",
+      "traceSha256": "d3c024f462a070e87b8c4df00160be0a06366069b40ca6b5c56626529bfc2e20",
       "unknownDrawSources": 0
     },
     {
@@ -5440,17 +5440,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-09-draws.json",
-      "traceCount": 13144,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-09-draws.json",
+      "traceCount": 13145,
       "traceCounts": {
-        "fillRect": 12522,
+        "fillRect": 12523,
         "drawImage": 622
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-09-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-09-architecture.json",
       "architectureRecipeSha256": "301a1a0477ab4f9e1a1acf7964e178e3c1f556b826df96e2abfc6beccba7e7cb",
       "path": "level-09.png",
-      "sha256": "afec0e9fa3b23062b0885b0cf02d65a3ab2ba80eec263d9fbc9854826fbbee5d",
-      "traceSha256": "85a5eba41e1a97fdbb15b64e9310c749a383d5620381841b76ed2352a7dbf51f",
+      "sha256": "bf0b5c438d414c94ac936836b35f797851d31463339a949df9ddd98934bee7f1",
+      "traceSha256": "2637e1411a12cc0ee8d075061c7e36f111855962fa9a8979bb96be5991f9622e",
       "unknownDrawSources": 0
     },
     {
@@ -6221,17 +6221,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-10-draws.json",
-      "traceCount": 15320,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-10-draws.json",
+      "traceCount": 15321,
       "traceCounts": {
-        "fillRect": 14601,
+        "fillRect": 14602,
         "drawImage": 719
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-10-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-10-architecture.json",
       "architectureRecipeSha256": "658d8fe0588956282ccaaaff481698c5651ad293dfc28a70e45b118607c19e12",
       "path": "level-10.png",
-      "sha256": "40f0644516a778e621b9d24638df86f4592f93e5185f7f13f9fd8d72ea7ec10c",
-      "traceSha256": "9de1f278f8fc26c9cb01e2c15a4615b2aa09518663ddd21cbb768fb850323472",
+      "sha256": "2535d6c125067aa03709ee965370bea4e0c84693a2b386ad445ffc2f670cfff4",
+      "traceSha256": "d08e1ff95b146c3d0014c09d88d9c31003461afd8744896de694fd140ce1ae42",
       "unknownDrawSources": 0
     },
     {
@@ -6804,17 +6804,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-11-draws.json",
-      "traceCount": 13921,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-11-draws.json",
+      "traceCount": 13922,
       "traceCounts": {
-        "fillRect": 13335,
+        "fillRect": 13336,
         "drawImage": 586
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-11-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-11-architecture.json",
       "architectureRecipeSha256": "e0e1d1d15740c5992a353288f76e47d8dcdd8439f007da1760b057e1eaa81673",
       "path": "level-11.png",
       "sha256": "bd3a7a25d40acd5f7677c01668a08370291c3ffa5bc014589858dbec197ba1c5",
-      "traceSha256": "ed0fa3bbec58d04f5d57305782ef5865976d9779f75444a33370917df1656fd6",
+      "traceSha256": "781019b51cda4670a0bb5fb544ecdfcf23a005835c4b04c279f76178cc662795",
       "unknownDrawSources": 0
     },
     {
@@ -7385,17 +7385,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-12-draws.json",
-      "traceCount": 14283,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-12-draws.json",
+      "traceCount": 14284,
       "traceCounts": {
-        "fillRect": 13781,
+        "fillRect": 13782,
         "drawImage": 502
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-12-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-12-architecture.json",
       "architectureRecipeSha256": "f8a677a22a208b741c6aab4f881d100b2b5891427e0e96eb978063efaf551cf4",
       "path": "level-12.png",
       "sha256": "17949cade71e1cc88cdda0ddb190abe4e735f198344cf2331f6dbf4aa065f666",
-      "traceSha256": "752dda608d6a104f9929b2926c897ac54b1b791f397892b16ff276f73c5f155e",
+      "traceSha256": "81a9e2ecd0dd7a5724f00648334d650034db1e97ed60eb7322213907999dfae8",
       "unknownDrawSources": 0
     },
     {
@@ -8046,17 +8046,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-13-draws.json",
-      "traceCount": 15554,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-13-draws.json",
+      "traceCount": 15555,
       "traceCounts": {
-        "fillRect": 15018,
+        "fillRect": 15019,
         "drawImage": 536
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-13-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-13-architecture.json",
       "architectureRecipeSha256": "59b2d9ebe6213d88ff31442c7a1d6f700486aa11cea9934fb2b03613d8208504",
       "path": "level-13.png",
       "sha256": "5e7e322614ac6ecee0cb3593b7d80b653c067b9c0b7b4049a10e82199cf8b2e9",
-      "traceSha256": "a58dbf8b918f7feb3e563500ae8dfaeb188c9c6a45cadd86b8abc899712b1809",
+      "traceSha256": "79ab16ffbdf79c2ccaa6a3b5a37f3ad064785c00ff4aa5d5e2e2e8f951cb777c",
       "unknownDrawSources": 0
     },
     {
@@ -8802,17 +8802,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-14-draws.json",
-      "traceCount": 20138,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-14-draws.json",
+      "traceCount": 20139,
       "traceCounts": {
-        "fillRect": 19531,
+        "fillRect": 19532,
         "drawImage": 607
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-14-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-14-architecture.json",
       "architectureRecipeSha256": "4131b7e7577582c0d938e24a41d946d92c88a9005ae72aa90a58b3553640901c",
       "path": "level-14.png",
       "sha256": "c6d224e4690a3f601942b0509ed80f97b689e860e5e15d17442a5b1e607f9dd8",
-      "traceSha256": "fb3eeb5f17fe432be61d88b63ca75cc74c416ef1281e9b548017ec9728903c37",
+      "traceSha256": "5fc6ca46e90362adb12516dd7f20a670e0dbecdb36554e29711833f41777fda8",
       "unknownDrawSources": 0
     },
     {
@@ -9406,17 +9406,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-15-draws.json",
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-15-draws.json",
       "traceCount": 14703,
       "traceCounts": {
         "fillRect": 14182,
         "drawImage": 521
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-15-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-15-architecture.json",
       "architectureRecipeSha256": "58f15d1d9e9790c6913cb6aafee2914f0228e3e1c68b3f61f1df128cb4ef6861",
       "path": "level-15.png",
-      "sha256": "b48f9ceda6893326f08ddf77cc84bf7baa560644fbc32170c64d09a3bc997ee6",
-      "traceSha256": "e932bac4a6e330f2324b409c89d7b924c308dd5f6c648f745b9678478ae713bd",
+      "sha256": "a483dfa649c276af769db95005e793115b042b0d32d2f5698ee04600250baeee",
+      "traceSha256": "5e69851d9a313476614f6594b9afcc4f148d098e1b9e6d529c51142df332d5bd",
       "unknownDrawSources": 0
     },
     {
@@ -9987,17 +9987,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-16-draws.json",
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-16-draws.json",
       "traceCount": 15445,
       "traceCounts": {
         "fillRect": 14838,
         "drawImage": 607
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-16-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-16-architecture.json",
       "architectureRecipeSha256": "abb7df87480df3f6335e5340ae87df04691a9bc5705a74531efce7dcec769e25",
       "path": "level-16.png",
-      "sha256": "cb9dc7d948db3e91f8125618188472ff356be02c1b22ff86ef2548fd620e7b5a",
-      "traceSha256": "3f63ae24660597358f53da1dcb4a16ed9fa7efb61ac4eb9778a5ac67101b6688",
+      "sha256": "ecdb0a90e0aa7b8d21ed4835fa4c3e71c335243258b166f2979ac9994013fc91",
+      "traceSha256": "732e02fe4fe4fd9caade93f99281c725a71d06ab6b39c1720940b03979784344",
       "unknownDrawSources": 0
     },
     {
@@ -10625,17 +10625,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-17-draws.json",
-      "traceCount": 17727,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-17-draws.json",
+      "traceCount": 17726,
       "traceCounts": {
-        "fillRect": 17235,
+        "fillRect": 17234,
         "drawImage": 492
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-17-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-17-architecture.json",
       "architectureRecipeSha256": "b4590a2476abdbea6fbaa9a11cc213c11f822ef95d4462bf1dfe24b03525d3f9",
       "path": "level-17.png",
-      "sha256": "f643f697977174acf653e623012bed541a9e26775d4f14873ea73ecae8595f78",
-      "traceSha256": "115f55a8537e70a9c7a561965cc0af3f4817bd5f7016868643df6b5ab03c2416",
+      "sha256": "426ec7576171dae521adc086d73d296b5ecb997a0bfac03f28480b2b4e68e87d",
+      "traceSha256": "0cb565cf0642c70a1203c4d3c0d80c0088770ed7eaa027cf6a34e4728a9f5ded",
       "unknownDrawSources": 0
     },
     {
@@ -11384,17 +11384,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-18-draws.json",
-      "traceCount": 18584,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-18-draws.json",
+      "traceCount": 18583,
       "traceCounts": {
-        "fillRect": 17917,
+        "fillRect": 17916,
         "drawImage": 667
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-18-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-18-architecture.json",
       "architectureRecipeSha256": "a723280536869f79057ab2bce51b6816a8adc1d2483f5432d843639702cb94ab",
       "path": "level-18.png",
-      "sha256": "80077e151154ccbf46362fed54f7b8d548a6643f21eb9bf2c987c21dc40345d8",
-      "traceSha256": "38772d87149c8038853affe40c9b297df1ae06f4c01dcab5a3f377823252b18e",
+      "sha256": "e9cf5f2f88802ab824b2b2a1b96a094b8138e17bd26f56908bb1ba1df9541ee6",
+      "traceSha256": "5672428c3ef027103c8449142eb545c619893718116e8935e8239f6eee563b14",
       "unknownDrawSources": 0
     },
     {
@@ -12173,17 +12173,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-19-draws.json",
-      "traceCount": 18583,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-19-draws.json",
+      "traceCount": 18582,
       "traceCounts": {
-        "fillRect": 17978,
+        "fillRect": 17977,
         "drawImage": 605
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-19-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-19-architecture.json",
       "architectureRecipeSha256": "a495dbe066b95f007ca2c892cdbc6ea9252eed9c1ccd81c21b11781cf1e72f72",
       "path": "level-19.png",
-      "sha256": "3c11b9ee3406051c6f1e501dffd93ec485959c581b573c94a7e2b618adde53e0",
-      "traceSha256": "f817447e4eb3093c4f4dba541ef9e7e6c56f342ae50fc6e64c2ec8ee239a7af7",
+      "sha256": "0443a2c4dcc43f9a8121e49b1878b78f8f5b89cfb9bba309b0bb65646c77f868",
+      "traceSha256": "d6b0ea94189ca1cf5445144cd78b086b409c90926b3d8ea5c54194ac1461c657",
       "unknownDrawSources": 0
     },
     {
@@ -12735,17 +12735,17 @@
           "optional": true
         }
       ],
-      "tracePath": "/workspace/scratch/reference-worlds/final/panoramas/level-20-draws.json",
-      "traceCount": 9962,
+      "tracePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-20-draws.json",
+      "traceCount": 9961,
       "traceCounts": {
-        "fillRect": 9612,
+        "fillRect": 9611,
         "drawImage": 350
       },
-      "architectureRecipePath": "/workspace/scratch/reference-worlds/final/panoramas/level-20-architecture.json",
+      "architectureRecipePath": "/workspace/scratch/reference-worlds/final-main/panoramas/level-20-architecture.json",
       "architectureRecipeSha256": "cbf9bb46f27b0ed5a3898bcedb34f71b1f820403189486dc47e1e40d86748eaa",
       "path": "level-20.png",
-      "sha256": "4a404499a39a1ece32dc06591118749d66509e68284389c8974e5f3ccdbf0d15",
-      "traceSha256": "3853ebcb1267a5590a575beac95ae0e7ae468c1fd45338b002367636e3b4e39e",
+      "sha256": "bea448dee5df8ba19d76c01b8f9d8884d7c4914ef72cfc916276276959af36eb",
+      "traceSha256": "f78be7f9bc1d696c96debdf9b0a4732ba19dd1451821df8f91fd693252c69b49",
       "unknownDrawSources": 0
     }
   ],
