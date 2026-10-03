@@ -1,0 +1,498 @@
+{
+  "approvedBuiltSourceSha256": "733345a853ba7c4915f60595f898572887365e946715fbea09367b27d6ca9796",
+  "freshBuiltSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
+  "approvedRendererRecipes": {
+    "campaign-architecture.js": "0757edfb4ae390a0b60e7c8805db69f6bbf7ce336a02c2cd8107d16a63d2894f",
+    "garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+  },
+  "freshRendererRecipes": {
+    "campaign-architecture.js": "0757edfb4ae390a0b60e7c8805db69f6bbf7ce336a02c2cd8107d16a63d2894f",
+    "garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+  },
+  "nativeSourceIdentitiesIdentical": true,
+  "all20RgbaIdentical": false,
+  "all20NormalizedDrawsIdentical": false,
+  "all20GeometryIdentical": true,
+  "all20ArchitectureOpsIdentical": true,
+  "conclusion": "All 20 routes, architecture recipes and native source identities are unchanged. Full-frame and full-command equality do not hold because the renderer retains randomized loot/cache glow phases and campfire sparks. Review PNGs and hero windows were recaptured from the fresh producer; the approved 733 snapshot remains immutable.",
+  "levels": [
+    {
+      "stage": 1,
+      "nativeSize": [
+        1247,
+        474
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 157,
+      "changedPixelBounds": [
+        685,
+        145,
+        1102,
+        280
+      ],
+      "approvedRgbaSha256": "3179ff9585b75ddff64d42d2a576ea11926b68c01051bd65978c13a454c09f1e",
+      "freshRgbaSha256": "52b540f6407d76dc68e1c20c627a576c99f50f5bdf2189713a52d5a72e8fd69e",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "2e3c345904392d99564f9ce6fe0f75bd3332f0956c81f7ebdbea3e229e112e01",
+      "freshNormalizedDrawSha256": "07b2dbc9d2e87868b2a6025fb1e92a99822043422a08c5cf50183cb9fd9d9f6a",
+      "approvedDrawCount": 7350,
+      "freshDrawCount": 7350,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 2,
+      "nativeSize": [
+        1719,
+        408
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        1233,
+        116,
+        1246,
+        131
+      ],
+      "approvedRgbaSha256": "4fc7562f5476ab4d196d644914fc8f2cae58f769d9789c40f5da8f626855425f",
+      "freshRgbaSha256": "fa3d3d1fadbaf99887f03d8e8a87d9fc4681fd2e457be85fc72a8431ed09e43f",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "91f9a02caf830c3eb2377497c338b1601c6d92a21cf147227616418f1287e2d3",
+      "freshNormalizedDrawSha256": "473870bab33298da4d631835a822b5a52317889e139de72731e5d4320fc2ec35",
+      "approvedDrawCount": 9973,
+      "freshDrawCount": 9973,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 3,
+      "nativeSize": [
+        2009,
+        465
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 114,
+      "changedPixelBounds": [
+        1301,
+        234,
+        1340,
+        282
+      ],
+      "approvedRgbaSha256": "5cc97f44b0bb3f9bbf0d90a4075c546d1111ca8c5f5211a4d45b911094ff3d5c",
+      "freshRgbaSha256": "0458284db22990ffd481a4f89778c49de114a2f8d1ceb64bbbc76674b2043196",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "d412c97d325372438245268060afe3a1e3662b4ac79cf7c9ced0221fbf2f64e1",
+      "freshNormalizedDrawSha256": "c827af77d1bc4ec7f8817a08323e8e2f9814f184ba66153b03306861c2f006a4",
+      "approvedDrawCount": 17265,
+      "freshDrawCount": 17265,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 4,
+      "nativeSize": [
+        1472,
+        486
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 40,
+      "changedPixelBounds": [
+        533,
+        292,
+        1233,
+        393
+      ],
+      "approvedRgbaSha256": "c2f6cbfbe9d02d5ae230ec754e037e346e816827b22427477ebbaa4b09f288b8",
+      "freshRgbaSha256": "06d3f370c60a30c84ab4bed4f30ed0cf802d9affb203495101021467f71053e5",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "b97df594b433fa52ee6a7da63da68a31473a8329316760506febade0b9d623a5",
+      "freshNormalizedDrawSha256": "daab9cf7b5741af10b54d35be465f2c5aee42bebec14c4438f070d5e27e40762",
+      "approvedDrawCount": 13618,
+      "freshDrawCount": 13619,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 5,
+      "nativeSize": [
+        1277,
+        496
+      ],
+      "rgbaIdentical": true,
+      "changedNativePixels": 0,
+      "changedPixelBounds": null,
+      "approvedRgbaSha256": "a0e857722e5c3577ee3200a8a47ee95127221eb601f54327446c3324c06c331b",
+      "freshRgbaSha256": "a0e857722e5c3577ee3200a8a47ee95127221eb601f54327446c3324c06c331b",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "e47d14f61a8778e0e5c63993479c9e4afbc2155dfdf3db692b0e1accb906e1fa",
+      "freshNormalizedDrawSha256": "2f93c5e64877f961f76be593574618cc83ebfdef415cc142daaf851d3f8c7ae0",
+      "approvedDrawCount": 17316,
+      "freshDrawCount": 17318,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 6,
+      "nativeSize": [
+        1600,
+        544
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 1,
+      "changedPixelBounds": [
+        488,
+        451,
+        489,
+        452
+      ],
+      "approvedRgbaSha256": "cc859ed88cb4dc2caee0babf3244c62298f770f7dfbac9d5594b80f0377b2007",
+      "freshRgbaSha256": "07b50a77efb4083008c9a0bd25cee3512e56bafcca95997da52da03849ee9979",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "fb15dc8aa1014449a59bf4148f5b29c157d1261315f592540fd8a2f52e59caff",
+      "freshNormalizedDrawSha256": "e2e69aeb2ece0fb098ba9b1a3d51ea86d100a3f1683c6be9b7f9db12e22deb56",
+      "approvedDrawCount": 14516,
+      "freshDrawCount": 14517,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 7,
+      "nativeSize": [
+        1643,
+        527
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        1093,
+        263,
+        1106,
+        278
+      ],
+      "approvedRgbaSha256": "a140979fec319836e82f24b4fcad873fe70275f68a12cf50b278a1c45e4c9c80",
+      "freshRgbaSha256": "05d7f2419a6c783a195f06121afe0370de63858792da77e3ace1664381a42bac",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "b05a3d98a3df7a74778511c863ea4c1c79dc7005050cf02051d10b16bb8b6b04",
+      "freshNormalizedDrawSha256": "deff20d9a2cbca14395da1f4348408b825252eb219d7b7e02230f07da48da05b",
+      "approvedDrawCount": 17419,
+      "freshDrawCount": 17420,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 8,
+      "nativeSize": [
+        1811,
+        532
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 77,
+      "changedPixelBounds": [
+        131,
+        278,
+        560,
+        307
+      ],
+      "approvedRgbaSha256": "315b768bbc4e411729f344e42c91808f926dcaa7b5e4c82b59f964f931a95022",
+      "freshRgbaSha256": "60a9114c1db50f96d4ddbc9f5bcf32ac052a28ad23129ab09a797f2218b8a171",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "acdffadc873b2b9503d43cc944c7408b9f4610b26fcd3d9636ca1b51affd7730",
+      "freshNormalizedDrawSha256": "d5a12a1409a7423a0cb6d136a95f0d5097c77b00e81d24ab2ea7f4779ccec81f",
+      "approvedDrawCount": 16295,
+      "freshDrawCount": 16296,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 9,
+      "nativeSize": [
+        1313,
+        568
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        646,
+        336,
+        659,
+        351
+      ],
+      "approvedRgbaSha256": "6ca21da4d55fd2793a3c8730c0f6717ef6a797f1c27e3188b3d4e0bbf1b12826",
+      "freshRgbaSha256": "c546dc8313d427003b649f042af101160f612df37f769b1ed240daacbf30c134",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "fe00e6a8f94d1fb86e27a4b25dc5fb6572dc7cbd63cc6ef1b5c5df5ac600d259",
+      "freshNormalizedDrawSha256": "9eb039e170f0b19f9ccc89d0b4108ec384c6cd672aec5170f962a80da10e546c",
+      "approvedDrawCount": 13144,
+      "freshDrawCount": 13145,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 10,
+      "nativeSize": [
+        1618,
+        561
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        475,
+        338,
+        488,
+        353
+      ],
+      "approvedRgbaSha256": "e07265d3a061e0fe8d65f94cf7f41d4000e012df02917b7c73dab0412ab886c1",
+      "freshRgbaSha256": "4958ecaf4cab75797cc0c727b38060fb31519f8d304f2c377e38ff8336a282bc",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "66f6c12cfa3e3ab0d9d692a2382f7fb079eed4353ae76863429e713f964e177d",
+      "freshNormalizedDrawSha256": "1cea723ba81be3fd4c85738f9b3c8ac0a85f98c156671df29d4f0bb8db0824c8",
+      "approvedDrawCount": 15320,
+      "freshDrawCount": 15321,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 11,
+      "nativeSize": [
+        1563,
+        545
+      ],
+      "rgbaIdentical": true,
+      "changedNativePixels": 0,
+      "changedPixelBounds": null,
+      "approvedRgbaSha256": "5cc071dc5392f38dc7cc021b6856585435fb7ed111807c54801ff187b88bf0b9",
+      "freshRgbaSha256": "5cc071dc5392f38dc7cc021b6856585435fb7ed111807c54801ff187b88bf0b9",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "b07a490b62cf8d00916f4f2f2db15a5db4c6af72e3171cc173e5c28878836644",
+      "freshNormalizedDrawSha256": "efeccec3457a537cf182725c4f7c6b20d88bdbe2ec4fc25826589feddcf175cb",
+      "approvedDrawCount": 13921,
+      "freshDrawCount": 13922,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 12,
+      "nativeSize": [
+        1439,
+        528
+      ],
+      "rgbaIdentical": true,
+      "changedNativePixels": 0,
+      "changedPixelBounds": null,
+      "approvedRgbaSha256": "e7070dce4e40cadcbdbc07e9fc4dfa76179542fa41197bc050c8b9677f94688a",
+      "freshRgbaSha256": "e7070dce4e40cadcbdbc07e9fc4dfa76179542fa41197bc050c8b9677f94688a",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "7be98e912cdf8d04da8672db23c975ddbc3c36da0e9370ab3fee899676dfaddd",
+      "freshNormalizedDrawSha256": "99a54a10ae904325ea513ae51902fff8b3c9f1d43112438bf48ba7e10e9cbac3",
+      "approvedDrawCount": 14283,
+      "freshDrawCount": 14284,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 13,
+      "nativeSize": [
+        1765,
+        525
+      ],
+      "rgbaIdentical": true,
+      "changedNativePixels": 0,
+      "changedPixelBounds": null,
+      "approvedRgbaSha256": "8a33826878e59ee9d8e98c399bcaa242074963b114ade9a87c3588bbb3e104fc",
+      "freshRgbaSha256": "8a33826878e59ee9d8e98c399bcaa242074963b114ade9a87c3588bbb3e104fc",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "606c4adbc1e077695d4c99e01a313d0b6bba37256b2bf51aa69d1503cd7c8d03",
+      "freshNormalizedDrawSha256": "8991e62b4a676ef613922eec8ac05539532ace439e21a10f2128a5916d46b7f0",
+      "approvedDrawCount": 15554,
+      "freshDrawCount": 15555,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 14,
+      "nativeSize": [
+        1913,
+        539
+      ],
+      "rgbaIdentical": true,
+      "changedNativePixels": 0,
+      "changedPixelBounds": null,
+      "approvedRgbaSha256": "dd6aba4c25831d379d0355624969fb96cba28ec39c24fa3d742309061c809a79",
+      "freshRgbaSha256": "dd6aba4c25831d379d0355624969fb96cba28ec39c24fa3d742309061c809a79",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "73e8d0db641a17fff1f0b6bed5547c938636b360a57e5410896c6e7124be7f40",
+      "freshNormalizedDrawSha256": "0297ff125e10ad5762a49dba20fd865dda31b51be2bd16a95b4cd70008e0112e",
+      "approvedDrawCount": 20138,
+      "freshDrawCount": 20139,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 1
+    },
+    {
+      "stage": 15,
+      "nativeSize": [
+        1568,
+        534
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        492,
+        179,
+        530,
+        423
+      ],
+      "approvedRgbaSha256": "84e03677c2f8dd081a11fc197d40653f7c0f70ac7e5494ff1fdfa6540d08ee99",
+      "freshRgbaSha256": "11d47e69ef81750647f7fac099d820aa4ee1d3d550c64103f8c3188935f08b9f",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "5b3391a14407783751a91de0fba8ef9bf43c1f90498304489bf33b0e2489bc3d",
+      "freshNormalizedDrawSha256": "3eed79e899a0e6daa3bf6af3f316aaa9cecd1d771a17d15e4ff31983ce96d21c",
+      "approvedDrawCount": 14703,
+      "freshDrawCount": 14703,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 16,
+      "nativeSize": [
+        1610,
+        535
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        509,
+        255,
+        522,
+        270
+      ],
+      "approvedRgbaSha256": "c236692d84b05b593a3c1ba00b59fea9a0ef22aafb0c1432a0cd975d34acd507",
+      "freshRgbaSha256": "cd21135e059d904f8aee2b3dc15c7f5982ce31d8d5e268e6453c8548263345d0",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "788dd54ee7230e1a48b583913425db6c3b79414c9046079255b5bf2ac0b34ef4",
+      "freshNormalizedDrawSha256": "12f6e6cabde65ef2330b22d2fa1a8209e0d6bfdfc22e69001524eb8dcf1e08f7",
+      "approvedDrawCount": 15445,
+      "freshDrawCount": 15445,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 3
+    },
+    {
+      "stage": 17,
+      "nativeSize": [
+        1533,
+        538
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 113,
+      "changedPixelBounds": [
+        801,
+        268,
+        841,
+        316
+      ],
+      "approvedRgbaSha256": "16c3d7449166e5c22aa985a731f8c8acb32daef12139da9190848fa91bb5060f",
+      "freshRgbaSha256": "f8f29c6d33c58b799e021ff0d6ccc31054ac56aea32ded4d3ab67d7b3f7a1e16",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "64b101b88a6337e56bcb124a9f3a40c8be75ee2295c8996da130b2d5d3f5dc68",
+      "freshNormalizedDrawSha256": "7cb23edd3fe7743bc6584b8ae5b00bb003f4ba73c34189a127a627ac13d05023",
+      "approvedDrawCount": 17727,
+      "freshDrawCount": 17726,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 3
+    },
+    {
+      "stage": 18,
+      "nativeSize": [
+        1698,
+        550
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 74,
+      "changedPixelBounds": [
+        799,
+        279,
+        812,
+        295
+      ],
+      "approvedRgbaSha256": "90b8a6ab25f5b40764421cafbe762d43f288e3f859daf47ffe198f746aef42fa",
+      "freshRgbaSha256": "147ad07f39bb7c4cb388b1f51fc17e3e313842025dc5ddee3aee99c7f9e34a48",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "227e9c636ba72f21c8523e4b270536080f326defc503b9b0a70438d528516037",
+      "freshNormalizedDrawSha256": "9f9431b4a2b808a4a2cdfe3f4fba7b8f353b7e1ab2ae07c938f6a732eb264a1f",
+      "approvedDrawCount": 18584,
+      "freshDrawCount": 18583,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    },
+    {
+      "stage": 19,
+      "nativeSize": [
+        1697,
+        537
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 39,
+      "changedPixelBounds": [
+        673,
+        198,
+        686,
+        213
+      ],
+      "approvedRgbaSha256": "7b6b585b3d8b13c887ad6dca1104d6c39bda2856428a5ea4c20007ef951b3993",
+      "freshRgbaSha256": "8087b8cb4a7673e9b3ecffd64515f4ee048b869f71eab208a7d4b4d8fb824352",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "f46dd7cd339bb183d5ff3e5768e45c589b82c72627a5d5eccbe2f417282e94b5",
+      "freshNormalizedDrawSha256": "5f5e8541ee7b4a95bfaeacf9b0ad9f6f4fc8ed838a1d9b7b74d32f625f2f7a55",
+      "approvedDrawCount": 18583,
+      "freshDrawCount": 18582,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 3
+    },
+    {
+      "stage": 20,
+      "nativeSize": [
+        1268,
+        413
+      ],
+      "rgbaIdentical": false,
+      "changedNativePixels": 77,
+      "changedPixelBounds": [
+        146,
+        139,
+        473,
+        200
+      ],
+      "approvedRgbaSha256": "67659f79688a9ec44a14697d0e9ca388ec0abedb928156b4f52b51016cdd3ef5",
+      "freshRgbaSha256": "2c77e3008460fea235a4b126dc1e11a8ee9ff2eb20f0ef2b9e2de93cd9d726eb",
+      "normalizedDrawsIdentical": false,
+      "approvedNormalizedDrawSha256": "2253c6e96754788952052664417daecd81883065bb66aa55c8914e9e22e12deb",
+      "freshNormalizedDrawSha256": "b88063ae1119df89bb0b90ec3afeed47e3781026922c7c75b8cf6dd856d70d5b",
+      "approvedDrawCount": 9962,
+      "freshDrawCount": 9961,
+      "geometryIdentical": true,
+      "architectureOpsIdentical": true,
+      "drawDifferenceBlocks": 2
+    }
+  ],
+  "changedPixelsTotal": 926,
+  "nativePixelsTotal": 16390242,
+  "scratchDetailedAudit": "/workspace/scratch/reference-worlds/final-main/equivalence-audit.json"
+}

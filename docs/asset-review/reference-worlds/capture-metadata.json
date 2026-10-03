@@ -1,0 +1,2097 @@
+{
+  "capturedAtUtc": "2026-10-03T12:33:55.049169+00:00",
+  "runtimeSourceCommit": "afd718f8cb471c3afd835e30495aa5eee739f0a7",
+  "builtSourceSha256": "9ec63b38ddfaa152933b52a09482d053c64a0fe5405c9ab6951faa6b112e199b",
+  "rendererRecipes": {
+    "campaign-architecture.js": "0757edfb4ae390a0b60e7c8805db69f6bbf7ce336a02c2cd8107d16a63d2894f",
+    "garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+  },
+  "snapshotSha256": "f9fc115114a9988fd3d9ee4af03b47baeb5bf3eec5c882e1595e5584b9213e46",
+  "seed": 1,
+  "captureMethod": "Actual built renderer in a read-only isolated native canvas: actual stage geometry and camera-fixed world windows, with no HUD or player labels. Stage 20 includes the actual Crown at its authored court.",
+  "worldCount": 20,
+  "heroCount": 8,
+  "registration": {
+    "sidebarWidth": 240,
+    "commonOriginX": 1829,
+    "worldWidth": 2980,
+    "stackWidth": 3220,
+    "relativeWorldLeft": -1589,
+    "relativeWorldRight": 1391,
+    "nativeStackHeight": 10305
+  },
+  "sourceCaptureValidation": {
+    "pngSources": 17,
+    "cachedCanvasPlanes": 507,
+    "rawRgbaBytes": 11990384,
+    "clipStateCaptured": true,
+    "readbackFailures": [],
+    "clipFailures": [],
+    "missingDrawSources": 0,
+    "browserAndHttpErrors": [],
+    "allWorldPngAndTraceHashesVerified": true
+  },
+  "skyProgression": {
+    "underground": [
+      1,
+      17
+    ],
+    "firstGlimpses": [
+      18,
+      19
+    ],
+    "radioactiveDawnAndFinalBoss": 20
+  },
+  "worlds": [
+    {
+      "stage": 1,
+      "title": "Seed Vault",
+      "seed": 1,
+      "width": 1247,
+      "height": 474,
+      "worldLeft": -555,
+      "worldTop": -282,
+      "worldOrigin": 0,
+      "snapshotBounds": {
+        "worldLeft": -555,
+        "worldTop": -282,
+        "width": 1247,
+        "height": 474
+      },
+      "platforms": 45,
+      "bossCourt": {
+        "x": 540,
+        "y": 7,
+        "left": 428,
+        "right": 652
+      },
+      "sha256": "5bcc456d11db0cf2bf18faabffd07cdfe0fbe3ca63ac9fc7d7879432fa414781",
+      "path": "/review/crown-ascent/level-01.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": null,
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        "rooms": [],
+        "ops": 0,
+        "footings": 0
+      }
+    },
+    {
+      "stage": 2,
+      "title": "Railway Ruins",
+      "seed": 1,
+      "width": 1719,
+      "height": 408,
+      "worldLeft": 206957,
+      "worldTop": -261,
+      "worldOrigin": 207510,
+      "snapshotBounds": {
+        "worldLeft": 206957,
+        "worldTop": -261,
+        "width": 1719,
+        "height": 408
+      },
+      "platforms": 103,
+      "bossCourt": {
+        "x": 208320,
+        "y": -1,
+        "left": 208208,
+        "right": 208390
+      },
+      "sha256": "e45f5c8eda39d286c6261f28eeb96d53487bb75dcef6d35ca5f52af9723cf920",
+      "path": "/review/crown-ascent/level-02.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": null,
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        "rooms": [],
+        "ops": 0,
+        "footings": 0
+      }
+    },
+    {
+      "stage": 3,
+      "title": "Broken Aqueduct",
+      "seed": 1,
+      "width": 2009,
+      "height": 465,
+      "worldLeft": 411361,
+      "worldTop": -411,
+      "worldOrigin": 412950,
+      "snapshotBounds": {
+        "worldLeft": 411391,
+        "worldTop": -321,
+        "width": 1870,
+        "height": 375
+      },
+      "platforms": 63,
+      "bossCourt": {
+        "x": 412181,
+        "y": -9.6386588636393,
+        "left": 412117,
+        "right": 412293
+      },
+      "sha256": "30eddb402623e8bf43378bececb353d8db69e7453a0cccc486559352e9108182",
+      "path": "/review/crown-ascent/level-03.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "buried-aqueduct",
+          "x": 412984,
+          "y": -271,
+          "floor": -25,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 411361,
+          "y": -411,
+          "w": 2009,
+          "h": 455
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 412806,
+            "y": -272,
+            "w": 288,
+            "h": 243
+          },
+          {
+            "id": "route-bay--1",
+            "x": 412590,
+            "y": -208,
+            "w": 248,
+            "h": 203
+          },
+          {
+            "id": "route-bay-1",
+            "x": 413061,
+            "y": -280,
+            "w": 207,
+            "h": 283
+          },
+          {
+            "id": "place-wing",
+            "x": 411859,
+            "y": -141,
+            "w": 292,
+            "h": 146
+          },
+          {
+            "id": "expedition-vault",
+            "x": 411394,
+            "y": -345,
+            "w": 538,
+            "h": 360
+          },
+          {
+            "id": "landing-0",
+            "x": 411766,
+            "y": -137,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-1",
+            "x": 411488,
+            "y": -223,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 411422,
+            "y": -331,
+            "w": 158,
+            "h": 78
+          }
+        ],
+        "ops": 6510,
+        "footings": 46
+      }
+    },
+    {
+      "stage": 4,
+      "title": "Sunken Chapel",
+      "seed": 1,
+      "width": 1472,
+      "height": 486,
+      "worldLeft": 617749,
+      "worldTop": -411,
+      "worldOrigin": 618390,
+      "snapshotBounds": {
+        "worldLeft": 617749,
+        "worldTop": -321,
+        "width": 1442,
+        "height": 359
+      },
+      "platforms": 57,
+      "bossCourt": {
+        "x": 618194,
+        "y": -21.66898234309174,
+        "left": 618136,
+        "right": 618306
+      },
+      "sha256": "0ffe0d522dd4d4b6fd1e048a5073ae058ebcff5a011813ac775491901fe1ebde",
+      "path": "/review/crown-ascent/level-04.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "chapel-vault",
+          "x": 618368,
+          "y": -221,
+          "floor": -10,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 617903,
+          "y": -411,
+          "w": 1318,
+          "h": 486
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 618246,
+            "y": -222,
+            "w": 288,
+            "h": 224
+          },
+          {
+            "id": "route-bay--1",
+            "x": 618072,
+            "y": -183,
+            "w": 206,
+            "h": 175
+          },
+          {
+            "id": "route-bay-1",
+            "x": 618501,
+            "y": -230,
+            "w": 237,
+            "h": 210
+          },
+          {
+            "id": "place-wing",
+            "x": 617931,
+            "y": -185,
+            "w": 244,
+            "h": 182
+          },
+          {
+            "id": "expedition-vault",
+            "x": 618780,
+            "y": -345,
+            "w": 408,
+            "h": 344
+          },
+          {
+            "id": "landing-0",
+            "x": 618984,
+            "y": -155,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-1",
+            "x": 619008,
+            "y": -257,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 619002,
+            "y": -331,
+            "w": 158,
+            "h": 78
+          }
+        ],
+        "ops": 5602,
+        "footings": 40
+      }
+    },
+    {
+      "stage": 5,
+      "title": "Root Stair",
+      "seed": 1,
+      "width": 1277,
+      "height": 496,
+      "worldLeft": 823217,
+      "worldTop": -411,
+      "worldOrigin": 823830,
+      "snapshotBounds": {
+        "worldLeft": 823247,
+        "worldTop": -321,
+        "width": 1247,
+        "height": 366
+      },
+      "platforms": 59,
+      "bossCourt": {
+        "x": 824342,
+        "y": -0.032520875487392686,
+        "left": 824268,
+        "right": 824454
+      },
+      "sha256": "7f39a0ca0cfdadbcdb05035ff0c0c403d1861488dab2c8b2619824c85dda1b7e",
+      "path": "/review/crown-ascent/level-05.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "root-shell",
+          "x": 823864,
+          "y": -239,
+          "floor": 2,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 823217,
+          "y": -411,
+          "w": 1123,
+          "h": 496
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 823686,
+            "y": -240,
+            "w": 288,
+            "h": 252
+          },
+          {
+            "id": "route-bay--1",
+            "x": 823504,
+            "y": -248,
+            "w": 214,
+            "h": 254
+          },
+          {
+            "id": "route-bay-1",
+            "x": 823941,
+            "y": -193,
+            "w": 207,
+            "h": 201
+          },
+          {
+            "id": "place-wing",
+            "x": 824080,
+            "y": -174,
+            "w": 232,
+            "h": 182
+          },
+          {
+            "id": "expedition-vault",
+            "x": 823250,
+            "y": -345,
+            "w": 376,
+            "h": 340
+          },
+          {
+            "id": "landing-0",
+            "x": 823420,
+            "y": -155,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-1",
+            "x": 823444,
+            "y": -259,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 823440,
+            "y": -331,
+            "w": 158,
+            "h": 78
+          }
+        ],
+        "ops": 9897,
+        "footings": 45
+      }
+    },
+    {
+      "stage": 6,
+      "title": "Cairn Terraces",
+      "seed": 1,
+      "width": 1600,
+      "height": 544,
+      "worldLeft": 1024370,
+      "worldTop": -458,
+      "worldOrigin": 1024790,
+      "snapshotBounds": {
+        "worldLeft": 1024446,
+        "worldTop": -368,
+        "width": 1494,
+        "height": 412
+      },
+      "platforms": 68,
+      "bossCourt": {
+        "x": 1024598,
+        "y": -0.5518999845790233,
+        "left": 1024486,
+        "right": 1024710
+      },
+      "sha256": "4355002c58dd34af41579aea8c43294959d3ec9f3dda3e5b910253094df4c4b6",
+      "path": "/review/crown-ascent/level-06.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "quarry-cut",
+          "x": 1024768,
+          "y": -224,
+          "floor": 0,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 1024370,
+          "y": -458,
+          "w": 1600,
+          "h": 544
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 1024646,
+            "y": -225,
+            "w": 288,
+            "h": 238
+          },
+          {
+            "id": "route-bay--1",
+            "x": 1024464,
+            "y": -164,
+            "w": 214,
+            "h": 175
+          },
+          {
+            "id": "route-bay-1",
+            "x": 1024901,
+            "y": -233,
+            "w": 207,
+            "h": 237
+          },
+          {
+            "id": "place-wing",
+            "x": 1025052,
+            "y": -154,
+            "w": 256,
+            "h": 158
+          },
+          {
+            "id": "expedition-vault",
+            "x": 1025205,
+            "y": -392,
+            "w": 732,
+            "h": 400
+          },
+          {
+            "id": "landing-0",
+            "x": 1025567,
+            "y": -116,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-1",
+            "x": 1025577,
+            "y": -250,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 1025233,
+            "y": -374,
+            "w": 158,
+            "h": 78
+          }
+        ],
+        "ops": 5881,
+        "footings": 57
+      }
+    },
+    {
+      "stage": 7,
+      "title": "Lantern Roots",
+      "seed": 1,
+      "width": 1643,
+      "height": 527,
+      "worldLeft": 1229007,
+      "worldTop": -452,
+      "worldOrigin": 1230230,
+      "snapshotBounds": {
+        "worldLeft": 1229037,
+        "worldTop": -362,
+        "width": 1588,
+        "height": 417
+      },
+      "platforms": 71,
+      "bossCourt": {
+        "x": 1230473,
+        "y": 1.6822413527912872,
+        "left": 1230361,
+        "right": 1230585
+      },
+      "sha256": "35d6c2825df4da705de09395178fdde98fa47d8d6f772bb0026678e616782ac1",
+      "path": "/review/crown-ascent/level-07.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "mycelium-cathedral",
+          "x": 1230264,
+          "y": -243,
+          "floor": -9,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 1229007,
+          "y": -452,
+          "w": 1643,
+          "h": 527
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 1230086,
+            "y": -244,
+            "w": 288,
+            "h": 246
+          },
+          {
+            "id": "route-bay--1",
+            "x": 1229912,
+            "y": -252,
+            "w": 206,
+            "h": 265
+          },
+          {
+            "id": "route-bay-1",
+            "x": 1230341,
+            "y": -201,
+            "w": 240,
+            "h": 211
+          },
+          {
+            "id": "place-wing",
+            "x": 1229680,
+            "y": -208,
+            "w": 214,
+            "h": 212
+          },
+          {
+            "id": "expedition-vault",
+            "x": 1229040,
+            "y": -386,
+            "w": 675,
+            "h": 406
+          },
+          {
+            "id": "landing-0",
+            "x": 1229351,
+            "y": -132,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 1229361,
+            "y": -260,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 1229068,
+            "y": -346,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 7968,
+        "footings": 55
+      }
+    },
+    {
+      "stage": 8,
+      "title": "Silo Stair",
+      "seed": 1,
+      "width": 1811,
+      "height": 532,
+      "worldLeft": 1435250,
+      "worldTop": -446,
+      "worldOrigin": 1435670,
+      "snapshotBounds": {
+        "worldLeft": 1435309,
+        "worldTop": -356,
+        "width": 1722,
+        "height": 409
+      },
+      "platforms": 63,
+      "bossCourt": {
+        "x": 1435848,
+        "y": 9.726292744548475,
+        "left": 1435736,
+        "right": 1435900
+      },
+      "sha256": "5d3bbf49ead49c09a6820da1eb5084501b35b0f7d0e73bbcea9878a7e65ffe4a",
+      "path": "/review/crown-ascent/level-08.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "counterweight-hoist",
+          "x": 1435648,
+          "y": -223,
+          "floor": 2,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 1435250,
+          "y": -446,
+          "w": 1811,
+          "h": 532
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 1435526,
+            "y": -224,
+            "w": 288,
+            "h": 237
+          },
+          {
+            "id": "route-bay--1",
+            "x": 1435310,
+            "y": -232,
+            "w": 248,
+            "h": 237
+          },
+          {
+            "id": "route-bay-1",
+            "x": 1435781,
+            "y": -185,
+            "w": 209,
+            "h": 193
+          },
+          {
+            "id": "place-wing",
+            "x": 1436327,
+            "y": -133,
+            "w": 256,
+            "h": 146
+          },
+          {
+            "id": "expedition-vault",
+            "x": 1436499,
+            "y": -380,
+            "w": 529,
+            "h": 379
+          },
+          {
+            "id": "landing-0",
+            "x": 1436842,
+            "y": -162,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 1436527,
+            "y": -238,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 1436843,
+            "y": -360,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 5907,
+        "footings": 47
+      }
+    },
+    {
+      "stage": 9,
+      "title": "Collapsed Tower",
+      "seed": 1,
+      "width": 1313,
+      "height": 568,
+      "worldLeft": 1637657,
+      "worldTop": -473,
+      "worldOrigin": 1638550,
+      "snapshotBounds": {
+        "worldLeft": 1637687,
+        "worldTop": -383,
+        "width": 1247,
+        "height": 433
+      },
+      "platforms": 65,
+      "bossCourt": {
+        "x": 1638357,
+        "y": 13.276807434321897,
+        "left": 1638257,
+        "right": 1638469
+      },
+      "sha256": "bf0b5c438d414c94ac936836b35f797851d31463339a949df9ddd98934bee7f1",
+      "path": "/review/crown-ascent/level-09.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "broken-tower",
+          "x": 1638584,
+          "y": -245,
+          "floor": 13,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 1637657,
+          "y": -473,
+          "w": 1313,
+          "h": 568
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 1638406,
+            "y": -252,
+            "w": 288,
+            "h": 274
+          },
+          {
+            "id": "route-bay--1",
+            "x": 1638231,
+            "y": -200,
+            "w": 207,
+            "h": 222
+          },
+          {
+            "id": "route-bay-1",
+            "x": 1638661,
+            "y": -260,
+            "w": 207,
+            "h": 268
+          },
+          {
+            "id": "place-wing",
+            "x": 1638058,
+            "y": -209,
+            "w": 226,
+            "h": 194
+          },
+          {
+            "id": "expedition-vault",
+            "x": 1637690,
+            "y": -407,
+            "w": 401,
+            "h": 397
+          },
+          {
+            "id": "landing-0",
+            "x": 1637905,
+            "y": -159,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 1637902,
+            "y": -255,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 1637925,
+            "y": -393,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 6200,
+        "footings": 49
+      }
+    },
+    {
+      "stage": 10,
+      "title": "Bell Cellar",
+      "seed": 1,
+      "width": 1618,
+      "height": 561,
+      "worldLeft": 1845241,
+      "worldTop": -482,
+      "worldOrigin": 1845910,
+      "snapshotBounds": {
+        "worldLeft": 1845241,
+        "worldTop": -392,
+        "width": 1588,
+        "height": 434
+      },
+      "platforms": 85,
+      "bossCourt": {
+        "x": 1845812,
+        "y": 0.23639825486559118,
+        "left": 1845700,
+        "right": 1845924
+      },
+      "sha256": "2535d6c125067aa03709ee965370bea4e0c84693a2b386ad445ffc2f670cfff4",
+      "path": "/review/crown-ascent/level-10.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "buried-carillon",
+          "x": 1845888,
+          "y": -263,
+          "floor": -5,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 1845395,
+          "y": -482,
+          "w": 1464,
+          "h": 561
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 1845766,
+            "y": -292,
+            "w": 288,
+            "h": 298
+          },
+          {
+            "id": "route-bay--1",
+            "x": 1845592,
+            "y": -208,
+            "w": 206,
+            "h": 215
+          },
+          {
+            "id": "route-bay-1",
+            "x": 1846021,
+            "y": -300,
+            "w": 207,
+            "h": 310
+          },
+          {
+            "id": "place-wing",
+            "x": 1845423,
+            "y": -161,
+            "w": 268,
+            "h": 158
+          },
+          {
+            "id": "expedition-vault",
+            "x": 1846106,
+            "y": -416,
+            "w": 720,
+            "h": 421
+          },
+          {
+            "id": "landing-0",
+            "x": 1846176,
+            "y": -160,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 1846445,
+            "y": -280,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 1846134,
+            "y": -392,
+            "w": 138,
+            "h": 76
+          }
+        ],
+        "ops": 6397,
+        "footings": 60
+      }
+    },
+    {
+      "stage": 11,
+      "title": "Old Quarry",
+      "seed": 1,
+      "width": 1563,
+      "height": 545,
+      "worldLeft": 2050509,
+      "worldTop": -463,
+      "worldOrigin": 2051350,
+      "snapshotBounds": {
+        "worldLeft": 2050539,
+        "worldTop": -373,
+        "width": 1533,
+        "height": 423
+      },
+      "platforms": 60,
+      "bossCourt": {
+        "x": 2051920,
+        "y": 9.128669368041974,
+        "left": 2051864,
+        "right": 2052032
+      },
+      "sha256": "bd3a7a25d40acd5f7677c01668a08370291c3ffa5bc014589858dbec197ba1c5",
+      "path": "/review/crown-ascent/level-11.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "frozen-seed-wheel",
+          "x": 2051384,
+          "y": -227,
+          "floor": -3,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 2050509,
+          "y": -463,
+          "w": 1409,
+          "h": 545
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 2051206,
+            "y": -228,
+            "w": 288,
+            "h": 237
+          },
+          {
+            "id": "route-bay--1",
+            "x": 2050984,
+            "y": -236,
+            "w": 254,
+            "h": 243
+          },
+          {
+            "id": "route-bay-1",
+            "x": 2051461,
+            "y": -191,
+            "w": 207,
+            "h": 184
+          },
+          {
+            "id": "place-wing",
+            "x": 2051616,
+            "y": -170,
+            "w": 274,
+            "h": 170
+          },
+          {
+            "id": "expedition-vault",
+            "x": 2050542,
+            "y": -397,
+            "w": 546,
+            "h": 399
+          },
+          {
+            "id": "landing-0",
+            "x": 2050632,
+            "y": -127,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 2050570,
+            "y": -265,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 2050922,
+            "y": -383,
+            "w": 138,
+            "h": 76
+          }
+        ],
+        "ops": 5520,
+        "footings": 44
+      }
+    },
+    {
+      "stage": 12,
+      "title": "Weeping Roots",
+      "seed": 1,
+      "width": 1439,
+      "height": 528,
+      "worldLeft": 2256370,
+      "worldTop": -442,
+      "worldOrigin": 2256790,
+      "snapshotBounds": {
+        "worldLeft": 2256490,
+        "worldTop": -352,
+        "width": 1289,
+        "height": 406
+      },
+      "platforms": 62,
+      "bossCourt": {
+        "x": 2257074,
+        "y": 3.386175061314262,
+        "left": 2257022,
+        "right": 2257186
+      },
+      "sha256": "17949cade71e1cc88cdda0ddb190abe4e735f198344cf2331f6dbf4aa065f666",
+      "path": "/review/crown-ascent/level-12.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "root-glass-cistern",
+          "x": 2256768,
+          "y": -257,
+          "floor": 1,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 2256370,
+          "y": -442,
+          "w": 1439,
+          "h": 528
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 2256646,
+            "y": -277,
+            "w": 288,
+            "h": 290
+          },
+          {
+            "id": "route-bay--1",
+            "x": 2256472,
+            "y": -285,
+            "w": 206,
+            "h": 294
+          },
+          {
+            "id": "route-bay-1",
+            "x": 2256901,
+            "y": -205,
+            "w": 207,
+            "h": 227
+          },
+          {
+            "id": "place-wing",
+            "x": 2257075,
+            "y": -182,
+            "w": 256,
+            "h": 194
+          },
+          {
+            "id": "expedition-vault",
+            "x": 2257252,
+            "y": -376,
+            "w": 524,
+            "h": 387
+          },
+          {
+            "id": "landing-0",
+            "x": 2257590,
+            "y": -150,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 2257280,
+            "y": -228,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 2257321,
+            "y": -337,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 5844,
+        "footings": 48
+      }
+    },
+    {
+      "stage": 13,
+      "title": "Twin Shafts",
+      "seed": 1,
+      "width": 1765,
+      "height": 525,
+      "worldLeft": 2461587,
+      "worldTop": -467,
+      "worldOrigin": 2462230,
+      "snapshotBounds": {
+        "worldLeft": 2461617,
+        "worldTop": -377,
+        "width": 1735,
+        "height": 431
+      },
+      "platforms": 70,
+      "bossCourt": {
+        "x": 2462378,
+        "y": -14.73790608346117,
+        "left": 2462266,
+        "right": 2462490
+      },
+      "sha256": "5e7e322614ac6ecee0cb3593b7d80b653c067b9c0b7b4049a10e82199cf8b2e9",
+      "path": "/review/crown-ascent/level-13.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "twin-shafts",
+          "x": 2462264,
+          "y": -270,
+          "floor": -12,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 2461587,
+          "y": -467,
+          "w": 1611,
+          "h": 525
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 2462086,
+            "y": -288,
+            "w": 288,
+            "h": 273
+          },
+          {
+            "id": "route-bay--1",
+            "x": 2461912,
+            "y": -214,
+            "w": 206,
+            "h": 204
+          },
+          {
+            "id": "route-bay-1",
+            "x": 2462341,
+            "y": -296,
+            "w": 207,
+            "h": 309
+          },
+          {
+            "id": "place-wing",
+            "x": 2462878,
+            "y": -174,
+            "w": 292,
+            "h": 182
+          },
+          {
+            "id": "expedition-vault",
+            "x": 2461620,
+            "y": -401,
+            "w": 401,
+            "h": 402
+          },
+          {
+            "id": "landing-0",
+            "x": 2461835,
+            "y": -149,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 2461832,
+            "y": -246,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 2461855,
+            "y": -387,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 5783,
+        "footings": 48
+      }
+    },
+    {
+      "stage": 14,
+      "title": "Catacomb",
+      "seed": 1,
+      "width": 1913,
+      "height": 539,
+      "worldLeft": 2662146,
+      "worldTop": -465,
+      "worldOrigin": 2663190,
+      "snapshotBounds": {
+        "worldLeft": 2662146,
+        "worldTop": -375,
+        "width": 1883,
+        "height": 426
+      },
+      "platforms": 82,
+      "bossCourt": {
+        "x": 2662924,
+        "y": -1.051480578245922,
+        "left": 2662874,
+        "right": 2663036
+      },
+      "sha256": "c6d224e4690a3f601942b0509ed80f97b689e860e5e15d17442a5b1e607f9dd8",
+      "path": "/review/crown-ascent/level-14.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "ancient-rib-vault",
+          "x": 2663168,
+          "y": -270,
+          "floor": -12,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 2662300,
+          "y": -465,
+          "w": 1759,
+          "h": 539
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 2663046,
+            "y": -271,
+            "w": 288,
+            "h": 272
+          },
+          {
+            "id": "route-bay--1",
+            "x": 2662831,
+            "y": -212,
+            "w": 247,
+            "h": 219
+          },
+          {
+            "id": "route-bay-1",
+            "x": 2663301,
+            "y": -279,
+            "w": 235,
+            "h": 299
+          },
+          {
+            "id": "place-wing",
+            "x": 2662328,
+            "y": -152,
+            "w": 292,
+            "h": 146
+          },
+          {
+            "id": "expedition-vault",
+            "x": 2663294,
+            "y": -399,
+            "w": 732,
+            "h": 387
+          },
+          {
+            "id": "landing-0",
+            "x": 2663562,
+            "y": -153,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 2663840,
+            "y": -242,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 2663840,
+            "y": -375,
+            "w": 138,
+            "h": 76
+          }
+        ],
+        "ops": 9231,
+        "footings": 59
+      }
+    },
+    {
+      "stage": 15,
+      "title": "Fault Steps",
+      "seed": 1,
+      "width": 1568,
+      "height": 534,
+      "worldLeft": 2867829,
+      "worldTop": -453,
+      "worldOrigin": 2868630,
+      "snapshotBounds": {
+        "worldLeft": 2867859,
+        "worldTop": -363,
+        "width": 1538,
+        "height": 417
+      },
+      "platforms": 64,
+      "bossCourt": {
+        "x": 2869245,
+        "y": 14.94212564214014,
+        "left": 2869183,
+        "right": 2869357
+      },
+      "sha256": "a483dfa649c276af769db95005e793115b042b0d32d2f5698ee04600250baeee",
+      "path": "/review/crown-ascent/level-15.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "fault-monolith",
+          "x": 2868664,
+          "y": -261,
+          "floor": -3,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 2867829,
+          "y": -453,
+          "w": 1414,
+          "h": 534
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 2868486,
+            "y": -298,
+            "w": 288,
+            "h": 306
+          },
+          {
+            "id": "route-bay--1",
+            "x": 2868294,
+            "y": -306,
+            "w": 224,
+            "h": 310
+          },
+          {
+            "id": "route-bay-1",
+            "x": 2868741,
+            "y": -201,
+            "w": 207,
+            "h": 192
+          },
+          {
+            "id": "place-wing",
+            "x": 2868971,
+            "y": -190,
+            "w": 244,
+            "h": 206
+          },
+          {
+            "id": "expedition-vault",
+            "x": 2867862,
+            "y": -387,
+            "w": 529,
+            "h": 388
+          },
+          {
+            "id": "landing-0",
+            "x": 2867890,
+            "y": -163,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 2868225,
+            "y": -241,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 2868224,
+            "y": -347,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 5872,
+        "footings": 49
+      }
+    },
+    {
+      "stage": 16,
+      "title": "Giant's Stair",
+      "seed": 1,
+      "width": 1610,
+      "height": 535,
+      "worldLeft": 3073296,
+      "worldTop": -459,
+      "worldOrigin": 3074070,
+      "snapshotBounds": {
+        "worldLeft": 3073296,
+        "worldTop": -369,
+        "width": 1580,
+        "height": 406
+      },
+      "platforms": 61,
+      "bossCourt": {
+        "x": 3074326,
+        "y": -2.431661826194361,
+        "left": 3074214,
+        "right": 3074438
+      },
+      "sha256": "ecdb0a90e0aa7b8d21ed4835fa4c3e71c335243258b166f2979ac9994013fc91",
+      "path": "/review/crown-ascent/level-16.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "magnetic-crane",
+          "x": 3074048,
+          "y": -269,
+          "floor": -11,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 3073450,
+          "y": -459,
+          "w": 1456,
+          "h": 535
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 3073926,
+            "y": -276,
+            "w": 288,
+            "h": 279
+          },
+          {
+            "id": "route-bay--1",
+            "x": 3073711,
+            "y": -284,
+            "w": 247,
+            "h": 263
+          },
+          {
+            "id": "route-bay-1",
+            "x": 3074181,
+            "y": -215,
+            "w": 250,
+            "h": 223
+          },
+          {
+            "id": "place-wing",
+            "x": 3073478,
+            "y": -200,
+            "w": 274,
+            "h": 194
+          },
+          {
+            "id": "expedition-vault",
+            "x": 3074339,
+            "y": -393,
+            "w": 534,
+            "h": 386
+          },
+          {
+            "id": "landing-0",
+            "x": 3074681,
+            "y": -133,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 3074687,
+            "y": -271,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 3074367,
+            "y": -351,
+            "w": 138,
+            "h": 76
+          }
+        ],
+        "ops": 6800,
+        "footings": 48
+      }
+    },
+    {
+      "stage": 17,
+      "title": "Reactor Nest",
+      "seed": 1,
+      "width": 1533,
+      "height": 538,
+      "worldLeft": 3275837,
+      "worldTop": -457,
+      "worldOrigin": 3276950,
+      "snapshotBounds": {
+        "worldLeft": 3275867,
+        "worldTop": -367,
+        "width": 1382,
+        "height": 417
+      },
+      "platforms": 69,
+      "bossCourt": {
+        "x": 3277097,
+        "y": 2.77556758718406,
+        "left": 3276985,
+        "right": 3277209
+      },
+      "sha256": "426ec7576171dae521adc086d73d296b5ecb997a0bfac03f28480b2b4e68e87d",
+      "path": "/review/crown-ascent/level-17.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "reactor-heart",
+          "x": 3276984,
+          "y": -257,
+          "floor": 1,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 3275837,
+          "y": -457,
+          "w": 1533,
+          "h": 538
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 3276806,
+            "y": -306,
+            "w": 288,
+            "h": 314
+          },
+          {
+            "id": "route-bay--1",
+            "x": 3276588,
+            "y": -220,
+            "w": 250,
+            "h": 213
+          },
+          {
+            "id": "route-bay-1",
+            "x": 3277061,
+            "y": -314,
+            "w": 207,
+            "h": 325
+          },
+          {
+            "id": "place-wing",
+            "x": 3276301,
+            "y": -214,
+            "w": 220,
+            "h": 206
+          },
+          {
+            "id": "expedition-vault",
+            "x": 3275870,
+            "y": -391,
+            "w": 524,
+            "h": 388
+          },
+          {
+            "id": "landing-0",
+            "x": 3276208,
+            "y": -147,
+            "w": 158,
+            "h": 78
+          },
+          {
+            "id": "landing-1",
+            "x": 3275898,
+            "y": -226,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-2",
+            "x": 3276209,
+            "y": -352,
+            "w": 102,
+            "h": 78
+          }
+        ],
+        "ops": 9128,
+        "footings": 51
+      }
+    },
+    {
+      "stage": 18,
+      "title": "Last Sluice",
+      "seed": 1,
+      "width": 1698,
+      "height": 550,
+      "worldLeft": 3483636,
+      "worldTop": -477,
+      "worldOrigin": 3484310,
+      "snapshotBounds": {
+        "worldLeft": 3483650,
+        "worldTop": -387,
+        "width": 1654,
+        "height": 426
+      },
+      "platforms": 84,
+      "bossCourt": {
+        "x": 3484141,
+        "y": -10.882528083615021,
+        "left": 3484029,
+        "right": 3484253
+      },
+      "sha256": "e9cf5f2f88802ab824b2b2a1b96a094b8138e17bd26f56908bb1ba1df9541ee6",
+      "path": "/review/crown-ascent/level-18.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "last-sluice-aperture",
+          "x": 3484288,
+          "y": -269,
+          "floor": -11,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 3483636,
+          "y": -477,
+          "w": 1698,
+          "h": 550
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 3484166,
+            "y": -295,
+            "w": 288,
+            "h": 295
+          },
+          {
+            "id": "route-bay--1",
+            "x": 3483951,
+            "y": -303,
+            "w": 247,
+            "h": 307
+          },
+          {
+            "id": "route-bay-1",
+            "x": 3484421,
+            "y": -229,
+            "w": 212,
+            "h": 233
+          },
+          {
+            "id": "place-wing",
+            "x": 3483664,
+            "y": -183,
+            "w": 298,
+            "h": 158
+          },
+          {
+            "id": "expedition-vault",
+            "x": 3484569,
+            "y": -411,
+            "w": 732,
+            "h": 411
+          },
+          {
+            "id": "landing-0",
+            "x": 3484627,
+            "y": -147,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-1",
+            "x": 3484941,
+            "y": -267,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 3484597,
+            "y": -393,
+            "w": 158,
+            "h": 78
+          }
+        ],
+        "ops": 6405,
+        "footings": 64
+      }
+    },
+    {
+      "stage": 19,
+      "title": "Surface Breach",
+      "seed": 1,
+      "width": 1697,
+      "height": 537,
+      "worldLeft": 3688967,
+      "worldTop": -460,
+      "worldOrigin": 3689750,
+      "snapshotBounds": {
+        "worldLeft": 3688997,
+        "worldTop": -370,
+        "width": 1653,
+        "height": 416
+      },
+      "platforms": 84,
+      "bossCourt": {
+        "x": 3689806,
+        "y": -18.48677610531064,
+        "left": 3689694,
+        "right": 3689918
+      },
+      "sha256": "0443a2c4dcc43f9a8121e49b1878b78f8f5b89cfb9bba309b0bb65646c77f868",
+      "path": "/review/crown-ascent/level-19.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": {
+          "id": "broken-conservatory",
+          "x": 3689784,
+          "y": -274,
+          "floor": -16,
+          "native": true,
+          "decoration": true
+        },
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 3688967,
+          "y": -460,
+          "w": 1697,
+          "h": 537
+        },
+        "rooms": [
+          {
+            "id": "main-vault",
+            "x": 3689606,
+            "y": -334,
+            "w": 288,
+            "h": 338
+          },
+          {
+            "id": "route-bay--1",
+            "x": 3689432,
+            "y": -342,
+            "w": 206,
+            "h": 354
+          },
+          {
+            "id": "route-bay-1",
+            "x": 3689861,
+            "y": -228,
+            "w": 207,
+            "h": 240
+          },
+          {
+            "id": "place-wing",
+            "x": 3690344,
+            "y": -151,
+            "w": 292,
+            "h": 158
+          },
+          {
+            "id": "expedition-vault",
+            "x": 3689000,
+            "y": -394,
+            "w": 418,
+            "h": 391
+          },
+          {
+            "id": "landing-0",
+            "x": 3689058,
+            "y": -162,
+            "w": 138,
+            "h": 76
+          },
+          {
+            "id": "landing-1",
+            "x": 3689084,
+            "y": -233,
+            "w": 102,
+            "h": 78
+          },
+          {
+            "id": "landing-2",
+            "x": 3689028,
+            "y": -376,
+            "w": 158,
+            "h": 78
+          }
+        ],
+        "ops": 6331,
+        "footings": 54
+      }
+    },
+    {
+      "stage": 20,
+      "title": "Radioactive Dawn",
+      "seed": 1,
+      "width": 1268,
+      "height": 413,
+      "worldLeft": 3894894,
+      "worldTop": -363,
+      "worldOrigin": 3895190,
+      "snapshotBounds": {
+        "worldLeft": 3894894,
+        "worldTop": -363,
+        "width": 1268,
+        "height": 413
+      },
+      "platforms": 65,
+      "bossCourt": {
+        "x": 3895046,
+        "y": -6.688071375274884,
+        "left": 3894934,
+        "right": 3895158
+      },
+      "sha256": "bea448dee5df8ba19d76c01b8f9d8884d7c4914ef72cfc916276276959af36eb",
+      "path": "/review/crown-ascent/level-20.png",
+      "smoothing": false,
+      "nativeScale": 1,
+      "architecture": {
+        "version": 1,
+        "landmark": null,
+        "landmarkCaptureBounds": null,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        "rooms": [],
+        "ops": 0,
+        "footings": 0
+      }
+    }
+  ],
+  "landmarkWindows": [
+    {
+      "stage": 3,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 412767,
+      "worldTop": -317,
+      "worldOrigin": 412950,
+      "sha256": "73b293ccc0513099329fc2de64f1414412f3c16e1751dd56eaa4ea9673c3686f",
+      "path": "/review/crown-ascent/landmarks/level-03.png",
+      "playablePath": "/review.html?mode=layout3&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 412850,
+        "y": -293,
+        "w": 373,
+        "h": 268
+      }
+    },
+    {
+      "stage": 5,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 823588,
+      "worldTop": -290,
+      "worldOrigin": 823830,
+      "sha256": "61394e02b979fc98ee7c29b3778cee67f411057eca154555de5470dbdfd7d7bc",
+      "path": "/review/crown-ascent/landmarks/level-05.png",
+      "playablePath": "/review.html?mode=layout5&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 823659,
+        "y": -208,
+        "w": 398,
+        "h": 236
+      }
+    },
+    {
+      "stage": 7,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 1229986,
+      "worldTop": -301,
+      "worldOrigin": 1230230,
+      "sha256": "72602d357efa0eaeccbc89399d56b213b7cf119647e11a1877e29de534b7a56d",
+      "path": "/review/crown-ascent/landmarks/level-07.png",
+      "playablePath": "/review.html?mode=layout7&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 1230114,
+        "y": -231,
+        "w": 283,
+        "h": 221
+      }
+    },
+    {
+      "stage": 11,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 2051116,
+      "worldTop": -295,
+      "worldOrigin": 2051350,
+      "sha256": "850e6f8f765596f0bbdb18c4b17a54a1f39bdb8260af422146f7200ac0d7890e",
+      "path": "/review/crown-ascent/landmarks/level-11.png",
+      "playablePath": "/review.html?mode=layout11&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 2051253,
+        "y": -213,
+        "w": 266,
+        "h": 207
+      }
+    },
+    {
+      "stage": 14,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 2662931,
+      "worldTop": -304,
+      "worldOrigin": 2663190,
+      "sha256": "a258df0c3fa81b350990c9636cada2e7592bd65a1327d9be79bfc819649f0db2",
+      "path": "/review/crown-ascent/landmarks/level-14.png",
+      "playablePath": "/review.html?mode=layout14&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 2662939,
+        "y": -205,
+        "w": 524,
+        "h": 171
+      }
+    },
+    {
+      "stage": 16,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 3073775,
+      "worldTop": -303,
+      "worldOrigin": 3074070,
+      "sha256": "179b708e28be4702408872f8164f27e6b4f68d9f463fe9ded4ee4b9cc04e4af5",
+      "path": "/review/crown-ascent/landmarks/level-16.png",
+      "playablePath": "/review.html?mode=layout16&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 3073899,
+        "y": -224,
+        "w": 291,
+        "h": 213
+      }
+    },
+    {
+      "stage": 17,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 3276714,
+      "worldTop": -291,
+      "worldOrigin": 3276950,
+      "sha256": "6b6e28446e327d1535f181a7c5c505848012ff14df36e166a803a2374f70a7cd",
+      "path": "/review/crown-ascent/landmarks/level-17.png",
+      "playablePath": "/review.html?mode=layout17&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 3276827,
+        "y": -256,
+        "w": 314,
+        "h": 254
+      }
+    },
+    {
+      "stage": 18,
+      "width": 540,
+      "height": 320,
+      "worldLeft": 3484018,
+      "worldTop": -303,
+      "worldOrigin": 3484310,
+      "sha256": "554db8fb885e0d63d3a4a44586994a7ef89ab71f80094b2e4343809c9949f0cb",
+      "path": "/review/crown-ascent/landmarks/level-18.png",
+      "playablePath": "/review.html?mode=layout18&class=bulwark&seed=1&site=1",
+      "actualLandmarkBounds": {
+        "x": 3484145,
+        "y": -266,
+        "w": 286,
+        "h": 255
+      }
+    }
+  ],
+  "scratchCaptureEvidence": "/workspace/scratch/reference-worlds/final-main",
+  "scratchHeroEvidence": "/workspace/scratch/reference-worlds/final-main/heroes",
+  "rawTracePublished": false,
+  "approvedSnapshotEquivalence": "equivalence-audit.json"
+}
