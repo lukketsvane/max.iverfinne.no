@@ -226,7 +226,7 @@ test('Sligo stays off the character screen until its name is typed into Login, w
     assert.equal(m.w.document.querySelector('[data-class-id="sligo"]').getAttribute('aria-pressed'), 'true');
     assert.match(m.w.document.querySelector('.max-character-stage img').src, /max-skins-v1\/sligo\/main\.png$/);
     assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')), { classId: 'sligo', skinId: 'sligo', difficulty: 'medium' });
-    m.click('Mech'); assert.equal(m.w.document.querySelector('.max-character-name').dataset.long, undefined);
+    m.click('Max'); assert.equal(m.w.document.querySelector('.max-character-name').dataset.long, undefined);
   } finally { m.dom.window.close(); }
 });
 

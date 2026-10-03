@@ -108,7 +108,7 @@ function highTideStrike(k,x,y,r,power,tell,type){var h=addRunHazard(type||'root'
 function updateHighTideBoss(k,dt){
   var a=highTideEnemyTarget(k);if(!a)return;
   k.phase=k.hp<k.maxHp/3?3:k.hp<k.maxHp*2/3?2:1;k.exposed=Math.max(0,k.exposed-dt);k.flee=0;
-  if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step;k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
+  if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step*mechWetFactor(k);k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
   if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){highTideDamagePlant(p,.07,false);p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
   k.cool-=dt;
   var gate=highTideRoutePoint(HIGH_TIDE_GATES[k.tideIndex]);
@@ -135,7 +135,7 @@ function updateHighTideEnemies(dt){
     if(k.burn>0){k.burn=Math.max(0,k.burn-dt);if(damagePest(k,(k.burnRate||.2)*dt,k.x-20))return;}
     if(k.glue>0)k.glue=Math.max(0,k.glue-dt);
     if(k.boss){updateHighTideBoss(k,dt);return;}
-    if(k.flee>0){k.flee-=dt;k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt;k.y-=8*dt;return;}
+    if(k.flee>0){k.flee-=dt;var wet=mechWetFactor(k);k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt*wet;k.y-=8*dt*wet;return;}
     var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
     var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
     k.cool=Math.max(0,k.cool-dt);
@@ -158,8 +158,9 @@ function updateHighTide(dt){
     var actors=seedActors(),carers=actors.filter(highTideCarer),care=carers.reduce(function(sum,a){return sum+highTideCareRate(a);},0);
     if(carers.length&&carers[0].member)p.carer=carers[0].member.id;
     carers.forEach(function(a){if((a.member?a.member.classId:rogueRun.classId)!=='sligo')return;var c=sligoColony(a.member),b=sligoBody(c,c.active);if(b&&b.sligoMass<SLIGO_LIFE.startMass){sligoFeed(c,b,Math.min(step*.12,SLIGO_LIFE.startMass-b.sligoMass));a.p.sligoMass=b.sligoMass;}});
-    var perks=plantPerks(p);
+    var perks=plantPerks(p),careMoisture=p.moisture;
     p.moisture=clamp01(p.moisture+step*(care*.18-.016*Math.pow(.7,perks.water||0)));
+    if(!p.dead&&p.health>0&&p.moisture>careMoisture)carers.forEach(function(a){if((a.member?a.member.classId:rogueRun.classId)==='mech')mechCircuitCare(a.member||null,p,p.moisture-careMoisture,'care');});
     p.health=clamp01(p.health+step*(care*.035+(p.moisture>.2?.005*(perks.regen||0):0)-(p.moisture<=0?.008:0)));
     if(p.health<=0){finishHighTide(false);return;}
     var growth=(1+.35*(perks.growth||0))*(s.growthRush>0?2:1);
