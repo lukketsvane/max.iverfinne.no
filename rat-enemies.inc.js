@@ -28,7 +28,7 @@ function makeRat(side,elite,variant){
 function ratState(k,name){if(k.ratState!==name){k.ratState=name;k.ratStateT=0;}}
 function cancelRatAttack(k){
   if(k.ratWarning)runHazards=runHazards.filter(function(h){return h.id!==k.ratWarning||h.tell<=0;});
-  k.ratWarning=0;k.windup=0;k.attackT=0;k.ratTargetId=0;k.ratNavX=null;
+  k.ratWarning=0;k.windup=0;k.attackT=0;k.warnedAttack=false;k.ratTargetId=0;k.ratNavX=null;
 }
 function ratMove(k,speed,dt){
   var layout=stageLayout(),left=dt;
@@ -109,7 +109,7 @@ function finishRatBite(k){
   var p=gardenPlots.find(function(p){return p.id===k.ratTargetId;});
   if(p&&!p.dead&&p.health>0&&Math.abs(p.x-k.x)<21&&Math.abs(surfaceY(p.x)-foot)<14)biteGarden(k,p,raidPressure());
   if(k.ratVariant==='plague'){
-    var poison=addRunHazard('rat-plague',k.ratAimX,14,.7,.55,k.x,foot,k.ratAimY);
+    var poison=enemyHazard(k,'rat-plague',k.ratAimX,14,.7,.55,k.x,foot,k.ratAimY);
     if(poison)poison.life=.5;
   }
   k.ratWarning=0;k.ratTargetId=0;
@@ -141,8 +141,8 @@ function updateRat(k,dt){
   var dx=target.x-k.x,dy=target.y-(k.y+RAT_FOOT);
   if(k.ratGrounded&&Math.abs(dx)<=30&&Math.abs(dy)<12&&k.bite<=0&&(target.plant||target.player)){
     k.face=dx<0?-1:1;k.ratAimX=target.x;k.ratAimY=target.y;k.ratTargetId=target.plant?target.plant.id:0;
-    k.tell=k.windup=.6;ratState(k,'windup');k.vx=k.vy=0;
-    var warning=addRunHazard('rat-bite',target.x,12,.86,0,k.x,k.y,target.y);
+    beginEnemyWarning(k);k.tell=k.windup=.6;ratState(k,'windup');k.vx=k.vy=0;
+    var warning=enemyHazard(k,'rat-bite',target.x,12,.86,0,k.x,k.y,target.y);
     if(warning)k.ratWarning=warning.id;
     return;
   }

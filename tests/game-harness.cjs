@@ -29,7 +29,7 @@ const functionNames = [
   'highTidePods', 'HIGH_TIDE_GATES', 'highTideRoutePoint', 'highTideTip', 'highTideBoons', 'highTideSpawnBoss', 'updateHighTideEnemies', 'highTideBossDefeated',
   'HIGH_TIDE', 'highTideMode', 'highTideProfile', 'highTidePlant', 'updateHighTide',
   'lastSeedMode', 'seedVital', 'seedDown', 'seedActors', 'damageGardener', 'updateLastSeed', 'lastSeedEnemy',
-  'classSkillCooldown', 'updateClassCombat', 'boxerDodge',
+  'classSkillCooldown', 'updateClassCombat', 'boxerDodge', 'fighterState', 'polgeClinch', 'polgeClinchWorld', 'polgeAvoidedWarning', 'polgeUtilityReady', 'polgePunch', 'polgeFlurryWorld', 'combatLineClear', 'classAttackCooldown', 'updateRunHazards', 'updateHazardContact', 'addRunHazard', 'polgeEnemyWarning', 'finishRatBite', 'updateRat', 'updateEnemyRole', 'updateStageBoss', 'dodgeSweep', 'useClassSecondary', 'updatePolgeControls',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap',
   'chargeStart', 'chargeRelease', 'updateCharge', 'finalizeRogueRun', 'setEffectsVolume',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopDepart', 'coopAvatar', 'stopCoop',

@@ -27,11 +27,13 @@ function startLastSeed(plant){
   var s=rogueRun.survival;s.started=true;s.rest=3;s.plantId=plant.id;
   gardenSeeds=0;runElapsed=0;plant.moisture=.8;
 }
-function damageGardener(member,amount){
+function damageGardener(member,amount,warning){
   if(!relicRunMode()||coopGuest()||rogueRun.ended)return false;
   var v=seedVital(member),a=member?coopMemberAvatar(member):P;
   var remote=member&&member.id!==coop.me;
-  if(v.hp<=0||v.shield>0||(remote?member.dodge&&performance.now()<member.dodge.expires:a.dodgeT>0)||(remote?curledMember(member,a):a.tun>0))return false;
+  if(v.hp<=0||v.shield>0)return false;
+  if(gardenerDodging(member,a)){polgeAvoidedWarning(member,warning);return false;}
+  if(remote?curledMember(member,a):a.tun>0)return false;
   var guarded=member?bracedMember(member,a):a.brace>0;
   v.hp=Math.max(0,v.hp-amount*(guarded?.35:1));v.shield=.85;v.hurt=4;v.revive=0;
   if(!member||member.id===coop.me){P.hurt=.4;shake=Math.max(shake,2);}
@@ -102,11 +104,11 @@ function lastSeedEnemy(k,dt){
   k.target=null;k.face=dx<0?-1:1;
   if(k.windup>0){
     k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
-    if(!k.windup){if(d<18)damageGardener(target.member,(k.elite?30:18)*runDamageScale());k.bite=.9;}
+    if(!k.windup){if(d<18)damageGardener(target.member,(k.elite?30:18)*runDamageScale(),polgeEnemyWarning(k,true));k.bite=.9;}
   }else if(d>10){
     var speed=(k.kind===2?32:24)*(1+Math.min(1.2,gardenWave*.035))*pestSlow(k);
     k.vx=dx/d*speed;k.vy=dy/d*speed;k.x+=k.vx*dt;k.y+=k.vy*dt;
-  }else if(k.bite<=0){k.tell=.55;k.windup=k.tell;k.vx=k.vy=0;}
+  }else if(k.bite<=0){beginEnemyWarning(k);k.tell=.55;k.windup=k.tell;k.vx=k.vy=0;}
   return true;
 }
 function seedVitalFrom(value){
