@@ -20,7 +20,7 @@ test('Cairn fault extends cleave, parry builds retaliate, and sanctuary restores
  const p=plot({id:1,x:g.P.x,health:.5,moisture:.2});g.gardenPlots=[p];Object.assign(g.rogueRun.perks,{counter:2,bedrock:2,aftershock:1,sanctuary:1});const k=pest(g,18,-12,{windup:.1}),before=k.hp;assert.equal(g.cairnBrace(),true);assert.equal(k.hp,before);g.cairnBeginAttack(k);assert.equal(g.cairnStrike(null,g.cairnContact(k,{kind:'strike',pointX:g.P.x,pointY:g.P.y-12})),true);assert.ok(Math.abs(before-k.hp-3.05)<1e-8);h.advance(120);g.updateCairnCombat(.12);assert.ok(Math.abs(before-k.hp-4.05)<1e-8);assert.equal(p.health,.65);assert.equal(p.moisture,.32);
 });
 test('Mycel chains beside plants, colony extends chain reach, ferment strengthens bolts, symbiosis restores plants',()=>{
- const {game:g}=fresh('herbalist'),p=plot({x:g.P.x+25,health:.5,moisture:.2});g.gardenPlots=[p];const a=pest(g,24),b=pest(g,70);Object.assign(g.rogueRun.perks,{colony:2,ferment:2,symbiosis:2});fire(g,a);tick(g,.4);assert.ok(30-a.hp>1.4);assert.ok(b.hp<30,'colony extends chain beyond base38');assert.ok(p.health>.5&&p.moisture>.2);
+ const {game:g}=fresh('herbalist'),p=plot({id:1,x:g.P.x+25,health:.5,moisture:.08});g.gardenPlots=[p];const a=pest(g,24),b=pest(g,70);Object.assign(g.rogueRun.perks,{colony:2,ferment:2,symbiosis:2});fire(g,a);tick(g,.4);assert.ok(Math.abs(30-a.hp-1.4)<1e-8,'initial1D uses the retained Ferment multiplier');assert.equal(g.mycelState().culture,.5);assert.ok(b.hp<30,'colony extends chain beyond base38');assert.ok(p.health>.5&&p.moisture>.08);
  const {game:out}=fresh('herbalist'),one=pest(out,20),two=pest(out,44),three=pest(out,67);out.rogueRun.perks.outbreak=1;fire(out,one);tick(out,.4);assert.ok(two.hp<30&&three.hp<30,'outbreak chains without plants');
 });
 test('Rattus close kicks stop at solid rock and solve reachable guardian objectives without bombs',()=>{
@@ -28,7 +28,7 @@ test('Rattus close kicks stop at solid rock and solve reachable guardian objecti
  g.rogueRun.world=8;const boss=pest(g,80,-16,{boss:true,guardianStage:8,pattern:'spindle',exposed:0,nodes:[{x:x+30,y:y-12,hp:1,kind:'spindle'}]});fire(g,boss.nodes[0]);tick(g,.5);assert.equal(boss.nodes[0].hp,0);
 });
 test('guest Symphony cannot reset attacks with an empty rejected bloom, including forged multi-action packets',()=>{
- const {host,guest,ids}=party('herbalist'),m=host.coop.members[ids[1]];m.perks.symphony=1;const target={x:guest.P.x+50,y:guest.P.y-12};const actions=[{id:1,type:'throw',...target},{id:2,type:'skill',x:guest.P.x,y:guest.P.y},{id:3,type:'throw',...target},{id:4,type:'skill',x:guest.P.x,y:guest.P.y},{id:5,type:'throw',...target}];host.coopInput(ids[1],{avatar:guest.coopAvatar(),actions});assert.equal(host.classShots.length,1);assert.equal(m.skillUntil,0);
+ const {host,guest,ids}=party('herbalist'),m=host.coop.members[ids[1]];m.perks.symphony=1;const target={x:guest.P.x+50,y:guest.P.y-12};const actions=[{id:1,type:'throw',world:host.rogueRun.world,attackTag:1,...target},{id:2,type:'skill',world:host.rogueRun.world,skillTag:1,phase:'start',x:guest.P.x,y:guest.P.y,culture:6},{id:3,type:'throw',world:host.rogueRun.world,attackTag:2,...target},{id:4,type:'skill',world:host.rogueRun.world,skillTag:2,phase:'start',x:guest.P.x,y:guest.P.y,culture:6},{id:5,type:'throw',world:host.rogueRun.world,attackTag:3,...target}];host.coopInput(ids[1],{avatar:guest.coopAvatar(),actions});assert.equal(host.classShots.length,1);assert.equal(host.mycelState(m).specialCool,0);assert.equal(host.mycelState(m).bloom,null);assert.ok(host.mycelState(m).primaryCool>0,'denied forged E cannot ready another dart');
 });
 test('guest cooldown reductions reconcile acknowledged actions while older snapshots preserve fresh predictions',()=>{
  const {host,guest,send,ids}=party('polge');host.coop.members[ids[1]].perks.raincoat=3;const k=pest(host,guest.P.x-host.P.x+14);guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));const stale=JSON.parse(JSON.stringify(host.coopCapture()));guest.useClassSkill();assert.equal(guest.P.skillCool,8);guest.coopState(stale);assert.equal(guest.P.skillCool,8,'unacknowledged flurry not reset');send();tick(host,.5);guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));assert.ok(guest.P.skillCool<7,'acknowledged local Ringcraft contacts shorten guest cooldown');assert.ok(k.hp<30);
@@ -36,9 +36,26 @@ test('guest cooldown reductions reconcile acknowledged actions while older snaps
 test('guest projectiles and cooldowns survive authority handoff without duplicating their first hit',()=>{
  const {host,guest,send,ids}=party('herbalist');const k=pest(host,guest.P.x-host.P.x+60);guest.throwBomb({x:k.x,y:k.y});send();host.updateClassCombat(.1);const state=JSON.parse(JSON.stringify(host.coopCapture()));guest.coopState(state);assert.equal(guest.classShots.length,1);assert.ok(guest.coop.members[ids[1]].cool>0);guest.coopRoster({...guest.coop.network.room,host:ids[1]});tick(guest,.4);assert.ok(guest.floatKrek[0].hp<30);assert.equal(guest.classShots.length,0);guest.enterLevel(2);assert.equal(guest.classFighters.length,0);
 });
-test('Mycel Living Chorus resets attack recovery and increases real Bloom healing on host and guest',()=>{
- const outcomes=[0,1].map(rank=>{const {game:g}=fresh('herbalist'),p=plot({x:g.P.x,health:.4,moisture:.2}),k=pest(g,20);g.gardenPlots=[p];g.rogueRun.perks.symphony=rank;g.bombCool=.5;assert.equal(g.useClassSkill(),true);assert.ok(k.hp<30);return {health:p.health,cool:g.bombCool};});assert.ok(outcomes[1].health>outcomes[0].health);assert.equal(outcomes[1].cool,0);assert.equal(outcomes[0].cool,.5);
- const {host,guest,ids,send}=party('herbalist');host.coop.members[ids[1]].perks.symphony=1;host.gardenPlots=[plot({x:guest.P.x,health:.4,moisture:.2})];guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));guest.throwBomb({x:guest.P.x+60,y:guest.P.y-12});send();assert.ok(guest.bombCool>0);guest.useClassSkill();send();guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));assert.equal(guest.bombCool,0);assert.ok(guest.gardenPlots[0].health>.7);
+test('Mycel Living Chorus readies one useful host pulse while earned Bloom restoration stays absolute',()=>{
+ // The proposal replaces free immediate healing with paid, host-scheduled
+ // pulses. Symphony preserves readiness and strengthens one earned damage
+ // pulse; it cannot multiply the whole-cast plant restoration budget.
+ function earn(h){for(let i=0;i<82;i++){h.advance(100);h.game.updateMycelCombat(.1);}}
+ const outcomes=[0,1].map(rank=>{
+  const h=fresh('herbalist'),g=h.game,p=plot({id:1,x:g.P.x,health:.4,moisture:.6}),k=pest(g,20);g.gardenPlots=[p];g.rogueRun.perks.symphony=rank;
+  earn(h);assert.ok(g.mycelState().culture>=4,'real wet-plant generation funds the cast');fire(g,k);assert.ok(g.bombCool>0);
+  assert.equal(g.useClassSkill(),true);assert.equal(k.hp,30,'activation does not execute a pulse callback');assert.equal(p.health,.4);
+  g.updateMycelCombat(0);assert.ok(k.hp<30);const ready=g.bombCool;
+  for(let i=0;i<40;i++){h.advance(100);g.updateMycelCombat(.1);}
+  assert.ok(Math.abs(p.health-.52)<1e-8);assert.ok(Math.abs(p.moisture-.75)<1e-8);return {health:p.health,water:p.moisture,ready};
+ });
+ assert.equal(outcomes[0].health,outcomes[1].health);assert.equal(outcomes[0].water,outcomes[1].water);assert.equal(outcomes[1].ready,0);assert.ok(outcomes[0].ready>0);
+ const team=party('herbalist'),{host,guest,ids,send}=team,m=host.coop.members[ids[1]];m.perks.symphony=1;host.gardenPlots=[plot({id:1,x:guest.P.x,health:.4,moisture:.6})];
+ earn(team.hs[0]);assert.ok(host.mycelState(m).culture>=4);guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
+ assert.equal(guest.throwBomb({x:guest.P.x+60,y:guest.P.y-12}),true);send();assert.ok(guest.bombCool>0);
+ assert.equal(guest.useClassSkill(),true);send();assert.equal(host.gardenPlots[0].health,.4,'guest input does not heal before the host update');
+ host.updateMycelCombat(0);guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
+ assert.equal(guest.bombCool,0);assert.ok(Math.abs(guest.gardenPlots[0].health-.44)<1e-8);assert.ok(Math.abs(guest.gardenPlots[0].moisture-.65)<1e-8);
 });
 test('Haymaker reaches surrounding pests that ordinary uppercuts miss, without travelling projectiles',()=>{
  const results=[0,1].map(rank=>{const {game:g}=fresh('polge'),front=pest(g,15),rear=pest(g,-27);g.rogueRun.perks.haymaker=rank;for(let i=0;i<3;i++)fire(g,front);assert.equal(g.classShots.length,0);return rear.hp;});assert.equal(results[0],30);assert.ok(results[1]<30);

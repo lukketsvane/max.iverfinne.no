@@ -109,7 +109,7 @@ function lastSeedEnemy(k,dt){
     if(!k.windup){if(d<18)damageGardener(target.member,(k.elite?30:18)*runDamageScale(),polgeEnemyWarning(k,true),cairnContact(k,{kind:'strike',pointX:target.p.x,pointY:target.p.y-12,accepted:true}));k.bite=.9;}
   }else if(d>10){
     var wet=mechWetFactor(k),speed=(k.kind===2?32:24)*(1+Math.min(1.2,gardenWave*.035))*pestSlow(k)/wet;
-    k.vx=dx/d*speed;k.vy=dy/d*speed;k.x+=k.vx*dt*wet;k.y+=k.vy*dt*wet;
+    var cloud=mycelSlowFactor(k);k.vx=dx/d*speed;k.vy=dy/d*speed;k.x+=k.vx*dt*wet*cloud;k.y+=k.vy*dt*wet*cloud;
   }else if(k.bite<=0){beginEnemyWarning(k);k.tell=.55;k.windup=k.tell;k.vx=k.vy=0;}
   return true;
 }

@@ -37,7 +37,7 @@ function ratMove(k,speed,dt){
     var x0=k.x,y0=k.y+RAT_FOOT,before={x:k.x,y:k.y,vx:k.vx,vy:k.vy,grounded:!!k.ratGrounded&&k.vy>=-.01};
     var cairnGround={grounded:before.grounded,supportId:k.ratPlatform||'ground',foot:RAT_FOOT,bodyRadius:9};
     k.vx=approach(k.vx,speed,360*step);
-    k.x+=k.vx*step*mechWetFactor(k)*cairnPestSlow(k,cairnGround);
+    k.x+=k.vx*step*mechWetFactor(k)*cairnPestSlow(k,cairnGround)*mycelSlowFactor(k);
     if(k.ratGrounded&&k.vy<-.01)k.ratGrounded=false;
     if(k.ratGrounded){
       var platform=k.ratPlatform?window.MaxStageLayout.support(layout,k.ratPlatform,k.x):null;

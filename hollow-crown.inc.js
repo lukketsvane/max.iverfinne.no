@@ -235,17 +235,20 @@ function updateHollowCrown(k,dt){
   if(k.windup>0){
     k.crownState='tell';k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
     if(!k.windup){
-      k.attackT=k.attackDuration;k.crownState='attack';
+      k.attackT=k.attackDuration;k.crownState='attack';k.crownMotionT=0;
       if(k.crownMove==='orbs'&&!k.crownPoundSpent){k.hp=Math.max(1,k.hp*.92);k.crownPoundSpent=true;}
     }
     return;
   }
   if(k.attackT>0){
-    k.crownState='attack';var remaining=Math.max(0,k.attackT-dt),progress=1-remaining/k.attackDuration;
+    k.crownState='attack';var remaining=Math.max(0,k.attackT-dt),progress=1-remaining/k.attackDuration,oldProgress=1-k.attackT/k.attackDuration,cloud=mycelSlowFactor(k);
+    var motion=Number.isFinite(k.crownMotionT)?Math.max(0,Math.min(k.attackDuration,k.crownMotionT)):Math.max(0,k.attackDuration-k.attackT);
+    k.crownMotionT=Math.min(k.attackDuration,motion+Math.min(dt,k.attackT)*cloud);var moving=k.crownMotionT/k.attackDuration;
     if(k.crownMove==='leap'){
-      k.x=guardianAimX(k,k.fromX+(k.landX-k.fromX)*progress);k.y=surfaceY(k.x)-32-Math.sin(progress*Math.PI)*56;
+      var height=Math.max(0,Math.min(56,surfaceY(k.x)-32-k.y+(Math.sin(progress*Math.PI)-Math.sin(oldProgress*Math.PI))*56*cloud));
+      k.x=guardianAimX(k,k.fromX+(k.landX-k.fromX)*moving);k.y=surfaceY(k.x)-32-height;
     }else if(k.crownMove==='hammer'||k.crownMove==='combo'){
-      var from=k.x;k.x=guardianAimX(k,k.fromX+(k.landX-k.fromX)*Math.min(1,progress*2));crownGround(k);k.vx=dt?(k.x-from)/dt:0;
+      var from=k.x;k.x=guardianAimX(k,k.fromX+(k.landX-k.fromX)*Math.min(1,moving*2));crownGround(k);k.vx=dt?(k.x-from)/dt:0;
     }else{k.vx=k.vy=0;crownGround(k);}
     k.attackT=remaining;if(!k.attackT)crownFinishAttack(k);return;
   }
@@ -256,7 +259,7 @@ function updateHollowCrown(k,dt){
   k.crownState='stalk';
   var aim=crownAim(k),speed=k.phase===4?7:k.phase===3?30:23,delta=aim-k.x;
   k.face=delta<0?-1:1;
-  if(Math.abs(delta)>36){var step=Math.sign(delta)*Math.min(Math.abs(delta)-36,speed*dt);k.x=guardianAimX(k,k.x+step);k.vx=dt?step/dt:0;}else k.vx=0;
+  if(Math.abs(delta)>36){var step=Math.sign(delta)*Math.min(Math.abs(delta)-36,speed*dt)*mycelSlowFactor(k);k.x=guardianAimX(k,k.x+step);k.vx=dt?step/dt:0;}else k.vx=0;
   crownGround(k);
   if(k.cool<=0)crownBeginAttack(k);
 }

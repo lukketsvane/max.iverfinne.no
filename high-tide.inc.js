@@ -110,7 +110,7 @@ function highTideStrike(k,x,y,r,power,tell,type){var h=addRunHazard(type||'root'
 function updateHighTideBoss(k,dt){
   var a=highTideEnemyTarget(k);if(!a)return;
   k.phase=k.hp<k.maxHp/3?3:k.hp<k.maxHp*2/3?2:1;k.exposed=Math.max(0,k.exposed-dt);k.flee=0;
-  if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step*mechWetFactor(k);k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
+  if(k.dashLeft>0){var step=Math.min(dt,k.dashLeft);k.x+=k.dashV*step*mechWetFactor(k)*mycelSlowFactor(k);k.dashLeft-=step;k.vx=k.dashV;k.vy=0;return;}
   if(k.windup>0){k.windup=Math.max(0,k.windup-dt);k.vx=k.vy=0;if(!k.windup){if(k.healing){var p=highTidePlant();if(p){var tip=highTideTip();highTideDamagePlant(p,.07,false,{source:k,kind:'drain',pointX:tip.x,pointY:tip.y,accepted:true});p.moisture=clamp01(p.moisture-.12);}healPest(k,1.8);k.healing=false;}if(k.bossId==='mossback'){k.dashLeft=.45;k.dashV=Math.max(-140,Math.min(140,(k.chargeX-k.x)/.45));}k.exposed=1.5;k.cool=2.7-k.tideIndex*.2;}return;}
   k.cool-=dt;
   var gate=highTideRoutePoint(HIGH_TIDE_GATES[k.tideIndex]);
@@ -134,10 +134,10 @@ function updateHighTideEnemies(dt){
     highTideSpawnPest();s.enemyClock=Math.max(9,18-s.bosses*1.5)/highTideProfile().enemy;
   }
   floatKrek.slice().forEach(function(k){if(!k.tide||k.hp<=0)return;k.flash=Math.max(0,(k.flash||0)-dt*5);k.startle=Math.max(0,(k.startle||0)-dt);
-    if(k.burn>0){k.burn=Math.max(0,k.burn-dt);if(damagePest(k,(k.burnRate||.2)*dt,k.x-20))return;}
+    if(k.burn>0){var burnContext=mycelBurnContext(k),burnStep=Math.min(dt,k.burn);k.burn=Math.max(0,k.burn-burnStep);if(damagePest(k,(k.burnRate||.2)*burnStep,k.x-20,null,burnContext))return;if(k.burn<=0)mycelSetBurnCause(k,null);}
     if(k.glue>0)k.glue=Math.max(0,k.glue-dt);
     if(k.boss){updateHighTideBoss(k,dt);return;}
-    if(k.flee>0){k.flee-=dt;var wet=mechWetFactor(k);k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt*wet;k.y-=8*dt*wet;return;}
+    if(k.flee>0){k.flee-=dt;var wet=mechWetFactor(k)*mycelSlowFactor(k);k.x+=(k.x<(k.fleeFromX==null?P.x:k.fleeFromX)?-1:1)*28*dt*wet;k.y-=8*dt*wet;return;}
     var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
     var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
     k.cool=Math.max(0,k.cool-dt);

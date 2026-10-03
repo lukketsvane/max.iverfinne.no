@@ -132,9 +132,11 @@ async function checkCircuit(page,engineName,errors){
    assert.deepEqual(errors,[]);console.log(engineName,classId,'charge movement, stationary placement and delayed explosion OK');
    }
    }
-   for(const [classId,primary] of [['runner','dropkick'],['bulwark','cairn-sweep'],['herbalist','spore'],['polge','jab']]){
-    await page.goto(base+'/review.html?mode=class-kits&portrait=1&class='+classId);
+   for(const [classId,primary] of [['runner','dropkick'],['bulwark','cairn-sweep'],['herbalist','mycel-dart'],['polge','jab']]){
+    await page.goto(base+'/review.html?mode='+(classId==='herbalist'?'mycel':'class-kits')+'&portrait=1&class='+classId);
     await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
+    const beforePrimary=classId==='herbalist'?JSON.parse(await page.locator('#status').getAttribute('data-guardian')).combat:null;
+    if(beforePrimary)assert.ok((beforePrimary.mycel?.culture||0)<4,'Mycel starts without prefilled Bloom stock');
     const game=page.frames().find(f=>f!==page.mainFrame());
     const art=await game.evaluate(()=>window.MaxNativeArt.load());assert.deepEqual(art.failed,[]);
     await page.getByRole('button',{name:'Game Attack',exact:true}).click();
@@ -172,18 +174,41 @@ async function checkCircuit(page,engineName,errors){
      assert.equal(afterRidge.cairn.ridgePhase,0);assert.equal(afterRidge.cairn.ridgeReserved,0);
      assert.equal(afterRidge.cairn.specialCool,0,'an unaffordable Ridge starts no cooldown');
      assert.ok(afterRidge.cairnMotionCell,'Brace retains the original native body pose');
+    }else if(classId==='herbalist'){
+     // Actual initial dart contact and current wet plants fund the new paid E.
+     // No fixture grant, clock jump or callback replaces its ordinary pulses.
+     await page.waitForFunction(previous=>{
+      const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
+      return c.mycel?.culture>=.5&&c.targets.some(k=>{const old=previous.find(p=>p.id===k.id);return old&&k.hp<old.hp-.8;});
+     },beforePrimary.targets,{timeout:4000});
+     await page.waitForFunction(()=>{
+      const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
+      return c.grounded&&c.body.st==='free'&&c.mycel?.culture>=4&&c.mycel.specialCool<=0&&c.phasePolicy.phase==='none';
+     },{},{timeout:12000});
+     const beforeBloom=JSON.parse(await page.locator('#status').getAttribute('data-guardian')).combat,beforeBloomAt=Date.now();
+     await page.keyboard.press('e');
+     await page.waitForFunction(serial=>{
+      const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
+      return c.mycel?.bloom?.serial>serial&&c.mycel.specialCool>0&&(c.mycel.bloom.pulseMask&1)&&c.strikes['mycel-bloom']>0;
+     },beforeBloom.mycel.bloom?.serial||0,{timeout:4000});
+     const afterBloom=JSON.parse(await page.locator('#status').getAttribute('data-guardian')).combat;
+     const maximumPassive=(Date.now()-beforeBloomAt)/1000+.1;
+     assert.ok(afterBloom.mycel.culture<=beforeBloom.mycel.culture-4+maximumPassive,'accepted Bloom pays four; only real bounded passive generation follows');
+     assert.equal(afterBloom.mycel.bloom.x,beforeBloom.body.x,'Bloom keeps its accepted center');
+     assert.equal(afterBloom.mycel.bloom.y,beforeBloom.body.y-12);
+     assert.ok(afterBloom.targets.some(k=>k.mycelEvents?.mycelBloomEvents.some(e=>e.serial===afterBloom.mycel.bloom.serial&&(e.mask&1)))||afterBloom.mycel.bloom.plots.some(p=>p.healthUsed>0||p.waterUsed>0),'the first ordinary host pulse has a real consumed target or plot debt');
     }else{
      await page.keyboard.press('e');
      await page.waitForFunction(id=>{
      const c=JSON.parse(document.querySelector('#status').dataset.guardian).combat;
-     return c.skillCool>0&&(id==='runner'?c.strikes.splits>0:id==='herbalist'?c.cues.bloom>0||c.cues.revive>0:c.strikes.flurry>0);
+     return c.skillCool>0&&(id==='runner'?c.strikes.splits>0:c.strikes.flurry>0);
      },classId,{timeout:5000});
     }
     observation=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
     assert.equal(observation.combat.bombPeak,0,'native specials never place bombs');
     if(classId==='polge'||classId==='runner')assert.equal(observation.combat.shotsCreated,0,'close specials stay melee');
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${classId}-native-kit.png`});
-    assert.deepEqual(errors,[]);console.log(engineName,classId,classId==='bulwark'?'parent Attack, keyboard Brace and unpaid Ridge rejection OK':'parent Attack control and keyboard special OK');
+    assert.deepEqual(errors,[]);console.log(engineName,classId,classId==='bulwark'?'parent Attack, keyboard Brace and unpaid Ridge rejection OK':classId==='herbalist'?'real Dart contact, naturally earned Culture and paid host Bloom pulse OK':'parent Attack control and keyboard special OK');
    }
    if(process.argv.includes('--native-kits-only'))continue;
    await page.goto(base+'/review.html?mode=boons&portrait=1');
