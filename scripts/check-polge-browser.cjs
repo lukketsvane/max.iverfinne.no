@@ -28,6 +28,9 @@ window.__polgeBrowser={
   arrange:function(kind){
     clearRunInput();classFighters=[];classShots=[];bombs=[];booms=[];polgeBrowserFx=[];runHazards=[];
     P.x=levelOriginX(1);P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.wet=false;P.st='free';P.face=1;P.dodgeT=P.dodgeCool=P.skillCool=P.secondaryCool=0;P.hurt=0;bombCool=0;
+    // Camera easing from the preceding moving case must not relocate a world
+    // target while Playwright waits for the canvas to receive a genuine tap.
+    camX=P.x-IW*.5;camY=P.y-climbAnchor();shake=0;
     floatKrek=[];runEncounters=[];gardenRaidActive=false;krekSpawnT=60;gardenRaidT=60;
     gardenPlots.forEach(function(p){p.health=.55;p.moisture=.4;});
     if(kind==='empty')return;
