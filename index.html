@@ -64,9 +64,16 @@
     #perkMenu button{min-height:106px;padding-top:6px;gap:4px}
     #perkMenu small{font-size:10px}.perkIcon{width:18px;height:18px}
   }
+  #polgeControls{position:fixed;z-index:25;right:max(12px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));display:flex;gap:8px}
+  #polgeControls[hidden]{display:none}
+  #polgeControls button{min-width:64px;min-height:48px;border:1px solid #755b51;border-radius:2px;background:rgba(18,24,26,.9);color:#eed2b5;font:11px/1.3 ui-monospace,monospace;touch-action:manipulation;cursor:pointer}
+  #polgeControls button:disabled{color:#89796e;border-color:#403b38}
+  #polgeControls button:focus-visible{outline:2px solid #efd17e;outline-offset:2px}
+  @media(hover:hover) and (pointer:fine){#polgeControls{bottom:12px}#polgeControls button{min-height:34px;font-size:10px}}
 </style>
 <div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="perkMenu" aria-live="polite"></div>
+<div id="polgeControls" hidden aria-label="Pølge combat"><button id="polgeClinch" type="button" aria-label="Clinch break (C)">Clinch · C</button><button id="polgeSlip" type="button" aria-label="Slip and counter (X)">Slip · X</button></div>
 <script>
 (function () {
 "use strict";
@@ -404,6 +411,7 @@ window.addEventListener('keydown', function (e) {
   else if (k === 'k' || k === 'K') { if (!e.repeat) requestDodge(); }
   else if (k === 'x' || k === 'X') { if (!e.repeat) requestDodge(); }
   else if ((k === 'e' || k === 'E') && !e.repeat) useClassSkill();
+  else if ((k === 'c' || k === 'C') && !e.repeat) useClassSecondary();
   else if ((k === 'q' || k === 'Q') && !e.repeat) cycleSligo();
   else return;
   unlockAudio();
@@ -509,13 +517,13 @@ function pollPads(){
     if(single){
       if(hit(4)&&!work){if(charge&&charge.src==='pad')charge=null;requestDodge();padRumble(30,.2);}
       if(hit(3)&&useClassSkill())padRumble(45,.3);
-      if(hit(8)){if(rogueRun.classId==='sligo')cycleSligo();else refillCompanion();}
+      if(hit(8)){if(rogueRun.classId==='sligo')cycleSligo();else if(rogueRun.classId==='polge')useClassSecondary();else refillCompanion();}
       if(hit(16)||hit(10)&&rogueRun.classId!=='sligo')lampToggle=true;
       if(hit(10)&&rogueRun.classId==='sligo')cycleSligo();
     }else{
       if((hit(10)||hit(11))&&!D&&!work&&!aiming)requestDodge();
       if(hit(6)&&rogueRun.classId==='sligo')cycleSligo();
-      if(hit(4))useClassSkill();if(hit(6)&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(8))refillCompanion();
+      if(hit(4))useClassSkill();if(hit(6)&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(8)){if(rogueRun.classId==='polge')useClassSecondary();else refillCompanion();}
     }
     if(hit(9))padEscape();
     if(b.some(Boolean))unlockAudio();
@@ -709,16 +717,17 @@ function setAnim(n) { if (P.anim !== n) { P.anim = n; P.frame = 0; P.clock = 0; 
 var GRAV = 430, JUMP_V = -154, ACC = 720, BRAKE = 980, FRIC = 1100;
 var DODGE_TIME = .16, DODGE_SPEED = 156, DODGE_COOLDOWN = .85;
 function ownClass(){return window.MaxClasses.get(rogueRun.classId);}
-function dodgeRecovery(){return DODGE_COOLDOWN*ownClass().dodgeRecovery*Math.pow(.83,rogueRun.perks.dash||0);}
+function dodgeRecovery(){return (ownClass().id==='polge'?3.5:DODGE_COOLDOWN*ownClass().dodgeRecovery)*Math.pow(.83,rogueRun.perks.dash||0);}
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
   if(P.dodgeCool>0||P.pounce||P.tun>0||!P.grounded||P.wet||climb||warp||P.st==='float')return false;
-  P.dodgeT=DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;
+  if(ownClass().id==='polge'&&!boxerDodge())return false;
+  P.dodgeT=ownClass().id==='polge'?.18:DODGE_TIME;P.dodgeCool=dodgeRecovery();P.dodgeDir=dodgeDirection;P.dodgeId++;P.dodgeDust=0;P.slipDistance=0;
   P.face=P.dodgeDir;P.st='free';P.still=0;P.land=0;P.throwPose=0;P.lampLit=0;P.brace=0;
   task=null;holdWater=null;climbGoal=null;gardenPress=false;dodgeBuf=0;
   setAnim('run');puff(P.x,P.y,4,.3);sfx('swish',0);
-  dewDodge();boxerDodge();
-  if(coopGuest())coopAction('dodge',{x:P.x,y:P.y,direction:P.dodgeDir});
+  dewDodge();
+  if(coopGuest())coopAction('dodge',{x:P.x,y:P.y,direction:P.dodgeDir,dodgeTag:P.dodgeId});
   return true;
 }
 function dodgeContact(dt) {
@@ -727,6 +736,11 @@ function dodgeContact(dt) {
   dodgeSweep(P.x,P.y,P.x,P.y);
 }
 function dodgeSweep(x0,y0,x1,y1){
+  if(ownClass().id==='polge'){
+    var bodyX=P.x,bodyY=P.y,steps=Math.max(1,Math.ceil(Math.hypot(x1-x0,y1-y0)));
+    try{for(var n=0;n<=steps;n++){P.x=x0+(x1-x0)*n/steps;P.y=y0+(y1-y0)*n/steps;floatKrek.forEach(function(k){if(enemyDistance(k,P.x,P.y-12)<18)polgeAvoidedWarning(coopActor||null,polgeEnemyWarning(k));});}}
+    finally{P.x=bodyX;P.y=bodyY;}return;
+  }
   var actor=coopActor?coopActor.slot:0,dx=x1-x0,dy=y1-y0,length=dx*dx+dy*dy;
   for(var i=0;i<floatKrek.length;i++){
     var k=floatKrek[i],along=length?clamp01(((k.x-x0)*dx+(k.y-(y0-12))*dy)/length):0;
@@ -755,7 +769,7 @@ function updatePlayer(dt, inp) {
     P.ladderRegrab=Math.max(0,(P.ladderRegrab||0)-step);
     P.dodgeCool=Math.max(0,P.dodgeCool-step);
     if(P.skillCool>0){P.skillCool=Math.max(0,P.skillCool-step);if(!P.skillCool){if(!coopActor)skillReadyCue(rogueRun.classId);for(var s=0;s<3;s++)sparks.push({x:P.x+(s-1)*3,y:P.y-2,vx:(s-1)*8,vy:-18,l:.35});}}
-    P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
+    P.secondaryCool=Math.max(0,(P.secondaryCool||0)-step);P.skillDenied=Math.max(0,P.skillDenied-step);P.skillPose=Math.max(0,P.skillPose-step);
     if(P.pounce||P.rattlePose>0)P.rattleClock+=step;
     P.rattlePose=Math.max(0,P.rattlePose-step);
     if(!P.pounce&&!P.rattlePose)P.rattleMove='';
@@ -770,7 +784,7 @@ function updatePlayer(dt, inp) {
     else if(P.st==='climb')updateClimb(step,inp);
     else if(P.st==='ladder')updateLadder(step,inp);
     else physics(step,(P.st==='free'||P.st==='float')?held:{axis:0,top:inp.top});
-    if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);}
+    if(P.dodgeT>0){dodgeContact(step);P.dodgeT=Math.max(0,P.dodgeT-step);if(ownClass().id==='polge'&&P.dodgeT<=1e-7){P.dodgeT=0;P.vx=0;}}
     P.throwPose=Math.max(0,P.throwPose-step);
     animate(step);
     if(nightRelayMode())relayConstrain(P);
@@ -783,7 +797,7 @@ function physics(dt, inp) {
   var oldX=P.x,oldY=P.y;
   var wp0 = waterAt(P.x); P.wet = playerWetAt(P.x,P.y);
   if(P.wet)P.dodgeT=0;
-  if(P.dodgeT>0){P.face=P.dodgeDir;P.vx=P.dodgeDir*DODGE_SPEED;}
+  if(P.dodgeT>0){if(ownClass().id==='polge'&&inp.axis)P.dodgeDir=inp.axis;P.face=P.dodgeDir;P.vx=P.dodgeDir*(ownClass().id==='polge'?Math.min(24/.18,Math.max(0,24-(P.slipDistance||0))/dt):DODGE_SPEED);}
   else if (inp.axis !== 0) {
     P.face = inp.axis;
     var topW = inp.top * ownClass().speed * (1+.06*(rogueRun.perks.stride||0)) * (P.wet ? 0.5 : 1) * (P.st === 'float' ? 0.55 : 1);
@@ -818,6 +832,7 @@ function physics(dt, inp) {
   if(P.pounce===2&&Math.random()<dt*40)parts.push({x:P.x+(Math.random()-.5)*6,y:P.y-6-Math.random()*8,vx:(Math.random()-.5)*10,vy:-10-Math.random()*10,l:.4,m:.4,c:'96,128,78'});
   if (P.st === 'float' && P.vy > 30) P.vy = 30;
   P.x += P.vx * dt;
+  if(ownClass().id==='polge'&&P.dodgeT>0)P.slipDistance=(P.slipDistance||0)+Math.abs(P.x-oldX);
   P.y += P.vy * dt;
   var rock=window.MaxStageLayout.solid(layout,oldX,oldY,P.x,P.y);
   if(layout.hazards&&layout.hazards.length)pictureLava();
@@ -856,7 +871,8 @@ function physics(dt, inp) {
 function animate(dt) {
   var spd = Math.abs(P.vx);
   if (P.st !== 'free') { P.idleT = 0; P.fidget = null; }
-  else if(P.dodgeT>0){setAnim('run');P.idleT=0;P.fidget=null;}
+  else if(P.dodgeT>0){setAnim(ownClass().id==='polge'&&sheet2Ready?'crouch':'run');P.idleT=0;P.fidget=null;}
+  else if(ownClass().id==='polge'&&P.skillPose>0&&sheet2Ready){setAnim(P.skillAnim);P.idleT=0;P.fidget=null;}
   else if (!P.grounded) {
     P.idleT = 0; P.fidget = null; P.land = 0;
     setAnim(P.vy < -18 ? 'rise' : 'fall');
@@ -2467,6 +2483,24 @@ function classProtection(plant){
   return 1-protection;
 }
 function plantProtection(plant,bite){return classProtection(plant)*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
+function useClassSecondary(){
+  if(runIsPaused()||seedDown()||ownClass().id!=='polge')return false;
+  var target=floatKrek.filter(function(k){return enemyDistance(k,P.x,P.y-12)<=20;}).sort(function(a,b){return enemyDistance(a,P.x,P.y-12)-enemyDistance(b,P.x,P.y-12);})[0];
+  var ok=polgeClinch(target||{x:P.x+P.face*20,y:P.y-12});
+  if(!ok)P.skillDenied=.2;
+  return ok;
+}
+var polgeControls=document.getElementById('polgeControls'),polgeClinchButton=document.getElementById('polgeClinch'),polgeSlipButton=document.getElementById('polgeSlip');
+polgeClinchButton.addEventListener('click',function(){unlockAudio();useClassSecondary();});
+polgeSlipButton.addEventListener('click',function(){unlockAudio();requestDodge();});
+function updatePolgeControls(){
+  var visible=runActive&&!rogueRun.ended&&rogueRun.classId==='polge'&&!runIsPaused()&&!(window.MaxGameMenu&&window.MaxGameMenu.isOpen&&window.MaxGameMenu.isOpen());
+  polgeControls.hidden=!visible;if(!visible)return;
+  var q=fighterState(),clinch=Math.max(P.secondaryCool||0,q.clinchCool||0),slip=Math.max(P.dodgeCool||0,q.utilityCool||0);
+  polgeClinchButton.disabled=clinch>0||seedDown();polgeSlipButton.disabled=slip>0||seedDown();
+  polgeClinchButton.textContent=clinch>0?'Clinch '+clinch.toFixed(1)+'s':'Clinch · C';
+  polgeSlipButton.textContent=slip>0?'Slip '+slip.toFixed(1)+'s':'Slip · X';
+}
 function useClassSkill(){
   if(seedDown())return false;
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
@@ -2626,6 +2660,7 @@ function drawClassAuras(){
 function drawSkillPip(){
   if(!runActive||rogueRun.ended)return;
   var kit=ownClass(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
+  if(kit.id==='polge'){var q=fighterState();for(var beat=0;beat<3;beat++){ctx.fillStyle=beat<(q.rhythm||0)?'#efd17e':'#755b51';ctx.fillRect(x-2+beat*3,y+3,2,2);}if(q.counter>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-29,13,1);}}
   ctx.fillStyle='rgba(236,232,220,.22)';ctx.fillRect(x,y,5,1);
   if(P.skillDenied>0){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
   else if(P.tun>0){var left=Math.round(5*P.tun/kit.tunTime);ctx.fillStyle='rgba(236,232,220,.5)';if(left>0)ctx.fillRect(x,y,left,1);}
@@ -2777,7 +2812,7 @@ function resetRogueRun(reason,selection){
   if(perkMenu)perkMenu.style.display='none';
   if(window.MaxRunResults)window.MaxRunResults.hide();
   selectedPerk=null;resultAtlasReady=false;clearRunInput();task=null;bombs.length=0;
-  climb=null;climbGoal=null;warp=null;P.st='free';P.lampLit=0;P.dodgeCool=0;P.skillCool=0;bombCool=0;setAnim('idle');
+  climb=null;climbGoal=null;warp=null;P.st='free';P.lampLit=0;P.dodgeCool=0;P.secondaryCool=0;P.skillCool=0;bombCool=0;setAnim('idle');
   P.x=levelOriginX(keepWorld);P.y=surfaceY(P.x);P.vx=P.vy=0;P.airJumpUsed=false;P.grounded=true;P.coyote=.1;started=false;
   resetSligoLife();runDropId=0;hazardId=0;initRunStage();
 
@@ -4588,7 +4623,7 @@ function chargeRelease(){
   return ok;
 }
 function drawNativeAim(target,cool){
-  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,id=ownClass().id,melee=['runner','polge','bulwark'].indexOf(id)>=0,reach=melee?(id==='runner'?(P.grounded?34:24)+3*(rogueRun.perks.fletching||0):id==='polge'?31:38+6*(rogueRun.perks.fault||0)):Math.min(160,length);
+  var dx=target.x-P.x,dy=target.y-(P.y-12),length=Math.hypot(dx,dy)||1,id=ownClass().id,melee=['runner','polge','bulwark'].indexOf(id)>=0,reach=melee?(id==='runner'?(P.grounded?34:24)+3*(rogueRun.perks.fletching||0):id==='polge'?(fighterState().window>0&&fighterState().combo===1?(rogueRun.perks.haymaker?36:24):fighterState().window>0&&fighterState().combo===0?20:18):38+6*(rogueRun.perks.fault||0)):Math.min(160,length);
   ctx.fillStyle=cool?'#6d7690':ownClass().id==='herbalist'?'#80d1b1':'#e6bf69';
   for(var aimStep=8;aimStep<=reach;aimStep+=5)ctx.fillRect(Math.round(P.x+dx/length*aimStep-camX),Math.round(P.y-12+dy/length*aimStep-camY),1,1);
   var tx=Math.round(P.x+dx/length*reach-camX),ty=Math.round(P.y-12+dy/length*reach-camY);ctx.fillRect(tx-2,ty,5,1);ctx.fillRect(tx,ty-2,1,5);
@@ -5026,7 +5061,7 @@ var CLASS_STRIKE_CUES={
 };
 function classStrikeCue(kind,dist,combo){
   try{
-    kind=({kestrel:'needle',runner:'cleave',dropkick:'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
+    kind=({clinch:'cross',finisher:'uppercut',kestrel:'needle',runner:'cleave',dropkick:'cleave',salto:'flurry',splits:'cleave',cairn:'cleave',bulwark:'cleave',mycel:'spore',herbalist:'spore'})[kind]||kind;
     if(kind==='polge')kind=['jab','cross','uppercut'][Math.max(0,Math.min(2,Math.floor(Number(combo)||0)))];
     var kit=CLASS_STRIKE_CUES[kind];if(!kit)return;
     var v=effectVoice('strike:'+kind,kit.life,kit.space,kind==='parry'?2:1,dist);if(!v)return;
@@ -5494,6 +5529,11 @@ function drawPlayer() {
   var img = native || (a.sh === 2 ? sheet2 : sheet);
   if (!native && (a.sh === 2 ? !sheet2Ready : !sheetReady)) return;
   var fr = a.f[Math.min(P.frame, a.f.length - 1)];
+  if(P.skin==='polge'){
+    var poseOwner=P.evoKey||skillOwner(),poseFx=booms.slice().reverse().find(function(b){return b.owner===poseOwner&&b.t<.24&&['jab','cross','uppercut','clinch','flurry','finisher'].indexOf(b.strike)>=0;});
+    if(poseFx){var move=['uppercut','finisher'].indexOf(poseFx.strike)>=0?'rise':['jab','clinch'].indexOf(poseFx.strike)>=0?'crouch':'toss';a=ANIM[move];img=window.MaxNativeArt&&window.MaxNativeArt.playerImage(P.skin,a.sh===2?'interaction':'main')||img;fr=a.f[Math.min(a.f.length-1,Math.floor(poseFx.t*a.fps))];}
+    else if(P.dodgeT>0||P.dodging){a=ANIM.crouch;img=window.MaxNativeArt&&window.MaxNativeArt.playerImage(P.skin,'interaction')||img;fr=a.f[Math.min(3,Math.floor((.18-(P.dodgeT||.1))*20))];}
+  }
   var artRow = native && window.MaxNativeArt.playerRow ? window.MaxNativeArt.playerRow(P.skin,a.sh===2?'interaction':'main',a.row,P.anim) : a.row;
   var playerCell=window.MaxNativeArt&&window.MaxNativeArt.playerCell&&window.MaxNativeArt.playerCell(P.skin,P);
   if(playerCell){var moveImage=window.MaxNativeArt.playerImage(P.skin,playerCell.sheet);if(moveImage){img=moveImage;fr=playerCell.column;artRow=playerCell.row;}}
@@ -5725,7 +5765,7 @@ function frame(now) {
   drawWonderAir();
   drawBirdBlasts();
   drawCompanion();
-  P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();drawTeamArrows();drawMouseReticle();
+  updatePolgeControls();P.evo=sligoEvo();drawSligoColony();drawPlayer();drawCharge();drawSkillPip();drawExitCue(tSec);drawCoopPlayers(dt);drawPlaceVeils();drawTeamArrows();drawMouseReticle();
   drawPickupNotice(dt);
   drawClimbSky(tSec);
   drawBombs(tSec);

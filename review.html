@@ -5,11 +5,11 @@
 <h1>MAX · visual review</h1><p class="intro">Actual game renderer and controls. Fixture saves stay in memory.</p>
 <div class="review-controls"><label>Scene<select id="fixture" aria-label="Review scene"></select></label><label>Class<select id="review-class" aria-label="Review class"><option value="mech">Mech</option><option value="runner">Rattus norvegicus</option><option value="bulwark">Cairn</option><option value="herbalist">Mycel</option><option value="polge">Pølge</option><option value="sligo">Sligo</option></select></label><label>Viewport<select id="viewport" aria-label="Review viewport"><option value="desktop">Desktop · 1000 × 650</option><option value="phone">Phone · 390 × 844</option><option value="small">Small phone · 320 × 568</option><option value="landscape">Landscape · 844 × 390</option><option value="compact">Small landscape · 568 × 320</option></select></label><button id="restart" type="button">Reset scene</button><button id="rotate" type="button">Portrait / landscape</button></div>
 <details><summary>Original fixtures</summary>
-<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button></nav></details><p id="fixture-help"></p><p id="status" role="status">Loading…</p><nav id="review-input" aria-label="Game controls"></nav><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
+<nav><button data-mode="menu">Main menu</button><button data-mode="controls">Controls</button><button data-mode="combat">Combat</button><button data-mode="feathers">Double jump</button><button data-mode="trial">Shrine trial</button><button data-mode="enemies">Enemy roles</button><button data-mode="boss">Final boss</button><button data-mode="native-skins">Native skins</button><button data-mode="native-enemies">Enemy animation states</button><button data-mode="native-crown">Crown phases and tells</button><button data-mode="results">Bouquet</button><button data-mode="empty">Empty garden</button><button data-mode="many">Three bouquets</button><button data-mode="robot0">Small robot</button><button data-mode="robot1">First upgrade</button><button data-mode="robot2">Second upgrade</button></nav></details><p id="fixture-help"></p><p id="status" role="status">Loading…</p><p id="combat-status" aria-label="Combat observation" hidden></p><nav id="review-input" aria-label="Game controls"></nav><iframe title="Game preview" width="1000" height="650" sandbox="allow-scripts allow-same-origin"></iframe>
 <script src="stage-layout.js"></script>
 <script>
 (async function(){
- const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status');
+ const source=await fetch('index.html').then(r=>r.text()), frame=document.querySelector('iframe'),status=document.getElementById('status'),combatStatus=document.getElementById('combat-status');
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Glass Snail','Wick Hermit','Bellkeeper','Frostjaw','Spindle Widow','Orchard Mimic','Tuning Fork','Moon Moth','Kiln Beetle','Ash Ferryman','Compost Choir','Seed Engine'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
  const pressureMinutes=[0,5,10,20];
@@ -22,7 +22,7 @@
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
  group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · motherplant and guardians']]);
  group('Sligo',[['sligo-life','Sligo · Eat and grow'],['sligo-colony','Sligo · AI and control swap']]);
- group('Pølge',[['polge','Pølge · Boxing combinations']]);
+ group('Pølge',[['polge','Pølge · Rhythm, clinch and counter']]);
  group('Relics',[['relic-garden','Relics · Game mode stones']]);
  group('Plant traversal',[['plant-climb','Rattus norvegicus · Growing plant climb']]);
  group('Campaign climb',layouts.map(world=>['layout'+world,'Garden '+world+' · '+window.MaxStageLayout.profile(world).title]));
@@ -44,6 +44,7 @@
   document.querySelectorAll('#review-input button[aria-pressed]').forEach(button=>button.setAttribute('aria-pressed','false'));
   status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');
   status.removeAttribute('data-circuit');
+  status.removeAttribute('data-guardian');combatStatus.hidden=true;combatStatus.textContent='';
   const circuit=mode==='circuit',custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
   const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):8):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
@@ -54,6 +55,7 @@
   classChooser.disabled=!custom;
   help.textContent=mode.startsWith('sligo-')?'Harvest the red cords with ↓ / Space; walk over meat to eat. B throws flesh and shrinks you. Hold a clone for half a second, Q, or left trigger to swap. Four divisions per run.':rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Rattus norvegicus can climb these living, still-growing plants before clearing the garden. Change class to compare. ↑ jumps away · ↓ climbs down. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diver, seed thief, spore caster, shield beetle, healing moth, thorn caster, dew leech and rammer. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
   if(circuit)help.textContent='Choose either gift altar with ↓ / Space. Amber marks show where each keeper arrives. Defend the terrace to earn your chosen gift, or leave the terrace to withdraw. B punch · E flurry · X dodge · ↑ jump.';
+  if(mode==='polge')help.textContent='B: jab → cross → uppercut. Confirmed hits build 0–3 Rhythm; misses keep the current combo step. C / touch Clinch: make room at close range. X / touch Slip: weave through an amber warned attack, then B for one stronger counter. E / tap Pølge: moving close flurry. Trial sentries use their real warnings and attacks; reset after defeating them. '+(params.get('boons')==='1'?'All Pølge boons enabled; a landed flurry finish can restore the damaged plants.':'Base kit, no boons. Add &boons=1 to compare the upgraded build.');
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu'||mode==='relic-garden',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   const setup='<script>'+`(function(){
@@ -74,7 +76,7 @@
     "MAX_REVIEW_FIXTURE_START";
     window.addEventListener('message',function(event){
       if(event.source!==parent||event.origin!==${JSON.stringify(location.origin)}||!event.data||event.data.serial!==${serial}||event.data.type!=='max-review-input')return;
-      if(['ArrowLeft','ArrowRight','ArrowUp',' ','b','x','e','1','2','3'].indexOf(event.data.key)<0)return;
+      if(['ArrowLeft','ArrowRight','ArrowUp',' ','b','c','x','e','1','2','3'].indexOf(event.data.key)<0)return;
       window.dispatchEvent(new KeyboardEvent(event.data.down?'keydown':'keyup',{key:event.data.key,bubbles:true,cancelable:true}));
     });
     menuPaused=false;runActive=${gameplay};rogueRun.next=1000000000;rogueRun.ended=false;rogueRun.choice=null;rogueRun.perks.robot=${tier};
@@ -139,10 +141,19 @@
         rogueRun.choice=[classBoon,'spring','mulch'].map(function(id){return ROGUE_PERKS.find(function(p){return p.id===id;});});
         renderRogueChoice();runEncounters=[];runLoot=[];runHazards=[];
       }
-      if(${mode==='polge'||mode==='class-kits'}){
+      if(${mode==='class-kits'}){
         if(rogueRun.classId==='polge'){rogueRun.perks.varnish=1;rogueRun.perks.splinters=1;rogueRun.perks.raincoat=1;}
         [20,36,54].forEach(function(dx,i){var k=makeKrek(1,false,i);k.scout=false;k.x=P.x+dx;k.y=P.y-14;k.hp=k.maxHp=6;floatKrek.push(k);});
         runEncounters=[];runLoot=[];runHazards=[];
+      }
+      if(${mode==='polge'}){
+        if(${params.get('boons')==='1'}){rogueRun.perks.varnish=3;rogueRun.perks.splinters=3;rogueRun.perks.raincoat=3;rogueRun.perks.haymaker=1;rogueRun.perks.secondwind=1;rogueRun.perks.dash=1;}
+        // Authentic sentry AI supplies warned attacks at melee height. The
+        // fixture places the encounter; it never grants a hit or a counter.
+        var boxingTrial={id:901,x:P.x,y:P.y,type:'cache',cost:0,active:true,done:false,locked:false,progress:0,duration:75,guardsRemaining:0,age:0,away:0};
+        runEncounters=[boxingTrial];runLoot=[];runHazards=[];
+        [-16,16,38].forEach(function(dx,i){var k=makeKrek(dx<0?-1:1,false,0);k.scout=false;k.x=P.x+dx;k.y=P.y-12;k.vx=k.vy=0;k.hp=k.maxHp=12;k.trialGuard=true;k.eventId=boxingTrial.id;k.eventX=P.x;k.eventY=P.y;k.bite=1.8+i*.7;floatKrek.push(k);});
+        gardenPlots.forEach(function(p){p.health=.55;p.moisture=.4;});
       }
       if(${circuit}){
         var reviewCircuit=stageLayout().expedition&&stageLayout().expedition.circuit;
@@ -236,8 +247,8 @@
           var C=observedLayout.expedition.circuit,e=runExpedition;
           parent.postMessage({type:'max-circuit-observation',serial:${serial},geometry:C,seed:rogueRun.seed,world:worldLevel(),classId:rogueRun.classId,player:{x:P.x,y:P.y,grounded:P.grounded,platformId:P.platform},active:e.circuitActive,choice:e.circuitChoice,done:e.circuitDone,failed:e.circuitFailed,queued:e.circuitQueued,spawned:e.circuitSerial,age:e.circuitAge,away:e.circuitAway,tell:e.circuitTell,warning:{x:e.circuitSpawnX,y:e.circuitSpawnY,kind:e.circuitKind},guards:floatKrek.filter(function(k){return k.eventId===2000+worldLevel();}).map(function(k){return {x:k.x,y:k.y,kind:k.kind};}),log:reviewCircuitLog,propsReady:ready(districtProps)&&ready(districtLandmarks),loot:runLoot.map(function(q){return {id:q.id,type:q.type,x:q.x,y:q.y};}),traits:rogueRun.traits,boonOpen:!!rogueRun.choice,ended:rogueRun.ended},${JSON.stringify(location.origin)});
         }
-        var reviewCanvasBounds=cv.getBoundingClientRect();
-        parent.postMessage({type:'max-guardian-observation',serial:${serial},combat:{classId:rogueRun.classId,strikes:reviewCombat.strikes,cues:reviewCombat.cues,bombPeak:reviewCombat.bombPeak,shotPeak:reviewCombat.shotPeak,shotsCreated:classShotId,skillCool:P.skillCool,attackCool:bombCool,grounded:P.grounded,brace:P.brace,pounce:P.pounce},shrine:bossEvent,entrance:{x:observedLayout.origin,y:surfaceY(observedLayout.origin)},sites:observedLayout.guardianSites||[],ladders:observedLayout.ladders||[],motion:P.st,playerY:P.y,view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
+        var reviewCanvasBounds=cv.getBoundingClientRect(),observedFighter=classFighters.find(function(q){return q.owner===skillOwner();});
+        parent.postMessage({type:'max-guardian-observation',serial:${serial},combat:{classId:rogueRun.classId,strikes:reviewCombat.strikes,cues:reviewCombat.cues,bombPeak:reviewCombat.bombPeak,shotPeak:reviewCombat.shotPeak,shotsCreated:classShotId,skillCool:P.skillCool,attackCool:bombCool,grounded:P.grounded,brace:P.brace,pounce:P.pounce,dodgeCool:P.dodgeCool||0,dodgeT:P.dodgeT||0,fighter:observedFighter?Object.assign({},observedFighter):null,targets:floatKrek.map(function(k){return {dx:Math.round(k.x-P.x),dy:Math.round(k.y-(P.y-12)),hp:k.hp,windup:k.windup||0,boss:!!k.boss};}),warnings:runHazards.filter(function(h){return h.tell>0;}).map(function(h){return {id:h.id,type:h.type,tell:h.tell};}),plants:gardenPlots.map(function(p){return {id:p.id,health:p.health,moisture:p.moisture};})},shrine:bossEvent,entrance:{x:observedLayout.origin,y:surfaceY(observedLayout.origin)},sites:observedLayout.guardianSites||[],ladders:observedLayout.ladders||[],motion:P.st,playerY:P.y,view:{width:innerWidth,height:innerHeight,player:{left:reviewCanvasBounds.left+(P.x-camX-10)*SCALE,right:reviewCanvasBounds.left+(P.x-camX+10)*SCALE,top:reviewCanvasBounds.top+(P.y-camY-24)*SCALE,bottom:reviewCanvasBounds.top+(P.y-camY)*SCALE}},x:P.x-levelOriginX(worldLevel()),bombs:bombs.map(function(b){return {x:b.x-levelOriginX(worldLevel()),y:b.y,planted:!!b.planted,fuse:b.fuse};}),boss:observedBoss?{id:observedBoss.bossId,hp:observedBoss.hp,windup:observedBoss.windup||0,exposed:observedBoss.exposed||0}:null},${JSON.stringify(location.origin)});
         parent.postMessage({type:'max-review-state',serial:${serial},mode:${JSON.stringify(mode)},health:singleSeedMode()?seedVital().hp:null,tide:highTideMode()?{started:rogueRun.survival.started,bosses:rogueRun.survival.bosses,height:rogueRun.survival.height,waterY:rogueRun.survival.waterY,artReady:ready(highTideLayout().art.img),floors:highTideLayout().platforms.length}:null,wave:gardenWave,world:worldLevel(),campaign:window.MaxStageLayout.profile(worldLevel()).title,atmosphere:campaignAtmosphere(worldLevel()),objective:levelGuideObjective(),theme:observedLayout&&observedLayout.theme||'',classId:rogueRun.classId,elapsed:Math.floor(runElapsed),motion:P.st,climbPlantId:climb&&climb.p?climb.p.id:null,robot:!!companion,grounded:!!P.grounded,platformId:P.platform||null,x:Math.round(P.x-levelOriginX(worldLevel())),height:Math.round(surfaceY(P.x)-P.y),pressure:Math.round(raidPressure()*10)/10,enemies:floatKrek.length,bossId:observedBoss&&observedBoss.bossId||'',phase:observedBoss&&observedBoss.phase||0,ended:!!rogueRun.ended,sligo:rogueRun.classId==='sligo'?{active:sligoColony(null).active,mass:P.sligoMass,divisions:sligoColony(null).divisions,meat:sligoMeat.length,bodies:sligoColony(null).bodies.map(function(b){return {id:b.sligoId,x:(b.x-camX)*SCALE,y:(b.y-sligoHeight(b)/2-camY)*SCALE,h:sligoHeight(b)};})}:null},${JSON.stringify(location.origin)});
       };
     }
@@ -254,7 +265,13 @@
   if(event.source!==frame.contentWindow||event.origin!==location.origin||!data||data.serial!==fixtureSerial)return;
   if(data.type==='max-review-error'){status.textContent='Fixture error: '+data.message;return;}
   if(data.type==='max-circuit-observation'){status.dataset.circuit=JSON.stringify(data);return;}
-  if(data.type==='max-guardian-observation'){status.dataset.guardian=JSON.stringify(data);return;}
+  if(data.type==='max-guardian-observation'){
+   status.dataset.guardian=JSON.stringify(data);
+   const c=data.combat,f=c&&c.fighter;
+   combatStatus.hidden=!c||c.classId!=='polge';
+   if(!combatStatus.hidden)combatStatus.textContent='Rhythm '+(f&&f.rhythm||0)+'/3 · '+['jab','cross','uppercut'][f&&f.window>0?(f.combo+1)%3:0]+' next · counter '+(f&&f.counter>0?f.counter.toFixed(1)+' s':'waiting')+' · clinch '+Math.max(0,f&&f.clinchCool||0).toFixed(1)+' s · slip '+Math.max(0,f&&f.utilityCool||0).toFixed(1)+' s · flurry '+((f&&f.flurryBeats||0)+(f&&f.flurryFinish||0))+' strikes left · skill '+Math.max(0,c.skillCool).toFixed(1)+' s · '+c.warnings.length+' warned attacks · '+c.targets.length+' targets';
+   return;
+  }
   if(data.type!=='max-review-state')return;
   status.dataset.state=JSON.stringify(data);
   const className={mech:'Mech',runner:'Rattus norvegicus',bulwark:'Cairn',herbalist:'Mycel',polge:'Pølge',sligo:'Sligo'}[data.classId]||data.classId,clock=Math.floor(data.elapsed/60)+':'+String(data.elapsed%60).padStart(2,'0');
@@ -266,7 +283,7 @@
  viewport.onchange=()=>resize(viewport.value);
  document.getElementById('rotate').onclick=()=>{resize(frame.width==='390'?'desktop':'phone');show(current);};
  const input=document.getElementById('review-input');
- for(const [label,key,toggle] of [['Left','ArrowLeft',true],['Right','ArrowRight',true],['Jump','ArrowUp'],['Tend',' ',true],['Attack','b'],['Dodge','x'],['Skill','e'],['Boon 1','1'],['Boon 2','2'],['Boon 3','3']]){
+ for(const [label,key,toggle] of [['Left','ArrowLeft',true],['Right','ArrowRight',true],['Jump','ArrowUp'],['Tend',' ',true],['Attack','b'],['Clinch','c'],['Dodge','x'],['Skill','e'],['Boon 1','1'],['Boon 2','2'],['Boon 3','3']]){
   const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-label','Game '+label);
   if(toggle)b.setAttribute('aria-pressed','false');
   b.onclick=()=>{const down=!toggle||b.getAttribute('aria-pressed')!=='true';if(toggle)b.setAttribute('aria-pressed',String(down));

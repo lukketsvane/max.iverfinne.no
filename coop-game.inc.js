@@ -22,7 +22,7 @@ function beginCoop(network){
 function stopCoop(){coop=null;runActive=false;rogueRun.ended=true;rogueRun.choice=null;clearRunInput();if(perkMenu)perkMenu.style.display='none';}
 function coopMember(id,slot,kit,avatar){
   var classId=window.MaxClasses.clean(kit.classId||kit.class_id),skin=window.MaxClasses.skin(kit.skinId||kit.skin_id||kit.skin,classId);
-  return {id:id,slot:slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],owed:0,round:0,ack:0,last:performance.now(),cool:0,dodgeUntil:0,skillUntil:0,braceUntil:0,braceX:0,tunUntil:0,tunX:0,airTop:null,landAt:0,
+  return {id:id,slot:slot,classId:classId,skin:skin,perks:window.MaxClasses.perks(classId),traits:emptyTraits(),choices:[],owed:0,round:0,ack:0,last:performance.now(),cool:0,dodgeUntil:0,dodgeTag:0,secondaryTag:0,skillUntil:0,braceUntil:0,braceX:0,tunUntil:0,tunX:0,airTop:null,landAt:0,
     avatar:Object.assign(coopAvatar(),{classId:classId,skin:skin},avatar),left:false};
 }
 function coopJoin(id,kit){
@@ -48,7 +48,7 @@ function coopPromote(){
   coopFxId=Math.max(coopFxId,top(booms,'id'))+1000;seedPickupUid=Math.max(seedPickupUid,top(seedPickups,'uid'))+1000;
   runDropId=Math.max(runDropId,top(runLoot,'id'))+1000;hazardId=Math.max(hazardId,top(runHazards,'id'))+1000;
   rogueRun.nextPlantId=Math.max(rogueRun.nextPlantId,top(rogueRun.garden,'id'),top(gardenPlots,'id'))+1000;
-  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;m.dodge=null;m.trust=true;coopNextChoice(m);});
+  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;if(!m.dodge||!m.dodge.boxer||m.dodge.world!==worldLevel()||m.dodge.expires<=now)m.dodge=null;m.trust=true;coopNextChoice(m);});
   coop.ui='';coopShowChoices();
 }
 function coopDepart(id){if(coop&&coop.host&&id!==coop.me){delete coop.members[id];classShots=classShots.filter(function(q){return q.owner!==id;});classFighters=classFighters.filter(function(q){return q.owner!==id;});}}
@@ -57,7 +57,7 @@ function coopWithMember(m,fn){
   var oldP=P,oldClass=rogueRun.classId,oldPerks=rogueRun.perks,oldTraits=rogueRun.traits,oldTask=task,oldWater=holdWater,oldCool=bombCool,oldActor=coopActor,oldClimb=climb,oldWarp=warp;
   if(!coopActor)coop.members[coop.me].avatar=coopAvatar();
   try{
-    P=Object.assign({},oldP,m.avatar,{st:'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,throwPose:0,brace:0,pounce:0,skillCool:0,skillPose:0,
+    P=Object.assign({},oldP,m.avatar,{st:m.classId==='polge'&&m.avatar.st==='float'?'float':'free',dodgeId:m.slot*100000+(m.ack||0),dodgeT:0,dodgeCool:0,secondaryCool:0,throwPose:0,brace:0,pounce:0,skillCool:0,skillPose:0,
       tun:curledMember(m,m.avatar)?(m.tunUntil-performance.now())/1000:0,tunX:m.tunX||0});
     P.platform=playerSupportId(P.x,P.y);P.wet=playerWetAt(P.x,P.y);
     P.grounded=!!P.grounded&&coopSupportY(P.x,P.y)!==null&&!P.wet;
@@ -139,6 +139,14 @@ function coopInput(id,packet){
       return;
     }
     if(action.type==='throw'&&m.classId==='runner'&&m.avatar.pounce>0)return;
+    if(m.classId==='polge'){
+      var tagKey=({throw:'attackTag',secondary:'secondaryTag',dodge:'dodgeTag',skill:'skillTag'})[action.type];
+      if(tagKey){
+        if(!Number.isSafeInteger(action[tagKey])||action[tagKey]<=0||action[tagKey]<=(m[tagKey]||0))return;
+        m[tagKey]=action[tagKey];
+        if(!accepted||m.avatar.st==='float'||m.avatar.exitClimb||action.type!=='throw'&&m.avatar.st==='climb')return;
+      }
+    }
     coopWithMember(m,function(){
       if(action.type==='grow')crouchGardenAction();
       else if(action.type==='encounter')interactEncounter();
@@ -148,13 +156,18 @@ function coopInput(id,packet){
         var spore=runHazards.find(function(h){return h.id===action.spore&&h.type==='spore'&&h.tell>0&&Math.abs(h.x-P.x)<300;});
         throwBomb(spore?sporeAim(spore):{x:action.x,y:action.y},Number.isFinite(action.power)?action.power:0);
       }
-      else if(action.type==='dodge'&&now>=m.dodgeUntil&&P.grounded&&!P.wet){
+      else if(action.type==='secondary'&&m.classId==='polge'&&Number.isFinite(action.x)&&Number.isFinite(action.y)&&Math.hypot(action.x-P.x,action.y-P.y)<64){
+        polgeClinchWorld({x:action.x,y:action.y});
+      }
+      else if(action.type==='dodge'&&(m.classId==='polge'||now>=m.dodgeUntil)&&P.grounded&&!P.wet){
         var x=action.x==null?P.x:action.x,y=action.y==null?P.y:action.y,dir=action.direction==null?P.face:action.direction;
-        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>36)return;
+        var boxer=m.classId==='polge',duration=boxer?.18:DODGE_TIME;
+        if(!Number.isFinite(x)||!Number.isFinite(y)||(dir!==1&&dir!==-1)||Math.hypot(x-P.x,y-P.y)>(boxer?26:36))return;
         var support=coopSupportY(x,y);if(support===null||playerWetAt(x,y))return;
+        if(boxer&&!boxerDodge())return;
         m.dodgeUntil=now+dodgeRecovery()*1000;
-        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:support,progress:0,expires:now+(DODGE_TIME+.12)*1000};
-        P.dodgeDir=dir;dewDodge();boxerDodge();
+        m.dodge={id:m.ack,world:worldLevel(),dir:dir,origin:x,x:x,y:support,progress:0,boxer:boxer,expires:now+(duration+(boxer?0:.12))*1000};
+        P.dodgeDir=dir;dewDodge();if(!boxer)boxerDodge();
       }
       else if(action.type==='skill'){
         if(Number.isSafeInteger(action.skillTag))m.skillTag=action.skillTag;
@@ -169,23 +182,24 @@ function coopInput(id,packet){
 function coopDodgeContact(m,now){
   var d=m.dodge,a=m.avatar;if(!d)return;
   if(d.world!==worldLevel()||now>d.expires||!a.grounded||a.wet||playerWetAt(a.x,a.y)||coopSupportY(a.x,a.y)===null){m.dodge=null;return;}
-  var distance=(a.x-d.origin)*d.dir,maxDistance=DODGE_SPEED*DODGE_TIME+2;
-  if(distance<d.progress-2){m.dodge=null;return;}
-  var progress=Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance))),x=d.origin+progress*d.dir;
+  var distance=d.boxer?Math.abs(a.x-d.x):(a.x-d.origin)*d.dir,maxDistance=d.boxer?24:DODGE_SPEED*DODGE_TIME+2;
+  if(d.boxer&&distance>maxDistance-d.progress+2||!d.boxer&&distance<d.progress-2){m.dodge=null;return;}
+  var progress=d.boxer?Math.min(maxDistance-d.progress,distance):Math.max(d.progress,Math.min(maxDistance,Math.max(0,distance)));
+  var x=d.boxer?d.x+Math.sign(a.x-d.x)*progress:d.origin+progress*d.dir;
   var steps=Math.max(1,Math.ceil(Math.abs(x-d.x))),points=[{x:d.x,y:d.y}],blocked=false;
   for(var i=1;i<=steps;i++){
     var nextX=d.x+(x-d.x)*i/steps,previous=points[points.length-1],nextY=coopSupportY(nextX,previous.y);
-    if(nextY===null||playerWetAt(nextX,nextY)){blocked=true;break;}
+    if(nextY===null||playerWetAt(nextX,nextY)||d.boxer&&!combatLineClear(previous.x,previous.y-12,nextX,nextY-12)){blocked=true;break;}
     points.push({x:nextX,y:nextY});
   }
   var end=points[points.length-1];
   if(!blocked&&distance<=maxDistance&&Math.abs(end.y-a.y)>4){m.dodge=null;return;}
   coopWithMember(m,function(){
-    P.dodgeId=d.id;P.dodgeDir=d.dir;
+    P.dodgeId=d.id;P.dodgeDir=d.boxer?Math.sign(end.x-d.x)||d.dir:d.dir;
     for(var i=1;i<points.length;i++)dodgeSweep(points[i-1].x,points[i-1].y,points[i].x,points[i].y);
   });
-  d.x=end.x;d.y=end.y;d.progress=Math.max(d.progress,(end.x-d.origin)*d.dir);
-  if(blocked||progress>=maxDistance||a.dodging===false)m.dodge=null;
+  d.progress=d.boxer?d.progress+Math.abs(end.x-d.x):Math.max(d.progress,(end.x-d.origin)*d.dir);d.x=end.x;d.y=end.y;
+  if(blocked||d.progress>=maxDistance||a.dodging===false)m.dodge=null;
 }
 function coopOffer(){
   if(!coop||!coop.host)return;
@@ -219,8 +233,26 @@ function coopTeamPerks(){
 function coopPlain(o){
   var out={};Object.keys(o).forEach(function(k){var v=o[k];if(k==='__proto__'||k==='constructor'||k==='prototype')return;if(typeof v==='number'&&Number.isFinite(v)||typeof v==='boolean'||typeof v==='string'&&v.length<80)out[k]=v;});return out;
 }
+function coopFighter(q,world,members){
+  if(!q||q.world!==world||typeof q.owner!=='string'||!/^[0-9a-f-]{36}$/.test(q.owner)||!members.some(function(m){return m&&m.id===q.owner&&window.MaxClasses.clean(m.classId||m.class_id)==='polge';})||!['combo','window','weave','flurry','next'].every(function(k){return Number.isFinite(q[k]);}))return null;
+  var out={owner:q.owner,world:world},limits={combo:2,window:.95,weave:1.1,flurry:.95,next:.95,rhythm:3,rhythmIdle:2,rhythmDecay:1,utilityCool:3.5,slip:.18,counter:1.1,avoidedWarning:1,clinchCool:4,flurryBeats:11,flurryFinish:1,flurryStep:.168,flurryAge:.95};
+  Object.keys(limits).forEach(function(k){var v=Number.isFinite(q[k])?Math.max(0,Math.min(limits[k],q[k])):0;out[k]=['combo','rhythm','avoidedWarning','flurryBeats','flurryFinish'].indexOf(k)>=0?Math.floor(v):v;});
+  return out;
+}
+function coopCaptureSlip(m){
+  if(m.classId!=='polge')return null;
+  var fighter=classFighters.find(function(q){return q.owner===m.id;});if(!fighter||fighter.slip<=0)return null;
+  var d=m.id===coop.me&&P.dodgeT>0?{id:P.dodgeId,world:worldLevel(),x:P.x,y:P.y,progress:P.slipDistance||0,dir:P.dodgeDir,left:P.dodgeT,tag:P.dodgeId}:m.dodge;
+  if(!d||d.world!==worldLevel())return null;
+  var left=Math.max(0,Math.min(.18,fighter.slip,d.left==null?(d.expires-performance.now())/1000:d.left));
+  return left>0?{id:d.id,world:d.world,x:d.x,y:d.y,progress:d.progress,dir:d.dir,left:left,tag:d.tag==null?m.dodgeTag:d.tag}:null;
+}
+function coopCleanSlip(q,m,a,fighter){
+  if(!q||m.classId!=='polge'||!fighter||fighter.slip<=0||q.world!==worldLevel()||q.tag!==m.dodgeTag||!Number.isSafeInteger(q.id)||q.id<=0||!['x','y','progress','left'].every(function(k){return Number.isFinite(q[k]);})||(q.dir!==1&&q.dir!==-1)||q.progress<0||q.progress>24||q.left<=0||q.left>.18||Math.hypot(q.x-a.x,q.y-a.y)>4||!a.grounded||a.wet||coopSupportY(q.x,q.y)===null)return null;
+  return {id:q.id,world:q.world,x:q.x,y:q.y,origin:q.x,progress:q.progress,dir:q.dir,boxer:true,tag:q.tag,expires:performance.now()+Math.min(q.left,fighter.slip)*1000};
+}
 function coopCapture(){
-  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,airTop:m.id===coop.me&&P.pounce?Math.min(P.y,P.pounce===2?P.pounceY:P.y):m.airTop,landAgo:m.landAt?Math.min(1,(performance.now()-m.landAt)/1000):null,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
+  var members=coopMembers().map(function(m){return {id:m.id,slot:m.slot,classId:m.classId,skin:m.skin,avatar:m.id===coop.me?coopAvatar():m.avatar,airTop:m.id===coop.me&&P.pounce?Math.min(P.y,P.pounce===2?P.pounceY:P.y):m.airTop,landAgo:m.landAt?Math.min(1,(performance.now()-m.landAt)/1000):null,perks:m.perks,traits:m.traits,choices:m.choices,owed:m.owed|0,round:m.round|0,place:m.place|0,braceTag:m.braceTag||0,braceLeft:Math.max(0,((m.braceUntil||0)-performance.now())/1000),tunLeft:Math.max(0,((m.tunUntil||0)-performance.now())/1000),sligo:captureSligo(m),sligoAck:m.sligoAck||0,vital:relicRunMode()?coopPlain(seedVital(m)):null,attackTag:m.attackTag||0,skillTag:m.skillTag||0,secondaryTag:m.secondaryTag||0,dodgeTag:m.id===coop.me?(P.dodgeId||0):(m.dodgeTag||0),dodgePath:coopCaptureSlip(m),attackLeft:m.id===coop.me?Math.max(0,bombCool):Math.max(0,((m.cool||0)-performance.now())/1000),skillLeft:m.id===coop.me?P.skillCool:Math.max(0,((m.skillUntil||0)-performance.now())/1000)};}),acks={},robots=[];
   eachCompanion(function(bot,m){robots.push(Object.assign({owner:m.id},coopPlain(bot.state)));});
   coopMembers().forEach(function(m){acks[m.id]=m.ack;});
   return {mode:rogueRun.mode,survival:relicRunMode()?coopPlain(rogueRun.survival):null,world:worldLevel(),time:tSec,elapsed:runElapsed,wave:gardenWave,seeds:gardenSeeds,score:gardenScore,stats:coopPlain(gardenStats),level:rogueRun.level,xp:rogueRun.xp,next:rogueRun.next,
@@ -246,7 +278,7 @@ function coopState(s){
   if(Array.isArray(s.collected)&&s.collected.length<=20000){seedCollected={};s.collected.forEach(function(k){if(typeof k==='string'&&k.length<=32)seedCollected[k]=1;});}
   if(Number.isFinite(s.dust)&&s.dust>=0&&s.dust<1)seedDust=s.dust;
   sligoMeat=Array.isArray(s.sligoMeat)?s.sligoMeat.slice(0,80).filter(function(q){return q&&['x','y','id','age'].every(function(k){return Number.isFinite(q[k]);});}).map(coopPlain):[];
-  classFighters=Array.isArray(s.fighters)?s.fighters.slice(0,4).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['combo','window','weave','flurry','next'].every(function(k){return Number.isFinite(q[k]);})&&q.combo>=0&&q.combo<=2&&q.flurry>=0&&q.flurry<=7;}).map(coopPlain):[];
+  classFighters=Array.isArray(s.fighters)?s.fighters.slice(0,4).map(function(q){return coopFighter(q,s.world,s.members);}).filter(function(q,i,list){return q&&!list.slice(0,i).some(function(other){return other&&other.owner===q.owner;});}):[];
   classShots=Array.isArray(s.shots)?s.shots.slice(0,48).filter(function(q){return q&&q.world===s.world&&typeof q.owner==='string'&&['needle','spore'].indexOf(q.kind)>=0&&['id','x','y','vx','vy','life','damage','pierce','hits'].every(function(k){return Number.isFinite(q[k]);})&&q.life>0&&q.life<=1.2&&q.damage>=0&&q.damage<=10&&Math.hypot(q.vx,q.vy)<=250;}).map(function(q){return Object.assign(coopPlain(q),{perks:coopPlain(q.perks||{})});}):[];
   classShotId=classShots.reduce(function(n,q){return Math.max(n,q.id);},classShotId);
   runLoot=Array.isArray(s.loot)?s.loot.slice(0,200).map(coopPlain):[];
@@ -283,6 +315,8 @@ function coopState(s){
     if(relicRunMode()&&q.vital){var wasDown=seedVital(m).hp<=0;m.vital=seedVitalFrom(q.vital);if(q.id===coop.me&&wasDown&&m.vital.hp>0){P.st='free';setAnim('idle');}if(q.id===coop.me&&m.vital.hp<=0){P.x=a.x;P.y=a.y;}}
     if(Number.isSafeInteger(q.attackTag))m.attackTag=q.attackTag;
     if(Number.isSafeInteger(q.skillTag))m.skillTag=q.skillTag;
+    if(Number.isSafeInteger(q.secondaryTag)&&q.secondaryTag>=0)m.secondaryTag=q.secondaryTag;
+    if(Number.isSafeInteger(q.dodgeTag)&&q.dodgeTag>=0)m.dodgeTag=q.dodgeTag;
     if(Number.isFinite(q.skillLeft))m.skillUntil=performance.now()+Math.max(0,Math.min(30,q.skillLeft))*1000;
     if(Number.isFinite(q.attackLeft))m.cool=performance.now()+Math.max(0,Math.min(5,q.attackLeft))*1000;
     m.airTop=Number.isFinite(q.airTop)&&Math.abs(q.airTop)<1e7?q.airTop:null;
@@ -290,6 +324,14 @@ function coopState(s){
     if(q.id===coop.me&&['runner','bulwark','herbalist','polge'].indexOf(m.classId)>=0){
       if(q.attackTag===(P.attackTag||0)&&Number.isFinite(q.attackLeft))bombCool=Math.min(bombCool,Math.max(0,q.attackLeft));
       if(q.skillTag===(P.skillTag||0)&&Number.isFinite(q.skillLeft))P.skillCool=Math.min(P.skillCool,Math.max(0,q.skillLeft));
+    }
+    if(m.classId==='polge'){
+      var fighter=classFighters.find(function(f){return f.owner===m.id;});
+      m.dodgeUntil=performance.now()+(fighter?fighter.utilityCool:0)*1000;
+      m.dodge=coopCleanSlip(q.dodgePath,m,a,fighter);
+      if(q.id===coop.me){P.dodgeId=Math.max(P.dodgeId||0,m.dodgeTag||0);P.secondaryTag=Math.max(P.secondaryTag||0,m.secondaryTag||0);}
+      if(q.id===coop.me&&q.secondaryTag===(P.secondaryTag||0))P.secondaryCool=Math.min(P.secondaryCool||0,fighter?fighter.clinchCool:0);
+      if(q.id===coop.me&&q.dodgeTag===(P.dodgeId||0))P.dodgeCool=Math.min(P.dodgeCool||0,fighter?fighter.utilityCool:0);
     }
     if(q.id!==coop.me){m.avatar=a;m.place=q.place|0;}
     else if((q.place|0)!==(m.place|0)){m.place=q.place|0;placed=a;}

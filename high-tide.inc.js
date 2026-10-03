@@ -104,7 +104,7 @@ function highTideSpawnPest(){
   k.tide=true;k.tideType=i%3===2?'sap':'hunter';k.x=p.x+(i%2?60:-60);k.y=p.y-30;k.hp=k.maxHp=2+Math.floor(s.bosses/2);k.raid=true;k.scout=false;k.target=null;k.cool=1;k.windup=0;k.flee=0;
   floatKrek.push(k);
 }
-function highTideStrike(k,x,y,r,power,tell,type){var h=addRunHazard(type||'root',x,r,tell,power,k.x,k.y,y);if(h)h.tide=true;}
+function highTideStrike(k,x,y,r,power,tell,type){var h=addRunHazard(type||'root',x,r,tell,power,k.x,k.y,y);if(h){h.tide=true;h.warned=true;}}
 function updateHighTideBoss(k,dt){
   var a=highTideEnemyTarget(k);if(!a)return;
   k.phase=k.hp<k.maxHp/3?3:k.hp<k.maxHp*2/3?2:1;k.exposed=Math.max(0,k.exposed-dt);k.flee=0;
@@ -114,7 +114,7 @@ function updateHighTideBoss(k,dt){
   var gate=highTideRoutePoint(HIGH_TIDE_GATES[k.tideIndex]);
   if(k.exposed<=0)moveEnemyTo(k,gate.x+(k.attack%2?-44:44),gate.y-(k.bossId==='moon-moth'?40:22),dt,24);
   if(k.cool>0)return;
-  k.attack++;k.tell=k.windup=Math.max(.75,1.25-k.tideIndex*.06);k.face=a.p.x<k.x?-1:1;k.chargeX=a.p.x;
+  beginEnemyWarning(k);k.attack++;k.tell=k.windup=Math.max(.75,1.25-k.tideIndex*.06);k.face=a.p.x<k.x?-1:1;k.chargeX=a.p.x;
   if(k.bossId==='moon-moth'&&k.attack%3===0){var tip=highTideTip();k.healing=true;k.healX=tip.x;k.healY=tip.y;k.windup=k.tell=1.5;return;}
   var power=.55+k.tideIndex*.08,type=k.bossId==='mossback'?'root':'spore';
   highTideStrike(k,a.p.x,a.p.y,11,power,k.tell,type);
@@ -139,8 +139,8 @@ function updateHighTideEnemies(dt){
     var a=highTideEnemyTarget(k);if(!a)return;var target=k.tideType==='sap'?highTideTip():{x:a.p.x,y:a.p.y-10};
     var d=moveEnemyTo(k,target.x,target.y,dt,18+s.bosses*2);
     k.cool=Math.max(0,k.cool-dt);
-    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){highTideDamagePlant(p,.045,true);p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale());}k.cool=1.5;}return;}
-    if(d<14&&k.cool<=0){k.tell=k.windup=.65;k.vx=k.vy=0;}
+    if(k.windup>0){k.windup=Math.max(0,k.windup-dt);if(!k.windup){if(d<20){if(k.tideType==='sap'){highTideDamagePlant(p,.045,true);p.moisture=clamp01(p.moisture-.08);p.hit=1;}else damageGardener(a.member,10*runDamageScale(),polgeEnemyWarning(k,true));}k.cool=1.5;}return;}
+    if(d<14&&k.cool<=0){k.tell=k.windup=.65;beginEnemyWarning(k);k.vx=k.vy=0;}
   });
 }
 function updateHighTide(dt){
