@@ -1,0 +1,1262 @@
+{
+  "schema": "max-native-atlas/1",
+  "name": "effects",
+  "nativeScale": 1,
+  "defaultFacing": 1,
+  "sheets": {
+    "main": {
+      "image": "effects.png",
+      "size": [
+        256,
+        120
+      ],
+      "cell": [
+        32,
+        24
+      ],
+      "columns": 8,
+      "rows": 5
+    }
+  },
+  "frames": {
+    "vine_lash": {
+      "sheet": "main",
+      "rect": [
+        0,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        3,
+        12
+      ],
+      "opaqueBounds": [
+        3,
+        11,
+        16,
+        5
+      ],
+      "sourceFrame": "vine_lash",
+      "source": {
+        "boss": "moonroot",
+        "sourceCell": [
+          1,
+          2
+        ],
+        "sourceBox": [
+          332,
+          579,
+          118,
+          46
+        ],
+        "detachedFromBody": true
+      }
+    },
+    "moon_seed_00": {
+      "sheet": "main",
+      "rect": [
+        32,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        14,
+        10,
+        4,
+        4
+      ],
+      "sourceFrame": "moon_seed_00",
+      "source": {
+        "boss": "moonroot",
+        "component": 91,
+        "sourceBox": [
+          917,
+          546,
+          30,
+          23
+        ]
+      }
+    },
+    "moon_seed_01": {
+      "sheet": "main",
+      "rect": [
+        64,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "moon_seed_01",
+      "source": {
+        "boss": "moonroot",
+        "component": 93,
+        "sourceBox": [
+          968,
+          552,
+          18,
+          16
+        ]
+      }
+    },
+    "moon_seed_02": {
+      "sheet": "main",
+      "rect": [
+        96,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        14,
+        11,
+        4,
+        3
+      ],
+      "sourceFrame": "moon_seed_02",
+      "source": {
+        "boss": "moonroot",
+        "component": 98,
+        "sourceBox": [
+          993,
+          563,
+          25,
+          21
+        ]
+      }
+    },
+    "moon_seed_03": {
+      "sheet": "main",
+      "rect": [
+        128,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        13,
+        10,
+        6,
+        5
+      ],
+      "sourceFrame": "moon_seed_03",
+      "source": {
+        "boss": "moonroot",
+        "component": 101,
+        "sourceBox": [
+          1039,
+          569,
+          44,
+          35
+        ]
+      }
+    },
+    "sprout_blue": {
+      "sheet": "main",
+      "rect": [
+        160,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        21
+      ],
+      "opaqueBounds": [
+        12,
+        6,
+        8,
+        15
+      ],
+      "sourceFrame": "sprout_blue",
+      "source": {
+        "boss": "moonroot",
+        "sourceBox": [
+          1343,
+          535,
+          64,
+          119
+        ],
+        "separatedSoilBase": true
+      }
+    },
+    "sprout_curl": {
+      "sheet": "main",
+      "rect": [
+        192,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        21
+      ],
+      "opaqueBounds": [
+        12,
+        7,
+        9,
+        14
+      ],
+      "sourceFrame": "sprout_curl",
+      "source": {
+        "boss": "moonroot",
+        "sourceBox": [
+          1407,
+          535,
+          65,
+          119
+        ],
+        "separatedSoilBase": true
+      }
+    },
+    "sprout_pink": {
+      "sheet": "main",
+      "rect": [
+        224,
+        0,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        21
+      ],
+      "opaqueBounds": [
+        10,
+        4,
+        11,
+        17
+      ],
+      "sourceFrame": "sprout_pink",
+      "source": {
+        "boss": "moonroot",
+        "sourceBox": [
+          1472,
+          535,
+          80,
+          119
+        ],
+        "separatedSoilBase": true
+      }
+    },
+    "feather_00": {
+      "sheet": "main",
+      "rect": [
+        0,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        3,
+        2
+      ],
+      "sourceFrame": "feather_00",
+      "source": {
+        "boss": "raven",
+        "component": 147,
+        "sourceBox": [
+          43,
+          837,
+          20,
+          12
+        ]
+      }
+    },
+    "feather_01": {
+      "sheet": "main",
+      "rect": [
+        32,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        3,
+        2
+      ],
+      "sourceFrame": "feather_01",
+      "source": {
+        "boss": "raven",
+        "component": 145,
+        "sourceBox": [
+          152,
+          823,
+          21,
+          13
+        ]
+      }
+    },
+    "feather_02": {
+      "sheet": "main",
+      "rect": [
+        64,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        10,
+        2,
+        4
+      ],
+      "sourceFrame": "feather_02",
+      "source": {
+        "boss": "raven",
+        "component": 122,
+        "sourceBox": [
+          435,
+          755,
+          10,
+          21
+        ]
+      }
+    },
+    "feather_03": {
+      "sheet": "main",
+      "rect": [
+        96,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        14,
+        11,
+        3,
+        2
+      ],
+      "sourceFrame": "feather_03",
+      "source": {
+        "boss": "raven",
+        "component": 117,
+        "sourceBox": [
+          654,
+          736,
+          20,
+          13
+        ]
+      }
+    },
+    "feather_04": {
+      "sheet": "main",
+      "rect": [
+        128,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "feather_04",
+      "source": {
+        "boss": "raven",
+        "component": 142,
+        "sourceBox": [
+          592,
+          811,
+          14,
+          20
+        ]
+      }
+    },
+    "feather_05": {
+      "sheet": "main",
+      "rect": [
+        160,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "feather_05",
+      "source": {
+        "boss": "raven",
+        "component": 135,
+        "sourceBox": [
+          673,
+          789,
+          16,
+          15
+        ]
+      }
+    },
+    "feather_06": {
+      "sheet": "main",
+      "rect": [
+        192,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        14,
+        11,
+        3,
+        2
+      ],
+      "sourceFrame": "feather_06",
+      "source": {
+        "boss": "raven",
+        "component": 146,
+        "sourceBox": [
+          829,
+          825,
+          20,
+          14
+        ]
+      }
+    },
+    "feather_07": {
+      "sheet": "main",
+      "rect": [
+        224,
+        24,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "feather_07",
+      "source": {
+        "boss": "raven",
+        "component": 120,
+        "sourceBox": [
+          1045,
+          749,
+          18,
+          14
+        ]
+      }
+    },
+    "feather_08": {
+      "sheet": "main",
+      "rect": [
+        0,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "feather_08",
+      "source": {
+        "boss": "raven",
+        "component": 129,
+        "sourceBox": [
+          1272,
+          777,
+          15,
+          15
+        ]
+      }
+    },
+    "feather_09": {
+      "sheet": "main",
+      "rect": [
+        32,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        14,
+        10,
+        4,
+        4
+      ],
+      "sourceFrame": "feather_09",
+      "source": {
+        "boss": "raven",
+        "component": 136,
+        "sourceBox": [
+          1356,
+          795,
+          25,
+          19
+        ]
+      }
+    },
+    "feather_10": {
+      "sheet": "main",
+      "rect": [
+        64,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "feather_10",
+      "source": {
+        "boss": "raven",
+        "component": 134,
+        "sourceBox": [
+          1582,
+          785,
+          16,
+          18
+        ]
+      }
+    },
+    "petal_00": {
+      "sheet": "main",
+      "rect": [
+        96,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        10,
+        2,
+        4
+      ],
+      "sourceFrame": "petal_00",
+      "source": {
+        "boss": "moonroot",
+        "component": 159,
+        "sourceBox": [
+          47,
+          685,
+          23,
+          27
+        ]
+      }
+    },
+    "petal_01": {
+      "sheet": "main",
+      "rect": [
+        128,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "petal_01",
+      "source": {
+        "boss": "moonroot",
+        "component": 162,
+        "sourceBox": [
+          167,
+          716,
+          13,
+          13
+        ]
+      }
+    },
+    "petal_02": {
+      "sheet": "main",
+      "rect": [
+        160,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        14,
+        10,
+        4,
+        4
+      ],
+      "sourceFrame": "petal_02",
+      "source": {
+        "boss": "moonroot",
+        "component": 175,
+        "sourceBox": [
+          171,
+          745,
+          33,
+          37
+        ]
+      }
+    },
+    "petal_03": {
+      "sheet": "main",
+      "rect": [
+        192,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "petal_03",
+      "source": {
+        "boss": "moonroot",
+        "component": 182,
+        "sourceBox": [
+          245,
+          777,
+          15,
+          17
+        ]
+      }
+    },
+    "petal_04": {
+      "sheet": "main",
+      "rect": [
+        224,
+        48,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "petal_04",
+      "source": {
+        "boss": "moonroot",
+        "component": 161,
+        "sourceBox": [
+          324,
+          707,
+          19,
+          13
+        ]
+      }
+    },
+    "petal_05": {
+      "sheet": "main",
+      "rect": [
+        0,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "petal_05",
+      "source": {
+        "boss": "moonroot",
+        "component": 176,
+        "sourceBox": [
+          397,
+          747,
+          13,
+          17
+        ]
+      }
+    },
+    "petal_06": {
+      "sheet": "main",
+      "rect": [
+        32,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "petal_06",
+      "source": {
+        "boss": "moonroot",
+        "component": 208,
+        "sourceBox": [
+          417,
+          848,
+          11,
+          13
+        ]
+      }
+    },
+    "petal_07": {
+      "sheet": "main",
+      "rect": [
+        64,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "petal_07",
+      "source": {
+        "boss": "moonroot",
+        "component": 163,
+        "sourceBox": [
+          620,
+          716,
+          14,
+          17
+        ]
+      }
+    },
+    "soil_03": {
+      "sheet": "main",
+      "rect": [
+        96,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "soil_03",
+      "source": {
+        "boss": "moonroot",
+        "component": 113,
+        "sourceBox": [
+          470,
+          594,
+          11,
+          13
+        ]
+      }
+    },
+    "soil_04": {
+      "sheet": "main",
+      "rect": [
+        128,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "soil_04",
+      "source": {
+        "boss": "moonroot",
+        "component": 104,
+        "sourceBox": [
+          626,
+          575,
+          11,
+          16
+        ]
+      }
+    },
+    "soil_05": {
+      "sheet": "main",
+      "rect": [
+        160,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "soil_05",
+      "source": {
+        "boss": "moonroot",
+        "component": 112,
+        "sourceBox": [
+          645,
+          592,
+          12,
+          13
+        ]
+      }
+    },
+    "mote_02": {
+      "sheet": "main",
+      "rect": [
+        192,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        12,
+        2,
+        1
+      ],
+      "sourceFrame": "mote_02",
+      "source": {
+        "boss": "moonroot",
+        "component": 164,
+        "sourceBox": [
+          1261,
+          717,
+          11,
+          10
+        ]
+      }
+    },
+    "mote_04": {
+      "sheet": "main",
+      "rect": [
+        224,
+        72,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "mote_04",
+      "source": {
+        "boss": "moonroot",
+        "component": 179,
+        "sourceBox": [
+          1659,
+          772,
+          12,
+          13
+        ]
+      }
+    },
+    "mote_05": {
+      "sheet": "main",
+      "rect": [
+        0,
+        96,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "opaqueBounds": [
+        15,
+        11,
+        2,
+        2
+      ],
+      "sourceFrame": "mote_05",
+      "source": {
+        "boss": "moonroot",
+        "component": 185,
+        "sourceBox": [
+          1410,
+          791,
+          11,
+          13
+        ]
+      }
+    }
+  },
+  "animations": {
+    "vine_lash": {
+      "frames": [
+        "vine_lash"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "moon_seed_00": {
+      "frames": [
+        "moon_seed_00"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "moon_seed_01": {
+      "frames": [
+        "moon_seed_01"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "moon_seed_02": {
+      "frames": [
+        "moon_seed_02"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "moon_seed_03": {
+      "frames": [
+        "moon_seed_03"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "sprout_blue": {
+      "frames": [
+        "sprout_blue"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "sprout_curl": {
+      "frames": [
+        "sprout_curl"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "sprout_pink": {
+      "frames": [
+        "sprout_pink"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_00": {
+      "frames": [
+        "feather_00"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_01": {
+      "frames": [
+        "feather_01"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_02": {
+      "frames": [
+        "feather_02"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_03": {
+      "frames": [
+        "feather_03"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_04": {
+      "frames": [
+        "feather_04"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_05": {
+      "frames": [
+        "feather_05"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_06": {
+      "frames": [
+        "feather_06"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_07": {
+      "frames": [
+        "feather_07"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_08": {
+      "frames": [
+        "feather_08"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_09": {
+      "frames": [
+        "feather_09"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "feather_10": {
+      "frames": [
+        "feather_10"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_00": {
+      "frames": [
+        "petal_00"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_01": {
+      "frames": [
+        "petal_01"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_02": {
+      "frames": [
+        "petal_02"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_03": {
+      "frames": [
+        "petal_03"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_04": {
+      "frames": [
+        "petal_04"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_05": {
+      "frames": [
+        "petal_05"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_06": {
+      "frames": [
+        "petal_06"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "petal_07": {
+      "frames": [
+        "petal_07"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "soil_03": {
+      "frames": [
+        "soil_03"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "soil_04": {
+      "frames": [
+        "soil_04"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "soil_05": {
+      "frames": [
+        "soil_05"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "mote_02": {
+      "frames": [
+        "mote_02"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "mote_04": {
+      "frames": [
+        "mote_04"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "mote_05": {
+      "frames": [
+        "mote_05"
+      ],
+      "fps": 1,
+      "loop": true
+    },
+    "seed_pulse": {
+      "frames": [
+        "moon_seed_00",
+        "moon_seed_01",
+        "moon_seed_02",
+        "moon_seed_03",
+        "moon_seed_02",
+        "moon_seed_01"
+      ],
+      "fps": 10,
+      "loop": true
+    }
+  }
+}
