@@ -4,6 +4,7 @@ const vm = require('node:vm');
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
+  'mycelSerial', 'wonders', 'runExpedition', 'seedCollected',
   'ascentPresentation', 'ascentFrame', 'ascentLive', 'worldCovered',
   'rattusSerial',
   'cairnSerial', 'cairnAttackSerial',
@@ -24,6 +25,14 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'mycelState', 'mycelPeek', 'mycelCaptureState', 'mycelRestoreState', 'mycelRebaseClocks', 'mycelRefreshClocks', 'mycelCaptureShot', 'mycelRestoreShot', 'mycelCapturePestEvents', 'mycelRestorePestEvents',
+  'mycelBuild', 'mycelCleanBuild', 'mycelPrimaryInterval', 'mycelPlantPoint', 'mycelNetwork', 'mycelWetBody', 'mycelWetPoint', 'mycelCanAct', 'mycelPhasePolicy', 'mycelCloudPlacement',
+  'mycelPrimary', 'mycelPrimaryWorld', 'mycelPrimaryContact', 'mycelCloud', 'mycelCloudWorld', 'mycelBloom', 'mycelBloomWorld', 'mycelBloomUseful', 'mycelDrift', 'mycelDriftWorld', 'mycelDriftCancelWorld',
+  'mycelRestoreCast', 'mycelRestoreContext', 'mycelCastBySerial', 'mycelSetBurnCause', 'mycelBurnContext', 'mycelSlowFactor', 'mycelMotionIntent', 'mycelMovement', 'mycelLanding', 'mycelCancelMotion', 'mycelInterrupt', 'updateMycelCombat',
+  'mycelLaunchPose', 'mycelPhysicsPose', 'mycelPhysicsScene', 'mycelProjectStep', 'mycelReplayMotion', 'mycelPhysics',
+  'mycelObjectivePoints', 'encounterBlast', 'wonderBlast', 'digBlast', 'digSpots', 'expeditionBlast', 'guardianCoreHit', 'combatObjectives', 'combatRestore', 'combatDamage',
+  'updateMycelControls', 'mycelPolicy', 'mycelInputAim', 'mycelMotionContext', 'combatPlotRestore',
+  'coopMycelInput', 'coopMycelRequest', 'coopMycelProof', 'coopMycelCaptureProof', 'coopMycelCleanCorrection', 'coopMycelCorrect', 'coopMycelShot', 'coopMycelPest', 'coopMycelObserve', 'coopMycelValidate', 'coopMycelReceiveInput',
   'cairnRootedGround', 'cairnPrimary', 'cairnPrimaryWorld', 'cairnPrimaryInterval', 'cairnStone', 'cairnStoneWorld', 'cairnBrace', 'cairnBraceWorld', 'cairnReleaseBrace', 'cairnReleaseBraceWorld', 'cairnBreakwater', 'cairnBreakwaterWorld', 'cairnInterrupt', 'cairnProtection', 'cairnReducedBite', 'cairnStrike', 'cairnBeginAttack', 'cairnTagHazard', 'cairnContact', 'cairnConsumeAttack', 'cairnSourceFamily', 'updateCairnCombat', 'cairnPatchPoint', 'cairnSupportPoint', 'cairnSupportRoute', 'coopCairnSource', 'coopCairnSourceFamilies', 'coopCairnValidate',
   'cairnState', 'cairnPeek', 'cairnCaptureState', 'cairnRestoreState', 'cairnRebaseClocks', 'cairnRefreshClocks', 'cairnWetBody', 'cairnWetPoint', 'cairnCancelMotion', 'cairnPhasePolicy', 'cairnBraceActive', 'cairnShortenBrace', 'cairnRidgePlacement', 'cairnPestGround', 'cairnPestSlow', 'cairnPestStep', 'cairnPolicy', 'cairnMotionContext', 'cairnInputAim', 'useCairnBurrow', 'classProtection', 'plantProtection', 'bracedMember', 'rootAbsorb', 'highTideDamagePlant', 'predictRat',
   'rememberAscentFrame', 'beginAscentPresentation', 'prepareAscentPresentation', 'drawAscentPresentation', 'cancelAscentPresentation', 'ascentPresentationOffset', 'screenToWorld', 'resize',
