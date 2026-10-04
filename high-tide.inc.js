@@ -177,7 +177,7 @@ function updateHighTide(dt){
       if(highTideNearPlant(a)&&p.moisture>.2&&a.v.hurt<=1.5){var tending=carers.indexOf(a)>=0;a.v.hp=Math.min(100,a.v.hp+step*(tending?(s.bossActive?5:9):(s.bossActive?.5:5)));}
       s.best=Math.max(s.best,Math.min(HIGH_TIDE.height,Math.max(0,s.base-a.p.y)));
     });
-    if(actors.every(function(a){return a.v.hp<=0;})){finishHighTide(false);return;}
+    if(seedTeamDown()){finishHighTide(false);return;}
     var winner=actors.find(highTideAtSummit);if(winner){finishHighTide(true,winner.id);return;}
   }
 }

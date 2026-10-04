@@ -34,6 +34,11 @@ Tørke stansar vekst og tærer på planta. Fiendar kan tappe henne. Plantetap el
 at heile laget går ned avsluttar forsøket. Ein medspelar kan gjenopplivast med
 stell i tre sekund dersom kroppen er over vatnet.
 
+Heile laget tyder alle som framleis står i romlista på serveren. Ein levande
+medspelar med reservert PWA-plass hindrar lagtap sjølv om avataren er skjult
+lokalt. Manglande helse ved byte av vert ventar på godteken tilstand eller
+stadfesta avgang. Tap av morplanta avsluttar framleis forsøket med ein gong.
+
 Sligo får att startmassen ved å stelle planta og kan vekse vidare frå kjøt som
 fiendane slepper. Slik kan han halde fram med sjefskampane utan å hauste den eine
 morplanta. Vekst frå kjøt og deling brukar den vanlege kolonimodellen.

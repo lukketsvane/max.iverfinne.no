@@ -44,6 +44,12 @@ there, or the server roster confirms their departure. A stale teammate whose
 accepted position is already at the exit still counts their arrival; stale
 controls cannot hold an exit rune. Authority handoff preserves these rules.
 
+Team defeat also checks the server roster. A reserved living teammate cannot
+be excluded because their input is stale or their avatar is locally hidden.
+Every roster member needs known authoritative zero health; missing health
+after promotion waits for hydration or confirmed departure. The existing
+freeze with fewer than two fresh humans still takes precedence.
+
 ## Iteration evidence
 
 The first input-only paired runs exposed an unsafe walk-off edge beside lock

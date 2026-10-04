@@ -107,6 +107,8 @@ The stones stand beside the collected flowers, at the beginning of **Garden**. T
 
 Each player has 100 health. Attacks have a warning, dodging avoids damage and Cairn's brace reduces it. At zero health a gardener goes down. A living teammate holds the normal Tend control (↓ / Space, controller Tend, or touch drag down) within reach for three uninterrupted seconds to revive them at half health. Moving away, taking damage or releasing Tend resets progress. The run ends when everyone is down. Health, waves, the plant and revives replicate from the host and survive a host handoff.
 
+Last Seed, High Tide and Night Relay check everyone still in the server room before declaring the team down. A living teammate whose PWA is briefly hidden keeps their reserved place; missing health after a host handoff waits for accepted state or a confirmed departure. Night Relay still freezes with fewer than two fresh players, and High Tide still ends if the motherplant dies.
+
 Results preserve the actual single plant, wave, survival time and plant lifetime in the garden archive; they are excluded from normal garden scores and public leaderboard publishing. Retry keeps Last Seed selected. `review.html?mode=last-seed` runs the real simulation with isolated memory storage; `mode=relic-garden` previews the owner collection. Bastion and Minos have been removed.
 
 ## Garden runs
