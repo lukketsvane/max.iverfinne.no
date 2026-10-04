@@ -1,5 +1,8 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const { createHash } = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 const A = require('../campaign-architecture.js');
 const S = require('../stage-layout.js');
 const E = require('../stage-expeditions.js');
@@ -89,4 +92,68 @@ test('fractional-camera drawing culls scenery and preserves existing tiles at so
     }
   }
   assert.equal(state.globalAlpha, .8); assert.equal(state.imageSmoothingEnabled, false);
+});
+
+test('Garden 7 keeps exact room and footing geometry and every other chamber unchanged', () => {
+  // Captured before the Garden 7 pass, from 805551b. These hashes cover whole
+  // ordered scenes, not a few properties that could miss collateral changes.
+  const untouched = createHash('sha256'), gardenGeometry = createHash('sha256');
+  for (const seed of [1, 81, 260931841]) for (let stage = 3; stage <= 19; stage++) {
+    const scene = A.buildScene(layout(stage, seed), ground, wet);
+    if (stage !== 7) untouched.update(JSON.stringify(scene));
+    else gardenGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+  }
+  assert.equal(untouched.digest('hex'), '99b32c67e3960fc5ae45ed8272a824276cfccbff12e431d15ddab96cc182283d');
+  assert.equal(gardenGeometry.digest('hex'), '2f0a62113454d437f7df83d153efd105fea995cde2ebcf08deeac9eee43daef0');
+  for (const [file, expected] of [
+    ['assets/levels-v1/seed-vault.png', '6c05f0ebbd28dbf23c9a23ba484bff7273f314768acebb74ffc6cf7138ecd63f'],
+    ['assets/tiles-v1/sanctuary.png', '2dab27519a47db0d037ea89aa3a7b0aca12a96df2a4971b042e0708ebc6c21ef']
+  ]) assert.equal(createHash('sha256').update(fs.readFileSync(path.join(__dirname, '..', file))).digest('hex'), expected);
+});
+
+test('Garden 7 encloses its actual main and expedition rooms with quiet depth, not new route art', () => {
+  for (const seed of [1, 2, 81, 260931841, 0xffffffff]) {
+    const L = layout(7, seed), before = JSON.stringify(L), scene = A.buildScene(L, ground, wet);
+    assert.equal(JSON.stringify(L), before);
+    for (const room of scene.rooms.filter(r => !r.id.startsWith('landing-'))) {
+      const depth = scene.ops.filter(op => op.part === 'fungal-depth:' + room.id);
+      const frame = scene.ops.filter(op => op.part === 'fungal-enclosure:' + room.id);
+      assert.ok(depth.length > 0 && frame.length > 0, room.id + ' has a complete rear composition');
+      assert.deepEqual([depth[0].x, depth[0].y, depth[0].w, depth[0].h], [room.x, room.y, room.w, room.h]);
+      assert.ok(depth[0].alpha <= .4, 'room wash preserves the original cavern depth');
+      assert.ok(depth.every(op => op.kind === 'rect' && op.alpha <= 1));
+      assert.ok(depth.every(op => Math.max(...op.color.slice(1).match(/../g).map(c => parseInt(c, 16))) < 100),
+        'distant masses have no bright walkable-looking lip');
+    }
+    const hero = scene.ops.filter(op => op.part === 'landmark:mycelium-cathedral');
+    assert.ok(hero.some(op => op.color === '#0b252c'), 'deep gill bowl');
+    assert.ok(hero.some(op => op.color === '#79a78d'), 'localized native mint rim');
+    assert.ok(hero.some(op => op.color === '#e4bb75'), 'one warm refuge remains distinct from teal scenery');
+    assert.ok(hero.every(op => op.kind === 'rect'), 'no presentation bitmap or resized source enters the hero');
+    assert.ok(scene.landmark.bounds.w >= 305 && scene.landmark.bounds.w <= 361);
+    assert.ok(scene.landmark.bounds.y + scene.landmark.bounds.h >= scene.landmark.floor);
+    assert.equal(scene.landmark.decoration, true);
+  }
+});
+
+test('Garden 7 native composition stays deterministic, bounded and cached across 100 rolled footprints', () => {
+  for (let seed = 1; seed <= 100; seed++) {
+    const L = layout(7, seed), before = JSON.stringify(L), scene = A.buildScene(L, ground, wet);
+    assert.equal(JSON.stringify(L), before);
+    assert.equal(A.buildScene(L, ground, wet), scene);
+    assert.deepEqual(A.buildScene(layout(7, seed), ground, wet), scene);
+    assert.ok(scene.ops.length > 700 && scene.ops.length < 9500, 'seed ' + seed + ': ' + scene.ops.length);
+    for (const op of scene.ops) {
+      assert.ok([op.x, op.y, op.w, op.h].every(Number.isInteger));
+      assert.ok(op.w > 0 && op.h > 0);
+      assert.ok(op.alpha > 0 && op.alpha <= 1);
+    }
+  }
+  const L = layout(7, 81), previous = A.buildScene(L, ground, wet);
+  const expedition = L.platforms.filter(p => p.expedition).reduce((left, p) => p.x < left.x ? p : left);
+  expedition.x -= 29;
+  const changed = A.buildScene(L, ground, wet);
+  assert.notEqual(changed, previous);
+  assert.notDeepEqual(changed.rooms, previous.rooms, 'rear expedition envelope follows actual changed footing');
+  assert.notDeepEqual(changed.ops, previous.ops);
 });

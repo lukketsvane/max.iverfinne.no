@@ -22,6 +22,7 @@
     h = Math.imul(h ^ h >>> 15, 0x2c1b3c6d); return (h ^ h >>> 13) >>> 0;
   }
   function palette(stage) {
+    if (stage === 7) return { void: '#070f14', recess: '#10212b', wall: '#183039', body: '#294442', edge: '#3c5c53', light: '#617e68', moss: '#3c5d48', wood: '#40372b', rust: '#65513d', glow: '#8ab8a2', frost: '#587c7b' };
     if (stage >= 16) return { void: '#0b1015', recess: '#10191c', wall: '#182125', body: '#28302c', edge: '#41483d', light: '#61634b', moss: '#384833', wood: '#3d3025', rust: '#65513b', glow: '#97956b', frost: '#556965' };
     if (stage >= 11) return { void: '#08101a', recess: '#101c29', wall: '#182838', body: '#2a3e4d', edge: '#455d69', light: '#6d8792', moss: '#344b49', wood: '#343838', rust: '#5a5145', glow: '#a4bfc2', frost: '#7597a5' };
     if (stage >= 6) return { void: '#0b1118', recess: '#121d25', wall: '#1b2a31', body: '#2b3b3e', edge: '#455650', light: '#667868', moss: '#39503d', wood: '#44382a', rust: '#62513e', glow: '#94bba1', frost: '#648082' };
@@ -163,16 +164,17 @@
       // Wide coherent patches and small chips follow the authored silhouette;
       // this is not a traced image or a bitmap-to-vector conversion.
       var top = Math.ceil(Math.min.apply(null, points.map(function (p) { return p[1]; }))), bottom = Math.floor(Math.max.apply(null, points.map(function (p) { return p[1]; })));
+      var step = material === 'dome' ? 5 : 3;
       for (var y = top; y < bottom; y += 2) {
         var hit = [];
         for (var i = 0, j = points.length - 1; i < points.length; j = i++) { var a = points[i], b = points[j]; if ((a[1] <= y && b[1] > y) || (b[1] <= y && a[1] > y)) hit.push(a[0] + (y - a[1]) * (b[0] - a[0]) / (b[1] - a[1])); }
         hit.sort(function (a, b) { return a - b; });
         for (var k = 0; k + 1 < hit.length; k += 2) {
           var left = Math.ceil(hit[k]), right = Math.floor(hit[k + 1]), run = left, lastColor = null;
-          for (var x = left; x <= right + 3; x += 3) {
+          for (var x = left; x <= right + step; x += step) {
             var coarse = hash(Math.floor(x / 11), Math.floor(y / 9) + salt), fine = hash(Math.floor(x / 3) + salt, Math.floor(y / 2));
             var u = (x - left) / Math.max(1, right - left), v = (y - top) / Math.max(1, bottom - top), shade;
-            if (material === 'cap') shade = Math.floor(2.5 + (1 - v) * 1.4 - u * .8) + (coarse % 5 === 0 ? 1 : coarse % 4 === 0 ? -1 : 0);
+            if (material === 'cap' || material === 'dome') shade = Math.floor(2.5 + (1 - v) * 1.4 - u * .8) + (coarse % 5 === 0 ? 1 : coarse % 4 === 0 ? -1 : 0);
             else if (material === 'bark') { var groove = Math.floor(x - y * .13 + Math.sin(y / 19) * 4) % 9; shade = groove < 2 ? 1 : groove < 5 ? 3 : 2; if (u < .18) shade++; if (coarse % 4 === 0) shade--; }
             else shade = u < .2 ? 4 : u < .57 ? 3 : u < .81 ? 2 : 1;
             if (fine % 17 === 0) shade--; if (fine % 29 === 0) shade++;
@@ -187,7 +189,53 @@
       part: function (name) { part = name; } };
   }
 
-  function chamber(B, room, P, salt) {
+  function fungalChamber(B, room, P, salt) {
+    var x = room.x, y = room.y, w = room.w, h = room.h;
+    B.part('fungal-depth:' + room.id);
+    B.rect(x, y, w, h, P.recess, .38);
+    // These broad, low-contrast forms live on the far wall. No bright upper
+    // lip, bridge, ladder or horizontal seam suggests an additional route.
+    for (var i = 0; i < 3; i++) {
+      var seed = hash(i, salt), xx = x + w * (i + .5) / 3, base = y + h,
+        rise = Math.min(h - 25, 83 + seed % Math.max(1, Math.floor(h * .5))), lean = (seed % 19) - 9,
+        top = base - rise, breadth = Math.min(43, w / 7), color = i === 1 ? '#1b3440' : '#152b36';
+      B.polygon([[xx - breadth, base], [xx - 13, base - rise * .32], [xx + lean - 7, top + 22],
+        [xx + lean - breadth, top + 14], [xx + lean - breadth * .88, top + 5], [xx + lean - breadth * .47, top - 5],
+        [xx + lean - 4, top - 9], [xx + lean + breadth * .46, top - 6], [xx + lean + breadth * .87, top + 4],
+        [xx + lean + breadth, top + 19],
+        [xx + lean + 8, top + 23], [xx + 17, base - rise * .31], [xx + breadth, base]], color);
+      B.rect(xx + lean + 3, top + 28, 3, Math.min(24, rise * .16), '#102731', .48);
+      B.rect(xx + 6, base - rise * .36, 4, Math.min(31, rise * .18), '#102731', .36);
+      B.line(xx + lean - 3, top + 26, xx - 8, base - 17, 2, '#294552', .28);
+      for (var gill = -1; gill <= 1; gill++) B.line(xx + lean + gill * breadth * .65, top + 12 + gill * 2,
+        xx + lean + gill * 3, top + 22, 1, '#294552', .32);
+      B.line(xx + lean - breadth * .68, top + 2, xx + lean - breadth * .3, top - 4, 1, '#29483e', .32);
+    }
+    B.part('fungal-enclosure:' + room.id);
+    // A broken organic roof follows the actual room, leaving its first
+    // landing's headroom clear. Scalloped edges are rear rock, not floors.
+    var roof = [[x - 10, y - 12], [x + w + 10, y - 12], [x + w + 10, y + 11]];
+    for (var k = 12; k >= 0; k--) {
+      var px = x + w * k / 12, tooth = 7 + hash(k, salt) % 14;
+      roof.push([px, y + tooth]); roof.push([px - w / 28, y + 5 + tooth * .42]);
+    }
+    roof.push([x - 10, y + 13]);
+    B.polygon(roof, '#0a171c');
+    for (var side = -1; side <= 1; side += 2) {
+      var edge = side < 0 ? x : x + w, root = [[edge - side * 11, y], [edge - side * 11, y + h]];
+      for (var j = 8; j >= 0; j--) root.push([edge + side * (6 + hash(j, salt + side) % 14), y + h * j / 8]);
+      B.polygon(root, '#0c1c21');
+      B.line(edge + side * 8, y + 26, edge + side * 11, y + h - 12, 2, '#29463f', .55);
+    }
+    for (var n = 1; n < 9; n += 2) {
+      var rx = x + w * n / 9, ry = y + 9 + hash(n, salt) % 10;
+      B.polygon([[rx - 5, ry], [rx + 4, ry - 3], [rx + 2, ry + 13], [rx - 2, ry + 26]], '#172d2c');
+      B.line(rx - 2, ry + 2, rx - 1, ry + 17, 1, '#426252', .48);
+    }
+    B.part('chamber');
+  }
+  function chamber(B, room, P, salt, fungal) {
+    if (fungal) { fungalChamber(B, room, P, salt); return; }
     var x = room.x, y = room.y, w = room.w, h = room.h, rim = 20, rise = Math.min(Math.floor(h * .58), Math.floor(w * .42), 142);
     // The recess is not a floor: its lower edge disappears under actual soil.
     B.rect(x, y + rise, w, h - rise, P.recess, .34);
@@ -276,36 +324,58 @@
     }
     B.ellipse(x, y, 7, 7, P.void); B.rect(x - 2, y - 2, 4, 4, P.rust);
   }
-  function fungus(B, x, floor, P) {
-    var crown = floor - 194;
-    var stem = [[x - 31, floor], [x - 14, floor - 25], [x - 9, floor - 61], [x - 1, floor - 91], [x + 17, floor - 117], [x + 22, crown + 31], [x + 18, crown + 17], [x + 42, crown + 11], [x + 49, crown + 31], [x + 40, floor - 114], [x + 30, floor - 78], [x + 26, floor - 45], [x + 37, floor - 21], [x + 53, floor]];
-    B.surface(stem, 71, ['#253335', '#414b42', '#5b6655', '#7b8369', '#a1a488'], 'bark');
-    B.line(x - 14, floor - 7, x + 4, floor - 64, 3, '#91997a', .75);
-    B.line(x + 4, floor - 64, x + 21, floor - 105, 2, '#b0b397', .7);
-    B.line(x + 21, floor - 105, x + 30, crown + 31, 2, '#959c7f', .65);
-    var cap = [], under = [];
-    for (var edge = -126; edge <= 126; edge += 9) { var v = edge / 127, arc = Math.sqrt(Math.max(0, 1 - v * v)), chip = hash(edge, 7) % 3; cap.push([x + edge, crown + 33 - arc * 60 + edge * .07 + chip]); }
-    for (var edge = 126; edge >= -126; edge -= 9) cap.push([x + edge, crown + 33 + 15 * Math.sqrt(Math.max(0, 1 - edge * edge / (127 * 127))) + edge * .07]);
-    B.surface(cap, 7, ['#163239', '#24454a', '#345d5b', '#49786d', '#6a9180'], 'cap');
-    for (var edge = -126; edge <= 126; edge += 9) under.push([x + edge, crown + 33 + edge * .07]);
-    for (var edge = 126; edge >= -126; edge -= 9) under.push([x + edge, crown + 35 + 18 * Math.sqrt(Math.max(0, 1 - edge * edge / (127 * 127))) + edge * .07]);
-    B.polygon(under, '#142e35');
-    for (var i = -9; i <= 9; i++) {
-      var ex = x + i * 13, ey = crown + 34 + i * 1.05, bend = x + 25 + i * 4;
-      B.line(ex, ey, bend, crown + 48 + i * .25, 1, i % 3 ? '#517b70' : '#82a293', .75);
+  function fungus(B, x, floor, P, footprint) {
+    var height = Math.max(224, Math.min(260, floor - footprint.y + 54)), radius = Math.max(152, Math.min(180, (footprint.right - footprint.x) * .34)),
+      crown = floor - height + 66, tilt = .19, neckX = x + 32, neckY = crown + 31;
+    // Original native geometry, not a scaled sprite. The cap takes its size
+    // from the real route footprint; its tilt leaves two unequal dark spaces.
+    var stem = [[x - 40, floor], [x - 16, floor - 32], [x - 3, floor - 83], [neckX - 20, neckY + 30],
+      [neckX - 13, neckY - 8], [neckX + 12, neckY - 14], [neckX + 28, neckY + 8],
+      [neckX + 18, neckY + 46], [x + 32, floor - 82], [x + 29, floor - 35], [x + 62, floor]];
+    B.surface(stem, 71, ['#263b35', '#405347', '#5f7259', '#809078', '#a7ad88'], 'bark');
+    B.line(x - 16, floor - 12, x + 5, floor - 84, 3, '#a2ae83', .65);
+    B.line(x + 5, floor - 84, neckX - 6, neckY + 12, 2, '#bac4a0', .66);
+    B.line(x + 19, floor - 43, neckX + 13, neckY + 28, 2, '#233a34', .75);
+    var cap = [], under = [], rim = [], samples = 32;
+    for (var edge = 0; edge <= samples; edge++) {
+      var offset = -radius + radius * 2 * edge / samples, arc = Math.sqrt(Math.max(0, 1 - offset * offset / (radius * radius))), chip = hash(edge, 7) % 4;
+      cap.push([x + offset, crown - arc * 76 + offset * tilt + chip]);
+      rim.push([x + offset, crown + offset * tilt + arc * 5]);
     }
-    for (var n = 0; n < 19; n++) { var xx = x - 99 + n * 11, yy = crown + 7 - Math.sqrt(Math.max(0, 1 - (xx - x) * (xx - x) / (116 * 116))) * 23 + hash(n, 7) % 18; B.rect(xx, yy, 3 + n % 3, 2, '#91ae93', .72); B.rect(xx + 1, yy + 2, 2 + n % 2, 1, '#35534e'); }
+    cap = cap.concat(rim.slice().reverse());
+    B.surface(cap, 7, ['#12343b', '#204e52', '#306c68', '#4d8d7d', '#7bad92'], 'dome');
+    under = rim.slice();
+    for (var edge = samples; edge >= 0; edge--) {
+      var offset = -radius + radius * 2 * edge / samples, arc = Math.sqrt(Math.max(0, 1 - offset * offset / (radius * radius)));
+      under.push([x + offset, crown + offset * tilt + arc * 34 + 3]);
+    }
+    B.polygon(under, '#0b252c');
+    for (var i = 1; i < samples; i++) {
+      var offset = -radius + radius * 2 * i / samples, arc = Math.sqrt(Math.max(0, 1 - offset * offset / (radius * radius))), ey = crown + offset * tilt + arc * 6;
+      B.line(x + offset, ey + 1, neckX + offset * .09, neckY + offset * .035, 1, i % 4 ? '#3d7066' : '#74a28b', .83);
+      if (i % 4 === 0) B.line(x + offset, ey + 4, neckX + offset * .13, neckY + 5 + offset * .04, 1, '#203f40');
+    }
+    for (var r = 0; r < rim.length - 1; r++) {
+      B.line(rim[r][0], rim[r][1], rim[r + 1][0], rim[r + 1][1], 2, '#79a78d', .8);
+      if (r % 5 === 2) B.line(rim[r][0], rim[r][1] + 4, rim[r][0] + 1, rim[r][1] + 14, 1, '#497d70', .75);
+    }
+    for (var n = 0; n < 17; n++) {
+      var xx = x - radius * .79 + n * radius * 1.58 / 16, yy = crown - Math.sqrt(Math.max(0, 1 - (xx - x) * (xx - x) / (radius * radius))) * 37 + (xx - x) * tilt + hash(n, 7) % 13;
+      B.rect(xx, yy, 3 + n % 3, 2, '#a4bd95', .63); B.rect(xx + 1, yy + 2, 3, 1, '#28554e');
+    }
     for (var root = -1; root <= 1; root += 2) {
-      B.polygon([[x + 9, floor - 27], [x + root * 38, floor - 16], [x + root * 78, floor - 9], [x + root * 91, floor - 2], [x + root * 43, floor - 6], [x + root * 17, floor]], '#4e5e4c');
-      B.line(x + root * 16, floor - 17, x + root * 64, floor - 7, 2, '#819271', .6);
+      B.polygon([[x + 9, floor - 32], [x + root * 47, floor - 21], [x + root * 96, floor - 13], [x + root * 126, floor - 2],
+        [x + root * 53, floor - 7], [x + root * 20, floor]], '#314b3c');
+      B.line(x + root * 18, floor - 20, x + root * 76, floor - 10, 2, '#628d69', .65);
+      B.line(x + root * 76, floor - 10, x + root * 143, floor - 24, 1, '#74a58b', .5);
+      B.line(x + root * 75, floor - 11, x + root * 91, floor - 42, 1, '#416d5c', .7);
     }
-    // Filaments occupy soil behind the true floor; glowing root paths are
-    // fine decoration and never imply another traversable horizontal shelf.
-    for (var k = -1; k <= 1; k += 2) {
-      B.line(x + k * 6, floor - 7, x + k * 67, floor - 26, 2, P.moss, .8);
-      B.line(x + k * 67, floor - 26, x + k * 141, floor - 13, 1, P.glow, .45);
-      B.line(x + k * 67, floor - 26, x + k * 87, floor - 53, 1, P.glow, .35);
-    }
+    // One amber refuge at the trunk; surrounding teal is muted scenery, not
+    // a second interactive objective or an extra traversable root shelf.
+    B.ellipse(x + 38, floor - 31, 17, 24, '#213b31', .67);
+    B.lamp(x + 38, floor - 21, 7);
+    var top = Math.floor(crown - 81 - radius * tilt);
+    return { x: Math.floor(x - radius), y: top, w: Math.ceil(radius * 2 + 1), h: floor - top + 1 };
   }
   function landmark(B, scene, layout, ground, P) {
     var stage = layout.stage | 0, main = scene.footings.filter(function (p) { return !p.expedition; }), bb = bbox(main, ground(layout.origin)), cx = Math.round(layout.origin + (stage % 2 ? 34 : -22)), floor = Math.round(ground(cx));
@@ -350,7 +420,7 @@
       for (var cut = 0; cut < 5; cut++) B.line(cx - 83 + cut * 3, y + 62 + cut * 27, cx - 31 + cut * 7, y + 51 + cut * 28, 2, P.recess);
       if (stage === 15) { B.line(cx + 1, y + 37, cx + 31, floor - 20, 3, P.frost, .8); B.line(cx + 5, y + 82, cx + 52, y + 94, 1, P.frost, .65); }
       else { B.line(cx - 102, y + 32, cx + 113, y + 45, 2, P.wood); B.rect(cx + 94, y + 42, 3, 38, P.rust); B.rect(cx + 88, y + 78, 16, 8, P.body); }
-    } else if (stage === 7) fungus(B, cx - 9, floor - 1, P);
+    } else if (stage === 7) scene.landmark.bounds = fungus(B, cx - 9, floor - 1, P, bb);
     else if (stage === 8) {
       B.stone(cx - 117, y + 22, 20, floor - y - 22, P.body, stage); B.stone(cx + 93, y + 22, 20, floor - y - 22, P.body, stage + 2);
       B.rect(cx - 123, y + 17, 242, 9, P.wood); B.line(cx - 93, y + 26, cx - 58, y + 73, 5, P.wood); B.line(cx + 92, y + 26, cx + 57, y + 73, 5, P.wood);
@@ -472,23 +542,23 @@
     // ledges room to read. Native rock teeth break the chamber silhouette.
     var main = ps.filter(function (p) { return !p.expedition; }), mb = bbox(main, floor), mx = Math.min(origin - 318, mb.x - 39), mr = Math.max(origin + 318, mb.right + 39);
     var room = { id: 'main-vault', x: origin - 144, y: mb.y - 43, w: 288, h: floor - mb.y + 54 };
-    scene.rooms.push(room); chamber(B, room, P, stage);
+    scene.rooms.push(room); chamber(B, room, P, stage, stage === 7);
     [-1, 1].forEach(function (side) {
       var route = main.filter(function (p) { return p.route === side; }), rb = bbox(route, floor), left = side < 0 ? mx : origin + 111, right = side < 0 ? origin - 112 : mr;
       var bay = { id: 'route-bay-' + side, x: left, y: rb.y - 51, w: right - left, h: Math.round(ground((left + right) / 2)) - rb.y + 61 };
-      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19);
+      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19, stage === 7);
     });
     if (layout.place && layout.place.bounds) {
       var pb = layout.place.bounds, wing = { id: 'place-wing', x: pb.x - 26, y: pb.y - 34, w: pb.w + 52, h: pb.h + 44 };
       var oldRight = bounds.x + bounds.w; bounds.x = Math.min(bounds.x, wing.x - 28);
       bounds.w = Math.max(oldRight, wing.x + wing.w + 28) - bounds.x;
-      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97);
+      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97, stage === 7);
       B.lamp(pb.x + 12, pb.y - 18, stage + 97);
     }
     var exp = ps.filter(function (p) { return p.expedition; });
     if (exp.length) {
       var eb = bbox(exp, floor), ef = Math.round(ground((eb.x + eb.right) / 2)), er = { id: 'expedition-vault', x: eb.x - 37, y: eb.y - 60, w: eb.right - eb.x + 74, h: ef - eb.y + 68 };
-      scene.rooms.push(er); chamber(B, er, P, stage + 53);
+      scene.rooms.push(er); chamber(B, er, P, stage + 53, stage === 7);
       // Upper rest rooms have a recess anchored to their own true landing.
       (layout.expedition.rooms || []).forEach(function (r, i) {
         var q = { id: 'landing-' + i, x: r.bounds.x - 9, y: r.bounds.y - 46, w: r.bounds.w + 18, h: 52 + r.bounds.h };
