@@ -78,6 +78,7 @@ for(const mode of modes)test(`${mode} missing reserved vitality after promotion 
   const f=team(mode);f.sync();hide(f);down(f.g,ids.slice(0,2));f.sync();const h=f.peers[1],g=h.game,m=g.coop.members[ids[2]];
   delete m.vital;g.coopRoster({...f.room,host:ids[1]});h.tick(16);
   assert.equal(g.rogueRun.ended,false);assert.equal(m.vital,undefined);assert.equal(m.left,true);
+  if(mode==='night-relay'){const oldHost=g.coop.members[ids[0]];g.coopInput(ids[0],{avatar:{...oldHost.avatar,vx:0,vy:0},actions:[]});h.tick(16);assert.equal(g.rogueRun.ended,false);assert.equal(m.vital,undefined);}
   g.coopRoster({...g.coop.network.room,members:f.room.members.slice(0,2)});h.tick(16);assert.equal(g.rogueRun.ended,true);
 });
 for(const mode of modes)test(`${mode} ignores forged returning guest vitality when the authoritative team is down`,()=>{

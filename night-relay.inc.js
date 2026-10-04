@@ -28,7 +28,13 @@ function nightRelayLayout(){
   RELAY_LEDGES.forEach(function(p,i){L.platforms.push({id:'relay-'+i,x:p[0],y:s.base-p[1],w:p[2],depth:6,route:1,style:'ruin'});});
   activeStageLayout=L;return L;
 }
-function relayActors(){return seedActors().filter(function(a){return a.member&&(a.id===coop.me||performance.now()-a.member.last<1500);});}
+function relayInputFresh(member,age){
+  // Initial room presence retains its existing grace; promotion explicitly waits
+  // for accepted input and cannot fall back to a refreshed presence lease.
+  var at=Object.hasOwn(member,'relayInputAt')?member.relayInputAt:member.last;
+  return Number.isFinite(at)&&performance.now()-at<age;
+}
+function relayActors(){return seedActors().filter(function(a){return a.member&&(a.id===coop.me||relayInputFresh(a.member,1500));});}
 // The room retains PWA memberships when their actor is stale or locally hidden.
 // Every reserved participant must arrive before the team can claim the escape.
 function relayTeamAtExit(){
@@ -36,7 +42,7 @@ function relayTeamAtExit(){
   if(!Array.isArray(members)||members.length<2)return false;
   return members.every(function(q){var m=q&&Object.hasOwn(coop.members,q.id)&&coop.members[q.id];return !!(m&&!m.left&&seedVital(m).hp>0&&coopMemberAvatar(m).x>=972);});
 }
-function relayHeld(a){return a.v.hp>0&&(a.id===coop.me?!!(heldDown||heldSpace||swipeDown):!!a.p.relayTend&&performance.now()-a.member.last<500);}
+function relayHeld(a){return a.v.hp>0&&(a.id===coop.me?!!(heldDown||heldSpace||swipeDown):!!a.p.relayTend&&relayInputFresh(a.member,500));}
 function relayAt(a,x,h,r){return a.v.hp>0&&a.p.grounded&&Math.abs(a.p.x-x)<(r||17)&&Math.abs(a.p.y-(rogueRun.survival.base-h))<5;}
 function relayCheckpoint(){var s=rogueRun.survival;return {x:s.stage?RELAY_LOCKS[s.stage-1].x+24:22,y:s.base};}
 function relayConstrain(a){

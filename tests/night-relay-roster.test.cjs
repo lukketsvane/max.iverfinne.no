@@ -56,7 +56,7 @@ test('authority handoff retains the reserved absent teammate escape requirement 
   h.advance(10001);g.coop.members[ids[1]].last=now(h);h.tick(16);assert.equal(m.left,true);const snapshot=f.sync();
   assert.equal(snapshot.members.some(q=>q.id===ids[2]),false,'timed-out actor stays out of the existing wire snapshot');
   const next=f.peers[1].game;next.coopRoster({...room,host:ids[1]});next.heldDown=true;
-  const carrier=next.coop.members[ids[0]];carrier.avatar.relayTend=true;carrier.last=now(f.peers[1]);
+  const carrier=next.coop.members[ids[0]];next.coopInput(ids[0],{avatar:{...carrier.avatar,relayTend:true},actions:[]});
   assert.equal(next.coop.members[ids[2]].left,true);step(next,2.2);assert.equal(next.runWon,false);assert.equal(next.rogueRun.survival.exitCharge,0);
   const absent=next.coop.members[ids[2]];
   next.coopInput(ids[2],{avatar:{...absent.avatar,x:990,y:next.rogueRun.survival.base,grounded:true,st:'free',wet:false},actions:[]});
