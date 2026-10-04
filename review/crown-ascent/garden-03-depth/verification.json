@@ -1,0 +1,638 @@
+{
+  "before": "/tmp/max-garden3-depth-before-final",
+  "after": "/tmp/max-garden3-depth-after-final",
+  "source": "c0268db5043d1248a6726b2ef12c400e69b9ba39a29b48597fc099c745f7efd1",
+  "architectureBefore": "e36ff8d0c6a6272f371b9c4d27286547c9c8bb920490dfa89e3102d1ccc32d91",
+  "architectureAfter": "f8c880942bcc2ca6c107f62c594dafebdcc8b4563f34af2861b99de5874ffb43",
+  "nativePngCount": 661,
+  "nativePngBytesUnchanged": true,
+  "errors": [],
+  "rows": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "w": 1000,
+        "h": 650
+      },
+      "sameCamera": {
+        "w": 334,
+        "h": 217,
+        "scale": 3,
+        "x": 412783,
+        "y": -191.78505003351324,
+        "smoothing": false
+      },
+      "geometryUnchanged": true,
+      "roomBoundsUnchanged": true,
+      "controlsUnchanged": true,
+      "opsBefore": 6510,
+      "opsAfter": 6475,
+      "walkDistance": 60.745283067342825,
+      "jumpRise": 23.85436402870178,
+      "actualLanding": "3:1:0",
+      "liveElapsed": 1.916699999999995
+    },
+    {
+      "name": "portrait",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "sameCamera": {
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "x": 412885,
+        "y": -229.78505003351324,
+        "smoothing": false
+      },
+      "geometryUnchanged": true,
+      "roomBoundsUnchanged": true,
+      "controlsUnchanged": true,
+      "opsBefore": 6510,
+      "opsAfter": 6475,
+      "walkDistance": 61.53041986754397,
+      "jumpRise": 23.846830073747526,
+      "actualLanding": "3:1:0",
+      "liveElapsed": 1.9333000000000098
+    },
+    {
+      "name": "landscape",
+      "viewport": {
+        "w": 568,
+        "h": 320
+      },
+      "sameCamera": {
+        "w": 284,
+        "h": 160,
+        "scale": 2,
+        "x": 412808,
+        "y": -151.78505003351324,
+        "smoothing": false
+      },
+      "geometryUnchanged": true,
+      "roomBoundsUnchanged": true,
+      "controlsUnchanged": true,
+      "opsBefore": 6510,
+      "opsAfter": 6475,
+      "walkDistance": 61.762936800776515,
+      "jumpRise": 25.287360599538857,
+      "actualLanding": "3:1:0",
+      "liveElapsed": 1.9665000000000203
+    }
+  ],
+  "baselineCommit": "d5f501ee5949f5d8345d9ff94a433115fd05a95e",
+  "testSource": "ad4018dc65b5b18d63ef7fecb103f14f1149bde26ee5938314a2dc162a99faad",
+  "audit": {
+    "completeNon3ScenesUnchanged": 80,
+    "furnishedGeometrySnapshotsUnchanged": 5,
+    "actual100Seeds": {
+      "method": "actual tests/game-harness.cjs loadGame; resetRogueRun REVIEW mech/tide; enterLevel(3); real stageLayout/surfaceY/waterAt, fully furnished P→E→G; seeds1–100 with activeStageLayout invalidated",
+      "verifiedAt": "2026-10-04T19:21:10.589Z",
+      "minOps": 5832,
+      "maxOps": 6475,
+      "maximumSeed": 1,
+      "baselineMinOps": 6022,
+      "baselineMaxOps": 6536,
+      "originalGeometryUnchanged": true,
+      "inputNonmutationCases": 100,
+      "pierColumnsPerSeed": 111,
+      "actualSoilColumnContacts": 11100,
+      "allColumnsContactActualSoil": true,
+      "rows": [
+        {
+          "seed": 1,
+          "baselineOps": 6510,
+          "candidateOps": 6475
+        },
+        {
+          "seed": 2,
+          "baselineOps": 6206,
+          "candidateOps": 6016
+        },
+        {
+          "seed": 3,
+          "baselineOps": 6373,
+          "candidateOps": 6304
+        },
+        {
+          "seed": 4,
+          "baselineOps": 6374,
+          "candidateOps": 6326
+        },
+        {
+          "seed": 5,
+          "baselineOps": 6385,
+          "candidateOps": 6389
+        },
+        {
+          "seed": 6,
+          "baselineOps": 6196,
+          "candidateOps": 5996
+        },
+        {
+          "seed": 7,
+          "baselineOps": 6121,
+          "candidateOps": 5917
+        },
+        {
+          "seed": 8,
+          "baselineOps": 6323,
+          "candidateOps": 6238
+        },
+        {
+          "seed": 9,
+          "baselineOps": 6340,
+          "candidateOps": 6366
+        },
+        {
+          "seed": 10,
+          "baselineOps": 6484,
+          "candidateOps": 6418
+        },
+        {
+          "seed": 11,
+          "baselineOps": 6421,
+          "candidateOps": 6344
+        },
+        {
+          "seed": 12,
+          "baselineOps": 6214,
+          "candidateOps": 6046
+        },
+        {
+          "seed": 13,
+          "baselineOps": 6103,
+          "candidateOps": 5910
+        },
+        {
+          "seed": 14,
+          "baselineOps": 6296,
+          "candidateOps": 6117
+        },
+        {
+          "seed": 15,
+          "baselineOps": 6264,
+          "candidateOps": 6014
+        },
+        {
+          "seed": 16,
+          "baselineOps": 6155,
+          "candidateOps": 5955
+        },
+        {
+          "seed": 17,
+          "baselineOps": 6197,
+          "candidateOps": 5994
+        },
+        {
+          "seed": 18,
+          "baselineOps": 6259,
+          "candidateOps": 6090
+        },
+        {
+          "seed": 19,
+          "baselineOps": 6491,
+          "candidateOps": 6326
+        },
+        {
+          "seed": 20,
+          "baselineOps": 6460,
+          "candidateOps": 6269
+        },
+        {
+          "seed": 21,
+          "baselineOps": 6297,
+          "candidateOps": 6139
+        },
+        {
+          "seed": 22,
+          "baselineOps": 6121,
+          "candidateOps": 5969
+        },
+        {
+          "seed": 23,
+          "baselineOps": 6286,
+          "candidateOps": 6062
+        },
+        {
+          "seed": 24,
+          "baselineOps": 6169,
+          "candidateOps": 6003
+        },
+        {
+          "seed": 25,
+          "baselineOps": 6080,
+          "candidateOps": 5837
+        },
+        {
+          "seed": 26,
+          "baselineOps": 6419,
+          "candidateOps": 6187
+        },
+        {
+          "seed": 27,
+          "baselineOps": 6233,
+          "candidateOps": 6111
+        },
+        {
+          "seed": 28,
+          "baselineOps": 6140,
+          "candidateOps": 5890
+        },
+        {
+          "seed": 29,
+          "baselineOps": 6275,
+          "candidateOps": 6080
+        },
+        {
+          "seed": 30,
+          "baselineOps": 6462,
+          "candidateOps": 6305
+        },
+        {
+          "seed": 31,
+          "baselineOps": 6311,
+          "candidateOps": 6022
+        },
+        {
+          "seed": 32,
+          "baselineOps": 6327,
+          "candidateOps": 6078
+        },
+        {
+          "seed": 33,
+          "baselineOps": 6321,
+          "candidateOps": 6120
+        },
+        {
+          "seed": 34,
+          "baselineOps": 6368,
+          "candidateOps": 6174
+        },
+        {
+          "seed": 35,
+          "baselineOps": 6192,
+          "candidateOps": 5949
+        },
+        {
+          "seed": 36,
+          "baselineOps": 6362,
+          "candidateOps": 6269
+        },
+        {
+          "seed": 37,
+          "baselineOps": 6266,
+          "candidateOps": 5983
+        },
+        {
+          "seed": 38,
+          "baselineOps": 6144,
+          "candidateOps": 5965
+        },
+        {
+          "seed": 39,
+          "baselineOps": 6080,
+          "candidateOps": 5832
+        },
+        {
+          "seed": 40,
+          "baselineOps": 6146,
+          "candidateOps": 5962
+        },
+        {
+          "seed": 41,
+          "baselineOps": 6392,
+          "candidateOps": 6207
+        },
+        {
+          "seed": 42,
+          "baselineOps": 6205,
+          "candidateOps": 5990
+        },
+        {
+          "seed": 43,
+          "baselineOps": 6117,
+          "candidateOps": 5865
+        },
+        {
+          "seed": 44,
+          "baselineOps": 6225,
+          "candidateOps": 6022
+        },
+        {
+          "seed": 45,
+          "baselineOps": 6194,
+          "candidateOps": 6040
+        },
+        {
+          "seed": 46,
+          "baselineOps": 6374,
+          "candidateOps": 6333
+        },
+        {
+          "seed": 47,
+          "baselineOps": 6166,
+          "candidateOps": 5979
+        },
+        {
+          "seed": 48,
+          "baselineOps": 6290,
+          "candidateOps": 6026
+        },
+        {
+          "seed": 49,
+          "baselineOps": 6212,
+          "candidateOps": 6124
+        },
+        {
+          "seed": 50,
+          "baselineOps": 6205,
+          "candidateOps": 6071
+        },
+        {
+          "seed": 51,
+          "baselineOps": 6436,
+          "candidateOps": 6269
+        },
+        {
+          "seed": 52,
+          "baselineOps": 6425,
+          "candidateOps": 6266
+        },
+        {
+          "seed": 53,
+          "baselineOps": 6222,
+          "candidateOps": 6007
+        },
+        {
+          "seed": 54,
+          "baselineOps": 6536,
+          "candidateOps": 6472
+        },
+        {
+          "seed": 55,
+          "baselineOps": 6321,
+          "candidateOps": 6153
+        },
+        {
+          "seed": 56,
+          "baselineOps": 6363,
+          "candidateOps": 6177
+        },
+        {
+          "seed": 57,
+          "baselineOps": 6235,
+          "candidateOps": 6014
+        },
+        {
+          "seed": 58,
+          "baselineOps": 6318,
+          "candidateOps": 6244
+        },
+        {
+          "seed": 59,
+          "baselineOps": 6217,
+          "candidateOps": 6134
+        },
+        {
+          "seed": 60,
+          "baselineOps": 6232,
+          "candidateOps": 6082
+        },
+        {
+          "seed": 61,
+          "baselineOps": 6265,
+          "candidateOps": 6033
+        },
+        {
+          "seed": 62,
+          "baselineOps": 6206,
+          "candidateOps": 6027
+        },
+        {
+          "seed": 63,
+          "baselineOps": 6317,
+          "candidateOps": 6106
+        },
+        {
+          "seed": 64,
+          "baselineOps": 6256,
+          "candidateOps": 6073
+        },
+        {
+          "seed": 65,
+          "baselineOps": 6388,
+          "candidateOps": 6137
+        },
+        {
+          "seed": 66,
+          "baselineOps": 6226,
+          "candidateOps": 6010
+        },
+        {
+          "seed": 67,
+          "baselineOps": 6292,
+          "candidateOps": 6074
+        },
+        {
+          "seed": 68,
+          "baselineOps": 6343,
+          "candidateOps": 6200
+        },
+        {
+          "seed": 69,
+          "baselineOps": 6136,
+          "candidateOps": 5947
+        },
+        {
+          "seed": 70,
+          "baselineOps": 6254,
+          "candidateOps": 5973
+        },
+        {
+          "seed": 71,
+          "baselineOps": 6186,
+          "candidateOps": 6067
+        },
+        {
+          "seed": 72,
+          "baselineOps": 6177,
+          "candidateOps": 6013
+        },
+        {
+          "seed": 73,
+          "baselineOps": 6422,
+          "candidateOps": 6319
+        },
+        {
+          "seed": 74,
+          "baselineOps": 6266,
+          "candidateOps": 6270
+        },
+        {
+          "seed": 75,
+          "baselineOps": 6178,
+          "candidateOps": 5896
+        },
+        {
+          "seed": 76,
+          "baselineOps": 6310,
+          "candidateOps": 6099
+        },
+        {
+          "seed": 77,
+          "baselineOps": 6363,
+          "candidateOps": 6359
+        },
+        {
+          "seed": 78,
+          "baselineOps": 6192,
+          "candidateOps": 6008
+        },
+        {
+          "seed": 79,
+          "baselineOps": 6308,
+          "candidateOps": 6152
+        },
+        {
+          "seed": 80,
+          "baselineOps": 6188,
+          "candidateOps": 6114
+        },
+        {
+          "seed": 81,
+          "baselineOps": 6272,
+          "candidateOps": 6166
+        },
+        {
+          "seed": 82,
+          "baselineOps": 6345,
+          "candidateOps": 6155
+        },
+        {
+          "seed": 83,
+          "baselineOps": 6214,
+          "candidateOps": 5985
+        },
+        {
+          "seed": 84,
+          "baselineOps": 6134,
+          "candidateOps": 5947
+        },
+        {
+          "seed": 85,
+          "baselineOps": 6192,
+          "candidateOps": 6018
+        },
+        {
+          "seed": 86,
+          "baselineOps": 6171,
+          "candidateOps": 5975
+        },
+        {
+          "seed": 87,
+          "baselineOps": 6426,
+          "candidateOps": 6376
+        },
+        {
+          "seed": 88,
+          "baselineOps": 6394,
+          "candidateOps": 6325
+        },
+        {
+          "seed": 89,
+          "baselineOps": 6215,
+          "candidateOps": 6021
+        },
+        {
+          "seed": 90,
+          "baselineOps": 6232,
+          "candidateOps": 6052
+        },
+        {
+          "seed": 91,
+          "baselineOps": 6370,
+          "candidateOps": 6316
+        },
+        {
+          "seed": 92,
+          "baselineOps": 6022,
+          "candidateOps": 5886
+        },
+        {
+          "seed": 93,
+          "baselineOps": 6247,
+          "candidateOps": 6036
+        },
+        {
+          "seed": 94,
+          "baselineOps": 6212,
+          "candidateOps": 6039
+        },
+        {
+          "seed": 95,
+          "baselineOps": 6379,
+          "candidateOps": 6148
+        },
+        {
+          "seed": 96,
+          "baselineOps": 6176,
+          "candidateOps": 5955
+        },
+        {
+          "seed": 97,
+          "baselineOps": 6302,
+          "candidateOps": 6127
+        },
+        {
+          "seed": 98,
+          "baselineOps": 6227,
+          "candidateOps": 5970
+        },
+        {
+          "seed": 99,
+          "baselineOps": 6286,
+          "candidateOps": 6023
+        },
+        {
+          "seed": 100,
+          "baselineOps": 6127,
+          "candidateOps": 5891
+        }
+      ]
+    },
+    "hardOperationCeiling": 10000,
+    "heroUpperAndWidthEnvelopeUnchanged": true,
+    "onlyDarkFoundationsFollowActualSoil": true,
+    "sourceImagesImported": false,
+    "figmaReviewBoardUpdated": false,
+    "negativeBaseline": {
+      "baselineCommit": "d5f501ee5949f5d8345d9ff94a433115fd05a95e",
+      "baselineSource": "e36ff8d0c6a6272f371b9c4d27286547c9c8bb920490dfa89e3102d1ccc32d91",
+      "finalTestSource": "ad4018dc65b5b18d63ef7fecb103f14f1149bde26ee5938314a2dc162a99faad",
+      "pass": 10,
+      "fail": 3,
+      "expectedFailures": [
+        "new aqueduct room depth absent",
+        "original portal has opaque blue infill",
+        "original pier columns do not contact real soil"
+      ]
+    },
+    "independentSynthetic1000Seeds": {
+      "source": "f8c880942bcc2ca6c107f62c594dafebdcc8b4563f34af2861b99de5874ffb43",
+      "testSource": "ad4018dc65b5b18d63ef7fecb103f14f1149bde26ee5938314a2dc162a99faad",
+      "minOps": 5443,
+      "maxOps": 6298,
+      "maximumSeed": 470,
+      "softBudget": 9500,
+      "layoutNonmutation": true,
+      "method": "fully furnished synthetic terrain fixture, separate from the actual-game 100-seed audit"
+    },
+    "focusedTests": {
+      "architectureAndReferenceRoom": 17,
+      "pass": 17,
+      "fail": 0
+    }
+  }
+}

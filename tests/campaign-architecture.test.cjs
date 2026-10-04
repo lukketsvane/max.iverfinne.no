@@ -103,25 +103,32 @@ test('fractional-camera drawing culls scenery and preserves existing tiles at so
   assert.equal(state.globalAlpha, .8); assert.equal(state.imageSmoothingEnabled, false);
 });
 
-test('intentional Garden 7/14 passes preserve every untouched chamber and original geometry', () => {
+test('intentional Garden 3/7/14 passes preserve every untouched chamber and original geometry', () => {
   // Untouched stages are independently derived from 805551b, excluding only
-  // the two intentional passes. Whole Garden 7 scenes are pinned to 8680e00;
-  // neither pin is refreshed to bless the new Garden 14 implementation.
+  // the three intentional passes. Whole Garden 7 scenes retain 8680e00 and
+  // whole Garden 14 retains d5f501e; no combined hash blesses the new Garden 3.
   const untouched = createHash('sha256'), gardenGeometry = createHash('sha256'),
-    gardenSeven = createHash('sha256'), fossilGeometry = createHash('sha256');
+    gardenSeven = createHash('sha256'), fossilGeometry = createHash('sha256'),
+    gardenFourteen = createHash('sha256'), aqueductGeometry = createHash('sha256');
   for (const seed of [1, 81, 260931841]) for (let stage = 3; stage <= 19; stage++) {
     const scene = A.buildScene(layout(stage, seed), ground, wet);
-    if (stage !== 7 && stage !== 14) untouched.update(JSON.stringify(scene));
+    if (stage !== 3 && stage !== 7 && stage !== 14) untouched.update(JSON.stringify(scene));
     if (stage === 7) {
       gardenSeven.update(JSON.stringify(scene));
       gardenGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
     }
-    if (stage === 14) fossilGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+    if (stage === 14) {
+      gardenFourteen.update(JSON.stringify(scene));
+      fossilGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+    }
+    if (stage === 3) aqueductGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
   }
-  assert.equal(untouched.digest('hex'), 'b7082e2a561a30a48100320bda7433a03ab2ac0eff5a970fa5db9b9ef4c3e31d');
+  assert.equal(untouched.digest('hex'), '90e5b9298543b4618d42f374b2523c5fe50f4c571d0b26ce803a16f2151f31f5');
   assert.equal(gardenSeven.digest('hex'), '3352829178fe0514cfdb0a503bf7e4de2ee9021baca0792e52eaeb17c5caada8');
   assert.equal(gardenGeometry.digest('hex'), '2f0a62113454d437f7df83d153efd105fea995cde2ebcf08deeac9eee43daef0');
   assert.equal(fossilGeometry.digest('hex'), 'c2f94c68c939bd997b86c8ba59259474ab1f729f04c0461622bd8919b4ad04c8');
+  assert.equal(gardenFourteen.digest('hex'), '404c08078efd9e9def861ff1773ada9f2b26c11542e986852563651bf09ff473');
+  assert.equal(aqueductGeometry.digest('hex'), '2e6a68c866a9ec8e1a7d6ef41977ffcd4ce42b71952b394ef91dff04b881edec');
   for (const [file, expected] of [
     ['assets/levels-v1/seed-vault.png', '6c05f0ebbd28dbf23c9a23ba484bff7273f314768acebb74ffc6cf7138ecd63f'],
     ['assets/tiles-v1/sanctuary.png', '2dab27519a47db0d037ea89aa3a7b0aca12a96df2a4971b042e0708ebc6c21ef']
@@ -273,4 +280,133 @@ test('100 fully furnished Garden 14 footprints retain native caching, culling an
     }
   }
   assert.deepEqual(state, { globalAlpha: .9, imageSmoothingEnabled: true, fillStyle: '#123456' }, 'drawing restores caller state');
+});
+
+test('Garden 3 worn masonry follows every furnished room and preserves its original geometry', () => {
+  const geometry = createHash('sha256');
+  for (const seed of [1, 81, 260931841]) {
+    const L = furnishedLayout(3, seed), before = JSON.stringify(L), scene = A.buildScene(L, ground, wet);
+    assert.equal(JSON.stringify(L), before);
+    geometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+    for (const room of scene.rooms.filter(r => !r.id.startsWith('landing-'))) {
+      const depth = scene.ops.filter(op => op.part === 'aqueduct-depth:' + room.id),
+        enclosure = scene.ops.filter(op => op.part === 'aqueduct-enclosure:' + room.id);
+      assert.ok(depth.length > 0 && enclosure.length > 0, room.id + ' shares the worn aqueduct composition');
+      assert.deepEqual([depth[0].x, depth[0].y, depth[0].w, depth[0].h], [room.x, room.y, room.w, room.h]);
+      assert.ok(depth[0].alpha <= .3, 'quiet room wash reveals the existing far cavern');
+      assert.ok(depth.every(op => op.kind === 'rect'));
+      assert.ok(depth.every(op => Math.max(...op.color.slice(1).match(/../g).map(c => parseInt(c, 16))) < 100),
+        'rear retaining masonry has no bright false route lip');
+    }
+    assert.ok(!scene.ops.some(op => /^(fungal|fossil)-/.test(op.part)), 'early masonry does not reuse the later garden motifs');
+  }
+  assert.equal(geometry.digest('hex'), '726173239675e8ac2d95d0557fdd7eee3e5538eb79ffedd5cfc63b3416d41c5b');
+});
+
+test('Garden 3 keeps its original hero envelope with massive piers and unequal genuinely open portals', () => {
+  const scene = A.buildScene(furnishedLayout(3), ground, wet), { x, y, floor } = scene.landmark;
+  const hero = scene.ops.filter(op => op.part === 'landmark:buried-aqueduct');
+  assert.ok(hero.every(op => op.kind === 'rect' || op.kind === 'tile'), 'original native geometry and exact atlas crops, no resized bitmap');
+  assert.ok(hero.every(op => op.x >= x - 134 && op.x + op.w <= x + 239 && op.y >= y - 22));
+  for (const op of hero) {
+    if (op.color !== '#1e2c31') assert.ok(op.y + op.h <= floor, 'only a quiet foundation may extend below the original envelope');
+    else {
+      for (let px = op.x; px < op.x + op.w; px++) {
+        assert.equal(op.y, Math.min(floor, Math.round(ground(px))));
+        assert.equal(op.y + op.h, Math.round(ground(px)) + 1);
+      }
+    }
+  }
+  const covered = (px, py) => hero.some(op => px >= op.x && px < op.x + op.w && py >= op.y && py < op.y + op.h);
+  assert.equal(covered(x - 23, y + 86), false, 'large portal reveals the actual cavern rather than an opaque blue fill');
+  assert.equal(covered(x + 166, y + 133), false, 'lower portal remains genuinely open');
+  assert.equal(covered(x + 166, y + 86), true, 'unequal springing heights distinguish the two portals');
+  for (const [cx, minimum] of [[x - 114, 30], [x + 81, 40], [x + 223, 20]]) {
+    let width = 0;
+    for (let px = cx - 28; px <= cx + 28; px++) if (covered(px, floor - 28)) width++;
+    assert.ok(width >= minimum, 'grounded worn pier is a substantial masonry mass');
+  }
+  for (const [left, right] of [[-134, -98], [56, 103], [210, 235]]) {
+    for (let px = x + left; px <= x + right; px++) assert.ok(covered(px, Math.round(ground(px))), 'each pier column meets its own integer soil profile');
+  }
+  assert.ok(hero.every(op => op.w <= 100), 'no continuous bright fake bridge crown');
+  assert.ok(hero.some(op => op.color === '#25383a'), 'deep inner masonry edges');
+  assert.ok(hero.filter(op => op.color === '#314439').length >= 30, 'interrupted radial voussoir joints distinguish laid stone from smooth bone');
+  assert.ok(hero.some(op => op.color === '#253b37'), 'short broken channel recesses');
+  const solid = new Set();
+  for (const op of hero.filter(op => op.kind === 'rect' && op.alpha === 1)) {
+    for (let px = op.x; px < op.x + op.w; px++) for (let py = op.y; py < op.y + op.h; py++) solid.add(px + ':' + py);
+  }
+  const stack = [solid.values().next().value]; solid.delete(stack[0]);
+  while (stack.length) {
+    const [px, py] = stack.pop().split(':').map(Number);
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+      const neighbour = (px + dx) + ':' + (py + dy);
+      if (solid.delete(neighbour)) stack.push(neighbour);
+    }
+  }
+  assert.equal(solid.size, 0, 'native opaque crown chunks join their arch shoulders: no floating straps or old chimney');
+  assert.equal(scene.landmark.decoration, true);
+});
+
+test('100 furnished Garden 3 scenes retain native caching, culling and bounded construction', () => {
+  for (let seed = 1; seed <= 100; seed++) {
+    const L = furnishedLayout(3, seed), before = JSON.stringify(L), scene = A.buildScene(L, ground, wet);
+    assert.equal(JSON.stringify(L), before);
+    assert.equal(A.buildScene(L, ground, wet), scene);
+    assert.deepEqual(A.buildScene(furnishedLayout(3, seed), ground, wet), scene);
+    assert.ok(scene.ops.length > 700 && scene.ops.length < 9500, 'seed ' + seed + ': ' + scene.ops.length);
+    const hero = scene.ops.filter(op => op.part === 'landmark:buried-aqueduct'), { x, floor } = scene.landmark;
+    for (const [left, right] of [[-134, -98], [56, 103], [210, 235]]) {
+      for (let px = x + left; px <= x + right; px++) {
+        const py = Math.round(ground(px));
+        assert.ok(hero.some(op => px >= op.x && px < op.x + op.w && py >= op.y && py < op.y + op.h), 'each rolled pier column reaches its soil');
+      }
+    }
+    for (const op of hero.filter(op => op.color === '#1e2c31')) {
+      for (let px = op.x; px < op.x + op.w; px++) {
+        assert.equal(op.y, Math.min(floor, Math.round(ground(px))));
+        assert.equal(op.y + op.h, Math.round(ground(px)) + 1, 'every foundation column stops at real soil');
+      }
+    }
+    for (const op of scene.ops) {
+      assert.ok([op.x, op.y, op.w, op.h].every(Number.isInteger));
+      assert.ok(op.w > 0 && op.h > 0 && op.alpha > 0 && op.alpha <= 1);
+      if (op.kind === 'tile') {
+        const p = T.pieces[op.piece];
+        assert.ok(p && op.ox >= 0 && op.oy >= 0 && op.ox + op.w <= p[2] && op.oy + op.h <= p[3]);
+      }
+    }
+  }
+  const L = furnishedLayout(3, 81), previous = A.buildScene(L, ground, wet);
+  L.platforms.filter(p => p.expedition).reduce((left, p) => p.x < left.x ? p : left).x -= 19;
+  const changed = A.buildScene(L, ground, wet);
+  assert.notEqual(changed, previous); assert.notDeepEqual(changed.rooms, previous.rooms); assert.notDeepEqual(changed.ops, previous.ops);
+  const scene = A.buildScene(furnishedLayout(3), ground, wet), tile = scene.ops.find(op => op.kind === 'tile'), drawn = [];
+  let state = { globalAlpha: .7, imageSmoothingEnabled: true, fillStyle: '#123456' }, saved;
+  const ctx = new Proxy({}, {
+    get(_, key) {
+      if (key in state) return state[key];
+      if (key === 'save') return () => { saved = { ...state }; };
+      if (key === 'restore') return () => { state = saved; };
+      return (...args) => {
+        assert.equal(state.imageSmoothingEnabled, false, 'every actual draw is unsmoothed');
+        drawn.push({ key, args });
+      };
+    },
+    set(_, key, value) { state[key] = value; return true; }
+  });
+  const tiles = { img: { complete: true, naturalWidth: 128 }, pieces: T.pieces };
+  A.draw(ctx, furnishedLayout(3), tile.x - 17.49, tile.y - 15.6, 160, 120, 10, tiles, ground, wet);
+  assert.ok(drawn.length > 0 && drawn.length < scene.ops.length);
+  assert.ok(drawn.some(d => d.key === 'drawImage'), 'native crop registration is exercised');
+  for (const d of drawn) {
+    if (d.key === 'fillRect') assert.ok(d.args.every(Number.isInteger));
+    if (d.key === 'drawImage') {
+      assert.equal(d.args[0], tiles.img); assert.equal(d.args.length, 9);
+      assert.equal(d.args[3], d.args[7]); assert.equal(d.args[4], d.args[8]);
+      assert.ok(d.args.slice(1).every(Number.isInteger)); assert.ok(d.args[3] > 0 && d.args[4] > 0);
+    }
+  }
+  assert.deepEqual(state, { globalAlpha: .7, imageSmoothingEnabled: true, fillStyle: '#123456' });
 });
