@@ -401,7 +401,7 @@ async function press(page,game,key,pose) {
   await page.keyboard.press(key);
 }
 async function body(game,kind) {
-  await game.waitForFunction(kind => !!window.__mycelCombat.state.bodies[kind],kind,{timeout:2000});
+  await game.waitForFunction(kind => !!window.__mycelCombat.state.bodies[kind]?.cell,kind,{timeout:2000});
   const b=(await state(game)).bodies[kind];
   assert.deepEqual([b.rect[2],b.rect[3],b.rect[6],b.rect[7]],[32,32,32,32]);
   assert.ok(b.rect.every(Number.isInteger));
