@@ -55,7 +55,7 @@ const functionNames = [
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap',
   'chargeStart', 'chargeRelease', 'updateCharge', 'finalizeRogueRun', 'setEffectsVolume',
   'beginCoop', 'coopInput', 'coopState', 'coopCapture', 'coopDepart', 'coopAvatar', 'stopCoop',
-  'chooseRoguePerk', 'redrawRogueChoice', 'offerRogueChoice', 'grantRogueLevel', 'coopOffer', 'coopRedraw',
+  'chooseRoguePerk', 'redrawRogueChoice', 'offerRogueChoice', 'renderRogueChoice', 'grantRogueLevel', 'coopOffer', 'coopRedraw',
   'readInput', 'crouchGardenAction', 'requestClimb', 'ensureCompanion', 'spawnLooseSeeds', 'coopRoster', 'coopJoin', 'drawResultScene', 'endRogueRun', 'winRogueRun', 'resetRogueRun', 'updateRunCompetition',
   'updatePlayer', 'doJump', 'requestDodge', 'throwBomb', 'updateBombs', 'makeKrek', 'updateKrek', 'waterAt',
   'harvestGardenPlot', 'saveGarden',

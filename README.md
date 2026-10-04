@@ -175,7 +175,7 @@ Black, albino and plague rat variants unlock later still.
 
 ## Boons and run pickups
 
-Boons are a live overlay; the simulation continues underneath them. Each choice shows its name, effect, rank and any signature upgrade that the pick unlocks. Once a build is started, one choice develops it whenever possible: an unlocked signature first, then a missing prerequisite or another owned rank. The other two choices explore other paths. Current build paths include the original upgrades plus:
+Boons are a live overlay; the simulation continues underneath them. Each choice shows its name, effect, rank and any signature upgrade that the pick unlocks. Earlier prerequisite picks preview a signature and the exact ranks still needed after that pick; hints use your own build and only upgrades supported by the current class and mode. Once a build is started, one choice develops it whenever possible: an unlocked signature first, then a missing prerequisite or another owned rank. The other two choices explore other paths. Current build paths include the original upgrades plus:
 
 - Green Thumb — stronger tending.
 - Wide Watering — reaches more neighbours.
