@@ -33,3 +33,11 @@ The complete [vertical stack](../../review/crown-ascent/) uses actual seed-1 run
 Two generated mushroom and fossil sprite studies were produced separately. The supported Figma image upload was rejected by the environment's network proxy before reaching Figma. Those candidates remain development studies: they are not shipped runtime assets or registered native masters. The implemented chamber art uses original editable geometry and already registered native image sources.
 
 Verification covers native crop registration, bounded operations, deterministic regeneration, nonmutation of collision geometry, all room styles and hidden-wall fades, unchanged Crown pixels, underground sky rules and actual browser traversal.
+
+## Garden 7 fungal depth pass
+
+The October 4 reference review gives the Mycelium Cathedral a dedicated composition: an asymmetric monumental canopy, a dark gill bowl, curved bark, restrained mint edges and one warm trunk refuge. Main routes, the side place and the upper expedition share quiet fungal distance layers and broken organic roof/flank silhouettes rather than competing bright outer stone arches. Existing landing arches, actual platform supports and native ledge materials retain their purpose. Distant caps have no bright walkable lips; the original cavern remains visible behind them.
+
+This is original native world geometry, not an imported concept bitmap or a resized sprite. The uploaded `levels(1).zip` remains reference material only. All 661 built runtime PNGs stay byte-identical. Room IDs/bounds, collision footings, caches, shrines, guardian approaches, clocks, controls and multiplayer ownership are unchanged. Every non-7 architecture scene is pinned to the previous `805551b` implementation; 100 seeded Garden 7 footprints check deterministic generation, cache invalidation and the existing 10,000-operation ceiling.
+
+Actual seed-1 before/after evidence is in [Garden 7 depth review](../../review/crown-ascent/garden-07-depth/). It uses the same native cameras and includes desktop, portrait and compact landscape views plus genuine walking, jumping and a grounded landing on the first real ledge. The broader Figma ascent board and earlier stack captures remain historical review snapshots; this pass does not claim that they were updated or that review images became runtime assets.
