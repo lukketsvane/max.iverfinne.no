@@ -10,7 +10,7 @@ const assert = require('node:assert/strict');
 const { chromium, webkit } = require('playwright');
 const root = path.resolve(process.env.MYCEL_REVIEW_DIST || path.join(__dirname, '../dist'));
 const output = path.resolve(process.env.MYCEL_REVIEW_OUTPUT || 'mycel-combat-browser-review');
-const engines = (process.env.MYCEL_BROWSER_ENGINES || 'chromium,webkit').split(',');
+const engines = (process.env.MYCEL_BROWSER_ENGINES ?? 'chromium,webkit').split(',').map(name=>name.trim());
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex');
 const build = Object.fromEntries([
   'index.html', 'assets/characters-v2/mycel/main.png',
@@ -46,8 +46,8 @@ function browserProbe() {
     return q;
   };
   function accepted(name, original) { return function() {
-    var result = original.apply(this, arguments);
-    if (result) record('accepts', { name:name, at:performance.now(), owner:skillOwner(),
+    var before = captured(); var result = original.apply(this, arguments);
+    if (result) record('accepts', { before:before,name:name, at:performance.now(), owner:skillOwner(),
       body:actor(), q:captured() });
     return result;
   }; }
@@ -164,6 +164,8 @@ function browserProbe() {
     gardenFeverT=gardenPower=gardenCombo=gardenComboT=0;
     runActive = true; menuPaused = false; activeStageLayout = null;
     if (worldLevel() !== 1) enterLevel(1);
+    // Each isolated combat case excludes unrelated random/weather restoration.
+    stageWeather=null;worldWeather={type:'clear',target:'clear',intensity:0,targetI:0,timer:9999,seed:17,wind:0};
     var m = mycelMember(); (m || rogueRun).mycel = null;
     Object.assign(P, { skin:'moon', x:levelOriginX(1) + 150, vx:0, vy:0, grounded:true,
       platform:null, wet:false, st:'free', face:1, held:false, hurt:0, brace:0,
@@ -197,7 +199,7 @@ function browserProbe() {
     if (kind === 'cloud') { guard(48); q.culture = 2; }
     if (kind === 'bloom') { [-20, 24].forEach(function(dx, i) { plant(dx, .3, .3, i + 1); }); guard(20); q.culture = 4; }
     if (kind === 'drift') { plant(35, .08, .7, 1); plant(48, .08, .7, 2); }
-    if (kind === 'revive') { var p = plant(16, .08, .01, 1); recordGardenPlant(p); plantFalls(p); q.culture = 4; }
+    if (kind === 'revive') { var p = plant(16, .08, .01, 1); recordGardenPlant(p); plantFalls(p); plant(120,.08,.7,2); q.culture = 4; }
     if (kind === 'wall') {
       enterLevel(2); activeStageLayout = pictureLayout(2); var selected;
       (stageLayout().platforms || []).some(function(wall) {
@@ -222,6 +224,7 @@ function browserProbe() {
     get state() {
       var q = captured(), a = actor();
       return { at:performance.now(), world:worldLevel(), mode:rogueRun.mode, actor:a, q:q,
+        weather:{world:Object.assign({},worldWeather),stage:stageWeather?Object.assign({},stageWeather):null},
         policy:mycelPhasePolicy(), build:mycelBuild(),
         network:mycelNetwork().map(function(n) { return {id:n.id,x:n.x,y:n.y,wet:n.wet,distance:n.distance}; }),
         placement:mycelCloudPlacement({x:P.x + P.face * 48,y:P.y - 12}),
@@ -274,8 +277,8 @@ function browserProbe() {
         resetHighTide();var s=rogueRun.survival;s.height=120;
         gardenPlots=[{id:1,x:s.root,kind:0,seed:37,growth:.65,stalk:false,health:.5,
           moisture:.3,tideVine:true,tideHeight:s.height,pulse:0,hit:0,age:0}];
-        highTideLayout();P.x=scene==='stem'?32:358;P.y=s.base+(scene==='stem'?0:-4);
-        P.platform=scene==='stem'?'five-gardens-0':'five-gardens-101';
+        highTideLayout();P.x=scene==='stem'?highTideRoutePoint(16).x:358;P.y=s.base+(scene==='stem'?-16:-4);
+        P.platform=scene==='stem'?'five-gardens-2':'five-gardens-101';
       }else if(name==='night-relay'){
         resetNightRelay();rogueRun.survival.stage=1;nightRelayLayout();
         P.x=100;P.y=rogueRun.survival.base;P.platform=null;
@@ -284,7 +287,9 @@ function browserProbe() {
       (mycelMember()||rogueRun).mycel=null;var q=mycelState();q.culture=6;mycelRebaseClocks(mycelMember());
       camX=P.x-IW*.5;camY=P.y-climbAnchor();return api.state;
     },
+    touchPoint:function(character){var p=character?P:floatKrek[0],r=cv.getBoundingClientRect(),x=(p.x-camX)*r.width/cv.width,y=((character?P.y-12:p.y)-camY)*r.height/cv.height;return {x:x,y:y,clientX:r.left+x,clientY:r.top+y};},
     floodFoot:function() { rogueRun.survival.waterY=P.y-1; },
+    enterActualWater:function() { for(var b=1;b<20;b++){var pond=pondInBucket(b);if(!pond)continue;var x=pond.cx,y=pond.level+4;if(!playerWetAt(x,y)||window.MaxStageLayout.inRock(stageLayout(),x,y))continue;Object.assign(P,{x:x,y:y,vy:0,vx:0,grounded:false,platform:null,wet:false,st:'free'});return {x:x,y:y,level:pond.level};}throw Error('No real open water fixture'); },
     placeAir:function() { P.y-=28;P.vy=80;P.grounded=false;P.platform=null;P.coyote=0;P.airJumpUsed=true; },
     causal:function(kind,castKind) {
       arrange('empty');var p=plant(18,.08,.3,1),q=mycelState();q.culture=6;
@@ -421,25 +426,23 @@ function wholeRestore(s,serial) {
 // and the original host simulator. Isolated seeded cases test rejection/budget edges.
 async function presentation(page,game,engine,results,visuals) {
   const initial=await game.evaluate(()=>window.__mycelCombat.initial);
-  assert.equal(initial?.culture ?? 0,0,'Public Mycel review has no resource prefill');
+  assert.ok(initial,'First actual Mycel resource state was observed');
+  assert.equal(initial.culture,0,'Public Mycel review has no resource prefill');
   for(const [viewport,width,height] of [['desktop',1000,650],['phone',390,844],['small',320,568]]) {
     await page.locator('#viewport').selectOption(viewport);
-    await game.waitForFunction(({width,height})=>innerWidth===width&&innerHeight===height,{width,height});
+    await game.waitForFunction(({width,height})=>{const c=window.__mycelCombat.canvas,r=c.getBoundingClientRect(),scale=r.width/c.width;return innerWidth===width&&innerHeight===height&&Number.isInteger(scale)&&scale>=2&&r.width>=width&&r.width<width+scale&&r.height>=height&&r.height<height+scale;},{width,height});
     const view=await game.evaluate(()=>({
       width:innerWidth,height:innerHeight,skin:window.__mycelCombat.player.skin,
       smoothing:window.__mycelCombat.canvas.getContext('2d').imageSmoothingEnabled,
-      buttons:Array.from(document.querySelectorAll('#mycelControls button')).filter(b=>!b.hidden).map(b=>{
-        const r=b.getBoundingClientRect();return {id:b.id,label:b.getAttribute('aria-label'),
-          hidden:!!b.closest('[hidden]'),left:r.left,right:r.right,top:r.top,bottom:r.bottom};
-      })
+      canvas:(()=>{const r=window.__mycelCombat.canvas.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,scale:r.width/window.__mycelCombat.canvas.width};})(),
+      actionControls:document.querySelectorAll('#mycelControls').length
     }));
-    assert.equal(view.skin,'moon');assert.equal(view.smoothing,false);assert.equal(view.buttons.length,4);
-    assert.ok(view.buttons.every(b=>!b.hidden&&b.left>=0&&b.right<=width&&b.top>=0&&
-      b.bottom<=height&&b.bottom-b.top>=48));
+    assert.equal(view.skin,'moon');assert.equal(view.smoothing,false);assert.equal(view.actionControls,0);
+    assert.ok(view.canvas.left<=0&&view.canvas.right>=width&&view.canvas.top<=0&&view.canvas.bottom>=height&&view.canvas.left>-view.canvas.scale&&view.canvas.top>-view.canvas.scale,'Native canvas covers viewport with bounded integer-pixel overscan');
     visuals.push(view);await shot(page,engine,viewport);
   }
   await page.locator('#viewport').selectOption('phone');
-  results.push('Original Mycel sheets/atlas bytes,32px cells,16/31 anchors and integer native body; desktop/390/320 four coarse48px controls');
+  results.push('Original Mycel sheets/atlas bytes,32px cells,16/31 anchors and integer native body; desktop/390/320 canvas inputs without action controls');
 }
 async function primary(page,game,engine,results) {
   await arrange(game,'primary');await press(page,game,'b','primary');await body(game,'primary');
@@ -475,8 +478,8 @@ async function network(page,game,engine,results) {
   for(const count of [1,2,3]) {
     await arrange(game,'empty');await game.evaluate(count=>window.__mycelCombat.setNetwork(count,.8),count);
     await game.waitForFunction(()=>window.__mycelCombat.state.ticks.length>=35);
-    const s=await state(game),dt=s.ticks.reduce((sum,t)=>sum+Math.max(0,Math.min(.1,t.dt)),0);
-    near(s.q.culture,.5*Math.min(2,count)*dt,.003,'Only actual valid host simulation dt generates Culture');
+    const s=await state(game),earned=s.ticks.reduce((sum,t)=>sum+.5*Math.min(2,t.wet)*Math.max(0,Math.min(.1,t.dt)),0);
+    near(s.q.culture,earned,.003,'Only actual host ticks with wet plants generate Culture');
     assert.equal(s.network.length,count);assert.ok(s.network.every(n=>n.wet));
     assert.ok(s.q.networkIds.length<=3);
   }
@@ -528,7 +531,7 @@ async function cloud(page,game,engine,results) {
 }
 async function bloom(page,game,engine,results) {
   await arrange(game,'bloom');await press(page,game,'e','bloom');await body(game,'bloom');
-  let s=await state(game),cast=s.q.bloom;assert.ok(cast);assert.equal(s.q.culture,0);
+  let s=await state(game),cast=s.q.bloom;assert.ok(cast);assert.equal(s.accepts.find(a=>a.name==='bloom').before.culture-s.accepts.find(a=>a.name==='bloom').q.culture,4);
   assert.ok(s.q.specialCool>11.5);assert.equal(s.policy.blockTend,false);assert.equal(s.policy.lockSteer,false);
   await focus(game);await page.keyboard.down('ArrowLeft');
   try { await game.waitForTimeout(120); } finally { await page.keyboard.up('ArrowLeft'); }
@@ -549,9 +552,9 @@ async function bloom(page,game,engine,results) {
   assert.ok(s.q.chorusT>3.5,'Empty denial preserves the genuinely stored opportunity');
   await arrange(game,'bloom');await press(page,game,'e');
   await game.waitForFunction(()=>window.__mycelCombat.q.bloom?.pulseMask===1);
-  await game.evaluate(()=>{window.__mycelCombat.player.wet=true;});await game.waitForTimeout(60);
+  await game.evaluate(()=>window.__mycelCombat.enterActualWater());await game.waitForTimeout(60);
   s=await state(game);assert.equal(s.q.bloom.cancelled,1);assert.equal(s.q.bloom.pulseMask,7);
-  assert.ok(s.q.specialCool>0);assert.equal(s.q.culture,0);
+  assert.ok(s.q.specialCool>0);assert.equal(s.accepts.find(a=>a.name==='bloom').before.culture-s.accepts.find(a=>a.name==='bloom').q.culture,4);
   results.push('E acceptedfixedr48 centre/three0/2/4s.8D slots; actualmovement staysfree, wholeplot.12/.15 debt, emptydenial preservesstock/Chorus, wetpaidcancel preservescost/CD');
 }
 async function revive(page,game,engine,results) {
@@ -653,7 +656,7 @@ async function boons(page,game,engine,results) {
   assert.ok(s.q.symbiosis.length>0);
   assert.ok(s.q.symbiosis.every(d=>d.healthUsed<=.045+1e-8&&d.waterUsed<=.105+1e-8));
   const debt=s.q.symbiosis.map(d=>({id:d.id,health:d.healthUsed,water:d.waterUsed}));
-  await game.evaluate(()=>window.__mycelCombat.seed({primaryCool:0}));
+  await game.waitForFunction(()=>window.__mycelCombat.q.primaryCool<=0);
   await press(page,game,'b');await game.waitForFunction(()=>window.__mycelCombat.state.contacts.filter(c=>c.accepted).length===2);
   s=await state(game);for(const d of debt){
     const after=s.q.symbiosis.find(a=>a.id===d.id);
@@ -699,37 +702,22 @@ async function modes(page,game,engine,results) {
   results.push('ActualTide bentstem network/restoration, physicalrisingwater paidcancel/no Drift; plant-freeRelay Cloud/realboundedDrift without plants/HP/progression and emptyEunpaid');
 }
 async function touch(page,game,engine,results) {
-  await arrange(game,'primary');
-  await game.evaluate(()=>window.__mycelCombat.native('primary'));
-  await game.locator('#mycelPrimary').tap();await body(game,'primary');
-  await game.waitForFunction(()=>window.__mycelCombat.state.contacts.some(c=>c.accepted));
-  await arrange(game,'cloud');await game.evaluate(()=>window.__mycelCombat.native('cloud'));
-  await game.locator('#mycelSecondary').tap();await body(game,'cloud');
-  assert.equal((await state(game)).q.culture,0);
-  await arrange(game,'drift');const x=(await state(game)).actor.x;
-  await focus(game);await page.keyboard.down('ArrowRight');
-  try {
-    await game.locator('#mycelUtility').tap();
-    await game.waitForFunction(()=>window.__mycelCombat.q.drift?.landingConsumed===1,null,{timeout:2000});
-  } finally { await page.keyboard.up('ArrowRight'); }
-  assert.ok((await state(game)).actor.x>x+30,'Touch ability coexists with real directional movement');
-  await arrange(game,'bloom');await game.evaluate(()=>window.__mycelCombat.native('bloom'));
-  await game.locator('#mycelSpecial').tap();await body(game,'bloom');
-  assert.equal((await state(game)).q.culture,0);
-  for(const id of ['mycelSecondary','mycelSpecial']) {
-    await arrange(game,id==='mycelSecondary'?'cloud':'bloom');
-    const button=game.locator('#'+id),before=await state(game);
-    await button.dispatchEvent('pointerdown',{pointerId:13,pointerType:'touch',clientX:10,clientY:10});
-    await button.dispatchEvent('pointercancel',{pointerId:13,pointerType:'touch'});
-    await button.dispatchEvent('click');let s=await state(game);
-    assert.equal(s.q.culture,before.q.culture);assert.equal(s.accepts.length,0,'Canceledtouch cannotcast');
-    await button.dispatchEvent('pointerdown',{pointerId:14,pointerType:'touch',clientX:10,clientY:10});
-    await button.dispatchEvent('pointermove',{pointerId:14,pointerType:'touch',clientX:2000,clientY:2000});
-    await button.dispatchEvent('click');s=await state(game);
-    assert.equal(s.q.culture,before.q.culture);assert.equal(s.accepts.length,0,'Drag-out cancels tap');
-  }
-  await shot(page,engine,'touch');
-  results.push('Real coarse touch B/C/V/E, simultaneousdirectionalmovement, tapDrift surviveskeyup; pointercancel/drag-out cannotspend or createeffects');
+ const point=character=>game.evaluate(character=>window.__mycelCombat.touchPoint(character),character);
+ await arrange(game,'primary');await game.evaluate(()=>window.__mycelCombat.native('primary'));
+ await game.locator('#c').tap({position:await point(false)});await body(game,'primary');
+ await game.waitForFunction(()=>window.__mycelCombat.state.contacts.some(c=>c.accepted));
+ await arrange(game,'bloom');await game.evaluate(()=>window.__mycelCombat.native('bloom'));
+ await game.locator('#c').tap({position:await point(true)});await body(game,'bloom');
+ let s=await state(game),accepted=s.accepts.find(a=>a.name==='bloom');assert.ok(accepted);assert.equal(accepted.before.culture-accepted.q.culture,4);
+ for(const cancel of ['pointercancel','drag']){
+  await arrange(game,'bloom');const p=await point(true),c=game.locator('#c');
+  await c.dispatchEvent('pointerdown',{pointerId:13,pointerType:'touch',button:0,clientX:p.clientX,clientY:p.clientY});
+  if(cancel==='pointercancel')await c.dispatchEvent('pointercancel',{pointerId:13,pointerType:'touch',clientX:p.clientX,clientY:p.clientY});
+  else await c.dispatchEvent('pointermove',{pointerId:13,pointerType:'touch',clientX:p.clientX+20,clientY:p.clientY});
+  await c.dispatchEvent('pointerup',{pointerId:13,pointerType:'touch',clientX:p.clientX+20,clientY:p.clientY});
+  s=await state(game);assert.equal(s.accepts.length,0);assert.equal(s.q.bloom,null);assert.equal(s.q.specialCool,0);
+ }
+ await shot(page,engine,'touch');results.push('Actual canvas threat tap shoots and character tap spends four on Bloom; pointer cancel/drag cannot cast; C/V use keyboard/controller');
 }
 async function controller(page,game,engine,results) {
   const cases=[];
@@ -771,3 +759,47 @@ async function controller(page,game,engine,results) {
   fs.writeFileSync(path.join(output,engine+'-controllers.json'),JSON.stringify(cases,null,2));
   results.push('Actualstandard/JoyCon polling B2/C8/V6-or10/E4-or3; humanpacedTend200ms+Crefill and Tend+Vlantern suppressgardening/casts, Home16manualpose anddisconnect');
 }
+
+const groups = {presentation,primary,network,cloud,bloom,revive,drift,idle,causal,boons,modes,touch,controller};
+const selected = process.env.MYCEL_BROWSER_GROUPS === undefined ? Object.keys(groups) :
+  process.env.MYCEL_BROWSER_GROUPS.split(',').map(name=>name.trim());
+let activeEngine, activeGroup, activeErrors=[], failureSaved=false;
+async function recordFailure(error){
+  const evidence={engine:activeEngine||null,group:activeGroup||null,engines,groups:selected,build,error:error.stack||String(error),errors:activeErrors,state:activeGame?await state(activeGame).catch(()=>null):null};
+  fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify(evidence,null,2));
+  await activePage?.screenshot({path:path.join(output,'failed.png'),fullPage:true}).catch(()=>{});
+  failureSaved=true;
+}
+(async()=>{
+  fs.mkdirSync(output,{recursive:true});
+  try{
+    assert.ok(engines.length&&engines.every(name=>Object.hasOwn({chromium,webkit},name)),'Empty or unknown browser engine');
+    assert.ok(selected.length&&selected.every(name=>Object.hasOwn(groups,name)),'Empty or unknown verification group');
+    await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
+    base='http://127.0.0.1:'+server.address().port;
+    for(const engine of engines){
+      activeEngine=engine;activeGroup=null;
+      browser=await {chromium,webkit}[engine].launch(options(engine));
+      try{
+        const context=await browser.newContext({viewport:{width:1100,height:1700},hasTouch:true,isMobile:true,deviceScaleFactor:1});
+        const errors=[],results=[],visuals=[],checks=[];activeErrors=errors;
+        collectErrors(context,errors);await installProbe(context);
+        const page=await context.newPage();activePage=page;page.setDefaultTimeout(10000);
+        await page.goto(base+'/review.html?mode=mycel&portrait=1');
+        const game=await ready(page);activeGame=game;
+        for(const name of selected){
+          activeGroup=name;console.log(engine+': '+name);const start=Date.now();
+          await groups[name](page,game,engine,results,visuals);
+          assert.deepEqual(errors,[],'No browser runtime, console, request or HTTP errors');
+          checks.push({group:name,status:'passed',ms:Date.now()-start,weather:(await state(game)).weather});
+        }
+        const evidence={engine,scope:selected.length===Object.keys(groups).length&&Object.keys(groups).every(name=>selected.includes(name))?'full':'partial',build,checks,visuals,results,errors};
+        fs.writeFileSync(path.join(output,engine+'.json'),JSON.stringify(evidence,null,2));
+        console.log('MYCEL_BROWSER_OK',JSON.stringify(evidence));
+      }catch(error){await recordFailure(error);throw error;}finally{await browser.close();browser=null;activePage=activeGame=null;}
+    }
+  }catch(error){
+    console.error(error);process.exitCode=1;
+    if(!failureSaved)await recordFailure(error);
+  }finally{await browser?.close();if(server.listening)await new Promise(resolve=>server.close(resolve));}
+})().catch(error=>{console.error(error);process.exitCode=1;server.close();});
