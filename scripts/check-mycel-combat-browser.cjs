@@ -35,7 +35,7 @@ function browserProbe() {
   function record(key, value) { log[key].push(value); if (log[key].length > 1600) log[key].shift(); }
   function actor() { return { x:P.x, y:P.y, vx:P.vx, vy:P.vy, face:P.face, grounded:!!P.grounded,
     platform:P.platform || '', st:P.st, anim:P.anim, wet:!!P.wet, autoIdlePose:!!P.autoIdlePose,
-    dodgeT:P.dodgeT || 0, dodgeCool:P.dodgeCool || 0, airJumpUsed:!!P.airJumpUsed,
+    hurt:P.hurt || 0, dodgeT:P.dodgeT || 0, dodgeCool:P.dodgeCool || 0, airJumpUsed:!!P.airJumpUsed,
     lampBlock:!!P.lampBlock, skin:P.skin }; }
   function captured(member) { var q = mycelPeek(member); return q ? mycelCaptureState(q) : null; }
   var create = mycelState;
@@ -155,6 +155,8 @@ function browserProbe() {
   }
   function arrange(kind) {
     clearRunInput(); if (window.MaxRunResults) window.MaxRunResults.hide();
+    // Idle observes a fresh opening, not the previous case's ambient-patrol clock.
+    if (kind === 'idle') runElapsed = 0;
     task = holdWater = climb = warp = null;
     classShots = []; bombs = []; booms = []; runHazards = []; floatKrek = [];
     runEncounters = []; gardenPlots = []; runLoot = [];
@@ -223,7 +225,7 @@ function browserProbe() {
     get coop() { return coop; }, get q() { return mycelPeek(); },
     get state() {
       var q = captured(), a = actor();
-      return { at:performance.now(), world:worldLevel(), mode:rogueRun.mode, actor:a, q:q,
+      return { at:performance.now(), elapsed:runElapsed, world:worldLevel(), mode:rogueRun.mode, actor:a, q:q,
         weather:{world:Object.assign({},worldWeather),stage:stageWeather?Object.assign({},stageWeather):null},
         policy:mycelPhasePolicy(), build:mycelBuild(),
         network:mycelNetwork().map(function(n) { return {id:n.id,x:n.x,y:n.y,wet:n.wet,distance:n.distance}; }),
@@ -240,7 +242,7 @@ function browserProbe() {
           burnOwner:k.mycelBurnOwner || '',burnSerial:k.mycelBurnSerial || 0,
           burnWorld:k.mycelBurnWorld || 0,burnKind:k.mycelBurnKind || ''}; }),
         shots:classShots.filter(function(s) { return s.kind === 'spore'; }).map(mycelCaptureShot),
-        bombs:bombs.length, vital:lastSeedMode() ? Object.assign({},seedVital(null)) : null,
+        bombs:bombs.length, hazards:runHazards.length, vital:lastSeedMode() ? Object.assign({},seedVital(null)) : null,
         hands:{task:task ? {kind:task.kind,fired:task.fired} : null,water:!!holdWater,
           heldDown:heldDown,heldSpace:heldSpace,gardenPress:gardenPress},
         controller:{connected:!!lastPad,single:!!pad.single,lamp:lampToggle} };
@@ -607,13 +609,19 @@ async function drift(page,game,engine,results) {
   results.push('Real vulnerableVX100/VY-90 Drift.35s nativecollisionpath<=48; Ballowed/steer-C-E-jumplocked, actualfirstlanding+.04totalonce, airXpaidcancelwithoutiframe');
 }
 async function idle(page,game,engine,results) {
-  await arrange(game,'empty');await focus(game);
+  const opening=await arrange(game,'idle');
+  assert.equal(opening.elapsed,0);assert.equal(opening.plants.length,0);assert.equal(opening.targets.length,0);assert.equal(opening.hazards,0);assert.equal(opening.actor.hurt,0);
+  await focus(game);
   await game.waitForFunction(()=>['lampUp','lamp'].includes(window.__mycelCombat.player.st),null,{timeout:9500});
-  assert.equal((await state(game)).actor.autoIdlePose,true);
-  await press(page,game,'c');let s=await state(game);
+  let s=await state(game);
+  assert.ok(s.elapsed>=7,'The fresh idle opening advances the real world clock for seven seconds');
+  assert.equal(s.plants.length,0);assert.equal(s.targets.length,0);assert.equal(s.hazards,0);assert.equal(s.actor.hurt,0);
+  assert.equal(s.actor.autoIdlePose,true);
+  await press(page,game,'c');s=await state(game);
   assert.equal(s.actor.autoIdlePose,true);assert.equal(s.q.clouds.length,0);
   await press(page,game,'b','primary');await body(game,'primary');
   s=await state(game);assert.equal(s.actor.autoIdlePose,false);assert.equal(s.actor.st,'free');
+  assert.ok(s.elapsed>=7);assert.equal(s.plants.length,0);assert.equal(s.targets.length,0);assert.equal(s.hazards,0);assert.equal(s.actor.hurt,0);
   await arrange(game,'empty');await press(page,game,'l');
   await game.waitForFunction(()=>['lampUp','lamp'].includes(window.__mycelCombat.player.st));
   await press(page,game,'v');s=await state(game);assert.equal(s.q.drift,null);
