@@ -187,7 +187,7 @@ A boon belongs to the player who picked it. The host applies each effect with it
 - The bomb's thrower: Big Blast, Wild Spark, Sap Burst, Chain Bloom and embers ride on the bomb. Rover boons ride on Max's own crew.
 - The plant's carer, whoever planted it or last watered it (`plantPerks(p)`): Quick Roots, Deep Soil, Morning Dew, Sap and the seeds a plant sheds. A carer who left takes their boons along.
 - The team's best rank (`coopTeamPerks`) only where the effect is global: Sticky Pollen, because pests belong to nobody, and Golden Seeds' bonus seed on a raid clear, a team reward that spawns at the host.
-- Thorns, Barkskin, Bramble, Evergreen and Mulch still read the team's best rank inside the protection code; they move to `plantPerks(p)` with the protection rework.
+- Thorns, Barkskin and Bramble read `plantPerks(p)`; Evergreen uses the same actual `plantCarer(p)` and one `evergreenWorld` stamp per member. Taking over care switches ranks without refunding either owner's spent rescue. Explicit player attack Mulch reads the attack's own build; Mycel causal restoration bounds remain intact. Unattributed environmental kills retain their existing fallback.
 
 ## Audio
 
@@ -333,3 +333,9 @@ Audio keeps music separate from effects. Class attack envelopes use modest varia
 The latest October 3 Mycel implementation (`57bd0d4`) reached production and passed all nine browser reviews, but its regression workflow failed five older integration assertions. Class taps and guest Bloom tests now supply the required four Culture, observe the deferred first pulse and verify owner-only spending. Controller tests use stable plot IDs and real primary recovery instead of resetting one cooldown mirror; High Tide exercises actual spore darts with advancing cast clocks and preserves the guardian gate.
 
 Actual Garden hazard contact now calls `mycelInterrupt('hazard')` before knockback. This cancels both active Drift and its remaining landing opportunity through the existing local/guest cancellation path, keeps the paid cooldown and lets normal knockback survive the next physics step. The physics regression covers both phases and confirms that the interrupted landing gives no water. Bloom, native artwork and the rest of the class kits retain their existing contracts.
+
+## October 4 personal build choices and plant protection
+
+`MaxBuilds.redraw` preserves the exact first offered boon and draws fresh alternatives from the current class/mode/prerequisite/rank pool. It prefers absent paths and unseen cards; sparse catalogues retain an old alternate only to fill the offer. No new alternative means no redraw. The normal overlay adds a compact footer and key4; controller navigation includes it. Each offer owns one free redraw, with no seed cost or boon award. Solo `choiceRedrawn/choiceRound` and host-owned member `redrawn/round/choices` keep it personal. Host validates the round and spent flag; replaced old cards are rejected by ordinary choice validation. Snapshots/handoff retain choices and the spent flag; a new offer resets it. Audio reads the stable offer round so redrawing cannot masquerade as a level-up. The browser review checks touch and keyboard on phone/compact layouts in Chromium and WebKit.
+
+`plantCarer` is the shared live-owner lookup for growth and protection. Garden bites, hazards and friendly blasts use the cared plant's Shield/Barkskin; Bramble uses that same carer. Evergreen is once per actual carer per garden, with a validated `evergreenWorld` marker in every member snapshot. Promotion/rejoin cannot re-arm the rescue. Solo reset starts unused; moving to the next garden permits one new rescue. Strongest Cairn/Sligo guard, shelter auras, High Tide care, existing artwork and attacker-owned Mulch remain unchanged.

@@ -119,7 +119,29 @@
     }
     return out;
   }
-  var api={perks:perks,paths:paths,max:max,empty:empty,clean:clean,choices:choices,available:available,unlocks:unlocks,catalogue:catalogue};
+  function redraw(p,offered,level,salt,classId,mode){
+    p=clean(p,classId);
+    if(!Array.isArray(offered)||offered.length<2||offered.length>3)return [];
+    var held=Array.from(offered,function(q){var id=typeof q==='string'?q:q&&q.id;return typeof id==='string'?perks.find(function(option){return option.id===id;}):null;});
+    if(held.some(function(q,i){return !q||held.indexOf(q)!==i||!available(p,q,classId,mode);}))return [];
+    var pool=catalogue(classId,mode).filter(function(q){return q!==held[0]&&available(p,q,classId,mode);});
+    var unseen=pool.filter(function(q){return held.indexOf(q)<0;});
+    if(!unseen.length)return [];
+    var roll=roller(hash(['redraw',level|0,salt|0,classId||'mech',mode||'garden',held.map(function(q){return q.id;}).join(',')].join(':'))),out=[held[0]];
+    while(out.length<held.length){
+      var left=unseen.filter(function(q){return out.indexOf(q)<0;});
+      if(!left.length)left=pool.filter(function(q){return out.indexOf(q)<0;});
+      var other=left.filter(function(q){return out.every(function(pick){return pick.path!==q.path;});});
+      if(other.length)left=other;
+      else{var alternatives=left.filter(function(q){return q.path!==out[0].path;});if(alternatives.length)left=alternatives;}
+      var weight=function(q){return (q.classId?1.6:1)*(q.needs?.6:1);};
+      var total=left.reduce(function(n,q){return n+weight(q);},0),r=roll()*total,pick=left[left.length-1];
+      for(var i=0;i<left.length;i++){r-=weight(left[i]);if(r<0){pick=left[i];break;}}
+      out.push(pick);
+    }
+    return out;
+  }
+  var api={perks:perks,paths:paths,max:max,empty:empty,clean:clean,choices:choices,redraw:redraw,available:available,unlocks:unlocks,catalogue:catalogue};
   if(typeof module==='object'&&module.exports)module.exports=api;
   else root.MaxBuilds=api;
 })(typeof window==='object'?window:globalThis);

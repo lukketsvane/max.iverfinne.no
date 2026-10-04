@@ -64,7 +64,7 @@ test('missing identity, dead plants, and repeated pure guard queries cannot gran
 });
 test('stronger real Sligo tun suppresses weaker Cairn credit while retaining the Shield multiplier',()=>{
   const f=party('sligo'),g=f.host,q=g.cairnState(),p=plant(g),k=pest(g),sligo=g.coop.members[ids[1]];sligo.tunUntil=13000;sligo.tunX=sligo.avatar.x;
-  g.rogueRun.perks.shield=1;start(g,k);const defense=g.cairnProtection(p,{kind:'bite'});close(defense.fraction,.5);assert.equal(defense.sourceKind,'sligo-tun');
+  g.rogueRun.perks.shield=1;p.carer=ids[0];start(g,k);const defense=g.cairnProtection(p,{kind:'bite'});close(defense.fraction,.5);assert.equal(defense.sourceKind,'sligo-tun');
   g.biteGarden(k,p,1);close(p.health,1-.15*.78*.5);assert.equal(q.strata,0);assert.equal(k.cairnBiteUsed,0);
 });
 test('an actual brace bite may kill its attacker without undoing plant health, water, or growth loss',()=>{
