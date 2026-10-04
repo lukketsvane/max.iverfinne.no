@@ -234,8 +234,50 @@
     }
     B.part('chamber');
   }
-  function chamber(B, room, P, salt, fungal) {
+  function fossilChamber(B, room, P, salt) {
+    var x = room.x, y = room.y, w = room.w, h = room.h, base = y + h;
+    B.part('fossil-depth:' + room.id);
+    B.rect(x, y, w, h, '#132431', .24);
+    // Buried rib echoes rise from the rear soil, not horizontal shelves.
+    // Their quiet curved masses leave the true frost ledges brightest.
+    for (var i = 0; i < 2; i++) {
+      var seed = hash(i, salt), xx = x + w * (i ? .76 : .25), rise = Math.min(158, h * (.43 + seed % 9 * .01)),
+        top = base - rise, side = i ? -1 : 1;
+      // Follow one outer curve upward and its inner curve back to the soil:
+      // a tapered sickle, never two crossing structural braces.
+      B.polygon([[xx - side * 8, base], [xx + side * 12, base - rise * .25], [xx + side * 23, base - rise * .51],
+        [xx + side * 14, base - rise * .76], [xx - side * 3, top + rise * .08], [xx - side * 20, top],
+        [xx - side * 32, top + rise * .05], [xx - side * 20, top + rise * .085], [xx - side * 9, top + rise * .16],
+        [xx + side * 3, base - rise * .74], [xx + side * 10, base - rise * .51],
+        [xx + side * 3, base - rise * .24], [xx - side * 12, base - 5]], i ? '#172b35' : '#1b3039');
+      B.line(xx - side * 20, top + 5, xx - side * 7, top + 16, 1, '#3b4140', .32);
+      B.line(xx + side * 9, base - rise * .29, xx + side * 17, base - rise * .49, 1, '#33413e', .34);
+    }
+    B.part('fossil-enclosure:' + room.id);
+    var roof = [[x - 12, y - 10], [x + w + 12, y - 10], [x + w + 12, y + 10]];
+    for (var n = 14; n >= 0; n--) {
+      var px = x + w * n / 14, chip = hash(n, salt) % 12;
+      roof.push([px, y + 7 + chip]); roof.push([px - w / 35, y + 5 + chip * .35]);
+    }
+    roof.push([x - 12, y + 11]); B.polygon(roof, '#0b151e');
+    for (var side = -1; side <= 1; side += 2) {
+      var edge = side < 0 ? x : x + w, points = [[edge - side * 14, y], [edge - side * 14, base]];
+      for (var j = 7; j >= 0; j--) points.push([edge + side * (8 + hash(j, salt + side) % 15), y + h * j / 7]);
+      B.polygon(points, '#101f29');
+      B.line(edge + side * 7, y + 24, edge + side * 11, y + 53, 2, '#304249', .34);
+      B.line(edge + side * 10, base - 67, edge + side * 16, base - 32, 2, '#273b41', .38);
+    }
+    // Sparse fractured roof strata, never a continuous bright cornice.
+    for (var k = 1; k < 12; k += 3) {
+      var rx = x + w * k / 12, ry = y + 5 + hash(k, salt) % 6;
+      B.line(rx - 7, ry, rx + 4, ry + 4, 2, '#344549', .4);
+      B.polygon([[rx - 2, ry + 4], [rx + 5, ry + 6], [rx + 1, ry + 23]], '#1c3037');
+    }
+    B.part('chamber');
+  }
+  function chamber(B, room, P, salt, fungal, fossil) {
     if (fungal) { fungalChamber(B, room, P, salt); return; }
+    if (fossil) { fossilChamber(B, room, P, salt); return; }
     var x = room.x, y = room.y, w = room.w, h = room.h, rim = 20, rise = Math.min(Math.floor(h * .58), Math.floor(w * .42), 142);
     // The recess is not a floor: its lower edge disappears under actual soil.
     B.rect(x, y + rise, w, h - rise, P.recess, .34);
@@ -282,11 +324,18 @@
   }
   function ribs(B, x, y, width, height, P) {
     var count = 8, dx = width / (count - 1);
+    // Quiet cartilage connects the skeleton behind the uneven joints. Its
+    // bent, four-pixel depth is deliberately not a bright horizontal ledge.
+    var spine = [[x - 12, y + 9], [x + width * .12, y + 8], [x + width * .26, y + 12],
+      [x + width * .42, y + 12], [x + width * .58, y + 17], [x + width * .72, y + 16],
+      [x + width * .87, y + 22], [x + width + 12, y + 24]];
+    B.polygon(spine.concat(spine.slice().reverse().map(function (p) { return [p[0], p[1] + 4]; })), '#2c393b');
     for (var i = 0; i < count; i++) {
       var top = y + Math.abs(i - 3) * 5, xx = Math.round(x + i * dx), tilt = i < 4 ? -1 : 1, long = height - Math.abs(i - 3) * 10;
       var points = [[xx - 3, top], [xx + 11, top + 3], [xx + tilt * 15 + 16, top + long * .2], [xx + tilt * 25 + 15, top + long * .4], [xx + tilt * 27 + 10, top + long * .61], [xx + tilt * 22 + 5, top + long * .82], [xx + tilt * 13 - 4, top + long], [xx + tilt * 8 - 10, top + long - 8], [xx + tilt * 17 - 5, top + long * .8], [xx + tilt * 17 - 2, top + long * .6], [xx + tilt * 16 - 2, top + long * .39], [xx + tilt * 10 - 4, top + long * .19]];
       B.polygon(points, P.body);
       B.surface(points, 14 + i, ['#263a40', '#455453', '#68766c', '#8d9682', '#b6b89a'], 'bone');
+      B.polygon([[xx - 2, top + 8], [xx + 8, top + 10], [xx + 13, top + 18], [xx + 4, top + 15]], '#3d4c47', .6);
       B.line(xx + 3, top + 6, xx + tilt * 13 + 6, top + long * .23, 2, '#bec2a6', .66);
       B.line(xx + tilt * 13 + 6, top + long * .23, xx + tilt * 21 + 4, top + long * .48, 2, '#a5ad92', .6);
       B.line(xx + tilt * 17 + 4, top + long * .71, xx + tilt * 11 - 3, top + long * .93, 1, '#b0b79e', .56);
@@ -295,8 +344,16 @@
       B.rect(xx + tilt * 14 + 1, top + long * .7, 2, 2, P.recess, .8);
       if (i % 2) B.vine(xx + tilt * 15 + 8, top + long * .58, 30 + i * 2, i);
     }
-    B.line(x - 18, y + 4, x + width + 21, y + 19, 8, P.body);
-    for (var k = 0; k < width; k += 16) { B.rect(x + k, y + Math.floor(k * 15 / width) - 1, 8, 5, P.edge, .8); B.rect(x + k + 6, y + Math.floor(k * 15 / width) + 2, 2, 4, P.void, .8); }
+    // Irregular vertebrae overlap the dark connection without recreating the
+    // former bridge-like bone strip. Highlights remain short and broken.
+    for (var k = -10, joint = 0; k < width + 12; k += 25 + hash(joint++, 14) % 7) {
+      var yy = y + 7 + k * 15 / width, bend = hash(k, 14) % 5, size = 23 + hash(k, 7) % 6;
+      B.polygon([[x + k - 2, yy + 3], [x + k + 3, yy - 4 - bend % 2], [x + k + 13, yy - 3],
+        [x + k + size, yy + 1], [x + k + size - 3, yy + 8], [x + k + 14, yy + 10 + bend % 3],
+        [x + k + 4, yy + 7]], P.body);
+      B.line(x + k + 4, yy - 2, x + k + 12, yy - 2 - bend % 2, 2, P.edge, .74);
+      B.rect(x + k + size - 5, yy + 3, 2, 4, P.void, .74);
+    }
   }
   function wheel(B, x, y, radius, P, frozen) {
     B.ellipse(x, y, radius + 13, radius + 13, P.void);
@@ -463,17 +520,38 @@
     } else if (stage === 14) {
       var bone = { body: '#3d4a49', edge: '#69766e', light: '#9a9e8d', recess: P.recess, void: P.void, moss: P.moss };
       ribs(B, cx - 207, floor - 192, 358, 170, bone);
-      var skull = [[cx + 155, floor - 172], [cx + 177, floor - 179], [cx + 205, floor - 172], [cx + 229, floor - 159], [cx + 263, floor - 146], [cx + 284, floor - 128], [cx + 294, floor - 109], [cx + 277, floor - 108], [cx + 267, floor - 120], [cx + 232, floor - 123], [cx + 226, floor - 99], [cx + 202, floor - 94], [cx + 181, floor - 103], [cx + 164, floor - 115]];
+      var skull = [[cx + 154, floor - 169], [cx + 158, floor - 180], [cx + 174, floor - 187], [cx + 193, floor - 184],
+        [cx + 209, floor - 176], [cx + 222, floor - 162], [cx + 245, floor - 153], [cx + 263, floor - 145],
+        [cx + 281, floor - 132], [cx + 292, floor - 119], [cx + 294, floor - 109], [cx + 279, floor - 107],
+        [cx + 267, floor - 120], [cx + 239, floor - 124], [cx + 229, floor - 111], [cx + 224, floor - 97],
+        [cx + 207, floor - 91], [cx + 188, floor - 96], [cx + 169, floor - 113], [cx + 159, floor - 139]];
       B.surface(skull, 141, ['#263a40', '#455453', '#68766c', '#8d9682', '#b6b89a'], 'bone');
-      B.line(cx + 172, floor - 172, cx + 204, floor - 161, 2, '#c0bfa1', .7);
-      B.line(cx + 205, floor - 160, cx + 242, floor - 144, 2, '#a7af94', .7);
-      B.polygon([[cx + 183, floor - 151], [cx + 199, floor - 155], [cx + 210, floor - 142], [cx + 203, floor - 127], [cx + 188, floor - 123], [cx + 178, floor - 136]], '#182b34');
-      B.line(cx + 183, floor - 153, cx + 198, floor - 157, 2, '#99a98c', .8);
-      B.line(cx + 210, floor - 143, cx + 205, floor - 129, 2, '#566b60');
+      B.line(cx + 166, floor - 177, cx + 181, floor - 183, 2, '#c0bfa1', .65);
+      B.line(cx + 183, floor - 181, cx + 204, floor - 169, 2, '#a7af94', .65);
+      B.line(cx + 224, floor - 157, cx + 251, floor - 145, 2, '#a7af94', .62);
+      B.ring(cx + 194, floor - 142, 25, 26, 5, '#748375', .8);
+      B.ellipse(cx + 194, floor - 142, 18, 20, '#12232e');
+      B.ellipse(cx + 189, floor - 146, 10, 12, '#0b1a24');
+      B.polygon([[cx + 211, floor - 158], [cx + 217, floor - 151], [cx + 220, floor - 137],
+        [cx + 214, floor - 128], [cx + 213, floor - 141]], '#2c4144', .85);
+      B.polygon([[cx + 177, floor - 155], [cx + 180, floor - 165], [cx + 189, floor - 167],
+        [cx + 181, floor - 159]], '#314443', .8);
+      B.line(cx + 174, floor - 151, cx + 181, floor - 164, 3, '#a4ae90', .72);
+      B.line(cx + 206, floor - 160, cx + 216, floor - 147, 3, '#829579', .66);
+      B.line(cx + 211, floor - 125, cx + 217, floor - 118, 2, '#3b514c', .8);
       B.polygon([[cx + 268, floor - 134], [cx + 277, floor - 127], [cx + 281, floor - 119], [cx + 274, floor - 121]], '#233740');
-      var jaw = [[cx + 195, floor - 98], [cx + 223, floor - 103], [cx + 254, floor - 101], [cx + 284, floor - 93], [cx + 292, floor - 87], [cx + 272, floor - 82], [cx + 238, floor - 85], [cx + 212, floor - 82], [cx + 191, floor - 91]];
+      var jaw = [[cx + 188, floor - 98], [cx + 197, floor - 109], [cx + 207, floor - 105], [cx + 213, floor - 93],
+        [cx + 232, floor - 90], [cx + 253, floor - 93], [cx + 272, floor - 96], [cx + 290, floor - 89],
+        [cx + 293, floor - 82], [cx + 277, floor - 77], [cx + 254, floor - 77], [cx + 234, floor - 80],
+        [cx + 215, floor - 77], [cx + 201, floor - 83], [cx + 191, floor - 90]];
       B.surface(jaw, 142, ['#263a40', '#455453', '#68766c', '#8d9682', '#b6b89a'], 'bone');
-      for (var tooth = 0; tooth < 10; tooth++) B.polygon([[cx + 232 + tooth * 5, floor - 121 + tooth], [cx + 235 + tooth * 5, floor - 120 + tooth], [cx + 233 + tooth * 5, floor - 112 + tooth]], '#9ba78e');
+      for (var tooth = 0; tooth < 9; tooth++) {
+        var tx = cx + 232 + tooth * 6, ty = floor - 122 + tooth * 1.4, length = 7 + hash(tooth, 14) % 7;
+        B.polygon([[tx, ty], [tx + 4, ty + 1], [tx + 2, ty + length]], '#9ba78e');
+        if (tooth % 2) B.polygon([[tx, floor - 89], [tx + 3, floor - 90], [tx + 1, floor - 96 - tooth % 3]], '#8d9b85');
+      }
+      B.line(cx + 218, floor - 86, cx + 231, floor - 83, 2, '#a6af90', .65);
+      B.line(cx + 258, floor - 81, cx + 273, floor - 82, 2, '#9aa78b', .6);
       B.line(cx + 218, floor - 113, cx + 212, floor - 125, 1, P.recess);
       B.vine(cx + 181, floor - 101, 35, stage); B.vine(cx + 210, floor - 92, 27, stage + 2);
     } else if (stage === 16) {
@@ -542,23 +620,23 @@
     // ledges room to read. Native rock teeth break the chamber silhouette.
     var main = ps.filter(function (p) { return !p.expedition; }), mb = bbox(main, floor), mx = Math.min(origin - 318, mb.x - 39), mr = Math.max(origin + 318, mb.right + 39);
     var room = { id: 'main-vault', x: origin - 144, y: mb.y - 43, w: 288, h: floor - mb.y + 54 };
-    scene.rooms.push(room); chamber(B, room, P, stage, stage === 7);
+    scene.rooms.push(room); chamber(B, room, P, stage, stage === 7, stage === 14);
     [-1, 1].forEach(function (side) {
       var route = main.filter(function (p) { return p.route === side; }), rb = bbox(route, floor), left = side < 0 ? mx : origin + 111, right = side < 0 ? origin - 112 : mr;
       var bay = { id: 'route-bay-' + side, x: left, y: rb.y - 51, w: right - left, h: Math.round(ground((left + right) / 2)) - rb.y + 61 };
-      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19, stage === 7);
+      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19, stage === 7, stage === 14);
     });
     if (layout.place && layout.place.bounds) {
       var pb = layout.place.bounds, wing = { id: 'place-wing', x: pb.x - 26, y: pb.y - 34, w: pb.w + 52, h: pb.h + 44 };
       var oldRight = bounds.x + bounds.w; bounds.x = Math.min(bounds.x, wing.x - 28);
       bounds.w = Math.max(oldRight, wing.x + wing.w + 28) - bounds.x;
-      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97, stage === 7);
+      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97, stage === 7, stage === 14);
       B.lamp(pb.x + 12, pb.y - 18, stage + 97);
     }
     var exp = ps.filter(function (p) { return p.expedition; });
     if (exp.length) {
       var eb = bbox(exp, floor), ef = Math.round(ground((eb.x + eb.right) / 2)), er = { id: 'expedition-vault', x: eb.x - 37, y: eb.y - 60, w: eb.right - eb.x + 74, h: ef - eb.y + 68 };
-      scene.rooms.push(er); chamber(B, er, P, stage + 53, stage === 7);
+      scene.rooms.push(er); chamber(B, er, P, stage + 53, stage === 7, stage === 14);
       // Upper rest rooms have a recess anchored to their own true landing.
       (layout.expedition.rooms || []).forEach(function (r, i) {
         var q = { id: 'landing-' + i, x: r.bounds.x - 9, y: r.bounds.y - 46, w: r.bounds.w + 18, h: 52 + r.bounds.h };
