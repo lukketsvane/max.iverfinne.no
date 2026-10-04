@@ -159,7 +159,7 @@ function coopPromote(){
     mycelSerial=Math.min(1e9,mycelSerial+1000);classPestId=Math.min(1e9,classPestId+1000);
   }
   rogueRun.nextPlantId=Math.max(rogueRun.nextPlantId,top(rogueRun.garden,'id'),top(gardenPlots,'id'))+1000;
-  Object.values(coop.members).forEach(function(m){m.last=now;m.ack=null;if(!m.dodge||!m.dodge.boxer||m.dodge.world!==worldLevel()||m.dodge.expires<=now)m.dodge=null;m.trust=true;m.runnerObserved=null;if(m.classId==='runner'){rattusRebaseHold(m,now);rattusRebaseMotion(m,now);}if(m.classId==='bulwark'){m.cairn=cairnRestoreState(cairnCaptureState(cairnState(m)),m);var q=cairnCaptureState(m.cairn);m.braceUntil=now+q.braceT*1000;m.braceX=q.braceX;m.cool=now+q.primaryCool*1000;m.skillUntil=now+q.specialCool*1000;}coopNextChoice(m);});
+  Object.values(coop.members).forEach(function(m){if(nightRelayMode())m.relayInputAt=m.id===coop.me?now:null;m.last=now;m.ack=null;if(!m.dodge||!m.dodge.boxer||m.dodge.world!==worldLevel()||m.dodge.expires<=now)m.dodge=null;m.trust=true;m.runnerObserved=null;if(m.classId==='runner'){rattusRebaseHold(m,now);rattusRebaseMotion(m,now);}if(m.classId==='bulwark'){m.cairn=cairnRestoreState(cairnCaptureState(cairnState(m)),m);var q=cairnCaptureState(m.cairn);m.braceUntil=now+q.braceT*1000;m.braceX=q.braceX;m.cool=now+q.primaryCool*1000;m.skillUntil=now+q.specialCool*1000;}coopNextChoice(m);});
   Object.values(coop.members).forEach(function(m){if(m.classId==='herbalist'){var proof=m.mycelProof;m.mycel=mycelRestoreState(mycelCaptureState(mycelState(m)),m);mycelRebaseClocks(m,now);m.mycelProof=coopMycelProof(proof,m,now);m.cool=now+m.mycel.primaryCool*1000;m.skillUntil=now+m.mycel.specialCool*1000;}});
   var own=coop.members[coop.me];
   if(own&&own.classId==='runner'){
@@ -289,6 +289,9 @@ function coopInput(id,packet){
       else{a.x=planted.overloadX;a.y=planted.overloadY+12;a.vx=a.vy=0;}
     }
   }
+  // A down gardener's body stays authoritative. Only its clean stationary
+  // current-world heartbeat can confirm Relay presence; submitted Tend cannot.
+  var relayDownInput=!!(nightRelayMode()&&m.vital&&Number.isFinite(m.vital.hp)&&m.vital.hp<=0&&a&&a.world===worldLevel()&&before&&Math.abs(a.x-before.x)<=1&&Math.abs(a.y-before.y)<=1&&a.vx===0&&a.vy===0);
   if(seedDown(m)){a=null;m.last=now;m.reviveHeld=false;if(m.classId==='herbalist')mycelCancelMotion(m,'down');}
   if(a&&m.classId==='sligo'){var colony=sligoColony(m);if(a.sligoId!==colony.active)a=null;else a.sligoMass=sligoBody(colony,colony.active).sligoMass;}
   if(a&&a.st==='climb'){
@@ -321,6 +324,7 @@ function coopInput(id,packet){
     m.last=now;
   }
   if(!Array.isArray(packet.actions)||packet.actions.length>16)return;
+  if(nightRelayMode()&&(accepted||relayDownInput)){m.relayInputAt=now;if(relayDownInput)m.avatar.relayTend=false;}
   packet.actions.forEach(function(action){
     if(action&&m.ack==null&&Number.isSafeInteger(action.id)&&action.id>0)m.ack=action.id-1;
     if(!action||action.id!==m.ack+1)return;m.ack=action.id;

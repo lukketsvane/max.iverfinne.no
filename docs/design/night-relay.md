@@ -42,7 +42,13 @@ rune operators cannot leave that teammate behind. A locally hidden or not yet
 hydrated member blocks the exit charge until an accepted return places them
 there, or the server roster confirms their departure. A stale teammate whose
 accepted position is already at the exit still counts their arrival; stale
-controls cannot hold an exit rune. Authority handoff preserves these rules.
+controls cannot hold an exit rune. After authority handoff, every remote
+participant needs a newly accepted current-world input before counting as fresh
+or operating a rune; an existing accepted exit position and health remain valid.
+Room presence, selection-only rejoin handshakes, snapshots and rejected input
+cannot refresh that confirmation. A clean stationary heartbeat at a known down
+body confirms presence without moving, reviving or preserving its old Tend.
+Authority handoff preserves these rules.
 
 Team defeat also checks the server roster. A reserved living teammate cannot
 be excluded because their input is stale or their avatar is locally hidden.
