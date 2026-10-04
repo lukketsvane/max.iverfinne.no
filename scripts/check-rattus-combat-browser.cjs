@@ -142,7 +142,36 @@ async function checkLatch(page,game,engine,results){
   await arrange(game,'geometry');await down(page,game,'c','latch');try{await game.waitForFunction(()=>window.__rattusCombat.wrestler.latchPhase===1);const geometry=await state(game);assert.equal(geometry.wrestler.anchorKind,'platform','C selects canonical real geometry');assert.ok(geometry.surfaces.some(p=>p.id===geometry.wrestler.anchorSurfaceId));assert.equal((await body(game,'latch')).clip,'tail-whip');}finally{await page.keyboard.up('c');}
   await arrange(game,'plant');await down(page,game,'c','latch');try{await game.waitForFunction(()=>window.__rattusCombat.wrestler.latchPhase===1);const plant=await state(game);assert.equal(plant.wrestler.anchorKind,'plant');assert.ok(plant.plants[0].height>=64);await body(game,'latch');}finally{await page.keyboard.up('c');}
   for(const kind of ['small-plant','dead-plant']){await arrange(game,kind);const eligible=await game.evaluate(()=>{var p=window.__rattusCombat.state.plants[0],a=window.__rattusCombat.anchor({x:p.x,y:window.__rattusCombat.player.y-12});return a&&a.kind;});assert.notEqual(eligible,'plant','Dead or immature stems cannot be real anchors');}
-  await arrange(game,'heavy');await down(page,game,'c','latch');await game.waitForFunction(()=>window.__rattusCombat.wrestler.latchPhase===1);await body(game,'latch');await game.evaluate(()=>window.dispatchEvent(new Event('blur')));await page.keyboard.up('c');await game.waitForFunction(()=>window.__rattusCombat.wrestler.latchPhase===0);
+  await arrange(game,'heavy');
+  // Observe blur in the same native keydown task as acceptance. A delayed RAF
+  // can exhaust the real .75s lease before an additional body wait returns.
+  await game.evaluate(()=>{
+    window.__rattusBlurObservation=null;
+    window.__rattusBlurListener=function(e){
+      if(e.key.toLowerCase()!=='c'||e.repeat)return;
+      window.removeEventListener('keydown',window.__rattusBlurListener);
+      const capture=()=>{const s=window.__rattusCombat.state,q=s.wrestler;return {
+        phase:q.latchPhase,hasLatch:s.policy.hasLatch,startTag:q.latchStartTag,
+        serial:q.latchSerial,anchor:q.anchorKind,cool:q.latchCool};};
+      const before=capture();window.dispatchEvent(new Event('blur'));
+      window.__rattusBlurObservation={before:before,after:capture()};
+    };
+    window.addEventListener('keydown',window.__rattusBlurListener);
+  });
+  try{
+    await down(page,game,'c','latch');
+    const blur=await game.evaluate(()=>window.__rattusBlurObservation);
+    assert.ok(blur,'Real C keydown observes blur cancellation');
+    assert.equal(blur.before.phase,1);assert.equal(blur.before.hasLatch,true);
+    assert.ok(blur.before.startTag>0&&blur.before.serial>0);assert.equal(blur.before.anchor,'pest');
+    assert.equal(blur.after.phase,0);assert.equal(blur.after.hasLatch,false);
+    assert.equal(blur.after.startTag,blur.before.startTag);assert.equal(blur.after.serial,blur.before.serial);
+    assert.equal(blur.after.anchor,'');assert.ok(blur.after.cool>0,'Blur retains accepted cast cooldown');
+    fs.writeFileSync(path.join(output,engine+'-blur.json'),JSON.stringify(blur,null,2));
+  }finally{
+    try{await game.evaluate(()=>{window.removeEventListener('keydown',window.__rattusBlurListener);delete window.__rattusBlurListener;delete window.__rattusBlurObservation;});}
+    finally{await page.keyboard.up('c');}
+  }
   results.push('Held C selects real anchors, moves the actor toward heavy anchors, preserves release velocity, caps travel and locks jump/dodge; light tug grants no boot/traction/combo reward; blur cancels');
 }
 async function heldDrive(page,game,hold){await down(page,game,'v','charge');await game.waitForFunction(()=>window.__rattusCombat.wrestler.drivePhase===1);await body(game,'charge');if(hold>=600)await game.waitForFunction(()=>window.__rattusCombat.wrestler.driveHold>=.6,{},{timeout:1500});else if(hold)await game.waitForTimeout(hold);const release=await game.evaluate(()=>({momentum:window.__rattusCombat.wrestler.momentum,hold:window.__rattusCombat.wrestler.driveHold}));await page.keyboard.up('v');return release;}

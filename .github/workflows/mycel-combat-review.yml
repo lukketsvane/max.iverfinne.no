@@ -64,3 +64,4 @@ jobs:
         with:
           name: mycel-combat-browser-review
           path: mycel-combat-browser-review/
+          if-no-files-found: error
