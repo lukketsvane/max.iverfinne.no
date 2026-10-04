@@ -1,0 +1,1364 @@
+{
+  "schema": "max-boss-megasheet/1",
+  "image": "megasheet.png",
+  "size": [
+    384,
+    504
+  ],
+  "nativeScale": 1,
+  "groups": {
+    "raven": {
+      "offset": [
+        0,
+        0
+      ],
+      "atlas": "raven.json"
+    },
+    "moonroot": {
+      "offset": [
+        0,
+        192
+      ],
+      "atlas": "moonroot.json"
+    },
+    "effects": {
+      "offset": [
+        64,
+        384
+      ],
+      "atlas": "effects.json"
+    }
+  },
+  "frames": {
+    "raven/idle_00": {
+      "rect": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "idle_00"
+    },
+    "raven/idle_01": {
+      "rect": [
+        48,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "idle_01"
+    },
+    "raven/idle_02": {
+      "rect": [
+        96,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "idle_02"
+    },
+    "raven/idle_03": {
+      "rect": [
+        144,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "idle_03"
+    },
+    "raven/caw_00": {
+      "rect": [
+        192,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "caw_00"
+    },
+    "raven/caw_01": {
+      "rect": [
+        240,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "caw_01"
+    },
+    "raven/caw_02": {
+      "rect": [
+        288,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "caw_02"
+    },
+    "raven/caw_03": {
+      "rect": [
+        336,
+        0,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "caw_03"
+    },
+    "raven/move_00": {
+      "rect": [
+        0,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "move_00"
+    },
+    "raven/move_01": {
+      "rect": [
+        48,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "move_01"
+    },
+    "raven/move_02": {
+      "rect": [
+        96,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "move_02"
+    },
+    "raven/move_03": {
+      "rect": [
+        144,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "move_03"
+    },
+    "raven/move_04": {
+      "rect": [
+        192,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "move_04"
+    },
+    "raven/move_05": {
+      "rect": [
+        240,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "move_05"
+    },
+    "raven/crouch_00": {
+      "rect": [
+        288,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "crouch_00"
+    },
+    "raven/crouch_01": {
+      "rect": [
+        336,
+        48,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "crouch_01"
+    },
+    "raven/flight_00": {
+      "rect": [
+        0,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "flight_00"
+    },
+    "raven/flight_01": {
+      "rect": [
+        48,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "flight_01"
+    },
+    "raven/flight_02": {
+      "rect": [
+        96,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "flight_02"
+    },
+    "raven/flight_03": {
+      "rect": [
+        144,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "flight_03"
+    },
+    "raven/flight_04": {
+      "rect": [
+        192,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "flight_04"
+    },
+    "raven/flight_05": {
+      "rect": [
+        240,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "flight_05"
+    },
+    "raven/impact_00": {
+      "rect": [
+        288,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "impact_00"
+    },
+    "raven/impact_01": {
+      "rect": [
+        336,
+        96,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "impact_01"
+    },
+    "raven/hurt_00": {
+      "rect": [
+        0,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "hurt_00"
+    },
+    "raven/hurt_01": {
+      "rect": [
+        48,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "hurt_01"
+    },
+    "raven/hurt_02": {
+      "rect": [
+        96,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "hurt_02"
+    },
+    "raven/death_00": {
+      "rect": [
+        144,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "death_00"
+    },
+    "raven/death_01": {
+      "rect": [
+        192,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "death_01"
+    },
+    "raven/death_02": {
+      "rect": [
+        240,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "death_02"
+    },
+    "raven/death_03": {
+      "rect": [
+        288,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "death_03"
+    },
+    "raven/death_04": {
+      "rect": [
+        336,
+        144,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "raven",
+      "sourceFrame": "death_04"
+    },
+    "moonroot/idle_00": {
+      "rect": [
+        0,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_00"
+    },
+    "moonroot/idle_01": {
+      "rect": [
+        48,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_01"
+    },
+    "moonroot/idle_02": {
+      "rect": [
+        96,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_02"
+    },
+    "moonroot/idle_03": {
+      "rect": [
+        144,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_03"
+    },
+    "moonroot/idle_04": {
+      "rect": [
+        192,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_04"
+    },
+    "moonroot/idle_05": {
+      "rect": [
+        240,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_05"
+    },
+    "moonroot/idle_06": {
+      "rect": [
+        288,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_06"
+    },
+    "moonroot/idle_07": {
+      "rect": [
+        336,
+        192,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "idle_07"
+    },
+    "moonroot/move_00": {
+      "rect": [
+        0,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_00"
+    },
+    "moonroot/move_01": {
+      "rect": [
+        48,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_01"
+    },
+    "moonroot/move_02": {
+      "rect": [
+        96,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_02"
+    },
+    "moonroot/move_03": {
+      "rect": [
+        144,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_03"
+    },
+    "moonroot/move_04": {
+      "rect": [
+        192,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_04"
+    },
+    "moonroot/move_05": {
+      "rect": [
+        240,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_05"
+    },
+    "moonroot/move_06": {
+      "rect": [
+        288,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_06"
+    },
+    "moonroot/move_07": {
+      "rect": [
+        336,
+        240,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "move_07"
+    },
+    "moonroot/windup_00": {
+      "rect": [
+        0,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "windup_00"
+    },
+    "moonroot/lash_00": {
+      "rect": [
+        48,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "lash_00"
+    },
+    "moonroot/slam_00": {
+      "rect": [
+        96,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "slam_00"
+    },
+    "moonroot/cast_00": {
+      "rect": [
+        144,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "cast_00"
+    },
+    "moonroot/brace_00": {
+      "rect": [
+        192,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "brace_00"
+    },
+    "moonroot/summon_00": {
+      "rect": [
+        240,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "summon_00"
+    },
+    "moonroot/hurt_00": {
+      "rect": [
+        288,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "hurt_00"
+    },
+    "moonroot/hurt_01": {
+      "rect": [
+        336,
+        288,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "hurt_01"
+    },
+    "moonroot/hurt_02": {
+      "rect": [
+        0,
+        336,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "hurt_02"
+    },
+    "moonroot/enrage_00": {
+      "rect": [
+        48,
+        336,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "enrage_00"
+    },
+    "moonroot/enrage_01": {
+      "rect": [
+        96,
+        336,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "enrage_01"
+    },
+    "moonroot/death_00": {
+      "rect": [
+        144,
+        336,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "death_00"
+    },
+    "moonroot/death_01": {
+      "rect": [
+        192,
+        336,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "death_01"
+    },
+    "moonroot/death_02": {
+      "rect": [
+        240,
+        336,
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        44
+      ],
+      "sourceAtlas": "moonroot",
+      "sourceFrame": "death_02"
+    },
+    "effects/vine_lash": {
+      "rect": [
+        64,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        3,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "vine_lash"
+    },
+    "effects/moon_seed_00": {
+      "rect": [
+        96,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "moon_seed_00"
+    },
+    "effects/moon_seed_01": {
+      "rect": [
+        128,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "moon_seed_01"
+    },
+    "effects/moon_seed_02": {
+      "rect": [
+        160,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "moon_seed_02"
+    },
+    "effects/moon_seed_03": {
+      "rect": [
+        192,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "moon_seed_03"
+    },
+    "effects/sprout_blue": {
+      "rect": [
+        224,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        21
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "sprout_blue"
+    },
+    "effects/sprout_curl": {
+      "rect": [
+        256,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        21
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "sprout_curl"
+    },
+    "effects/sprout_pink": {
+      "rect": [
+        288,
+        384,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        21
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "sprout_pink"
+    },
+    "effects/feather_00": {
+      "rect": [
+        64,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_00"
+    },
+    "effects/feather_01": {
+      "rect": [
+        96,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_01"
+    },
+    "effects/feather_02": {
+      "rect": [
+        128,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_02"
+    },
+    "effects/feather_03": {
+      "rect": [
+        160,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_03"
+    },
+    "effects/feather_04": {
+      "rect": [
+        192,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_04"
+    },
+    "effects/feather_05": {
+      "rect": [
+        224,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_05"
+    },
+    "effects/feather_06": {
+      "rect": [
+        256,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_06"
+    },
+    "effects/feather_07": {
+      "rect": [
+        288,
+        408,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_07"
+    },
+    "effects/feather_08": {
+      "rect": [
+        64,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_08"
+    },
+    "effects/feather_09": {
+      "rect": [
+        96,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_09"
+    },
+    "effects/feather_10": {
+      "rect": [
+        128,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "feather_10"
+    },
+    "effects/petal_00": {
+      "rect": [
+        160,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_00"
+    },
+    "effects/petal_01": {
+      "rect": [
+        192,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_01"
+    },
+    "effects/petal_02": {
+      "rect": [
+        224,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_02"
+    },
+    "effects/petal_03": {
+      "rect": [
+        256,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_03"
+    },
+    "effects/petal_04": {
+      "rect": [
+        288,
+        432,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_04"
+    },
+    "effects/petal_05": {
+      "rect": [
+        64,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_05"
+    },
+    "effects/petal_06": {
+      "rect": [
+        96,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_06"
+    },
+    "effects/petal_07": {
+      "rect": [
+        128,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "petal_07"
+    },
+    "effects/soil_03": {
+      "rect": [
+        160,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "soil_03"
+    },
+    "effects/soil_04": {
+      "rect": [
+        192,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "soil_04"
+    },
+    "effects/soil_05": {
+      "rect": [
+        224,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "soil_05"
+    },
+    "effects/mote_02": {
+      "rect": [
+        256,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "mote_02"
+    },
+    "effects/mote_04": {
+      "rect": [
+        288,
+        456,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "mote_04"
+    },
+    "effects/mote_05": {
+      "rect": [
+        64,
+        480,
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        12
+      ],
+      "sourceAtlas": "effects",
+      "sourceFrame": "mote_05"
+    }
+  }
+}

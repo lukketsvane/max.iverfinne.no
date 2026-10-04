@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "asset": "raven",
+      "dimensions": [
+        384,
+        192
+      ],
+      "frameBounds": "pass",
+      "emptyBorder": "pass",
+      "fixedBodyAnchors": "pass",
+      "animationReferences": "pass",
+      "individualPngs": 32
+    },
+    {
+      "asset": "moonroot",
+      "dimensions": [
+        384,
+        192
+      ],
+      "frameBounds": "pass",
+      "emptyBorder": "pass",
+      "fixedBodyAnchors": "pass",
+      "animationReferences": "pass",
+      "individualPngs": 30
+    },
+    {
+      "asset": "effects",
+      "dimensions": [
+        256,
+        120
+      ],
+      "frameBounds": "pass",
+      "emptyBorder": "pass",
+      "fixedBodyAnchors": "effect-specific",
+      "animationReferences": "pass",
+      "individualPngs": 33
+    },
+    {
+      "asset": "megasheet",
+      "dimensions": [
+        384,
+        504
+      ],
+      "frames": 95,
+      "allFramesIncluded": "pass"
+    }
+  ],
+  "frames": 95,
+  "uniquePixelBuffers": 93,
+  "binaryAlpha": true,
+  "hiddenRGBZero": true
+}
