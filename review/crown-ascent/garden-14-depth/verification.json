@@ -1,0 +1,103 @@
+{
+  "source": "c0268db5043d1248a6726b2ef12c400e69b9ba39a29b48597fc099c745f7efd1",
+  "architectureBefore": "96f327458c353fc8d6c601d699bb3a3304ebb243361c4466e42478d78848253d",
+  "architectureAfter": "e36ff8d0c6a6272f371b9c4d27286547c9c8bb920490dfa89e3102d1ccc32d91",
+  "nativePngCount": 661,
+  "nativePngBytesUnchanged": true,
+  "errors": [],
+  "rows": [
+    {
+      "name": "desktop",
+      "viewport": {
+        "w": 1000,
+        "h": 650
+      },
+      "sameCamera": {
+        "w": 334,
+        "h": 217,
+        "scale": 3,
+        "x": 2663023,
+        "y": -161.90195537241874,
+        "smoothing": false
+      },
+      "geometryUnchanged": true,
+      "roomBoundsUnchanged": true,
+      "controlsUnchanged": true,
+      "opsBefore": 9231,
+      "opsAfter": 8451,
+      "walkDistance": 61.76293680863455,
+      "jumpRise": 23.776286296159547,
+      "actualLanding": "14:1:0",
+      "liveElapsed": 1.9500000000000202
+    },
+    {
+      "name": "portrait",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "sameCamera": {
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "x": 2663125,
+        "y": -199.90195537241874,
+        "smoothing": false
+      },
+      "geometryUnchanged": true,
+      "roomBoundsUnchanged": true,
+      "controlsUnchanged": true,
+      "opsBefore": 9231,
+      "opsAfter": 8451,
+      "walkDistance": 61.546948672737926,
+      "jumpRise": 23.854978467981965,
+      "actualLanding": "14:1:0",
+      "liveElapsed": 1.9166000000000087
+    },
+    {
+      "name": "landscape",
+      "viewport": {
+        "w": 568,
+        "h": 320
+      },
+      "sameCamera": {
+        "w": 284,
+        "h": 160,
+        "scale": 2,
+        "x": 2663048,
+        "y": -121.90195537241874,
+        "smoothing": false
+      },
+      "geometryUnchanged": true,
+      "roomBoundsUnchanged": true,
+      "controlsUnchanged": true,
+      "opsBefore": 9231,
+      "opsAfter": 8451,
+      "walkDistance": 61.54214867344126,
+      "jumpRise": 22.942401899085,
+      "actualLanding": "14:1:0",
+      "liveElapsed": 1.9666000000000028
+    }
+  ],
+  "baselineCommit": "8680e00d718384364563abd932863c492464776f",
+  "referenceArchiveSHA256": "133385b4ab3cf03e6348bc88fdd09ed312d66bbc80d36d94ff054ff1c547159f",
+  "captureEngine": "Chromium 153, actual Playwright fallback after bounded agent-browser startup failure",
+  "seed": 1,
+  "heroCamera": {
+    "x": 2662830,
+    "y": -320,
+    "w": 720,
+    "h": 320,
+    "smoothing": false
+  },
+  "actualFurnished100Seeds": {
+    "minOps": 8155,
+    "maxOps": 8755,
+    "limit": 10000
+  },
+  "independentFurnishedSynthetic1000Seeds": {
+    "minOps": 8015,
+    "maxOps": 8715,
+    "limit": 10000
+  }
+}

@@ -6,6 +6,8 @@ const path = require('node:path');
 const A = require('../campaign-architecture.js');
 const S = require('../stage-layout.js');
 const E = require('../stage-expeditions.js');
+const P = require('../garden-places.js');
+const G = require('../guardian-sites.js');
 const T = require('../assets/tiles-v1/atlas.json');
 
 const ground = x => 182 + Math.floor(Math.sin(x / 190) * 3);
@@ -13,6 +15,13 @@ const wet = () => null;
 function layout(stage, seed = 1) {
   const L = S.create(stage, 1090, ground, wet, seed);
   E.furnish(L, ground, wet);
+  return L;
+}
+function furnishedLayout(stage, seed = 1) {
+  const L = S.create(stage, 1090, ground, wet, seed);
+  P.furnish(L, ground, wet);
+  E.furnish(L, ground, wet);
+  G.furnish(L, ground, wet);
   return L;
 }
 
@@ -94,17 +103,25 @@ test('fractional-camera drawing culls scenery and preserves existing tiles at so
   assert.equal(state.globalAlpha, .8); assert.equal(state.imageSmoothingEnabled, false);
 });
 
-test('Garden 7 keeps exact room and footing geometry and every other chamber unchanged', () => {
-  // Captured before the Garden 7 pass, from 805551b. These hashes cover whole
-  // ordered scenes, not a few properties that could miss collateral changes.
-  const untouched = createHash('sha256'), gardenGeometry = createHash('sha256');
+test('intentional Garden 7/14 passes preserve every untouched chamber and original geometry', () => {
+  // Untouched stages are independently derived from 805551b, excluding only
+  // the two intentional passes. Whole Garden 7 scenes are pinned to 8680e00;
+  // neither pin is refreshed to bless the new Garden 14 implementation.
+  const untouched = createHash('sha256'), gardenGeometry = createHash('sha256'),
+    gardenSeven = createHash('sha256'), fossilGeometry = createHash('sha256');
   for (const seed of [1, 81, 260931841]) for (let stage = 3; stage <= 19; stage++) {
     const scene = A.buildScene(layout(stage, seed), ground, wet);
-    if (stage !== 7) untouched.update(JSON.stringify(scene));
-    else gardenGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+    if (stage !== 7 && stage !== 14) untouched.update(JSON.stringify(scene));
+    if (stage === 7) {
+      gardenSeven.update(JSON.stringify(scene));
+      gardenGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+    }
+    if (stage === 14) fossilGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
   }
-  assert.equal(untouched.digest('hex'), '99b32c67e3960fc5ae45ed8272a824276cfccbff12e431d15ddab96cc182283d');
+  assert.equal(untouched.digest('hex'), 'b7082e2a561a30a48100320bda7433a03ab2ac0eff5a970fa5db9b9ef4c3e31d');
+  assert.equal(gardenSeven.digest('hex'), '3352829178fe0514cfdb0a503bf7e4de2ee9021baca0792e52eaeb17c5caada8');
   assert.equal(gardenGeometry.digest('hex'), '2f0a62113454d437f7df83d153efd105fea995cde2ebcf08deeac9eee43daef0');
+  assert.equal(fossilGeometry.digest('hex'), 'c2f94c68c939bd997b86c8ba59259474ab1f729f04c0461622bd8919b4ad04c8');
   for (const [file, expected] of [
     ['assets/levels-v1/seed-vault.png', '6c05f0ebbd28dbf23c9a23ba484bff7273f314768acebb74ffc6cf7138ecd63f'],
     ['assets/tiles-v1/sanctuary.png', '2dab27519a47db0d037ea89aa3a7b0aca12a96df2a4971b042e0708ebc6c21ef']
@@ -156,4 +173,104 @@ test('Garden 7 native composition stays deterministic, bounded and cached across
   assert.notEqual(changed, previous);
   assert.notDeepEqual(changed.rooms, previous.rooms, 'rear expedition envelope follows actual changed footing');
   assert.notDeepEqual(changed.ops, previous.ops);
+});
+
+test('Garden 14 fossil depth follows every fully furnished room without moving original geometry', () => {
+  const geometry = createHash('sha256');
+  for (const seed of [1, 81, 260931841]) {
+    const L = furnishedLayout(14, seed), before = JSON.stringify(L), scene = A.buildScene(L, ground, wet);
+    assert.equal(JSON.stringify(L), before);
+    geometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
+    for (const room of scene.rooms.filter(r => !r.id.startsWith('landing-'))) {
+      const depth = scene.ops.filter(op => op.part === 'fossil-depth:' + room.id);
+      const enclosure = scene.ops.filter(op => op.part === 'fossil-enclosure:' + room.id);
+      assert.ok(depth.length > 0 && enclosure.length > 0, room.id + ' has fossil-vault depth');
+      assert.deepEqual([depth[0].x, depth[0].y, depth[0].w, depth[0].h], [room.x, room.y, room.w, room.h]);
+      assert.ok(depth[0].alpha <= .4, 'existing cold cavern remains visible');
+      assert.ok(depth.every(op => op.kind === 'rect'));
+      assert.ok(depth.every(op => Math.max(...op.color.slice(1).match(/../g).map(c => parseInt(c, 16))) < 100),
+        'distant bone masses do not gain bright, false walking surfaces');
+      for (const color of ['#172b35', '#1b3039']) {
+        const curve = depth.filter(op => op.color === color);
+        assert.ok(curve.length > 10 && curve.every(op => op.w <= 24), 'far ribs taper rather than flare into X-braces');
+        assert.ok(Math.max(...curve.map(op => op.x + op.w)) - Math.min(...curve.map(op => op.x)) > 40,
+          'the thin buried rib bends through a wider organic silhouette');
+      }
+    }
+    assert.ok(!scene.ops.some(op => op.part.startsWith('fungal-')), 'fossils have their own visual language');
+  }
+  assert.equal(geometry.digest('hex'), 'd00f28cc9006d4c30dceb4aba318cebb8da13acded027566600119833059c5ad');
+});
+
+test('Garden 14 keeps the existing native hero footprint with a broken orbit and connected irregular vertebrae', () => {
+  const scene = A.buildScene(furnishedLayout(14), ground, wet), { x, floor } = scene.landmark;
+  const hero = scene.ops.filter(op => op.part === 'landmark:ancient-rib-vault');
+  assert.ok(hero.every(op => op.kind === 'rect'), 'anatomy is native original geometry, not a resized bitmap');
+  assert.ok(hero.every(op => op.x >= x - 229 && op.x + op.w <= x + 295));
+  assert.ok(hero.every(op => op.y >= floor - 193 && op.y + op.h <= floor - 22));
+  const orbit = hero.filter(op => op.color === '#12232e');
+  assert.ok(orbit.length > 5, 'orbital cavity has a rounded native contour');
+  assert.ok(Math.max(...orbit.map(op => op.w)) >= 37 && Math.min(...orbit.map(op => op.w)) <= 3);
+  assert.ok(hero.some(op => op.color === '#0b1a24'), 'orbit has a quieter inner depth');
+  assert.ok(hero.some(op => op.color === '#2c4144') && hero.some(op => op.color === '#314443'),
+    'unequal cheek and brow shadows break the perfect orbital rim');
+  const cartilage = hero.filter(op => op.color === '#2c393b');
+  assert.ok(cartilage.length > 5 && cartilage.every(op => op.h <= 4), 'thin dark cartilage joins the irregular bones');
+  assert.ok(Math.max(...cartilage.map(op => op.x + op.w)) - Math.min(...cartilage.map(op => op.x)) > 350);
+  assert.ok(hero.filter(op => op.color === '#3d4a49').every(op => op.w <= 55),
+    'bone silhouette has no long continuous bridge-like spine strip');
+  assert.equal(scene.landmark.decoration, true);
+});
+
+test('100 fully furnished Garden 14 footprints retain native caching, culling and the original operation ceiling', () => {
+  for (let seed = 1; seed <= 100; seed++) {
+    const L = furnishedLayout(14, seed), before = JSON.stringify(L), scene = A.buildScene(L, ground, wet);
+    assert.equal(JSON.stringify(L), before);
+    assert.equal(A.buildScene(L, ground, wet), scene);
+    assert.deepEqual(A.buildScene(furnishedLayout(14, seed), ground, wet), scene);
+    assert.ok(scene.ops.length > 700 && scene.ops.length < 10000, 'seed ' + seed + ': ' + scene.ops.length);
+    assert.ok(scene.ops.length < 9500, 'fossil composition retains furnished headroom: ' + seed);
+    for (const op of scene.ops) {
+      assert.ok([op.x, op.y, op.w, op.h].every(Number.isInteger));
+      assert.ok(op.w > 0 && op.h > 0 && op.alpha > 0 && op.alpha <= 1);
+      if (op.kind === 'tile') {
+        const p = T.pieces[op.piece];
+        assert.ok(p && op.ox >= 0 && op.oy >= 0 && op.ox + op.w <= p[2] && op.oy + op.h <= p[3]);
+      }
+    }
+  }
+  const L = furnishedLayout(14, 81), previous = A.buildScene(L, ground, wet);
+  L.platforms.filter(p => p.expedition).reduce((left, p) => p.x < left.x ? p : left).x -= 19;
+  const changed = A.buildScene(L, ground, wet);
+  assert.notEqual(changed, previous);
+  assert.notDeepEqual(changed.rooms, previous.rooms);
+  assert.notDeepEqual(changed.ops, previous.ops);
+  const scene = A.buildScene(furnishedLayout(14), ground, wet), tile = scene.ops.find(op => op.kind === 'tile'), drawn = [];
+  let state = { globalAlpha: .9, imageSmoothingEnabled: true, fillStyle: '#123456' }, saved;
+  const ctx = new Proxy({}, {
+    get(_, key) {
+      if (key in state) return state[key];
+      if (key === 'save') return () => { saved = { ...state }; };
+      if (key === 'restore') return () => { state = saved; };
+      return (...args) => {
+        assert.equal(state.imageSmoothingEnabled, false, 'every actual scenery draw is native and unsmoothed');
+        drawn.push({ key, args });
+      };
+    },
+    set(_, key, value) { state[key] = value; return true; }
+  });
+  const tiles = { img: { complete: true, naturalWidth: 128 }, pieces: T.pieces };
+  A.draw(ctx, furnishedLayout(14), tile.x - 17.49, tile.y - 15.6, 160, 120, 10, tiles, ground, wet);
+  assert.ok(drawn.length > 0 && drawn.length < scene.ops.length, 'small fractional-camera viewport culls the furnished vault');
+  assert.ok(drawn.some(d => d.key === 'drawImage'), 'the viewport exercises existing source atlas crops');
+  for (const d of drawn) {
+    if (d.key === 'fillRect') assert.ok(d.args.every(Number.isInteger));
+    if (d.key === 'drawImage') {
+      assert.equal(d.args[0], tiles.img); assert.equal(d.args.length, 9);
+      assert.equal(d.args[3], d.args[7]); assert.equal(d.args[4], d.args[8]);
+      assert.ok(d.args.slice(1).every(Number.isInteger));
+      assert.ok(d.args[3] > 0 && d.args[4] > 0);
+    }
+  }
+  assert.deepEqual(state, { globalAlpha: .9, imageSmoothingEnabled: true, fillStyle: '#123456' }, 'drawing restores caller state');
 });
