@@ -36,6 +36,14 @@ an accepted avatar and input newer than 500 ms. Snapshots preserve the entire
 heist and health through host handoff. Existing character reservation, room
 limits, invite validation and access controls remain authoritative in Supabase.
 
+The final escape checks the current server room roster, including a teammate
+whose input has gone stale or whose PWA membership remains reserved. Two fresh
+rune operators cannot leave that teammate behind. A locally hidden or not yet
+hydrated member blocks the exit charge until an accepted return places them
+there, or the server roster confirms their departure. A stale teammate whose
+accepted position is already at the exit still counts their arrival; stale
+controls cannot hold an exit rune. Authority handoff preserves these rules.
+
 ## Iteration evidence
 
 The first input-only paired runs exposed an unsafe walk-off edge beside lock

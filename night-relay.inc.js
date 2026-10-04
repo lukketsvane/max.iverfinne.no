@@ -29,6 +29,13 @@ function nightRelayLayout(){
   activeStageLayout=L;return L;
 }
 function relayActors(){return seedActors().filter(function(a){return a.member&&(a.id===coop.me||performance.now()-a.member.last<1500);});}
+// The room retains PWA memberships when their actor is stale or locally hidden.
+// Every reserved participant must arrive before the team can claim the escape.
+function relayTeamAtExit(){
+  var members=coop&&coop.network&&coop.network.room&&coop.network.room.members;
+  if(!Array.isArray(members)||members.length<2)return false;
+  return members.every(function(q){var m=q&&Object.hasOwn(coop.members,q.id)&&coop.members[q.id];return !!(m&&!m.left&&seedVital(m).hp>0&&coopMemberAvatar(m).x>=972);});
+}
 function relayHeld(a){return a.v.hp>0&&(a.id===coop.me?!!(heldDown||heldSpace||swipeDown):!!a.p.relayTend&&performance.now()-a.member.last<500);}
 function relayAt(a,x,h,r){return a.v.hp>0&&a.p.grounded&&Math.abs(a.p.x-x)<(r||17)&&Math.abs(a.p.y-(rogueRun.survival.base-h))<5;}
 function relayCheckpoint(){var s=rogueRun.survival;return {x:s.stage?RELAY_LOCKS[s.stage-1].x+24:22,y:s.base};}
@@ -114,7 +121,7 @@ function updateNightRelay(dt){
     }
   }else{
     var left=held.find(function(a){return relayAt(a,1032,0);}),right=held.find(function(a){return relayAt(a,1100,22);});
-    var escaped=left&&right&&left.id!==right.id&&(left.id===carrier.id||right.id===carrier.id)&&actors.every(function(a){return a.v.hp>0&&a.p.x>=972;});
+    var escaped=left&&right&&left.id!==right.id&&(left.id===carrier.id||right.id===carrier.id)&&relayTeamAtExit();
     s.exitCharge=escaped?Math.min(2,s.exitCharge+dt):Math.max(0,s.exitCharge-dt*2);
     if(s.exitCharge>=2)finishNightRelay(true,'Everyone made it home.');
   }
