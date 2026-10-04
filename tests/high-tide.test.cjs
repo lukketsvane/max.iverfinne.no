@@ -74,14 +74,16 @@ test('native routes are climbable by every class at 30, 60 and 120 Hz without ho
  }
 });
 
-test('ordinary bomb projectiles damage and defeat a guardian through the live collision path',()=>{
- const g=setup('herbalist').game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();const k=g.liveBoss();
+test('Mycel spore darts damage and defeat a guardian through the live collision path',()=>{
+ const h=setup('herbalist'),g=h.game,p=start(g),s=g.rogueRun.survival;s.height=p.tideHeight=g.HIGH_TIDE_GATES[0];stand(g,g.highTideTip());g.highTideSpawnBoss();const k=g.liveBoss();let casts=0;
  for(let i=0;i<60*30&&k.hp>0;i++){
-  g.bombCool=Math.max(0,g.bombCool-1/60);
-  if(!g.bombCool)g.throwBomb({kind:'krek',o:k},.7);
+  h.advance(1000/60);
+  if(g.bombCool<=0&&g.throwBomb({kind:'krek',o:k},.7)){
+   casts++;assert.equal(g.classShots.at(-1).kind,'spore');assert.equal(g.bombs.length,0,'Mycel never falls back to a bomb');
+  }
   g.updateBombs(1/60);
  }
- assert.ok(k.hp<=0,'normal projectiles must hit the native guardian');assert.equal(s.bosses,1);assert.equal(g.runWon,false);
+ assert.ok(casts>1,'the accepted primary clock must recover between real casts');assert.ok(k.hp<=0,'normal spores must hit the native guardian');assert.equal(s.bosses,1);assert.equal(g.liveBoss(),null);assert.equal(g.runWon,false);
 });
 
 test('a downed climber stays reachable high up and a partner can revive them through Tend',()=>{
