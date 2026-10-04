@@ -52,6 +52,7 @@
   #perkMenu small{font:11px/1.3 ui-monospace,monospace;color:#c0ccc2;text-align:center}
   #perkMenu .perkUnlock{font:10px/1.25 ui-monospace,monospace;color:#e0ba72;text-align:center;margin-top:auto}
   #perkMenu button[data-signature="true"]{border-color:#e0ba72;border-top-width:3px}
+  #perkMenu button[data-redraw]{grid-column:1/-1;min-height:28px;padding:6px;font:10px/1.2 ui-monospace,monospace;color:#c0ccc2}
   .perkKind{font:8px/1 ui-monospace,monospace;color:#8eb6b8;letter-spacing:.05em;text-transform:uppercase}
   .perkIcon{width:27px;height:27px;display:block;image-rendering:pixelated;flex-shrink:0}
   .perkDots{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);display:flex;gap:3px;height:3px}
@@ -394,6 +395,7 @@ window.addEventListener('keydown', function (e) {
   var k = e.key;
   rattusWake();
   if(rogueRun.choice&&/^[123]$/.test(k)){if(!e.repeat&&rogueRun.choice[+k-1])chooseRoguePerk(rogueRun.choice[+k-1].id);e.preventDefault();return;}
+  if(rogueRun.choice&&k==='4'){if(!e.repeat)redrawRogueChoice();e.preventDefault();return;}
   if (runIsPaused()) return;
   if(k==='c'||k==='C')rattusHeldC=true;if(k==='v'||k==='V')rattusHeldV=true;
   if (k === 'ArrowLeft' || k === 'a' || k === 'A') heldL = true;
@@ -2547,7 +2549,7 @@ var seedPickups=[], seedCollected={}, seedSpawnClock=0, seedPickupUid=0, seedStr
 var FINAL_WAVE=3,runElapsed=0,runFinishT=0,runWon=false,raidLostStart=0,gardenBossSpawned=false;
 var rogueMeta={runs:0,wins:0,bestWave:0,bestScore:0,bestTime:0,petals:0};
 var selectedPerk=null, resultAtlasReady=false, menuPaused=false, runActive=false, companion=null, soloCrew=[];
-var rogueRun={classId:'mech',skinId:'tide',ownerId:null,playerName:'Guest',garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,traits:emptyTraits(),perks:window.MaxClasses.perks('mech')};
+var rogueRun={classId:'mech',skinId:'tide',ownerId:null,playerName:'Guest',garden:[],nextPlantId:1,world:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,choiceRedrawn:false,choiceRound:0,ended:false,finalized:false,traits:emptyTraits(),perks:window.MaxClasses.perks('mech')};
 try{
   var rm=JSON.parse(localStorage.getItem('max-fuglesprenger-meta-v1')||'null');if(rm)rogueMeta=Object.assign(rogueMeta,rm);
 }catch(e){}
@@ -2622,7 +2624,7 @@ function drawCompanion(){
 function bracedMember(m,a){if((m?m.classId:ownClass().id)==='bulwark')return cairnBraceActive(m,a);if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.bracing:P.brace>0;return performance.now()<(m.braceUntil||0)&&Math.abs(a.x-(m.braceX||0))<=6;}
 function curledMember(m,a){if(!a||!a.grounded||a.wet)return false;if(!m||m.id===coop.me)return coopActor?!!a.curled:P.tun>0;return performance.now()<(m.tunUntil||0)&&Math.abs(a.x-(m.tunX||0))<=6;}
 function classProtection(plant,context){return cairnProtection(plant,context||{kind:'hazard',pointX:plant.x,pointY:surfaceY(plant.x)}).multiplier;}
-function plantProtection(plant,bite,context){return classProtection(plant,context||{kind:bite?'bite':'hazard',pointX:plant.x,pointY:surfaceY(plant.x)})*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?rogueRun.perks.shield:rogueRun.perks.bark)||0);}
+function plantProtection(plant,bite,context){var perks=plantPerks(plant);return classProtection(plant,context||{kind:bite?'bite':'hazard',pointX:plant.x,pointY:surfaceY(plant.x)})*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?perks.shield:perks.bark)||0);}
 function useClassSecondary(){
   if(runIsPaused()||seedDown())return false;
   if(ownClass().id==='herbalist'){var cloud=mycelCloud(mycelInputAim());if(!cloud)P.skillDenied=.2;return cloud;}
@@ -3197,7 +3199,7 @@ function resetRogueRun(reason,selection){
   gifts.length=0;
   crows.length=0;smallFauna.length=0;
   var keepWorld=1;
-  rogueRun={classId:classId,skinId:skin,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,ended:false,finalized:false,world:keepWorld,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
+  rogueRun={classId:classId,skinId:skin,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,choiceRedrawn:false,choiceRound:0,ended:false,finalized:false,world:keepWorld,evergreenWorld:0,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
   rogueRun.mode=['last-seed','high-tide','night-relay'].indexOf(selection.mode)>=0?selection.mode:'garden';resetLastSeed();resetHighTide();resetNightRelay();
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
@@ -3385,6 +3387,14 @@ function drawResultScene(canvas,bouquet,resultRun){
 function perkMax(id){return window.MaxBuilds.max(id);}
 var ROGUE_PERKS=window.MaxBuilds.perks;
 function perkChoices(perks,salt,classId){return window.MaxBuilds.choices(perks||rogueRun.perks,rogueRun.level,((salt||0)+gardenWave+worldLevel())^(rogueRun.seed|0),classId||rogueRun.classId,highTideMode()?'high-tide':lastSeedMode()?'last-seed':null);}
+function redrawChoices(perks,offered,salt,classId){return window.MaxBuilds.redraw(perks,offered,rogueRun.level,((salt||0)+gardenWave+worldLevel())^(rogueRun.seed|0),classId||rogueRun.classId,highTideMode()?'high-tide':lastSeedMode()?'last-seed':null);}
+function redrawRogueChoice(){
+  if(rogueRun.ended||!rogueRun.choice||rogueRun.choiceRedrawn||seedDown())return false;
+  if(coop){var m=coop.members[coop.me];if(!m||m.redrawn||!redrawChoices(m.perks,m.choices,m.slot*100+m.round,m.classId).length)return false;return coop.host?coopRedraw(m.id,m.round):coopAction('boon-redraw',{round:m.round});}
+  var next=redrawChoices(rogueRun.perks,rogueRun.choice,rogueRun.choiceRound);
+  if(!next.length)return false;
+  rogueRun.choice=next;rogueRun.choiceRedrawn=true;renderRogueChoice();saveGarden();return true;
+}
 
 var BOON_COLORS=['#a6c982','#8eb6b8','#e0ba72'],BOON_ART={},boonInked={};
 ROGUE_PERKS.forEach(function(p){BOON_ART[p.id]=loadImg('assets/boon-symbols-v1/'+p.id+'.png');});
@@ -3421,13 +3431,16 @@ function renderRogueChoice(){
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
   });
+  if(!rogueRun.choiceRedrawn&&redrawChoices(rogueRun.perks,rogueRun.choice,rogueRun.choiceRound).length){
+    var redraw=document.createElement('button');redraw.type='button';redraw.setAttribute('data-redraw','true');redraw.textContent='Redraw alternatives · 4';redraw.title='Keep the first boon and redraw the remaining choices once';redraw.setAttribute('aria-label',redraw.title+'. Key 4');redraw.addEventListener('click',redrawRogueChoice);perkMenu.appendChild(redraw);
+  }
   perkMenu.style.display='grid';
 }
 function offerRogueChoice(){
   if(coop){coopOffer();return;}
   if(rogueRun.choice||rogueRun.ended)return;
   var choices=perkChoices();if(!choices.length)return;
-  rogueRun.choice=choices;renderRogueChoice();saveGarden();
+  rogueRun.choice=choices;rogueRun.choiceRedrawn=false;rogueRun.choiceRound=(rogueRun.choiceRound||0)+1;renderRogueChoice();saveGarden();
 }
 function chooseRoguePerk(id){
   if(!window.MaxBuilds.available(rogueRun.perks,id,rogueRun.classId))return;
@@ -4355,18 +4368,19 @@ function makeKrek(side,elite,kind){
 }
 function staggerKrek(k,time){if(k.boss)return;if(isRat(k)){cancelRatAttack(k);ratState(k,'hurt');}if(k.divePhase)cancelPestDive(k);k.flee=Math.max(k.flee||0,time);k.fleeFromX=P.x;k.target=null;k.windup=0;k.attackTarget=null;k.healing=false;k.draining=false;k.chargeT=0;k.bite=.35;}
 function biteGarden(k,p,pressure){
-  var context={kind:'bite',pointX:p.x,pointY:surfaceY(p.x),plantId:p.id,accepted:true},defense=cairnProtection(p,context),raw=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.85,auraAt(p.x,'shelter'))*Math.pow(.78,rogueRun.perks.shield||0),before={health:p.health,rawDamage:raw},dmg=raw*defense.multiplier;
+  var perks=plantPerks(p),context={kind:'bite',pointX:p.x,pointY:surfaceY(p.x),plantId:p.id,accepted:true},defense=cairnProtection(p,context),raw=(p.stalk?.5:1)*(k.kind===1?.15:(k.kind===2?.075:.10))*(k.queen?2.05:(k.elite?1.55:1))*(isRat(k)?ratStats(k).damage:1)*runDamageScale()*Math.pow(.85,auraAt(p.x,'shelter'))*Math.pow(.78,perks.shield||0),before={health:p.health,rawDamage:raw},dmg=raw*defense.multiplier;
   if(defense.multiplier<1)p.guard=.35;
   p.health=clamp01(p.health-dmg);p.moisture=Math.max(0,p.moisture-.045);p.growth=Math.max(0,p.growth-(k.kind===1?.025:.018));p.hit=1;p.pulse=.3;
   cairnReducedBite(defense,cairnContact(k,context),before,{health:p.health});
   for(var z=0;z<4;z++)parts.push({x:p.x+(Math.random()-.5)*5,y:surfaceY(p.x)-5-Math.random()*6,vx:(Math.random()-.5)*10,vy:-5-Math.random()*6,l:.45,m:.45,c:'101,125,70'});
-  var thorn=rogueRun.perks.bramble||0;if(thorn){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.3*thorn);mycelSetBurnCause(k,null);}
+  var thorn=perks.bramble||0;if(thorn){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.3*thorn);mycelSetBurnCause(k,null);}
   if(plantMature(p)){var own=plantFeature(p);if(own==='thorns'){k.burn=Math.max(k.burn||0,1.2);k.burnRate=Math.max(k.burnRate||0,.4);mycelSetBurnCause(k,null);}else if(own==='bind'&&!k.boss)k.glue=Math.max(k.glue||0,1.2);}
   if(p.health<=.01&&plantFalls(p))k.target=null;
 }
 function plantFalls(p){
-  if(rogueRun.perks.evergreen&&rogueRun.evergreenWorld!==worldLevel()){
-    rogueRun.evergreenWorld=worldLevel();p.health=.35;p.pulse=1.7;p.guard=1;chime([392,523,784],.07,.05);
+  var carer=plantCarer(p);
+  if(carer&&carer.perks.evergreen&&carer.evergreenWorld!==worldLevel()){
+    carer.evergreenWorld=worldLevel();p.health=.35;p.pulse=1.7;p.guard=1;chime([392,523,784],.07,.05);
     for(var i=0;i<18;i++)parts.push({x:p.x+(Math.random()-.5)*10,y:surfaceY(p.x)-Math.random()*20,vx:(Math.random()-.5)*16,vy:-10-Math.random()*16,l:.9,m:.9,c:'122,196,106'});
     return false;
   }
@@ -5539,7 +5553,7 @@ function guardianCue(kind,k){
   else if(kind==='break')chime([392,587,784],.04,.05,'guardian:break',dist);
 }
 function listenRun(){
-  var b=heard,now={run:rogueRun,seed:rogueRun.seed,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:rogueRun.choice||null,hit:{},boss:{},fuses:[]},hurt=null,fuse=null,matched=[];
+  var b=heard,now={run:rogueRun,seed:rogueRun.seed,world:worldLevel(),t:tSec,fall:0,lost:gardenStats.lost||0,raid:gardenWave,clear:rogueRun.clearedWorld===worldLevel(),trial:0,done:0,level:rogueRun.choice?rogueRun.choiceRound||1:0,hit:{},boss:{},fuses:[]},hurt=null,fuse=null,matched=[];
   gardenPlots.forEach(function(p){now.hit[p.id]=p.hit||0;if(p.dead)now.fall++;else if(b&&p.hit>(b.hit[p.id]||0)+.2&&(!hurt||Math.abs(p.x-P.x)<Math.abs(hurt.x-P.x)))hurt=p;});
   runEncounters.forEach(function(e){if(e.done&&!e.failed)now.done++;else if(e.active)now.trial++;});
   var district=runExpedition,region=!relicRunMode()&&stageLayout().expedition,court=region&&region.circuit;

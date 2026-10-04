@@ -184,6 +184,10 @@ Boons are a live overlay; the simulation continues underneath them. Each choice 
 - Spring Step — higher jumps.
 - Quick Hands — shorter recovery between attacks; planted bombs keep their two-second fuse.
 
+Each offer has one free **Redraw alternatives** (tap its small footer, keyboard 4 or controller navigation). It keeps the first build card and replaces the remaining cards with eligible alternatives. An almost exhausted catalogue may replace only one; a fully exhausted offer has no redraw. Redrawing spends no seeds or boon pick and never pauses the world. Each teammate owns their offer and its redraw, including after reconnect or authority handoff.
+
+Thorns, Barkskin and Bramble follow the player who planted or last watered each plant. Evergreen gives each carer one rescue per garden across all their plants; changing carers does not refund a used rescue. Departed carers take their protection ranks with them. Mulch follows the attacker for confirmed player attacks.
+
 The close and spore fighters have three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on confirmed hits for Pølge. Pølge's Haymaker extends uppercuts and strengthens them against guards without lifting bosses; Second wind restores plants only when his flurry finish contacts an enemy. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Max and Sligo. Max keeps every existing robot, Guard bot, harvest and bomb upgrade; the new base abilities add no prerequisite boon.
 
 Max-only robot boons remain exclusive to Max. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
