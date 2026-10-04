@@ -73,6 +73,25 @@
     var next=Object.assign({},p);next[id]++;
     return catalogue(classId,mode).filter(function(q){return q.needs&&!available(p,q,classId)&&available(next,q,classId);});
   }
+  function signatureProgress(p,id,classId,mode){
+    p=clean(p,classId);
+    id=typeof id==='string'?id:id&&id.id;
+    if(!available(p,id,classId,mode))return null;
+    var pool=catalogue(classId,mode),next=Object.assign({},p),best=null;
+    next[id]++;
+    pool.forEach(function(q){
+      if(!q.needs||p[q.id]||!(q.needs[id]>p[id]))return;
+      var keys=Object.keys(q.needs);
+      if(!keys.every(function(key){return pool.some(function(prerequisite){return prerequisite.id===key;});}))return;
+      var missing=keys.filter(function(key){return next[key]<q.needs[key];}).map(function(key){
+        var prerequisite=pool.find(function(option){return option.id===key;});
+        return {id:key,name:prerequisite.name,ranks:q.needs[key]-next[key]};
+      });
+      var candidate={perk:q,missing:missing,remaining:missing.reduce(function(n,need){return n+need.ranks;},0)};
+      if(!best||!!q.classId>!!best.perk.classId||!!q.classId===!!best.perk.classId&&candidate.remaining<best.remaining)best=candidate;
+    });
+    return best;
+  }
   function hash(text){var h=2166136261;for(var i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
   function roller(seed){return function(){seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
   function continuation(p,pool,classId,mode){
@@ -141,7 +160,7 @@
     }
     return out;
   }
-  var api={perks:perks,paths:paths,max:max,empty:empty,clean:clean,choices:choices,redraw:redraw,available:available,unlocks:unlocks,catalogue:catalogue};
+  var api={perks:perks,paths:paths,max:max,empty:empty,clean:clean,choices:choices,redraw:redraw,available:available,unlocks:unlocks,signatureProgress:signatureProgress,catalogue:catalogue};
   if(typeof module==='object'&&module.exports)module.exports=api;
   else root.MaxBuilds=api;
 })(typeof window==='object'?window:globalThis);

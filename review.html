@@ -211,7 +211,8 @@
       }
       if(${mode==='boons'}){
         var classBoon={runner:'needle',bulwark:'fault',herbalist:'colony',polge:'splinters'}[rogueRun.classId]||'blast';
-        rogueRun.perks[classBoon]=1;rogueRun.perks.cadence=1;
+        if(${params.get('progress')==='1'})classBoon={runner:'tailwind',bulwark:'bedrock',herbalist:'ferment',polge:'raincoat'}[rogueRun.classId]||'growth';
+        rogueRun.perks[classBoon]=${params.get('progress')==='1'?0:1};rogueRun.perks.cadence=1;
         rogueRun.choice=[classBoon,'spring','mulch'].map(function(id){return ROGUE_PERKS.find(function(p){return p.id===id;});});
         renderRogueChoice();runEncounters=[];runLoot=[];runHazards=[];
       }

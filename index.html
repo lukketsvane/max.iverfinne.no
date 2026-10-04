@@ -3427,6 +3427,10 @@ function renderRogueChoice(){
     var mode=highTideMode()?'high-tide':lastSeedMode()?'last-seed':null;
     var unlocks=window.MaxBuilds.unlocks?window.MaxBuilds.unlocks(rogueRun.perks,p.id,rogueRun.classId,mode):[];
     if(unlocks.length){var next=document.createElement('span');next.className='perkUnlock';next.textContent='Unlocks '+unlocks[0].name;bt.appendChild(next);bt.setAttribute('aria-label',bt.getAttribute('aria-label')+'. '+next.textContent);}
+    else{
+      var progress=window.MaxBuilds.signatureProgress(rogueRun.perks,p.id,rogueRun.classId,mode);
+      if(progress){var hint=document.createElement('span');hint.className='perkUnlock';hint.textContent='Toward '+progress.perk.name+' · Needs '+progress.missing.map(function(q){return q.name+' ×'+q.ranks;}).join(' · ');bt.appendChild(hint);bt.setAttribute('aria-label',bt.getAttribute('aria-label')+'. After this pick: '+hint.textContent);}
+    }
     var key=document.createElement('i');key.className='perkKey';key.textContent=String(index+1);key.setAttribute('aria-hidden','true');bt.appendChild(key);
     bt.addEventListener('click',function(){chooseRoguePerk(p.id);bt.blur&&bt.blur();});
     perkMenu.appendChild(bt);
