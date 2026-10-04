@@ -5,6 +5,16 @@ function seedVital(member){
 }
 function seedDown(member){return relicRunMode()&&seedVital(member).hp<=0;}
 function seedActors(){return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m),v:seedVital(m),id:m.id};}):[{member:null,p:P,v:seedVital(null),id:'solo'}];}
+function seedTeamDown(){
+  if(!coop)return !!(rogueRun.vital&&Number.isFinite(rogueRun.vital.hp)&&rogueRun.vital.hp<=0);
+  var members=coop.network&&coop.network.room&&coop.network.room.members;
+  if(!Array.isArray(members)||!members.length||members.length>4)return false;
+  // Local visibility and input freshness cannot end a reserved member's run.
+  return members.every(function(q,i){
+    if(!q||typeof q.id!=='string'||!Object.hasOwn(coop.members,q.id)||members.some(function(p,j){return j<i&&p&&p.id===q.id;}))return false;
+    var m=coop.members[q.id],v=m&&m.vital;return !!(m&&m.id===q.id&&v&&Number.isFinite(v.hp)&&v.hp<=0);
+  });
+}
 function seedHeld(){return !!(heldDown||heldSpace||swipeDown||(!highTideMode()&&gardenPress));}
 function seedReviveTarget(actor){
   if(!lastSeedMode()||actor.v.hp<=0)return null;
@@ -71,7 +81,7 @@ function updateLastSeed(dt){
       skillCue('bloom',0);
     }
   });
-  if(actors.length&&actors.every(function(a){return a.v.hp<=0;})){endRogueRun();return;}
+  if(seedTeamDown()){endRogueRun();return;}
   if(!gardenRaidActive){
     s.rest-=dt;gardenRaidT=s.rest;
     if(s.rest>0)return;

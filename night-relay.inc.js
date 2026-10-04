@@ -106,7 +106,7 @@ function updateNightRelay(dt){
     else if(a.v.hurt<=0)a.v.hp=Math.min(100,a.v.hp+dt*2);
     RELAY_BEAMS.forEach(function(b){if(relayBeam(b)===2&&Math.abs(a.p.x-b.x)<b.w/2+3&&a.p.y>s.base-14&&damageGardener(a.member,profile.damage))s.energy=Math.max(0,s.energy-3);});
   });
-  if(actors.every(function(a){return a.v.hp<=0;})){finishNightRelay(false,'The team fell.');return;}
+  if(seedTeamDown()){finishNightRelay(false,'The team fell.');return;}
   RELAY_WISPS.forEach(function(w,i){if(s.wisps&(1<<i))return;var a=actors.find(function(a){return relayAt(a,w[0],w[1],12);});if(a){s.wisps|=1<<i;s.energy=Math.min(100,s.energy+22);a.v.hp=Math.min(100,a.v.hp+25);chime([659,880],.06,.03);}});
   if(s.energy<=0){finishNightRelay(false,'The light went out.');return;}
   if(!carrier||carrier.v.hp<=0){s.charge=0;s.exitCharge=0;return;}
