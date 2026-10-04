@@ -29,17 +29,26 @@ function tap(h, wx, wy, ms = 60) {
   h.pointer('pointerdown', x, y); h.advance(ms); h.pointer('pointerup', x, y);
 }
 
-test('tapping Max fires the class skill and never bombs his own feet', () => {
+test('tapping a character fires its funded class skill and never bombs its own feet', () => {
   for (const kit of classes.all) {
     const h = fresh(kit.id), g = h.game, p = plot({ id: 1, x: g.P.x + 10, health: .5, moisture: .3 }); g.gardenPlots = [p];
     if (kit.id === 'mech') { Object.assign(g.ensureCompanion().state, { x: g.P.x - 20, water: 1 }); g.engineerState().charge = 3; }
     if(kit.id==='bulwark')g.cairnState().strata=3;
+    if(kit.id==='herbalist')g.mycelState().culture=4;
     tap(h, g.P.x, g.P.y - 3);
     assert.equal(g.bombs.length, 0, kit.id);
     if (kit.id === 'mech') { assert.equal(g.companion.state.dispatchT, 0); assert.equal(g.engineerState().charge, 0); assert.equal(g.engineerState().overloadWindup, .4); assert.equal(g.P.skillCool, 18); }
     if (kit.id === 'runner') assert.equal(g.P.pounce, 1);
     if (kit.id === 'bulwark') { assert.equal(g.P.brace, 0); assert.equal(g.P.skillCool, 0);assert.equal(g.cairnState().ridgeReserved,3);assert.equal(g.cairnState().strata,3); }
-    if (kit.id === 'herbalist') { assert.ok(Math.abs(p.health - .745) < 1e-9); assert.equal(g.P.skillCool, 12); }
+    if (kit.id === 'herbalist') {
+      const q = g.mycelState();
+      assert.equal(q.culture, 0); assert.equal(q.bloom.pulseMask, 0);
+      assert.equal(p.health, .5, 'acceptance schedules Bloom without healing');
+      g.updateMycelCombat(0);
+      assert.ok(Math.abs(p.health - .54) < 1e-9);
+      assert.ok(Math.abs(p.moisture - .35) < 1e-9);
+      assert.equal(q.bloom.pulseMask, 1); assert.equal(g.P.skillCool, 12);
+    }
     if (kit.id === 'sligo') { assert.equal(g.P.tun, 3); assert.equal(g.P.skillCool, 0, 'a tun cools from its end'); }
     const cool = g.P.skillCool;
     tap(h, g.P.x, g.P.y - 3); assert.ok(g.P.skillDenied > 0);
@@ -67,9 +76,19 @@ test('guest brace and bloom run on the host with the guest’s class, cooldown a
   assert.equal(m.ack, 2); assert.equal(m.braceUntil, 13000);assert.ok(m.cairn.utilityCool>8);assert.equal(m.cairn.specialCool,0);
   guard.game.P.x += 10; guard.game.P.y = guard.game.surfaceY(guard.game.P.x); send(2);
   assert.equal(m.braceUntil, 0); p.health = 1; host.biteGarden({ kind: 0 }, p, 0); assert.ok(Math.abs(p.health - .93) < 1e-9);
-  const medic = players[3], q = plot({ id: 2, x: host.coop.members[ids[3]].avatar.x, health: .3 }); host.gardenPlots = [q]; sync();
+  const medic = players[3], member = host.coop.members[ids[3]], q = plot({ id: 2, x: member.avatar.x, health: .3 });
+  host.gardenPlots = [q]; host.mycelState(member).culture = 4; sync();
   assert.equal(medic.game.useClassSkill(), true); assert.equal(medic.game.gardenPlots[0].health, .3);
-  send(3); assert.ok(Math.abs(q.health - .643) < 1e-9); assert.equal(host.rogueRun.classId, 'mech');
+  send(3);
+  assert.equal(member.mycel.culture, 0); assert.equal(member.mycel.specialCool, 12);
+  assert.equal(member.mycel.bloom.x, member.avatar.x);
+  assert.equal(member.mycel.bloom.y, member.avatar.y - 12);
+  assert.equal(q.health, .3, 'host acceptance schedules the guest Bloom');
+  host.updateMycelCombat(0);
+  assert.ok(Math.abs(q.health - .34) < 1e-9);
+  host.updateMycelCombat(0);
+  assert.ok(Math.abs(q.health - .34) < 1e-9, 'the same pulse cannot restore twice');
+  assert.equal(host.rogueRun.classId, 'mech');
 });
 
 test('a Mech guest dispatches its own rover through the host; other classes’ forged skills never create a rover', () => {

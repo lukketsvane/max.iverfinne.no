@@ -81,6 +81,17 @@ test('B can shoot and change facing without steering Drift; actual air X cancels
   const h2=fresh(),a=h2.game;a.P.y=Math.min(a.P.y,...a.stageLayout().platforms.map(p=>p.y))-80;a.P.grounded=false;const e=drift(h2);tick(h2,.1);h2.key('keydown','x');tick(h2,.05);h2.key('keyup','x');assert.equal(e.phase,0);assert.equal(e.landingConsumed,1);assert.equal(a.P.dodgeT,0);assert.equal(a.P.hurt,0);assert.ok(a.mycelState().utilityCool>5);
 });
 
+test('actual hazard knockback cancels active Drift and its landing lease without refunding cooldown or watering',()=>{
+  for(const elapsed of [.08,.36]){
+    const h=fresh(),g=h.game,p=plot({id:821,x:g.P.x+35,health:.8,moisture:.2});g.gardenPlots=[p];const d=drift(h);tick(h,elapsed);
+    assert.equal(d.phase,elapsed<.35?1:2);assert.equal(d.landingConsumed,0);const cool=g.mycelState().utilityCool;
+    g.addRunHazard('root',g.P.x,16,0,1,g.P.x,g.P.y,g.P.y);g.updateHazardContact();
+    assert.equal(g.P.hurt,2,'the ordinary hazard actually contacts Mycel');assert.equal(d.phase,0);assert.equal(d.landingConsumed,1);assert.equal(d.landingLease,0);close(g.mycelState().utilityCool,cool,'paid cooldown survives hazard contact');
+    const knockback=g.P.vx;tick(h,1/120);assert.ok(g.P.vx<knockback,'ordinary knockback cannot be replaced by accepted Drift velocity');
+    tick(h,.6);close(p.moisture,.2,'canceled landing cannot water');assert.equal(d.landingPlantId,0);
+  }
+});
+
 test('post-Relay native projection spends accepted curved path rather than the unclamped proposal',()=>{
   const h=fresh('night-relay'),g=h.game,s=g.rogueRun.survival,scene=g.mycelPhysicsScene(null),limit=scene.relayMax;
   assert.ok(Number.isFinite(limit));const before={x:limit-2,y:scene.floorAt(limit)-30,vx:100,vy:0,grounded:false,platform:null,st:'free'},d={serial:812,startTag:1,world:scene.world,phase:1,face:1,totalAge:0,travel:0,launchVY:0};

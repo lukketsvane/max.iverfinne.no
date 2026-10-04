@@ -524,6 +524,7 @@ function updateHazardContact(){
       if(P.brace>0||P.tun>0)continue;
       var resistance=ownClass().id==='runner'?rattusKnockbackFactor():1;if(ownClass().id==='runner')rattusCancelMotion(rattusMember(),'hazard');
       if(ownClass().id==='bulwark')cairnCancelMotion(undefined,'hazard');
+      if(ownClass().id==='herbalist')mycelInterrupt('hazard');
       P.hurt=2;P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback*resistance;P.vy=-88*ownClass().knockback*resistance;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }

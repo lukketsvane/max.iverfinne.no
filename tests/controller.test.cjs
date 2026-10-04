@@ -38,20 +38,29 @@ test('face buttons separate jumping, tending and skill; down plus bottom plants 
   assert.equal(g.heldSpace, true); assert.equal(g.jumpBuf, 0); assert.equal(g.dodgeBuf, 0);
   h.sample(); h.sample([], [0, 1]); assert.equal(g.heldSpace, false); assert.equal(g.heldDown, false);
   h.sample([0], [0, 1]); assert.equal(g.heldSpace, true); assert.equal(g.jumpBuf, 0); assert.equal(g.dodgeBuf, 0);
-  g.gardenPlots = [plot({ health: .4 })];
-  h.sample(); h.sample([3]); assert.ok(g.P.skillCool > 0); assert.equal(g.heldSpace, false);
+  g.gardenPlots = [plot({ id: 1, health: .4 })];
+  h.sample(); h.sample([3]);
+  assert.equal(g.P.skillCool, 0); assert.equal(g.mycelState().bloom, null, 'Bloom needs four Culture');
+  g.mycelState().culture = 4;
+  h.sample(); h.sample([3]);
+  assert.equal(g.P.skillCool, 12); assert.equal(g.mycelState().culture, 0);
+  assert.equal(g.mycelState().bloom.pulseMask, 0); assert.equal(g.heldSpace, false);
 });
 
 test('SR attacks while running, ZL aims without planting and keeps aim on release', () => {
   const h = setup('herbalist'), g = h.game;
   h.sample([5], [.75, 0]); assert.ok(g.charge); assert.equal(g.readInput().axis, 1); assert.equal(g.charge.lock, false);
   h.sample(); assert.equal(g.charge, null); assert.equal(g.classShots.length, 1);
-  g.bombCool = 0; h.sample([6], [-.6, .6]);
+  const firstShot = g.classShots[0].id;
+  h.sample([], [0, 0], 600); // Wait for Mycel's authoritative .58s primary recovery.
+  g.updateBombs(.6);
+  h.sample([6], [-.6, .6]);
   assert.equal(g.readInput().axis, 0); assert.ok(g.charge.ax < -.6 && g.charge.ay > .6);
   assert.equal(g.heldDown, false); assert.equal(g.heldSpace, false);
   g.updateCharge(.2); h.sample([], [0, 0]);
-  assert.equal(g.charge, null); assert.equal(g.classShots.length, 2);
-  assert.ok(g.classShots[1].vx < 0 && g.classShots[1].vy > 0);
+  assert.equal(g.charge, null); assert.ok(g.classShots.some(s => s.id !== firstShot));
+  const aimedShot = g.classShots.at(-1);
+  assert.ok(aimedShot.vx < 0 && aimedShot.vy > 0);
 });
 
 test('Mech keeps moving while charging; SL cancels charge and dodges once', () => {
