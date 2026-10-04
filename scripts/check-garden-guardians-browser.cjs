@@ -221,18 +221,18 @@ async function checkCircuit(page,engineName,errors){
      return view.width===({phone:390,small:320,landscape:844,compact:568})[name];
     },viewport,{timeout:3000});
     const player=JSON.parse(await page.locator('#status').getAttribute('data-guardian')).view.player;
-    const bounds=await boonFrame.locator('#perkMenu button').evaluateAll((buttons,player)=>buttons.map(b=>{
+    const bounds=await boonFrame.locator('#perkMenu button:not([data-redraw])').evaluateAll((buttons,player)=>buttons.map(b=>{
      const r=b.getBoundingClientRect(),n=b.querySelector('strong'),d=b.querySelector('small');
      return {name:n?.textContent,description:d?.textContent,nameVisible:getComputedStyle(n).display!=='none',descriptionVisible:getComputedStyle(d).display!=='none',inside:r.x>=0&&r.y>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,overflow:b.scrollWidth>b.clientWidth,overlapsPlayer:r.left<player.right&&r.right>player.left&&r.top<player.bottom&&r.bottom>player.top};
     }),player);
-   assert.equal(bounds.length,3);
+    assert.equal(bounds.length,3);
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-boons-${viewport}.png`});
     assert.ok(bounds.every(b=>b.name&&b.description&&b.nameVisible&&b.descriptionVisible&&b.inside&&!b.overflow&&!b.overlapsPlayer),JSON.stringify({viewport,player,bounds}));
    }
    assert.match(await boonFrame.locator('#perkMenu').innerText(),/Unlocks Chain bloom/);
    const before=JSON.parse(await page.locator('#status').getAttribute('data-state')).elapsed;
    await page.waitForFunction(t=>JSON.parse(document.querySelector('#status').dataset.state).elapsed>t,before,{timeout:3000});
-   await boonFrame.locator('#perkMenu button').first().click();
+   await boonFrame.locator('#perkMenu button:not([data-redraw])').first().click();
    await boonFrame.locator('#perkMenu').waitFor({state:'hidden'});
    assert.deepEqual(errors,[]);console.log(engineName,'readable live boon choices fit four phone orientations and select OK');
    await page.goto(base+'/guardian-motion-review.html');
