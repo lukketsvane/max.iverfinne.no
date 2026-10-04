@@ -10,10 +10,13 @@ const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript
 const server=http.createServer((req,res)=>{try{const requested=decodeURIComponent(new URL(req.url,'http://localhost').pathname),file=path.resolve(root,'.'+(requested.endsWith('/')?requested+'index.html':requested));if(!file.startsWith(root+path.sep))throw Error('Outside build');res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404);res.end();}});
 const names=game=>game.locator('#perkMenu button:not([data-redraw]) strong').allTextContents();
 async function run(){
+ const requestedEngine=process.env.BOON_BROWSER_ENGINE;
+ assert.ok(requestedEngine===undefined||['chromium','webkit'].includes(requestedEngine),'Empty or unknown browser engine');
+ const engines=requestedEngine===undefined?['chromium','webkit']:[requestedEngine];
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const base='http://127.0.0.1:'+server.address().port,results=[];
- for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
-  if(process.env.BOON_BROWSER_ENGINE&&process.env.BOON_BROWSER_ENGINE!==engine)continue;
+ for(const engine of engines){
+  const type={chromium,webkit}[engine];
   const launch=engine==='chromium'&&process.env.BOON_BROWSER_EXECUTABLE?{executablePath:process.env.BOON_BROWSER_EXECUTABLE,args:['--no-sandbox','--disable-dev-shm-usage']}:{};
   const browser=await type.launch({headless:true,...launch});
   try{
@@ -47,4 +50,4 @@ async function run(){
  fs.writeFileSync(path.join(output,'report.json'),JSON.stringify(results,null,2));
  console.log('BOON_BROWSER_OK',JSON.stringify(results));
 }
-run().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>server.close());
+run().catch(error=>{console.error(error);fs.writeFileSync(path.join(output,'failure.json'),JSON.stringify({error:String(error.stack||error)},null,2));process.exitCode=1;}).finally(()=>{if(server.listening)server.close();});
