@@ -275,9 +275,59 @@
     }
     B.part('chamber');
   }
-  function chamber(B, room, P, salt, fungal, fossil) {
+  function aqueductChamber(B, room, P, salt) {
+    var x = room.x, y = room.y, w = room.w, h = room.h, base = y + h;
+    B.part('aqueduct-depth:' + room.id);
+    B.rect(x, y, w, h, '#151f29', .22);
+    // Offset ruined springing masses, not a row of complete arch rings.
+    // The open centre keeps the real distant cavern visible behind the climb.
+    var spring = y + h * .48, left = x + w * .17, right = x + w * .79;
+    B.polygon([[left - 20, base], [left - 17, spring + 4], [left - 6, spring - 34],
+      [left + 22, y + h * .19], [left + 49, y + h * .15], [left + 65, y + h * .17],
+      [left + 57, y + h * .22], [left + 47, y + h * .21], [left + 25, y + h * .27],
+      [left + 7, spring - 20], [left + 5, base - 6]], '#1e2c30', .9);
+    B.polygon([[right - 11, base], [right - 10, y + h * .58], [right - 24, y + h * .35],
+      [right - 49, y + h * .27], [right - 53, y + h * .21], [right - 34, y + h * .23],
+      [right - 12, y + h * .32], [right + 9, y + h * .54], [right + 14, base]], '#19272e', .88);
+    for (var row = 0; row < 7; row++) {
+      var yy = spring + 12 + row * (base - spring - 23) / 7, slip = hash(row, salt) % 7;
+      B.rect(left - 12 + slip, yy, 9 + slip, 2, '#3b4743', .34);
+      B.rect(right - 3 - slip, yy + 7, 7 + slip, 2, '#33403e', .3);
+      if (row % 2) B.rect(left - 8 + slip, yy + 4, 1, 6, '#101d24', .7);
+    }
+    B.line(left + 13, spring - 34, left + 26, spring - 47, 2, '#455046', .3);
+    B.line(right - 22, y + h * .37, right - 10, y + h * .51, 1, '#3b4740', .3);
+    B.part('aqueduct-enclosure:' + room.id);
+    var roof = [[x - 10, y - 10], [x + w + 10, y - 10], [x + w + 10, y + 9]];
+    for (var n = 12; n >= 0; n--) {
+      var px = x + w * n / 12, chip = hash(n, salt) % 12;
+      roof.push([px, y + 6 + chip]); roof.push([px - w / 32, y + 4 + chip * .25]);
+    }
+    roof.push([x - 10, y + 12]); B.polygon(roof, '#0d1720');
+    for (var side = -1; side <= 1; side += 2) {
+      var edge = side < 0 ? x : x + w;
+      B.polygon([[edge - side * 9, y], [edge + side * 17, y + 18], [edge + side * 12, y + h * .35],
+        [edge + side * 22, y + h * .64], [edge + side * 14, base], [edge - side * 9, base]], '#14232b');
+      for (var j = 1; j < 6; j++) {
+        var yy = y + h * j / 6, bx = edge + side * (5 + hash(j, salt) % 6);
+        B.rect(bx - 4, yy, 9, 2, '#35413d', .32);
+        B.rect(bx + 2, yy + 3, 1, 7, '#0b171f', .7);
+      }
+    }
+    for (var k = 1; k < 10; k += 3) {
+      var rx = x + w * k / 10, ry = y + 7 + hash(k, salt) % 5;
+      B.rect(rx - 5, ry, 13, 2, '#38433e', .32);
+      for (var moss = 0; moss < 17 + k; moss += 4) {
+        B.rect(rx + (Math.floor(moss / 9) & 1), ry + 4 + moss, 1, 3, '#354338', .55);
+        if (moss % 8 === 0) B.rect(rx - 2, ry + 6 + moss, 2, 1, '#4b5840', .35);
+      }
+    }
+    B.part('chamber');
+  }
+  function chamber(B, room, P, salt, fungal, fossil, aqueduct) {
     if (fungal) { fungalChamber(B, room, P, salt); return; }
     if (fossil) { fossilChamber(B, room, P, salt); return; }
+    if (aqueduct) { aqueductChamber(B, room, P, salt); return; }
     var x = room.x, y = room.y, w = room.w, h = room.h, rim = 20, rise = Math.min(Math.floor(h * .58), Math.floor(w * .42), 142);
     // The recess is not a floor: its lower edge disappears under actual soil.
     B.rect(x, y + rise, w, h - rise, P.recess, .34);
@@ -440,10 +490,69 @@
     scene.landmark = { id: NAMES[stage], x: cx, y: y, floor: floor, native: true, decoration: true };
     B.part('landmark:' + NAMES[stage]);
     if (stage === 3) {
-      for (var a = -1; a <= 1; a++) { var ax = cx + a * 118; B.stone(ax - 11, y + 79, 22, floor - y - 79, P.body, a); B.ring(ax + 59, y + 86, 61, 67, 10, P.edge, .76); B.rect(ax + 7, y + 83, 104, floor - y - 83, P.recess); B.vine(ax + 14, y + 111, 36 + a * 4, a); }
-      B.stone(cx - 134, y + 7, 275, 17, P.body, stage);
-      B.rect(cx - 125, y + 23, 251, 3, P.edge, .7);
-      B.rect(cx - 3, y - 17, 15, 25, P.wall); B.rect(cx + 5, y - 22, 4, 7, P.body);
+      var masonry = ['#263438', '#424e48', '#5e6b55', '#788361', '#939d75'];
+      // One massive ruined body with unequal open portals, not three rings
+      // or opaque blue infill. Its piers end in the original soil footprint.
+      var piers = [
+        [[cx - 134, floor], [cx - 130, y + 124], [cx - 116, y + 116], [cx - 96, y + 126], [cx - 92, floor - 10], [cx - 98, floor]],
+        [[cx + 56, floor], [cx + 61, y + 117], [cx + 82, y + 104], [cx + 106, y + 139], [cx + 110, floor - 12], [cx + 103, floor]],
+        [[cx + 210, floor], [cx + 212, y + 149], [cx + 231, y + 143], [cx + 238, y + 164], [cx + 235, floor]]
+      ];
+      piers.forEach(function (points, i) { B.surface(points, 31 + i, masonry, 'stone'); });
+      // The old common floor left gaps over sloping soil. Only these quiet
+      // rear foundations continue down, column by column, to the real ground.
+      [[-134, -98], [56, 103], [210, 235]].forEach(function (foot) {
+        for (var px = cx + foot[0]; px <= cx + foot[1]; px++) {
+          var bottom = Math.round(ground(px));
+          B.rect(px, Math.min(floor, bottom), 1, Math.max(1, bottom - floor + 1), '#1e2c31');
+        }
+      });
+      var highArch = [[cx - 130, y + 136], [cx - 122, y + 96], [cx - 105, y + 66], [cx - 73, y + 37],
+        [cx - 36, y + 20], [cx - 12, y + 18], [cx + 24, y + 33], [cx + 55, y + 59],
+        [cx + 80, y + 95], [cx + 91, y + 137], [cx + 60, y + 137], [cx + 51, y + 111],
+        [cx + 30, y + 81], [cx - 1, y + 58], [cx - 23, y + 53], [cx - 55, y + 67],
+        [cx - 79, y + 94], [cx - 94, y + 137]];
+      B.surface(highArch, 34, masonry, 'stone');
+      var lowArch = [[cx + 84, y + 150], [cx + 92, y + 117], [cx + 116, y + 86], [cx + 145, y + 66],
+        [cx + 171, y + 70], [cx + 202, y + 92], [cx + 226, y + 121], [cx + 238, y + 159],
+        [cx + 213, y + 160], [cx + 202, y + 133], [cx + 184, y + 111], [cx + 163, y + 97],
+        [cx + 146, y + 98], [cx + 127, y + 115], [cx + 114, y + 151]];
+      B.surface(lowArch, 35, masonry, 'stone');
+      B.line(cx - 89, y + 105, cx - 98, y + 135, 4, '#25383a');
+      B.line(cx + 54, y + 116, cx + 61, y + 139, 5, '#25383a');
+      B.line(cx + 201, y + 136, cx + 212, y + 161, 4, '#25383a');
+      // Short interrupted radial joints make these broad faces laid stone,
+      // not smooth bone. Both ends stay inside their own unequal arch band.
+      var joints = [[-119, 99, -104, 115], [-110, 76, -94, 94], [-88, 51, -72, 77], [-55, 29, -47, 63],
+        [-25, 19, -25, 50], [7, 26, -4, 54], [38, 46, 24, 74], [66, 76, 51, 108], [83, 110, 62, 127],
+        [99, 123, 119, 136], [118, 87, 129, 111], [144, 69, 146, 94], [163, 70, 164, 93],
+        [187, 82, 185, 109], [214, 107, 201, 129], [230, 140, 208, 143]];
+      joints.forEach(function (q, i) {
+        var dx = q[2] - q[0], dy = q[3] - q[1];
+        B.line(cx + q[0] + dx * .08, y + q[1] + dy * .08, cx + q[0] + dx * .46, y + q[1] + dy * .46, 1, '#314439', .72);
+        B.line(cx + q[0] + dx * .61, y + q[1] + dy * .61, cx + q[0] + dx * .92, y + q[1] + dy * .92, 1, '#314439', .66);
+        if (i % 2) B.rect(cx + q[0] + dx * .12, y + q[1] + dy * .12, 2, 1, '#a2ad80', .42);
+      });
+      // Chipped joints, broad weathered blocks and short isolated moss marks.
+      for (var block = 0; block < 12; block++) {
+        var px = cx + (block % 3 === 0 ? -122 : block % 3 === 1 ? 72 : 219), py = y + 145 + Math.floor(block / 3) * 22;
+        if (py + 12 >= floor) continue;
+        B.rect(px, py, 13 + hash(block, 3) % 7, 2, '#243238', .75);
+        B.rect(px + 7, py + 2, 1, 9, '#29383a', .7);
+        B.rect(px + 2, py + 9, 6, 2, '#88946a', .35);
+      }
+      B.line(cx - 107, y + 70, cx - 91, y + 52, 2, '#abb48b', .45);
+      B.line(cx - 45, y + 24, cx - 30, y + 21, 2, '#abb48b', .4);
+      B.line(cx + 124, y + 86, cx + 137, y + 77, 2, '#a0ad81', .4);
+      // Broken channel blocks sit directly on the two arch shoulders. No
+      // disconnected strap, obsolete chimney or continuous bridge survives.
+      B.surface([[cx - 62, y + 15], [cx - 47, y + 8], [cx - 25, y + 10], [cx - 14, y + 4],
+        [cx - 8, y + 11], [cx - 5, y + 27], [cx - 22, y + 31], [cx - 43, y + 31], [cx - 56, y + 36]], 36, masonry, 'stone');
+      B.surface([[cx + 121, y + 67], [cx + 135, y + 57], [cx + 151, y + 59], [cx + 159, y + 52],
+        [cx + 171, y + 60], [cx + 178, y + 75], [cx + 163, y + 87], [cx + 137, y + 85], [cx + 127, y + 87]], 37, masonry, 'stone');
+      B.line(cx - 48, y + 16, cx - 25, y + 16, 2, '#253b37', .9);
+      B.line(cx + 138, y + 65, cx + 154, y + 67, 2, '#253b37', .9);
+      B.vine(cx - 79, y + 43, 27, 3); B.vine(cx + 105, y + 119, 31, 31);
     } else if (stage === 4) {
       var archY = y + 98;
       B.arch(cx, archY, 109, 106, 15, P.body);
@@ -620,23 +729,23 @@
     // ledges room to read. Native rock teeth break the chamber silhouette.
     var main = ps.filter(function (p) { return !p.expedition; }), mb = bbox(main, floor), mx = Math.min(origin - 318, mb.x - 39), mr = Math.max(origin + 318, mb.right + 39);
     var room = { id: 'main-vault', x: origin - 144, y: mb.y - 43, w: 288, h: floor - mb.y + 54 };
-    scene.rooms.push(room); chamber(B, room, P, stage, stage === 7, stage === 14);
+    scene.rooms.push(room); chamber(B, room, P, stage, stage === 7, stage === 14, stage === 3);
     [-1, 1].forEach(function (side) {
       var route = main.filter(function (p) { return p.route === side; }), rb = bbox(route, floor), left = side < 0 ? mx : origin + 111, right = side < 0 ? origin - 112 : mr;
       var bay = { id: 'route-bay-' + side, x: left, y: rb.y - 51, w: right - left, h: Math.round(ground((left + right) / 2)) - rb.y + 61 };
-      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19, stage === 7, stage === 14);
+      scene.rooms.push(bay); chamber(B, bay, P, stage + side * 19, stage === 7, stage === 14, stage === 3);
     });
     if (layout.place && layout.place.bounds) {
       var pb = layout.place.bounds, wing = { id: 'place-wing', x: pb.x - 26, y: pb.y - 34, w: pb.w + 52, h: pb.h + 44 };
       var oldRight = bounds.x + bounds.w; bounds.x = Math.min(bounds.x, wing.x - 28);
       bounds.w = Math.max(oldRight, wing.x + wing.w + 28) - bounds.x;
-      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97, stage === 7, stage === 14);
+      scene.rooms.push(wing); B.part('place-wing'); chamber(B, wing, P, stage + 97, stage === 7, stage === 14, stage === 3);
       B.lamp(pb.x + 12, pb.y - 18, stage + 97);
     }
     var exp = ps.filter(function (p) { return p.expedition; });
     if (exp.length) {
       var eb = bbox(exp, floor), ef = Math.round(ground((eb.x + eb.right) / 2)), er = { id: 'expedition-vault', x: eb.x - 37, y: eb.y - 60, w: eb.right - eb.x + 74, h: ef - eb.y + 68 };
-      scene.rooms.push(er); chamber(B, er, P, stage + 53, stage === 7, stage === 14);
+      scene.rooms.push(er); chamber(B, er, P, stage + 53, stage === 7, stage === 14, stage === 3);
       // Upper rest rooms have a recess anchored to their own true landing.
       (layout.expedition.rooms || []).forEach(function (r, i) {
         var q = { id: 'landing-' + i, x: r.bounds.x - 9, y: r.bounds.y - 46, w: r.bounds.w + 18, h: 52 + r.bounds.h };
