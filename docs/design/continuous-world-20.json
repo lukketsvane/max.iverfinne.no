@@ -1,0 +1,865 @@
+{
+  "schemaVersion": 1,
+  "status": "design-candidate",
+  "runtimePromotion": false,
+  "date": "2026-10-05",
+  "title": "MAX continuous ascent — 20 connected regions",
+  "scope": "Alternative visual blueprint from the owner’s supplied twelve-region stack and four single-region examples. It does not replace current runtime art, campaign profiles, collision geometry or progression.",
+  "order": "bottom-to-top",
+  "regionIds": "Existing garden-1 through garden-20 identifiers; candidate meanings only.",
+  "sources": {
+    "referenceFilenames": [
+      "combined(1).jpeg",
+      "01.jpeg",
+      "02.jpeg",
+      "04.jpeg",
+      "05.jpeg"
+    ],
+    "figmaFileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "figmaPageId": "508:11825",
+    "figmaReferenceNodeId": "692:113033",
+    "figmaCandidateBoardId": "729:117482",
+    "document": "docs/design/continuous-world-20.md",
+    "figmaWorldNodeId": "729:117488",
+    "figmaArtworkNodeId": "729:117489",
+    "figmaCandidateUrl": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=729-117482",
+    "figmaSourceType": "Raster concept illustration with twenty editable semantic region frames, nineteen planned overlap frames and reusable annotations; not compiled/native terrain."
+  },
+  "currentRuntime": {
+    "stageCount": 20,
+    "handoffMilliseconds": 640,
+    "handoffSeamPixels": 16,
+    "continuouslyStreamedGeometry": false,
+    "files": [
+      "ascent-presentation.inc.js",
+      "index.html",
+      "coop-game.inc.js"
+    ]
+  },
+  "composition": {
+    "singleWorld": true,
+    "separatePanelBorders": false,
+    "singleSky": true,
+    "regionHeight": "Use heightWeight as relative composition guidance, not measured geometry.",
+    "ports": "Symbolic attached-route ports; final integer world coordinates require native layout authoring and physics verification.",
+    "overlap": "Target 18% of the shorter neighboring region as a shared transition volume; materials and light coexist before one recedes.",
+    "spines": {
+      "water": "One connected hydraulic system. Pale source channels in upper terraces feed rivulets, marsh runoff, drains, wheel tailrace and thawing vault seepage; mark deliberate occlusion rather than inventing disconnected waterfalls.",
+      "root": "Roots begin in vault cracks, thread through fossils and fungus, expand into the hollow tree and bridges, then grip machinery and become summit vines.",
+      "structure": "Iron and masonry joints persist across regions: vault pipe, railway support, drainage work, machinery cable, aqueduct pier and greenhouse rib. Avoid a single repeated central shaft."
+    },
+    "overlapTargetFraction": 0.18
+  },
+  "regions": {
+    "garden-1": {
+      "order": 1,
+      "landmark": "Frozen Mechanical Seed Vault",
+      "materials": [
+        "ice",
+        "iron",
+        "glass"
+      ],
+      "light": "ice-blue vault darkness; amber plant jars",
+      "composition": "central seed wheel; three unequal service floors",
+      "heightWeight": 1,
+      "entryPort": "garden-1:entry",
+      "exitPort": "garden-1:exit"
+    },
+    "garden-2": {
+      "order": 2,
+      "landmark": "Thawing Cistern",
+      "materials": [
+        "wet stone",
+        "ice",
+        "corroded pipe"
+      ],
+      "light": "cyan meltwater with small amber lamps",
+      "composition": "one broad melt basin with staggered maintenance shelves",
+      "heightWeight": 0.75,
+      "entryPort": "garden-2:entry",
+      "exitPort": "garden-2:exit"
+    },
+    "garden-3": {
+      "order": 3,
+      "landmark": "Railway Ruins",
+      "materials": [
+        "mossy brick",
+        "iron rail",
+        "timber"
+      ],
+      "light": "blue-black station; warm local lamps",
+      "composition": "broken viaduct, tilted carriage and lift tower",
+      "heightWeight": 1,
+      "entryPort": "garden-3:entry",
+      "exitPort": "garden-3:exit"
+    },
+    "garden-4": {
+      "order": 4,
+      "landmark": "Drowned Station",
+      "materials": [
+        "flooded brick",
+        "iron",
+        "reeds"
+      ],
+      "light": "teal reflected light beneath dark platform arches",
+      "composition": "stacked station halls with drowned lower tracks",
+      "heightWeight": 0.8,
+      "entryPort": "garden-4:entry",
+      "exitPort": "garden-4:exit"
+    },
+    "garden-5": {
+      "order": 5,
+      "landmark": "Tidal Waterwheel Basin",
+      "materials": [
+        "stone",
+        "timber",
+        "moss",
+        "water"
+      ],
+      "light": "deep tidal cyan; sparse warm refuge light",
+      "composition": "monumental waterwheel within an asymmetric basin",
+      "heightWeight": 1,
+      "entryPort": "garden-5:entry",
+      "exitPort": "garden-5:exit"
+    },
+    "garden-6": {
+      "order": 6,
+      "landmark": "Drainage Tunnels",
+      "materials": [
+        "dark stone",
+        "pipe",
+        "mineral seep"
+      ],
+      "light": "low cyan pools; irregular lantern recesses",
+      "composition": "narrow inlet, vertical drain and widening fossil mouth",
+      "heightWeight": 0.65,
+      "entryPort": "garden-6:entry",
+      "exitPort": "garden-6:exit"
+    },
+    "garden-7": {
+      "order": 7,
+      "landmark": "Enormous Mossy Ribcage",
+      "materials": [
+        "fossil bone",
+        "moss",
+        "stone"
+      ],
+      "light": "cold bone highlights amid deep green shadow",
+      "composition": "one giant rib arch with unequal ribs and a dark skull refuge",
+      "heightWeight": 1.15,
+      "entryPort": "garden-7:entry",
+      "exitPort": "garden-7:exit"
+    },
+    "garden-8": {
+      "order": 8,
+      "landmark": "Root Ossuary",
+      "materials": [
+        "bone",
+        "bark",
+        "earth"
+      ],
+      "light": "muted moss with first small fungal cyan points",
+      "composition": "compressed ossuary between tangled load-bearing roots",
+      "heightWeight": 0.7,
+      "entryPort": "garden-8:entry",
+      "exitPort": "garden-8:exit"
+    },
+    "garden-9": {
+      "order": 9,
+      "landmark": "Giant Bioluminescent Mushroom Cave",
+      "materials": [
+        "fungus",
+        "bark",
+        "damp earth"
+      ],
+      "light": "luminous mint cap edges; warm tiny trunk shelter",
+      "composition": "one enormous tilted mushroom with smaller distant caps",
+      "heightWeight": 1.2,
+      "entryPort": "garden-9:entry",
+      "exitPort": "garden-9:exit"
+    },
+    "garden-10": {
+      "order": 10,
+      "landmark": "Mycelium Fissure",
+      "materials": [
+        "mineral rock",
+        "fungus",
+        "root"
+      ],
+      "light": "cyan veins recede into blue depth",
+      "composition": "split narrow chasm with branching fungal ledges",
+      "heightWeight": 0.75,
+      "entryPort": "garden-10:entry",
+      "exitPort": "garden-10:exit"
+    },
+    "garden-11": {
+      "order": 11,
+      "landmark": "Hollow Monumental Tree",
+      "materials": [
+        "bark",
+        "moss",
+        "root"
+      ],
+      "light": "quiet turquoise hollows and one amber heart",
+      "composition": "thick branching trunk with three unequal hollow chambers",
+      "heightWeight": 1.3,
+      "entryPort": "garden-11:entry",
+      "exitPort": "garden-11:exit"
+    },
+    "garden-12": {
+      "order": 12,
+      "landmark": "Root Bridges",
+      "materials": [
+        "root",
+        "moss",
+        "stone anchor"
+      ],
+      "light": "green-grey distance; modest warm glints",
+      "composition": "braided bridges and a deep offset return loop",
+      "heightWeight": 0.8,
+      "entryPort": "garden-12:entry",
+      "exitPort": "garden-12:exit"
+    },
+    "garden-13": {
+      "order": 13,
+      "landmark": "Winding Drums and Counterweights",
+      "materials": [
+        "timber",
+        "rusted iron",
+        "root"
+      ],
+      "light": "violet machine depth with warm lantern anchors",
+      "composition": "two unequal drums; counterweight shaft as main climb",
+      "heightWeight": 1,
+      "entryPort": "garden-13:entry",
+      "exitPort": "garden-13:exit"
+    },
+    "garden-14": {
+      "order": 14,
+      "landmark": "Cable Ravine",
+      "materials": [
+        "cable",
+        "rough stone",
+        "timber"
+      ],
+      "light": "muted violet-blue distance and dark flanks",
+      "composition": "wide asymmetrical ravine with suspended service platforms",
+      "heightWeight": 0.95,
+      "entryPort": "garden-14:entry",
+      "exitPort": "garden-14:exit"
+    },
+    "garden-15": {
+      "order": 15,
+      "landmark": "Broken Aqueduct",
+      "materials": [
+        "weathered limestone",
+        "moss",
+        "iron anchor"
+      ],
+      "light": "cool open depth; pale worn stone",
+      "composition": "unequal monumental arches and a broken upper water channel",
+      "heightWeight": 1.1,
+      "entryPort": "garden-15:entry",
+      "exitPort": "garden-15:exit"
+    },
+    "garden-16": {
+      "order": 16,
+      "landmark": "Terrace Gardens",
+      "materials": [
+        "limestone",
+        "earth",
+        "moss"
+      ],
+      "light": "soft green ambient light and restrained warm windows",
+      "composition": "uneven terraces, seed refuge and two short rise phrases",
+      "heightWeight": 0.85,
+      "entryPort": "garden-16:entry",
+      "exitPort": "garden-16:exit"
+    },
+    "garden-17": {
+      "order": 17,
+      "landmark": "Hanging Bells and Reed Marsh",
+      "materials": [
+        "reed",
+        "weathered bronze",
+        "mossy stone"
+      ],
+      "light": "hazy sage light with isolated amber bell mouths",
+      "composition": "tall bell stems above a slow irregular marsh",
+      "heightWeight": 0.95,
+      "entryPort": "garden-17:entry",
+      "exitPort": "garden-17:exit"
+    },
+    "garden-18": {
+      "order": 18,
+      "landmark": "Limestone Channel",
+      "materials": [
+        "limestone",
+        "water",
+        "grass"
+      ],
+      "light": "warm pale rock while cool water persists",
+      "composition": "terraced ravine with several connected shallow falls",
+      "heightWeight": 0.8,
+      "entryPort": "garden-18:entry",
+      "exitPort": "garden-18:exit"
+    },
+    "garden-19": {
+      "order": 19,
+      "landmark": "Greenhouse Terraces",
+      "materials": [
+        "limestone",
+        "iron",
+        "glass",
+        "vines"
+      ],
+      "light": "gradually amber sky through broken greenhouse frames",
+      "composition": "layered conservatory courts with incomplete glazing",
+      "heightWeight": 1,
+      "entryPort": "garden-19:entry",
+      "exitPort": "garden-19:exit"
+    },
+    "garden-20": {
+      "order": 20,
+      "landmark": "Sunset Greenhouse Crown",
+      "materials": [
+        "iron",
+        "glass",
+        "limestone",
+        "overgrowth"
+      ],
+      "light": "one continuous warm sunset sky; cool shaded planting",
+      "composition": "open monumental greenhouse crown and broad summit garden",
+      "heightWeight": 1.15,
+      "entryPort": "garden-20:entry",
+      "exitPort": null
+    }
+  },
+  "joins": [
+    {
+      "id": "join-01",
+      "from": "garden-1",
+      "to": "garden-2",
+      "exitPort": "garden-1:exit",
+      "entryPort": "garden-2:entry",
+      "connector": "thawing sluice",
+      "geometry": "stepped drain shaft",
+      "overlap": {
+        "materials": [
+          "ice",
+          "wet iron",
+          "stone"
+        ],
+        "palette": [
+          "#536d88",
+          "#739aa2",
+          "#b89a63"
+        ],
+        "spines": [
+          "water",
+          "structure"
+        ],
+        "light": "blue ice light decreases while wet reflections and amber lamps persist"
+      },
+      "traversal": "two short climbs interrupted by a broad dry maintenance landing"
+    },
+    {
+      "id": "join-02",
+      "from": "garden-2",
+      "to": "garden-3",
+      "exitPort": "garden-2:exit",
+      "entryPort": "garden-3:entry",
+      "connector": "cistern service shaft",
+      "geometry": "offset maintenance galleries",
+      "overlap": {
+        "materials": [
+          "wet brick",
+          "pipe",
+          "moss"
+        ],
+        "palette": [
+          "#314851",
+          "#547572",
+          "#ac8950"
+        ],
+        "spines": [
+          "water",
+          "structure"
+        ],
+        "light": "cistern cyan becomes station reflection before railway lamp pools increase"
+      },
+      "traversal": "side climb around the cistern wall; safe return ledge beneath the rail deck"
+    },
+    {
+      "id": "join-03",
+      "from": "garden-3",
+      "to": "garden-4",
+      "exitPort": "garden-3:exit",
+      "entryPort": "garden-4:entry",
+      "connector": "flooded track stair",
+      "geometry": "sloping rail cutting",
+      "overlap": {
+        "materials": [
+          "brick",
+          "iron rail",
+          "water"
+        ],
+        "palette": [
+          "#243944",
+          "#465b54",
+          "#9d814f"
+        ],
+        "spines": [
+          "water",
+          "structure"
+        ],
+        "light": "railway lamps reflect into increasingly submerged halls"
+      },
+      "traversal": "descending side loop followed by an upward station stair"
+    },
+    {
+      "id": "join-04",
+      "from": "garden-4",
+      "to": "garden-5",
+      "exitPort": "garden-4:exit",
+      "entryPort": "garden-5:entry",
+      "connector": "station spillway",
+      "geometry": "wide arch throat",
+      "overlap": {
+        "materials": [
+          "brick",
+          "stone",
+          "timber",
+          "water"
+        ],
+        "palette": [
+          "#283d49",
+          "#587162",
+          "#b39b63"
+        ],
+        "spines": [
+          "water",
+          "structure"
+        ],
+        "light": "teal water opens gradually while dark station arches remain behind"
+      },
+      "traversal": "cross a broad lip, climb two offset sluice landings"
+    },
+    {
+      "id": "join-05",
+      "from": "garden-5",
+      "to": "garden-6",
+      "exitPort": "garden-5:exit",
+      "entryPort": "garden-6:entry",
+      "connector": "wheel tailrace",
+      "geometry": "winding drainage gallery",
+      "overlap": {
+        "materials": [
+          "mossy stone",
+          "pipe",
+          "water"
+        ],
+        "palette": [
+          "#253c42",
+          "#527460",
+          "#62a8b0"
+        ],
+        "spines": [
+          "water",
+          "structure"
+        ],
+        "light": "basin reflections narrow into a quieter dark tunnel"
+      },
+      "traversal": "short horizontal compression before a tall drain climb"
+    },
+    {
+      "id": "join-06",
+      "from": "garden-6",
+      "to": "garden-7",
+      "exitPort": "garden-6:exit",
+      "entryPort": "garden-7:entry",
+      "connector": "fossil drain mouth",
+      "geometry": "fractured pipe-to-bone shaft",
+      "overlap": {
+        "materials": [
+          "mineral stone",
+          "bone",
+          "moss"
+        ],
+        "palette": [
+          "#29393f",
+          "#5e7561",
+          "#899886"
+        ],
+        "spines": [
+          "water",
+          "root"
+        ],
+        "light": "small seep highlights connect the drainage wall to pale buried bones"
+      },
+      "traversal": "three uneven shelves around a large exposed rib base"
+    },
+    {
+      "id": "join-07",
+      "from": "garden-7",
+      "to": "garden-8",
+      "exitPort": "garden-7:exit",
+      "entryPort": "garden-8:entry",
+      "connector": "buried root joint",
+      "geometry": "curving ossuary stair",
+      "overlap": {
+        "materials": [
+          "bone",
+          "root",
+          "moss"
+        ],
+        "palette": [
+          "#263831",
+          "#60724e",
+          "#969b79"
+        ],
+        "spines": [
+          "root",
+          "water"
+        ],
+        "light": "bone highlights diminish beneath root shadow"
+      },
+      "traversal": "curving climb through a low chamber and one spacious rest pocket"
+    },
+    {
+      "id": "join-08",
+      "from": "garden-8",
+      "to": "garden-9",
+      "exitPort": "garden-8:exit",
+      "entryPort": "garden-9:entry",
+      "connector": "fungal root throat",
+      "geometry": "broad branching cave opening",
+      "overlap": {
+        "materials": [
+          "root",
+          "earth",
+          "mycelium"
+        ],
+        "palette": [
+          "#253d3e",
+          "#467575",
+          "#8cc9b2"
+        ],
+        "spines": [
+          "root",
+          "water"
+        ],
+        "light": "small cyan fungi precede the monumental cap"
+      },
+      "traversal": "low root passage opens into a large mushroom overlook"
+    },
+    {
+      "id": "join-09",
+      "from": "garden-9",
+      "to": "garden-10",
+      "exitPort": "garden-9:exit",
+      "entryPort": "garden-10:entry",
+      "connector": "gill fissure",
+      "geometry": "diagonal mycelial chimney",
+      "overlap": {
+        "materials": [
+          "fungus",
+          "mineral rock",
+          "root"
+        ],
+        "palette": [
+          "#263e50",
+          "#517779",
+          "#83c5b3"
+        ],
+        "spines": [
+          "root",
+          "water"
+        ],
+        "light": "bright cap rim gives way to sparse vein light"
+      },
+      "traversal": "diagonal route alternates attached shelf and narrow gap"
+    },
+    {
+      "id": "join-10",
+      "from": "garden-10",
+      "to": "garden-11",
+      "exitPort": "garden-10:exit",
+      "entryPort": "garden-11:entry",
+      "connector": "mycelial heart root",
+      "geometry": "split root ascent",
+      "overlap": {
+        "materials": [
+          "root",
+          "bark",
+          "fungus"
+        ],
+        "palette": [
+          "#293e36",
+          "#658264",
+          "#b69b61"
+        ],
+        "spines": [
+          "root",
+          "water"
+        ],
+        "light": "cyan veins enter dark bark; a warm hollow appears gradually"
+      },
+      "traversal": "two unequal root arms reconnect at a broad trunk landing"
+    },
+    {
+      "id": "join-11",
+      "from": "garden-11",
+      "to": "garden-12",
+      "exitPort": "garden-11:exit",
+      "entryPort": "garden-12:entry",
+      "connector": "hollow branch mouth",
+      "geometry": "open braided branch",
+      "overlap": {
+        "materials": [
+          "bark",
+          "root",
+          "moss"
+        ],
+        "palette": [
+          "#314837",
+          "#637d51",
+          "#acac78"
+        ],
+        "spines": [
+          "root",
+          "structure"
+        ],
+        "light": "hollow illumination recedes while muted ambient depth grows"
+      },
+      "traversal": "walkable branch bends outward; small climbs lead to a bridge fork"
+    },
+    {
+      "id": "join-12",
+      "from": "garden-12",
+      "to": "garden-13",
+      "exitPort": "garden-12:exit",
+      "entryPort": "garden-13:entry",
+      "connector": "root-wrapped anchor",
+      "geometry": "root and machinery stair",
+      "overlap": {
+        "materials": [
+          "root",
+          "timber",
+          "iron"
+        ],
+        "palette": [
+          "#303e42",
+          "#725f4d",
+          "#a99a68"
+        ],
+        "spines": [
+          "root",
+          "structure"
+        ],
+        "light": "green bark shadows acquire violet distance and warm lamp anchors"
+      },
+      "traversal": "root bridge enters machinery from below; optional anchor pocket returns safely"
+    },
+    {
+      "id": "join-13",
+      "from": "garden-13",
+      "to": "garden-14",
+      "exitPort": "garden-13:exit",
+      "entryPort": "garden-14:entry",
+      "connector": "counterweight outlet",
+      "geometry": "suspended service span",
+      "overlap": {
+        "materials": [
+          "iron",
+          "cable",
+          "timber"
+        ],
+        "palette": [
+          "#36394e",
+          "#74625c",
+          "#b1a67b"
+        ],
+        "spines": [
+          "structure",
+          "root"
+        ],
+        "light": "drum shadows stretch into a single violet ravine atmosphere"
+      },
+      "traversal": "vertical counterweight climb opens into unequal suspended crossings"
+    },
+    {
+      "id": "join-14",
+      "from": "garden-14",
+      "to": "garden-15",
+      "exitPort": "garden-14:exit",
+      "entryPort": "garden-15:entry",
+      "connector": "cable aqueduct anchor",
+      "geometry": "pier-supported rising bridge",
+      "overlap": {
+        "materials": [
+          "cable",
+          "stone",
+          "moss"
+        ],
+        "palette": [
+          "#3b4652",
+          "#7b8a7b",
+          "#b4bfa5"
+        ],
+        "spines": [
+          "structure",
+          "water",
+          "root"
+        ],
+        "light": "distant cool ravine remains visible through incomplete stone arches"
+      },
+      "traversal": "last suspended landing reconnects to a broad grounded pier"
+    },
+    {
+      "id": "join-15",
+      "from": "garden-15",
+      "to": "garden-16",
+      "exitPort": "garden-15:exit",
+      "entryPort": "garden-16:entry",
+      "connector": "broken channel stair",
+      "geometry": "irregular retaining terraces",
+      "overlap": {
+        "materials": [
+          "limestone",
+          "moss",
+          "earth"
+        ],
+        "palette": [
+          "#4c6156",
+          "#869071",
+          "#bec3a1"
+        ],
+        "spines": [
+          "water",
+          "structure",
+          "root"
+        ],
+        "light": "pale stone warms slowly as planting occupies cracks"
+      },
+      "traversal": "wide channel crossing and two varied terraced climbs"
+    },
+    {
+      "id": "join-16",
+      "from": "garden-16",
+      "to": "garden-17",
+      "exitPort": "garden-16:exit",
+      "entryPort": "garden-17:entry",
+      "connector": "reed runoff stair",
+      "geometry": "low garden-to-marsh apron",
+      "overlap": {
+        "materials": [
+          "earth",
+          "moss",
+          "reed",
+          "stone"
+        ],
+        "palette": [
+          "#415e50",
+          "#839272",
+          "#b4b89a"
+        ],
+        "spines": [
+          "water",
+          "root"
+        ],
+        "light": "terrace shade becomes sage marsh haze without a fresh sky strip"
+      },
+      "traversal": "low sheltered traverse and a climb beside one bell stem"
+    },
+    {
+      "id": "join-17",
+      "from": "garden-17",
+      "to": "garden-18",
+      "exitPort": "garden-17:exit",
+      "entryPort": "garden-18:entry",
+      "connector": "marsh limestone lip",
+      "geometry": "stepped rivulet channel",
+      "overlap": {
+        "materials": [
+          "reed",
+          "limestone",
+          "water"
+        ],
+        "palette": [
+          "#5b7269",
+          "#a0aaa0",
+          "#d0c9ae"
+        ],
+        "spines": [
+          "water",
+          "root"
+        ],
+        "light": "reeds thin out while pale limestone reflects the same ambient light"
+      },
+      "traversal": "two shallow fall crossings around a wide rest shelf"
+    },
+    {
+      "id": "join-18",
+      "from": "garden-18",
+      "to": "garden-19",
+      "exitPort": "garden-18:exit",
+      "entryPort": "garden-19:entry",
+      "connector": "conservatory foundation",
+      "geometry": "planted limestone stair",
+      "overlap": {
+        "materials": [
+          "limestone",
+          "iron",
+          "vine",
+          "water"
+        ],
+        "palette": [
+          "#80908b",
+          "#bcbda5",
+          "#d4b385"
+        ],
+        "spines": [
+          "water",
+          "root",
+          "structure"
+        ],
+        "light": "amber sky grows through incomplete iron glazing ribs"
+      },
+      "traversal": "channel climbs into a broad greenhouse footing"
+    },
+    {
+      "id": "join-19",
+      "from": "garden-19",
+      "to": "garden-20",
+      "exitPort": "garden-19:exit",
+      "entryPort": "garden-20:entry",
+      "connector": "greenhouse crown ramp",
+      "geometry": "branching planted iron stair",
+      "overlap": {
+        "materials": [
+          "iron",
+          "glass",
+          "limestone",
+          "vine"
+        ],
+        "palette": [
+          "#68766e",
+          "#b69770",
+          "#e6b469"
+        ],
+        "spines": [
+          "water",
+          "root",
+          "structure"
+        ],
+        "light": "terraces share the crown's single sunset sky; shadow stays cool"
+      },
+      "traversal": "two unequal summit approaches converge at the broad crown garden"
+    }
+  ],
+  "implementation": {
+    "status": "unimplemented",
+    "contractDocument": "docs/design/continuous-world-20.md"
+  }
+}
