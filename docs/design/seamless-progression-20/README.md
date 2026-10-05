@@ -1,46 +1,46 @@
 # MAX: twenty connected level concepts
 
-Twenty separate wide images rework the owner's twelve-level reference stack into one ascending geography. Level 01 begins in the frozen seed archive; Level 20 reaches the broken glasshouse in warm amber light. The named environments retain their focal landmarks, while intermediate levels turn each material and biome change into a place of its own.
+Twenty separate wide images rework the owner's twelve-level reference into one ascending geography. Level 01 begins in the frozen seed archive; level 20 reaches an overgrown glasshouse in warm sunset light. The sequence preserves the reference landmarks and gives every material and biome transition its own connected place.
 
-The new concept direction progresses through thawing machinery, abandoned railway, fossil strata, fungi, waterworks, living roots, salvage cranes, aqueducts, wetland and mountain nursery. Water drains through the whole world. Roots connect the middle regions. The upper scenes share one dusk sky and mountain language.
+The images were generated sequentially, one at a time. Final selected PNGs live in `images/`. The original complete sequential pass is preserved unchanged in `source/`, including replaced candidates. Both sets have manifests binding original filenames, actual dimensions, byte counts and SHA-256 hashes. Generated dimensions vary slightly; no claim of a uniform native runtime size is made.
 
-## Art and sequence
+## Sequence
 
-Each PNG is a separate landscape original from image generation. Preserve its bytes and recorded source dimensions. The requested canvas is 1536×864; actual generated originals are recorded in `manifest.json` and may differ slightly. Displaying them at a common review width does not make them native runtime masters.
+Read from the bottom upward: 01 below 02, continuing to 20 at the summit. `progression-plan.json` describes the route anchors and material progression.
 
-`progression-plan.json` defines the bottom-to-top order and every connecting material. `common-prompt.txt` records the shared direction; `prompts/level-NN.txt` preserves the exact request sent for each image. `manifest.json` binds final image bytes, dimensions, prompt hashes and Figma concept nodes.
+| Level | Scene | Material continuing upward |
+| --- | --- | --- |
+| 01 | [Frostarkivet](images/level-01.png) | icy masonry, blue steel pipe and maintenance ladder |
+| 02 | [Tinesjakta](images/level-02.png) | dark brick ventilation shaft and dripping blue pipe |
+| 03 | [Den gløymde stasjonen](images/level-03.png) | rooted lift cage, red-brown brick and a drainpipe |
+| 04 | [Rot- og beinbrotet](images/level-04.png) | pale calcite, fossil fragments and embedded roots |
+| 05 | [Leviatanen](images/level-05.png) | mossy ivory rib and damp dark limestone |
+| 06 | [Sopphvelvet](images/level-06.png) | turquoise seep, cave rock and stalactite beside a rope ladder |
+| 07 | [Trykksisternene](images/level-07.png) | cyan sluice masonry, wet brick and water elevator cable |
+| 08 | [Nattdemninga](images/level-08.png) | root-bound damp stone gate and narrow canal |
+| 09 | [Rotslusa](images/level-09.png) | warm massive trunk, blue rivulet and root arch |
+| 10 | [Holtreet](images/level-10.png) | bark, living roots and rope gantry |
+| 11 | [Den poda planteskulen](images/level-11.png) | rust steel beam, cable and living tree roots |
+| 12 | [Magnetgarden](images/level-12.png) | rusty truss, hoist cable and mossy stone pier |
+| 13 | [Stormstillaset](images/level-13.png) | mossy aqueduct pier, water mist and rope |
+| 14 | [Kråkeakvedukten](images/level-14.png) | wet mossy stone, reed roots and shallow runnel |
+| 15 | [Klokkeblommyra](images/level-15.png) | reeds, muddy ledge and a hanging planted basket |
+| 16 | [Sivklippene](images/level-16.png) | basalt, plant-covered cable support and moss shelf |
+| 17 | [Taubanekløfta](images/level-17.png) | pale rock, windmill shaft and cable pulley |
+| 18 | [Vindkvernløpet](images/level-18.png) | white travertine water channel, lift and pipe |
+| 19 | [Kalkterrassene](images/level-19.png) | limestone, greenhouse irrigation pipe and iron frame |
+| 20 | [Glashustoppen](images/level-20.png) | summit cap |
 
-| Level | Concept | Bottom entry X | Upper exit X | Material carried into the next level |
-| --- | --- | --- | --- | --- |
-| 01 | [Frostarkivet](images/level-01.png) | 20% | 78% | icy masonry, blue steel pipe and maintenance ladder |
-| 02 | [Tinesjakta](images/level-02.png) | 78% | 28% | dark brick ventilation shaft and dripping blue pipe |
-| 03 | [Den gløymde stasjonen](images/level-03.png) | 28% | 80% | rooted lift cage, red-brown brick and a drainpipe |
-| 04 | [Rot- og beinbrotet](images/level-04.png) | 80% | 35% | pale calcite, fossil fragments and embedded roots |
-| 05 | [Leviatanen](images/level-05.png) | 35% | 73% | mossy ivory rib and damp dark limestone |
-| 06 | [Sopphvelvet](images/level-06.png) | 73% | 23% | turquoise seep, cave rock and stalactite beside a rope ladder |
-| 07 | [Trykksisternene](images/level-07.png) | 23% | 77% | cyan sluice masonry, wet brick and water elevator cable |
-| 08 | [Nattdemninga](images/level-08.png) | 77% | 30% | root-bound damp stone gate and narrow canal |
-| 09 | [Rotslusa](images/level-09.png) | 30% | 72% | warm massive trunk, blue rivulet and root arch |
-| 10 | [Holtreet](images/level-10.png) | 72% | 24% | bark, living roots and rope gantry |
-| 11 | [Den poda planteskulen](images/level-11.png) | 24% | 75% | rust steel beam, cable and living tree roots |
-| 12 | [Magnetgarden](images/level-12.png) | 75% | 28% | rusty truss, hoist cable and mossy stone pier |
-| 13 | [Stormstillaset](images/level-13.png) | 28% | 74% | mossy aqueduct pier, water mist and rope |
-| 14 | [Kråkeakvedukten](images/level-14.png) | 74% | 35% | wet mossy stone, reed roots and shallow runnel |
-| 15 | [Klokkeblommyra](images/level-15.png) | 35% | 80% | reeds, muddy ledge and a hanging planted basket |
-| 16 | [Sivklippene](images/level-16.png) | 80% | 26% | basalt, plant-covered cable support and moss shelf |
-| 17 | [Taubanekløfta](images/level-17.png) | 26% | 75% | pale rock, windmill shaft and cable pulley |
-| 18 | [Vindkvernløpet](images/level-18.png) | 75% | 32% | white travertine water channel, lift and pipe |
-| 19 | [Kalkterrassene](images/level-19.png) | 32% | 70% | limestone, greenhouse irrigation pipe and iron frame |
-| 20 | [Glashustoppen](images/level-20.png) | 70% | Summit | summit cap |
+## Connecting the scenes
 
-## Transition design
+Water descends through the world. Blue service pipes connect the frozen vault to the railway and pressure machinery; fossil-bearing rock becomes fungal cavern and reservoir. Massive roots wrap the sluice and form the hollow tree, then meet salvage steel. Crane supports turn into aqueduct piers, reed roots join wetland to basalt cliffs, and mountain irrigation leads through pale terraces into the glasshouse.
 
-At each join, the upper exit of level N and the bottom entry of level N+1 use the same normalized X position. The route occupies approximately 12% of the width and continues off the edge through a ladder, root, cable, pipe or stair. The outgoing material persists into the next scene's bottom quarter; the next biome appears before the previous scene's upper quarter ends. Side masses, water and local illumination carry through those overlap zones.
+The sequential pass continued upper landmarks in each next image's lower region. Those overlap regions require registration rather than naïve edge-to-edge stacking. The adjoining-band repair pass concentrates on weak joins while preserving each principal scene. The selected images are being registered in a cropped Figma concept master. Ten adjoining-band repairs improve material and landmark continuity. The adjoining image edges are not pixel-identical; literal edge registration is not certified. Movement reachability has not been tested.
 
-These images establish the spatial and material direction. Literal edge-pixel continuity and movement reachability have not been certified by image generation. Before a playable seamless world is integrated, register adjoining route anchors at native game scale, author connecting geometry, match edge bands and test all nineteen ascents with the game's simulator.
+`manifest.json` binds the final selected images and repair provenance. It identifies the Figma master and records binding-pending until the actual import audit is complete. `source/manifest.json` preserves the immutable first complete pass. `common-prompt.txt` records shared creative intent rather than claiming a verbatim log of every prompt.
 
-## Figma review and runtime boundary
+## Figma and game integration
 
-The concept frames belong in a separate section on the [levels design page](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=508-11825), under names outside the live `garden-NN` compiler pattern and without `designed` markers. Final section and node links are recorded in the manifest.
+The assembled review belongs on the [level-design page](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=508-11825), with 01 at the bottom and 20 at the top. Concept frames use names outside the live `garden-NN` compiler pattern and contain no `designed` marker.
 
-This kit proposes a new art direction; it leaves current runtime PNG masters, collision geometry, multiplayer state, rendering and deployment unchanged. The present campaign's underground stages and radioactive dawn remain current behavior until an implementation change is reviewed. Existing Figma production masters remain authoritative under `docs/figma.md`.
+These are concept scenes. Playable integration requires native game-scale registration, authored standing surfaces and connecting geometry, then actual ascent checks. Current runtime PNG masters, collision geometry, controls, co-op state and deployment remain unchanged. Runtime art continues to follow [the Figma source contract](../../figma.md).

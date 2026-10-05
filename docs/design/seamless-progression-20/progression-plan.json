@@ -1,10 +1,6 @@
 {
-  "version": 1,
+  "version": 2,
   "direction": "bottom-to-top",
-  "dimensions": [
-    1536,
-    864
-  ],
   "levels": [
     {
       "id": 1,
@@ -15,7 +11,12 @@
       "bottomMaterial": "cold blue flooded stone and ice",
       "topMaterial": "icy masonry, blue steel pipe and maintenance ladder",
       "previous": null,
-      "next": "Tinesjakta"
+      "next": "Tinesjakta",
+      "image": "images/level-01.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 2,
@@ -26,7 +27,12 @@
       "bottomMaterial": "icy masonry, blue steel pipe and maintenance ladder",
       "topMaterial": "dark brick ventilation shaft and dripping blue pipe",
       "previous": "Frostarkivet",
-      "next": "Den gløymde stasjonen"
+      "next": "Den gløymde stasjonen",
+      "image": "images/level-02.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 3,
@@ -37,7 +43,12 @@
       "bottomMaterial": "dark brick ventilation shaft and dripping blue pipe",
       "topMaterial": "rooted lift cage, red-brown brick and a drainpipe",
       "previous": "Tinesjakta",
-      "next": "Rot- og beinbrotet"
+      "next": "Rot- og beinbrotet",
+      "image": "images/level-03.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 4,
@@ -48,7 +59,12 @@
       "bottomMaterial": "rooted lift cage, red-brown brick and a drainpipe",
       "topMaterial": "pale calcite, fossil fragments and embedded roots",
       "previous": "Den gløymde stasjonen",
-      "next": "Leviatanen"
+      "next": "Leviatanen",
+      "image": "images/level-04.png",
+      "imageDimensions": [
+        1670,
+        942
+      ]
     },
     {
       "id": 5,
@@ -59,7 +75,12 @@
       "bottomMaterial": "pale calcite, fossil fragments and embedded roots",
       "topMaterial": "mossy ivory rib and damp dark limestone",
       "previous": "Rot- og beinbrotet",
-      "next": "Sopphvelvet"
+      "next": "Sopphvelvet",
+      "image": "images/level-05.png",
+      "imageDimensions": [
+        1669,
+        942
+      ]
     },
     {
       "id": 6,
@@ -70,7 +91,12 @@
       "bottomMaterial": "mossy ivory rib and damp dark limestone",
       "topMaterial": "turquoise seep, cave rock and stalactite beside a rope ladder",
       "previous": "Leviatanen",
-      "next": "Trykksisternene"
+      "next": "Trykksisternene",
+      "image": "images/level-06.png",
+      "imageDimensions": [
+        1670,
+        942
+      ]
     },
     {
       "id": 7,
@@ -81,7 +107,12 @@
       "bottomMaterial": "turquoise seep, cave rock and stalactite beside a rope ladder",
       "topMaterial": "cyan sluice masonry, wet brick and water elevator cable",
       "previous": "Sopphvelvet",
-      "next": "Nattdemninga"
+      "next": "Nattdemninga",
+      "image": "images/level-07.png",
+      "imageDimensions": [
+        1670,
+        942
+      ]
     },
     {
       "id": 8,
@@ -92,7 +123,12 @@
       "bottomMaterial": "cyan sluice masonry, wet brick and water elevator cable",
       "topMaterial": "root-bound damp stone gate and narrow canal",
       "previous": "Trykksisternene",
-      "next": "Rotslusa"
+      "next": "Rotslusa",
+      "image": "images/level-08.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 9,
@@ -103,7 +139,12 @@
       "bottomMaterial": "root-bound damp stone gate and narrow canal",
       "topMaterial": "warm massive trunk, blue rivulet and root arch",
       "previous": "Nattdemninga",
-      "next": "Holtreet"
+      "next": "Holtreet",
+      "image": "images/level-09.png",
+      "imageDimensions": [
+        1672,
+        941
+      ]
     },
     {
       "id": 10,
@@ -114,7 +155,12 @@
       "bottomMaterial": "warm massive trunk, blue rivulet and root arch",
       "topMaterial": "bark, living roots and rope gantry",
       "previous": "Rotslusa",
-      "next": "Den poda planteskulen"
+      "next": "Den poda planteskulen",
+      "image": "images/level-10.png",
+      "imageDimensions": [
+        1672,
+        941
+      ]
     },
     {
       "id": 11,
@@ -125,7 +171,12 @@
       "bottomMaterial": "bark, living roots and rope gantry",
       "topMaterial": "rust steel beam, cable and living tree roots",
       "previous": "Holtreet",
-      "next": "Magnetgarden"
+      "next": "Magnetgarden",
+      "image": "images/level-11.png",
+      "imageDimensions": [
+        1672,
+        941
+      ]
     },
     {
       "id": 12,
@@ -136,7 +187,12 @@
       "bottomMaterial": "rust steel beam, cable and living tree roots",
       "topMaterial": "rusty truss, hoist cable and mossy stone pier",
       "previous": "Den poda planteskulen",
-      "next": "Stormstillaset"
+      "next": "Stormstillaset",
+      "image": "images/level-12.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 13,
@@ -147,7 +203,12 @@
       "bottomMaterial": "rusty truss, hoist cable and mossy stone pier",
       "topMaterial": "mossy aqueduct pier, water mist and rope",
       "previous": "Magnetgarden",
-      "next": "Kråkeakvedukten"
+      "next": "Kråkeakvedukten",
+      "image": "images/level-13.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 14,
@@ -158,7 +219,12 @@
       "bottomMaterial": "mossy aqueduct pier, water mist and rope",
       "topMaterial": "wet mossy stone, reed roots and shallow runnel",
       "previous": "Stormstillaset",
-      "next": "Klokkeblommyra"
+      "next": "Klokkeblommyra",
+      "image": "images/level-14.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 15,
@@ -169,7 +235,12 @@
       "bottomMaterial": "wet mossy stone, reed roots and shallow runnel",
       "topMaterial": "reeds, muddy ledge and a hanging planted basket",
       "previous": "Kråkeakvedukten",
-      "next": "Sivklippene"
+      "next": "Sivklippene",
+      "image": "images/level-15.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 16,
@@ -180,7 +251,12 @@
       "bottomMaterial": "reeds, muddy ledge and a hanging planted basket",
       "topMaterial": "basalt, plant-covered cable support and moss shelf",
       "previous": "Klokkeblommyra",
-      "next": "Taubanekløfta"
+      "next": "Taubanekløfta",
+      "image": "images/level-16.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 17,
@@ -191,7 +267,12 @@
       "bottomMaterial": "basalt, plant-covered cable support and moss shelf",
       "topMaterial": "pale rock, windmill shaft and cable pulley",
       "previous": "Sivklippene",
-      "next": "Vindkvernløpet"
+      "next": "Vindkvernløpet",
+      "image": "images/level-17.png",
+      "imageDimensions": [
+        1670,
+        941
+      ]
     },
     {
       "id": 18,
@@ -202,7 +283,12 @@
       "bottomMaterial": "pale rock, windmill shaft and cable pulley",
       "topMaterial": "white travertine water channel, lift and pipe",
       "previous": "Taubanekløfta",
-      "next": "Kalkterrassene"
+      "next": "Kalkterrassene",
+      "image": "images/level-18.png",
+      "imageDimensions": [
+        1670,
+        941
+      ]
     },
     {
       "id": 19,
@@ -213,7 +299,12 @@
       "bottomMaterial": "white travertine water channel, lift and pipe",
       "topMaterial": "limestone, greenhouse irrigation pipe and iron frame",
       "previous": "Vindkvernløpet",
-      "next": "Glashustoppen"
+      "next": "Glashustoppen",
+      "image": "images/level-19.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     },
     {
       "id": 20,
@@ -224,7 +315,20 @@
       "bottomMaterial": "limestone, greenhouse irrigation pipe and iron frame",
       "topMaterial": "summit cap",
       "previous": "Kalkterrassene",
-      "next": null
+      "next": null,
+      "image": "images/level-20.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
     }
-  ]
+  ],
+  "requestedDimensions": [
+    1536,
+    864
+  ],
+  "coordinateSpace": "entryX and exitX are normalized concept percentages, not authored collision coordinates",
+  "sourceManifest": "source/manifest.json",
+  "imageManifest": "manifest.json",
+  "continuityStatus": "material/landmark repairs; cropped concept assembly; edges are not pixel-identical"
 }
