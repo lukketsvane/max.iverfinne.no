@@ -9,15 +9,91 @@
     "materialAndLandmarkContinuity": "selected weak joins repaired",
     "pixelIdenticalEdges": false,
     "edgeRegistration": "not certified",
-    "movementReachability": "untested"
+    "movementReachability": "untested",
+    "overlapReview": {
+      "strong": 7,
+      "weak": 8,
+      "moderate": 4,
+      "weakJoins": [
+        [
+          3,
+          4
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          17,
+          18
+        ],
+        [
+          18,
+          19
+        ]
+      ],
+      "method": "Approximate local 64-pixel overlap correlation and seam-jump ratios; heuristic confidence, not proof of seamlessness."
+    }
   },
   "runtimeIntegration": "not-integrated",
   "figma": {
     "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
     "pageId": "508:11825",
     "masterNodeId": "746:117481",
-    "status": "binding-pending",
-    "url": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=746-117481"
+    "status": "composition-preview-audited",
+    "url": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=746-117481",
+    "representations": {
+      "nativePng": [
+        1
+      ],
+      "previewJpeg": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    "purpose": "composition-preview",
+    "fullQualitySources": "GitHub images/ contains the complete selected PNGs",
+    "width": 1672,
+    "height": 13135,
+    "masterName": "MAX / 20 OMRÅDE / KONSEPTSTABEL",
+    "assembly": "figma-assembly.json",
+    "auditSourceSha256": "0e2436bfc531ef5e185434ee1686a084fdb9abcf60458239b02adb57397d0546",
+    "structureVerified": true,
+    "visualReview": "completed",
+    "allRepresentationHashesVerified": true
   },
   "sourceManifest": "source/manifest.json",
   "levels": [
@@ -35,7 +111,27 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-01.png",
       "previous": null,
-      "next": 2
+      "next": 2,
+      "figma": {
+        "frameNodeId": "746:117492",
+        "imageNodeId": "780:13579",
+        "representation": "native-png",
+        "imageHash": "af36892f52dca2257156713b156d81656bbec739",
+        "storedImageDimensions": [
+          1671,
+          941
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": true,
+        "crop": {
+          "top": 242,
+          "bottom": 0,
+          "visibleHeight": 699,
+          "masterY": 12436,
+          "imageX": 0,
+          "imageY": -242
+        }
+      }
     },
     {
       "id": 2,
@@ -51,7 +147,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-02.png",
       "previous": 1,
-      "next": 3
+      "next": 3,
+      "figma": {
+        "frameNodeId": "746:117499",
+        "imageNodeId": "782:13533",
+        "representation": "preview-jpeg",
+        "imageHash": "c0ff63b1f7dc0c78f58539c389e1012b5361ccf1",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 109,
+          "bottom": 48,
+          "visibleHeight": 784,
+          "masterY": 11652,
+          "imageX": 0,
+          "imageY": -109
+        },
+        "previewBytes": 23573
+      }
     },
     {
       "id": 3,
@@ -67,7 +184,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-03.png",
       "previous": 2,
-      "next": 4
+      "next": 4,
+      "figma": {
+        "frameNodeId": "746:117506",
+        "imageNodeId": "782:13535",
+        "representation": "preview-jpeg",
+        "imageHash": "e198d6554c5ba4256f9b7970e16349479cd975f2",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 319,
+          "bottom": 99,
+          "visibleHeight": 523,
+          "masterY": 11129,
+          "imageX": 0,
+          "imageY": -319
+        },
+        "previewBytes": 25583
+      }
     },
     {
       "id": 4,
@@ -83,7 +221,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-04.png",
       "previous": 3,
-      "next": 5
+      "next": 5,
+      "figma": {
+        "frameNodeId": "746:117513",
+        "imageNodeId": "782:13537",
+        "representation": "preview-jpeg",
+        "imageHash": "28cbaecaeaaf4ede42e4550110df997d9af03f2c",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 94,
+          "bottom": 102,
+          "visibleHeight": 746,
+          "masterY": 10383,
+          "imageX": 1,
+          "imageY": -94
+        },
+        "previewBytes": 25948
+      }
     },
     {
       "id": 5,
@@ -99,7 +258,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-05.png",
       "previous": 4,
-      "next": 6
+      "next": 6,
+      "figma": {
+        "frameNodeId": "746:117521",
+        "imageNodeId": "782:13539",
+        "representation": "preview-jpeg",
+        "imageHash": "48352fd317a75807a2cde941bfa673a2eba45e70",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 159,
+          "bottom": 140,
+          "visibleHeight": 643,
+          "masterY": 9740,
+          "imageX": 1,
+          "imageY": -159
+        },
+        "previewBytes": 28442
+      }
     },
     {
       "id": 6,
@@ -115,7 +295,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-06.png",
       "previous": 5,
-      "next": 7
+      "next": 7,
+      "figma": {
+        "frameNodeId": "746:117528",
+        "imageNodeId": "782:13527",
+        "representation": "preview-jpeg",
+        "imageHash": "8bb6fb674f369f8dd19fb0836a6e6d3cf09e7d98",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 18,
+          "bottom": 44,
+          "visibleHeight": 880,
+          "masterY": 8860,
+          "imageX": 1,
+          "imageY": -18
+        },
+        "previewBytes": 27647
+      }
     },
     {
       "id": 7,
@@ -131,7 +332,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-07.png",
       "previous": 6,
-      "next": 8
+      "next": 8,
+      "figma": {
+        "frameNodeId": "746:117535",
+        "imageNodeId": "782:13528",
+        "representation": "preview-jpeg",
+        "imageHash": "b0cb6ccc2b41dc2f365ab0b0b66dfe949e0315bd",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 309,
+          "bottom": 426,
+          "visibleHeight": 207,
+          "masterY": 8653,
+          "imageX": 1,
+          "imageY": -309
+        },
+        "previewBytes": 28360
+      }
     },
     {
       "id": 8,
@@ -147,7 +369,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-08.png",
       "previous": 7,
-      "next": 9
+      "next": 9,
+      "figma": {
+        "frameNodeId": "746:117542",
+        "imageNodeId": "782:13529",
+        "representation": "preview-jpeg",
+        "imageHash": "fc404d6164f0a8e7b464ac110fb036bf63da093c",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 89,
+          "bottom": 119,
+          "visibleHeight": 733,
+          "masterY": 7920,
+          "imageX": 0,
+          "imageY": -89
+        },
+        "previewBytes": 26608
+      }
     },
     {
       "id": 9,
@@ -163,7 +406,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-09.png",
       "previous": 8,
-      "next": 10
+      "next": 10,
+      "figma": {
+        "frameNodeId": "746:117550",
+        "imageNodeId": "782:13530",
+        "representation": "preview-jpeg",
+        "imageHash": "c786bbd8e1acae44a7a91ce633561975af0bee6d",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 167,
+          "bottom": 119,
+          "visibleHeight": 655,
+          "masterY": 7265,
+          "imageX": 0,
+          "imageY": -167
+        },
+        "previewBytes": 25655
+      }
     },
     {
       "id": 10,
@@ -179,7 +443,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-10.png",
       "previous": 9,
-      "next": 11
+      "next": 11,
+      "figma": {
+        "frameNodeId": "746:117557",
+        "imageNodeId": "782:13531",
+        "representation": "preview-jpeg",
+        "imageHash": "91339ba7afcbadad3cb9ff24438d0ad9462e5620",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 61,
+          "bottom": 125,
+          "visibleHeight": 755,
+          "masterY": 6510,
+          "imageX": 0,
+          "imageY": -61
+        },
+        "previewBytes": 25892
+      }
     },
     {
       "id": 11,
@@ -195,7 +480,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-11.png",
       "previous": 10,
-      "next": 12
+      "next": 12,
+      "figma": {
+        "frameNodeId": "746:117564",
+        "imageNodeId": "782:13532",
+        "representation": "preview-jpeg",
+        "imageHash": "d04f044606552b160b01633f56a9f038f9c02a58",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 235,
+          "bottom": 176,
+          "visibleHeight": 530,
+          "masterY": 5980,
+          "imageX": 0,
+          "imageY": -235
+        },
+        "previewBytes": 26045
+      }
     },
     {
       "id": 12,
@@ -211,7 +517,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-12.png",
       "previous": 11,
-      "next": 13
+      "next": 13,
+      "figma": {
+        "frameNodeId": "746:117571",
+        "imageNodeId": "782:13534",
+        "representation": "preview-jpeg",
+        "imageHash": "06a1d4087dd8fae3b90ef96810b13f354415fdfd",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 42,
+          "bottom": 63,
+          "visibleHeight": 836,
+          "masterY": 5144,
+          "imageX": 0,
+          "imageY": -42
+        },
+        "previewBytes": 25800
+      }
     },
     {
       "id": 13,
@@ -227,7 +554,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-13.png",
       "previous": 12,
-      "next": 14
+      "next": 14,
+      "figma": {
+        "frameNodeId": "746:117579",
+        "imageNodeId": "782:13536",
+        "representation": "preview-jpeg",
+        "imageHash": "9ba3d084147c5a7ab17338e1a88c729705d9879c",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 194,
+          "bottom": 191,
+          "visibleHeight": 556,
+          "masterY": 4588,
+          "imageX": 0,
+          "imageY": -194
+        },
+        "previewBytes": 26181
+      }
     },
     {
       "id": 14,
@@ -243,7 +591,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-14.png",
       "previous": 13,
-      "next": 15
+      "next": 15,
+      "figma": {
+        "frameNodeId": "746:117586",
+        "imageNodeId": "782:13538",
+        "representation": "preview-jpeg",
+        "imageHash": "773f63940f298ddcb9cdd126c5dfdfb81803d27a",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 191,
+          "bottom": 60,
+          "visibleHeight": 690,
+          "masterY": 3898,
+          "imageX": 0,
+          "imageY": -191
+        },
+        "previewBytes": 31286
+      }
     },
     {
       "id": 15,
@@ -259,7 +628,28 @@
       "selection": "original-sequential-pass",
       "originalSource": "source/level-15.png",
       "previous": 14,
-      "next": 16
+      "next": 16,
+      "figma": {
+        "frameNodeId": "746:117593",
+        "imageNodeId": "782:13540",
+        "representation": "preview-jpeg",
+        "imageHash": "adb5e28270e22162a83ccf6fc0fc817bbacb6902",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 296,
+          "bottom": 80,
+          "visibleHeight": 565,
+          "masterY": 3333,
+          "imageX": 0,
+          "imageY": -296
+        },
+        "previewBytes": 26230
+      }
     },
     {
       "id": 16,
@@ -275,7 +665,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-16.png",
       "previous": 15,
-      "next": 17
+      "next": 17,
+      "figma": {
+        "frameNodeId": "746:117600",
+        "imageNodeId": "782:13541",
+        "representation": "preview-jpeg",
+        "imageHash": "5b4c2c8c6e46508a8873d5b3f7d56ab18d95a98e",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 155,
+          "bottom": 84,
+          "visibleHeight": 702,
+          "masterY": 2631,
+          "imageX": 0,
+          "imageY": -155
+        },
+        "previewBytes": 27638
+      }
     },
     {
       "id": 17,
@@ -291,7 +702,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-17.png",
       "previous": 16,
-      "next": 18
+      "next": 18,
+      "figma": {
+        "frameNodeId": "746:117608",
+        "imageNodeId": "782:13542",
+        "representation": "preview-jpeg",
+        "imageHash": "c25ee7eb80ddd1f8337f23747533d1882f51bde7",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 125,
+          "bottom": 162,
+          "visibleHeight": 654,
+          "masterY": 1977,
+          "imageX": 1,
+          "imageY": -125
+        },
+        "previewBytes": 26915
+      }
     },
     {
       "id": 18,
@@ -307,7 +739,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-18.png",
       "previous": 17,
-      "next": 19
+      "next": 19,
+      "figma": {
+        "frameNodeId": "746:117615",
+        "imageNodeId": "782:13543",
+        "representation": "preview-jpeg",
+        "imageHash": "4ae3c69c3a13b3728f32fbfe3468e0516e5952ea",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 275,
+          "bottom": 103,
+          "visibleHeight": 563,
+          "masterY": 1414,
+          "imageX": 1,
+          "imageY": -275
+        },
+        "previewBytes": 25520
+      }
     },
     {
       "id": 19,
@@ -323,7 +776,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-19.png",
       "previous": 18,
-      "next": 20
+      "next": 20,
+      "figma": {
+        "frameNodeId": "746:117622",
+        "imageNodeId": "782:13544",
+        "representation": "preview-jpeg",
+        "imageHash": "da85743fe145a7e9a3ed2325e42ce89f65854ee1",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 319,
+          "bottom": 96,
+          "visibleHeight": 526,
+          "masterY": 888,
+          "imageX": 0,
+          "imageY": -319
+        },
+        "previewBytes": 26440
+      }
     },
     {
       "id": 20,
@@ -339,7 +813,28 @@
       "selection": "adjoining-band-repair",
       "originalSource": "source/level-20.png",
       "previous": 19,
-      "next": null
+      "next": null,
+      "figma": {
+        "frameNodeId": "746:117629",
+        "imageNodeId": "782:13545",
+        "representation": "preview-jpeg",
+        "imageHash": "52f8662c2fb0e64a165e9122545513a933630dab",
+        "storedImageDimensions": [
+          384,
+          216
+        ],
+        "imageHashVerified": true,
+        "sourceByteIdentity": false,
+        "crop": {
+          "top": 0,
+          "bottom": 53,
+          "visibleHeight": 888,
+          "masterY": 0,
+          "imageX": 0,
+          "imageY": 0
+        },
+        "previewBytes": 28814
+      }
     }
   ]
 }
