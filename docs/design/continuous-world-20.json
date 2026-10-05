@@ -3,8 +3,8 @@
   "status": "design-candidate",
   "runtimePromotion": false,
   "date": "2026-10-05",
-  "title": "MAX continuous ascent — 20 connected regions",
-  "scope": "Alternative visual blueprint from the owner’s supplied twelve-region stack and four single-region examples. It does not replace current runtime art, campaign profiles, collision geometry or progression.",
+  "title": "MAX continuous ascent — twenty separate wide scene concepts",
+  "scope": "Twenty separate horizontal scene concepts and nineteen neighboring connector contracts from the owner’s visual references. This candidate does not replace current runtime art, campaign profiles, collision geometry or progression.",
   "order": "bottom-to-top",
   "regionIds": "Existing garden-1 through garden-20 identifiers; candidate meanings only.",
   "sources": {
@@ -18,12 +18,11 @@
     "figmaFileKey": "TC0PHGMTCMR6im4hb3CSbF",
     "figmaPageId": "508:11825",
     "figmaReferenceNodeId": "692:113033",
-    "figmaCandidateBoardId": "729:117482",
+    "figmaCandidateBoardId": "746:117481",
     "document": "docs/design/continuous-world-20.md",
-    "figmaWorldNodeId": "729:117488",
-    "figmaArtworkNodeId": "729:117489",
-    "figmaCandidateUrl": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=729-117482",
-    "figmaSourceType": "Raster concept illustration with twenty editable semantic region frames, nineteen planned overlap frames and reusable annotations; not compiled/native terrain."
+    "figmaArtworkNodeId": null,
+    "figmaCandidateUrl": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=746-117481",
+    "figmaSourceType": "Gallery of twenty separate horizontal concept frames with 1024-pixel-wide previews and reusable annotations. Original source PNGs are in the downloadable package; neither preview nor source is compiled/native terrain."
   },
   "currentRuntime": {
     "stageCount": 20,
@@ -37,302 +36,759 @@
     ]
   },
   "composition": {
-    "singleWorld": true,
-    "separatePanelBorders": false,
-    "singleSky": true,
-    "regionHeight": "Use heightWeight as relative composition guidance, not measured geometry.",
-    "ports": "Symbolic attached-route ports; final integer world coordinates require native layout authoring and physics verification.",
-    "overlap": "Target 18% of the shorter neighboring region as a shared transition volume; materials and light coexist before one recedes.",
+    "individualScenes": true,
+    "sharedWorldIntent": true,
+    "regionOrder": "bottom-to-top ascent",
+    "aspectRatio": "16:9",
+    "orientation": "horizontal",
+    "noMontage": true,
+    "noTextInArtwork": true,
+    "scale": "One tiny gardener and a small cart; gardener about 2.5% of scene height, consistent throughout. The architecture dominates.",
+    "ports": "Each scene has a physical bottom entry and top exit; consecutive exit/entry contracts share center, width, cross-section, materials, palette and spine intent. Coordinates are normalized composition targets, not measured collision or exact pixel data.",
+    "overlap": "Neighbor material and light overlap within each scene before the connector. The target is about 18% of local scene height around the join; retain final raster crops for future seam work.",
+    "noVerifiedPixelSeams": true,
     "spines": {
       "water": "One connected hydraulic system. Pale source channels in upper terraces feed rivulets, marsh runoff, drains, wheel tailrace and thawing vault seepage; mark deliberate occlusion rather than inventing disconnected waterfalls.",
       "root": "Roots begin in vault cracks, thread through fossils and fungus, expand into the hollow tree and bridges, then grip machinery and become summit vines.",
       "structure": "Iron and masonry joints persist across regions: vault pipe, railway support, drainage work, machinery cable, aqueduct pier and greenhouse rib. Avoid a single repeated central shaft."
     },
-    "overlapTargetFraction": 0.18
+    "sky": {
+      "target": "one shared upper-world sky layer",
+      "status": "native integration required; repeated baked suns/horizons in concept images are not a completed shared sky"
+    }
   },
   "regions": {
     "garden-1": {
       "order": 1,
       "landmark": "Frozen Mechanical Seed Vault",
-      "materials": [
-        "ice",
-        "iron",
-        "glass"
-      ],
-      "light": "ice-blue vault darkness; amber plant jars",
-      "composition": "central seed wheel; three unequal service floors",
-      "heightWeight": 1,
-      "entryPort": "garden-1:entry",
-      "exitPort": "garden-1:exit"
+      "scene": "An immense frozen mechanical seed vault: a monumental dark seed-storage wheel occupies the recessed center-right, glass plant tanks stand unevenly to either side, and a short ice bridge spans a frozen pool.",
+      "entryPort": "spawn",
+      "exitPort": "garden-1:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [],
+        "exit": [
+          "#536d88",
+          "#739aa2",
+          "#b89a63"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "01-frozen-seed-vault.png",
+        "figmaNodeId": "746:117492",
+        "figmaCardId": "746:117491",
+        "sourceSha256": "c2cea653b1c0effc1c30fb04607ec090f637cfc953424c687e6759d8fcc62407",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2283415,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-2": {
       "order": 2,
       "landmark": "Thawing Cistern",
-      "materials": [
-        "wet stone",
-        "ice",
-        "corroded pipe"
-      ],
-      "light": "cyan meltwater with small amber lamps",
-      "composition": "one broad melt basin with staggered maintenance shelves",
-      "heightWeight": 0.75,
+      "scene": "A thawing cistern surrounding one broad asymmetrical melt basin.",
       "entryPort": "garden-2:entry",
-      "exitPort": "garden-2:exit"
+      "exitPort": "garden-2:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#536d88",
+          "#739aa2",
+          "#b89a63"
+        ],
+        "exit": [
+          "#314851",
+          "#547572",
+          "#ac8950"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "02-thawing-cistern.png",
+        "figmaNodeId": "746:117499",
+        "figmaCardId": "746:117498",
+        "sourceSha256": "03c0c8ef0305bdfebea6e691969494cd5ca4dfa889d1ab1d340778c29d932ff3",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2398545,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-3": {
       "order": 3,
       "landmark": "Railway Ruins",
-      "materials": [
-        "mossy brick",
-        "iron rail",
-        "timber"
-      ],
-      "light": "blue-black station; warm local lamps",
-      "composition": "broken viaduct, tilted carriage and lift tower",
-      "heightWeight": 1,
+      "scene": "Railway ruins with a tilted overgrown carriage on the left, two heavy brick arches, a broken viaduct across the middle and a tall narrow lift tower on the right.",
       "entryPort": "garden-3:entry",
-      "exitPort": "garden-3:exit"
+      "exitPort": "garden-3:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#314851",
+          "#547572",
+          "#ac8950"
+        ],
+        "exit": [
+          "#243944",
+          "#465b54",
+          "#9d814f"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "03-railway-ruins.png",
+        "figmaNodeId": "746:117506",
+        "figmaCardId": "746:117505",
+        "sourceSha256": "043b60a760d38e68ac43ce1883662316d9178991b2d6e4c21d1b9291e1de2081",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2320536,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-4": {
       "order": 4,
       "landmark": "Drowned Station",
-      "materials": [
-        "flooded brick",
-        "iron",
-        "reeds"
-      ],
-      "light": "teal reflected light beneath dark platform arches",
-      "composition": "stacked station halls with drowned lower tracks",
-      "heightWeight": 0.8,
+      "scene": "A drowned station where two unequal flooded passenger halls are sheltered under dark brick platforms.",
       "entryPort": "garden-4:entry",
-      "exitPort": "garden-4:exit"
+      "exitPort": "garden-4:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#243944",
+          "#465b54",
+          "#9d814f"
+        ],
+        "exit": [
+          "#283d49",
+          "#587162",
+          "#b39b63"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "04-drowned-station.png",
+        "figmaNodeId": "746:117513",
+        "figmaCardId": "746:117512",
+        "sourceSha256": "ab0035176c5d47658ba925b2cdc699b4bce1e170551f12a5c873dafcbcd4b9c0",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2183204,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-5": {
       "order": 5,
       "landmark": "Tidal Waterwheel Basin",
-      "materials": [
-        "stone",
-        "timber",
-        "moss",
-        "water"
-      ],
-      "light": "deep tidal cyan; sparse warm refuge light",
-      "composition": "monumental waterwheel within an asymmetric basin",
-      "heightWeight": 1,
+      "scene": "A tidal waterwheel basin with one monumental mossy timber wheel grounded on stone supports slightly right of center.",
       "entryPort": "garden-5:entry",
-      "exitPort": "garden-5:exit"
+      "exitPort": "garden-5:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#283d49",
+          "#587162",
+          "#b39b63"
+        ],
+        "exit": [
+          "#253c42",
+          "#527460",
+          "#62a8b0"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "05-tidal-waterwheel.png",
+        "figmaNodeId": "746:117521",
+        "figmaCardId": "746:117520",
+        "sourceSha256": "628c5677e5993fe1eac289538280c8ebe3bf7832c88371588cb9893dd7fa3aa8",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2454833,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-6": {
       "order": 6,
       "landmark": "Drainage Tunnels",
-      "materials": [
-        "dark stone",
-        "pipe",
-        "mineral seep"
-      ],
-      "light": "low cyan pools; irregular lantern recesses",
-      "composition": "narrow inlet, vertical drain and widening fossil mouth",
-      "heightWeight": 0.65,
+      "scene": "Drainage tunnels: a narrow mineral corridor opens around one tall offset vertical drain, then widens toward a fossil mouth high on the right.",
       "entryPort": "garden-6:entry",
-      "exitPort": "garden-6:exit"
+      "exitPort": "garden-6:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#253c42",
+          "#527460",
+          "#62a8b0"
+        ],
+        "exit": [
+          "#29393f",
+          "#5e7561",
+          "#899886"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "06-drainage-tunnels.png",
+        "figmaNodeId": "746:117528",
+        "figmaCardId": "746:117527",
+        "sourceSha256": "89bade74a94a1a88e5fd4cae7e9af6fac46d3a4b51ca54aa754014adb6539725",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2538712,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-7": {
       "order": 7,
       "landmark": "Enormous Mossy Ribcage",
-      "materials": [
-        "fossil bone",
-        "moss",
-        "stone"
-      ],
-      "light": "cold bone highlights amid deep green shadow",
-      "composition": "one giant rib arch with unequal ribs and a dark skull refuge",
-      "heightWeight": 1.15,
+      "scene": "An enormous mossy ribcage buried across the full wide room, with unequal pale ribs forming one huge organic vault and a dark partial skull refuge on the right.",
       "entryPort": "garden-7:entry",
-      "exitPort": "garden-7:exit"
+      "exitPort": "garden-7:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#29393f",
+          "#5e7561",
+          "#899886"
+        ],
+        "exit": [
+          "#263831",
+          "#60724e",
+          "#969b79"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "07-mossy-ribcage.png",
+        "figmaNodeId": "746:117535",
+        "figmaCardId": "746:117534",
+        "sourceSha256": "4b8788f5aa817035b06bb0bbfbec06660d1b6cbb90850c0d27c4392ec5a17c20",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2898318,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-8": {
       "order": 8,
       "landmark": "Root Ossuary",
-      "materials": [
-        "bone",
-        "bark",
-        "earth"
-      ],
-      "light": "muted moss with first small fungal cyan points",
-      "composition": "compressed ossuary between tangled load-bearing roots",
-      "heightWeight": 0.7,
+      "scene": "A root ossuary: a compressed winding chamber filled with weathered bone remnants held between thick dark living roots.",
       "entryPort": "garden-8:entry",
-      "exitPort": "garden-8:exit"
+      "exitPort": "garden-8:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#263831",
+          "#60724e",
+          "#969b79"
+        ],
+        "exit": [
+          "#253d3e",
+          "#467575",
+          "#8cc9b2"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "08-root-ossuary.png",
+        "figmaNodeId": "746:117542",
+        "figmaCardId": "746:117541",
+        "sourceSha256": "8a4e27dfb56ce65913b83d72e95aea4c3c995ac74c208230a66e5fdc17c54f4c",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2500224,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-9": {
       "order": 9,
       "landmark": "Giant Bioluminescent Mushroom Cave",
-      "materials": [
-        "fungus",
-        "bark",
-        "damp earth"
-      ],
-      "light": "luminous mint cap edges; warm tiny trunk shelter",
-      "composition": "one enormous tilted mushroom with smaller distant caps",
-      "heightWeight": 1.2,
+      "scene": "A giant bioluminescent mushroom cave dominated by one immense tilted mint-edged mushroom with dark layered gills and a massive asymmetrical stem.",
       "entryPort": "garden-9:entry",
-      "exitPort": "garden-9:exit"
+      "exitPort": "garden-9:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#253d3e",
+          "#467575",
+          "#8cc9b2"
+        ],
+        "exit": [
+          "#263e50",
+          "#517779",
+          "#83c5b3"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "09-mushroom-cave.png",
+        "figmaNodeId": "746:117550",
+        "figmaCardId": "746:117549",
+        "sourceSha256": "868fb7ca72abb0d026acd576a5f04b47d31bbf7551b3f4e92501e65d7c8c98b5",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2270380,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-10": {
       "order": 10,
       "landmark": "Mycelium Fissure",
-      "materials": [
-        "mineral rock",
-        "fungus",
-        "root"
-      ],
-      "light": "cyan veins recede into blue depth",
-      "composition": "split narrow chasm with branching fungal ledges",
-      "heightWeight": 0.75,
+      "scene": "A mycelium fissure: a tall offset split in mineral rock exposes cyan fungal veins, dark roots and a few irregular attached shelves.",
       "entryPort": "garden-10:entry",
-      "exitPort": "garden-10:exit"
+      "exitPort": "garden-10:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#263e50",
+          "#517779",
+          "#83c5b3"
+        ],
+        "exit": [
+          "#293e36",
+          "#658264",
+          "#b69b61"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "10-mycelium-fissure.png",
+        "figmaNodeId": "746:117557",
+        "figmaCardId": "746:117556",
+        "sourceSha256": "300ce4613d656109bad3eaeaf9d7eeb23d7f39ff7a696376bbc9f77300c3a69d",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2314047,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-11": {
       "order": 11,
       "landmark": "Hollow Monumental Tree",
-      "materials": [
-        "bark",
-        "moss",
-        "root"
-      ],
-      "light": "quiet turquoise hollows and one amber heart",
-      "composition": "thick branching trunk with three unequal hollow chambers",
-      "heightWeight": 1.3,
+      "scene": "A hollow monumental tree with a massive thick branching trunk, three unequal dark hollow chambers and one very small amber heart refuge.",
       "entryPort": "garden-11:entry",
-      "exitPort": "garden-11:exit"
+      "exitPort": "garden-11:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#293e36",
+          "#658264",
+          "#b69b61"
+        ],
+        "exit": [
+          "#314837",
+          "#637d51",
+          "#acac78"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "11-hollow-tree.png",
+        "figmaNodeId": "746:117564",
+        "figmaCardId": "746:117563",
+        "sourceSha256": "f445eb4a83289168030e79769e98e4045d82e52497e0efe90b563e40d3fdc92c",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2512422,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-12": {
       "order": 12,
       "landmark": "Root Bridges",
-      "materials": [
-        "root",
-        "moss",
-        "stone anchor"
-      ],
-      "light": "green-grey distance; modest warm glints",
-      "composition": "braided bridges and a deep offset return loop",
-      "heightWeight": 0.8,
+      "scene": "Root bridges spanning a deep irregular cavity: two thick braided roots support staggered attached ledges and one offset lower return loop.",
       "entryPort": "garden-12:entry",
-      "exitPort": "garden-12:exit"
+      "exitPort": "garden-12:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#314837",
+          "#637d51",
+          "#acac78"
+        ],
+        "exit": [
+          "#303e42",
+          "#725f4d",
+          "#a99a68"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "12-root-bridges.png",
+        "figmaNodeId": "746:117571",
+        "figmaCardId": "746:117570",
+        "sourceSha256": "879ab34d619f1db463a59ee0e0983abf8caf2a5c4c8c9fe16c53af3013f04c6a",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2657312,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-13": {
       "order": 13,
       "landmark": "Winding Drums and Counterweights",
-      "materials": [
-        "timber",
-        "rusted iron",
-        "root"
-      ],
-      "light": "violet machine depth with warm lantern anchors",
-      "composition": "two unequal drums; counterweight shaft as main climb",
-      "heightWeight": 1,
+      "scene": "Winding drums and counterweights: two unequal colossal timber-and-rusted-iron drums sit on opposite anchored walls, joined by taut cables and a tall offset counterweight shaft.",
       "entryPort": "garden-13:entry",
-      "exitPort": "garden-13:exit"
+      "exitPort": "garden-13:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#303e42",
+          "#725f4d",
+          "#a99a68"
+        ],
+        "exit": [
+          "#36394e",
+          "#74625c",
+          "#b1a67b"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "13-winding-drums.png",
+        "figmaNodeId": "746:117579",
+        "figmaCardId": "746:117578",
+        "sourceSha256": "376db5a92523ab9402fdb1403ef371ee2a564d238e3d22eb96a4429f79d18a38",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2571634,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-14": {
       "order": 14,
       "landmark": "Cable Ravine",
-      "materials": [
-        "cable",
-        "rough stone",
-        "timber"
-      ],
-      "light": "muted violet-blue distance and dark flanks",
-      "composition": "wide asymmetrical ravine with suspended service platforms",
-      "heightWeight": 0.95,
+      "scene": "A cable ravine with heavy rough-stone flanks, a wide asymmetrical void and unequal suspended timber service platforms hanging from taut black cables.",
       "entryPort": "garden-14:entry",
-      "exitPort": "garden-14:exit"
+      "exitPort": "garden-14:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#36394e",
+          "#74625c",
+          "#b1a67b"
+        ],
+        "exit": [
+          "#3b4652",
+          "#7b8a7b",
+          "#b4bfa5"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "14-cable-ravine.png",
+        "figmaNodeId": "746:117586",
+        "figmaCardId": "746:117585",
+        "sourceSha256": "5b5b5a02d95529fa3115eef4bf98f5c4142d8db03c16c9ccd5cf1a3ef7f0a597",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2619114,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-15": {
       "order": 15,
       "landmark": "Broken Aqueduct",
-      "materials": [
-        "weathered limestone",
-        "moss",
-        "iron anchor"
-      ],
-      "light": "cool open depth; pale worn stone",
-      "composition": "unequal monumental arches and a broken upper water channel",
-      "heightWeight": 1.1,
+      "scene": "A broken aqueduct built from unequal monumental weathered-limestone arches, thick grounded piers, fractured upper water channels and small moss-covered supported landings.",
       "entryPort": "garden-15:entry",
-      "exitPort": "garden-15:exit"
+      "exitPort": "garden-15:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#3b4652",
+          "#7b8a7b",
+          "#b4bfa5"
+        ],
+        "exit": [
+          "#4c6156",
+          "#869071",
+          "#bec3a1"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "15-broken-aqueduct.png",
+        "figmaNodeId": "746:117593",
+        "figmaCardId": "746:117592",
+        "sourceSha256": "99996615c27b721ec09b5c5a65557a2980fec8a201f9c5f390ffae3cd13e792f",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2738384,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-16": {
       "order": 16,
       "landmark": "Terrace Gardens",
-      "materials": [
-        "limestone",
-        "earth",
-        "moss"
-      ],
-      "light": "soft green ambient light and restrained warm windows",
-      "composition": "uneven terraces, seed refuge and two short rise phrases",
-      "heightWeight": 0.85,
+      "scene": "Terrace gardens on uneven mossy limestone retaining walls, with dark soil, modest dense planting, a small amber seed refuge and one quiet retaining-wall alcove.",
       "entryPort": "garden-16:entry",
-      "exitPort": "garden-16:exit"
+      "exitPort": "garden-16:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#4c6156",
+          "#869071",
+          "#bec3a1"
+        ],
+        "exit": [
+          "#415e50",
+          "#839272",
+          "#b4b89a"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "16-terrace-gardens.png",
+        "figmaNodeId": "746:117600",
+        "figmaCardId": "746:117599",
+        "sourceSha256": "1b43a34e3089b1771f7cc4ed0f846594888f9aa895eb2b75112a5bda06727c60",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2740918,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-17": {
       "order": 17,
       "landmark": "Hanging Bells and Reed Marsh",
-      "materials": [
-        "reed",
-        "weathered bronze",
-        "mossy stone"
-      ],
-      "light": "hazy sage light with isolated amber bell mouths",
-      "composition": "tall bell stems above a slow irregular marsh",
-      "heightWeight": 0.95,
+      "scene": "Hanging bells and a reed marsh: three unequal weathered bronze bells hang from tall curved organic stems above an irregular slow teal marsh.",
       "entryPort": "garden-17:entry",
-      "exitPort": "garden-17:exit"
+      "exitPort": "garden-17:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#415e50",
+          "#839272",
+          "#b4b89a"
+        ],
+        "exit": [
+          "#5b7269",
+          "#a0aaa0",
+          "#d0c9ae"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "17-bell-marsh.png",
+        "figmaNodeId": "746:117608",
+        "figmaCardId": "746:117607",
+        "sourceSha256": "4db2c7ce7b4c507d91dd831eed68ca1d0b4e1da76907e334a683c9c15631ccd0",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2664671,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-18": {
       "order": 18,
       "landmark": "Limestone Channel",
-      "materials": [
-        "limestone",
-        "water",
-        "grass"
-      ],
-      "light": "warm pale rock while cool water persists",
-      "composition": "terraced ravine with several connected shallow falls",
-      "heightWeight": 0.8,
+      "scene": "A limestone channel with broad pale worn terraces, a connected sequence of shallow blue falls and uneven grassy ledges.",
       "entryPort": "garden-18:entry",
-      "exitPort": "garden-18:exit"
+      "exitPort": "garden-18:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#5b7269",
+          "#a0aaa0",
+          "#d0c9ae"
+        ],
+        "exit": [
+          "#80908b",
+          "#bcbda5",
+          "#d4b385"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "18-limestone-channel.png",
+        "figmaNodeId": "746:117615",
+        "figmaCardId": "746:117614",
+        "sourceSha256": "ad2fbac0186a3e8a2fa1d99f26405a134b4e2e2f4cc517cb443ea1ecbf210104",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2952786,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-19": {
       "order": 19,
       "landmark": "Greenhouse Terraces",
-      "materials": [
-        "limestone",
-        "iron",
-        "glass",
-        "vines"
-      ],
-      "light": "gradually amber sky through broken greenhouse frames",
-      "composition": "layered conservatory courts with incomplete glazing",
-      "heightWeight": 1,
+      "scene": "Greenhouse terraces: incomplete iron glazing ribs, a few cracked glass panes, planted limestone courts and trailing vines form an ascending conservatory across the wide scene.",
       "entryPort": "garden-19:entry",
-      "exitPort": "garden-19:exit"
+      "exitPort": "garden-19:exit",
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#80908b",
+          "#bcbda5",
+          "#d4b385"
+        ],
+        "exit": [
+          "#68766e",
+          "#b69770",
+          "#e6b469"
+        ]
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "19-greenhouse-terraces.png",
+        "figmaNodeId": "746:117622",
+        "figmaCardId": "746:117621",
+        "sourceSha256": "19a4c61af71ad634f77c59dad96ce4a31e7daff2d686e4fb639f8d6ec736ff16",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2647120,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     },
     "garden-20": {
       "order": 20,
       "landmark": "Sunset Greenhouse Crown",
-      "materials": [
-        "iron",
-        "glass",
-        "limestone",
-        "overgrowth"
-      ],
-      "light": "one continuous warm sunset sky; cool shaded planting",
-      "composition": "open monumental greenhouse crown and broad summit garden",
-      "heightWeight": 1.15,
+      "scene": "A sunset greenhouse crown with an open monumental iron conservatory, incomplete glass, luxuriant vines and a broad planted summit court.",
       "entryPort": "garden-20:entry",
-      "exitPort": null
+      "exitPort": null,
+      "sharedPalette": {
+        "base": [
+          "#080b14",
+          "#17232c",
+          "#30423f"
+        ],
+        "entry": [
+          "#68766e",
+          "#b69770",
+          "#e6b469"
+        ],
+        "exit": []
+      },
+      "artwork": {
+        "status": "final-concept-original",
+        "sourceFilename": "20-greenhouse-crown.png",
+        "figmaNodeId": "746:117629",
+        "figmaCardId": "746:117628",
+        "sourceSha256": "a12e6f825c44e8df1b0245ba81094b6e5628c56b2c003973db73d3ef3e1372fa",
+        "width": 1672,
+        "height": 941,
+        "figmaFrameWidth": 1536,
+        "figmaFrameHeight": 864,
+        "sourceByteLength": 2576388,
+        "figmaPreview": "1024-pixel-wide display preview; full original PNG is in the download package"
+      }
     }
   },
   "joins": [
@@ -342,26 +798,37 @@
       "to": "garden-2",
       "exitPort": "garden-1:exit",
       "entryPort": "garden-2:entry",
-      "connector": "thawing sluice",
+      "upperEdge": {
+        "centerXNormalized": 0.78,
+        "widthFraction": 0.14
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.78,
+        "widthFraction": 0.14
+      },
+      "crossSection": "open thawing brick service shaft with ice remaining on the left shoulder, dark iron cheeks and an attached dry maintenance shelf; no portal or doorway",
+      "continuity": "water spine crosses the frame at x approximately 0.62 and falls toward the frozen vault; a fine root follows the service shaft; warmer light arrives from above before the biome changes",
       "geometry": "stepped drain shaft",
+      "traversal": "two short climbs interrupted by a broad dry maintenance landing",
       "overlap": {
         "materials": [
           "ice",
+          "thawing brick",
           "wet iron",
-          "stone"
+          "water"
         ],
         "palette": [
           "#536d88",
           "#739aa2",
           "#b89a63"
         ],
+        "light": "blue vault ice recedes into wet cyan reflections while warm light arrives through the open shaft before the cistern",
         "spines": [
           "water",
           "structure"
-        ],
-        "light": "blue ice light decreases while wet reflections and amber lamps persist"
+        ]
       },
-      "traversal": "two short climbs interrupted by a broad dry maintenance landing"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-02",
@@ -369,8 +836,18 @@
       "to": "garden-3",
       "exitPort": "garden-2:exit",
       "entryPort": "garden-3:entry",
-      "connector": "cistern service shaft",
+      "upperEdge": {
+        "centerXNormalized": 0.31,
+        "widthFraction": 0.14
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.31,
+        "widthFraction": 0.14
+      },
+      "crossSection": "wet-brick maintenance shaft with an iron service pipe on the right and an attached stair landing",
+      "continuity": "a cold trickle runs down the right service pipe into the cistern; dark roots grip wet brick cracks",
       "geometry": "offset maintenance galleries",
+      "traversal": "side climb around the cistern wall; safe return ledge beneath the rail deck",
       "overlap": {
         "materials": [
           "wet brick",
@@ -382,13 +859,13 @@
           "#547572",
           "#ac8950"
         ],
+        "light": "cistern cyan becomes station reflection before railway lamp pools increase",
         "spines": [
           "water",
           "structure"
-        ],
-        "light": "cistern cyan becomes station reflection before railway lamp pools increase"
+        ]
       },
-      "traversal": "side climb around the cistern wall; safe return ledge beneath the rail deck"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-03",
@@ -396,8 +873,18 @@
       "to": "garden-4",
       "exitPort": "garden-3:exit",
       "entryPort": "garden-4:entry",
-      "connector": "flooded track stair",
+      "upperEdge": {
+        "centerXNormalized": 0.72,
+        "widthFraction": 0.16
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.72,
+        "widthFraction": 0.16
+      },
+      "crossSection": "broken station stair throat between mossy brick piers; paired vertical lift rails and one old timber crossbeam",
+      "continuity": "teal drainage water follows the right lift rail into the station below; moss roots hook around the left pier",
       "geometry": "sloping rail cutting",
+      "traversal": "descending side loop followed by an upward station stair",
       "overlap": {
         "materials": [
           "brick",
@@ -409,13 +896,13 @@
           "#465b54",
           "#9d814f"
         ],
+        "light": "railway lamps reflect into increasingly submerged halls",
         "spines": [
           "water",
           "structure"
-        ],
-        "light": "railway lamps reflect into increasingly submerged halls"
+        ]
       },
-      "traversal": "descending side loop followed by an upward station stair"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-04",
@@ -423,8 +910,18 @@
       "to": "garden-5",
       "exitPort": "garden-4:exit",
       "entryPort": "garden-5:entry",
-      "connector": "station spillway",
+      "upperEdge": {
+        "centerXNormalized": 0.64,
+        "widthFraction": 0.18
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.64,
+        "widthFraction": 0.18
+      },
+      "crossSection": "broad stone spillway arch with two timber posts; shallow teal water leaves a dry attached shelf",
+      "continuity": "a visible teal spillway connects station floodwater to the basin; a climbing vine shares the left timber post",
       "geometry": "wide arch throat",
+      "traversal": "cross a broad lip, climb two offset sluice landings",
       "overlap": {
         "materials": [
           "brick",
@@ -437,13 +934,13 @@
           "#587162",
           "#b39b63"
         ],
+        "light": "teal water opens gradually while dark station arches remain behind",
         "spines": [
           "water",
           "structure"
-        ],
-        "light": "teal water opens gradually while dark station arches remain behind"
+        ]
       },
-      "traversal": "cross a broad lip, climb two offset sluice landings"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-05",
@@ -451,8 +948,18 @@
       "to": "garden-6",
       "exitPort": "garden-5:exit",
       "entryPort": "garden-6:entry",
-      "connector": "wheel tailrace",
+      "upperEdge": {
+        "centerXNormalized": 0.28,
+        "widthFraction": 0.13
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.28,
+        "widthFraction": 0.13
+      },
+      "crossSection": "mossy tailrace slit framed by worn hydraulic masonry and one rusted pipe",
+      "continuity": "wheel outflow continues down one pipe into the drainage gallery; roots remain sparse in masonry joints",
       "geometry": "winding drainage gallery",
+      "traversal": "short horizontal compression before a tall drain climb",
       "overlap": {
         "materials": [
           "mossy stone",
@@ -464,13 +971,13 @@
           "#527460",
           "#62a8b0"
         ],
+        "light": "basin reflections narrow into a quieter dark tunnel",
         "spines": [
           "water",
           "structure"
-        ],
-        "light": "basin reflections narrow into a quieter dark tunnel"
+        ]
       },
-      "traversal": "short horizontal compression before a tall drain climb"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-06",
@@ -478,8 +985,18 @@
       "to": "garden-7",
       "exitPort": "garden-6:exit",
       "entryPort": "garden-7:entry",
-      "connector": "fossil drain mouth",
+      "upperEdge": {
+        "centerXNormalized": 0.69,
+        "widthFraction": 0.16
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.69,
+        "widthFraction": 0.16
+      },
+      "crossSection": "fractured drain mouth where mineral stone embraces one exposed pale rib and a dark hanging root",
+      "continuity": "a thin mineral seep follows the exposed rib into the old drain; hanging roots visibly continue upward",
       "geometry": "fractured pipe-to-bone shaft",
+      "traversal": "three uneven shelves around a large exposed rib base",
       "overlap": {
         "materials": [
           "mineral stone",
@@ -491,13 +1008,13 @@
           "#5e7561",
           "#899886"
         ],
+        "light": "small seep highlights connect the drainage wall to pale buried bones",
         "spines": [
           "water",
           "root"
-        ],
-        "light": "small seep highlights connect the drainage wall to pale buried bones"
+        ]
       },
-      "traversal": "three uneven shelves around a large exposed rib base"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-07",
@@ -505,8 +1022,18 @@
       "to": "garden-8",
       "exitPort": "garden-7:exit",
       "entryPort": "garden-8:entry",
-      "connector": "buried root joint",
+      "upperEdge": {
+        "centerXNormalized": 0.35,
+        "widthFraction": 0.15
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.35,
+        "widthFraction": 0.15
+      },
+      "crossSection": "curved bone-and-root throat with unequal rib shoulders and a broad attached moss landing",
+      "continuity": "one thick dark root loops over the pale rib and continues through the joint; a restrained cyan seep stays on its right",
       "geometry": "curving ossuary stair",
+      "traversal": "curving climb through a low chamber and one spacious rest pocket",
       "overlap": {
         "materials": [
           "bone",
@@ -518,13 +1045,13 @@
           "#60724e",
           "#969b79"
         ],
+        "light": "bone highlights diminish beneath root shadow",
         "spines": [
           "root",
           "water"
-        ],
-        "light": "bone highlights diminish beneath root shadow"
+        ]
       },
-      "traversal": "curving climb through a low chamber and one spacious rest pocket"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-08",
@@ -532,8 +1059,18 @@
       "to": "garden-9",
       "exitPort": "garden-8:exit",
       "entryPort": "garden-9:entry",
-      "connector": "fungal root throat",
+      "upperEdge": {
+        "centerXNormalized": 0.42,
+        "widthFraction": 0.18
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.42,
+        "widthFraction": 0.18
+      },
+      "crossSection": "root-framed cave opening with damp earth shoulders and tiny cyan fungi before the bright cap",
+      "continuity": "paired roots enter the mushroom cave and acquire small glowing fungi; one damp turquoise channel stays recessed",
       "geometry": "broad branching cave opening",
+      "traversal": "low root passage opens into a large mushroom overlook",
       "overlap": {
         "materials": [
           "root",
@@ -545,13 +1082,13 @@
           "#467575",
           "#8cc9b2"
         ],
+        "light": "small cyan fungi precede the monumental cap",
         "spines": [
           "root",
           "water"
-        ],
-        "light": "small cyan fungi precede the monumental cap"
+        ]
       },
-      "traversal": "low root passage opens into a large mushroom overlook"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-09",
@@ -559,8 +1096,18 @@
       "to": "garden-10",
       "exitPort": "garden-9:exit",
       "entryPort": "garden-10:entry",
-      "connector": "gill fissure",
+      "upperEdge": {
+        "centerXNormalized": 0.72,
+        "widthFraction": 0.13
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.72,
+        "widthFraction": 0.13
+      },
+      "crossSection": "diagonal mineral fissure with a thick bark root on the left and sparse cyan mycelial veins",
+      "continuity": "cyan mycelial veins remain on both stone shoulders; a bark root and small water seam continue vertically",
       "geometry": "diagonal mycelial chimney",
+      "traversal": "diagonal route alternates attached shelf and narrow gap",
       "overlap": {
         "materials": [
           "fungus",
@@ -572,13 +1119,13 @@
           "#517779",
           "#83c5b3"
         ],
+        "light": "bright cap rim gives way to sparse vein light",
         "spines": [
           "root",
           "water"
-        ],
-        "light": "bright cap rim gives way to sparse vein light"
+        ]
       },
-      "traversal": "diagonal route alternates attached shelf and narrow gap"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-10",
@@ -586,8 +1133,18 @@
       "to": "garden-11",
       "exitPort": "garden-10:exit",
       "entryPort": "garden-11:entry",
-      "connector": "mycelial heart root",
+      "upperEdge": {
+        "centerXNormalized": 0.34,
+        "widthFraction": 0.17
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.34,
+        "widthFraction": 0.17
+      },
+      "crossSection": "split tree-root throat around a dark vertical hollow; one forked root forms the attached landing",
+      "continuity": "mycelial veins branch into the thick tree roots; one recessed cool trickle enters the hollow",
       "geometry": "split root ascent",
+      "traversal": "two unequal root arms reconnect at a broad trunk landing",
       "overlap": {
         "materials": [
           "root",
@@ -599,13 +1156,13 @@
           "#658264",
           "#b69b61"
         ],
+        "light": "cyan veins enter dark bark; a warm hollow appears gradually",
         "spines": [
           "root",
           "water"
-        ],
-        "light": "cyan veins enter dark bark; a warm hollow appears gradually"
+        ]
       },
-      "traversal": "two unequal root arms reconnect at a broad trunk landing"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-11",
@@ -613,8 +1170,18 @@
       "to": "garden-12",
       "exitPort": "garden-11:exit",
       "entryPort": "garden-12:entry",
-      "connector": "hollow branch mouth",
+      "upperEdge": {
+        "centerXNormalized": 0.71,
+        "widthFraction": 0.19
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.71,
+        "widthFraction": 0.19
+      },
+      "crossSection": "wide hollow branch mouth with rough bark shoulders and two braided supporting roots",
+      "continuity": "two braided living roots continue uninterrupted; a dark water runnel lies in the left bark groove",
       "geometry": "open braided branch",
+      "traversal": "walkable branch bends outward; small climbs lead to a bridge fork",
       "overlap": {
         "materials": [
           "bark",
@@ -626,13 +1193,13 @@
           "#637d51",
           "#acac78"
         ],
+        "light": "hollow illumination recedes while muted ambient depth grows",
         "spines": [
           "root",
           "structure"
-        ],
-        "light": "hollow illumination recedes while muted ambient depth grows"
+        ]
       },
-      "traversal": "walkable branch bends outward; small climbs lead to a bridge fork"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-12",
@@ -640,8 +1207,18 @@
       "to": "garden-13",
       "exitPort": "garden-12:exit",
       "entryPort": "garden-13:entry",
-      "connector": "root-wrapped anchor",
+      "upperEdge": {
+        "centerXNormalized": 0.63,
+        "widthFraction": 0.16
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.63,
+        "widthFraction": 0.16
+      },
+      "crossSection": "root-wrapped timber-and-iron machinery anchor with one taut dark cable",
+      "continuity": "thick roots grip the iron anchor and cable; water follows one dark timber gutter",
       "geometry": "root and machinery stair",
+      "traversal": "root bridge enters machinery from below; optional anchor pocket returns safely",
       "overlap": {
         "materials": [
           "root",
@@ -653,13 +1230,13 @@
           "#725f4d",
           "#a99a68"
         ],
+        "light": "green bark shadows acquire violet distance and warm lamp anchors",
         "spines": [
           "root",
           "structure"
-        ],
-        "light": "green bark shadows acquire violet distance and warm lamp anchors"
+        ]
       },
-      "traversal": "root bridge enters machinery from below; optional anchor pocket returns safely"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-13",
@@ -667,8 +1244,18 @@
       "to": "garden-14",
       "exitPort": "garden-13:exit",
       "entryPort": "garden-14:entry",
-      "connector": "counterweight outlet",
+      "upperEdge": {
+        "centerXNormalized": 0.28,
+        "widthFraction": 0.14
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.28,
+        "widthFraction": 0.14
+      },
+      "crossSection": "counterweight service opening with two taut cables and an offset rusted platform bracket",
+      "continuity": "the same two taut cables cross the joint and continue into counterweights; a thin root wraps one bracket",
       "geometry": "suspended service span",
+      "traversal": "vertical counterweight climb opens into unequal suspended crossings",
       "overlap": {
         "materials": [
           "iron",
@@ -680,13 +1267,13 @@
           "#74625c",
           "#b1a67b"
         ],
+        "light": "drum shadows stretch into a single violet ravine atmosphere",
         "spines": [
           "structure",
           "root"
-        ],
-        "light": "drum shadows stretch into a single violet ravine atmosphere"
+        ]
       },
-      "traversal": "vertical counterweight climb opens into unequal suspended crossings"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-14",
@@ -694,8 +1281,18 @@
       "to": "garden-15",
       "exitPort": "garden-14:exit",
       "entryPort": "garden-15:entry",
-      "connector": "cable aqueduct anchor",
+      "upperEdge": {
+        "centerXNormalized": 0.73,
+        "widthFraction": 0.2
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.73,
+        "widthFraction": 0.2
+      },
+      "crossSection": "cable anchorage inside fractured aqueduct piers; one pale limestone arch spring remains open",
+      "continuity": "one black cable enters the pier; a shallow upper aqueduct water channel drains through the right notch",
       "geometry": "pier-supported rising bridge",
+      "traversal": "last suspended landing reconnects to a broad grounded pier",
       "overlap": {
         "materials": [
           "cable",
@@ -707,14 +1304,14 @@
           "#7b8a7b",
           "#b4bfa5"
         ],
+        "light": "distant cool ravine remains visible through incomplete stone arches",
         "spines": [
           "structure",
           "water",
           "root"
-        ],
-        "light": "distant cool ravine remains visible through incomplete stone arches"
+        ]
       },
-      "traversal": "last suspended landing reconnects to a broad grounded pier"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-15",
@@ -722,8 +1319,18 @@
       "to": "garden-16",
       "exitPort": "garden-15:exit",
       "entryPort": "garden-16:entry",
-      "connector": "broken channel stair",
+      "upperEdge": {
+        "centerXNormalized": 0.32,
+        "widthFraction": 0.18
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.32,
+        "widthFraction": 0.18
+      },
+      "crossSection": "broken limestone channel joint with planted cracks, one narrow water notch and mossy retaining shoulders",
+      "continuity": "one narrow blue rivulet continues through the water notch while living roots occupy planted limestone cracks",
       "geometry": "irregular retaining terraces",
+      "traversal": "wide channel crossing and two varied terraced climbs",
       "overlap": {
         "materials": [
           "limestone",
@@ -735,14 +1342,14 @@
           "#869071",
           "#bec3a1"
         ],
+        "light": "pale stone warms slowly as planting occupies cracks",
         "spines": [
           "water",
           "structure",
           "root"
-        ],
-        "light": "pale stone warms slowly as planting occupies cracks"
+        ]
       },
-      "traversal": "wide channel crossing and two varied terraced climbs"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-16",
@@ -750,8 +1357,18 @@
       "to": "garden-17",
       "exitPort": "garden-16:exit",
       "entryPort": "garden-17:entry",
-      "connector": "reed runoff stair",
+      "upperEdge": {
+        "centerXNormalized": 0.38,
+        "widthFraction": 0.18
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.38,
+        "widthFraction": 0.18
+      },
+      "crossSection": "low planted retaining lip with reed roots, dark moss and a small bronze bell stem outside the opening",
+      "continuity": "terrace runoff follows a dark moss groove into the reed marsh; fine reed roots bind the retaining wall",
       "geometry": "low garden-to-marsh apron",
+      "traversal": "low sheltered traverse and a climb beside one bell stem",
       "overlap": {
         "materials": [
           "earth",
@@ -764,13 +1381,13 @@
           "#839272",
           "#b4b89a"
         ],
+        "light": "terrace shade becomes sage marsh haze without a fresh sky strip",
         "spines": [
           "water",
           "root"
-        ],
-        "light": "terrace shade becomes sage marsh haze without a fresh sky strip"
+        ]
       },
-      "traversal": "low sheltered traverse and a climb beside one bell stem"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-17",
@@ -778,8 +1395,18 @@
       "to": "garden-18",
       "exitPort": "garden-17:exit",
       "entryPort": "garden-18:entry",
-      "connector": "marsh limestone lip",
+      "upperEdge": {
+        "centerXNormalized": 0.7,
+        "widthFraction": 0.16
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.7,
+        "widthFraction": 0.16
+      },
+      "crossSection": "pale limestone rivulet throat with reed clumps thinning out at both stone shoulders",
+      "continuity": "cool water descends through the limestone channel; reed roots thin into small grass roots",
       "geometry": "stepped rivulet channel",
+      "traversal": "two shallow fall crossings around a wide rest shelf",
       "overlap": {
         "materials": [
           "reed",
@@ -791,13 +1418,13 @@
           "#a0aaa0",
           "#d0c9ae"
         ],
+        "light": "reeds thin out while pale limestone reflects the same ambient light",
         "spines": [
           "water",
           "root"
-        ],
-        "light": "reeds thin out while pale limestone reflects the same ambient light"
+        ]
       },
-      "traversal": "two shallow fall crossings around a wide rest shelf"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-18",
@@ -805,8 +1432,18 @@
       "to": "garden-19",
       "exitPort": "garden-18:exit",
       "entryPort": "garden-19:entry",
-      "connector": "conservatory foundation",
+      "upperEdge": {
+        "centerXNormalized": 0.68,
+        "widthFraction": 0.17
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.68,
+        "widthFraction": 0.17
+      },
+      "crossSection": "planted limestone greenhouse footing between two incomplete dark iron glazing ribs",
+      "continuity": "the pale water channel passes between iron footings; vines continue upward along the left glazing rib",
       "geometry": "planted limestone stair",
+      "traversal": "channel climbs into a broad greenhouse footing",
       "overlap": {
         "materials": [
           "limestone",
@@ -819,14 +1456,14 @@
           "#bcbda5",
           "#d4b385"
         ],
+        "light": "amber sky grows through incomplete iron glazing ribs",
         "spines": [
           "water",
           "root",
           "structure"
-        ],
-        "light": "amber sky grows through incomplete iron glazing ribs"
+        ]
       },
-      "traversal": "channel climbs into a broad greenhouse footing"
+      "status": "composition-contract-not-verified-raster-seam"
     },
     {
       "id": "join-19",
@@ -834,8 +1471,18 @@
       "to": "garden-20",
       "exitPort": "garden-19:exit",
       "entryPort": "garden-20:entry",
-      "connector": "greenhouse crown ramp",
+      "upperEdge": {
+        "centerXNormalized": 0.34,
+        "widthFraction": 0.2
+      },
+      "lowerEdge": {
+        "centerXNormalized": 0.34,
+        "widthFraction": 0.2
+      },
+      "crossSection": "broad greenhouse stair throat with limestone shoulders, paired iron ribs and trailing vines",
+      "continuity": "the same iron ribs and trailing vines continue through the summit joint; a small blue runnel stays shaded",
       "geometry": "branching planted iron stair",
+      "traversal": "two unequal summit approaches converge at the broad crown garden",
       "overlap": {
         "materials": [
           "iron",
@@ -848,18 +1495,82 @@
           "#b69770",
           "#e6b469"
         ],
+        "light": "terraces share the crown's single sunset sky; shadow stays cool",
         "spines": [
           "water",
           "root",
           "structure"
-        ],
-        "light": "terraces share the crown's single sunset sky; shadow stays cool"
+        ]
       },
-      "traversal": "two unequal summit approaches converge at the broad crown garden"
+      "status": "composition-contract-not-verified-raster-seam"
     }
   ],
   "implementation": {
     "status": "unimplemented",
     "contractDocument": "docs/design/continuous-world-20.md"
+  },
+  "deliverable": {
+    "format": "twenty-separate-images",
+    "count": 20,
+    "aspectRatio": "approximately-16:9-source",
+    "orientation": "horizontal",
+    "finalAssetStatus": "twenty-final-concept-originals-packaged",
+    "combinedPanorama": "superseded draft; not the requested final deliverable",
+    "nativeSeamVerification": false,
+    "playabilityVerification": false,
+    "imageWidth": 1672,
+    "imageHeight": 941,
+    "assetStorage": "Separate download package and Figma gallery; full PNG images are not stored in this Git branch.",
+    "downloadPackage": {
+      "filename": "max-20-wide-levels.zip",
+      "delivery": "Companion download supplied with this design pass; the Figma gallery is the canonical online visual reference."
+    },
+    "targetAspectRatio": "16:9",
+    "figmaFrameDimensions": {
+      "width": 1536,
+      "height": 864
+    },
+    "sourcePixelDimensions": "1672×941 generated source PNGs; retained without resizing",
+    "packageContents": {
+      "pngCount": 20,
+      "documents": [
+        "README.md",
+        "continuous-world-20.md",
+        "continuous-world-20.json"
+      ],
+      "tallOverview": false
+    }
+  },
+  "review": {
+    "status": "candidate-with-known-seam-work",
+    "exactPixelSeamsVerified": false,
+    "connectorGeometryVerified": false,
+    "physicalContinuousCameraImplemented": false,
+    "remaining": [
+      {
+        "id": "join-02",
+        "between": [
+          "garden-2",
+          "garden-3"
+        ],
+        "work": "Realign cistern exit and railway entry through the same shared connector before claiming a physical raster seam."
+      },
+      {
+        "id": "join-09",
+        "between": [
+          "garden-9",
+          "garden-10"
+        ],
+        "work": "Realign mushroom exit and mycelium-fissure entry; retain their physical opening and shared roots/veins."
+      },
+      {
+        "id": "shared-sky",
+        "work": "Replace repeated baked suns/horizons in upper scene concepts with one continuous shared-sky layer during native integration."
+      }
+    ],
+    "completedRefinements": [
+      "Regions 8,9 and11 have open physical bone/root mouths in their final concept revisions.",
+      "Region17 uses warmer shared fog in its final concept revision."
+    ]
   }
 }
