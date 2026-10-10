@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "authority": "Offline actual-engine evidence only; no production activation or authenticated Figma synchronization",
+  "sourceScratch": "/workspace/scratch/max-tree-hollow-final-08-contained",
+  "rawReport": "browser-review.json",
+  "candidateSHA256": "de1594352f8e10d20f051932639a6efdc6bf121c40ea778dfb09b31426bbfb6e",
+  "sceneSHA256": "ec9e46730e0850a35553c24061deaf0aa67f7528ec5c5aed70f5b63da3eb5ab1",
+  "fixtureSHA256": "abec3a0cf52a3274548d926dda1f7c956d90bd51ad67c150925deaabd53fc815",
+  "runnerSHA256": "4b3ba4f382cad507d4a3a99ac003f777338780110be5b3e28e2717de45d02e28",
+  "publication": "All copied screenshots and raw reports preserve exact original bytes",
+  "filesSHA256": {
+    "garden-01-desktop-lower-left-wall.png": "3b35f079c96f6ea450839306f043979a6f88737677c2f64b823a28e0f19b8f81",
+    "garden-01-desktop-lower-passage.png": "88e26dcebfed24cee36560dd3dff280adc41097d27a90cf6bebfb0d2f47b105e",
+    "garden-01-desktop-lower-right-wall.png": "4b9fc9e0e15a93f8e6caec5db2ab53960c560b7c938b86edede8a3c3977bbd49",
+    "garden-01-desktop-native.png": "6d2603e0ad9f1b720cc278fa3c23d227e07f1f774b0ca135690a1dc7795cec1b",
+    "garden-01-desktop-return-court.png": "fe907c082c72c6cbc64b98f469e69836023d4083f168665557b6780263da89e4",
+    "garden-01-desktop-story-passed.png": "da7b26a10cec34b5e2e3d754826236a128c97e757c5623dd71f0da6561dff9a1",
+    "garden-01-desktop.png": "e7cf8dfd8c86506a3dcce29a9fb644cac10d842dd53a73c8b3b834df0be8474c",
+    "garden-01-full-chamber-native.png": "6daafbcb5171a6c805827b7924d935bba83e21bfa78711ce5cee8771fe85c334",
+    "garden-01-phone-lantern.png": "0896c2362750c721fc2a5364fdc9922723ddae27efa865b2b31f275b4f5e1c5b",
+    "garden-01-phone-lower-left-wall.png": "3fa5ba8c935e314e092d0e86e81ba5367ed2efd3b7d2ac72090981c5c3318a16",
+    "garden-01-phone-lower-passage.png": "43bf0857509dd7ed620bc7df74bb2f7872ce5eaccd4aed5def55d8e0b9cb12ce",
+    "garden-01-phone-lower-right-wall.png": "c2dc83015e405071245e852b5ff634475c49ae1501cde5c6e9526c3233a9e9d8",
+    "garden-01-phone-native.png": "213c8834e0c045e27a8e68addb8cc93711410b76c671c2236934604c9b6d2462",
+    "garden-01-phone-return-court.png": "90dd9bfc3dfef428d07ef33df4e74e11f3c300aca227445c04425dfbe338b375",
+    "garden-01-phone-story-passed.png": "068ace5a3d041af0523a57d937d91b8313ccca30b35afa8451d9746db640e702",
+    "garden-01-phone.png": "f313e29f979a5d8b3a9ba77f32879542ac9d392a434242f727644ad3c872120e",
+    "garden-01-world-640x400.png": "209c3d6678660907843a824223fdbc13175c7c64f9106cd4f8100afec4f25bda",
+    "browser-review.json": "3c45473a2ef5eb4ac6db63649cc7de15b58e1099096c98a1db20312502bf08f7",
+    "baseline-seed-vault/baseline-report.json": "cea25629f19185a9857b690ebae985451608d7b160c993278e84c2b8c965f44f",
+    "baseline-seed-vault/garden-01-desktop-native.png": "27fe23eedb7bd0cd97123f43739c3b795852248c4a0af7f895d7e619cf00587f",
+    "baseline-seed-vault/garden-01-desktop.png": "d0bc2424e422be14f0deaefe6551462f6e2980262fecbfd21bbb01ad0fda1416",
+    "baseline-seed-vault/garden-01-full-chamber-native.png": "84562417215807baa22092b5a14a87392b609eb17e5ed6550c0390b34b3c9879",
+    "baseline-seed-vault/garden-01-phone-native.png": "5b3b106dec68f80f84b98da3c23b47da15e7910648b4b55ebd3416757c39bf20",
+    "baseline-seed-vault/garden-01-phone.png": "9f67d57f1c9b71f6058c6724a48ec37e68475fcac42819b9fa1d30ae74359466",
+    "baseline-seed-vault/garden-01-world-640x400.png": "64d9847063c6f25af46fd8c926b82262be1547b050581cea1338a79318e6f796"
+  },
+  "historicalEvidence": {
+    "interimVisualPass": "/workspace/scratch/max-tree-hollow-final-03-captures",
+    "interimBothViewStoryPass": "/workspace/scratch/max-tree-hollow-final-06-portable-story",
+    "failedRunsPreserved": [
+      "/workspace/scratch/max-tree-hollow-pass-01",
+      "/workspace/scratch/max-tree-hollow-pass-01-lower-boundary-story",
+      "/workspace/scratch/max-tree-hollow-final-02",
+      "/workspace/scratch/max-tree-hollow-final-04-story",
+      "/workspace/scratch/max-tree-hollow-final-05-story",
+      "/workspace/scratch/max-tree-hollow-final-07-contained"
+    ],
+    "failureInterpretation": "Observer scope/boot initialization or bounded clock deadlines; final04 also preserved the actual run pausing when a planted court seed died while the player was away. Final route returns before planting; no plant health, fauna or engine clocks are suppressed."
+  }
+}

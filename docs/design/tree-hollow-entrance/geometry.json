@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "offline-reference-led-native-geometry-not-imported-into-figma",
+  "live": false,
+  "seed": 1,
+  "source": {
+    "reference": "Owner's October 10 hollow-tree entrance scene and matching tree, timber, moss, water and lantern kit attached in conversation.",
+    "runtimeBaseline": "8c9dadb7425c8432f8b24147a77994c814e31c66",
+    "coordinateSpace": "Integer native game pixels. Upper route coordinates are offsets from Garden 1's origin and rises above its original soil line. The scene review spans x -320 to +320 and y soil -280 to soil +120.",
+    "limits": "Offline actual-engine prototype, not an authenticated Figma export or live override. Existing production PNG bytes and production levels-data.js remain unchanged. The original seeded Garden 1 has no pond within this scene extent. A below-soil passage and reference pond require explicitly documented review-only ground/water fixtures; the generic production ground contract does not create either.",
+    "previewGround": "Build the upper candidate against original game ground first. Preserve that original base as layout.referenceBaseY before any review-only lowering of fallback ground. The lower chamber, soil bridge and entrance ladder are separate preview geometry and are not represented as already playable by this export."
+  },
+  "gardens": [
+    {
+      "stage": 1,
+      "title": "Tree Hollow Entrance",
+      "frame": "review-garden-01b",
+      "intent": "A rooted hollow tree anchors a dry central planting court. Broad timber terraces climb on both sides through seven real ladders, with an open dark center and restrained moss. The left climb reaches a quiet high reward; the right climb reaches a seed and lantern landing. The owner reference replaces the frozen-vault visual direction for this prototype.",
+      "artReference": "Owner's latest hollow-tree scene. Original integer scenery and unchanged registered Sanctuary native crops are the prototype materials; no source image or Figma synchronization is asserted.",
+      "replacePicture": true,
+      "ledges": [
+        { "x": -135, "rise": 40, "w": 70, "style": "branch" },
+        { "x": -215, "rise": 80, "w": 110, "style": "branch" },
+        { "x": -230, "rise": 120, "w": 95, "style": "branch" },
+        { "x": -220, "rise": 200, "w": 100, "style": "branch" },
+        { "x": 125, "rise": 80, "w": 105, "style": "branch" },
+        { "x": 170, "rise": 160, "w": 100, "style": "branch" },
+        { "x": 100, "rise": 200, "w": 100, "style": "branch" }
+      ],
+      "blocks": [
+        { "x": -280, "rise": 40, "w": 40, "h": 60, "style": "root" },
+        { "x": 250, "rise": 20, "w": 30, "h": 60, "style": "root" }
+      ],
+      "ladders": [
+        { "x": -112, "rise": 40, "w": 14, "h": 33 },
+        { "x": -120, "rise": 80, "w": 14, "h": 40 },
+        { "x": -180, "rise": 120, "w": 14, "h": 40 },
+        { "x": -190, "rise": 200, "w": 14, "h": 80 },
+        { "x": 210, "rise": 80, "w": 14, "h": 75 },
+        { "x": 190, "rise": 160, "w": 14, "h": 80 },
+        { "x": 180, "rise": 200, "w": 14, "h": 40 }
+      ],
+      "reward": [{ "x": -170, "rise": 200 }],
+      "seed": [{ "x": 125, "rise": 200 }],
+      "trial": [{ "x": -165, "rise": 80 }, { "x": 215, "rise": 160 }],
+      "bonus": [{ "x": -205, "rise": 120 }],
+      "puzzle": [{ "x": -95, "rise": 40 }],
+      "door": [{ "x": 150, "rise": 200 }],
+      "dig": [{ "x": -20, "rise": 0 }],
+      "secret": [{ "x": 190, "rise": 80 }],
+      "start": [{ "x": 0, "rise": 0 }]
+    }
+  ]
+}

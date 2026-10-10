@@ -414,9 +414,38 @@ Live variants of Gardens 1–2 can explicitly opt into `replace-picture`.
 available bounce blooms without duplicating furnishing. Existing unmarked
 layouts, picture masters and all production PNG pins remain unchanged.
 
-The latest twenty-level concepts are on Figma board `746:117481` and draft
+The earlier twenty-level concepts are on Figma board `746:117481` and draft
 PR #51. Their normalized composition anchors are not authored game geometry.
 This pipeline batch does not implement their new regional artwork or nineteen
 continuous connectors. Figma authoring must supply native playable frames;
 new art must pass the existing production-source contract. Historical review
 captures cannot establish fresh synchronization.
+
+The owner's later October 10 feedback rejects that visual direction and supplies
+ten pixel-art level references. Use their thick dark terrain, open cave and arch
+spaces, restrained moss and native detail for the next implementation. The
+unpublished third geometry batch was stopped and preserved outside the repository;
+do not resume or publish it as the accepted direction. Show frequent actual game
+screenshots, including phone views, and push verified checkpoints to `main`.
+Figma connectors currently require reauthentication. Existing source pins remain
+authoritative; an original procedural scenery pass does not establish fresh
+Figma synchronization or authorize new PNG masters or live authored imports.
+
+The newest two references explicitly replace the first-level target with a dark
+hollow-tree entrance: bent moss bark, amber door lantern, left pond, supported
+timber terraces and ladders, with a root passage beneath the garden court.
+Prioritize Garden 1; do not resume the held Garden 7 pass as this request.
+`docs/design/tree-hollow-entrance/` contains the original native scenery,
+editable offline geometry and finite actual-engine preview fixtures. Its
+synthetic compiler activation is review-only, and its supplemental court,
+lower-room floor resolver and native pond are not an authenticated Figma export.
+Production activation still requires importing and verifying the authored source.
+
+The actual Tree Hollow review now includes phone and desktop screenshots plus
+ordinary-input descent, both lower-room walls, return climb and one-seed planting
+proof. Upper geometry separately passes all four base classes at 30/60/120 Hz.
+Use its bound evidence gallery for updates; the owner asks for frequent pictures
+of the working level, with short captions. The newest early-room references add
+broken waterworks, hanging pods, mossy root bridges, a beetle crossing and an acorn
+seesaw. They guide subsequent drafts; they are not already registered PNG masters
+or an approved new ordering of the twenty levels.
