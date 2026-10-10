@@ -528,3 +528,15 @@ available without marking the distant shrine discovered. Its discovered shrines
 use the real court target instead of contradictory downward arrows or PLANT BELOW.
 This presentation change preserves all collision, native art, seeds, guardian
 discovery and physical ascent rules.
+
+The immutable offline tree study still records its original Seed Vault title and
+focus. Its comparison asserts both historical and current labels explicitly,
+normalizes only those two profile fields and retains exact geometry, source
+bindings and bundle byte checks.
+
+The paired Cairn browser review accepts the real queued Stone input and captures
+the handoff in one host task before awaiting native body evidence on the promoted
+guest. A delayed body observation previously let the short flight finish before
+capture. Moving capture preserves the actual phase-1 flight, accepted serial,
+one resource spend, one contact and one damage assertion without changing the
+production clock or gameplay.
