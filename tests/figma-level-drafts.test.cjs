@@ -76,3 +76,61 @@ test('offline source preparation rejects invalid seeds and import refuses the wr
   f.figma.fileKey = s.file; f.page.id = 'wrong-page';
   await assert.rejects(importDrafts(f.figma, s), /page was not found/); assert.equal(f.nodes.length, 1);
 });
+
+test('normal compiled authored ponds round-trip through editable drafts without using their depressed origin as soil', async () => {
+  const baseline = await sourcePromise, m = await modulePromise;
+  const { gardenOf, gameWorld } = await import('../scripts/figma-levels.mjs');
+  const { importDrafts } = await importerPromise;
+  const harness = require('./game-harness.cjs'), originalLoad = harness.loadGame;
+  const geometry = [{ x: -450, rise: -4, hw: 30, bank: 180, depth: 12 },
+    { x: 0, rise: -2, hw: 140, bank: 100, depth: 24 }];
+  const data = { gardens: { 2: [{ frame: 'garden-02b', replacePicture: true,
+    ledges: [], blocks: [], reward: [], trial: [], ponds: geometry }] } };
+  let source;
+  // Exercise the public snapshot path and its private frameOf with the real
+  // compiler/runtime. Only the process-local test loader receives source data.
+  try {
+    harness.loadGame = saved => originalLoad({ ...saved, __levelData: data });
+    source = m.snapshot(1);
+  } finally { harness.loadGame = originalLoad; }
+  const draft = source.gardens[1], base = draft.runtime.authoredSoilY;
+  assert.equal(draft.frame, 'review-garden-02');
+  assert.ok(Number.isFinite(base));
+  assert.equal(draft.soilY + draft.canvasWorldTop, base);
+  assert.ok(draft.instances.every(n => n.name !== 'designed'));
+  assert.deepEqual(draft.compilerGarden.ponds, geometry);
+  const center = draft.runtime.ponds.find(p => p.cx === draft.worldOrigin);
+  assert.equal(center.level, base + 2);
+  assert.ok(center.level + center.depth > base + 12, 'The original soil anchor stays above the actual native pond bed');
+  const ponds = draft.instances.filter(n => n.name.startsWith('pond:'));
+  assert.equal(ponds.length, 2);
+  for (const [i, p] of draft.runtime.ponds.entries()) {
+    assert.deepEqual([ponds[i].name, ponds[i].x + draft.canvasWorldLeft,
+      ponds[i].y + draft.canvasWorldTop, ponds[i].w, ponds[i].h, ponds[i].sourceId],
+    [`pond:${p.bank}`, p.cx - p.hw, p.level, p.hw * 2, p.depth, p.id]);
+    assert.ok(draft.canvasWorldLeft <= p.cx - p.hw - p.bank - 40);
+    assert.ok(draft.canvasWorldLeft + draft.width >= p.cx + p.hw + p.bank + 40);
+  }
+  assert.ok(draft.water.length > 0, 'Editable pond tags retain their actual locked water reference too');
+  assert.ok(baseline.gardens.some(g => g.water.length > 0));
+  assert.ok(baseline.gardens.every(g => !g.instances.some(n => n.name.startsWith('pond:'))), 'Procedural water never becomes an editable authored pond');
+  const f = fakeFigma(source.page, source.file), result = await importDrafts(f.figma, source);
+  const frame = f.nodes.find(n => n.id === result.frames[1].id);
+  const editable = frame.children.filter(n => n.type === 'INSTANCE');
+  for (const p of ponds) {
+    const n = editable.find(n => n.name === p.name);
+    assert.deepEqual([n.x, n.y, n.width, n.height], [p.x, p.y, p.w, p.h]);
+    const master = f.nodes.find(n => n.type === 'COMPONENT' && n.name === p.name);
+    assert.deepEqual([master.width, master.height], [32, 16]);
+  }
+  assert.equal(frame.children.filter(n => n.name === 'water — locked runtime reference').length, draft.water.length);
+  assert.ok(frame.children.filter(n => n.name === 'water — locked runtime reference').every(n => n.locked));
+  const parsed = gardenOf({ name: draft.frame, children: editable.map(n => ({
+    type: 'instance', name: n.name, x: n.x, y: n.y, width: n.width, height: n.height, children: [] })) });
+  assert.equal(parsed.live, false); assert.deepEqual(parsed.problems, []);
+  assert.deepEqual(parsed.garden.ponds, geometry);
+  const world = gameWorld(), rebuilt = world.levels.build(parsed.garden, 2,
+    world.origin(2), world.ground, world.wet, 1, world.environment);
+  const shape = list => Array.from(list, p => [p.cx, p.level, p.hw, p.bank, p.depth]);
+  assert.deepEqual(shape(rebuilt.ponds), shape(draft.runtime.ponds), 'Imported native tags restore the original compiled pond heights and dimensions');
+});

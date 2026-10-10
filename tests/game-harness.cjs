@@ -4,6 +4,7 @@ const vm = require('node:vm');
 const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
+  'pondCache', 'POND_B', 'swans', 'dflies', 'tSec',
   'mycelSerial', 'wonders', 'runExpedition', 'seedCollected',
   'ascentPresentation', 'ascentFrame', 'ascentLive', 'worldCovered',
   'rattusSerial',
@@ -25,6 +26,7 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'baseSurfaceY', 'naturalPondNear', 'pondNear', 'pondInBucket', 'pondsInView', 'terrainY', 'nextPond', 'pondDeco', 'populatePond', 'updateSwans', 'spawnFlyers', 'updateFlyers',
   'mycelState', 'mycelPeek', 'mycelCaptureState', 'mycelRestoreState', 'mycelRebaseClocks', 'mycelRefreshClocks', 'mycelCaptureShot', 'mycelRestoreShot', 'mycelCapturePestEvents', 'mycelRestorePestEvents',
   'mycelBuild', 'mycelCleanBuild', 'mycelPrimaryInterval', 'mycelPlantPoint', 'mycelNetwork', 'mycelWetBody', 'mycelWetPoint', 'mycelCanAct', 'mycelPhasePolicy', 'mycelCloudPlacement',
   'mycelPrimary', 'mycelPrimaryWorld', 'mycelPrimaryContact', 'mycelCloud', 'mycelCloudWorld', 'mycelBloom', 'mycelBloomWorld', 'mycelBloomUseful', 'mycelDrift', 'mycelDriftWorld', 'mycelDriftCancelWorld',
@@ -163,6 +165,7 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'guardian-sites.js'), 'utf8'), sandbox);
   const pics = path.join(__dirname, '..', 'levels-v1'); if (saved.__pictures && fs.existsSync(pics)) for (const f of fs.readdirSync(pics).filter(n => n.endsWith('.js'))) vm.runInNewContext(fs.readFileSync(path.join(pics, f), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels-data.js'), 'utf8'), sandbox);
+  if (saved.__levelData !== undefined) sandbox.MaxLevelData = saved.__levelData;
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'high-tide-map.js'), 'utf8'), sandbox);

@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "sourceAuthority": "synthetic offline XML; not authenticated Figma",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "scripts/figma-levels.mjs",
+    "--from",
+    "docs/design/authored-ponds/source/synthetic-pond-source.json",
+    "--out",
+    "docs/design/authored-ponds/bundle/candidate-levels-data.js"
+  ],
+  "startedAt": "2026-10-10T09:48:33.294Z",
+  "finishedAt": "2026-10-10T09:48:33.674Z",
+  "compilerExitCode": 0,
+  "sourceSHA256": {
+    "scripts/figma-levels.mjs": "1f462746c1c1e1196f58f163f5374afb18080b17664f8ef4e26afd8af24694eb",
+    "scripts/figma-authored-drafts.mjs": "1b64fdbc0762d3a057efb156877f58e753db17f8da6c4c2c4d4480cede386ef9",
+    "levels.js": "a8932fa36a83227ccdce51a2ca21aed5e2c8399a21a343daabad6ac475c18162",
+    "stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+    "index.html": "f5a5c78c16b3e9e283d1fb382b5c973ebfd9aabbf893bbf721f58daa744ca330",
+    "tests/game-harness.cjs": "2dbfebeca670d527bbd1583544ba996c1b7d4e510fbe2e8be089aac56a460834",
+    "docs/design/authored-ponds/source/synthetic-pond-source.json": "2f31608456791b6dc9165756e1f013cb5d871ec949df85f699e941023be3769b"
+  },
+  "candidateSHA256": "87b76780c93b0170038a2f1e4c2a4096fee6ef26593fa2aaf5193fef08872131",
+  "reportSHA256": "deb579a1e3d119ad056ab6011215b4558346985ba4ee585351192f6b84432c7c",
+  "productionLevelDataSHA256": "c69e217a32512a868efc7222a34529cc1f5ddc62c8fe5c6558068a1708595b0d",
+  "productionLevelDataUnchanged": true,
+  "productionOutputWritten": false,
+  "authenticatedFigma": false,
+  "candidateFrame": "garden-02b",
+  "ponds": [
+    {
+      "x": -85,
+      "rise": -2,
+      "hw": 47,
+      "bank": 20,
+      "depth": 24
+    }
+  ]
+}

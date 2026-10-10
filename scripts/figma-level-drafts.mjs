@@ -18,12 +18,13 @@ function digest() {
 }
 
 function frameOf(layout, game, api) {
-  const stage = layout.stage, base = Math.floor(game.surfaceY(layout.origin));
+  const stage = layout.stage, base = Number.isFinite(layout.authoredSoilY) ? layout.authoredSoilY : Math.floor(game.surfaceY(layout.origin));
   const points = layout.platforms.flatMap(p => [[p.x, p.y], [p.x + p.w, p.y + (p.h || p.depth || 6)]]);
   for (const key of ['rewards', 'trials', 'bonuses', 'guardianSites', 'blooms']) points.push(...list(layout[key]).map(a => [a.x, a.y]));
   for (const key of SPOTS) points.push(...list(layout.spots?.[key]).map(a => [a.x, a.y]));
   list(layout.guardianSites).forEach(s => points.push([s.courtLeft, s.courtY - 24], [s.courtRight, s.courtY]));
   list(layout.ladders).forEach(l => points.push([l.x - l.w / 2, l.top], [l.x + l.w / 2, l.bottom]));
+  list(layout.ponds).forEach(p => points.push([p.cx - p.hw - p.bank, p.level], [p.cx + p.hw + p.bank, p.level + p.depth]));
   if (layout.place) points.push([layout.place.x, layout.place.y], [layout.place.x + layout.place.w, layout.place.y + layout.place.h]);
   if (layout.expedition?.circuit) { const a = layout.expedition.circuit.arena; points.push([a.x, a.y - 24], [a.x + a.w, a.y]); }
   if (layout.art) points.push([layout.art.x, layout.art.y], [layout.art.x + layout.art.w, layout.art.y + layout.art.h]);
@@ -38,6 +39,7 @@ function frameOf(layout, game, api) {
     ...layout.platforms.map(p => ({ name: `${p.solid ? 'block' : 'ledge'}:${STYLES.includes(p.style) ? p.style : 'ruin'}`, x: X(p.x), y: Y(p.y), w: Math.round(p.w), h: Math.round(p.solid ? p.h : p.depth || 6), sourceId: p.id, sourceStyle: p.style }))
   ];
   const marker = (name, a, sourceId) => instances.push({ name, x: X(a.x) - 3, y: Y(a.y) - 7, w: 7, h: 7, sourceId: sourceId || a.platformId || null });
+  list(layout.ponds).forEach(p => instances.push({ name: `pond:${p.bank}`, x: X(p.cx - p.hw), y: Y(p.level), w: p.hw * 2, h: p.depth, sourceId: p.id }));
   layout.rewards.forEach((a, i) => marker(i === layout.rewards.length - 1 ? 'seed' : 'reward', a));
   for (const key of ['trial', 'bonus']) list(layout[key === 'trial' ? 'trials' : 'bonuses']).forEach(a => marker(key, a));
   for (const key of SPOTS) list(layout.spots?.[key]).forEach(a => marker(key, a));

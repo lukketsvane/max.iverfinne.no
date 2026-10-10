@@ -15,7 +15,7 @@ const BASELINE = ['index.html', 'build-paths.js', 'max-classes.js', 'stage-layou
 const BASELINE_SCOPE = { method: 'SHA-256 of named source files plus the expanded game source used by gameWorld()', expandedGameSource: 'scripts/game-source.cjs()' };
 const MARKERS = ['reward', 'seed', 'trial', 'bonus', 'puzzle', 'door', 'dig', 'secret', 'start'];
 const STYLES = ['stone', 'ruin', 'branch', 'root'];
-const FIELDS = ['frame', 'node', 'ledges', 'blocks', 'ladders', 'decor', 'replacePicture', 'furnishPlace', ...MARKERS];
+const FIELDS = ['frame', 'node', 'ledges', 'blocks', 'ladders', 'ponds', 'decor', 'replacePicture', 'furnishPlace', ...MARKERS];
 const OUTPUTS = ['snapshot.json', 'import.use-figma.js', 'code.js', 'manifest.json', 'reach-report.md', 'synthetic-candidate.json', 'candidate-levels-data.js', 'compiler-report.txt'];
 const hash = value => createHash('sha256').update(value).digest('hex');
 const json = value => JSON.stringify(value, null, 2) + '\n';
@@ -45,14 +45,19 @@ function validateGarden(garden, index) {
   if (garden.geometry != null && (typeof garden.geometry !== 'object' || Array.isArray(garden.geometry))) throw new Error(`${frame} requires a native geometry object.`);
   const geometry = garden.geometry || Object.fromEntries(FIELDS.filter(key => key in garden).map(key => [key, garden[key]]));
   for (const key of Object.keys(geometry)) if (!FIELDS.includes(key)) throw new Error(`${frame}: unsupported geometry field ${key}; use direct compiler tags.`);
-  for (const key of ['ledges', 'blocks', 'ladders', 'decor', ...MARKERS]) {
+  for (const key of ['ledges', 'blocks', 'ladders', 'ponds', 'decor', ...MARKERS]) {
     if (geometry[key] != null && !Array.isArray(geometry[key])) throw new Error(`${frame}: ${key} must be an array.`);
     for (const [i, item] of (geometry[key] || []).entries()) {
       const at = `${frame} ${key}[${i}]`;
       if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`${at} must be a native geometry record.`);
-      const allowed = ['x', 'rise', ...(['ledges', 'blocks', 'ladders', 'decor'].includes(key) ? ['w'] : []), ...(['blocks', 'ladders', 'decor'].includes(key) ? ['h'] : []), ...(['ledges', 'blocks'].includes(key) ? ['style'] : []), ...(key === 'decor' ? ['src'] : [])];
+      const allowed = ['x', 'rise', ...(['ledges', 'blocks', 'ladders', 'decor'].includes(key) ? ['w'] : []), ...(['blocks', 'ladders', 'decor'].includes(key) ? ['h'] : []), ...(['ledges', 'blocks'].includes(key) ? ['style'] : []), ...(key === 'ponds' ? ['hw', 'bank', 'depth'] : []), ...(key === 'decor' ? ['src'] : [])];
       for (const field of Object.keys(item)) if (!allowed.includes(field)) throw new Error(`${at}: unsupported field ${field}.`);
       integer(item.x, `${at}.x`); integer(item.rise, `${at}.rise`);
+      if (key === 'ponds') {
+        for (const field of ['x', 'rise', 'hw', 'bank', 'depth']) if (!Number.isSafeInteger(item[field])) throw new Error(`${at}.${field} must be a safe integer native pixel value.`);
+        for (const field of ['hw', 'bank', 'depth']) integer(item[field], `${at}.${field}`, true);
+        if (!Number.isSafeInteger(item.hw * 2)) throw new Error(`${at}.hw must produce a safe integer pond width.`);
+      }
       if (['ledges', 'blocks', 'ladders', 'decor'].includes(key)) integer(item.w, `${at}.w`, true);
       if (['blocks', 'ladders', 'decor'].includes(key)) integer(item.h, `${at}.h`, true);
       if (['ledges', 'blocks'].includes(key) && !STYLES.includes(item.style)) throw new Error(`${at}.style must be ${STYLES.join(', ')}.`);
@@ -74,33 +79,37 @@ function draftFrame(garden, world, seed) {
   add('origin', origin, base - 24, 1, 24);
   for (const [key, prefix] of [['ledges', 'ledge'], ['blocks', 'block']]) (geometry[key] || []).forEach((p, i) => add(`${prefix}:${p.style}`, origin + p.x, base - p.rise, p.w, prefix === 'block' ? p.h : 6, `authored:${stage}:${prefix}:${i}`));
   (geometry.ladders || []).forEach((q, i) => add('ladder', origin + q.x - Math.floor(q.w / 2), base - q.rise, q.w, q.h, `authored:${stage}:ladder:${i}`));
+  (geometry.ponds || []).forEach((p, i) => add(`pond:${p.bank}`, origin + p.x - p.hw, base - p.rise, p.hw * 2, p.depth, `authored:${stage}:pond:${i}`));
   for (const key of MARKERS) (geometry[key] || []).forEach((m, i) => add(key, origin + m.x - 3, base - m.rise - 7, 7, 7, `authored:${stage}:${key}:${i}`));
   (geometry.decor || []).forEach((d, i) => add(`decor:${d.src}`, origin + d.x, base - d.rise, d.w, d.h, `authored:${stage}:decor:${i}`));
   if (geometry.replacePicture) add('replace-picture', origin + 8, base + 8, 7, 7);
   if (geometry.furnishPlace) add('furnish-place', origin + 24, base + 8, 7, 7);
-  const left = Math.min(origin - 80, ...raw.map(n => n.x)) - 40, top = Math.min(base - 24, ...raw.map(n => n.y)) - 36;
-  const right = Math.max(origin + 80, ...raw.map(n => n.x + n.w)) + 40, width = right - left;
+  const pondBanks = (geometry.ponds || []).map(p => ({ left: origin + p.x - p.hw - p.bank, right: origin + p.x + p.hw + p.bank }));
+  const left = Math.min(origin - 80, ...raw.map(n => n.x), ...pondBanks.map(p => p.left)) - 40, top = Math.min(base - 24, ...raw.map(n => n.y)) - 36;
+  const right = Math.max(origin + 80, ...raw.map(n => n.x + n.w), ...pondBanks.map(p => p.right)) + 40, width = right - left;
   const floor = Math.ceil(Math.max(...Array.from({ length: width + 1 }, (_, i) => world.ground(left + i)), ...raw.map(n => n.y + n.h))) + 36, height = floor - top;
   const X = x => x - left, Y = y => Math.round(y) - top;
   const instances = [{ name: 'soil', x: 0, y: Y(base), w: width, h: 1 }, ...raw.map(n => ({ ...n, x: X(n.x), y: Y(n.y) }))];
   const parsed = gardenOf({ id: `offline:${frame}`, name: frame, children: instances.map(n => ({ ...n, type: 'instance', width: n.w, height: n.h, children: [] })) });
   if (parsed.live || parsed.problems.length) throw new Error(`${frame} cannot compile: ${parsed.problems.join('; ')}`);
-  const layout = world.levels.build(parsed.garden, stage, origin, world.ground, world.wet, seed);
-  const reachable = world.levels.reachable(layout, 0, world.ground, world.wet);
+  const layout = world.levels.build(parsed.garden, stage, origin, world.ground, world.wet, seed, world.environment);
+  const effective = world.levels.pondWorld ? world.levels.pondWorld(layout, world.ground, world.wet, world.environment) : world;
+  const reachable = world.levels.reachable(layout, 0, effective.ground, effective.wet);
   for (const key of ['rewards', 'trials']) for (const [i, marker] of layout[key].entries()) {
-    const safe = marker.platformId ? reachable[marker.platformId] : marker.y === world.ground(marker.x) && !world.wet(marker.x);
+    const water = effective.wet && effective.wet(marker.x), submerged = layout.ponds && water && Number.isFinite(water.level) && marker.y > water.level + 1;
+    const safe = !submerged && (marker.platformId ? reachable[marker.platformId] : marker.y === effective.ground(marker.x) && !water);
     if (!safe) throw new Error(`${frame} ${key}[${i}] is not reachable on dry C0 footing; add a supported ladder or move the marker onto a reachable ledge.`);
   }
-  const sets = [0, 1, 2, 3].map(t => world.levels.reachable(layout, t, world.ground, world.wet));
+  const sets = [0, 1, 2, 3].map(t => world.levels.reachable(layout, t, effective.ground, effective.wet));
   const platforms = layout.platforms.map(p => ({ id: p.id, tier: sets.findIndex(s => s[p.id]), required: true, support: p.solid ? 'solid' : 'one-way' }));
   const count = [0, 0, 0, 0, 0]; platforms.forEach(p => count[p.tier < 0 ? 4 : p.tier]++);
-  const terrainY = Math.min(...Array.from({ length: width + 1 }, (_, i) => Y(world.ground(left + i))));
-  let previous = Y(world.ground(left)) - terrainY, terrainPath = `M 0 ${height - terrainY} L 0 ${previous}`, run = null;
+  const terrainY = Math.min(...Array.from({ length: width + 1 }, (_, i) => Y(effective.ground(left + i))));
+  let previous = Y(effective.ground(left)) - terrainY, terrainPath = `M 0 ${height - terrainY} L 0 ${previous}`, run = null;
   const water = [];
   for (let x = 0; x <= width; x++) {
-    const y = Y(world.ground(left + x)), terrainTop = y - terrainY;
+    const y = Y(effective.ground(left + x)), terrainTop = y - terrainY;
     if (terrainTop !== previous) { terrainPath += ` L ${x} ${previous} L ${x} ${terrainTop}`; previous = terrainTop; }
-    const pond = world.wet(left + x), level = pond ? Y(pond.level) : null;
+    const pond = effective.wet && effective.wet(left + x), level = pond ? Y(pond.level) : null;
     if (run && run.y !== level) { if (run.w > 0 && run.h > 0) water.push(run); run = null; }
     if (level != null && x < width) { if (!run) run = { x, y: level, w: 0, h: 1 }; run.w++; run.h = Math.max(run.h, y - level); }
   }

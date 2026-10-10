@@ -7,6 +7,49 @@
     var list = ((data || root.MaxLevelData || {}).gardens || {})[stage | 0] || [];
     return list.length ? list[seed == null ? 0 : mix(seed, stage | 0) % list.length] : null;
   }
+  function pondNear(layout, x) {
+    var ponds = layout && layout.ponds || [];
+    for (var i = 0; i < ponds.length; i++) if (Math.abs(x - ponds[i].cx) < ponds[i].hw + ponds[i].bank) return ponds[i];
+    return null;
+  }
+  function pondAllowed(layout, pond) {
+    return !pond || !(layout && layout.ponds || []).some(function (p) { return Math.abs(p.cx - pond.cx) < p.hw + p.bank + pond.hw + pond.bank; });
+  }
+  function pondTerrain(x, pond, soil) {
+    var d = Math.abs(x - pond.cx);
+    if (d < pond.hw) { var t = d / pond.hw; return pond.level + pond.depth * (1 - t * t * t * t); }
+    var u = (d - pond.hw) / pond.bank, s = u * u * (3 - 2 * u);
+    return (pond.level - 1) * (1 - s) + soil * s;
+  }
+  // Procedural terrain needs its original, unsunken soil and raw natural pond
+  // lookup to restore the complete bank of any suppressed natural pond.
+  // Pure ground callbacks without natural ponds need no environment.
+  function pondWorld(layout, ground, wet, environment) {
+    if (!(layout && layout.ponds && layout.ponds.length)) return { ground: ground, wet: wet };
+    var soil = environment && environment.baseGround || ground, natural = environment && environment.pondNear;
+    return {
+      ground: function (x) {
+        var authored = pondNear(layout, x), p = natural && natural(x);
+        if (authored) return pondTerrain(x, authored, soil(x));
+        return p && !pondAllowed(layout, p) ? soil(x) : ground(x);
+      },
+      wet: function (x) {
+        var authored = pondNear(layout, x);
+        if (authored) return Math.abs(x - authored.cx) < authored.hw ? authored : null;
+        var p = natural && natural(x), water = wet && wet(x);
+        return p && !pondAllowed(layout, p) || water && typeof water === 'object' && !pondAllowed(layout, water) ? null : water;
+      }
+    };
+  }
+  function authoredPonds(garden, stage, origin, base) {
+    if (!Array.isArray(garden.ponds)) throw new Error('Authored ponds must be an array');
+    return garden.ponds.map(function (p, i) {
+      if (!p || !['x', 'rise', 'hw', 'bank', 'depth'].every(function (key) { return Number.isSafeInteger(p[key]); }) || p.hw <= 0 || p.bank <= 0 || p.depth <= 0) throw new Error('Authored pond ' + i + ' requires integer coordinates and positive half-width, bank and depth');
+      if (garden.ponds.some(function (q, j) { return j < i && Math.abs(p.x - q.x) < p.hw + p.bank + q.hw + q.bank; })) throw new Error('Authored pond bank extents must not overlap');
+      var cx = origin + p.x;
+      return { id: stage + ':pond:' + i, authored: true, b: Math.floor(cx / 760), cx: cx, hw: p.hw, bank: p.bank, depth: p.depth, level: base - p.rise, pop: false, deco: null };
+    });
+  }
   function floorUnder(ground, x, w) { var f = Infinity; for (var i = x; i <= x + w; i++) f = Math.min(f, ground(i)); return f; }
   function byX(a, b) { return a.x - b.x; }
   function highest(a, b) { return b.y < a.y ? b : a; }
@@ -83,12 +126,19 @@
     var sets = [0, 1, 2, 3].map(function (t) { return reachable(layout, t, ground, wet); });
     return layout.platforms.map(function (p) { var t = 0; while (t < 3 && !sets[t][p.id]) t++; return { x: p.x + Math.floor(p.w / 2), y: p.y, platformId: p.id, tier: t }; });
   }
-  function build(garden, stage, origin, ground, wet, seed) {
+  function build(garden, stage, origin, ground, wet, seed, environment) {
     stage = Math.max(1, Math.min(20, stage | 0)); origin = Math.round(origin);
     var kind = L.theme(stage), base = Math.floor(ground(origin));
     var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, designed: true, frame: garden.frame, platforms: [], routes: [], rewards: [], trials: [], bonuses: [], spots: {}, decor: [] };
     if (garden.replacePicture === true) layout.replacePicture = true;
     if (garden.furnishPlace === true) layout.furnishPlace = true;
+    if (garden.ponds != null) {
+      var ponds = authoredPonds(garden, stage, origin, base);
+      if (ponds.length) {
+        layout.ponds = ponds; layout.authoredSoilY = base;
+        var world = pondWorld(layout, ground, wet, environment); ground = world.ground; wet = world.wet;
+      }
+    }
     var shape = (garden.ledges || []).map(function (l, i) { return { id: stage + ':d' + i, x: origin + l.x, y: base - l.rise, w: l.w, style: l.style }; })
       .concat((garden.blocks || []).map(function (b, i) { return { id: stage + ':b' + i, x: origin + b.x, y: base - b.rise, w: b.w, h: b.h, style: b.style, solid: true }; }));
     layout.platforms = shape.map(function (s) {
@@ -112,8 +162,8 @@
     layout.seed = seed == null ? seed : seed >>> 0;
     return layout;
   }
-  function layout(stage, origin, ground, wet, seed) { var garden = pick(stage, seed); return garden ? build(garden, stage, origin, ground, wet, seed) : null; }
-  var api = { layout: layout, build: build, pick: pick, reachable: reachable };
+  function layout(stage, origin, ground, wet, seed, environment) { var garden = pick(stage, seed); return garden ? build(garden, stage, origin, ground, wet, seed, environment) : null; }
+  var api = { layout: layout, build: build, pick: pick, reachable: reachable, pondNear: pondNear, pondAllowed: pondAllowed, pondWorld: pondWorld };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxLevels = api;
 })(typeof window === 'object' ? window : globalThis);
