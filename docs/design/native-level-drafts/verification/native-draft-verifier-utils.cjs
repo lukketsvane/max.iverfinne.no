@@ -8,13 +8,42 @@ const STAGES = [1, 2, 3];
 const CLASSES = ['mech', 'runner', 'bulwark', 'herbalist'];
 const RATES = [30, 60, 120];
 
-function validateCandidate(data) {
-  assert.ok(data && data.gardens && typeof data.gardens === 'object', 'Candidate must contain expected stages 1–3');
-  assert.deepEqual(Object.keys(data.gardens).sort(), STAGES.map(String), 'Candidate must contain exactly expected stages 1–3');
-  for (const stage of STAGES) {
+function validateStages(stages) {
+  assert.ok(Array.isArray(stages) && stages.length > 0, 'Stage selection must be a nonempty list of unique integers from 1–20');
+  assert.ok(stages.every(stage => Number.isInteger(stage) && stage >= 1 && stage <= 20) && new Set(stages).size === stages.length,
+    'Stage selection must contain unique integers from 1–20');
+  return stages;
+}
+
+function parseVerifierArguments(args, runner) {
+  const usage = `Usage: node ${runner} <candidate-levels-data.js> <report.json> [--stages 4,5,6]`;
+  const positional = [];
+  let stages = STAGES.slice(), selected = false;
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index];
+    if (arg === '--stages') {
+      const value = args[++index];
+      if (selected || typeof value !== 'string' || !/^(?:[1-9]|1\d|20)(?:,(?:[1-9]|1\d|20))*$/.test(value)) throw new Error(`Invalid --stages: use unique integers from 1–20 separated by commas. ${usage}`);
+      stages = value.split(',').map(Number); validateStages(stages); selected = true;
+    } else {
+      if (typeof arg !== 'string' || !arg || arg.startsWith('--')) throw new Error(usage);
+      positional.push(arg);
+    }
+  }
+  if (positional.length !== 2) throw new Error(usage);
+  return { input: path.resolve(positional[0]), output: path.resolve(positional[1]), stages };
+}
+
+function validateCandidate(data, stages = STAGES) {
+  validateStages(stages);
+  const expected = stages.slice().sort((a, b) => a - b).map(String), label = expected.join(',');
+  assert.ok(data && data.gardens && typeof data.gardens === 'object' && !Array.isArray(data.gardens), `Candidate must contain expected stages ${label}`);
+  assert.deepEqual(Object.keys(data.gardens).sort((a, b) => +a - +b), expected, `Candidate must contain exactly expected stages ${label}`);
+  for (const stage of stages) {
     const variants = data.gardens[stage];
     assert.ok(Array.isArray(variants) && variants.length === 1, `Stage ${stage} must contain one authored candidate garden`);
     const garden = variants[0];
+    assert.match(garden?.frame || '', new RegExp(`^garden-${String(stage).padStart(2, '0')}[b-z]?$`), `Stage ${stage} must identify its authored source frame`);
     assert.ok(garden && Array.isArray(garden.ledges), `Stage ${stage} requires authored surfaces`);
     assert.ok(garden.blocks === undefined || Array.isArray(garden.blocks), `Stage ${stage} blocks must be an array`);
     const surfaces = garden.ledges.concat(garden.blocks || []);
@@ -24,6 +53,8 @@ function validateCandidate(data) {
         `Stage ${stage} requires valid native authored surfaces`);
     }
     for (const block of garden.blocks || []) assert.ok(Number.isInteger(block.h) && block.h > 0, `Stage ${stage} requires valid block heights`);
+    assert.ok(garden.ladders === undefined || Array.isArray(garden.ladders), `Stage ${stage} ladders must be an array`);
+    for (const ladder of garden.ladders || []) assert.ok(ladder && [ladder.x, ladder.rise, ladder.w, ladder.h].every(Number.isInteger) && ladder.w > 0 && ladder.h > 0, `Stage ${stage} requires valid native ladder geometry`);
     for (const [key, minimum] of [['reward', 1], ['seed', 1], ['trial', 2], ['start', 1]]) {
       assert.ok(Array.isArray(garden[key]) && garden[key].length >= minimum,
         `Stage ${stage} requires ${key} markers (at least ${minimum})`);
@@ -33,11 +64,12 @@ function validateCandidate(data) {
       for (const marker of garden[key] || []) assert.ok(marker && [marker.x, marker.rise].every(Number.isInteger), `Stage ${stage} requires valid native ${key} markers`);
     }
   }
-  return STAGES;
+  return stages;
 }
 
-function caseCoverageFailures(cases, fields = {}) {
-  const expected = new Set(STAGES.flatMap(stage => RATES.flatMap(hz => CLASSES.map(classId => `${stage}:${classId}:${hz}`))));
+function caseCoverageFailures(cases, fields = {}, stages = STAGES) {
+  validateStages(stages);
+  const expected = new Set(stages.flatMap(stage => RATES.flatMap(hz => CLASSES.map(classId => `${stage}:${classId}:${hz}`))));
   const seen = new Set(), failures = [];
   for (const entry of cases) {
     const key = `${entry.stage}:${entry.classId}:${entry.hz}`;
@@ -84,4 +116,4 @@ function createReportWriter(input, output, repo) {
   };
 }
 
-module.exports = { STAGES, CLASSES, RATES, validateCandidate, caseCoverageFailures, createReportWriter };
+module.exports = { STAGES, CLASSES, RATES, validateStages, parseVerifierArguments, validateCandidate, caseCoverageFailures, createReportWriter };

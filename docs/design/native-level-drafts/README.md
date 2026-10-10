@@ -2,6 +2,8 @@
 
 Frostarkivet, Tinesjakta and Den gløymde stasjonen now have authored native collision prototypes: 46 standing surfaces, seven ladders, two trials per room, rewards, seed reserves and cache/dig markers. The layouts follow the first three compositions in the newer [twenty-level concept board](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=746-117481), pinned to `b12d88a3ab2a6d39a5c2deda4ef51cb30e95a4c1`.
 
+[The second batch](../native-level-drafts-batch-02/README.md) adds concepts 4–6, bringing the six prototypes to 96 standing surfaces and 15 ladders. Each batch keeps its own source, compiled candidate and execution evidence.
+
 These are offline drafts. They have not been imported into Figma or promoted to production. Both Figma connections required reauthentication when this batch was prepared. The synthetic local compiler fixture is labeled explicitly and is not evidence of Figma synchronization. Production `levels-data.js` and every runtime PNG remain unchanged.
 
 [geometry.json](geometry.json) is the editable coordinate source. Positions are newly authored integer game pixels relative to the stage origin and soil line. The concept board's normalized entry/exit percentages are composition hints; they are not collision coordinates. [The route overview](route-overview.svg) shows the authored surfaces and ladders at native scale.

@@ -1,0 +1,626 @@
+{
+  "schema": 1,
+  "status": "offline-authored-native-geometry-not-imported-into-figma",
+  "live": false,
+  "seed": 1,
+  "source": {
+    "conceptFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "conceptNode": "746:117481",
+    "conceptCommit": "b12d88a3ab2a6d39a5c2deda4ef51cb30e95a4c1",
+    "runtimeBaseline": "97f3782dbf1fd7f56e7630ff9c39911978aae5cc",
+    "coordinateSpace": "Newly authored integer game-pixel offsets from each stage origin, with rises above its seed-1 soil line. Ledge x is its left edge; marker and ladder x is its centre. Normalized concept percentages are not collision coordinates.",
+    "limits": "Geometry prototypes only. No authenticated Figma capture, new runtime artwork, authored spawn override, terrain or water changes, or continuous-world connectors. Existing automatic expeditions and guardian furnishing remain runtime code. The pinned concept manifest marks 03-to-04 and 06-to-07 joins weak; no seamless boundary certification is implied.",
+    "conceptArtifacts": [
+      {
+        "stage": 4,
+        "path": "docs/design/seamless-progression-20/images/level-04.png",
+        "sha256": "5e9beb01d397815e5d209f9391771ddba4aeee174f8ecd795ceb0eb315069042",
+        "dimensions": [
+          1670,
+          942
+        ],
+        "selection": "adjoining-band-repair",
+        "figmaFrame": "746:117513",
+        "figmaImage": "782:13537"
+      },
+      {
+        "stage": 5,
+        "path": "docs/design/seamless-progression-20/images/level-05.png",
+        "sha256": "0a11b43ca185a4e3e95b47cf7e0bd7061ea7014f90ec5eee0895068354458646",
+        "dimensions": [
+          1669,
+          942
+        ],
+        "selection": "original-sequential-pass",
+        "figmaFrame": "746:117521",
+        "figmaImage": "782:13539"
+      },
+      {
+        "stage": 6,
+        "path": "docs/design/seamless-progression-20/images/level-06.png",
+        "sha256": "9ea2354925ccdd2df52ca50042c17f1f9284dc9d04fd23f853ab5c1025e548eb",
+        "dimensions": [
+          1670,
+          942
+        ],
+        "selection": "original-sequential-pass",
+        "figmaFrame": "746:117528",
+        "figmaImage": "782:13527"
+      }
+    ],
+    "figmaRepresentation": "Pinned historical composition previews for stages 4–6 are 384x216 JPEG fills, not native runtime PNG masters. Concept image references here bind full selected PNGs in the pinned Git commit."
+  },
+  "gardens": [
+    {
+      "stage": 4,
+      "title": "Rot- og beinbrotet",
+      "frame": "review-garden-04",
+      "intent": "A lower-right railway-salvage approach reaches the first excavation terrace. Uneven calcite/root switchbacks rise leftward across a continuous upper gallery. The western ladder also connects the lower excavation stairs to the high left terrace, giving both sides a supported descent toward the dry central entry. Inter-stage connectors are not authored here.",
+      "artReference": "Pinned concept selected adjoining-band-repair PNG images/level-04.png, 1670x942, SHA-256 5e9beb01d397815e5d209f9391771ddba4aeee174f8ecd795ceb0eb315069042. Existing native stone, ruin and root surfaces are geometry stand-ins; no calcite/fossil or salvage artwork is added or reassigned.",
+      "ledges": [
+        {
+          "x": -24,
+          "rise": 16,
+          "w": 48,
+          "style": "ruin"
+        },
+        {
+          "x": 32,
+          "rise": 32,
+          "w": 32,
+          "style": "ruin"
+        },
+        {
+          "x": 72,
+          "rise": 48,
+          "w": 32,
+          "style": "ruin"
+        },
+        {
+          "x": 112,
+          "rise": 64,
+          "w": 40,
+          "style": "ruin"
+        },
+        {
+          "x": -56,
+          "rise": 32,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": -88,
+          "rise": 48,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": -120,
+          "rise": 64,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": -160,
+          "rise": 80,
+          "w": 40,
+          "style": "stone"
+        },
+        {
+          "x": 96,
+          "rise": 144,
+          "w": 64,
+          "style": "ruin"
+        },
+        {
+          "x": 32,
+          "rise": 160,
+          "w": 56,
+          "style": "stone"
+        },
+        {
+          "x": -32,
+          "rise": 176,
+          "w": 56,
+          "style": "stone"
+        },
+        {
+          "x": -96,
+          "rise": 192,
+          "w": 56,
+          "style": "root"
+        },
+        {
+          "x": -160,
+          "rise": 208,
+          "w": 56,
+          "style": "root"
+        }
+      ],
+      "ladders": [
+        {
+          "x": 128,
+          "rise": 144,
+          "w": 14,
+          "h": 80
+        },
+        {
+          "x": -144,
+          "rise": 208,
+          "w": 14,
+          "h": 128
+        }
+      ],
+      "reward": [
+        {
+          "x": -136,
+          "rise": 208
+        },
+        {
+          "x": 128,
+          "rise": 144
+        }
+      ],
+      "seed": [
+        {
+          "x": -72,
+          "rise": 192
+        }
+      ],
+      "trial": [
+        {
+          "x": -104,
+          "rise": 64
+        },
+        {
+          "x": 88,
+          "rise": 48
+        }
+      ],
+      "bonus": [
+        {
+          "x": -8,
+          "rise": 176
+        }
+      ],
+      "puzzle": [
+        {
+          "x": 128,
+          "rise": 64
+        }
+      ],
+      "door": [
+        {
+          "x": -128,
+          "rise": 208
+        }
+      ],
+      "dig": [
+        {
+          "x": 8,
+          "rise": 0
+        }
+      ],
+      "secret": [
+        {
+          "x": 64,
+          "rise": 160
+        }
+      ],
+      "start": [
+        {
+          "x": 0,
+          "rise": 0
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "title": "Leviatanen",
+      "frame": "review-garden-05",
+      "intent": "Three uneven connected paths interpret the skeleton: lower foot approaches, a middle spine gallery and an ascending upper rib gallery ending at the high right skull chamber. Two horizontally offset pairs of supported maintenance ladders link the bands at their western and eastern ends; the offset keeps normal up-input from reselecting the lower ladder at a shared landing. Elevated western ribs clear the existing native pond; start, dig and soil-return targets stay in the dry central area.",
+      "artReference": "Pinned concept original sequential PNG images/level-05.png, 1669x942, SHA-256 0a11b43ca185a4e3e95b47cf7e0bd7061ea7014f90ec5eee0895068354458646. Existing native stone/root surfaces provide prototype standing geometry. Existing fossil scenery remains at its established runtime stages; the new leviathan skeleton, ribs and eye-chamber artwork still require Figma authoring.",
+      "ledges": [
+        {
+          "x": -24,
+          "rise": 16,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": -56,
+          "rise": 32,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": -88,
+          "rise": 48,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": -128,
+          "rise": 64,
+          "w": 32,
+          "style": "stone"
+        },
+        {
+          "x": -176,
+          "rise": 80,
+          "w": 40,
+          "style": "root"
+        },
+        {
+          "x": 32,
+          "rise": 32,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": 64,
+          "rise": 48,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": 96,
+          "rise": 64,
+          "w": 24,
+          "style": "stone"
+        },
+        {
+          "x": 128,
+          "rise": 80,
+          "w": 56,
+          "style": "root"
+        },
+        {
+          "x": -168,
+          "rise": 144,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": -112,
+          "rise": 144,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": -56,
+          "rise": 144,
+          "w": 48,
+          "style": "root"
+        },
+        {
+          "x": 0,
+          "rise": 160,
+          "w": 48,
+          "style": "root"
+        },
+        {
+          "x": 56,
+          "rise": 160,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": 112,
+          "rise": 160,
+          "w": 64,
+          "style": "stone"
+        },
+        {
+          "x": -168,
+          "rise": 224,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": -112,
+          "rise": 224,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": -56,
+          "rise": 240,
+          "w": 48,
+          "style": "root"
+        },
+        {
+          "x": 0,
+          "rise": 256,
+          "w": 48,
+          "style": "root"
+        },
+        {
+          "x": 56,
+          "rise": 272,
+          "w": 48,
+          "style": "stone"
+        },
+        {
+          "x": 112,
+          "rise": 272,
+          "w": 72,
+          "style": "stone"
+        }
+      ],
+      "ladders": [
+        {
+          "x": -144,
+          "rise": 144,
+          "w": 14,
+          "h": 64
+        },
+        {
+          "x": 144,
+          "rise": 160,
+          "w": 14,
+          "h": 80
+        },
+        {
+          "x": -128,
+          "rise": 224,
+          "w": 14,
+          "h": 80
+        },
+        {
+          "x": 160,
+          "rise": 272,
+          "w": 14,
+          "h": 112
+        }
+      ],
+      "reward": [
+        {
+          "x": -144,
+          "rise": 224
+        },
+        {
+          "x": 160,
+          "rise": 272
+        }
+      ],
+      "seed": [
+        {
+          "x": 24,
+          "rise": 256
+        }
+      ],
+      "trial": [
+        {
+          "x": -112,
+          "rise": 64
+        },
+        {
+          "x": 144,
+          "rise": 80
+        }
+      ],
+      "bonus": [
+        {
+          "x": -32,
+          "rise": 144
+        },
+        {
+          "x": 80,
+          "rise": 160
+        }
+      ],
+      "puzzle": [
+        {
+          "x": -88,
+          "rise": 224
+        }
+      ],
+      "door": [
+        {
+          "x": 160,
+          "rise": 272
+        }
+      ],
+      "dig": [
+        {
+          "x": 8,
+          "rise": 0
+        }
+      ],
+      "secret": [
+        {
+          "x": 80,
+          "rise": 272
+        }
+      ],
+      "start": [
+        {
+          "x": 0,
+          "rise": 0
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "title": "Sopphvelvet",
+      "frame": "review-garden-06",
+      "intent": "Asymmetric broad cap landings span the cavern. A lower-right approach and ladder reach the eastern cap; a stepped high gallery winds toward the taller western cap and its separate supported rope-ladder descent. The narrow intermediate landings leave space between the broad islands. Existing terrain and water are retained; the concept pools, fungi and vaulted cave are visual references awaiting authored art.",
+      "artReference": "Pinned concept original sequential PNG images/level-06.png, 1670x942, SHA-256 9ea2354925ccdd2df52ca50042c17f1f9284dc9d04fd23f853ab5c1025e548eb. Existing native root, branch and stone surfaces are prototype cap landings. Existing Garden 7 fungal scenery remains unchanged; no mushroom PNG master or new pool geometry is introduced.",
+      "ledges": [
+        {
+          "x": -24,
+          "rise": 16,
+          "w": 48,
+          "style": "root"
+        },
+        {
+          "x": 32,
+          "rise": 32,
+          "w": 32,
+          "style": "root"
+        },
+        {
+          "x": 72,
+          "rise": 48,
+          "w": 32,
+          "style": "root"
+        },
+        {
+          "x": 112,
+          "rise": 64,
+          "w": 32,
+          "style": "root"
+        },
+        {
+          "x": 128,
+          "rise": 80,
+          "w": 64,
+          "style": "branch"
+        },
+        {
+          "x": -56,
+          "rise": 32,
+          "w": 24,
+          "style": "root"
+        },
+        {
+          "x": -88,
+          "rise": 48,
+          "w": 24,
+          "style": "root"
+        },
+        {
+          "x": -120,
+          "rise": 64,
+          "w": 24,
+          "style": "root"
+        },
+        {
+          "x": -152,
+          "rise": 80,
+          "w": 24,
+          "style": "root"
+        },
+        {
+          "x": -184,
+          "rise": 96,
+          "w": 64,
+          "style": "branch"
+        },
+        {
+          "x": 128,
+          "rise": 176,
+          "w": 64,
+          "style": "branch"
+        },
+        {
+          "x": 48,
+          "rise": 176,
+          "w": 72,
+          "style": "branch"
+        },
+        {
+          "x": 0,
+          "rise": 192,
+          "w": 40,
+          "style": "root"
+        },
+        {
+          "x": -72,
+          "rise": 208,
+          "w": 64,
+          "style": "branch"
+        },
+        {
+          "x": -152,
+          "rise": 224,
+          "w": 72,
+          "style": "branch"
+        },
+        {
+          "x": -208,
+          "rise": 224,
+          "w": 48,
+          "style": "root"
+        }
+      ],
+      "ladders": [
+        {
+          "x": 160,
+          "rise": 176,
+          "w": 14,
+          "h": 96
+        },
+        {
+          "x": -176,
+          "rise": 224,
+          "w": 14,
+          "h": 128
+        }
+      ],
+      "reward": [
+        {
+          "x": -184,
+          "rise": 224
+        },
+        {
+          "x": 160,
+          "rise": 176
+        }
+      ],
+      "seed": [
+        {
+          "x": -40,
+          "rise": 208
+        }
+      ],
+      "trial": [
+        {
+          "x": -108,
+          "rise": 64
+        },
+        {
+          "x": 88,
+          "rise": 48
+        }
+      ],
+      "bonus": [
+        {
+          "x": 16,
+          "rise": 192
+        }
+      ],
+      "puzzle": [
+        {
+          "x": 160,
+          "rise": 80
+        }
+      ],
+      "door": [
+        {
+          "x": -184,
+          "rise": 224
+        }
+      ],
+      "dig": [
+        {
+          "x": 8,
+          "rise": 0
+        }
+      ],
+      "secret": [
+        {
+          "x": 72,
+          "rise": 176
+        }
+      ],
+      "start": [
+        {
+          "x": 0,
+          "rise": 0
+        }
+      ]
+    }
+  ]
+}
