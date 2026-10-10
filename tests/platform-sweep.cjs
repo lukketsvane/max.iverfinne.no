@@ -72,7 +72,8 @@ function walkRoutes(g, layout, hz, label) {
 }
 
 function sweepSeeds(from, to) {
-  const { game: g } = require('./game-harness.cjs').loadGame();
+  // This matrix verifies the seeded terrace generator independently of authored levels.
+  const { game: g } = require('./game-harness.cjs').loadGame({ __levelData: { gardens: {} } });
   for (let i = from; i < to; i++) {
     g.resetRogueRun('test'); g.rogueRun.seed = Math.imul(i + 1, 2654435761) >>> 0;
     for (let stage = 1; stage <= 19; stage++) { if (stage > 1) g.enterLevel(stage); walkRoutes(g, g.stageLayout(), [30, 60, 120][i % 3], 'seed ' + g.rogueRun.seed); }

@@ -19,10 +19,21 @@ The historical prototype contributed original editable scenery; the active runti
 node docs/design/master-levels/art/compile-runtime.cjs \
   --geometry docs/design/master-levels/art/hollow-master-geometry-actual.json \
   --art docs/design/master-levels/art/hollow-tree-actual-chunks \
-  --out docs/design/master-levels/art/hollow-tree-actual
+  --out docs/design/master-levels/art/hollow-tree-review-new
 ```
 
-The optional explicit `--activate` flag writes the compiled stage and scene data to the local runtime source. Deployment and production verification are separate release steps.
+Choose an unused output directory whose parent already exists inside
+`master-levels/art`. Existing captures and review bundles are never overwritten;
+linked directories and linked or multiple-link source files are refused. Review
+files are staged together and become visible only after complete publication.
+
+The optional explicit `--activate` flag stages the geometry and native scene data
+before replacing the local runtime pair. A failed install or review publication
+rolls back the targets this invocation replaced; concurrent edits are preserved.
+If rollback itself fails, original-byte backups are retained for recovery.
+Unchanged stages retain their
+geometry and bound native artwork when another stage is imported. Deployment and
+production verification are separate release steps.
 
 `level-scenes.js` draws two phases at integer world positions using native 1× transient canvas caches. The editable ordered primitives remain the source; no scene PNG is created. The Sanctuary crops reuse the already loaded `TILES.img`. Drawing restores the caller's canvas state. A layout must carry the exact compiled `masterSceneSourceKey`; mismatched stages, frames or previous source versions cannot activate the scene. Picture stages 1–2 also require `replacePicture`.
 

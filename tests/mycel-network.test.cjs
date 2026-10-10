@@ -4,11 +4,11 @@ const {loadGame,plot}=require('./game-harness.cjs');
 const ids=[1,2,3].map(i=>`${i}`.repeat(8)+'-'+`${i}`.repeat(4)+'-4'+`${i}`.repeat(3)+'-8'+`${i}`.repeat(3)+'-'+`${i}`.repeat(12));
 const clone=o=>JSON.parse(JSON.stringify(o));
 function close(a,b,label='value'){assert.ok(Math.abs(a-b)<1e-6,`${label}: ${a} != ${b}`);}
-function party(count=2,mode='garden'){
+function party(count=2,mode='garden',originX=200){
   const classes=count===3?['polge','runner','herbalist']:['polge','herbalist'],room={id:'room',host:ids[0],mode,members:ids.slice(0,count).map((id,i)=>({id,slot:i+1,ready:true}))},loadouts=Object.fromEntries(room.members.map((m,i)=>[m.id,{classId:classes[i],skinId:classes[i]==='herbalist'?'moon':classes[i]==='runner'?'moss-pink':'hoss'}]));
   const peers=room.members.map(({id})=>{const h=loadGame(),pending=[];let seq=0;h.game.beginCoop({room,loadouts,user:{id},host:id===ids[0],action(type,data){pending.push({id:++seq,type,...data});return true;},tick(){}});return {...h,pending};}),host=peers[0].game,index=count-1,guest=peers[index].game,member=host.coop.members[ids[index]];
   function clear(g){const layout=g.stageLayout();layout.platforms=[];layout.ladders=[];layout.hazards=[];}
-  host.floatKrek=[];host.gardenPlots=[];host.runHazards=[];clear(host);Object.values(host.coop.members).forEach(m=>Object.assign(m.avatar,{x:200+(m.slot-1)*12,y:host.surfaceY(200+(m.slot-1)*12),st:'free',grounded:true,wet:false,vx:0,vy:0,pounce:0,face:1}));Object.assign(host.P,host.coop.members[ids[0]].avatar);
+  host.floatKrek=[];host.gardenPlots=[];host.runHazards=[];clear(host);Object.values(host.coop.members).forEach(m=>Object.assign(m.avatar,{x:originX+(m.slot-1)*12,y:host.surfaceY(originX+(m.slot-1)*12),st:'free',grounded:true,wet:false,vx:0,vy:0,pounce:0,face:1}));Object.assign(host.P,host.coop.members[ids[0]].avatar);
   function sync(){const s=clone(host.coopCapture());peers.slice(1).forEach(h=>{h.game.coopState(s);clear(h.game);});return s;}
   sync();peers.slice(1).forEach((h,i)=>Object.assign(h.game.P,host.coop.members[ids[i+1]].avatar));
   function send(actions=peers[index].pending,avatar=guest.coopAvatar()){host.coopInput(member.id,{avatar,actions});}
@@ -55,7 +55,10 @@ test('future input uses host receipt even on rejected poses, never backdates the
 });
 
 test('first real canonical support landing waters once, while a rejected pose crossing consumes the lease without any water',()=>{
-  for(const rejected of [false,true]){const f=party(),{host,member,motion,send}=f,d=startDrift(f),p=plot({id:77,x:d.originX+40,health:.5,moisture:.2});host.gardenPlots=[p];
+  // Keep the complete Drift path on the real court, away from its entrance.
+  for(const rejected of [false,true]){const f=party(2,'garden',100),{host,member,motion,send}=f;
+    assert.equal(host.surfaceY(member.avatar.x+48),member.avatar.y,'the landing fixture has continuous court support');
+    const d=startDrift(f),p=plot({id:77,x:d.originX+40,health:.5,moisture:.2});host.gardenPlots=[p];
     for(let i=0;i<12&&!d.landingConsumed;i++)motion(.04,rejected?{x:99999}:{} ,!rejected);assert.equal(member.avatar.grounded,true);assert.equal(d.seenAir,1);assert.equal(d.landingConsumed,1);close(p.moisture,rejected?.2:.24);close(p.health,.5);const water=p.moisture;send([],{...member.avatar,grounded:true});assert.equal(p.moisture,water);assert.equal(host.mycelState(member).culture,0);
   }
 });

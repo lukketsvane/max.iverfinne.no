@@ -69,7 +69,8 @@ function explore(g, layout, classId = 'bulwark', limit = layout.art ? 12000 : 30
 }
 
 function sweepPlaces(stages) {
-  const assert = require('node:assert/strict'), g = require('./game-harness.cjs').loadGame().game;
+  // These caches and crossing bounds belong to the procedural place generator.
+  const assert = require('node:assert/strict'), g = require('./game-harness.cjs').loadGame({ __levelData: { gardens: {} } }).game;
   for (const stage of stages) {
     g.resetRogueRun('test', { classId: 'bulwark' }); g.rogueRun.seed = 1;
     if (stage > 1) g.enterLevel(stage); g.activeStageLayout = null;

@@ -109,10 +109,25 @@ test('tree entrance artifacts reproduce an explicitly offline editable source an
   await assert.rejects(importDrafts({ editorType: 'figma', fileKey: 'wrong-file' }, snapshot), /configured.*Figma file/);
 });
 
-test('offline tree study retains production levels, original picture and approved native source bytes', () => {
+test('offline tree study retains its frozen production baseline evidence and approved native source bytes', () => {
   const root = path.join(__dirname, '..');
+  // The study predates the authorized MASTER replacement. Its receipts bind
+  // the old served bytes; current levels-data.js belongs to the active source.
+  const historicalLevelsSHA = 'c69e217a32512a868efc7222a34529cc1f5ddc62c8fe5c6558068a1708595b0d',
+    manifestFile = 'evidence/capture-manifest.json', manifest = json(manifestFile);
+  assert.equal(sha(read(manifestFile)), '1941e6c087a56c83a8117f6cdd402c642bb38b0b5723ab9a12614d30d719b0c0',
+    'the historical capture manifest remains immutable');
+  for (const file of ['baseline-seed-vault/baseline-report.json', 'browser-review.json']) {
+    assert.equal(sha(read('evidence/' + file)), manifest.filesSHA256[file],
+      'the historical manifest binds the complete receipt: ' + file);
+    const receipt = json('evidence/' + file);
+    assert.equal(receipt.baselineSHA256['/levels-data.js'], historicalLevelsSHA,
+      'the original capture used the preserved main baseline');
+    assert.equal(receipt.servedOriginalFilesSHA256['/levels-data.js'], historicalLevelsSHA,
+      'the offline observer preserved its original served level bytes');
+    assert.equal(receipt.builtInputsUnchanged, true);
+  }
   for (const [file, expected] of [
-    ['levels-data.js', 'c69e217a32512a868efc7222a34529cc1f5ddc62c8fe5c6558068a1708595b0d'],
     ['assets/tiles-v1/sanctuary.png', '2dab27519a47db0d037ea89aa3a7b0aca12a96df2a4971b042e0708ebc6c21ef'],
     ['assets/levels-v1/seed-vault.png', '6c05f0ebbd28dbf23c9a23ba484bff7273f314768acebb74ffc6cf7138ecd63f']
   ]) assert.equal(sha(fs.readFileSync(path.join(root, file))), expected, file + ' retains main 8c9dadb bytes');
