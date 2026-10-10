@@ -17,6 +17,8 @@
 <script src="high-tide-map.js"></script>
 <script src="levels-data.js"></script>
 <script src="levels.js"></script>
+<script src="level-scenes-data.js"></script>
+<script src="level-scenes.js"></script>
 <script src="native-art.js"></script>
 <link rel="stylesheet" href="game-menu.css">
 <script src="game-menu.js" defer></script>
@@ -234,6 +236,10 @@ function activePondLayout() {
   var L = activeStageLayout;
   return L && L.ponds && L.ponds.length && !isolatedRelicMode() && L.stage === worldLevel() && L.seed === rogueRun.seed && L.authoredPondSource === window.MaxLevels.pick(L.stage, rogueRun.seed) ? L : null;
 }
+function activeTerrainLayout() {
+  var L=activeStageLayout;
+  return L&&L.terrain&&L.terrain.length&&!isolatedRelicMode()&&L.stage===worldLevel()&&L.seed===rogueRun.seed&&L.authoredTerrainSource===window.MaxLevels.pick(L.stage,rogueRun.seed)?L:null;
+}
 function pondIsCurrent(p) {
   if (!p) return false;
   var L = activePondLayout();
@@ -253,6 +259,8 @@ function pondNear(x) {
 function waterAt(x) { if(isolatedRelicMode())return null; var p = pondNear(x); return (p && Math.abs(x - p.cx) < p.hw) ? p : null; }
 function surfaceY(x) {
   if(isolatedRelicMode()&&rogueRun.survival)return rogueRun.survival.base;
+  var authored=activeTerrainLayout();
+  if(authored)return window.MaxLevels.surfaceAt(authored,x,terrainY);
   var pg = activeStageLayout && activeStageLayout.ground;
   if (pg && x > pg.x0 - 24 && x < pg.x1 + 24) {
     var t = x < pg.x0 ? (pg.x0 - x) / 24 : x > pg.x1 ? (x - pg.x1) / 24 : 0;
@@ -299,11 +307,13 @@ function pictureLava(){
 function stageLayout(){
   if(nightRelayMode())return nightRelayLayout();
   if(highTideMode())return highTideLayout();
-  var level=worldLevel(),garden=window.MaxLevels.pick(level,rogueRun.seed),authoredWater=garden&&garden.ponds&&garden.ponds.length;
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed||((authoredWater||activeStageLayout.ponds&&activeStageLayout.ponds.length)&&activeStageLayout.authoredPondSource!==garden)){
+  var level=worldLevel(),garden=window.MaxLevels.pick(level,rogueRun.seed),authoredWater=garden&&garden.ponds&&garden.ponds.length,authoredTerrain=garden&&garden.terrain&&garden.terrain.length,authoredScene=garden&&garden.masterSceneSourceKey;
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed||((authoredWater||activeStageLayout.ponds&&activeStageLayout.ponds.length)&&activeStageLayout.authoredPondSource!==garden)||((authoredTerrain||activeStageLayout.terrain&&activeStageLayout.terrain.length)&&activeStageLayout.authoredTerrainSource!==garden)||((authoredScene||activeStageLayout.masterSceneSourceKey)&&activeStageLayout.authoredSceneSource!==garden)){
     activeStageLayout=null;
     activeStageLayout=(level<=2&&!(garden&&garden.replacePicture)&&pictureLayout(level))||(garden&&window.MaxLevels.build(garden,level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed,{baseGround:baseSurfaceY,pondNear:naturalPondNear}))||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
     if(authoredWater)Object.defineProperty(activeStageLayout,'authoredPondSource',{value:garden});
+    if(authoredTerrain)Object.defineProperty(activeStageLayout,'authoredTerrainSource',{value:garden});
+    if(authoredScene)Object.defineProperty(activeStageLayout,'authoredSceneSource',{value:garden});
     if(activeStageLayout.designed&&activeStageLayout.furnishPlace)window.MaxPlaces.furnish(activeStageLayout,surfaceY,waterAt);
   }
   window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
@@ -312,10 +322,12 @@ function stageLayout(){
   return activeStageLayout;
 }
 function playerSupportId(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.id:null;}
-function playerSupportY(x,y){var p=window.MaxStageLayout.at(stageLayout(),x,y,4);return p?p.y:highTideMode()?rogueRun.survival.base+110:surfaceY(x);}
+function bodyFloorY(x,y){return window.MaxLevels.floorAt(activeTerrainLayout(),x,y,surfaceY);}
+function playerSupportY(x,y){var L=stageLayout(),p=window.MaxStageLayout.at(L,x,y,4);return p?p.y:highTideMode()?rogueRun.survival.base+110:window.MaxLevels.floorAt(activeTerrainLayout(),x,y,surfaceY);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
 var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
-function drawPlatforms(t){var L=stageLayout(),a=L.art;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,L,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
+function drawPlatforms(t){var L=stageLayout(),a=L.art,presentation=!isolatedRelicMode()&&window.MaxLevelScenes?window.MaxLevelScenes.presentation(L,surfaceY):L;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,presentation,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
+function drawLevelScene(layer){if(!isolatedRelicMode()&&window.MaxLevelScenes)window.MaxLevelScenes.draw(ctx,stageLayout(),camX,camY,IW,IH,surfaceY,layer,TILES);}
 function drawLadders(L){
   (L.ladders||[]).forEach(function(q){if(q.art)return;var x=Math.round(q.x-camX),top=Math.round(q.top-camY),bottom=Math.round(q.bottom-camY),w=Math.min(7,Math.round((q.w||14)/2));if(x+w<0||x-w>IW||bottom<0||top>IH)return;
     rect(x-w,top,2,bottom-top,'#665239');rect(x+w-1,top,2,bottom-top,'#665239');
@@ -350,7 +362,7 @@ function updateLadder(dt,inp){
   var dir=ladderInput();P.x=q.x;P.vx=0;P.vy=dir*48;P.y=Math.max(q.top,Math.min(q.bottom,P.y+P.vy*dt));P.grounded=false;P.coyote=0;gardenPress=false;jumpBuf=0;
   if(dir&&((dir<0&&P.y<=q.top)||(dir>0&&P.y>=q.bottom))){
     var y=P.y;leaveLadder(false,0);P.ladderRegrab=0;P.y=y;var support=window.MaxStageLayout.at(stageLayout(),P.x,y,4);
-    if(support||Math.abs(y-surfaceY(P.x))<5){P.grounded=true;P.platform=support?support.id:null;P.coyote=.1;P.vy=0;P.crouchGardenLatch=true;setAnim('idle');}
+    if(support||Math.abs(y-window.MaxLevels.floorAt(activeTerrainLayout(),P.x,y,surfaceY))<5){P.grounded=true;P.platform=support?support.id:null;P.coyote=.1;P.vy=0;P.crouchGardenLatch=true;setAnim('idle');}
     return;
   }
   setAnim('climb');
@@ -904,7 +916,7 @@ function physics(dt, inp) {
   if(layout.hazards&&layout.hazards.length)pictureLava();
   if(rock){P.x=rock.x;P.y=rock.y;if(rock.wall)P.vx=0;if(rock.ceil&&P.vy<0)P.vy=0;if(runner&&rock.top)P.platform=rock.top;}
 
-  var g = highTideMode()?rogueRun.survival.base+110:surfaceY(P.x),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
+  var g = highTideMode()?rogueRun.survival.base+110:window.MaxLevels.floorAt(activeTerrainLayout(),P.x,P.y,surfaceY),landing=P.vy>=0?window.MaxStageLayout.landing(layout,oldX,oldY,P.x,P.y):null;
   if(runner&&rock&&rock.top){var rockSupport=window.MaxStageLayout.support(layout,rock.top,P.x);if(rockSupport)g=Math.min(g,rockSupport.y);}
   if(landing&&landing.y<g){g=landing.y;P.platform=landing.id;}
   else if(P.platform&&P.grounded){
@@ -952,7 +964,7 @@ function mycelLaunchPose(actor,drift){
 function mycelPhysicsPose(actor){return {x:actor.x,y:actor.y,vx:actor.vx||0,vy:actor.vy||0,grounded:!!actor.grounded,platform:actor.platform||null,st:actor.st||'free',airJumpUsed:!!actor.airJumpUsed,coyote:actor.coyote||0,held:!!actor.held};}
 function mycelPhysicsScene(member){
   var relay=nightRelayMode(),tide=highTideMode(),survival=rogueRun.survival,layout=stageLayout(),tideFloor=tide?survival.base+110:0;
-  return {world:worldLevel(),layout:layout,floorAt:function(x){return tide?tideFloor:surfaceY(x);},wet:function(a){return mycelWetBody(a,member);},
+  return {world:worldLevel(),layout:layout,floorAt:function(x,y){return tide?tideFloor:window.MaxLevels.floorAt(activeTerrainLayout(),x,y,surfaceY);},wet:function(a){return mycelWetBody(a,member);},
     relayMin:relay?-35:null,relayMax:relay?(survival.stage<3?RELAY_LOCKS[survival.stage].x-5:NIGHT_RELAY.end):null,
     springAt:function(x,y){return window.MaxPlaces.bloomAt(layout,x,y);},springVelocity:window.MaxPlaces.bloom.v,canSpring:!seedHeld()};
 }
@@ -961,7 +973,7 @@ function mycelProjectStep(before,proposed,context){
   if(after.platform&&!platform&&after.grounded){after.grounded=false;after.platform=null;after.coyote=.1;}
   rock=window.MaxStageLayout.solid(layout,before.x,before.y,after.x,after.y);
   if(rock){after.x=rock.x;after.y=rock.y;if(rock.wall)after.vx=0;if(rock.ceil&&after.vy<0)after.vy=0;if(rock.top)after.platform=rock.top;}
-  var floor=scene.floorAt(after.x),support=rock&&rock.top&&window.MaxStageLayout.support(layout,rock.top,after.x),crossed=after.vy>=0?window.MaxStageLayout.landing(layout,before.x,before.y,after.x,after.y):null;
+  var floor=scene.floorAt(after.x,after.y),support=rock&&rock.top&&window.MaxStageLayout.support(layout,rock.top,after.x),crossed=after.vy>=0?window.MaxStageLayout.landing(layout,before.x,before.y,after.x,after.y):null;
   if(support)floor=Math.min(floor,support.y);
   if(crossed&&crossed.y<floor){floor=crossed.y;after.platform=crossed.id;}
   else if(after.platform&&after.grounded){platform=window.MaxStageLayout.support(layout,after.platform,after.x);if(platform)floor=platform.y;else{after.platform=null;after.grounded=false;after.coyote=.1;}}
@@ -977,10 +989,10 @@ function mycelProjectStep(before,proposed,context){
   function legal(p){return !(layout.platforms||[]).some(function(q){return q.solid&&p.x+4>q.x+1e-7&&p.x-4<q.x+q.w-1e-7&&p.y>q.y+1e-7&&p.y-18<q.y+q.h-1e-7;})&&!(scene.relayMin!=null&&(p.x<scene.relayMin-1e-7||p.x>scene.relayMax+1e-7));}
   if(Number.isFinite(limit)&&(path>limit+1e-9||!legal(after))){
     var lo=0,hi=1,accepted={x:before.x,y:before.y},final=after;
-    function point(t){var p={x:before.x+(final.x-before.x)*t,y:before.y+(final.y-before.y)*t};if(before.grounded&&final.grounded&&(before.platform||null)===(final.platform||null)){var s=final.platform&&window.MaxStageLayout.support(layout,final.platform,p.x);p.y=s?s.y:scene.floorAt(p.x);}return p;}
+    function point(t){var p={x:before.x+(final.x-before.x)*t,y:before.y+(final.y-before.y)*t};if(before.grounded&&final.grounded&&(before.platform||null)===(final.platform||null)){var s=final.platform&&window.MaxStageLayout.support(layout,final.platform,p.x);p.y=s?s.y:scene.floorAt(p.x,p.y);}return p;}
     for(var n=0;n<32;n++){var mid=(lo+hi)/2,p=point(mid);if(Math.hypot(p.x-before.x,p.y-before.y)<=limit+1e-9&&legal(p)){lo=mid;accepted=p;}else hi=mid;}
     if(!legal(accepted))return {valid:false,after:mycelPhysicsPose(before),path:0,landing:null,spring:null,blocked:true,wet:!!scene.wet(before)};
-    after.x=accepted.x;after.y=accepted.y;var actual=window.MaxStageLayout.at(layout,after.x,after.y,1e-7),g=scene.floorAt(after.x);
+    after.x=accepted.x;after.y=accepted.y;var actual=window.MaxStageLayout.at(layout,after.x,after.y,1e-7),g=scene.floorAt(after.x,after.y);
     after.grounded=!!actual||Math.abs(after.y-g)<1e-7;after.platform=actual?actual.id:null;if(after.grounded)after.vy=0;
     if(after.vx)after.vx=(after.x-before.x)/context.dt;
     landing=!before.grounded&&after.grounded&&after.y>=before.y-1e-7?{id:after.platform||'ground',y:after.y,impact:impact}:null;
@@ -2708,7 +2720,7 @@ function rattusBoundMovement(before,motion,dt){
   function within(p){return Math.hypot(p.x-before.x,p.y-before.y)<=limit+1e-9;}
   var finalPoint={x:finalX,y:finalY};if(within(finalPoint)&&legal(finalPoint))return;
   function point(t){if(!t)return {x:before.x,y:before.y};var x=before.x+(finalX-before.x)*t,y=before.y+(finalY-before.y)*t;
-    if(before.grounded&&grounded&&(before.platform||null)===(platformId||null)){var support=platformId&&window.MaxStageLayout.support(layout,platformId,x);y=support?support.y:highTideMode()?rogueRun.survival.base+110:surfaceY(x);}
+    if(before.grounded&&grounded&&(before.platform||null)===(platformId||null)){var support=platformId&&window.MaxStageLayout.support(layout,platformId,x);y=support?support.y:highTideMode()?rogueRun.survival.base+110:window.MaxLevels.floorAt(activeTerrainLayout(),x,y,surfaceY);}
     return {x:x,y:y};}
   var accepted={x:before.x,y:before.y};
   for(var n=0;n<32;n++){var mid=(lo+hi)/2,p=point(mid);if(within(p)&&legal(p)){lo=mid;accepted=p;}else hi=mid;}
@@ -2716,7 +2728,7 @@ function rattusBoundMovement(before,motion,dt){
   if(grounded&&platformId&&platformId!==before.platform&&finalY<before.y){var rise=Math.min(limit,before.y-finalY),stepPoint={x:before.x,y:before.y-rise};if(legal(stepPoint)&&within(stepPoint)&&Math.hypot(stepPoint.x-before.x,stepPoint.y-before.y)>Math.hypot(accepted.x-before.x,accepted.y-before.y))accepted=stepPoint;}
   if(!within(accepted)||!legal(accepted))accepted={x:before.x,y:before.y};
   P.x=accepted.x;P.y=accepted.y;
-  var support=window.MaxStageLayout.at(layout,P.x,P.y,1e-7),floor=highTideMode()?rogueRun.survival.base+110:surfaceY(P.x);
+  var support=window.MaxStageLayout.at(layout,P.x,P.y,1e-7),floor=highTideMode()?rogueRun.survival.base+110:window.MaxLevels.floorAt(activeTerrainLayout(),P.x,P.y,surfaceY);
   P.grounded=!!support||Math.abs(P.y-floor)<1e-7;P.platform=support?support.id:null;
   if(motion.overrideX&&P.vx)P.vx=(P.x-before.x)/dt;
   if(motion.overrideY)P.vy=P.grounded?0:(P.y-before.y)/dt;
@@ -3555,7 +3567,7 @@ function updateSeedPickups(dt){
     var q=seedPickups[i],collector=P,collectorPerks=rogueRun.perks;
     if(coop&&coop.host)coopMembers().forEach(function(m){if(m.id!==coop.me&&Math.hypot(m.avatar.x-q.x,m.avatar.y-6-q.y)<Math.hypot(collector.x-q.x,collector.y-6-q.y)){collector=m.avatar;collectorPerks=m.perks;}});
     magnet=10+(collectorPerks.magnet||0)*12;
-    if(q.fall){q.vy+=58*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.94,dt*60);var g=surfaceY(q.x)-2;if(q.y>=g){q.y=g;q.vy=0;q.vx=0;q.fall=false;}}
+    if(q.fall){q.vy+=58*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=Math.pow(.94,dt*60);var g=bodyFloorY(q.x,q.y+2)-2;if(q.y>=g){q.y=g;q.vy=0;q.vx=0;q.fall=false;}}
     if(magnet>10&&Math.hypot(q.x-collector.x,q.y-(collector.y-6))<magnet){q.x+=(collector.x-q.x)*Math.min(1,dt*(2+(collectorPerks.magnet||0)*1.2));q.y+=(collector.y-6-q.y)*Math.min(1,dt*2.2);}
     if(Math.abs(q.x-collector.x)<(q.sky?12:7)&&Math.abs(q.y-(collector.y-6))<(q.sky?24:18)){
       if(coopGuest()){
@@ -4145,6 +4157,7 @@ function enterLevel(n,ascenderId,physicalAscent){
   climb=null;climbGoal=null;task=null;holdWater=null;crows.length=0;
   rogueRun.ascenderId=typeof ascenderId==='string'?ascenderId:'';
   var x=levelOriginX(n),ownAscended=!!ascenderId&&(!coop||ascenderId===coop.me),ownSlot=coop&&coop.members[coop.me]?coop.members[coop.me].slot:1,ownX=x+(ownSlot-1)*12;
+  var entryGarden=window.MaxLevels.pick(n,rogueRun.seed);if(entryGarden&&entryGarden.terrain&&entryGarden.terrain.length)stageLayout();
   P.x=ownX;P.vx=0;P.vy=0;P.airJumpUsed=false;P.coyote=0;P.face=1;P.wet=false;P.platform=null;P.climbRegrab=0;P.climbIgnoreId=null;
   if(ownAscended){P.y=surfaceY(ownX);P.grounded=true;P.st='free';setAnim('idle');worldBanner=4;}
   else{P.y=surfaceY(ownX)-80;P.grounded=false;P.st='float';setAnim('hang');}
@@ -5179,7 +5192,7 @@ function stepBombs(dt) {
       if(b.st==='drop'){
         var oldY=b.y;b.vy+=BOMB_G*dt;b.y+=b.vy*dt;
         var landing=window.MaxStageLayout.landing(stageLayout(),b.x,oldY+2,b.x,b.y+2);
-        var floor=landing?landing.y:surfaceY(b.x);
+        var floor=landing?landing.y:bodyFloorY(b.x,b.y+2);
         if(b.y+2>=floor){b.y=floor-2;b.supportY=floor;b.st='planted';b.vy=0;}
       }
       w=waterAt(b.x);if(w&&b.y>=w.level-2){b.st='water';b.y=w.level-1;}
@@ -5189,7 +5202,7 @@ function stepBombs(dt) {
       w = waterAt(b.x);
       if (w && b.y >= w.level) { b.st = 'water'; b.y = w.level; b.vx *= 0.25; b.vy = 0; ripple(b.x, w.level, 'splash'); }
       else {
-        var g = surfaceY(b.x) - 2;
+        var g = bodyFloorY(b.x,b.y+2) - 2;
         if (b.t > 0.03 && window.MaxStageLayout.inRock(stageLayout(), b.x, b.y)) { explode(b.x, b.y, false, b.perks||(b.sligo?{sligo:true}:undefined),b); bombs.splice(i, 1); continue; }
         if (b.y >= g) {
           b.y = g;
@@ -5201,7 +5214,7 @@ function stepBombs(dt) {
       b.vx *= Math.exp(-6 * dt); b.x += b.vx * dt; b.spin += b.vx * dt * 0.8;
       w = waterAt(b.x);
       if (w) { b.st = 'water'; b.y = w.level; ripple(b.x, w.level, 'ring'); }
-      else b.y = surfaceY(b.x) - 2;
+      else b.y = bodyFloorY(b.x,b.y+2) - 2;
     } else {
       w = waterAt(b.x); b.vx *= Math.exp(-2 * dt); b.x += b.vx * dt;
       if (w) b.y = w.level - 1 + Math.sin(b.t * 5) * 0.6;
@@ -6443,6 +6456,7 @@ function frame(now) {
     var roomAtmosphere=campaignAtmosphere();
     if(roomAtmosphere.glimpse)drawCampaignBreach(tSec,roomAtmosphere);
   }
+  drawLevelScene('before-ground');
   drawGround();
   drawTrailAccents();
   drawSoil();
@@ -6450,6 +6464,7 @@ function frame(now) {
   drawSurfaceTrim(tSec);
   drawRocks();
   drawScorches();
+  drawLevelScene('after-soil');
   }
   drawCrownArenaBack(tSec);
   drawPlatforms(tSec);

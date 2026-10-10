@@ -1,0 +1,15 @@
+✔ finite court, entrance and lower void preserve original soil and native pond composition (1718.333911ms)
+✔ all six classes at 30/60/120 Hz descend, hit both real lower walls, return by ladder and plant using ordinary keys (31188.980525ms)
+✔ normal lower-room body replay, Sligo food, bombs and grounded pests keep their actual lower floor (1763.520907ms)
+✔ Cairn keyboard abilities use the real court and lower floor while rejecting the entrance gap (16420.883647ms)
+✔ normal source binding passes through only a valid digest and invalidates a replaced scene source (944.89874ms)
+✔ source replacement, seed/stage changes and isolated modes reject stale terrain before recompilation (1200.215791ms)
+✔ compiler preserves exact typed terrain and rejects unknown, fractional and overlapping regions (12.805361ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 53602.201764

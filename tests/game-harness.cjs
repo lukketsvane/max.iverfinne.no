@@ -67,7 +67,7 @@ const functionNames = [
   'guardianBlast', 'updateRunHazards', 'updateHazardContact', 'runHazardTouches', 'interactBossEvent', 'guardianRecovery', 'enemyDistance',
   'biteGarden',
   'stageLayout', 'pictureLayout', 'levelOriginX',
-  'collectSeed',
+  'collectSeed', 'updateSeedPickups',
   'beginClimb',
   'useClassSkill', 'mossSlam', 'braceShove',
   'SLIGO_KINDS', 'plantGardenSeed',

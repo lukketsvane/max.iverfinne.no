@@ -37,18 +37,23 @@ test('picture gardens require an explicit Figma replacement and keep their maste
 });
 
 test('a new authored variant clears cached picture terrain before building its geometry', () => {
-  const h = loadGame({ __pictures: true }), g = h.game;
+  // This transition starts from a legacy picture even when production already
+  // replaces Garden 1 with an authored MASTER row.
+  const h = loadGame({ __pictures: true, __levelData: { gardens: {} } }), g = h.game;
   g.resetRogueRun();
+  g.rogueRun.seed = 1;
   const picture = g.stageLayout();
   assert.ok(picture.ground);
   const origin = g.levelOriginX(1), groundX = picture.ground.x0 + 20;
   h.window.MaxLevelData = { gardens: { 1: [{
     frame: 'garden-01', replacePicture: true,
-    ledges: [{ x: groundX - origin, rise: 16, w: 32, style: 'stone' }],
+    ledges: [{ x: groundX - origin, rise: 0, w: 32, style: 'stone' }],
   }] } };
   g.rogueRun.seed = (g.rogueRun.seed + 1) >>> 0;
+  const stale = h.window.MaxLevels.build(h.window.MaxLevelData.gardens[1][0], 1, origin, g.surfaceY, g.waterAt, g.rogueRun.seed);
   const authored = g.stageLayout();
   const expected = h.window.MaxLevels.build(h.window.MaxLevelData.gardens[1][0], 1, origin, g.surfaceY, g.waterAt, g.rogueRun.seed);
+  assert.notEqual(stale.platforms[0].y, expected.platforms[0].y, 'the fixture distinguishes cached picture terrain from the cleared terrain');
   assert.equal(authored.platforms[0].y, expected.platforms[0].y);
   assert.equal(authored.ground, undefined);
 });

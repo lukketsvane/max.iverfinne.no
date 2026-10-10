@@ -1,0 +1,7 @@
+{
+  "exitCode": 0,
+  "command": "npm run figma:check",
+  "FIGMA_MCP_URL": "http://127.0.0.1:38741/mcp",
+  "captureSHA256": "541d292a677fe96014e6c0ddc7c74e7671e3dac5237ed74e0404bc0080d4f0d3",
+  "summary": "665 layers in 10:2 \u00b7 665 MATCH \u00b7 0 problem(s)"
+}

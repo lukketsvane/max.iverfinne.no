@@ -7,7 +7,7 @@ var RAT_STATS={
 };
 function isRat(k){return !!k&&!k.boss&&k.kind===RAT_KIND;}
 function ratStats(k){return Object.hasOwn(RAT_STATS,k.ratVariant)?RAT_STATS[k.ratVariant]:RAT_STATS.common;}
-function ratFloor(x){var water=waterAt(x);return water?Math.min(surfaceY(x),water.level):surfaceY(x);}
+function ratFloor(x,y){var water=waterAt(x),floor=bodyFloorY(x,y);return water?Math.min(floor,water.level):floor;}
 function makeRat(side,elite,variant){
   var choices=['common'];
   if(worldLevel()>=11||runElapsed>=540)choices.push('black');
@@ -38,16 +38,18 @@ function ratMove(k,speed,dt){
     var cairnGround={grounded:before.grounded,supportId:k.ratPlatform||'ground',foot:RAT_FOOT,bodyRadius:9};
     k.vx=approach(k.vx,speed,360*step);
     k.x+=k.vx*step*mechWetFactor(k)*cairnPestSlow(k,cairnGround)*mycelSlowFactor(k);
+    if(activeTerrainLayout()){var wall=window.MaxStageLayout.solid(layout,x0,y0,k.x,y0);if(wall){k.x=wall.x;if(wall.wall)k.vx=0;}}
     if(k.ratGrounded&&k.vy<-.01)k.ratGrounded=false;
     if(k.ratGrounded){
       var platform=k.ratPlatform?window.MaxStageLayout.support(layout,k.ratPlatform,k.x):null;
       if(k.ratPlatform&&!platform){k.ratGrounded=false;k.ratPlatform='';}
-      else {k.y=(platform?platform.y:ratFloor(k.x))-RAT_FOOT;k.vy=0;}
+      else {var supportFloor=platform?platform.y:ratFloor(k.x,y0);if(activeTerrainLayout()&&supportFloor-y0>3)k.ratGrounded=false;else{k.y=supportFloor-RAT_FOOT;k.vy=0;}}
     }
     if(!k.ratGrounded){
       k.vy=Math.min(220,k.vy+430*step);
-      var foot=y0+k.vy*step,landing=k.vy>=0?window.MaxStageLayout.landing(layout,x0,y0,k.x,foot):null;
-      var floor=ratFloor(k.x);
+      var foot=y0+k.vy*step;
+      if(activeTerrainLayout()){var hit=window.MaxStageLayout.solid(layout,x0,y0,k.x,foot);if(hit){k.x=hit.x;foot=hit.y;if(hit.wall)k.vx=0;if(hit.ceil&&k.vy<0)k.vy=0;}}
+      var landing=k.vy>=0?window.MaxStageLayout.landing(layout,x0,y0,k.x,foot):null,floor=ratFloor(k.x,foot);
       if(landing&&landing.y<=floor){k.y=landing.y-RAT_FOOT;k.vy=0;k.ratGrounded=true;k.ratPlatform=landing.id;k.ratNavX=null;}
       else if(foot>=floor){k.y=floor-RAT_FOOT;k.vy=0;k.ratGrounded=true;k.ratPlatform='';k.ratNavX=null;}
       else k.y=foot-RAT_FOOT;
@@ -57,7 +59,7 @@ function ratMove(k,speed,dt){
       k.x=accepted.x;k.y=accepted.y;k.vx=accepted.vx;k.vy=accepted.vy;
     }
   }
-  k.ratWet=!!waterAt(k.x)&&Math.abs(k.y+RAT_FOOT-ratFloor(k.x))<2&&!k.ratPlatform;
+  k.ratWet=!!waterAt(k.x)&&Math.abs(k.y+RAT_FOOT-ratFloor(k.x,k.y+RAT_FOOT))<2&&!k.ratPlatform;
 }
 function ratJumpToward(k,x,y){
   if(!k.ratGrounded||k.ratJumpCool>0)return false;

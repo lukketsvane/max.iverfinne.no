@@ -1,0 +1,34 @@
+{
+  "createdNodeIds": [],
+  "mutatedNodeIds": [
+    "865:14016",
+    "865:14058"
+  ],
+  "removedNodeIds": [
+    "866:13982",
+    "866:13983"
+  ],
+  "images": [
+    {
+      "nodeId": "865:14016",
+      "imageHash": "724a65a208730a225a575a3ddb2bb03205ee58c0",
+      "bytes": 174144,
+      "w": 640,
+      "h": 400
+    },
+    {
+      "nodeId": "865:14058",
+      "imageHash": "c2fb76f78361cc3923df4bdc61fabe9357f9aa50",
+      "bytes": 182356,
+      "w": 640,
+      "h": 400
+    }
+  ],
+  "nativePixelsPreserved": true,
+  "referenceOnly": true,
+  "sourceFiles": [
+    "docs/design/tree-hollow-entrance/evidence/garden-01-world-640x400.png",
+    "docs/design/authored-ponds/evidence/garden-02-world-640x400.png"
+  ],
+  "verifiedSha1Match": true
+}

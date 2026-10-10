@@ -1,0 +1,3 @@
+garden-01b  887:13528  live   terraces · 8 ledges · 6 blocks · 8 ladders · 1 ponds · C0 14 · C1 0 · C2 0 · C3 0 · unreachable 0 · reward 1 · seed 1 · bonus 1 · trial 2 · puzzle 1 · door 1 · dig 1 · secret 1 · start 1
+
+1 garden frame(s) · 1 live: garden-01b · a frame goes live with a "designed" instance

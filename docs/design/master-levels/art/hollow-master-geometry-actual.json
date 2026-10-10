@@ -1,0 +1,1733 @@
+{
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "master": {
+    "id": "863:15150",
+    "name": "01 · LEVEL MASTER / 20 → 01 / Layouts + Per-level Assets",
+    "type": "SECTION",
+    "x": -1105,
+    "y": 706,
+    "width": 6982,
+    "height": 15707,
+    "visible": true,
+    "relativeTransform": [
+      [
+        1,
+        0,
+        -1105
+      ],
+      [
+        0,
+        1,
+        706
+      ]
+    ]
+  },
+  "editor": {
+    "id": "863:15149",
+    "name": "MASTER LEVEL EDITOR / 20 per-level workspaces",
+    "type": "FRAME",
+    "x": 100,
+    "y": 100,
+    "width": 6782,
+    "height": 15507,
+    "rotation": 0,
+    "visible": true,
+    "relativeTransform": [
+      [
+        1,
+        0,
+        100
+      ],
+      [
+        0,
+        1,
+        100
+      ]
+    ]
+  },
+  "rows": [
+    {
+      "id": "887:13528",
+      "name": "level_01",
+      "type": "FRAME",
+      "x": 0,
+      "y": 0,
+      "width": 640,
+      "height": 500,
+      "rotation": 0,
+      "visible": true,
+      "relativeTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "stage": 1,
+      "planes": {
+        "art": {
+          "id": "887:13531",
+          "name": "ART",
+          "type": "FRAME",
+          "x": 0,
+          "y": 100,
+          "width": 640,
+          "height": 400,
+          "rotation": 0,
+          "visible": true,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              100
+            ]
+          ],
+          "children": [
+            {
+              "id": "890:13527",
+              "name": "LAYER 000000 · PHASE BEFORE_GROUND · depth",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13528",
+              "name": "LAYER 000001 · PHASE BEFORE_GROUND · distant-forest",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13529",
+              "name": "LAYER 000002 · PHASE BEFORE_GROUND · branch-depth",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13530",
+              "name": "LAYER 000003 · PHASE BEFORE_GROUND · hollow-tree",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13531",
+              "name": "LAYER 000004 · PHASE BEFORE_GROUND · footing:1:d0",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13532",
+              "name": "LAYER 000005 · PHASE BEFORE_GROUND · footing:1:d1",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13533",
+              "name": "LAYER 000006 · PHASE BEFORE_GROUND · footing:1:d2",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13534",
+              "name": "LAYER 000007 · PHASE BEFORE_GROUND · footing:1:d3",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13535",
+              "name": "LAYER 000008 · PHASE BEFORE_GROUND · footing:1:d4",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13536",
+              "name": "LAYER 000009 · PHASE BEFORE_GROUND · footing:1:d5",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13537",
+              "name": "LAYER 000010 · PHASE BEFORE_GROUND · footing:1:d6",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13538",
+              "name": "LAYER 000011 · PHASE BEFORE_GROUND · footing:1:tree-entrance-lip",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13539",
+              "name": "LAYER 000012 · PHASE BEFORE_GROUND · hollow-floor-flora",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13540",
+              "name": "LAYER 000013 · PHASE BEFORE_GROUND · forest-fireflies",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13541",
+              "name": "LAYER 000014 · PHASE AFTER_SOIL · underworld:cave-window",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13542",
+              "name": "LAYER 000015 · PHASE AFTER_SOIL · underworld:passage-roots",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13543",
+              "name": "LAYER 000016 · PHASE AFTER_SOIL · underworld:footing:1:b0",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13544",
+              "name": "LAYER 000017 · PHASE AFTER_SOIL · underworld:footing:1:b1",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13545",
+              "name": "LAYER 000018 · PHASE AFTER_SOIL · underworld:footing:1:tree-court",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13546",
+              "name": "LAYER 000019 · PHASE AFTER_SOIL · underworld:footing:1:tree-floor",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13547",
+              "name": "LAYER 000020 · PHASE AFTER_SOIL · underworld:footing:1:tree-left-wall",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "890:13548",
+              "name": "LAYER 000021 · PHASE AFTER_SOIL · underworld:footing:1:tree-right-wall",
+              "type": "FRAME",
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            }
+          ]
+        },
+        "routes": {
+          "id": "887:13532",
+          "name": "ROUTES",
+          "type": "FRAME",
+          "x": 0,
+          "y": 100,
+          "width": 640,
+          "height": 400,
+          "rotation": 0,
+          "visible": false,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              100
+            ]
+          ],
+          "children": [
+            {
+              "id": "888:13527",
+              "name": "ROUTE 000000 · hollow:ledges:0 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 185,
+              "y": 240,
+              "width": 70,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  185
+                ],
+                [
+                  0,
+                  1,
+                  240
+                ]
+              ]
+            },
+            {
+              "id": "888:13528",
+              "name": "ROUTE 000001 · hollow:ledges:1 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 105,
+              "y": 200,
+              "width": 110,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  105
+                ],
+                [
+                  0,
+                  1,
+                  200
+                ]
+              ]
+            },
+            {
+              "id": "888:13529",
+              "name": "ROUTE 000002 · hollow:ledges:2 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 90,
+              "y": 160,
+              "width": 95,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  90
+                ],
+                [
+                  0,
+                  1,
+                  160
+                ]
+              ]
+            },
+            {
+              "id": "888:13530",
+              "name": "ROUTE 000003 · hollow:ledges:3 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 100,
+              "y": 80,
+              "width": 100,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  100
+                ],
+                [
+                  0,
+                  1,
+                  80
+                ]
+              ]
+            },
+            {
+              "id": "888:13531",
+              "name": "ROUTE 000004 · hollow:ledges:4 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 445,
+              "y": 200,
+              "width": 105,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  445
+                ],
+                [
+                  0,
+                  1,
+                  200
+                ]
+              ]
+            },
+            {
+              "id": "888:13532",
+              "name": "ROUTE 000005 · hollow:ledges:5 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 490,
+              "y": 120,
+              "width": 100,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  490
+                ],
+                [
+                  0,
+                  1,
+                  120
+                ]
+              ]
+            },
+            {
+              "id": "888:13533",
+              "name": "ROUTE 000006 · hollow:ledges:6 · one-way:branch",
+              "type": "INSTANCE",
+              "x": 420,
+              "y": 80,
+              "width": 100,
+              "height": 6,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  420
+                ],
+                [
+                  0,
+                  1,
+                  80
+                ]
+              ]
+            },
+            {
+              "id": "888:13534",
+              "name": "ROUTE 000007 · hollow:blocks:0 · solid:root",
+              "type": "INSTANCE",
+              "x": 40,
+              "y": 240,
+              "width": 40,
+              "height": 60,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  40
+                ],
+                [
+                  0,
+                  1,
+                  240
+                ]
+              ]
+            },
+            {
+              "id": "888:13535",
+              "name": "ROUTE 000008 · hollow:blocks:1 · solid:root",
+              "type": "INSTANCE",
+              "x": 570,
+              "y": 260,
+              "width": 30,
+              "height": 60,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  570
+                ],
+                [
+                  0,
+                  1,
+                  260
+                ]
+              ]
+            },
+            {
+              "id": "888:13536",
+              "name": "ROUTE 000009 · hollow:ladder:0 · ladder",
+              "type": "INSTANCE",
+              "x": 201,
+              "y": 240,
+              "width": 14,
+              "height": 40,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  201
+                ],
+                [
+                  0,
+                  1,
+                  240
+                ]
+              ]
+            },
+            {
+              "id": "888:13537",
+              "name": "ROUTE 000010 · hollow:ladder:1 · ladder",
+              "type": "INSTANCE",
+              "x": 193,
+              "y": 200,
+              "width": 14,
+              "height": 40,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  193
+                ],
+                [
+                  0,
+                  1,
+                  200
+                ]
+              ]
+            },
+            {
+              "id": "888:13538",
+              "name": "ROUTE 000011 · hollow:ladder:2 · ladder",
+              "type": "INSTANCE",
+              "x": 133,
+              "y": 160,
+              "width": 14,
+              "height": 40,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  133
+                ],
+                [
+                  0,
+                  1,
+                  160
+                ]
+              ]
+            },
+            {
+              "id": "888:13539",
+              "name": "ROUTE 000012 · hollow:ladder:3 · ladder",
+              "type": "INSTANCE",
+              "x": 123,
+              "y": 80,
+              "width": 14,
+              "height": 80,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  123
+                ],
+                [
+                  0,
+                  1,
+                  80
+                ]
+              ]
+            },
+            {
+              "id": "888:13540",
+              "name": "ROUTE 000013 · hollow:ladder:4 · ladder",
+              "type": "INSTANCE",
+              "x": 523,
+              "y": 200,
+              "width": 14,
+              "height": 80,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  523
+                ],
+                [
+                  0,
+                  1,
+                  200
+                ]
+              ]
+            },
+            {
+              "id": "888:13541",
+              "name": "ROUTE 000014 · hollow:ladder:5 · ladder",
+              "type": "INSTANCE",
+              "x": 503,
+              "y": 120,
+              "width": 14,
+              "height": 80,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  503
+                ],
+                [
+                  0,
+                  1,
+                  120
+                ]
+              ]
+            },
+            {
+              "id": "888:13542",
+              "name": "ROUTE 000015 · hollow:ladder:6 · ladder",
+              "type": "INSTANCE",
+              "x": 493,
+              "y": 80,
+              "width": 14,
+              "height": 40,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  493
+                ],
+                [
+                  0,
+                  1,
+                  80
+                ]
+              ]
+            },
+            {
+              "id": "888:13543",
+              "name": "ROUTE 000016 · hollow:court · solid:root",
+              "type": "INSTANCE",
+              "x": 155,
+              "y": 280,
+              "width": 395,
+              "height": 24,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  155
+                ],
+                [
+                  0,
+                  1,
+                  280
+                ]
+              ]
+            },
+            {
+              "id": "888:13544",
+              "name": "ROUTE 000017 · hollow:floor · solid:root",
+              "type": "INSTANCE",
+              "x": 175,
+              "y": 358,
+              "width": 395,
+              "height": 20,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  175
+                ],
+                [
+                  0,
+                  1,
+                  358
+                ]
+              ]
+            },
+            {
+              "id": "888:13545",
+              "name": "ROUTE 000018 · hollow:left-wall · solid:root",
+              "type": "INSTANCE",
+              "x": 155,
+              "y": 304,
+              "width": 20,
+              "height": 54,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  155
+                ],
+                [
+                  0,
+                  1,
+                  304
+                ]
+              ]
+            },
+            {
+              "id": "888:13546",
+              "name": "ROUTE 000019 · hollow:right-wall · solid:root",
+              "type": "INSTANCE",
+              "x": 570,
+              "y": 320,
+              "width": 30,
+              "height": 38,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  570
+                ],
+                [
+                  0,
+                  1,
+                  320
+                ]
+              ]
+            },
+            {
+              "id": "888:13547",
+              "name": "ROUTE 000020 · hollow:entrance-lip · one-way:branch",
+              "type": "INSTANCE",
+              "x": 550,
+              "y": 280,
+              "width": 18,
+              "height": 4,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  550
+                ],
+                [
+                  0,
+                  1,
+                  280
+                ]
+              ]
+            },
+            {
+              "id": "888:13548",
+              "name": "ROUTE 000021 · hollow:passage-ladder · ladder",
+              "type": "INSTANCE",
+              "x": 552,
+              "y": 280,
+              "width": 14,
+              "height": 78,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  552
+                ],
+                [
+                  0,
+                  1,
+                  280
+                ]
+              ]
+            },
+            {
+              "id": "888:13549",
+              "name": "ROUTE 000022 · hollow:pond · pond:22",
+              "type": "INSTANCE",
+              "x": 64,
+              "y": 282,
+              "width": 86,
+              "height": 14,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  64
+                ],
+                [
+                  0,
+                  1,
+                  282
+                ]
+              ]
+            }
+          ]
+        },
+        "points": {
+          "id": "887:13533",
+          "name": "POINTS",
+          "type": "FRAME",
+          "x": 0,
+          "y": 100,
+          "width": 640,
+          "height": 400,
+          "rotation": 0,
+          "visible": false,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              100
+            ]
+          ],
+          "children": [
+            {
+              "id": "888:13550",
+              "name": "POINT 000000 · reward · hollow:reward:0",
+              "type": "INSTANCE",
+              "x": 147,
+              "y": 73,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  147
+                ],
+                [
+                  0,
+                  1,
+                  73
+                ]
+              ]
+            },
+            {
+              "id": "888:13551",
+              "name": "POINT 000001 · seed · hollow:seed:0",
+              "type": "INSTANCE",
+              "x": 442,
+              "y": 73,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  442
+                ],
+                [
+                  0,
+                  1,
+                  73
+                ]
+              ]
+            },
+            {
+              "id": "888:13552",
+              "name": "POINT 000002 · trial · hollow:trial:0",
+              "type": "INSTANCE",
+              "x": 152,
+              "y": 193,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  152
+                ],
+                [
+                  0,
+                  1,
+                  193
+                ]
+              ]
+            },
+            {
+              "id": "888:13553",
+              "name": "POINT 000003 · trial · hollow:trial:1",
+              "type": "INSTANCE",
+              "x": 532,
+              "y": 113,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  532
+                ],
+                [
+                  0,
+                  1,
+                  113
+                ]
+              ]
+            },
+            {
+              "id": "888:13554",
+              "name": "POINT 000004 · bonus · hollow:bonus:0",
+              "type": "INSTANCE",
+              "x": 112,
+              "y": 153,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  112
+                ],
+                [
+                  0,
+                  1,
+                  153
+                ]
+              ]
+            },
+            {
+              "id": "888:13555",
+              "name": "POINT 000005 · puzzle · hollow:puzzle:0",
+              "type": "INSTANCE",
+              "x": 222,
+              "y": 233,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  222
+                ],
+                [
+                  0,
+                  1,
+                  233
+                ]
+              ]
+            },
+            {
+              "id": "888:13556",
+              "name": "POINT 000006 · door · hollow:door:0",
+              "type": "INSTANCE",
+              "x": 467,
+              "y": 73,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  467
+                ],
+                [
+                  0,
+                  1,
+                  73
+                ]
+              ]
+            },
+            {
+              "id": "888:13557",
+              "name": "POINT 000007 · dig · hollow:dig:0",
+              "type": "INSTANCE",
+              "x": 297,
+              "y": 273,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  297
+                ],
+                [
+                  0,
+                  1,
+                  273
+                ]
+              ]
+            },
+            {
+              "id": "888:13558",
+              "name": "POINT 000008 · secret · hollow:secret:0",
+              "type": "INSTANCE",
+              "x": 507,
+              "y": 193,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  507
+                ],
+                [
+                  0,
+                  1,
+                  193
+                ]
+              ]
+            },
+            {
+              "id": "888:13559",
+              "name": "POINT 000009 · start · hollow:start:0",
+              "type": "INSTANCE",
+              "x": 317,
+              "y": 273,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  317
+                ],
+                [
+                  0,
+                  1,
+                  273
+                ]
+              ]
+            }
+          ]
+        },
+        "registration": {
+          "id": "887:13534",
+          "name": "REGISTRATION",
+          "type": "FRAME",
+          "x": 0,
+          "y": 100,
+          "width": 640,
+          "height": 400,
+          "rotation": 0,
+          "visible": false,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              100
+            ]
+          ],
+          "children": [
+            {
+              "id": "887:13536",
+              "name": "ORIGIN · native reference",
+              "type": "RECTANGLE",
+              "x": 320,
+              "y": 0,
+              "width": 1,
+              "height": 400,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  320
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "id": "887:13537",
+              "name": "SOIL · native reference",
+              "type": "RECTANGLE",
+              "x": 0,
+              "y": 280,
+              "width": 640,
+              "height": 1,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  280
+                ]
+              ]
+            },
+            {
+              "id": "888:13563",
+              "name": "designed",
+              "type": "INSTANCE",
+              "x": 8,
+              "y": 8,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  8
+                ],
+                [
+                  0,
+                  1,
+                  8
+                ]
+              ]
+            },
+            {
+              "id": "888:13564",
+              "name": "replace-picture",
+              "type": "INSTANCE",
+              "x": 24,
+              "y": 8,
+              "width": 7,
+              "height": 7,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  24
+                ],
+                [
+                  0,
+                  1,
+                  8
+                ]
+              ]
+            }
+          ]
+        },
+        "terrain": {
+          "id": "887:13535",
+          "name": "TERRAIN",
+          "type": "FRAME",
+          "x": 0,
+          "y": 100,
+          "width": 640,
+          "height": 400,
+          "rotation": 0,
+          "visible": false,
+          "relativeTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              100
+            ]
+          ],
+          "children": [
+            {
+              "id": "888:13560",
+              "name": "terrain:court",
+              "type": "RECTANGLE",
+              "x": 155,
+              "y": 280,
+              "width": 395,
+              "height": 24,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  155
+                ],
+                [
+                  0,
+                  1,
+                  280
+                ]
+              ]
+            },
+            {
+              "id": "888:13561",
+              "name": "terrain:void",
+              "type": "RECTANGLE",
+              "x": 175,
+              "y": 304,
+              "width": 395,
+              "height": 54,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  175
+                ],
+                [
+                  0,
+                  1,
+                  304
+                ]
+              ]
+            },
+            {
+              "id": "888:13562",
+              "name": "terrain:entrance",
+              "type": "RECTANGLE",
+              "x": 550,
+              "y": 280,
+              "width": 20,
+              "height": 78,
+              "rotation": 0,
+              "visible": true,
+              "relativeTransform": [
+                [
+                  1,
+                  0,
+                  550
+                ],
+                [
+                  0,
+                  1,
+                  280
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "masterRowMap": [
+    {
+      "id": "871:207",
+      "name": "level_20",
+      "workspaceId": "880:2"
+    },
+    {
+      "id": "871:200",
+      "name": "level_19",
+      "workspaceId": "880:6"
+    },
+    {
+      "id": "871:193",
+      "name": "level_18",
+      "workspaceId": "880:10"
+    },
+    {
+      "id": "871:186",
+      "name": "level_17",
+      "workspaceId": "880:14"
+    },
+    {
+      "id": "871:179",
+      "name": "level_16",
+      "workspaceId": "880:18"
+    },
+    {
+      "id": "871:172",
+      "name": "level_15",
+      "workspaceId": "880:22"
+    },
+    {
+      "id": "871:165",
+      "name": "level_14",
+      "workspaceId": "880:26"
+    },
+    {
+      "id": "871:158",
+      "name": "level_13",
+      "workspaceId": "880:30"
+    },
+    {
+      "id": "871:151",
+      "name": "level_12",
+      "workspaceId": "880:34"
+    },
+    {
+      "id": "871:144",
+      "name": "level_11",
+      "workspaceId": "880:38"
+    },
+    {
+      "id": "871:137",
+      "name": "level_10",
+      "workspaceId": "880:42"
+    },
+    {
+      "id": "871:130",
+      "name": "level_09",
+      "workspaceId": "880:46"
+    },
+    {
+      "id": "871:123",
+      "name": "level_08",
+      "workspaceId": "880:50"
+    },
+    {
+      "id": "871:116",
+      "name": "level_07",
+      "workspaceId": "880:54"
+    },
+    {
+      "id": "871:109",
+      "name": "level_06",
+      "workspaceId": "880:58"
+    },
+    {
+      "id": "834:13982",
+      "name": "level_05",
+      "workspaceId": "880:62"
+    },
+    {
+      "id": "837:14188",
+      "name": "level_04",
+      "workspaceId": "880:66"
+    },
+    {
+      "id": "840:19065",
+      "name": "level_03",
+      "workspaceId": "880:70"
+    },
+    {
+      "id": "840:42223",
+      "name": "level_02",
+      "workspaceId": "880:74"
+    },
+    {
+      "id": "887:13528",
+      "name": "level_01",
+      "workspaceId": "880:78"
+    }
+  ],
+  "sourceKind": "figma-MASTER-level-rows",
+  "scope": "actual-current-Level01-only",
+  "production": false
+}

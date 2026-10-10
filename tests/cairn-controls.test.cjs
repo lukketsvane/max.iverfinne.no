@@ -1,7 +1,8 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
-function fresh(saved={}){const h=loadGame(saved),g=h.game;g.resetRogueRun('CAIRN',{classId:'bulwark',skinId:'ember'});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];const L=g.stageLayout();L.platforms=[];L.ladders=[];Object.assign(g.P,{x:200,y:g.surfaceY(200),grounded:true,st:'free',vx:0,vy:0,face:1,wet:false,platform:null,dodgeT:0,tun:0,pounce:0});return h;}
+// These isolated Cairn fixtures use the original un-authored terrain baseline.
+function fresh(saved={}){const h=loadGame({...saved,__levelData:{gardens:{}}}),g=h.game;g.resetRogueRun('CAIRN',{classId:'bulwark',skinId:'ember'});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];const L=g.stageLayout();L.platforms=[];L.ladders=[];Object.assign(g.P,{x:200,y:g.surfaceY(200),grounded:true,st:'free',vx:0,vy:0,face:1,wet:false,platform:null,dodgeT:0,tun:0,pounce:0});return h;}
 function step(h,t,hz=120,input={axis:0,top:88}){for(let i=0;i<Math.round(t*hz);i++){h.advance(1000/hz);h.game.updatePlayer(1/hz,input);h.game.updateCairnCombat(1/hz);}}
 function pad(h,single){h.document.querySelectorAll=()=>[];const gp={id:single?'Joy-Con (L) Gamepad':'Xbox Wireless Controller',mapping:'standard',connected:true,index:0,buttons:[],axes:[0,0,0,0]};h.window.navigator={getGamepads:()=>[gp]};return buttons=>{gp.buttons=Array.from({length:17},(_,i)=>({pressed:buttons.includes(i),value:Number(buttons.includes(i))}));h.game.pollPads();};}
 

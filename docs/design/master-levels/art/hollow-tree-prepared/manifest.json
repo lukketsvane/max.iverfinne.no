@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "status": "prepared-not-executed",
+  "targetRow": "887:13528",
+  "targetArt": "887:13531",
+  "sourceDigest": "ff92d3862284c9fa93199d4eb946683cbbe86642f454efe316fc1108cb43f221",
+  "originalSceneDigest": "ea6bbc582e561f452804d8445e09df19782a09455aea6fe781c44525da7f6784",
+  "registration": {
+    "originX": 320,
+    "soilY": 280
+  },
+  "nativeWidth": 640,
+  "nativeHeight": 400,
+  "operations": 6965,
+  "nativeCrops": 7,
+  "layerCount": 22,
+  "partCounts": {
+    "depth": 1,
+    "distant-forest": 1902,
+    "branch-depth": 341,
+    "hollow-tree": 2920,
+    "footing:1:d0": 104,
+    "footing:1:d1": 126,
+    "footing:1:d2": 110,
+    "footing:1:d3": 81,
+    "footing:1:d4": 136,
+    "footing:1:d5": 100,
+    "footing:1:d6": 102,
+    "footing:1:tree-entrance-lip": 18,
+    "hollow-floor-flora": 7,
+    "forest-fireflies": 6,
+    "underworld:cave-window": 42,
+    "underworld:passage-roots": 462,
+    "underworld:footing:1:b0": 20,
+    "underworld:footing:1:b1": 20,
+    "underworld:footing:1:tree-court": 190,
+    "underworld:footing:1:tree-floor": 241,
+    "underworld:footing:1:tree-left-wall": 15,
+    "underworld:footing:1:tree-right-wall": 21
+  },
+  "omittedRuntimeFurnishingOperations": 42,
+  "retainedRuntimeFurnishingOperations": 0,
+  "archivePolicy": "Parent archived the old active row outside MASTER before binding this new ART plane. No prepared script deletes or overwrites that source.",
+  "files": [
+    {
+      "path": "import-000000.use-figma.js",
+      "bytes": 45405,
+      "sha256": "6885681a5f22771e0449128f2168acda9ada24b06b591c18141e127dc45addf1"
+    },
+    {
+      "path": "import-000500.use-figma.js",
+      "bytes": 45858,
+      "sha256": "ae0283e902bca65204b41dede6cfc2c9d409babe4422bfe60e5ef5d20837154f"
+    },
+    {
+      "path": "import-001000.use-figma.js",
+      "bytes": 45898,
+      "sha256": "c5236141c9f99b40d53d7efc0a30a7674cab72a03e6f7c5f62dbb416de77bb62"
+    },
+    {
+      "path": "import-001500.use-figma.js",
+      "bytes": 45870,
+      "sha256": "dc454c92898c64ff3748caad4ec83310b168d56ba34fa9ab89382cf40d65fa81"
+    },
+    {
+      "path": "import-002000.use-figma.js",
+      "bytes": 45858,
+      "sha256": "30246067d47c6e153bc2d71cb530a1330b9d8f58cb4a46223fb16621944a0fbb"
+    },
+    {
+      "path": "import-002500.use-figma.js",
+      "bytes": 45560,
+      "sha256": "e0cde22856607e31a5c122e54af2a4ce5b5964311d0d7b8697f53d4c5185e3d3"
+    },
+    {
+      "path": "import-003000.use-figma.js",
+      "bytes": 45927,
+      "sha256": "07695081dde6d58abe64f71133bae3542a181921e9fda3712790dc51756571af"
+    },
+    {
+      "path": "import-003500.use-figma.js",
+      "bytes": 46075,
+      "sha256": "2706b5984c1a3cb034ee903b396bf551a261976e0b05b1d52d55a6544756cff5"
+    },
+    {
+      "path": "import-004000.use-figma.js",
+      "bytes": 46061,
+      "sha256": "e8d34f15cb04527a142b5a6cee80d33978e4fa7a563dd4dbc7f9f760b38b929b"
+    },
+    {
+      "path": "import-004500.use-figma.js",
+      "bytes": 46070,
+      "sha256": "c486f880437e4667a3f7b1e025e76779306bdef97a1f4f0c689f1fb66232b409"
+    },
+    {
+      "path": "import-005000.use-figma.js",
+      "bytes": 46030,
+      "sha256": "ba5d1ca71b70b0cd568c153a0a161b27642207335307469fcca304d4ced6d063"
+    },
+    {
+      "path": "import-005500.use-figma.js",
+      "bytes": 46803,
+      "sha256": "85fe3b20f7876fc0d3d72a91ad46211442b2f82caf62003843f7dfefbc94f811"
+    },
+    {
+      "path": "import-006000.use-figma.js",
+      "bytes": 46512,
+      "sha256": "0370c2259d2aa639a77019fb84663a41748f555d89c644ecd10a2aa7345446dc"
+    },
+    {
+      "path": "import-006500.use-figma.js",
+      "bytes": 44041,
+      "sha256": "ee7998f0d3069f81bdce4a671584f1365dfae961aa4dd1b4cb05d45f2ef46b17"
+    },
+    {
+      "path": "source.js",
+      "bytes": 492635,
+      "sha256": "ac949d4c2fed91908d896baeb870f13e62c8538f6f7953bc7fb7a5cb474398f0"
+    },
+    {
+      "path": "source.json",
+      "bytes": 492588,
+      "sha256": "95f088143ebadf18ab58d8d5077bbf0664672ee5fc520151030e5d9d8fdd30c2"
+    }
+  ]
+}

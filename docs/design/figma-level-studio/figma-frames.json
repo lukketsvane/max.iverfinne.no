@@ -1,0 +1,493 @@
+{
+  "status": "created-drafts",
+  "pageId": "508:11825",
+  "createdNodeIds": [
+    "865:13982",
+    "865:13983",
+    "865:13984",
+    "865:13985",
+    "865:13986",
+    "865:13987",
+    "865:13988",
+    "865:13989",
+    "865:13990",
+    "865:13991",
+    "865:13992",
+    "865:13993",
+    "865:13994",
+    "865:13995",
+    "865:13996",
+    "865:13997",
+    "865:13998",
+    "865:13999",
+    "865:14000",
+    "865:14001",
+    "865:14002",
+    "865:14003",
+    "865:14004",
+    "865:14005",
+    "865:14006",
+    "865:14007",
+    "865:14008",
+    "865:14009",
+    "865:14010",
+    "865:14011",
+    "865:14012",
+    "865:14013",
+    "865:14014",
+    "865:14015",
+    "865:14016",
+    "865:14017",
+    "865:14018",
+    "865:14019",
+    "865:14020",
+    "865:14021",
+    "865:14022",
+    "865:14023",
+    "865:14024",
+    "865:14025",
+    "865:14026",
+    "865:14027",
+    "865:14028",
+    "865:14029",
+    "865:14030",
+    "865:14031",
+    "865:14032",
+    "865:14033",
+    "865:14034",
+    "865:14035",
+    "865:14036",
+    "865:14037",
+    "865:14038",
+    "865:14039",
+    "865:14040",
+    "865:14041",
+    "865:14042",
+    "865:14043",
+    "865:14044",
+    "865:14045",
+    "865:14046",
+    "865:14047",
+    "865:14048",
+    "865:14049",
+    "865:14050",
+    "865:14051",
+    "865:14052",
+    "865:14053",
+    "865:14054",
+    "865:14055",
+    "865:14056",
+    "865:14057",
+    "865:14058",
+    "865:14059",
+    "865:14060"
+  ],
+  "mutatedNodeIds": [],
+  "frames": [
+    {
+      "id": "865:13984",
+      "name": "garden-01b",
+      "x": 6680,
+      "y": 1190,
+      "w": 640,
+      "h": 319,
+      "directInstanceCount": 29,
+      "designed": false
+    },
+    {
+      "id": "865:14021",
+      "name": "garden-02b",
+      "x": 6680,
+      "y": 1750,
+      "w": 630,
+      "h": 279,
+      "directInstanceCount": 33,
+      "designed": false
+    }
+  ],
+  "referenceNodes": [
+    {
+      "stage": 1,
+      "id": "865:14016"
+    },
+    {
+      "stage": 2,
+      "id": "865:14058"
+    }
+  ],
+  "instanceSources": [
+    {
+      "id": "865:13987",
+      "frame": "garden-01b",
+      "tag": "soil",
+      "sourceId": null
+    },
+    {
+      "id": "865:13988",
+      "frame": "garden-01b",
+      "tag": "origin",
+      "sourceId": null
+    },
+    {
+      "id": "865:13989",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:0"
+    },
+    {
+      "id": "865:13990",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:1"
+    },
+    {
+      "id": "865:13991",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:2"
+    },
+    {
+      "id": "865:13992",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:3"
+    },
+    {
+      "id": "865:13993",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:4"
+    },
+    {
+      "id": "865:13994",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:5"
+    },
+    {
+      "id": "865:13995",
+      "frame": "garden-01b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:1:ledge:6"
+    },
+    {
+      "id": "865:13996",
+      "frame": "garden-01b",
+      "tag": "block:root",
+      "sourceId": "authored:1:block:0"
+    },
+    {
+      "id": "865:13997",
+      "frame": "garden-01b",
+      "tag": "block:root",
+      "sourceId": "authored:1:block:1"
+    },
+    {
+      "id": "865:13998",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:0"
+    },
+    {
+      "id": "865:13999",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:1"
+    },
+    {
+      "id": "865:14000",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:2"
+    },
+    {
+      "id": "865:14001",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:3"
+    },
+    {
+      "id": "865:14002",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:4"
+    },
+    {
+      "id": "865:14003",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:5"
+    },
+    {
+      "id": "865:14004",
+      "frame": "garden-01b",
+      "tag": "ladder",
+      "sourceId": "authored:1:ladder:6"
+    },
+    {
+      "id": "865:14005",
+      "frame": "garden-01b",
+      "tag": "reward",
+      "sourceId": "authored:1:reward:0"
+    },
+    {
+      "id": "865:14006",
+      "frame": "garden-01b",
+      "tag": "seed",
+      "sourceId": "authored:1:seed:0"
+    },
+    {
+      "id": "865:14007",
+      "frame": "garden-01b",
+      "tag": "trial",
+      "sourceId": "authored:1:trial:0"
+    },
+    {
+      "id": "865:14008",
+      "frame": "garden-01b",
+      "tag": "trial",
+      "sourceId": "authored:1:trial:1"
+    },
+    {
+      "id": "865:14009",
+      "frame": "garden-01b",
+      "tag": "bonus",
+      "sourceId": "authored:1:bonus:0"
+    },
+    {
+      "id": "865:14010",
+      "frame": "garden-01b",
+      "tag": "puzzle",
+      "sourceId": "authored:1:puzzle:0"
+    },
+    {
+      "id": "865:14011",
+      "frame": "garden-01b",
+      "tag": "door",
+      "sourceId": "authored:1:door:0"
+    },
+    {
+      "id": "865:14012",
+      "frame": "garden-01b",
+      "tag": "dig",
+      "sourceId": "authored:1:dig:0"
+    },
+    {
+      "id": "865:14013",
+      "frame": "garden-01b",
+      "tag": "secret",
+      "sourceId": "authored:1:secret:0"
+    },
+    {
+      "id": "865:14014",
+      "frame": "garden-01b",
+      "tag": "start",
+      "sourceId": "authored:1:start:0"
+    },
+    {
+      "id": "865:14015",
+      "frame": "garden-01b",
+      "tag": "replace-picture",
+      "sourceId": null
+    },
+    {
+      "id": "865:14025",
+      "frame": "garden-02b",
+      "tag": "soil",
+      "sourceId": null
+    },
+    {
+      "id": "865:14026",
+      "frame": "garden-02b",
+      "tag": "origin",
+      "sourceId": null
+    },
+    {
+      "id": "865:14027",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:0"
+    },
+    {
+      "id": "865:14028",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:1"
+    },
+    {
+      "id": "865:14029",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:2"
+    },
+    {
+      "id": "865:14030",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:3"
+    },
+    {
+      "id": "865:14031",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:4"
+    },
+    {
+      "id": "865:14032",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:5"
+    },
+    {
+      "id": "865:14033",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:6"
+    },
+    {
+      "id": "865:14034",
+      "frame": "garden-02b",
+      "tag": "ledge:branch",
+      "sourceId": "authored:2:ledge:7"
+    },
+    {
+      "id": "865:14035",
+      "frame": "garden-02b",
+      "tag": "block:ruin",
+      "sourceId": "authored:2:block:0"
+    },
+    {
+      "id": "865:14036",
+      "frame": "garden-02b",
+      "tag": "block:ruin",
+      "sourceId": "authored:2:block:1"
+    },
+    {
+      "id": "865:14037",
+      "frame": "garden-02b",
+      "tag": "block:ruin",
+      "sourceId": "authored:2:block:2"
+    },
+    {
+      "id": "865:14038",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:0"
+    },
+    {
+      "id": "865:14039",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:1"
+    },
+    {
+      "id": "865:14040",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:2"
+    },
+    {
+      "id": "865:14041",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:3"
+    },
+    {
+      "id": "865:14042",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:4"
+    },
+    {
+      "id": "865:14043",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:5"
+    },
+    {
+      "id": "865:14044",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:6"
+    },
+    {
+      "id": "865:14045",
+      "frame": "garden-02b",
+      "tag": "ladder",
+      "sourceId": "authored:2:ladder:7"
+    },
+    {
+      "id": "865:14046",
+      "frame": "garden-02b",
+      "tag": "pond:20",
+      "sourceId": "authored:2:pond:0"
+    },
+    {
+      "id": "865:14047",
+      "frame": "garden-02b",
+      "tag": "reward",
+      "sourceId": "authored:2:reward:0"
+    },
+    {
+      "id": "865:14048",
+      "frame": "garden-02b",
+      "tag": "seed",
+      "sourceId": "authored:2:seed:0"
+    },
+    {
+      "id": "865:14049",
+      "frame": "garden-02b",
+      "tag": "trial",
+      "sourceId": "authored:2:trial:0"
+    },
+    {
+      "id": "865:14050",
+      "frame": "garden-02b",
+      "tag": "trial",
+      "sourceId": "authored:2:trial:1"
+    },
+    {
+      "id": "865:14051",
+      "frame": "garden-02b",
+      "tag": "bonus",
+      "sourceId": "authored:2:bonus:0"
+    },
+    {
+      "id": "865:14052",
+      "frame": "garden-02b",
+      "tag": "puzzle",
+      "sourceId": "authored:2:puzzle:0"
+    },
+    {
+      "id": "865:14053",
+      "frame": "garden-02b",
+      "tag": "door",
+      "sourceId": "authored:2:door:0"
+    },
+    {
+      "id": "865:14054",
+      "frame": "garden-02b",
+      "tag": "dig",
+      "sourceId": "authored:2:dig:0"
+    },
+    {
+      "id": "865:14055",
+      "frame": "garden-02b",
+      "tag": "secret",
+      "sourceId": "authored:2:secret:0"
+    },
+    {
+      "id": "865:14056",
+      "frame": "garden-02b",
+      "tag": "start",
+      "sourceId": "authored:2:start:0"
+    },
+    {
+      "id": "865:14057",
+      "frame": "garden-02b",
+      "tag": "replace-picture",
+      "sourceId": null
+    }
+  ],
+  "geometryDigest": "409b8dc6d3a1550ec3ebcf9690ef824f10221a65a065e2518ad14b8e04600883"
+}

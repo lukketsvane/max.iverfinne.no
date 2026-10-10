@@ -1,7 +1,8 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
-function fresh(mode){const h=loadGame(),g=h.game;g.resetRogueRun('Cairn',{classId:'bulwark',skinId:'ember',difficulty:'medium',...(mode?{mode}:{})});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];g.stageLayout().platforms=[];g.stageLayout().ladders=[];Object.assign(g.P,{x:200,y:g.surfaceY(200),grounded:true,vx:0,vy:0,face:1,st:'free',wet:false,platform:null,dodgeT:0,tun:0,pounce:0});return h;}
+// These isolated Cairn fixtures use the original un-authored terrain baseline.
+function fresh(mode){const h=loadGame({__levelData:{gardens:{}}}),g=h.game;g.resetRogueRun('Cairn',{classId:'bulwark',skinId:'ember',difficulty:'medium',...(mode?{mode}:{})});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];g.stageLayout().platforms=[];g.stageLayout().ladders=[];Object.assign(g.P,{x:200,y:g.surfaceY(200),grounded:true,vx:0,vy:0,face:1,st:'free',wet:false,platform:null,dodgeT:0,tun:0,pounce:0});return h;}
 function close(a,b){assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);}
 function tick(h,s,hz=60){for(let i=0;i<Math.round(s*hz);i++){h.advance(1000/hz);h.game.updateCairnCombat(1/hz);}}
 function pest(g,fields={}){const k=Object.assign(g.makeKrek(1,false,1),{x:g.P.x+20,y:g.P.y-12,hp:100,maxHp:100,scout:false,raid:true,queen:false,boss:false,elite:false,face:-1},fields);g.floatKrek.push(k);return k;}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root { --studio-color-water:#284c63; --studio-color-timber:#aa825d; --studio-color-marker:#c1ff89; color-scheme:dark; }
+* { box-sizing:border-box; } body { margin:0; padding:14px; font:12px/1.4 system-ui,sans-serif; color:#e1e7e4; background:#142023; }
+h1 { margin:0 0 3px; font-size:16px; } p { margin:4px 0 10px; color:#b8c7c1; } label { display:block; margin:8px 0 3px; } select,input,textarea,button { width:100%; font:inherit; border:1px solid #49605a; border-radius:5px; padding:7px; color:inherit; background:#20322f; }
+button { cursor:pointer; margin-top:8px; } button:hover { border-color:var(--studio-color-marker); } button:disabled { opacity:.5; cursor:default; } .row { display:flex; gap:7px; } .row>* { flex:1; min-width:0; } .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; } .primary { background:var(--studio-color-water); } .add { border-color:var(--studio-color-timber); } .activation { border-color:var(--studio-color-marker); } small { display:block; color:#afc0b6; margin-top:4px; } hr { border:0; border-top:1px solid #344c45; margin:13px 0; } #status { white-space:pre-wrap; overflow-wrap:anywhere; margin-top:12px; border-left:3px solid var(--studio-color-marker); padding:7px 9px; background:#1a2c27; max-height:170px; overflow:auto; } #status.error { border-color:#e8907d; } details { margin-top:12px; } textarea { min-height:96px; margin-top:8px; font-family:monospace; } code { display:block; font:10px/1.5 monospace; white-space:pre-wrap; overflow-wrap:anywhere; color:#c9d5d0; } .badge { font-size:10px; color:var(--studio-color-marker); }
+</style></head><body>
+<h1>MAX Native Level Studio</h1><p>Edit the existing MASTER level rows. 1 Figma pixel = 1 game pixel.</p>
+<label for="rows">MASTER level <span id="mode" class="badge"></span></label><div class="row"><select id="rows"></select><button id="refresh" style="flex:0 0 66px;margin:0">Refresh</button></div>
+<small id="counts">The level_01…level_20 row names define the campaign stages.</small>
+<div class="row"><div><label for="plane">Source plane</label><select id="plane"><option value="routes">ROUTES</option><option value="points">POINTS</option><option value="registration">REGISTRATION</option><option value="terrain">TERRAIN (if present)</option><option value="art">ART</option></select></div><button id="showPlane" style="align-self:end">Show & select</button></div>
+<small>Uses the row's existing planes. No duplicate garden frame, row or artwork is created.</small>
+<hr><label for="tag">Add exact compiler component</label><select id="tag"></select><small id="meaning"></small>
+<div id="pondBank" hidden><label for="bank">Pond bank pixels</label><input id="bank" type="number" min="1" step="1" value="20"><small>The real pond master stays unchanged. This route explicitly records pond:&lt;bank&gt;.</small></div>
+<div class="grid"><div><label for="x">Left x</label><input id="x" type="number" step="1" value="296"></div><div><label for="y">Top y</label><input id="y" type="number" step="1" value="222"></div><div><label for="w">Width</label><input id="w" type="number" min="1" step="1" value="48"></div><div><label for="h">Height</label><input id="h" type="number" min="1" step="1" value="6"></div></div>
+<div class="row"><button id="add" class="add">Round & add</button><button id="round">Round selected</button></div><small>Geometry is local to the aligned planes. Rounding is deliberate; pond width rounds to even pixels. ART is preserved.</small>
+<button id="enable" class="activation">Make review export live</button><small>Adds designed to this row's REGISTRATION. Picture replacement stays separate. Downloads do not deploy.</small>
+<hr><label><input id="includeArt" type="checkbox" checked style="width:auto"> Include selected row's native ART</label><small>Converted native rectangle/crop layers only. Older rows can use geometry-only download and the CLI fallback. The Preview button requires native ART.</small>
+<div class="row"><button id="validate">Validate MASTER</button><button id="export">Download all levels</button></div>
+<small>Captures all 20 rows and optional TERRAIN. ART includes only the selected row. Legacy launch, destination and shortcut points stay metadata.</small>
+<hr><div class="row"><div><label for="seed">Review seed</label><input id="seed" type="number" min="0" max="4294967295" step="1" value="1"></div><label style="align-self:end"><input id="draftPreview" type="checkbox" checked style="width:auto"> Local draft preview</label></div>
+<button id="preview" class="primary">Preview in game</button><small>Start <code style="display:inline">npm run figma:studio</code> once, then paste its session key below. Each preview validates the current source and opens a temporary actual-game review.</small>
+<details open><summary>Local preview connection</summary><label for="endpoint">Local endpoint</label><input id="endpoint" value="http://127.0.0.1:8765/studio/preview"><label for="sessionKey">Session key</label><input id="sessionKey" type="password" autocomplete="off" placeholder="From the local preview command"><small>Only HTTP loopback port 8765 is permitted. No upload or deployment.</small></details>
+<p><a id="previewLink" hidden target="_blank" rel="noopener noreferrer" style="color:var(--studio-color-marker)">Open actual game preview</a></p>
+<div id="status" role="status">Loading the configured MASTER…</div>
+<details><summary>Local component bindings</summary><p>Real master IDs only. Exact names and component types are verified before creating pieces.</p><textarea id="bindings" spellcheck="false" aria-label="Component bindings JSON"></textarea><button id="saveBindings">Verify & save bindings</button></details>
+<details><summary>Start once / download fallback</summary><code>npm run build
+npm run figma:studio
+# Or review the download without the connection:
+node docs/design/figma-level-studio/plugin/preview.mjs --from ~/Downloads/max-master-levels-508-11825.json --stage 1 --seed 1 --draft-preview</code><small>Draft preview adds activation only to temporary local data. It does not add designed in Figma. Gardens 1–2 need replace-picture in source. Checked source exports pass tests and release verification before production.</small></details>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const meanings = { origin:'ORIGIN registration: centre x is the game origin.', soil:'SOIL registration: top y is the original soil datum.', ledge:'ROUTES: one-way walking surface at its top edge.', block:'ROUTES: solid rectangle; its top is walkable.', ladder:'ROUTES: centre x, top and bottom form a real climbable ladder.', pond:'ROUTES: top y is water level; width = twice half-width; height = depth.', terrain:'TERRAIN: explicit native court, void or entrance rectangle. Adds one aligned plane only when this row has none.', 'replace-picture':'REGISTRATION: allows Garden 1–2 geometry to replace its picture level.', 'furnish-place':'REGISTRATION: opts into the existing native place furnishings.' };
+let state = null, busy = false;
+function status(text, error = false) { $('status').textContent = text; $('status').className = error ? 'error' : ''; }
+function lock(value) { busy = value; document.querySelectorAll('button').forEach(button => { button.disabled = value; }); if (!value) controls(); }
+function controls() { const have = !!state?.selectedRow; ['add','round','enable','showPlane','preview','export'].forEach(id => { $(id).disabled = !have || busy; }); $('enable').disabled = !have || busy || state.rows.find(row => row.id === state.selectedRow)?.active || !state.masters.designed; }
+function send(message) { if (busy) return; lock(true); parent.postMessage({ pluginMessage:message }, '*'); }
+function option(parent, value, text) { const node = document.createElement('option'); node.value = value; node.textContent = text; parent.appendChild(node); }
+function tagChanged(reset) {
+  const tag = $('tag').value, base = tag.split(':')[0]; $('meaning').textContent = meanings[base] || 'POINTS: explicit gameplay marker; its centre x and bottom y determine its footing. The run uses two trials.';
+  $('pondBank').hidden = base !== 'pond'; if (reset && base === 'pond') $('bank').value = tag.slice(5);
+  if (reset) { $('w').value = base === 'pond' ? 94 : base === 'ladder' ? 14 : base === 'origin' ? 1 : base === 'soil' ? state?.datum?.width || 640 : ['ledge','block'].includes(base) ? 48 : 7; $('h').value = base === 'pond' ? 24 : base === 'ladder' ? 96 : base === 'origin' ? state?.datum?.height || 24 : base === 'soil' ? 1 : ['ledge','block'].includes(base) ? 6 : 7; }
+}
+$('rows').onchange = () => send({ type:'select-row', id:$('rows').value });
+$('refresh').onclick = () => send({ type:'refresh' });
+$('showPlane').onclick = () => send({ type:'select-plane', plane:$('plane').value, show:true });
+$('tag').onchange = () => tagChanged(true);
+$('add').onclick = () => send({ type:'add', tag:$('tag').value, ...($('tag').value.startsWith('pond:') ? { bank:$('bank').value } : {}), geometry:Object.fromEntries(['x','y','w','h'].map(key => [key,$(key).value])) });
+$('round').onclick = () => send({ type:'round' });
+$('enable').onclick = () => send({ type:'enable' });
+$('validate').onclick = () => send({ type:'validate' });
+$('export').onclick = () => send({ type:'export', includeArt:$('includeArt').checked });
+$('preview').onclick = () => {
+  try { connection(); if (!$('includeArt').checked) throw new Error('Preview in game requires native ART. Use Download all levels and the CLI fallback for explicit geometry-only review.'); const seed = Number($('seed').value); if (!$('seed').value.trim() || !Number.isSafeInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('Use an unsigned 32-bit integer review seed.'); send({ type:'preview', seed, preview:$('draftPreview').checked, includeArt:true }); }
+  catch (error) { status(error.message,true); }
+};
+$('saveBindings').onclick = () => send({ type:'bindings', json:$('bindings').value });
+function connection() {
+  const url = new URL($('endpoint').value), key = $('sessionKey').value.trim();
+  if (url.protocol !== 'http:' || !['127.0.0.1','localhost'].includes(url.hostname) || url.port !== '8765' || url.pathname !== '/studio/preview' || url.search || url.hash || url.username || url.password) throw new Error('Use http://127.0.0.1:8765/studio/preview or localhost on port 8765.');
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(key)) throw new Error('Paste the session key printed by npm run figma:studio.');
+  return { url:url.href, key };
+}
+async function openPreview(payload) {
+  lock(true); status('Compiling native source and preparing the actual game…');
+  try {
+    const { url,key } = connection(), response = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-Max-Studio-Key':key},body:JSON.stringify(payload)}), result = await response.json();
+    if (!response.ok) throw new Error(result.error || result.message || 'Local preview was rejected.');
+    const game = new URL(result.actualgameURL);
+    if (game.protocol !== 'http:' || game.hostname !== '127.0.0.1' || game.port !== '8765' || game.username || game.password) throw new Error('Local bridge returned an unexpected game address.');
+    $('previewLink').href = game.href; $('previewLink').hidden = false;
+    status(`Actual game preview ready.\n${result.candidateSHA256 ? 'Candidate SHA-256: '+result.candidateSHA256+'\n' : ''}${payload.capture.nativeART ? 'Includes the selected row’s native ART and terrain.' : 'Geometry-only review; source artwork was not compiled.'}\nOpen the game link. This preview does not deploy.`);
+  } catch (error) { status(error.message || String(error),true); }
+  finally { lock(false); }
+}
+onmessage = event => {
+  const message = event.data?.pluginMessage; if (!message) return;
+  if (message.type === 'progress') { status(message.message); return; }
+  if (message.type === 'preview-capture') { openPreview(message.payload); return; }
+  if (message.type === 'state') {
+    const previous = $('tag').value, changedRow = state?.selectedRow !== message.selectedRow; state = message;
+    $('rows').replaceChildren(); message.rows.forEach(row => option($('rows'),row.id,row.name+(row.active?' · designed':' · draft'))); $('rows').value = message.selectedRow || '';
+    const row = message.rows.find(row => row.id === message.selectedRow); $('mode').textContent = row?.active ? 'designed' : 'draft'; $('counts').textContent = row ? `${row.counts.routes} routes · ${row.counts.points} points · ${row.counts.art} ART nodes · stage ${row.stage}` : '';
+    const tags = [...new Set([...Object.keys(message.masters), 'terrain:court', 'terrain:void', 'terrain:entrance'])].filter(tag => tag !== 'designed').sort(); $('tag').replaceChildren(); tags.forEach(tag => option($('tag'),tag,tag)); if (tags.includes(previous)) $('tag').value = previous; else if (message.masters['ledge:branch']) $('tag').value = 'ledge:branch';
+    if (message.geometry) { if (tags.includes(message.geometry.tag)) $('tag').value = message.geometry.tag; else if (message.geometry.tag.startsWith('pond:') && message.masters['pond:20']) $('tag').value = 'pond:20'; if (message.geometry.tag.startsWith('pond:')) $('bank').value = message.geometry.tag.slice(5); ['x','y','w','h'].forEach(key => { $(key).value = message.geometry[key]; }); }
+    else if (changedRow) { tagChanged(true); if (Number.isFinite(message.datum?.originX)) $('x').value = message.datum.originX - Math.floor(Number($('w').value) / 2); if (Number.isFinite(message.datum?.soilY)) $('y').value = message.datum.soilY - 24; }
+    $('bindings').value = JSON.stringify(message.masters,null,2); tagChanged(false);
+    status([message.message,...message.errors,...message.warnings].filter(Boolean).join('\n') || 'Ready. Select a direct source node to load its native geometry.',message.errors.length>0);
+  } else if (message.type === 'error') status(message.message,true);
+  else if (message.type === 'validation') status([message.errors.length ? 'Export blocked.' : `${message.count} MASTER row(s): structural validation passed.`,...message.errors,...message.warnings].join('\n'),message.errors.length>0);
+  else if (message.type === 'download') {
+    const blob = new Blob([message.text],{type:'application/json'}), url = URL.createObjectURL(blob), link = document.createElement('a'); link.href=url; link.download=message.filename; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url),1000);
+    status(`Downloaded ${message.count} real MASTER rows; ${message.live} contain designed.\n${message.nativeOperations ? message.nativeOperations+' native ART operations in the selected row.' : 'Geometry-only export; ART remains source metadata.'}\n${message.warnings.join('\n')}`);
+  }
+  lock(false);
+};
+</script></body></html>

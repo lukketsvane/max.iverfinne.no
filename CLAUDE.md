@@ -143,7 +143,7 @@ The enemy clock stays superlinear and unbounded; the team answers it the way Ris
 - `MaxStageLayout.create(stage, origin, ground, wet, seed)` generates gardens 1–19 and caches by stage and seed. Without a seed it returns the authored shape, which is also the fallback and the Crown.
 - The generator never calls `Math.random`. Every required ledge must stay reachable by a walking Cairn ([historical seeded-gardens.test.cjs](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/tests/seeded-gardens.test.cjs)), and `tests/seeded-physics-*.test.cjs` jumps every hop of 20 seeds with all four classes. Change a reach rule only together with those tests.
 - `layout.nodes` holds each platform's capability tier (C0–C3) for loot placement.
-- The campaign starts in the deepest vaults and climbs toward sunrise. Gardens 1–17 stay underground; the first limited dawn breaches are high above the routes in 18–19. Garden 20 emerges into a radioactive hellscape for the Hollow Crown. Gardens 1 and 2 retain the authored Seed Vault and Railway Ruins; the other gardens use seeded or live Figma geometry.
+- The campaign starts in the deepest vaults and climbs toward sunrise. Gardens 1–17 stay underground; the first limited dawn breaches are high above the routes in 18–19. Garden 20 emerges into a radioactive hellscape for the Hollow Crown. Garden 1 now uses the Hollow Tree MASTER source; Garden 2 retains Railway Ruins. Other gardens use seeded or live Figma geometry. The original Seed Vault remains an unchanged source and explicit historical test fixture.
 - Generated gardens draw their ledges and rock from the Sanctuary tile atlas: `tiles.js` and `assets/tiles-v1/` (built by [historical build-tiles.py](https://github.com/lukketsvane/max.iverfinne.no/blob/050bc6ce0e31f0d37139297973822224d58a0be8/scripts/build-tiles.py) from `docs/asset-review/sanctuary-tiles-v1/`), passed to `MaxStageLayout.draw`; stone ledges are mossy strips with flora, branch and root ledges are planks, ruin ledges are lintels, rock is nine-sliced. Frost and ember gardens keep their baked snow and ember ledges (`MaxPlaces.ledgeArt`), and until the atlas loads the baked ledges stand in. Garden places and pictures keep their own art.
 - `campaign-atmosphere.inc.js` renders native cavern layers through Garden 19, even during partial image loading. Mineral haze differentiates underground chapters; only 18–19 have a bounded roof aperture. No outdoor moon, stars or exit-cloud effects appear before the surface. All existing PNG sources remain unchanged.
 - `campaign-architecture.js` composes cached native world-space chambers around actual generated footing and expedition bounds in Gardens 3–19. It replaces the repeating backdrop columns with textured broken arches, grounded piers, attached place wings, lamps and a distinct large landmark. It never adds platforms or alters physics; exact tile/image crops keep source size, integer registration and disabled smoothing. Garden 18–19 breaches are drawn again after the architecture so their roof openings remain visible. Picture levels 1–2, Crown 20 and isolated modes keep their existing render paths. Material-only changes in `garden-places.js` preserve false-wall fades and Crown pixels. See `docs/design/campaign-chambers.md`.
@@ -427,7 +427,7 @@ spaces, restrained moss and native detail for the next implementation. The
 unpublished third geometry batch was stopped and preserved outside the repository;
 do not resume or publish it as the accepted direction. Show frequent actual game
 screenshots, including phone views, and push verified checkpoints to `main`.
-Figma connectors currently require reauthentication. Existing source pins remain
+At that earlier feedback checkpoint, Figma connectors required reauthentication. Existing source pins remained
 authoritative; an original procedural scenery pass does not establish fresh
 Figma synchronization or authorize new PNG masters or live authored imports.
 
@@ -458,3 +458,31 @@ Keep the dry and pond evidence and capture runners separate. Both studies remain
 offline and excluded from `dist`; the source PNG masters and normal live level
 data are unchanged. Importing editable scenery shapes alone does not implement
 the missing authenticated terrain/water and scenery-export contracts.
+
+## October 10 authenticated MASTER source
+
+The later explicit source instruction supersedes the offline-only status above
+for Garden 1. Author all twenty levels in MASTER `863:15150`, editor
+`863:15149`, page `508:11825`. The bottom `level_01` row `887:13528` is now
+Hollow Tree Entrance; its previous Magnetkløfta row is preserved in a separate
+reference section. Per-level ASSETS remains outside the gameplay source planes.
+The source and installer are documented in `docs/design/figma-level-studio/`.
+
+`scripts/master-levels.mjs` projects the existing native ART, ROUTES, POINTS,
+REGISTRATION and optional TERRAIN planes through the normal level compiler.
+Typed court/void/entrance regions and native ponds support real movement and
+planting. Gameplay geometry uses direct native instances/rectangles; artwork
+supports transparent native containers and integer translations with explicit
+draw phases. Unsupported transforms or artwork fail export. Original runtime
+PNG masters remain unchanged; the fresh authenticated asset check reports
+665 MATCH with zero problems. The sixty unused level-component PNG sources
+are preserved in a separate review section, outside production coverage.
+
+`level-scenes-data.js` contains the actual authenticated 6,965-operation ART
+capture. Its source key binds artwork, registration and compiled collision
+geometry. Normal source replacement and isolated mode guards reject stale
+scenery/terrain. Reusable Hollow Tree art components and gameplay instances are
+in the bottom Level 01 asset area. The local development plugin requires one
+manifest import; `npm run figma:studio` starts its actual-game preview bridge.
+Preview exports do not publish automatically. Every main checkpoint still
+requires the complete test/build and exact-SHA CI/production verification.

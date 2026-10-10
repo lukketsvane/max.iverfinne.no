@@ -199,3 +199,23 @@ A layer is REJECTED when it is off the integer grid, has not exactly one image f
 To retire an asset: `npm run figma:check` (all MATCH), move its layer from its runtime section to an archive frame outside the configured runtime sections, remove the runtime use, `npm run figma:manifest`, `npm test`.
 
 Logo and PWA icon exports are outside the native runtime atlas sync workflow.
+
+## Level authoring in MASTER
+
+The current level source is [the twenty-row MASTER](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=863-15150)
+on page `508:11825`. The bottom [Level 01](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=887-13528)
+contains Hollow Tree Entrance, with its reusable native art beside it in ASSETS.
+Its former layout remains a reference outside MASTER.
+
+Import the [MAX Native Level Studio package](design/figma-level-studio/plugin/INSTALL.md)
+once, run `npm run build` and `npm run figma:studio`, then edit the selected row
+and click **Preview in game**. The panel captures the actual native artwork and
+gameplay planes; the bridge compiles and serves an isolated copy of the real game.
+**Download all levels** exports the same source for checked runtime import.
+See the [ART export contract](design/master-levels/art/README.md) for the normal
+compiler/import command. Source activation and production publication remain
+separate: tests, build, CI and exact production SHA verification precede main.
+
+The [fresh October 10 asset audit](design/master-levels/evidence/figma-assets/README.md)
+reports 665 MATCH, zero problems. Sixty unused review PNGs were moved out of the
+runtime sections with IDs, images and native registration preserved.

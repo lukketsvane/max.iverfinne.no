@@ -10,7 +10,9 @@
     "figma:manifest": "node scripts/figma-sync.mjs manifest",
     "figma:drafts": "node scripts/figma-sync.mjs drafts",
     "figma:levels": "node scripts/figma-levels.mjs",
-    "figma:level-drafts": "node scripts/figma-level-drafts.mjs"
+    "figma:level-drafts": "node scripts/figma-level-drafts.mjs",
+    "figma:master-levels": "node scripts/master-levels.mjs",
+    "figma:studio": "node docs/design/figma-level-studio/plugin/preview.mjs --listen"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.116.0"
