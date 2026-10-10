@@ -16,6 +16,9 @@
 <script src="levels-v1/sunken-sanctuary.js"></script>
 <script src="high-tide-map.js"></script>
 <script src="levels-data.js"></script>
+<script src="turtle-garden-art-data.js"></script>
+<script src="turtle-garden-data.js"></script>
+<script src="turtle-garden-art.js"></script>
 <script src="levels.js"></script>
 <script src="level-scenes-data.js"></script>
 <script src="level-scenes.js"></script>
@@ -326,13 +329,15 @@ function bodyFloorY(x,y){return window.MaxLevels.floorAt(activeTerrainLayout(),x
 function playerSupportY(x,y){var L=stageLayout(),p=window.MaxStageLayout.at(L,x,y,4);return p?p.y:highTideMode()?rogueRun.survival.base+110:window.MaxLevels.floorAt(activeTerrainLayout(),x,y,surfaceY);}
 function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
 var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
-function drawPlatforms(t){var L=stageLayout(),a=L.art,presentation=!isolatedRelicMode()&&window.MaxLevelScenes?window.MaxLevelScenes.presentation(L,surfaceY):L;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,presentation,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
-function drawLevelScene(layer){if(!isolatedRelicMode()&&window.MaxLevelScenes)window.MaxLevelScenes.draw(ctx,stageLayout(),camX,camY,IW,IH,surfaceY,layer,TILES);}
+function drawPlatforms(t){var L=stageLayout(),a=L.art,presentation=!isolatedRelicMode()&&window.MaxLevelScenes?window.MaxLevelScenes.presentation(L,surfaceY):L;if(!isolatedRelicMode()&&window.MaxTurtleArt)presentation=window.MaxTurtleArt.presentation(presentation);if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));if(isolatedRelicMode()||!window.MaxTurtleArt||!window.MaxTurtleArt.drawSupports(ctx,presentation,camX,camY,IW,IH,TILES))window.MaxStageLayout.draw(ctx,presentation,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
+function drawLevelScene(layer){if(isolatedRelicMode())return;var L=stageLayout();if(window.MaxLevelScenes)window.MaxLevelScenes.draw(ctx,L,camX,camY,IW,IH,surfaceY,layer,TILES);if(window.MaxTurtleArt)window.MaxTurtleArt.draw(ctx,L,camX,camY,IW,IH,layer);}
 function levelSceneCamera(){
-  if(relicRunMode()||warp||P.st==='float'||climb&&climb.exit||!window.MaxLevelScenes||!window.MaxLevelScenes.camera)return null;
-  return window.MaxLevelScenes.camera(stageLayout(),{actorX:P.x,feet:P.y,width:IW,height:IH,headroom:safeTopArt()+34},surfaceY);
+  if(relicRunMode()||warp||P.st==='float'||climb&&climb.exit)return null;
+  var L=stageLayout(),view={actorX:P.x,feet:P.y,width:IW,height:IH,headroom:safeTopArt()+34};
+  return window.MaxTurtleArt&&window.MaxTurtleArt.camera(L,view)||window.MaxLevelScenes&&window.MaxLevelScenes.camera&&window.MaxLevelScenes.camera(L,view,surfaceY)||null;
 }
 function drawLadders(L){
+  if(!isolatedRelicMode()&&window.MaxTurtleArt&&window.MaxTurtleArt.drawLadders(ctx,L,camX,camY,IW,IH))return;
   (L.ladders||[]).forEach(function(q){if(q.art)return;var x=Math.round(q.x-camX),top=Math.round(q.top-camY),bottom=Math.round(q.bottom-camY),w=Math.min(7,Math.round((q.w||14)/2));if(x+w<0||x-w>IW||bottom<0||top>IH)return;
     rect(x-w,top,2,bottom-top,'#665239');rect(x+w-1,top,2,bottom-top,'#665239');
     for(var y=top+3;y<bottom;y+=7){rect(x-w,y,w*2+1,2,'#a38655');rect(x-w+1,y+2,w*2-1,1,'#493d30');}
@@ -6459,7 +6464,7 @@ function frame(now) {
   drawBiomeTint();
   }
   drawLandmarkBack(tSec);
-  if(!isolatedRelicMode()&&window.MaxCampaignArchitecture){
+  if(!isolatedRelicMode()&&window.MaxCampaignArchitecture&&!stageLayout().pixelMillTurtle){
     window.MaxCampaignArchitecture.draw(ctx,stageLayout(),camX,camY,IW,IH,tSec,TILES,surfaceY,waterAt);
     var roomAtmosphere=campaignAtmosphere();
     if(roomAtmosphere.glimpse)drawCampaignBreach(tSec,roomAtmosphere);

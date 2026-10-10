@@ -1,0 +1,25 @@
+{
+  "format": "pixel-mill-preprocessing-audit",
+  "version": 1,
+  "inputDecodedRGBA": {
+    "width": 1280,
+    "height": 720,
+    "sha256": "16f725fd2170afc1e7ce5ef3781a419f13e55d7aadb31da8c6865b6128046af0"
+  },
+  "prepassRGBA": {
+    "width": 1280,
+    "height": 720,
+    "sha256": "973a5f2d12a8db8c06f9da2a9012776bee11464b033c15afbf08bb98af5a032a"
+  },
+  "finalRGBA": {
+    "width": 640,
+    "height": 360,
+    "sha256": "35e9e8ab3deef23d9cc3c5911460c2306ac6dc7bb52d7168232b1f6f1d6510c3"
+  },
+  "functions": [
+    "removeBackground",
+    "processPixels"
+  ],
+  "nativeScale": 0.5,
+  "pass": true
+}

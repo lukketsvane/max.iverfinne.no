@@ -1,0 +1,57 @@
+{
+  "format": "pixel-mill-public-source-audit",
+  "version": 1,
+  "site": "https://pixel-mill.iverfinne.no",
+  "commit": "16cf029abf8e5f7ab791421b17f722d5fc5ff00c",
+  "modules": [
+    {
+      "name": "pixel-core.mjs",
+      "liveSha256": "35adc6490b0eb57ec63852a4f0455560179668e52d367610c252279960c523f6",
+      "preservedSha256": "35adc6490b0eb57ec63852a4f0455560179668e52d367610c252279960c523f6",
+      "matches": true
+    },
+    {
+      "name": "png.mjs",
+      "liveSha256": "bac7833380c86589fb42776d51877507329eff43ef659b4cd4903571eebd197b",
+      "preservedSha256": "bac7833380c86589fb42776d51877507329eff43ef659b4cd4903571eebd197b",
+      "matches": true
+    },
+    {
+      "name": "agent.mjs",
+      "liveSha256": "05a702502400e25da6e8ccc323025c36a05bebf855c8c7d3f05621c0f5790d24",
+      "preservedSha256": "05a702502400e25da6e8ccc323025c36a05bebf855c8c7d3f05621c0f5790d24",
+      "matches": true
+    },
+    {
+      "name": "io.mjs",
+      "liveSha256": "5c3e8fcb323a56f764780768a4469b4f203104d4f38bdd6eb2f161e174e8955d",
+      "preservedSha256": "5c3e8fcb323a56f764780768a4469b4f203104d4f38bdd6eb2f161e174e8955d",
+      "matches": true
+    },
+    {
+      "name": "geometry.mjs",
+      "liveSha256": "91f35c29cdcef21b27cb27786d26bb90980ffbec582869b157792e3638649ffe",
+      "preservedSha256": "91f35c29cdcef21b27cb27786d26bb90980ffbec582869b157792e3638649ffe",
+      "matches": true
+    },
+    {
+      "name": "engine.mjs",
+      "liveSha256": "d2b659a390a5720525e491cab183b90b916da1b2823bba6314ef48a6d92185aa",
+      "preservedSha256": "d2b659a390a5720525e491cab183b90b916da1b2823bba6314ef48a6d92185aa",
+      "matches": true
+    },
+    {
+      "name": "figma-bridge.mjs",
+      "liveSha256": "c7dc178dc592df2496aec4b9ea865fe0d007717248753c70d7594e73d85727df",
+      "preservedSha256": "c7dc178dc592df2496aec4b9ea865fe0d007717248753c70d7594e73d85727df",
+      "matches": true
+    },
+    {
+      "name": "figma-plugin.mjs",
+      "liveSha256": "d52b738eba936f1ac156c4ee8d57e3271e1ac8eaf7ff5890616a47adb3356636",
+      "preservedSha256": "d52b738eba936f1ac156c4ee8d57e3271e1ac8eaf7ff5890616a47adb3356636",
+      "matches": true
+    }
+  ],
+  "pass": true
+}

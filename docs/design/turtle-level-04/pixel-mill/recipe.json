@@ -1,0 +1,119 @@
+{
+  "format": "max-pixel-mill-native-art-recipe",
+  "version": 1,
+  "name": "Garden 4 \u2014 Mossy Turtle reference treatment",
+  "input": "photo-7-source.jpg",
+  "inputSha256": "c5c8886e855fd2020b7c29c848df3799cc5b8603234e682d909ca379d5429a82",
+  "inputDimensions": {
+    "width": 1280,
+    "height": 720
+  },
+  "source": {
+    "repository": "https://github.com/lukketsvane/pixel-mill.iverfinne.no",
+    "commit": "16cf029abf8e5f7ab791421b17f722d5fc5ff00c",
+    "modules": [
+      {
+        "name": "pixel-core.mjs",
+        "sha256": "35adc6490b0eb57ec63852a4f0455560179668e52d367610c252279960c523f6"
+      },
+      {
+        "name": "png.mjs",
+        "sha256": "bac7833380c86589fb42776d51877507329eff43ef659b4cd4903571eebd197b"
+      },
+      {
+        "name": "agent.mjs",
+        "sha256": "05a702502400e25da6e8ccc323025c36a05bebf855c8c7d3f05621c0f5790d24"
+      },
+      {
+        "name": "io.mjs",
+        "sha256": "5c3e8fcb323a56f764780768a4469b4f203104d4f38bdd6eb2f161e174e8955d"
+      },
+      {
+        "name": "geometry.mjs",
+        "sha256": "91f35c29cdcef21b27cb27786d26bb90980ffbec582869b157792e3638649ffe"
+      },
+      {
+        "name": "engine.mjs",
+        "sha256": "d2b659a390a5720525e491cab183b90b916da1b2823bba6314ef48a6d92185aa"
+      },
+      {
+        "name": "figma-bridge.mjs",
+        "sha256": "c7dc178dc592df2496aec4b9ea865fe0d007717248753c70d7594e73d85727df"
+      },
+      {
+        "name": "figma-plugin.mjs",
+        "sha256": "d52b738eba936f1ac156c4ee8d57e3271e1ac8eaf7ff5890616a47adb3356636"
+      }
+    ]
+  },
+  "options": {
+    "width": 640,
+    "height": 360,
+    "color": [
+      255,
+      255,
+      255
+    ],
+    "tolerance": 80,
+    "mode": "edge",
+    "remove": true,
+    "palette": 48,
+    "minArea": 1,
+    "connectivity": 8,
+    "bridge": 0
+  },
+  "prepass": {
+    "function": "removeBackground",
+    "color": [
+      255,
+      255,
+      255
+    ],
+    "tolerance": 15,
+    "mode": "all",
+    "enabled": true,
+    "dimensions": "original source dimensions"
+  },
+  "executionEnvironment": {
+    "PIXEL_MILL_SOURCE_ROOT": "/tmp/pixel-mill-source",
+    "PIXEL_MILL_INPUT": "/tmp/codex-remote-attachments/01a12680-9f84-7781-8bd0-a86617b3a055/1F4122D9-1449-413C-9413-85337AF6923D/7-Photo-7.jpg",
+    "PIXEL_MILL_OUT": "/tmp/max-turtle-pixel-mill-clean-p48",
+    "PIXEL_MILL_PALETTE": "48",
+    "PIXEL_MILL_TOLERANCE": "80",
+    "PIXEL_MILL_MODE": "edge",
+    "PIXEL_MILL_REVIEW_BACKGROUND": "#080e17",
+    "PIXEL_MILL_PRECLEAR_TOLERANCE": "15",
+    "PIXEL_MILL_SOURCE_COMMIT": "16cf029abf8e5f7ab791421b17f722d5fc5ff00c"
+  },
+  "scaling": "Pixel Mill resizePixels: nearest-neighbor source samples floor((coordinate+0.5)*sourceDimension/targetDimension).",
+  "transparency": "White within RMS RGB distance 80 removed in edge mode; dark shell/cave colors retained. Alpha is binary.",
+  "palette": "Pixel Mill weighted median-cut quantize with 48 colors, followed by exact RGB enumeration.",
+  "reviewBackground": "#080e17",
+  "authority": "User-provided JPEG reference treatment. No new Figma node IDs or runtime PNG master authority. Figma kits are local import packages and are unsynced.",
+  "coordinates": "640\u00d7360 native pixels; x right, y down; drawing origin 0,0. MAX runtime registration and geometry are separate.",
+  "preprocessingHashes": {
+    "format": "pixel-mill-preprocessing-audit",
+    "version": 1,
+    "inputDecodedRGBA": {
+      "width": 1280,
+      "height": 720,
+      "sha256": "16f725fd2170afc1e7ce5ef3781a419f13e55d7aadb31da8c6865b6128046af0"
+    },
+    "prepassRGBA": {
+      "width": 1280,
+      "height": 720,
+      "sha256": "973a5f2d12a8db8c06f9da2a9012776bee11464b033c15afbf08bb98af5a032a"
+    },
+    "finalRGBA": {
+      "width": 640,
+      "height": 360,
+      "sha256": "35e9e8ab3deef23d9cc3c5911460c2306ac6dc7bb52d7168232b1f6f1d6510c3"
+    },
+    "functions": [
+      "removeBackground",
+      "processPixels"
+    ],
+    "nativeScale": 0.5,
+    "pass": true
+  }
+}

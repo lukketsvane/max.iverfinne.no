@@ -1,0 +1,235 @@
+{
+  "format": "max-turtle-pixel-mill-source/v1",
+  "stage": 4,
+  "origin": "user-requested-pixel-mill-treatment",
+  "references": [
+    {
+      "photo": 7,
+      "originalFilename": "7-Photo-7.jpg",
+      "path": "pixel-mill/photo-7-source.jpg",
+      "width": 1280,
+      "height": 720,
+      "sha256": "c5c8886e855fd2020b7c29c848df3799cc5b8603234e682d909ca379d5429a82",
+      "use": "Giant mossy turtle scene; immutable input to actual Pixel Mill processing."
+    },
+    {
+      "photo": 8,
+      "originalFilename": "8-Photo-8.jpg",
+      "path": "references/photo-8-source.jpg",
+      "width": 1280,
+      "height": 960,
+      "sha256": "fdd1e07ebf98fc1deea2c06dcbb712a1fd7756444d18f92bc760652da3d63ec0",
+      "use": "Machinery, planters and small creatures; reference only, no runtime pixels imported."
+    }
+  ],
+  "pixelMill": {
+    "repository": "https://github.com/lukketsvane/pixel-mill.iverfinne.no",
+    "commit": "16cf029abf8e5f7ab791421b17f722d5fc5ff00c",
+    "recipe": "pixel-mill/recipe.json",
+    "processingScript": "pixel-mill/reproduce.cjs",
+    "receipt": "pixel-mill/report.json",
+    "preprocessingAudit": "pixel-mill/preprocessing-audit.json",
+    "liveModuleAudit": "pixel-mill/live-module-audit.json",
+    "editorProject": "pixel-mill/pixel-mill-project.json",
+    "editorZip": "pixel-mill/pixel-mill-export.zip",
+    "preservedModuleReplay": "source-replay-audit.json"
+  },
+  "native": {
+    "width": 640,
+    "height": 360,
+    "paletteColors": 48,
+    "rectangles": 51164,
+    "opaquePixels": 95097,
+    "transparentPixels": 135303,
+    "rgbaSha256": "35e9e8ab3deef23d9cc3c5911460c2306ac6dc7bb52d7168232b1f6f1d6510c3",
+    "pngSha256": "7f6c7f626fd3fa9a6700cf33b0332b98d839dcc15304581c39f5893c2b96e9e1",
+    "rectanglesPath": "pixel-mill/turtle-native-rects.json",
+    "reviewPng": "pixel-mill/turtle-640x360.png",
+    "runtimeData": "turtle-garden-art-data.js",
+    "runtimeGenerator": "scripts/build-turtle-art.cjs",
+    "geometryProvider": "turtle-garden-data.js",
+    "registration": {
+      "width": 640,
+      "height": 360,
+      "originX": 180,
+      "soilY": 234,
+      "imageX": 0,
+      "imageY": 0
+    }
+  },
+  "figma": {
+    "synchronized": false,
+    "authenticatedCapture": null,
+    "importKit": "pixel-mill/pixel-mill-figma-kit.zip",
+    "transfer": "pixel-mill/level.figma.json",
+    "status": "Local Pixel Mill import kit; import and authenticated readback have not occurred."
+  },
+  "runtimeMasterPng": false,
+  "productionManifest": {
+    "path": "assets/figma-manifest.json",
+    "sha256": "332492df488c2d11bbc53ab4d66ee95ff7a06ab27ce680c95da3968c082d2f53",
+    "status": "Existing production entries and PNG pins unchanged."
+  },
+  "files": [
+    {
+      "path": "pixel-mill-source/dist/agent.mjs",
+      "bytes": 42484,
+      "sha256": "05a702502400e25da6e8ccc323025c36a05bebf855c8c7d3f05621c0f5790d24"
+    },
+    {
+      "path": "pixel-mill-source/dist/color.mjs",
+      "bytes": 520,
+      "sha256": "5d6fa5030c27094d008fe74da74fe5a92e0c597fad160358230ee4e1f65d66c5"
+    },
+    {
+      "path": "pixel-mill-source/dist/engine.mjs",
+      "bytes": 19570,
+      "sha256": "d2b659a390a5720525e491cab183b90b916da1b2823bba6314ef48a6d92185aa"
+    },
+    {
+      "path": "pixel-mill-source/dist/figma-bridge.mjs",
+      "bytes": 5761,
+      "sha256": "c7dc178dc592df2496aec4b9ea865fe0d007717248753c70d7594e73d85727df"
+    },
+    {
+      "path": "pixel-mill-source/dist/figma-plugin.mjs",
+      "bytes": 16737,
+      "sha256": "d52b738eba936f1ac156c4ee8d57e3271e1ac8eaf7ff5890616a47adb3356636"
+    },
+    {
+      "path": "pixel-mill-source/dist/geometry.mjs",
+      "bytes": 11466,
+      "sha256": "91f35c29cdcef21b27cb27786d26bb90980ffbec582869b157792e3638649ffe"
+    },
+    {
+      "path": "pixel-mill-source/dist/io.mjs",
+      "bytes": 8952,
+      "sha256": "5c3e8fcb323a56f764780768a4469b4f203104d4f38bdd6eb2f161e174e8955d"
+    },
+    {
+      "path": "pixel-mill-source/dist/pixel-core.mjs",
+      "bytes": 7938,
+      "sha256": "35adc6490b0eb57ec63852a4f0455560179668e52d367610c252279960c523f6"
+    },
+    {
+      "path": "pixel-mill-source/dist/png.mjs",
+      "bytes": 4833,
+      "sha256": "bac7833380c86589fb42776d51877507329eff43ef659b4cd4903571eebd197b"
+    },
+    {
+      "path": "pixel-mill-source/dist/project-state.mjs",
+      "bytes": 1884,
+      "sha256": "ef4cce6ef9aec1974ac81f6a60ffeb213246fc7da40e055636350865bdaae9c0"
+    },
+    {
+      "path": "pixel-mill-source/dist/sheet-recognition.mjs",
+      "bytes": 6607,
+      "sha256": "b1ae86eeb9dd5c295c76a9ca9056ad74da346c53219d4443e5d3a6e8ff322792"
+    },
+    {
+      "path": "pixel-mill-source/dist/spritesheets.mjs",
+      "bytes": 35637,
+      "sha256": "8c851479ac0c47e3749ce5bb706f933999d58bd63e92a818e3d6cea67a07c9a7"
+    },
+    {
+      "path": "pixel-mill/audit-preprocessing.cjs",
+      "bytes": 3152,
+      "sha256": "ceb2831ad137284b3a4996552d82f674d3cd229d7ad66bd8ccd011989785c16c"
+    },
+    {
+      "path": "pixel-mill/connected-cuts.json",
+      "bytes": 624,
+      "sha256": "d75853aadd18d53314e9a71e908ce7eb2a98b6a9f099d67490363b0a0fa9423d"
+    },
+    {
+      "path": "pixel-mill/level.figma.json",
+      "bytes": 189161,
+      "sha256": "06ab354ac73dc4d0ccef3c5b7cfff2ec0fc9fbc0793aae2840c55b7f441ca5f0"
+    },
+    {
+      "path": "pixel-mill/live-module-audit.json",
+      "bytes": 2163,
+      "sha256": "79377cde0e2d3fe570709c260772d08e1542962e3a1c9603ec24384f7c6468bd"
+    },
+    {
+      "path": "pixel-mill/palette.json",
+      "bytes": 3288,
+      "sha256": "52b70bb73e4febe817ee0c3ddbdd94f1e86578ec79411c4d964cd8a37870cfe2"
+    },
+    {
+      "path": "pixel-mill/photo-7-source.jpg",
+      "bytes": 145654,
+      "sha256": "c5c8886e855fd2020b7c29c848df3799cc5b8603234e682d909ca379d5429a82"
+    },
+    {
+      "path": "pixel-mill/pixel-mill-export-level.png",
+      "bytes": 156537,
+      "sha256": "50582fb148db1f08507d876ea5a826026b98df9eea9a417e0774a6d5dbb6ac0b"
+    },
+    {
+      "path": "pixel-mill/pixel-mill-export.zip",
+      "bytes": 322826,
+      "sha256": "fe382468fab4e03d3dc6db3de375cf94eb56dc3c31b2015680c95cb8dacef75f"
+    },
+    {
+      "path": "pixel-mill/pixel-mill-figma-kit.zip",
+      "bytes": 302723,
+      "sha256": "ecd75da48afff58614547137799afb4a40a4b085d185a3a9dfbb8718bd788e3c"
+    },
+    {
+      "path": "pixel-mill/pixel-mill-processed-review.png",
+      "bytes": 148878,
+      "sha256": "00a8a54ec719236e17532e9ae04c8792b9d07b6de8441cce48581c94cac336cd"
+    },
+    {
+      "path": "pixel-mill/pixel-mill-project.json",
+      "bytes": 94813,
+      "sha256": "8e11f959fda0fbd28155e4bcc38fcc465fdcbf16bad7d2a2c8c3792f7d064b94"
+    },
+    {
+      "path": "pixel-mill/preprocessing-audit.json",
+      "bytes": 600,
+      "sha256": "6d20a3197300422bea30029969b04d0830415382630868394df4eb5bd18c7410"
+    },
+    {
+      "path": "pixel-mill/recipe.json",
+      "bytes": 3952,
+      "sha256": "12fdf87662e484516e0ba6fdd97a36373727399e067b1e67c7f3c8bcd704026c"
+    },
+    {
+      "path": "pixel-mill/report.json",
+      "bytes": 1506,
+      "sha256": "94c62cdb10c1fd1fb0c9df0e464bb5a190dcc9d789008dc13922e2dbfd110d06"
+    },
+    {
+      "path": "pixel-mill/reproduce.cjs",
+      "bytes": 11530,
+      "sha256": "493b54a90b5077b049970689b05daee5de7c985f245e85fe4e7664e2fa8db9dd"
+    },
+    {
+      "path": "pixel-mill/turtle-640x360.png",
+      "bytes": 70470,
+      "sha256": "7f6c7f626fd3fa9a6700cf33b0332b98d839dcc15304581c39f5893c2b96e9e1"
+    },
+    {
+      "path": "pixel-mill/turtle-640x360.rgba",
+      "bytes": 921600,
+      "sha256": "35e9e8ab3deef23d9cc3c5911460c2306ac6dc7bb52d7168232b1f6f1d6510c3"
+    },
+    {
+      "path": "pixel-mill/turtle-native-rects.json",
+      "bytes": 844981,
+      "sha256": "c442f1e17ff00b7a418b7ab4b7bfe9c5e67374396be98a637768d733cbd27d0d"
+    },
+    {
+      "path": "references/photo-8-source.jpg",
+      "bytes": 169069,
+      "sha256": "fdd1e07ebf98fc1deea2c06dcbb712a1fd7756444d18f92bc760652da3d63ec0"
+    },
+    {
+      "path": "source-replay-audit.json",
+      "bytes": 1651,
+      "sha256": "cbbf761e9c79c07c304566f7d865f54b854f1fbd89843054493f193ce93e7b78"
+    }
+  ]
+}

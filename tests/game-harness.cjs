@@ -165,6 +165,9 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'guardian-sites.js'), 'utf8'), sandbox);
   const pics = path.join(__dirname, '..', 'levels-v1'); if (saved.__pictures && fs.existsSync(pics)) for (const f of fs.readdirSync(pics).filter(n => n.endsWith('.js'))) vm.runInNewContext(fs.readFileSync(path.join(pics, f), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels-data.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'turtle-garden-art-data.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'turtle-garden-data.js'), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'turtle-garden-art.js'), 'utf8'), sandbox);
   if (saved.__levelData !== undefined) sandbox.MaxLevelData = saved.__levelData;
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
