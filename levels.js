@@ -156,6 +156,17 @@
     var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, designed: true, frame: garden.frame, platforms: [], routes: [], rewards: [], trials: [], bonuses: [], spots: {}, decor: [] };
     if (garden.replacePicture === true) layout.replacePicture = true;
     if (garden.furnishPlace === true) layout.furnishPlace = true;
+    if (stage === 4 && garden.pixelMillTurtle === true) {
+      layout.pixelMillTurtle = true;
+      layout.pixelMillSourceKey = garden.pixelMillSourceKey;
+      layout.campaign = Object.assign({}, L.profile(stage), { title: 'Mossback Sanctuary', focus: 'Explore the living shell', routes: [{ role: 'Shell galleries' }, { role: 'Moss crown' }] });
+      if (Array.isArray(garden.guardianSites) && garden.guardianSites.length === 3) {
+        layout.guardianSites = garden.guardianSites.map(function (s) {
+          return { id: stage + ':' + s.id, name: s.name, x: origin + s.x, y: base - s.rise, platformId: s.platformId,
+            courtX: origin + s.courtX, courtY: base - s.courtRise, courtLeft: origin + s.courtLeft, courtRight: origin + s.courtRight };
+        });
+      }
+    }
     if (garden.masterSceneSourceKey != null) {
       if (typeof garden.masterSceneSourceKey !== 'string' || !/^[a-f0-9]{64}$/.test(garden.masterSceneSourceKey)) throw new Error('MASTER scene source binding requires a lowercase SHA-256 digest');
       layout.masterSceneSourceKey = garden.masterSceneSourceKey;

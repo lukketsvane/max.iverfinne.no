@@ -486,3 +486,25 @@ in the bottom Level 01 asset area. The local development plugin requires one
 manifest import; `npm run figma:studio` starts its actual-game preview bridge.
 Preview exports do not publish automatically. Every main checkpoint still
 requires the complete test/build and exact-SHA CI/production verification.
+
+## October 10 Pixel Mill Turtle Garden 4
+
+The owner's subsequent instruction selects the giant mossy turtle reference
+for Level 4 and explicitly requests Pixel Mill. `turtle-garden-data.js` supplies
+its geometry only when there is no authored MASTER Garden 4; a later verified
+MASTER import takes precedence. The exact user JPEG, Pixel Mill source modules,
+recipe, normalized export, editor project and local Figma kit remain in
+`docs/design/turtle-level-04/`. The kit is unsynchronized and is never treated
+as an authenticated MASTER readback.
+
+Runtime art is the lossless editable rectangle export in
+`turtle-garden-art-data.js`, cached by `turtle-garden-art.js` at native 1:1.
+No new runtime PNG or data URI is introduced; all 665 existing Figma PNG pins
+remain unchanged. Native source registration is origin 180 / soil 234, placing
+all four ordinary co-op entry slots on the dry inner gallery. Source collision
+strips retain their art, while added timber supports remain visibly drawn.
+Lower terrain explicitly removes the procedural floor through the open chamber.
+The visible lower pool is scenery, with an accessible real lower floor; it does
+not claim new water physics across overlapping dry galleries. Three distant
+shrine destinations use the single verified 104-pixel dry planting court.
+Ordinary guardian clearing and physical exit-plant ascent remain unchanged.

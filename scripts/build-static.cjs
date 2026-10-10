@@ -26,7 +26,7 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
-for (const file of files) copy(file);
+for (const file of files.concat(['turtle-garden-data.js', 'turtle-garden-art-data.js', 'turtle-garden-art.js'])) copy(file);
 copy('review/crown-ascent');
 writeFileSync(join(output, 'index.html'), require('./game-source.cjs')());
 require('./build-companion.cjs')(output);
