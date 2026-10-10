@@ -449,3 +449,12 @@ of the working level, with short captions. The newest early-room references add
 broken waterworks, hanging pods, mossy root bridges, a beetle crossing and an acorn
 seesaw. They guide subsequent drafts; they are not already registered PNG masters
 or an approved new ordering of the twenty levels.
+
+`docs/design/early-gardens-waterworks/` now contains an original Broken Waterworks
+scene, editable dry geometry and actual phone/desktop climb, return and planting
+evidence. Its optional native pond has a separate 12-case four-class physics
+proof and continuous phone/desktop water-exit, gallery and planting stories.
+Keep the dry and pond evidence and capture runners separate. Both studies remain
+offline and excluded from `dist`; the source PNG masters and normal live level
+data are unchanged. Importing editable scenery shapes alone does not implement
+the missing authenticated terrain/water and scenery-export contracts.

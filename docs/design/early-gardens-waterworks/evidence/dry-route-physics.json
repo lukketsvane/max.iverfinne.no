@@ -1,0 +1,600 @@
+{
+  "status": "offline-broken-waterworks-dry-candidate-physics",
+  "input": "/workspace/max-game/docs/design/early-gardens-waterworks/bundle/candidate-levels-data.js",
+  "sha256": "b6e8e87d7523ecbf63469bd7c44b814a86dd845dec8d0004fc5a264a5e1c7eff",
+  "source": "actual existing engine; synthetic candidate data; no fresh Figma synchronization or production claim",
+  "stages": [
+    2
+  ],
+  "expectedCases": 12,
+  "classes": [
+    "mech",
+    "runner",
+    "bulwark",
+    "herbalist"
+  ],
+  "rates": [
+    30,
+    60,
+    120
+  ],
+  "integration": [
+    {
+      "stage": 2,
+      "seed": 1,
+      "authoredPlatforms": 11,
+      "furnishedPlatforms": 20,
+      "ladders": 8,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 2026,
+      "authoredPlatforms": 11,
+      "furnishedPlatforms": 21,
+      "ladders": 8,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 4294967295,
+      "authoredPlatforms": 11,
+      "furnishedPlatforms": 20,
+      "ladders": 8,
+      "identical": true
+    }
+  ],
+  "cases": [
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 30,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 1658,
+      "ladderDownFrames": 496,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 30,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 1658,
+      "ladderDownFrames": 496,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 30,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 1658,
+      "ladderDownFrames": 496,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 30,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 1658,
+      "ladderDownFrames": 496,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 60,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 3331,
+      "ladderDownFrames": 995,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 60,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 3331,
+      "ladderDownFrames": 995,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 60,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 3331,
+      "ladderDownFrames": 995,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 60,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 3331,
+      "ladderDownFrames": 995,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 120,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 6691,
+      "ladderDownFrames": 2000,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 120,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 6691,
+      "ladderDownFrames": 2000,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 120,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 6691,
+      "ladderDownFrames": 2000,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 120,
+      "platforms": 11,
+      "markers": 10,
+      "jumpHops": 9,
+      "ladderUpFrames": 6691,
+      "ladderDownFrames": 2000,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2",
+        "2:ladder4",
+        "2:ladder3",
+        "2:ladder5",
+        "2:ladder6",
+        "2:ladder7"
+      ],
+      "ladderReturns": 8,
+      "galleryCrossings": 0,
+      "supportedWalks": 0,
+      "returns": 2,
+      "alternativeReturns": [],
+      "failures": [],
+      "expected": {
+        "platforms": 11,
+        "markers": 10,
+        "returns": 2,
+        "ladderReturns": 8
+      }
+    }
+  ],
+  "failures": [],
+  "sourceBinding": {
+    "fixture": "/workspace/max-game/docs/design/early-gardens-waterworks/bundle/synthetic-candidate.json",
+    "fixtureStatus": "offline-authored-simulation-not-figma-capture",
+    "kind": "offline-native-geometry",
+    "geometryDigest": "c7e3c98e0919ff3ec9a7eeb77ad1a89a12593e482665505d87e390a1fab85df9",
+    "baselineDigest": "b1e2c81fa459145ab3f787bd57b0ec0f7bbd4ce5d48e31516a09a1e2d6fd3077",
+    "sourceDigest": "5ebcc3c4f44607da6e188f95c6a66b6c17420d847609e41e96c54a2a0960b09d",
+    "sourceFiles": [
+      "ascent-presentation.inc.js",
+      "build-paths.js",
+      "cairn.inc.js",
+      "campaign-architecture.js",
+      "campaign-atmosphere.inc.js",
+      "companion.js",
+      "coop-game.inc.js",
+      "garden-places.js",
+      "guardian-sites.js",
+      "high-tide-map.js",
+      "high-tide.inc.js",
+      "hollow-crown.inc.js",
+      "index.html",
+      "last-seed.inc.js",
+      "level-guide.inc.js",
+      "levels-data.js",
+      "levels-v1/railway-ruins.js",
+      "levels-v1/seed-vault.js",
+      "levels-v1/sunken-sanctuary.js",
+      "levels.js",
+      "max-classes.js",
+      "mech.inc.js",
+      "mycel.inc.js",
+      "night-relay.inc.js",
+      "polge.inc.js",
+      "rat-enemies.inc.js",
+      "rattus.inc.js",
+      "run-director.inc.js",
+      "scripts/figma-authored-drafts.mjs",
+      "scripts/figma-level-drafts-import.mjs",
+      "scripts/figma-level-drafts.mjs",
+      "scripts/figma-levels.mjs",
+      "scripts/figma-mcp.mjs",
+      "scripts/game-source.cjs",
+      "secrets.inc.js",
+      "sligo-life.inc.js",
+      "stage-expeditions.js",
+      "stage-layout.js",
+      "tests/game-harness.cjs",
+      "wonders.inc.js",
+      "yeet.inc.js"
+    ],
+    "baselineScope": {
+      "method": "SHA-256 of named source files plus the expanded game source used by gameWorld()",
+      "expandedGameSource": "scripts/game-source.cjs()"
+    },
+    "intendedFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "fixturePairingVerified": false,
+    "provenance": "Declared adjacent offline fixture metadata; pairing with these candidate bytes has not been independently verified."
+  },
+  "resetSemantics": "Each independent route starts once at a genuine dry soil entry with no solid overlap. When the compiler jump heuristic selects soil inside masonry, the observer chooses the nearest legal outside-soil entry before initialization and verifies the real jump; it never repairs a buried ladder approach. Subsequent movement uses updatePlayer without per-hop pose placement. Jump retries restore only the same takeoff state. Reverse-route fallback restores the reached reward state, searches alternatives, then replays actual input frames without pose placement; those returns reject automatic furnished supports.",
+  "returnSupportPolicy": "Every grounded tick during the ordinary reverse route must use an authored platform identity or original bare soil. Alternative return search and replay apply the same authored-support restriction. Actor poses are not placed between successful return hops.",
+  "initialEntryAdjustments": [
+    {
+      "stage": 2,
+      "target": "2:d3",
+      "compilerEntry": {
+        "x": 207563,
+        "y": -0.6484558833098717
+      },
+      "verifiedEntry": {
+        "x": 207551,
+        "y": -0.3500564598929792
+      },
+      "reason": "compiler jump heuristic soil point overlapped solid masonry"
+    },
+    {
+      "stage": 2,
+      "target": "2:d4",
+      "compilerEntry": {
+        "x": 207563,
+        "y": -0.6484558833098717
+      },
+      "verifiedEntry": {
+        "x": 207551,
+        "y": -0.3500564598929792
+      },
+      "reason": "compiler jump heuristic soil point overlapped solid masonry"
+    },
+    {
+      "stage": 2,
+      "target": "2:b0",
+      "compilerEntry": {
+        "x": 207233,
+        "y": 6.684063151356973
+      },
+      "verifiedEntry": {
+        "x": 207231,
+        "y": 6.566910349288573
+      },
+      "reason": "compiler jump heuristic soil point overlapped solid masonry"
+    },
+    {
+      "stage": 2,
+      "target": "2:b1",
+      "compilerEntry": {
+        "x": 207563,
+        "y": -0.6484558833098717
+      },
+      "verifiedEntry": {
+        "x": 207551,
+        "y": -0.3500564598929792
+      },
+      "reason": "compiler jump heuristic soil point overlapped solid masonry"
+    },
+    {
+      "stage": 2,
+      "target": "2:b2",
+      "compilerEntry": {
+        "x": 207787,
+        "y": -1.9668593249425825
+      },
+      "verifiedEntry": {
+        "x": 207789,
+        "y": -2.5891688810461737
+      },
+      "reason": "compiler jump heuristic soil point overlapped solid masonry"
+    }
+  ],
+  "verificationTargets": [
+    "Compiled offline candidate selected through real stageLayout with pictures enabled",
+    "Exact authored surface dimensions preserved within automatic expedition/guardian furnishing",
+    "Two independent clients share identical full furnished layouts for three seeds",
+    "Each authored collider footprint and required marker reached by all four base classes at 30/60/120 Hz without traits or perks",
+    "Every authored ladder climbed and descended independently, with supported endpoints",
+    "Three dry gallery routes with separate soil approaches; open spaces do not assert an aerial crossing",
+    "Every reward and seed destination has a dry-soil physical return using authored supports"
+  ],
+  "pending": [
+    "Fresh authenticated Figma read, upload and live designed-marker validation",
+    "Full artwork composition in Figma and runtime browser visual review",
+    "Authored continuous connectors between stages",
+    "Runtime activation or production promotion of these candidate data"
+  ],
+  "passed": true,
+  "verified": [
+    "Compiled offline candidate selected through real stageLayout with pictures enabled",
+    "Exact authored surface dimensions preserved within automatic expedition/guardian furnishing",
+    "Two independent clients share identical full furnished layouts for three seeds",
+    "Each authored collider footprint and required marker reached by all four base classes at 30/60/120 Hz without traits or perks",
+    "Every authored ladder climbed and descended independently, with supported endpoints",
+    "Three dry gallery routes with separate soil approaches; open spaces do not assert an aerial crossing",
+    "Every reward and seed destination has a dry-soil physical return using authored supports"
+  ],
+  "total": {
+    "ladderRoundTrips": 96,
+    "galleryCrossings": 0,
+    "jumpHops": 108,
+    "ladderUpFrames": 46720,
+    "ladderDownFrames": 13964,
+    "supportedWalks": 0,
+    "alternativeReturns": 0,
+    "cases": 12,
+    "platforms": 132,
+    "markers": 120,
+    "returns": 24,
+    "failures": 0
+  }
+}

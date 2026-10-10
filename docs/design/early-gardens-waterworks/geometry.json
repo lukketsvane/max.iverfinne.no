@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "status": "offline-composition-draft-native-geometry-not-imported-into-figma",
+  "live": false,
+  "seed": 1,
+  "source": {
+    "reference": "Owner's October 10 mossy waterworks, circular ruins, native water/vegetation/mechanism sheets, root passages, hanging pods, giant beetle bridge and acorn seesaw scenes attached in conversation.",
+    "runtimeBaseline": "8c9dadb7425c8432f8b24147a77994c814e31c66",
+    "coordinateSpace": "Integer native game pixels, x relative to Garden 2's origin and rise measured from its original soil line of 1 px. The editable source frame is review-garden-02b.",
+    "limits": "A dry collision and traversal composition draft only. It has not been imported into Figma, activated, rendered with new room artwork or promoted to production. Original Garden 2 terrain contains no pond inside this chamber; a flooded basin and waterfall require a separate finite water/ground contract. New image attachments are inspiration, not registered runtime PNG masters. No moving bridge, sluice, pod, wheel, beetle or seesaw physics is implemented by these tags."
+  },
+  "gardens": [
+    {
+      "stage": 2,
+      "title": "Broken Waterworks",
+      "frame": "review-garden-02b",
+      "intent": "Composition draft for a dark buried waterworks: two broken outer arch abutments frame a central sluice pier and open voids. Supported timber galleries climb three columns; chunky stone footings grow out of the original dry soil. High left and right landings hold the required reward and seed, with genuine ladder approaches and returns. The intended turquoise basin and falling water are not simulated by this dry draft.",
+      "artReference": "Owner's mossy circular waterworks scene and water/mechanism sheets. Future masonry must use restrained moss, substantial native blocks, open arch apertures and amber lamps. No new runtime artwork is claimed here.",
+      "replacePicture": true,
+      "ledges": [
+        { "x": -245, "rise": 40, "w": 105, "style": "branch" },
+        { "x": -250, "rise": 100, "w": 110, "style": "branch" },
+        { "x": -235, "rise": 160, "w": 110, "style": "branch" },
+        { "x": -5, "rise": 100, "w": 110, "style": "branch" },
+        { "x": -10, "rise": 160, "w": 105, "style": "branch" },
+        { "x": 135, "rise": 40, "w": 105, "style": "branch" },
+        { "x": 140, "rise": 100, "w": 105, "style": "branch" },
+        { "x": 125, "rise": 160, "w": 110, "style": "branch" }
+      ],
+      "blocks": [
+        { "x": -275, "rise": 10, "w": 28, "h": 50, "style": "ruin" },
+        { "x": 45, "rise": 20, "w": 35, "h": 50, "style": "ruin" },
+        { "x": 245, "rise": 10, "w": 30, "h": 50, "style": "ruin" }
+      ],
+      "ladders": [
+        { "x": -190, "rise": 40, "w": 14, "h": 52 },
+        { "x": -170, "rise": 100, "w": 14, "h": 60 },
+        { "x": -155, "rise": 160, "w": 14, "h": 60 },
+        { "x": 60, "rise": 100, "w": 14, "h": 80 },
+        { "x": 40, "rise": 160, "w": 14, "h": 60 },
+        { "x": 180, "rise": 40, "w": 14, "h": 40 },
+        { "x": 185, "rise": 100, "w": 14, "h": 60 },
+        { "x": 190, "rise": 160, "w": 14, "h": 60 }
+      ],
+      "reward": [{ "x": -180, "rise": 160 }],
+      "seed": [{ "x": 180, "rise": 160 }],
+      "trial": [{ "x": -210, "rise": 100 }, { "x": 190, "rise": 100 }],
+      "bonus": [{ "x": 30, "rise": 160 }],
+      "puzzle": [{ "x": 30, "rise": 100 }],
+      "door": [{ "x": 205, "rise": 160 }],
+      "dig": [{ "x": 10, "rise": 0 }],
+      "secret": [{ "x": -220, "rise": 40 }],
+      "start": [{ "x": 0, "rise": 0 }]
+    }
+  ]
+}
