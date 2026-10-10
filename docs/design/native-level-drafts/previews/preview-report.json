@@ -1,0 +1,3208 @@
+{
+  "status": "passed",
+  "candidate": "/workspace/max-game/docs/design/native-level-drafts/review/candidate-levels-data.js",
+  "candidateSHA256": "678edbfff3c66cc647cb32c827fb2afb863cc93cbe5d30d3aa4a409fda40bc6d",
+  "authority": "Offline authored candidate. No Figma synchronization or production release is asserted.",
+  "renderer": "Copied production build, current native assets, review.html memory-only fixtures.",
+  "startedAt": "2026-10-10T05:04:49.404Z",
+  "captures": [
+    {
+      "stage": 1,
+      "viewport": "phone",
+      "url": "http://127.0.0.1:39823/review.html?mode=layout1&class=bulwark&seed=1&portrait=1",
+      "screenshot": "/workspace/scratch/max-first-three-draft-preview/evidence/garden-01-phone.png",
+      "status": "Garden 1 · Seed Vault · Deep vaults · Cairn · 0:07 · grounded · 0 px above local soil · x 0 · pressure 0.1 · 0 enemies",
+      "state": {
+        "world": 1,
+        "seed": 1,
+        "designed": true,
+        "frame": "garden-01",
+        "picture": null,
+        "replacePicture": true,
+        "furnishPlace": false,
+        "place": null,
+        "platforms": [
+          {
+            "id": "1:d0",
+            "x": -160,
+            "y": -72,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d1",
+            "x": -160,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d2",
+            "x": -120,
+            "y": -56,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d3",
+            "x": -104,
+            "y": -168,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d4",
+            "x": -88,
+            "y": -40,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d5",
+            "x": -56,
+            "y": -24,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d6",
+            "x": -56,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d7",
+            "x": -24,
+            "y": -8,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d8",
+            "x": 0,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d9",
+            "x": 32,
+            "y": -24,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d10",
+            "x": 56,
+            "y": -168,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d11",
+            "x": 64,
+            "y": -40,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d12",
+            "x": 96,
+            "y": -56,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d13",
+            "x": 104,
+            "y": -168,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d14",
+            "x": 128,
+            "y": -72,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d15",
+            "x": 128,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "exp:1:0",
+            "x": -338,
+            "y": -19,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:1",
+            "x": -382,
+            "y": -35,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:2",
+            "x": -338,
+            "y": -51,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:3",
+            "x": -382,
+            "y": -67,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:4",
+            "x": -338,
+            "y": -83,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:5",
+            "x": -382,
+            "y": -99,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:6",
+            "x": -338,
+            "y": -115,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:7",
+            "x": -378,
+            "y": -133,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:8",
+            "x": -422,
+            "y": -149,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:9",
+            "x": -486,
+            "y": -163,
+            "w": 68,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:10",
+            "x": -423,
+            "y": -181,
+            "w": 30,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:11",
+            "x": -392,
+            "y": -197,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:12",
+            "x": -422,
+            "y": -215,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:13",
+            "x": -490,
+            "y": -233,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:room0",
+            "x": -290,
+            "y": -75,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:nook0",
+            "x": -246,
+            "y": -93,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:room1",
+            "x": -570,
+            "y": -159,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:nook1",
+            "x": -634,
+            "y": -177,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:room2",
+            "x": -562,
+            "y": -225,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:nook2",
+            "x": -618,
+            "y": -241,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          }
+        ],
+        "ladders": [
+          {
+            "id": "1:ladder0",
+            "x": -144,
+            "top": -168,
+            "bottom": -72,
+            "w": 14
+          },
+          {
+            "id": "1:ladder1",
+            "x": 144,
+            "top": -168,
+            "bottom": -72,
+            "w": 14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": -14,
+              "y": 8.278313067089691
+            },
+            "platformIds": [
+              "1:d7",
+              "1:d5",
+              "1:d4",
+              "1:d2",
+              "1:d0",
+              "1:d1"
+            ],
+            "steps": [
+              {
+                "platformId": "1:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d1",
+                "kind": "ladder",
+                "ladderId": "1:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "1:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": -14,
+              "y": 8.278313067089691
+            },
+            "platformIds": [
+              "1:d7",
+              "1:d5",
+              "1:d4",
+              "1:d2",
+              "1:d0",
+              "1:d1",
+              "1:d3",
+              "1:d6",
+              "1:d8"
+            ],
+            "steps": [
+              {
+                "platformId": "1:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d1",
+                "kind": "ladder",
+                "ladderId": "1:ladder0"
+              },
+              {
+                "platformId": "1:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d8",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "1:ladder0"
+            ],
+            "id": 1
+          }
+        ],
+        "player": {
+          "x": 0,
+          "y": 8.5081706000108,
+          "grounded": true,
+          "platform": null,
+          "st": "free",
+          "ladderId": null
+        },
+        "nativeCanvas": {
+          "w": 130,
+          "h": 282,
+          "smoothing": false
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "stage": 2,
+      "viewport": "phone",
+      "url": "http://127.0.0.1:39823/review.html?mode=layout2&class=bulwark&seed=1&portrait=1",
+      "screenshot": "/workspace/scratch/max-first-three-draft-preview/evidence/garden-02-phone.png",
+      "status": "Garden 2 · Railway Ruins · Deep vaults · Cairn · 0:04 · grounded · 0 px above local soil · x 0 · pressure 0.2 · 0 enemies",
+      "state": {
+        "world": 2,
+        "seed": 1,
+        "designed": true,
+        "frame": "garden-02",
+        "picture": null,
+        "replacePicture": true,
+        "furnishPlace": false,
+        "place": null,
+        "platforms": [
+          {
+            "id": "2:d0",
+            "x": 207374,
+            "y": -79,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d1",
+            "x": 207374,
+            "y": -143,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d2",
+            "x": 207382,
+            "y": -239,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d3",
+            "x": 207390,
+            "y": -63,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d4",
+            "x": 207422,
+            "y": -47,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d5",
+            "x": 207430,
+            "y": -143,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d6",
+            "x": 207430,
+            "y": -239,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d7",
+            "x": 207454,
+            "y": -31,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d8",
+            "x": 207478,
+            "y": -143,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d9",
+            "x": 207486,
+            "y": -15,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d10",
+            "x": 207526,
+            "y": -143,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d11",
+            "x": 207542,
+            "y": -31,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d12",
+            "x": 207574,
+            "y": -47,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d13",
+            "x": 207574,
+            "y": -143,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "exp:2:0",
+            "x": 207740,
+            "y": -16,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:1",
+            "x": 207784,
+            "y": -32,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:2",
+            "x": 207828,
+            "y": -48,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:3",
+            "x": 207872,
+            "y": -64,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:4",
+            "x": 207828,
+            "y": -80,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:5",
+            "x": 207784,
+            "y": -96,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:6",
+            "x": 207740,
+            "y": -112,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:7",
+            "x": 207789,
+            "y": -128,
+            "w": 26,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:8",
+            "x": 207833,
+            "y": -146,
+            "w": 26,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:9",
+            "x": 207858,
+            "y": -160,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:10",
+            "x": 207831,
+            "y": -178,
+            "w": 30,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:11",
+            "x": 207775,
+            "y": -192,
+            "w": 54,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:12",
+            "x": 207832,
+            "y": -210,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:13",
+            "x": 207852,
+            "y": -228,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:room0",
+            "x": 207920,
+            "y": -56,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:nook0",
+            "x": 207964,
+            "y": -74,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:room1",
+            "x": 207930,
+            "y": -156,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:nook1",
+            "x": 208014,
+            "y": -174,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:room2",
+            "x": 207936,
+            "y": -220,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:nook2",
+            "x": 208008,
+            "y": -236,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          }
+        ],
+        "ladders": [
+          {
+            "id": "2:ladder0",
+            "x": 207398,
+            "top": -143,
+            "bottom": -79,
+            "w": 14
+          },
+          {
+            "id": "2:ladder1",
+            "x": 207446,
+            "top": -239,
+            "bottom": -143,
+            "w": 14
+          },
+          {
+            "id": "2:ladder2",
+            "x": 207590,
+            "top": -143,
+            "bottom": -47,
+            "w": 14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 207536,
+              "y": -0.03077593194395689
+            },
+            "platformIds": [
+              "2:d9",
+              "2:d7",
+              "2:d4",
+              "2:d3",
+              "2:d0",
+              "2:d1",
+              "2:d5",
+              "2:d6",
+              "2:d2"
+            ],
+            "steps": [
+              {
+                "platformId": "2:d9",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d1",
+                "kind": "ladder",
+                "ladderId": "2:ladder0"
+              },
+              {
+                "platformId": "2:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d6",
+                "kind": "ladder",
+                "ladderId": "2:ladder1"
+              },
+              {
+                "platformId": "2:d2",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "2:ladder0",
+              "2:ladder1"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 207536,
+              "y": -0.03077593194395689
+            },
+            "platformIds": [
+              "2:d9",
+              "2:d11",
+              "2:d12",
+              "2:d13"
+            ],
+            "steps": [
+              {
+                "platformId": "2:d9",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d11",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d13",
+                "kind": "ladder",
+                "ladderId": "2:ladder2"
+              }
+            ],
+            "ladderIds": [
+              "2:ladder2"
+            ],
+            "id": 1
+          }
+        ],
+        "player": {
+          "x": 207510,
+          "y": 1.1797484856845557,
+          "grounded": true,
+          "platform": null,
+          "st": "free",
+          "ladderId": null
+        },
+        "nativeCanvas": {
+          "w": 130,
+          "h": 282,
+          "smoothing": false
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "stage": 3,
+      "viewport": "phone",
+      "url": "http://127.0.0.1:39823/review.html?mode=layout3&class=bulwark&seed=1&portrait=1",
+      "screenshot": "/workspace/scratch/max-first-three-draft-preview/evidence/garden-03-phone.png",
+      "status": "Garden 3 · Broken Aqueduct · Deep vaults · Cairn · 0:07 · grounded · 0 px above local soil · x 0 · pressure 0.3 · 0 enemies",
+      "state": {
+        "world": 3,
+        "seed": 1,
+        "designed": true,
+        "frame": "garden-03",
+        "picture": null,
+        "replacePicture": false,
+        "furnishPlace": false,
+        "place": null,
+        "platforms": [
+          {
+            "id": "3:d0",
+            "x": 412782,
+            "y": -200,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d1",
+            "x": 412822,
+            "y": -104,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d2",
+            "x": 412838,
+            "y": -200,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d3",
+            "x": 412862,
+            "y": -88,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d4",
+            "x": 412894,
+            "y": -72,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d5",
+            "x": 412894,
+            "y": -216,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d6",
+            "x": 412926,
+            "y": -56,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d7",
+            "x": 412950,
+            "y": -232,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d8",
+            "x": 412982,
+            "y": -72,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d9",
+            "x": 413006,
+            "y": -248,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d10",
+            "x": 413014,
+            "y": -88,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d11",
+            "x": 413046,
+            "y": -104,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d12",
+            "x": 413054,
+            "y": -248,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d13",
+            "x": 413078,
+            "y": -248,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:b0",
+            "x": 412782,
+            "y": -120,
+            "w": 32,
+            "h": 24,
+            "solid": true,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:b1",
+            "x": 413078,
+            "y": -120,
+            "w": 32,
+            "h": 16,
+            "solid": true,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "exp:3:0",
+            "x": 412628,
+            "y": -26,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:1",
+            "x": 412584,
+            "y": -42,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:2",
+            "x": 412540,
+            "y": -58,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:3",
+            "x": 412584,
+            "y": -74,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:4",
+            "x": 412628,
+            "y": -90,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:5",
+            "x": 412584,
+            "y": -106,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:6",
+            "x": 412540,
+            "y": -122,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:7",
+            "x": 412491,
+            "y": -140,
+            "w": 46,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:8",
+            "x": 412544,
+            "y": -156,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:9",
+            "x": 412490,
+            "y": -174,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:10",
+            "x": 412544,
+            "y": -192,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:11",
+            "x": 412478,
+            "y": -210,
+            "w": 72,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:12",
+            "x": 412543,
+            "y": -228,
+            "w": 30,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:13",
+            "x": 412575,
+            "y": -242,
+            "w": 54,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:14",
+            "x": 412544,
+            "y": -260,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:15",
+            "x": 412476,
+            "y": -278,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:room0",
+            "x": 412672,
+            "y": -82,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:nook0",
+            "x": 412744,
+            "y": -98,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:room1",
+            "x": 412446,
+            "y": -166,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:nook1",
+            "x": 412394,
+            "y": -184,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:room2",
+            "x": 412392,
+            "y": -274,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:nook2",
+            "x": 412328,
+            "y": -292,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          }
+        ],
+        "ladders": [
+          {
+            "id": "3:ladder0",
+            "x": 412798,
+            "top": -200,
+            "bottom": -120,
+            "w": 14
+          },
+          {
+            "id": "3:ladder1",
+            "x": 413094,
+            "top": -248,
+            "bottom": -120,
+            "w": 14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 412942,
+              "y": -40.78090882860636
+            },
+            "platformIds": [
+              "3:d6",
+              "3:d4",
+              "3:d3",
+              "3:d1",
+              "3:b0",
+              "3:d0"
+            ],
+            "steps": [
+              {
+                "platformId": "3:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:b0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d0",
+                "kind": "ladder",
+                "ladderId": "3:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "3:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 412942,
+              "y": -40.78090882860636
+            },
+            "platformIds": [
+              "3:d6",
+              "3:d8",
+              "3:d10",
+              "3:d11",
+              "3:b1",
+              "3:d13",
+              "3:d12",
+              "3:d9"
+            ],
+            "steps": [
+              {
+                "platformId": "3:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d8",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d11",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:b1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d13",
+                "kind": "ladder",
+                "ladderId": "3:ladder1"
+              },
+              {
+                "platformId": "3:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d9",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "3:ladder1"
+            ],
+            "id": 1
+          }
+        ],
+        "player": {
+          "x": 412950,
+          "y": -39.78505003351324,
+          "grounded": true,
+          "platform": null,
+          "st": "free",
+          "ladderId": null
+        },
+        "nativeCanvas": {
+          "w": 130,
+          "h": 282,
+          "smoothing": false
+        },
+        "viewport": {
+          "width": 390,
+          "height": 844
+        }
+      },
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "stage": 1,
+      "viewport": "desktop",
+      "url": "http://127.0.0.1:39823/review.html?mode=layout1&class=bulwark&seed=1",
+      "screenshot": "/workspace/scratch/max-first-three-draft-preview/evidence/garden-01-desktop.png",
+      "status": "Garden 1 · Seed Vault · Deep vaults · Cairn · 0:04 · grounded · 0 px above local soil · x 0 · pressure 0 · 0 enemies",
+      "state": {
+        "world": 1,
+        "seed": 1,
+        "designed": true,
+        "frame": "garden-01",
+        "picture": null,
+        "replacePicture": true,
+        "furnishPlace": false,
+        "place": null,
+        "platforms": [
+          {
+            "id": "1:d0",
+            "x": -160,
+            "y": -72,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d1",
+            "x": -160,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d2",
+            "x": -120,
+            "y": -56,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d3",
+            "x": -104,
+            "y": -168,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d4",
+            "x": -88,
+            "y": -40,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d5",
+            "x": -56,
+            "y": -24,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d6",
+            "x": -56,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d7",
+            "x": -24,
+            "y": -8,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d8",
+            "x": 0,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d9",
+            "x": 32,
+            "y": -24,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d10",
+            "x": 56,
+            "y": -168,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d11",
+            "x": 64,
+            "y": -40,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d12",
+            "x": 96,
+            "y": -56,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d13",
+            "x": 104,
+            "y": -168,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d14",
+            "x": 128,
+            "y": -72,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "1:d15",
+            "x": 128,
+            "y": -168,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "exp:1:0",
+            "x": -338,
+            "y": -19,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:1",
+            "x": -382,
+            "y": -35,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:2",
+            "x": -338,
+            "y": -51,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:3",
+            "x": -382,
+            "y": -67,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:4",
+            "x": -338,
+            "y": -83,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:5",
+            "x": -382,
+            "y": -99,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:6",
+            "x": -338,
+            "y": -115,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:7",
+            "x": -378,
+            "y": -133,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:8",
+            "x": -422,
+            "y": -149,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:9",
+            "x": -486,
+            "y": -163,
+            "w": 68,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:10",
+            "x": -423,
+            "y": -181,
+            "w": 30,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:11",
+            "x": -392,
+            "y": -197,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:12",
+            "x": -422,
+            "y": -215,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:13",
+            "x": -490,
+            "y": -233,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:room0",
+            "x": -290,
+            "y": -75,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:nook0",
+            "x": -246,
+            "y": -93,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:room1",
+            "x": -570,
+            "y": -159,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:nook1",
+            "x": -634,
+            "y": -177,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:room2",
+            "x": -562,
+            "y": -225,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:1:nook2",
+            "x": -618,
+            "y": -241,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          }
+        ],
+        "ladders": [
+          {
+            "id": "1:ladder0",
+            "x": -144,
+            "top": -168,
+            "bottom": -72,
+            "w": 14
+          },
+          {
+            "id": "1:ladder1",
+            "x": 144,
+            "top": -168,
+            "bottom": -72,
+            "w": 14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": -14,
+              "y": 8.278313067089691
+            },
+            "platformIds": [
+              "1:d7",
+              "1:d5",
+              "1:d4",
+              "1:d2",
+              "1:d0",
+              "1:d1"
+            ],
+            "steps": [
+              {
+                "platformId": "1:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d1",
+                "kind": "ladder",
+                "ladderId": "1:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "1:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": -14,
+              "y": 8.278313067089691
+            },
+            "platformIds": [
+              "1:d7",
+              "1:d5",
+              "1:d4",
+              "1:d2",
+              "1:d0",
+              "1:d1",
+              "1:d3",
+              "1:d6",
+              "1:d8"
+            ],
+            "steps": [
+              {
+                "platformId": "1:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d1",
+                "kind": "ladder",
+                "ladderId": "1:ladder0"
+              },
+              {
+                "platformId": "1:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d8",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "1:ladder0"
+            ],
+            "id": 1
+          }
+        ],
+        "player": {
+          "x": 0,
+          "y": 8.5081706000108,
+          "grounded": true,
+          "platform": null,
+          "st": "free",
+          "ladderId": null
+        },
+        "nativeCanvas": {
+          "w": 334,
+          "h": 217,
+          "smoothing": false
+        },
+        "viewport": {
+          "width": 1000,
+          "height": 650
+        }
+      },
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "stage": 2,
+      "viewport": "desktop",
+      "url": "http://127.0.0.1:39823/review.html?mode=layout2&class=bulwark&seed=1",
+      "screenshot": "/workspace/scratch/max-first-three-draft-preview/evidence/garden-02-desktop.png",
+      "status": "Garden 2 · Railway Ruins · Deep vaults · Cairn · 0:03 · grounded · 0 px above local soil · x 0 · pressure 0.2 · 0 enemies",
+      "state": {
+        "world": 2,
+        "seed": 1,
+        "designed": true,
+        "frame": "garden-02",
+        "picture": null,
+        "replacePicture": true,
+        "furnishPlace": false,
+        "place": null,
+        "platforms": [
+          {
+            "id": "2:d0",
+            "x": 207374,
+            "y": -79,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d1",
+            "x": 207374,
+            "y": -143,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d2",
+            "x": 207382,
+            "y": -239,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d3",
+            "x": 207390,
+            "y": -63,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d4",
+            "x": 207422,
+            "y": -47,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d5",
+            "x": 207430,
+            "y": -143,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d6",
+            "x": 207430,
+            "y": -239,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d7",
+            "x": 207454,
+            "y": -31,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d8",
+            "x": 207478,
+            "y": -143,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d9",
+            "x": 207486,
+            "y": -15,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d10",
+            "x": 207526,
+            "y": -143,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d11",
+            "x": 207542,
+            "y": -31,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d12",
+            "x": 207574,
+            "y": -47,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "2:d13",
+            "x": 207574,
+            "y": -143,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "exp:2:0",
+            "x": 207740,
+            "y": -16,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:1",
+            "x": 207784,
+            "y": -32,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:2",
+            "x": 207828,
+            "y": -48,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:3",
+            "x": 207872,
+            "y": -64,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:4",
+            "x": 207828,
+            "y": -80,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:5",
+            "x": 207784,
+            "y": -96,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:6",
+            "x": 207740,
+            "y": -112,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:7",
+            "x": 207789,
+            "y": -128,
+            "w": 26,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:8",
+            "x": 207833,
+            "y": -146,
+            "w": 26,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:9",
+            "x": 207858,
+            "y": -160,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:10",
+            "x": 207831,
+            "y": -178,
+            "w": 30,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:11",
+            "x": 207775,
+            "y": -192,
+            "w": 54,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:12",
+            "x": 207832,
+            "y": -210,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:13",
+            "x": 207852,
+            "y": -228,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:room0",
+            "x": 207920,
+            "y": -56,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:nook0",
+            "x": 207964,
+            "y": -74,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:room1",
+            "x": 207930,
+            "y": -156,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:nook1",
+            "x": 208014,
+            "y": -174,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:room2",
+            "x": 207936,
+            "y": -220,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:2:nook2",
+            "x": 208008,
+            "y": -236,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          }
+        ],
+        "ladders": [
+          {
+            "id": "2:ladder0",
+            "x": 207398,
+            "top": -143,
+            "bottom": -79,
+            "w": 14
+          },
+          {
+            "id": "2:ladder1",
+            "x": 207446,
+            "top": -239,
+            "bottom": -143,
+            "w": 14
+          },
+          {
+            "id": "2:ladder2",
+            "x": 207590,
+            "top": -143,
+            "bottom": -47,
+            "w": 14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 207536,
+              "y": -0.03077593194395689
+            },
+            "platformIds": [
+              "2:d9",
+              "2:d7",
+              "2:d4",
+              "2:d3",
+              "2:d0",
+              "2:d1",
+              "2:d5",
+              "2:d6",
+              "2:d2"
+            ],
+            "steps": [
+              {
+                "platformId": "2:d9",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d1",
+                "kind": "ladder",
+                "ladderId": "2:ladder0"
+              },
+              {
+                "platformId": "2:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d6",
+                "kind": "ladder",
+                "ladderId": "2:ladder1"
+              },
+              {
+                "platformId": "2:d2",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "2:ladder0",
+              "2:ladder1"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 207536,
+              "y": -0.03077593194395689
+            },
+            "platformIds": [
+              "2:d9",
+              "2:d11",
+              "2:d12",
+              "2:d13"
+            ],
+            "steps": [
+              {
+                "platformId": "2:d9",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d11",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d13",
+                "kind": "ladder",
+                "ladderId": "2:ladder2"
+              }
+            ],
+            "ladderIds": [
+              "2:ladder2"
+            ],
+            "id": 1
+          }
+        ],
+        "player": {
+          "x": 207510,
+          "y": 1.1797484856845557,
+          "grounded": true,
+          "platform": null,
+          "st": "free",
+          "ladderId": null
+        },
+        "nativeCanvas": {
+          "w": 334,
+          "h": 217,
+          "smoothing": false
+        },
+        "viewport": {
+          "width": 1000,
+          "height": 650
+        }
+      },
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "stage": 3,
+      "viewport": "desktop",
+      "url": "http://127.0.0.1:39823/review.html?mode=layout3&class=bulwark&seed=1",
+      "screenshot": "/workspace/scratch/max-first-three-draft-preview/evidence/garden-03-desktop.png",
+      "status": "Garden 3 · Broken Aqueduct · Deep vaults · Cairn · 0:03 · grounded · 0 px above local soil · x 0 · pressure 0.3 · 0 enemies",
+      "state": {
+        "world": 3,
+        "seed": 1,
+        "designed": true,
+        "frame": "garden-03",
+        "picture": null,
+        "replacePicture": false,
+        "furnishPlace": false,
+        "place": null,
+        "platforms": [
+          {
+            "id": "3:d0",
+            "x": 412782,
+            "y": -200,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d1",
+            "x": 412822,
+            "y": -104,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d2",
+            "x": 412838,
+            "y": -200,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d3",
+            "x": 412862,
+            "y": -88,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d4",
+            "x": 412894,
+            "y": -72,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d5",
+            "x": 412894,
+            "y": -216,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d6",
+            "x": 412926,
+            "y": -56,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d7",
+            "x": 412950,
+            "y": -232,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d8",
+            "x": 412982,
+            "y": -72,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d9",
+            "x": 413006,
+            "y": -248,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d10",
+            "x": 413014,
+            "y": -88,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d11",
+            "x": 413046,
+            "y": -104,
+            "w": 24,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d12",
+            "x": 413054,
+            "y": -248,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:d13",
+            "x": 413078,
+            "y": -248,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:b0",
+            "x": 412782,
+            "y": -120,
+            "w": 32,
+            "h": 24,
+            "solid": true,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "3:b1",
+            "x": 413078,
+            "y": -120,
+            "w": 32,
+            "h": 16,
+            "solid": true,
+            "place": false,
+            "expedition": false
+          },
+          {
+            "id": "exp:3:0",
+            "x": 412628,
+            "y": -26,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:1",
+            "x": 412584,
+            "y": -42,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:2",
+            "x": 412540,
+            "y": -58,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:3",
+            "x": 412584,
+            "y": -74,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:4",
+            "x": 412628,
+            "y": -90,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:5",
+            "x": 412584,
+            "y": -106,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:6",
+            "x": 412540,
+            "y": -122,
+            "w": 36,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:7",
+            "x": 412491,
+            "y": -140,
+            "w": 46,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:8",
+            "x": 412544,
+            "y": -156,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:9",
+            "x": 412490,
+            "y": -174,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:10",
+            "x": 412544,
+            "y": -192,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:11",
+            "x": 412478,
+            "y": -210,
+            "w": 72,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:12",
+            "x": 412543,
+            "y": -228,
+            "w": 30,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:13",
+            "x": 412575,
+            "y": -242,
+            "w": 54,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:14",
+            "x": 412544,
+            "y": -260,
+            "w": 28,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:15",
+            "x": 412476,
+            "y": -278,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:room0",
+            "x": 412672,
+            "y": -82,
+            "w": 64,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:nook0",
+            "x": 412744,
+            "y": -98,
+            "w": 48,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:room1",
+            "x": 412446,
+            "y": -166,
+            "w": 32,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:nook1",
+            "x": 412394,
+            "y": -184,
+            "w": 40,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:room2",
+            "x": 412392,
+            "y": -274,
+            "w": 76,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          },
+          {
+            "id": "exp:3:nook2",
+            "x": 412328,
+            "y": -292,
+            "w": 56,
+            "h": 0,
+            "solid": false,
+            "place": false,
+            "expedition": true
+          }
+        ],
+        "ladders": [
+          {
+            "id": "3:ladder0",
+            "x": 412798,
+            "top": -200,
+            "bottom": -120,
+            "w": 14
+          },
+          {
+            "id": "3:ladder1",
+            "x": 413094,
+            "top": -248,
+            "bottom": -120,
+            "w": 14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 412942,
+              "y": -40.78090882860636
+            },
+            "platformIds": [
+              "3:d6",
+              "3:d4",
+              "3:d3",
+              "3:d1",
+              "3:b0",
+              "3:d0"
+            ],
+            "steps": [
+              {
+                "platformId": "3:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:b0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d0",
+                "kind": "ladder",
+                "ladderId": "3:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "3:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 412942,
+              "y": -40.78090882860636
+            },
+            "platformIds": [
+              "3:d6",
+              "3:d8",
+              "3:d10",
+              "3:d11",
+              "3:b1",
+              "3:d13",
+              "3:d12",
+              "3:d9"
+            ],
+            "steps": [
+              {
+                "platformId": "3:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d8",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d11",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:b1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d13",
+                "kind": "ladder",
+                "ladderId": "3:ladder1"
+              },
+              {
+                "platformId": "3:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d9",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "3:ladder1"
+            ],
+            "id": 1
+          }
+        ],
+        "player": {
+          "x": 412950,
+          "y": -39.78505003351324,
+          "grounded": true,
+          "platform": null,
+          "st": "free",
+          "ladderId": null
+        },
+        "nativeCanvas": {
+          "w": 334,
+          "h": 217,
+          "smoothing": false
+        },
+        "viewport": {
+          "width": 1000,
+          "height": 650
+        }
+      },
+      "errors": [],
+      "failedRequests": []
+    }
+  ],
+  "previewURL": "http://127.0.0.1:39823",
+  "finishedAt": "2026-10-10T05:05:35.365Z"
+}

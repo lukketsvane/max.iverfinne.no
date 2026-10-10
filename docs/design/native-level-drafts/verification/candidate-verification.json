@@ -1,0 +1,143 @@
+{
+  "status": "offline-authored-candidate-verified-physics",
+  "passed": true,
+  "sourceBinding": {
+    "fixture": "/workspace/max-game/docs/design/native-level-drafts/review/synthetic-candidate.json",
+    "fixtureStatus": "offline-authored-simulation-not-figma-capture",
+    "kind": "offline-native-geometry",
+    "geometryDigest": "3e25e088d07b81b71331f9f1a50ca3fc7a287152b1bb4747b2b66623e482de9b",
+    "baselineDigest": "0de6ea706de37fcf9f2a881e070db27d7f06cda58b0ac0055cb449cd47911371",
+    "sourceDigest": "216c186c49594472b69ef654ca662c879e95fc04d05994b5084ebb87e8ba08ac",
+    "intendedFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "compiledDataDigest": "678edbfff3c66cc647cb32c827fb2afb863cc93cbe5d30d3aa4a409fda40bc6d",
+    "engineDigests": {
+      "index.html": "8b0f7168771959af89c910cd8a2928d3de9592686141e7b9a2f5346dc647308c",
+      "levels.js": "cef60a5dead1cdfd69dcd14d6de48811869be506282138cffea60421852909dc",
+      "stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+      "stage-expeditions.js": "9251798b2bcb2b6e22a7a52c18d53d4d8702de5044ed564d2afef59f0082f961",
+      "guardian-sites.js": "d1dbd1f3ee6bd08b42ad54fc9bdcd4429fac35a104d21f9011e8e5f0b77a7ee0"
+    }
+  },
+  "authored": {
+    "cases": 36,
+    "platforms": 552,
+    "markers": 348,
+    "returns": 108,
+    "failures": 0,
+    "ladderReturns": 84,
+    "galleryCrossings": 96,
+    "jumpHops": 5412,
+    "ladderUpFrames": 87856,
+    "ladderDownFrames": 27796,
+    "supportedWalks": 120,
+    "alternativeReturns": 24,
+    "startMarkerContacts": 36,
+    "allAuthoredMarkerContacts": 384
+  },
+  "guardians": {
+    "seededCases": 9,
+    "guardianRoundTrips": 27,
+    "failures": 0
+  },
+  "seededIntegration": [
+    {
+      "stage": 1,
+      "seed": 1,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 20,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 1,
+      "seed": 2026,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 1,
+      "seed": 4294967295,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 1,
+      "authoredPlatforms": 14,
+      "furnishedPlatforms": 20,
+      "ladders": 3,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 2026,
+      "authoredPlatforms": 14,
+      "furnishedPlatforms": 21,
+      "ladders": 3,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 4294967295,
+      "authoredPlatforms": 14,
+      "furnishedPlatforms": 20,
+      "ladders": 3,
+      "identical": true
+    },
+    {
+      "stage": 3,
+      "seed": 1,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 22,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 3,
+      "seed": 2026,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 22,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 3,
+      "seed": 4294967295,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    }
+  ],
+  "verified": [
+    "Offline compiled candidate selected by actual stageLayout with picture levels enabled",
+    "Exact authored surface geometry retained within automatic expedition and guardian furnishing",
+    "Two independent clients share identical full furnished layouts for seeds 1, 2026 and 0xffffffff",
+    "All authored collider footprints and required route markers reached by all four base classes at 30/60/120 Hz without traits or perks",
+    "All seven authored ladders independently climbed and descended at all class/rate combinations",
+    "Upper galleries crossed continuously and returned, including supported walking across overlapping coplanar surfaces",
+    "All reward and seed destinations have authored-support dry-soil returns",
+    "Every authored start marker is contacted and left on dry soil at all class/rate combinations"
+  ],
+  "resetSemantics": "Each independent route starts once at its grounded C0 soil entry; subsequent movement between platforms, markers, ladder endpoints and gallery crossings uses updatePlayer without per-hop pose placement. Jump retries restore only the same takeoff state. If reversing an outward route meets a nested lower ledge, the runner restores the reached reward state, searches an alternative, then replays actual inputs with no pose placement and rejects automatic furnished supports. Start marker contact/return is a supplemental independent dry-soil walk.",
+  "guardianResetSemantics": "Each stage begins at the real enterLevel entrance, settles by updatePlayer, and each guardian route replays from that captured entrance. The existing search helper searches then replays actual movement inputs; return begins at the reached site. No per-hop pose placement.",
+  "pending": [
+    "Fresh authenticated Figma read and upload; synthetic nodes are local and do not certify live designed markers",
+    "Full artwork composition and browser visual review",
+    "Authored continuous inter-stage connectors",
+    "Runtime activation or production promotion of the candidate level data"
+  ],
+  "artifacts": {
+    "authored": "/workspace/scratch/candidate-playtest-final.json",
+    "guardians": "/workspace/scratch/candidate-guardians.json",
+    "starts": "/workspace/scratch/candidate-starts.json"
+  },
+  "reproduction": {
+    "authored": "node /workspace/scratch/playtest-authored-candidates.cjs /workspace/max-game/docs/design/native-level-drafts/review/candidate-levels-data.js /workspace/scratch/candidate-playtest-reproduced.json",
+    "guardians": "node /workspace/scratch/playtest-candidate-guardians.cjs /workspace/max-game/docs/design/native-level-drafts/review/candidate-levels-data.js /workspace/scratch/candidate-guardians-reproduced.json"
+  }
+}

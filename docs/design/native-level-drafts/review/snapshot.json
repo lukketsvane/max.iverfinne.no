@@ -1,0 +1,3438 @@
+{
+  "schema": 1,
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "seed": 1,
+  "sourceKind": "offline-authored-native-geometry",
+  "status": "offline-authored-review-not-imported-or-synchronized",
+  "live": false,
+  "sourceDigest": "2535c6a737019d0f8f2f49a59edb669a5aa40c6661afab9145217db647b47a86",
+  "geometryDigest": "3e25e088d07b81b71331f9f1a50ca3fc7a287152b1bb4747b2b66623e482de9b",
+  "baselineDigest": "b1e2c81fa459145ab3f787bd57b0ec0f7bbd4ce5d48e31516a09a1e2d6fd3077",
+  "sourceFiles": [
+    "ascent-presentation.inc.js",
+    "build-paths.js",
+    "cairn.inc.js",
+    "campaign-architecture.js",
+    "campaign-atmosphere.inc.js",
+    "companion.js",
+    "coop-game.inc.js",
+    "garden-places.js",
+    "guardian-sites.js",
+    "high-tide-map.js",
+    "high-tide.inc.js",
+    "hollow-crown.inc.js",
+    "index.html",
+    "last-seed.inc.js",
+    "level-guide.inc.js",
+    "levels-data.js",
+    "levels-v1/railway-ruins.js",
+    "levels-v1/seed-vault.js",
+    "levels-v1/sunken-sanctuary.js",
+    "levels.js",
+    "max-classes.js",
+    "mech.inc.js",
+    "mycel.inc.js",
+    "night-relay.inc.js",
+    "polge.inc.js",
+    "rat-enemies.inc.js",
+    "rattus.inc.js",
+    "run-director.inc.js",
+    "scripts/figma-authored-drafts.mjs",
+    "scripts/figma-level-drafts-import.mjs",
+    "scripts/figma-level-drafts.mjs",
+    "scripts/figma-levels.mjs",
+    "scripts/figma-mcp.mjs",
+    "scripts/game-source.cjs",
+    "secrets.inc.js",
+    "sligo-life.inc.js",
+    "stage-expeditions.js",
+    "stage-layout.js",
+    "tests/game-harness.cjs",
+    "wonders.inc.js",
+    "yeet.inc.js"
+  ],
+  "baselineScope": {
+    "method": "SHA-256 of named source files plus the expanded game source used by gameWorld()",
+    "expandedGameSource": "scripts/game-source.cjs()"
+  },
+  "authoringSource": {
+    "conceptFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "conceptNode": "746:117481",
+    "conceptCommit": "b12d88a3ab2a6d39a5c2deda4ef51cb30e95a4c1",
+    "runtimeBaseline": "97f3782dbf1fd7f56e7630ff9c39911978aae5cc",
+    "coordinateSpace": "Newly authored integer game-pixel offsets from the stage origin and rise above its soil line. Concept percentages are not copied as collision coordinates.",
+    "limits": "Geometry prototype only. No authenticated Figma capture, new runtime artwork, authored spawn override or continuous-world connector. Existing runtime art and production levels-data.js are unchanged."
+  },
+  "gardens": [
+    {
+      "stage": 1,
+      "frame": "review-garden-01",
+      "title": "Frostarkivet",
+      "intent": "Two stair-and-ladder routes flank the seed wheel. An upper service gallery connects both sides; the right landing prepares the departure toward the thaw shaft.",
+      "artReference": "Existing native seed-vault master assets/levels-v1/seed-vault.png, 557x314, Figma 477:11669. Reference only; this new geometry does not replace that picture map.",
+      "setting": "underground",
+      "profile": {
+        "id": "garden-1",
+        "stage": 1,
+        "title": "Seed Vault",
+        "theme": "terraces",
+        "chapter": "Deep vaults",
+        "focus": "Find your footing",
+        "routes": [
+          {
+            "role": "Refuge",
+            "height": [
+              66,
+              78
+            ],
+            "width": [
+              30,
+              40
+            ],
+            "gap": [
+              7,
+              9
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.08,
+            "branch": 0.15,
+            "graphs": [
+              [
+                "step",
+                "rest",
+                "step"
+              ],
+              [
+                "step",
+                "step",
+                "rest"
+              ]
+            ]
+          },
+          {
+            "role": "Lookout",
+            "height": [
+              98,
+              112
+            ],
+            "width": [
+              26,
+              36
+            ],
+            "gap": [
+              7,
+              10
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.12,
+            "branch": 0.25,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "gallery"
+              ],
+              [
+                "step",
+                "rest",
+                "stack"
+              ]
+            ]
+          }
+        ]
+      },
+      "kind": "terraces",
+      "width": 416,
+      "height": 270,
+      "worldOrigin": 0,
+      "canvasWorldLeft": -200,
+      "canvasWorldTop": -211,
+      "soilY": 219,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 219,
+          "w": 416,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 200,
+          "y": 195,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:stone",
+          "x": 176,
+          "y": 203,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:1:ledge:0"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 144,
+          "y": 187,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:1:ledge:1"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 112,
+          "y": 171,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:1:ledge:2"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 80,
+          "y": 155,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:1:ledge:3"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 40,
+          "y": 139,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:1:ledge:4"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 232,
+          "y": 187,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:1:ledge:5"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 264,
+          "y": 171,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:1:ledge:6"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 296,
+          "y": 155,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:1:ledge:7"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 328,
+          "y": 139,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:1:ledge:8"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 40,
+          "y": 43,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:1:ledge:9"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 96,
+          "y": 43,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:1:ledge:10"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 144,
+          "y": 43,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:1:ledge:11"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 200,
+          "y": 43,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:1:ledge:12"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 256,
+          "y": 43,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:1:ledge:13"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 304,
+          "y": 43,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:1:ledge:14"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 328,
+          "y": 43,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:1:ledge:15"
+        },
+        {
+          "name": "ladder",
+          "x": 49,
+          "y": 43,
+          "w": 14,
+          "h": 96,
+          "sourceId": "authored:1:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 337,
+          "y": 43,
+          "w": 14,
+          "h": 96,
+          "sourceId": "authored:1:ladder:1"
+        },
+        {
+          "name": "reward",
+          "x": 53,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:reward:0"
+        },
+        {
+          "name": "reward",
+          "x": 349,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:reward:1"
+        },
+        {
+          "name": "seed",
+          "x": 213,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 125,
+          "y": 164,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 269,
+          "y": 164,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:trial:1"
+        },
+        {
+          "name": "puzzle",
+          "x": 53,
+          "y": 132,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 349,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 189,
+          "y": 212,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 165,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 197,
+          "y": 212,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:start:0"
+        },
+        {
+          "name": "replace-picture",
+          "x": 208,
+          "y": 227,
+          "w": 7,
+          "h": 7,
+          "sourceId": null
+        }
+      ],
+      "terrainY": 199,
+      "terrainPath": "M 0 71 L 0 9 L 3 9 L 3 8 L 8 8 L 8 7 L 13 7 L 13 6 L 18 6 L 18 5 L 22 5 L 22 4 L 26 4 L 26 3 L 30 3 L 30 2 L 35 2 L 35 1 L 44 1 L 44 0 L 47 0 L 47 1 L 56 1 L 56 2 L 60 2 L 60 3 L 63 3 L 63 4 L 66 4 L 66 5 L 69 5 L 69 6 L 71 6 L 71 7 L 74 7 L 74 8 L 76 8 L 76 9 L 79 9 L 79 10 L 82 10 L 82 11 L 84 11 L 84 12 L 87 12 L 87 13 L 91 13 L 91 14 L 95 14 L 95 15 L 99 15 L 99 16 L 103 16 L 103 17 L 109 17 L 109 18 L 115 18 L 115 19 L 123 19 L 123 20 L 139 20 L 139 21 L 171 21 L 171 20 L 200 20 L 200 21 L 225 21 L 225 20 L 243 20 L 243 19 L 259 19 L 259 18 L 290 18 L 290 17 L 358 17 L 358 16 L 386 16 L 386 15 L 416 15 L 416 71 Z",
+      "water": [],
+      "annotations": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGarden": {
+        "frame": "review-garden-01",
+        "node": "offline:review-garden-01",
+        "ledges": [
+          {
+            "x": -160,
+            "rise": 80,
+            "w": 32,
+            "style": "ruin"
+          },
+          {
+            "x": -160,
+            "rise": 176,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -120,
+            "rise": 64,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -104,
+            "rise": 176,
+            "w": 40,
+            "style": "ruin"
+          },
+          {
+            "x": -88,
+            "rise": 48,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -56,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -56,
+            "rise": 176,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -24,
+            "rise": 16,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": 0,
+            "rise": 176,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": 32,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 56,
+            "rise": 176,
+            "w": 40,
+            "style": "ruin"
+          },
+          {
+            "x": 64,
+            "rise": 48,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 96,
+            "rise": 64,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 104,
+            "rise": 176,
+            "w": 32,
+            "style": "ruin"
+          },
+          {
+            "x": 128,
+            "rise": 80,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": 128,
+            "rise": 176,
+            "w": 48,
+            "style": "ruin"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -144,
+            "rise": 176,
+            "w": 14,
+            "h": 96
+          },
+          {
+            "x": 144,
+            "rise": 176,
+            "w": 14,
+            "h": 96
+          }
+        ],
+        "replacePicture": true,
+        "reward": [
+          {
+            "x": -144,
+            "rise": 176
+          },
+          {
+            "x": 152,
+            "rise": 176
+          }
+        ],
+        "seed": [
+          {
+            "x": 16,
+            "rise": 176
+          }
+        ],
+        "trial": [
+          {
+            "x": -72,
+            "rise": 48
+          },
+          {
+            "x": 72,
+            "rise": 48
+          }
+        ],
+        "puzzle": [
+          {
+            "x": -144,
+            "rise": 80
+          }
+        ],
+        "door": [
+          {
+            "x": 152,
+            "rise": 176
+          }
+        ],
+        "dig": [
+          {
+            "x": -8,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": -32,
+            "rise": 176
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "runtime": {
+        "id": "garden-1-terraces",
+        "stage": 1,
+        "theme": "terraces",
+        "kind": "terraces",
+        "origin": 0,
+        "designed": true,
+        "frame": "review-garden-01",
+        "platforms": [
+          {
+            "id": "1:d0",
+            "x": -160,
+            "y": -72,
+            "w": 32,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -10
+          },
+          {
+            "id": "1:d1",
+            "x": -160,
+            "y": -168,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -8
+          },
+          {
+            "id": "1:d2",
+            "x": -120,
+            "y": -56,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "1:d3",
+            "x": -104,
+            "y": -168,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 7
+          },
+          {
+            "id": "1:d4",
+            "x": -88,
+            "y": -40,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 8
+          },
+          {
+            "id": "1:d5",
+            "x": -56,
+            "y": -24,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 9
+          },
+          {
+            "id": "1:d6",
+            "x": -56,
+            "y": -168,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 9
+          },
+          {
+            "id": "1:d7",
+            "x": -24,
+            "y": -8,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 9
+          },
+          {
+            "id": "1:d8",
+            "x": 0,
+            "y": -168,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 9
+          },
+          {
+            "id": "1:d9",
+            "x": 32,
+            "y": -24,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 7
+          },
+          {
+            "id": "1:d10",
+            "x": 56,
+            "y": -168,
+            "w": 40,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 6
+          },
+          {
+            "id": "1:d11",
+            "x": 64,
+            "y": -40,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 6
+          },
+          {
+            "id": "1:d12",
+            "x": 96,
+            "y": -56,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 5
+          },
+          {
+            "id": "1:d13",
+            "x": 104,
+            "y": -168,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 5
+          },
+          {
+            "id": "1:d14",
+            "x": 128,
+            "y": -72,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 5
+          },
+          {
+            "id": "1:d15",
+            "x": 128,
+            "y": -168,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 5
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": -14,
+              "y": 8.278313067089691
+            },
+            "platformIds": [
+              "1:d7",
+              "1:d5",
+              "1:d4",
+              "1:d2",
+              "1:d0",
+              "1:d1"
+            ],
+            "steps": [
+              {
+                "platformId": "1:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d1",
+                "kind": "ladder",
+                "ladderId": "1:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "1:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": -14,
+              "y": 8.278313067089691
+            },
+            "platformIds": [
+              "1:d7",
+              "1:d5",
+              "1:d4",
+              "1:d2",
+              "1:d0",
+              "1:d1",
+              "1:d3",
+              "1:d6",
+              "1:d8"
+            ],
+            "steps": [
+              {
+                "platformId": "1:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d1",
+                "kind": "ladder",
+                "ladderId": "1:ladder0"
+              },
+              {
+                "platformId": "1:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "1:d8",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "1:ladder0"
+            ],
+            "id": 1
+          }
+        ],
+        "rewards": [
+          {
+            "x": -144,
+            "y": -168,
+            "platformId": "1:d1",
+            "side": -1
+          },
+          {
+            "x": 152,
+            "y": -168,
+            "platformId": "1:d15",
+            "side": 1
+          },
+          {
+            "x": 16,
+            "y": -168,
+            "platformId": "1:d8",
+            "side": 1
+          }
+        ],
+        "trials": [
+          {
+            "x": -72,
+            "y": -40,
+            "platformId": "1:d4",
+            "side": -1
+          },
+          {
+            "x": 72,
+            "y": -40,
+            "platformId": "1:d11",
+            "side": 1
+          }
+        ],
+        "bonuses": [],
+        "spots": {
+          "puzzle": [
+            {
+              "x": -144,
+              "y": -72,
+              "platformId": "1:d0",
+              "side": -1
+            }
+          ],
+          "door": [
+            {
+              "x": 152,
+              "y": -168,
+              "platformId": "1:d15",
+              "side": 1
+            }
+          ],
+          "dig": [
+            {
+              "x": -8,
+              "y": 8.320828072736033,
+              "platformId": null,
+              "side": -1
+            }
+          ],
+          "secret": [
+            {
+              "x": -32,
+              "y": -168,
+              "platformId": "1:d6",
+              "side": -1
+            }
+          ],
+          "start": [
+            {
+              "x": 0,
+              "y": 8.5081706000108,
+              "platformId": null,
+              "side": 1
+            }
+          ]
+        },
+        "decor": [],
+        "replacePicture": true,
+        "ladders": [
+          {
+            "id": "1:ladder0",
+            "x": -144,
+            "top": -168,
+            "bottom": -72,
+            "w": 14
+          },
+          {
+            "id": "1:ladder1",
+            "x": 144,
+            "top": -168,
+            "bottom": -72,
+            "w": 14
+          }
+        ],
+        "nodes": [
+          {
+            "x": -144,
+            "y": -72,
+            "platformId": "1:d0",
+            "tier": 0
+          },
+          {
+            "x": -136,
+            "y": -168,
+            "platformId": "1:d1",
+            "tier": 0
+          },
+          {
+            "x": -108,
+            "y": -56,
+            "platformId": "1:d2",
+            "tier": 0
+          },
+          {
+            "x": -84,
+            "y": -168,
+            "platformId": "1:d3",
+            "tier": 0
+          },
+          {
+            "x": -76,
+            "y": -40,
+            "platformId": "1:d4",
+            "tier": 0
+          },
+          {
+            "x": -44,
+            "y": -24,
+            "platformId": "1:d5",
+            "tier": 0
+          },
+          {
+            "x": -32,
+            "y": -168,
+            "platformId": "1:d6",
+            "tier": 0
+          },
+          {
+            "x": 0,
+            "y": -8,
+            "platformId": "1:d7",
+            "tier": 0
+          },
+          {
+            "x": 24,
+            "y": -168,
+            "platformId": "1:d8",
+            "tier": 0
+          },
+          {
+            "x": 44,
+            "y": -24,
+            "platformId": "1:d9",
+            "tier": 0
+          },
+          {
+            "x": 76,
+            "y": -168,
+            "platformId": "1:d10",
+            "tier": 0
+          },
+          {
+            "x": 76,
+            "y": -40,
+            "platformId": "1:d11",
+            "tier": 0
+          },
+          {
+            "x": 108,
+            "y": -56,
+            "platformId": "1:d12",
+            "tier": 0
+          },
+          {
+            "x": 120,
+            "y": -168,
+            "platformId": "1:d13",
+            "tier": 0
+          },
+          {
+            "x": 152,
+            "y": -72,
+            "platformId": "1:d14",
+            "tier": 0
+          },
+          {
+            "x": 152,
+            "y": -168,
+            "platformId": "1:d15",
+            "tier": 0
+          }
+        ],
+        "seed": 1
+      },
+      "reach": {
+        "method": "MaxLevels.reachable on offline authored base geometry; real physics verification remains required.",
+        "summary": "C0 16 · C1 0 · C2 0 · C3 0 · unreachable 0",
+        "count": [
+          16,
+          0,
+          0,
+          0,
+          0
+        ],
+        "platforms": [
+          {
+            "id": "1:d0",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d1",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d2",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d3",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d4",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d5",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d6",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d7",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d8",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d9",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d10",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d11",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d12",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d13",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d14",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "1:d15",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          }
+        ]
+      }
+    },
+    {
+      "stage": 2,
+      "frame": "review-garden-02",
+      "title": "Tinesjakta",
+      "intent": "Offset maintenance bridges cross a thawing shaft. The right ladder reaches a middle gallery; the left gallery climbs again to a high left departure. Both lower stairways remain usable without upgrades.",
+      "artReference": "Existing native sanctuary masonry, cavern and district pump/arch materials. No thaw-shaft PNG master has been authored or imported.",
+      "setting": "underground",
+      "profile": {
+        "id": "garden-2",
+        "stage": 2,
+        "title": "Railway Ruins",
+        "theme": "canopy",
+        "chapter": "Deep vaults",
+        "focus": "Read the broken path",
+        "routes": [
+          {
+            "role": "Gallery",
+            "height": [
+              78,
+              90
+            ],
+            "width": [
+              28,
+              40
+            ],
+            "gap": [
+              7,
+              11
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.12,
+            "branch": 0.25,
+            "graphs": [
+              [
+                "step",
+                "rest",
+                "arch"
+              ],
+              [
+                "step",
+                "step",
+                "gallery"
+              ]
+            ]
+          },
+          {
+            "role": "Lookout",
+            "height": [
+              114,
+              128
+            ],
+            "width": [
+              24,
+              34
+            ],
+            "gap": [
+              8,
+              11
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.22,
+            "branch": 0.35,
+            "graphs": [
+              [
+                "step",
+                "stack",
+                "rest",
+                "switch"
+              ],
+              [
+                "step",
+                "step",
+                "fork",
+                "stack"
+              ]
+            ]
+          }
+        ]
+      },
+      "kind": "canopy",
+      "width": 328,
+      "height": 334,
+      "worldOrigin": 207510,
+      "canvasWorldLeft": 207334,
+      "canvasWorldTop": -282,
+      "soilY": 283,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 283,
+          "w": 328,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 176,
+          "y": 259,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:stone",
+          "x": 152,
+          "y": 267,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:2:ledge:0"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 208,
+          "y": 251,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:2:ledge:1"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 240,
+          "y": 235,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:2:ledge:2"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 120,
+          "y": 251,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:2:ledge:3"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 88,
+          "y": 235,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:2:ledge:4"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 56,
+          "y": 219,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:2:ledge:5"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 40,
+          "y": 203,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:2:ledge:6"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 240,
+          "y": 139,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:2:ledge:7"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 192,
+          "y": 139,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:2:ledge:8"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 144,
+          "y": 139,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:2:ledge:9"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 96,
+          "y": 139,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:2:ledge:10"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 40,
+          "y": 139,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:2:ledge:11"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 96,
+          "y": 43,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:2:ledge:12"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 48,
+          "y": 43,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:2:ledge:13"
+        },
+        {
+          "name": "ladder",
+          "x": 249,
+          "y": 139,
+          "w": 14,
+          "h": 96,
+          "sourceId": "authored:2:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 57,
+          "y": 139,
+          "w": 14,
+          "h": 64,
+          "sourceId": "authored:2:ladder:1"
+        },
+        {
+          "name": "ladder",
+          "x": 105,
+          "y": 43,
+          "w": 14,
+          "h": 96,
+          "sourceId": "authored:2:ladder:2"
+        },
+        {
+          "name": "reward",
+          "x": 69,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:reward:0"
+        },
+        {
+          "name": "reward",
+          "x": 261,
+          "y": 132,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:reward:1"
+        },
+        {
+          "name": "seed",
+          "x": 117,
+          "y": 132,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 61,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 253,
+          "y": 228,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:trial:1"
+        },
+        {
+          "name": "puzzle",
+          "x": 157,
+          "y": 132,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 69,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 181,
+          "y": 276,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 53,
+          "y": 132,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 173,
+          "y": 276,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:start:0"
+        },
+        {
+          "name": "replace-picture",
+          "x": 184,
+          "y": 291,
+          "w": 7,
+          "h": 7,
+          "sourceId": null
+        }
+      ],
+      "terrainY": 280,
+      "terrainPath": "M 0 54 L 0 15 L 24 15 L 24 14 L 37 14 L 37 13 L 46 13 L 46 12 L 54 12 L 54 11 L 61 11 L 61 10 L 68 10 L 68 9 L 77 9 L 77 8 L 91 8 L 91 7 L 107 7 L 107 6 L 155 6 L 155 5 L 166 5 L 166 4 L 174 4 L 174 3 L 183 3 L 183 2 L 224 2 L 224 1 L 236 1 L 236 2 L 248 2 L 248 3 L 277 3 L 277 2 L 286 2 L 286 1 L 299 1 L 299 0 L 311 0 L 311 1 L 325 1 L 325 2 L 328 2 L 328 54 Z",
+      "water": [],
+      "annotations": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGarden": {
+        "frame": "review-garden-02",
+        "node": "offline:review-garden-02",
+        "ledges": [
+          {
+            "x": -136,
+            "rise": 80,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -136,
+            "rise": 144,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -128,
+            "rise": 240,
+            "w": 40,
+            "style": "stone"
+          },
+          {
+            "x": -120,
+            "rise": 64,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -88,
+            "rise": 48,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -80,
+            "rise": 144,
+            "w": 40,
+            "style": "ruin"
+          },
+          {
+            "x": -80,
+            "rise": 240,
+            "w": 40,
+            "style": "stone"
+          },
+          {
+            "x": -56,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -32,
+            "rise": 144,
+            "w": 40,
+            "style": "ruin"
+          },
+          {
+            "x": -24,
+            "rise": 16,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": 16,
+            "rise": 144,
+            "w": 40,
+            "style": "ruin"
+          },
+          {
+            "x": 32,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 64,
+            "rise": 48,
+            "w": 32,
+            "style": "ruin"
+          },
+          {
+            "x": 64,
+            "rise": 144,
+            "w": 48,
+            "style": "ruin"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -112,
+            "rise": 144,
+            "w": 14,
+            "h": 64
+          },
+          {
+            "x": -64,
+            "rise": 240,
+            "w": 14,
+            "h": 96
+          },
+          {
+            "x": 80,
+            "rise": 144,
+            "w": 14,
+            "h": 96
+          }
+        ],
+        "replacePicture": true,
+        "reward": [
+          {
+            "x": -104,
+            "rise": 240
+          },
+          {
+            "x": 88,
+            "rise": 144
+          }
+        ],
+        "seed": [
+          {
+            "x": -56,
+            "rise": 144
+          }
+        ],
+        "trial": [
+          {
+            "x": -112,
+            "rise": 80
+          },
+          {
+            "x": 80,
+            "rise": 48
+          }
+        ],
+        "puzzle": [
+          {
+            "x": -16,
+            "rise": 144
+          }
+        ],
+        "door": [
+          {
+            "x": -104,
+            "rise": 240
+          }
+        ],
+        "dig": [
+          {
+            "x": 8,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": -120,
+            "rise": 144
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "runtime": {
+        "id": "garden-2-canopy",
+        "stage": 2,
+        "theme": "canopy",
+        "kind": "canopy",
+        "origin": 207510,
+        "designed": true,
+        "frame": "review-garden-02",
+        "platforms": [
+          {
+            "id": "2:d0",
+            "x": 207374,
+            "y": -79,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 8
+          },
+          {
+            "id": "2:d1",
+            "x": 207374,
+            "y": -143,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 8
+          },
+          {
+            "id": "2:d2",
+            "x": 207382,
+            "y": -239,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 7
+          },
+          {
+            "id": "2:d3",
+            "x": 207390,
+            "y": -63,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 7
+          },
+          {
+            "id": "2:d4",
+            "x": 207422,
+            "y": -47,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 5
+          },
+          {
+            "id": "2:d5",
+            "x": 207430,
+            "y": -143,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 4
+          },
+          {
+            "id": "2:d6",
+            "x": 207430,
+            "y": -239,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 4
+          },
+          {
+            "id": "2:d7",
+            "x": 207454,
+            "y": -31,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 4
+          },
+          {
+            "id": "2:d8",
+            "x": 207478,
+            "y": -143,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 3
+          },
+          {
+            "id": "2:d9",
+            "x": 207486,
+            "y": -15,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "2:d10",
+            "x": 207526,
+            "y": -143,
+            "w": 40,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 0
+          },
+          {
+            "id": "2:d11",
+            "x": 207542,
+            "y": -31,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 0
+          },
+          {
+            "id": "2:d12",
+            "x": 207574,
+            "y": -47,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "2:d13",
+            "x": 207574,
+            "y": -143,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": 1
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 207536,
+              "y": -0.03077593194395689
+            },
+            "platformIds": [
+              "2:d9",
+              "2:d7",
+              "2:d4",
+              "2:d3",
+              "2:d0",
+              "2:d1",
+              "2:d5",
+              "2:d6",
+              "2:d2"
+            ],
+            "steps": [
+              {
+                "platformId": "2:d9",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d1",
+                "kind": "ladder",
+                "ladderId": "2:ladder0"
+              },
+              {
+                "platformId": "2:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d6",
+                "kind": "ladder",
+                "ladderId": "2:ladder1"
+              },
+              {
+                "platformId": "2:d2",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "2:ladder0",
+              "2:ladder1"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 207536,
+              "y": -0.03077593194395689
+            },
+            "platformIds": [
+              "2:d9",
+              "2:d11",
+              "2:d12",
+              "2:d13"
+            ],
+            "steps": [
+              {
+                "platformId": "2:d9",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d11",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "2:d13",
+                "kind": "ladder",
+                "ladderId": "2:ladder2"
+              }
+            ],
+            "ladderIds": [
+              "2:ladder2"
+            ],
+            "id": 1
+          }
+        ],
+        "rewards": [
+          {
+            "x": 207406,
+            "y": -239,
+            "platformId": "2:d2",
+            "side": -1
+          },
+          {
+            "x": 207598,
+            "y": -143,
+            "platformId": "2:d13",
+            "side": 1
+          },
+          {
+            "x": 207454,
+            "y": -143,
+            "platformId": "2:d5",
+            "side": -1
+          }
+        ],
+        "trials": [
+          {
+            "x": 207398,
+            "y": -79,
+            "platformId": "2:d0",
+            "side": -1
+          },
+          {
+            "x": 207590,
+            "y": -47,
+            "platformId": "2:d12",
+            "side": 1
+          }
+        ],
+        "bonuses": [],
+        "spots": {
+          "puzzle": [
+            {
+              "x": 207494,
+              "y": -143,
+              "platformId": "2:d8",
+              "side": -1
+            }
+          ],
+          "door": [
+            {
+              "x": 207406,
+              "y": -239,
+              "platformId": "2:d2",
+              "side": -1
+            }
+          ],
+          "dig": [
+            {
+              "x": 207518,
+              "y": 0.4179471258297802,
+              "platformId": null,
+              "side": 1
+            }
+          ],
+          "secret": [
+            {
+              "x": 207390,
+              "y": -143,
+              "platformId": "2:d1",
+              "side": -1
+            }
+          ],
+          "start": [
+            {
+              "x": 207510,
+              "y": 1.1797484856845557,
+              "platformId": null,
+              "side": 1
+            }
+          ]
+        },
+        "decor": [],
+        "replacePicture": true,
+        "ladders": [
+          {
+            "id": "2:ladder0",
+            "x": 207398,
+            "top": -143,
+            "bottom": -79,
+            "w": 14
+          },
+          {
+            "id": "2:ladder1",
+            "x": 207446,
+            "top": -239,
+            "bottom": -143,
+            "w": 14
+          },
+          {
+            "id": "2:ladder2",
+            "x": 207590,
+            "top": -143,
+            "bottom": -47,
+            "w": 14
+          }
+        ],
+        "nodes": [
+          {
+            "x": 207398,
+            "y": -79,
+            "platformId": "2:d0",
+            "tier": 0
+          },
+          {
+            "x": 207398,
+            "y": -143,
+            "platformId": "2:d1",
+            "tier": 0
+          },
+          {
+            "x": 207402,
+            "y": -239,
+            "platformId": "2:d2",
+            "tier": 0
+          },
+          {
+            "x": 207402,
+            "y": -63,
+            "platformId": "2:d3",
+            "tier": 0
+          },
+          {
+            "x": 207434,
+            "y": -47,
+            "platformId": "2:d4",
+            "tier": 0
+          },
+          {
+            "x": 207450,
+            "y": -143,
+            "platformId": "2:d5",
+            "tier": 0
+          },
+          {
+            "x": 207450,
+            "y": -239,
+            "platformId": "2:d6",
+            "tier": 0
+          },
+          {
+            "x": 207466,
+            "y": -31,
+            "platformId": "2:d7",
+            "tier": 0
+          },
+          {
+            "x": 207498,
+            "y": -143,
+            "platformId": "2:d8",
+            "tier": 0
+          },
+          {
+            "x": 207510,
+            "y": -15,
+            "platformId": "2:d9",
+            "tier": 0
+          },
+          {
+            "x": 207546,
+            "y": -143,
+            "platformId": "2:d10",
+            "tier": 0
+          },
+          {
+            "x": 207554,
+            "y": -31,
+            "platformId": "2:d11",
+            "tier": 0
+          },
+          {
+            "x": 207590,
+            "y": -47,
+            "platformId": "2:d12",
+            "tier": 0
+          },
+          {
+            "x": 207598,
+            "y": -143,
+            "platformId": "2:d13",
+            "tier": 0
+          }
+        ],
+        "seed": 1
+      },
+      "reach": {
+        "method": "MaxLevels.reachable on offline authored base geometry; real physics verification remains required.",
+        "summary": "C0 14 · C1 0 · C2 0 · C3 0 · unreachable 0",
+        "count": [
+          14,
+          0,
+          0,
+          0,
+          0
+        ],
+        "platforms": [
+          {
+            "id": "2:d0",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d1",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d2",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d3",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d4",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d5",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d6",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d7",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d8",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d9",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d10",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d11",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d12",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "2:d13",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          }
+        ]
+      }
+    },
+    {
+      "stage": 3,
+      "frame": "review-garden-03",
+      "title": "Den gløymde stasjonen",
+      "intent": "Broken lower platforms flank the fallen carriage. A west maintenance ladder reaches brick arches; stepped overhead rails lead to a taller rooted lift and right departure. The platform gaps and both lift returns are tested on foot.",
+      "artReference": "Existing native railway-ruins master assets/levels-v1/railway-ruins.png, 1080x224, Figma 477:11670. It currently serves garden 2 and is not reassigned by this draft.",
+      "setting": "underground",
+      "profile": {
+        "id": "garden-3",
+        "stage": 3,
+        "title": "Broken Aqueduct",
+        "theme": "crossing",
+        "chapter": "Deep vaults",
+        "focus": "Cross, then climb",
+        "routes": [
+          {
+            "role": "Crossing",
+            "height": [
+              70,
+              84
+            ],
+            "width": [
+              30,
+              42
+            ],
+            "gap": [
+              8,
+              12
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.08,
+            "branch": 0.2,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "promenade",
+                "rest"
+              ],
+              [
+                "step",
+                "step",
+                "bridge",
+                "step"
+              ]
+            ]
+          },
+          {
+            "role": "Lookout",
+            "height": [
+              112,
+              126
+            ],
+            "width": [
+              24,
+              34
+            ],
+            "gap": [
+              8,
+              12
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.14,
+            "branch": 0.3,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "pond",
+                "gallery"
+              ],
+              [
+                "step",
+                "step",
+                "arch",
+                "stack"
+              ]
+            ]
+          }
+        ]
+      },
+      "kind": "crossing",
+      "width": 432,
+      "height": 321,
+      "worldOrigin": 412950,
+      "canvasWorldLeft": 412742,
+      "canvasWorldTop": -291,
+      "soilY": 251,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 251,
+          "w": 432,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 208,
+          "y": 227,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 184,
+          "y": 235,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:3:ledge:0"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 152,
+          "y": 219,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:3:ledge:1"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 120,
+          "y": 203,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:3:ledge:2"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 80,
+          "y": 187,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:3:ledge:3"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 240,
+          "y": 219,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:3:ledge:4"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 272,
+          "y": 203,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:3:ledge:5"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 304,
+          "y": 187,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:3:ledge:6"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 40,
+          "y": 91,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:3:ledge:7"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 96,
+          "y": 91,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:3:ledge:8"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 152,
+          "y": 75,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:3:ledge:9"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 208,
+          "y": 59,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:3:ledge:10"
+        },
+        {
+          "name": "ledge:root",
+          "x": 264,
+          "y": 43,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:3:ledge:11"
+        },
+        {
+          "name": "ledge:root",
+          "x": 312,
+          "y": 43,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:3:ledge:12"
+        },
+        {
+          "name": "ledge:root",
+          "x": 336,
+          "y": 43,
+          "w": 56,
+          "h": 6,
+          "sourceId": "authored:3:ledge:13"
+        },
+        {
+          "name": "block:ruin",
+          "x": 40,
+          "y": 171,
+          "w": 32,
+          "h": 24,
+          "sourceId": "authored:3:block:0"
+        },
+        {
+          "name": "block:root",
+          "x": 336,
+          "y": 171,
+          "w": 32,
+          "h": 16,
+          "sourceId": "authored:3:block:1"
+        },
+        {
+          "name": "ladder",
+          "x": 49,
+          "y": 91,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:3:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 345,
+          "y": 43,
+          "w": 14,
+          "h": 128,
+          "sourceId": "authored:3:ladder:1"
+        },
+        {
+          "name": "reward",
+          "x": 61,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:reward:0"
+        },
+        {
+          "name": "reward",
+          "x": 365,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:reward:1"
+        },
+        {
+          "name": "seed",
+          "x": 277,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 133,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 277,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:trial:1"
+        },
+        {
+          "name": "bonus",
+          "x": 117,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:bonus:0"
+        },
+        {
+          "name": "bonus",
+          "x": 221,
+          "y": 52,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:bonus:1"
+        },
+        {
+          "name": "puzzle",
+          "x": 53,
+          "y": 164,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 365,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 213,
+          "y": 244,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 125,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 205,
+          "y": 244,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:3:start:0"
+        }
+      ],
+      "terrainY": 250,
+      "terrainPath": "M 0 71 L 0 15 L 15 15 L 15 16 L 18 16 L 18 17 L 21 17 L 21 18 L 23 18 L 23 19 L 25 19 L 25 20 L 28 20 L 28 21 L 30 21 L 30 22 L 32 22 L 32 23 L 34 23 L 34 24 L 36 24 L 36 25 L 38 25 L 38 26 L 40 26 L 40 27 L 43 27 L 43 28 L 46 28 L 46 29 L 51 29 L 51 30 L 82 30 L 82 29 L 94 29 L 94 28 L 107 28 L 107 27 L 120 27 L 120 26 L 130 26 L 130 25 L 136 25 L 136 24 L 141 24 L 141 23 L 144 23 L 144 22 L 148 22 L 148 21 L 151 21 L 151 20 L 153 20 L 153 19 L 156 19 L 156 18 L 158 18 L 158 17 L 160 17 L 160 16 L 162 16 L 162 15 L 164 15 L 164 14 L 166 14 L 166 13 L 168 13 L 168 12 L 169 12 L 169 11 L 171 11 L 171 10 L 173 10 L 173 9 L 175 9 L 175 8 L 177 8 L 177 7 L 179 7 L 179 6 L 181 6 L 181 5 L 183 5 L 183 4 L 185 4 L 185 3 L 188 3 L 188 2 L 191 2 L 191 1 L 196 1 L 196 0 L 204 0 L 204 1 L 210 1 L 210 2 L 213 2 L 213 3 L 216 3 L 216 4 L 218 4 L 218 5 L 221 5 L 221 6 L 223 6 L 223 7 L 225 7 L 225 8 L 227 8 L 227 9 L 229 9 L 229 10 L 231 10 L 231 11 L 233 11 L 233 12 L 235 12 L 235 13 L 237 13 L 237 14 L 239 14 L 239 15 L 241 15 L 241 16 L 243 16 L 243 17 L 245 17 L 245 18 L 247 18 L 247 19 L 250 19 L 250 20 L 252 20 L 252 21 L 255 21 L 255 22 L 259 22 L 259 23 L 263 23 L 263 24 L 269 24 L 269 25 L 279 25 L 279 26 L 303 26 L 303 25 L 316 25 L 316 26 L 328 26 L 328 27 L 335 27 L 335 28 L 341 28 L 341 29 L 347 29 L 347 30 L 354 30 L 354 31 L 365 31 L 365 32 L 379 32 L 379 33 L 393 33 L 393 34 L 432 34 L 432 71 Z",
+      "water": [],
+      "annotations": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGarden": {
+        "frame": "review-garden-03",
+        "node": "offline:review-garden-03",
+        "ledges": [
+          {
+            "x": -168,
+            "rise": 160,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -128,
+            "rise": 64,
+            "w": 32,
+            "style": "ruin"
+          },
+          {
+            "x": -112,
+            "rise": 160,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -88,
+            "rise": 48,
+            "w": 24,
+            "style": "ruin"
+          },
+          {
+            "x": -56,
+            "rise": 32,
+            "w": 24,
+            "style": "ruin"
+          },
+          {
+            "x": -56,
+            "rise": 176,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": -24,
+            "rise": 16,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": 0,
+            "rise": 192,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": 32,
+            "rise": 32,
+            "w": 24,
+            "style": "ruin"
+          },
+          {
+            "x": 56,
+            "rise": 208,
+            "w": 40,
+            "style": "root"
+          },
+          {
+            "x": 64,
+            "rise": 48,
+            "w": 24,
+            "style": "ruin"
+          },
+          {
+            "x": 96,
+            "rise": 64,
+            "w": 24,
+            "style": "ruin"
+          },
+          {
+            "x": 104,
+            "rise": 208,
+            "w": 32,
+            "style": "root"
+          },
+          {
+            "x": 128,
+            "rise": 208,
+            "w": 56,
+            "style": "root"
+          }
+        ],
+        "blocks": [
+          {
+            "x": -168,
+            "rise": 80,
+            "w": 32,
+            "h": 24,
+            "style": "ruin"
+          },
+          {
+            "x": 128,
+            "rise": 80,
+            "w": 32,
+            "h": 16,
+            "style": "root"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -152,
+            "rise": 160,
+            "w": 14,
+            "h": 80
+          },
+          {
+            "x": 144,
+            "rise": 208,
+            "w": 14,
+            "h": 128
+          }
+        ],
+        "reward": [
+          {
+            "x": -144,
+            "rise": 160
+          },
+          {
+            "x": 160,
+            "rise": 208
+          }
+        ],
+        "seed": [
+          {
+            "x": 72,
+            "rise": 208
+          }
+        ],
+        "bonus": [
+          {
+            "x": -88,
+            "rise": 160
+          },
+          {
+            "x": 16,
+            "rise": 192
+          }
+        ],
+        "trial": [
+          {
+            "x": -72,
+            "rise": 48
+          },
+          {
+            "x": 72,
+            "rise": 48
+          }
+        ],
+        "puzzle": [
+          {
+            "x": -152,
+            "rise": 80
+          }
+        ],
+        "door": [
+          {
+            "x": 160,
+            "rise": 208
+          }
+        ],
+        "dig": [
+          {
+            "x": 8,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": -80,
+            "rise": 160
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "runtime": {
+        "id": "garden-3-crossing",
+        "stage": 3,
+        "theme": "crossing",
+        "kind": "crossing",
+        "origin": 412950,
+        "designed": true,
+        "frame": "review-garden-03",
+        "platforms": [
+          {
+            "id": "3:d0",
+            "x": 412782,
+            "y": -200,
+            "w": 48,
+            "depth": 8,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -11
+          },
+          {
+            "id": "3:d1",
+            "x": 412822,
+            "y": -104,
+            "w": 32,
+            "depth": 8,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -13
+          },
+          {
+            "id": "3:d2",
+            "x": 412838,
+            "y": -200,
+            "w": 48,
+            "depth": 8,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -15
+          },
+          {
+            "id": "3:d3",
+            "x": 412862,
+            "y": -88,
+            "w": 24,
+            "depth": 8,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -16
+          },
+          {
+            "id": "3:d4",
+            "x": 412894,
+            "y": -72,
+            "w": 24,
+            "depth": 8,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -27
+          },
+          {
+            "id": "3:d5",
+            "x": 412894,
+            "y": -216,
+            "w": 48,
+            "depth": 8,
+            "route": -1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -33
+          },
+          {
+            "id": "3:d6",
+            "x": 412926,
+            "y": -56,
+            "w": 48,
+            "depth": 8,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -40
+          },
+          {
+            "id": "3:d7",
+            "x": 412950,
+            "y": -232,
+            "w": 48,
+            "depth": 8,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -30
+          },
+          {
+            "id": "3:d8",
+            "x": 412982,
+            "y": -72,
+            "w": 24,
+            "depth": 8,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -20
+          },
+          {
+            "id": "3:d9",
+            "x": 413006,
+            "y": -248,
+            "w": 40,
+            "depth": 8,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": -15
+          },
+          {
+            "id": "3:d10",
+            "x": 413014,
+            "y": -88,
+            "w": 24,
+            "depth": 8,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -15
+          },
+          {
+            "id": "3:d11",
+            "x": 413046,
+            "y": -104,
+            "w": 24,
+            "depth": 8,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -15
+          },
+          {
+            "id": "3:d12",
+            "x": 413054,
+            "y": -248,
+            "w": 32,
+            "depth": 8,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": -14
+          },
+          {
+            "id": "3:d13",
+            "x": 413078,
+            "y": -248,
+            "w": 56,
+            "depth": 8,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": -10
+          },
+          {
+            "id": "3:b0",
+            "x": 412782,
+            "y": -120,
+            "w": 32,
+            "h": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "ruin",
+            "solid": true,
+            "optional": false,
+            "floor": -11
+          },
+          {
+            "id": "3:b1",
+            "x": 413078,
+            "y": -120,
+            "w": 32,
+            "h": 16,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "solid": true,
+            "optional": false,
+            "floor": -11
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 412942,
+              "y": -40.78090882860636
+            },
+            "platformIds": [
+              "3:d6",
+              "3:d4",
+              "3:d3",
+              "3:d1",
+              "3:b0",
+              "3:d0"
+            ],
+            "steps": [
+              {
+                "platformId": "3:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:b0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d0",
+                "kind": "ladder",
+                "ladderId": "3:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "3:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 412942,
+              "y": -40.78090882860636
+            },
+            "platformIds": [
+              "3:d6",
+              "3:d8",
+              "3:d10",
+              "3:d11",
+              "3:b1",
+              "3:d13",
+              "3:d12",
+              "3:d9"
+            ],
+            "steps": [
+              {
+                "platformId": "3:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d8",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d11",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:b1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d13",
+                "kind": "ladder",
+                "ladderId": "3:ladder1"
+              },
+              {
+                "platformId": "3:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "3:d9",
+                "kind": "jump",
+                "ladderId": null
+              }
+            ],
+            "ladderIds": [
+              "3:ladder1"
+            ],
+            "id": 1
+          }
+        ],
+        "rewards": [
+          {
+            "x": 412806,
+            "y": -200,
+            "platformId": "3:d0",
+            "side": -1
+          },
+          {
+            "x": 413110,
+            "y": -248,
+            "platformId": "3:d13",
+            "side": 1
+          },
+          {
+            "x": 413022,
+            "y": -248,
+            "platformId": "3:d9",
+            "side": 1
+          }
+        ],
+        "trials": [
+          {
+            "x": 412878,
+            "y": -88,
+            "platformId": "3:d3",
+            "side": -1
+          },
+          {
+            "x": 413022,
+            "y": -88,
+            "platformId": "3:d10",
+            "side": 1
+          }
+        ],
+        "bonuses": [
+          {
+            "x": 412862,
+            "y": -200,
+            "platformId": "3:d2",
+            "side": -1
+          },
+          {
+            "x": 412966,
+            "y": -232,
+            "platformId": "3:d7",
+            "side": 1
+          }
+        ],
+        "spots": {
+          "puzzle": [
+            {
+              "x": 412798,
+              "y": -120,
+              "platformId": "3:b0",
+              "side": -1
+            }
+          ],
+          "door": [
+            {
+              "x": 413110,
+              "y": -248,
+              "platformId": "3:d13",
+              "side": 1
+            }
+          ],
+          "dig": [
+            {
+              "x": 412958,
+              "y": -37.28975004886787,
+              "platformId": null,
+              "side": 1
+            }
+          ],
+          "secret": [
+            {
+              "x": 412870,
+              "y": -200,
+              "platformId": "3:d2",
+              "side": -1
+            }
+          ],
+          "start": [
+            {
+              "x": 412950,
+              "y": -39.78505003351324,
+              "platformId": null,
+              "side": 1
+            }
+          ]
+        },
+        "decor": [],
+        "ladders": [
+          {
+            "id": "3:ladder0",
+            "x": 412798,
+            "top": -200,
+            "bottom": -120,
+            "w": 14
+          },
+          {
+            "id": "3:ladder1",
+            "x": 413094,
+            "top": -248,
+            "bottom": -120,
+            "w": 14
+          }
+        ],
+        "nodes": [
+          {
+            "x": 412806,
+            "y": -200,
+            "platformId": "3:d0",
+            "tier": 0
+          },
+          {
+            "x": 412838,
+            "y": -104,
+            "platformId": "3:d1",
+            "tier": 0
+          },
+          {
+            "x": 412862,
+            "y": -200,
+            "platformId": "3:d2",
+            "tier": 0
+          },
+          {
+            "x": 412874,
+            "y": -88,
+            "platformId": "3:d3",
+            "tier": 0
+          },
+          {
+            "x": 412906,
+            "y": -72,
+            "platformId": "3:d4",
+            "tier": 0
+          },
+          {
+            "x": 412918,
+            "y": -216,
+            "platformId": "3:d5",
+            "tier": 0
+          },
+          {
+            "x": 412950,
+            "y": -56,
+            "platformId": "3:d6",
+            "tier": 0
+          },
+          {
+            "x": 412974,
+            "y": -232,
+            "platformId": "3:d7",
+            "tier": 0
+          },
+          {
+            "x": 412994,
+            "y": -72,
+            "platformId": "3:d8",
+            "tier": 0
+          },
+          {
+            "x": 413026,
+            "y": -248,
+            "platformId": "3:d9",
+            "tier": 0
+          },
+          {
+            "x": 413026,
+            "y": -88,
+            "platformId": "3:d10",
+            "tier": 0
+          },
+          {
+            "x": 413058,
+            "y": -104,
+            "platformId": "3:d11",
+            "tier": 0
+          },
+          {
+            "x": 413070,
+            "y": -248,
+            "platformId": "3:d12",
+            "tier": 0
+          },
+          {
+            "x": 413106,
+            "y": -248,
+            "platformId": "3:d13",
+            "tier": 0
+          },
+          {
+            "x": 412798,
+            "y": -120,
+            "platformId": "3:b0",
+            "tier": 0
+          },
+          {
+            "x": 413094,
+            "y": -120,
+            "platformId": "3:b1",
+            "tier": 0
+          }
+        ],
+        "seed": 1
+      },
+      "reach": {
+        "method": "MaxLevels.reachable on offline authored base geometry; real physics verification remains required.",
+        "summary": "C0 16 · C1 0 · C2 0 · C3 0 · unreachable 0",
+        "count": [
+          16,
+          0,
+          0,
+          0,
+          0
+        ],
+        "platforms": [
+          {
+            "id": "3:d0",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d1",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d2",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d3",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d4",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d5",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d6",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d7",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d8",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d9",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d10",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d11",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d12",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:d13",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "3:b0",
+            "tier": 0,
+            "required": true,
+            "support": "solid"
+          },
+          {
+            "id": "3:b1",
+            "tier": 0,
+            "required": true,
+            "support": "solid"
+          }
+        ]
+      }
+    }
+  ]
+}
