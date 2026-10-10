@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "status": "verified-offline-fixture-candidate-pairing",
+  "sourceAuthority": "offline-not-authenticated",
+  "method": "Compile the saved synthetic metadata with exportLevels(metadata, page, gameWorld()), serialize with dataFile(), and compare every byte with the tested candidate.",
+  "compiler": "scripts/figma-levels.mjs",
+  "candidate": {
+    "path": "docs/design/native-level-drafts-batch-02/review/candidate-levels-data.js",
+    "sha256": "69da784a13650b9a92d868dddd898f7e8ff17d71fcc35ded83c5ad0e9f091ca7"
+  },
+  "fixture": {
+    "path": "docs/design/native-level-drafts-batch-02/review/synthetic-candidate.json",
+    "sha256": "e57d0297aaec581c87ef2a994d7338ada1872e38a6ab1226ec5b310a78eaeba0",
+    "metadataSha256": "30d17a71524b43673453df314696bdc65a9054e9059294d1075f5198295a145e"
+  },
+  "sourceDigest": "457a4f2c71dd9cd980a9f651f311fa0f29c019e92f2a857637b2bf9d9fddf3fa",
+  "geometryDigest": "81f944f91bcf19cb1768aa58ab0d8460210fc3cdb3c5b150a8784a7b80106345",
+  "baselineDigest": "b1e2c81fa459145ab3f787bd57b0ec0f7bbd4ce5d48e31516a09a1e2d6fd3077",
+  "stages": [
+    4,
+    5,
+    6
+  ],
+  "compilerErrors": 0,
+  "candidateBytesMatch": true,
+  "authenticatedFigmaSourceVerified": false
+}

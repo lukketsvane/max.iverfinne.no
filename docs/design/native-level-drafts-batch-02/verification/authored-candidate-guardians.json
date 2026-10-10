@@ -1,0 +1,671 @@
+{
+  "status": "offline-authored-candidate-guardian-physics",
+  "input": "/workspace/max-game/docs/design/native-level-drafts-batch-02/review/candidate-levels-data.js",
+  "sha256": "69da784a13650b9a92d868dddd898f7e8ff17d71fcc35ded83c5ad0e9f091ca7",
+  "stages": [
+    4,
+    5,
+    6
+  ],
+  "expectedSeededCases": 9,
+  "classId": "bulwark",
+  "hz": 60,
+  "seededCases": [
+    {
+      "stage": 4,
+      "seed": 1,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "4:route-court",
+          "x": 618586,
+          "y": -43.69774178153796,
+          "outward": {
+            "reached": true,
+            "iterations": 2,
+            "states": 16,
+            "actions": 2,
+            "frames": 279,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 10,
+            "actions": 2,
+            "frames": 268,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "4:route-lookout",
+          "x": 618250,
+          "y": -90,
+          "outward": {
+            "reached": true,
+            "iterations": 59,
+            "states": 100,
+            "actions": 5,
+            "frames": 207,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 11,
+            "states": 59,
+            "actions": 3,
+            "frames": 296,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "4:landmark-court",
+          "x": 618122,
+          "y": -6.958448613350885,
+          "outward": {
+            "reached": true,
+            "iterations": 3,
+            "states": 22,
+            "actions": 3,
+            "frames": 389,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 3,
+            "states": 12,
+            "actions": 3,
+            "frames": 378,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 4,
+      "seed": 2026,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "4:route-court",
+          "x": 618586,
+          "y": -43.69774178153796,
+          "outward": {
+            "reached": true,
+            "iterations": 2,
+            "states": 16,
+            "actions": 2,
+            "frames": 279,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 10,
+            "actions": 2,
+            "frames": 268,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "4:route-lookout",
+          "x": 618250,
+          "y": -90,
+          "outward": {
+            "reached": true,
+            "iterations": 69,
+            "states": 120,
+            "actions": 5,
+            "frames": 207,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 11,
+            "states": 59,
+            "actions": 3,
+            "frames": 296,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "4:landmark-court",
+          "x": 618122,
+          "y": -6.958448613350885,
+          "outward": {
+            "reached": true,
+            "iterations": 3,
+            "states": 22,
+            "actions": 3,
+            "frames": 389,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 3,
+            "states": 18,
+            "actions": 3,
+            "frames": 378,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 4,
+      "seed": 4294967295,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "4:route-court",
+          "x": 618586,
+          "y": -43.69774178153796,
+          "outward": {
+            "reached": true,
+            "iterations": 2,
+            "states": 16,
+            "actions": 2,
+            "frames": 279,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 10,
+            "actions": 2,
+            "frames": 268,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "4:route-lookout",
+          "x": 618250,
+          "y": -90,
+          "outward": {
+            "reached": true,
+            "iterations": 59,
+            "states": 100,
+            "actions": 5,
+            "frames": 207,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 11,
+            "states": 59,
+            "actions": 3,
+            "frames": 296,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "4:landmark-court",
+          "x": 618122,
+          "y": -6.958448613350885,
+          "outward": {
+            "reached": true,
+            "iterations": 3,
+            "states": 22,
+            "actions": 3,
+            "frames": 389,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 3,
+            "states": 12,
+            "actions": 3,
+            "frames": 378,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "seed": 1,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "5:route-court",
+          "x": 823502,
+          "y": -4.695421597326792,
+          "outward": {
+            "reached": true,
+            "iterations": 5,
+            "states": 39,
+            "actions": 5,
+            "frames": 654,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 5,
+            "states": 36,
+            "actions": 5,
+            "frames": 643,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "5:route-lookout",
+          "x": 823974,
+          "y": -160,
+          "outward": {
+            "reached": true,
+            "iterations": 21,
+            "states": 76,
+            "actions": 6,
+            "frames": 386,
+            "ladderFrames": 159
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 11,
+            "actions": 2,
+            "frames": 230,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "5:landmark-court",
+          "x": 823374,
+          "y": -19.118980984651557,
+          "outward": {
+            "reached": true,
+            "iterations": 6,
+            "states": 47,
+            "actions": 6,
+            "frames": 846,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 6,
+            "states": 41,
+            "actions": 6,
+            "frames": 835,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "seed": 2026,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "5:route-court",
+          "x": 823502,
+          "y": -4.695421597326792,
+          "outward": {
+            "reached": true,
+            "iterations": 5,
+            "states": 38,
+            "actions": 5,
+            "frames": 654,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 5,
+            "states": 27,
+            "actions": 5,
+            "frames": 643,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "5:route-lookout",
+          "x": 823974,
+          "y": -160,
+          "outward": {
+            "reached": true,
+            "iterations": 21,
+            "states": 80,
+            "actions": 6,
+            "frames": 386,
+            "ladderFrames": 159
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 11,
+            "actions": 2,
+            "frames": 230,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "5:landmark-court",
+          "x": 823374,
+          "y": -19.118980984651557,
+          "outward": {
+            "reached": true,
+            "iterations": 6,
+            "states": 43,
+            "actions": 6,
+            "frames": 846,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 6,
+            "states": 32,
+            "actions": 6,
+            "frames": 835,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "seed": 4294967295,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "5:route-court",
+          "x": 823502,
+          "y": -4.695421597326792,
+          "outward": {
+            "reached": true,
+            "iterations": 5,
+            "states": 39,
+            "actions": 5,
+            "frames": 654,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 5,
+            "states": 36,
+            "actions": 5,
+            "frames": 643,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "5:route-lookout",
+          "x": 823974,
+          "y": -160,
+          "outward": {
+            "reached": true,
+            "iterations": 21,
+            "states": 76,
+            "actions": 6,
+            "frames": 386,
+            "ladderFrames": 159
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 11,
+            "actions": 2,
+            "frames": 230,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "5:landmark-court",
+          "x": 823374,
+          "y": -19.118980984651557,
+          "outward": {
+            "reached": true,
+            "iterations": 6,
+            "states": 47,
+            "actions": 6,
+            "frames": 846,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 6,
+            "states": 41,
+            "actions": 6,
+            "frames": 835,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "seed": 1,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "6:route-court",
+          "x": 1024950,
+          "y": -4.932096305128216,
+          "outward": {
+            "reached": true,
+            "iterations": 2,
+            "states": 16,
+            "actions": 2,
+            "frames": 226,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 9,
+            "actions": 2,
+            "frames": 215,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "6:route-lookout",
+          "x": 1024638,
+          "y": -94,
+          "outward": {
+            "reached": true,
+            "iterations": 37,
+            "states": 96,
+            "actions": 7,
+            "frames": 397,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 11,
+            "states": 62,
+            "actions": 4,
+            "frames": 327,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "6:landmark-court",
+          "x": 1024506,
+          "y": 0.7944410117482867,
+          "outward": {
+            "reached": true,
+            "iterations": 3,
+            "states": 24,
+            "actions": 3,
+            "frames": 412,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 3,
+            "states": 11,
+            "actions": 3,
+            "frames": 401,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "seed": 2026,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "6:route-court",
+          "x": 1024950,
+          "y": -4.932096305128216,
+          "outward": {
+            "reached": true,
+            "iterations": 2,
+            "states": 16,
+            "actions": 2,
+            "frames": 226,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 9,
+            "actions": 2,
+            "frames": 215,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "6:route-lookout",
+          "x": 1024638,
+          "y": -94,
+          "outward": {
+            "reached": true,
+            "iterations": 37,
+            "states": 96,
+            "actions": 7,
+            "frames": 397,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 11,
+            "states": 62,
+            "actions": 4,
+            "frames": 327,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "6:landmark-court",
+          "x": 1024506,
+          "y": 0.7944410117482867,
+          "outward": {
+            "reached": true,
+            "iterations": 3,
+            "states": 24,
+            "actions": 3,
+            "frames": 412,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 3,
+            "states": 13,
+            "actions": 3,
+            "frames": 401,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "seed": 4294967295,
+      "designed": true,
+      "expedition": true,
+      "guardianSites": 3,
+      "sites": [
+        {
+          "id": "6:route-court",
+          "x": 1024950,
+          "y": -4.932096305128216,
+          "outward": {
+            "reached": true,
+            "iterations": 2,
+            "states": 16,
+            "actions": 2,
+            "frames": 226,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 2,
+            "states": 9,
+            "actions": 2,
+            "frames": 215,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "6:route-lookout",
+          "x": 1024638,
+          "y": -94,
+          "outward": {
+            "reached": true,
+            "iterations": 37,
+            "states": 96,
+            "actions": 7,
+            "frames": 397,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 11,
+            "states": 62,
+            "actions": 4,
+            "frames": 327,
+            "ladderFrames": 0
+          }
+        },
+        {
+          "id": "6:landmark-court",
+          "x": 1024506,
+          "y": 0.7944410117482867,
+          "outward": {
+            "reached": true,
+            "iterations": 3,
+            "states": 24,
+            "actions": 3,
+            "frames": 412,
+            "ladderFrames": 0
+          },
+          "return": {
+            "reached": true,
+            "iterations": 3,
+            "states": 11,
+            "actions": 3,
+            "frames": 401,
+            "ladderFrames": 0
+          }
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "resetSemantics": "Each stage begins at the real enterLevel entrance, settles by updatePlayer, and each guardian route replays from that captured entrance. The existing search helper searches then replays actual movement inputs; return begins at the reached site. No per-hop pose placement.",
+  "passed": true,
+  "total": {
+    "seededCases": 9,
+    "guardianRoundTrips": 27,
+    "failures": 0
+  }
+}

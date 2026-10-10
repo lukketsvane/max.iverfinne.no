@@ -7,20 +7,18 @@ const { loadGame } = require(path.join(repo, 'tests/game-harness.cjs'));
 const { searchAltar, capture, restore, setHz } = require('./altar-route-sweep-candidate.cjs');
 const levels = require(path.join(repo, 'levels.js'));
 const stageApi = require(path.join(repo, 'stage-layout.js'));
-const { STAGES, CLASSES: classes, RATES: rates, validateCandidate, caseCoverageFailures, createReportWriter } = require('./native-draft-verifier-utils.cjs');
-const args = process.argv.slice(2);
-if (args.length !== 2) throw new Error('Usage: node playtest-authored-candidates.cjs <candidate-levels-data.js> <report.json>');
-const input = path.resolve(args[0]), output = path.resolve(args[1]);
+const { CLASSES: classes, RATES: rates, parseVerifierArguments, validateCandidate, caseCoverageFailures, createReportWriter } = require('./native-draft-verifier-utils.cjs');
+const { input, output, stages } = parseVerifierArguments(process.argv.slice(2), 'playtest-authored-candidates.cjs');
 const writeReport = createReportWriter(input, output, repo);
 const bytes = fs.readFileSync(input), context = { window: {} };
 vm.runInNewContext(bytes.toString(), context);
 const data = JSON.parse(JSON.stringify(context.window.MaxLevelData));
-validateCandidate(data);
-const report = { status: 'offline-authored-candidate-physics', input: path.resolve(input), sha256: crypto.createHash('sha256').update(bytes).digest('hex'), source: 'actual existing engine; synthetic candidate data; no fresh Figma synchronization or production claim', classes, rates, integration: [], cases: [], failures: [] };
+validateCandidate(data, stages);
+const report = { status: 'offline-authored-candidate-physics', input: path.resolve(input), sha256: crypto.createHash('sha256').update(bytes).digest('hex'), source: 'actual existing engine; synthetic candidate data; no fresh Figma synchronization or production claim', stages, expectedCases: stages.length * classes.length * rates.length, classes, rates, integration: [], cases: [], failures: [] };
 const fixturePath = path.join(path.dirname(input), 'synthetic-candidate.json');
 if (fs.existsSync(fixturePath)) {
   const synthetic = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
-  report.sourceBinding = { fixture: path.resolve(fixturePath), fixtureStatus: synthetic.status, ...synthetic.source };
+  report.sourceBinding = { fixture: path.resolve(fixturePath), fixtureStatus: synthetic.status, ...synthetic.source, fixturePairingVerified: false, provenance: 'Declared adjacent offline fixture metadata; pairing with these candidate bytes has not been independently verified.' };
 }
 report.resetSemantics = 'Each independent route starts once at its grounded C0 soil entry; subsequent movement between platforms, markers, ladder endpoints and continuous gallery crossings uses updatePlayer without per-hop pose placement. Jump retries restore only the same takeoff state. Reverse-route fallback restores the reached reward state, searches alternatives, then replays actual input frames without pose placement; those returns reject automatic furnished supports.';
 report.verificationTargets = ['Compiled offline candidate selected through real stageLayout with pictures enabled', 'Exact authored surface dimensions preserved within automatic expedition/guardian furnishing', 'Two independent clients share identical full furnished layouts for three seeds', 'Each authored collider footprint and required marker reached by all four base classes at 30/60/120 Hz without traits or perks', 'Every authored ladder climbed and descended independently, with supported endpoints', 'Continuous upper-gallery crossings and returns, including coplanar overlap walks', 'Every reward and seed destination has a dry-soil physical return using authored supports'];
@@ -207,7 +205,7 @@ function returnRoute(fixture, route, hz, counts, label) {
   }
 }
 
-for (const stage of STAGES) {
+for (const stage of stages) {
   for (const seed of [1, 2026, 0xffffffff]) {
     try {
       const a = fixtureFor(stage, 'bulwark', seed), b = fixtureFor(stage, 'bulwark', seed);
@@ -285,12 +283,12 @@ for (const stage of STAGES) {
     console.log(JSON.stringify({ stage, classId, hz, sampleFailure: counts.failures[0], platforms: counts.platforms, markers: counts.markers, returns: counts.returns, ladderReturns: counts.ladderReturns, galleryCrossings: counts.galleryCrossings, ladders: counts.ladderIds.length, failures: counts.failures.length }));
   }
 }
-failures.push(...caseCoverageFailures(report.cases, { platforms: c => c.expected?.platforms, markers: c => c.expected?.markers, returns: c => c.expected?.returns }));
+failures.push(...caseCoverageFailures(report.cases, { platforms: c => c.expected?.platforms, markers: c => c.expected?.markers, returns: c => c.expected?.returns }, stages));
 for (const c of report.cases) {
   if (c.expected && c.ladderReturns !== c.expected.ladderReturns) failures.push({ kind: 'coverage', stage: c.stage, classId: c.classId, hz: c.hz, message: 'Incomplete authored ladder round-trip coverage' });
   if (!Number.isInteger(c.galleryCrossings) || c.galleryCrossings <= 0) failures.push({ kind: 'coverage', stage: c.stage, classId: c.classId, hz: c.hz, message: 'Positive continuous gallery crossing and return coverage required' });
 }
-if (report.integration.length !== STAGES.length * 3) failures.push({ kind: 'coverage', message: 'Incomplete seeded integration coverage' });
+if (report.integration.length !== stages.length * 3) failures.push({ kind: 'coverage', message: 'Incomplete seeded integration coverage' });
 report.passed = failures.length === 0;
 if (report.passed) report.verified = report.verificationTargets;
 report.total = { ladderRoundTrips: report.cases.reduce((a, c) => a + c.ladderReturns, 0), galleryCrossings: report.cases.reduce((a, c) => a + c.galleryCrossings, 0), jumpHops: report.cases.reduce((a, c) => a + c.jumpHops, 0), ladderUpFrames: report.cases.reduce((a, c) => a + c.ladderUpFrames, 0), ladderDownFrames: report.cases.reduce((a, c) => a + c.ladderDownFrames, 0), supportedWalks: report.cases.reduce((a, c) => a + c.supportedWalks, 0), alternativeReturns: report.cases.reduce((a, c) => a + c.alternativeReturns.length, 0), cases: report.cases.length, platforms: report.cases.reduce((a, c) => a + c.platforms, 0), markers: report.cases.reduce((a, c) => a + c.markers, 0), returns: report.cases.reduce((a, c) => a + c.returns, 0), failures: failures.length };

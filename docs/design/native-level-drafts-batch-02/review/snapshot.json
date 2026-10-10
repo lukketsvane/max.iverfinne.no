@@ -1,0 +1,3653 @@
+{
+  "schema": 1,
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "seed": 1,
+  "sourceKind": "offline-authored-native-geometry",
+  "status": "offline-authored-review-not-imported-or-synchronized",
+  "live": false,
+  "sourceDigest": "457a4f2c71dd9cd980a9f651f311fa0f29c019e92f2a857637b2bf9d9fddf3fa",
+  "geometryDigest": "81f944f91bcf19cb1768aa58ab0d8460210fc3cdb3c5b150a8784a7b80106345",
+  "baselineDigest": "b1e2c81fa459145ab3f787bd57b0ec0f7bbd4ce5d48e31516a09a1e2d6fd3077",
+  "sourceFiles": [
+    "ascent-presentation.inc.js",
+    "build-paths.js",
+    "cairn.inc.js",
+    "campaign-architecture.js",
+    "campaign-atmosphere.inc.js",
+    "companion.js",
+    "coop-game.inc.js",
+    "garden-places.js",
+    "guardian-sites.js",
+    "high-tide-map.js",
+    "high-tide.inc.js",
+    "hollow-crown.inc.js",
+    "index.html",
+    "last-seed.inc.js",
+    "level-guide.inc.js",
+    "levels-data.js",
+    "levels-v1/railway-ruins.js",
+    "levels-v1/seed-vault.js",
+    "levels-v1/sunken-sanctuary.js",
+    "levels.js",
+    "max-classes.js",
+    "mech.inc.js",
+    "mycel.inc.js",
+    "night-relay.inc.js",
+    "polge.inc.js",
+    "rat-enemies.inc.js",
+    "rattus.inc.js",
+    "run-director.inc.js",
+    "scripts/figma-authored-drafts.mjs",
+    "scripts/figma-level-drafts-import.mjs",
+    "scripts/figma-level-drafts.mjs",
+    "scripts/figma-levels.mjs",
+    "scripts/figma-mcp.mjs",
+    "scripts/game-source.cjs",
+    "secrets.inc.js",
+    "sligo-life.inc.js",
+    "stage-expeditions.js",
+    "stage-layout.js",
+    "tests/game-harness.cjs",
+    "wonders.inc.js",
+    "yeet.inc.js"
+  ],
+  "baselineScope": {
+    "method": "SHA-256 of named source files plus the expanded game source used by gameWorld()",
+    "expandedGameSource": "scripts/game-source.cjs()"
+  },
+  "authoringSource": {
+    "conceptFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "conceptNode": "746:117481",
+    "conceptCommit": "b12d88a3ab2a6d39a5c2deda4ef51cb30e95a4c1",
+    "runtimeBaseline": "97f3782dbf1fd7f56e7630ff9c39911978aae5cc",
+    "coordinateSpace": "Newly authored integer game-pixel offsets from each stage origin, with rises above its seed-1 soil line. Ledge x is its left edge; marker and ladder x is its centre. Normalized concept percentages are not collision coordinates.",
+    "limits": "Geometry prototypes only. No authenticated Figma capture, new runtime artwork, authored spawn override, terrain or water changes, or continuous-world connectors. Existing automatic expeditions and guardian furnishing remain runtime code. The pinned concept manifest marks 03-to-04 and 06-to-07 joins weak; no seamless boundary certification is implied.",
+    "conceptArtifacts": [
+      {
+        "stage": 4,
+        "path": "docs/design/seamless-progression-20/images/level-04.png",
+        "sha256": "5e9beb01d397815e5d209f9391771ddba4aeee174f8ecd795ceb0eb315069042",
+        "dimensions": [
+          1670,
+          942
+        ],
+        "selection": "adjoining-band-repair",
+        "figmaFrame": "746:117513",
+        "figmaImage": "782:13537"
+      },
+      {
+        "stage": 5,
+        "path": "docs/design/seamless-progression-20/images/level-05.png",
+        "sha256": "0a11b43ca185a4e3e95b47cf7e0bd7061ea7014f90ec5eee0895068354458646",
+        "dimensions": [
+          1669,
+          942
+        ],
+        "selection": "original-sequential-pass",
+        "figmaFrame": "746:117521",
+        "figmaImage": "782:13539"
+      },
+      {
+        "stage": 6,
+        "path": "docs/design/seamless-progression-20/images/level-06.png",
+        "sha256": "9ea2354925ccdd2df52ca50042c17f1f9284dc9d04fd23f853ab5c1025e548eb",
+        "dimensions": [
+          1670,
+          942
+        ],
+        "selection": "original-sequential-pass",
+        "figmaFrame": "746:117528",
+        "figmaImage": "782:13527"
+      }
+    ],
+    "figmaRepresentation": "Pinned historical composition previews for stages 4–6 are 384x216 JPEG fills, not native runtime PNG masters. Concept image references here bind full selected PNGs in the pinned Git commit."
+  },
+  "gardens": [
+    {
+      "stage": 4,
+      "frame": "review-garden-04",
+      "title": "Rot- og beinbrotet",
+      "intent": "A lower-right railway-salvage approach reaches the first excavation terrace. Uneven calcite/root switchbacks rise leftward across a continuous upper gallery. The western ladder also connects the lower excavation stairs to the high left terrace, giving both sides a supported descent toward the dry central entry. Inter-stage connectors are not authored here.",
+      "artReference": "Pinned concept selected adjoining-band-repair PNG images/level-04.png, 1670x942, SHA-256 5e9beb01d397815e5d209f9391771ddba4aeee174f8ecd795ceb0eb315069042. Existing native stone, ruin and root surfaces are geometry stand-ins; no calcite/fossil or salvage artwork is added or reassigned.",
+      "setting": "underground",
+      "profile": {
+        "id": "garden-4",
+        "stage": 4,
+        "title": "Sunken Chapel",
+        "theme": "ruins",
+        "chapter": "Deep vaults",
+        "focus": "Shelter beneath the spire",
+        "routes": [
+          {
+            "role": "Refuge",
+            "height": [
+              82,
+              96
+            ],
+            "width": [
+              28,
+              40
+            ],
+            "gap": [
+              7,
+              11
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.18,
+            "branch": 0.3,
+            "graphs": [
+              [
+                "step",
+                "rest",
+                "wall",
+                "gallery"
+              ],
+              [
+                "step",
+                "step",
+                "gallery",
+                "arch"
+              ]
+            ]
+          },
+          {
+            "role": "Spire",
+            "height": [
+              126,
+              142
+            ],
+            "width": [
+              22,
+              32
+            ],
+            "gap": [
+              8,
+              12
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.26,
+            "branch": 0.4,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "wall",
+                "stack"
+              ],
+              [
+                "step",
+                "step",
+                "narrow",
+                "gallery"
+              ]
+            ]
+          }
+        ]
+      },
+      "kind": "ruins",
+      "width": 400,
+      "height": 292,
+      "worldOrigin": 618390,
+      "canvasWorldLeft": 618190,
+      "canvasWorldTop": -261,
+      "soilY": 251,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 251,
+          "w": 400,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 200,
+          "y": 227,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 176,
+          "y": 235,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:4:ledge:0"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 232,
+          "y": 219,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:4:ledge:1"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 272,
+          "y": 203,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:4:ledge:2"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 312,
+          "y": 187,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:4:ledge:3"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 144,
+          "y": 219,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:4:ledge:4"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 112,
+          "y": 203,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:4:ledge:5"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 80,
+          "y": 187,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:4:ledge:6"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 40,
+          "y": 171,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:4:ledge:7"
+        },
+        {
+          "name": "ledge:ruin",
+          "x": 296,
+          "y": 107,
+          "w": 64,
+          "h": 6,
+          "sourceId": "authored:4:ledge:8"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 232,
+          "y": 91,
+          "w": 56,
+          "h": 6,
+          "sourceId": "authored:4:ledge:9"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 168,
+          "y": 75,
+          "w": 56,
+          "h": 6,
+          "sourceId": "authored:4:ledge:10"
+        },
+        {
+          "name": "ledge:root",
+          "x": 104,
+          "y": 59,
+          "w": 56,
+          "h": 6,
+          "sourceId": "authored:4:ledge:11"
+        },
+        {
+          "name": "ledge:root",
+          "x": 40,
+          "y": 43,
+          "w": 56,
+          "h": 6,
+          "sourceId": "authored:4:ledge:12"
+        },
+        {
+          "name": "ladder",
+          "x": 321,
+          "y": 107,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:4:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 49,
+          "y": 43,
+          "w": 14,
+          "h": 128,
+          "sourceId": "authored:4:ladder:1"
+        },
+        {
+          "name": "reward",
+          "x": 61,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:reward:0"
+        },
+        {
+          "name": "reward",
+          "x": 325,
+          "y": 100,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:reward:1"
+        },
+        {
+          "name": "seed",
+          "x": 125,
+          "y": 52,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 93,
+          "y": 180,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 285,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:trial:1"
+        },
+        {
+          "name": "bonus",
+          "x": 189,
+          "y": 68,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:bonus:0"
+        },
+        {
+          "name": "puzzle",
+          "x": 325,
+          "y": 180,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 69,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 205,
+          "y": 244,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 261,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 197,
+          "y": 244,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:4:start:0"
+        }
+      ],
+      "terrainY": 217,
+      "terrainPath": "M 0 75 L 0 23 L 2 23 L 2 22 L 15 22 L 15 23 L 22 23 L 22 24 L 27 24 L 27 25 L 31 25 L 31 26 L 35 26 L 35 27 L 38 27 L 38 28 L 41 28 L 41 29 L 45 29 L 45 30 L 49 30 L 49 31 L 53 31 L 53 32 L 58 32 L 58 33 L 85 33 L 85 32 L 95 32 L 95 31 L 114 31 L 114 32 L 125 32 L 125 33 L 135 33 L 135 34 L 164 34 L 164 33 L 176 33 L 176 34 L 193 34 L 193 35 L 214 35 L 214 36 L 227 36 L 227 37 L 236 37 L 236 38 L 245 38 L 245 39 L 265 39 L 265 38 L 277 38 L 277 37 L 288 37 L 288 36 L 296 36 L 296 35 L 308 35 L 308 34 L 317 34 L 317 33 L 323 33 L 323 32 L 328 32 L 328 31 L 332 31 L 332 30 L 335 30 L 335 29 L 337 29 L 337 28 L 340 28 L 340 27 L 342 27 L 342 26 L 344 26 L 344 25 L 346 25 L 346 24 L 347 24 L 347 23 L 349 23 L 349 22 L 351 22 L 351 21 L 352 21 L 352 20 L 354 20 L 354 19 L 356 19 L 356 18 L 357 18 L 357 17 L 359 17 L 359 16 L 360 16 L 360 15 L 362 15 L 362 14 L 363 14 L 363 13 L 365 13 L 365 12 L 366 12 L 366 11 L 368 11 L 368 10 L 370 10 L 370 9 L 371 9 L 371 8 L 373 8 L 373 7 L 375 7 L 375 6 L 377 6 L 377 5 L 379 5 L 379 4 L 381 4 L 381 3 L 384 3 L 384 2 L 387 2 L 387 1 L 393 1 L 393 0 L 400 0 L 400 1 L 400 1 L 400 75 Z",
+      "water": [],
+      "annotations": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGarden": {
+        "frame": "review-garden-04",
+        "node": "offline:review-garden-04",
+        "ledges": [
+          {
+            "x": -160,
+            "rise": 80,
+            "w": 40,
+            "style": "stone"
+          },
+          {
+            "x": -160,
+            "rise": 208,
+            "w": 56,
+            "style": "root"
+          },
+          {
+            "x": -120,
+            "rise": 64,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -96,
+            "rise": 192,
+            "w": 56,
+            "style": "root"
+          },
+          {
+            "x": -88,
+            "rise": 48,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -56,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -32,
+            "rise": 176,
+            "w": 56,
+            "style": "stone"
+          },
+          {
+            "x": -24,
+            "rise": 16,
+            "w": 48,
+            "style": "ruin"
+          },
+          {
+            "x": 32,
+            "rise": 32,
+            "w": 32,
+            "style": "ruin"
+          },
+          {
+            "x": 32,
+            "rise": 160,
+            "w": 56,
+            "style": "stone"
+          },
+          {
+            "x": 72,
+            "rise": 48,
+            "w": 32,
+            "style": "ruin"
+          },
+          {
+            "x": 96,
+            "rise": 144,
+            "w": 64,
+            "style": "ruin"
+          },
+          {
+            "x": 112,
+            "rise": 64,
+            "w": 40,
+            "style": "ruin"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -144,
+            "rise": 208,
+            "w": 14,
+            "h": 128
+          },
+          {
+            "x": 128,
+            "rise": 144,
+            "w": 14,
+            "h": 80
+          }
+        ],
+        "reward": [
+          {
+            "x": -136,
+            "rise": 208
+          },
+          {
+            "x": 128,
+            "rise": 144
+          }
+        ],
+        "seed": [
+          {
+            "x": -72,
+            "rise": 192
+          }
+        ],
+        "bonus": [
+          {
+            "x": -8,
+            "rise": 176
+          }
+        ],
+        "trial": [
+          {
+            "x": -104,
+            "rise": 64
+          },
+          {
+            "x": 88,
+            "rise": 48
+          }
+        ],
+        "puzzle": [
+          {
+            "x": 128,
+            "rise": 64
+          }
+        ],
+        "door": [
+          {
+            "x": -128,
+            "rise": 208
+          }
+        ],
+        "dig": [
+          {
+            "x": 8,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": 64,
+            "rise": 160
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "runtime": {
+        "id": "garden-4-ruins",
+        "stage": 4,
+        "theme": "ruins",
+        "kind": "ruins",
+        "origin": 618390,
+        "designed": true,
+        "frame": "review-garden-04",
+        "platforms": [
+          {
+            "id": "4:d0",
+            "x": 618230,
+            "y": -90,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -11
+          },
+          {
+            "id": "4:d1",
+            "x": 618230,
+            "y": -218,
+            "w": 56,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -11
+          },
+          {
+            "id": "4:d2",
+            "x": 618270,
+            "y": -74,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -12
+          },
+          {
+            "id": "4:d3",
+            "x": 618294,
+            "y": -202,
+            "w": 56,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -11
+          },
+          {
+            "id": "4:d4",
+            "x": 618302,
+            "y": -58,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -12
+          },
+          {
+            "id": "4:d5",
+            "x": 618334,
+            "y": -42,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -10
+          },
+          {
+            "id": "4:d6",
+            "x": 618358,
+            "y": -186,
+            "w": 56,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -9
+          },
+          {
+            "id": "4:d7",
+            "x": 618366,
+            "y": -26,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -9
+          },
+          {
+            "id": "4:d8",
+            "x": 618422,
+            "y": -42,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -5
+          },
+          {
+            "id": "4:d9",
+            "x": 618422,
+            "y": -170,
+            "w": 56,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": -5
+          },
+          {
+            "id": "4:d10",
+            "x": 618462,
+            "y": -58,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -8
+          },
+          {
+            "id": "4:d11",
+            "x": 618486,
+            "y": -154,
+            "w": 64,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -13
+          },
+          {
+            "id": "4:d12",
+            "x": 618502,
+            "y": -74,
+            "w": 40,
+            "depth": 6,
+            "route": 1,
+            "style": "ruin",
+            "optional": false,
+            "floor": -14
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 618364,
+              "y": -10.557692344707725
+            },
+            "platformIds": [
+              "4:d7",
+              "4:d5",
+              "4:d4",
+              "4:d2",
+              "4:d0",
+              "4:d1"
+            ],
+            "steps": [
+              {
+                "platformId": "4:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d1",
+                "kind": "ladder",
+                "ladderId": "4:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "4:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 618364,
+              "y": -10.557692344707725
+            },
+            "platformIds": [
+              "4:d7",
+              "4:d8",
+              "4:d10",
+              "4:d12",
+              "4:d11"
+            ],
+            "steps": [
+              {
+                "platformId": "4:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d8",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "4:d11",
+                "kind": "ladder",
+                "ladderId": "4:ladder1"
+              }
+            ],
+            "ladderIds": [
+              "4:ladder1"
+            ],
+            "id": 1
+          }
+        ],
+        "rewards": [
+          {
+            "x": 618254,
+            "y": -218,
+            "platformId": "4:d1",
+            "side": -1
+          },
+          {
+            "x": 618518,
+            "y": -154,
+            "platformId": "4:d11",
+            "side": 1
+          },
+          {
+            "x": 618318,
+            "y": -202,
+            "platformId": "4:d3",
+            "side": -1
+          }
+        ],
+        "trials": [
+          {
+            "x": 618286,
+            "y": -74,
+            "platformId": "4:d2",
+            "side": -1
+          },
+          {
+            "x": 618478,
+            "y": -58,
+            "platformId": "4:d10",
+            "side": 1
+          }
+        ],
+        "bonuses": [
+          {
+            "x": 618382,
+            "y": -186,
+            "platformId": "4:d6",
+            "side": -1
+          }
+        ],
+        "spots": {
+          "puzzle": [
+            {
+              "x": 618518,
+              "y": -74,
+              "platformId": "4:d12",
+              "side": 1
+            }
+          ],
+          "door": [
+            {
+              "x": 618262,
+              "y": -218,
+              "platformId": "4:d1",
+              "side": -1
+            }
+          ],
+          "dig": [
+            {
+              "x": 618398,
+              "y": -8.736995414133652,
+              "platformId": null,
+              "side": 1
+            }
+          ],
+          "secret": [
+            {
+              "x": 618454,
+              "y": -170,
+              "platformId": "4:d9",
+              "side": 1
+            }
+          ],
+          "start": [
+            {
+              "x": 618390,
+              "y": -9.10815034018109,
+              "platformId": null,
+              "side": 1
+            }
+          ]
+        },
+        "decor": [],
+        "ladders": [
+          {
+            "id": "4:ladder0",
+            "x": 618246,
+            "top": -218,
+            "bottom": -90,
+            "w": 14
+          },
+          {
+            "id": "4:ladder1",
+            "x": 618518,
+            "top": -154,
+            "bottom": -74,
+            "w": 14
+          }
+        ],
+        "nodes": [
+          {
+            "x": 618250,
+            "y": -90,
+            "platformId": "4:d0",
+            "tier": 0
+          },
+          {
+            "x": 618258,
+            "y": -218,
+            "platformId": "4:d1",
+            "tier": 0
+          },
+          {
+            "x": 618282,
+            "y": -74,
+            "platformId": "4:d2",
+            "tier": 0
+          },
+          {
+            "x": 618322,
+            "y": -202,
+            "platformId": "4:d3",
+            "tier": 0
+          },
+          {
+            "x": 618314,
+            "y": -58,
+            "platformId": "4:d4",
+            "tier": 0
+          },
+          {
+            "x": 618346,
+            "y": -42,
+            "platformId": "4:d5",
+            "tier": 0
+          },
+          {
+            "x": 618386,
+            "y": -186,
+            "platformId": "4:d6",
+            "tier": 0
+          },
+          {
+            "x": 618390,
+            "y": -26,
+            "platformId": "4:d7",
+            "tier": 0
+          },
+          {
+            "x": 618438,
+            "y": -42,
+            "platformId": "4:d8",
+            "tier": 0
+          },
+          {
+            "x": 618450,
+            "y": -170,
+            "platformId": "4:d9",
+            "tier": 0
+          },
+          {
+            "x": 618478,
+            "y": -58,
+            "platformId": "4:d10",
+            "tier": 0
+          },
+          {
+            "x": 618518,
+            "y": -154,
+            "platformId": "4:d11",
+            "tier": 0
+          },
+          {
+            "x": 618522,
+            "y": -74,
+            "platformId": "4:d12",
+            "tier": 0
+          }
+        ],
+        "seed": 1
+      },
+      "reach": {
+        "method": "MaxLevels.reachable on offline authored base geometry; real physics verification remains required.",
+        "summary": "C0 13 · C1 0 · C2 0 · C3 0 · unreachable 0",
+        "count": [
+          13,
+          0,
+          0,
+          0,
+          0
+        ],
+        "platforms": [
+          {
+            "id": "4:d0",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d1",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d2",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d3",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d4",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d5",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d6",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d7",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d8",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d9",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d10",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d11",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "4:d12",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          }
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "frame": "review-garden-05",
+      "title": "Leviatanen",
+      "intent": "Three uneven connected paths interpret the skeleton: lower foot approaches, a middle spine gallery and an ascending upper rib gallery ending at the high right skull chamber. Two horizontally offset pairs of supported maintenance ladders link the bands at their western and eastern ends; the offset keeps normal up-input from reselecting the lower ladder at a shared landing. Elevated western ribs clear the existing native pond; start, dig and soil-return targets stay in the dry central area.",
+      "artReference": "Pinned concept original sequential PNG images/level-05.png, 1669x942, SHA-256 0a11b43ca185a4e3e95b47cf7e0bd7061ea7014f90ec5eee0895068354458646. Existing native stone/root surfaces provide prototype standing geometry. Existing fossil scenery remains at its established runtime stages; the new leviathan skeleton, ribs and eye-chamber artwork still require Figma authoring.",
+      "setting": "underground",
+      "profile": {
+        "id": "garden-5",
+        "stage": 5,
+        "title": "Root Stair",
+        "theme": "switchbacks",
+        "chapter": "Deep vaults",
+        "focus": "Follow the turning roots",
+        "routes": [
+          {
+            "role": "Gallery",
+            "height": [
+              88,
+              102
+            ],
+            "width": [
+              28,
+              38
+            ],
+            "gap": [
+              7,
+              10
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.14,
+            "branch": 0.2,
+            "graphs": [
+              [
+                "step",
+                "rest",
+                "gallery"
+              ],
+              [
+                "step",
+                "step",
+                "switch",
+                "rest"
+              ]
+            ]
+          },
+          {
+            "role": "Spine",
+            "height": [
+              136,
+              150
+            ],
+            "width": [
+              22,
+              32
+            ],
+            "gap": [
+              7,
+              11
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.2,
+            "branch": 0.3,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "switch",
+                "stack",
+                "rest"
+              ],
+              [
+                "step",
+                "step",
+                "stack",
+                "switch",
+                "gallery"
+              ]
+            ]
+          }
+        ]
+      },
+      "kind": "switchbacks",
+      "width": 440,
+      "height": 355,
+      "worldOrigin": 823830,
+      "canvasWorldLeft": 823614,
+      "canvasWorldTop": -315,
+      "soilY": 315,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 315,
+          "w": 440,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 216,
+          "y": 291,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:stone",
+          "x": 192,
+          "y": 299,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:0"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 160,
+          "y": 283,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:5:ledge:1"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 128,
+          "y": 267,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:5:ledge:2"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 88,
+          "y": 251,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:5:ledge:3"
+        },
+        {
+          "name": "ledge:root",
+          "x": 40,
+          "y": 235,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:5:ledge:4"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 248,
+          "y": 283,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:5:ledge:5"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 280,
+          "y": 267,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:5:ledge:6"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 312,
+          "y": 251,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:5:ledge:7"
+        },
+        {
+          "name": "ledge:root",
+          "x": 344,
+          "y": 235,
+          "w": 56,
+          "h": 6,
+          "sourceId": "authored:5:ledge:8"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 48,
+          "y": 171,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:9"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 104,
+          "y": 171,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:10"
+        },
+        {
+          "name": "ledge:root",
+          "x": 160,
+          "y": 171,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:11"
+        },
+        {
+          "name": "ledge:root",
+          "x": 216,
+          "y": 155,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:12"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 272,
+          "y": 155,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:13"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 328,
+          "y": 155,
+          "w": 64,
+          "h": 6,
+          "sourceId": "authored:5:ledge:14"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 48,
+          "y": 91,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:15"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 104,
+          "y": 91,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:16"
+        },
+        {
+          "name": "ledge:root",
+          "x": 160,
+          "y": 75,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:17"
+        },
+        {
+          "name": "ledge:root",
+          "x": 216,
+          "y": 59,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:18"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 272,
+          "y": 43,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:5:ledge:19"
+        },
+        {
+          "name": "ledge:stone",
+          "x": 328,
+          "y": 43,
+          "w": 72,
+          "h": 6,
+          "sourceId": "authored:5:ledge:20"
+        },
+        {
+          "name": "ladder",
+          "x": 65,
+          "y": 171,
+          "w": 14,
+          "h": 64,
+          "sourceId": "authored:5:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 353,
+          "y": 155,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:5:ladder:1"
+        },
+        {
+          "name": "ladder",
+          "x": 81,
+          "y": 91,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:5:ladder:2"
+        },
+        {
+          "name": "ladder",
+          "x": 369,
+          "y": 43,
+          "w": 14,
+          "h": 112,
+          "sourceId": "authored:5:ladder:3"
+        },
+        {
+          "name": "reward",
+          "x": 69,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:reward:0"
+        },
+        {
+          "name": "reward",
+          "x": 373,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:reward:1"
+        },
+        {
+          "name": "seed",
+          "x": 237,
+          "y": 52,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 101,
+          "y": 244,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 357,
+          "y": 228,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:trial:1"
+        },
+        {
+          "name": "bonus",
+          "x": 181,
+          "y": 164,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:bonus:0"
+        },
+        {
+          "name": "bonus",
+          "x": 293,
+          "y": 148,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:bonus:1"
+        },
+        {
+          "name": "puzzle",
+          "x": 125,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 373,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 221,
+          "y": 308,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 293,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 213,
+          "y": 308,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:5:start:0"
+        }
+      ],
+      "terrainY": 300,
+      "terrainPath": "M 0 55 L 0 11 L 36 11 L 36 10 L 45 10 L 45 9 L 50 9 L 50 8 L 54 8 L 54 7 L 57 7 L 57 6 L 59 6 L 59 5 L 62 5 L 62 4 L 64 4 L 64 3 L 66 3 L 66 2 L 67 2 L 67 1 L 68 1 L 68 0 L 72 0 L 72 1 L 75 1 L 75 2 L 78 2 L 78 3 L 80 3 L 80 4 L 81 4 L 81 5 L 83 5 L 83 6 L 84 6 L 84 7 L 86 7 L 86 8 L 87 8 L 87 9 L 89 9 L 89 10 L 90 10 L 90 11 L 92 11 L 92 12 L 93 12 L 93 13 L 95 13 L 95 14 L 97 14 L 97 15 L 99 15 L 99 16 L 103 16 L 103 17 L 111 17 L 111 16 L 245 16 L 245 17 L 273 17 L 273 18 L 306 18 L 306 17 L 323 17 L 323 16 L 341 16 L 341 15 L 373 15 L 373 14 L 386 14 L 386 13 L 397 13 L 397 12 L 429 12 L 429 13 L 440 13 L 440 55 Z",
+      "water": [
+        {
+          "x": 0,
+          "y": 301,
+          "w": 68,
+          "h": 10
+        }
+      ],
+      "annotations": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGarden": {
+        "frame": "review-garden-05",
+        "node": "offline:review-garden-05",
+        "ledges": [
+          {
+            "x": -176,
+            "rise": 80,
+            "w": 40,
+            "style": "root"
+          },
+          {
+            "x": -168,
+            "rise": 144,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": -168,
+            "rise": 224,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": -128,
+            "rise": 64,
+            "w": 32,
+            "style": "stone"
+          },
+          {
+            "x": -112,
+            "rise": 144,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": -112,
+            "rise": 224,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": -88,
+            "rise": 48,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -56,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": -56,
+            "rise": 144,
+            "w": 48,
+            "style": "root"
+          },
+          {
+            "x": -56,
+            "rise": 240,
+            "w": 48,
+            "style": "root"
+          },
+          {
+            "x": -24,
+            "rise": 16,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": 0,
+            "rise": 160,
+            "w": 48,
+            "style": "root"
+          },
+          {
+            "x": 0,
+            "rise": 256,
+            "w": 48,
+            "style": "root"
+          },
+          {
+            "x": 32,
+            "rise": 32,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 56,
+            "rise": 160,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": 56,
+            "rise": 272,
+            "w": 48,
+            "style": "stone"
+          },
+          {
+            "x": 64,
+            "rise": 48,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 96,
+            "rise": 64,
+            "w": 24,
+            "style": "stone"
+          },
+          {
+            "x": 112,
+            "rise": 160,
+            "w": 64,
+            "style": "stone"
+          },
+          {
+            "x": 112,
+            "rise": 272,
+            "w": 72,
+            "style": "stone"
+          },
+          {
+            "x": 128,
+            "rise": 80,
+            "w": 56,
+            "style": "root"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -144,
+            "rise": 144,
+            "w": 14,
+            "h": 64
+          },
+          {
+            "x": -128,
+            "rise": 224,
+            "w": 14,
+            "h": 80
+          },
+          {
+            "x": 144,
+            "rise": 160,
+            "w": 14,
+            "h": 80
+          },
+          {
+            "x": 160,
+            "rise": 272,
+            "w": 14,
+            "h": 112
+          }
+        ],
+        "reward": [
+          {
+            "x": -144,
+            "rise": 224
+          },
+          {
+            "x": 160,
+            "rise": 272
+          }
+        ],
+        "seed": [
+          {
+            "x": 24,
+            "rise": 256
+          }
+        ],
+        "bonus": [
+          {
+            "x": -32,
+            "rise": 144
+          },
+          {
+            "x": 80,
+            "rise": 160
+          }
+        ],
+        "trial": [
+          {
+            "x": -112,
+            "rise": 64
+          },
+          {
+            "x": 144,
+            "rise": 80
+          }
+        ],
+        "puzzle": [
+          {
+            "x": -88,
+            "rise": 224
+          }
+        ],
+        "door": [
+          {
+            "x": 160,
+            "rise": 272
+          }
+        ],
+        "dig": [
+          {
+            "x": 8,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": 80,
+            "rise": 272
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "runtime": {
+        "id": "garden-5-switchbacks",
+        "stage": 5,
+        "theme": "switchbacks",
+        "kind": "switchbacks",
+        "origin": 823830,
+        "designed": true,
+        "frame": "review-garden-05",
+        "platforms": [
+          {
+            "id": "5:d0",
+            "x": 823654,
+            "y": -80,
+            "w": 40,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -10
+          },
+          {
+            "id": "5:d1",
+            "x": 823662,
+            "y": -144,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -14
+          },
+          {
+            "id": "5:d2",
+            "x": 823662,
+            "y": -224,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": -14
+          },
+          {
+            "id": "5:d3",
+            "x": 823702,
+            "y": -64,
+            "w": 32,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "5:d4",
+            "x": 823718,
+            "y": -144,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d5",
+            "x": 823718,
+            "y": -224,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d6",
+            "x": 823742,
+            "y": -48,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d7",
+            "x": 823774,
+            "y": -32,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d8",
+            "x": 823774,
+            "y": -144,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d9",
+            "x": 823774,
+            "y": -240,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d10",
+            "x": 823806,
+            "y": -16,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d11",
+            "x": 823830,
+            "y": -160,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d12",
+            "x": 823830,
+            "y": -256,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d13",
+            "x": 823862,
+            "y": -32,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "5:d14",
+            "x": 823886,
+            "y": -160,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 3
+          },
+          {
+            "id": "5:d15",
+            "x": 823886,
+            "y": -272,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 3
+          },
+          {
+            "id": "5:d16",
+            "x": 823894,
+            "y": -48,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 3
+          },
+          {
+            "id": "5:d17",
+            "x": 823926,
+            "y": -64,
+            "w": 24,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 1
+          },
+          {
+            "id": "5:d18",
+            "x": 823942,
+            "y": -160,
+            "w": 64,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 0
+          },
+          {
+            "id": "5:d19",
+            "x": 823942,
+            "y": -272,
+            "w": 72,
+            "depth": 6,
+            "route": 1,
+            "style": "stone",
+            "optional": false,
+            "floor": 0
+          },
+          {
+            "id": "5:d20",
+            "x": 823958,
+            "y": -80,
+            "w": 56,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 0
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 823822,
+              "y": 0.5756096510659212
+            },
+            "platformIds": [
+              "5:d10",
+              "5:d7",
+              "5:d6",
+              "5:d3",
+              "5:d0",
+              "5:d1",
+              "5:d2"
+            ],
+            "steps": [
+              {
+                "platformId": "5:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d6",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d3",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d0",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d1",
+                "kind": "ladder",
+                "ladderId": "5:ladder0"
+              },
+              {
+                "platformId": "5:d2",
+                "kind": "ladder",
+                "ladderId": "5:ladder1"
+              }
+            ],
+            "ladderIds": [
+              "5:ladder0",
+              "5:ladder1"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 823822,
+              "y": 0.5756096510659212
+            },
+            "platformIds": [
+              "5:d10",
+              "5:d13",
+              "5:d16",
+              "5:d17",
+              "5:d20",
+              "5:d18",
+              "5:d19"
+            ],
+            "steps": [
+              {
+                "platformId": "5:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d13",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d16",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d17",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d20",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "5:d18",
+                "kind": "ladder",
+                "ladderId": "5:ladder2"
+              },
+              {
+                "platformId": "5:d19",
+                "kind": "ladder",
+                "ladderId": "5:ladder3"
+              }
+            ],
+            "ladderIds": [
+              "5:ladder2",
+              "5:ladder3"
+            ],
+            "id": 1
+          }
+        ],
+        "rewards": [
+          {
+            "x": 823686,
+            "y": -224,
+            "platformId": "5:d2",
+            "side": -1
+          },
+          {
+            "x": 823990,
+            "y": -272,
+            "platformId": "5:d19",
+            "side": 1
+          },
+          {
+            "x": 823854,
+            "y": -256,
+            "platformId": "5:d12",
+            "side": 1
+          }
+        ],
+        "trials": [
+          {
+            "x": 823718,
+            "y": -64,
+            "platformId": "5:d3",
+            "side": -1
+          },
+          {
+            "x": 823974,
+            "y": -80,
+            "platformId": "5:d20",
+            "side": 1
+          }
+        ],
+        "bonuses": [
+          {
+            "x": 823798,
+            "y": -144,
+            "platformId": "5:d8",
+            "side": -1
+          },
+          {
+            "x": 823910,
+            "y": -160,
+            "platformId": "5:d14",
+            "side": 1
+          }
+        ],
+        "spots": {
+          "puzzle": [
+            {
+              "x": 823742,
+              "y": -224,
+              "platformId": "5:d5",
+              "side": -1
+            }
+          ],
+          "door": [
+            {
+              "x": 823990,
+              "y": -272,
+              "platformId": "5:d19",
+              "side": 1
+            }
+          ],
+          "dig": [
+            {
+              "x": 823838,
+              "y": 0.8568033795043171,
+              "platformId": null,
+              "side": 1
+            }
+          ],
+          "secret": [
+            {
+              "x": 823910,
+              "y": -272,
+              "platformId": "5:d15",
+              "side": 1
+            }
+          ],
+          "start": [
+            {
+              "x": 823830,
+              "y": 0.6505880313251673,
+              "platformId": null,
+              "side": 1
+            }
+          ]
+        },
+        "decor": [],
+        "ladders": [
+          {
+            "id": "5:ladder0",
+            "x": 823686,
+            "top": -144,
+            "bottom": -80,
+            "w": 14
+          },
+          {
+            "id": "5:ladder1",
+            "x": 823702,
+            "top": -224,
+            "bottom": -144,
+            "w": 14
+          },
+          {
+            "id": "5:ladder2",
+            "x": 823974,
+            "top": -160,
+            "bottom": -80,
+            "w": 14
+          },
+          {
+            "id": "5:ladder3",
+            "x": 823990,
+            "top": -272,
+            "bottom": -160,
+            "w": 14
+          }
+        ],
+        "nodes": [
+          {
+            "x": 823674,
+            "y": -80,
+            "platformId": "5:d0",
+            "tier": 0
+          },
+          {
+            "x": 823686,
+            "y": -144,
+            "platformId": "5:d1",
+            "tier": 0
+          },
+          {
+            "x": 823686,
+            "y": -224,
+            "platformId": "5:d2",
+            "tier": 0
+          },
+          {
+            "x": 823718,
+            "y": -64,
+            "platformId": "5:d3",
+            "tier": 0
+          },
+          {
+            "x": 823742,
+            "y": -144,
+            "platformId": "5:d4",
+            "tier": 0
+          },
+          {
+            "x": 823742,
+            "y": -224,
+            "platformId": "5:d5",
+            "tier": 0
+          },
+          {
+            "x": 823754,
+            "y": -48,
+            "platformId": "5:d6",
+            "tier": 0
+          },
+          {
+            "x": 823786,
+            "y": -32,
+            "platformId": "5:d7",
+            "tier": 0
+          },
+          {
+            "x": 823798,
+            "y": -144,
+            "platformId": "5:d8",
+            "tier": 0
+          },
+          {
+            "x": 823798,
+            "y": -240,
+            "platformId": "5:d9",
+            "tier": 0
+          },
+          {
+            "x": 823830,
+            "y": -16,
+            "platformId": "5:d10",
+            "tier": 0
+          },
+          {
+            "x": 823854,
+            "y": -160,
+            "platformId": "5:d11",
+            "tier": 0
+          },
+          {
+            "x": 823854,
+            "y": -256,
+            "platformId": "5:d12",
+            "tier": 0
+          },
+          {
+            "x": 823874,
+            "y": -32,
+            "platformId": "5:d13",
+            "tier": 0
+          },
+          {
+            "x": 823910,
+            "y": -160,
+            "platformId": "5:d14",
+            "tier": 0
+          },
+          {
+            "x": 823910,
+            "y": -272,
+            "platformId": "5:d15",
+            "tier": 0
+          },
+          {
+            "x": 823906,
+            "y": -48,
+            "platformId": "5:d16",
+            "tier": 0
+          },
+          {
+            "x": 823938,
+            "y": -64,
+            "platformId": "5:d17",
+            "tier": 0
+          },
+          {
+            "x": 823974,
+            "y": -160,
+            "platformId": "5:d18",
+            "tier": 0
+          },
+          {
+            "x": 823978,
+            "y": -272,
+            "platformId": "5:d19",
+            "tier": 0
+          },
+          {
+            "x": 823986,
+            "y": -80,
+            "platformId": "5:d20",
+            "tier": 0
+          }
+        ],
+        "seed": 1
+      },
+      "reach": {
+        "method": "MaxLevels.reachable on offline authored base geometry; real physics verification remains required.",
+        "summary": "C0 21 · C1 0 · C2 0 · C3 0 · unreachable 0",
+        "count": [
+          21,
+          0,
+          0,
+          0,
+          0
+        ],
+        "platforms": [
+          {
+            "id": "5:d0",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d1",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d2",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d3",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d4",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d5",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d6",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d7",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d8",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d9",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d10",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d11",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d12",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d13",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d14",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d15",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d16",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d17",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d18",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d19",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "5:d20",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          }
+        ]
+      }
+    },
+    {
+      "stage": 6,
+      "frame": "review-garden-06",
+      "title": "Sopphvelvet",
+      "intent": "Asymmetric broad cap landings span the cavern. A lower-right approach and ladder reach the eastern cap; a stepped high gallery winds toward the taller western cap and its separate supported rope-ladder descent. The narrow intermediate landings leave space between the broad islands. Existing terrain and water are retained; the concept pools, fungi and vaulted cave are visual references awaiting authored art.",
+      "artReference": "Pinned concept original sequential PNG images/level-06.png, 1670x942, SHA-256 9ea2354925ccdd2df52ca50042c17f1f9284dc9d04fd23f853ab5c1025e548eb. Existing native root, branch and stone surfaces are prototype cap landings. Existing Garden 7 fungal scenery remains unchanged; no mushroom PNG master or new pool geometry is introduced.",
+      "setting": "underground",
+      "profile": {
+        "id": "garden-6",
+        "stage": 6,
+        "title": "Cairn Terraces",
+        "theme": "terraces",
+        "chapter": "Buried works",
+        "focus": "Choose a broad traverse or climb",
+        "routes": [
+          {
+            "role": "Crossing",
+            "height": [
+              82,
+              96
+            ],
+            "width": [
+              30,
+              42
+            ],
+            "gap": [
+              8,
+              12
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.12,
+            "branch": 0.25,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "promenade",
+                "gallery"
+              ],
+              [
+                "step",
+                "step",
+                "rest",
+                "arch"
+              ]
+            ]
+          },
+          {
+            "role": "Lookout",
+            "height": [
+              126,
+              142
+            ],
+            "width": [
+              24,
+              34
+            ],
+            "gap": [
+              8,
+              13
+            ],
+            "rests": [
+              2,
+              3
+            ],
+            "turn": 0.18,
+            "branch": 0.35,
+            "graphs": [
+              [
+                "step",
+                "step",
+                "fork",
+                "stack",
+                "gallery"
+              ],
+              [
+                "step",
+                "step",
+                "stack",
+                "rest",
+                "switch"
+              ]
+            ]
+          }
+        ]
+      },
+      "kind": "terraces",
+      "width": 480,
+      "height": 305,
+      "worldOrigin": 1024790,
+      "canvasWorldLeft": 1024542,
+      "canvasWorldTop": -265,
+      "soilY": 267,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 267,
+          "w": 480,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 248,
+          "y": 243,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:root",
+          "x": 224,
+          "y": 251,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:6:ledge:0"
+        },
+        {
+          "name": "ledge:root",
+          "x": 280,
+          "y": 235,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:6:ledge:1"
+        },
+        {
+          "name": "ledge:root",
+          "x": 320,
+          "y": 219,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:6:ledge:2"
+        },
+        {
+          "name": "ledge:root",
+          "x": 360,
+          "y": 203,
+          "w": 32,
+          "h": 6,
+          "sourceId": "authored:6:ledge:3"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 376,
+          "y": 187,
+          "w": 64,
+          "h": 6,
+          "sourceId": "authored:6:ledge:4"
+        },
+        {
+          "name": "ledge:root",
+          "x": 192,
+          "y": 235,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:6:ledge:5"
+        },
+        {
+          "name": "ledge:root",
+          "x": 160,
+          "y": 219,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:6:ledge:6"
+        },
+        {
+          "name": "ledge:root",
+          "x": 128,
+          "y": 203,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:6:ledge:7"
+        },
+        {
+          "name": "ledge:root",
+          "x": 96,
+          "y": 187,
+          "w": 24,
+          "h": 6,
+          "sourceId": "authored:6:ledge:8"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 64,
+          "y": 171,
+          "w": 64,
+          "h": 6,
+          "sourceId": "authored:6:ledge:9"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 376,
+          "y": 91,
+          "w": 64,
+          "h": 6,
+          "sourceId": "authored:6:ledge:10"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 296,
+          "y": 91,
+          "w": 72,
+          "h": 6,
+          "sourceId": "authored:6:ledge:11"
+        },
+        {
+          "name": "ledge:root",
+          "x": 248,
+          "y": 75,
+          "w": 40,
+          "h": 6,
+          "sourceId": "authored:6:ledge:12"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 176,
+          "y": 59,
+          "w": 64,
+          "h": 6,
+          "sourceId": "authored:6:ledge:13"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 96,
+          "y": 43,
+          "w": 72,
+          "h": 6,
+          "sourceId": "authored:6:ledge:14"
+        },
+        {
+          "name": "ledge:root",
+          "x": 40,
+          "y": 43,
+          "w": 48,
+          "h": 6,
+          "sourceId": "authored:6:ledge:15"
+        },
+        {
+          "name": "ladder",
+          "x": 401,
+          "y": 91,
+          "w": 14,
+          "h": 96,
+          "sourceId": "authored:6:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 65,
+          "y": 43,
+          "w": 14,
+          "h": 128,
+          "sourceId": "authored:6:ladder:1"
+        },
+        {
+          "name": "reward",
+          "x": 61,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:reward:0"
+        },
+        {
+          "name": "reward",
+          "x": 405,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:reward:1"
+        },
+        {
+          "name": "seed",
+          "x": 205,
+          "y": 52,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 137,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 333,
+          "y": 212,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:trial:1"
+        },
+        {
+          "name": "bonus",
+          "x": 261,
+          "y": 68,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:bonus:0"
+        },
+        {
+          "name": "puzzle",
+          "x": 405,
+          "y": 180,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 61,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 253,
+          "y": 260,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 317,
+          "y": 84,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 245,
+          "y": 260,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:6:start:0"
+        }
+      ],
+      "terrainY": 253,
+      "terrainPath": "M 0 52 L 0 13 L 32 13 L 32 12 L 55 12 L 55 11 L 91 11 L 91 10 L 98 10 L 98 9 L 103 9 L 103 8 L 108 8 L 108 7 L 112 7 L 112 6 L 115 6 L 115 5 L 119 5 L 119 4 L 123 4 L 123 3 L 127 3 L 127 2 L 132 2 L 132 1 L 140 1 L 140 0 L 166 0 L 166 1 L 171 1 L 171 2 L 176 2 L 176 3 L 179 3 L 179 4 L 183 4 L 183 5 L 187 5 L 187 6 L 190 6 L 190 7 L 194 7 L 194 8 L 198 8 L 198 9 L 203 9 L 203 10 L 209 10 L 209 11 L 218 11 L 218 12 L 228 12 L 228 13 L 240 13 L 240 14 L 303 14 L 303 15 L 334 15 L 334 14 L 340 14 L 340 13 L 345 13 L 345 12 L 350 12 L 350 11 L 355 11 L 355 10 L 361 10 L 361 9 L 374 9 L 374 8 L 401 8 L 401 7 L 416 7 L 416 6 L 431 6 L 431 5 L 457 5 L 457 6 L 470 6 L 470 7 L 480 7 L 480 52 Z",
+      "water": [],
+      "annotations": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGarden": {
+        "frame": "review-garden-06",
+        "node": "offline:review-garden-06",
+        "ledges": [
+          {
+            "x": -208,
+            "rise": 224,
+            "w": 48,
+            "style": "root"
+          },
+          {
+            "x": -184,
+            "rise": 96,
+            "w": 64,
+            "style": "branch"
+          },
+          {
+            "x": -152,
+            "rise": 80,
+            "w": 24,
+            "style": "root"
+          },
+          {
+            "x": -152,
+            "rise": 224,
+            "w": 72,
+            "style": "branch"
+          },
+          {
+            "x": -120,
+            "rise": 64,
+            "w": 24,
+            "style": "root"
+          },
+          {
+            "x": -88,
+            "rise": 48,
+            "w": 24,
+            "style": "root"
+          },
+          {
+            "x": -72,
+            "rise": 208,
+            "w": 64,
+            "style": "branch"
+          },
+          {
+            "x": -56,
+            "rise": 32,
+            "w": 24,
+            "style": "root"
+          },
+          {
+            "x": -24,
+            "rise": 16,
+            "w": 48,
+            "style": "root"
+          },
+          {
+            "x": 0,
+            "rise": 192,
+            "w": 40,
+            "style": "root"
+          },
+          {
+            "x": 32,
+            "rise": 32,
+            "w": 32,
+            "style": "root"
+          },
+          {
+            "x": 48,
+            "rise": 176,
+            "w": 72,
+            "style": "branch"
+          },
+          {
+            "x": 72,
+            "rise": 48,
+            "w": 32,
+            "style": "root"
+          },
+          {
+            "x": 112,
+            "rise": 64,
+            "w": 32,
+            "style": "root"
+          },
+          {
+            "x": 128,
+            "rise": 80,
+            "w": 64,
+            "style": "branch"
+          },
+          {
+            "x": 128,
+            "rise": 176,
+            "w": 64,
+            "style": "branch"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -176,
+            "rise": 224,
+            "w": 14,
+            "h": 128
+          },
+          {
+            "x": 160,
+            "rise": 176,
+            "w": 14,
+            "h": 96
+          }
+        ],
+        "reward": [
+          {
+            "x": -184,
+            "rise": 224
+          },
+          {
+            "x": 160,
+            "rise": 176
+          }
+        ],
+        "seed": [
+          {
+            "x": -40,
+            "rise": 208
+          }
+        ],
+        "bonus": [
+          {
+            "x": 16,
+            "rise": 192
+          }
+        ],
+        "trial": [
+          {
+            "x": -108,
+            "rise": 64
+          },
+          {
+            "x": 88,
+            "rise": 48
+          }
+        ],
+        "puzzle": [
+          {
+            "x": 160,
+            "rise": 80
+          }
+        ],
+        "door": [
+          {
+            "x": -184,
+            "rise": 224
+          }
+        ],
+        "dig": [
+          {
+            "x": 8,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": 72,
+            "rise": 176
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "runtime": {
+        "id": "garden-6-terraces",
+        "stage": 6,
+        "theme": "terraces",
+        "kind": "terraces",
+        "origin": 1024790,
+        "designed": true,
+        "frame": "review-garden-06",
+        "platforms": [
+          {
+            "id": "6:d0",
+            "x": 1024582,
+            "y": -222,
+            "w": 48,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -1
+          },
+          {
+            "id": "6:d1",
+            "x": 1024606,
+            "y": -94,
+            "w": 64,
+            "depth": 6,
+            "route": -1,
+            "style": "branch",
+            "optional": false,
+            "floor": -2
+          },
+          {
+            "id": "6:d2",
+            "x": 1024638,
+            "y": -78,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -5
+          },
+          {
+            "id": "6:d3",
+            "x": 1024638,
+            "y": -222,
+            "w": 72,
+            "depth": 6,
+            "route": -1,
+            "style": "branch",
+            "optional": false,
+            "floor": -11
+          },
+          {
+            "id": "6:d4",
+            "x": 1024670,
+            "y": -62,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -12
+          },
+          {
+            "id": "6:d5",
+            "x": 1024702,
+            "y": -46,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -10
+          },
+          {
+            "id": "6:d6",
+            "x": 1024718,
+            "y": -206,
+            "w": 64,
+            "depth": 6,
+            "route": -1,
+            "style": "branch",
+            "optional": false,
+            "floor": -2
+          },
+          {
+            "id": "6:d7",
+            "x": 1024734,
+            "y": -30,
+            "w": 24,
+            "depth": 6,
+            "route": -1,
+            "style": "root",
+            "optional": false,
+            "floor": -2
+          },
+          {
+            "id": "6:d8",
+            "x": 1024766,
+            "y": -14,
+            "w": 48,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "6:d9",
+            "x": 1024790,
+            "y": -190,
+            "w": 40,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "6:d10",
+            "x": 1024822,
+            "y": -30,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "6:d11",
+            "x": 1024838,
+            "y": -174,
+            "w": 72,
+            "depth": 6,
+            "route": 1,
+            "style": "branch",
+            "optional": false,
+            "floor": 3
+          },
+          {
+            "id": "6:d12",
+            "x": 1024862,
+            "y": -46,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": 2
+          },
+          {
+            "id": "6:d13",
+            "x": 1024902,
+            "y": -62,
+            "w": 32,
+            "depth": 6,
+            "route": 1,
+            "style": "root",
+            "optional": false,
+            "floor": -4
+          },
+          {
+            "id": "6:d14",
+            "x": 1024918,
+            "y": -78,
+            "w": 64,
+            "depth": 6,
+            "route": 1,
+            "style": "branch",
+            "optional": false,
+            "floor": -5
+          },
+          {
+            "id": "6:d15",
+            "x": 1024918,
+            "y": -174,
+            "w": 64,
+            "depth": 6,
+            "route": 1,
+            "style": "branch",
+            "optional": false,
+            "floor": -5
+          }
+        ],
+        "routes": [
+          {
+            "side": -1,
+            "start": {
+              "x": 1024764,
+              "y": -0.0026847654606072524
+            },
+            "platformIds": [
+              "6:d8",
+              "6:d7",
+              "6:d5",
+              "6:d4",
+              "6:d2",
+              "6:d1",
+              "6:d0"
+            ],
+            "steps": [
+              {
+                "platformId": "6:d8",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d7",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d5",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d4",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d2",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d1",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d0",
+                "kind": "ladder",
+                "ladderId": "6:ladder0"
+              }
+            ],
+            "ladderIds": [
+              "6:ladder0"
+            ],
+            "id": 0
+          },
+          {
+            "side": 1,
+            "start": {
+              "x": 1024764,
+              "y": -0.0026847654606072524
+            },
+            "platformIds": [
+              "6:d8",
+              "6:d10",
+              "6:d12",
+              "6:d13",
+              "6:d14",
+              "6:d15"
+            ],
+            "steps": [
+              {
+                "platformId": "6:d8",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d10",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d12",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d13",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d14",
+                "kind": "jump",
+                "ladderId": null
+              },
+              {
+                "platformId": "6:d15",
+                "kind": "ladder",
+                "ladderId": "6:ladder1"
+              }
+            ],
+            "ladderIds": [
+              "6:ladder1"
+            ],
+            "id": 1
+          }
+        ],
+        "rewards": [
+          {
+            "x": 1024606,
+            "y": -222,
+            "platformId": "6:d0",
+            "side": -1
+          },
+          {
+            "x": 1024950,
+            "y": -174,
+            "platformId": "6:d15",
+            "side": 1
+          },
+          {
+            "x": 1024750,
+            "y": -206,
+            "platformId": "6:d6",
+            "side": -1
+          }
+        ],
+        "trials": [
+          {
+            "x": 1024682,
+            "y": -62,
+            "platformId": "6:d4",
+            "side": -1
+          },
+          {
+            "x": 1024878,
+            "y": -46,
+            "platformId": "6:d12",
+            "side": 1
+          }
+        ],
+        "bonuses": [
+          {
+            "x": 1024806,
+            "y": -190,
+            "platformId": "6:d9",
+            "side": 1
+          }
+        ],
+        "spots": {
+          "puzzle": [
+            {
+              "x": 1024950,
+              "y": -78,
+              "platformId": "6:d14",
+              "side": 1
+            }
+          ],
+          "door": [
+            {
+              "x": 1024606,
+              "y": -222,
+              "platformId": "6:d0",
+              "side": -1
+            }
+          ],
+          "dig": [
+            {
+              "x": 1024798,
+              "y": 2.374635754354614,
+              "platformId": null,
+              "side": 1
+            }
+          ],
+          "secret": [
+            {
+              "x": 1024862,
+              "y": -174,
+              "platformId": "6:d11",
+              "side": 1
+            }
+          ],
+          "start": [
+            {
+              "x": 1024790,
+              "y": 2.086342892575253,
+              "platformId": null,
+              "side": 1
+            }
+          ]
+        },
+        "decor": [],
+        "ladders": [
+          {
+            "id": "6:ladder0",
+            "x": 1024614,
+            "top": -222,
+            "bottom": -94,
+            "w": 14
+          },
+          {
+            "id": "6:ladder1",
+            "x": 1024950,
+            "top": -174,
+            "bottom": -78,
+            "w": 14
+          }
+        ],
+        "nodes": [
+          {
+            "x": 1024606,
+            "y": -222,
+            "platformId": "6:d0",
+            "tier": 0
+          },
+          {
+            "x": 1024638,
+            "y": -94,
+            "platformId": "6:d1",
+            "tier": 0
+          },
+          {
+            "x": 1024650,
+            "y": -78,
+            "platformId": "6:d2",
+            "tier": 0
+          },
+          {
+            "x": 1024674,
+            "y": -222,
+            "platformId": "6:d3",
+            "tier": 0
+          },
+          {
+            "x": 1024682,
+            "y": -62,
+            "platformId": "6:d4",
+            "tier": 0
+          },
+          {
+            "x": 1024714,
+            "y": -46,
+            "platformId": "6:d5",
+            "tier": 0
+          },
+          {
+            "x": 1024750,
+            "y": -206,
+            "platformId": "6:d6",
+            "tier": 0
+          },
+          {
+            "x": 1024746,
+            "y": -30,
+            "platformId": "6:d7",
+            "tier": 0
+          },
+          {
+            "x": 1024790,
+            "y": -14,
+            "platformId": "6:d8",
+            "tier": 0
+          },
+          {
+            "x": 1024810,
+            "y": -190,
+            "platformId": "6:d9",
+            "tier": 0
+          },
+          {
+            "x": 1024838,
+            "y": -30,
+            "platformId": "6:d10",
+            "tier": 0
+          },
+          {
+            "x": 1024874,
+            "y": -174,
+            "platformId": "6:d11",
+            "tier": 0
+          },
+          {
+            "x": 1024878,
+            "y": -46,
+            "platformId": "6:d12",
+            "tier": 0
+          },
+          {
+            "x": 1024918,
+            "y": -62,
+            "platformId": "6:d13",
+            "tier": 0
+          },
+          {
+            "x": 1024950,
+            "y": -78,
+            "platformId": "6:d14",
+            "tier": 0
+          },
+          {
+            "x": 1024950,
+            "y": -174,
+            "platformId": "6:d15",
+            "tier": 0
+          }
+        ],
+        "seed": 1
+      },
+      "reach": {
+        "method": "MaxLevels.reachable on offline authored base geometry; real physics verification remains required.",
+        "summary": "C0 16 · C1 0 · C2 0 · C3 0 · unreachable 0",
+        "count": [
+          16,
+          0,
+          0,
+          0,
+          0
+        ],
+        "platforms": [
+          {
+            "id": "6:d0",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d1",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d2",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d3",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d4",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d5",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d6",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d7",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d8",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d9",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d10",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d11",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d12",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d13",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d14",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          },
+          {
+            "id": "6:d15",
+            "tier": 0,
+            "required": true,
+            "support": "one-way"
+          }
+        ]
+      }
+    }
+  ]
+}

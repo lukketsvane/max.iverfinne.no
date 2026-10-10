@@ -1,0 +1,267 @@
+{
+  "kind": "authored-start-marker-contact",
+  "input": "/workspace/max-game/docs/design/native-level-drafts-batch-02/review/candidate-levels-data.js",
+  "sha256": "69da784a13650b9a92d868dddd898f7e8ff17d71fcc35ded83c5ad0e9f091ca7",
+  "stages": [
+    4,
+    5,
+    6
+  ],
+  "expectedCases": 36,
+  "checks": [
+    {
+      "stage": 4,
+      "classId": "mech",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "runner",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "bulwark",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "herbalist",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "mech",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "runner",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "bulwark",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "herbalist",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "mech",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "runner",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "bulwark",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 4,
+      "classId": "herbalist",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "mech",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "runner",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "bulwark",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "herbalist",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "mech",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "runner",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "bulwark",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "herbalist",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "mech",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "runner",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "bulwark",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 5,
+      "classId": "herbalist",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "mech",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "runner",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "bulwark",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "herbalist",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "mech",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "runner",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "bulwark",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "herbalist",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "mech",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "runner",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "bulwark",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 6,
+      "classId": "herbalist",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    }
+  ],
+  "failures": [],
+  "passed": true
+}

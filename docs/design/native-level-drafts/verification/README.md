@@ -27,6 +27,28 @@ node docs/design/native-level-drafts/verification/playtest-candidate-guardians.c
 node docs/design/native-level-drafts/verification/playtest-candidate-starts.cjs docs/design/native-level-drafts/review/candidate-levels-data.js /tmp/max-native-starts.json
 ```
 
+With two positional arguments, all three runners select stages 1–3. Use the
+optional `--stages` flag for a different candidate batch:
+
+```sh
+node docs/design/native-level-drafts/verification/playtest-authored-candidates.cjs /path/to/stages-04-06/candidate-levels-data.js /tmp/max-native-routes-04-06.json --stages 4,5,6
+node docs/design/native-level-drafts/verification/playtest-candidate-guardians.cjs /path/to/stages-04-06/candidate-levels-data.js /tmp/max-native-guardians-04-06.json --stages 4,5,6
+node docs/design/native-level-drafts/verification/playtest-candidate-starts.cjs /path/to/stages-04-06/candidate-levels-data.js /tmp/max-native-starts-04-06.json --stages 4,5,6
+```
+
+Selections must contain unique integers from 1–20, separated by commas, with no
+empty entries, spaces or leading zeros. The candidate must contain exactly those
+stage keys and one matching authored source frame per stage. Missing or extra
+stages fail before physics and preserve any prior report. No geometry fields are
+filtered or rewritten. Reports record the selected stages and expected case
+counts: twelve class/rate cases per stage for routes and starts, and three seeded
+cases per stage with three ordinary guardian sites for the guardian verifier.
+All three reports hash the actual candidate input bytes. Adjacent synthetic
+fixture metadata, when included, is declared provenance with
+`fixturePairingVerified: false`; reading that file does not prove it compiles to
+the executed candidate. Any verified fixture pairing belongs in separate
+round-trip evidence.
+
 The route verifier places each independent scenario once at its grounded C0 soil
 entry, then uses actual movement between surfaces, marker contacts, ladder
 endpoints, and gallery crossings. Jump retries restore the same takeoff state.
@@ -48,9 +70,9 @@ changes the grouping of marker counts, not the executed geometry or physics.
 Packaging added path portability and explicit report arguments. The subsequent
 verifier audit added a shared atomic report writer that rejects candidate/runtime
 aliases, symlinks, and hard-linked report destinations before physics begins.
-Candidates must contain exactly stages 1–3, one garden per stage, with nonempty native surfaces,
+Candidates must contain exactly the selected stages, one garden per stage, with nonempty native surfaces,
 reward/seed markers, two trials, and positive start-marker coverage. Success
-requires all 36 distinct class/rate/stage cases, complete expected surface,
+requires all distinct selected class/rate/stage cases, complete expected surface,
 marker, reward-return and ladder coverage, and positive gallery crossings in
 every case. Completed verification claims appear only on successful reports.
 Syntax checks, bounded CLI rejection tests, atomic-write failure tests, and the

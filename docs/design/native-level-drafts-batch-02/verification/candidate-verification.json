@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "status": "offline-authored-candidate-verified-physics",
+  "passed": true,
+  "stages": [
+    4,
+    5,
+    6
+  ],
+  "candidateSha256": "69da784a13650b9a92d868dddd898f7e8ff17d71fcc35ded83c5ad0e9f091ca7",
+  "sourceBinding": {
+    "sourceAuthority": "offline-not-authenticated",
+    "fixturePairingVerified": true,
+    "authenticatedFigmaSourceVerified": false,
+    "proof": "source-pairing.json",
+    "sourceDigest": "457a4f2c71dd9cd980a9f651f311fa0f29c019e92f2a857637b2bf9d9fddf3fa",
+    "geometryDigest": "81f944f91bcf19cb1768aa58ab0d8460210fc3cdb3c5b150a8784a7b80106345",
+    "baselineDigest": "b1e2c81fa459145ab3f787bd57b0ec0f7bbd4ce5d48e31516a09a1e2d6fd3077",
+    "engineDigests": {
+      "index.html": "8b0f7168771959af89c910cd8a2928d3de9592686141e7b9a2f5346dc647308c",
+      "levels.js": "cef60a5dead1cdfd69dcd14d6de48811869be506282138cffea60421852909dc",
+      "stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+      "stage-expeditions.js": "9251798b2bcb2b6e22a7a52c18d53d4d8702de5044ed564d2afef59f0082f961",
+      "guardian-sites.js": "d1dbd1f3ee6bd08b42ad54fc9bdcd4429fac35a104d21f9011e8e5f0b77a7ee0"
+    }
+  },
+  "authored": {
+    "ladderRoundTrips": 96,
+    "galleryCrossings": 96,
+    "jumpHops": 5944,
+    "ladderUpFrames": 112560,
+    "ladderDownFrames": 34480,
+    "supportedWalks": 0,
+    "alternativeReturns": 50,
+    "cases": 36,
+    "platforms": 600,
+    "markers": 408,
+    "returns": 108,
+    "failures": 0
+  },
+  "starts": {
+    "cases": 36,
+    "failures": 0,
+    "supplemental": true,
+    "includedInAuthoredMarkerTotal": true
+  },
+  "guardians": {
+    "seededCases": 9,
+    "guardianRoundTrips": 27,
+    "failures": 0
+  },
+  "seededIntegration": [
+    {
+      "stage": 4,
+      "seed": 1,
+      "authoredPlatforms": 13,
+      "furnishedPlatforms": 22,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 4,
+      "seed": 2026,
+      "authoredPlatforms": 13,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 4,
+      "seed": 4294967295,
+      "authoredPlatforms": 13,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 5,
+      "seed": 1,
+      "authoredPlatforms": 21,
+      "furnishedPlatforms": 21,
+      "ladders": 4,
+      "identical": true
+    },
+    {
+      "stage": 5,
+      "seed": 2026,
+      "authoredPlatforms": 21,
+      "furnishedPlatforms": 20,
+      "ladders": 4,
+      "identical": true
+    },
+    {
+      "stage": 5,
+      "seed": 4294967295,
+      "authoredPlatforms": 21,
+      "furnishedPlatforms": 21,
+      "ladders": 4,
+      "identical": true
+    },
+    {
+      "stage": 6,
+      "seed": 1,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 37,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 6,
+      "seed": 2026,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 35,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 6,
+      "seed": 4294967295,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 25,
+      "ladders": 2,
+      "identical": true
+    }
+  ],
+  "verified": [
+    "Compiled offline candidate selected through real stageLayout with pictures enabled",
+    "Exact authored surface dimensions preserved within automatic expedition/guardian furnishing",
+    "Two independent clients share identical full furnished layouts for three seeds",
+    "Each authored collider footprint and required marker reached by all four base classes at 30/60/120 Hz without traits or perks",
+    "Every authored ladder climbed and descended independently, with supported endpoints",
+    "Continuous upper-gallery crossings and returns, including coplanar overlap walks",
+    "Every reward and seed destination has a dry-soil physical return using authored supports"
+  ],
+  "resetSemantics": "Each independent route starts once at its grounded C0 soil entry; subsequent movement between platforms, markers, ladder endpoints and continuous gallery crossings uses updatePlayer without per-hop pose placement. Jump retries restore only the same takeoff state. Reverse-route fallback restores the reached reward state, searches alternatives, then replays actual input frames without pose placement; those returns reject automatic furnished supports.",
+  "guardianResetSemantics": "Each stage begins at the real enterLevel entrance, settles by updatePlayer, and each guardian route replays from that captured entrance. The existing search helper searches then replays actual movement inputs; return begins at the reached site. No per-hop pose placement.",
+  "pending": [
+    "Fresh authenticated Figma read, import, re-export and inspection of the exported source",
+    "Full artwork composition and native PNG export",
+    "Authored continuous connectors between stages",
+    "Runtime activation and production promotion after the normal regression/build gate"
+  ],
+  "artifacts": {
+    "authored": "authored-candidate-playtest.json",
+    "guardians": "authored-candidate-guardians.json",
+    "starts": "authored-candidate-starts.json",
+    "sourcePairing": "source-pairing.json",
+    "ladderRegression": "ladder-before-after.json"
+  }
+}

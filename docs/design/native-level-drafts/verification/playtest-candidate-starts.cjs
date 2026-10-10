@@ -1,17 +1,15 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),vm=require('vm'),assert=require('assert/strict');
+const fs=require('node:fs'),path=require('node:path'),vm=require('vm'),crypto=require('node:crypto'),assert=require('assert/strict');
 const repo=path.resolve(__dirname,'../../../../');
 const {loadGame}=require(path.join(repo,'tests/game-harness.cjs'));
 const levels=require(path.join(repo,'levels.js'));
-const {STAGES,CLASSES,RATES,validateCandidate,caseCoverageFailures,createReportWriter}=require('./native-draft-verifier-utils.cjs');
-const args=process.argv.slice(2);
-if(args.length!==2)throw new Error('Usage: node playtest-candidate-starts.cjs <candidate-levels-data.js> <report.json>');
-const input=path.resolve(args[0]),output=path.resolve(args[1]);
+const {CLASSES,RATES,parseVerifierArguments,validateCandidate,caseCoverageFailures,createReportWriter}=require('./native-draft-verifier-utils.cjs');
+const {input,output,stages}=parseVerifierArguments(process.argv.slice(2),'playtest-candidate-starts.cjs');
 const writeReport=createReportWriter(input,output,repo);
-const ctx={window:{}};vm.runInNewContext(fs.readFileSync(input,'utf8'),ctx);const data=JSON.parse(JSON.stringify(ctx.window.MaxLevelData));
-validateCandidate(data);
-const report={kind:'authored-start-marker-contact',checks:[],failures:[]};
-for(const stage of STAGES)for(const hz of RATES)for(const classId of CLASSES){
+const bytes=fs.readFileSync(input),ctx={window:{}};vm.runInNewContext(bytes.toString(),ctx);const data=JSON.parse(JSON.stringify(ctx.window.MaxLevelData));
+validateCandidate(data,stages);
+const report={kind:'authored-start-marker-contact',input,sha256:crypto.createHash('sha256').update(bytes).digest('hex'),stages,expectedCases:stages.length*CLASSES.length*RATES.length,checks:[],failures:[]};
+for(const stage of stages)for(const hz of RATES)for(const classId of CLASSES){
  const h=loadGame({__pictures:true}),g=h.game;h.window.MaxLevelData=data;g.resetRogueRun('Start marker QA',{classId});g.rogueRun.seed=1;g.enterLevel(stage,'local',true);
  const L=g.stageLayout(),base=levels.build(levels.pick(stage,1,data),stage,g.levelOriginX(stage),g.surfaceY,g.waterAt,1);
  try{for(const m of base.spots.start||[]){
@@ -22,5 +20,5 @@ for(const stage of STAGES)for(const hz of RATES)for(const classId of CLASSES){
  }report.checks.push({stage,classId,hz,markers:base.spots.start.length,contactAndReturn:true});}
  catch(error){report.failures.push({stage,classId,hz,message:error.message});}
 }
-report.failures.push(...caseCoverageFailures(report.checks,{markers:c=>data.gardens[c.stage][0].start.length}));
+report.failures.push(...caseCoverageFailures(report.checks,{markers:c=>data.gardens[c.stage][0].start.length},stages));
 report.passed=!report.failures.length;writeReport(report);console.log(JSON.stringify({passed:report.passed,checks:report.checks.length,failures:report.failures}));process.exitCode=report.passed?0:1;
