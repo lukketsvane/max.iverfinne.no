@@ -41,7 +41,7 @@ export async function importDrafts(figma, source) {
   const createdNodeIds = [], frames = [], instanceSources = [];
   const created = n => { createdNodeIds.push(n.id); return n; };
   const paint = hex => [{ type: 'SOLID', color: { r: parseInt(hex.slice(0, 2), 16) / 255, g: parseInt(hex.slice(2, 4), 16) / 255, b: parseInt(hex.slice(4, 6), 16) / 255 } }];
-  const palette = { origin: 'c1ff89', soil: '5b8068', stone: '93b7a9', ruin: 'bea98b', branch: '78a16a', root: 'aa825d', reward: 'f7d376', seed: 'b7eb88', bonus: '9cdddf', trial: 'a8a1f2', puzzle: 'e9c4ec', door: 'dcac75', dig: 'd3a67b', secret: 'ea92b1', start: 'f3f4da' };
+  const palette = { origin: 'c1ff89', soil: '5b8068', stone: '93b7a9', ruin: 'bea98b', branch: '78a16a', root: 'aa825d', reward: 'f7d376', seed: 'b7eb88', bonus: '9cdddf', trial: 'a8a1f2', puzzle: 'e9c4ec', door: 'dcac75', dig: 'd3a67b', secret: 'ea92b1', start: 'f3f4da', pond: '284c63' };
   const label = (parent, name, value, x, y, width, size = 14) => {
     const n = created(figma.createText());
     n.fontName = font; n.fontSize = size; n.lineHeight = { unit: 'PIXELS', value: size + 4 }; n.characters = value;
@@ -62,8 +62,8 @@ export async function importDrafts(figma, source) {
   for (const [i, tag] of tags.entries()) {
     const component = created(figma.createComponent());
     component.name = tag; component.description = `Native 1:1 level compiler tag ${tag}. Keep instance names and integer geometry. Review drafts have no designed marker.`;
-    component.resize(tag === 'soil' ? 32 : tag === 'origin' ? 1 : tag.startsWith('ledge:') || tag.startsWith('block:') ? 32 : 7, tag === 'origin' ? 24 : tag === 'soil' ? 1 : tag.startsWith('ledge:') || tag.startsWith('block:') ? 6 : 7);
-    component.fills = paint(palette[tag.split(':')[1]] || palette[tag] || '9faeaf');
+    component.resize(tag === 'soil' ? 32 : tag === 'origin' ? 1 : tag.startsWith('ledge:') || tag.startsWith('block:') || tag.startsWith('pond:') ? 32 : 7, tag === 'origin' ? 24 : tag === 'soil' ? 1 : tag.startsWith('pond:') ? 16 : tag.startsWith('ledge:') || tag.startsWith('block:') ? 6 : 7);
+    component.fills = paint(tag.startsWith('pond:') ? palette.pond : palette[tag.split(':')[1]] || palette[tag] || '9faeaf');
     components.appendChild(component); component.x = (i % 10) * 108; component.y = Math.floor(i / 10) * 40;
     masters[tag] = component;
     label(components, `Tag ${tag}`, tag, component.x, component.y + 25, 106, 8);

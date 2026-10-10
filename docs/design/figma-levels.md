@@ -8,7 +8,7 @@ The gardens can be drawn in Figma and exported into the game. The authored pictu
 - Runtime frames are named `garden-01` … `garden-20`; frame size can expand to fit the native layout. Inspect the current page for component and frame IDs before editing. The former page `218:2` and its historical frame IDs remain in the test fixture and Git history, not as current remote pins.
 - `npm run figma:level-drafts` prepares an offline snapshot of all twenty actual seed-1 runtime layouts, including the authored picture levels, places, expeditions and guardian courts. [The prepared source and import instructions](level-review-source/README.md) record the local source hash and compiler limitations. An offline snapshot does not establish Figma synchronization.
 - 1 Figma px = 1 art px. Keep the instances on whole pixels.
-- The locked `terrain` vector and `water` rectangles show the real ground and ponds under that garden. The ground depends only on the stage, not on the run seed. They are reference and are never exported.
+- The locked `terrain` vector and `water` rectangles show the real ground and ponds under that garden. They are references and are never exported. Editable `pond:<bank>` instances explicitly author native water terrain; ordinary procedural terrain remains stage-dependent.
 
 ## Live frames
 
@@ -31,6 +31,7 @@ The layer name is the tag. Instances keep their component's name, so do not rena
 | `ledge:stone` `ledge:branch` `ledge:ruin` `ledge:root` | Left edge, width, and top edge. The top edge is where you stand. | A one-way platform in `layout.platforms` |
 | `block:stone` `block:ruin` `block:root` `block:branch` | Left edge, top edge, width and height | A solid platform (`solid: true`, `h`). Its top is walkable. |
 | `ladder` | Centre x, top edge, width and height, all integer pixels | A climbable ladder in `layout.ladders`, using the existing keyboard, controller and touch controls. Geometry is not lifted or snapped. |
+| `pond:<bank>` | Centre x, top edge as water level, even width as twice the half-width, height as depth; the tag parameter is bank width | A layout-owned native pond in `layout.ponds`, with native terrain depression, water rendering, flora, fauna and player water physics. |
 | `replace-picture` | Presence | Allows the selected live variant to replace picture garden 1 or 2. |
 | `furnish-place` | Presence | Adds the garden's existing native place and available bounce blooms. |
 | `reward` | Centre x, bottom y (7×7) | `layout.rewards`, where the feathers are dropped |
@@ -43,6 +44,10 @@ The layer name is the tag. Instances keep their component's name, so do not rena
 
 Groups are not read. Put the instances directly in the garden frame. Text is ignored; unrecognized names are ignored. The compiler recognizes tag names on direct children, so keep reference layers clearly named and avoid giving ordinary rectangles or vectors compiler tag names.
 
+Ponds require direct editable instances, safe integer geometry, positive even width, positive depth and a positive integer bank parameter. Their complete banks must not overlap. For example, `pond:20` with width 94 and height 24 creates a 47-pixel half-width, 20-pixel bank and 24-pixel depth. Its top edge determines the water level relative to the original soil line. Structural pond errors stop the export and preserve the previous output.
+
+The compiler captures the original soil datum before applying authored water. Clearance, markers and route reports then use the effective wet terrain. A natural pond whose bank intersects an authored pond is suppressed for that layout without replacing its cached object. Several authored ponds may share a native bucket; each owns fresh population and decoration state. Existing gardens without authored ponds retain their original geometry and water behavior. Reload the export or replace its source object when changing a selected pond source; mutable source records are not a live editor API.
+
 ### How positions become world positions
 
 - x is the offset from the origin.
@@ -51,6 +56,7 @@ Groups are not read. Put the instances directly in the garden frame. Text is ign
 - A spot whose bottom is within 6 px of a ledge or block top stands on that platform.
 - A spot on the soil line (within 2 px), or within 6 px of the real ground, stands on the ground.
 - Any other spot floats, and the report says so.
+- Authored pond levels use the original soil datum; terrain and route checks use the resulting pond bed and banks. A supported marker below the water line is still reported as wet.
 
 ## Export
 
@@ -106,11 +112,14 @@ A failure names the garden and the ledge. Then run `npm run build` and commit `l
 - `nodes`, the stage-layout capability tiers.
 - `routes`: per side, the shortest C0 path from the soil to that side's reward ledge (or its highest ledge), with the launch point on the soil.
 - `spots` and `decor`.
+- Optional `ponds` and `authoredSoilY`, preserving native water objects and the original source datum.
 
 Designer spots are active: `initRunStage` in `run-director.inc.js` places the hidden cache at `secret`; `digSpots` and `digBlast` in `index.html` use `dig`; `rollWonders` in `wonders.inc.js` uses `puzzle` and `door` when provided. Door availability still follows the runtime stage rules. `start` remains metadata and does not override spawning.
 
 `layout.decor` remains exported metadata and is not drawn by the generic layout renderer. Place ornamentation and authored picture artwork have their own render paths.
 
-The compiler encodes authored ladders and can opt into existing native place furnishing. It does not encode custom place false walls and caches, authored bounce blooms, guardian courts or expedition objectives. The runtime review import still marks those annotations as references and keeps `review-garden-NN` names outside the live frame pattern. Do not rename a complete furnished runtime snapshot and mark it designed without translating its intended base geometry: doing so can lose those interactions and duplicate the runtime expedition furnishing. Keep picture replacement explicit and preserve seeded gameplay and physical exit climbs.
+The compiler encodes authored ladders and ponds and can opt into existing native place furnishing. It does not encode custom terrain cavities or planting courts, custom place false walls and caches, authored bounce blooms, guardian courts, moving water mechanisms or expedition objectives. Authored pond support does not create waterfall forces, sluice puzzles or moving platforms. Editable scenery shapes also need a separate runtime scenery contract. The runtime review import still marks unsupported annotations as references and keeps `review-garden-NN` names outside the live frame pattern. Do not rename a complete furnished runtime snapshot and mark it designed without translating its intended base geometry: doing so can lose those interactions and duplicate the runtime expedition furnishing. Keep picture replacement explicit and preserve seeded gameplay and physical exit climbs.
+
+For programmatic builds on procedural terrain, pass the original terrain callbacks as the optional seventh argument: `{ baseGround, pondNear }`. The compiler and draft tooling use this environment so suppressing a natural pond restores its entire bank. `MaxLevels.pondWorld` supplies the same effective ground and water callbacks for independent route and marker checks. Pure ground callbacks with no natural ponds need no environment. [The offline pond review](authored-ponds/README.md) exercises the normal export/build path; it does not activate a live level or establish authenticated Figma access.
 
 The newer twenty-level concept stack at [746:117481](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=746-117481), preserved in [PR #51](https://github.com/lukketsvane/max.iverfinne.no/pull/51), contains composition references rather than authored collision coordinates. Its normalized entry/exit percentages are not native geometry. This importer supports the next authoring pass; it does not promote the concept images to runtime masters or implement continuous world connectors. New runtime artwork still follows [the Figma source contract](../figma.md).

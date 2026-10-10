@@ -1,0 +1,271 @@
+{
+  "status": "passed",
+  "authority": "synthetic offline source through normal compiler/runtime; not authenticated Figma or production",
+  "packageSourceSHA256": {
+    "docs/design/authored-ponds/source/synthetic-pond-source.json": "2f31608456791b6dc9165756e1f013cb5d871ec949df85f699e941023be3769b",
+    "docs/design/authored-ponds/source/synthetic-pond-source.xml": "aec82391f7ef22371b6e6d50b04f4aaf251517cda12af29c3f4c790aa84c46de",
+    "docs/design/authored-ponds/source/historical-input-pins.json": "2c5af6707a0fa4aa88f802d8e836a34ca7dc5ebc6baf881de2a70e1c2dff3409",
+    "docs/design/authored-ponds/source/compile.cjs": "7c1af67c0d5e2274f4f091bf7571b369d3dcdc3003628c445645e20e2664a674",
+    "docs/design/authored-ponds/source/publish-evidence.cjs": "7a89126050d048d6fc2e188488ba971329d8f18c93d1a482c113c7422bb30f70",
+    "docs/design/authored-ponds/pond-observer-metadata.js": "f974ee46562ed6110552be42e1f489dc532d3b06736c6963d5ee25aa8d90883b",
+    "docs/design/authored-ponds/evidence/capture.cjs": "ab26060309611f91173dcd5f3179e98323c1500e8ce49417dc67b353852f05a3",
+    "docs/design/authored-ponds/bundle/candidate-levels-data.js": "87b76780c93b0170038a2f1e4c2a4096fee6ef26593fa2aaf5193fef08872131",
+    "docs/design/authored-ponds/bundle/compilation-receipt.json": "541a07c543237b14b25c66c748049fa10a0a807400f712246d8748352eb42e93",
+    "docs/design/authored-ponds/bundle/compiler-report.txt": "deb579a1e3d119ad056ab6011215b4558346985ba4ee585351192f6b84432c7c"
+  },
+  "snapshotMetadataSHA256": "546726f8e58b8bbc8a4b6ec474f6120126e73ac5b68e5c4b4c6be1b2331ad5aa",
+  "diagnosticAttemptsSHA256": "e28036680efb2fe4451e01bc192e3a9569d1d4748498f9da5ed88498ec081356",
+  "rawCaptureDirectory": "/workspace/scratch/max-authored-ponds-normal-03",
+  "originalRawReportSHA256": "10a7762fb1c54c1fa22967f4f1c7bc2bf39044ba20a9ba4e6b10d718da31f08d",
+  "runnerSHA256": "ab26060309611f91173dcd5f3179e98323c1500e8ce49417dc67b353852f05a3",
+  "candidateSHA256": "87b76780c93b0170038a2f1e4c2a4096fee6ef26593fa2aaf5193fef08872131",
+  "compilerReceiptSHA256": "541a07c543237b14b25c66c748049fa10a0a807400f712246d8748352eb42e93",
+  "sourceSHA256": {
+    "scripts/figma-levels.mjs": "1f462746c1c1e1196f58f163f5374afb18080b17664f8ef4e26afd8af24694eb",
+    "scripts/figma-authored-drafts.mjs": "1b64fdbc0762d3a057efb156877f58e753db17f8da6c4c2c4d4480cede386ef9",
+    "levels.js": "a8932fa36a83227ccdce51a2ca21aed5e2c8399a21a343daabad6ac475c18162",
+    "stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+    "index.html": "f5a5c78c16b3e9e283d1fb382b5c973ebfd9aabbf893bbf721f58daa744ca330",
+    "tests/game-harness.cjs": "2dbfebeca670d527bbd1583544ba996c1b7d4e510fbe2e8be089aac56a460834",
+    "docs/design/authored-ponds/source/synthetic-pond-source.json": "2f31608456791b6dc9165756e1f013cb5d871ec949df85f699e941023be3769b"
+  },
+  "baselineBuiltSHA256": {
+    "/index.html": "f64858af0083a598781cdc5e86caec526f4e0a0c6963f0713bfcb2785a75433a",
+    "/review.html": "52d52a89bfd9da0c1c6d690605bcf864f0b26a0c52d80b79915f0304052ed355",
+    "/levels-data.js": "c69e217a32512a868efc7222a34529cc1f5ddc62c8fe5c6558068a1708595b0d",
+    "/levels.js": "a8932fa36a83227ccdce51a2ca21aed5e2c8399a21a343daabad6ac475c18162",
+    "/stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+    "/campaign-architecture.js": "f8c880942bcc2ca6c107f62c594dafebdcc8b4563f34af2861b99de5874ffb43",
+    "/garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+  },
+  "actualDrawBodySHA256": "a0610ba81af49d5c57a9cbccd10a7f8a5718db0d13a28147aefab15f4c16b2a0",
+  "observerSHA256": "cabeaafe3a6bf629f0e4a1e3b092289b252db25cd8ccbff504135f20938d3187",
+  "normalRuntimeBodySHA256": {
+    "pondInBucket": "40dbfa9550bcc367512d8e83559f7ae11a7ae46fbc6ab39ec40210b1daeeeb7a",
+    "waterAt": "4bfcfde633dab6fea509dae25c9f2b43ab2984af82de792ae315ba8885bac80e",
+    "surfaceY": "43803394db0a80cdd771ab96ad34765c5e0d0023b36d96d3e617b604fe788793",
+    "updatePlayer": "1bf0cfcf6c5895668bf06a1b5197558d7515089ac60f42b8616a18bde3d11f37"
+  },
+  "metadataAdapterSHA256": "f974ee46562ed6110552be42e1f489dc532d3b06736c6963d5ee25aa8d90883b",
+  "historicalInputsSHA256": {
+    "docs/design/early-gardens-waterworks/evidence/capture-basin.cjs": "a2ea052d59f462880d2f1b01c3cd02266465384ad964f737ce059e974269a4a5",
+    "docs/design/early-gardens-waterworks/bundle/synthetic-candidate.json": "294594eab1b5c47d9a50972fafb8a3dbf2da4f11c15e93352a1bbe644b8c25e4",
+    "docs/design/early-gardens-waterworks/bundle/candidate-levels-data.js": "b6e8e87d7523ecbf63469bd7c44b814a86dd845dec8d0004fc5a264a5e1c7eff",
+    "docs/design/early-gardens-waterworks/waterworks-scene.js": "f6e52fe9425a30a3e6fa7065d9554efcd923c9cdf160a07afab617e576af0821",
+    "docs/design/early-gardens-waterworks/preview-fixture.js": "904fb7f09aab3a5b9b6dec2b0c7dc350fa5c16b00f1b569b8d46a4c76b60b10b",
+    "docs/design/early-gardens-waterworks/basin-preview-fixture.js": "68660ed6512aac45255e851b30d3353e6b98392e71c24a28717aa1b4bd5ca466"
+  },
+  "nativePondLookupAdapterCount": 0,
+  "physicsPatchCount": 0,
+  "productionLevelDataUnchanged": true,
+  "scenarios": [
+    {
+      "viewport": "phone",
+      "status": "passed",
+      "sampledFrames": 1095,
+      "basinFeetY": 26.209258954217596,
+      "basinWet": true,
+      "returnedDry": true,
+      "beforePlantSeeds": 9,
+      "afterPlantSeeds": 8,
+      "plotCount": 1,
+      "plantAttempts": 1,
+      "runtimeFunctionIdentitiesPreserved": true,
+      "elapsedStart": 23.48240000000001,
+      "elapsedEnd": 51.598000000000745
+    },
+    {
+      "viewport": "desktop",
+      "status": "passed",
+      "sampledFrames": 991,
+      "basinFeetY": 26.999931639493255,
+      "basinWet": true,
+      "returnedDry": true,
+      "beforePlantSeeds": 9,
+      "afterPlantSeeds": 8,
+      "plotCount": 1,
+      "plantAttempts": 1,
+      "runtimeFunctionIdentitiesPreserved": true,
+      "elapsedStart": 20.465799999999994,
+      "elapsedEnd": 47.76480000000026
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-dry-bank.png",
+      "sha256": "536ac8428f6c07f1914552e84eced95b2e3b7bc2a55946f42508f455b9c683dd",
+      "bytes": 57649,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-high-gallery.png",
+      "sha256": "329fc0002c15cddc3027a640eccca35b7cde7800b5d30c81d2e5260f1bc64060",
+      "bytes": 34660,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-mid-gallery.png",
+      "sha256": "e94f7929664d3638cfb249be265810fed837e94b841fb53645aeda98a347a8d9",
+      "bytes": 43449,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-native-basin.png",
+      "sha256": "19587ef58fa508d50221b4cf58a57322b0f2a0689ab61341f091452bdbf3fdc1",
+      "bytes": 54780,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-native.png",
+      "sha256": "16285a202cc8d6e2fab97684b5efad1ef137c26f0238cc097d845cb02585447c",
+      "bytes": 67902,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 334,
+      "height": 217
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-planted.png",
+      "sha256": "70e76d3bea8306bd330f7ac9f4cd89a59661764d55c3798e7a4c5d82f64e111d",
+      "bytes": 56877,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-return-soil.png",
+      "sha256": "f1a9866831fdb5d48619eb871d2b39248324daa464028ea2ebb2875294c643e1",
+      "bytes": 56919,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-sluice-pier.png",
+      "sha256": "50efb2098790d6a4b661f8d428fe1beb2d498a64e0b3eaf6bf2a3972100b9c6d",
+      "bytes": 55131,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop-story-passed.png",
+      "sha256": "89d7a505f7a7ed0b1d4ac61e47732134e449ae5623944ac98236d3871762476a",
+      "bytes": 57685,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-desktop.png",
+      "sha256": "e3bb73209ca50447552a2cd334da38a5b42594e8983fad8e842e7668c951b2c4",
+      "bytes": 57862,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 1000,
+      "height": 650
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-full-chamber-native.png",
+      "sha256": "01c12c29781a444040a6cc6a561a20b84816e0857ddc6e0720b66326b1355b2c",
+      "bytes": 193814,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 640,
+      "height": 440
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-dry-bank.png",
+      "sha256": "1fe6e1ad85e3e29f47e3b2f87f70ce221cdbbd703c58b0a5982f94bed4032833",
+      "bytes": 30197,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-high-gallery.png",
+      "sha256": "09139f3570dd5e6dd75de1bdb486ef35335040e89885db4f77db4788aec1ca24",
+      "bytes": 23773,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-mid-gallery.png",
+      "sha256": "0b04a08393c4bac997869fdfee46bf0829ef94ef547173366c779f0a2fac4df9",
+      "bytes": 28554,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-native-basin.png",
+      "sha256": "0179447c4f09cf16d393e07ed9ea2577aef64fb87115ce71e6e36e6a1c6124af",
+      "bytes": 31101,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-native.png",
+      "sha256": "962a34af0ae9f66233b82ad9d39fe72c60fb2f2c06d091680f336ae615a5c26d",
+      "bytes": 33665,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 130,
+      "height": 282
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-planted.png",
+      "sha256": "621e400d286520b52173d935f1a17655536589755b4651d7647c8a0531a47396",
+      "bytes": 33114,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-return-soil.png",
+      "sha256": "8de3f208ecb967a3da610eacc5881b775c38b7767024bed2c845a91fba3c85d0",
+      "bytes": 32781,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-sluice-pier.png",
+      "sha256": "4a047f24129d2347521c0b15697d46f30c64dae3930209eb47715dba0936fc41",
+      "bytes": 33979,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone-story-passed.png",
+      "sha256": "87d09c6745bd9c74a04f7b9623363555243652203305af7932070efd68f13b0a",
+      "bytes": 31955,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-phone.png",
+      "sha256": "653974639b9d7e5f57f5a62fbd26787a522aada63f62917e1b8e6eb6c3313f05",
+      "bytes": 29855,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "path": "docs/design/authored-ponds/evidence/garden-02-world-640x400.png",
+      "sha256": "41c82e2b5e68c4a18f674bbd186379574de07f6d3d0c5492d407f98df50e6dbb",
+      "bytes": 182356,
+      "digestAuthority": "capture report SHA256 verified before copy",
+      "width": 640,
+      "height": 400
+    }
+  ]
+}

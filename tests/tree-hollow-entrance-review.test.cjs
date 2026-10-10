@@ -52,8 +52,25 @@ test('tree entrance artifacts reproduce an explicitly offline editable source an
   assert.match(synthetic.status, /not-figma-capture/);
   assert.match(input.source.limits, /review-only ground\/water fixtures/);
   assert.equal(input.source.runtimeBaseline, '8c9dadb7425c8432f8b24147a77994c814e31c66');
-  assert.deepEqual(plain(authored.source), snapshot, 'current geometry and named runtime baseline reproduce the editable bundle');
-  assert.deepEqual(plain(authored.candidate), synthetic);
+  const stableSource = value => {
+    const { baselineDigest, sourceDigest, ...stable } = plain(value);
+    assert.match(baselineDigest, /^[a-f0-9]{64}$/);
+    assert.match(stable.geometryDigest, /^[a-f0-9]{64}$/);
+    assert.equal(sourceDigest, sha(stable.geometryDigest + '\n' + baselineDigest),
+      'each source digest binds its own geometry and runtime baseline');
+    return stable;
+  };
+  assert.deepEqual(stableSource(authored.source), stableSource(snapshot),
+    'current compiler retains the complete historical editable geometry with its own runtime binding');
+  assert.deepEqual({ ...plain(authored.candidate), source: stableSource(authored.candidate.source) },
+    { ...synthetic, source: stableSource(synthetic.source) },
+    'current compiler retains the complete historical synthetic candidate with its own runtime binding');
+  for (const [source, candidate] of [[snapshot, synthetic], [authored.source, authored.candidate]]) {
+    for (const key of ['geometryDigest', 'baselineDigest', 'sourceDigest', 'sourceFiles', 'baselineScope']) {
+      assert.deepEqual(plain(candidate.source[key]), plain(source[key]),
+        'each synthetic candidate retains its source binding: ' + key);
+    }
+  }
   assert.equal(read('bundle/candidate-levels-data.js'), compiler.dataFile(authored.data));
   assert.deepEqual(Object.keys(authored.data.gardens), ['1']);
   assert.equal(authored.data.gardens[1][0].frame, 'garden-01b');
@@ -69,8 +86,18 @@ test('tree entrance artifacts reproduce an explicitly offline editable source an
   assert.match(read('bundle/reach-report.md'), /Actual climbs, returns, solid collisions.*still require/);
   const { importScript } = await import('../scripts/figma-level-drafts.mjs'), editable = { ...snapshot,
     gardens: snapshot.gardens.map(({ runtime, compilerGarden, ...garden }) => garden) };
-  assert.equal(read('bundle/import.use-figma.js'), importScript(editable), 'the actual editable import carries the same guarded source');
-  assert.ok(read('bundle/code.js').includes(read('bundle/import.use-figma.js')));
+  const frozenImport = read('bundle/import.use-figma.js'), frozenPayload = frozenImport.match(/^const source = (.+);$/m);
+  assert.ok(frozenPayload, 'historical editable import retains its inspectable source payload');
+  assert.deepEqual(JSON.parse(frozenPayload[1]), editable,
+    'historical import preserves every editable field from its frozen source');
+  assert.equal(sha(frozenImport), '55da4b688169f5a64630d4e68f76be8497c4708bb4a5d2a806f6acbf0b2a366d',
+    'historical importer bytes stay frozen while the current importer gains pond support');
+  const currentPayload = importScript(editable).match(/^const source = (.+);$/m);
+  assert.ok(currentPayload);
+  assert.deepEqual(JSON.parse(currentPayload[1]), editable,
+    'current importer still embeds the complete historical editable geometry');
+  assert.equal(sha(read('bundle/code.js')), 'a72a837b8178ea39bc2c9be26c677b40dae01c7a351ee0c25cd27ab9d267154c');
+  assert.ok(read('bundle/code.js').includes(frozenImport));
 
   const { importDrafts } = await import('../scripts/figma-level-drafts-import.mjs');
   for (const change of [s => { s.live = true; }, s => { s.gardens[0].frame = 'garden-01b'; },

@@ -14,7 +14,8 @@ const CONTAINERS = ['group', 'frame', 'section', 'boolean-operation'];
 
 export function gameWorld() {
   const h = require('../tests/game-harness.cjs').loadGame(), g = h.game;
-  return { ground: g.surfaceY, wet: g.waterAt, origin: g.levelOriginX, levels: h.window.MaxLevels, layouts: h.window.MaxStageLayout };
+  return { ground: g.surfaceY, wet: g.waterAt, origin: g.levelOriginX, levels: h.window.MaxLevels, layouts: h.window.MaxStageLayout,
+    environment: { baseGround: g.baseSurfaceY, pondNear: g.naturalPondNear } };
 }
 
 function* walk(node) { for (const c of node.children) { yield c; if (!FRAME.test(c.name)) yield* walk(c); } }
@@ -25,12 +26,26 @@ export function gardenOf(frame) {
   for (const n of frame.children) {
     const name = (n.name || '').trim(), tag = name.split(':')[0];
     if (n.type === 'text') continue;
-    if (!['ledge', 'block', 'ladder', 'origin', 'soil', 'designed', 'replace-picture', 'furnish-place', 'decor', ...MARKERS].includes(tag) || (tag === 'ledge' || tag === 'block') && !STYLES.includes(name.slice(6)) || tag === 'decor' && name.length < 7) {
+    if (tag === 'pond' && (!/^pond:[1-9]\d*$/.test(name) || !Number.isSafeInteger(Number(name.slice(5))))) {
+      problems.push(`"${name}" requires a pond:<bank> tag with a positive integer bank`);
+      continue;
+    }
+    if (!['ledge', 'block', 'ladder', 'pond', 'origin', 'soil', 'designed', 'replace-picture', 'furnish-place', 'decor', ...MARKERS].includes(tag) || (tag === 'ledge' || tag === 'block') && !STYLES.includes(name.slice(6)) || tag === 'decor' && name.length < 7) {
       if (n.type === 'instance') notes.push(`unknown instance "${name}" is ignored`);
       else if (CONTAINERS.includes(n.type) && n.children.length) notes.push(`${n.type} "${name}" is not read: ungroup it so its instances sit directly in the frame`);
       continue;
     }
     const geometry = [n.x, n.y, n.width, n.height];
+    if (tag === 'pond') {
+      if (n.type !== 'instance') {
+        problems.push('pond requires a direct editable instance');
+        continue;
+      }
+      if (!geometry.every(Number.isSafeInteger) || n.width <= 0 || n.width % 2 || n.height <= 0) {
+        problems.push('pond requires integer pixel coordinates, a positive even width and a positive integer depth; its geometry is not rounded');
+        continue;
+      }
+    }
     if (tag === 'ladder') {
       if (!geometry.every(Number.isFinite) || n.width <= 0 || n.height <= 0) {
         problems.push('ladder requires finite coordinates and positive width and height');
@@ -59,6 +74,11 @@ export function gardenOf(frame) {
   if (blocks.length) garden.blocks = blocks;
   const ladders = found.filter(f => f.tag === 'ladder').map(f => ({ x: f.x + Math.floor(f.w / 2) - ox, rise: sy - f.y, w: f.w, h: f.h })).sort(order);
   if (ladders.length) garden.ladders = ladders;
+  const ponds = found.filter(f => f.tag === 'pond').map(f => ({ x: f.x + f.w / 2 - ox, rise: sy - f.y, hw: f.w / 2, bank: Number(f.name.slice(5)), depth: f.h })).sort(order);
+  for (let i = 0; i < ponds.length; i++) for (let j = 0; j < i; j++) {
+    if (Math.abs(ponds[i].x - ponds[j].x) < ponds[i].hw + ponds[i].bank + ponds[j].hw + ponds[j].bank) problems.push(`pond ${j + 1} and pond ${i + 1} bank extents overlap`);
+  }
+  if (ponds.length) garden.ponds = ponds;
   if (found.some(f => f.tag === 'replace-picture')) garden.replacePicture = true;
   if (found.some(f => f.tag === 'furnish-place')) garden.furnishPlace = true;
   for (const key of MARKERS) { const list = found.filter(f => f.tag === key).map(spot).sort(order); if (list.length) garden[key] = list; }
@@ -74,9 +94,10 @@ function anchorsOf(layout, garden, key) {
 const where = (x, rise) => `x ${String(x > 0 ? '+' + x : x).padStart(4)}  rise ${String(rise).padStart(3)}`;
 
 export function check(garden, stage, world) {
-  const origin = world.origin(stage), base = Math.floor(world.ground(origin)), layout = world.levels.build(garden, stage, origin, world.ground, world.wet, 1);
+  const origin = world.origin(stage), base = Math.floor(world.ground(origin)), layout = world.levels.build(garden, stage, origin, world.ground, world.wet, 1, world.environment);
+  const effective = world.levels.pondWorld ? world.levels.pondWorld(layout, world.ground, world.wet, world.environment) : world;
   const reachable = world.levels.reachable || world.layouts.reachable;
-  const sets = [0, 1, 2, 3].map(t => reachable(layout, t, world.ground, world.wet)), raw = p => sets.findIndex(s => s[p.id]);
+  const sets = [0, 1, 2, 3].map(t => reachable(layout, t, effective.ground, effective.wet)), raw = p => sets.findIndex(s => s[p.id]);
   const blocks = layout.platforms.filter(p => p.solid && raw(p) >= 0), tiers = new Map(layout.platforms.map(p => {
     const under = p.solid ? [] : blocks.filter(b => p.x < b.x + b.w && b.x < p.x + p.w && p.y >= b.y).map(raw);
     return [p.id, raw(p) < 0 && under.length ? Math.min(...under) : raw(p)];
@@ -89,15 +110,16 @@ export function check(garden, stage, world) {
     if (lift) lines.push(`${name} ${where(l.x, l.rise)}  lifted ${lift} px to clear the soil`);
   });
   for (const key of MARKERS) (garden[key] || []).forEach((m, i) => {
-    const a = anchorsOf(layout, garden, key)[i], t = a.platformId ? tiers.get(a.platformId) : 0, gap = Math.round(world.ground(a.x) - a.y);
-    const floating = !a.platformId && a.y !== world.ground(a.x), wet = !a.platformId && !floating && world.wet(a.x);
+    const a = anchorsOf(layout, garden, key)[i], t = a.platformId ? tiers.get(a.platformId) : 0, gap = Math.round(effective.ground(a.x) - a.y);
+    const floating = !a.platformId && a.y !== effective.ground(a.x), water = !floating && (!a.platformId || layout.ponds) && effective.wet && effective.wet(a.x);
+    const wet = water && (!a.platformId || layout.ponds && Number.isFinite(water.level) && a.y > water.level + 1);
     const why = floating ? gap > 0 ? `floats ${gap} px above the soil and every ledge: stand it on one` : `sits ${-gap} px inside the soil: lift it onto the ground` : wet ? 'sits in the pond' : t ? `${t < 0 ? 'unreachable at every tier' : 'needs ' + TIERS[t]}${NEEDED.includes(key) ? ': a walking Bulwark cannot reach it' : ''}` : '';
     if (why) lines.push(`${key.padEnd(13)} ${where(m.x, m.rise)}  ${why}`);
   });
   const trials = (garden.trial || []).length;
   if (trials !== 2) lines.push(`the run places two trials; this garden has ${trials}${trials < 2 ? ', the rest fall back to the soil' : ', the extra ones are unused'}`);
   if (!garden.reward && !garden.seed) lines.push('no reward or seed: feathers and the seed reserve fall back to the soil');
-  const summary = `${layout.kind} · ${garden.ledges.length} ledges${garden.blocks ? ` · ${garden.blocks.length} blocks` : ''}${garden.ladders ? ` · ${garden.ladders.length} ladders` : ''} · ${count.slice(0, 4).map((c, t) => `C${t} ${c}`).join(' · ')} · unreachable ${count[4]}${MARKERS.filter(k => garden[k]).map(k => ` · ${k} ${garden[k].length}`).join('')}`;
+  const summary = `${layout.kind} · ${garden.ledges.length} ledges${garden.blocks ? ` · ${garden.blocks.length} blocks` : ''}${garden.ladders ? ` · ${garden.ladders.length} ladders` : ''}${garden.ponds?.length ? ` · ${garden.ponds.length} ponds` : ''} · ${count.slice(0, 4).map((c, t) => `C${t} ${c}`).join(' · ')} · unreachable ${count[4]}${MARKERS.filter(k => garden[k]).map(k => ` · ${k} ${garden[k].length}`).join('')}`;
   return { summary, lines };
 }
 

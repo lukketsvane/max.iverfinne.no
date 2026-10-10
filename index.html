@@ -222,11 +222,31 @@ function pondInBucket(b) {
   pondCache[b] = p;
   return p;
 }
-function pondNear(x) {
+function naturalPondNear(x) {
   var b = Math.floor(x / POND_B);
   for (var k = -1; k <= 1; k++) {
     var p = pondInBucket(b + k);
     if (p && Math.abs(x - p.cx) < p.hw + p.bank) return p;
+  }
+  return null;
+}
+function activePondLayout() {
+  var L = activeStageLayout;
+  return L && L.ponds && L.ponds.length && !isolatedRelicMode() && L.stage === worldLevel() && L.seed === rogueRun.seed && L.authoredPondSource === window.MaxLevels.pick(L.stage, rogueRun.seed) ? L : null;
+}
+function pondIsCurrent(p) {
+  if (!p) return false;
+  var L = activePondLayout();
+  return p.authored ? !!L && L.ponds.indexOf(p) >= 0 : !L || window.MaxLevels.pondAllowed(L, p);
+}
+function pondNear(x) {
+  var L = activePondLayout(), authored = L && window.MaxLevels.pondNear(L, x);
+  if (authored) return authored;
+  if (!L) return naturalPondNear(x);
+  var b = Math.floor(x / POND_B);
+  for (var k = -1; k <= 1; k++) {
+    var p = pondInBucket(b + k);
+    if (p && window.MaxLevels.pondAllowed(L, p) && Math.abs(x - p.cx) < p.hw + p.bank) return p;
   }
   return null;
 }
@@ -249,8 +269,10 @@ function terrainY(x) {
   return (p.level - 1) * (1 - s) + y * s;
 }
 function pondsInView(fn) {
-  var b0 = Math.floor((camX - 260) / POND_B), b1 = Math.floor((camX + IW + 260) / POND_B);
-  for (var b = b0; b <= b1; b++) { var p = pondInBucket(b); if (p) fn(p); }
+  var L = activePondLayout(), left = camX - 260, right = camX + IW + 260;
+  var b0 = Math.floor(left / POND_B), b1 = Math.floor(right / POND_B);
+  for (var b = b0; b <= b1; b++) { var p = pondInBucket(b); if (p && (!L || window.MaxLevels.pondAllowed(L, p))) fn(p); }
+  if (L) L.ponds.forEach(function (p) { if (p.cx + p.hw + p.bank >= left && p.cx - p.hw - p.bank <= right) fn(p); });
 }
 
 function dryX(x) { var w = waterAt(x); return w ? w.cx + (x < w.cx ? -1 : 1) * (w.hw + 2) : x; }
@@ -277,11 +299,11 @@ function pictureLava(){
 function stageLayout(){
   if(nightRelayMode())return nightRelayLayout();
   if(highTideMode())return highTideLayout();
-  var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed){
-    var garden=window.MaxLevels.pick(level,rogueRun.seed);
+  var level=worldLevel(),garden=window.MaxLevels.pick(level,rogueRun.seed),authoredWater=garden&&garden.ponds&&garden.ponds.length;
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed||((authoredWater||activeStageLayout.ponds&&activeStageLayout.ponds.length)&&activeStageLayout.authoredPondSource!==garden)){
     activeStageLayout=null;
-    activeStageLayout=(level<=2&&!(garden&&garden.replacePicture)&&pictureLayout(level))||(garden&&window.MaxLevels.build(garden,level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed))||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+    activeStageLayout=(level<=2&&!(garden&&garden.replacePicture)&&pictureLayout(level))||(garden&&window.MaxLevels.build(garden,level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed,{baseGround:baseSurfaceY,pondNear:naturalPondNear}))||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+    if(authoredWater)Object.defineProperty(activeStageLayout,'authoredPondSource',{value:garden});
     if(activeStageLayout.designed&&activeStageLayout.furnishPlace)window.MaxPlaces.furnish(activeStageLayout,surfaceY,waterAt);
   }
   window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
@@ -1578,6 +1600,17 @@ function populatePond(p) {
   if (h1(p.b * 9.9) > 0.82) swans.push(makeSwan(p, p.cx + p.hw * 0.55, 'black'));
 }
 function nextPond(p, dir) {
+  var L = activePondLayout();
+  if (L) {
+    var next = null, distance = Infinity;
+    function consider(q) {
+      var d = q && (q.cx - p.cx) * dir;
+      if (q && q !== p && d > 0 && d <= POND_B * 5 && d < distance) { next = q; distance = d; }
+    }
+    L.ponds.forEach(consider);
+    for (var b = 0; b <= 5; b++) { var candidate = pondInBucket(p.b + dir * b); if (candidate && window.MaxLevels.pondAllowed(L, candidate)) consider(candidate); }
+    return next;
+  }
   for (var k = 1; k <= 5; k++) { var q = pondInBucket(p.b + dir * k); if (q) return q; }
   return null;
 }
@@ -1594,6 +1627,13 @@ function updateSwans(dt) {
   pondsInView(populatePond);
   for (var i = swans.length - 1; i >= 0; i--) {
     var s = swans[i];
+    if (!pondIsCurrent(s.pond)) {
+      var retiredPond = s.pond;
+      swans.splice(i, 1);
+      if (!pondHasSwans(retiredPond)) { retiredPond.pop = false; retiredPond.gone = 0; }
+      continue;
+    }
+    if (s.target && !pondIsCurrent(s.target)) { s.target = null; if (s.st === 'land') { s.st = 'fly'; setSW(s, 'fly'); } }
     if (Math.abs(s.x - P.x) > IW * 3 + 500) {
       var oldP=s.pond;
       swans.splice(i,1);
@@ -1618,7 +1658,8 @@ function updateSwans(dt) {
                       : p.cx + side * (p.hw - 13 - s.j * 23);
       var dx = tx - s.x;
       if (Math.abs(dx) > 1.5) { s.face = dx > 0 ? 1 : -1; s.x += s.face * Math.min(Math.abs(dx), (onPond ? 9 : 16) * dt); }
-      s.x = Math.max(p.cx - p.hw + 11, Math.min(p.cx + p.hw - 11, s.x));
+      var cygLimit = Math.max(0, p.hw - 11);
+      s.x = Math.max(p.cx - cygLimit, Math.min(p.cx + cygLimit, s.x));
       s.y = p.level + Math.sin(tSec * 1.7 + s.bob) * 0.5;
       continue;
     }
@@ -1629,7 +1670,7 @@ function updateSwans(dt) {
       var fleeing = s.flee > 0; if (fleeing) s.flee -= dt;
       var spd = fleeing ? 16 : (s.kind === 'black' ? 4.5 : 6.5);
       s.x += s.face * spd * dt;
-      var lim = p.hw - 15;
+      var lim = Math.max(0, p.hw - 15);
       if (s.x > p.cx + lim) { s.x = p.cx + lim; s.face = -1; }
       if (s.x < p.cx - lim) { s.x = p.cx - lim; s.face = 1; }
       s.y = p.level + Math.sin(tSec * 1.3 + s.bob) * 0.5;
@@ -1678,7 +1719,8 @@ function updateSwans(dt) {
       }
     } else if (s.st === 'settle') {
       s.vx *= Math.pow(0.08, dt); s.x += s.vx * dt;
-      s.x = Math.max(s.pond.cx - s.pond.hw + 15, Math.min(s.pond.cx + s.pond.hw - 15, s.x));
+      var settleLimit = Math.max(0, s.pond.hw - 15);
+      s.x = Math.max(s.pond.cx - settleLimit, Math.min(s.pond.cx + settleLimit, s.x));
       if (s.done) { s.st = 'swim'; setSW(s, 'swim'); s.actT = 2 + Math.random() * 3; }
     }
 
@@ -1935,6 +1977,7 @@ function spawnFlyers() {
   while (fireflies.length < (secretEvent() === 'moon' ? 10 : 5)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
     ph: Math.random() * 6.28, sp: 0.2 + Math.random() * 0.3, f: (Math.random() * 7) | 0, clock: 0 });
   for (var i = fireflies.length - 1; i >= 0; i--) if (Math.abs(fireflies[i].x - P.x) > IW * 1.2) fireflies.splice(i, 1);
+  for (var retired = dflies.length - 1; retired >= 0; retired--) if (!pondIsCurrent(dflies[retired].pond)) { dflies[retired].pond.df = false; dflies.splice(retired, 1); }
   pondsInView(function (p) {
     if (p.df) return;
     p.df = true;
@@ -3918,7 +3961,8 @@ function worldLevel(){return Math.max(1,rogueRun.world|0);}
 function levelOriginX(n){
   n=Math.max(1,n|0);if(n===1)return 0;
   var seg=8*40*(n-1)+LEVEL_BIOME[(n-1)%LEVEL_BIOME.length];
-  return dryX(seg*BIOME_W+150);
+  var x=seg*BIOME_W+150,p=!isolatedRelicMode()&&naturalPondNear(x);
+  return p&&Math.abs(x-p.cx)<p.hw?p.cx+(x<p.cx?-1:1)*(p.hw+2):x;
 }
 function chime(freqs,gap,vol,tag,dist){
   try{var v=effectVoice(tag||'chime:'+freqs.join(','),.32+freqs.length*gap,tag&&tag.indexOf('run:')===0?0:.08,2,dist);if(!v)return;
