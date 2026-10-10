@@ -236,7 +236,7 @@ function coopRunnerValidate(m,a,now){
   if(policy.lockLadder&&(a.st==='climb'||a.st==='ladder'||a.exitClimb))return false;
   if(kind==='walk')return true;
   if(a.st!=='free'||!coopRunnerSweep(before,a))return false;
-  var floor=highTideMode()?rogueRun.survival.base+110:surfaceY(a.x),crossed=a.y>=before.y?window.MaxStageLayout.landing(stageLayout(),before.x,before.y,a.x,a.y):null;
+  var floor=highTideMode()?rogueRun.survival.base+110:bodyFloorY(a.x,a.y),crossed=a.y>=before.y?window.MaxStageLayout.landing(stageLayout(),before.x,before.y,a.x,a.y):null;
   if(a.y>floor+1||crossed&&a.y>crossed.y+1)return false;
   var intent=rattusMotionIntent(m,0);
   if(!intent||intent.kind==='none'||intent.world!==worldLevel())return false;
@@ -273,7 +273,7 @@ function coopRunnerObserve(m,before,after,now){
   }
   coopWithMember(m,function(){rattusMovement(m,observedBefore,observedAfter,dt,context);
     if(kind==='stomp'&&!observedBefore.grounded&&observedAfter.grounded&&after.y>=before.y&&coopSupportY(after.x,after.y)!==null){
-      var platform=window.MaxStageLayout.landing(stageLayout(),before.x,before.y,after.x,after.y),floor=highTideMode()?rogueRun.survival.base+110:surfaceY(after.x),landing=platform&&platform.y<floor?platform:{id:null,y:floor};
+      var platform=window.MaxStageLayout.landing(stageLayout(),before.x,before.y,after.x,after.y),floor=highTideMode()?rogueRun.survival.base+110:bodyFloorY(after.x,after.y),landing=platform&&platform.y<floor?platform:{id:null,y:floor};
       if(Math.abs(after.y-landing.y)<=1&&rattusLanding(m,landing,observedBefore,observedAfter,Object.assign({},context,{landing:true}))){m.avatar.pounce=0;m.avatar.grounded=true;m.avatar.vy=0;coopRunnerCorrect(m,m.avatar,'accepted-cast');}
     }
   });
