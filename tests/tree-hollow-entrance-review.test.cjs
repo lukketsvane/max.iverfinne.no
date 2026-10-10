@@ -52,15 +52,26 @@ test('tree entrance artifacts reproduce an explicitly offline editable source an
   assert.match(synthetic.status, /not-figma-capture/);
   assert.match(input.source.limits, /review-only ground\/water fixtures/);
   assert.equal(input.source.runtimeBaseline, '8c9dadb7425c8432f8b24147a77994c814e31c66');
-  const stableSource = value => {
+  const historicalCampaign = { title: 'Seed Vault', focus: 'Find your footing' },
+    currentCampaign = { title: 'Hollow Tree', focus: 'Find your footing inside the hollow tree' };
+  const stableSource = (value, campaign) => {
     const { baselineDigest, sourceDigest, ...stable } = plain(value);
     assert.match(baselineDigest, /^[a-f0-9]{64}$/);
     assert.match(stable.geometryDigest, /^[a-f0-9]{64}$/);
     assert.equal(sourceDigest, sha(stable.geometryDigest + '\n' + baselineDigest),
       'each source digest binds its own geometry and runtime baseline');
+    if (campaign) {
+      assert.equal(stable.gardens.length, 1); assert.equal(stable.gardens[0].stage, 1);
+      const profile = stable.gardens[0].profile;
+      assert.deepEqual({ title: profile.title, focus: profile.focus }, campaign,
+        'current and historical campaign labels are asserted before their metadata-only comparison');
+      // This immutable offline study predates the Hollow Tree campaign name.
+      // Normalize only its two presentation labels; every other field stays exact.
+      Object.assign(profile, historicalCampaign);
+    }
     return stable;
   };
-  assert.deepEqual(stableSource(authored.source), stableSource(snapshot),
+  assert.deepEqual(stableSource(authored.source, currentCampaign), stableSource(snapshot, historicalCampaign),
     'current compiler retains the complete historical editable geometry with its own runtime binding');
   assert.deepEqual({ ...plain(authored.candidate), source: stableSource(authored.candidate.source) },
     { ...synthetic, source: stableSource(synthetic.source) },
