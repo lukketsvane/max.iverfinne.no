@@ -328,6 +328,10 @@ function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
 var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
 function drawPlatforms(t){var L=stageLayout(),a=L.art,presentation=!isolatedRelicMode()&&window.MaxLevelScenes?window.MaxLevelScenes.presentation(L,surfaceY):L;if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));window.MaxStageLayout.draw(ctx,presentation,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
 function drawLevelScene(layer){if(!isolatedRelicMode()&&window.MaxLevelScenes)window.MaxLevelScenes.draw(ctx,stageLayout(),camX,camY,IW,IH,surfaceY,layer,TILES);}
+function levelSceneCamera(){
+  if(relicRunMode()||warp||P.st==='float'||climb&&climb.exit||!window.MaxLevelScenes||!window.MaxLevelScenes.camera)return null;
+  return window.MaxLevelScenes.camera(stageLayout(),{actorX:P.x,feet:P.y,width:IW,height:IH,headroom:safeTopArt()+34},surfaceY);
+}
 function drawLadders(L){
   (L.ladders||[]).forEach(function(q){if(q.art)return;var x=Math.round(q.x-camX),top=Math.round(q.top-camY),bottom=Math.round(q.bottom-camY),w=Math.min(7,Math.round((q.w||14)/2));if(x+w<0||x-w>IW||bottom<0||top>IH)return;
     rect(x-w,top,2,bottom-top,'#665239');rect(x+w-1,top,2,bottom-top,'#665239');
@@ -6406,17 +6410,21 @@ function frame(now) {
   var tx = P.x - IW * 0.5 + look, ty = P.y - climbAnchor();
   var crownCamera=crownFightCamera(tx,ty);tx=crownCamera.x;ty=crownCamera.y;
   if(crownResultPresentation){tx=crownResultPresentation.x;ty=crownResultPresentation.y;}
+  var sceneCamera=levelSceneCamera();
+  if(sceneCamera)ty=Math.max(sceneCamera.minY,Math.min(sceneCamera.maxY,ty));
   if (!started) { camX = tx; camY = ty; started = true; }
   camX += (tx - camX) * (1 - Math.pow(0.0026, dt));
   camY += (ty - camY) * (1 - Math.pow(0.012, dt));
   if(Number.isFinite(crownCamera.minX))camX=Math.max(crownCamera.minX,Math.min(crownCamera.maxX,camX));
   if(Number.isFinite(crownCamera.minY))camY=Math.max(crownCamera.minY,Math.min(crownCamera.maxY,camY));
+  if(sceneCamera)camY=Math.max(sceneCamera.minY,Math.min(sceneCamera.maxY,camY));
 
   var fx = camX, fy = camY;
   if (shake > 0) { camX += (Math.random() * 2 - 1) * shake; camY += (Math.random() * 2 - 1) * shake * 0.6; }
   // Fast leaps cannot ease the king's maul through the header or either actor off a phone.
   if(Number.isFinite(crownCamera.minX))camX=Math.max(crownCamera.minX,Math.min(crownCamera.maxX,camX));
   if(Number.isFinite(crownCamera.minY))camY=Math.max(crownCamera.minY,Math.min(crownCamera.maxY,camY));
+  if(sceneCamera)camY=Math.max(sceneCamera.minY,Math.min(sceneCamera.maxY,camY));
   camX = Math.round(camX); camY = Math.round(camY);
   prepareAscentPresentation();
   buildSurfCache();

@@ -131,7 +131,30 @@
     }
     return null;
   }
+  function hollowCanopy(L,ground){
+    if(L.hollowCanopy||L.stage!==1||!L.designed||L.replacePicture!==true||L.masterSceneSourceKey!=='62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f')return;
+    var soil=L.authoredSoilY,origin=L.origin;
+    if(!Number.isFinite(soil))return;
+    var left=L.platforms.find(function(p){return p.id==='1:d1';}),right=L.platforms.find(function(p){return p.id==='1:d4';});
+    if(!left||!right)return;
+    // Optional native branch furnishing joins the two existing upper terraces.
+    // The registered Figma surfaces and their source binding stay intact.
+    var added=[];
+    function branch(id,x,rise,w){
+      var p={id:'canopy:1:'+id,x:origin+x,y:soil-rise,w:w,depth:7,style:'branch',route:x<0?-1:1,optional:true,canopy:true,floor:Math.round(ground(origin+x+w/2))};
+      L.platforms.push(p);added.push(p);return p;
+    }
+    var crossing=[left];
+    [[-112,32],[-68,32],[-24,44],[32,28],[72,20]].forEach(function(r,i){crossing.push(branch('cross'+i,r[0],200,r[1]));});
+    crossing.push(right);
+    var west=branch('west-nook',-274,140,42),east=branch('east-nook',234,100,40);
+    var secrets=L.spots.secret||[];if(!Array.isArray(secrets))secrets=[secrets];
+    [west,crossing[3],east].forEach(function(p){secrets.push({x:p.x+Math.floor(p.w/2),y:p.y,platformId:p.id,side:p.route});});
+    L.spots.secret=secrets;
+    L.hollowCanopy={name:'Canopy crossing',path:crossing.map(function(p){return p.id;}),platformIds:added.map(function(p){return p.id;}),nooks:[west.id,east.id]};
+  }
   function furnish(L,ground,wet){
+    hollowCanopy(L,ground);
     if(L.expedition||L.stage<1||L.stage>20)return L;
     var d=stages[L.stage-1],seed=L.seed>>>0,side=L.picture?-1:((seed^L.stage)&1?1:-1),pattern=patterns[d[1]],edge=L.origin+side*65;
     L.platforms.forEach(function(p){edge=side>0?Math.max(edge,p.x+p.w):Math.min(edge,p.x);});
