@@ -15,8 +15,9 @@ test('the campaign begins in the deep vaults and emerges into Radioactive Dawn',
     ...Array(5).fill('Underworld faults'), ...Array(2).fill('Reactor depths'),
     ...Array(2).fill('Surface breach'), 'Radioactive dawn',
   ]);
-  assert.equal(campaign[0].title, 'Seed Vault');
+  assert.equal(campaign[0].title, 'Hollow Tree');
   assert.equal(campaign[1].title, 'Railway Ruins');
+  assert.equal(campaign[3].title, 'Mossback Sanctuary');
   assert.equal(campaign[18].title, 'Surface Breach');
   assert.equal(campaign[19].title, 'Radioactive Dawn');
   assert.match(campaign[19].focus, /Hollow Crown at sunrise/);

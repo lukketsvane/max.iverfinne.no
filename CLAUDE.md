@@ -508,3 +508,23 @@ The visible lower pool is scenery, with an accessible real lower floor; it does
 not claim new water physics across overlapping dry galleries. Three distant
 shrine destinations use the single verified 104-pixel dry planting court.
 Ordinary guardian clearing and physical exit-plant ascent remain unchanged.
+
+## October 10 level stack and navigation refinement
+
+The owner's next instruction prioritizes the full twenty-level stack and clarifies
+that each level needs its own unique generated full-scene image. Figma node
+`941:450` refers to Level 4's giant mossy turtle, as confirmed by the owner;
+the connector could not execute a new read or write at this checkpoint.
+`docs/design/levels-overview/` contains the individual scene references,
+unchanged current-game entry captures, a browsable vertical stack and a local
+Figma importer for each existing MASTER level's ASSETS or aligned reference column. Keep generated references
+outside ART, ROUTES, POINTS, REGISTRATION and TERRAIN until separately authored
+and verified through the normal native source pipeline. The import package is
+prepared locally and does not establish cloud synchronization.
+
+Campaign labels now identify Hollow Tree and Mossback Sanctuary correctly.
+The actual bound turtle's nearby entry court shows PLANT while a first seed is
+available without marking the distant shrine discovered. Its discovered shrines
+use the real court target instead of contradictory downward arrows or PLANT BELOW.
+This presentation change preserves all collision, native art, seeds, guardian
+discovery and physical ascent rules.

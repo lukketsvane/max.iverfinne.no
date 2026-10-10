@@ -1,0 +1,3113 @@
+{
+  "status": "passed",
+  "commit": "7e8a783f309dbe21d3f3144c7331d429102be557",
+  "purpose": "Read-only actual current game entry-view overview, not full world capture or design authority",
+  "method": "Unmodified stock built review layout1..20, isolated memory storage, seed1, Max class; native canvas read only; no game/response/camera/actor/art injections",
+  "bindings": [
+    {
+      "file": "index.html",
+      "sha256": "38097afebc8fc9b7afd829ca8c6961edca639c9c9a55f5257bea139fa298925b"
+    },
+    {
+      "file": "review.html",
+      "sha256": "52d52a89bfd9da0c1c6d690605bcf864f0b26a0c52d80b79915f0304052ed355"
+    },
+    {
+      "file": "stage-layout.js",
+      "sha256": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c"
+    },
+    {
+      "file": "levels.js",
+      "sha256": "e5a99a51dea5d430c73b4a7f00dbf7159f0c9afca742cc3415c8c05183904872"
+    },
+    {
+      "file": "levels-data.js",
+      "sha256": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee"
+    },
+    {
+      "file": "level-scenes.js",
+      "sha256": "f77a12ec162b778584f3298fc044621ea31fc4be41e181a981e4bcc780bc7ef6"
+    },
+    {
+      "file": "level-scenes-data.js",
+      "sha256": "d1e226233a6fd8a64a69a0da8b3795699fc8d9b7e7ece010f4ecb6ec283d4512"
+    },
+    {
+      "file": "garden-places.js",
+      "sha256": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+    },
+    {
+      "file": "campaign-architecture.js",
+      "sha256": "f8c880942bcc2ca6c107f62c594dafebdcc8b4563f34af2861b99de5874ffb43"
+    },
+    {
+      "file": "stage-expeditions.js",
+      "sha256": "dca5b88cc0257552b7de164c3129d17ccbd7029b1241efab43b89a9ffc9b13be"
+    },
+    {
+      "file": "turtle-garden-data.js",
+      "sha256": "7954c3559ee22becb7435d74a6e449497437bca923e3c19a20573d5147143c06"
+    },
+    {
+      "file": "turtle-garden-art.js",
+      "sha256": "38a7630058106650b5b53deb7f1459cd63d78037acef77bc2e2a24685c0ed7e5"
+    },
+    {
+      "file": "turtle-garden-art-data.js",
+      "sha256": "a8f4a433310037b45c63b4a61f913a2f966c9cc78a0da31d22bb8b3fc24229e8"
+    },
+    {
+      "file": "levels-v1/railway-ruins.js",
+      "sha256": "012e9b884cd0f69b1b2a42715fae41e78e21fd91e0da76921ca32eec9c75c69a"
+    }
+  ],
+  "inventory": [
+    {
+      "stage": 1,
+      "profileTitle": "Seed Vault",
+      "displayTitle": "Hollow Tree",
+      "chapter": "Deep vaults",
+      "theme": "terraces",
+      "focus": "Find your footing",
+      "architectureLandmark": null,
+      "visualAuthority": "Bound Figma MASTER native operations",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout1&class=mech&seed=1"
+    },
+    {
+      "stage": 2,
+      "profileTitle": "Railway Ruins",
+      "displayTitle": "Railway Ruins",
+      "chapter": "Deep vaults",
+      "theme": "canopy",
+      "focus": "Read the broken path",
+      "architectureLandmark": null,
+      "visualAuthority": "Shipped registered Railway Ruins PNG and authored geometry",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout2&class=mech&seed=1"
+    },
+    {
+      "stage": 3,
+      "profileTitle": "Broken Aqueduct",
+      "displayTitle": "Broken Aqueduct",
+      "chapter": "Deep vaults",
+      "theme": "crossing",
+      "focus": "Cross, then climb",
+      "architectureLandmark": "buried-aqueduct",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout3&class=mech&seed=1"
+    },
+    {
+      "stage": 4,
+      "profileTitle": "Sunken Chapel",
+      "displayTitle": "Mossy Turtle",
+      "chapter": "Deep vaults",
+      "theme": "ruins",
+      "focus": "Shelter beneath the spire",
+      "architectureLandmark": "pixel-mill-turtle",
+      "visualAuthority": "Pixel Mill normalized RGBA and ordered native rectangles (Figma kit unsynced)",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout4&class=mech&seed=1"
+    },
+    {
+      "stage": 5,
+      "profileTitle": "Root Stair",
+      "displayTitle": "Root Stair",
+      "chapter": "Deep vaults",
+      "theme": "switchbacks",
+      "focus": "Follow the turning roots",
+      "architectureLandmark": "root-shell",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout5&class=mech&seed=1"
+    },
+    {
+      "stage": 6,
+      "profileTitle": "Cairn Terraces",
+      "displayTitle": "Cairn Terraces",
+      "chapter": "Buried works",
+      "theme": "terraces",
+      "focus": "Choose a broad traverse or climb",
+      "architectureLandmark": "quarry-cut",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout6&class=mech&seed=1"
+    },
+    {
+      "stage": 7,
+      "profileTitle": "Lantern Roots",
+      "displayTitle": "Lantern Roots",
+      "chapter": "Buried works",
+      "theme": "canopy",
+      "focus": "Climb between the buried lanterns",
+      "architectureLandmark": "mycelium-cathedral",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout7&class=mech&seed=1"
+    },
+    {
+      "stage": 8,
+      "profileTitle": "Silo Stair",
+      "displayTitle": "Silo Stair",
+      "chapter": "Buried works",
+      "theme": "crossing",
+      "focus": "Catch your breath on the buried bridge",
+      "architectureLandmark": "counterweight-hoist",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout8&class=mech&seed=1"
+    },
+    {
+      "stage": 9,
+      "profileTitle": "Collapsed Tower",
+      "displayTitle": "Collapsed Tower",
+      "chapter": "Buried works",
+      "theme": "ruins",
+      "focus": "Explore the broken galleries",
+      "architectureLandmark": "broken-tower",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout9&class=mech&seed=1"
+    },
+    {
+      "stage": 10,
+      "profileTitle": "Bell Cellar",
+      "displayTitle": "Bell Cellar",
+      "chapter": "Buried works",
+      "theme": "switchbacks",
+      "focus": "Climb out of the buried works",
+      "architectureLandmark": "buried-carillon",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout10&class=mech&seed=1"
+    },
+    {
+      "stage": 11,
+      "profileTitle": "Old Quarry",
+      "displayTitle": "Old Quarry",
+      "chapter": "Underworld faults",
+      "theme": "terraces",
+      "focus": "Recover on the frozen terraces",
+      "architectureLandmark": "frozen-seed-wheel",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout11&class=mech&seed=1"
+    },
+    {
+      "stage": 12,
+      "profileTitle": "Weeping Roots",
+      "displayTitle": "Weeping Roots",
+      "chapter": "Underworld faults",
+      "theme": "canopy",
+      "focus": "Weave through the frozen root chamber",
+      "architectureLandmark": "root-glass-cistern",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout12&class=mech&seed=1"
+    },
+    {
+      "stage": 13,
+      "profileTitle": "Twin Shafts",
+      "displayTitle": "Twin Shafts",
+      "chapter": "Underworld faults",
+      "theme": "crossing",
+      "focus": "Find two different ways upward",
+      "architectureLandmark": "twin-shafts",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout13&class=mech&seed=1"
+    },
+    {
+      "stage": 14,
+      "profileTitle": "Catacomb",
+      "displayTitle": "Catacomb",
+      "chapter": "Underworld faults",
+      "theme": "ruins",
+      "focus": "Move between shelter and exposed ledges",
+      "architectureLandmark": "ancient-rib-vault",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout14&class=mech&seed=1"
+    },
+    {
+      "stage": 15,
+      "profileTitle": "Fault Steps",
+      "displayTitle": "Fault Steps",
+      "chapter": "Underworld faults",
+      "theme": "switchbacks",
+      "focus": "Rest before the fault-line climb",
+      "architectureLandmark": "fault-monolith",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout15&class=mech&seed=1"
+    },
+    {
+      "stage": 16,
+      "profileTitle": "Giant's Stair",
+      "displayTitle": "Giant's Stair",
+      "chapter": "Reactor depths",
+      "theme": "terraces",
+      "focus": "Cross the ash terraces",
+      "architectureLandmark": "magnetic-crane",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout16&class=mech&seed=1"
+    },
+    {
+      "stage": 17,
+      "profileTitle": "Reactor Nest",
+      "displayTitle": "Reactor Nest",
+      "chapter": "Reactor depths",
+      "theme": "canopy",
+      "focus": "Reach the irradiated root chamber",
+      "architectureLandmark": "reactor-heart",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout17&class=mech&seed=1"
+    },
+    {
+      "stage": 18,
+      "profileTitle": "Last Sluice",
+      "displayTitle": "Last Sluice",
+      "chapter": "Surface breach",
+      "theme": "crossing",
+      "focus": "Traverse the last buried spans",
+      "architectureLandmark": "last-sluice-aperture",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout18&class=mech&seed=1"
+    },
+    {
+      "stage": 19,
+      "profileTitle": "Surface Breach",
+      "displayTitle": "Surface Breach",
+      "chapter": "Surface breach",
+      "theme": "ruins",
+      "focus": "Prepare at the broken surface gate",
+      "architectureLandmark": "broken-conservatory",
+      "visualAuthority": "Existing code-composed native chamber around actual rolled routes",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout19&class=mech&seed=1"
+    },
+    {
+      "stage": 20,
+      "profileTitle": "Radioactive Dawn",
+      "displayTitle": "Radioactive Dawn",
+      "chapter": "Radioactive dawn",
+      "theme": "crown",
+      "focus": "Face the Hollow Crown at sunrise",
+      "architectureLandmark": null,
+      "visualAuthority": "Existing code-composed Hollow Crown and surface sunrise",
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout20&class=mech&seed=1"
+    }
+  ],
+  "captures": [
+    {
+      "stage": 1,
+      "screenshot": "garden-01.png",
+      "sha256": "f658920430652d2f9e9b8cd584e49ce755028590a1a6e69fb1e1a505006e29fb",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout1",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 1,
+        "campaign": "Seed Vault",
+        "atmosphere": {
+          "stage": 1,
+          "zone": "deep-vaults",
+          "label": "Deep vaults",
+          "depth": 19,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "terraces",
+        "classId": "mech",
+        "elapsed": 5,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-1",
+          "stage": 1,
+          "title": "Seed Vault",
+          "theme": "terraces",
+          "chapter": "Deep vaults",
+          "focus": "Find your footing",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                66,
+                78
+              ],
+              "width": [
+                30,
+                40
+              ],
+              "gap": [
+                7,
+                9
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.08,
+              "branch": 0.15,
+              "graphs": [
+                [
+                  "step",
+                  "rest",
+                  "step"
+                ],
+                [
+                  "step",
+                  "step",
+                  "rest"
+                ]
+              ]
+            },
+            {
+              "role": "Lookout",
+              "height": [
+                98,
+                112
+              ],
+              "width": [
+                26,
+                36
+              ],
+              "gap": [
+                7,
+                10
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.12,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "rest",
+                  "stack"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 2,
+      "screenshot": "garden-02.png",
+      "sha256": "f4ed205949f0ed1416122e0dda26c04f275a62900bf82686cb6735734652c8d0",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout2",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 2,
+        "campaign": "Railway Ruins",
+        "atmosphere": {
+          "stage": 2,
+          "zone": "deep-vaults",
+          "label": "Deep vaults",
+          "depth": 18,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "picture",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0.2,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-2",
+          "stage": 2,
+          "title": "Railway Ruins",
+          "theme": "canopy",
+          "chapter": "Deep vaults",
+          "focus": "Read the broken path",
+          "routes": [
+            {
+              "role": "Gallery",
+              "height": [
+                78,
+                90
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                7,
+                11
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.12,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "rest",
+                  "arch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "gallery"
+                ]
+              ]
+            },
+            {
+              "role": "Lookout",
+              "height": [
+                114,
+                128
+              ],
+              "width": [
+                24,
+                34
+              ],
+              "gap": [
+                8,
+                11
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "stack",
+                  "rest",
+                  "switch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "fork",
+                  "stack"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 3,
+      "screenshot": "garden-03.png",
+      "sha256": "6d864c93efb23f3ec96d3de2cbb94d3ee4103083166740884b3a1cc9ac6a1b87",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout3",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 3,
+        "campaign": "Broken Aqueduct",
+        "atmosphere": {
+          "stage": 3,
+          "zone": "deep-vaults",
+          "label": "Deep vaults",
+          "depth": 17,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "crossing",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0.3,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-3",
+          "stage": 3,
+          "title": "Broken Aqueduct",
+          "theme": "crossing",
+          "chapter": "Deep vaults",
+          "focus": "Cross, then climb",
+          "routes": [
+            {
+              "role": "Crossing",
+              "height": [
+                70,
+                84
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.08,
+              "branch": 0.2,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "promenade",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "bridge",
+                  "step"
+                ]
+              ]
+            },
+            {
+              "role": "Lookout",
+              "height": [
+                112,
+                126
+              ],
+              "width": [
+                24,
+                34
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.14,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "pond",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "arch",
+                  "stack"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 4,
+      "screenshot": "garden-04.png",
+      "sha256": "2ebde5b5adf47cb3e52a4460ff17ebeb822e30edbb2077bc8e7534307a3b954c",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout4",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 4,
+        "campaign": "Sunken Chapel",
+        "atmosphere": {
+          "stage": 4,
+          "zone": "deep-vaults",
+          "label": "Deep vaults",
+          "depth": 16,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "ruins",
+        "classId": "mech",
+        "elapsed": 5,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0.5,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-4",
+          "stage": 4,
+          "title": "Sunken Chapel",
+          "theme": "ruins",
+          "chapter": "Deep vaults",
+          "focus": "Shelter beneath the spire",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                82,
+                96
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                7,
+                11
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.18,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "rest",
+                  "wall",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "arch"
+                ]
+              ]
+            },
+            {
+              "role": "Spire",
+              "height": [
+                126,
+                142
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.26,
+              "branch": 0.4,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "stack"
+                ],
+                [
+                  "step",
+                  "step",
+                  "narrow",
+                  "gallery"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 5,
+      "screenshot": "garden-05.png",
+      "sha256": "49d7b0317448e01f233ec0ed460c94bfd054c800c3f19742afff6a6ac5d7d96f",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout5",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 5,
+        "campaign": "Root Stair",
+        "atmosphere": {
+          "stage": 5,
+          "zone": "deep-vaults",
+          "label": "Deep vaults",
+          "depth": 15,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "switchbacks",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0.6,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-5",
+          "stage": 5,
+          "title": "Root Stair",
+          "theme": "switchbacks",
+          "chapter": "Deep vaults",
+          "focus": "Follow the turning roots",
+          "routes": [
+            {
+              "role": "Gallery",
+              "height": [
+                88,
+                102
+              ],
+              "width": [
+                28,
+                38
+              ],
+              "gap": [
+                7,
+                10
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.14,
+              "branch": 0.2,
+              "graphs": [
+                [
+                  "step",
+                  "rest",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "rest"
+                ]
+              ]
+            },
+            {
+              "role": "Spine",
+              "height": [
+                136,
+                150
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                7,
+                11
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.2,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "stack",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "switch",
+                  "gallery"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 6,
+      "screenshot": "garden-06.png",
+      "sha256": "c7a8a71f67f220b873da05a4ded2af47c2d0507ea973b9a300a52ecb845e45a5",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout6",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 6,
+        "campaign": "Cairn Terraces",
+        "atmosphere": {
+          "stage": 6,
+          "zone": "buried-works",
+          "label": "Buried works",
+          "depth": 14,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "terraces",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0.7,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-6",
+          "stage": 6,
+          "title": "Cairn Terraces",
+          "theme": "terraces",
+          "chapter": "Buried works",
+          "focus": "Choose a broad traverse or climb",
+          "routes": [
+            {
+              "role": "Crossing",
+              "height": [
+                82,
+                96
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.12,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "promenade",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "rest",
+                  "arch"
+                ]
+              ]
+            },
+            {
+              "role": "Lookout",
+              "height": [
+                126,
+                142
+              ],
+              "width": [
+                24,
+                34
+              ],
+              "gap": [
+                8,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.18,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "fork",
+                  "stack",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "rest",
+                  "switch"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 7,
+      "screenshot": "garden-07.png",
+      "sha256": "b5ac9e1d3fc9f2b884d93110f8f2af74cab3b3e5f2f2a5618fb8d8d4b32ac098",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout7",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 7,
+        "campaign": "Lantern Roots",
+        "atmosphere": {
+          "stage": 7,
+          "zone": "buried-works",
+          "label": "Buried works",
+          "depth": 13,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "canopy",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 0.9,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-7",
+          "stage": 7,
+          "title": "Lantern Roots",
+          "theme": "canopy",
+          "chapter": "Buried works",
+          "focus": "Climb between the buried lanterns",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                92,
+                106
+              ],
+              "width": [
+                30,
+                40
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.18,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "arch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "fork",
+                  "rest"
+                ]
+              ]
+            },
+            {
+              "role": "Roots",
+              "height": [
+                144,
+                158
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                8,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.3,
+              "branch": 0.45,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "gallery",
+                  "stack"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "fork",
+                  "switch"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 8,
+      "screenshot": "garden-08.png",
+      "sha256": "ae6d0bd8113c5e8cca6bad7b911fc9489689230ca23e32a04f6a600fda5ed0cc",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout8",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 8,
+        "campaign": "Silo Stair",
+        "atmosphere": {
+          "stage": 8,
+          "zone": "buried-works",
+          "label": "Buried works",
+          "depth": 12,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "crossing",
+        "classId": "mech",
+        "elapsed": 2,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-8",
+          "stage": 8,
+          "title": "Silo Stair",
+          "theme": "crossing",
+          "chapter": "Buried works",
+          "focus": "Catch your breath on the buried bridge",
+          "routes": [
+            {
+              "role": "Crossing",
+              "height": [
+                88,
+                102
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.1,
+              "branch": 0.2,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "bridge",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "promenade",
+                  "arch"
+                ]
+              ]
+            },
+            {
+              "role": "Spine",
+              "height": [
+                138,
+                152
+              ],
+              "width": [
+                22,
+                34
+              ],
+              "gap": [
+                9,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.2,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "pond",
+                  "stack",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "hop",
+                  "gallery",
+                  "switch"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 9,
+      "screenshot": "garden-09.png",
+      "sha256": "be51d880dfdf41ba712f64be1dde1e782d24c5335dba75e69f574bde3794dbb5",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout9",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 9,
+        "campaign": "Collapsed Tower",
+        "atmosphere": {
+          "stage": 9,
+          "zone": "buried-works",
+          "label": "Buried works",
+          "depth": 11,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "ruins",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1.1,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-9",
+          "stage": 9,
+          "title": "Collapsed Tower",
+          "theme": "ruins",
+          "chapter": "Buried works",
+          "focus": "Explore the broken galleries",
+          "routes": [
+            {
+              "role": "Gallery",
+              "height": [
+                96,
+                110
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.2,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "gallery",
+                  "arch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "drop",
+                  "rest",
+                  "gallery"
+                ]
+              ]
+            },
+            {
+              "role": "Spire",
+              "height": [
+                152,
+                166
+              ],
+              "width": [
+                22,
+                30
+              ],
+              "gap": [
+                8,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.28,
+              "branch": 0.4,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "narrow",
+                  "stack",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "switch",
+                  "gallery"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 10,
+      "screenshot": "garden-10.png",
+      "sha256": "70661b4ff64772eb3d48909f532c7e3eb2e62c86b07e7aa94019313dd4582695",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout10",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 10,
+        "campaign": "Bell Cellar",
+        "atmosphere": {
+          "stage": 10,
+          "zone": "buried-works",
+          "label": "Buried works",
+          "depth": 10,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "switchbacks",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1.3,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-10",
+          "stage": 10,
+          "title": "Bell Cellar",
+          "theme": "switchbacks",
+          "chapter": "Buried works",
+          "focus": "Climb out of the buried works",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                102,
+                116
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.16,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "gallery",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "rest",
+                  "arch"
+                ]
+              ]
+            },
+            {
+              "role": "Spine",
+              "height": [
+                160,
+                174
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                8,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.24,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "stack",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "switch",
+                  "rest"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 11,
+      "screenshot": "garden-11.png",
+      "sha256": "483053efe0aed9653d6bb8969dacabb5aa1801026b4a9135ba6f8a478188668c",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout11",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 11,
+        "campaign": "Old Quarry",
+        "atmosphere": {
+          "stage": 11,
+          "zone": "underworld-faults",
+          "label": "Underworld faults",
+          "depth": 9,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "terraces",
+        "classId": "mech",
+        "elapsed": 4,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1.4,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-11",
+          "stage": 11,
+          "title": "Old Quarry",
+          "theme": "terraces",
+          "chapter": "Underworld faults",
+          "focus": "Recover on the frozen terraces",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                94,
+                108
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.12,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "promenade"
+                ],
+                [
+                  "step",
+                  "step",
+                  "rest",
+                  "arch",
+                  "gallery"
+                ]
+              ]
+            },
+            {
+              "role": "Lookout",
+              "height": [
+                148,
+                162
+              ],
+              "width": [
+                22,
+                34
+              ],
+              "gap": [
+                10,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.4,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "fork",
+                  "stack",
+                  "switch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "hop",
+                  "stack",
+                  "gallery"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 12,
+      "screenshot": "garden-12.png",
+      "sha256": "43f177359272fd1883554ff7d08e7d61ce898ca2754e32029c781cfb6bcb61ef",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout12",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 12,
+        "campaign": "Weeping Roots",
+        "atmosphere": {
+          "stage": 12,
+          "zone": "underworld-faults",
+          "label": "Underworld faults",
+          "depth": 8,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "canopy",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1.6,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-12",
+          "stage": 12,
+          "title": "Weeping Roots",
+          "theme": "canopy",
+          "chapter": "Underworld faults",
+          "focus": "Weave through the frozen root chamber",
+          "routes": [
+            {
+              "role": "Gallery",
+              "height": [
+                102,
+                116
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.2,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "arch",
+                  "gallery",
+                  "fork"
+                ],
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "switch",
+                  "rest"
+                ]
+              ]
+            },
+            {
+              "role": "Roots",
+              "height": [
+                164,
+                178
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                9,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.32,
+              "branch": 0.45,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "stack",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "fork",
+                  "switch",
+                  "rest"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 13,
+      "screenshot": "garden-13.png",
+      "sha256": "cbe5b69246bbefdec555c8a2ea1f4f2f8e9de73f1bedb86f60d14160880b4339",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout13",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 13,
+        "campaign": "Twin Shafts",
+        "atmosphere": {
+          "stage": 13,
+          "zone": "underworld-faults",
+          "label": "Underworld faults",
+          "depth": 7,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "crossing",
+        "classId": "mech",
+        "elapsed": 2,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1.7,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-13",
+          "stage": 13,
+          "title": "Twin Shafts",
+          "theme": "crossing",
+          "chapter": "Underworld faults",
+          "focus": "Find two different ways upward",
+          "routes": [
+            {
+              "role": "Crossing",
+              "height": [
+                98,
+                112
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                10,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.12,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "bridge",
+                  "arch",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "pond",
+                  "promenade",
+                  "rest"
+                ]
+              ]
+            },
+            {
+              "role": "Spire",
+              "height": [
+                158,
+                174
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                10,
+                15
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "hop",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "wall",
+                  "rest"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 14,
+      "screenshot": "garden-14.png",
+      "sha256": "dfb84c3bc503f55a8e117a44e26b5f4b4bfd257bf2a171c1aef82a08f5376148",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout14",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 14,
+        "campaign": "Catacomb",
+        "atmosphere": {
+          "stage": 14,
+          "zone": "underworld-faults",
+          "label": "Underworld faults",
+          "depth": 6,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "ruins",
+        "classId": "mech",
+        "elapsed": 3,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 1.8,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-14",
+          "stage": 14,
+          "title": "Catacomb",
+          "theme": "ruins",
+          "chapter": "Underworld faults",
+          "focus": "Move between shelter and exposed ledges",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                106,
+                120
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "drop",
+                  "gallery",
+                  "wall"
+                ],
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "rest",
+                  "arch"
+                ]
+              ]
+            },
+            {
+              "role": "Spire",
+              "height": [
+                172,
+                186
+              ],
+              "width": [
+                20,
+                30
+              ],
+              "gap": [
+                9,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.3,
+              "branch": 0.45,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "narrow",
+                  "switch",
+                  "stack",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "stack",
+                  "gallery"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 15,
+      "screenshot": "garden-15.png",
+      "sha256": "d81a8a274a67eae7acdb4b2a2666fa9c15f17f952df79632bc83dcfccf1583dd",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout15",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 15,
+        "campaign": "Fault Steps",
+        "atmosphere": {
+          "stage": 15,
+          "zone": "underworld-faults",
+          "label": "Underworld faults",
+          "depth": 5,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "switchbacks",
+        "classId": "mech",
+        "elapsed": 4,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 2,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-15",
+          "stage": 15,
+          "title": "Fault Steps",
+          "theme": "switchbacks",
+          "chapter": "Underworld faults",
+          "focus": "Rest before the fault-line climb",
+          "routes": [
+            {
+              "role": "Gallery",
+              "height": [
+                112,
+                126
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                8,
+                12
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.18,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "switch",
+                  "arch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "rest",
+                  "gallery"
+                ]
+              ]
+            },
+            {
+              "role": "Spine",
+              "height": [
+                180,
+                194
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.26,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "stack",
+                  "switch",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "gallery",
+                  "switch"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 16,
+      "screenshot": "garden-16.png",
+      "sha256": "215f510fdd58026c08d8611fe12c86e06b035d3f4a2951cbf51bf4afabbc2b83",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout16",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 16,
+        "campaign": "Giant's Stair",
+        "atmosphere": {
+          "stage": 16,
+          "zone": "reactor-depths",
+          "label": "Reactor depths",
+          "depth": 4,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0.07
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "terraces",
+        "classId": "mech",
+        "elapsed": 2,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 2.1,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-16",
+          "stage": 16,
+          "title": "Giant's Stair",
+          "theme": "terraces",
+          "chapter": "Reactor depths",
+          "focus": "Cross the ash terraces",
+          "routes": [
+            {
+              "role": "Crossing",
+              "height": [
+                108,
+                122
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                10,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.14,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "promenade",
+                  "gallery",
+                  "arch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "rest",
+                  "hop",
+                  "gallery"
+                ]
+              ]
+            },
+            {
+              "role": "Lookout",
+              "height": [
+                170,
+                184
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                10,
+                15
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.4,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "fork",
+                  "stack",
+                  "gallery",
+                  "switch"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "hop",
+                  "rest"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 17,
+      "screenshot": "garden-17.png",
+      "sha256": "335fecc6901fdfc85b65cb4aff1e7cc64797a023d3f759431aab62c7d0f4502f",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout17",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 17,
+        "campaign": "Reactor Nest",
+        "atmosphere": {
+          "stage": 17,
+          "zone": "reactor-depths",
+          "label": "Reactor depths",
+          "depth": 3,
+          "surface": false,
+          "glimpse": false,
+          "exposure": 0,
+          "fallout": 0.14
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "canopy",
+        "classId": "mech",
+        "elapsed": 1,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 2.3,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-17",
+          "stage": 17,
+          "title": "Reactor Nest",
+          "theme": "canopy",
+          "chapter": "Reactor depths",
+          "focus": "Reach the irradiated root chamber",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                116,
+                130
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "arch",
+                  "gallery",
+                  "stack"
+                ],
+                [
+                  "step",
+                  "step",
+                  "fork",
+                  "rest",
+                  "switch"
+                ]
+              ]
+            },
+            {
+              "role": "Roots",
+              "height": [
+                186,
+                200
+              ],
+              "width": [
+                20,
+                30
+              ],
+              "gap": [
+                10,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.32,
+              "branch": 0.45,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "switch",
+                  "stack",
+                  "fork",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "gallery",
+                  "switch"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 18,
+      "screenshot": "garden-18.png",
+      "sha256": "4151e9e6c74acc784b41aea576d3628b4dc367312d14b6cb98a66816a44638c1",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout18",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 18,
+        "campaign": "Last Sluice",
+        "atmosphere": {
+          "stage": 18,
+          "zone": "surface-breach",
+          "label": "Surface breach",
+          "depth": 2,
+          "surface": false,
+          "glimpse": true,
+          "exposure": 0.12,
+          "fallout": 0.21000000000000002
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "crossing",
+        "classId": "mech",
+        "elapsed": 2,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 2.4,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-18",
+          "stage": 18,
+          "title": "Last Sluice",
+          "theme": "crossing",
+          "chapter": "Surface breach",
+          "focus": "Traverse the last buried spans",
+          "routes": [
+            {
+              "role": "Crossing",
+              "height": [
+                112,
+                126
+              ],
+              "width": [
+                30,
+                42
+              ],
+              "gap": [
+                11,
+                15
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.12,
+              "branch": 0.25,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "bridge",
+                  "gallery",
+                  "pond"
+                ],
+                [
+                  "step",
+                  "step",
+                  "promenade",
+                  "arch",
+                  "rest"
+                ]
+              ]
+            },
+            {
+              "role": "Spine",
+              "height": [
+                180,
+                194
+              ],
+              "width": [
+                22,
+                32
+              ],
+              "gap": [
+                11,
+                16
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.24,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "hop",
+                  "stack",
+                  "switch",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "pond",
+                  "stack",
+                  "rest"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 19,
+      "screenshot": "garden-19.png",
+      "sha256": "ad774b4607131aa9ec613834e7f72ff8ea0914e73f7b65092ac4bc2cb07d55ef",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout19",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 19,
+        "campaign": "Surface Breach",
+        "atmosphere": {
+          "stage": 19,
+          "zone": "surface-breach",
+          "label": "Surface breach",
+          "depth": 1,
+          "surface": false,
+          "glimpse": true,
+          "exposure": 0.28,
+          "fallout": 0.28
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "ruins",
+        "classId": "mech",
+        "elapsed": 1,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 2.5,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-19",
+          "stage": 19,
+          "title": "Surface Breach",
+          "theme": "ruins",
+          "chapter": "Surface breach",
+          "focus": "Prepare at the broken surface gate",
+          "routes": [
+            {
+              "role": "Refuge",
+              "height": [
+                120,
+                134
+              ],
+              "width": [
+                28,
+                40
+              ],
+              "gap": [
+                9,
+                13
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.22,
+              "branch": 0.35,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "gallery",
+                  "drop",
+                  "rest"
+                ],
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "arch",
+                  "wall"
+                ]
+              ]
+            },
+            {
+              "role": "Spire",
+              "height": [
+                194,
+                208
+              ],
+              "width": [
+                20,
+                30
+              ],
+              "gap": [
+                10,
+                15
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.3,
+              "branch": 0.45,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "narrow",
+                  "stack",
+                  "switch",
+                  "gallery"
+                ],
+                [
+                  "step",
+                  "step",
+                  "wall",
+                  "stack",
+                  "rest",
+                  "switch"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    },
+    {
+      "stage": 20,
+      "screenshot": "garden-20.png",
+      "sha256": "24189f8e805bfd3bd2708fb0563df8a2ca520fdb534b934df2931c7a6690d3f5",
+      "view": "Actual normal desktop entry camera 1000x650 (not complete level bounds)",
+      "state": {
+        "type": "max-review-state",
+        "serial": 1,
+        "mode": "layout20",
+        "health": null,
+        "tide": null,
+        "wave": 0,
+        "world": 20,
+        "campaign": "Radioactive Dawn",
+        "atmosphere": {
+          "stage": 20,
+          "zone": "radioactive-dawn",
+          "label": "Radioactive dawn",
+          "depth": 0,
+          "surface": true,
+          "glimpse": false,
+          "exposure": 1,
+          "fallout": 1
+        },
+        "objective": {
+          "id": "discover",
+          "text": "EXPLORE",
+          "ink": "#dfba73",
+          "target": null
+        },
+        "theme": "crown",
+        "classId": "mech",
+        "elapsed": 2,
+        "motion": "free",
+        "climbPlantId": null,
+        "robot": true,
+        "grounded": true,
+        "platformId": null,
+        "x": 0,
+        "height": 0,
+        "pressure": 2.7,
+        "enemies": 0,
+        "bossId": "",
+        "phase": 0,
+        "ended": false,
+        "sligo": null
+      },
+      "canvas": {
+        "width": 334,
+        "height": 217,
+        "smoothing": false,
+        "isolated": true,
+        "profile": {
+          "id": "garden-20",
+          "stage": 20,
+          "title": "Radioactive Dawn",
+          "theme": "crown",
+          "chapter": "Radioactive dawn",
+          "focus": "Face the Hollow Crown at sunrise",
+          "routes": [
+            {
+              "role": "Crown West",
+              "height": [
+                140,
+                160
+              ],
+              "width": [
+                24,
+                40
+              ],
+              "gap": [
+                9,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.2,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "gallery",
+                  "switch"
+                ]
+              ]
+            },
+            {
+              "role": "Crown East",
+              "height": [
+                140,
+                160
+              ],
+              "width": [
+                24,
+                40
+              ],
+              "gap": [
+                9,
+                14
+              ],
+              "rests": [
+                2,
+                3
+              ],
+              "turn": 0.2,
+              "branch": 0.3,
+              "graphs": [
+                [
+                  "step",
+                  "step",
+                  "stack",
+                  "rest"
+                ]
+              ]
+            }
+          ]
+        },
+        "activeAuthoredStages": [
+          "1",
+          "4"
+        ]
+      },
+      "nativeFailed": []
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "sockets": [],
+  "buildUnchanged": true
+}

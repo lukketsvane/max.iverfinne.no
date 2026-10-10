@@ -1,0 +1,412 @@
+{
+  "format": "max-level-overview-inventory/v1",
+  "status": "Twenty unique generated full-scene PNGs and unchanged current native entry captures are ready.",
+  "currentCaptureCommit": "7e8a783f309dbe21d3f3144c7331d429102be557",
+  "currentCaptureScope": "Read-only actual current game entry-view overview, not full world capture or design authority",
+  "currentCaptureMethod": "Unmodified stock built review layout1..20, isolated memory storage, seed1, Max class; native canvas read only; no game/response/camera/actor/art injections",
+  "titleNotes": "Current Hollow Tree and Mossback Sanctuary replacements override stale base Seed Vault/Sunken Chapel labels. Scenery aliases Buried Aqueduct/Mycelium Cathedral/Fossil Vault do not rename campaign stages 3/7/14.",
+  "cloudSynchronized": false,
+  "runtimeSource": false,
+  "levels": [
+    {
+      "stage": 1,
+      "title": "Hollow Tree",
+      "filename": "level-01.png",
+      "titleSource": "README.md:122",
+      "currentCapture": {
+        "path": "current-captures/level-01-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "4dcb07d983976027736145ed6b4bb8383ef0b000e3877d70f57e19d5adc638af"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout1&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Dry inner gallery by the lantern",
+        "climb": "Timber terraces into the hollow crown",
+        "return": "Root ladder from the lower passage",
+        "find": "Side nooks beside the canopy"
+      },
+      "exportFilename": "level-01-hollow-tree.png"
+    },
+    {
+      "stage": 2,
+      "title": "Railway Ruins",
+      "filename": "level-02.png",
+      "titleSource": "stage-layout.js:24",
+      "currentCapture": {
+        "path": "current-captures/level-02-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "97b97ee8fd0ec1a05f8de7d2093fb01b5e7ec870be5878b40c7cd3b1ed52a95d"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout2&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Sheltered station yard",
+        "climb": "Viaduct and lift-tower roof",
+        "return": "Vine ladder back toward the mill",
+        "find": "Rail alcoves and the mill loft"
+      },
+      "exportFilename": "level-02-railway-ruins.png"
+    },
+    {
+      "stage": 3,
+      "title": "Broken Aqueduct",
+      "filename": "level-03.png",
+      "titleSource": "stage-layout.js:27",
+      "currentCapture": {
+        "path": "current-captures/level-03-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "2a1e8c9d1b4c4b41e980336abf126aa93569c05802e773b73942e9f6d5383144"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout3&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Broad stone pier",
+        "climb": "Broken aqueduct spans and upper arches",
+        "return": "Low gallery reconnecting the banks",
+        "find": "Quiet recesses behind the piers"
+      },
+      "exportFilename": "level-03-broken-aqueduct.png"
+    },
+    {
+      "stage": 4,
+      "title": "Mossback Sanctuary",
+      "filename": "level-04.png",
+      "titleSource": "levels.js:162",
+      "currentCapture": {
+        "path": "current-captures/level-04-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "ca809ffbc089d6af6aedab3f8cc4fa267ec590fea0516ed8074e3eab8844f545"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout4&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Dry inner-shell court",
+        "climb": "Root ladders, galleries and moss crown",
+        "return": "Lower chamber ladder back to the court",
+        "find": "Shell nooks along the side routes"
+      },
+      "exportFilename": "level-04-mossback-sanctuary.png"
+    },
+    {
+      "stage": 5,
+      "title": "Root Stair",
+      "filename": "level-05.png",
+      "titleSource": "stage-layout.js:33",
+      "currentCapture": {
+        "path": "current-captures/level-05-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "f64043eede4aad33d5ab3a43b1c83cbbf89704b5e91391c02cb2591bf22355b8"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout5&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Wide root landing",
+        "climb": "Alternating bark stairs",
+        "return": "Lower root loop to the landing",
+        "find": "Small hollows beside the turns"
+      },
+      "exportFilename": "level-05-root-stair.png"
+    },
+    {
+      "stage": 6,
+      "title": "Cairn Terraces",
+      "filename": "level-06.png",
+      "titleSource": "stage-layout.js:36",
+      "currentCapture": {
+        "path": "current-captures/level-06-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "b2d45ae7f18ace8cf743ce68b020076a0749f3f117430064fe9f8028dddaa3e2"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout6&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Broad quarry terrace",
+        "climb": "Stacked cairns and upper lookout",
+        "return": "Wide stone traverse around the foot",
+        "find": "Sheltered niches below the lookout"
+      },
+      "exportFilename": "level-06-cairn-terraces.png"
+    },
+    {
+      "stage": 7,
+      "title": "Lantern Roots",
+      "filename": "level-07.png",
+      "titleSource": "stage-layout.js:39",
+      "currentCapture": {
+        "path": "current-captures/level-07-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "d07c74c0581195184597fcd6d98a2562c44a09ed9e0bbe2ab09fd4e360723ebb"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout7&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Dry fungal clearing",
+        "climb": "Lantern roots beneath the great mushroom",
+        "return": "Low gill gallery to the clearing",
+        "find": "Warm lamp alcoves off the climb"
+      },
+      "exportFilename": "level-07-lantern-roots.png"
+    },
+    {
+      "stage": 8,
+      "title": "Silo Stair",
+      "filename": "level-08.png",
+      "titleSource": "stage-layout.js:42",
+      "currentCapture": {
+        "path": "current-captures/level-08-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "22bc0fa29442e067b69ac504482c52895a77d6a2d34ea586803bde7cdc0c144e"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout8&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Protected silo landing",
+        "climb": "Counterweight bridges and silo stairs",
+        "return": "Service gallery below the hoist",
+        "find": "Old grain bays beside the stairs"
+      },
+      "exportFilename": "level-08-silo-stair.png"
+    },
+    {
+      "stage": 9,
+      "title": "Collapsed Tower",
+      "filename": "level-09.png",
+      "titleSource": "stage-layout.js:45",
+      "currentCapture": {
+        "path": "current-captures/level-09-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "d14708278a83e985b902ab363ed4b872dc269363333078ecb357e4067a75ec9d"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout9&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Wide ruined forecourt",
+        "climb": "Broken tower galleries and spire",
+        "return": "Lower masonry walk to the forecourt",
+        "find": "Collapsed rooms beside the tower"
+      },
+      "exportFilename": "level-09-collapsed-tower.png"
+    },
+    {
+      "stage": 10,
+      "title": "Bell Cellar",
+      "filename": "level-10.png",
+      "titleSource": "stage-layout.js:48",
+      "currentCapture": {
+        "path": "current-captures/level-10-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "56f33554455b777205701000911e37717642ebda6dc46ac888269eb446fdee76"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout10&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Sheltered bell court",
+        "climb": "Turning stairs around the buried bell",
+        "return": "Lower vault gallery reconnects the court",
+        "find": "Lamp niches beneath the bell"
+      },
+      "exportFilename": "level-10-bell-cellar.png"
+    },
+    {
+      "stage": 11,
+      "title": "Old Quarry",
+      "filename": "level-11.png",
+      "titleSource": "stage-layout.js:51",
+      "currentCapture": {
+        "path": "current-captures/level-11-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "9370824345fc7834e2f489ef783097ddfbcdaefbccca0ca27f538a9c86926888"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout11&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Wide frozen terrace",
+        "climb": "Quarry ledges to the high lookout",
+        "return": "Low shelf along the quarry wall",
+        "find": "Recesses behind the ice-cut stones"
+      },
+      "exportFilename": "level-11-old-quarry.png"
+    },
+    {
+      "stage": 12,
+      "title": "Weeping Roots",
+      "filename": "level-12.png",
+      "titleSource": "stage-layout.js:54",
+      "currentCapture": {
+        "path": "current-captures/level-12-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "a1b88156aa38622318f433d070b0b380e99c28310dc3509f626c5751b0b60985"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout12&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Dry root gallery",
+        "climb": "Woven frozen roots and branch forks",
+        "return": "Sheltered lower root loop",
+        "find": "Small frost pockets off the main path"
+      },
+      "exportFilename": "level-12-weeping-roots.png"
+    },
+    {
+      "stage": 13,
+      "title": "Twin Shafts",
+      "filename": "level-13.png",
+      "titleSource": "stage-layout.js:57",
+      "currentCapture": {
+        "path": "current-captures/level-13-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "f674a2b0751dd33e438ff3c783af5168a15d2b8b03d13427bbd6d724174e9e77"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout13&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Broad bridge court",
+        "climb": "Two contrasting shaft climbs",
+        "return": "Cross-bridge and lower shaft return",
+        "find": "Side chambers beside each shaft"
+      },
+      "exportFilename": "level-13-twin-shafts.png"
+    },
+    {
+      "stage": 14,
+      "title": "Catacomb",
+      "filename": "level-14.png",
+      "titleSource": "stage-layout.js:60",
+      "currentCapture": {
+        "path": "current-captures/level-14-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "f486eb2bc231cc168bb97584a69e3e344995c50ee115fd9fdd7168a678f12b0a"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout14&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Dry chamber under the ribs",
+        "climb": "Broken catacomb walls and exposed ledges",
+        "return": "Lower sheltered corridor",
+        "find": "Quiet tomb pockets beneath the skull"
+      },
+      "exportFilename": "level-14-catacomb.png"
+    },
+    {
+      "stage": 15,
+      "title": "Fault Steps",
+      "filename": "level-15.png",
+      "titleSource": "stage-layout.js:63",
+      "currentCapture": {
+        "path": "current-captures/level-15-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "93114b29ae3d5d66885b934a1b7fe272903113437dcdbc93a783e228422ac146"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout15&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Broad resting shelf",
+        "climb": "Zigzag steps along the deep fault",
+        "return": "Lower gallery across the crack",
+        "find": "Narrow alcoves beside the turns"
+      },
+      "exportFilename": "level-15-fault-steps.png"
+    },
+    {
+      "stage": 16,
+      "title": "Giant's Stair",
+      "filename": "level-16.png",
+      "titleSource": "stage-layout.js:66",
+      "currentCapture": {
+        "path": "current-captures/level-16-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "d9f0dd504fbfb7621d0be534dbb069e956844c455c2707d5eb3daae35ba35ee7"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout16&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Wide ash terrace",
+        "climb": "Monumental stone stairs and lookout",
+        "return": "Broad lower promenade",
+        "find": "Sheltered bays below the high stairs"
+      },
+      "exportFilename": "level-16-giants-stair.png"
+    },
+    {
+      "stage": 17,
+      "title": "Reactor Nest",
+      "filename": "level-17.png",
+      "titleSource": "stage-layout.js:69",
+      "currentCapture": {
+        "path": "current-captures/level-17-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "0b28d57ccd0f13ade7ea217df2f12f0e677fe42601852ee6a5945b0b1b03bbde"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout17&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Dry reactor-root chamber",
+        "climb": "Irradiated roots around the reactor",
+        "return": "Low maintenance gallery",
+        "find": "Shielded niches beyond the root forks"
+      },
+      "exportFilename": "level-17-reactor-nest.png"
+    },
+    {
+      "stage": 18,
+      "title": "Last Sluice",
+      "filename": "level-18.png",
+      "titleSource": "stage-layout.js:72",
+      "currentCapture": {
+        "path": "current-captures/level-18-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "f4bff95b3d89cc8ba0f873f931a0b382f145fc2e54204d800d30d312cd2419bf"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout18&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Broad sluice bridge",
+        "climb": "Last buried spans and raised walkways",
+        "return": "Lower service path around the gate",
+        "find": "Recessed machinery bays"
+      },
+      "exportFilename": "level-18-last-sluice.png"
+    },
+    {
+      "stage": 19,
+      "title": "Surface Breach",
+      "filename": "level-19.png",
+      "titleSource": "stage-layout.js:75",
+      "currentCapture": {
+        "path": "current-captures/level-19-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "c9d6f8e8bee2541a9d296cbd2a8263c86fc5578e73ad18271b88e35c0952dd51"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout19&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Protected surface-gate court",
+        "climb": "Broken spire toward the first light",
+        "return": "Sheltered wall gallery back to the gate",
+        "find": "Small pockets under the breach"
+      },
+      "exportFilename": "level-19-surface-breach.png"
+    },
+    {
+      "stage": 20,
+      "title": "Radioactive Dawn",
+      "filename": "level-20.png",
+      "titleSource": "stage-layout.js:78",
+      "currentCapture": {
+        "path": "current-captures/level-20-current-native.png",
+        "width": 334,
+        "height": 217,
+        "sha256": "eae912b8eccf4b5ca54cfa9b52d55039b38650be47deedd8281cbd77f68b682b"
+      },
+      "reviewURL": "https://max.iverfinne.no/review?mode=layout20&class=mech&seed=1",
+      "routeIntent": {
+        "court": "Broad Crown approach",
+        "climb": "Two clear flanks toward the king",
+        "return": "Return landings before the final court",
+        "find": "Restrained side shelves before the encounter"
+      },
+      "exportFilename": "level-20-radioactive-dawn.png"
+    }
+  ]
+}

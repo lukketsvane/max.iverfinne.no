@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "generatedAtUTC": "2026-10-10 17:33:14 UTC",
+  "scope": "Five independently generated complete level scene concepts; documentation imagery only.",
+  "tool": "image_gen__imagegen",
+  "originalsPreserved": true,
+  "editingOrResampling": false,
+  "records": [
+    {
+      "level": 16,
+      "title": "Giant’s Stair",
+      "prompt": "Create ONE complete standalone landscape environment image for a 2D pixel platformer, requested canvas 1536×864 pixels (or the largest landscape resolution supported). Show the entire individual level as a carefully composed side-on orthographic cross-section, all edges and the full route visible. Meticulous hand-placed dark pixel-art aesthetic with crisp square pixels, thick near-black terrain masses, large open rooms, restrained deep green moss, dark teal shadows, worn brown timber, blocky stone and warm amber lanterns. Fine native-scale detail, clear silhouettes, deliberate negative space. Tiny gardener about 24 pixels tall, roughly 3% of image height, for scale. Every ledge stays proportionate to the tiny gardener. Readable broad dry entry planting court at the lower left; one clear main climbing route with frequent reachable intermediate steps and broad safe landings; a connected secondary loop that can return to the court without giant drops; two or three quiet cache alcoves away from the main route; generous clear headroom above the highest landing. Ladders visibly meet the supports they connect. Small groups of living plants mark safe dry soil. Art should look like a polished pixel platformer environment, not an illustration photographed or viewed in perspective. Exactly one scene, no panels, no collage, no contact sheet, no labels, no typography, no numbers, no UI, no HUD, no logos, no border. This is concept source imagery, so prioritize a uniquely memorable complete level and physically understandable routes.\nUnique scene: GIANT'S STAIR. Completely underground in an enormous ember cave. A diagonal sequence of monumental buried basalt steps rises from the dry lower-left work court toward an upper-right sealed stone doorway. The giant stair blocks are ancient and too tall for a person, but tiny attached timber shelves, short stone intermediate steps and sturdy ladders provide a visibly reachable human-scale climb along their edges. Three broad ash-dark landings allow rest; beneath the big stair, an open lower chamber and a moss-lined tunnel provide the connected return loop, with two quiet cache niches lit by a single amber lantern each. Rust-red minerals and ember glints are restrained accents, not pools of lava across the path. Thick dark continuous cave ceiling and walls enclose the entire picture. Absolutely no outdoors, no sky, no sun, no moon, no clouds, no surface opening. The giant steps are the distinctive landmark.",
+      "sourcePath": "/workspace/generated_images/exec-8beba1c8-9313-4c17-bac5-8e629597d765.png",
+      "targetPath": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-16.png",
+      "tool": "image_gen__imagegen",
+      "transparentBackground": false,
+      "requestedDimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "referencedImages": [],
+      "generationType": "new independent full scene",
+      "actualDimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "mode": "RGB",
+      "bytes": 2325892,
+      "sha256": "4e2c420ea809b866b160c28598107d320be14f7f29c1c29b6d6db7a40595298d",
+      "exactCopyVerified": true,
+      "promptSha256": "983a441a86410c6bd4987d9e9107111d06d5661a80fc7c6c168e61615fe18321"
+    },
+    {
+      "level": 17,
+      "title": "Reactor Nest",
+      "prompt": "Create ONE complete standalone landscape environment image for a 2D pixel platformer, requested canvas 1536×864 pixels (or the largest landscape resolution supported). Show the entire individual level as a carefully composed side-on orthographic cross-section, all edges and the full route visible. Meticulous hand-placed dark pixel-art aesthetic with crisp square pixels, thick near-black terrain masses, large open rooms, restrained deep green moss, dark teal shadows, worn brown timber, blocky stone and warm amber lanterns. Fine native-scale detail, clear silhouettes, deliberate negative space. Tiny gardener about 24 pixels tall, roughly 3% of image height, for scale. Every ledge stays proportionate to the tiny gardener. Readable broad dry entry planting court at the lower left; one clear main climbing route with frequent reachable intermediate steps and broad safe landings; a connected secondary loop that can return to the court without giant drops; two or three quiet cache alcoves away from the main route; generous clear headroom above the highest landing. Ladders visibly meet the supports they connect. Small groups of living plants mark safe dry soil. Art should look like a polished pixel platformer environment, not an illustration photographed or viewed in perspective. Exactly one scene, no panels, no collage, no contact sheet, no labels, no typography, no numbers, no UI, no HUD, no logos, no border. This is concept source imagery, so prioritize a uniquely memorable complete level and physically understandable routes.\nUnique scene: REACTOR NEST. Entirely underground. Monumental rusted circular machinery, broken reactor rings, oversized pressure housings and riveted steel towers have been swallowed by thick irradiated roots. The huge central reactor nest is inert, dark and partly hollow, with the visible main climb running on stone footings, timber maintenance galleries and ladders around its outer shell; upper galleries lead toward a small warm exit hatch near the high left edge. The lower-right side of the shell contains a dry connecting maintenance corridor that loops safely back to the broad lower-left planting work court. Keep all planting soil and primary footing dry. Restrained pale radioactive green light belongs deep inside machinery cavities; it does not flood the screen. One hanging planter, a broken winch, two quiet rootside cache alcoves, tiny living garden patches and warm amber lamps give intimate scale. Strong rusted machinery landmark, massive dark terrain, broad safe landings and frequent tiny-person intermediate supports. The entire top is solid underground cave roof: absolutely no outdoor sky, sun, moon, clouds or surface opening.",
+      "sourcePath": "/workspace/generated_images/exec-9745f717-d292-4b53-b161-b5e3a0f3a32c.png",
+      "targetPath": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-17.png",
+      "tool": "image_gen__imagegen",
+      "transparentBackground": false,
+      "requestedDimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "referencedImages": [],
+      "generationType": "new independent full scene",
+      "actualDimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "mode": "RGB",
+      "bytes": 2588018,
+      "sha256": "a4c68646bd0fae206092a9b8cf66a9fa18c94abe8e585b70d32517f8e4a39f58",
+      "exactCopyVerified": true,
+      "promptSha256": "d7428341a4ea3e7bec4cf08fa5fa205691f15eb7df22db38ab6160f53b9dc7f1"
+    },
+    {
+      "level": 18,
+      "title": "Last Sluice",
+      "prompt": "Create ONE complete standalone landscape environment image for a 2D pixel platformer, requested canvas 1536×864 pixels (or the largest landscape resolution supported). Show the entire individual level as a carefully composed side-on orthographic cross-section, all edges and the full route visible. Meticulous hand-placed dark pixel-art aesthetic with crisp square pixels, thick near-black terrain masses, large open rooms, restrained deep green moss, dark teal shadows, worn brown timber, blocky stone and warm amber lanterns. Fine native-scale detail, clear silhouettes, deliberate negative space. Tiny gardener about 24 pixels tall, roughly 3% of image height, for scale. Every ledge stays proportionate to the tiny gardener. Readable broad dry entry planting court at the lower left; one clear main climbing route with frequent reachable intermediate steps and broad safe landings; a connected secondary loop that can return to the court without giant drops; two or three quiet cache alcoves away from the main route; generous clear headroom above the highest landing. Ladders visibly meet the supports they connect. Small groups of living plants mark safe dry soil. Art should look like a polished pixel platformer environment, not an illustration photographed or viewed in perspective. Exactly one scene, no panels, no collage, no contact sheet, no labels, no typography, no numbers, no UI, no HUD, no logos, no border. This is concept source imagery, so prioritize a uniquely memorable complete level and physically understandable routes.\nUnique scene: LAST SLUICE. A vast water-control ruin deep underground, with a broken stone sluice gate, two vertical water channels, a dry central keeper's court, rusted handwheels and thick mossy masonry. The main climb zigzags between three broad dry timber/stone galleries through the old gate supports, reaching an upper-right maintenance doorway. Short ladders and intermediate ledges are physically connected; falling water stays beside the route rather than across dry planting landings. A lower service tunnel behind a buttress and an outward gallery provide the connected return loop. Two tiny quiet cache rooms, lantern-lit roots and mature small plants on dry soil. Almost all of the composition is dark enclosed cave. The FIRST sign of dawn is only one tiny crack high in the upper cave roof, far above the playable landings: a thin muted peach slit and one narrow light shaft, at most 2% of the image area. No open outdoor landscape, no visible sun disk, no moon, no cloud field. The ruined sluice is the dominant landmark.",
+      "sourcePath": "/workspace/generated_images/exec-ec87fbf9-ba11-4ad8-93b4-4071dfa26586.png",
+      "targetPath": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-18.png",
+      "tool": "image_gen__imagegen",
+      "transparentBackground": false,
+      "requestedDimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "referencedImages": [],
+      "generationType": "new independent full scene",
+      "actualDimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "mode": "RGB",
+      "bytes": 2675315,
+      "sha256": "ef5cf429525ef1f22c19bed269041f37417bed7cd273fa1093f52048dc69a138",
+      "exactCopyVerified": true,
+      "promptSha256": "374550ca863d3f87fa2b3ffe0537d19013a067907d64de50d8d3beb25676049b"
+    },
+    {
+      "level": 19,
+      "title": "Surface Breach",
+      "prompt": "Create ONE complete standalone landscape environment image for a 2D pixel platformer, requested canvas 1536×864 pixels (or the largest landscape resolution supported). Show the entire individual level as a carefully composed side-on orthographic cross-section, all edges and the full route visible. Meticulous hand-placed dark pixel-art aesthetic with crisp square pixels, thick near-black terrain masses, large open rooms, restrained deep green moss, dark teal shadows, worn brown timber, blocky stone and warm amber lanterns. Fine native-scale detail, clear silhouettes, deliberate negative space. Tiny gardener about 24 pixels tall, roughly 3% of image height, for scale. Every ledge stays proportionate to the tiny gardener. Readable broad dry entry planting court at the lower left; one clear main climbing route with frequent reachable intermediate steps and broad safe landings; a connected secondary loop that can return to the court without giant drops; two or three quiet cache alcoves away from the main route; generous clear headroom above the highest landing. Ladders visibly meet the supports they connect. Small groups of living plants mark safe dry soil. Art should look like a polished pixel platformer environment, not an illustration photographed or viewed in perspective. Exactly one scene, no panels, no collage, no contact sheet, no labels, no typography, no numbers, no UI, no HUD, no logos, no border. This is concept source imagery, so prioritize a uniquely memorable complete level and physically understandable routes.\nUnique scene: SURFACE BREACH. Mostly underground at a monumental broken cave gate, cracked pillars and fallen gate lintels forming an ascending stone route. Warm dawn is almost within reach but the player remains inside a huge dark chamber. Begin on a broad mossy dry planting court at lower right for this distinctive reverse-facing composition; lead the main climb through reachable stone switchbacks and short timber ladders toward a broad upper-left gate landing. A rooted middle gallery and lower hidden passage connect back to the court as a secondary return loop. Quiet caches tucked into two broken gate towers and dry living plants near amber lanterns. Large open central void framed by thick dark terrain and ancient stone gate masses. Headroom above the final landing remains generous. Only a small high roof breach beyond the gate admits a thin warm peach dawn glow, less than 4% of image area; retain darkness and roof masses across almost the entire composition. No broad exterior landscape, no exposed sun disk, no moon, no big clouds. The broken cave gate is the distinctive landmark.",
+      "sourcePath": "/workspace/generated_images/exec-553b90d6-1931-4d06-929f-e810cc85d226.png",
+      "targetPath": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-19.png",
+      "tool": "image_gen__imagegen",
+      "transparentBackground": false,
+      "requestedDimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "referencedImages": [],
+      "generationType": "new independent full scene",
+      "actualDimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "mode": "RGB",
+      "bytes": 2430646,
+      "sha256": "d7b779ee84f1ac8de9489e9d6ff1b4701b3fa1d7a9b60d62b146e9f0f7d584aa",
+      "exactCopyVerified": true,
+      "promptSha256": "922fc2c3cd0d4bdbf26928ad15a5e15075e4cc5275e6867d23114d844ff9260e"
+    },
+    {
+      "level": 20,
+      "title": "Radioactive Dawn",
+      "prompt": "Create ONE complete standalone landscape environment image for a 2D pixel platformer, requested canvas 1536×864 pixels (or the largest landscape resolution supported). Show the entire individual level as a carefully composed side-on orthographic cross-section, all edges and the full route visible. Meticulous hand-placed dark pixel-art aesthetic with crisp square pixels, thick near-black terrain masses, large open rooms, restrained deep green moss, dark teal shadows, worn brown timber, blocky stone and warm amber lanterns. Fine native-scale detail, clear silhouettes, deliberate negative space. Tiny gardener about 24 pixels tall, roughly 3% of image height, for scale. Every ledge stays proportionate to the tiny gardener. Readable broad dry entry planting court at the lower left; one clear main climbing route with frequent reachable intermediate steps and broad safe landings; a connected secondary loop that can return to the court without giant drops; two or three quiet cache alcoves away from the main route; generous clear headroom above the highest landing. Ladders visibly meet the supports they connect. Small groups of living plants mark safe dry soil. Art should look like a polished pixel platformer environment, not an illustration photographed or viewed in perspective. Exactly one scene, no panels, no collage, no contact sheet, no labels, no typography, no numbers, no UI, no HUD, no logos, no border. This is concept source imagery, so prioritize a uniquely memorable complete level and physically understandable routes.\nUnique scene: RADIOACTIVE DAWN, the final level, fully on the surface at sunrise. A dark irradiated ruin court under a low peach-and-amber dawn horizon, fractured black stone towers, collapsed aqueduct bones and strange pale green roots. Use a sparse warm sunrise sky across the upper portion and a hazy sun low at the far horizon; the foreground stays dark, textured and mossy. The broad lower-left planting court holds a stubborn tiny living garden protected by broken architecture. A clear climb through connected stone terraces, short timber stair shelves, two ladders and broad landings leads to the final upper-right boss court, with a distinct secondary loop along the lower ruin ramparts returning to the living garden. Keep caches quiet and away from the boss court. The final boss on the upper-right court is a FACELESS SILVER KING with a silver crown and massive stone-and-metal maul: no facial features, no visible face beneath the crown, regal silver silhouette at about four times the tiny gardener's height, never gigantic enough to block the entire level. Massive maul rests grounded, readable weapon silhouette. Boss and small gardener are separated, the planting court remains visible and safe to understand. Dark radioactive architecture dominates lower two thirds; dawn provides the first full outdoor sky of the campaign. No moon, no UI, no text. Show this entire final level as one coherent navigable scene.",
+      "sourcePath": "/workspace/generated_images/exec-db1ff468-db6c-4dcd-97c9-0a603f11f353.png",
+      "targetPath": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-20.png",
+      "tool": "image_gen__imagegen",
+      "transparentBackground": false,
+      "requestedDimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "referencedImages": [],
+      "generationType": "new independent full scene",
+      "actualDimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "mode": "RGB",
+      "bytes": 2831374,
+      "sha256": "34db39e99957169bc226e3ee2c70b108cbd36f38b547bff08acb39d43a8feaf0",
+      "exactCopyVerified": true,
+      "promptSha256": "022e31c31831fa9b7552c3124020f27bda2d52c5456a988efdf0b1038401369b"
+    }
+  ]
+}

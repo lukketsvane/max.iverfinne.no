@@ -64,11 +64,15 @@ function drawBossEvent(t){
   if(guardianView.key!==key)guardianView={key:key,found:false};
   if(x>=-9&&x<=IW+9&&y>=0&&y<=IH+24&&Math.hypot(P.x-bossEvent.x,P.y-bossEvent.y)<90)guardianView.found=true;
   var ready=bossEvent.status==='ready',readyPlant=!!guardianGardenPlant(),ink=ready?'#e0b54f':'#536448',core=ready&&readyPlant?'#77bbb9':'#657668';
-  if(ready&&guardianView.found&&(Math.abs(bossEvent.courtX-bossEvent.x)>8||bossEvent.courtY-bossEvent.y>24)){
+  var turtle=window.MaxTurtleArt&&window.MaxTurtleArt.enabled(stageLayout());
+  var nearCourt=Math.abs(P.x-bossEvent.courtX)<(turtle?53:28)&&Math.abs(P.y-bossEvent.courtY)<16;
+  // The turtle's entry court is known terrain; its distant shrine stays hidden.
+  var entryCourt=turtle&&gardenSeeds>0&&nearCourt&&!gardenPlots.some(function(p){return guardianCourtPlant(p,bossEvent);});
+  if(ready&&(guardianView.found||entryCourt)&&(Math.abs(bossEvent.courtX-bossEvent.x)>8||bossEvent.courtY-bossEvent.y>24)){
     var cx=Math.round(bossEvent.courtX-camX),cy=Math.round(bossEvent.courtY-camY);
     if(cx>=-12&&cx<=IW+12&&cy>=0&&cy<=IH+8){
       rect(cx-10,cy,21,1,'#82725b');rect(cx-8,cy-2,3,2,ink);rect(cx+6,cy-2,3,2,ink);rect(cx-1,cy-3,3,3,core);
-      if(!readyPlant&&Math.abs(P.x-bossEvent.courtX)<28&&Math.abs(P.y-bossEvent.courtY)<16)drawBossWord('PLANT',Math.max(20,Math.min(IW-20,cx)),cy-19,1);
+      if(!readyPlant&&nearCourt)drawBossWord('PLANT',Math.max(20,Math.min(IW-20,cx)),cy-19,1);
     }
   }
   if(x<-24||x>IW+24||y<-12||y>IH+35)return;
@@ -79,11 +83,13 @@ function drawBossEvent(t){
     var glint=Math.round(Math.sin(t*2.8)*3);rect(x-8,y-20+glint,1,1,ink);rect(x+8,y-17-glint,1,1,ink);
   }
   if(ready&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32){
-    var trial=runEncounters.some(function(e){return e.active&&!e.done;}),label=!readyPlant?(bossEvent.courtY-bossEvent.y>24?'PLANT BELOW':'PLANT'):trial?'TRIAL ACTIVE':floatKrek.length>=MAX_ACTIVE_ENEMIES?'CLEAR PESTS':'TEND';
-    var courtCue=!readyPlant&&Math.abs(P.x-bossEvent.courtX)<28&&Math.abs(P.y-bossEvent.courtY)<16&&(Math.abs(bossEvent.courtX-bossEvent.x)>8||bossEvent.courtY-bossEvent.y>24);
+    var trial=runEncounters.some(function(e){return e.active&&!e.done;}),label=!readyPlant?(!turtle&&bossEvent.courtY-bossEvent.y>24?'PLANT BELOW':'PLANT'):trial?'TRIAL ACTIVE':floatKrek.length>=MAX_ACTIVE_ENEMIES?'CLEAR PESTS':'TEND';
+    var courtCue=!readyPlant&&nearCourt&&(Math.abs(bossEvent.courtX-bossEvent.x)>8||bossEvent.courtY-bossEvent.y>24);
     if(!courtCue)drawBossWord(label,Math.max(36,Math.min(IW-36,x)),y-35,1);
-    drawArrow(x-2,y-29+Math.round(Math.sin(t*4)),'down',ink);
-  }else if(bossEvent.status==='active'&&bossEvent.courtY-bossEvent.y>24&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32){
+    // The ordinary guide points at the actual court. A local down arrow at
+    // this remote shrine would contradict that target on a narrow phone.
+    if(!turtle||readyPlant)drawArrow(x-2,y-29+Math.round(Math.sin(t*4)),'down',ink);
+  }else if(!turtle&&bossEvent.status==='active'&&bossEvent.courtY-bossEvent.y>24&&Math.abs(P.x-bossEvent.x)<44&&Math.abs(P.y-bossEvent.y)<32){
     drawArrow(x-2,y+3,'down','#e0b54f');
   }
 }
