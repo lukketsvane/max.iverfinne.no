@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAX level scene references</title>
+<style>
+  :root { color-scheme: light dark; } body { margin: 24px; font: 14px/1.5 Inter, system-ui, sans-serif; }
+  h1 { margin: 0 0 12px; font-size: 20px; } p, label { display: block; margin: 12px 0; }
+  button { font: inherit; padding: 9px 12px; margin: 3px 0; border-radius: 6px; border: 1px solid #6c8580; cursor: pointer; }
+  #references { background: #315f53; color: white; } #status { min-height: 42px; }
+  button:disabled { opacity: .6; cursor: default; } a { color: inherit; }
+</style>
+<h1>Level stack scene references</h1>
+<p>Add one unique full-scene design to each existing MASTER level's ASSETS.</p>
+<p>Open <a href="https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF" target="_blank" rel="noreferrer">the configured MAX file</a>. All twenty rows are checked before importing.</p>
+<label><input id="verified" type="checkbox"> I verified this exact file address. Required only when Figma hides the file key.</label>
+<button id="references">Add / update all 20 level references</button>
+<button id="stack">Create comparison stack · 20 → 01</button>
+<button id="receipt" disabled>Save import receipt</button><button id="close">Close</button>
+<p id="status" role="status" aria-live="polite">Images are embedded. Gameplay source planes stay intact.</p>
+<script>
+  const controls = [...document.querySelectorAll('button')], status = document.getElementById('status'), receiptButton = document.getElementById('receipt');
+  let receipt = null;
+  function send(type) {
+    controls.forEach(button => button.disabled = true); status.textContent = 'Validating twenty source rows and images…';
+    parent.postMessage({ pluginMessage: { type, verifiedFileKey: document.getElementById('verified').checked ? 'TC0PHGMTCMR6im4hb3CSbF' : null } }, '*');
+  }
+  document.getElementById('references').onclick = () => send('import-references');
+  document.getElementById('stack').onclick = () => send('import-stack');
+  document.getElementById('close').onclick = () => parent.postMessage({ pluginMessage: { type: 'close' } }, '*');
+  receiptButton.onclick = () => {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(receipt, null, 2) + '\n'], { type: 'application/json' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'max-level-scene-import-receipt.json'; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  onmessage = event => {
+    const message = event.data.pluginMessage;
+    if (!message || !['complete', 'error'].includes(message.type)) return;
+    status.textContent = message.message; if (message.receipt) receipt = message.receipt;
+    controls.forEach(button => button.disabled = false); receiptButton.disabled = !receipt;
+  };
+</script></html>

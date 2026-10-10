@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "kind": "generated level concept references",
+  "runtimeArtwork": false,
+  "figmaMaster": false,
+  "description": "Five separate underground full-scene concepts generated from user-authorized prompts. Exact tool PNGs are copied without resizing, editing, or altering existing game artwork/collisions. No authenticated Figma design extraction is claimed.",
+  "images": [
+    {
+      "level": 1,
+      "theme": "Hollow Tree",
+      "prompt": "Create one single landscape image, ideally 1536x864 or the largest available landscape size, showing ONE COMPLETE ENTIRE 2D side-view pixel-art platformer level cross-section from its left entry to its right exit. Level 01: Hollow Tree. The entire level is deep underground inside a vast cavern: absolutely NO outdoor sky, moon, clouds, distant mountains, skyline, or above-ground landscape. A massive bent ancient moss-covered hollow tree dominates the silhouette, with thick root and soil masses, an amber-lit entry door, a small scenic pond on the left, spacious open negative-space cavities inside the trunk, timber galleries, ladders formed of roots and wood, a lower root passage, and a quiet upper canopy chamber that still sits beneath the cave ceiling. Make the gameplay route intuitive: a broad dry left entry court, a clearly visible continuous main climb with broad stable landings rather than tiny stepping dots, one connected secondary return loop through the hollow interior, and a few quiet cache nooks that do not compete with the main route. Maintain generous headroom at the upper route. Meticulous dark mossy pixel art, hand-placed crisp square pixels, thick believable terrain masses, warm amber lanterns, weathered timber, subdued teal shadow depth, restrained flowers and fungi, legible playable surfaces. Include just one tiny gardener explorer, about 24 native pixels tall and approximately 3 percent of image height, standing at the entry for scale. Entire level fits in the image with room around all edges and no cropped architecture. Flat 2D orthographic side-view game art, no perspective or isometric view. No UI, no text, no labels, no numbers, no watermark, no panel grid, no contact sheet, no title. Design reference artwork only.",
+      "tool": "image_gen.imagegen",
+      "toolParameters": {
+        "transparent_background": false
+      },
+      "referenceImages": [],
+      "requestedSize": "1536x864 or largest available landscape",
+      "originalPath": "/workspace/generated_images/exec-1f2fb480-cdd9-41b1-89de-c0cdf7a912c1.png",
+      "file": "generated/level-01.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "edff62a96b4117e3524d8844d48dffa636f64b1db3603f2ad9a84f1e63ace63d",
+      "byteLength": 2984907
+    },
+    {
+      "level": 2,
+      "theme": "Railway Ruins",
+      "prompt": "Create one single landscape image, ideally 1536x864 or the largest available landscape size, showing ONE COMPLETE ENTIRE 2D side-view pixel-art platformer level cross-section from left entry to right exit. Level 02: Railway Ruins. Absolutely the ENTIRE environment is underground, buried inside a gigantic cavern: NO outdoor sky, moon, clouds, mountains, skyline, or open-air scene. A forgotten mossy railway station and a broken dark-green railcar lie under heavy cave rock, with a fractured old rail viaduct, thick stone embankments, open recessed station halls, an old iron wheel and a weathered timber lift tower. Distinctive readable silhouette. Show a broad dry left entry court, one obvious main climb using a connected timber lift tower and broad stable station landings, a traversable viaduct route through the station, one connected lower return loop underneath through dry vaults, and only a few quiet cache nooks. Generous headroom above the highest route. Meticulous dark mossy pixel art with hand-placed crisp square pixels, thick terrain masses, generous negative-space caves, weathered brick and rusted iron, timber-root ladders, warm amber lanterns, teal-shadow depths, small flowers and fungi. Include one tiny gardener explorer about 24 native pixels tall and roughly 3 percent of image height on the entry court for scale. The whole level and all architecture fit within the frame with margins, not cropped. Flat orthographic 2D side-view game art, no perspective or isometric view. No UI, no text, no labels, no numbers, no watermark, no panels, no contact sheet, no title. Design reference artwork only.",
+      "tool": "image_gen.imagegen",
+      "toolParameters": {
+        "transparent_background": false
+      },
+      "referenceImages": [],
+      "requestedSize": "1536x864 or largest available landscape",
+      "originalPath": "/workspace/generated_images/exec-617a4d70-8440-4484-a36c-fcb37b2d30bc.png",
+      "file": "generated/level-02.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "cc16b889106b3f5b1c2cfeb8f0e57bfb058551b8bcb6333ee452f33a89d803af",
+      "byteLength": 2830263
+    },
+    {
+      "level": 3,
+      "theme": "Broken Aqueduct",
+      "prompt": "Create one single landscape image, ideally 1536x864 or the largest available landscape size, showing ONE COMPLETE ENTIRE 2D side-view pixel-art platformer level cross-section from left entry to right exit. Level 03: Broken Aqueduct. The entire aqueduct is completely BURIED UNDERGROUND inside a vast cave with a continuous heavy rock ceiling: NO outdoor sky, moon, clouds, mountains, open air, or skyline. A monumental ancient stone aqueduct has exactly three large dramatically UNEQUAL broken arches, one low and broad, one very tall and narrow, one medium arch with a collapsed edge. Its fractured canal crown forms a stepped main route, with thick mossy stone terrain masses and spacious recessed DRY galleries within the arches and piers. Small scenic pools sit below optional routes without swallowing the main path. Make navigation intuitive: broad dry left entry court, obvious connected main climb with timber-root ladders and wide reliable landings, clear canal-crown traversal, a connected secondary dry return loop through recessed gallery chambers, and a few quiet cache nooks. Keep ample upper headroom under the cavern ceiling. Meticulous dark mossy pixel art, hand-placed crisp square pixels, warm amber lanterns, weathered timber reinforcement, teal-shadow cave depths, restrained ferns and flowers, massive stone silhouette with clean open negative space. Include one tiny gardener explorer around 24 native pixels high and roughly 3 percent of image height at the entry for scale. Entire level and three arches fit inside the image with margins and no cropped architecture. Flat 2D orthographic side-view game art, no perspective or isometric view. No UI, no text, no labels, no numbers, no watermark, no title, no panel grid, no contact sheet. Design reference artwork only.",
+      "tool": "image_gen.imagegen",
+      "toolParameters": {
+        "transparent_background": false
+      },
+      "referenceImages": [],
+      "requestedSize": "1536x864 or largest available landscape",
+      "originalPath": "/workspace/generated_images/exec-162a8d2f-c263-4ba3-8c85-3a6cc849bd8a.png",
+      "file": "generated/level-03.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "87f79736d2d220e72b7a5c4a97614ae28a6fefd5b1d19394da2d3f891fc9364f",
+      "byteLength": 2805970
+    },
+    {
+      "level": 4,
+      "theme": "Mossback Sanctuary",
+      "prompt": "Create one single landscape image, ideally 1536x864 or the largest available landscape size, showing ONE COMPLETE ENTIRE 2D side-view pixel-art platformer level cross-section. Level 04: Mossback Sanctuary. A truly gigantic ancient living TURTLE, sleeping with its clearly recognizable HEAD ON THE RIGHT, forms the entire main playable terrain silhouette. Its heavy domed cracked shell is covered in moss, small flowers and ancient roots; its spacious HOLLOW SHELL INTERIOR is shown in cross-section, containing dry timber galleries, ladders made of roots, thick curved shell and earth walls, one clear central DRY gardening court, and a scenic pool far below in an optional lower chamber. Four stout legs support the shell. A flowered shell crown offers a readable upper route with ample headroom. This entire turtle sanctuary is DEEP UNDERGROUND within a huge rock cavern, including a visible dark rock cave ceiling above the turtle: absolutely NO outdoor sky, moon, clouds, mountains, skyline, or sunlight. Make the routes intuitive: broad dry left entry court connected to the central dry court, one obvious main climb with broad stable interior landings and timber-root ladders up to the shell crown, one clear connected secondary return loop within the shell and lower root passage, a safe neck/head route on the right, and only a few quiet cache nooks. The turtle's face should be peaceful and sleepy, not a monster. Meticulous dark mossy pixel art in the aesthetic of a hand-crafted native pixel platformer reference, hand-placed crisp square pixels, thick believable terrain masses, spacious open negative-space chambers, amber lanterns, weathered timber, muted teal cave shadow depths, lush green shell moss and tiny warm flowers. Include one tiny gardener explorer, around 24 native pixels tall and roughly 3 percent of image height, at the dry entry court for scale. Fit the entire turtle, head, shell crown, feet and cave framing within the image with margins, no cropped anatomy or architecture. Flat orthographic 2D side-view game art, no perspective or isometric view. No UI, no text, no labels, no numbers, no watermark, no title, no contact sheet, no panels. Design reference artwork only.",
+      "tool": "image_gen.imagegen",
+      "toolParameters": {
+        "transparent_background": false
+      },
+      "referenceImages": [],
+      "requestedSize": "1536x864 or largest available landscape",
+      "originalPath": "/workspace/generated_images/exec-f0ef75be-be7d-46dd-b4b0-992cf532766a.png",
+      "file": "generated/level-04.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "a5e29185c1b6030e8396aed91d6b455acc9ba1ba88bf37e51f404a5e3fb62474",
+      "byteLength": 3231600
+    },
+    {
+      "level": 5,
+      "theme": "Root Stair",
+      "prompt": "Create one single landscape image, ideally 1536x864 or the largest available landscape size, showing ONE COMPLETE ENTIRE 2D side-view pixel-art platformer level cross-section from left entry to right exit. Level 05: Root Stair. The entire environment lies completely UNDERGROUND beneath a continuous heavy rock cavern ceiling: absolutely NO outdoor sky, moon, clouds, mountains, skyline, open air, or sunlight. Enormous ancient roots knot through massive mossy rock and earth, forming a dramatic winding SWITCHBACK ROOT STAIR as the clear main silhouette, with thick rooted terrain masses separated by generous open negative-space cave chambers. Show a broad dry left entry court; one obvious winding main climb built from broad root-stair landings, safe short steps, and timber-root ladders; a traversable highest root gallery with generous headroom; one connected secondary return loop through the lower caves; and a few quiet sheltered cache nooks away from the main climb. Let the main route read easily at a glance rather than dissolving into many tiny platforms. Small scenic pools can lie well below optional side routes; keep all main landings dry. Meticulous dark mossy pixel art, crisp hand-placed square pixels, amber lanterns marking important landings, weathered wooden reinforcements, muted teal cave depth, ancient bark texture, sparse mushrooms and tiny flowers. Include one tiny gardener explorer, about 24 native pixels tall and roughly 3 percent of image height, at the entry court for scale. All of the entire level fits in the image with margins and no cropped top staircase or cave ceiling. Flat 2D orthographic side-view game art, no perspective or isometric view. No UI, no text, no labels, no numbers, no watermark, no title, no contact sheet, no panels. Design reference artwork only.",
+      "tool": "image_gen.imagegen",
+      "toolParameters": {
+        "transparent_background": false
+      },
+      "referenceImages": [],
+      "requestedSize": "1536x864 or largest available landscape",
+      "originalPath": "/workspace/generated_images/exec-ef4ffc75-945f-4eb8-96e4-1d5235e68f3e.png",
+      "file": "generated/level-05.png",
+      "width": 1672,
+      "height": 941,
+      "format": "PNG",
+      "sha256": "8cb79bb28458bfab5f2507420907a7c0ce679964c7378ef21b5ca745ebadf22a",
+      "byteLength": 3316837
+    }
+  ],
+  "recordedAtUtc": "2026-10-10T17:33:27.923726+00:00"
+}

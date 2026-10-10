@@ -1,0 +1,1006 @@
+{
+  "created": "2026-10-10T17:39:27.224Z",
+  "sourceBefore": "2e828fa29df931562b11162e4896983f08ab0ca3e13eeb08e4acfcca42956205",
+  "sourceFile": "/workspace/max-intuitive-levels/docs/design/levels-overview/stack.html",
+  "views": [
+    {
+      "view": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      },
+      "start": {
+        "hash": "#level-01",
+        "scrollY": 16811,
+        "active": "Level 01 / 20",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "documentWidth": 1440,
+        "header": {
+          "height": 101,
+          "right": 1440
+        },
+        "card": {
+          "id": "level-01",
+          "top": 115.03125,
+          "title": "Hollow Tree"
+        },
+        "scene": {
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "width": 968,
+          "height": 544.5,
+          "top": 236.03125,
+          "right": 1023,
+          "objectFit": "contain"
+        }
+      },
+      "second": {
+        "hash": "#level-02",
+        "scrollY": 15939,
+        "active": "Level 02 / 20",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "documentWidth": 1440,
+        "header": {
+          "height": 101,
+          "right": 1440
+        },
+        "card": {
+          "id": "level-02",
+          "top": 115.03125,
+          "title": "Railway Ruins"
+        },
+        "scene": {
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "width": 968,
+          "height": 544.5,
+          "top": 236.03125,
+          "right": 1023,
+          "objectFit": "contain"
+        }
+      },
+      "turtle": {
+        "hash": "#level-04",
+        "scrollY": 14195,
+        "active": "Level 04 / 20",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "documentWidth": 1440,
+        "header": {
+          "height": 101,
+          "right": 1440
+        },
+        "card": {
+          "id": "level-04",
+          "top": 115.03125,
+          "title": "Mossback Sanctuary"
+        },
+        "scene": {
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "width": 968,
+          "height": 544.5,
+          "top": 236.03125,
+          "right": 1023,
+          "objectFit": "contain"
+        }
+      },
+      "order": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "links": [
+        {
+          "stage": 20,
+          "href": "https://max.iverfinne.no/review?mode=layout20&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 19,
+          "href": "https://max.iverfinne.no/review?mode=layout19&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 18,
+          "href": "https://max.iverfinne.no/review?mode=layout18&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 17,
+          "href": "https://max.iverfinne.no/review?mode=layout17&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 16,
+          "href": "https://max.iverfinne.no/review?mode=layout16&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 15,
+          "href": "https://max.iverfinne.no/review?mode=layout15&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 14,
+          "href": "https://max.iverfinne.no/review?mode=layout14&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 13,
+          "href": "https://max.iverfinne.no/review?mode=layout13&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 12,
+          "href": "https://max.iverfinne.no/review?mode=layout12&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 11,
+          "href": "https://max.iverfinne.no/review?mode=layout11&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 10,
+          "href": "https://max.iverfinne.no/review?mode=layout10&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 9,
+          "href": "https://max.iverfinne.no/review?mode=layout9&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 8,
+          "href": "https://max.iverfinne.no/review?mode=layout8&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 7,
+          "href": "https://max.iverfinne.no/review?mode=layout7&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 6,
+          "href": "https://max.iverfinne.no/review?mode=layout6&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 5,
+          "href": "https://max.iverfinne.no/review?mode=layout5&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 4,
+          "href": "https://max.iverfinne.no/review?mode=layout4&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 3,
+          "href": "https://max.iverfinne.no/review?mode=layout3&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 2,
+          "href": "https://max.iverfinne.no/review?mode=layout2&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 1,
+          "href": "https://max.iverfinne.no/review?mode=layout1&class=mech&seed=1",
+          "target": "_blank"
+        }
+      ],
+      "images": [
+        {
+          "src": "generated/level-20.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-20-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-19.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-19-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-18.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-18-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-17.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-17-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-16.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-16-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-15.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-15-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-14.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-14-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-13.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-13-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-12.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-12-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-11.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-11-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-10.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-10-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-09.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-09-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-08.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-08-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-07.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-07-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-06.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-06-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-05.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-05-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-04.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-04-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-03.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-03-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-02.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-02-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-01.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-01-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        }
+      ]
+    },
+    {
+      "view": {
+        "name": "phone",
+        "width": 390,
+        "height": 844
+      },
+      "start": {
+        "hash": "#level-01",
+        "scrollY": 18285,
+        "active": "Level 01 / 20",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "header": {
+          "height": 118,
+          "right": 390
+        },
+        "card": {
+          "id": "level-01",
+          "top": 123.96875,
+          "title": "Hollow Tree"
+        },
+        "scene": {
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "width": 324,
+          "height": 182.25,
+          "top": 219.96875,
+          "right": 357,
+          "objectFit": "contain"
+        }
+      },
+      "second": {
+        "hash": "#level-02",
+        "scrollY": 17327,
+        "active": "Level 02 / 20",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "header": {
+          "height": 118,
+          "right": 390
+        },
+        "card": {
+          "id": "level-02",
+          "top": 131.71875,
+          "title": "Railway Ruins"
+        },
+        "scene": {
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "width": 324,
+          "height": 182.25,
+          "top": 227.71875,
+          "right": 357,
+          "objectFit": "contain"
+        }
+      },
+      "turtle": {
+        "hash": "#level-04",
+        "scrollY": 15384,
+        "active": "Level 04 / 20",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "header": {
+          "height": 118,
+          "right": 390
+        },
+        "card": {
+          "id": "level-04",
+          "top": 132.21875,
+          "title": "Mossback Sanctuary"
+        },
+        "scene": {
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "width": 324,
+          "height": 182.25,
+          "top": 228.21875,
+          "right": 357,
+          "objectFit": "contain"
+        }
+      },
+      "order": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "links": [
+        {
+          "stage": 20,
+          "href": "https://max.iverfinne.no/review?mode=layout20&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 19,
+          "href": "https://max.iverfinne.no/review?mode=layout19&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 18,
+          "href": "https://max.iverfinne.no/review?mode=layout18&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 17,
+          "href": "https://max.iverfinne.no/review?mode=layout17&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 16,
+          "href": "https://max.iverfinne.no/review?mode=layout16&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 15,
+          "href": "https://max.iverfinne.no/review?mode=layout15&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 14,
+          "href": "https://max.iverfinne.no/review?mode=layout14&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 13,
+          "href": "https://max.iverfinne.no/review?mode=layout13&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 12,
+          "href": "https://max.iverfinne.no/review?mode=layout12&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 11,
+          "href": "https://max.iverfinne.no/review?mode=layout11&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 10,
+          "href": "https://max.iverfinne.no/review?mode=layout10&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 9,
+          "href": "https://max.iverfinne.no/review?mode=layout9&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 8,
+          "href": "https://max.iverfinne.no/review?mode=layout8&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 7,
+          "href": "https://max.iverfinne.no/review?mode=layout7&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 6,
+          "href": "https://max.iverfinne.no/review?mode=layout6&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 5,
+          "href": "https://max.iverfinne.no/review?mode=layout5&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 4,
+          "href": "https://max.iverfinne.no/review?mode=layout4&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 3,
+          "href": "https://max.iverfinne.no/review?mode=layout3&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 2,
+          "href": "https://max.iverfinne.no/review?mode=layout2&class=mech&seed=1",
+          "target": "_blank"
+        },
+        {
+          "stage": 1,
+          "href": "https://max.iverfinne.no/review?mode=layout1&class=mech&seed=1",
+          "target": "_blank"
+        }
+      ],
+      "images": [
+        {
+          "src": "generated/level-20.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-20-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-19.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-19-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-18.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-18-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-17.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-17-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-16.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-16-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-15.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-15-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-14.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-14-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-13.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-13-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-12.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-12-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-11.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-11-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-10.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-10-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-09.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-09-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-08.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-08-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-07.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-07-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-06.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-06-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-05.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-05-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-04.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-04-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-03.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-03-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-02.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-02-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        },
+        {
+          "src": "generated/level-01.png",
+          "complete": true,
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "objectFit": "contain"
+        },
+        {
+          "src": "current-captures/level-01-current-native.png",
+          "complete": true,
+          "naturalWidth": 334,
+          "naturalHeight": 217,
+          "objectFit": "contain"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "badResponses": [],
+  "failedRequests": [],
+  "sourceAfter": "2e828fa29df931562b11162e4896983f08ab0ca3e13eeb08e4acfcca42956205",
+  "passed": true
+}

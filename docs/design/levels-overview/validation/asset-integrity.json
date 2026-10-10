@@ -1,0 +1,323 @@
+{
+  "generatedPNGs": "passed20unique1672x941unchanged-originalcopies",
+  "records": [
+    {
+      "level": 1,
+      "source": "/workspace/generated_images/exec-1f2fb480-cdd9-41b1-89de-c0cdf7a912c1.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-01.png",
+      "sha256": "edff62a96b4117e3524d8844d48dffa636f64b1db3603f2ad9a84f1e63ace63d",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2984907,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-01-05.json",
+      "promptSHA256": "a956f44c16244e0861fcb3c8a55746924c0211ac287f4e12581a6757bdb93a2f"
+    },
+    {
+      "level": 2,
+      "source": "/workspace/generated_images/exec-617a4d70-8440-4484-a36c-fcb37b2d30bc.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-02.png",
+      "sha256": "cc16b889106b3f5b1c2cfeb8f0e57bfb058551b8bcb6333ee452f33a89d803af",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2830263,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-01-05.json",
+      "promptSHA256": "b3d7a2bc242befc026ee868b8379d41b0415d8f016991d74106a75a2890d7607"
+    },
+    {
+      "level": 3,
+      "source": "/workspace/generated_images/exec-162a8d2f-c263-4ba3-8c85-3a6cc849bd8a.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-03.png",
+      "sha256": "87f79736d2d220e72b7a5c4a97614ae28a6fefd5b1d19394da2d3f891fc9364f",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2805970,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-01-05.json",
+      "promptSHA256": "c93dd17ce83ef5cd7f6b816a000173f8070b8b40b9fe81da1a9253df269b7077"
+    },
+    {
+      "level": 4,
+      "source": "/workspace/generated_images/exec-f0ef75be-be7d-46dd-b4b0-992cf532766a.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-04.png",
+      "sha256": "a5e29185c1b6030e8396aed91d6b455acc9ba1ba88bf37e51f404a5e3fb62474",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3231600,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-01-05.json",
+      "promptSHA256": "486b59c151e373299f806b61d6d21c231fbd1e67ebf7614f15ba469586ab470c"
+    },
+    {
+      "level": 5,
+      "source": "/workspace/generated_images/exec-ef4ffc75-945f-4eb8-96e4-1d5235e68f3e.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-05.png",
+      "sha256": "8cb79bb28458bfab5f2507420907a7c0ce679964c7378ef21b5ca745ebadf22a",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3316837,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-01-05.json",
+      "promptSHA256": "1037645374a158d88e76d2645b6e22075ee6c7392b124aeb630f2d7c00ef9776"
+    },
+    {
+      "level": 6,
+      "source": "/workspace/generated_images/exec-58defd9e-22f9-4bd2-a0d4-7e2b046bf3bd.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-06.png",
+      "sha256": "2c5e6b773b0fc964193e332883e17f3d9a324ac6816f8ae9a5257da1178f4c8c",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3234829,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-06-10.json",
+      "promptSHA256": "193c3336906bf308b0fa7c2fe687d1ed268009db2b06fbfdf1067f6ff0f9c30d"
+    },
+    {
+      "level": 7,
+      "source": "/workspace/generated_images/exec-99ded69c-edef-453c-bb8c-7fda14dea0a2.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-07.png",
+      "sha256": "ded03b536b70c08be0a8c9d68c2d2eaac1f18d1be4db7a5eca29e9fde0ad8687",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3293676,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-06-10.json",
+      "promptSHA256": "444817dcf241911651edd2fe349b264df5b34fe1ee8d901cd729eb46b4960ac4"
+    },
+    {
+      "level": 8,
+      "source": "/workspace/generated_images/exec-c28ccf1c-2868-4fac-a4a1-864e697db820.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-08.png",
+      "sha256": "b6b9b863160117bfe8c2aba614d6161cc00a1f11f682da3302ed42c9935f19b3",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2855714,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-06-10.json",
+      "promptSHA256": "bcedf7d6c8fcdc0b0ad521b67621315c3fc063c9967d594d36f700cf3b43eb5a"
+    },
+    {
+      "level": 9,
+      "source": "/workspace/generated_images/exec-c067b28d-684d-4942-b4bb-cf534856e538.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-09.png",
+      "sha256": "6eda594cee3f1cc6aa06794b52815f259f134e277ab0774a60949e5eb38c491a",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2899450,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-06-10.json",
+      "promptSHA256": "7f4793617097721157a53a2a9c8890bb341770b96e63bc0d17f14b55ee69c063"
+    },
+    {
+      "level": 10,
+      "source": "/workspace/generated_images/exec-4f1ca5bb-717f-4cf1-ab84-1af6ec03a7ea.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-10.png",
+      "sha256": "f93f1fcacf4a9d7f6356298d28bf456c581a8683875a979989eadf1a690ca444",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2882625,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-06-10.json",
+      "promptSHA256": "f2428c437c814294809479093d1ccdcb6191c97d5fcebae4b48a2e1a0a079334"
+    },
+    {
+      "level": 11,
+      "source": "/workspace/generated_images/exec-c00277c0-ea30-460e-b73f-20257aca229d.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-11.png",
+      "sha256": "78f95b65714b56a75e68fcea69668ca8fd8861e302048cfd4b9653006bed6983",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3127705,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-11-15.json",
+      "promptSHA256": "db097747e13461898edbb399b20f1342347c4eb100dea0c09d2b0047972a3d89"
+    },
+    {
+      "level": 12,
+      "source": "/workspace/generated_images/exec-cf565aa3-1c8e-47a2-88a5-7429ecbd67bb.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-12.png",
+      "sha256": "75205e18fa26cf305a3eca6063ce07d5534d832e03a16778bc204c6c2b4823f7",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3202877,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-11-15.json",
+      "promptSHA256": "b15ea6528ac0d029bcb19fb256cfdcb06644e9724dbfe8befb7a4938609d52ff"
+    },
+    {
+      "level": 13,
+      "source": "/workspace/generated_images/exec-a9b9411b-25b6-4f1e-ae82-e5040bc053be.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-13.png",
+      "sha256": "6ebb44add0a184010540fba0856de395b8727d898beb25df9b6179c8eef46b38",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3209565,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-11-15.json",
+      "promptSHA256": "9f65cb33494a05aa2b35e2be89466d22c96ee0c74401b125d5ed2771a3e90185"
+    },
+    {
+      "level": 14,
+      "source": "/workspace/generated_images/exec-0710f680-c6de-4d42-ad1c-5889342152c0.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-14.png",
+      "sha256": "4639a2c433e7d71963d0ee5a250922e59fd445dfa09d5a54d237ae8605d53215",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3410626,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-11-15.json",
+      "promptSHA256": "0d320a675af1826b6834bdc5d9218e4f1bdc27b2244d8f32eb894ae92c935e6c"
+    },
+    {
+      "level": 15,
+      "source": "/workspace/generated_images/exec-5b0063be-6301-41ea-bdf5-4321848bc3be.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-15.png",
+      "sha256": "2db53a63a9a850e74f603dacc5ab0c1d8776aba8180afb489a556163ef3f9278",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 3277964,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-11-15.json",
+      "promptSHA256": "ba82fef26b7bd3f8c88448cd34d9fc1b7090b99b539b985a4747b4871d2a7e55"
+    },
+    {
+      "level": 16,
+      "source": "/workspace/generated_images/exec-8beba1c8-9313-4c17-bac5-8e629597d765.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-16.png",
+      "sha256": "4e2c420ea809b866b160c28598107d320be14f7f29c1c29b6d6db7a40595298d",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2325892,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-16-20.json",
+      "promptSHA256": "983a441a86410c6bd4987d9e9107111d06d5661a80fc7c6c168e61615fe18321"
+    },
+    {
+      "level": 17,
+      "source": "/workspace/generated_images/exec-9745f717-d292-4b53-b161-b5e3a0f3a32c.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-17.png",
+      "sha256": "a4c68646bd0fae206092a9b8cf66a9fa18c94abe8e585b70d32517f8e4a39f58",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2588018,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-16-20.json",
+      "promptSHA256": "d7428341a4ea3e7bec4cf08fa5fa205691f15eb7df22db38ab6160f53b9dc7f1"
+    },
+    {
+      "level": 18,
+      "source": "/workspace/generated_images/exec-ec87fbf9-ba11-4ad8-93b4-4071dfa26586.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-18.png",
+      "sha256": "ef5cf429525ef1f22c19bed269041f37417bed7cd273fa1093f52048dc69a138",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2675315,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-16-20.json",
+      "promptSHA256": "374550ca863d3f87fa2b3ffe0537d19013a067907d64de50d8d3beb25676049b"
+    },
+    {
+      "level": 19,
+      "source": "/workspace/generated_images/exec-553b90d6-1931-4d06-929f-e810cc85d226.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-19.png",
+      "sha256": "d7b779ee84f1ac8de9489e9d6ff1b4701b3fa1d7a9b60d62b146e9f0f7d584aa",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2430646,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-16-20.json",
+      "promptSHA256": "922fc2c3cd0d4bdbf26928ad15a5e15075e4cc5275e6867d23114d844ff9260e"
+    },
+    {
+      "level": 20,
+      "source": "/workspace/generated_images/exec-db1ff468-db6c-4dcd-97c9-0a603f11f353.png",
+      "generated": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/level-20.png",
+      "sha256": "34db39e99957169bc226e3ee2c70b108cbd36f38b547bff08acb39d43a8feaf0",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 2831374,
+      "copyUnchanged": true,
+      "promptProvenance": "/workspace/max-intuitive-levels/docs/design/levels-overview/generated/prompts-16-20.json",
+      "promptSHA256": "022e31c31831fa9b7552c3124020f27bda2d52c5456a988efdf0b1038401369b"
+    }
+  ],
+  "runtimeScenePins": [
+    {
+      "file": "levels-data.js",
+      "sha256": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee",
+      "sameAsPublished7e8": true
+    },
+    {
+      "file": "level-scenes-data.js",
+      "sha256": "d1e226233a6fd8a64a69a0da8b3795699fc8d9b7e7ece010f4ecb6ec283d4512",
+      "sameAsPublished7e8": true
+    },
+    {
+      "file": "level-scenes.js",
+      "sha256": "f77a12ec162b778584f3298fc044621ea31fc4be41e181a981e4bcc780bc7ef6",
+      "sameAsPublished7e8": true
+    },
+    {
+      "file": "turtle-garden-data.js",
+      "sha256": "7954c3559ee22becb7435d74a6e449497437bca923e3c19a20573d5147143c06",
+      "sameAsPublished7e8": true
+    },
+    {
+      "file": "turtle-garden-art.js",
+      "sha256": "38a7630058106650b5b53deb7f1459cd63d78037acef77bc2e2a24685c0ed7e5",
+      "sameAsPublished7e8": true
+    },
+    {
+      "file": "turtle-garden-art-data.js",
+      "sha256": "a8f4a433310037b45c63b4a61f913a2f966c9cc78a0da31d22bb8b3fc24229e8",
+      "sameAsPublished7e8": true
+    },
+    {
+      "file": "levels.js",
+      "sha256": "e5a99a51dea5d430c73b4a7f00dbf7159f0c9afca742cc3415c8c05183904872",
+      "sameAsPublished7e8": true
+    }
+  ],
+  "sourceChangeNote": "levels.js optional title/guide change examined separately; actual1/4scene source data and artmodules unchanged vs7e8publishedsource"
+}

@@ -18,7 +18,7 @@
       graphs: graphs.map(function (graph) { return graph.split(' '); }) };
   }
   var CAMPAIGN = [null,
-    ['Seed Vault', 'Find your footing',
+    ['Hollow Tree', 'Find your footing inside the hollow tree',
       route('Refuge', [66, 78], [30, 40], [7, 9], [2, 3], .08, .15, ['step rest step', 'step step rest']),
       route('Lookout', [98, 112], [26, 36], [7, 10], [2, 3], .12, .25, ['step step gallery', 'step rest stack'])],
     ['Railway Ruins', 'Read the broken path',
@@ -27,7 +27,7 @@
     ['Broken Aqueduct', 'Cross, then climb',
       route('Crossing', [70, 84], [30, 42], [8, 12], [2, 3], .08, .2, ['step step promenade rest', 'step step bridge step']),
       route('Lookout', [112, 126], [24, 34], [8, 12], [2, 3], .14, .3, ['step step pond gallery', 'step step arch stack'])],
-    ['Sunken Chapel', 'Shelter beneath the spire',
+    ['Mossback Sanctuary', 'Explore the living shell',
       route('Refuge', [82, 96], [28, 40], [7, 11], [2, 3], .18, .3, ['step rest wall gallery', 'step step gallery arch']),
       route('Spire', [126, 142], [22, 32], [8, 12], [2, 3], .26, .4, ['step step wall stack', 'step step narrow gallery'])],
     ['Root Stair', 'Follow the turning roots',

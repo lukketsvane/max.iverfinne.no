@@ -1,0 +1,350 @@
+{
+  "kind": "local-vm-importer-validation",
+  "actualFigmaExecution": false,
+  "templatePath": "/workspace/max-intuitive-levels/docs/design/levels-overview/plugin/code.js",
+  "templateSha256": "302d44bac0b9dd73dbde0eea64dd5f9f58abbf21c9a07748f8d124ae9fa969c6",
+  "results": [
+    {
+      "name": "default imports 20 ASSETS references",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "referenceCount": 20,
+        "placements": [
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS",
+          "ASSETS"
+        ],
+        "sourceUnchanged": true,
+        "originalNodeWrites": []
+      }
+    },
+    {
+      "name": "rerun is idempotent",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "referencesUnchanged": true,
+        "transientNodesOnRerun": 1,
+        "pagesRemaining": 1,
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "late malformed registration plane rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": {
+          "type": "error",
+          "message": "level_20: unexpected REGISTRATION plane."
+        },
+        "message": "level_20: unexpected REGISTRATION plane.",
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "late duplicate ASSETS rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": {
+          "type": "error",
+          "message": "level_19: expected one sibling ASSETS frame."
+        },
+        "message": "level_19: expected one sibling ASSETS frame.",
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "late unowned reference conflict rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": {
+          "type": "error",
+          "message": "level_20: an unowned or stale reference conflicts with the import."
+        },
+        "message": "level_20: an unowned or stale reference conflicts with the import.",
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "wrong file rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": {
+          "type": "error",
+          "message": "Open the configured MAX file. If Figma hides its file key, verify its exact address in this panel."
+        },
+        "message": "Open the configured MAX file. If Figma hides its file key, verify its exact address in this panel.",
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "small ASSETS fallback aligns to actual row and repeats safely",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "placement20": "aligned-reference",
+        "fallbackBounds": [
+          {
+            "x": 8320,
+            "y": 20000,
+            "width": 672,
+            "height": 462
+          }
+        ],
+        "expectedX": 8320,
+        "expectedY": 20000,
+        "sourceUnchanged": true,
+        "repeatReferenceIDsUnchanged": true
+      }
+    },
+    {
+      "name": "full ASSETS fallback aligns to actual row and repeats safely",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "placement20": "aligned-reference",
+        "fallbackBounds": [
+          {
+            "x": 8320,
+            "y": 20000,
+            "width": 672,
+            "height": 462
+          }
+        ],
+        "expectedX": 8320,
+        "expectedY": 20000,
+        "sourceUnchanged": true,
+        "repeatReferenceIDsUnchanged": true
+      }
+    },
+    {
+      "name": "auto-layout ASSETS fallback aligns to actual row and repeats safely",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "placement20": "aligned-reference",
+        "fallbackBounds": [
+          {
+            "x": 8320,
+            "y": 20000,
+            "width": 672,
+            "height": 462
+          }
+        ],
+        "expectedX": 8320,
+        "expectedY": 20000,
+        "sourceUnchanged": true,
+        "repeatReferenceIDsUnchanged": true
+      }
+    },
+    {
+      "name": "HUG ASSETS fallback aligns to actual row and repeats safely",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "placement20": "aligned-reference",
+        "fallbackBounds": [
+          {
+            "x": 8320,
+            "y": 20000,
+            "width": 672,
+            "height": 462
+          }
+        ],
+        "expectedX": 8320,
+        "expectedY": 20000,
+        "sourceUnchanged": true,
+        "repeatReferenceIDsUnchanged": true
+      }
+    },
+    {
+      "name": "bound TERRAIN identity mismatch rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "level_01: missing or replaced bound TERRAIN plane.",
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true,
+        "expectedTerrainId": "887:13535"
+      }
+    },
+    {
+      "name": "bound TERRAIN missing rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "level_01: missing or replaced bound TERRAIN plane.",
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true,
+        "expectedTerrainId": "887:13535"
+      }
+    },
+    {
+      "name": "shared ASSETS across bound rows rejects before writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "level_20: multiple levels share one ASSETS workspace.",
+        "sharedRefs": [],
+        "metrics": {
+          "nodeCreates": 0,
+          "imageCreates": 0,
+          "fontLoads": 0,
+          "setCurrentPage": 0,
+          "existingNodeWrites": []
+        },
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "late application failure rolls back all additions",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "Injected ASSETS append failure",
+        "referenceCount": 0,
+        "pagesRemaining": 1,
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "missing final row refuses without document writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "MASTER must contain exactly twenty existing level rows.",
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "duplicate final row refuses without document writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "MASTER must contain exactly twenty existing level rows.",
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "missing file identity refuses without document writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "Open the configured MAX file. If Figma hides its file key, verify its exact address in this panel.",
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "unowned comparison stack refuses without document writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "An unowned or different-source comparison stack already exists. Preserve and rename it before creating another.",
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "malformed decoded image refuses before document writes",
+      "pass": true,
+      "details": {
+        "reply": "error",
+        "message": "Invalid PNG",
+        "sourceUnchanged": true,
+        "decodeCalls": 13
+      }
+    },
+    {
+      "name": "tight actual row spacing uses clear nonoverlapping fallback columns",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "count": 20,
+        "columns": [
+          17820,
+          18588,
+          19356,
+          20124,
+          20892,
+          21660,
+          22428,
+          23196,
+          23964,
+          24732
+        ],
+        "overlaps": false,
+        "sourceUnchanged": true
+      }
+    },
+    {
+      "name": "comparison stack is 20→01, FIT, 1× native previews and idempotent",
+      "pass": true,
+      "details": {
+        "reply": "complete",
+        "top": "LEVEL 20 — Radioactive Dawn",
+        "bottom": "LEVEL 01 — Hollow Tree",
+        "reused": true,
+        "sourceUnchanged": true
+      }
+    }
+  ],
+  "passed": 21,
+  "failed": 0
+}
