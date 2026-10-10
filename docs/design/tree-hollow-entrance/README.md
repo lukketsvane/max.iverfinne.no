@@ -11,6 +11,50 @@ this folder nor its screenshots establish a fresh Figma export, a live authored
 level or a production release. Production `levels-data.js`, the existing picture
 masters and all 665 registered production PNGs remain unchanged.
 
+## Actual-game review
+
+![Garden 1 hollow tree in the actual game at native 640 × 400](evidence/garden-01-world-640x400.png)
+
+The image above uses the actual built game's drawing body at a fixed native
+640 × 400 camera. [Full chamber, 640 × 440](evidence/garden-01-full-chamber-native.png)
+shows the extra lower margin. The normal
+[desktop view](evidence/garden-01-desktop.png) and
+[phone view](evidence/garden-01-phone.png) preserve their live viewport cameras;
+none of these PNGs is resized.
+
+Both desktop and phone completed the same seed-1 Max story using ordinary
+keyboard input: walk from the court to the entrance, descend the ladder, hold
+against both passage walls, return up the ladder to the dry court, then use
+Tend to plant. The walls stop the player at x = 246 and x = −141. Each final
+plant creates one plot and spends exactly one seed, from 11 to 10 after ordinary
+route pickups. No actor is relocated after input starts. The complete
+[browser report](evidence/browser-review.json) retains the input history and
+checkpoint states. Final planted-court views are available for
+[desktop](evidence/garden-01-desktop-story-passed.png) and
+[phone](evidence/garden-01-phone-story-passed.png).
+
+This lower-room proof covers that single class and seed in both viewport sizes.
+The separate upper-route proof covers four classes at three frame rates.
+The capture server serves the existing build read-only and injects the
+candidate, scene, fixture and observer only into local responses with isolated
+storage. The fixed-camera captures restore 405 mutable closure bindings and
+1,905/1,906 reachable objects; the report confirms unchanged gameplay objects,
+DOM and live canvas. Both viewport runs report no page/console errors, failed
+requests or WebSocket connections, ready native assets and disabled smoothing.
+
+The [capture manifest](evidence/capture-manifest.json) binds all copied image and
+report bytes. Its source pins match these frozen files:
+
+| Source | SHA-256 |
+| --- | --- |
+| Upper candidate | `de1594352f8e10d20f051932639a6efdc6bf121c40ea778dfb09b31426bbfb6e` |
+| Native scene | `ec9e46730e0850a35553c24061deaf0aa67f7528ec5c5aed70f5b63da3eb5ab1` |
+| Preview fixture | `abec3a0cf52a3274548d926dda1f7c956d90bd51ad67c150925deaabd53fc815` |
+
+See [capture reproduction and limits](evidence/README.md). These screenshots
+verify the local prototype and its explicit supplements; they do not establish
+an authenticated Figma import or production activation.
+
 ## Native registration and files
 
 The intended composition is 640 × 400 native pixels. At seed 1, Garden 1's origin
