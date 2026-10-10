@@ -1,0 +1,254 @@
+{
+  "status": "passed",
+  "authority": "offline native pond physics study, not Figma or production",
+  "candidateSHA256": "b6e8e87d7523ecbf63469bd7c44b814a86dd845dec8d0004fc5a264a5e1c7eff",
+  "dryFixtureSHA256": "904fb7f09aab3a5b9b6dec2b0c7dc350fa5c16b00f1b569b8d46a4c76b60b10b",
+  "basinFixtureSHA256": "68660ed6512aac45255e851b30d3353e6b98392e71c24a28717aa1b4bd5ca466",
+  "verifierSHA256": "75e17be4ef70695651a4c3ef27268f56d63568bee480ccf2809fedc9082a54ba",
+  "originalEngineSHA256": "7b93b3eea739a742b395e986cfd716a9e72dc05e75ffdb84110ad2ec13b04b89",
+  "scope": "Continuous dry soil to left bank through native water, then return through water to dry soil. No jump, ladder, reward or full-room coverage claimed.",
+  "setup": "One supported original-soil pose before inputs; no relocation, velocity repair or snapshot restoration after movement starts.",
+  "cases": [
+    {
+      "classId": "mech",
+      "hz": 30,
+      "status": "passed",
+      "frames": 320,
+      "wetFrames": 231,
+      "deepestY": 26.99999996016133,
+      "leftBank": {
+        "x": -160.20000000440632,
+        "y": 12.942222934887244,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.0874999999650754,
+        "y": 1.1696038253311443,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "mech",
+      "hz": 60,
+      "status": "passed",
+      "frames": 640,
+      "wetFrames": 463,
+      "deepestY": 26.99999999999988,
+      "leftBank": {
+        "x": -160.20000000440632,
+        "y": 12.942222934887244,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.0874999999650754,
+        "y": 1.1696038253311443,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "mech",
+      "hz": 120,
+      "status": "passed",
+      "frames": 1280,
+      "wetFrames": 927,
+      "deepestY": 26.99999999999988,
+      "leftBank": {
+        "x": -160.20000000440632,
+        "y": 12.942222934887244,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.0874999999650754,
+        "y": 1.1696038253311443,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "runner",
+      "hz": 30,
+      "status": "passed",
+      "frames": 259,
+      "wetFrames": 184,
+      "deepestY": 26.999999999985175,
+      "leftBank": {
+        "x": -161.6599999999744,
+        "y": 13.015399226521387,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 1.8083333333488554,
+        "y": 0.9762671703383319,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "runner",
+      "hz": 60,
+      "status": "passed",
+      "frames": 515,
+      "wetFrames": 370,
+      "deepestY": 26.999999999985175,
+      "leftBank": {
+        "x": -160.6599999999744,
+        "y": 12.965928665312974,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.8083333333488554,
+        "y": 1.0871277625264817,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "runner",
+      "hz": 120,
+      "status": "passed",
+      "frames": 1027,
+      "wetFrames": 740,
+      "deepestY": 26.999999999985175,
+      "leftBank": {
+        "x": -160.1599999999744,
+        "y": 12.940134106560862,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.3083333333488554,
+        "y": 1.1441253002274436,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "bulwark",
+      "hz": 30,
+      "status": "passed",
+      "frames": 376,
+      "wetFrames": 272,
+      "deepestY": 26.999999999983956,
+      "leftBank": {
+        "x": -160.68000000625034,
+        "y": 12.966946034092748,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.172500000015134,
+        "y": 1.1597756539537336,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "bulwark",
+      "hz": 60,
+      "status": "passed",
+      "frames": 750,
+      "wetFrames": 546,
+      "deepestY": 26.999999999983956,
+      "leftBank": {
+        "x": -160.00000000625732,
+        "y": 12.931735427553834,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.172500000015134,
+        "y": 1.1597756539537336,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "bulwark",
+      "hz": 120,
+      "status": "passed",
+      "frames": 1500,
+      "wetFrames": 1091,
+      "deepestY": 26.999999999983956,
+      "leftBank": {
+        "x": -160.00000000625732,
+        "y": 12.931735427553834,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.172500000015134,
+        "y": 1.1597756539537336,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "herbalist",
+      "hz": 30,
+      "status": "passed",
+      "frames": 320,
+      "wetFrames": 231,
+      "deepestY": 26.99999996016133,
+      "leftBank": {
+        "x": -160.20000000440632,
+        "y": 12.942222934887244,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.0874999999650754,
+        "y": 1.1696038253311443,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "herbalist",
+      "hz": 60,
+      "status": "passed",
+      "frames": 640,
+      "wetFrames": 463,
+      "deepestY": 26.99999999999988,
+      "leftBank": {
+        "x": -160.20000000440632,
+        "y": 12.942222934887244,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.0874999999650754,
+        "y": 1.1696038253311443,
+        "wet": false,
+        "grounded": true
+      }
+    },
+    {
+      "classId": "herbalist",
+      "hz": 120,
+      "status": "passed",
+      "frames": 1280,
+      "wetFrames": 927,
+      "deepestY": 26.99999999999988,
+      "leftBank": {
+        "x": -160.20000000440632,
+        "y": 12.942222934887244,
+        "wet": false,
+        "grounded": true
+      },
+      "returnCourt": {
+        "x": 0.0874999999650754,
+        "y": 1.1696038253311443,
+        "wet": false,
+        "grounded": true
+      }
+    }
+  ],
+  "failures": []
+}
