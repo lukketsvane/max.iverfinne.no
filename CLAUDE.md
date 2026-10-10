@@ -534,9 +534,12 @@ focus. Its comparison asserts both historical and current labels explicitly,
 normalizes only those two profile fields and retains exact geometry, source
 bindings and bundle byte checks.
 
-The paired Cairn browser review accepts the real queued Stone input and captures
-the handoff in one host task before awaiting native body evidence on the promoted
-guest. A delayed body observation previously let the short flight finish before
-capture. Moving capture preserves the actual phase-1 flight, accepted serial,
-one resource spend, one contact and one damage assertion without changing the
-production clock or gameplay.
+The paired Cairn browser review captures real Primary and Stone startup in the
+same host task that accepts their queued keyboard inputs. Ridge captures and
+demotes authority during an observed remaining windup before awaiting native
+body evidence on the promoted guest. Driver delays previously let these short
+phases finish before capture. Brace admits its real queued input during the
+foe's actual final warning frame, avoiding driver transit through the unchanged
+.28-second parry window. Accepted serials, remaining delay, actual contacts,
+resource spends, reward gates and native body assertions remain intact; no
+production clock, contact or gameplay outcome is manufactured.
