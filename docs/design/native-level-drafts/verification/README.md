@@ -45,10 +45,17 @@ returns. The start verifier checks dry-soil contact and return independently.
 The packaged route verifier includes start-marker checks inline; the preserved
 execution counted those same 36 checks in the supplemental start report. This
 changes the grouping of marker counts, not the executed geometry or physics.
-Only path portability, explicit report arguments, and output guards were added
-when packaging these scripts. Syntax checks and the portable start-marker smoke
-passed; the full matrix was not repeated for byte-identical candidate/runtime
-data.
+Packaging added path portability and explicit report arguments. The subsequent
+verifier audit added a shared atomic report writer that rejects candidate/runtime
+aliases, symlinks, and hard-linked report destinations before physics begins.
+Candidates must contain exactly stages 1–3, one garden per stage, with nonempty native surfaces,
+reward/seed markers, two trials, and positive start-marker coverage. Success
+requires all 36 distinct class/rate/stage cases, complete expected surface,
+marker, reward-return and ladder coverage, and positive gallery crossings in
+every case. Completed verification claims appear only on successful reports.
+Syntax checks, bounded CLI rejection tests, atomic-write failure tests, and the
+portable start-marker smoke passed. The full matrix was not repeated for
+byte-identical candidate/runtime data; its historical reports remain unchanged.
 
 Fresh authenticated Figma synchronization, complete artwork composition and
 browser visual review, authored inter-stage connectors, and runtime activation

@@ -7,14 +7,15 @@ const { loadGame } = require(path.join(repo, 'tests/game-harness.cjs'));
 const { searchAltar, capture, restore, setHz } = require('./altar-route-sweep-candidate.cjs');
 const levels = require(path.join(repo, 'levels.js'));
 const stageApi = require(path.join(repo, 'stage-layout.js'));
-const classes = ['mech', 'runner', 'bulwark', 'herbalist'], rates = [30, 60, 120];
+const { STAGES, CLASSES: classes, RATES: rates, validateCandidate, caseCoverageFailures, createReportWriter } = require('./native-draft-verifier-utils.cjs');
 const args = process.argv.slice(2);
 if (args.length !== 2) throw new Error('Usage: node playtest-authored-candidates.cjs <candidate-levels-data.js> <report.json>');
 const input = path.resolve(args[0]), output = path.resolve(args[1]);
-if (input === output || output === path.join(repo, 'levels-data.js')) throw new Error('Report output must be a separate review file, away from runtime levels-data.js');
+const writeReport = createReportWriter(input, output, repo);
 const bytes = fs.readFileSync(input), context = { window: {} };
 vm.runInNewContext(bytes.toString(), context);
 const data = JSON.parse(JSON.stringify(context.window.MaxLevelData));
+validateCandidate(data);
 const report = { status: 'offline-authored-candidate-physics', input: path.resolve(input), sha256: crypto.createHash('sha256').update(bytes).digest('hex'), source: 'actual existing engine; synthetic candidate data; no fresh Figma synchronization or production claim', classes, rates, integration: [], cases: [], failures: [] };
 const fixturePath = path.join(path.dirname(input), 'synthetic-candidate.json');
 if (fs.existsSync(fixturePath)) {
@@ -22,7 +23,7 @@ if (fs.existsSync(fixturePath)) {
   report.sourceBinding = { fixture: path.resolve(fixturePath), fixtureStatus: synthetic.status, ...synthetic.source };
 }
 report.resetSemantics = 'Each independent route starts once at its grounded C0 soil entry; subsequent movement between platforms, markers, ladder endpoints and continuous gallery crossings uses updatePlayer without per-hop pose placement. Jump retries restore only the same takeoff state. Reverse-route fallback restores the reached reward state, searches alternatives, then replays actual input frames without pose placement; those returns reject automatic furnished supports.';
-report.verified = ['Compiled offline candidate selected through real stageLayout with pictures enabled', 'Exact authored surface dimensions preserved within automatic expedition/guardian furnishing', 'Two independent clients share identical full furnished layouts for three seeds', 'Each authored collider footprint and required marker reached by all four base classes at 30/60/120 Hz without traits or perks', 'Every authored ladder climbed and descended independently, with supported endpoints', 'Continuous upper-gallery crossings and returns, including coplanar overlap walks', 'Every reward and seed destination has a dry-soil physical return using authored supports'];
+report.verificationTargets = ['Compiled offline candidate selected through real stageLayout with pictures enabled', 'Exact authored surface dimensions preserved within automatic expedition/guardian furnishing', 'Two independent clients share identical full furnished layouts for three seeds', 'Each authored collider footprint and required marker reached by all four base classes at 30/60/120 Hz without traits or perks', 'Every authored ladder climbed and descended independently, with supported endpoints', 'Continuous upper-gallery crossings and returns, including coplanar overlap walks', 'Every reward and seed destination has a dry-soil physical return using authored supports'];
 report.pending = ['Fresh authenticated Figma read, upload and live designed-marker validation', 'Full artwork composition in Figma and runtime browser visual review', 'Authored continuous connectors between stages', 'Runtime activation or production promotion of these candidate data'];
 const failures = report.failures;
 
@@ -206,7 +207,7 @@ function returnRoute(fixture, route, hz, counts, label) {
   }
 }
 
-for (const stage of Object.keys(data.gardens || {}).map(Number).sort((a, b) => a - b)) {
+for (const stage of STAGES) {
   for (const seed of [1, 2026, 0xffffffff]) {
     try {
       const a = fixtureFor(stage, 'bulwark', seed), b = fixtureFor(stage, 'bulwark', seed);
@@ -218,6 +219,7 @@ for (const stage of Object.keys(data.gardens || {}).map(Number).sort((a, b) => a
     const counts = { stage, classId, hz, platforms: 0, markers: 0, jumpHops: 0, ladderUpFrames: 0, ladderDownFrames: 0, ladderIds: new Set(), ladderReturns: 0, galleryCrossings: 0, supportedWalks: 0, returns: 0, alternativeReturns: [], failures: [] };
     try {
       const fixture = fixtureFor(stage, classId), { g, base } = fixture;
+      counts.expected = { platforms: base.platforms.length, markers: base.rewards.length + base.trials.length + base.bonuses.length + ['puzzle', 'door', 'dig', 'secret', 'start'].reduce((n, key) => n + (base.spots[key] || []).length, 0), returns: base.rewards.length, ladderReturns: base.ladders?.length || 0 };
       const reachable = levels.reachable(base, 0, g.surfaceY, g.waterAt);
       for (const p of base.platforms) assert.ok(reachable[p.id], 'every authored base platform is C0: ' + p.id);
       for (const target of base.platforms) {
@@ -279,12 +281,19 @@ for (const stage of Object.keys(data.gardens || {}).map(Number).sort((a, b) => a
     counts.ladderIds = [...counts.ladderIds];
     report.cases.push(counts);
     for (const failure of counts.failures) failures.push({ stage, classId, hz, ...failure });
-    fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
+    writeReport(report);
     console.log(JSON.stringify({ stage, classId, hz, sampleFailure: counts.failures[0], platforms: counts.platforms, markers: counts.markers, returns: counts.returns, ladderReturns: counts.ladderReturns, galleryCrossings: counts.galleryCrossings, ladders: counts.ladderIds.length, failures: counts.failures.length }));
   }
 }
+failures.push(...caseCoverageFailures(report.cases, { platforms: c => c.expected?.platforms, markers: c => c.expected?.markers, returns: c => c.expected?.returns }));
+for (const c of report.cases) {
+  if (c.expected && c.ladderReturns !== c.expected.ladderReturns) failures.push({ kind: 'coverage', stage: c.stage, classId: c.classId, hz: c.hz, message: 'Incomplete authored ladder round-trip coverage' });
+  if (!Number.isInteger(c.galleryCrossings) || c.galleryCrossings <= 0) failures.push({ kind: 'coverage', stage: c.stage, classId: c.classId, hz: c.hz, message: 'Positive continuous gallery crossing and return coverage required' });
+}
+if (report.integration.length !== STAGES.length * 3) failures.push({ kind: 'coverage', message: 'Incomplete seeded integration coverage' });
 report.passed = failures.length === 0;
+if (report.passed) report.verified = report.verificationTargets;
 report.total = { ladderRoundTrips: report.cases.reduce((a, c) => a + c.ladderReturns, 0), galleryCrossings: report.cases.reduce((a, c) => a + c.galleryCrossings, 0), jumpHops: report.cases.reduce((a, c) => a + c.jumpHops, 0), ladderUpFrames: report.cases.reduce((a, c) => a + c.ladderUpFrames, 0), ladderDownFrames: report.cases.reduce((a, c) => a + c.ladderDownFrames, 0), supportedWalks: report.cases.reduce((a, c) => a + c.supportedWalks, 0), alternativeReturns: report.cases.reduce((a, c) => a + c.alternativeReturns.length, 0), cases: report.cases.length, platforms: report.cases.reduce((a, c) => a + c.platforms, 0), markers: report.cases.reduce((a, c) => a + c.markers, 0), returns: report.cases.reduce((a, c) => a + c.returns, 0), failures: failures.length };
-fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
+writeReport(report);
 console.log(JSON.stringify({ report: output, passed: report.passed, ...report.total }));
 process.exitCode = report.passed ? 0 : 1;
