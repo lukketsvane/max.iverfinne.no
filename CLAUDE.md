@@ -397,3 +397,26 @@ Regression baselines are intentionally partitioned: complete gardens other than 
 The next bounded loop changes Garden 3 scenery only. Its aqueduct replaces thin repeated rings and the bright unbroken header with heavy worn masonry, unequal open portals and a fractured canal crown. Quiet retaining-wall depth follows the exact main/route/place/expedition rooms rather than stacking another set of generic arches. Original cavern layers remain visible; sparse moss and recessed stone do not become false walking surfaces. The hero retains its original width and upper envelope; only dark native pier foundations extend downward to follow the actual soil, closing inherited floating-base gaps. Upper landing arches and real platform supports remain unchanged.
 
 The untouched scene partition now excludes only 3/7/14 and still derives from `805551b`. Complete Garden 7 stays pinned to `8680e00`; complete Garden 14 is separately pinned to `d5f501e`. Original geometry pins remain, with dedicated Garden 3 and fully furnished Garden 3 bounds/rooms/footings checks. Never replace these independent baselines with a new combined hash. The same-camera review in `review/crown-ascent/garden-03-depth/` records genuine first-ledge traversal. No runtime PNG, collision, shrine, camera, clock, control, co-op or Figma source-authority changes.
+
+## October 10 Figma level implementation pipeline
+
+The level compiler now preserves approved output on live-frame structural errors,
+checks the metadata page ID, and atomically replaces valid exports. `--out`
+creates a separate review export; it works with live reads or `--from` captures.
+Authored integer `ladder` rectangles use the existing live ladder physics and
+stable IDs. `MaxLevels.reachable` includes supported ladder endpoints; route
+steps distinguish climbs from jumps. Actual Cairn ascent and return are tested
+at 30/60/120 Hz. The graph is still an approximation of solid collision, so
+new authored rooms require actual traversal checks.
+
+Live variants of Gardens 1–2 can explicitly opt into `replace-picture`.
+`furnish-place` retains the existing native place, false walls, caches and
+available bounce blooms without duplicating furnishing. Existing unmarked
+layouts, picture masters and all production PNG pins remain unchanged.
+
+The latest twenty-level concepts are on Figma board `746:117481` and draft
+PR #51. Their normalized composition anchors are not authored game geometry.
+This pipeline batch does not implement their new regional artwork or nineteen
+continuous connectors. Figma authoring must supply native playable frames;
+new art must pass the existing production-source contract. Historical review
+captures cannot establish fresh synchronization.

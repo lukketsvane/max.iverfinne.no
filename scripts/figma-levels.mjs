@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -25,12 +25,23 @@ export function gardenOf(frame) {
   for (const n of frame.children) {
     const name = (n.name || '').trim(), tag = name.split(':')[0];
     if (n.type === 'text') continue;
-    if (!['ledge', 'block', 'origin', 'soil', 'designed', 'decor', ...MARKERS].includes(tag) || (tag === 'ledge' || tag === 'block') && !STYLES.includes(name.slice(6)) || tag === 'decor' && name.length < 7) {
+    if (!['ledge', 'block', 'ladder', 'origin', 'soil', 'designed', 'replace-picture', 'furnish-place', 'decor', ...MARKERS].includes(tag) || (tag === 'ledge' || tag === 'block') && !STYLES.includes(name.slice(6)) || tag === 'decor' && name.length < 7) {
       if (n.type === 'instance') notes.push(`unknown instance "${name}" is ignored`);
       else if (CONTAINERS.includes(n.type) && n.children.length) notes.push(`${n.type} "${name}" is not read: ungroup it so its instances sit directly in the frame`);
       continue;
     }
-    const [x, y, w, h] = [n.x, n.y, n.width, n.height].map(Math.round);
+    const geometry = [n.x, n.y, n.width, n.height];
+    if (tag === 'ladder') {
+      if (!geometry.every(Number.isFinite) || n.width <= 0 || n.height <= 0) {
+        problems.push('ladder requires finite coordinates and positive width and height');
+        continue;
+      }
+      if (!geometry.every(Number.isInteger)) {
+        problems.push('ladder must stay on the integer pixel grid; its geometry is not rounded');
+        continue;
+      }
+    }
+    const [x, y, w, h] = geometry.map(Math.round);
     if (x !== n.x || y !== n.y || w !== n.width || h !== n.height) off++;
     if (tag === 'designed') live = true;
     else found.push({ tag, name, x, y, w, h });
@@ -46,6 +57,10 @@ export function gardenOf(frame) {
   const garden = { frame: frame.name, node: frame.id, ledges: found.filter(f => f.tag === 'ledge').map(f => ({ x: f.x - ox, rise: sy - f.y, w: f.w, style: f.name.slice(6) })).sort(order) };
   const blocks = found.filter(f => f.tag === 'block').map(f => ({ x: f.x - ox, rise: sy - f.y, w: f.w, h: f.h, style: f.name.slice(6) })).sort(order);
   if (blocks.length) garden.blocks = blocks;
+  const ladders = found.filter(f => f.tag === 'ladder').map(f => ({ x: f.x + Math.floor(f.w / 2) - ox, rise: sy - f.y, w: f.w, h: f.h })).sort(order);
+  if (ladders.length) garden.ladders = ladders;
+  if (found.some(f => f.tag === 'replace-picture')) garden.replacePicture = true;
+  if (found.some(f => f.tag === 'furnish-place')) garden.furnishPlace = true;
   for (const key of MARKERS) { const list = found.filter(f => f.tag === key).map(spot).sort(order); if (list.length) garden[key] = list; }
   const decor = found.filter(f => f.tag === 'decor').map(f => ({ src: f.name.slice(6), x: f.x - ox, rise: sy - f.y, w: f.w, h: f.h })).sort(order);
   if (decor.length) garden.decor = decor;
@@ -60,7 +75,8 @@ const where = (x, rise) => `x ${String(x > 0 ? '+' + x : x).padStart(4)}  rise $
 
 export function check(garden, stage, world) {
   const origin = world.origin(stage), base = Math.floor(world.ground(origin)), layout = world.levels.build(garden, stage, origin, world.ground, world.wet, 1);
-  const sets = [0, 1, 2, 3].map(t => world.layouts.reachable(layout, t, world.ground, world.wet)), raw = p => sets.findIndex(s => s[p.id]);
+  const reachable = world.levels.reachable || world.layouts.reachable;
+  const sets = [0, 1, 2, 3].map(t => reachable(layout, t, world.ground, world.wet)), raw = p => sets.findIndex(s => s[p.id]);
   const blocks = layout.platforms.filter(p => p.solid && raw(p) >= 0), tiers = new Map(layout.platforms.map(p => {
     const under = p.solid ? [] : blocks.filter(b => p.x < b.x + b.w && b.x < p.x + p.w && p.y >= b.y).map(raw);
     return [p.id, raw(p) < 0 && under.length ? Math.min(...under) : raw(p)];
@@ -81,7 +97,7 @@ export function check(garden, stage, world) {
   const trials = (garden.trial || []).length;
   if (trials !== 2) lines.push(`the run places two trials; this garden has ${trials}${trials < 2 ? ', the rest fall back to the soil' : ', the extra ones are unused'}`);
   if (!garden.reward && !garden.seed) lines.push('no reward or seed: feathers and the seed reserve fall back to the soil');
-  const summary = `${layout.kind} · ${garden.ledges.length} ledges${garden.blocks ? ` · ${garden.blocks.length} blocks` : ''} · ${count.slice(0, 4).map((c, t) => `C${t} ${c}`).join(' · ')} · unreachable ${count[4]}${MARKERS.filter(k => garden[k]).map(k => ` · ${k} ${garden[k].length}`).join('')}`;
+  const summary = `${layout.kind} · ${garden.ledges.length} ledges${garden.blocks ? ` · ${garden.blocks.length} blocks` : ''}${garden.ladders ? ` · ${garden.ladders.length} ladders` : ''} · ${count.slice(0, 4).map((c, t) => `C${t} ${c}`).join(' · ')} · unreachable ${count[4]}${MARKERS.filter(k => garden[k]).map(k => ` · ${k} ${garden[k].length}`).join('')}`;
   return { summary, lines };
 }
 
@@ -99,7 +115,7 @@ export function exportLevels(xml, page, world) {
       report.push(`${head}  not exported`, ...problems.map(p => `  ! ${p}`), ...notes.map(n => `  · ${n}`));
       continue;
     }
-    if (!garden.ledges.length && !garden.blocks) { report.push(`${head}  empty: the generator builds this garden`, ...notes.map(n => `  · ${n}`)); continue; }
+    if (!garden.ledges.length && !garden.blocks && !garden.ladders) { report.push(`${head}  empty: the generator builds this garden`, ...notes.map(n => `  · ${n}`)); continue; }
     const { summary, lines } = check(garden, stage, world);
     report.push(`${head}  ${summary}`, ...(live ? lines.map(l => `  ${l}`) : []), ...notes.map(n => `  · ${n}`));
     if (live) (gardens[stage] ||= []).push(garden);
@@ -111,38 +127,74 @@ export function exportLevels(xml, page, world) {
 
 export const dataFile = data => `window.MaxLevelData = ${JSON.stringify(data, null, 2).replace(/\{\n\s+([^{}[\]]*?)\n\s+\}/g, (m, body) => `{ ${body.replace(/,\n\s+/g, ', ')} }`)};\n`;
 
-function run(xml, page, world) {
-  const { data, report, errors } = exportLevels(xml, page, world), text = dataFile(data), file = join(root, DATA);
-  const changed = !existsSync(file) || readFileSync(file, 'utf8').replace(/\r\n/g, '\n') !== text;
-  if (changed) writeFileSync(file, text);
-  console.log(report.join('\n'));
-  console.log(`${DATA} ${changed ? 'written' : 'unchanged'}`);
-  return errors ? 1 : 0;
+function writeAtomic(file, text) {
+  const directory = mkdtempSync(join(dirname(file), '.figma-levels-'));
+  try {
+    const temporary = join(directory, DATA);
+    writeFileSync(temporary, text);
+    renameSync(temporary, file);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
 }
 
-async function watch(world) {
+function run(xml, page, world, file = join(root, DATA)) {
+  const source = tree(xml);
+  if (source.id !== page) throw new FigmaError(`Levels metadata belongs to node ${source.id}, expected page ${page}; output was not written`);
+  const { data, report, errors } = exportLevels(xml, page, world), label = file === join(root, DATA) ? DATA : file;
+  console.log(report.join('\n'));
+  if (errors) {
+    console.error(`${label} not written: ${errors} live garden frame(s) failed structural validation`);
+    return 1;
+  }
+  const text = dataFile(data);
+  const changed = !existsSync(file) || readFileSync(file, 'utf8').replace(/\r\n/g, '\n') !== text;
+  if (changed) writeAtomic(file, text);
+  console.log(`${label} ${changed ? 'written' : 'unchanged'}`);
+  return 0;
+}
+
+async function watch(world, file) {
   let last = '', wait = 3, timer, wake;
   process.stdin.on('data', () => { last = ''; clearTimeout(timer); wake?.(); });
   console.log('Watching the levels page. Enter re-exports now, Ctrl+C stops.');
   for (;;) {
     const xml = await metadataXml(PAGE);
-    if (xml !== last) { last = xml; wait = 3; console.log(`\n${new Date().toLocaleTimeString()} · ${toolCalls()} Figma tool call(s)`); run(xml, PAGE, world); }
+    if (xml !== last) { last = xml; wait = 3; console.log(`\n${new Date().toLocaleTimeString()} · ${toolCalls()} Figma tool call(s)`); run(xml, PAGE, world, file); }
     else wait = Math.min(30, wait * 2);
     await new Promise(r => { wake = r; timer = setTimeout(r, wait * 1000); });
   }
 }
 
 async function main(args) {
-  const from = args.indexOf('--from'), fixture = from < 0 ? null : args[from + 1];
-  if (args.some((a, i) => a !== '--watch' && (from < 0 || i < from || i > from + 1)) || from >= 0 && !fixture) {
-    console.error('Usage: node scripts/figma-levels.mjs [--watch] [--from <fixture.json>]');
+  const options = { watch: false, fixture: null, file: join(root, DATA) }, seen = new Set();
+  let invalid = false;
+  for (let i = 0; i < args.length; i++) {
+    const flag = args[i];
+    if (!['--watch', '--from', '--out'].includes(flag) || seen.has(flag)) { invalid = true; break; }
+    seen.add(flag);
+    if (flag === '--watch') options.watch = true;
+    else {
+      const value = args[++i];
+      if (!value || value.startsWith('--')) { invalid = true; break; }
+      options[flag === '--from' ? 'fixture' : 'file'] = resolve(value);
+    }
+  }
+  if (invalid || options.watch && options.fixture || options.fixture === options.file) {
+    console.error('Usage: node scripts/figma-levels.mjs [--watch | --from <fixture.json>] [--out <levels-data.js>]');
+    if (options.watch && options.fixture) console.error('--watch cannot be combined with --from');
+    if (options.fixture === options.file) console.error('--out must not overwrite the input fixture');
     return 2;
   }
   const world = gameWorld();
-  if (fixture) { const f = JSON.parse(readFileSync(resolve(fixture), 'utf8')); return run(f.metadata, f.page, world); }
+  if (options.fixture) {
+    const f = JSON.parse(readFileSync(options.fixture, 'utf8'));
+    if (!f || typeof f.page !== 'string' || !f.page.trim() || typeof f.metadata !== 'string' || !f.metadata.trim()) throw new FigmaError('A levels fixture requires a page ID and node metadata');
+    return run(f.metadata, f.page, world, options.file);
+  }
   await connect('max-figma-levels');
-  if (args.includes('--watch')) return watch(world);
-  return run(await metadataXml(PAGE), PAGE, world);
+  if (options.watch) return watch(world, options.file);
+  return run(await metadataXml(PAGE), PAGE, world, options.file);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

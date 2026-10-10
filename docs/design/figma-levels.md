@@ -1,6 +1,6 @@
 # Designing a garden in Figma
 
-The gardens can be drawn in Figma and exported into the game. The authored picture levels take precedence in gardens 1–2; other gardens use the seeded generator unless a Figma frame is live. Expeditions and guardian destinations are furnished by the runtime after the base layout is chosen.
+The gardens can be drawn in Figma and exported into the game. The authored picture levels take precedence in gardens 1–2 unless their selected live Figma variant explicitly contains `replace-picture`; other gardens use the seeded generator unless a Figma frame is live. Expeditions and guardian destinations are furnished by the runtime after the base layout is chosen.
 
 ## Where the frames are
 
@@ -16,6 +16,10 @@ A frame is used by the game only when it contains an instance of **`designed`**.
 
 A copy named `garden-07b` or `garden-07c` is a variant of garden 7. When several frames of one garden are live, the run seed picks one of them. Every co-op client picks the same one, because they share the seed and the build.
 
+`replace-picture` opts a live variant of garden 1 or 2 into replacing the existing picture level. Keep it off drafts and variants that should retain the Seed Vault or Railway Ruins. The marker does not make a frame live by itself. Picture masters remain in the repository.
+
+`furnish-place` opts a live frame into the existing native garden place, including its false walls, two authoritative seed caches and available bounce blooms. The runtime adds the place before expeditions and guardian destinations, once per layout. Leave the marker off a layout that already contains its own place geometry. The authored base routes keep their coordinates and IDs.
+
 ## The components
 
 The layer name is the tag. Instances keep their component's name, so do not rename them.
@@ -26,6 +30,9 @@ The layer name is the tag. Instances keep their component's name, so do not rena
 | `soil` | y is ground level at the origin. Rise is measured up from this line. | `floor(surfaceY(origin))` |
 | `ledge:stone` `ledge:branch` `ledge:ruin` `ledge:root` | Left edge, width, and top edge. The top edge is where you stand. | A one-way platform in `layout.platforms` |
 | `block:stone` `block:ruin` `block:root` `block:branch` | Left edge, top edge, width and height | A solid platform (`solid: true`, `h`). Its top is walkable. |
+| `ladder` | Centre x, top edge, width and height, all integer pixels | A climbable ladder in `layout.ladders`, using the existing keyboard, controller and touch controls. Geometry is not lifted or snapped. |
+| `replace-picture` | Presence | Allows the selected live variant to replace picture garden 1 or 2. |
+| `furnish-place` | Presence | Adds the garden's existing native place and available bounce blooms. |
 | `reward` | Centre x, bottom y (7×7) | `layout.rewards`, where the feathers are dropped |
 | `seed` | Centre x, bottom y | The last entry of `layout.rewards`, which holds the seed reserve |
 | `bonus` | Centre x, bottom y | `layout.bonuses`: embers or dew from garden 3 on |
@@ -69,10 +76,15 @@ Tiers are C0 walking, C1 running, C2 Moss or Spring Step 2, and C3 the air jump.
 
 A ledge on or under the top of a block that the player can reach is not reported as unreachable. Rewards, the seed and trials should stay C0. Draft frames get one summary line each. A live frame without an origin is not exported, and the command exits with code 1.
 
+Ladder routes include their ladder IDs and explicit climb steps. A ladder joins the jump graph only when both endpoints have usable dry ground or platform support and an endpoint is reachable. A disconnected ladder does not make an elevated reward reachable. Check climbs and returns with actual player physics as well as the graph report.
+
+Structural errors in any live frame stop the entire write and preserve the previous output byte for byte. Successful exports replace the output atomically. Invalid, nonpositive or fractional ladder geometry is a structural error; existing legacy tags retain their documented rounding and reach warnings.
+
 Other modes:
 
 - `npm run figma:levels -- --watch` exports again whenever the page changes. It polls every 3 s after a change and backs off to every 30 s while nothing changes. Press Enter to export at once.
 - `npm run figma:levels -- --from <fixture.json>` exports offline from a recorded page, `{ "page": "<captured page ID>", "metadata": "<get_metadata XML>" }`. The historical `tests/fixtures/figma-levels.json` explicitly uses `218:2`; it remains valid as an offline compiler fixture.
+- `npm run figma:levels -- --from <fixture.json> --out /tmp/max-levels-review.js` writes a separate review export, leaving runtime `levels-data.js` intact. `--out` also works with live reads and `--watch`; `--watch` and `--from` cannot be combined.
 - `npm run figma:level-drafts -- --seed 2026 --out /tmp/max-level-review` prepares an editable review snapshot and a local Figma plugin without contacting Figma or changing `levels-data.js`. The generated `import.use-figma.js` can also be executed through the connected Figma Plugin API once access is restored.
 
 Each poll is one Dev Mode MCP tool call, and Figma caps those per day. Once the cap is spent, Figma answers "Rate limit exceeded, please try again tomorrow".
@@ -99,4 +111,6 @@ Designer spots are active: `initRunStage` in `run-director.inc.js` places the hi
 
 `layout.decor` remains exported metadata and is not drawn by the generic layout renderer. Place ornamentation and authored picture artwork have their own render paths.
 
-The existing level compiler does not encode ladders, place false walls and caches, bounce blooms, guardian courts or expedition objectives. The runtime review import marks them as locked reference annotations and keeps `review-garden-NN` names outside the live frame pattern. Do not rename a complete furnished runtime snapshot and mark it designed without translating its intended base geometry: doing so can lose those interactions and duplicate the runtime expedition furnishing. Preserve the authored picture levels, seeded gameplay and physical exit climb when integrating a reviewed design.
+The compiler encodes authored ladders and can opt into existing native place furnishing. It does not encode custom place false walls and caches, authored bounce blooms, guardian courts or expedition objectives. The runtime review import still marks those annotations as references and keeps `review-garden-NN` names outside the live frame pattern. Do not rename a complete furnished runtime snapshot and mark it designed without translating its intended base geometry: doing so can lose those interactions and duplicate the runtime expedition furnishing. Keep picture replacement explicit and preserve seeded gameplay and physical exit climbs.
+
+The newer twenty-level concept stack at [746:117481](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=746-117481), preserved in [PR #51](https://github.com/lukketsvane/max.iverfinne.no/pull/51), contains composition references rather than authored collision coordinates. Its normalized entry/exit percentages are not native geometry. This importer supports the next authoring pass; it does not promote the concept images to runtime masters or implement continuous world connectors. New runtime artwork still follows [the Figma source contract](../figma.md).
