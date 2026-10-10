@@ -1,0 +1,982 @@
+{
+  "schema": 1,
+  "status": "offline-prepared-figma-authoring-setup-not-imported",
+  "authenticatedFigma": false,
+  "production": false,
+  "live": false,
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "seed": 1,
+  "authoringArea": {
+    "x": 6710,
+    "y": 160,
+    "spacing": 80,
+    "note": "Position requested by the setup owner; inspect the live page before appending."
+  },
+  "masterIds": {
+    "origin": "382:4",
+    "soil": "382:5",
+    "designed": "382:6",
+    "ledge:stone": "382:7",
+    "ledge:branch": "382:8",
+    "ledge:ruin": "382:9",
+    "ledge:root": "382:10",
+    "block:stone": "382:11",
+    "block:ruin": "382:12",
+    "block:root": "382:13",
+    "block:branch": "382:14",
+    "reward": "382:15",
+    "seed": "382:16",
+    "bonus": "382:17",
+    "trial": "382:18",
+    "puzzle": "382:19",
+    "door": "382:20",
+    "dig": "382:21",
+    "secret": "382:22",
+    "start": "382:23"
+  },
+  "masterIdsSource": "Parent-supplied current Figma production component IDs; this local preparer does not authenticate them.",
+  "missingMasterNames": [
+    "ladder",
+    "pond:20",
+    "replace-picture",
+    "furnish-place"
+  ],
+  "sourceFiles": [
+    {
+      "file": "docs/design/tree-hollow-entrance/geometry.json",
+      "sha256": "dab3050392593866e887b0c79a3a2bc55d3d7665de719f9de5c12368e98312cd"
+    },
+    {
+      "file": "docs/design/early-gardens-waterworks/geometry.json",
+      "sha256": "421ab81f233899a0c777e19698fbc74ebae94773e25448977a00b3bae5d50f5e"
+    },
+    {
+      "file": "docs/design/authored-ponds/source/synthetic-pond-source.json",
+      "sha256": "2f31608456791b6dc9165756e1f013cb5d871ec949df85f699e941023be3769b"
+    }
+  ],
+  "geometryDigest": "409b8dc6d3a1550ec3ebcf9690ef824f10221a65a065e2518ad14b8e04600883",
+  "baselineDigest": "c741ea27e82620a44e0315fbe4efaec37bdc1d8e3284cc3cfdfeccc7b863b000",
+  "sourceDigest": "4fcd3667f487a99316e82d703269d9a1a061c9bb4400b4fc00f1d6ab2b0bae97",
+  "limits": "The garden-NN names are eligible for compiler inspection but neither board contains designed. Terrain and visible-water layers are locked runtime references. Editable pond:20 is the only authored water source. Scenery and review-only fixtures require separate contracts.",
+  "gardens": [
+    {
+      "stage": 1,
+      "title": "Tree Hollow Entrance",
+      "frame": "garden-01b",
+      "w": 640,
+      "h": 319,
+      "worldOrigin": 0,
+      "nativeBounds": {
+        "x": -320,
+        "y": -235,
+        "w": 640,
+        "h": 319
+      },
+      "originalSoilY": 8,
+      "soilY": 243,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 243,
+          "w": 640,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 320,
+          "y": 219,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:branch",
+          "x": 185,
+          "y": 203,
+          "w": 70,
+          "h": 6,
+          "sourceId": "authored:1:ledge:0"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 105,
+          "y": 163,
+          "w": 110,
+          "h": 6,
+          "sourceId": "authored:1:ledge:1"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 90,
+          "y": 123,
+          "w": 95,
+          "h": 6,
+          "sourceId": "authored:1:ledge:2"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 100,
+          "y": 43,
+          "w": 100,
+          "h": 6,
+          "sourceId": "authored:1:ledge:3"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 445,
+          "y": 163,
+          "w": 105,
+          "h": 6,
+          "sourceId": "authored:1:ledge:4"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 490,
+          "y": 83,
+          "w": 100,
+          "h": 6,
+          "sourceId": "authored:1:ledge:5"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 420,
+          "y": 43,
+          "w": 100,
+          "h": 6,
+          "sourceId": "authored:1:ledge:6"
+        },
+        {
+          "name": "block:root",
+          "x": 40,
+          "y": 203,
+          "w": 40,
+          "h": 60,
+          "sourceId": "authored:1:block:0"
+        },
+        {
+          "name": "block:root",
+          "x": 570,
+          "y": 223,
+          "w": 30,
+          "h": 60,
+          "sourceId": "authored:1:block:1"
+        },
+        {
+          "name": "ladder",
+          "x": 201,
+          "y": 203,
+          "w": 14,
+          "h": 33,
+          "sourceId": "authored:1:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 193,
+          "y": 163,
+          "w": 14,
+          "h": 40,
+          "sourceId": "authored:1:ladder:1"
+        },
+        {
+          "name": "ladder",
+          "x": 133,
+          "y": 123,
+          "w": 14,
+          "h": 40,
+          "sourceId": "authored:1:ladder:2"
+        },
+        {
+          "name": "ladder",
+          "x": 123,
+          "y": 43,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:1:ladder:3"
+        },
+        {
+          "name": "ladder",
+          "x": 523,
+          "y": 163,
+          "w": 14,
+          "h": 75,
+          "sourceId": "authored:1:ladder:4"
+        },
+        {
+          "name": "ladder",
+          "x": 503,
+          "y": 83,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:1:ladder:5"
+        },
+        {
+          "name": "ladder",
+          "x": 493,
+          "y": 43,
+          "w": 14,
+          "h": 40,
+          "sourceId": "authored:1:ladder:6"
+        },
+        {
+          "name": "reward",
+          "x": 147,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:reward:0"
+        },
+        {
+          "name": "seed",
+          "x": 442,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 152,
+          "y": 156,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 532,
+          "y": 76,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:trial:1"
+        },
+        {
+          "name": "bonus",
+          "x": 112,
+          "y": 116,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:bonus:0"
+        },
+        {
+          "name": "puzzle",
+          "x": 222,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 467,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 297,
+          "y": 236,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 507,
+          "y": 156,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 317,
+          "y": 236,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:1:start:0"
+        },
+        {
+          "name": "replace-picture",
+          "x": 328,
+          "y": 251,
+          "w": 7,
+          "h": 7,
+          "sourceId": null
+        }
+      ],
+      "terrainY": 219,
+      "terrainPath": "M 0 100 L 0 16 L 4 16 L 4 15 L 10 15 L 10 14 L 15 14 L 15 13 L 19 13 L 19 12 L 22 12 L 22 11 L 25 11 L 25 10 L 28 10 L 28 9 L 30 9 L 30 8 L 33 8 L 33 7 L 35 7 L 35 6 L 38 6 L 38 5 L 40 5 L 40 4 L 43 4 L 43 3 L 46 3 L 46 2 L 50 2 L 50 1 L 56 1 L 56 0 L 61 0 L 61 1 L 66 1 L 66 2 L 70 2 L 70 3 L 73 3 L 73 4 L 75 4 L 75 5 L 77 5 L 77 6 L 80 6 L 80 7 L 82 7 L 82 8 L 84 8 L 84 9 L 87 9 L 87 10 L 89 10 L 89 11 L 93 11 L 93 12 L 96 12 L 96 13 L 103 13 L 103 14 L 114 14 L 114 13 L 123 13 L 123 12 L 128 12 L 128 11 L 133 11 L 133 10 L 138 10 L 138 9 L 142 9 L 142 8 L 146 8 L 146 7 L 150 7 L 150 6 L 155 6 L 155 5 L 164 5 L 164 4 L 167 4 L 167 5 L 176 5 L 176 6 L 180 6 L 180 7 L 183 7 L 183 8 L 186 8 L 186 9 L 189 9 L 189 10 L 191 10 L 191 11 L 194 11 L 194 12 L 196 12 L 196 13 L 199 13 L 199 14 L 202 14 L 202 15 L 204 15 L 204 16 L 207 16 L 207 17 L 211 17 L 211 18 L 215 18 L 215 19 L 219 19 L 219 20 L 223 20 L 223 21 L 229 21 L 229 22 L 235 22 L 235 23 L 243 23 L 243 24 L 259 24 L 259 25 L 291 25 L 291 24 L 320 24 L 320 25 L 345 25 L 345 24 L 363 24 L 363 23 L 379 23 L 379 22 L 410 22 L 410 21 L 478 21 L 478 20 L 506 20 L 506 19 L 544 19 L 544 18 L 552 18 L 552 17 L 560 17 L 560 16 L 569 16 L 569 15 L 583 15 L 583 16 L 597 16 L 597 17 L 612 17 L 612 18 L 639 18 L 639 19 L 640 19 L 640 100 Z",
+      "water": [],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGeometry": {
+        "ledges": [
+          {
+            "x": -230,
+            "rise": 120,
+            "w": 95,
+            "style": "branch"
+          },
+          {
+            "x": -220,
+            "rise": 200,
+            "w": 100,
+            "style": "branch"
+          },
+          {
+            "x": -215,
+            "rise": 80,
+            "w": 110,
+            "style": "branch"
+          },
+          {
+            "x": -135,
+            "rise": 40,
+            "w": 70,
+            "style": "branch"
+          },
+          {
+            "x": 100,
+            "rise": 200,
+            "w": 100,
+            "style": "branch"
+          },
+          {
+            "x": 125,
+            "rise": 80,
+            "w": 105,
+            "style": "branch"
+          },
+          {
+            "x": 170,
+            "rise": 160,
+            "w": 100,
+            "style": "branch"
+          }
+        ],
+        "blocks": [
+          {
+            "x": -280,
+            "rise": 40,
+            "w": 40,
+            "h": 60,
+            "style": "root"
+          },
+          {
+            "x": 250,
+            "rise": 20,
+            "w": 30,
+            "h": 60,
+            "style": "root"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -190,
+            "rise": 200,
+            "w": 14,
+            "h": 80
+          },
+          {
+            "x": -180,
+            "rise": 120,
+            "w": 14,
+            "h": 40
+          },
+          {
+            "x": -120,
+            "rise": 80,
+            "w": 14,
+            "h": 40
+          },
+          {
+            "x": -112,
+            "rise": 40,
+            "w": 14,
+            "h": 33
+          },
+          {
+            "x": 180,
+            "rise": 200,
+            "w": 14,
+            "h": 40
+          },
+          {
+            "x": 190,
+            "rise": 160,
+            "w": 14,
+            "h": 80
+          },
+          {
+            "x": 210,
+            "rise": 80,
+            "w": 14,
+            "h": 75
+          }
+        ],
+        "replacePicture": true,
+        "reward": [
+          {
+            "x": -170,
+            "rise": 200
+          }
+        ],
+        "seed": [
+          {
+            "x": 125,
+            "rise": 200
+          }
+        ],
+        "bonus": [
+          {
+            "x": -205,
+            "rise": 120
+          }
+        ],
+        "trial": [
+          {
+            "x": -165,
+            "rise": 80
+          },
+          {
+            "x": 215,
+            "rise": 160
+          }
+        ],
+        "puzzle": [
+          {
+            "x": -95,
+            "rise": 40
+          }
+        ],
+        "door": [
+          {
+            "x": 150,
+            "rise": 200
+          }
+        ],
+        "dig": [
+          {
+            "x": -20,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": 190,
+            "rise": 80
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "roundTrip": {
+        "status": "exact-local-geometry-match",
+        "live": false,
+        "method": "Existing prepareAuthoredDrafts and gardenOf; original source soil datum retained."
+      }
+    },
+    {
+      "stage": 2,
+      "title": "Broken Waterworks",
+      "frame": "garden-02b",
+      "w": 630,
+      "h": 279,
+      "worldOrigin": 207510,
+      "nativeBounds": {
+        "x": 207195,
+        "y": -202,
+        "w": 630,
+        "h": 279
+      },
+      "originalSoilY": 1,
+      "soilY": 203,
+      "instances": [
+        {
+          "name": "soil",
+          "x": 0,
+          "y": 203,
+          "w": 630,
+          "h": 1
+        },
+        {
+          "name": "origin",
+          "x": 315,
+          "y": 179,
+          "w": 1,
+          "h": 24,
+          "sourceId": null
+        },
+        {
+          "name": "ledge:branch",
+          "x": 70,
+          "y": 163,
+          "w": 105,
+          "h": 6,
+          "sourceId": "authored:2:ledge:0"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 65,
+          "y": 103,
+          "w": 110,
+          "h": 6,
+          "sourceId": "authored:2:ledge:1"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 80,
+          "y": 43,
+          "w": 110,
+          "h": 6,
+          "sourceId": "authored:2:ledge:2"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 310,
+          "y": 103,
+          "w": 110,
+          "h": 6,
+          "sourceId": "authored:2:ledge:3"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 305,
+          "y": 43,
+          "w": 105,
+          "h": 6,
+          "sourceId": "authored:2:ledge:4"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 450,
+          "y": 163,
+          "w": 105,
+          "h": 6,
+          "sourceId": "authored:2:ledge:5"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 455,
+          "y": 103,
+          "w": 105,
+          "h": 6,
+          "sourceId": "authored:2:ledge:6"
+        },
+        {
+          "name": "ledge:branch",
+          "x": 440,
+          "y": 43,
+          "w": 110,
+          "h": 6,
+          "sourceId": "authored:2:ledge:7"
+        },
+        {
+          "name": "block:ruin",
+          "x": 40,
+          "y": 193,
+          "w": 28,
+          "h": 50,
+          "sourceId": "authored:2:block:0"
+        },
+        {
+          "name": "block:ruin",
+          "x": 360,
+          "y": 183,
+          "w": 35,
+          "h": 50,
+          "sourceId": "authored:2:block:1"
+        },
+        {
+          "name": "block:ruin",
+          "x": 560,
+          "y": 193,
+          "w": 30,
+          "h": 50,
+          "sourceId": "authored:2:block:2"
+        },
+        {
+          "name": "ladder",
+          "x": 118,
+          "y": 163,
+          "w": 14,
+          "h": 52,
+          "sourceId": "authored:2:ladder:0"
+        },
+        {
+          "name": "ladder",
+          "x": 138,
+          "y": 103,
+          "w": 14,
+          "h": 60,
+          "sourceId": "authored:2:ladder:1"
+        },
+        {
+          "name": "ladder",
+          "x": 153,
+          "y": 43,
+          "w": 14,
+          "h": 60,
+          "sourceId": "authored:2:ladder:2"
+        },
+        {
+          "name": "ladder",
+          "x": 368,
+          "y": 103,
+          "w": 14,
+          "h": 80,
+          "sourceId": "authored:2:ladder:3"
+        },
+        {
+          "name": "ladder",
+          "x": 348,
+          "y": 43,
+          "w": 14,
+          "h": 60,
+          "sourceId": "authored:2:ladder:4"
+        },
+        {
+          "name": "ladder",
+          "x": 488,
+          "y": 163,
+          "w": 14,
+          "h": 40,
+          "sourceId": "authored:2:ladder:5"
+        },
+        {
+          "name": "ladder",
+          "x": 493,
+          "y": 103,
+          "w": 14,
+          "h": 60,
+          "sourceId": "authored:2:ladder:6"
+        },
+        {
+          "name": "ladder",
+          "x": 498,
+          "y": 43,
+          "w": 14,
+          "h": 60,
+          "sourceId": "authored:2:ladder:7"
+        },
+        {
+          "name": "pond:20",
+          "x": 183,
+          "y": 205,
+          "w": 94,
+          "h": 24,
+          "sourceId": "authored:2:pond:0"
+        },
+        {
+          "name": "reward",
+          "x": 132,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:reward:0"
+        },
+        {
+          "name": "seed",
+          "x": 492,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:seed:0"
+        },
+        {
+          "name": "trial",
+          "x": 102,
+          "y": 96,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:trial:0"
+        },
+        {
+          "name": "trial",
+          "x": 502,
+          "y": 96,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:trial:1"
+        },
+        {
+          "name": "bonus",
+          "x": 342,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:bonus:0"
+        },
+        {
+          "name": "puzzle",
+          "x": 342,
+          "y": 96,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:puzzle:0"
+        },
+        {
+          "name": "door",
+          "x": 517,
+          "y": 36,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:door:0"
+        },
+        {
+          "name": "dig",
+          "x": 322,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:dig:0"
+        },
+        {
+          "name": "secret",
+          "x": 92,
+          "y": 156,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:secret:0"
+        },
+        {
+          "name": "start",
+          "x": 312,
+          "y": 196,
+          "w": 7,
+          "h": 7,
+          "sourceId": "authored:2:start:0"
+        },
+        {
+          "name": "replace-picture",
+          "x": 323,
+          "y": 211,
+          "w": 7,
+          "h": 7,
+          "sourceId": null
+        }
+      ],
+      "terrainY": 180,
+      "terrainPath": "M 0 99 L 0 28 L 35 28 L 35 29 L 51 29 L 51 30 L 66 30 L 66 31 L 75 31 L 75 32 L 84 32 L 84 33 L 93 33 L 93 34 L 113 34 L 113 35 L 163 35 L 163 34 L 167 34 L 167 33 L 169 33 L 169 32 L 170 32 L 170 31 L 171 31 L 171 30 L 173 30 L 173 29 L 174 29 L 174 28 L 175 28 L 175 27 L 177 27 L 177 26 L 178 26 L 178 25 L 181 25 L 181 24 L 184 24 L 184 27 L 185 27 L 185 29 L 186 29 L 186 31 L 187 31 L 187 32 L 188 32 L 188 34 L 189 34 L 189 35 L 190 35 L 190 36 L 191 36 L 191 38 L 192 38 L 192 39 L 193 39 L 193 40 L 194 40 L 194 41 L 195 41 L 195 42 L 197 42 L 197 43 L 198 43 L 198 44 L 200 44 L 200 45 L 201 45 L 201 46 L 204 46 L 204 47 L 207 47 L 207 48 L 213 48 L 213 49 L 248 49 L 248 48 L 254 48 L 254 47 L 257 47 L 257 46 L 260 46 L 260 45 L 261 45 L 261 44 L 263 44 L 263 43 L 264 43 L 264 42 L 266 42 L 266 41 L 267 41 L 267 40 L 268 40 L 268 39 L 269 39 L 269 38 L 270 38 L 270 36 L 271 36 L 271 35 L 272 35 L 272 34 L 273 34 L 273 32 L 274 32 L 274 31 L 275 31 L 275 29 L 276 29 L 276 27 L 277 27 L 277 24 L 285 24 L 285 25 L 305 25 L 305 24 L 313 24 L 313 23 L 322 23 L 322 22 L 363 22 L 363 21 L 375 21 L 375 22 L 387 22 L 387 23 L 416 23 L 416 22 L 425 22 L 425 21 L 438 21 L 438 20 L 450 20 L 450 21 L 464 21 L 464 22 L 477 22 L 477 23 L 502 23 L 502 22 L 527 22 L 527 23 L 572 23 L 572 22 L 586 22 L 586 21 L 591 21 L 591 20 L 594 20 L 594 19 L 597 19 L 597 18 L 599 18 L 599 17 L 602 17 L 602 16 L 603 16 L 603 15 L 605 15 L 605 14 L 607 14 L 607 13 L 609 13 L 609 12 L 610 12 L 610 11 L 612 11 L 612 10 L 614 10 L 614 9 L 615 9 L 615 8 L 617 8 L 617 7 L 618 7 L 618 6 L 620 6 L 620 5 L 622 5 L 622 4 L 624 4 L 624 3 L 626 3 L 626 2 L 628 2 L 628 1 L 630 1 L 630 0 L 630 0 L 630 99 Z",
+      "water": [
+        {
+          "x": 184,
+          "y": 205,
+          "w": 93,
+          "h": 24
+        }
+      ],
+      "unsupported": [
+        "Expeditions and guardian destinations remain runtime furnishing; authored instances contain base geometry only."
+      ],
+      "compilerGeometry": {
+        "ledges": [
+          {
+            "x": -250,
+            "rise": 100,
+            "w": 110,
+            "style": "branch"
+          },
+          {
+            "x": -245,
+            "rise": 40,
+            "w": 105,
+            "style": "branch"
+          },
+          {
+            "x": -235,
+            "rise": 160,
+            "w": 110,
+            "style": "branch"
+          },
+          {
+            "x": -10,
+            "rise": 160,
+            "w": 105,
+            "style": "branch"
+          },
+          {
+            "x": -5,
+            "rise": 100,
+            "w": 110,
+            "style": "branch"
+          },
+          {
+            "x": 125,
+            "rise": 160,
+            "w": 110,
+            "style": "branch"
+          },
+          {
+            "x": 135,
+            "rise": 40,
+            "w": 105,
+            "style": "branch"
+          },
+          {
+            "x": 140,
+            "rise": 100,
+            "w": 105,
+            "style": "branch"
+          }
+        ],
+        "blocks": [
+          {
+            "x": -275,
+            "rise": 10,
+            "w": 28,
+            "h": 50,
+            "style": "ruin"
+          },
+          {
+            "x": 45,
+            "rise": 20,
+            "w": 35,
+            "h": 50,
+            "style": "ruin"
+          },
+          {
+            "x": 245,
+            "rise": 10,
+            "w": 30,
+            "h": 50,
+            "style": "ruin"
+          }
+        ],
+        "ladders": [
+          {
+            "x": -190,
+            "rise": 40,
+            "w": 14,
+            "h": 52
+          },
+          {
+            "x": -170,
+            "rise": 100,
+            "w": 14,
+            "h": 60
+          },
+          {
+            "x": -155,
+            "rise": 160,
+            "w": 14,
+            "h": 60
+          },
+          {
+            "x": 40,
+            "rise": 160,
+            "w": 14,
+            "h": 60
+          },
+          {
+            "x": 60,
+            "rise": 100,
+            "w": 14,
+            "h": 80
+          },
+          {
+            "x": 180,
+            "rise": 40,
+            "w": 14,
+            "h": 40
+          },
+          {
+            "x": 185,
+            "rise": 100,
+            "w": 14,
+            "h": 60
+          },
+          {
+            "x": 190,
+            "rise": 160,
+            "w": 14,
+            "h": 60
+          }
+        ],
+        "ponds": [
+          {
+            "x": -85,
+            "rise": -2,
+            "hw": 47,
+            "bank": 20,
+            "depth": 24
+          }
+        ],
+        "replacePicture": true,
+        "reward": [
+          {
+            "x": -180,
+            "rise": 160
+          }
+        ],
+        "seed": [
+          {
+            "x": 180,
+            "rise": 160
+          }
+        ],
+        "bonus": [
+          {
+            "x": 30,
+            "rise": 160
+          }
+        ],
+        "trial": [
+          {
+            "x": -210,
+            "rise": 100
+          },
+          {
+            "x": 190,
+            "rise": 100
+          }
+        ],
+        "puzzle": [
+          {
+            "x": 30,
+            "rise": 100
+          }
+        ],
+        "door": [
+          {
+            "x": 205,
+            "rise": 160
+          }
+        ],
+        "dig": [
+          {
+            "x": 10,
+            "rise": 0
+          }
+        ],
+        "secret": [
+          {
+            "x": -220,
+            "rise": 40
+          }
+        ],
+        "start": [
+          {
+            "x": 0,
+            "rise": 0
+          }
+        ]
+      },
+      "roundTrip": {
+        "status": "exact-local-geometry-match",
+        "live": false,
+        "method": "Existing prepareAuthoredDrafts and gardenOf; original source soil datum retained."
+      }
+    }
+  ]
+}

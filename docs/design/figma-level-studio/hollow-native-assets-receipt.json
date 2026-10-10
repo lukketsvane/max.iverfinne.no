@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"Level01-native-art-components-and-gameplay-palette-ready\",\"assetsId\":\"880:79\",\"rowId\":\"887:13528\",\"components\":[{\"id\":\"896:13527\",\"name\":\"ASSET · PHASE BEFORE_GROUND · Hollow Tree + Lantern\",\"x\":24,\"y\":100,\"width\":354,\"height\":274,\"children\":2920},{\"id\":\"896:16449\",\"name\":\"ASSET · PHASE BEFORE_GROUND · Mossy Timber + Supports\",\"x\":430,\"y\":100,\"width\":100,\"height\":229,\"children\":126},{\"id\":\"896:16577\",\"name\":\"ASSET · PHASE AFTER_SOIL · Passage Roots + Lamps\",\"x\":620,\"y\":100,\"width\":327,\"height\":57,\"children\":462},{\"id\":\"896:17041\",\"name\":\"ASSET · PHASE AFTER_SOIL · Cave Window\",\"x\":620,\"y\":245,\"width\":376,\"height\":57,\"children\":42},{\"id\":\"896:17085\",\"name\":\"ASSET · PHASE BEFORE_GROUND · Native Forest Flowers\",\"x\":620,\"y\":375,\"width\":344,\"height\":17,\"children\":7}],\"paletteInstances\":22,\"createdNodeIdRanges\":[{\"prefix\":\"896\",\"first\":13527,\"last\":17145,\"count\":3619}],\"createdNodeCount\":3619,\"mutatedNodeIds\":[\"896:13527\",\"896:16449\",\"896:16577\",\"896:17041\",\"896:17085\",\"880:80\",\"880:81\",\"896:17103\",\"896:17105\",\"896:17107\",\"896:17109\",\"896:17111\",\"896:17113\",\"896:17115\",\"896:17117\",\"896:17119\",\"896:17121\",\"896:17123\",\"896:17125\",\"896:17127\",\"896:17129\",\"896:17131\",\"896:17133\",\"896:17135\",\"896:17137\",\"896:17139\",\"896:17141\",\"896:17143\",\"896:17145\",\"880:79\",\"880:78\"],\"allCreatedIdsEncoding\":\"Lossless inclusive ranges from actual returned node IDs; literal IDs preserved separately\",\"sourceARTChanged\":false,\"sourcePNGsChanged\":false}"
+    }
+  ],
+  "isError": false
+}

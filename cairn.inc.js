@@ -48,11 +48,11 @@ function cairnRebaseClocks(member,now){var q=cairnState(member);cairnRebaseState
 function cairnRefreshClocks(member,now){var q=cairnState(member),c=cairnClocks.get(q);now=Number.isFinite(now)?now:performance.now();if(!c){cairnRebaseState(q,now);c=cairnClocks.get(q);}CAIRN_TIMER_FIELDS.forEach(function(k){q[k]=cairnRemaining(q,k);});if(q.braceT>0)q.braceAge=Math.min(3,Math.max(q.braceAge,(now-c.brace)/1000));return q;}
 function cairnWetPoint(x,y){return highTideMode()?y>=rogueRun.survival.waterY:playerWetAt(x,y);}
 function cairnWetBody(a,member){return !!(a&&(highTideMode()?highTideHead({p:a,member:cairnMember(member)})>=rogueRun.survival.waterY:a.wet||playerWetAt(a.x,a.y)));}
-function cairnFloor(x){return highTideMode()?rogueRun.survival.base+110:surfaceY(x);}
+function cairnFloor(x,y){return highTideMode()?rogueRun.survival.base+110:bodyFloorY(x,y);}
 function cairnSupportPoint(x,y,id){
   var L=stageLayout(),p=id==='ground'?null:L.platforms.find(function(p){return (!id||p.id===id)&&x>=p.x-1e-7&&x<=p.x+p.w+1e-7&&Math.abs(p.y-y)<=2;});
   if(p&&Math.abs(p.y-y)<=2&&x>=p.x-1e-7&&x<=p.x+p.w+1e-7)return {x:x,y:p.y,id:p.id};
-  if((!id||id==='ground')&&Math.abs(cairnFloor(x)-y)<=2&&!highTideMode())return {x:x,y:cairnFloor(x),id:'ground'};return null;
+  if((!id||id==='ground')&&Math.abs(cairnFloor(x,y)-y)<=2&&!highTideMode())return {x:x,y:cairnFloor(x,y),id:'ground'};return null;
 }
 function cairnRootedGround(a,member){member=cairnMember(member);var local=!member||!coop||member.id===coop.me||coopActor&&member.id===coopActor.id;return !!(a&&a.grounded&&(!Number.isFinite(a.world)||a.world===worldLevel())&&!a.exitClimb&&!cairnWetBody(a,member)&&!cairnWetPoint(a.x,a.y)&&!seedDown(member)&&!['float','climb','ladder','burrow'].includes(a.st)&&!(local&&(warp||climb||a.tun>0))&&cairnSupportPoint(a.x,a.y,a.platform||null));}
 function cairnAutomaticIdle(a,member){var local=!member||!coop||member.id===coop.me||coopActor&&member.id===coopActor.id;return !!(a&&a.autoIdlePose===true&&a.grounded&&['lampUp','lamp','lampDn','toSit','rest','unsit'].includes(a.st)&&(!local||!task&&!holdWater&&!heldDown&&!heldSpace&&!swipeDown&&!gardenPress&&!lampToggle));}
@@ -77,13 +77,13 @@ function cairnPestGround(k,context){
 function cairnExactNear(x,y,tolerance){return stageLayout().platforms.filter(function(p){return x>=p.x-1e-7&&x<=p.x+p.w+1e-7&&Math.abs(p.y-y)<=tolerance;}).sort(function(a,b){return Math.abs(a.y-y)-Math.abs(b.y-y);})[0]||null;}
 function cairnRouteSamples(x0,x1){var min=Math.min(x0,x1),max=Math.max(x0,x1),xs=[x0,x1];for(var x=min;x<max;x+=2)xs.push(x);stageLayout().platforms.forEach(function(p){[p.x,p.x+p.w].forEach(function(edge){[-.0001,0,.0001].forEach(function(d){if(edge+d>min&&edge+d<max)xs.push(edge+d);});});});return xs.sort(function(a,b){return x1>=x0?a-b:b-a;});}
 function cairnSupportRoute(x0,y0,x1,y1){
-  var last=y0,okay=true;cairnRouteSamples(x0,x1).forEach(function(x){if(!okay)return;var near=cairnExactNear(x,last,6),y=near?near.y:highTideMode()?NaN:surfaceY(x);if(!Number.isFinite(y)||Math.abs(y-last)>6||cairnWetPoint(x,y)||!combatLineClear(x,y-4,x,y-16)){okay=false;return;}last=y;});return okay&&Math.abs(last-y1)<=6;
+  var last=y0,okay=true;cairnRouteSamples(x0,x1).forEach(function(x){if(!okay)return;var near=cairnExactNear(x,last,6),y=near?near.y:highTideMode()?NaN:cairnFloor(x,last);if(!Number.isFinite(y)||Math.abs(y-last)>6||cairnWetPoint(x,y)||!combatLineClear(x,y-4,x,y-16)){okay=false;return;}last=y;});return okay&&Math.abs(last-y1)<=6;
 }
 function cairnSegmentRect(a,b,left,right,top,bottom){var t0=0,t1=1;return [[a.x,b.x-a.x,left,right],[a.y,b.y-a.y,top,bottom]].every(function(v){if(Math.abs(v[1])<1e-9)return v[0]>=v[2]&&v[0]<=v[3];var lo=(v[2]-v[0])/v[1],hi=(v[3]-v[0])/v[1];if(lo>hi){var z=lo;lo=hi;hi=z;}t0=Math.max(t0,lo);t1=Math.min(t1,hi);return t0<=t1;});}
 function cairnRidgePlacement(member,face){
   member=cairnMember(member);var a=cairnActor(member);face=face==null?a.face:face;var origin=cairnSupportPoint(a.x,a.y,a.platform||null),x=a.x+(face<0?-1:1)*48,L=stageLayout();function deny(reason){return {valid:false,x:x,y:a.y,supportId:'',reason:reason};}
-  if(!cairnDryGround(a,member)||!origin)return deny('ground');var centre=cairnExactNear(x,a.y,6),y=centre?centre.y:highTideMode()?NaN:surfaceY(x);if(!Number.isFinite(y)||Math.abs(y-origin.y)>6||!cairnSupportRoute(a.x,a.y,x,y))return deny('route');
-  var samples=cairnRouteSamples(x-32,x+32);for(var i=0;i<samples.length;i++){var nx=samples[i],support=cairnExactNear(nx,y,6),sy=support?support.y:highTideMode()?NaN:surfaceY(nx);if(!Number.isFinite(sy)||Math.abs(sy-y)>6||cairnWetPoint(nx,sy)||window.MaxStageLayout.inRock(L,nx,sy-8)||!combatLineClear(a.x,a.y-12,nx,sy-12))return deny('footprint');}
+  if(!cairnDryGround(a,member)||!origin)return deny('ground');var centre=cairnExactNear(x,a.y,6),y=centre?centre.y:highTideMode()?NaN:cairnFloor(x,a.y);if(!Number.isFinite(y)||Math.abs(y-origin.y)>6||!cairnSupportRoute(a.x,a.y,x,y))return deny('route');
+  var samples=cairnRouteSamples(x-32,x+32);for(var i=0;i<samples.length;i++){var nx=samples[i],support=cairnExactNear(nx,y,6),sy=support?support.y:highTideMode()?NaN:cairnFloor(nx,y);if(!Number.isFinite(sy)||Math.abs(sy-y)>6||cairnWetPoint(nx,sy)||window.MaxStageLayout.inRock(L,nx,sy-8)||!combatLineClear(a.x,a.y-12,nx,sy-12))return deny('footprint');}
   var left=x-32,right=x+32;
   if(L.platforms.some(function(p){return p.solid&&p.x<right&&p.x+p.w>left&&p.y<y-1e-7&&p.y+(p.h||0)>y-16;}))return deny('rock');
   if((L.ladders||[]).some(function(l){return l.x+(l.w||14)/2+12>=left&&l.x-(l.w||14)/2-12<=right&&y>=l.top-12&&y-16<=l.bottom+12;}))return deny('ladder');
@@ -200,14 +200,14 @@ function cairnCommitRidge(m,q){
 }
 function cairnPatchPoint(x,y){
   var choices=[];stageLayout().platforms.forEach(function(p){choices.push({x:Math.max(p.x,Math.min(p.x+p.w,x)),y:p.y,id:p.id});});
-  if(!highTideMode())for(var nx=x-24;nx<=x+24;nx+=2)choices.push({x:nx,y:surfaceY(nx),id:'ground'});
+  if(!highTideMode())for(var nx=x-24;nx<=x+24;nx+=2)choices.push({x:nx,y:cairnFloor(nx,y),id:'ground'});
   var best=null,distance=25;choices.forEach(function(point){var d=Math.hypot(point.x-x,point.y-y);if(d<=24&&d<distance&&!cairnWetPoint(point.x,point.y)&&cairnSupportPoint(point.x,point.y,point.id)&&combatLineClear(x,y,point.x,point.y-3)){best=point;distance=d;}});return best||{x:x,y:y,id:''};
 }
 function cairnStoneTerrain(x0,y0,x,y){
   var L=stageLayout();if(cairnWetPoint(x,y+3))return 'water';
   if([[-3,0],[3,0],[0,-3],[0,3]].some(function(d){return window.MaxStageLayout.inRock(L,x+d[0],y+d[1]);}))return 'rock';
   if(y>=y0&&L.platforms.some(function(p){return x>=p.x-3&&x<=p.x+p.w+3&&y0+3<=p.y+1e-7&&y+3>=p.y;}))return 'platform';
-  if(!highTideMode()&&y+3>=surfaceY(x))return 'soil';return '';
+  if(!highTideMode()&&y+3>=cairnFloor(x,y+3))return 'soil';return '';
 }
 function cairnStoneStep(m,q,dt){
   if(q.stonePhase!==1)return;var remaining=Math.min(dt,Math.max(0,2-q.stoneAge));while(remaining>1e-9&&q.stonePhase===1){var h=Math.min(remaining,1/120),x0=q.stoneX,y0=q.stoneY,x1=x0+q.stoneVX*h,y1=y0+q.stoneVY*h+60*h*h,distance=Math.hypot(x1-x0,y1-y0),fraction=distance>0?Math.min(1,(72-q.stoneTravel)/distance):1,steps=Math.max(1,Math.ceil(distance*fraction*2)),event=null;

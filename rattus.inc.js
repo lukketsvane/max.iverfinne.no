@@ -265,7 +265,7 @@ function rattusLanding(member,landing,before,after,context){
   }
   if(rattusClass(member)!=='runner'||context.canContact===false||context.corrected||context.placed||context.world!==worldLevel()||!landing||!before||!after||before.grounded||!after.grounded||after.y<before.y-1e-6)return false;
   var q=wrestlerState(member);if((q.stompPhase!==1&&q.stompPhase!==2)||q.stompWorld!==worldLevel()||context.serial!==q.stompSerial||q.stompConsumed||!q.stompSeenAir||q.consumedLandingSerial===q.stompSerial)return false;
-  var support=window.MaxStageLayout.at(stageLayout(),after.x,after.y,2),floor=highTideMode()?rogueRun.survival.base+110:surfaceY(after.x);
+  var support=window.MaxStageLayout.at(stageLayout(),after.x,after.y,2),floor=highTideMode()?rogueRun.survival.base+110:bodyFloorY(after.x,after.y);
   if(!(support&&(!landing.id||support.id===landing.id)||Math.abs(after.y-floor)<1e-6)||rattusWetBody(after,member)||seedDown(member)){rattusCancelMotion(member,'invalid-landing');return false;}
   q.stompConsumed=1;q.consumedLandingSerial=q.stompSerial;q.stompPhase=3;rattusSetTimer(q,'stompRecoveryT',.2*Math.pow(.88,Math.min(3,rattusPerks(member).tailwind||0)));rattusSetTimer(q,'landingGuardT',.2);
   rattusStompContact(member,q,after.x,after.y);var a=rattusActor(member);a.pounce=0;if(!member||!coop||member.id===coop.me){P.pounce=0;P.rattlePose=.2;P.rattleMove='splits';P.rattleClock=0;shake=Math.min(3,shake+1.6);puff(after.x,after.y,9,.5);skillCue('slam',0);}

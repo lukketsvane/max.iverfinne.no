@@ -30,12 +30,17 @@ export function gardenOf(frame) {
       problems.push(`"${name}" requires a pond:<bank> tag with a positive integer bank`);
       continue;
     }
-    if (!['ledge', 'block', 'ladder', 'pond', 'origin', 'soil', 'designed', 'replace-picture', 'furnish-place', 'decor', ...MARKERS].includes(tag) || (tag === 'ledge' || tag === 'block') && !STYLES.includes(name.slice(6)) || tag === 'decor' && name.length < 7) {
+    // Historical snapshots use an ordinary "terrain" reference group. Only
+    // typed direct authoring tags declare the new physical terrain contract.
+    if (name === 'terrain' && n.type !== 'instance') { if (CONTAINERS.includes(n.type) && n.children.length) notes.push(`${n.type} "${name}" is not read: ungroup it so its instances sit directly in the frame`); continue; }
+    if (tag === 'terrain' && !['terrain:court', 'terrain:void', 'terrain:entrance'].includes(name)) { problems.push(`"${name}" requires an explicit terrain:court, terrain:void or terrain:entrance tag`); continue; }
+    if (!['ledge', 'block', 'ladder', 'pond', 'terrain', 'origin', 'soil', 'designed', 'replace-picture', 'furnish-place', 'decor', ...MARKERS].includes(tag) || (tag === 'ledge' || tag === 'block') && !STYLES.includes(name.slice(6)) || tag === 'decor' && name.length < 7) {
       if (n.type === 'instance') notes.push(`unknown instance "${name}" is ignored`);
       else if (CONTAINERS.includes(n.type) && n.children.length) notes.push(`${n.type} "${name}" is not read: ungroup it so its instances sit directly in the frame`);
       continue;
     }
     const geometry = [n.x, n.y, n.width, n.height];
+    if (tag === 'terrain' && (n.type !== 'instance' || !geometry.every(Number.isSafeInteger) || n.width <= 0 || n.height <= 0 || !Number.isSafeInteger(n.x+n.width) || !Number.isSafeInteger(n.y+n.height))) { problems.push('terrain requires a direct editable instance with positive integer native bounds; its geometry is not rounded'); continue; }
     if (tag === 'pond') {
       if (n.type !== 'instance') {
         problems.push('pond requires a direct editable instance');
@@ -79,6 +84,9 @@ export function gardenOf(frame) {
     if (Math.abs(ponds[i].x - ponds[j].x) < ponds[i].hw + ponds[i].bank + ponds[j].hw + ponds[j].bank) problems.push(`pond ${j + 1} and pond ${i + 1} bank extents overlap`);
   }
   if (ponds.length) garden.ponds = ponds;
+  const terrain = found.filter(f => f.tag === 'terrain').map(f => ({ kind:f.name.slice(8),x:f.x-ox,rise:sy-f.y,w:f.w,h:f.h })).sort(order);
+  for(let i=0;i<terrain.length;i++)for(let j=0;j<i;j++)if(terrain[i].kind===terrain[j].kind&&terrain[i].x<terrain[j].x+terrain[j].w&&terrain[j].x<terrain[i].x+terrain[i].w)problems.push(`terrain ${j+1} and terrain ${i+1} of the same kind overlap`);
+  if(terrain.length)garden.terrain=terrain;
   if (found.some(f => f.tag === 'replace-picture')) garden.replacePicture = true;
   if (found.some(f => f.tag === 'furnish-place')) garden.furnishPlace = true;
   for (const key of MARKERS) { const list = found.filter(f => f.tag === key).map(spot).sort(order); if (list.length) garden[key] = list; }
@@ -95,7 +103,7 @@ const where = (x, rise) => `x ${String(x > 0 ? '+' + x : x).padStart(4)}  rise $
 
 export function check(garden, stage, world) {
   const origin = world.origin(stage), base = Math.floor(world.ground(origin)), layout = world.levels.build(garden, stage, origin, world.ground, world.wet, 1, world.environment);
-  const effective = world.levels.pondWorld ? world.levels.pondWorld(layout, world.ground, world.wet, world.environment) : world;
+  const effective = world.levels.terrainWorld ? world.levels.terrainWorld(layout, world.ground, world.wet, world.environment) : world.levels.pondWorld ? world.levels.pondWorld(layout, world.ground, world.wet, world.environment) : world;
   const reachable = world.levels.reachable || world.layouts.reachable;
   const sets = [0, 1, 2, 3].map(t => reachable(layout, t, effective.ground, effective.wet)), raw = p => sets.findIndex(s => s[p.id]);
   const blocks = layout.platforms.filter(p => p.solid && raw(p) >= 0), tiers = new Map(layout.platforms.map(p => {

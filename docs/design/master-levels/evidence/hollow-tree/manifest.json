@@ -1,0 +1,537 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "authority": "Actual captured Figma MASTER Level 01 compiled into normal runtime geometry and bound native ART. Local built review fixture only; no release claim.",
+  "initialization": "Unmodified built review layout1 fixture: isolated memory storage, one initial court spawn, eight starting seeds and empty garden. No actor, clock, health or resource changes after controls begin.",
+  "scope": {
+    "stage": 1,
+    "seed": 1,
+    "browserClass": "mech",
+    "phone": [
+      390,
+      844
+    ],
+    "desktop": [
+      1000,
+      650
+    ],
+    "nativeWorld": [
+      640,
+      400
+    ],
+    "liveDeploymentVerified": false
+  },
+  "source": {
+    "file": "TC0PHGMTCMR6im4hb3CSbF",
+    "page": "508:11825",
+    "master": "863:15150",
+    "editor": "863:15149",
+    "row": "887:13528",
+    "art": "887:13531",
+    "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+    "geometryCapture": "../../art/hollow-master-geometry-actual.json",
+    "geometryCaptureSHA256": "a46217e0ab5cc99f2b184c19700ceaef1ede62876e9660b7546d9ff284916536",
+    "runtimeLevelsDataSHA256": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee",
+    "runtimeScenesDataSHA256": "d1e226233a6fd8a64a69a0da8b3795699fc8d9b7e7ece010f4ecb6ec283d4512"
+  },
+  "baselineSHA256": {
+    "/index.html": "e7884b2fce07933ec23be6196520c8f41ea4be90f03e364f94637696f596ffde",
+    "/review.html": "52d52a89bfd9da0c1c6d690605bcf864f0b26a0c52d80b79915f0304052ed355",
+    "/levels-data.js": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee",
+    "/levels.js": "e77a93bfe292a5bc427be341ad152abf0779830c7e9c1a01ddc365b4aa45df51",
+    "/level-scenes-data.js": "d1e226233a6fd8a64a69a0da8b3795699fc8d9b7e7ece010f4ecb6ec283d4512",
+    "/level-scenes.js": "255994d5fc0fe6dc2784d4176974c1be99aa5590ee7c9739dd7d10865352f41e",
+    "/stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+    "/campaign-architecture.js": "f8c880942bcc2ca6c107f62c594dafebdcc8b4563f34af2861b99de5874ffb43",
+    "/garden-places.js": "23fa6dca0de07f492ac4e62f474e2554059b45dbbd27a689fbda758f0db1e191"
+  },
+  "adapters": {
+    "candidate": 0,
+    "terrain": 0,
+    "playerResolver": 0,
+    "artwork": 0,
+    "resourcesAfterInput": 0
+  },
+  "normalEngineBodiesUnchanged": true,
+  "execution": {
+    "runtime": "Node v22.23.3",
+    "runner": "../capture.cjs",
+    "runnerSHA256": "16b5e39734f57dfa0d8e2939d3d4d44b36f419a49e9c57610f8b465e610d054f",
+    "sourceSnapshot": "capture-source.txt",
+    "browserReport": "browser-review.json",
+    "browserReportSHA256": "fc271e2badd6f623fce85080ad3bdf54e754e94777a0c39cd5baf36a1774f330",
+    "startedAt": "2026-10-10T11:23:21.532Z",
+    "finishedAt": "2026-10-10T11:25:25.504Z",
+    "originalCaptureDirectory": "/workspace/scratch/max-master-hollow-native-final-04",
+    "command": "PLAYWRIGHT_MODULE=/installed/playwright node docs/design/master-levels/evidence/capture.cjs --out /fresh/outside/repo --story yes --world yes"
+  },
+  "compilationReceipt": {
+    "file": "compilation-receipt.json",
+    "sha256": "ccc61ec82469b7cea6bbc6f7d2950bd67db22b277313bc66a29ed91a2bcb2408"
+  },
+  "screenshots": [
+    {
+      "file": "garden-01-phone.png",
+      "sha256": "f49c861782dc46aa997fc8b56db05dabc8c8b6d8bb7451d9f744cd0328fcf240",
+      "width": 390,
+      "height": 844,
+      "viewport": "phone",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": -65,
+        "y": -182,
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "anchor": 190
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 0,
+          "y": 8,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": null,
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 8,
+        "clock": 6.233300000000014,
+        "elapsed": 9.549500000000016,
+        "seeds": 8,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-phone-lantern.png",
+      "sha256": "d68b43b7e97a4cd8940362eae25383997e7b3b3c856835a4bd93c907d7139280",
+      "width": 390,
+      "height": 844,
+      "viewport": "phone",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": 21.589549381090247,
+        "y": -182,
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "anchor": 190
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 82.65181416000026,
+          "y": 8,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": null,
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 8,
+        "clock": 8.816400000000032,
+        "elapsed": 12.516099999999996,
+        "seeds": 10,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-phone-lower-floor.png",
+      "sha256": "8b078659c28024a4186da625e9b0657fc7e03f3a062c6eb353459e35bf659efb",
+      "width": 390,
+      "height": 844,
+      "viewport": "phone",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": 174.00000144475777,
+        "y": -111.86180879906887,
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "anchor": 190
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 239,
+          "y": 86,
+          "vx": 0,
+          "vy": 0,
+          "st": "toCrouch",
+          "grounded": true,
+          "platform": "1:b3",
+          "ladderId": null
+        },
+        "soil": 86,
+        "floor": 86,
+        "clock": 15.332599999999987,
+        "elapsed": 19.332499999999957,
+        "seeds": 11,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-phone-left-wall.png",
+      "sha256": "79f4412d6ec0ad9aafcbe510d808bd26c3804fa851eaeba140f7d72cfeea649c",
+      "width": 390,
+      "height": 844,
+      "viewport": "phone",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": -210.30898338654953,
+        "y": -104.00000000000003,
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "anchor": 190
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": -141,
+          "y": 86,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "1:b3",
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 86,
+        "clock": 24.798599999999976,
+        "elapsed": 30.11539999999992,
+        "seeds": 11,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-phone-story-passed.png",
+      "sha256": "fc969fe0b2b1a1ec01f517fb0be3d458b050af5a00f4a1f63082a3f5214d4663",
+      "width": 390,
+      "height": 844,
+      "viewport": "phone",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": -56.63316329387892,
+        "y": -181.99999999999972,
+        "w": 130,
+        "h": 282,
+        "scale": 3,
+        "anchor": 190
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 8.3668538000007,
+          "y": 8,
+          "vx": 0,
+          "vy": 0,
+          "st": "task",
+          "grounded": true,
+          "platform": null,
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 8,
+        "clock": 42.214200000000304,
+        "elapsed": 48.964700000000555,
+        "seeds": 10,
+        "plots": [
+          {
+            "id": 1,
+            "x": 2.3668538000006993,
+            "health": 1,
+            "moisture": 0.25799960000000005
+          }
+        ],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-desktop.png",
+      "sha256": "e6388595134457efe7804de86962dabd79fbe09f897d8fb33c3e9a5bab97e1cf",
+      "width": 1000,
+      "height": 650,
+      "viewport": "desktop",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": -167,
+        "y": -144,
+        "w": 334,
+        "h": 217,
+        "scale": 3,
+        "anchor": 152
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 0,
+          "y": 8,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": null,
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 8,
+        "clock": 6.666099999999999,
+        "elapsed": 10.06630000000001,
+        "seeds": 8,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-world.png",
+      "sha256": "76c4c3b7ae74a6ddbf7edfb00068f8013fab603dc00033764510c01cd0fcf3bc",
+      "width": 640,
+      "height": 400,
+      "viewport": "world-native",
+      "subject": "Actual native draw pass at explicit full-source camera",
+      "camera": {
+        "x": -320,
+        "y": -272,
+        "w": 640,
+        "h": 400,
+        "anchor": 280
+      },
+      "mutationCheck": {
+        "mutableBindingCount": 405,
+        "objectCount": 1978,
+        "gameplayObjectsUnchanged": true,
+        "domUnchanged": true,
+        "liveCanvasUnchanged": true,
+        "errors": []
+      }
+    },
+    {
+      "file": "garden-01-desktop-lower-floor.png",
+      "sha256": "c707f4021ccc04ccba6170464234d3c55da5cedf6b4e7bb62847b0f01b0e9801",
+      "width": 1000,
+      "height": 650,
+      "viewport": "desktop",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": 72.00000671824618,
+        "y": -73.73703085097507,
+        "w": 334,
+        "h": 217,
+        "scale": 3,
+        "anchor": 152
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 239,
+          "y": 86,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "1:b3",
+          "ladderId": null
+        },
+        "soil": 86,
+        "floor": 86,
+        "clock": 15.83199999999993,
+        "elapsed": 19.849199999999907,
+        "seeds": 11,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-desktop-left-wall.png",
+      "sha256": "f9abb85fb4af1fb58dfa8b576b9df881c1065a794d801334e28bdeefd292c22e",
+      "width": 1000,
+      "height": 650,
+      "viewport": "desktop",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": -310.4870036966075,
+        "y": -66.00000000000003,
+        "w": 334,
+        "h": 217,
+        "scale": 3,
+        "anchor": 152
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": -141,
+          "y": 86,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "1:b3",
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 86,
+        "clock": 25.348199999999924,
+        "elapsed": 32.532099999999836,
+        "seeds": 11,
+        "plots": [],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    },
+    {
+      "file": "garden-01-desktop-story-passed.png",
+      "sha256": "c0cbfc2be66898af97498dbe92ddf4327a40a1d3a75144715542486dcd1ca74d",
+      "width": 1000,
+      "height": 650,
+      "viewport": "desktop",
+      "subject": "Actual game iframe only, no image resizing",
+      "camera": {
+        "x": -159.42538937006125,
+        "y": -143.99999999999986,
+        "w": 334,
+        "h": 217,
+        "scale": 3,
+        "anchor": 152
+      },
+      "movement": {
+        "stage": 1,
+        "seed": 1,
+        "frame": "garden-01b",
+        "classId": "mech",
+        "sourceKey": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+        "player": {
+          "x": 7.574624655557011,
+          "y": 8,
+          "vx": 0,
+          "vy": 0,
+          "st": "task",
+          "grounded": true,
+          "platform": null,
+          "ladderId": null
+        },
+        "soil": 8,
+        "floor": 8,
+        "clock": 43.74689999999979,
+        "elapsed": 65.09739999999998,
+        "seeds": 10,
+        "plots": [
+          {
+            "id": 1,
+            "x": 1.5746246555570114,
+            "health": 1,
+            "moisture": 0.2574007999999999
+          }
+        ],
+        "paused": false,
+        "ended": false,
+        "coopActive": false
+      }
+    }
+  ],
+  "unarchivedAdditionalCaptures": [
+    {
+      "file": "garden-01-phone-return-court.png",
+      "sha256": "cccab53558815921380b35324dd1ec364e75752e791062bc23e140e155241a0a",
+      "retainedAt": "/workspace/scratch/max-master-hollow-native-final-04/garden-01-phone-return-court.png",
+      "reason": "Additional camera transition retained in the complete scratch capture; selected package has ten views."
+    },
+    {
+      "file": "garden-01-desktop-lantern.png",
+      "sha256": "e879995c45a42ad53d536776abef47e3b88b56ed51c55278bf9fe4b4de3d2c51",
+      "retainedAt": "/workspace/scratch/max-master-hollow-native-final-04/garden-01-desktop-lantern.png",
+      "reason": "Additional camera transition retained in the complete scratch capture; selected package has ten views."
+    },
+    {
+      "file": "garden-01-desktop-return-court.png",
+      "sha256": "148e8a29bb818ae4bf94f9321b1695c04d630cc9eca2df2a9829cbc5e7093dbe",
+      "retainedAt": "/workspace/scratch/max-master-hollow-native-final-04/garden-01-desktop-return-court.png",
+      "reason": "Additional camera transition retained in the complete scratch capture; selected package has ten views."
+    }
+  ],
+  "focusedPhysics": {
+    "file": "terrain-focused-test.log",
+    "sha256": "e2c7560415d5600c32f90200db92f6a00bc09333153381614ca86840915be34d",
+    "testSource": "../../../../../tests/authored-terrain-runtime.test.cjs",
+    "testSourceSHA256": "cf487dcc9469ed0b6e3f0c60a773e4f2a0331e4d0b593ba9127413fc42349a16",
+    "passedTests": 7,
+    "ordinaryClassRateCases": 18,
+    "actualCairnAbilityFloorRateCases": 24,
+    "browserCoverageIsSeparate": true
+  },
+  "preservedAttempts": [
+    {
+      "path": "/workspace/scratch/max-master-hollow-native-story-01",
+      "status": "failed",
+      "reason": "Observer lacked iframe focus; first ordinary walk timed out. Exact prior runner and failed report retained."
+    },
+    {
+      "path": "/workspace/scratch/max-master-hollow-native-story-02",
+      "status": "passed-interim",
+      "reason": "Earlier normal-source capture before corrected page metadata and final Cairn lower-floor fix."
+    },
+    {
+      "path": "/workspace/scratch/max-master-hollow-native-final-03",
+      "status": "failed",
+      "reason": "Concurrent full-suite build deleted/recreated dist at 11:21:01 UTC; strict check caught temporary plant PNG404s. Phone movement/Tend passed; full failed report and exact runner retained."
+    }
+  ],
+  "visualReview": "All ten selected unmodified native PNGs visually inspected: game iframe only, readable court/tree/ladder/underworld, intact lower walls and actual return planting. World image is the explicitly documented native offscreen camera."
+}

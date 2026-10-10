@@ -78,7 +78,8 @@ test('offline source preparation rejects invalid seeds and import refuses the wr
 });
 
 test('normal compiled authored ponds round-trip through editable drafts without using their depressed origin as soil', async () => {
-  const baseline = await sourcePromise, m = await modulePromise;
+  await sourcePromise;
+  const m = await modulePromise;
   const { gardenOf, gameWorld } = await import('../scripts/figma-levels.mjs');
   const { importDrafts } = await importerPromise;
   const harness = require('./game-harness.cjs'), originalLoad = harness.loadGame;
@@ -86,10 +87,14 @@ test('normal compiled authored ponds round-trip through editable drafts without 
     { x: 0, rise: -2, hw: 140, bank: 100, depth: 24 }];
   const data = { gardens: { 2: [{ frame: 'garden-02b', replacePicture: true,
     ledges: [], blocks: [], reward: [], trial: [], ponds: geometry }] } };
-  let source;
+  let baseline, source;
   // Exercise the public snapshot path and its private frameOf with the real
   // compiler/runtime. Only the process-local test loader receives source data.
   try {
+    // Procedural water has its own baseline; production may already contain
+    // authored MASTER ponds, which correctly remain editable in its snapshot.
+    harness.loadGame = saved => originalLoad({ ...saved, __levelData: { gardens: {} } });
+    baseline = m.snapshot(1);
     harness.loadGame = saved => originalLoad({ ...saved, __levelData: data });
     source = m.snapshot(1);
   } finally { harness.loadGame = originalLoad; }

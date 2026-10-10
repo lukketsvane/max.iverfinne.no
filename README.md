@@ -228,7 +228,8 @@ The project deliberately remains a small static game rather than a framework app
 - `coop-game.inc.js` — game-state replication, guest action validation and co-op simulation glue.
 - `stage-layout.js` — seeded platform geometry: generated gardens 1–19 with reach guarantees, the authored Crown and the authored fallback.
 - `garden-places.js` — each garden's explorable place: 20 designs drawn on a 6 px grid (rock, one-way ledges, false walls, caches, decor), placed beside the routes by the run seed and baked into native pixel art.
-- `levels.js` / `levels-data.js` — gardens designed in Figma, which replace the generated ones when their frame is live. `levels-data.js` is written by `npm run figma:levels` (see `docs/design/figma-levels.md`).
+- `levels.js` / `levels-data.js` — authored gameplay geometry. The current source is the twenty native rows in Figma MASTER; [MAX Native Level Studio](docs/design/figma-level-studio/plugin/README.md) captures and previews those rows through the normal compiler. Garden 1 uses the verified Hollow Tree row.
+- `level-scenes.js` / `level-scenes-data.js` — native editable MASTER artwork, bound to the exact compiled geometry source. The renderer preserves integer registration, source order and unchanged PNG crops; isolated modes keep their own scenes.
 - `run-director.inc.js` — raids, time pressure, specialist enemies, hazards and bosses.
 - `rat-enemies.inc.js` — rat behavior and native rat integration.
 - `secrets.inc.js` — rare seeded nights, hidden finds, date decorations and easter eggs (see `docs/design/secrets.md`).

@@ -1,0 +1,22 @@
+{
+  "format": "max-authenticated-native-source-audit/v1",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "captureFrom": "2026-10-10T11:16:52.654Z",
+  "captureUntil": "2026-10-10T11:17:06.076Z",
+  "capture": "docs/design/master-levels/evidence/figma-assets/production-capture.json",
+  "captureSHA256": "541d292a677fe96014e6c0ddc7c74e7671e3dac5237ed74e0404bc0080d4f0d3",
+  "manifest": "assets/figma-manifest.json",
+  "manifestSHA256": "332492df488c2d11bbc53ab4d66ee95ff7a06ab27ce680c95da3968c082d2f53",
+  "actualProductionPNGCount": 665,
+  "manifestProductionPNGCount": 665,
+  "matchingNodeIdsNativeSizesAndActualImageHashes": 665,
+  "matchingRepositoryPNGByteHashes": 665,
+  "duplicatePaths": [],
+  "issues": [],
+  "canonicalNativePaints": 665,
+  "unitTransforms": 1355,
+  "registrationIssues": [],
+  "originalHierarchyRowsUnchanged": 1349,
+  "repositoryAssetsOrManifestChanged": false
+}

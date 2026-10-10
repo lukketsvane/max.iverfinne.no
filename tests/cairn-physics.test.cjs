@@ -3,8 +3,9 @@ const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
 
 function close(actual,expected,label){assert.ok(Math.abs(actual-expected)<1e-7,`${label||'value'}: ${actual} !== ${expected}`);}
+// Keep the original Seed Vault picture footing for isolated Cairn physics.
 function fresh(mode){
-  const h=loadGame({__pictures:true,__randomSeed:42}),g=h.game;
+  const h=loadGame({__pictures:true,__randomSeed:42,__levelData:{gardens:{}}}),g=h.game;
   g.resetRogueRun('CAIRN',{classId:'bulwark',skinId:'ember',mode});
   g.runActive=true;g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];
   Object.assign(g.P,{x:150,y:g.surfaceY(150),vx:0,vy:0,grounded:true,platform:'',st:'free',wet:false,tun:0,brace:0,face:1,pounce:null});

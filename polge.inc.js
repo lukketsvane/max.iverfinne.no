@@ -209,7 +209,7 @@ function updateClassCombat(dt){
   for(var t=0;t<steps;t++)for(var i=classShots.length-1;i>=0;i--){
     var s=classShots[i],oldX=s.x,oldY=s.y;s.life-=step;s.x+=s.vx*step;s.y+=s.vy*step;
     if(!coopGuest()){
-      var blocked=window.MaxStageLayout.inRock(stageLayout(),s.x,s.y)||s.y>=surfaceY(s.x)-1;
+      var blocked=window.MaxStageLayout.inRock(stageLayout(),s.x,s.y)||s.y>=bodyFloorY(s.x,s.y+1)-1;
       if(blocked){s.x=oldX;s.y=oldY;}
       var contact=!blocked&&floatKrek.find(function(k){if(!k.combatId)k.combatId=++classPestId;return s.hit.indexOf(','+k.combatId+',')<0&&enemyDistance(k,s.x,s.y)<(s.kind==='spore'?8:6);});
       var m=coop&&coop.members[s.owner];

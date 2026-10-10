@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "status": "actual-master-source-written-to-runtime-data",
+  "geometry": {
+    "path": "docs/design/master-levels/art/hollow-master-geometry-actual.json",
+    "sha256": "a46217e0ab5cc99f2b184c19700ceaef1ede62876e9660b7546d9ff284916536"
+  },
+  "artChunks": [
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-000000.json",
+      "sha256": "80c0833d0c9355561b93daa7b7f975645d4fc74902bd0bfd3c5b33774b4be674"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-000250.json",
+      "sha256": "b46349dc8bb14702ba1f87fcbae73e0de48f1d26056fd473edd9e855aa219686"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-000500.json",
+      "sha256": "57754b053f6add4b78f496a8b43c7ecf0a02a4dbcedfe862b4c7861f8b1ecfca"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-000750.json",
+      "sha256": "209d50d9898440a48a8d681fdb66fd3842dd4e7ce18a472e3baa83b6469b5f95"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-001000.json",
+      "sha256": "8786a07ab2f26bb234536a8fb277ac2a15cba9fd87d6f5250bf2a0dfb546b395"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-001250.json",
+      "sha256": "cb79c56001602becb49c03a8668d714e3a342141f786a36ec2b499d614ebf542"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-001500.json",
+      "sha256": "ce06b3ee60d34730cf1f4e0d73392743a1a996b7c162b9b35c3bf49726a76057"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-001750.json",
+      "sha256": "c571a5e99391f5f9fb43f196e884ec63e7b8e7331c3cc7eaa1f1975bf2d9fb14"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-002000.json",
+      "sha256": "3d644fa8c3f52553fdca651c20aaee88b12a6ba8ae61c687fb50ebcd043d3dff"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-002250.json",
+      "sha256": "eab22af85586be3560c2a24f301d37ad3414b2cbe503afe8d693a3a59ea7e2aa"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-002500.json",
+      "sha256": "ef642d9bb01126be5471793df1f03817ef0d23ab34887f50fe716d96f8663755"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-002750.json",
+      "sha256": "da764f168da590dd8aa6e66d18d9e7abc32d62cc3f7a9430f55ab762f6b07674"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-003000.json",
+      "sha256": "014d64914913151c3bd06abbcb1515f565bc248e933f5d61996d3411f9e3b211"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-003250.json",
+      "sha256": "82cb3fb8369439d7259ee2ae41d7f174f53ac72b386a1e353a7d2c4180a61b97"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-003500.json",
+      "sha256": "3395bbcbf557656f3c65e22dce2b16f6e085a660232439f504d64451e7e5733b"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-003750.json",
+      "sha256": "b7e99e7b615a74028b9b5e98150197a39364e1a783f10397fc046e68d910ffd4"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-004000.json",
+      "sha256": "1d062cd04f17dff2b00d8066360a8a6e2bc7d7bf50a48284bb266181944a7bf7"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-004250.json",
+      "sha256": "f4ccd061a7a3a695bd34f8aff49dd9b17ed0dd8590c1693c4a1804e991f8efa1"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-004500.json",
+      "sha256": "dfd70947cd972501b53b53047597bd8508d4520906d2fdb88c7b21f9775597a8"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-004750.json",
+      "sha256": "570cfe47dd3590c11903391f13e54b4b118f50f1283f313fcab144e210e69562"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-005000.json",
+      "sha256": "d12dad6d606827f721305fb21cae77655400062e35f2419229cc504fdca90eea"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-005250.json",
+      "sha256": "b39a5e653cd9653e70cf2afab904f7c582b8dd7fa90fcf06115e7e03129d3b21"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-005500.json",
+      "sha256": "b44ff413ecfda34d0561cc43d3113e83b781acd1a8c7ac4f3bc6f8ac77c2bcb1"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-005750.json",
+      "sha256": "060fb1c5a342d81febd50186d1eff595cbe9b8aead75bf571611456a90def1c5"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-006000.json",
+      "sha256": "1191de77f964eca380d2494e19018c6b57e3856379c8f86e8bee247bf56a41dd"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-006250.json",
+      "sha256": "1748e4e59d3bde85b04517a03b2d4e55ef7737174573f0a70d359f93ea98726e"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-006500.json",
+      "sha256": "b3a598e936766392acde657600186ef0e9829bfeb3b46293609d9f38a2918de2"
+    },
+    {
+      "path": "docs/design/master-levels/art/hollow-tree-actual-chunks/chunk-006750.json",
+      "sha256": "5c045eaa0d8472ca9dff3e44125e0374d700543fdec5ab018fe5bda0daa164a4"
+    }
+  ],
+  "baselineLevelsDataSHA256": "c69f1d98bd42f966bb3bde3d5ad2e595b6f527829abd78f3751fee074e35a960",
+  "candidateLevelsDataSHA256": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee",
+  "levelScenesDataSHA256": "d1e226233a6fd8a64a69a0da8b3795699fc8d9b7e7ece010f4ecb6ec283d4512",
+  "sceneSourceDigest": "0fadcf253841cab305558a0943a39329772d6ab65a74fcad428714e9e57d5ba0",
+  "bindings": [
+    {
+      "stage": 1,
+      "frame": "garden-01b",
+      "rowId": "887:13528",
+      "sourceId": "887:13528",
+      "sourceDigest": "62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f",
+      "artDigest": "a65134345db04043e1b84f44d4249d41b9b8cee7ae77d179bba5337e96f972d0",
+      "geometryDigest": "52451d6a56c4d8dde1b85bf904e1cbfd7b0d7f270fa522689e34f4f49263fea6"
+    }
+  ],
+  "replacedStages": [
+    1
+  ],
+  "normalCompiler": "scripts/master-levels.mjs -> scripts/figma-levels.mjs exportLevels()",
+  "unchangedStages": [],
+  "sourcePNGs": [
+    {
+      "path": "assets/tiles-v1/sanctuary.png",
+      "imageHash": "8b0552caf2119b1ce407f92d45fc0c09128fccbf",
+      "width": 128,
+      "height": 75,
+      "sha256": "2dab27519a47db0d037ea89aa3a7b0aca12a96df2a4971b042e0708ebc6c21ef"
+    }
+  ],
+  "pixels": "Editable ordered integer primitives and unchanged native PNG crops, not a flattened scene PNG",
+  "productionActivated": false
+}

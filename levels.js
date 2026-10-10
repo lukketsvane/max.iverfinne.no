@@ -50,6 +50,30 @@
       return { id: stage + ':pond:' + i, authored: true, b: Math.floor(cx / 760), cx: cx, hw: p.hw, bank: p.bank, depth: p.depth, level: base - p.rise, pop: false, deco: null };
     });
   }
+  function authoredTerrain(garden, stage, origin, base) {
+    if (!Array.isArray(garden.terrain)) throw new Error('Authored terrain must be an array');
+    return garden.terrain.map(function (r, i) {
+      if (!r || ['court', 'void', 'entrance'].indexOf(r.kind) < 0 || !['x', 'rise', 'w', 'h'].every(function (key) { return Number.isSafeInteger(r[key]); }) || r.w <= 0 || r.h <= 0 || !Number.isSafeInteger(r.x + r.w) || !Number.isSafeInteger(r.rise - r.h)) throw new Error('Authored terrain ' + i + ' requires a court, void or entrance with positive integer native bounds');
+      if (garden.terrain.some(function (q, j) { return j < i && q.kind === r.kind && r.x < q.x + q.w && q.x < r.x + r.w; })) throw new Error('Authored terrain regions of the same kind must not overlap');
+      return { id: stage + ':terrain:' + i, kind: r.kind, x: origin + r.x, y: base - r.rise, w: r.w, h: r.h };
+    });
+  }
+  function surfaceAt(layout, x, ground) {
+    var regions = layout && layout.terrain || [], y = ground(x);
+    for (var i = 0; i < regions.length; i++) { var r = regions[i]; if (r.kind === 'court' && x >= r.x && x <= r.x + r.w) y = r.y; }
+    for (var j = 0; j < regions.length; j++) { var e = regions[j]; if (e.kind === 'entrance' && x > e.x && x < e.x + e.w) y = e.y + e.h; }
+    return y;
+  }
+  function floorAt(layout, x, y, ground) {
+    var regions = layout && layout.terrain || [];
+    if (!Number.isFinite(y)) return ground(x);
+    for (var i = 0; i < regions.length; i++) { var r = regions[i]; if ((r.kind === 'void' && x >= r.x && x <= r.x + r.w && y >= r.y) || (r.kind === 'entrance' && x > r.x && x < r.x + r.w)) return r.y + r.h; }
+    return ground(x);
+  }
+  function terrainWorld(layout, ground, wet, environment) {
+    var world = pondWorld(layout, ground, wet, environment);
+    return layout && layout.terrain && layout.terrain.length ? { ground: function (x) { return surfaceAt(layout, x, world.ground); }, wet: world.wet } : world;
+  }
   function floorUnder(ground, x, w) { var f = Infinity; for (var i = x; i <= x + w; i++) f = Math.min(f, ground(i)); return f; }
   function byX(a, b) { return a.x - b.x; }
   function highest(a, b) { return b.y < a.y ? b : a; }
@@ -132,19 +156,27 @@
     var layout = { id: 'garden-' + stage + '-' + kind, stage: stage, theme: kind, kind: kind, origin: origin, designed: true, frame: garden.frame, platforms: [], routes: [], rewards: [], trials: [], bonuses: [], spots: {}, decor: [] };
     if (garden.replacePicture === true) layout.replacePicture = true;
     if (garden.furnishPlace === true) layout.furnishPlace = true;
+    if (garden.masterSceneSourceKey != null) {
+      if (typeof garden.masterSceneSourceKey !== 'string' || !/^[a-f0-9]{64}$/.test(garden.masterSceneSourceKey)) throw new Error('MASTER scene source binding requires a lowercase SHA-256 digest');
+      layout.masterSceneSourceKey = garden.masterSceneSourceKey;
+    }
     if (garden.ponds != null) {
       var ponds = authoredPonds(garden, stage, origin, base);
       if (ponds.length) {
         layout.ponds = ponds; layout.authoredSoilY = base;
-        var world = pondWorld(layout, ground, wet, environment); ground = world.ground; wet = world.wet;
       }
     }
+    if (garden.terrain != null) {
+      var regions = authoredTerrain(garden, stage, origin, base);
+      if (regions.length) { layout.terrain = regions; layout.authoredSoilY = base; }
+    }
+    if (layout.ponds || layout.terrain) { var world = terrainWorld(layout, ground, wet, environment); ground = world.ground; wet = world.wet; }
     var shape = (garden.ledges || []).map(function (l, i) { return { id: stage + ':d' + i, x: origin + l.x, y: base - l.rise, w: l.w, style: l.style }; })
       .concat((garden.blocks || []).map(function (b, i) { return { id: stage + ':b' + i, x: origin + b.x, y: base - b.rise, w: b.w, h: b.h, style: b.style, solid: true }; }));
     layout.platforms = shape.map(function (s) {
       var c = s.x + Math.floor(s.w / 2);
       if (s.solid) return { id: s.id, x: s.x, y: s.y, w: s.w, h: s.h, depth: 6, route: s.x < origin ? -1 : 1, style: s.style, solid: true, optional: false, floor: Math.round(ground(c)) };
-      return { id: s.id, x: s.x, y: Math.min(s.y, Math.floor(floorUnder(ground, s.x, s.w)) - CLEAR), w: s.w, depth: kind === 'crossing' ? 8 : 6, route: c < origin ? -1 : 1, style: s.style, optional: false, floor: Math.round(ground(c)) };
+      return { id: s.id, x: s.x, y: layout.terrain ? s.y : Math.min(s.y, Math.floor(floorUnder(ground, s.x, s.w)) - CLEAR), w: s.w, depth: kind === 'crossing' ? 8 : 6, route: c < origin ? -1 : 1, style: s.style, optional: false, floor: Math.round(ground(c)) };
     });
     function anchor(m) {
       var x = origin + m.x, y = base - m.rise, s = L.at({ platforms: shape }, x, y, SNAP), p = s && layout.platforms[shape.indexOf(s)], g = ground(x);
@@ -163,7 +195,7 @@
     return layout;
   }
   function layout(stage, origin, ground, wet, seed, environment) { var garden = pick(stage, seed); return garden ? build(garden, stage, origin, ground, wet, seed, environment) : null; }
-  var api = { layout: layout, build: build, pick: pick, reachable: reachable, pondNear: pondNear, pondAllowed: pondAllowed, pondWorld: pondWorld };
+  var api = { layout: layout, build: build, pick: pick, reachable: reachable, pondNear: pondNear, pondAllowed: pondAllowed, pondWorld: pondWorld, terrainWorld: terrainWorld, surfaceAt: surfaceAt, floorAt: floorAt };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxLevels = api;
 })(typeof window === 'object' ? window : globalThis);

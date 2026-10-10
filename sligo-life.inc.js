@@ -114,7 +114,7 @@ function sligoAI(c,b,lead,m,dt){
   b.x+=b.vx*dt;b.y+=b.vy*dt;
   var hit=window.MaxStageLayout.solid(L,oldX,oldY,b.x,b.y);
   if(hit){b.x=hit.x;b.y=hit.y;if(hit.wall)b.vx=0;if(hit.ceil)b.vy=0;}
-  var floor=surfaceY(b.x),landing=b.vy>=0?window.MaxStageLayout.landing(L,oldX,oldY,b.x,b.y):null;
+  var floor=bodyFloorY(b.x,b.y),landing=b.vy>=0?window.MaxStageLayout.landing(L,oldX,oldY,b.x,b.y):null;
   if(landing&&landing.y<floor)floor=landing.y;
   if(b.y>=floor){b.y=floor;b.vy=0;b.grounded=true;b.platform=landing?landing.id:playerSupportId(b.x,b.y);}
   else{b.grounded=false;b.platform=null;}
@@ -138,7 +138,7 @@ function updateSligoLife(dt){
     var q=sligoMeat[i];q.age+=dt;if(q.age>90){sligoMeat.splice(i,1);continue;}
     var x=q.x,y=q.y;q.vy+=GRAV*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;
     var hit=window.MaxStageLayout.solid(stageLayout(),x,y,q.x,q.y);if(hit){q.x=hit.x;q.y=hit.y;if(hit.wall)q.vx=0;if(hit.ceil)q.vy=0;}
-    var l=window.MaxStageLayout.landing(stageLayout(),x,y,q.x,q.y),floor=Math.min(surfaceY(q.x),l?l.y:Infinity);
+    var l=window.MaxStageLayout.landing(stageLayout(),x,y,q.x,q.y),floor=Math.min(bodyFloorY(q.x,q.y+2),l?l.y:Infinity);
     if(q.y>=floor-2){q.y=floor-2;q.vy=0;q.vx=approach(q.vx,0,100*dt);}
   }
   eachSligo(function(c,m,a){
