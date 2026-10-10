@@ -278,7 +278,12 @@ function stageLayout(){
   if(nightRelayMode())return nightRelayLayout();
   if(highTideMode())return highTideLayout();
   var level=worldLevel();
-  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed)activeStageLayout=(level<=2&&pictureLayout(level))||window.MaxLevels.layout(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed)||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+  if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed){
+    var garden=window.MaxLevels.pick(level,rogueRun.seed);
+    activeStageLayout=null;
+    activeStageLayout=(level<=2&&!(garden&&garden.replacePicture)&&pictureLayout(level))||(garden&&window.MaxLevels.build(garden,level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed))||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+    if(activeStageLayout.designed&&activeStageLayout.furnishPlace)window.MaxPlaces.furnish(activeStageLayout,surfaceY,waterAt);
+  }
   window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
   window.MaxGuardianSites.furnish(activeStageLayout,surfaceY,waterAt);
   if(!activeStageLayout.campaign&&window.MaxStageLayout.profile)activeStageLayout.campaign=window.MaxStageLayout.profile(level);
