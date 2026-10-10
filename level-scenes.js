@@ -230,6 +230,18 @@
     var scene = native.forLayout(layout, ground);
     return scene && scene.row.binding && scene.row.status === 'joined-actual-document-native-art' ? scene : null;
   }
+  function camera(layout, view, ground) {
+    var scene = forLayout(layout, ground);
+    if (!scene || !scene.row.planes.art[9] || !view || view.height <= view.width) return null;
+    if (![view.actorX, view.feet, view.width, view.height, view.headroom].every(Number.isFinite) || view.width <= 0 || view.height <= 0 || view.headroom < 0) return null;
+    var bounds = scene.bounds;
+    // A finite native chamber should fill a portrait view above its upper route.
+    // Outside that chamber the normal camera follows the continuing world.
+    if (view.actorX < bounds.x || view.actorX > bounds.x + bounds.w || view.feet < bounds.y || view.feet > bounds.y + bounds.h) return null;
+    var maxY = Math.floor(view.feet - view.headroom);
+    // Preserve actual body/notch clearance if a high jump reaches the source roof.
+    return Object.freeze({ minY: Math.min(bounds.y, maxY), maxY: maxY });
+  }
   function compare(layout, ground) {
     var scene = forLayout(layout, ground);
     if (!scene) return null;
@@ -259,7 +271,7 @@
     if (!forLayout(layout, ground)) return null;
     return native.draw(ctx, layout, camX, camY, width, height, ground, phase, tiles);
   }
-  var api = Object.freeze({ setData: setData, forLayout: forLayout, draw: draw, presentation: presentation, inspect: inspect, metadata: native.metadata });
+  var api = Object.freeze({ setData: setData, forLayout: forLayout, camera: camera, draw: draw, presentation: presentation, inspect: inspect, metadata: native.metadata });
   if (typeof module === 'object' && module.exports) module.exports = api;
   else { root.MaxLevelScenes = api; if (root.MaxLevelScenesData) setData(root.MaxLevelScenesData); }
 })(typeof window === 'object' ? window : globalThis);
