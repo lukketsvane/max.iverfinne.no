@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const levels = require('../levels.js');
 const stage = require('../stage-layout.js');
 const { loadGame } = require('./game-harness.cjs');
+const { walkRoutes } = require('./platform-sweep.cjs');
 
 function authored(overrides = {}) {
   return { frame: 'garden-03', ledges: [{ x: -24, rise: 96, w: 48, style: 'ruin' }],
@@ -92,4 +93,49 @@ for (const hz of [30, 60, 120]) test(`walking Cairn climbs and returns on the au
   assert.ok(descentFrames > hz);
   assert.equal(g.P.grounded, true); assert.equal(g.P.platform, null);
   assert.equal(g.P.x, entrance.x); assert.ok(Math.abs(g.P.y - entrance.y) < 1);
+});
+
+for (const hz of [30, 60, 120]) test(`the campaign route sweep climbs and returns on imported Figma ladders at ${hz} Hz`, async () => {
+  const compiler = await import('../scripts/figma-levels.mjs');
+  const xml = `<canvas id="508:11825" name="levels" x="0" y="0" width="0" height="0">
+    <frame id="9:1" name="garden-03" x="0" y="0" width="400" height="280">
+      <instance id="9:2" name="soil" x="0" y="240" width="400" height="1" />
+      <instance id="9:3" name="origin" x="200" y="216" width="1" height="24" />
+      <instance id="9:4" name="designed" x="0" y="0" width="1" height="1" />
+      <instance id="9:5" name="ledge:ruin" x="176" y="144" width="48" height="6" />
+      <instance id="9:6" name="ladder" x="193" y="144" width="14" height="96" />
+      <instance id="9:7" name="ledge:ruin" x="226" y="128" width="36" height="6" />
+      <instance id="9:8" name="ledge:ruin" x="226" y="32" width="36" height="6" />
+      <instance id="9:9" name="ladder" x="237" y="32" width="14" height="96" />
+      <instance id="9:10" name="reward" x="241" y="25" width="7" height="7" />
+    </frame>
+  </canvas>`;
+  const exported = compiler.exportLevels(xml, '508:11825', compiler.gameWorld());
+  assert.equal(exported.errors, 0);
+  const h = loadGame(), g = h.game;
+  h.window.MaxLevelData = exported.data;
+  g.resetRogueRun('Imported ladder sweep', { classId: 'bulwark' });
+  g.enterLevel(3);
+  assert.equal(g.P.st, 'float', 'ordinary stage entry retains the real arrival fixture');
+  const L = g.stageLayout(), ladderIds = L.ladders.map(q => q.id), seen = new Map(), update = g.updatePlayer;
+  assert.deepEqual(Array.from(L.routes[0].steps, step => step.kind), ['ladder', 'jump', 'ladder']);
+  g.updatePlayer = function (dt, input) {
+    update(dt, input);
+    if (g.P.st !== 'ladder') return;
+    const key = g.rogueRun.classId, counts = seen.get(key) || { up: 0, down: 0, ladders: new Set() };
+    assert.ok(ladderIds.includes(g.P.ladderId));
+    counts.ladders.add(g.P.ladderId);
+    if (g.heldUp) counts.up++;
+    if (g.heldDown) counts.down++;
+    seen.set(key, counts);
+  };
+  walkRoutes(g, L, hz, 'imported Figma ladder');
+  assert.deepEqual([...seen.keys()], ['mech', 'runner', 'bulwark', 'herbalist']);
+  for (const [classId, counts] of seen) {
+    assert.ok(counts.up > hz * 4, classId + ': climbs both complete heights twice');
+    assert.ok(counts.down > hz * 2, classId + ': returns by each real ladder');
+    assert.deepEqual([...counts.ladders], Array.from(ladderIds));
+  }
+  assert.equal(g.P.grounded, true); assert.equal(g.P.platform, '3:d2');
+  assert.equal(g.rogueRun.world, 3);
 });
