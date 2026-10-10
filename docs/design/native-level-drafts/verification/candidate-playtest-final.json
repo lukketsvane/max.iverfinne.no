@@ -1,0 +1,1555 @@
+{
+  "status": "offline-authored-candidate-physics",
+  "input": "/workspace/max-game/docs/design/native-level-drafts/review/candidate-levels-data.js",
+  "sha256": "678edbfff3c66cc647cb32c827fb2afb863cc93cbe5d30d3aa4a409fda40bc6d",
+  "source": "actual existing engine; synthetic candidate data; no fresh Figma synchronization or production claim",
+  "classes": [
+    "mech",
+    "runner",
+    "bulwark",
+    "herbalist"
+  ],
+  "rates": [
+    30,
+    60,
+    120
+  ],
+  "integration": [
+    {
+      "stage": 1,
+      "seed": 1,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 20,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 1,
+      "seed": 2026,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 1,
+      "seed": 4294967295,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 1,
+      "authoredPlatforms": 14,
+      "furnishedPlatforms": 20,
+      "ladders": 3,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 2026,
+      "authoredPlatforms": 14,
+      "furnishedPlatforms": 21,
+      "ladders": 3,
+      "identical": true
+    },
+    {
+      "stage": 2,
+      "seed": 4294967295,
+      "authoredPlatforms": 14,
+      "furnishedPlatforms": 20,
+      "ladders": 3,
+      "identical": true
+    },
+    {
+      "stage": 3,
+      "seed": 1,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 22,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 3,
+      "seed": 2026,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 22,
+      "ladders": 2,
+      "identical": true
+    },
+    {
+      "stage": 3,
+      "seed": 4294967295,
+      "authoredPlatforms": 16,
+      "furnishedPlatforms": 21,
+      "ladders": 2,
+      "identical": true
+    }
+  ],
+  "cases": [
+    {
+      "stage": 1,
+      "classId": "mech",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 885,
+      "ladderDownFrames": 295,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "runner",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 885,
+      "ladderDownFrames": 295,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "bulwark",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 885,
+      "ladderDownFrames": 295,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "herbalist",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 885,
+      "ladderDownFrames": 295,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "mech",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 1785,
+      "ladderDownFrames": 595,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "runner",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 1785,
+      "ladderDownFrames": 595,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "bulwark",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 1785,
+      "ladderDownFrames": 595,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "herbalist",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 1785,
+      "ladderDownFrames": 595,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "mech",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 3585,
+      "ladderDownFrames": 1195,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "runner",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 3585,
+      "ladderDownFrames": 1195,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "bulwark",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 3585,
+      "ladderDownFrames": 1195,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 1,
+      "classId": "herbalist",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 9,
+      "jumpHops": 152,
+      "ladderUpFrames": 3585,
+      "ladderDownFrames": 1195,
+      "ladderIds": [
+        "1:ladder0",
+        "1:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 4,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 30,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 1188,
+      "ladderDownFrames": 353,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 99,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.481944445
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 65,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 30,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 1176,
+      "ladderDownFrames": 353,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 86,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.12416666673
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 50,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 30,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 1188,
+      "ladderDownFrames": 353,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 110,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.2138888893
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 72,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 30,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 1188,
+      "ladderDownFrames": 353,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 99,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.481944445
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 65,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 60,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 2376,
+      "ladderDownFrames": 713,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 195,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.94583333386
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 124,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 60,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 2388,
+      "ladderDownFrames": 713,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 170,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207503.12416666673
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 107,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 60,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 2376,
+      "ladderDownFrames": 713,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 217,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.8938888893
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 143,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 60,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 2376,
+      "ladderDownFrames": 713,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 195,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207502.94583333386
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 124,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 120,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 4776,
+      "ladderDownFrames": 1433,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 387,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207503.34583333385
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 249,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 120,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 4776,
+      "ladderDownFrames": 1433,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 338,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207503.12416666673
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 209,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            },
+            {
+              "type": "walk",
+              "x": 207536
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 120,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 4776,
+      "ladderDownFrames": 1433,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 431,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207503.23388888928
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 284,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 120,
+      "platforms": 14,
+      "markers": 9,
+      "jumpHops": 138,
+      "ladderUpFrames": 4776,
+      "ladderDownFrames": 1433,
+      "ladderIds": [
+        "2:ladder0",
+        "2:ladder1",
+        "2:ladder2"
+      ],
+      "ladderReturns": 3,
+      "galleryCrossings": 4,
+      "supportedWalks": 0,
+      "returns": 3,
+      "alternativeReturns": [
+        {
+          "label": "rewards:0",
+          "frames": 387,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207503.34583333385
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:0 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        },
+        {
+          "label": "rewards:2",
+          "frames": 249,
+          "actions": [
+            {
+              "type": "walk",
+              "x": 207536
+            },
+            {
+              "type": "walk",
+              "x": 207546
+            }
+          ],
+          "ladderFrames": 0,
+          "reverseReason": "rewards:2 return 2:d3: actual jump 2:d0 -> 2:d3\n\nfalse !== true\n"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "mech",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 1043,
+      "ladderDownFrames": 335,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "runner",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 1043,
+      "ladderDownFrames": 335,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "bulwark",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 1043,
+      "ladderDownFrames": 335,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "herbalist",
+      "hz": 30,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 1043,
+      "ladderDownFrames": 335,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "mech",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 2103,
+      "ladderDownFrames": 675,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "runner",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 2103,
+      "ladderDownFrames": 675,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "bulwark",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 2103,
+      "ladderDownFrames": 675,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "herbalist",
+      "hz": 60,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 2103,
+      "ladderDownFrames": 675,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "mech",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 4223,
+      "ladderDownFrames": 1355,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "runner",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 4223,
+      "ladderDownFrames": 1355,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "bulwark",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 4223,
+      "ladderDownFrames": 1355,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    },
+    {
+      "stage": 3,
+      "classId": "herbalist",
+      "hz": 120,
+      "platforms": 16,
+      "markers": 11,
+      "jumpHops": 161,
+      "ladderUpFrames": 4223,
+      "ladderDownFrames": 1355,
+      "ladderIds": [
+        "3:ladder0",
+        "3:ladder1"
+      ],
+      "ladderReturns": 2,
+      "galleryCrossings": 2,
+      "supportedWalks": 6,
+      "returns": 3,
+      "alternativeReturns": [],
+      "failures": []
+    }
+  ],
+  "failures": [],
+  "passed": true,
+  "total": {
+    "cases": 36,
+    "platforms": 552,
+    "markers": 348,
+    "returns": 108,
+    "failures": 0,
+    "ladderReturns": 84,
+    "galleryCrossings": 96,
+    "jumpHops": 5412,
+    "ladderUpFrames": 87856,
+    "ladderDownFrames": 27796,
+    "supportedWalks": 120,
+    "alternativeReturns": 24,
+    "startMarkerContacts": 36,
+    "allAuthoredMarkerContacts": 384
+  },
+  "sourceBinding": {
+    "fixture": "/workspace/max-game/docs/design/native-level-drafts/review/synthetic-candidate.json",
+    "fixtureStatus": "offline-authored-simulation-not-figma-capture",
+    "kind": "offline-native-geometry",
+    "geometryDigest": "3e25e088d07b81b71331f9f1a50ca3fc7a287152b1bb4747b2b66623e482de9b",
+    "baselineDigest": "0de6ea706de37fcf9f2a881e070db27d7f06cda58b0ac0055cb449cd47911371",
+    "sourceDigest": "216c186c49594472b69ef654ca662c879e95fc04d05994b5084ebb87e8ba08ac",
+    "intendedFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "compiledDataDigest": "678edbfff3c66cc647cb32c827fb2afb863cc93cbe5d30d3aa4a409fda40bc6d",
+    "engineDigests": {
+      "index.html": "8b0f7168771959af89c910cd8a2928d3de9592686141e7b9a2f5346dc647308c",
+      "levels.js": "cef60a5dead1cdfd69dcd14d6de48811869be506282138cffea60421852909dc",
+      "stage-layout.js": "b18ad965662b289f030d8f3786fb0550be40603ce7323f6be6aabf36898fd30c",
+      "stage-expeditions.js": "9251798b2bcb2b6e22a7a52c18d53d4d8702de5044ed564d2afef59f0082f961",
+      "guardian-sites.js": "d1dbd1f3ee6bd08b42ad54fc9bdcd4429fac35a104d21f9011e8e5f0b77a7ee0"
+    }
+  },
+  "resetSemantics": "Each independent route starts once at its grounded C0 soil entry; subsequent movement between platforms, markers, ladder endpoints and gallery crossings uses updatePlayer without per-hop pose placement. Jump retries restore only the same takeoff state. If reversing an outward route meets a nested lower ledge, the runner restores the reached reward state, searches an alternative, then replays actual inputs with no pose placement and rejects automatic furnished supports. Start marker contact/return is a supplemental independent dry-soil walk.",
+  "verified": [
+    "Offline compiled candidate selected by actual stageLayout with picture levels enabled",
+    "Exact authored surface geometry retained within automatic expedition and guardian furnishing",
+    "Two independent clients share identical full furnished layouts for seeds 1, 2026 and 0xffffffff",
+    "All authored collider footprints and required route markers reached by all four base classes at 30/60/120 Hz without traits or perks",
+    "All seven authored ladders independently climbed and descended at all class/rate combinations",
+    "Upper galleries crossed continuously and returned, including supported walking across overlapping coplanar surfaces",
+    "All reward and seed destinations have authored-support dry-soil returns",
+    "Every authored start marker is contacted and left on dry soil at all class/rate combinations"
+  ],
+  "pending": [
+    "Fresh authenticated Figma read and upload; synthetic nodes are local and do not certify live designed markers",
+    "Full artwork composition and browser visual review",
+    "Authored continuous inter-stage connectors",
+    "Runtime activation or production promotion of the candidate level data"
+  ],
+  "startMarkerChecks": [
+    {
+      "stage": 1,
+      "classId": "mech",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "runner",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "bulwark",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "herbalist",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "mech",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "runner",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "bulwark",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "herbalist",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "mech",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "runner",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "bulwark",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 1,
+      "classId": "herbalist",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "mech",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "runner",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "bulwark",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 2,
+      "classId": "herbalist",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "mech",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "runner",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "bulwark",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "herbalist",
+      "hz": 30,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "mech",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "runner",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "bulwark",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "herbalist",
+      "hz": 60,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "mech",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "runner",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "bulwark",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    },
+    {
+      "stage": 3,
+      "classId": "herbalist",
+      "hz": 120,
+      "markers": 1,
+      "contactAndReturn": true
+    }
+  ]
+}

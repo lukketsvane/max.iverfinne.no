@@ -1,6 +1,17 @@
 // This function is bundled into both a local Figma plugin and a use_figma script.
 // All geometry is fixed at native scale; the document copy is an editable review.
 export async function importDrafts(figma, source) {
+  if (!Array.isArray(source.gardens) || !source.gardens.length || source.live !== false) throw new Error('Level review source must contain non-live draft gardens.');
+  const expectedNames = new Set(source.gardens.map(garden => garden.frame));
+  if (expectedNames.size !== source.gardens.length) throw new Error('Level review source must contain unique draft frame names.');
+  for (const garden of source.gardens) {
+    if (!/^review-garden-(0[1-9]|1\d|20)([b-z]?)$/.test(garden.frame)) throw new Error(`Review frame ${garden.frame} must stay outside the live garden-NN compiler names.`);
+    if (!Array.isArray(garden.instances)) throw new Error(`Review frame ${garden.frame} has no editable instances.`);
+    for (const item of garden.instances) {
+      if ((item.name || '').trim().split(':')[0] === 'designed') throw new Error(`Review frame ${garden.frame} cannot contain a designed marker.`);
+      if (![item.x, item.y, item.w, item.h].every(Number.isInteger) || item.w <= 0 || item.h <= 0) throw new Error(`Review frame ${garden.frame}: ${item.name} must use positive integer native geometry.`);
+    }
+  }
   if (figma.editorType !== 'figma') throw new Error('Open a Figma Design file to import level drafts.');
   if (figma.fileKey && figma.fileKey !== source.file) throw new Error('Open the configured max.iverfinne.no Figma file.');
   const page = figma.root.children.find(p => p.id === source.page);
@@ -10,7 +21,9 @@ export async function importDrafts(figma, source) {
   const existing = page.children.find(n => n.name === rootName);
   if (existing) {
     const frames = 'children' in existing ? existing.children.filter(n => n.name.startsWith('review-garden-')) : [];
-    const complete = frames.length === source.gardens.length && frames.every(n => {
+    const actualNames = new Set(frames.map(n => n.name));
+    const complete = frames.length === source.gardens.length && actualNames.size === expectedNames.size
+      && [...expectedNames].every(name => actualNames.has(name)) && frames.every(n => {
       const garden = source.gardens.find(g => g.frame === n.name);
       if (!('children' in n) || !garden || n.children.filter(c => c.type === 'INSTANCE').length !== garden.instances.length) return false;
       const refs = n.children.find(c => c.name === 'REFERENCE ONLY — unsupported runtime features');
@@ -40,7 +53,8 @@ export async function importDrafts(figma, source) {
   const review = created(figma.createFrame());
   review.name = rootName; review.fills = paint('111e24'); review.clipsContent = false;
   page.appendChild(review); review.x = Math.ceil(right) + 160; review.y = 160;
-  label(review, 'Review contract', `20 editable runtime snapshots · seed ${source.seed}\n1 Figma px = 1 art px · whole-pixel geometry · source ${source.sourceDigest.slice(0, 12)}\nReview only: no designed marker. Locked annotations record features the level compiler cannot preserve.`, 24, 24, 1080);
+  const sourceLabel = source.sourceKind === 'offline-authored-native-geometry' ? 'authored native drafts · offline source, Figma import pending' : 'runtime snapshots';
+  label(review, 'Review contract', `${source.gardens.length} editable ${sourceLabel} · seed ${source.seed}\n1 Figma px = 1 art px · whole-pixel geometry · source ${source.sourceDigest.slice(0, 12)}\nReview only: no designed marker. Locked annotations record features the level compiler cannot preserve.`, 24, 24, 1080);
   const components = created(figma.createFrame());
   components.name = 'Compiler tag components'; components.fills = []; components.clipsContent = false;
   review.appendChild(components); components.x = 24; components.y = 124;

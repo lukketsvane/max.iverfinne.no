@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "status": "offline-authored-native-geometry-not-imported-into-figma",
+  "live": false,
+  "seed": 1,
+  "source": {
+    "conceptFile": "TC0PHGMTCMR6im4hb3CSbF",
+    "conceptNode": "746:117481",
+    "conceptCommit": "b12d88a3ab2a6d39a5c2deda4ef51cb30e95a4c1",
+    "runtimeBaseline": "97f3782dbf1fd7f56e7630ff9c39911978aae5cc",
+    "coordinateSpace": "Newly authored integer game-pixel offsets from the stage origin and rise above its soil line. Concept percentages are not copied as collision coordinates.",
+    "limits": "Geometry prototype only. No authenticated Figma capture, new runtime artwork, authored spawn override or continuous-world connector. Existing runtime art and production levels-data.js are unchanged."
+  },
+  "gardens": [
+    {
+      "stage": 1,
+      "title": "Frostarkivet",
+      "frame": "review-garden-01",
+      "intent": "Two stair-and-ladder routes flank the seed wheel. An upper service gallery connects both sides; the right landing prepares the departure toward the thaw shaft.",
+      "artReference": "Existing native seed-vault master assets/levels-v1/seed-vault.png, 557x314, Figma 477:11669. Reference only; this new geometry does not replace that picture map.",
+      "replacePicture": true,
+      "ledges": [
+        { "x": -24, "rise": 16, "w": 48, "style": "stone" },
+        { "x": -56, "rise": 32, "w": 24, "style": "stone" },
+        { "x": -88, "rise": 48, "w": 24, "style": "stone" },
+        { "x": -120, "rise": 64, "w": 24, "style": "stone" },
+        { "x": -160, "rise": 80, "w": 32, "style": "ruin" },
+        { "x": 32, "rise": 32, "w": 24, "style": "stone" },
+        { "x": 64, "rise": 48, "w": 24, "style": "stone" },
+        { "x": 96, "rise": 64, "w": 24, "style": "stone" },
+        { "x": 128, "rise": 80, "w": 48, "style": "ruin" },
+        { "x": -160, "rise": 176, "w": 48, "style": "ruin" },
+        { "x": -104, "rise": 176, "w": 40, "style": "ruin" },
+        { "x": -56, "rise": 176, "w": 48, "style": "ruin" },
+        { "x": 0, "rise": 176, "w": 48, "style": "ruin" },
+        { "x": 56, "rise": 176, "w": 40, "style": "ruin" },
+        { "x": 104, "rise": 176, "w": 32, "style": "ruin" },
+        { "x": 128, "rise": 176, "w": 48, "style": "ruin" }
+      ],
+      "ladders": [
+        { "x": -144, "rise": 176, "w": 14, "h": 96 },
+        { "x": 144, "rise": 176, "w": 14, "h": 96 }
+      ],
+      "reward": [{ "x": -144, "rise": 176 }, { "x": 152, "rise": 176 }],
+      "seed": [{ "x": 16, "rise": 176 }],
+      "trial": [{ "x": -72, "rise": 48 }, { "x": 72, "rise": 48 }],
+      "puzzle": [{ "x": -144, "rise": 80 }],
+      "door": [{ "x": 152, "rise": 176 }],
+      "dig": [{ "x": -8, "rise": 0 }],
+      "secret": [{ "x": -32, "rise": 176 }],
+      "start": [{ "x": 0, "rise": 0 }]
+    },
+    {
+      "stage": 2,
+      "title": "Tinesjakta",
+      "frame": "review-garden-02",
+      "intent": "Offset maintenance bridges cross a thawing shaft. The right ladder reaches a middle gallery; the left gallery climbs again to a high left departure. Both lower stairways remain usable without upgrades.",
+      "artReference": "Existing native sanctuary masonry, cavern and district pump/arch materials. No thaw-shaft PNG master has been authored or imported.",
+      "replacePicture": true,
+      "ledges": [
+        { "x": -24, "rise": 16, "w": 48, "style": "stone" },
+        { "x": 32, "rise": 32, "w": 24, "style": "stone" },
+        { "x": 64, "rise": 48, "w": 32, "style": "ruin" },
+        { "x": -56, "rise": 32, "w": 24, "style": "stone" },
+        { "x": -88, "rise": 48, "w": 24, "style": "stone" },
+        { "x": -120, "rise": 64, "w": 24, "style": "stone" },
+        { "x": -136, "rise": 80, "w": 48, "style": "ruin" },
+        { "x": 64, "rise": 144, "w": 48, "style": "ruin" },
+        { "x": 16, "rise": 144, "w": 40, "style": "ruin" },
+        { "x": -32, "rise": 144, "w": 40, "style": "ruin" },
+        { "x": -80, "rise": 144, "w": 40, "style": "ruin" },
+        { "x": -136, "rise": 144, "w": 48, "style": "ruin" },
+        { "x": -80, "rise": 240, "w": 40, "style": "stone" },
+        { "x": -128, "rise": 240, "w": 40, "style": "stone" }
+      ],
+      "ladders": [
+        { "x": 80, "rise": 144, "w": 14, "h": 96 },
+        { "x": -112, "rise": 144, "w": 14, "h": 64 },
+        { "x": -64, "rise": 240, "w": 14, "h": 96 }
+      ],
+      "reward": [{ "x": -104, "rise": 240 }, { "x": 88, "rise": 144 }],
+      "seed": [{ "x": -56, "rise": 144 }],
+      "trial": [{ "x": -112, "rise": 80 }, { "x": 80, "rise": 48 }],
+      "puzzle": [{ "x": -16, "rise": 144 }],
+      "door": [{ "x": -104, "rise": 240 }],
+      "dig": [{ "x": 8, "rise": 0 }],
+      "secret": [{ "x": -120, "rise": 144 }],
+      "start": [{ "x": 0, "rise": 0 }]
+    },
+    {
+      "stage": 3,
+      "title": "Den gløymde stasjonen",
+      "frame": "review-garden-03",
+      "intent": "Broken lower platforms flank the fallen carriage. A west maintenance ladder reaches brick arches; stepped overhead rails lead to a taller rooted lift and right departure. The platform gaps and both lift returns are tested on foot.",
+      "artReference": "Existing native railway-ruins master assets/levels-v1/railway-ruins.png, 1080x224, Figma 477:11670. It currently serves garden 2 and is not reassigned by this draft.",
+      "ledges": [
+        { "x": -24, "rise": 16, "w": 48, "style": "ruin" },
+        { "x": -56, "rise": 32, "w": 24, "style": "ruin" },
+        { "x": -88, "rise": 48, "w": 24, "style": "ruin" },
+        { "x": -128, "rise": 64, "w": 32, "style": "ruin" },
+        { "x": 32, "rise": 32, "w": 24, "style": "ruin" },
+        { "x": 64, "rise": 48, "w": 24, "style": "ruin" },
+        { "x": 96, "rise": 64, "w": 24, "style": "ruin" },
+        { "x": -168, "rise": 160, "w": 48, "style": "ruin" },
+        { "x": -112, "rise": 160, "w": 48, "style": "ruin" },
+        { "x": -56, "rise": 176, "w": 48, "style": "ruin" },
+        { "x": 0, "rise": 192, "w": 48, "style": "ruin" },
+        { "x": 56, "rise": 208, "w": 40, "style": "root" },
+        { "x": 104, "rise": 208, "w": 32, "style": "root" },
+        { "x": 128, "rise": 208, "w": 56, "style": "root" }
+      ],
+      "blocks": [
+        { "x": -168, "rise": 80, "w": 32, "h": 24, "style": "ruin" },
+        { "x": 128, "rise": 80, "w": 32, "h": 16, "style": "root" }
+      ],
+      "ladders": [
+        { "x": -152, "rise": 160, "w": 14, "h": 80 },
+        { "x": 144, "rise": 208, "w": 14, "h": 128 }
+      ],
+      "reward": [{ "x": -144, "rise": 160 }, { "x": 160, "rise": 208 }],
+      "seed": [{ "x": 72, "rise": 208 }],
+      "trial": [{ "x": -72, "rise": 48 }, { "x": 72, "rise": 48 }],
+      "bonus": [{ "x": -88, "rise": 160 }, { "x": 16, "rise": 192 }],
+      "puzzle": [{ "x": -152, "rise": 80 }],
+      "door": [{ "x": 160, "rise": 208 }],
+      "dig": [{ "x": 8, "rise": 0 }],
+      "secret": [{ "x": -80, "rise": 160 }],
+      "start": [{ "x": 0, "rise": 0 }]
+    }
+  ]
+}

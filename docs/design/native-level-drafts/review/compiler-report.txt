@@ -1,0 +1,7 @@
+OFFLINE AUTHORED SIMULATION — synthetic local nodes, not an authenticated Figma capture.
+
+garden-01   offline:garden-0 live   terraces · 16 ledges · 2 ladders · C0 16 · C1 0 · C2 0 · C3 0 · unreachable 0 · reward 2 · seed 1 · trial 2 · puzzle 1 · door 1 · dig 1 · secret 1 · start 1
+garden-02   offline:garden-1 live   canopy · 14 ledges · 3 ladders · C0 14 · C1 0 · C2 0 · C3 0 · unreachable 0 · reward 2 · seed 1 · trial 2 · puzzle 1 · door 1 · dig 1 · secret 1 · start 1
+garden-03   offline:garden-2 live   crossing · 14 ledges · 2 blocks · 2 ladders · C0 16 · C1 0 · C2 0 · C3 0 · unreachable 0 · reward 2 · seed 1 · bonus 2 · trial 2 · puzzle 1 · door 1 · dig 1 · secret 1 · start 1
+
+3 garden frame(s) · 3 live: garden-01, garden-02, garden-03 · a frame goes live with a "designed" instance
