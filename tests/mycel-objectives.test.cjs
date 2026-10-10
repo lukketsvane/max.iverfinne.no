@@ -3,7 +3,8 @@ const assert = require('node:assert/strict');
 const { loadGame } = require('./game-harness.cjs');
 
 function fresh() {
-  const h = loadGame({ __randomSeed: 4182 }), g = h.game;
+  // These objective fixtures construct their own flat arena at y=-40.
+  const h = loadGame({ __randomSeed: 4182, __levelData: { gardens: {} } }), g = h.game;
   g.resetRogueRun('test', { classId: 'herbalist', difficulty: 'medium' });
   const layout = g.stageLayout();
   Object.assign(layout, {

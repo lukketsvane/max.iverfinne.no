@@ -13,7 +13,11 @@ test('Max keyboard retains independent Fan, Rover and Overload without consuming
 
 test('the planted overload anticipation blocks movement, jump, dodge, tending and bombs, then releases once',()=>{
  for(const hz of [30,60,120]){
-  const h=ready(),g=h.game,q=g.engineerState(),x=g.P.x,y=g.P.y;q.charge=3;h.key('keydown','e');
+  const h=ready(),g=h.game,q=g.engineerState();
+  // Settle onto the active authored court before checking the planted pose.
+  g.updatePlayer(1/120,{axis:0,top:62});
+  assert.equal(g.P.grounded,true);assert.equal(g.P.y,g.surfaceY(g.P.x));
+  const x=g.P.x,y=g.P.y;q.charge=3;h.key('keydown','e');
   h.key('keydown','ArrowRight');g.doJump(true);g.requestDodge(1);assert.equal(g.crouchGardenAction(),false);assert.equal(g.throwBomb({x:x+20,y:y-12},0),false);
   for(let i=0;i<Math.round(.4*hz);i++){g.updatePlayer(1/hz,{axis:1,top:62});g.updateMechCombat(1/hz);}
   assert.equal(g.P.x,x);assert.equal(g.P.y,y);assert.equal(g.P.dodgeT,0);assert.equal(g.jumpBuf,0);assert.equal(g.bombs.length,0);

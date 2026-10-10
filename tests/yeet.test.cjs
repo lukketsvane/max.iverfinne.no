@@ -5,8 +5,8 @@ const { join } = require('node:path');
 const { loadGame } = require('./game-harness.cjs');
 const root = join(__dirname, '..');
 
-function scene(stage = 1) {
-  const h = loadGame({ __pictures: true, __randomSeed: 17 }), g = h.game;
+function scene(stage = 1, source = {}) {
+  const h = loadGame({ __pictures: true, __randomSeed: 17, ...source }), g = h.game;
   g.resetRogueRun('test', { classId: 'bulwark', difficulty: 'easy' });
   g.rogueRun.world = stage; g.activeStageLayout = null; g.runActive = true;
   Object.assign(g.P, { x: g.levelOriginX(stage), st: 'free', grounded: true, vx: 0, vy: 0 });
@@ -21,9 +21,11 @@ function encounter(g) {
   g.updateYeet(1 / 60); assert.equal(g.yeet.phase, 'arrive');
 }
 
-test('walking left reaches Yeet in all twenty gardens, including boss gardens', () => {
+test('walking left reaches Yeet in all twenty legacy procedural gardens, including boss gardens', () => {
   for (let stage = 1; stage <= 20; stage++) {
-    const { game: g } = scene(stage);
+    // This walking-only fixture predates authored solid banks and tests the
+    // original procedural approach. The other encounter tests use live data.
+    const { game: g } = scene(stage, { __levelData: { gardens: {} } });
     g.updateYeet(1 / 60); assert.equal(g.yeet.phase, 'idle');
     g.heldL = true;
     let frames = 0;
@@ -35,6 +37,47 @@ test('walking left reaches Yeet in all twenty gardens, including boss gardens', 
     assert.ok(Math.abs(g.yeet.x - g.P.x) <= 61);
     assert.ok(Math.abs(g.yeet.y - g.P.y) < 28);
   }
+});
+
+test('the active MASTER Tree reaches Yeet by ordinary left ladders and the real west bank', () => {
+  const h = scene(), g = h.game, L = g.stageLayout(), origin = g.levelOriginX(1), base = L.authoredSoilY;
+  assert.equal(L.frame, 'garden-01b');
+  assert.match(L.masterSceneSourceKey, /^[a-f0-9]{64}$/, 'the normal active MASTER source remains selected');
+  const sourceGeometry = () => JSON.stringify({ key: L.masterSceneSourceKey,
+    platforms: L.platforms, ladders: L.ladders, terrain: L.terrain });
+  const before = sourceGeometry(), climbed = new Set();
+  let frames = 0;
+  function step() {
+    h.advance(1000 / 60);
+    g.updatePlayer(1 / 60, g.readInput()); g.updateYeet(1 / 60);
+    if (g.P.st === 'ladder') climbed.add(g.P.ladderId);
+    frames++;
+  }
+  function leg(label, key, reached) {
+    h.key('keydown', key);
+    for (let n = 0; n < 600 && !reached(); n++) step();
+    h.key('keyup', key);
+    assert.ok(reached(), label + ': bounded ordinary controls reach the target');
+  }
+  g.updateYeet(1 / 60); assert.equal(g.yeet.phase, 'idle');
+  const route = [[-112, 40], [-120, 80], [-180, 120]];
+  for (const [x, rise] of route) {
+    const ladder = L.ladders.find(q => q.x === origin + x && q.top === base - rise);
+    assert.ok(ladder, 'the route uses the current authored ladder at x=' + x);
+    leg('approach left ladder ' + x, 'ArrowLeft', () => g.P.x <= ladder.x + 3);
+    leg('climb left ladder ' + x, 'ArrowUp', () => g.P.y <= ladder.top);
+    assert.ok(climbed.has(ladder.id), 'the actor physically climbed ' + ladder.id);
+    assert.ok(g.P.grounded);
+  }
+  leg('walk from the upper gallery to the west bank', 'ArrowLeft', () => g.yeet.phase === 'arrive');
+  const bank = L.platforms.find(p => p.solid && p.x === origin - 280 && p.w === 40);
+  assert.ok(bank);
+  assert.equal(g.P.platform, bank.id); assert.equal(g.P.grounded, true);
+  assert.equal(g.P.y, bank.y); assert.ok(g.P.x <= origin - 260);
+  assert.ok(Math.abs(g.yeet.x - g.P.x) <= 61);
+  assert.ok(Math.abs(g.yeet.y - g.P.y) < 28);
+  assert.ok(frames < 1000, 'the whole continuous route has a bounded duration');
+  assert.equal(sourceGeometry(), before, 'ordinary controls preserve the real source geometry and binding');
 });
 
 test('the trigger waits for both sprites and a grounded westbound player', () => {
