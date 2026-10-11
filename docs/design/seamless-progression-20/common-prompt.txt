@@ -1,0 +1,11 @@
+Shared art direction for MAX twenty-stage level concepts
+
+Create twenty separate wide landscape scenes, one at a time. Level 01 is the bottom of the world; level 20 is the summit. Use intricate native-looking pixel art, a fixed side-on game view, sharp terrain silhouettes, narrow connected paths, irregular asymmetric architecture and readable open traversal space. Keep the camera scale, material language and framing consistent.
+
+The world ascends from a frozen botanical seed archive through thawing machinery, an abandoned railway, fossil strata and luminous fungi. Waterworks lead into huge living roots, a hollow tree and a salvage nursery. Rusted cranes and giant horseshoe magnets become stone aqueducts, then bellflower wetlands, basalt cliffs, cable cars, a windmill headrace, travertine terraces and an overgrown glasshouse in warm sunset light.
+
+At every join, carry the previous scene's upper landmarks, lighting and materials into the lower region of the next scene. Root, pipe, ladder, cable, water and rock contours should continue across the scene boundary. Introduce the next biome gradually before leaving the current one. Treat the series as one geography rather than twenty isolated dioramas.
+
+The adjoining-band repair pass preserves the selected upper scene's principal landmark and camera. It repairs only the lower connecting region against the preceding lower scene's upper band so the width, major silhouettes and palette continue.
+
+This file records shared creative intent. It is not represented as the complete verbatim prompt log for individual generation calls. Original generations are pinned by source/manifest.json; selected originals and repairs are pinned by manifest.json.
