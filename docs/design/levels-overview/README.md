@@ -104,22 +104,79 @@ does not claim saved local screenshot image files. See the
 [native turtle source](../turtle-level-04/README.md).
 
 The current native editor is `941:450` under MASTER section `863:15150`.
-The final authenticated October 11 inspection found **17** direct
-`LEVEL NN / Layout` frames: 18 through 08, then 06 through 01. The rows have a
-consistent **96-pixel gap**, and their frame bounds do not overlap. A separate
-focused read verified all **17** actual `Layout title / NN` text captions, with
-the correct campaign titles, visible and fully inside their own rows. The current Level 4 row is `941:578`; Level 1 is `941:2783`.
-Levels **07, 19 and 20** have reference cards but no row in this inspected
-editor. The reference board does not manufacture those missing native rows or
-claim that twenty source layouts have been implemented.
+It now contains **20** source rows in physical **20→01** order, with
+**96-pixel gaps**: editor height **14,906**, MASTER height **15,180**. The three
+previously missing rows were deliberately authored as **inactive native
+drafts**, with editable ART, ROUTES, POINTS and REGISTRATION. Their actual links
+are [07 / Lantern Roots](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13577),
+[19 / Surface Breach](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13696)
+and [20 / Radioactive Dawn](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13828).
+The current Level 4 row remains `941:578`; Level 1 remains `941:2783`.
+Twenty source rows do **not** mean twenty activated or fully validated runtime
+layouts. [native-layouts-oct11.json](native-layouts-oct11.json) records these
+new identities and completed evidence with its precise scopes. The final
+authenticated read at **16:28:13 UTC** confirmed all twenty titles visible
+inside their rows, all nineteen gaps at 96 pixels, and the three new links
+from scene cards to their editable drafts. Returned Figma screenshots of 07
+and 19 (**2207×795 / 2261×805**) were inspected through the connector and
+showed their titles, scene massing, routes and sidebars inside the frames;
+this receipt does not claim saved local files for those screenshots.
 
-The final authenticated comparison after all twenty image imports matched
+The new drafts copy actual seed-1 platform bounds from current runtime source
+`5f709264f14252a1ffc0993a4e1cc22fa6e84e67`: **71 / 84 / 65** route rectangles,
+with no invented ladders. Native planes are **1707×591 / 1761×601 / 1252×418**,
+with origin/soil registrations **1255/474 / 815/484 / 288/327**. Each draft has
+thirteen point anchors: six existing reward/seed/trial/bonus markers, five cache
+destination metadata anchors, an entry marker and selected-shrine metadata.
+The ascent exit remains a dynamic living plant; Level 20 ends after its final
+guardian. These points do not create a fixed exit door or additional cache reward.
+
+Editable ART contains **16,112** imported native rectangles: **9,177** for 07,
+**6,639** for 19 and **296** for 20. It combines retained runtime architecture
+rectangles for 07/19, observed integer ground display spans and simple native
+palette platform massing. **231 tile-atlas operations are omitted** (86 / 145);
+Level 20 has route massing without copying the king or actors. The ART is a
+design draft, not a rendered or runtime-equivalent export. No TERRAIN override
+or `designed` marker was added. Twenty Crown-material supports in 20 use the
+compiler's supported `ruin` tag while retaining Crown palette massing in ART.
+
+The complete actual native ART readbacks are saved for all three drafts:
+**11 / 8 / 1** lossless transport parts retained stable source identities and
+the exact captured JSON hashes. The captured geometry passed three local
+normal-compiler VM checks covering selected seed-1 shrine approaches, returns,
+one cache collection and entry planting/care. All **six** bound native-ART
+desktop/phone browser cases passed, with the gardener fully visible at entry
+and ordinary planting, a short dry return and care input working. These checks
+used isolated previews and recorded working-tree compiler binding repairs;
+their geometry baseline is `5f709`, rather than a claim that every preview
+source byte came from that clean commit. Browser review fixtures supplied
+eight seeds and disabled encounters. Ordinary non-preview compilation still
+excludes the three unmarked source rows (**zero live layouts**).
+Activation still needs reconciliation: ordinary furnishing
+adds another **37 / 36 / 25** platforms, and the compiled Level 19 selected
+shrine moves from **(3689806, −124)** to **(3689895, −127)**. Preview success
+does not establish full campaign, combat, all-cache, exit or environment
+equivalence. The seventeen preserved older rows have not been validated as
+one current native editor; their historical plane ancestry and bounds may
+still fail the normal whole-editor native checks.
+
+The unchanged [cloud receipt](cloud-receipt.json) remains historical evidence
+for the earlier **17-row** checkpoint and its verified captions, reference
+images and source-plane comparison. The new native-layout receipt supplements
+that checkpoint instead of rewriting its timestamps or hashes.
+
+The reference-phase authenticated comparison after all twenty image imports matched
 all **72** native source-plane fingerprints and node counts against the saved
 pre-edit baseline. The [cloud receipt](cloud-receipt.json) records both sides
 and the calibrated FNV-1a32 algorithm. The comparison covers ordered descendant
 IDs, names, types, visibility, local bounds, rotation, fills, text and vector
 paths. It is selected-property evidence, not a full-node byte digest. The owned
 temporary image-import container (`976:13622`) was removed.
+The later authenticated comparison after the three draft imports, at
+**16:27:31 UTC**, again matched all **72 / 72** original plane hashes and
+counts (**13,690 observed nodes**, including the plane roots), with no
+differences. The new native-layout receipt records this separate comparison;
+the earlier cloud receipt remains unchanged.
 
 The earlier concept scenes retain their original numbering in archive
 `863:14758`, now named **ARCHIVE / Earlier concept scenes / original numbering**
@@ -129,12 +186,17 @@ current native editor and the new twenty-scene reference board.
 The preserved local importer in [plugin/](plugin/) uses historical bindings
 from an older twenty-row editor (`863:15149`). It requires exact saved row and
 plane IDs and distinct per-level sibling ASSETS workspaces. **Do not run that
-historical importer against the current seventeen-row editor.** A new import
+historical importer against the current native editor.** A new import
 must first bind the actual current hierarchy and any deliberately authored new
 rows; changing old IDs alone does not resolve the different ancestry and row
-count. The old package audit and VM validation remain historical local evidence,
-not receipts for this cloud update. The 665 existing runtime PNG production
-pins retain their separate asset-source contract.
+ownership. The old package audit and VM validation remain historical local evidence,
+not receipts for this cloud update. The historical importer also remains
+incompatible with the current twenty-row identities and ancestry. A fresh
+read-only production-source audit at **16:14:04 UTC on October 11** matched
+all **665** runtime PNG source identities, native bounds and repository byte
+hashes, with no registration issues. It did not download rendered Figma PNG
+exports or audit the new draft rows. Those pins retain their separate
+asset-source contract.
 
 The source PNGs, prompt manifests, inventory, HTML builder, plugin template,
 UI, manifest and builder remain preserved locally. Rebuild the HTML review with:
@@ -145,14 +207,20 @@ node docs/design/levels-overview/build-stack.cjs
 
 Generated references and authoring notes belong in reference/comparison or
 appropriate ASSETS workspaces, outside ART, ROUTES, POINTS, REGISTRATION and
-TERRAIN. This checkpoint does not add `designed`, compile new source geometry,
-activate runtime levels or change production game data. Source edits require
+TERRAIN. The new editable drafts keep `designed` absent; compilation occurs
+only in isolated local previews and does not activate runtime levels or change
+production game data. Source edits require
 fresh authenticated readback and the normal native compiler, actual walking,
-return and planting checks, and release gate. The earlier saved Native Level
-Studio bindings also require fresh current-source validation before use.
+return and planting checks, and release gate. See the
+[Native Level Studio instructions](../figma-level-studio/README.md) for its
+current editor binding; the historical importer preserved here keeps its
+separate older bindings.
 
 The review ZIP contains `stack.html`, images and provenance, and works when
 served with `python3 -m http.server` from its extracted directory. The preserved
 Figma plugin ZIP is self-contained but retains its historical bindings.
 Package receipts record the delivered ZIP paths, sizes and hashes; neither ZIP
 is tracked in Git.
+The current `stack.html` and its builder are maintained review files. The
+delivered ZIP remains an unchanged historical snapshot, and its recorded file
+hashes describe the packaged versions rather than the current HTML or docs.

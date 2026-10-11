@@ -19,17 +19,23 @@ function image(id, x = 0, y = 0) {
   const n = node('RECTANGLE', id, 'SOURCE · assets/tiles-v1/sanctuary.png · I394:16', x, y, 128, 75); delete n.children;
   n.fills = [{ type: 'IMAGE', imageHash: HASH, scaleMode: 'FILL', opacity: 1, imageTransform: [[1, 0, 0], [0, 1, 0]], filters: { exposure: 0 } }]; return n;
 }
-function fixture(flat = false) {
+function fixture(flat = false, legacy = false) {
   const page = { type: 'PAGE', id: '508:11825', name: 'levels', children: [] };
   const master = append(page, node('SECTION', '863:15150', 'MASTER', 0, 0, 10000, 10000)); delete master.relativeTransform;
-  const editor = append(master, node('SECTION', '863:15149', 'EDITOR', 0, 0, 10000, 10000)); delete editor.relativeTransform;
+  const editor = append(master, node(legacy ? 'SECTION' : 'FRAME', legacy ? '863:15149' : '941:450', 'EDITOR', 0, 0, 10000, 10000));
+  if (legacy) delete editor.relativeTransform;
   let row;
-  for (let i = 1; i <= 20; i++) { const n = append(editor, node('FRAME', '100:' + i, 'level_' + String(i).padStart(2, '0'), 0, (i - 1) * 450, 640, 440)); if (i === 1) row = n; }
+  for (let i = 1; i <= 20; i++) {
+    if (!legacy && [7, 19, 20].includes(i)) continue;
+    const parent = legacy ? editor : append(editor, node('FRAME', '110:' + i, 'LEVEL ' + String(i).padStart(2, '0') + ' / Layout', 0, (i - 1) * 500, 640, 480));
+    const n = append(parent, node('FRAME', '100:' + i, 'level_' + String(i).padStart(2, '0'), 0, legacy ? (i - 1) * 450 : 40, 640, 440));
+    if (i === 1) row = n;
+  }
   const art = append(row, node('FRAME', '200:1', 'ART')), registration = append(row, node('FRAME', '200:2', 'REGISTRATION'));
   art.clipsContent = true; registration.clipsContent = true; registration.visible = false;
   const origin = append(registration, node('RECTANGLE', '200:3', 'ORIGIN', 320, 0, 1, 400));
   const soil = append(registration, node('RECTANGLE', '200:4', 'SOIL', 0, 280, 640, 1));
-  const root = append(art, node(flat ? 'FRAME' : 'COMPONENT', '300:1', 'PART tree' + phase('BEFORE_GROUND'), flat ? 0 : 10, flat ? 0 : 20, 640, 400));
+  const root = append(art, node(flat ? 'FRAME' : 'COMPONENT', '300:1', (flat ? 'LAYER tree' : 'PART tree') + phase('BEFORE_GROUND'), flat ? 0 : 10, flat ? 0 : 20, 640, 400));
   const group = flat ? root : append(root, node('GROUP', 'I300:2;400:1', 'nested', 3, 4, 120, 80));
   const pixel = append(group, solid('I300:2;400:2', 1, 2));
   const crop = append(group, node('FRAME', 'I300:2;400:3', 'OP image', 8, 9, 10, 6)); crop.opacity = .8; crop.clipsContent = true;
@@ -39,7 +45,7 @@ function fixture(flat = false) {
   const figma = { editorType: 'figma', fileKey: 'TC0PHGMTCMR6im4hb3CSbF', currentPage: page,
     getNodeByIdAsync: async id => lookup.get(id), setCurrentPageAsync: async next => { calls.switches++; figma.currentPage = next; },
     getImageByHash: hash => hash === HASH ? { getSizeAsync: async () => { calls.imageSizes++; return { width: 128, height: 75 }; } } : null };
-  return { figma, page, master, editor, row, art, registration, origin, soil, root, group, pixel, crop, source, calls };
+  return { figma, page, master, editor, row, art, registration, origin, soil, root, group, pixel, crop, source, calls, lookup };
 }
 const fingerprint = chunk => createHash('sha1').update(JSON.stringify(chunk)).digest('hex');
 
@@ -109,12 +115,56 @@ test('hidden subtrees and empty roots are omitted without corrupting dense visib
   assert.equal(result.chunk.layers[1][11], 'after-soil');
 });
 
-test('flat native operations and headers remain compatible with the unchanged canonical capture', async () => {
-  const f = fixture(true), generic = await captureNativeContainers(f.figma, { all: true });
+test('explicit legacy replay preserves flat native operations and canonical headers', async () => {
+  const f = fixture(true, true), generic = await captureNativeContainers(f.figma, { all: true, legacyReplay: true });
   // The existing flat capture permits numeric native IDs only in SOURCE names.
   f.source.name = 'SOURCE · assets/tiles-v1/sanctuary.png · 394:16';
-  const legacy = await captureNativeArt(f.figma, { all: true });
+  const legacy = await captureNativeArt(f.figma, { all: true, legacyReplay: true });
+  assert.equal(legacy.chunk.editorId, '863:15149');
   for (const key of ['planes', 'registration', 'layers', 'ops', 'stage', 'frame', 'rowId', 'totalOperations', 'offset', 'nextOffset']) assert.deepEqual(generic.chunk[key], legacy.chunk[key], key);
+});
+
+test('current flat LAYER frames retain the strict container schema and native instance IDs', async () => {
+  const f = fixture(true), result = await captureNativeArt(f.figma, { all: true });
+  assert.equal(result.chunk.editorId, '941:450');
+  assert.equal(result.chunkSHA1, fingerprint(result.chunk));
+  assert.deepEqual(result.chunk.layers[0], [0, f.root.id, f.root.name, 0, 0, 640, 400, 1, 'PASS_THROUGH', false, true, 'before-ground']);
+  assert.deepEqual(result.chunk.ops, [
+    [0, 0, f.pixel.id, 1, 2, 5, 6, '#336699', .5, 'PASS_THROUGH'],
+    [0, 1, f.crop.id, 8, 9, 10, 6, 'assets/tiles-v1/sanctuary.png', HASH, 128, 75, 3, 4, .8, 'PASS_THROUGH']
+  ]);
+  f.pixel.blendMode = 'SCREEN';
+  await assert.rejects(captureNativeArt(f.figma, { all: true }), /unsupported isolation/);
+});
+
+test('capture stays within the current editor and ignores historical duplicates and ASSETS source-looking names', async () => {
+  for (const capture of [captureNativeContainers, captureNativeArt]) {
+    const f = fixture(true), old = fixture(true, true).editor;
+    append(f.master, old); f.lookup.set(old.id, old);
+    const assets = append(f.editor, node('FRAME', 'assets', 'ASSETS · references'));
+    append(assets, node('FRAME', 'asset-row', 'level_01'));
+    const result = await capture(f.figma, { all: true });
+    assert.equal(result.chunk.editorId, '941:450');
+    assert.equal(result.chunk.rowId, f.row.id);
+    assert.equal(result.chunk.totalOperations, 2, 'unrelated absent stages do not block a selected source capture');
+    await assert.rejects(capture(f.figma, { stage: 7 }), /level_07/);
+    const duplicate = append(f.editor, node('FRAME', 'duplicate-row', 'level_01'));
+    await assert.rejects(capture(f.figma), /duplicate|exactly one.*level_01/);
+    f.editor.children = f.editor.children.filter(n => n !== duplicate);
+    f.lookup.delete('941:450');
+    await assert.rejects(capture(f.figma), /configured.*editor|Configured.*editor/);
+  }
+});
+
+test('legacy editor selection requires an explicit boolean replay and never accepts arbitrary authority', async () => {
+  for (const capture of [captureNativeContainers, captureNativeArt]) {
+    const current = fixture(), old = fixture(false, true);
+    for (const legacyReplay of ['true', 1, null]) await assert.rejects(capture(current.figma, { legacyReplay }), /legacyReplay|legacy replay/i);
+    for (const options of [{ editorId: 'other' }, { editorId: null }, { editorId: '863:15149' }, { editorId: '941:450', legacyReplay: true }]) await assert.rejects(capture(current.figma, options), /editor|authority/i);
+    await assert.rejects(capture(old.figma), /configured.*editor|Configured.*editor/);
+    assert.equal((await capture(current.figma, { all: true, legacyReplay: false, editorId: '941:450' })).chunk.editorId, '941:450');
+    assert.equal((await capture(old.figma, { all: true, legacyReplay: true, editorId: '863:15149' })).chunk.editorId, '863:15149');
+  }
 });
 
 test('non-native geometry, isolation, arbitrary clips, mixed phases and unsupported shapes fail clearly', async () => {
@@ -155,16 +205,16 @@ test('image scale/filter/path/source bounds or partial SOURCE alpha cannot be si
   for (const change of changes) { const f = fixture(); change(f); await assert.rejects(captureNativeContainers(f.figma, { all: true })); }
 });
 
-test('configured page and all twenty authoritative outer rows are required; the only optional mutation is one awaited page switch', async () => {
+test('configured page and unique source rows are required; the only optional mutation is one awaited page switch', async () => {
   const f = fixture(); f.figma.currentPage = { id: 'other' };
   await assert.rejects(captureNativeContainers(f.figma), /Load the configured/);
   await captureNativeContainers(f.figma, { switchPage: true, all: true }); assert.equal(f.calls.switches, 1);
-  f.editor.children.push(f.editor.children[19]); await assert.rejects(captureNativeContainers(f.figma), /exactly one level_20/);
+  append(f.editor, node('FRAME', 'duplicate-level-18', 'level_18')); await assert.rejects(captureNativeContainers(f.figma), /duplicate|exactly one.*level_18/);
   const bad = fixture(); bad.figma.fileKey = 'wrong'; await assert.rejects(captureNativeContainers(bad.figma), /configured MAX/);
 });
 
 test('SECTION/GROUP unavailable properties are never read; resolved outer auto-layout stays native while ART phases remain explicit', async () => {
-  const f = fixture();
+  const f = fixture(false, true);
   const absent = ['relativeTransform', 'rotation', 'opacity', 'blendMode', 'effects', 'strokes', 'layoutMode', 'fills', 'clipsContent', 'cornerRadius'];
   function guarded(n, fields) {
     fields.forEach(key => delete n[key]);
@@ -178,9 +228,9 @@ test('SECTION/GROUP unavailable properties are never read; resolved outer auto-l
   const oldGet = f.figma.getNodeByIdAsync;
   f.figma.getNodeByIdAsync = async id => id === master.id ? master : id === editor.id ? editor : oldGet(id);
   f.row.layoutMode = 'HORIZONTAL';
-  assert.equal((await captureNativeContainers(f.figma, { all: true })).chunk.ops.length, 2);
+  assert.equal((await captureNativeContainers(f.figma, { all: true, legacyReplay: true })).chunk.ops.length, 2);
   f.root.name = 'PART without phase';
-  await assert.rejects(captureNativeContainers(f.figma, { all: true }), /explicit native PHASE/);
+  await assert.rejects(captureNativeContainers(f.figma, { all: true, legacyReplay: true }), /explicit native PHASE/);
   f.art.name = 'ART'; f.root.name += phase('BEFORE_GROUND');
-  assert.equal((await captureNativeContainers(f.figma, { all: true })).chunk.layers[0][11], 'before-ground');
+  assert.equal((await captureNativeContainers(f.figma, { all: true, legacyReplay: true })).chunk.layers[0][11], 'before-ground');
 });

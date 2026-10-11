@@ -9,7 +9,7 @@ import { dataFile, exportLevels, gameWorld } from './figma-levels.mjs';
 // Keep every decoder dependency inside this function: the local Figma plugin
 // embeds this exact function source, without a second parser or Node imports.
 export function decodeMasterRows(capture, options = {}) {
-  const PAGE = '508:11825', MASTER = '863:15150', EDITOR = '863:15149', FILE = 'TC0PHGMTCMR6im4hb3CSbF';
+  const PAGE = '508:11825', MASTER = '863:15150', EDITOR = '941:450', LEGACY_EDITOR = '863:15149', FILE = 'TC0PHGMTCMR6im4hb3CSbF';
   const errors = [], warnings = [], decoded = [], usedStages = new Set(), usedIds = new Set();
   const markerKinds = ['reward', 'seed', 'bonus', 'trial', 'puzzle', 'door', 'dig', 'secret', 'start'];
   const metadataKinds = ['launch', 'destination', 'shortcut'];
@@ -21,7 +21,10 @@ export function decodeMasterRows(capture, options = {}) {
   if (page !== PAGE) errors.push(`Capture must belong to level page ${PAGE}.`);
   if (capture?.file && capture.file !== FILE) errors.push('Capture belongs to a different Figma file.');
   if ((typeof capture?.master === 'string' ? capture.master : capture?.master?.id) !== MASTER) errors.push(`Capture must come directly from MASTER ${MASTER}.`);
-  if ((typeof capture?.editor === 'string' ? capture.editor : capture?.editor?.id) !== EDITOR) errors.push(`Capture must come directly from the native editor ${EDITOR}.`);
+  const editor = typeof capture?.editor === 'string' ? capture.editor : capture?.editor?.id;
+  // Offline evidence retains its recorded identity; never relabel a historical
+  // capture as the current editor. Live capture selects its editor explicitly.
+  if (![EDITOR, LEGACY_EDITOR].includes(editor)) errors.push(`Capture must identify current editor ${EDITOR} or historical editor ${LEGACY_EDITOR}.`);
   if (!Array.isArray(capture?.rows) || !capture.rows.length) errors.push('Capture requires nonempty MASTER rows.');
   let selection = null;
   if (options.stages != null) {
@@ -186,7 +189,7 @@ export function decodeMasterRows(capture, options = {}) {
     const box = row.planes.registration;
     return `  <frame id="${escape(row.id)}" name="${row.frame}" x="0" y="0" width="${box.w}" height="${box.h}">\n` + projected.map(node => `    <instance id="${escape(node.sourceId)}" name="${escape(node.name)}" x="${node.x}" y="${node.y}" width="${node.w}" height="${node.h}" />`).join('\n') + '\n  </frame>';
   }).join('\n') + '\n</canvas>';
-  return { page: PAGE, master: MASTER, rows: decoded, metadata, errors, warnings,
+  return { page: PAGE, master: MASTER, editor, rows: decoded, metadata, errors, warnings,
     live: eligible.filter(row => row.active).length, exported: eligible.length, preview: options.preview === true,
     projection: 'Direct existing MASTER planes projected into compiler metadata; no Figma garden overlay is created. Draft preview activation exists only in this local projection.' };
 }

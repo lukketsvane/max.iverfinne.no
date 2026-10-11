@@ -17,7 +17,7 @@ if (options.switchPage === true) await figma.setCurrentPageAsync(page); else if 
 const children = n => 'children' in n ? n.children : [];
 const rows = [];
 function findRows(n) { for (const c of children(n)) { const m = /^level_(0[1-9]|1\d|20)$/.exec(c.name); if (m) rows.push({ stage: Number(m[1]), node: c }); else findRows(c); } }
-findRows(master);
+findRows(editor);
 for (let s = 1; s <= 20; s++) if (rows.filter(r => r.stage === s).length !== 1) throw Error('MASTER requires exactly one level_' + String(s).padStart(2, '0') + ' row.');
 const row = rows.find(r => r.stage === CAPTURE_STAGE).node;
 function fail(n, message) { throw Error(n.id + ' ' + n.name + ': ' + message); }
@@ -111,11 +111,12 @@ return { chunk: captured, chunkSHA1: sha1(chunkJSON), fingerprintScope: 'UTF-8 J
 async function captureNativeContainers(figma, options = {}) {
   const stage = options.stage == null ? 1 : options.stage, offset = options.offset == null ? 0 : options.offset;
   const limit = options.all ? 100000 : options.limit == null ? 250 : options.limit;
-  const FILE = 'TC0PHGMTCMR6im4hb3CSbF', PAGE = '508:11825', MASTER = '863:15150', EDITOR = '863:15149';
+  const FILE = 'TC0PHGMTCMR6im4hb3CSbF', PAGE = '508:11825', MASTER = '863:15150', EDITOR = options.legacyReplay === true ? '863:15149' : '941:450';
   const MAX_LENGTH = options.all ? Infinity : 18000, CONTAINERS = ['FRAME', 'GROUP', 'COMPONENT', 'INSTANCE'];
   function fail(n, message) { throw Error((n && n.id || 'ART') + ' ' + (n && n.name || '') + ': ' + message); }
   function integer(value, n) { if (!Number.isSafeInteger(value)) fail(n, 'native integer geometry is required'); return value; }
   const children = n => n && 'children' in n ? n.children : [];
+  if (options.legacyReplay !== undefined && typeof options.legacyReplay !== 'boolean' || options.editorId !== undefined && options.editorId !== EDITOR) fail(null, 'Use the current editor by default, or explicit legacyReplay:true for historical editor 863:15149.');
   if (figma.editorType !== 'figma' || figma.fileKey && figma.fileKey !== FILE) fail(null, 'Open the configured MAX Design file.');
   if (!Number.isInteger(stage) || stage < 1 || stage > 20 || !Number.isSafeInteger(offset) || offset < 0 || !Number.isInteger(limit) || limit < 1 || limit > (options.all ? 100000 : 250)) fail(null, 'Invalid stage or operation pagination.');
   const page = await figma.getNodeByIdAsync(PAGE), master = await figma.getNodeByIdAsync(MASTER), editor = await figma.getNodeByIdAsync(EDITOR);
@@ -125,9 +126,9 @@ async function captureNativeContainers(figma, options = {}) {
   if (options.switchPage === true) await figma.setCurrentPageAsync(page);
   else if (!figma.currentPage || figma.currentPage.id !== PAGE) fail(null, 'Load the configured level page before shared native capture.');
   const rows = [];
-  function findRows(n) { for (const c of children(n)) { const m = /^level_(0[1-9]|1\d|20)$/.exec(c.name); if (m) rows.push({ stage: Number(m[1]), node: c }); else findRows(c); } }
-  findRows(master);
-  for (let s = 1; s <= 20; s++) if (rows.filter(r => r.stage === s).length !== 1) fail(master, 'MASTER requires exactly one level_' + String(s).padStart(2, '0') + ' row.');
+  function findRows(n) { for (const c of children(n)) { const m = /^level_(0[1-9]|1\d|20)$/.exec(c.name); if (m) rows.push({ stage: Number(m[1]), node: c }); else if (!/^ASSETS(?:$|\s[·:/-])/.test(c.name || '')) findRows(c); } }
+  findRows(editor);
+  for (let s = 1; s <= 20; s++) if (rows.filter(r => r.stage === s).length > 1 || s === stage && !rows.some(r => r.stage === s)) fail(editor, 'Editor requires exactly one level_' + String(s).padStart(2, '0') + ' row when selected; duplicate stages are unsupported.');
   const row = rows.find(r => r.stage === stage).node;
   if (!descendant(row, editor)) fail(row, 'Requested outer row must be inside the configured editor.');
   function geometry(n, ancestor) {
@@ -250,18 +251,35 @@ async function captureNativeContainers(figma, options = {}) {
   }
   return { chunk, chunkSHA1: sha1(json), fingerprintScope: 'UTF-8 JSON.stringify(chunk), not a whole-row fingerprint', jsonLength: json.length, more: chunk.nextOffset < totalOperations, nextOffset: chunk.nextOffset };
 }
+  if (options.legacyReplay !== undefined && typeof options.legacyReplay !== 'boolean') throw Error('legacyReplay must be an explicit boolean.');
+  const editorId = options.legacyReplay === true ? '863:15149' : '941:450';
+  if (options.editorId !== undefined && options.editorId !== editorId) throw Error('Unsupported editor authority; legacy replay must be explicit.');
+  if (figma.editorType !== 'figma' || figma.fileKey && figma.fileKey !== 'TC0PHGMTCMR6im4hb3CSbF') throw Error('Open the configured MAX Design file.');
+  const stage = options.stage == null ? 1 : options.stage;
+  if (!Number.isInteger(stage) || stage < 1 || stage > 20) throw Error('Invalid stage or operation pagination.');
   const page = await figma.getNodeByIdAsync('508:11825');
   if (!page || page.type !== 'PAGE') throw Error('Configured level page missing.');
+  const master = await figma.getNodeByIdAsync('863:15150'), editor = await figma.getNodeByIdAsync(editorId);
+  function descendant(n, parent) { for (; n; n = n.parent) if (n === parent) return true; return false; }
+  if (!master || !['SECTION', 'FRAME'].includes(master.type) || !editor || !['SECTION', 'FRAME'].includes(editor.type) || !descendant(master, page) || !descendant(editor, master)) throw Error('Configured levels page, MASTER or editor is missing or outside its authority.');
   if (options.switchPage === true) await figma.setCurrentPageAsync(page);
   else if (!figma.currentPage || figma.currentPage.id !== page.id) throw Error('Load the configured level page before shared native capture.');
-  const master = await figma.getNodeByIdAsync('863:15150'), stage = options.stage == null ? 1 : options.stage, wanted = 'level_' + String(stage).padStart(2, '0');
-  let row = null;
-  function find(n) { for (const c of 'children' in n ? n.children : []) { if (/^level_(0[1-9]|1\d|20)$/.test(c.name)) { if (c.name === wanted) row = c; } else find(c); } }
-  if (master) find(master);
-  const art = row && 'children' in row ? row.children.find(n => n.name === 'ART') : null;
-  // Preserve the exact old flat capture output for the frozen source. Component
-  // instances, moved/native groups or hidden leaves use the strict container path.
-  const flat = art && 'children' in art && art.children.every(layer => layer.type === 'FRAME' && layer.x === 0 && layer.y === 0 && layer.visible !== false && 'children' in layer && layer.children.every(op => op.visible !== false && (op.type === 'RECTANGLE' || op.type === 'FRAME' && op.clipsContent && op.children.length === 1 && op.children[0].type === 'RECTANGLE' && op.children[0].visible !== false)));
+  const rows = new Map();
+  function find(n) { for (const c of 'children' in n ? n.children : []) {
+    const match = /^level_(0[1-9]|1\d|20)$/.exec(c.name || '');
+    if (match) {
+      const foundStage = Number(match[1]);
+      if (c.type !== 'FRAME' || rows.has(foundStage)) throw Error('Configured editor requires exactly one native FRAME for each captured level_' + match[1] + '.');
+      rows.set(foundStage, c);
+    } else if (!/^ASSETS(?:$|\s[·:/-])/.test(c.name || '')) find(c);
+  } }
+  find(editor);
+  const row = rows.get(stage);
+  if (!row) throw Error('Requested level_' + String(stage).padStart(2, '0') + ' is missing from the configured editor.');
+  const arts = 'children' in row ? row.children.filter(n => n.name === 'ART') : [], art = arts.length === 1 ? arts[0] : null;
+  // Only explicit frozen legacy replay uses the historical flat schema. Current
+  // LAYER frames always pass through the strict native container capture.
+  const flat = options.legacyReplay === true && art && 'children' in art && art.children.every(layer => layer.type === 'FRAME' && layer.x === 0 && layer.y === 0 && layer.visible !== false && 'children' in layer && layer.children.every(op => op.visible !== false && (op.type === 'RECTANGLE' || op.type === 'FRAME' && op.clipsContent && op.children.length === 1 && op.children[0].type === 'RECTANGLE' && op.children[0].visible !== false)));
   return await (flat ? captureNativeArtFlat : captureNativeContainers)(figma, { ...options, switchPage: false });
 
 }

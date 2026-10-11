@@ -22,9 +22,9 @@ if (figma.fileKey && figma.fileKey !== maxLevelStudio.FILE) throw new Error('Wro
 const page = await figma.getNodeByIdAsync(maxLevelStudio.PAGE);
 if (!page || page.type !== 'PAGE') throw new Error('Configured levels page was not found.');
 await figma.setCurrentPageAsync(page);
-const captured = maxLevelStudio.captureMasterPage(page);
-const decoded = maxLevelStudio.decodeMasterRows(captured);
 const nativeStage = typeof MAX_STUDIO_NATIVE_STAGE === 'undefined' ? null : MAX_STUDIO_NATIVE_STAGE;
+const captured = maxLevelStudio.captureMasterPage(page, nativeStage == null ? {} : { stages: [nativeStage] });
+const decoded = maxLevelStudio.decodeMasterRows(captured);
 const nativeCapture = nativeStage == null ? null : await maxLevelStudio.captureReview(figma, page, nativeStage, true);
 return { page: captured.page, file: captured.file, master: captured.master.id, editor: captured.editor.id,
   sourceKind: captured.sourceKind, production: false,
@@ -33,7 +33,7 @@ return { page: captured.page, file: captured.file, master: captured.master.id, e
   fileKeyObserved: figma.fileKey || null,
   validation: { errors: decoded.errors.slice(0,20), warnings: decoded.warnings.slice(0,20), errorCount:decoded.errors.length, warningCount:decoded.warnings.length, count: captured.rows.length, live: decoded.live, exported: decoded.exported },
   bridge: { projection: decoded.projection, preview: false },
-  nativeART: nativeCapture ? {stage:nativeStage,rowId:nativeCapture.nativeART[0].chunk.rowId,totalOperations:nativeCapture.nativeART[0].chunk.totalOperations,chunkSHA1:nativeCapture.nativeART[0].chunkSHA1,captureConsistency:nativeCapture.captureConsistency} : null,
+  nativeART: nativeCapture ? {stage:nativeStage,rowId:nativeCapture.nativeART[0].chunk.rowId,totalOperations:nativeCapture.nativeART[0].chunk.totalOperations,chunkSHA1:nativeCapture.nativeART[0].chunkSHA1,captureConsistency:nativeCapture.captureConsistency,selectedRowState:nativeCapture.editorDiagnostics.rows.find(row=>row.stage===nativeStage)} : null,
   pluginCodeSHA256: '${hash}', status: 'actual-MASTER-document-capture' };
 `;
 const file = new URL('./helpers.use-figma.js', import.meta.url);

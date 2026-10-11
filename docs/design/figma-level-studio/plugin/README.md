@@ -6,9 +6,9 @@ Import this local development plugin once in Figma Design: **Plugins → Develop
 **MAX Native Level Studio**. The ZIP contains the built plugin. It does not install
 it automatically and needs no publishing account.
 
-The authoritative source is MASTER `863:15150`, editor `863:15149`, page
-`508:11825`, file `TC0PHGMTCMR6im4hb3CSbF`. The existing `level_01`…`level_20`
-rows remain in their per-level workspaces with ASSETS. The outer row number
+The current authoring source is MASTER `863:15150`, editor `941:450`, page
+`508:11825`, file `TC0PHGMTCMR6im4hb3CSbF`. Its `level_NN` rows remain in
+their per-level workspaces with ASSETS. The outer row number
 sets the campaign stage. Legacy titles and source IDs remain provenance.
 The plugin re-resolves rows by name; it creates no duplicate garden boards.
 
@@ -21,11 +21,25 @@ npm run figma:studio
 
 Paste the printed session key into **Local preview connection**. Leave its
 loopback endpoint on port 8765. Edit the selected MASTER row, then click
-**Preview in game** and open the returned game link. Each click captures all 20
-rows and the selected row's complete native ART, validates them, compiles a
+**Preview in game** and open the returned game link. Each click captures the
+editor's geometry and the selected row's complete native ART, validates the
+selected stage, compiles a
 temporary candidate, and serves the actual built game. The bridge preserves the
 last successful candidate when a later export fails. Ctrl-C closes it and removes
 the temporary files. A source/build change requires rebuilding and restarting.
+
+Unfinished or missing unrelated rows appear in `editorDiagnostics`; their
+geometry errors do not block a valid selected-stage draft. Duplicate stage rows,
+wrong source identity and invalid selected geometry still stop capture. **Validate
+MASTER** and an unselected all-stage export continue to report the full editor's
+errors. Existing rows with different ART and route bounds require a deliberate
+source edit before they can preview; the tool does not move or resize them.
+
+Live capture never falls back to historical editor `863:15149`. Read-only helper
+APIs can replay that editor only with explicit `{legacyReplay:true}`. Offline
+decoding and ART joining recognize the two recorded editor identities so frozen
+historical evidence remains replayable with its original bytes. Unknown IDs,
+mixed-editor ART batches and ART/geometry editor mismatches are rejected.
 
 **Local draft preview** explicitly permits a temporary `designed` projection.
 It does not edit Figma. Source `replace-picture` remains required for Gardens
@@ -63,6 +77,14 @@ atomic Figma snapshot. The bridge checks source IDs, native registration, scene
 binding and unchanged PNG bytes. Arbitrary vectors, filtering, unregistered
 transforms, moving mechanisms and unsupported clipping need an implemented
 contract before export.
+
+An editable `LAYER 000000 · PHASE BEFORE_GROUND · Editable route massing`
+frame is supported directly by the native container decoder, as are phased PART
+containers. Keep its fills empty, opacity 1, native integer geometry and unclipped
+children. Palette rectangles must use exact byte RGB values. Generated JPEG
+scene references belong outside ART; they are design references, not registered
+runtime PNG sources. New rows without `designed` remain drafts, and isolated
+preview adds that flag only to its local compiler projection.
 
 Download fallback, without the UI connection:
 

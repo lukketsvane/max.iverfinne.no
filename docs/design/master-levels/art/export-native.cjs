@@ -10,11 +10,13 @@ const fail = message => { throw Error(message); };
 const actualId = value => typeof value === 'string' && value.length > 0 && value.length <= 512 && !/[\s\u0000-\u001f]/.test(value);
 function joinChunks(inputs) {
   if (!Array.isArray(inputs) || !inputs.length) fail('No actual ART chunks.');
-  const stages = new Map();
+  const stages = new Map(); let editorId;
   for (const input of inputs) {
     if (!input || !input.chunk || input.chunkSHA1 !== sha(JSON.stringify(input.chunk), 'sha1')) fail('Actual chunk fingerprint failed.');
     const c = input.chunk;
-    if (c.schema !== 1 || c.status !== 'actual-document-native-art-chunk' || c.file !== 'TC0PHGMTCMR6im4hb3CSbF' || c.page !== '508:11825' || c.masterId !== '863:15150' || c.editorId !== '863:15149' || !Number.isInteger(c.stage) || c.stage < 1 || c.stage > 20 || c.frame !== 'garden-' + String(c.stage).padStart(2, '0') + 'b' || !/^\d+:\d+$/.test(c.rowId)) fail('Unexpected actual row authority.');
+    if (c.schema !== 1 || c.status !== 'actual-document-native-art-chunk' || c.file !== 'TC0PHGMTCMR6im4hb3CSbF' || c.page !== '508:11825' || c.masterId !== '863:15150' || !['941:450', '863:15149'].includes(c.editorId) || !Number.isInteger(c.stage) || c.stage < 1 || c.stage > 20 || c.frame !== 'garden-' + String(c.stage).padStart(2, '0') + 'b' || !/^\d+:\d+$/.test(c.rowId)) fail('Unexpected actual row authority.');
+    if (editorId != null && editorId !== c.editorId) fail('Actual ART chunks cannot mix current and historical editor identities.');
+    editorId = c.editorId;
     if (![c.offset, c.nextOffset, c.totalOperations].every(Number.isSafeInteger) || c.offset < 0 || c.nextOffset !== c.offset + c.ops.length || c.nextOffset > c.totalOperations || c.totalOperations <= 0) fail('Invalid actual operation interval.');
     if (!stages.has(c.stage)) stages.set(c.stage, []);
     stages.get(c.stage).push(input);

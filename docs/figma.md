@@ -202,20 +202,41 @@ Logo and PWA icon exports are outside the native runtime atlas sync workflow.
 
 ## Level authoring in MASTER
 
-The current level source is [the twenty-row MASTER](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=863-15150)
-on page `508:11825`. The bottom [Level 01](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=887-13528)
-contains Hollow Tree Entrance, with its reusable native art beside it in ASSETS.
-Its former layout remains a reference outside MASTER.
+The current level source is [the twenty-row editor `941:450`](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=941-450)
+inside MASTER `863:15150` on page `508:11825`. Rows run from Level 20 at the top
+to [Level 01, Hollow Tree Entrance](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=941-2783)
+at the bottom. Reusable ASSETS and archived references sit outside the source
+editor. Historical editor `863:15149` remains an explicit offline replay binding,
+never a fallback for live capture.
+
+The [October 11 layout receipt](design/levels-overview/native-layouts-oct11.json)
+records the three newly authored, inactive drafts for Levels 07, 19 and 20,
+their native source captures and isolated desktop/phone checks. All twenty rows
+now exist with visible titles and 96 px spacing. The previous 72 source planes
+retain their selected local properties and ordered descendant fingerprints.
+Existing unfinished rows still need validation before whole-editor export.
+The [scene overview](design/levels-overview/README.md) holds twenty unique level
+images and the separate Level 04 mossy turtle study. Reference images and guides
+remain outside registered gameplay planes.
 
 Import the [MAX Native Level Studio package](design/figma-level-studio/plugin/INSTALL.md)
 once, run `npm run build` and `npm run figma:studio`, then edit the selected row
 and click **Preview in game**. The panel captures the actual native artwork and
 gameplay planes; the bridge compiles and serves an isolated copy of the real game.
-**Download all levels** exports the same source for checked runtime import.
+A valid selected draft can preview while other unfinished rows are reported.
+**Download all levels** requires the whole editor to validate and exports the
+same source for checked runtime import.
 See the [ART export contract](design/master-levels/art/README.md) for the normal
 compiler/import command. Source activation and production publication remain
-separate: tests, build, CI and exact production SHA verification precede main.
+separate: compiler and gameplay checks precede activation; tests and build
+precede a main push, and green CI plus exact production SHA verification
+precede calling a release live. The new three drafts have no `designed` flag and
+ordinary compilation excludes them. Their isolated previews do not establish
+complete runtime visual equivalence or campaign balance.
 
 The [fresh October 10 asset audit](design/master-levels/evidence/figma-assets/README.md)
 reports 665 MATCH, zero problems. Sixty unused review PNGs were moved out of the
 runtime sections with IDs, images and native registration preserved.
+The October 11 continuation repeated the authenticated production-source audit
+and `figma:check`: 665 MATCH, zero problems. Its scope and actual capture hashes
+are recorded in the October 11 layout receipt; prior evidence remains preserved.

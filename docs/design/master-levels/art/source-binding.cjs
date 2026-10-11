@@ -23,6 +23,7 @@ function bindSceneSources(compiled, artData) {
   if (!compiled || !compiled.data || !compiled.data.gardens || !Array.isArray(compiled.ledger) || !artData || artData.status !== 'actual-master-native-art-export-for-isolated-preview' || !Array.isArray(artData.rows)) throw Error('Actual ART export and normal MASTER compiler result are required.');
   const data = JSON.parse(JSON.stringify(compiled.data)), rows = [];
   for (const artRow of artData.rows) {
+    if (compiled.decoded?.editor != null && artRow.editorId !== compiled.decoded.editor) throw Error('Actual ART and compiled geometry must identify the same native editor.');
     const garden = (data.gardens[String(artRow.stage)] || []).find(g => g.frame === artRow.frame && g.node === artRow.rowId);
     if (!garden) throw Error('Actual ART has no corresponding normal compiled garden.');
     const binding = sourceBinding(artRow, garden);
