@@ -1,0 +1,1535 @@
+{
+  "format": "max-native-layouts-oct11/v1",
+  "status": "Completed authenticated presentation and selected native draft verification; all twenty source rows are present, with stages 7/19/20 inactive and no claim of twenty valid or activated runtime layouts.",
+  "preparedAtUTC": "2026-10-11T16:31:09.436Z",
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "508:11825",
+  "master": {
+    "id": "863:15150",
+    "name": "01 · LEVEL MASTER / 20 → 01 / Layouts",
+    "type": "SECTION",
+    "x": -8084,
+    "y": 2536,
+    "width": 8147,
+    "height": 15180
+  },
+  "editor": {
+    "id": "941:450",
+    "name": "MASTER LEVEL EDITOR / 20 source layouts / 20 → 01",
+    "type": "FRAME",
+    "x": 100,
+    "y": 174,
+    "width": 7947,
+    "height": 14906,
+    "rowCount": 20,
+    "orderTopToBottom": [
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "rowGap": 96,
+    "structureEvidence": "Authenticated complete editor structure and later title/link readback; twenty rows ordered 20→01, nineteen 96-pixel gaps, and twenty visible titles fully inside their rows.",
+    "finalCompleteStructureReadback": "passed",
+    "structureReadbackEvidence": {
+      "path": "/tmp/max-figma-native-oct11/native20-stack-readback.json",
+      "byteCount": 17426,
+      "sha256": "aa54a802ddfb64d02401dfdd9ac68939ab42fc4bb900fb439be022f421b76d20"
+    },
+    "finalTitlesAndLinksEvidence": {
+      "path": "/tmp/max-figma-native-oct11/final-titles-and-links.json",
+      "byteCount": 13476,
+      "sha256": "564d06d041158bdb3a8a7b3a2819fce6f2f8491fb6b4a8b9785881703fb1b7d1"
+    },
+    "titleReadbackAtUTC": "2026-10-11T16:28:13.225Z",
+    "rowBounds": [
+      {
+        "id": "999:13828",
+        "name": "LEVEL 20 / Layout",
+        "x": 64,
+        "y": 64,
+        "width": 1752,
+        "height": 622,
+        "clipsContent": false,
+        "title": {
+          "id": "999:13917",
+          "name": "Layout title / 20",
+          "text": "LEVEL 20 / Radioactive Dawn",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1252,
+          "h": 31,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14008"
+          }
+        }
+      },
+      {
+        "id": "999:13696",
+        "name": "LEVEL 19 / Layout",
+        "x": 64,
+        "y": 782,
+        "width": 2261,
+        "height": 805,
+        "clipsContent": false,
+        "title": {
+          "id": "999:13804",
+          "name": "Layout title / 19",
+          "text": "LEVEL 19 / Surface Breach",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1761,
+          "h": 31,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14029"
+          }
+        }
+      },
+      {
+        "id": "952:14416",
+        "name": "LEVEL 18 / Layout",
+        "x": 64,
+        "y": 1683,
+        "width": 7819,
+        "height": 480,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14428",
+          "name": "Layout title / 18",
+          "text": "18 · Last Sluice",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14050"
+          }
+        }
+      },
+      {
+        "id": "941:475",
+        "name": "LEVEL 17 / Layout",
+        "x": 64,
+        "y": 2259,
+        "width": 3984,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14429",
+          "name": "Layout title / 17",
+          "text": "17 · Reactor Nest",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14071"
+          }
+        }
+      },
+      {
+        "id": "941:483",
+        "name": "LEVEL 16 / Layout",
+        "x": 64,
+        "y": 2935,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14430",
+          "name": "Layout title / 16",
+          "text": "16 · Giant's Stair",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14092"
+          }
+        }
+      },
+      {
+        "id": "941:491",
+        "name": "LEVEL 15 / Layout",
+        "x": 64,
+        "y": 3611,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14431",
+          "name": "Layout title / 15",
+          "text": "15 · Fault Steps",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14113"
+          }
+        }
+      },
+      {
+        "id": "941:499",
+        "name": "LEVEL 14 / Layout",
+        "x": 64,
+        "y": 4287,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14432",
+          "name": "Layout title / 14",
+          "text": "14 · Catacomb",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14134"
+          }
+        }
+      },
+      {
+        "id": "941:507",
+        "name": "LEVEL 13 / Layout",
+        "x": 64,
+        "y": 4963,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14433",
+          "name": "Layout title / 13",
+          "text": "13 · Twin Shafts",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14155"
+          }
+        }
+      },
+      {
+        "id": "941:515",
+        "name": "LEVEL 12 / Layout",
+        "x": 64,
+        "y": 5639,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14434",
+          "name": "Layout title / 12",
+          "text": "12 · Weeping Roots",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14176"
+          }
+        }
+      },
+      {
+        "id": "941:523",
+        "name": "LEVEL 11 / Layout",
+        "x": 64,
+        "y": 6315,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14435",
+          "name": "Layout title / 11",
+          "text": "11 · Old Quarry",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14197"
+          }
+        }
+      },
+      {
+        "id": "941:531",
+        "name": "LEVEL 10 / Layout",
+        "x": 64,
+        "y": 6991,
+        "width": 5370,
+        "height": 831,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14436",
+          "name": "Layout title / 10",
+          "text": "10 · Bell Cellar",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14218"
+          }
+        }
+      },
+      {
+        "id": "941:539",
+        "name": "LEVEL 09 / Layout",
+        "x": 64,
+        "y": 7918,
+        "width": 5370,
+        "height": 831,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14437",
+          "name": "Layout title / 09",
+          "text": "09 · Collapsed Tower",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14239"
+          }
+        }
+      },
+      {
+        "id": "941:547",
+        "name": "LEVEL 08 / Layout",
+        "x": 64,
+        "y": 8845,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14438",
+          "name": "Layout title / 08",
+          "text": "08 · Silo Stair",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14260"
+          }
+        }
+      },
+      {
+        "id": "999:13577",
+        "name": "LEVEL 07 / Layout",
+        "x": 64,
+        "y": 9521,
+        "width": 2207,
+        "height": 795,
+        "clipsContent": false,
+        "title": {
+          "id": "999:13672",
+          "name": "Layout title / 07",
+          "text": "LEVEL 07 / Lantern Roots",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1707,
+          "h": 31,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14281"
+          }
+        }
+      },
+      {
+        "id": "941:563",
+        "name": "LEVEL 06 / Layout",
+        "x": 64,
+        "y": 10412,
+        "width": 5373,
+        "height": 731,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14439",
+          "name": "Layout title / 06",
+          "text": "06 · Cairn Terraces",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14302"
+          }
+        }
+      },
+      {
+        "id": "941:571",
+        "name": "LEVEL 05 / Layout",
+        "x": 64,
+        "y": 11239,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14440",
+          "name": "Layout title / 05",
+          "text": "05 · Root Stair",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14323"
+          }
+        }
+      },
+      {
+        "id": "941:578",
+        "name": "LEVEL 04 / Layout",
+        "x": 64,
+        "y": 11915,
+        "width": 4395,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14441",
+          "name": "Layout title / 04",
+          "text": "04 · Mossback Sanctuary",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14344"
+          }
+        }
+      },
+      {
+        "id": "941:591",
+        "name": "LEVEL 03 / Layout",
+        "x": 64,
+        "y": 12591,
+        "width": 5760,
+        "height": 899,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14442",
+          "name": "Layout title / 03",
+          "text": "03 · Broken Aqueduct",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14365"
+          }
+        }
+      },
+      {
+        "id": "941:1569",
+        "name": "LEVEL 02 / Layout",
+        "x": 64,
+        "y": 13586,
+        "width": 3962,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14443",
+          "name": "Layout title / 02",
+          "text": "02 · Railway Ruins",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1472,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14386"
+          }
+        }
+      },
+      {
+        "id": "941:2783",
+        "name": "LEVEL 01 / Layout",
+        "x": 64,
+        "y": 14262,
+        "width": 640,
+        "height": 580,
+        "clipsContent": false,
+        "title": {
+          "id": "970:14444",
+          "name": "Layout title / 01",
+          "text": "01 · Hollow Tree",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 640,
+          "h": 36.400001525878906,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/max-fuglesprenger?node-id=970-14407"
+          }
+        }
+      }
+    ],
+    "actualRowGaps": [
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96
+    ],
+    "titleCount": 20,
+    "allTitlesVisibleAndInside": true,
+    "referenceCardLinks": [
+      {
+        "id": "970:14300",
+        "text": "Open editable layout draft ↗",
+        "link": {
+          "type": "URL",
+          "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13577"
+        }
+      },
+      {
+        "id": "970:14048",
+        "text": "Open editable layout draft ↗",
+        "link": {
+          "type": "URL",
+          "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13696"
+        }
+      },
+      {
+        "id": "970:14027",
+        "text": "Open editable layout draft ↗",
+        "link": {
+          "type": "URL",
+          "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13828"
+        }
+      }
+    ]
+  },
+  "runtimeSourceCommit": "5f709264f14252a1ffc0993a4e1cc22fa6e84e67",
+  "newStages": [
+    7,
+    19,
+    20
+  ],
+  "productionActivated": false,
+  "fullyValidatedTwentyRuntimeLayouts": false,
+  "generatedPNGFilesChanged": false,
+  "frozenEntryCaptureFilesChanged": false,
+  "historicalCloudReceipt": {
+    "path": "cloud-receipt.json",
+    "sha256": "22c7d88ba1c1132970bbd1aa213ea81e0d9fcfa489a75213bd9e9600898d010c",
+    "scope": "Unchanged first-phase reference board/image/native turtle/17-row/source72 checkpoint.",
+    "modified": false
+  },
+  "geometryCapture": {
+    "path": "/tmp/max-figma-native-oct11/native-drafts-geometry.json",
+    "byteCount": 76820,
+    "sha256": "84985614c32b52db1ff32b205dc2090db38edc45080f5a3c41f60021c9ca8a72",
+    "sourceKind": "figma-MASTER-level-rows",
+    "captureConsistency": "Three separately authenticated selected geometry reads with unchanged source; not an atomic whole-editor capture.",
+    "production": false
+  },
+  "art": {
+    "importedRectangleCount": 16112,
+    "countsByStage": {
+      "7": 9177,
+      "19": 6639,
+      "20": 296
+    },
+    "importCountEvidence": "All three actual native ART captures were read back through authenticated Figma connector results and losslessly reconstructed. Their 20 transport parts preserve exact raw JSON/SHA1 with stable source identity per stage.",
+    "omittedTileOperations": 231,
+    "omittedTilesByStage": {
+      "7": 86,
+      "19": 145,
+      "20": 0
+    },
+    "stage20KingAndActorsCopied": false,
+    "visualEquivalenceClaim": false,
+    "runtimeEquivalenceClaim": false,
+    "mergePolicy": "Only consecutive same x,width,color,alpha,part RECTs with disjoint vertical adjacency; retained RECT paint order preserved.",
+    "actualNativeReadbackParts": 20
+  },
+  "levels": [
+    {
+      "stage": 7,
+      "title": "Lantern Roots",
+      "outerRowId": "999:13577",
+      "rowId": "999:13578",
+      "titleNodeId": "999:13672",
+      "notesNodeId": "999:13675",
+      "guideNodeId": "999:13684",
+      "URL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13577",
+      "rowName": "level_07",
+      "nativePlanes": {
+        "ART": "999:13579",
+        "ROUTES": "999:13580",
+        "POINTS": "999:13581",
+        "REGISTRATION": "999:13582"
+      },
+      "artLayers": {
+        "architecture": "999:13583",
+        "ground": "999:13584",
+        "platforms": "999:13585"
+      },
+      "nativeBounds": {
+        "width": 1707,
+        "height": 591,
+        "planeX": 0,
+        "planeY": 100
+      },
+      "registration": {
+        "originX": 1255,
+        "soilY": 474,
+        "originNodeId": "999:13670",
+        "soilNodeId": "999:13671"
+      },
+      "sourceDesigned": false,
+      "TERRAINOverride": false,
+      "routeCount": 71,
+      "pointCount": 13,
+      "pointKinds": {
+        "reward": 1,
+        "seed": 1,
+        "trial": 2,
+        "bonus": 2,
+        "destination": 6,
+        "start": 1
+      },
+      "ladders": 0,
+      "artRectangleCount": 9177,
+      "creationEvidence": {
+        "path": "/tmp/max-figma-native-oct11/row-07-creation.json",
+        "byteCount": 2504,
+        "sha256": "d0dbe9c39e02fdb1ea5610a847e2ada343a4d43fc9ff26254cf335cb6222e5dd"
+      },
+      "geometryReadback": "actual-authenticated-selected-geometry-capture",
+      "nativeARTReadback": {
+        "status": "complete-decoded-native-readback",
+        "operationCount": 9177,
+        "captureSHA1": "2623a04f3a7083a8d5cacf160cfc1a537b31ff0b",
+        "captureSHA256": "27c33010b730140ddda2cc40304ed373d7ac39a295468961b70dcc9c2280f56f",
+        "fromUTC": "2026-10-11T16:19:40.536Z",
+        "untilUTC": "2026-10-11T16:25:12.827Z",
+        "partCount": 11,
+        "sourceStableAcrossParts": true,
+        "atomicWholeFileClaim": false,
+        "transportEvidence": {
+          "path": "/tmp/max-figma-native-oct11/native-art-07.transport-receipt.json",
+          "byteCount": 809,
+          "sha256": "a8c576298d34e0c6726d0dab992d75551925d267fe65c23b554e36a6d87a6a72"
+        },
+        "sourceProvenance": "Actual authenticated Figma native collector results saved by root; lossless decoder preserves original capture JSON bytes and SHA1.",
+        "rawJSONByteCount": 552446,
+        "rawCaptureEvidence": {
+          "path": "/tmp/max-figma-native-oct11/native-art-07.json",
+          "byteCount": 552446,
+          "sha256": "27c33010b730140ddda2cc40304ed373d7ac39a295468961b70dcc9c2280f56f"
+        }
+      },
+      "normalCompilerCollisionPreview": {
+        "passed": true,
+        "sourceDesigned": false,
+        "localProjectedDesigned": true,
+        "sourceGeometryRectsExact": true,
+        "sourceMaterialChanges": [],
+        "additionalFurnishedPlatforms": 37,
+        "selectedGuardianChanged": false,
+        "originalGuardian": {
+          "stage": 7,
+          "siteId": "7:route-lookout",
+          "siteIndex": 1,
+          "x": 1230473,
+          "y": -87,
+          "courtX": 1230473,
+          "courtY": 1.6822413527912872,
+          "courtLeft": 1230361,
+          "courtRight": 1230585,
+          "status": "ready",
+          "startedAt": 0
+        },
+        "previewGuardian": {
+          "x": 1230473,
+          "y": -87,
+          "platformId": "7:d60",
+          "route": 1,
+          "routePlatform": "7:d60",
+          "courtX": 1230473,
+          "courtY": 1.6822413527912872,
+          "courtLeft": 1230361,
+          "courtRight": 1230585,
+          "id": "7:route-lookout",
+          "name": "Eastern root rest"
+        },
+        "scope": "Selected seed1 Bulwark shrine approach/return, actual shrine-cache proximity collection, then ordinary planting/care on returned entry soil. Actual VM game harness; browser/native ART binding is a separate report. This is draft traversability, not equivalence to generated native stage furnishings or complete combat/exit coverage.",
+        "evidence": {
+          "path": "/tmp/max-figma-native-oct11/fresh-draft-review-07-19/draft-collision-review.json",
+          "byteCount": 32713,
+          "sha256": "dae5d3d1feaf761f22f3fe67af1c7c6f3d92b021704a770f4d679d3c5d8eeb6a"
+        },
+        "selectedSeed1PhysicsProof": {
+          "approach": true,
+          "return": true,
+          "actualCache": true,
+          "planting": true,
+          "returnedCare": true,
+          "inputsResourceInjection": false
+        }
+      },
+      "boundNativeARTBrowserPreview": {
+        "status": "passed",
+        "passed": true,
+        "scope": "Exact normal compiler/native ART bound isolated preview.mjs bridge. Real browser keyboard Space plants, arrows walk a short dry entry court return and Space cares. Layout review fixture supplies8 seeds and disables encounters. This is entry control/render verification, not campaign seed balance, combat or complete route traversal.",
+        "productionActivated": false,
+        "cases": [
+          {
+            "stage": 7,
+            "viewport": "desktop",
+            "nativeOperations": 9177,
+            "passed": true,
+            "errors": [],
+            "failedRequests": [],
+            "sourceBinding": {
+              "stage": 7,
+              "frame": "garden-07b",
+              "rowId": "999:13578",
+              "sourceId": "999:13578",
+              "sourceDigest": "7d30d55f58e78387ee4200f1606d47c20a5586061c6128b8a39c1c61f9b4fadb",
+              "artDigest": "ef674cf4cbb02882501d5cd9ed4fa1c57333781d18c370b6321e6233d2b30e87",
+              "geometryDigest": "26036f5543500c962c81a7d32b94882808979f785aa65b3f5ac49c05ee219e3c"
+            },
+            "screenshotSHA256": "0b7ed34447d56920ad64718a8849816b2ade90658075e92a2a8dac0c42f0c1dc"
+          },
+          {
+            "stage": 7,
+            "viewport": "phone",
+            "nativeOperations": 9177,
+            "passed": true,
+            "errors": [],
+            "failedRequests": [],
+            "sourceBinding": {
+              "stage": 7,
+              "frame": "garden-07b",
+              "rowId": "999:13578",
+              "sourceId": "999:13578",
+              "sourceDigest": "7d30d55f58e78387ee4200f1606d47c20a5586061c6128b8a39c1c61f9b4fadb",
+              "artDigest": "ef674cf4cbb02882501d5cd9ed4fa1c57333781d18c370b6321e6233d2b30e87",
+              "geometryDigest": "26036f5543500c962c81a7d32b94882808979f785aa65b3f5ac49c05ee219e3c"
+            },
+            "screenshotSHA256": "850b4d30ee1d9aec222c76920117defc78828cbef01d11db4e0bb71965661baf"
+          }
+        ],
+        "evidence": {
+          "path": "/tmp/max-figma-native-oct11/fresh-draft-browser-review-07/native-draft-browser-review.json",
+          "byteCount": 221071,
+          "sha256": "2c230a7c55d1f65cfbbb4b9288d26d7887e21fdaf7fdbe663494e786935c7f71"
+        },
+        "completeGardenerAtEntryBothViewports": true,
+        "ordinaryEntryPlantReturnCareBothViewports": true
+      },
+      "exitPolicy": "The living plant selected after guardian defeat becomes the ascent stalk; no fixed exit door.",
+      "titleReadback": {
+        "passed": true,
+        "capturedAtUTC": "2026-10-11T16:28:13.225Z",
+        "node": {
+          "id": "999:13672",
+          "name": "Layout title / 07",
+          "text": "LEVEL 07 / Lantern Roots",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1707,
+          "h": 31,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14281"
+          }
+        }
+      }
+    },
+    {
+      "stage": 19,
+      "title": "Surface Breach",
+      "outerRowId": "999:13696",
+      "rowId": "999:13697",
+      "titleNodeId": "999:13804",
+      "notesNodeId": "999:13807",
+      "guideNodeId": "999:13816",
+      "URL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13696",
+      "rowName": "level_19",
+      "nativePlanes": {
+        "ART": "999:13698",
+        "ROUTES": "999:13699",
+        "POINTS": "999:13700",
+        "REGISTRATION": "999:13701"
+      },
+      "artLayers": {
+        "architecture": "999:13702",
+        "ground": "999:13703",
+        "platforms": "999:13704"
+      },
+      "nativeBounds": {
+        "width": 1761,
+        "height": 601,
+        "planeX": 0,
+        "planeY": 100
+      },
+      "registration": {
+        "originX": 815,
+        "soilY": 484,
+        "originNodeId": "999:13802",
+        "soilNodeId": "999:13803"
+      },
+      "sourceDesigned": false,
+      "TERRAINOverride": false,
+      "routeCount": 84,
+      "pointCount": 13,
+      "pointKinds": {
+        "reward": 1,
+        "seed": 1,
+        "trial": 2,
+        "bonus": 2,
+        "destination": 6,
+        "start": 1
+      },
+      "ladders": 0,
+      "artRectangleCount": 6639,
+      "creationEvidence": {
+        "path": "/tmp/max-figma-native-oct11/row-19-creation.json",
+        "byteCount": 2726,
+        "sha256": "b5e5c8be185b391868ff5955cb3bfe55c3cd620bf631479acc94b7aa9f2d22d9"
+      },
+      "geometryReadback": "actual-authenticated-selected-geometry-capture",
+      "nativeARTReadback": {
+        "status": "complete-decoded-native-readback",
+        "operationCount": 6639,
+        "captureSHA1": "23dfa2e9c4ca760d8629477e2bce9c3e596cc9ab",
+        "captureSHA256": "14eb610e6a04c7a64e5c8452fe610be53cbe3999dd78f0832942cdd655d68d19",
+        "fromUTC": "2026-10-11T16:21:44.019Z",
+        "untilUTC": "2026-10-11T16:26:37.604Z",
+        "partCount": 8,
+        "sourceStableAcrossParts": true,
+        "atomicWholeFileClaim": false,
+        "transportEvidence": {
+          "path": "/tmp/max-figma-native-oct11/native-art-19.transport-receipt.json",
+          "byteCount": 809,
+          "sha256": "09f198f28f541316a2211241fe87c6302955751d8efc8fe05ce894f5dfae8829"
+        },
+        "sourceProvenance": "Actual authenticated Figma native collector results saved by root; lossless decoder preserves original capture JSON bytes and SHA1.",
+        "rawJSONByteCount": 436876,
+        "rawCaptureEvidence": {
+          "path": "/tmp/max-figma-native-oct11/native-art-19.json",
+          "byteCount": 436876,
+          "sha256": "14eb610e6a04c7a64e5c8452fe610be53cbe3999dd78f0832942cdd655d68d19"
+        }
+      },
+      "normalCompilerCollisionPreview": {
+        "passed": true,
+        "sourceDesigned": false,
+        "localProjectedDesigned": true,
+        "sourceGeometryRectsExact": true,
+        "sourceMaterialChanges": [],
+        "additionalFurnishedPlatforms": 36,
+        "selectedGuardianChanged": true,
+        "originalGuardian": {
+          "stage": 19,
+          "siteId": "19:route-lookout",
+          "siteIndex": 1,
+          "x": 3689806,
+          "y": -124,
+          "courtX": 3689806,
+          "courtY": -18.48677610531064,
+          "courtLeft": 3689694,
+          "courtRight": 3689918,
+          "status": "ready",
+          "startedAt": 0
+        },
+        "previewGuardian": {
+          "x": 3689895,
+          "y": -127,
+          "platformId": "19:d47",
+          "route": 1,
+          "routePlatform": "19:d47",
+          "courtX": 3689895,
+          "courtY": 1.9220243309871847,
+          "courtLeft": 3689783,
+          "courtRight": 3690007,
+          "id": "19:route-lookout",
+          "name": "Eastern ruined balcony"
+        },
+        "scope": "Selected seed1 Bulwark shrine approach/return, actual shrine-cache proximity collection, then ordinary planting/care on returned entry soil. Actual VM game harness; browser/native ART binding is a separate report. This is draft traversability, not equivalence to generated native stage furnishings or complete combat/exit coverage.",
+        "evidence": {
+          "path": "/tmp/max-figma-native-oct11/fresh-draft-review-07-19/draft-collision-review.json",
+          "byteCount": 32713,
+          "sha256": "dae5d3d1feaf761f22f3fe67af1c7c6f3d92b021704a770f4d679d3c5d8eeb6a"
+        },
+        "selectedSeed1PhysicsProof": {
+          "approach": true,
+          "return": true,
+          "actualCache": true,
+          "planting": true,
+          "returnedCare": true,
+          "inputsResourceInjection": false
+        }
+      },
+      "boundNativeARTBrowserPreview": {
+        "status": "passed",
+        "passed": true,
+        "scope": "Exact normal compiler/native ART bound isolated preview.mjs bridge. Real browser keyboard Space plants, arrows walk a short dry entry court return and Space cares. Layout review fixture supplies8 seeds and disables encounters. This is entry control/render verification, not campaign seed balance, combat or complete route traversal.",
+        "productionActivated": false,
+        "cases": [
+          {
+            "stage": 19,
+            "viewport": "desktop",
+            "nativeOperations": 6639,
+            "passed": true,
+            "errors": [],
+            "failedRequests": [],
+            "sourceBinding": {
+              "stage": 19,
+              "frame": "garden-19b",
+              "rowId": "999:13697",
+              "sourceId": "999:13697",
+              "sourceDigest": "6281cf74136505855d5eeef7209c672db6bd529e24ec9de71b36da8fe113d319",
+              "artDigest": "95a539695d8fdae1b7b45bf8f4499b14679b497d6075578693085d09613562bf",
+              "geometryDigest": "d88f7a5b6f6bef4470de3be1dd4e12912a5d067a05bf1ed0cf5930a6bf44023f"
+            },
+            "screenshotSHA256": "5523fdc41f03189a7cfecbfb7cb1fe0d965266e811b66d3338478250818271cd"
+          },
+          {
+            "stage": 19,
+            "viewport": "phone",
+            "nativeOperations": 6639,
+            "passed": true,
+            "errors": [],
+            "failedRequests": [],
+            "sourceBinding": {
+              "stage": 19,
+              "frame": "garden-19b",
+              "rowId": "999:13697",
+              "sourceId": "999:13697",
+              "sourceDigest": "6281cf74136505855d5eeef7209c672db6bd529e24ec9de71b36da8fe113d319",
+              "artDigest": "95a539695d8fdae1b7b45bf8f4499b14679b497d6075578693085d09613562bf",
+              "geometryDigest": "d88f7a5b6f6bef4470de3be1dd4e12912a5d067a05bf1ed0cf5930a6bf44023f"
+            },
+            "screenshotSHA256": "a3e0a3eb6465c90d94d1711d763ed389c067f082212b1e0bdbe1f3fd61de5d1d"
+          }
+        ],
+        "evidence": {
+          "path": "/tmp/max-figma-native-oct11/fresh-draft-browser-review-19/native-draft-browser-review.json",
+          "byteCount": 245644,
+          "sha256": "3564142ddde73c76fd5da5c7626e2c65a01df8c78391f5bcde25ed1d2fe5c0b5"
+        },
+        "completeGardenerAtEntryBothViewports": true,
+        "ordinaryEntryPlantReturnCareBothViewports": true
+      },
+      "exitPolicy": "The living plant selected after guardian defeat becomes the ascent stalk; no fixed exit door.",
+      "titleReadback": {
+        "passed": true,
+        "capturedAtUTC": "2026-10-11T16:28:13.225Z",
+        "node": {
+          "id": "999:13804",
+          "name": "Layout title / 19",
+          "text": "LEVEL 19 / Surface Breach",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1761,
+          "h": 31,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14029"
+          }
+        }
+      }
+    },
+    {
+      "stage": 20,
+      "title": "Radioactive Dawn",
+      "outerRowId": "999:13828",
+      "rowId": "999:13829",
+      "titleNodeId": "999:13917",
+      "notesNodeId": "999:13920",
+      "guideNodeId": "999:13929",
+      "URL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13828",
+      "rowName": "level_20",
+      "nativePlanes": {
+        "ART": "999:13830",
+        "ROUTES": "999:13831",
+        "POINTS": "999:13832",
+        "REGISTRATION": "999:13833"
+      },
+      "artLayers": {
+        "architecture": "999:13834",
+        "ground": "999:13835",
+        "platforms": "999:13836"
+      },
+      "nativeBounds": {
+        "width": 1252,
+        "height": 418,
+        "planeX": 0,
+        "planeY": 100
+      },
+      "registration": {
+        "originX": 288,
+        "soilY": 327,
+        "originNodeId": "999:13915",
+        "soilNodeId": "999:13916"
+      },
+      "sourceDesigned": false,
+      "TERRAINOverride": false,
+      "routeCount": 65,
+      "pointCount": 13,
+      "pointKinds": {
+        "reward": 1,
+        "seed": 1,
+        "trial": 2,
+        "bonus": 2,
+        "destination": 6,
+        "start": 1
+      },
+      "ladders": 0,
+      "artRectangleCount": 296,
+      "creationEvidence": {
+        "path": "/tmp/max-figma-native-oct11/row-20-creation.json",
+        "byteCount": 2403,
+        "sha256": "a90f0b6410996666c9b3f15326e7786d5a59b5f1ce82cc2d89d3b65e373bee8e"
+      },
+      "geometryReadback": "actual-authenticated-selected-geometry-capture",
+      "nativeARTReadback": {
+        "status": "complete-decoded-native-readback",
+        "operationCount": 296,
+        "captureSHA1": "a445d079007c149a4c1fc8e4b1b706fdac40284f",
+        "captureSHA256": "4716f9e603de51e5f5cf9180b0a402037d65b2ad3d370845fb8899f81ace026f",
+        "fromUTC": "2026-10-11T16:21:45.880Z",
+        "untilUTC": "2026-10-11T16:21:45.880Z",
+        "partCount": 1,
+        "sourceStableAcrossParts": true,
+        "atomicWholeFileClaim": false,
+        "transportEvidence": {
+          "path": "/tmp/max-figma-native-oct11/native-art-20.transport-receipt.json",
+          "byteCount": 806,
+          "sha256": "14d31e6b0b40b4130bad84b2dbe9eb0245c8e90106e42f7db5d2096d8579b14c"
+        },
+        "sourceProvenance": "Actual authenticated Figma native collector results saved by root; lossless decoder preserves original capture JSON bytes and SHA1.",
+        "rawJSONByteCount": 16805,
+        "rawCaptureEvidence": {
+          "path": "/tmp/max-figma-native-oct11/native-art-20.json",
+          "byteCount": 16805,
+          "sha256": "4716f9e603de51e5f5cf9180b0a402037d65b2ad3d370845fb8899f81ace026f"
+        }
+      },
+      "normalCompilerCollisionPreview": {
+        "passed": true,
+        "sourceDesigned": false,
+        "localProjectedDesigned": true,
+        "sourceGeometryRectsExact": true,
+        "sourceMaterialChanges": [
+          {
+            "sourceId": "20:pl4",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:pl1",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:pl2",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:pl0",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:pl5",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:pl3",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:pf",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p4",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p2",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p3",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p1",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p12",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p11",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p0",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p9",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p8",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p6",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p7",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p10",
+            "original": "crown",
+            "captured": "ruin"
+          },
+          {
+            "sourceId": "20:p5",
+            "original": "crown",
+            "captured": "ruin"
+          }
+        ],
+        "additionalFurnishedPlatforms": 25,
+        "selectedGuardianChanged": false,
+        "originalGuardian": {
+          "stage": 20,
+          "siteId": "20:route-lookout",
+          "siteIndex": 1,
+          "x": 3895046,
+          "y": -158,
+          "courtX": 3895046,
+          "courtY": -6.688071375249027,
+          "courtLeft": 3894934,
+          "courtRight": 3895158,
+          "status": "ready",
+          "startedAt": 0
+        },
+        "previewGuardian": {
+          "x": 3895046,
+          "y": -158,
+          "platformId": "20:d6",
+          "route": -1,
+          "routePlatform": "20:d6",
+          "courtX": 3895046,
+          "courtY": -6.688071375249027,
+          "courtLeft": 3894934,
+          "courtRight": 3895158,
+          "id": "20:route-lookout",
+          "name": "Western crown gallery"
+        },
+        "scope": "Selected seed1 Bulwark shrine approach/return, actual shrine-cache proximity collection, then ordinary planting/care on returned entry soil. Actual VM game harness; browser/native ART binding is a separate report. This is draft traversability, not equivalence to generated native stage furnishings or complete combat/exit coverage.",
+        "evidence": {
+          "path": "/tmp/max-figma-native-oct11/fresh-draft-review-20/draft-collision-review.json",
+          "byteCount": 18542,
+          "sha256": "afc7b53051bd296d7ac2c0d0fdd94986473e5b82e32dde0f6ed94e822adc53b6"
+        },
+        "selectedSeed1PhysicsProof": {
+          "approach": true,
+          "return": true,
+          "actualCache": true,
+          "planting": true,
+          "returnedCare": true,
+          "inputsResourceInjection": false
+        }
+      },
+      "boundNativeARTBrowserPreview": {
+        "status": "passed",
+        "passed": true,
+        "scope": "Exact normal compiler/native ART bound isolated preview.mjs bridge. Real browser keyboard Space plants, arrows walk a short dry entry court return and Space cares. Layout review fixture supplies8 seeds and disables encounters. This is entry control/render verification, not campaign seed balance, combat or complete route traversal.",
+        "productionActivated": false,
+        "cases": [
+          {
+            "stage": 20,
+            "viewport": "desktop",
+            "nativeOperations": 296,
+            "passed": true,
+            "errors": [],
+            "failedRequests": [],
+            "sourceBinding": {
+              "stage": 20,
+              "frame": "garden-20b",
+              "rowId": "999:13829",
+              "sourceId": "999:13829",
+              "sourceDigest": "19f7c8062896ee23c53f01984d5a56d398910d1ebc5275b13b734c82ee1c27b2",
+              "artDigest": "d48f4bdc07c10d078c52705b942358b51331d3e600824788ccf134f5352c7e9d",
+              "geometryDigest": "0c69ba0113c7e88aadabc822e8548013b38c181fe6ada5236db9854e481c8d7e"
+            },
+            "screenshotSHA256": "dd69b79e7746236a0243d369eed10d30f540a3315439aee01d7d1e3b8fc08f49"
+          },
+          {
+            "stage": 20,
+            "viewport": "phone",
+            "nativeOperations": 296,
+            "passed": true,
+            "errors": [],
+            "failedRequests": [],
+            "sourceBinding": {
+              "stage": 20,
+              "frame": "garden-20b",
+              "rowId": "999:13829",
+              "sourceId": "999:13829",
+              "sourceDigest": "19f7c8062896ee23c53f01984d5a56d398910d1ebc5275b13b734c82ee1c27b2",
+              "artDigest": "d48f4bdc07c10d078c52705b942358b51331d3e600824788ccf134f5352c7e9d",
+              "geometryDigest": "0c69ba0113c7e88aadabc822e8548013b38c181fe6ada5236db9854e481c8d7e"
+            },
+            "screenshotSHA256": "96907b31f8d0b74b69ddebbfb8e7b37088ec3230beacbc8ff68c65744d9d07da"
+          }
+        ],
+        "evidence": {
+          "path": "/tmp/max-figma-native-oct11/fresh-draft-browser-review-20/native-draft-browser-review.json",
+          "byteCount": 189216,
+          "sha256": "167b83f4d879fd563b85b4edf6666d614aece5a418c0c1f2c9ed7cc03b6ff1eb"
+        },
+        "completeGardenerAtEntryBothViewports": true,
+        "ordinaryEntryPlantReturnCareBothViewports": true
+      },
+      "exitPolicy": "Defeat final guardian to win; no next-stage exit.",
+      "titleReadback": {
+        "passed": true,
+        "capturedAtUTC": "2026-10-11T16:28:13.225Z",
+        "node": {
+          "id": "999:13917",
+          "name": "Layout title / 20",
+          "text": "LEVEL 20 / Radioactive Dawn",
+          "visible": true,
+          "x": 0,
+          "y": 0,
+          "w": 1252,
+          "h": 31,
+          "fullyInside": true,
+          "link": {
+            "type": "URL",
+            "value": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14008"
+          }
+        }
+      }
+    }
+  ],
+  "productionPNGSourceAudit": {
+    "verifiedAtUTC": "2026-10-11T16:14:04.452681+00:00",
+    "repositoryHEAD": "5f709264f14252a1ffc0993a4e1cc22fa6e84e67",
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "productionPageId": "10:2",
+    "productionSectionIds": [
+      "451:2",
+      "451:3",
+      "451:4",
+      "451:5",
+      "451:6",
+      "451:7"
+    ],
+    "captureFrom": "2026-10-11T16:07:37.547Z",
+    "captureUntil": "2026-10-11T16:12:13.341Z",
+    "authenticatedReadOnlyCalls": 7,
+    "localReplayToolCalls": 2,
+    "actualProductionPNGs": 665,
+    "matchCount": 665,
+    "problems": 0,
+    "figmaCheckExitCode": 0,
+    "matchingSourceIdentitiesNativeBoundsAndRepoBytes": 665,
+    "canonicalNativePaints": 665,
+    "unitTransforms": 1355,
+    "registrationIssues": 0,
+    "unchangedHistoricalHierarchyRows": 1355,
+    "historicalPaintsAndWorkbenchRulesUnchanged": true,
+    "ordinaryRuntimeSourcesUnchanged": true,
+    "runtimeChangesByAudit": false,
+    "repositoryChangesByAudit": false,
+    "cloudNodeMutationsByAudit": false,
+    "quotaOrToolErrors": 0,
+    "actualFigmaPNGBytesExported": false,
+    "capture": "/tmp/max-figma-native-oct11/figma-assets/production-capture.json",
+    "captureSHA256": "cf0aef47fbdfdcb91630c2ba5e045b7116ef5e065234bc63a5d76d66d32d1687",
+    "rawCapturedPayloadSHA256": "932b92e90faa8264747050ed2631024f96b2f441bff8f376fe9a23ddccdc64b6",
+    "nativeSourceAudit": "/tmp/max-figma-native-oct11/figma-assets/native-source-audit.json",
+    "figmaCheckLog": "/tmp/max-figma-native-oct11/figma-assets/figma-check.log",
+    "figmaCheckExitReceipt": "/tmp/max-figma-native-oct11/figma-assets/figma-check-exit.json",
+    "replayReceipt": "/tmp/max-figma-native-oct11/figma-assets/replay-receipt.json",
+    "replayReadRepositoryPins": false,
+    "replayStopped": true,
+    "scope": "Configured ordinary production PNG source sections10:2/451:2..7 and workbench rules; newly authored level draft rows are outside this source-identity audit.",
+    "evidenceLimits": [
+      "Actual Figma PNG bytes were not downloaded. Actual fresh content-addressed image identities equal repository PNG byte SHA-1 and native IHDR dimensions.",
+      "Capture does not record overall node visibility/opacity/effects/clipping; this is not rendered export equality."
+    ],
+    "passed": true,
+    "evidenceArtifact": {
+      "path": "/tmp/max-figma-native-oct11/figma-assets/summary.json",
+      "byteCount": 2180,
+      "sha256": "2c13ba8299751ca3e4986c0b7ab29895816c5b44f633bae46e83ac7c7045396a"
+    }
+  },
+  "original72SourcePlanes": {
+    "status": "passed-post-draft-source-plane-comparison",
+    "capturedAtUTC": "2026-10-11T16:27:31.360Z",
+    "originalPlaneCount": 72,
+    "matched": 72,
+    "differences": [],
+    "observedNodeCount": 13690,
+    "countsIncludeEachPlaneRoot": true,
+    "algorithm": "Ordered descendant selected-properties FNV-1a32; local properties, not full-node digest.",
+    "properties": [
+      "id",
+      "name",
+      "type",
+      "visible",
+      "x",
+      "y",
+      "width",
+      "height",
+      "rotation",
+      "fills",
+      "text characters",
+      "vector paths"
+    ],
+    "observationScope": "Depth-first, ordered selected-property FNV-1a32 fingerprints and node counts of the original 72 planes; excludes newly authored rows. This is observational preservation evidence, not a full-node digest or whole-editor compiler validation.",
+    "baselineEvidence": {
+      "path": "/tmp/max-figma-oct11/source-planes-before.json",
+      "byteCount": 16227,
+      "sha256": "1062596e29fda79e2e319056c0f394d7bbf77086734ef833ab52f40942b21757"
+    },
+    "afterEvidence": {
+      "path": "/tmp/max-figma-native-oct11/old-planes-after.json",
+      "byteCount": 5896,
+      "sha256": "fa75ca8e03b4f6f5361eced5b095eb13837c5ef655b42c184ab8e45d5b651280"
+    },
+    "comparisonEvidence": {
+      "path": "/tmp/max-figma-native-oct11/old-plane-preservation.json",
+      "byteCount": 256,
+      "sha256": "ae821e78a239c606b9d94288be3ed47fb78106e15ccba8cfeeeb01837785cc34"
+    },
+    "historicalReferencePhaseReceipt": "cloud-receipt.json"
+  },
+  "limitations": [
+    "No designed marker or TERRAIN override in any new row. Draft geometry does not activate production gameplay.",
+    "Ground rectangles are observed integer display massing; continuous natural terrain/water are not replaced or proven equivalent by them.",
+    "Current copied runtime furnishings become source colliders; ordinary authored runtime preview adds 37/36/25 new platforms. Reconciliation is required before activation.",
+    "Stage 20 maps 20 Crown-material supports to supported ruin compiler tags; native Crown palette remains in ART massing, but material/render equivalence is not claimed.",
+    "Compiled stage 19 selected seed-1 shrine moves from (3689806,-124) to (3689895,-127).",
+    "Selected-route collision and entry planting/care previews are not complete campaign combat, all-cache, all-shrine, all-seed or exit verification.",
+    "The seventeen existing source rows are preserved, but this receipt does not validate them with the normal whole-editor native compiler; historical ART/ROUTES ancestry and bounds may still fail those checks."
+  ],
+  "pendingVerification": [],
+  "verifiedAtUTC": "2026-10-11T16:28:13.225Z",
+  "isolatedNativeDraftReview": {
+    "status": "passed-isolated-draft-review",
+    "evidence": {
+      "path": "/tmp/max-figma-native-oct11/isolated-native-draft-review-summary.json",
+      "byteCount": 15424,
+      "sha256": "58e63853c21a3724babceeffd499c4644f0c8e70c23d714223653e0edea3da1c"
+    },
+    "geometrySHA256": "84985614c32b52db1ff32b205dc2090db38edc45080f5a3c41f60021c9ca8a72",
+    "actualFigmaReadbackUsed": true,
+    "selectedSeed1VMCaseCount": 3,
+    "desktopPhoneBrowserCaseCount": 6,
+    "allPassed": true,
+    "productionActivated": false,
+    "ordinaryNonPreviewCompiler": {
+      "actualCapture": "/tmp/max-figma-native-oct11/native-drafts-geometry.json",
+      "editor": "941:450",
+      "errors": [],
+      "live": 0,
+      "exported": 0,
+      "preview": false,
+      "rows": [
+        {
+          "id": "999:13578",
+          "stage": 7,
+          "active": false,
+          "terrainCount": 0,
+          "sourceMarkers": []
+        },
+        {
+          "id": "999:13697",
+          "stage": 19,
+          "active": false,
+          "terrainCount": 0,
+          "sourceMarkers": []
+        },
+        {
+          "id": "999:13829",
+          "stage": 20,
+          "active": false,
+          "terrainCount": 0,
+          "sourceMarkers": []
+        }
+      ],
+      "result": "All three newly captured rows stay excluded from ordinary non-preview compiler activation."
+    },
+    "baselineRuntimeSourceCommit": "5f709264f14252a1ffc0993a4e1cc22fa6e84e67",
+    "previewCommitAttribution": "Runtime geometry baseline is5f709. Preview uses the recorded working-tree compiler/editor-binding repair bytes; exact source digests are recorded separately.",
+    "previewSourceFileSHA256": {
+      "index.html": "34b54e0e9b7d68c2d34d8f34d96a9bca189439fa815c49b0b8cfa2cbc4180844",
+      "levels-data.js": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee",
+      "level-scenes-data.js": "d1e226233a6fd8a64a69a0da8b3795699fc8d9b7e7ece010f4ecb6ec283d4512",
+      "levels.js": "e5a99a51dea5d430c73b4a7f00dbf7159f0c9afca742cc3415c8c05183904872",
+      "stage-layout.js": "d0a4e8dbf5855551ca29e201f786232df599e34fa2a8f2c0d9aa4221e71ccc35",
+      "stage-expeditions.js": "dca5b88cc0257552b7de164c3129d17ccbd7029b1241efab43b89a9ffc9b13be",
+      "guardian-sites.js": "d1dbd1f3ee6bd08b42ad54fc9bdcd4429fac35a104d21f9011e8e5f0b77a7ee0",
+      "scripts/master-levels.mjs": "5592b75af4d8d85f8d062340bf7cea5e367c9edd6a1aeb2448c7bd20e520c0a1",
+      "docs/design/master-levels/art/export-native.cjs": "500f4b32067670778cdf9877cbacedd62e544b80bea96d9bffcd7bb9479c27e1",
+      "docs/design/master-levels/art/source-binding.cjs": "3885ecc42789b3594938cf2e6e15114b84c51e2aa5988a98e9587b69ddf91868"
+    },
+    "compilerWorkingTreeChangesAtReview": [
+      "M docs/design/master-levels/art/export-native.cjs",
+      " M docs/design/master-levels/art/source-binding.cjs",
+      " M scripts/master-levels.mjs"
+    ],
+    "scopeAndLimitations": [
+      "The actual normal compiler and native ART bridge were tested in isolated temporary copies of the freshly built actual game. Source Figma rows stay unmarked and are excluded from ordinary compilation.",
+      "Physical VM proof covers one selected seed1 Bulwark guardian shrine approach/return, guaranteed cache proximity collection, and ordinary returned entry planting/care; not all caches, all shrine candidates, combat balance or final exit/win.",
+      "Browser proof uses ordinary key events in layout review fixtures on desktop1000x650 and phone390x844; fixtures supply8 seeds and disable encounters. It is entry planting/care/render proof, not an untouched campaign seed inventory.",
+      "Copied runtime surfaces lose place/expedition semantic identity through ordinary authored compilation. The runtime adds37/36/25 new expedition furnishings. Stage19 selected guardian shifts. These drafts are traversable, not equivalent to the original generated native stage.",
+      "No authored TERRAIN override was introduced; natural ground/water remain continuous runtime functions. The editable ground ART uses integer sampled display massing, not a new collision floor.",
+      "Twenty stage20 crown-material supports are explicitly mapped to compiler ruin material with exact native rectangles retained. ART remains native palette massing; tile-atlas recipes were omitted by the authoring payload.",
+      "Generated full-scene PNGs remain visual intent references; these previews render actual captured editable native rectangles plus live native actors/atmosphere. No generated-scene PNG or fabricated king was used as runtime art.",
+      "All six actual game screenshots were visually inspected. The player is fully visible at entry, source support bindings match, stage7/19 remain underground, and stage20 shows sunrise. No source visual or collision defect was found within the verified scope."
+    ]
+  },
+  "actualFigmaScreenshotObservations": {
+    "source": "Root inspected returned images through the authenticated Figma connector.",
+    "savedLocalScreenshotFiles": false,
+    "observations": [
+      {
+        "stage": 7,
+        "rowId": "999:13577",
+        "returnedWidth": 2207,
+        "returnedHeight": 795,
+        "visuallyInspected": true,
+        "titleSceneRoutesSidebarInsideFrame": true
+      },
+      {
+        "stage": 19,
+        "rowId": "999:13696",
+        "returnedWidth": 2261,
+        "returnedHeight": 805,
+        "visuallyInspected": true,
+        "titleSceneRoutesSidebarInsideFrame": true
+      }
+    ],
+    "scope": "Actual Figma draft presentation only; separate saved game-browser screenshots support the isolated runtime preview review."
+  }
+}

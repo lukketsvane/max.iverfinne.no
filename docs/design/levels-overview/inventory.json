@@ -1,6 +1,6 @@
 {
   "format": "max-level-overview-inventory/v1",
-  "status": "Twenty unique generated scene references are synchronized to the actual Figma reference board and verified through final authenticated image readback; original PNGs and frozen current native entry captures remain unchanged.",
+  "status": "Twenty unique generated scene references remain synchronized and image-verified. The current native editor has twenty visible titled source rows; stages 7/19/20 are inactive drafts with completed selected native readbacks and isolated previews. Original PNGs, frozen entry captures and the historical cloud receipt remain unchanged.",
   "currentCaptureCommit": "7e8a783f309dbe21d3f3144c7331d429102be557",
   "currentCaptureScope": "Read-only actual current game entry-view overview, not full world capture or design authority",
   "currentCaptureMethod": "Unmodified stock built review layout1..20, isolated memory storage, seed1, Max class; native canvas read only; no game/response/camera/actor/art injections",
@@ -261,8 +261,8 @@
         "referenceImageId": "970:14284",
         "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14281",
         "imagePersistenceVerified": true,
-        "nativeRowId": null,
-        "nativeRowPresent": false,
+        "nativeRowId": "999:13577",
+        "nativeRowPresent": true,
         "scope": "Generated reference with authoring route notes; not an activated native source.",
         "referenceNotesId": "970:14285",
         "imageHash": "9c3bfe521c5795033b4561087b68ec6694b761b3",
@@ -270,7 +270,25 @@
         "imageWidth": 1672,
         "imageHeight": 941,
         "scaleMode": "FIT",
-        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeLevelId": "999:13578",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13577",
+        "nativeTitleNodeId": "999:13672",
+        "nativeDraft": true,
+        "nativeDraftActivated": false,
+        "nativeLayoutReceiptPath": "native-layouts-oct11.json",
+        "nativePlanes": {
+          "ART": "999:13579",
+          "ROUTES": "999:13580",
+          "POINTS": "999:13581",
+          "REGISTRATION": "999:13582"
+        },
+        "nativeGeometryReadback": "actual-authenticated-selected-geometry-capture",
+        "nativeARTReadbackStatus": "complete-decoded-native-readback",
+        "nativeRowScope": "Inactive editable native source draft; twenty-row presence does not claim activated or runtime-equivalent geometry.",
+        "nativeARTReadbackVerifiedUntilUTC": "2026-10-11T16:25:12.827Z",
+        "nativeTitleVisibleAndInside": true,
+        "nativeDraftBrowserPreviewStatus": "passed-isolated-desktop-and-phone"
       }
     },
     {
@@ -715,8 +733,8 @@
         "referenceImageId": "970:14032",
         "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14029",
         "imagePersistenceVerified": true,
-        "nativeRowId": null,
-        "nativeRowPresent": false,
+        "nativeRowId": "999:13696",
+        "nativeRowPresent": true,
         "scope": "Generated reference with authoring route notes; not an activated native source.",
         "referenceNotesId": "970:14033",
         "imageHash": "0576dd96271b5f3657f2bf7a6a1ff742dcc2aa96",
@@ -724,7 +742,25 @@
         "imageWidth": 1672,
         "imageHeight": 941,
         "scaleMode": "FIT",
-        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeLevelId": "999:13697",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13696",
+        "nativeTitleNodeId": "999:13804",
+        "nativeDraft": true,
+        "nativeDraftActivated": false,
+        "nativeLayoutReceiptPath": "native-layouts-oct11.json",
+        "nativePlanes": {
+          "ART": "999:13698",
+          "ROUTES": "999:13699",
+          "POINTS": "999:13700",
+          "REGISTRATION": "999:13701"
+        },
+        "nativeGeometryReadback": "actual-authenticated-selected-geometry-capture",
+        "nativeARTReadbackStatus": "complete-decoded-native-readback",
+        "nativeRowScope": "Inactive editable native source draft; twenty-row presence does not claim activated or runtime-equivalent geometry.",
+        "nativeARTReadbackVerifiedUntilUTC": "2026-10-11T16:26:37.604Z",
+        "nativeTitleVisibleAndInside": true,
+        "nativeDraftBrowserPreviewStatus": "passed-isolated-desktop-and-phone"
       }
     },
     {
@@ -751,8 +787,8 @@
         "referenceImageId": "970:14011",
         "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14008",
         "imagePersistenceVerified": true,
-        "nativeRowId": null,
-        "nativeRowPresent": false,
+        "nativeRowId": "999:13828",
+        "nativeRowPresent": true,
         "scope": "Generated reference with authoring route notes; not an activated native source.",
         "referenceNotesId": "970:14012",
         "imageHash": "4f683986afae2545da2a101b328ee7f21bc2d4d5",
@@ -760,7 +796,25 @@
         "imageWidth": 1672,
         "imageHeight": 941,
         "scaleMode": "FIT",
-        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeLevelId": "999:13829",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=999-13828",
+        "nativeTitleNodeId": "999:13917",
+        "nativeDraft": true,
+        "nativeDraftActivated": false,
+        "nativeLayoutReceiptPath": "native-layouts-oct11.json",
+        "nativePlanes": {
+          "ART": "999:13830",
+          "ROUTES": "999:13831",
+          "POINTS": "999:13832",
+          "REGISTRATION": "999:13833"
+        },
+        "nativeGeometryReadback": "actual-authenticated-selected-geometry-capture",
+        "nativeARTReadbackStatus": "complete-decoded-native-readback",
+        "nativeRowScope": "Inactive editable native source draft; twenty-row presence does not claim activated or runtime-equivalent geometry.",
+        "nativeARTReadbackVerifiedUntilUTC": "2026-10-11T16:21:45.880Z",
+        "nativeTitleVisibleAndInside": true,
+        "nativeDraftBrowserPreviewStatus": "passed-isolated-desktop-and-phone"
       }
     }
   ],
@@ -772,7 +826,7 @@
     "referenceStackURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14003",
     "navigationId": "976:13577",
     "nativeTurtleStudyId": "975:13577",
-    "synchronizationScope": "Scene-reference cards, route notes, navigation and native turtle review study only; no native source activation or runtime data export.",
+    "synchronizationScope": "Scene-reference cards, route notes, navigation, native turtle review study and three newly authored inactive native source drafts; no production runtime activation.",
     "referenceImageReadbackStatus": "verified-all-twenty-images",
     "referenceImageEncoding": {
       "format": "JPEG",
@@ -800,8 +854,10 @@
     },
     "nativeEditor": {
       "id": "941:450",
-      "rowCount": 17,
+      "rowCount": 20,
       "orderTopToBottom": [
+        20,
+        19,
         18,
         17,
         16,
@@ -813,6 +869,7 @@
         10,
         9,
         8,
+        7,
         6,
         5,
         4,
@@ -820,25 +877,72 @@
         2,
         1
       ],
-      "missingStages": [
-        7,
-        19,
-        20
-      ],
+      "missingStages": [],
       "rowGap": 96,
       "frameOverlaps": 0,
       "currentLevel4RowId": "941:578",
       "runtimeActivation": false,
       "width": 7947,
-      "height": 12396,
-      "titleCount": 17,
-      "allTitlesVisibleAndInside": true
+      "height": 14906,
+      "titleCount": 20,
+      "allTitlesVisibleAndInside": true,
+      "titleVerificationStatus": "passed-authenticated-complete-twenty-row-readback",
+      "draftStages": [
+        7,
+        19,
+        20
+      ],
+      "draftRowsActivated": false,
+      "fullyValidatedTwentyRuntimeLayouts": false,
+      "nativeLayoutReceiptPath": "native-layouts-oct11.json",
+      "historicalSeventeenRowCheckpoint": {
+        "id": "941:450",
+        "rowCount": 17,
+        "orderTopToBottom": [
+          18,
+          17,
+          16,
+          15,
+          14,
+          13,
+          12,
+          11,
+          10,
+          9,
+          8,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1
+        ],
+        "missingStages": [
+          7,
+          19,
+          20
+        ],
+        "rowGap": 96,
+        "frameOverlaps": 0,
+        "currentLevel4RowId": "941:578",
+        "runtimeActivation": false,
+        "width": 7947,
+        "height": 12396,
+        "titleCount": 17,
+        "allTitlesVisibleAndInside": true,
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "receiptPath": "cloud-receipt.json"
+      },
+      "nativeVerifiedAtUTC": "2026-10-11T16:28:13.225Z",
+      "actualGapCount": 19,
+      "titleReadbackReceiptPath": "native-layouts-oct11.json"
     },
     "historicalLocalImporter": {
       "compatibleWithCurrentEditor": false,
       "historicalEditorId": "863:15149",
       "requiredRowCount": 20,
-      "reason": "Current editor has 17 different direct row identities and a different ASSETS ancestry; fresh actual bindings are required before importing."
+      "reason": "Current editor has twenty rows with different actual row identities and ASSETS ancestry. Historical bindings are incompatible even though row count is now twenty; fresh current-source binding and validation are required.",
+      "historicalReason": "Current editor has 17 different direct row identities and a different ASSETS ancestry; fresh actual bindings are required before importing."
     },
     "runtimeActivation": false,
     "cloudReceiptPath": "cloud-receipt.json",
@@ -932,6 +1036,48 @@
       "localScreenshotArtifact": null,
       "localScreenshotArtifactClaimed": false
     },
-    "visualVerificationReceiptPath": "cloud-receipt.json"
+    "visualVerificationReceiptPath": "cloud-receipt.json",
+    "nativeLayoutDraftEvidence": {
+      "receiptPath": "native-layouts-oct11.json",
+      "newStages": [
+        7,
+        19,
+        20
+      ],
+      "sourceGeometryCaptured": true,
+      "normalCompilerCollisionPreviewsPassed": true,
+      "fullNativeARTReadbackStages": [
+        7,
+        19,
+        20
+      ],
+      "boundBrowserPreviewStages": [
+        7,
+        19,
+        20
+      ],
+      "pendingVerification": [],
+      "productionActivated": false,
+      "selectedSeed1VMCaseCount": 3,
+      "desktopPhoneBrowserCaseCount": 6,
+      "allTargetedChecksPassed": true,
+      "ordinaryCompilerLiveLayouts": 0,
+      "verifiedAtUTC": "2026-10-11T16:28:13.225Z"
+    },
+    "nativeLayoutsReceiptPath": "native-layouts-oct11.json",
+    "verifiedAtScope": "Historical final reference-image/native-study/original-source72 checkpoint; completed current native draft evidence carries separate authenticated timestamps.",
+    "postDraftOriginalSourcePlaneEvidence": {
+      "status": "passed",
+      "verifiedAtUTC": "2026-10-11T16:27:31.360Z",
+      "planesCompared": 72,
+      "planesMatched": 72,
+      "observedNodes": 13690,
+      "countsIncludeEachPlaneRoot": true,
+      "differences": 0,
+      "algorithm": "Ordered descendant selected-properties FNV-1a32; local properties, not full-node digest.",
+      "receiptPath": "native-layouts-oct11.json",
+      "fullNodeDigestClaim": false,
+      "wholeEditorCompilerValidationClaim": false
+    }
   }
 }

@@ -3,11 +3,12 @@
 async function captureNativeContainers(figma, options = {}) {
   const stage = options.stage == null ? 1 : options.stage, offset = options.offset == null ? 0 : options.offset;
   const limit = options.all ? 100000 : options.limit == null ? 250 : options.limit;
-  const FILE = 'TC0PHGMTCMR6im4hb3CSbF', PAGE = '508:11825', MASTER = '863:15150', EDITOR = '863:15149';
+  const FILE = 'TC0PHGMTCMR6im4hb3CSbF', PAGE = '508:11825', MASTER = '863:15150', EDITOR = options.legacyReplay === true ? '863:15149' : '941:450';
   const MAX_LENGTH = options.all ? Infinity : 18000, CONTAINERS = ['FRAME', 'GROUP', 'COMPONENT', 'INSTANCE'];
   function fail(n, message) { throw Error((n && n.id || 'ART') + ' ' + (n && n.name || '') + ': ' + message); }
   function integer(value, n) { if (!Number.isSafeInteger(value)) fail(n, 'native integer geometry is required'); return value; }
   const children = n => n && 'children' in n ? n.children : [];
+  if (options.legacyReplay !== undefined && typeof options.legacyReplay !== 'boolean' || options.editorId !== undefined && options.editorId !== EDITOR) fail(null, 'Use the current editor by default, or explicit legacyReplay:true for historical editor 863:15149.');
   if (figma.editorType !== 'figma' || figma.fileKey && figma.fileKey !== FILE) fail(null, 'Open the configured MAX Design file.');
   if (!Number.isInteger(stage) || stage < 1 || stage > 20 || !Number.isSafeInteger(offset) || offset < 0 || !Number.isInteger(limit) || limit < 1 || limit > (options.all ? 100000 : 250)) fail(null, 'Invalid stage or operation pagination.');
   const page = await figma.getNodeByIdAsync(PAGE), master = await figma.getNodeByIdAsync(MASTER), editor = await figma.getNodeByIdAsync(EDITOR);
@@ -17,9 +18,9 @@ async function captureNativeContainers(figma, options = {}) {
   if (options.switchPage === true) await figma.setCurrentPageAsync(page);
   else if (!figma.currentPage || figma.currentPage.id !== PAGE) fail(null, 'Load the configured level page before shared native capture.');
   const rows = [];
-  function findRows(n) { for (const c of children(n)) { const m = /^level_(0[1-9]|1\d|20)$/.exec(c.name); if (m) rows.push({ stage: Number(m[1]), node: c }); else findRows(c); } }
-  findRows(master);
-  for (let s = 1; s <= 20; s++) if (rows.filter(r => r.stage === s).length !== 1) fail(master, 'MASTER requires exactly one level_' + String(s).padStart(2, '0') + ' row.');
+  function findRows(n) { for (const c of children(n)) { const m = /^level_(0[1-9]|1\d|20)$/.exec(c.name); if (m) rows.push({ stage: Number(m[1]), node: c }); else if (!/^ASSETS(?:$|\s[·:/-])/.test(c.name || '')) findRows(c); } }
+  findRows(editor);
+  for (let s = 1; s <= 20; s++) if (rows.filter(r => r.stage === s).length > 1 || s === stage && !rows.some(r => r.stage === s)) fail(editor, 'Editor requires exactly one level_' + String(s).padStart(2, '0') + ' row when selected; duplicate stages are unsupported.');
   const row = rows.find(r => r.stage === stage).node;
   if (!descendant(row, editor)) fail(row, 'Requested outer row must be inside the configured editor.');
   function geometry(n, ancestor) {

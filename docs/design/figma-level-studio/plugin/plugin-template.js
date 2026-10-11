@@ -5,7 +5,7 @@
   'use strict';
   const decodeMasterRows = __MAX_SHARED_DECODER__;
   const captureNativeArt = __MAX_NATIVE_CAPTURE__;
-  const FILE = 'TC0PHGMTCMR6im4hb3CSbF', PAGE = '508:11825', MASTER = '863:15150', EDITOR = '863:15149';
+  const FILE = 'TC0PHGMTCMR6im4hb3CSbF', PAGE = '508:11825', MASTER = '863:15150', EDITOR = '941:450';
   const ROW = /^level_(0[1-9]|1\d|20)$/;
   const MARKERS = ['reward', 'seed', 'bonus', 'trial', 'puzzle', 'door', 'dig', 'secret', 'start'];
   const DEFAULT_MASTERS = {
@@ -17,37 +17,48 @@
     ladder: '864:13989', 'pond:20': '864:13990', 'replace-picture': '864:13991', 'furnish-place': '864:13992'
   };
   const STORAGE = 'max-native-level-studio-components-v1';
-  const children = node => 'children' in node && Array.isArray(node.children) ? node.children : [];
+  const children = node => node && 'children' in node && Array.isArray(node.children) ? node.children : [];
   function findById(root, id) {
     if (root.id === id) return root;
     for (const child of children(root)) { const found = findById(child, id); if (found) return found; }
     return null;
   }
-  function collectRows(page) {
-    const master = findById(page, MASTER), editor = master && findById(master, EDITOR), errors = [], rows = [];
+  function collectRows(page, options = {}) {
+    const editorId = options.legacyReplay === true ? '863:15149' : EDITOR;
+    if (options.legacyReplay !== undefined && typeof options.legacyReplay !== 'boolean' || options.editorId !== undefined && options.editorId !== editorId) throw new Error('Use current editor 941:450, or explicit legacyReplay:true for historical editor 863:15149.');
+    if (options.inspect !== undefined && typeof options.inspect !== 'boolean') throw new Error('Inspection must be an explicit boolean.');
+    if (options.stages != null && (!Array.isArray(options.stages) || !options.stages.length || options.stages.some(stage => !Number.isInteger(stage) || stage < 1 || stage > 20) || new Set(options.stages).size !== options.stages.length)) throw new Error('Select unique campaign stages 1–20.');
+    const selection = options.stages == null ? options.inspect === true ? new Set() : null : new Set(options.stages);
+    const master = findById(page, MASTER), editor = master && findById(master, editorId), errors = [], diagnostics = [], rows = [];
     if (!master) errors.push('Configured MASTER ' + MASTER + ' was not found on the levels page.');
-    if (!editor) errors.push('Configured MASTER editor ' + EDITOR + ' was not found inside MASTER.');
+    if (!editor || !['SECTION', 'FRAME'].includes(editor.type)) errors.push('Configured MASTER editor ' + editorId + ' was not found inside MASTER.');
+    function problem(stage, message) { diagnostics.push(message); if (!selection || selection.has(stage)) errors.push(message); }
     function visit(container) { for (const node of children(container)) {
       const match = ROW.exec(node.name || '');
       if (!match) { if (!/^ASSETS(?:$|\s[·:/-])/.test(node.name || '')) visit(node); continue; }
-      if (node.type !== 'FRAME') errors.push(node.name + ': the authoritative level row must be a FRAME.');
+      const stage = Number(match[1]);
+      if (node.type !== 'FRAME') problem(stage, node.name + ': the authoritative level row must be a FRAME.');
       const planes = {};
       for (const name of ['ART', 'ROUTES', 'POINTS', 'REGISTRATION']) {
         const found = children(node).filter(child => child.name === name || child.name.startsWith(name + ' ·'));
-        if (found.length !== 1 || found[0].type !== 'FRAME') errors.push(`${node.name}: expected one existing ${name} frame.`);
+        if (found.length !== 1 || found[0].type !== 'FRAME') problem(stage, `${node.name}: expected one existing ${name} frame.`);
         else planes[name.toLowerCase()] = found[0];
       }
       const terrain = children(node).filter(child => child.name === 'TERRAIN' || child.name.startsWith('TERRAIN ·'));
-      if (terrain.length > 1 || terrain.length === 1 && terrain[0].type !== 'FRAME') errors.push(`${node.name}: expected at most one native TERRAIN frame.`);
+      if (terrain.length > 1 || terrain.length === 1 && terrain[0].type !== 'FRAME') problem(stage, `${node.name}: expected at most one native TERRAIN frame.`);
       else if (terrain.length) planes.terrain = terrain[0];
-      rows.push({ node, stage: Number(match[1]), planes });
+      rows.push({ node, stage, planes });
     } }
     if (editor) visit(editor);
     for (let stage = 1; stage <= 20; stage++) {
       const matches = rows.filter(row => row.stage === stage);
-      if (matches.length !== 1) errors.push(`MASTER must contain one level_${String(stage).padStart(2, '0')} row; found ${matches.length}.`);
+      if (matches.length !== 1) {
+        const message = `MASTER editor must contain one level_${String(stage).padStart(2, '0')} row; found ${matches.length}.`;
+        diagnostics.push(message);
+        if (matches.length > 1 || !selection || selection.has(stage)) errors.push(message);
+      }
     }
-    return { master, editor, rows: rows.sort((a, b) => a.stage - b.stage), errors };
+    return { master, editor, rows: rows.sort((a, b) => a.stage - b.stage), errors, diagnostics };
   }
   function nodeRecord(node) {
     const record = { id: node.id, name: node.name, type: node.type, x: node.x, y: node.y, width: node.width, height: node.height };
@@ -62,28 +73,34 @@
     if ('children' in node) record.childCount = children(node).length;
     return record;
   }
-  function captureMasterPage(page) {
+  function captureMasterPage(page, options = {}) {
     if (page.id !== PAGE) throw new Error('Capture must use the configured levels page ' + PAGE);
-    const source = collectRows(page);
+    const source = collectRows(page, options);
     if (source.errors.length) throw new Error(source.errors.join('\n'));
     return { page: PAGE, file: FILE, master: nodeRecord(source.master), editor: nodeRecord(source.editor),
       rows: source.rows.map(row => ({ ...nodeRecord(row.node), stage: row.stage,
         planes: Object.fromEntries(Object.entries(row.planes).map(([name, plane]) => [name, { ...nodeRecord(plane), children: children(plane).map(nodeRecord) }])) })),
       sourceKind: 'figma-MASTER-level-rows', artScope: 'direct-node metadata only; no renderer or PNG export', production: false };
   }
-  async function captureReview(api, page, stage, includeArt) {
+  async function captureReview(api, page, stage, includeArt, options = {}) {
     if (!Number.isInteger(stage) || stage < 1 || stage > 20) throw new Error('Select a campaign stage 1–20.');
-    const before = captureMasterPage(page), fingerprint = JSON.stringify(before);
-    const decoded = decodeMasterRows(before);
+    const captureOptions = { ...options, stages: [stage] };
+    const before = captureMasterPage(page, captureOptions), fingerprint = JSON.stringify(before);
+    const decoded = decodeMasterRows(before, { stages: [stage] });
     if (decoded.errors.length) throw new Error(decoded.errors.join('\n'));
-    if (!includeArt) return { ...before, metadata: decoded.metadata, captureConsistency: 'single synchronous geometry capture; ART metadata only', bridge: { projection: decoded.projection, preview: false, live: decoded.live, exported: decoded.exported } };
-    const first = await captureNativeArt(api, { stage, all: true, switchPage: false });
-    const second = await captureNativeArt(api, { stage, all: true, switchPage: false });
+    const full = decodeMasterRows(before), structure = collectRows(page, { legacyReplay: options.legacyReplay });
+    const editorDiagnostics = { errors: [...structure.errors, ...full.errors], warnings: full.warnings,
+      missingStages: Array.from({ length: 20 }, (_, index) => index + 1).filter(stage => !before.rows.some(row => row.stage === stage)),
+      rows: before.rows.map(row => { const result = decodeMasterRows(before, { stages: [row.stage] }); return { stage: row.stage, rowId: row.id, valid: result.errors.length === 0, active: result.rows.some(item => item.active), errors: result.errors, warnings: result.warnings }; }) };
+    if (!includeArt) return { ...before, metadata: decoded.metadata, editorDiagnostics, captureConsistency: 'single synchronous geometry capture; ART metadata only', bridge: { projection: decoded.projection, preview: false, live: decoded.live, exported: decoded.exported } };
+    const nativeOptions = { stage, all: true, switchPage: false, legacyReplay: options.legacyReplay === true };
+    const first = await captureNativeArt(api, nativeOptions);
+    const second = await captureNativeArt(api, nativeOptions);
     if (first.more || second.more || first.chunk.offset !== 0 || first.chunk.nextOffset !== first.chunk.totalOperations || first.chunk.totalOperations < 1) throw new Error('Native ART capture must contain every operation in the selected row.');
-    if (first.chunkSHA1 !== second.chunkSHA1 || fingerprint !== JSON.stringify(captureMasterPage(page))) throw new Error('Source changed while capturing. Finish the edit, then preview again.');
+    if (first.chunkSHA1 !== second.chunkSHA1 || fingerprint !== JSON.stringify(captureMasterPage(page, captureOptions))) throw new Error('Source changed while capturing. Finish the edit, then preview again.');
     const row = before.rows.find(row => row.stage === stage), datum = decoded.rows.find(row => row.stage === stage)?.registration, chunk = first.chunk;
-    if (!row || chunk.rowId !== row.id || chunk.planes.art[1] !== row.planes.art.id || chunk.planes.registration[1] !== row.planes.registration.id || !datum || chunk.registration.originId !== datum.originNodeId || chunk.registration.soilId !== datum.soilNodeId || chunk.registration.originX !== datum.originX || chunk.registration.soilY !== datum.soilY) throw new Error('Native ART and geometry registration do not match the selected MASTER row.');
-    return { ...before, metadata: decoded.metadata, nativeART: [first], artScope: 'selected row complete native ordered ART operations and 1:1 PNG crop references; other rows geometry metadata only',
+    if (!row || chunk.editorId !== before.editor.id || chunk.rowId !== row.id || chunk.planes.art[1] !== row.planes.art.id || chunk.planes.registration[1] !== row.planes.registration.id || !datum || chunk.registration.originId !== datum.originNodeId || chunk.registration.soilId !== datum.soilNodeId || chunk.registration.originX !== datum.originX || chunk.registration.soilY !== datum.soilY) throw new Error('Native ART and geometry registration do not match the selected MASTER row.');
+    return { ...before, metadata: decoded.metadata, nativeART: [first], editorDiagnostics, artScope: 'selected row complete native ordered ART operations and 1:1 PNG crop references; other rows geometry metadata only',
       captureConsistency: 'two equal complete native chunk fingerprints and equal geometry before/after; separate reads, not an atomic Figma snapshot',
       bridge: { projection: decoded.projection, preview: false, live: decoded.live, exported: decoded.exported } };
   }
@@ -149,7 +166,7 @@
     return p;
   }
   async function authoring() {
-    const p = await page(), source = collectRows(p);
+    const p = await page(), source = collectRows(p, { inspect: true });
     if (source.errors.length) throw new Error(source.errors.join('\n'));
     return { p, ...source };
   }
@@ -169,6 +186,8 @@
   async function currentRow() {
     const source = await authoring(), row = source.rows.find(row => row.node.id === selectedRow);
     if (!row) throw new Error('Select an existing MASTER level row first.');
+    const selected = collectRows(source.p, { stages: [row.stage] });
+    if (selected.errors.length) throw new Error(selected.errors.join('\n'));
     await figma.setCurrentPageAsync(source.p);
     return { ...source, row };
   }
@@ -182,11 +201,14 @@
         ancestor = ancestor.parent;
       }
     }
+    if (!rows.length) throw new Error('The configured native editor has no level_NN source rows.');
     if (!rows.some(row => row.node.id === selectedRow)) selectedRow = rows[0].node.id;
-    const current = rows.find(row => row.node.id === selectedRow), captured = captureMasterPage(p), decoded = decodeMasterRows(captured), currentDecoded = decoded.rows.find(row => row.stage === current.stage);
+    const current = rows.find(row => row.node.id === selectedRow), captured = captureMasterPage(p, { inspect: true }), decoded = decodeMasterRows(captured, { stages: [current.stage] }), currentDecoded = decoded.rows.find(row => row.stage === current.stage);
+    const reviewStatus = { stage: current.stage, geometryValid: decoded.errors.length === 0,
+      unfinishedStages: Array.from({ length: 20 }, (_, index) => index + 1).filter(stage => stage !== current.stage && decodeMasterRows(captured, { stages: [stage] }).errors.length > 0) };
     const one = selection.length === 1 ? selection[0] : null, tag = one && componentFromLabel(one.name || '');
     const geometry = one && tag && ['routes', 'points', 'registration', 'terrain'].some(name => one.parent === current.planes[name]) ? { x: one.x, y: one.y, w: one.width, h: one.height, tag } : null;
-    send({ type: 'state', selectedRow, rows: rows.map(row => ({ id: row.node.id, name: row.node.name, stage: row.stage, active: children(row.planes.registration).some(node => node.name === 'designed'), counts: Object.fromEntries(Object.entries(row.planes).map(([name, plane]) => [name, children(plane).length])) })), masters, geometry, datum: { ...(currentDecoded?.registration || {}), width: current.planes.registration.width, height: current.planes.registration.height },
+    send({ type: 'state', selectedRow, reviewStatus, rows: rows.map(row => ({ id: row.node.id, name: row.node.name, stage: row.stage, active: children(row.planes.registration).some(node => node.name === 'designed'), counts: Object.fromEntries(Object.entries(row.planes).map(([name, plane]) => [name, children(plane).length])) })), masters, geometry, datum: { ...(currentDecoded?.registration || {}), width: current.planes.registration?.width, height: current.planes.registration?.height },
       errors: (decoded.errors || []).filter(text => !/^level_\d{2}[:/]/.test(text) || text.startsWith(current.node.name + ':') || text.startsWith(current.node.name + '/')), warnings: [...(decoded.warnings || []).filter(text => !/^level_\d{2}[:/]/.test(text) || text.startsWith(current.node.name + ':') || text.startsWith(current.node.name + '/')), 'Native ART capture supports converted ordered rectangle and unchanged PNG crop layers. Unsupported scenery blocks an ART preview; geometry-only review is explicit.', ...(!figma.fileKey ? ['Figma did not expose its file key. Verify the configured file address before using this capture.'] : [])], message: message || '' });
   }
   async function handle(message) {
@@ -205,7 +227,8 @@
     if (message.type === 'add' || message.type === 'enable') {
       const { p, row } = await currentRow(), componentTag = message.type === 'enable' ? 'designed' : String(message.tag || '');
       if (message.type === 'enable') {
-        const decoded = decodeMasterRows(captureMasterPage(p)), current = decoded.rows.find(source => source.stage === row.stage);
+        const decoded = decodeMasterRows(captureMasterPage(p, { stages: [row.stage] }), { stages: [row.stage] }), current = decoded.rows.find(source => source.stage === row.stage);
+        if (decoded.errors.length) throw new Error(decoded.errors.join('\n'));
         if (!current || !current.routes?.some(route => /^(one-way:|solid:)/.test(route.kind) || route.kind === 'ladder')) throw new Error('Add supported route geometry before activating this MASTER row. Registration and artwork alone do not make a playable level.');
       }
       let tag = componentTag;
@@ -282,8 +305,9 @@
       return;
     }
     if (message.type === 'validate' || message.type === 'export') {
-      const p = await page(), captured = captureMasterPage(p), decoded = decodeMasterRows(captured);
-      if (decoded.errors?.length) { send({ type: 'validation', errors: decoded.errors, warnings: decoded.warnings || [], count: captured.rows.length }); return; }
+      const p = await page(), captured = captureMasterPage(p, { inspect: true }), decoded = decodeMasterRows(captured);
+      const errors = [...collectRows(p).errors, ...decoded.errors];
+      if (errors.length) { send({ type: 'validation', errors, warnings: decoded.warnings || [], count: captured.rows.length }); return; }
       if (message.type === 'validate') { send({ type: 'validation', errors: [], warnings: decoded.warnings || [], count: captured.rows.length }); return; }
       if (typeof decoded.metadata !== 'string' || !decoded.metadata.trim()) throw new Error('Shared MASTER bridge did not produce compiler metadata.');
       const row = collectRows(p).rows.find(row => row.node.id === selectedRow);
