@@ -1,0 +1,2636 @@
+{
+  "format": "max-level-scene-cloud-receipt/v1",
+  "status": "verified-authenticated-twenty-image-reference-import",
+  "preparedAtUTC": "2026-10-11T14:54:39.171334+00:00",
+  "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+  "cloudSynchronized": true,
+  "actualFigmaExecution": true,
+  "runtimeSource": false,
+  "runtimeActivation": false,
+  "scope": "Generated scene-reference cards, route notes, navigation and native turtle review study only. Does not activate native source rows or change runtime game data.",
+  "figma": {
+    "file": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "508:11825",
+    "masterSectionId": "863:15150",
+    "referenceStackId": "970:14003",
+    "referenceStackURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14003",
+    "navigationId": "976:13577",
+    "nativeTurtleStudyId": "975:13577",
+    "referenceStackHeight": 15848.220703125,
+    "navigationScope": "Twenty direct scene-card links only; native editor links are per-card when a current row exists.",
+    "nativeTurtleStudyCrossLink": {
+      "id": "986:13577",
+      "parentNotesId": "970:14348",
+      "targetId": "975:13577"
+    },
+    "earlierConceptArchive": {
+      "id": "863:14758",
+      "name": "ARCHIVE / Earlier concept scenes / original numbering",
+      "x": -17580,
+      "y": 2536,
+      "width": 1672,
+      "height": 18820,
+      "originalNumberingPreserved": true,
+      "runtimeSource": false
+    },
+    "referenceBoardBounds": {
+      "id": "970:14003",
+      "x": 10488,
+      "y": 2536,
+      "width": 1568,
+      "height": 15848.220703125,
+      "clipsContent": false,
+      "cardOrder": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "cardGaps": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40.00048828125,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875
+      ]
+    },
+    "navigationReadback": {
+      "id": "976:13577",
+      "buttonCount": 20
+    }
+  },
+  "referenceImageEvidence": {
+    "expectedCount": 20,
+    "expectedOrderTopToBottom": [
+      20,
+      19,
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "finalReadbackComplete": true,
+    "verifiedImageCount": 20,
+    "method": "Authenticated final read after all fills committed: for each assigned rectangle, resolve its IMAGE fill through getImageByHash, read getBytesAsync and getSizeAsync, then compare the returned image hash, byte count and dimensions with recorded JPEG transport provenance.",
+    "images": [
+      {
+        "stage": 20,
+        "title": "Radioactive Dawn",
+        "cardId": "970:14008",
+        "imageNodeId": "970:14011",
+        "sourcePNG": {
+          "path": "generated/level-20.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2831374,
+          "sha256": "34db39e99957169bc226e3ee2c70b108cbd36f38b547bff08acb39d43a8feaf0",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 654282,
+          "sha1": "4f683986afae2545da2a101b328ee7f21bc2d4d5",
+          "sha256": "965983abe43cfcfbe27558efeae903170996a5d125095eab9f0f7c8d50a5d339",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 20,
+          "cardId": "970:14008",
+          "imageId": "970:14011",
+          "imageHash": "4f683986afae2545da2a101b328ee7f21bc2d4d5",
+          "scaleMode": "FIT",
+          "byteCount": 654282,
+          "width": 1672,
+          "height": 941,
+          "cardY": 434,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 20 / Radioactive Dawn / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 19,
+        "title": "Surface Breach",
+        "cardId": "970:14029",
+        "imageNodeId": "970:14032",
+        "sourcePNG": {
+          "path": "generated/level-19.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2430646,
+          "sha256": "d7b779ee84f1ac8de9489e9d6ff1b4701b3fa1d7a9b60d62b146e9f0f7d584aa",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 516246,
+          "sha1": "0576dd96271b5f3657f2bf7a6a1ff742dcc2aa96",
+          "sha256": "639236d1f3e3abd1e8af0200ade6e946810948052db552aeab68940221f6e548",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 19,
+          "cardId": "970:14029",
+          "imageId": "970:14032",
+          "imageHash": "0576dd96271b5f3657f2bf7a6a1ff742dcc2aa96",
+          "scaleMode": "FIT",
+          "byteCount": 516246,
+          "width": 1672,
+          "height": 941,
+          "cardY": 1204.31103515625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 19 / Surface Breach / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 18,
+        "title": "Last Sluice",
+        "cardId": "970:14050",
+        "imageNodeId": "970:14053",
+        "sourcePNG": {
+          "path": "generated/level-18.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2675315,
+          "sha256": "ef5cf429525ef1f22c19bed269041f37417bed7cd273fa1093f52048dc69a138",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 611530,
+          "sha1": "73df5431b1b4f653d4663817172827ca70ae1f4b",
+          "sha256": "e0e1f6e141c091086f9ed43b4c251a443dcaf034dd024b6f2e919638fd2f4577",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 18,
+          "cardId": "970:14050",
+          "imageId": "970:14053",
+          "imageHash": "73df5431b1b4f653d4663817172827ca70ae1f4b",
+          "scaleMode": "FIT",
+          "byteCount": 611530,
+          "width": 1672,
+          "height": 941,
+          "cardY": 1974.6220703125,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 18 / Last Sluice / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 17,
+        "title": "Reactor Nest",
+        "cardId": "970:14071",
+        "imageNodeId": "970:14074",
+        "sourcePNG": {
+          "path": "generated/level-17.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2588018,
+          "sha256": "a4c68646bd0fae206092a9b8cf66a9fa18c94abe8e585b70d32517f8e4a39f58",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 578356,
+          "sha1": "4d3cb1c33318f02be524a86233c3fd6e9b3859ca",
+          "sha256": "0f091e85ecf6feaa5af8d67011d7b23e1a589c35e92324a36a82387a695c6006",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 17,
+          "cardId": "970:14071",
+          "imageId": "970:14074",
+          "imageHash": "4d3cb1c33318f02be524a86233c3fd6e9b3859ca",
+          "scaleMode": "FIT",
+          "byteCount": 578356,
+          "width": 1672,
+          "height": 941,
+          "cardY": 2744.93310546875,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 17 / Reactor Nest / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 16,
+        "title": "Giant's Stair",
+        "cardId": "970:14092",
+        "imageNodeId": "970:14095",
+        "sourcePNG": {
+          "path": "generated/level-16.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2325892,
+          "sha256": "4e2c420ea809b866b160c28598107d320be14f7f29c1c29b6d6db7a40595298d",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 504058,
+          "sha1": "cd3bf16735eef58aff3fcc15b3b3ae2a77c4b3cc",
+          "sha256": "b6b4a6c2bb76a57cdd110e27cee826692f3a84c0d7fe1f3f2443d5f96513b3f1",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 16,
+          "cardId": "970:14092",
+          "imageId": "970:14095",
+          "imageHash": "cd3bf16735eef58aff3fcc15b3b3ae2a77c4b3cc",
+          "scaleMode": "FIT",
+          "byteCount": 504058,
+          "width": 1672,
+          "height": 941,
+          "cardY": 3515.244140625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 16 / Giant's Stair / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 15,
+        "title": "Fault Steps",
+        "cardId": "970:14113",
+        "imageNodeId": "970:14116",
+        "sourcePNG": {
+          "path": "generated/level-15.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3277964,
+          "sha256": "2db53a63a9a850e74f603dacc5ab0c1d8776aba8180afb489a556163ef3f9278",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 733116,
+          "sha1": "1e95fc840f831a921a858882053cbcb779869d82",
+          "sha256": "6ea65b48ab118dc4e0d67a3f38931762d843f71bbde3081d98cbc998ae66a220",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 15,
+          "cardId": "970:14113",
+          "imageId": "970:14116",
+          "imageHash": "1e95fc840f831a921a858882053cbcb779869d82",
+          "scaleMode": "FIT",
+          "byteCount": 733116,
+          "width": 1672,
+          "height": 941,
+          "cardY": 4285.55517578125,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 15 / Fault Steps / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 14,
+        "title": "Catacomb",
+        "cardId": "970:14134",
+        "imageNodeId": "970:14137",
+        "sourcePNG": {
+          "path": "generated/level-14.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3410626,
+          "sha256": "4639a2c433e7d71963d0ee5a250922e59fd445dfa09d5a54d237ae8605d53215",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 765962,
+          "sha1": "7f0b0771123e2137c511a4ab0f878332ecd01faa",
+          "sha256": "61080a7a543ea71ea69e86b445051ceb3a6af23dc4f6a3408011205477aaf766",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 14,
+          "cardId": "970:14134",
+          "imageId": "970:14137",
+          "imageHash": "7f0b0771123e2137c511a4ab0f878332ecd01faa",
+          "scaleMode": "FIT",
+          "byteCount": 765962,
+          "width": 1672,
+          "height": 941,
+          "cardY": 5055.8662109375,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 14 / Catacomb / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 13,
+        "title": "Twin Shafts",
+        "cardId": "970:14155",
+        "imageNodeId": "970:14158",
+        "sourcePNG": {
+          "path": "generated/level-13.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3209565,
+          "sha256": "6ebb44add0a184010540fba0856de395b8727d898beb25df9b6179c8eef46b38",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 756080,
+          "sha1": "24f8cd468dc17ecef4610354d61031094a5fde73",
+          "sha256": "d699a1a3b28a7df24c70d7ac4415dc320fe3a70548ee67cf9a350c19739b2703",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 13,
+          "cardId": "970:14155",
+          "imageId": "970:14158",
+          "imageHash": "24f8cd468dc17ecef4610354d61031094a5fde73",
+          "scaleMode": "FIT",
+          "byteCount": 756080,
+          "width": 1672,
+          "height": 941,
+          "cardY": 5826.17724609375,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 13 / Twin Shafts / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 12,
+        "title": "Weeping Roots",
+        "cardId": "970:14176",
+        "imageNodeId": "970:14179",
+        "sourcePNG": {
+          "path": "generated/level-12.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3202877,
+          "sha256": "75205e18fa26cf305a3eca6063ce07d5534d832e03a16778bc204c6c2b4823f7",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 723995,
+          "sha1": "13481dd695d6b0215c1b992f71893962a41175e0",
+          "sha256": "787e4fd3da636cdcc386bb393a67e50c4e5b3ce2b28671d80e4c1ab8bb269b75",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 12,
+          "cardId": "970:14176",
+          "imageId": "970:14179",
+          "imageHash": "13481dd695d6b0215c1b992f71893962a41175e0",
+          "scaleMode": "FIT",
+          "byteCount": 723995,
+          "width": 1672,
+          "height": 941,
+          "cardY": 6596.48828125,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 12 / Weeping Roots / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 11,
+        "title": "Old Quarry",
+        "cardId": "970:14197",
+        "imageNodeId": "970:14200",
+        "sourcePNG": {
+          "path": "generated/level-11.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3127705,
+          "sha256": "78f95b65714b56a75e68fcea69668ca8fd8861e302048cfd4b9653006bed6983",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 708308,
+          "sha1": "3fe19f46a755e3eaac66353d987551310a90c2be",
+          "sha256": "61b0859c043caaeecf71cd3983c14c5ff4279b21950511f35df6b4858576f9ee",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 11,
+          "cardId": "970:14197",
+          "imageId": "970:14200",
+          "imageHash": "3fe19f46a755e3eaac66353d987551310a90c2be",
+          "scaleMode": "FIT",
+          "byteCount": 708308,
+          "width": 1672,
+          "height": 941,
+          "cardY": 7366.79931640625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 11 / Old Quarry / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 10,
+        "title": "Bell Cellar",
+        "cardId": "970:14218",
+        "imageNodeId": "970:14221",
+        "sourcePNG": {
+          "path": "generated/level-10.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2882625,
+          "sha256": "f93f1fcacf4a9d7f6356298d28bf456c581a8683875a979989eadf1a690ca444",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 675901,
+          "sha1": "bf03d56d7836441eb2d5bda4ed28f94a58b62c9d",
+          "sha256": "7353b277dc2662f0c102e859e47facc5f753bdebb99100c04ab17521025d44cb",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 10,
+          "cardId": "970:14218",
+          "imageId": "970:14221",
+          "imageHash": "bf03d56d7836441eb2d5bda4ed28f94a58b62c9d",
+          "scaleMode": "FIT",
+          "byteCount": 675901,
+          "width": 1672,
+          "height": 941,
+          "cardY": 8137.1103515625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 10 / Bell Cellar / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 9,
+        "title": "Collapsed Tower",
+        "cardId": "970:14239",
+        "imageNodeId": "970:14242",
+        "sourcePNG": {
+          "path": "generated/level-09.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2899450,
+          "sha256": "6eda594cee3f1cc6aa06794b52815f259f134e277ab0774a60949e5eb38c491a",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 633527,
+          "sha1": "7b6280236e633b0e0568513904683a03b156dd15",
+          "sha256": "233d042288ecaaa03584dbdab2c1381f739849996b7a74e50e6b65ceb8ac4b91",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 9,
+          "cardId": "970:14239",
+          "imageId": "970:14242",
+          "imageHash": "7b6280236e633b0e0568513904683a03b156dd15",
+          "scaleMode": "FIT",
+          "byteCount": 633527,
+          "width": 1672,
+          "height": 941,
+          "cardY": 8907.421875,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 09 / Collapsed Tower / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 8,
+        "title": "Silo Stair",
+        "cardId": "970:14260",
+        "imageNodeId": "970:14263",
+        "sourcePNG": {
+          "path": "generated/level-08.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2855714,
+          "sha256": "b6b9b863160117bfe8c2aba614d6161cc00a1f11f682da3302ed42c9935f19b3",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 685834,
+          "sha1": "a3ac130159212c60109eeb2c8e54f7f3e253cdd8",
+          "sha256": "2f62d1506a92fb71dd6756156ebbfe1a8287bf35436a69e589c20fa1d9c180ed",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 8,
+          "cardId": "970:14260",
+          "imageId": "970:14263",
+          "imageHash": "a3ac130159212c60109eeb2c8e54f7f3e253cdd8",
+          "scaleMode": "FIT",
+          "byteCount": 685834,
+          "width": 1672,
+          "height": 941,
+          "cardY": 9677.732421875,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 08 / Silo Stair / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 7,
+        "title": "Lantern Roots",
+        "cardId": "970:14281",
+        "imageNodeId": "970:14284",
+        "sourcePNG": {
+          "path": "generated/level-07.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3293676,
+          "sha256": "ded03b536b70c08be0a8c9d68c2d2eaac1f18d1be4db7a5eca29e9fde0ad8687",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 774911,
+          "sha1": "9c3bfe521c5795033b4561087b68ec6694b761b3",
+          "sha256": "aa59a72d0ce501814995754b20c1b53a20b405959b7585451b98022a1c4a21c4",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 7,
+          "cardId": "970:14281",
+          "imageId": "970:14284",
+          "imageHash": "9c3bfe521c5795033b4561087b68ec6694b761b3",
+          "scaleMode": "FIT",
+          "byteCount": 774911,
+          "width": 1672,
+          "height": 941,
+          "cardY": 10448.04296875,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 07 / Lantern Roots / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 6,
+        "title": "Cairn Terraces",
+        "cardId": "970:14302",
+        "imageNodeId": "970:14305",
+        "sourcePNG": {
+          "path": "generated/level-06.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3234829,
+          "sha256": "2c5e6b773b0fc964193e332883e17f3d9a324ac6816f8ae9a5257da1178f4c8c",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 754678,
+          "sha1": "6cd1ec9203e3abc41a707cbb387cd4ad0b5baa51",
+          "sha256": "a838b0c7a3ea6fcae2bc4724ebf3296f98e33d4a0d5ee7c7c3ce068825ccb297",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 6,
+          "cardId": "970:14302",
+          "imageId": "970:14305",
+          "imageHash": "6cd1ec9203e3abc41a707cbb387cd4ad0b5baa51",
+          "scaleMode": "FIT",
+          "byteCount": 754678,
+          "width": 1672,
+          "height": 941,
+          "cardY": 11218.353515625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 06 / Cairn Terraces / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 5,
+        "title": "Root Stair",
+        "cardId": "970:14323",
+        "imageNodeId": "970:14326",
+        "sourcePNG": {
+          "path": "generated/level-05.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3316837,
+          "sha256": "8cb79bb28458bfab5f2507420907a7c0ce679964c7378ef21b5ca745ebadf22a",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 793619,
+          "sha1": "ef673f3b6837b8dd8ee7e7178ba88a6200979011",
+          "sha256": "8e960a704cae3180cb742e6502f68603972a48d65ef0b8dac3acb677587750a3",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 5,
+          "cardId": "970:14323",
+          "imageId": "970:14326",
+          "imageHash": "ef673f3b6837b8dd8ee7e7178ba88a6200979011",
+          "scaleMode": "FIT",
+          "byteCount": 793619,
+          "width": 1672,
+          "height": 941,
+          "cardY": 11988.6640625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 05 / Root Stair / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 4,
+        "title": "Mossback Sanctuary",
+        "cardId": "970:14344",
+        "imageNodeId": "970:14347",
+        "sourcePNG": {
+          "path": "generated/level-04.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 3231600,
+          "sha256": "a5e29185c1b6030e8396aed91d6b455acc9ba1ba88bf37e51f404a5e3fb62474",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 815343,
+          "sha1": "46e14c90b555105bdf54c32f89bd977629532fcd",
+          "sha256": "8d94f7708ec4fa71b48e995ebd485f37a365b9b8c71c3b0bc715b83aa32c8fce",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 4,
+          "cardId": "970:14344",
+          "imageId": "970:14347",
+          "imageHash": "46e14c90b555105bdf54c32f89bd977629532fcd",
+          "scaleMode": "FIT",
+          "byteCount": 815343,
+          "width": 1672,
+          "height": 941,
+          "cardY": 12758.974609375,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 04 / Mossback Sanctuary / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 3,
+        "title": "Broken Aqueduct",
+        "cardId": "970:14365",
+        "imageNodeId": "970:14368",
+        "sourcePNG": {
+          "path": "generated/level-03.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2805970,
+          "sha256": "87f79736d2d220e72b7a5c4a97614ae28a6fefd5b1d19394da2d3f891fc9364f",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 593211,
+          "sha1": "cef5f70b0d25a2ace0dcd7d6b008dd593b38c82f",
+          "sha256": "8be13fba915a713b12791cd2dcd5c8aef2230fc5097e4e43d5da527a7ff14fe2",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 3,
+          "cardId": "970:14365",
+          "imageId": "970:14368",
+          "imageHash": "cef5f70b0d25a2ace0dcd7d6b008dd593b38c82f",
+          "scaleMode": "FIT",
+          "byteCount": 593211,
+          "width": 1672,
+          "height": 941,
+          "cardY": 13529.28515625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 03 / Broken Aqueduct / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 2,
+        "title": "Railway Ruins",
+        "cardId": "970:14386",
+        "imageNodeId": "970:14389",
+        "sourcePNG": {
+          "path": "generated/level-02.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2830263,
+          "sha256": "cc16b889106b3f5b1c2cfeb8f0e57bfb058551b8bcb6333ee452f33a89d803af",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 689880,
+          "sha1": "dd74beeae7ed765e0807cf6accdecc8da1f3f9d8",
+          "sha256": "d4def4ab9a7674a8d90a9d3e0b796320333228ba7310739de52c659319675471",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 2,
+          "cardId": "970:14386",
+          "imageId": "970:14389",
+          "imageHash": "dd74beeae7ed765e0807cf6accdecc8da1f3f9d8",
+          "scaleMode": "FIT",
+          "byteCount": 689880,
+          "width": 1672,
+          "height": 941,
+          "cardY": 14299.595703125,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 02 / Railway Ruins / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      },
+      {
+        "stage": 1,
+        "title": "Hollow Tree",
+        "cardId": "970:14407",
+        "imageNodeId": "970:14410",
+        "sourcePNG": {
+          "path": "generated/level-01.png",
+          "width": 1672,
+          "height": 941,
+          "bytes": 2984907,
+          "sha256": "edff62a96b4117e3524d8844d48dffa636f64b1db3603f2ad9a84f1e63ace63d",
+          "unchanged": true
+        },
+        "transportPreview": {
+          "format": "JPEG",
+          "quality": 90,
+          "chromaSubsampling": 0,
+          "width": 1672,
+          "height": 941,
+          "bytes": 698435,
+          "sha1": "e57252d4386cb0579445dca4f7c29e2829085075",
+          "sha256": "4924e2592f2d4e54a45f3df3e6adbe9fdefd77b5c476590a827850645984d34a",
+          "resize": false,
+          "crop": false
+        },
+        "authenticatedReadback": {
+          "stage": 1,
+          "cardId": "970:14407",
+          "imageId": "970:14410",
+          "imageHash": "e57252d4386cb0579445dca4f7c29e2829085075",
+          "scaleMode": "FIT",
+          "byteCount": 698435,
+          "width": 1672,
+          "height": 941,
+          "cardY": 15069.90625,
+          "cardHeight": 730.31103515625,
+          "imageWidth": 1040,
+          "imageHeight": 585.31103515625,
+          "cardClipsContent": false,
+          "containerClipsContent": false,
+          "title": "LEVEL 01 / Hollow Tree / Scene + route intent",
+          "returnedImageHashMatchesTransportSHA1": true,
+          "returnedByteCountMatchesTransport": true
+        },
+        "persistenceVerified": true
+      }
+    ]
+  },
+  "nativeTurtleEvidence": {
+    "studyId": "975:13577",
+    "rectangleIds": [
+      "975:13584",
+      "975:13589"
+    ],
+    "imageHash": "0f4a31adb11031309feb88b2c423b999d30b099c",
+    "width": 640,
+    "height": 360,
+    "format": "PNG",
+    "bytes": 48631,
+    "persistedInIndependentLaterRead": true,
+    "pngSignature": [
+      137,
+      80,
+      78,
+      71,
+      13,
+      10,
+      26,
+      10
+    ],
+    "screenshotCheckedAfterFix": true,
+    "registration": {
+      "originX": 180,
+      "soilY": 234
+    },
+    "decodedRGBAIdenticalToNativeSource": true,
+    "decodedRGBA_SHA256": "35e9e8ab3deef23d9cc3c5911460c2306ac6dc7bb52d7168232b1f6f1d6510c3",
+    "transportPNG_SHA256": "e11d5d634eba283eea43384a50f77da62bc8d42fe4fc6a86d65ab4699ce7770e",
+    "nativeSourcePNG_SHA256": "7f6c7f626fd3fa9a6700cf33b0332b98d839dcc15304581c39f5893c2b96e9e1",
+    "runtimeMaster": false,
+    "finalAuthenticatedReadback": {
+      "studyId": "975:13577",
+      "x": 12152,
+      "y": 15294.974609375,
+      "width": 1424,
+      "height": 785,
+      "images": [
+        {
+          "imageId": "975:13584",
+          "imageHash": "0f4a31adb11031309feb88b2c423b999d30b099c",
+          "scaleMode": "FIT",
+          "byteCount": 48631,
+          "width": 640,
+          "height": 360
+        },
+        {
+          "imageId": "975:13589",
+          "imageHash": "0f4a31adb11031309feb88b2c423b999d30b099c",
+          "scaleMode": "FIT",
+          "byteCount": 48631,
+          "width": 640,
+          "height": 360
+        }
+      ]
+    },
+    "finalPersistenceVerified": true
+  },
+  "nativeEditor": {
+    "id": "941:450",
+    "rowCount": 17,
+    "orderTopToBottom": [
+      18,
+      17,
+      16,
+      15,
+      14,
+      13,
+      12,
+      11,
+      10,
+      9,
+      8,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "missingStages": [
+      7,
+      19,
+      20
+    ],
+    "rowGap": 96,
+    "frameOverlaps": 0,
+    "currentLevel4RowId": "941:578",
+    "runtimeActivation": false,
+    "finalBoundsAndSpacing": {
+      "id": "941:450",
+      "width": 7947,
+      "height": 12396,
+      "rows": [
+        {
+          "id": "952:14416",
+          "name": "LEVEL 18 / Layout",
+          "x": 64,
+          "y": 64,
+          "width": 7819,
+          "height": 480,
+          "clipsContent": false
+        },
+        {
+          "id": "941:475",
+          "name": "LEVEL 17 / Layout",
+          "x": 64,
+          "y": 640,
+          "width": 3984,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:483",
+          "name": "LEVEL 16 / Layout",
+          "x": 64,
+          "y": 1316,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:491",
+          "name": "LEVEL 15 / Layout",
+          "x": 64,
+          "y": 1992,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:499",
+          "name": "LEVEL 14 / Layout",
+          "x": 64,
+          "y": 2668,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:507",
+          "name": "LEVEL 13 / Layout",
+          "x": 64,
+          "y": 3344,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:515",
+          "name": "LEVEL 12 / Layout",
+          "x": 64,
+          "y": 4020,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:523",
+          "name": "LEVEL 11 / Layout",
+          "x": 64,
+          "y": 4696,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:531",
+          "name": "LEVEL 10 / Layout",
+          "x": 64,
+          "y": 5372,
+          "width": 5370,
+          "height": 831,
+          "clipsContent": false
+        },
+        {
+          "id": "941:539",
+          "name": "LEVEL 09 / Layout",
+          "x": 64,
+          "y": 6299,
+          "width": 5370,
+          "height": 831,
+          "clipsContent": false
+        },
+        {
+          "id": "941:547",
+          "name": "LEVEL 08 / Layout",
+          "x": 64,
+          "y": 7226,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:563",
+          "name": "LEVEL 06 / Layout",
+          "x": 64,
+          "y": 7902,
+          "width": 5373,
+          "height": 731,
+          "clipsContent": false
+        },
+        {
+          "id": "941:571",
+          "name": "LEVEL 05 / Layout",
+          "x": 64,
+          "y": 8729,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:578",
+          "name": "LEVEL 04 / Layout",
+          "x": 64,
+          "y": 9405,
+          "width": 4395,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:591",
+          "name": "LEVEL 03 / Layout",
+          "x": 64,
+          "y": 10081,
+          "width": 5760,
+          "height": 899,
+          "clipsContent": false
+        },
+        {
+          "id": "941:1569",
+          "name": "LEVEL 02 / Layout",
+          "x": 64,
+          "y": 11076,
+          "width": 3962,
+          "height": 580,
+          "clipsContent": false
+        },
+        {
+          "id": "941:2783",
+          "name": "LEVEL 01 / Layout",
+          "x": 64,
+          "y": 11752,
+          "width": 640,
+          "height": 580,
+          "clipsContent": false
+        }
+      ],
+      "gaps": [
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96,
+        96
+      ],
+      "overlap": false,
+      "missingLevels": [
+        7,
+        19,
+        20
+      ]
+    },
+    "actualTitleReadback": {
+      "editorId": "941:450",
+      "titleCount": 17,
+      "allVisibleAndInside": true,
+      "titles": [
+        {
+          "rowId": "952:14416",
+          "rowName": "LEVEL 18 / Layout",
+          "titles": [
+            {
+              "id": "970:14428",
+              "name": "Layout title / 18",
+              "characters": "18 \u00b7 Last Sluice",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:475",
+          "rowName": "LEVEL 17 / Layout",
+          "titles": [
+            {
+              "id": "970:14429",
+              "name": "Layout title / 17",
+              "characters": "17 \u00b7 Reactor Nest",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:483",
+          "rowName": "LEVEL 16 / Layout",
+          "titles": [
+            {
+              "id": "970:14430",
+              "name": "Layout title / 16",
+              "characters": "16 \u00b7 Giant's Stair",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:491",
+          "rowName": "LEVEL 15 / Layout",
+          "titles": [
+            {
+              "id": "970:14431",
+              "name": "Layout title / 15",
+              "characters": "15 \u00b7 Fault Steps",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:499",
+          "rowName": "LEVEL 14 / Layout",
+          "titles": [
+            {
+              "id": "970:14432",
+              "name": "Layout title / 14",
+              "characters": "14 \u00b7 Catacomb",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:507",
+          "rowName": "LEVEL 13 / Layout",
+          "titles": [
+            {
+              "id": "970:14433",
+              "name": "Layout title / 13",
+              "characters": "13 \u00b7 Twin Shafts",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:515",
+          "rowName": "LEVEL 12 / Layout",
+          "titles": [
+            {
+              "id": "970:14434",
+              "name": "Layout title / 12",
+              "characters": "12 \u00b7 Weeping Roots",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:523",
+          "rowName": "LEVEL 11 / Layout",
+          "titles": [
+            {
+              "id": "970:14435",
+              "name": "Layout title / 11",
+              "characters": "11 \u00b7 Old Quarry",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:531",
+          "rowName": "LEVEL 10 / Layout",
+          "titles": [
+            {
+              "id": "970:14436",
+              "name": "Layout title / 10",
+              "characters": "10 \u00b7 Bell Cellar",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:539",
+          "rowName": "LEVEL 09 / Layout",
+          "titles": [
+            {
+              "id": "970:14437",
+              "name": "Layout title / 09",
+              "characters": "09 \u00b7 Collapsed Tower",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:547",
+          "rowName": "LEVEL 08 / Layout",
+          "titles": [
+            {
+              "id": "970:14438",
+              "name": "Layout title / 08",
+              "characters": "08 \u00b7 Silo Stair",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:563",
+          "rowName": "LEVEL 06 / Layout",
+          "titles": [
+            {
+              "id": "970:14439",
+              "name": "Layout title / 06",
+              "characters": "06 \u00b7 Cairn Terraces",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:571",
+          "rowName": "LEVEL 05 / Layout",
+          "titles": [
+            {
+              "id": "970:14440",
+              "name": "Layout title / 05",
+              "characters": "05 \u00b7 Root Stair",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:578",
+          "rowName": "LEVEL 04 / Layout",
+          "titles": [
+            {
+              "id": "970:14441",
+              "name": "Layout title / 04",
+              "characters": "04 \u00b7 Mossback Sanctuary",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:591",
+          "rowName": "LEVEL 03 / Layout",
+          "titles": [
+            {
+              "id": "970:14442",
+              "name": "Layout title / 03",
+              "characters": "03 \u00b7 Broken Aqueduct",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:1569",
+          "rowName": "LEVEL 02 / Layout",
+          "titles": [
+            {
+              "id": "970:14443",
+              "name": "Layout title / 02",
+              "characters": "02 \u00b7 Railway Ruins",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 1472,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        },
+        {
+          "rowId": "941:2783",
+          "rowName": "LEVEL 01 / Layout",
+          "titles": [
+            {
+              "id": "970:14444",
+              "name": "Layout title / 01",
+              "characters": "01 \u00b7 Hollow Tree",
+              "visible": true,
+              "x": 0,
+              "y": 0,
+              "width": 640,
+              "height": 36.400001525878906,
+              "fontSize": 26,
+              "insideRow": true
+            }
+          ]
+        }
+      ]
+    },
+    "titleEvidenceArtifact": {
+      "preparationPath": "/tmp/max-figma-oct11/native-title-readback.json",
+      "sha256": "b943d5a8b5b4df197369f7b4dd97d53ed782c29281db0e668617e9a286191787"
+    },
+    "rawReadbackMeasurementNote": "The raw final-cloud-readback titleCount fields used the wrong name filter (Campaign title). Actual captions are Layout title / NN; the separate focused readback verifies17 actual visible TEXT titles inside their rows. Erroneous per-row filter counts are omitted from this summarized bounds record."
+  },
+  "historicalLocalImporter": {
+    "compatibleWithCurrentEditor": false,
+    "historicalEditorId": "863:15149",
+    "requiredRowCount": 20,
+    "reason": "Current editor has 17 different direct row identities and a different ASSETS ancestry; fresh actual bindings are required before importing."
+  },
+  "nativeSourcePlaneEvidence": {
+    "verificationDateUTC": "2026-10-11",
+    "checkpoint": "Final authenticated read after all twenty reference image fills committed.",
+    "finalPostImportReadbackComplete": true,
+    "count": 72,
+    "matchingCount": 72,
+    "allComparedHashesAndNodeCountsMatch": true,
+    "algorithm": "FNV-1a32, offset2166136261; Math.imul(hash XOR UTF16charCode,16777619); depth-first per-node compact JSON strings concatenated with no separator; unsigned hexadecimal without zero padding.",
+    "serializationPropertyOrder": [
+      "id",
+      "name",
+      "type",
+      "visible",
+      "x",
+      "y",
+      "w",
+      "h",
+      "r",
+      "fills",
+      "text",
+      "paths"
+    ],
+    "serializedProperties": {
+      "id": "node.id",
+      "name": "node.name",
+      "type": "node.type",
+      "visible": "node.visible",
+      "x": "node.x",
+      "y": "node.y",
+      "w": "node.width",
+      "h": "node.height",
+      "r": "node.rotation",
+      "fills": "'fills' in node ? node.fills : undefined",
+      "text": "node.type === 'TEXT' ? node.characters : undefined",
+      "paths": "node.type === 'VECTOR' ? node.vectorPaths : undefined"
+    },
+    "undefinedPropertyHandling": "JSON.stringify omits undefined object fields.",
+    "limitations": "Selected-property observational fingerprints, not cryptographic full-node byte hashes. Unserialized properties are outside this comparison.",
+    "leafCalibration": {
+      "id": "941:478",
+      "expectedHash": "88c1dbd8",
+      "actualHash": "88c1dbd8",
+      "matches": true
+    },
+    "evidenceArtifacts": {
+      "before": {
+        "preparationPath": "/tmp/max-figma-oct11/source-planes-before.json",
+        "sha256": "1062596e29fda79e2e319056c0f394d7bbf77086734ef833ab52f40942b21757"
+      },
+      "after": {
+        "preparationPath": "/tmp/max-figma-oct11/source-planes-after.json",
+        "sha256": "7b196dcc30715ee1eb05d639585c3050eed82a56853a5500afcbb3dc6352afd2"
+      },
+      "final": {
+        "preparationPath": "/tmp/max-figma-oct11/final-cloud-readback.json",
+        "sha256": "d11d75b56bdd097693fd7bb601b75f26397e0721936258f5614c9419ecbdbf9c",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+      }
+    },
+    "planes": [
+      {
+        "id": "952:14418",
+        "before": {
+          "fnv1a32": "ca8cad3e",
+          "nodeCount": 1138
+        },
+        "after": {
+          "fnv1a32": "ca8cad3e",
+          "nodeCount": 1138
+        },
+        "matches": true
+      },
+      {
+        "id": "952:14419",
+        "before": {
+          "fnv1a32": "8893459f",
+          "nodeCount": 3782
+        },
+        "after": {
+          "fnv1a32": "8893459f",
+          "nodeCount": 3782
+        },
+        "matches": true
+      },
+      {
+        "id": "952:14420",
+        "before": {
+          "fnv1a32": "7cb3e23",
+          "nodeCount": 36
+        },
+        "after": {
+          "fnv1a32": "7cb3e23",
+          "nodeCount": 36
+        },
+        "matches": true
+      },
+      {
+        "id": "952:14421",
+        "before": {
+          "fnv1a32": "6b07287b",
+          "nodeCount": 4
+        },
+        "after": {
+          "fnv1a32": "6b07287b",
+          "nodeCount": 4
+        },
+        "matches": true
+      },
+      {
+        "id": "952:14422",
+        "before": {
+          "fnv1a32": "d13f717e",
+          "nodeCount": 12
+        },
+        "after": {
+          "fnv1a32": "d13f717e",
+          "nodeCount": 12
+        },
+        "matches": true
+      },
+      {
+        "id": "941:477",
+        "before": {
+          "fnv1a32": "9af75458",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "9af75458",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:478",
+        "before": {
+          "fnv1a32": "88c1dbd8",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "88c1dbd8",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:479",
+        "before": {
+          "fnv1a32": "284ed336",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "284ed336",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:480",
+        "before": {
+          "fnv1a32": "1e09e84",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "1e09e84",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:485",
+        "before": {
+          "fnv1a32": "725e81c",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "725e81c",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:486",
+        "before": {
+          "fnv1a32": "da400ce5",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "da400ce5",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:487",
+        "before": {
+          "fnv1a32": "7f12a0c3",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "7f12a0c3",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:488",
+        "before": {
+          "fnv1a32": "2b9c7b11",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "2b9c7b11",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:493",
+        "before": {
+          "fnv1a32": "f6e3350a",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "f6e3350a",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:494",
+        "before": {
+          "fnv1a32": "7659789a",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "7659789a",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:495",
+        "before": {
+          "fnv1a32": "52970e18",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "52970e18",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:496",
+        "before": {
+          "fnv1a32": "f54baeab",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "f54baeab",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:501",
+        "before": {
+          "fnv1a32": "967a7717",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "967a7717",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:502",
+        "before": {
+          "fnv1a32": "71f46976",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "71f46976",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:503",
+        "before": {
+          "fnv1a32": "4b6f759c",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "4b6f759c",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:504",
+        "before": {
+          "fnv1a32": "7ee90273",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "7ee90273",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:509",
+        "before": {
+          "fnv1a32": "1b64bc60",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "1b64bc60",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:510",
+        "before": {
+          "fnv1a32": "6e78f95d",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "6e78f95d",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:511",
+        "before": {
+          "fnv1a32": "6287a34b",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "6287a34b",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:512",
+        "before": {
+          "fnv1a32": "4eb25aec",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "4eb25aec",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:517",
+        "before": {
+          "fnv1a32": "af068c62",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "af068c62",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:518",
+        "before": {
+          "fnv1a32": "6b55cff5",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "6b55cff5",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:519",
+        "before": {
+          "fnv1a32": "ef0b9393",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "ef0b9393",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:520",
+        "before": {
+          "fnv1a32": "7ff89885",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "7ff89885",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:549",
+        "before": {
+          "fnv1a32": "b641a2bc",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "b641a2bc",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:550",
+        "before": {
+          "fnv1a32": "ae144ab1",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "ae144ab1",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:551",
+        "before": {
+          "fnv1a32": "a2ea2667",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "a2ea2667",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:552",
+        "before": {
+          "fnv1a32": "deb18b00",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "deb18b00",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:525",
+        "before": {
+          "fnv1a32": "89d2446c",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "89d2446c",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:526",
+        "before": {
+          "fnv1a32": "b57519e0",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "b57519e0",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:527",
+        "before": {
+          "fnv1a32": "d867066e",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "d867066e",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:528",
+        "before": {
+          "fnv1a32": "6e645fe4",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "6e645fe4",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:580",
+        "before": {
+          "fnv1a32": "f6bbf907",
+          "nodeCount": 6
+        },
+        "after": {
+          "fnv1a32": "f6bbf907",
+          "nodeCount": 6
+        },
+        "matches": true
+      },
+      {
+        "id": "941:588",
+        "before": {
+          "fnv1a32": "dfcb71",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "dfcb71",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:589",
+        "before": {
+          "fnv1a32": "23a6a153",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "23a6a153",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:590",
+        "before": {
+          "fnv1a32": "1d69fda6",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "1d69fda6",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:573",
+        "before": {
+          "fnv1a32": "ad3677f6",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "ad3677f6",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:575",
+        "before": {
+          "fnv1a32": "91df783c",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "91df783c",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:576",
+        "before": {
+          "fnv1a32": "738337d0",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "738337d0",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:577",
+        "before": {
+          "fnv1a32": "9cfd319a",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "9cfd319a",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:565",
+        "before": {
+          "fnv1a32": "b9cdaa22",
+          "nodeCount": 2
+        },
+        "after": {
+          "fnv1a32": "b9cdaa22",
+          "nodeCount": 2
+        },
+        "matches": true
+      },
+      {
+        "id": "941:566",
+        "before": {
+          "fnv1a32": "3a44371a",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "3a44371a",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:567",
+        "before": {
+          "fnv1a32": "685d9c4",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "685d9c4",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:568",
+        "before": {
+          "fnv1a32": "603676d2",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "603676d2",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:541",
+        "before": {
+          "fnv1a32": "cbfe3e2d",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "cbfe3e2d",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:542",
+        "before": {
+          "fnv1a32": "9cc4d9da",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "9cc4d9da",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:543",
+        "before": {
+          "fnv1a32": "15124558",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "15124558",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:544",
+        "before": {
+          "fnv1a32": "1cbf78bf",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "1cbf78bf",
+          "nodeCount": 3
+        },
+        "matches": true
+      },
+      {
+        "id": "941:593",
+        "before": {
+          "fnv1a32": "7a6ca8da",
+          "nodeCount": 7
+        },
+        "after": {
+          "fnv1a32": "7a6ca8da",
+          "nodeCount": 7
+        },
+        "matches": true
+      },
+      {
+        "id": "941:605",
+        "before": {
+          "fnv1a32": "aab63815",
+          "nodeCount": 277
+        },
+        "after": {
+          "fnv1a32": "aab63815",
+          "nodeCount": 277
+        },
+        "matches": true
+      },
+      {
+        "id": "941:882",
+        "before": {
+          "fnv1a32": "31e26742",
+          "nodeCount": 38
+        },
+        "after": {
+          "fnv1a32": "31e26742",
+          "nodeCount": 38
+        },
+        "matches": true
+      },
+      {
+        "id": "941:920",
+        "before": {
+          "fnv1a32": "6c67dd6b",
+          "nodeCount": 5
+        },
+        "after": {
+          "fnv1a32": "6c67dd6b",
+          "nodeCount": 5
+        },
+        "matches": true
+      },
+      {
+        "id": "941:925",
+        "before": {
+          "fnv1a32": "f21846df",
+          "nodeCount": 16
+        },
+        "after": {
+          "fnv1a32": "f21846df",
+          "nodeCount": 16
+        },
+        "matches": true
+      },
+      {
+        "id": "941:1571",
+        "before": {
+          "fnv1a32": "20b59209",
+          "nodeCount": 910
+        },
+        "after": {
+          "fnv1a32": "20b59209",
+          "nodeCount": 910
+        },
+        "matches": true
+      },
+      {
+        "id": "941:2447",
+        "before": {
+          "fnv1a32": "836c5942",
+          "nodeCount": 277
+        },
+        "after": {
+          "fnv1a32": "836c5942",
+          "nodeCount": 277
+        },
+        "matches": true
+      },
+      {
+        "id": "941:2724",
+        "before": {
+          "fnv1a32": "213bd409",
+          "nodeCount": 38
+        },
+        "after": {
+          "fnv1a32": "213bd409",
+          "nodeCount": 38
+        },
+        "matches": true
+      },
+      {
+        "id": "941:2762",
+        "before": {
+          "fnv1a32": "61f10d92",
+          "nodeCount": 5
+        },
+        "after": {
+          "fnv1a32": "61f10d92",
+          "nodeCount": 5
+        },
+        "matches": true
+      },
+      {
+        "id": "941:2767",
+        "before": {
+          "fnv1a32": "a2ded0f4",
+          "nodeCount": 16
+        },
+        "after": {
+          "fnv1a32": "a2ded0f4",
+          "nodeCount": 16
+        },
+        "matches": true
+      },
+      {
+        "id": "941:2785",
+        "before": {
+          "fnv1a32": "17567dd1",
+          "nodeCount": 6995
+        },
+        "after": {
+          "fnv1a32": "17567dd1",
+          "nodeCount": 6995
+        },
+        "matches": true
+      },
+      {
+        "id": "941:9780",
+        "before": {
+          "fnv1a32": "79115d4e",
+          "nodeCount": 24
+        },
+        "after": {
+          "fnv1a32": "79115d4e",
+          "nodeCount": 24
+        },
+        "matches": true
+      },
+      {
+        "id": "941:9804",
+        "before": {
+          "fnv1a32": "49df22b3",
+          "nodeCount": 11
+        },
+        "after": {
+          "fnv1a32": "49df22b3",
+          "nodeCount": 11
+        },
+        "matches": true
+      },
+      {
+        "id": "941:9815",
+        "before": {
+          "fnv1a32": "80865a3a",
+          "nodeCount": 5
+        },
+        "after": {
+          "fnv1a32": "80865a3a",
+          "nodeCount": 5
+        },
+        "matches": true
+      },
+      {
+        "id": "941:9820",
+        "before": {
+          "fnv1a32": "a600b8d4",
+          "nodeCount": 4
+        },
+        "after": {
+          "fnv1a32": "a600b8d4",
+          "nodeCount": 4
+        },
+        "matches": true
+      },
+      {
+        "id": "941:533",
+        "before": {
+          "fnv1a32": "d39a3c22",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "d39a3c22",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:534",
+        "before": {
+          "fnv1a32": "1b97ecb",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "1b97ecb",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:535",
+        "before": {
+          "fnv1a32": "a8c67b09",
+          "nodeCount": 1
+        },
+        "after": {
+          "fnv1a32": "a8c67b09",
+          "nodeCount": 1
+        },
+        "matches": true
+      },
+      {
+        "id": "941:536",
+        "before": {
+          "fnv1a32": "829d65a2",
+          "nodeCount": 3
+        },
+        "after": {
+          "fnv1a32": "829d65a2",
+          "nodeCount": 3
+        },
+        "matches": true
+      }
+    ]
+  },
+  "localProvenance": {
+    "originalSourceManifest": {
+      "path": "generated/source.json",
+      "sha256": "5ceee8d45417e529e308c2d457be7b7f8ac4a0acb6c73ec3d87237247fa1afa2",
+      "changed": false
+    },
+    "transportManifest": {
+      "preparationPath": "/tmp/max-figma-oct11/transport/jpeg-manifest.json",
+      "sha256": "9550fa5421aa5b8a50aca4a93840f7c82d3394559d657bbf685070cd61c37702"
+    },
+    "currentCaptureCommit": "7e8a783f309dbe21d3f3144c7331d429102be557",
+    "currentCaptureFilesChanged": false,
+    "originalGeneratedPNGFilesChanged": false,
+    "historicalPackageReceiptsChanged": false
+  },
+  "temporaryImportEvidence": {
+    "id": "976:13622",
+    "removed": true,
+    "removedNodeIds": [
+      "976:13622"
+    ]
+  },
+  "finalReadbackArtifact": {
+    "preparationPath": "/tmp/max-figma-oct11/final-cloud-readback.json",
+    "sha256": "d11d75b56bdd097693fd7bb601b75f26397e0721936258f5614c9419ecbdbf9c",
+    "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+  },
+  "level4VisualVerification": {
+    "method": "Authenticated get_screenshot after final import",
+    "nodeId": "970:14344",
+    "returnedImageWidth": 1472,
+    "returnedImageHeight": 731,
+    "observed": "Complete giant mossy turtle in full FIT reference image; readable title, route notes and links; no image crop or top cutoff.",
+    "localScreenshotArtifact": null,
+    "localScreenshotArtifactClaimed": false
+  },
+  "visualVerification": {
+    "method": "Authenticated get_screenshot on actual Figma nodes, inspected after import",
+    "screenshots": [
+      {
+        "nodeId": "970:14344",
+        "name": "level-04-card",
+        "width": 1472,
+        "height": 731,
+        "format": "png",
+        "original_width": 1472,
+        "original_height": 730,
+        "visuallyReviewed": true,
+        "observed": "Complete giant mossy turtle reference; title, route notes and links readable; no image crop or top cutoff."
+      },
+      {
+        "nodeId": "970:14003",
+        "name": "full-stack",
+        "width": 406,
+        "height": 4096,
+        "format": "png",
+        "original_width": 1568,
+        "original_height": 15848,
+        "visuallyReviewed": true,
+        "observed": "All20 reference cards populated with distinct scene images in descending20\u219201 order."
+      }
+    ],
+    "metadataArtifact": {
+      "preparationPath": "/tmp/max-figma-oct11/visual-review.json",
+      "sha256": "efc2685b65752428a373e7b1bb7490099c1194f1686448418418f110ef01c765"
+    },
+    "localScreenshotImageArtifacts": null,
+    "localScreenshotImageArtifactsClaimed": false
+  }
+}

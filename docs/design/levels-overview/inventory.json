@@ -1,11 +1,11 @@
 {
   "format": "max-level-overview-inventory/v1",
-  "status": "Twenty unique generated full-scene PNGs and unchanged current native entry captures are ready.",
+  "status": "Twenty unique generated scene references are synchronized to the actual Figma reference board and verified through final authenticated image readback; original PNGs and frozen current native entry captures remain unchanged.",
   "currentCaptureCommit": "7e8a783f309dbe21d3f3144c7331d429102be557",
   "currentCaptureScope": "Read-only actual current game entry-view overview, not full world capture or design authority",
   "currentCaptureMethod": "Unmodified stock built review layout1..20, isolated memory storage, seed1, Max class; native canvas read only; no game/response/camera/actor/art injections",
   "titleNotes": "Current Hollow Tree and Mossback Sanctuary replacements override stale base Seed Vault/Sunken Chapel labels. Scenery aliases Buried Aqueduct/Mycelium Cathedral/Fossil Vault do not rename campaign stages 3/7/14.",
-  "cloudSynchronized": false,
+  "cloudSynchronized": true,
   "runtimeSource": false,
   "levels": [
     {
@@ -26,7 +26,25 @@
         "return": "Root ladder from the lower passage",
         "find": "Side nooks beside the canopy"
       },
-      "exportFilename": "level-01-hollow-tree.png"
+      "exportFilename": "level-01-hollow-tree.png",
+      "figma": {
+        "referenceCardId": "970:14407",
+        "referenceImageId": "970:14410",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14407",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:2783",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14411",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-2783",
+        "imageHash": "e57252d4386cb0579445dca4f7c29e2829085075",
+        "imageByteCount": 698435,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14444"
+      }
     },
     {
       "stage": 2,
@@ -46,7 +64,25 @@
         "return": "Vine ladder back toward the mill",
         "find": "Rail alcoves and the mill loft"
       },
-      "exportFilename": "level-02-railway-ruins.png"
+      "exportFilename": "level-02-railway-ruins.png",
+      "figma": {
+        "referenceCardId": "970:14386",
+        "referenceImageId": "970:14389",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14386",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:1569",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14390",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-1569",
+        "imageHash": "dd74beeae7ed765e0807cf6accdecc8da1f3f9d8",
+        "imageByteCount": 689880,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14443"
+      }
     },
     {
       "stage": 3,
@@ -66,7 +102,25 @@
         "return": "Low gallery reconnecting the banks",
         "find": "Quiet recesses behind the piers"
       },
-      "exportFilename": "level-03-broken-aqueduct.png"
+      "exportFilename": "level-03-broken-aqueduct.png",
+      "figma": {
+        "referenceCardId": "970:14365",
+        "referenceImageId": "970:14368",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14365",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:591",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14369",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-591",
+        "imageHash": "cef5f70b0d25a2ace0dcd7d6b008dd593b38c82f",
+        "imageByteCount": 593211,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14442"
+      }
     },
     {
       "stage": 4,
@@ -86,7 +140,26 @@
         "return": "Lower chamber ladder back to the court",
         "find": "Shell nooks along the side routes"
       },
-      "exportFilename": "level-04-mossback-sanctuary.png"
+      "exportFilename": "level-04-mossback-sanctuary.png",
+      "figma": {
+        "referenceCardId": "970:14344",
+        "referenceImageId": "970:14347",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14344",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:578",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14348",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-578",
+        "nativeTurtleStudyCrossLinkId": "986:13577",
+        "imageHash": "46e14c90b555105bdf54c32f89bd977629532fcd",
+        "imageByteCount": 815343,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14441"
+      }
     },
     {
       "stage": 5,
@@ -106,7 +179,25 @@
         "return": "Lower root loop to the landing",
         "find": "Small hollows beside the turns"
       },
-      "exportFilename": "level-05-root-stair.png"
+      "exportFilename": "level-05-root-stair.png",
+      "figma": {
+        "referenceCardId": "970:14323",
+        "referenceImageId": "970:14326",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14323",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:571",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14327",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-571",
+        "imageHash": "ef673f3b6837b8dd8ee7e7178ba88a6200979011",
+        "imageByteCount": 793619,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14440"
+      }
     },
     {
       "stage": 6,
@@ -126,7 +217,25 @@
         "return": "Wide stone traverse around the foot",
         "find": "Sheltered niches below the lookout"
       },
-      "exportFilename": "level-06-cairn-terraces.png"
+      "exportFilename": "level-06-cairn-terraces.png",
+      "figma": {
+        "referenceCardId": "970:14302",
+        "referenceImageId": "970:14305",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14302",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:563",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14306",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-563",
+        "imageHash": "6cd1ec9203e3abc41a707cbb387cd4ad0b5baa51",
+        "imageByteCount": 754678,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14439"
+      }
     },
     {
       "stage": 7,
@@ -146,7 +255,23 @@
         "return": "Low gill gallery to the clearing",
         "find": "Warm lamp alcoves off the climb"
       },
-      "exportFilename": "level-07-lantern-roots.png"
+      "exportFilename": "level-07-lantern-roots.png",
+      "figma": {
+        "referenceCardId": "970:14281",
+        "referenceImageId": "970:14284",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14281",
+        "imagePersistenceVerified": true,
+        "nativeRowId": null,
+        "nativeRowPresent": false,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14285",
+        "imageHash": "9c3bfe521c5795033b4561087b68ec6694b761b3",
+        "imageByteCount": 774911,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+      }
     },
     {
       "stage": 8,
@@ -166,7 +291,25 @@
         "return": "Service gallery below the hoist",
         "find": "Old grain bays beside the stairs"
       },
-      "exportFilename": "level-08-silo-stair.png"
+      "exportFilename": "level-08-silo-stair.png",
+      "figma": {
+        "referenceCardId": "970:14260",
+        "referenceImageId": "970:14263",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14260",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:547",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14264",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-547",
+        "imageHash": "a3ac130159212c60109eeb2c8e54f7f3e253cdd8",
+        "imageByteCount": 685834,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14438"
+      }
     },
     {
       "stage": 9,
@@ -186,7 +329,25 @@
         "return": "Lower masonry walk to the forecourt",
         "find": "Collapsed rooms beside the tower"
       },
-      "exportFilename": "level-09-collapsed-tower.png"
+      "exportFilename": "level-09-collapsed-tower.png",
+      "figma": {
+        "referenceCardId": "970:14239",
+        "referenceImageId": "970:14242",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14239",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:539",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14243",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-539",
+        "imageHash": "7b6280236e633b0e0568513904683a03b156dd15",
+        "imageByteCount": 633527,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14437"
+      }
     },
     {
       "stage": 10,
@@ -206,7 +367,25 @@
         "return": "Lower vault gallery reconnects the court",
         "find": "Lamp niches beneath the bell"
       },
-      "exportFilename": "level-10-bell-cellar.png"
+      "exportFilename": "level-10-bell-cellar.png",
+      "figma": {
+        "referenceCardId": "970:14218",
+        "referenceImageId": "970:14221",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14218",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:531",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14222",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-531",
+        "imageHash": "bf03d56d7836441eb2d5bda4ed28f94a58b62c9d",
+        "imageByteCount": 675901,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14436"
+      }
     },
     {
       "stage": 11,
@@ -226,7 +405,25 @@
         "return": "Low shelf along the quarry wall",
         "find": "Recesses behind the ice-cut stones"
       },
-      "exportFilename": "level-11-old-quarry.png"
+      "exportFilename": "level-11-old-quarry.png",
+      "figma": {
+        "referenceCardId": "970:14197",
+        "referenceImageId": "970:14200",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14197",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:523",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14201",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-523",
+        "imageHash": "3fe19f46a755e3eaac66353d987551310a90c2be",
+        "imageByteCount": 708308,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14435"
+      }
     },
     {
       "stage": 12,
@@ -246,7 +443,25 @@
         "return": "Sheltered lower root loop",
         "find": "Small frost pockets off the main path"
       },
-      "exportFilename": "level-12-weeping-roots.png"
+      "exportFilename": "level-12-weeping-roots.png",
+      "figma": {
+        "referenceCardId": "970:14176",
+        "referenceImageId": "970:14179",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14176",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:515",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14180",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-515",
+        "imageHash": "13481dd695d6b0215c1b992f71893962a41175e0",
+        "imageByteCount": 723995,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14434"
+      }
     },
     {
       "stage": 13,
@@ -266,7 +481,25 @@
         "return": "Cross-bridge and lower shaft return",
         "find": "Side chambers beside each shaft"
       },
-      "exportFilename": "level-13-twin-shafts.png"
+      "exportFilename": "level-13-twin-shafts.png",
+      "figma": {
+        "referenceCardId": "970:14155",
+        "referenceImageId": "970:14158",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14155",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:507",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14159",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-507",
+        "imageHash": "24f8cd468dc17ecef4610354d61031094a5fde73",
+        "imageByteCount": 756080,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14433"
+      }
     },
     {
       "stage": 14,
@@ -286,7 +519,25 @@
         "return": "Lower sheltered corridor",
         "find": "Quiet tomb pockets beneath the skull"
       },
-      "exportFilename": "level-14-catacomb.png"
+      "exportFilename": "level-14-catacomb.png",
+      "figma": {
+        "referenceCardId": "970:14134",
+        "referenceImageId": "970:14137",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14134",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:499",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14138",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-499",
+        "imageHash": "7f0b0771123e2137c511a4ab0f878332ecd01faa",
+        "imageByteCount": 765962,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14432"
+      }
     },
     {
       "stage": 15,
@@ -306,7 +557,25 @@
         "return": "Lower gallery across the crack",
         "find": "Narrow alcoves beside the turns"
       },
-      "exportFilename": "level-15-fault-steps.png"
+      "exportFilename": "level-15-fault-steps.png",
+      "figma": {
+        "referenceCardId": "970:14113",
+        "referenceImageId": "970:14116",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14113",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:491",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14117",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-491",
+        "imageHash": "1e95fc840f831a921a858882053cbcb779869d82",
+        "imageByteCount": 733116,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14431"
+      }
     },
     {
       "stage": 16,
@@ -326,7 +595,25 @@
         "return": "Broad lower promenade",
         "find": "Sheltered bays below the high stairs"
       },
-      "exportFilename": "level-16-giants-stair.png"
+      "exportFilename": "level-16-giants-stair.png",
+      "figma": {
+        "referenceCardId": "970:14092",
+        "referenceImageId": "970:14095",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14092",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:483",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14096",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-483",
+        "imageHash": "cd3bf16735eef58aff3fcc15b3b3ae2a77c4b3cc",
+        "imageByteCount": 504058,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14430"
+      }
     },
     {
       "stage": 17,
@@ -346,7 +633,25 @@
         "return": "Low maintenance gallery",
         "find": "Shielded niches beyond the root forks"
       },
-      "exportFilename": "level-17-reactor-nest.png"
+      "exportFilename": "level-17-reactor-nest.png",
+      "figma": {
+        "referenceCardId": "970:14071",
+        "referenceImageId": "970:14074",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14071",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "941:475",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14075",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=941-475",
+        "imageHash": "4d3cb1c33318f02be524a86233c3fd6e9b3859ca",
+        "imageByteCount": 578356,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14429"
+      }
     },
     {
       "stage": 18,
@@ -366,7 +671,25 @@
         "return": "Lower service path around the gate",
         "find": "Recessed machinery bays"
       },
-      "exportFilename": "level-18-last-sluice.png"
+      "exportFilename": "level-18-last-sluice.png",
+      "figma": {
+        "referenceCardId": "970:14050",
+        "referenceImageId": "970:14053",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14050",
+        "imagePersistenceVerified": true,
+        "nativeRowId": "952:14416",
+        "nativeRowPresent": true,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14054",
+        "nativeEditorURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=952-14416",
+        "imageHash": "73df5431b1b4f653d4663817172827ca70ae1f4b",
+        "imageByteCount": 611530,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+        "nativeTitleNodeId": "970:14428"
+      }
     },
     {
       "stage": 19,
@@ -386,7 +709,23 @@
         "return": "Sheltered wall gallery back to the gate",
         "find": "Small pockets under the breach"
       },
-      "exportFilename": "level-19-surface-breach.png"
+      "exportFilename": "level-19-surface-breach.png",
+      "figma": {
+        "referenceCardId": "970:14029",
+        "referenceImageId": "970:14032",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14029",
+        "imagePersistenceVerified": true,
+        "nativeRowId": null,
+        "nativeRowPresent": false,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14033",
+        "imageHash": "0576dd96271b5f3657f2bf7a6a1ff742dcc2aa96",
+        "imageByteCount": 516246,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+      }
     },
     {
       "stage": 20,
@@ -406,7 +745,193 @@
         "return": "Return landings before the final court",
         "find": "Restrained side shelves before the encounter"
       },
-      "exportFilename": "level-20-radioactive-dawn.png"
+      "exportFilename": "level-20-radioactive-dawn.png",
+      "figma": {
+        "referenceCardId": "970:14008",
+        "referenceImageId": "970:14011",
+        "referenceCardURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14008",
+        "imagePersistenceVerified": true,
+        "nativeRowId": null,
+        "nativeRowPresent": false,
+        "scope": "Generated reference with authoring route notes; not an activated native source.",
+        "referenceNotesId": "970:14012",
+        "imageHash": "4f683986afae2545da2a101b328ee7f21bc2d4d5",
+        "imageByteCount": 654282,
+        "imageWidth": 1672,
+        "imageHeight": 941,
+        "scaleMode": "FIT",
+        "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+      }
     }
-  ]
+  ],
+  "figma": {
+    "file": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "508:11825",
+    "masterSectionId": "863:15150",
+    "referenceStackId": "970:14003",
+    "referenceStackURL": "https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=970-14003",
+    "navigationId": "976:13577",
+    "nativeTurtleStudyId": "975:13577",
+    "synchronizationScope": "Scene-reference cards, route notes, navigation and native turtle review study only; no native source activation or runtime data export.",
+    "referenceImageReadbackStatus": "verified-all-twenty-images",
+    "referenceImageEncoding": {
+      "format": "JPEG",
+      "width": 1672,
+      "height": 941,
+      "quality": 90,
+      "chromaSubsampling": 0,
+      "purpose": "Cloud design-reference transport preview only",
+      "originalGeneratedPNGFilesChanged": false
+    },
+    "nativeTurtleImage": {
+      "rectangleIds": [
+        "975:13584",
+        "975:13589"
+      ],
+      "hash": "0f4a31adb11031309feb88b2c423b999d30b099c",
+      "format": "PNG",
+      "width": 640,
+      "height": 360,
+      "byteLength": 48631,
+      "persistenceVerified": true,
+      "runtimeMaster": false,
+      "finalPersistenceVerified": true,
+      "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+    },
+    "nativeEditor": {
+      "id": "941:450",
+      "rowCount": 17,
+      "orderTopToBottom": [
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "missingStages": [
+        7,
+        19,
+        20
+      ],
+      "rowGap": 96,
+      "frameOverlaps": 0,
+      "currentLevel4RowId": "941:578",
+      "runtimeActivation": false,
+      "width": 7947,
+      "height": 12396,
+      "titleCount": 17,
+      "allTitlesVisibleAndInside": true
+    },
+    "historicalLocalImporter": {
+      "compatibleWithCurrentEditor": false,
+      "historicalEditorId": "863:15149",
+      "requiredRowCount": 20,
+      "reason": "Current editor has 17 different direct row identities and a different ASSETS ancestry; fresh actual bindings are required before importing."
+    },
+    "runtimeActivation": false,
+    "cloudReceiptPath": "cloud-receipt.json",
+    "nativeSourcePlaneEvidence": {
+      "receiptPath": "cloud-receipt.json",
+      "count": 72,
+      "matchingCount": 72,
+      "allComparedHashesAndNodeCountsMatch": true,
+      "scope": "Ordered depth-first FNV-1a32 over id/name/type/visibility/local bounds/rotation/fills/text/vector paths and node counts.",
+      "checkpoint": "Final authenticated comparison after all twenty reference image fills committed.",
+      "finalPostImportReadbackComplete": true,
+      "verifiedAtUTC": "2026-10-11T15:06:14.740Z"
+    },
+    "referenceStackHeight": 15848.220703125,
+    "navigationScope": "Twenty direct scene-card links only; native editor links are per-card when a current row exists.",
+    "nativeTurtleStudyCrossLink": {
+      "id": "986:13577",
+      "parentNotesId": "970:14348",
+      "targetId": "975:13577"
+    },
+    "earlierConceptArchive": {
+      "id": "863:14758",
+      "name": "ARCHIVE / Earlier concept scenes / original numbering",
+      "x": -17580,
+      "y": 2536,
+      "width": 1672,
+      "height": 18820,
+      "originalNumberingPreserved": true,
+      "runtimeSource": false
+    },
+    "verifiedAtUTC": "2026-10-11T15:06:14.740Z",
+    "referenceStackBounds": {
+      "id": "970:14003",
+      "x": 10488,
+      "y": 2536,
+      "width": 1568,
+      "height": 15848.220703125,
+      "clipsContent": false,
+      "cardOrder": [
+        20,
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "cardGaps": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40.00048828125,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875,
+        39.99951171875
+      ]
+    },
+    "navigationButtonCount": 20,
+    "temporaryImportRemoved": true,
+    "level4VisualVerification": {
+      "method": "Authenticated get_screenshot after final import",
+      "nodeId": "970:14344",
+      "returnedImageWidth": 1472,
+      "returnedImageHeight": 731,
+      "observed": "Complete giant mossy turtle in full FIT reference image; readable title, route notes and links; no image crop or top cutoff.",
+      "localScreenshotArtifact": null,
+      "localScreenshotArtifactClaimed": false
+    },
+    "visualVerificationReceiptPath": "cloud-receipt.json"
+  }
 }
