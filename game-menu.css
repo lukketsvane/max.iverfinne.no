@@ -247,3 +247,12 @@
 .max-menu .max-relic-enter{width:auto;margin:18px 0 0;padding:12px 18px;min-height:44px;border-color:#9fbd9560;background:#1d3434;color:#e1e8c9;pointer-events:auto}
 .max-menu[data-focus="relic"] .max-garden-note{opacity:1;transform:none;pointer-events:auto;transition-delay:.6s}
 .max-menu[data-focus="relic"] .max-garden-arrow,.max-menu[data-focus="relic"] .max-garden-hint{opacity:0;pointer-events:none}
+/* Pre-run ability choices retain phone-sized controls and use the existing card scroll. */
+.max-skill-picker{min-width:0;margin:12px 0 0;padding:0;border:0}
+.max-skill-slots{display:grid;gap:10px}
+.max-skill-slot-name{display:block;margin-bottom:5px;color:#9daf9f;font-size:10px;letter-spacing:.08em}
+.max-skill-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.max-skill-choice{min-width:0;text-align:left;min-height:62px;padding:8px!important;border:1px solid #3e5148!important;background:#17241f!important;color:#c8d5c8!important}
+.max-skill-choice[aria-pressed="true"]{border-color:#d9c27a!important;background:#26372c!important}
+.max-skill-name{display:block;font-size:12px;line-height:1.25}
+.max-skill-detail{display:block;margin-top:4px;color:#9daf9f;font-size:10px;line-height:1.35}

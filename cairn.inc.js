@@ -157,7 +157,7 @@ function cairnProtection(plant,context){
   function choose(fraction,m,source,serial,order){if(fraction>best.fraction||fraction===best.fraction&&order<bestOrder){best={fraction:fraction,multiplier:1-fraction,ownerId:cairnOwnerKey(m),sourceKind:source,sourceSerial:serial||0};bestOrder=order;}}
   cairnOwners().forEach(function(m,index){var a=cairnActor(m),classId=cairnClass(m),q=cairnPeek(m),distance=Math.hypot(a.x-x,a.y-y),order=m&&Number.isFinite(m.slot)?m.slot:index;
     if(classId==='bulwark'){if(cairnRootedGround(a,m)){if(distance<=48)choose(.3,m,'passive',0,order);if(distance<=64&&cairnBraceActive(m,a))choose(.65,m,'brace',q.braceSerial,order);}if(q&&q.ridgeWorld===worldLevel()&&q.ridgePhase===2&&cairnRemaining(q,'ridgeWardT')>0&&kind==='bite'&&Math.hypot(q.ridgeX-x,q.ridgeY-y)<=48)choose(.45,m,'ridge',q.ridgeSerial,order);}
-    if(classId==='sligo'&&curledMember(m,a)&&distance<=40)choose(.5,m,'sligo-tun',0,order);
+    if(classId==='sligo'&&curledMember(m,a)&&distance<=(alternateSkill('special',m)==='watch'?64:40))choose(.5,m,'sligo-tun',0,order);
   });cairnOwners().forEach(function(m){var c=m?m.sligo:soloSligo;if(!c||!Array.isArray(c.bodies))return;c.bodies.forEach(function(b){if(b.sligoId!==c.active&&b.tun>0&&b.grounded&&!b.wet&&Math.hypot(b.x-x,b.y-y)<=40)choose(.5,m,'sligo-tun',0,100+(b.sligoId||0));});});return best;
 }
 function cairnParry(m,event){

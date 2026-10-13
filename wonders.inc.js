@@ -1,8 +1,8 @@
 var WONDERS={lights:'Firefly order',plates:'Twin plates',perch:'High lantern',crack:'Cracked stone',rune:'Rune plot',dig:'Buried relic',stars:'Three stars',bells:'Bell stones',echo:'Echo stone',well:'Moon well',crown:'Crown relic',clover:'Four-leaf clover',
   trader:'Trader rover',fledgling:'Lost fledgling',bee:'Hurt bee',ghost:'Rival gardener',beetle:'Sleeping beetle',statue:'Riddle statue',flock:'Storm flock',robot:'Broken robot',
-  shovel:'Old shovel',grove:'Secret garden',vault:'Seed vault',meadow:'Moonlit meadow',cavern:'Root cavern',rush:'Boss-rush door'};
+  shovel:'Old shovel',grove:'Secret garden',vault:'Seed vault',meadow:'Moonlit meadow',cavern:'Root cavern',rush:'Boss-rush door',offering:'Seed offering',lantern:'Lantern pact',keeper:'Cache keepers',spring:'Hidden spring'};
 var SPOT_PUZZLES=['crack','echo','stars'],SPOT_UNFIT=['lights','plates','perch','rune','dig','bells'];
-var WONDER_PUZZLES=['lights','plates','perch','crack','rune','dig','stars','bells','echo'],WONDER_MEETS=['trader','fledgling','bee','ghost','beetle','statue','flock','robot'],WONDER_LEVELS=['grove','vault','meadow','cavern','rush'];
+var WONDER_PUZZLES=['lights','plates','perch','crack','rune','dig','stars','bells','echo','offering','lantern'],WONDER_MEETS=['trader','fledgling','bee','ghost','beetle','statue','flock','robot','keeper','spring'],WONDER_LEVELS=['grove','vault','meadow','cavern','rush'];
 var wonders={world:0,seed:0,t:0,fc:0,last:'',next:'',special:''},wonderRun=null,wonderLand=[],wonderHold={};
 var WONDER_INK={s:'#3d4552',S:'#5b6472',m:'#4f6b3a',M:'#6f8a4a',b:'#cfc6a8',k:'#1c1a22',y:'#d9c27a',w:'#5a4632',g:'#34472e',G:'#4d6640',e:'#d8b24a',r:'#8a8f98',R:'#555a63',v:'#6d7690'};
 var WONDER_ART={
@@ -23,6 +23,10 @@ function wonderDraw(name,x,y,f){
   for(var r=0;r<h;r++)for(var c=0;c<w;c++){var ch=rows[r][f<0?w-1-c:c];if(ch==='.')continue;ctx.fillStyle=WONDER_INK[ch];ctx.fillRect(ox+c,oy+r,1,1);}
 }
 function wonderRoll(n){return secretHash(wonders.seed,wonders.world*131+n);}
+function wonderPick(pool,salt,offset){
+  var deck=pool.slice().sort(function(a,b){return secretHash(wonders.seed,salt+pool.indexOf(a))-secretHash(wonders.seed,salt+pool.indexOf(b));});
+  return deck[((wonders.world-1)*2+(offset||0))%deck.length];
+}
 function wonderGround(n,spread){var w=worldLevel(),side=wonderRoll(n)<.5?-1:1;return Math.round(dryX(levelOriginX(w)+side*(50+wonderRoll(n+1)*(spread||150))));}
 function wonderPerch(k){
   var l=typeof stageLayout==='function'?stageLayout():null,ps=l&&l.platforms?l.platforms.filter(function(p){return !p.place;}).sort(function(a,b){return a.y-b.y;}):[];
@@ -47,9 +51,9 @@ function rollWonders(){
   wonders.special=wonders.next||'';wonders.next='';
   wonders.pz='';wonders.pzs=0;wonders.pzt=0;wonders.pzd=0;
   var ultra=wonderRoll(1);
-  if(w>1&&!boss){
+  if(!boss){
     if(ultra<1/50)wonders.pz='well';else if(ultra<1/50+1/80)wonders.pz='crown';else if(ultra<1/50+1/80+1/120)wonders.pz='clover';
-    else if(wonderRoll(2)<.7)wonders.pz=WONDER_PUZZLES[Math.floor(wonderRoll(3)*WONDER_PUZZLES.length)];
+    else wonders.pz=wonderPick(WONDER_PUZZLES,600,0);
   }
   var L=stageLayout(),spot=levelSpots(L,'puzzle')[0],door=levelSpots(L,'door')[0];
   if(spot&&!boss&&(!wonders.pz||SPOT_UNFIT.indexOf(wonders.pz)>=0))wonders.pz=SPOT_PUZZLES[Math.floor(wonderRoll(3)*SPOT_PUZZLES.length)];
@@ -58,19 +62,28 @@ function rollWonders(){
   if(wonders.pz==='perch'){if(perch){wonders.pzx=perch.x;wonders.pzy=perch.y;}else wonders.pz='dig';}
   if(spot&&wonders.pz){wonders.pzx=Math.round(spot.x);wonders.pzy=Math.round(spot.y);}
   wonders.pzo=Math.floor(wonderRoll(6)*6);wonders.pzq=['bomb','plant','still'][Math.floor(wonderRoll(7)*3)];
-  wonders.en='';wonders.ens=0;wonders.ent=0;wonders.end=0;
-  if(w>1&&!boss&&wonderRoll(8)<.45)wonders.en=WONDER_MEETS[Math.floor(wonderRoll(9)*WONDER_MEETS.length)];
-  wonders.enx=wonderGround(10,190);if(Math.abs(wonders.enx-wonders.pzx)<60)wonders.enx=Math.round(dryX(wonders.pzx+(wonders.enx<wonders.pzx?-70:70)));
-  wonders.eny=surfaceY(wonders.enx);wonders.enh=wonders.enx;wonders.ena=20+Math.round(wonderRoll(11)*40);
-  wonders.enf=Math.round(dryX(wonders.enx+(wonderRoll(12)<.5?-1:1)*170));wonders.enq=['bomb','plant','still'][Math.floor(wonderRoll(13)*3)];
+  wonders.meets=0;wonders.en='';wonders.ens=0;wonders.ent=0;wonders.end=0;
+  if(!boss&&(w===1||wonderRoll(8)<.75))rollMeeting();
   wonders.gate='';wonders.gt=0;var gp=door||wonderPerch(1)||perch;
-  if(gp&&w>=2&&w<=18&&!boss&&!wonders.special&&(door||wonderRoll(14)<.2)){
+  if(gp&&w>=2&&w<=18&&!boss&&!wonders.special&&(door||wonderRoll(14)<.35)){
     var pool=WONDER_LEVELS.filter(function(id){return id!=='rush'||w%5===2||w%5===3;});
     wonders.gate=pool[Math.floor(wonderRoll(15)*pool.length)];wonders.gx=gp.x;wonders.gy=gp.y;
   }
   wonders.rush=0;wonders.spt=0;wonders.bc=0;wonders.b1=wonderGround(80,200);wonders.b2=wonderGround(82,200);
   wonders.sh=!rogueRun.shovel&&!coop&&ownClass().id==='bulwark'&&w>=2&&!boss&&(wonderRoll(84)<.35||w===12)?wonderGround(85,120):0;
   if(wonders.special)startSpecial(wonders.special);
+}
+function rollMeeting(){
+  var n=wonders.meets||0,salt=n*100;
+  wonders.en=wonderPick(WONDER_MEETS,800,n);wonders.meets=n+1;wonders.ens=0;wonders.ent=0;wonders.end=0;wonderHold.en=0;
+  wonders.enx=wonderGround(10+salt,190);if(Math.abs(wonders.enx-wonders.pzx)<60)wonders.enx=Math.round(dryX(wonders.pzx+(wonders.enx<wonders.pzx?-70:70)));
+  wonders.eny=surfaceY(wonders.enx);wonders.enh=wonders.enx;wonders.ena=wonders.t+12+Math.round(wonderRoll(11+salt)*18);
+  wonders.enf=Math.round(dryX(wonders.enx+(wonderRoll(12+salt)<.5?-1:1)*170));wonders.enq=['bomb','plant','still'][Math.floor(wonderRoll(13+salt)*3)];
+  wonders.keeperRemaining=0;wonders.keeperTell=0;wonders.keeperKills=0;
+}
+function wonderGift(){
+  var type=['feathers','embers','dew'][Math.floor(wonderRoll(95+(wonders.meets||0))*3)];
+  runPlayers().forEach(function(a,i){dropRunItem(type,wonders.enx+(i-(coopSize()-1)/2)*8,wonders.eny-12,a.member&&a.member.id);});
 }
 function startSpecial(id){
   var l=typeof stageLayout==='function'?stageLayout():null,spots=l?(l.rewards||[]).concat(l.bonuses||[]):[];
@@ -87,6 +100,7 @@ function updateWonders(dt){
   if(wonders.world!==worldLevel())rollWonders();
   wonders.t+=dt;var sy=wonders.pzy;wonders.hop=0;runPlayers().forEach(function(a,i){var on=Math.abs(a.p.x-wonders.pzx)<6&&Math.abs(a.p.y-sy)<4;if(on&&wonderLand[i])wonders.hop=1;wonderLand[i]=a.p.y<sy-10?true:on?false:wonderLand[i];});
   updatePuzzle(dt);updateMeeting(dt);updateSpecial(dt);
+  if(wonders.end&&wonders.ens!==2&&wonders.meets===1&&wonders.t-wonders.end>=12&&!liveBoss())rollMeeting();
   if(wonders.sh&&!rogueRun.shovel&&ownClass().id==='bulwark'&&Math.abs(P.x-wonders.sh)<8&&Math.abs(P.y-surfaceY(wonders.sh))<6){rogueRun.shovel=true;foundWonder('shovel',P.x,P.y,0,0);wonders.sh=0;}
   if(wonders.gate&&!wonders.next){
     wonderHold.gate=wonderStill(wonders.gx,wonders.gy,7)?(wonderHold.gate||0)+dt:0;
@@ -110,6 +124,14 @@ function updatePuzzle(dt){
     if(wonderHold.pz>={perch:2,dig:3,well:3,crown:4}[z])wonderDone(z==='well'?4:z==='crown'?6:2,z==='well'?3:z==='crown'?2:(wonderRoll(20)<.35?1:0));
   }else if(z==='rune'){
     if(gardenPlots.some(function(p){return !p.dead&&Math.abs(p.x-x)<10&&p.growth>=.5;}))wonderDone(3,1);
+  }else if(z==='offering'||z==='lantern'){
+    var valid=z==='offering'?gardenSeeds>=2:runPlayers().some(function(a){return a.p.lampLit>.45&&Math.abs(a.p.x-x)<12&&Math.abs(a.p.y-y)<8;});
+    wonderHold.pz=valid&&wonderStill(x,y,10)?(wonderHold.pz||0)+dt:0;
+    if(wonderHold.pz>=2.5){
+      if(z==='offering')gardenSeeds-=2;
+      runPlayers().forEach(function(a,i){dropRunItem(z==='offering'?'embers':'dew',x+i*6,y-12,a.member&&a.member.id);});
+      wonderDone(z==='lantern'?2:0,0);
+    }
   }else if(z==='stars'){
     if(wonders.pzt>0){wonders.pzt-=dt;if(wonders.pzt<=0)wonders.pzs=0;}
     else if(wonderOn(x,y,20))wonders.pzt=10;
@@ -155,7 +177,31 @@ function wakeBeetle(){
 }
 function updateMeeting(dt){
   var e=wonders.en,x=wonders.enx;if(!e||wonders.end||wonders.t<(e==='flock'?wonders.ena:0))return;
-  if(e==='trader'){
+  if(e==='keeper'){
+    if(!wonders.ens){
+      wonderHold.en=wonderStill(x,wonders.eny,14)?(wonderHold.en||0)+dt:0;
+      if(wonderHold.en>=1.5&&!liveBoss()){wonders.ens=1;wonders.keeperRemaining=2;wonders.ent=wonders.t;}
+    }
+    if(wonders.ens!==1)return;
+    if(wonders.t-wonders.ent>45){
+      wonders.ens=3;wonders.end=Math.max(.01,wonders.t);wonders.keeperTell=0;wonders.keeperRemaining=0;
+      floatKrek.forEach(function(k){if(k.keeperWorld===worldLevel()){if(k.rootHazard)runHazards=runHazards.filter(function(h){return h.id!==k.rootHazard||h.tell<=0;});staggerKrek(k,5);}});return;
+    }
+    if(wonders.keeperRemaining>0){
+      if(!wonders.keeperTell){
+        var ingress={active:true,guardsRemaining:2,guardIndex:2-wonders.keeperRemaining,type:'nest',x:x,y:wonders.eny};warnEncounterGuard(ingress);
+        wonders.keeperX=ingress.ingressX;wonders.keeperY=ingress.ingressY;wonders.keeperKind=ingress.ingressKind;wonders.keeperTell=1.35;
+      }else{
+        wonders.keeperTell=Math.max(.0001,wonders.keeperTell-dt);
+        if(wonders.keeperTell<=.0001&&floatKrek.length<MAX_ACTIVE_ENEMIES){
+          var k=makeKrek(wonders.keeperX<x?-1:1,false,wonders.keeperKind);k.x=wonders.keeperX;k.y=wonders.keeperY;k.keeperWorld=worldLevel();k.raid=false;floatKrek.push(k);wonders.keeperRemaining--;wonders.keeperTell=0;
+        }
+      }
+    }else if(wonders.keeperKills>=2&&!floatKrek.some(function(k){return k.keeperWorld===worldLevel()&&k.hp>0;})){wonderGift();meetDone(2,0);}
+  }else if(e==='spring'){
+    wonderHold.en=wonderStill(x,wonders.eny,12)?(wonderHold.en||0)+dt:0;
+    if(wonderHold.en>=2){gardenPlots.forEach(function(p){if(!p.dead&&Math.abs(p.x-x)<100){p.moisture=1;p.health=clamp01(p.health+.15);p.pulse=1;}});wonderGift();meetDone(1,0);}
+  }else if(e==='trader'){
     wonderHold.en=wonderStill(x,wonders.eny,12)&&gardenSeeds>=3?(wonderHold.en||0)+dt:0;
     if(wonderHold.en>=1.5){gardenSeeds-=3;meetDone(0,1);}
   }else if(e==='fledgling'){
@@ -218,6 +264,7 @@ function drawWonders(t){
   if(z==='stars'){wonderDraw('tablet',x,y);if(!done&&wonders.pzt>0)for(var i=0;i<3;i++)if(!(wonders.pzs&1<<i)&&((t*3+i)|0)%4){var q=wonderStarPos(i);ctx.fillStyle='#e8dca0';ctx.fillRect(q.x,q.y,1,1);ctx.fillRect(q.x-1,q.y,1,1);ctx.fillRect(q.x+1,q.y,1,1);ctx.fillRect(q.x,q.y-1,1,1);ctx.fillRect(q.x,q.y+1,1,1);}}
   if(z==='bells')[-30,0,30].forEach(function(o,i){wonderDraw('bell',x+o,surfaceY(x+o)-((wonders.pzs&1<<i)&&blink?1:0));});
   if(z==='echo')wonderDraw('drum',x,y);
+  if(z==='offering'||z==='lantern'){wonderDraw(z==='offering'?'tablet':done?'lantern':'dark',x,y);if(!done&&wonderOn(x,y,24))drawGuideLabel(z==='offering'?'2 SEEDS':'LIGHT LAMP',x-camX,y-camY-16,'#d9c27a');}
   var e=wonders.en,ex=wonders.enx,ey=wonders.eny;
   if(e&&(wonders.t>=(e==='flock'?wonders.ena:0))){
     var gone=wonders.end&&wonders.t-wonders.end>3;
@@ -228,6 +275,11 @@ function drawWonders(t){
     if(e==='beetle'&&wonders.ens!==2){wonderDraw('beetle',ex,ey,wonders.enf>ex?-1:1);if(!wonders.end){var cx=ex+(wonders.enf>ex?18:-18);wonderDraw('mound',cx,surfaceY(cx));}}
     if(e==='statue'){wonderDraw('statue',ex,ey);if(!wonders.end&&blink)wonderDraw(wonders.enq==='bomb'?'drop':wonders.enq==='plant'?'sprout':'bar',ex,ey-8);}
     if(e==='robot')wonderDraw('robot',ex,ey,wonders.end?1:-1);
+    if(e==='spring'&&!gone)wonderDraw('well',ex,ey);
+    if(e==='keeper'&&!gone){
+      wonderDraw('cache',ex,ey);if(!wonders.ens&&wonderOn(ex,ey,26))drawGuideLabel('WAIT TO CHALLENGE',ex-camX,ey-camY-18,'#d9c27a');
+      if(wonders.keeperTell>0){var kx=Math.round(wonders.keeperX-camX),ky=Math.round(wonders.keeperY-camY);ctx.fillStyle='#e0b54f';ctx.fillRect(kx-8,ky+12,17,1);ctx.fillRect(kx-1,ky-6,3,10);}
+    }
     if(e==='flock'&&wonders.t-wonders.ena<4)for(var b=0;b<7;b++){var bx=P.x-120+b*14+(wonders.t-wonders.ena)*70,by=surfaceY(P.x)-90-(b%3)*6;ctx.fillStyle='#1c1a22';ctx.fillRect(Math.round(bx-camX),Math.round(by-camY),1,1);ctx.fillRect(Math.round(bx-camX)-1,Math.round(by-camY)-1,1,1);ctx.fillRect(Math.round(bx-camX)+1,Math.round(by-camY)-1,1,1);}
   }
   if(wonders.gate&&!wonders.next){var near=Math.abs(P.x-wonders.gx)<60;if(near||blink)wonderDraw('gate',wonders.gx,wonders.gy);}

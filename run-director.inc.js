@@ -112,13 +112,27 @@ function enemyUnlocked(kind){
   var stage=worldLevel();
   if(kind===8)return stage>=({easy:12,medium:10,hard:9,insane:8}[rogueRun.difficulty]||10);
   if(kind<3)return true;
-  return stage>={3:6,4:7,5:8,6:9,9:11,10:13,11:16}[kind];
+  var gate={3:[1,0,1],4:[2,18,2],5:[2,32,2],6:[3,48,3],9:[3,65,4],10:[4,82,4],11:[4,100,5]}[kind];
+  if(!gate)return false;
+  if(lastSeedMode())return gardenWave>=gate[2];
+  return stage>=gate[0]||runElapsed>=gate[1]+(rogueRun.difficulty==='easy'?14:0);
 }
 function waveEnemyKind(index){
-  var first={6:3,7:4,8:5,9:6,11:9,13:10,16:11}[worldLevel()];
-  if(index===2&&first!=null)return first;
-  var kinds=stageCombatProfile().kinds,kind=kinds[(index+(gardenWave-1)*2)%kinds.length];
-  return enemyUnlocked(kind)?kind:(index+gardenWave)%3;
+  var kinds=Array.from(new Set(stageCombatProfile().kinds)).filter(enemyUnlocked);
+  var salt=worldLevel()*131+Math.max(0,gardenWave)*17;
+  kinds.sort(function(a,b){return secretHash(rogueRun.seed,salt+a)-secretHash(rogueRun.seed,salt+b);});
+  return kinds[Math.max(0,index|0)%kinds.length];
+}
+function nextRunEnemyKind(){
+  var d=rogueRun.enemyDirector||(rogueRun.enemyDirector={seen:0,last:-1,serial:0});
+  var kinds=Array.from(new Set(stageCombatProfile().kinds)).filter(enemyUnlocked),unseen=kinds.filter(function(k){return !(d.seen&(1<<k));});
+  // Introduce a newly available role on the very next spawn. Thereafter
+  // prefer underrepresented live roles and never repeat the last selection.
+  var pool=unseen.length?unseen:kinds.filter(function(k){return k!==d.last;}),fewest=Infinity;
+  pool.forEach(function(kind){var count=floatKrek.filter(function(k){return !k.boss&&k.hp>0&&k.kind===kind;}).length;fewest=Math.min(fewest,count);});
+  pool=pool.filter(function(kind){return floatKrek.filter(function(k){return !k.boss&&k.hp>0&&k.kind===kind;}).length===fewest;});
+  var kind=pool[Math.floor(secretHash(rogueRun.seed,worldLevel()*419+(d.serial|0))*pool.length)];
+  d.seen|=1<<kind;d.last=kind;d.serial=(d.serial|0)+1;return kind;
 }
 function safeEnemyPosition(k,x,y){
   var chosen=null,best=-1,players=runPlayers();
@@ -204,7 +218,7 @@ function initRunStage(){
     var goal=layout&&layout.rewards&&layout.rewards.slice().sort(function(a,b){return Math.abs(b.x-x)-Math.abs(a.x-x);})[0];
     runEncounters.push({id:w*2+i,x:x,y:route?route.y:surfaceY(x),type:type,cost:type==='cache'?3:type==='rain'?2:1,active:false,done:false,locked:false,progress:0,duration:type==='echo'?3:type==='loom'?4:type==='relay'?1:type==='nest'?10:14,goalX:goal?goal.x:x+48,goalY:goal?goal.y:surfaceY(x+48)});
   }
-  stageWeather={type:w%3===0?'seedfall':w%3===1?'bloom':'drought',at:36+(w%4)*4,life:0,started:false};
+  stageWeather=makeStageWeather(w);
   rogueRun.bossDefeated=false;initExpedition();initBossEvent();
 }
 function encounterFloor(e){return Number.isFinite(e.y)?e.y:surfaceY(e.x);}
@@ -369,16 +383,29 @@ function mycelObjectivePoints(point,r){
   }
   return points;
 }
+function makeStageWeather(stage){
+  var pool=['seedfall','bloom','drizzle','dewfall','forage'];
+  if(stage>=4&&rogueRun.difficulty!=='easy')pool.push('drought');
+  pool.sort(function(a,b){return secretHash(rogueRun.seed,stage*97+['seedfall','bloom','drizzle','dewfall','forage','drought'].indexOf(a))-secretHash(rogueRun.seed,stage*97+['seedfall','bloom','drizzle','dewfall','forage','drought'].indexOf(b));});
+  return {type:pool[0],next:pool[1],at:18+Math.floor(secretHash(rogueRun.seed,stage*97+10)*10),life:0,started:false,round:0};
+}
 function updateStageWeather(dt){
-  var w=stageWeather;if(!w)return;
+  var w=stageWeather;if(!w||coopGuest())return;
+  if(w.started&&w.life<=0&&w.round===0){w.type=w.next;w.round=1;w.started=false;w.at+=40+Math.floor(secretHash(rogueRun.seed,worldLevel()*97+11)*18);}
   if(!w.started&&rogueRun.worldElapsed>=w.at){
     w.started=true;w.life=14;
     if(w.type==='seedfall')runPlayers().forEach(function(a){spawnLooseSeeds(a.p.x,a.p.y-70,3);});
+    if(w.type==='dewfall')runPlayers().forEach(function(a){dropRunItem('dew',a.p.x,a.p.y-12,a.member&&a.member.id);});
+    if(w.type==='forage'){
+      var layout=stageLayout(),spots=(layout.rewards||[]).concat(layout.bonuses||[]);
+      spots.slice(0,3).forEach(function(s,i){var id='forage:'+worldLevel()+':'+i;if(!seedCollected[id]&&!seedPickups.some(function(q){return q.id===id;}))seedPickups.push({id:id,hidden:true,placeCache:true,x:s.x,y:s.y-6,amount:2,fall:false,ph:i});});
+    }
     chime(w.type==='drought'?[196,185]:[523,659],.10,.022);
   }
   if(w.life<=0)return;w.life=Math.max(0,w.life-dt);
   gardenPlots.forEach(function(p){if(p.dead)return;
     if(w.type==='bloom'){p.health=clamp01(p.health+dt*.012);p.growth+=dt*.008;}
+    if(w.type==='drizzle')p.moisture=clamp01(p.moisture+dt*.025);
     if(w.type==='drought'){p.moisture=Math.max(0,p.moisture-dt*.009);}
   });
 }
@@ -397,8 +424,7 @@ function raidBudget(active){
   return Math.min(36,Math.max(3,Math.ceil(base*(1+Math.max(0,coopSize()-1)*.42)*difficultyProfile().budget)));
 }
 function enemyKind(){
-  var choices=stageCombatProfile().kinds.filter(enemyUnlocked);
-  return choices[(Math.random()*choices.length)|0];
+  return waveEnemyKind(Math.floor(Math.random()*24));
 }
 function damagePest(k,amount,x,build,context){
   if(coopGuest()||!k||k.hp<=0)return false;
@@ -539,7 +565,29 @@ function updateHazardContact(){
 function updateRunDirector(dt){
   if(nightRelayMode())return;
   if(highTideMode()||lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
-  updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateRunHazards(dt);
+  updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateOverstay(dt);updateRunHazards(dt);
+}
+function updateOverstay(dt){
+  if(coopGuest()||relicRunMode()||!runActive||rogueRun.ended||runIsPaused()||worldLevel()===20||warp||climb&&climb.exit)return;
+  var profiles={easy:[240,100],medium:[110,55],hard:[90,45],insane:[70,35]},limits=profiles[rogueRun.difficulty]||profiles.medium;
+  var o=rogueRun.overstay;
+  if(!o||o.stage!==worldLevel())o=rogueRun.overstay={stage:worldLevel(),count:0,at:limits[0],pending:false,tell:0};
+  if(rogueRun.worldElapsed<o.at||bossEvent&&bossEvent.status==='active'||floatKrek.filter(function(k){return k.overstay&&k.hp>0;}).length>=3||floatKrek.length>=MAX_ACTIVE_ENEMIES)return;
+  if(!o.pending){
+    var ingress={active:true,guardsRemaining:1,guardIndex:o.count,type:'nest',x:P.x,y:P.y};warnEncounterGuard(ingress);
+    o.x=ingress.ingressX;o.y=ingress.ingressY;o.bossStage=[5,10,15][(Math.floor(secretHash(rogueRun.seed,worldLevel()*811)*3)+o.count)%3];o.pending=true;o.tell=5;return;
+  }
+  o.tell=Math.max(0,o.tell-dt);if(o.tell>0)return;
+  var k=makeStageBoss(o.bossStage);k.x=o.x;k.y=o.y;k.guardianStage=-1;k.overstay=true;k.raid=false;k.finalBoss=false;k.elite=true;
+  k.hp=k.maxHp=(10+worldLevel()*2+o.count*6)*(1+Math.max(0,coopSize()-1)*.55);k.cool=2;
+  floatKrek.push(k);o.count++;o.pending=false;
+  o.at=rogueRun.worldElapsed+Math.max(20,limits[1]-o.count*7);
+}
+function drawOverstay(){
+  var o=rogueRun.overstay;if(!o||o.stage!==worldLevel()||!o.pending)return;
+  var x=Math.round(o.x-camX),y=Math.round(o.y-camY);ctx.fillStyle='#e0b54f';
+  ctx.fillRect(x-16,y+12,33,2);ctx.fillRect(x-16,y-16,1,27);ctx.fillRect(x+16,y-16,1,27);
+  drawGuideLabel('ROAMING GUARDIAN',Math.max(55,Math.min(IW-55,x)),Math.max(safeTopArt()+16,y-26),'#e0b54f');
 }
 function dewDodge(){
   if(ownTraits().dew<3||coopGuest())return;
@@ -974,6 +1022,7 @@ function drawRunItem(type,x,y,bright){
   }else {ctx.fillRect(x-2,y-2,5,4);ctx.fillRect(x-1,y-4,2,2);ctx.fillStyle='#f1d587';ctx.fillRect(x,y-1,1,2);}
 }
 function drawRunExploration(t){
+  drawOverstay();
   drawBossEvent(t);
   drawGuardianNodes(t);
   drawExpedition(t);

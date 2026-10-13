@@ -3,7 +3,7 @@ import { createSoundtrack, SOUNDTRACK } from './soundtrack.mjs';
 import { createClient } from '@supabase/supabase-js';
 import { credentials, playerName, accountError } from './player-account.mjs';
 import { CoopSession } from './coop-session.mjs';
-import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout } from './player-loadout.mjs';
+import { CLASS_IDS, HIDDEN_CLASS_IDS, ALL_CLASS_IDS, DIFFICULTY_IDS, CLASS_SKINS, readLoadout, writeLoadout, skillOptions } from './player-loadout.mjs';
 import { createLeaderboard } from './garden-leaderboard.mjs';
 import { EGGS, createEasterEggs, eggForPhrase } from './easter-eggs.mjs';
 import { hasFullDiscovery, relicCollection, drawRelicStone } from './relics.mjs';
@@ -396,7 +396,9 @@ function chooseMax() {
     choice.dataset.difficulty = id; choice.setAttribute('aria-label', id + ' difficulty');
     pixelText(choice, id, 2, 0); choice.append(el('span', detail[id], 'max-role-ability')); difficultyGrid.append(choice);
   }
-  difficulty.append(difficultyGrid); card.append(characters, difficulty);
+  difficulty.append(difficultyGrid);
+  const skills = el('fieldset', undefined, 'max-skill-picker'); skills.append(el('legend', '03 / SKILLS'), el('div', undefined, 'max-skill-slots'));
+  card.append(characters, difficulty, skills);
   updateSelection();
 }
 function roleChoices(grid) {
@@ -417,7 +419,7 @@ function unlocksChanged() {
 }
 function selectMax(change) {
   selected = { ...selected, ...change };
-  if (change.classId && !change.skinId) selected.skinId = characterSkin(change.classId);
+  if (change.classId && !change.skinId) { selected.skinId = characterSkin(change.classId); selected.skills = {}; }
   writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
 }
 function updateSelection() {
@@ -431,7 +433,7 @@ function updateSelection() {
   if (taken.has(selected.classId) && selected.classId !== mine) {
     const free = visibleClassIds().find(id => !taken.has(id) || id === mine);
     if (free) {
-      selected = { ...selected, classId: free, skinId: characterSkin(free) };
+      selected = { ...selected, classId: free, skinId: characterSkin(free), skills: {} };
       writeLoadout(window.localStorage, selected, eggs.list());
     }
   }
@@ -461,6 +463,23 @@ function updateSelection() {
   if (name) characterName(name, classInfo(selected.classId));
   const heroImage = card.querySelector('.max-character-stage img');
   if (heroImage) heroImage.src = characterImage(selected.skinId);
+  const skillSlots = card.querySelector('.max-skill-slots');
+  if (skillSlots) {
+    const options = skillOptions(selected.classId), signature = selected.classId + JSON.stringify(selected.skills || {});
+    if (skillSlots.dataset.selection !== signature) {
+      skillSlots.dataset.selection = signature; skillSlots.replaceChildren();
+      for (const [slot, variants] of Object.entries(options)) {
+        const group = el('div', undefined, 'max-skill-slot'); group.append(el('span', slot === 'secondary' ? 'SECONDARY · C' : 'SPECIAL · E', 'max-skill-slot-name'));
+        const row = el('div', undefined, 'max-skill-options');
+        for (const [id, name, description] of variants) {
+          const choice = button('', () => { selectMax({ skills: { ...selected.skills, [slot]: id } }); card.querySelector(`[data-skill-slot="${slot}"][data-skill-id="${id}"]`)?.focus({ preventScroll: true }); }, 'max-skill-choice');
+          choice.dataset.skillSlot = slot; choice.dataset.skillId = id; choice.setAttribute('aria-pressed', String((selected.skills?.[slot] || 'base') === id));
+          choice.setAttribute('aria-label', name + ': ' + description); choice.append(el('span', name, 'max-skill-name'), el('span', description, 'max-skill-detail')); row.append(choice);
+        }
+        group.append(row); skillSlots.append(group);
+      }
+    }
+  }
 }
 function readInvite() {
   const params = new URL(window.location.href).searchParams, id = params.get('join'), mode = params.get('mode') || 'garden';
@@ -547,7 +566,7 @@ async function joinSharedGarden() {
     if (unavailable.has(selected.classId) && selected.classId !== sharedStatus.mine) {
       const free = visibleClassIds().find(id => !unavailable.has(id));
       if (!free) throw new Error('The garden already has all four characters.');
-      selected = { ...selected, classId: free, skinId: characterSkin(free) };
+      selected = { ...selected, classId: free, skinId: characterSkin(free), skills: {} };
       writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
     }
   }

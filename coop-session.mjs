@@ -50,6 +50,7 @@ export class CoopSession {
       this.mode = this.room.mode || 'garden';
       const me = this.room.members?.find(p => p.id === this.user.id);
       const canonical = validLoadout({
+        skills: this.selection.skills,
         classId: me?.classId || this.selection.classId,
         skinId: this.selection.skinId,
         difficulty: this.room.difficulty || this.selection.difficulty,
@@ -257,6 +258,7 @@ export class CoopSession {
         const member = this.room.members.find(p => p.id === sender);
         if (member?.classId && supplied.classId !== member.classId) return;
         const choice = validLoadout({
+          skills: this.playing && this.loadouts[sender] ? this.loadouts[sender].skills : supplied.skills,
           classId: member?.classId || supplied.classId,
           skinId: this.playing && this.loadouts[sender] ? this.loadouts[sender].skinId : supplied.skinId,
           difficulty: this.room.difficulty || supplied.difficulty,

@@ -13,6 +13,17 @@ const compiled = build({
 }).then(r => r.outputFiles[0].text);
 const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
 
+test('pre-run secondary and special choices persist and reach the accepted shared-game selection', async () => {
+  const m = await menu(JSON.stringify({ classId: 'polge' }));
+  try {
+    m.click('Play'); await m.settle();
+    const choose = (slot, id) => { const b = m.w.document.querySelector(`[data-skill-slot="${slot}"][data-skill-id="${id}"]`); assert.ok(b); b.click(); assert.equal(m.w.document.querySelector(`[data-skill-slot="${slot}"][data-skill-id="${id}"]`).getAttribute('aria-pressed'), 'true'); };
+    choose('secondary', 'rise'); choose('special', 'haymaker');
+    assert.deepEqual(JSON.parse(m.w.localStorage.getItem('max-loadout-v1')).skills, { secondary: 'rise', special: 'haymaker' });
+    m.click('Play'); await m.settle(); assert.equal(m.begun.selection.skills.special, 'haymaker'); assert.equal(m.begun.selection.skills.secondary, 'rise');
+  } finally { m.dom.window.close(); }
+});
+
 async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, summaryStarted = false, controller = {}, url = 'https://max.iverfinne.no' } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url, runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');

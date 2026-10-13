@@ -7,7 +7,7 @@ function fighterState(owner){
   if(owner==null)owner=skillOwner();
   var q=classFighters.find(function(f){return f.owner===owner&&f.world===worldLevel();});
   if(!q){q={owner:owner,world:worldLevel(),combo:0,window:0,weave:0,flurry:0,next:0};classFighters.push(q);}
-  ['rhythm','rhythmIdle','rhythmDecay','utilityCool','slip','counter','avoidedWarning','clinchCool','flurryBeats','flurryFinish','flurryStep','flurryAge'].forEach(function(k){if(!Number.isFinite(q[k]))q[k]=0;});
+  ['rhythm','rhythmIdle','rhythmDecay','utilityCool','slip','counter','avoidedWarning','clinchCool','loadoutSpecialCool','flurryBeats','flurryFinish','flurryStep','flurryAge'].forEach(function(k){if(!Number.isFinite(q[k]))q[k]=0;});
   return q;
 }
 function classAttackCooldown(){if(ownClass().id==='bulwark')return cairnPrimaryInterval();if(ownClass().id==='herbalist')return mycelPrimaryInterval();return ({runner:.5,polge:.22}[ownClass().id]||.75)*Math.pow(.88,rogueRun.perks.cadence||0);}
@@ -81,6 +81,7 @@ function polgeGuarded(k){
 function polgeRecover(hit,b){
   if(!hit||!b.raincoat)return;
   var amount=.2*Math.min(3,b.raincoat);
+  if(alternateSkill('special')==='haymaker')fighterState().loadoutSpecialCool=Math.max(0,fighterState().loadoutSpecialCool-amount);
   if(coopActor)coopActor.skillUntil=Math.max(performance.now(),(coopActor.skillUntil||0)-amount*1000);
   P.skillCool=Math.max(0,P.skillCool-amount);
 }
@@ -189,7 +190,8 @@ function updateClassCombat(dt){
   classFighters.forEach(function(q){
     fighterState(q.owner);q.window=Math.max(0,q.window-dt);if(q.window<=0)q.combo=0;
     q.weave=0;q.counter=Math.max(0,q.counter-dt);q.utilityCool=Math.max(0,q.utilityCool-dt);q.slip=Math.max(0,q.slip-dt);q.clinchCool=Math.max(0,q.clinchCool-dt);
-    ['counter','utilityCool','slip','clinchCool'].forEach(function(k){if(q[k]<1e-8)q[k]=0;});
+    q.loadoutSpecialCool=Math.max(0,q.loadoutSpecialCool-dt);
+    ['counter','utilityCool','slip','clinchCool','loadoutSpecialCool'].forEach(function(k){if(q[k]<1e-8)q[k]=0;});
     if(!coopGuest()){
       var idle=q.rhythmIdle,decay=Math.max(0,dt-Math.max(0,2-idle));q.rhythmIdle=Math.min(2,idle+dt);
       if(q.rhythm>0){q.rhythmDecay+=decay;while(q.rhythmDecay>=1-1e-8&&q.rhythm>0){q.rhythm--;q.rhythmDecay=Math.max(0,q.rhythmDecay-1);}}
@@ -246,4 +248,75 @@ function drawCombatStrike(b,x,y){
   else if(['jab','cross','uppercut','clinch','flurry','finisher'].indexOf(b.strike)>=0){var r=Math.round(b.strike==='uppercut'||b.strike==='finisher'?10:7);ctx.fillRect(x-r,y-3,r*2,6);ctx.fillRect(x-r+2,y-5,r*2-4,2);ctx.fillRect(x-r+2,y+3,r*2-4,2);ctx.fillStyle='#755b51';ctx.fillRect(x+(b.face<0?-3:1),y-4,1,8);}
   else for(var i=0;i<14;i++){var a=(i/13-.5)*Math.PI,r=b.r*(.35+b.t*3);ctx.fillRect(x+Math.round(Math.cos(a)*r*(b.face||1)),y+Math.round(Math.sin(a)*r),2,2);}
   ctx.globalAlpha=1;
+}
+
+function actorSkills(member){var m=member||(coop&&(coopActor||coop.members[coop.me]));return window.MaxSkillLoadouts.clean(m?m.classId:rogueRun.classId,m?m.skills:rogueRun.skills);}
+function alternateSkill(slot,member){return actorSkills(member)[slot]||'';}
+function loadoutSkillSpec(slot,member){
+  var id=member?member.classId:ownClass().id,key=alternateSkill(slot,member);if(!key||id==='sligo')return null;
+  return {
+    mech:{secondary:{cost:1,cd:6,r:40,damage:.9,fx:'fan',wet:true},special:{cost:2,cd:14,r:56,damage:1.6,fx:'overload',wet:true}},
+    runner:{secondary:{cost:15,cd:4,r:28,damage:1,fx:'dropkick',front:true,push:45},special:{cost:35,cd:8,r:44,damage:1.8,fx:'splits',ground:true,lift:65}},
+    bulwark:{secondary:{cost:1,cd:5,r:32,damage:1.3,fx:'cleave',front:true,push:35},special:{cost:2,cd:16,r:56,damage:1.8,fx:'cleave',ground:true,push:45}},
+    herbalist:{secondary:{cost:2,cd:5,r:36,damage:.9,fx:'mycel-cloud',slow:true},special:{cost:4,cd:12,r:72,damage:2,fx:'mycel-bloom'}},
+    polge:{secondary:{cost:1,cd:4,r:24,damage:1,fx:'uppercut',front:true,single:true,lift:85},special:{cost:3,cd:10,r:32,damage:3.2,fx:'uppercut',front:true,single:true,lift:130}}
+  }[id][slot];
+}
+function loadoutSkillState(slot,member){
+  var id=member?member.classId:ownClass().id,q,key,resource;
+  if(id==='mech'){q=engineerState(member);key=slot==='secondary'?'fanCool':'specialCool';resource='charge';}
+  else if(id==='runner'){q=wrestlerState(member);['latchCool','specialCool'].forEach(function(k){q[k]=rattusTimerRemaining(q,k);});key=slot==='secondary'?'latchCool':'specialCool';resource='momentum';}
+  else if(id==='bulwark'){q=cairnRefreshClocks(member);key=slot==='secondary'?'stoneCool':'specialCool';resource='strata';}
+  else if(id==='herbalist'){q=mycelRefreshClocks(member);key=slot==='secondary'?'cloudCool':'specialCool';resource='culture';}
+  else if(id==='polge'){q=fighterState(member?member.id:undefined);key=slot==='secondary'?'clinchCool':'loadoutSpecialCool';resource='rhythm';}
+  return q?{q:q,key:key,resource:resource}:null;
+}
+function loadoutSkillTargets(spec){
+  var targets=floatKrek.filter(function(k){return k.hp>0&&enemyDistance(k,P.x,P.y-12)<=spec.r&&(!spec.front||(k.x-P.x)*P.face>=-4)&&combatLineClear(P.x,P.y-12,k.x,k.y);});
+  targets.sort(function(a,b){return enemyDistance(a,P.x,P.y-12)-enemyDistance(b,P.x,P.y-12);});return spec.single?targets.slice(0,1):targets;
+}
+function loadoutSkillAllowed(slot,member){
+  var spec=loadoutSkillSpec(slot,member),state=loadoutSkillState(slot,member);if(!spec||!state)return false;
+  var a=member?coopMemberAvatar(member):P,id=member?member.classId:ownClass().id;
+  if(runIsPaused()||seedDown(member)||rogueRun.ended||a.wet||playerWetAt(a.x,a.y)||a.st!=='free'||a.pounce||a.curled||a.bracing||a===P&&(P.tun>0||P.dodgeT>0||warp||climb))return false;
+  if(spec.ground&&!a.grounded||state.q[state.key]>0||state.q[state.resource]<spec.cost||a===P&&P[slot==='secondary'?'secondaryCool':'skillCool']>0)return false;
+  if(id==='mech'&&!mechCanCast()||id==='runner'&&rattusPhasePolicy(member).phase!=='none'||id==='bulwark'&&cairnPhasePolicy(member).phase!=='none'||id==='herbalist'&&!mycelCanAct(member,slot==='secondary'?'cloud':'bloom')||id==='polge'&&state.q.flurry>0)return false;
+  return true;
+}
+function loadoutSkillWorld(slot){
+  if(coopGuest()||!loadoutSkillAllowed(slot,coopActor))return false;
+  var spec=loadoutSkillSpec(slot),state=loadoutSkillState(slot),targets=loadoutSkillTargets(spec),id=ownClass().id;
+  // Empty offensive casts do not spend a class resource or its cooldown.
+  if(!targets.length)return false;
+  state.q[state.resource]-=spec.cost;
+  if(id==='runner')rattusSetTimer(state.q,state.key,spec.cd);
+  else if(id==='bulwark')cairnSetTimer(state.q,state.key,spec.cd);
+  else if(id==='herbalist')mycelSetTimer(state.q,state.key,spec.cd);
+  else state.q[state.key]=spec.cd;
+  var build=combatBuild(),damage=spec.damage,chorus=id==='herbalist'&&slot==='special'&&state.q.chorusT>0;
+  if(chorus){damage*=1.25;mycelSetTimer(state.q,'chorusT',0);}
+  if(id==='polge')damage*=1+.25*Math.min(3,build.splinters||0);
+  targets.forEach(function(k){
+    if(!combatDamage(k,damage,P.x,build)&&!k.boss){if(spec.push)k.vx=P.face*spec.push;if(spec.lift)k.vy=-spec.lift;if(spec.slow)k.glue=Math.max(k.glue||0,.7);}
+    if(spec.wet&&k.hp>0)mechApplyWet(k);
+  });
+  P[slot==='secondary'?'secondaryCool':'skillCool']=spec.cd;
+  if(id==='polge'&&slot==='special'){
+    polgeRecover(1,build);
+    for(var echo=0;echo<Math.min(3,build.varnish||0)&&targets[0].hp>0;echo++){combatDamage(targets[0],.35,P.x,build);polgeRecover(1,build);combatFx('flurry',targets[0].x,targets[0].y,12,P.face);}
+    if(build.secondwind)combatRestore(P.x,P.y,48,.15,.12);
+  }
+  if(id==='herbalist'){
+    mycelCue(state.q,slot==='secondary'?'cloud':'bloom',mycelNextSerial(),P[slot==='secondary'?'secondaryTag':'skillTag']||1,P.face);
+    if(slot==='special'&&build.symphony){mycelSetTimer(state.q,'primaryCool',0);bombCool=0;}
+  }
+  if(id==='polge'){state.q.rhythmIdle=state.q.rhythmDecay=0;P.skillAnim='rise';}else P.skillAnim='toss';
+  P.skillPose=.24;task=holdWater=null;combatFx(spec.fx,P.x,P.y-12,spec.r,P.face);return true;
+}
+function useLoadoutSkill(slot){
+  var spec=loadoutSkillSpec(slot);if(!spec||!loadoutSkillAllowed(slot)||!loadoutSkillTargets(spec).length)return false;
+  if(!coopGuest())return loadoutSkillWorld(slot);
+  var tag=slot==='secondary'?'secondaryTag':'skillTag';P[tag]=(P[tag]||0)+1;
+  if(!coopAction(slot==='secondary'?'secondary':'skill',{phase:'start',x:P.x,y:P.y,loadout:true,[tag]:P[tag]}))return false;
+  P[slot==='secondary'?'secondaryCool':'skillCool']=spec.cd;P.skillPose=.24;P.skillAnim=ownClass().id==='polge'?'rise':'toss';return true;
 }
