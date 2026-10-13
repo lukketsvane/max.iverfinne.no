@@ -18,7 +18,19 @@
   function cleanPerks(value, id) { return builds.clean(value, clean(id)); }
   function skin(id, classId) { return id === 'moss' ? 'moss-pink' : ['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo'].indexOf(id) >= 0 ? id : !id && clean(classId) === 'runner' ? 'moss-pink' : 'original'; }
   var hidden = Object.freeze(all.filter(function (c) { return c.hidden; }).map(function (c) { return c.id; }));
-  var api = { all: all, hidden: hidden, clean: clean, get: get, perks: perks, skin: skin, canHaveRobot: canHaveRobot, canClimb: canClimb, cleanPerks: cleanPerks };
+  var kits={
+    mech:{secondary:[['base','Fan','1 Circuit · mist cone, Wet and rover irrigation'],['shock','Shock pulse','1 Circuit · immediate close shock, no irrigation']],special:[['base','Floodgate Overload','3 Circuit · planted blast and threatened-plant priority'],['steam','Steam vent','2 Circuit · radial blast and Wet, no rover priority']]},
+    runner:{secondary:[['base','Tail latch','Latch to stems, ledges and pests'],['snap','Snapkick','15 Momentum · close kick that pushes pests away']],special:[['base','Splits stomp','50 Momentum · leap; longer falls hit harder'],['quake','Earthshaker','35 Momentum · grounded shock; no leap']]},
+    bulwark:{secondary:[['base','Stone','1 Strata · thrown stone and grounded grit'],['clap','Fault clap','1 Strata · short forward cleave, no thrown stone']],special:[['base','Ridge','3 Strata · emergence, obstruction and bite ward'],['quake','Quake','2 Strata · immediate wide shock, no ward']]},
+    herbalist:{secondary:[['base','Cloud','2 Culture · fixed cloud with three slow pulses'],['miasma','Miasma burst','2 Culture · immediate close blast and brief slow']],special:[['base','Bloom','4 Culture · three healing and watering pulses'],['storm','Spore storm','4 Culture · wide offensive burst, no restoration']]},
+    polge:{secondary:[['base','Clinch','Close strike that makes room'],['rise','Rising clinch','1 Rhythm · close uppercut that lifts one pest']],special:[['base','Flurry','Spend Rhythm · moving punches and an uppercut finish'],['haymaker','Haymaker','3 Rhythm · one powerful close uppercut']]},
+    sligo:{special:[['base','Tun','3 seconds · protects plants within 40 pixels'],['watch','Watchful tun','1.5 seconds · protects plants within 64 pixels']]}
+  };
+  function cleanSkills(classId,value){var out={},kit=kits[classId]||kits.mech;Object.keys(kit).forEach(function(slot){var id=value&&value[slot];if(id!=='base'&&kit[slot].some(function(v){return v[0]===id;}))out[slot]=id;});return out;}
+  function skillOptions(classId){return kits[classId]||kits.mech;}
+  var skillLoadouts={clean:cleanSkills,options:skillOptions};
+  root.MaxSkillLoadouts=skillLoadouts;
+  var api = { skillLoadouts: skillLoadouts, all: all, hidden: hidden, clean: clean, get: get, perks: perks, skin: skin, canHaveRobot: canHaveRobot, canClimb: canClimb, cleanPerks: cleanPerks };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MaxClasses = api;
 })(typeof window === 'object' ? window : globalThis);

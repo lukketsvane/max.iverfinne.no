@@ -90,9 +90,7 @@ function updateLastSeed(dt){
   }
   s.spawn-=dt;
   if(s.remaining>0&&s.spawn<=0&&floatKrek.length<Math.min(MAX_ACTIVE_ENEMIES,5+Math.floor(s.wave/2)+actors.length)){
-    var index=s.remaining,kind=index%3;
-    if(s.wave>=4&&index%5===0)kind=5;
-    if(s.wave>=7&&index%7===0)kind=4;
+    var index=s.remaining,kind=nextRunEnemyKind();
     var k=makeKrek(index%2?1:-1,s.wave%5===0&&index%4===0,kind);
     k.raid=true;k.survival=true;k.hp=k.maxHp=Math.min(35,k.hp+Math.floor(s.wave/3));
     k.hunt=index%3!==0||!plant;floatKrek.push(k);s.remaining--;s.spawn=Math.max(.45,1.65-s.wave*.055);

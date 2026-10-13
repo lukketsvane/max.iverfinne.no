@@ -5,7 +5,7 @@ const html = require('../scripts/game-source.cjs')();
 const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const stateNames = [
   'pondCache', 'POND_B', 'swans', 'dflies', 'tSec',
-  'mycelSerial', 'wonders', 'runExpedition', 'seedCollected',
+  'mycelSerial', 'wonders', 'secrets', 'stageWeather', 'runExpedition', 'seedCollected',
   'ascentPresentation', 'ascentFrame', 'ascentLive', 'worldCovered',
   'rattusSerial',
   'cairnSerial', 'cairnAttackSerial',
@@ -26,6 +26,9 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
+  'actorSkills', 'alternateSkill', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat',
+  'enemyUnlocked', 'waveEnemyKind', 'nextRunEnemyKind', 'updateGardenFun', 'makeStageWeather', 'updateStageWeather', 'runPatrolLimit', 'openingRaidT',
+  'secretEventFor', 'rollSecrets', 'updateSecrets', 'rollWonders', 'rollMeeting', 'updateWonders', 'updatePuzzle', 'updateMeeting', 'secretStarLive', 'grantWish', 'wonderLog',
   'baseSurfaceY', 'naturalPondNear', 'pondNear', 'pondInBucket', 'pondsInView', 'terrainY', 'nextPond', 'pondDeco', 'populatePond', 'updateSwans', 'spawnFlyers', 'updateFlyers',
   'mycelState', 'mycelPeek', 'mycelCaptureState', 'mycelRestoreState', 'mycelRebaseClocks', 'mycelRefreshClocks', 'mycelCaptureShot', 'mycelRestoreShot', 'mycelCapturePestEvents', 'mycelRestorePestEvents',
   'mycelBuild', 'mycelCleanBuild', 'mycelPrimaryInterval', 'mycelPlantPoint', 'mycelNetwork', 'mycelWetBody', 'mycelWetPoint', 'mycelCanAct', 'mycelPhasePolicy', 'mycelCloudPlacement',
@@ -65,7 +68,7 @@ const functionNames = [
   'initRunStage', 'interactEncounter', 'updateEncounters', 'damagePest', 'makeHollowCrown', 'levelCleared',
   'updateHollowCrown', 'crownEnterPhase', 'hollowCrownDamage', 'crownBeginAttack', 'crownWave', 'crownLaneVolley', 'crownOrbitVolley',
   'guardianBlast', 'updateRunHazards', 'updateHazardContact', 'runHazardTouches', 'interactBossEvent', 'guardianRecovery', 'enemyDistance',
-  'biteGarden',
+  'biteGarden', 'plantProtection', 'fighterState',
   'stageLayout', 'pictureLayout', 'levelOriginX',
   'collectSeed', 'updateSeedPickups',
   'beginClimb',

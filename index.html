@@ -785,7 +785,7 @@ function setAnim(n) { if (P.anim !== n) { P.anim = n; P.frame = 0; P.clock = 0; 
 
 var GRAV = 430, JUMP_V = -154, ACC = 720, BRAKE = 980, FRIC = 1100;
 var DODGE_TIME = .16, DODGE_SPEED = 156, DODGE_COOLDOWN = .85;
-function ownClass(){return window.MaxClasses.get(rogueRun.classId);}
+function ownClass(){var kit=window.MaxClasses.get(rogueRun.classId);return kit.id==='sligo'&&typeof actorSkills==='function'&&actorSkills().special==='watch'?Object.assign({},kit,{tunTime:1.5,tunRadius:64}):kit;}
 function dodgeRecovery(){return (ownClass().id==='polge'?3.5:DODGE_COOLDOWN*ownClass().dodgeRecovery)*Math.pow(.83,rogueRun.perks.dash||0);}
 function approach(value, target, amount) { return value < target ? Math.min(target,value+amount) : Math.max(target,value-amount); }
 function startDodge() {
@@ -1995,7 +1995,7 @@ function spawnFlyers() {
                    grey: h1(l.b * 11 + i) > 0.5, x: l.x, y: 0, face: 1 });
     }
   });
-  while (fireflies.length < (secretEvent() === 'moon' ? 10 : 5)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
+  while (fireflies.length < (secretEvent() === 'fireflies' ? 18 : secretEvent() === 'moon' ? 10 : 5)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
     ph: Math.random() * 6.28, sp: 0.2 + Math.random() * 0.3, f: (Math.random() * 7) | 0, clock: 0 });
   for (var i = fireflies.length - 1; i >= 0; i--) if (Math.abs(fireflies[i].x - P.x) > IW * 1.2) fireflies.splice(i, 1);
   for (var retired = dflies.length - 1; retired >= 0; retired--) if (!pondIsCurrent(dflies[retired].pond)) { dflies[retired].pond.df = false; dflies.splice(retired, 1); }
@@ -2696,6 +2696,7 @@ function classProtection(plant,context){return cairnProtection(plant,context||{k
 function plantProtection(plant,bite,context){var perks=plantPerks(plant);return classProtection(plant,context||{kind:bite?'bite':'hazard',pointX:plant.x,pointY:surfaceY(plant.x)})*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?perks.shield:perks.bark)||0);}
 function useClassSecondary(){
   if(runIsPaused()||seedDown())return false;
+  if(alternateSkill('secondary'))return useLoadoutSkill('secondary');
   if(ownClass().id==='herbalist'){var cloud=mycelCloud(mycelInputAim());if(!cloud)P.skillDenied=.2;return cloud;}
   if(ownClass().id==='bulwark'){var stone=cairnStone(cairnInputAim());if(!stone)P.skillDenied=.2;return stone;}
   if(ownClass().id==='runner'){var aim=rattusInputAim();if(!pad.rattusAim&&!(mouse.seen&&mouse.locked))aim=rattusDirectionalAnchorAim(aim)||aim;var latch=rattusLatch(aim);if(!latch)P.skillDenied=.2;return latch;}
@@ -2795,6 +2796,7 @@ function useCairnBurrow(){
 }
 function useClassSkill(){
   if(seedDown())return false;
+  if(ownClass().id!=='sligo'&&alternateSkill('special'))return useLoadoutSkill('special');
   var kit=ownClass(),ok=false;if(runIsPaused())return false;
   if(kit.id==='mech'){ok=mechOverload();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
   if(kit.id==='runner'){ok=rattusStomp();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
@@ -3269,6 +3271,7 @@ function resetRogueRun(reason,selection){
   crows.length=0;smallFauna.length=0;
   var keepWorld=1;
   rogueRun={classId:classId,skinId:skin,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,choiceRedrawn:false,choiceRound:0,ended:false,finalized:false,world:keepWorld,evergreenWorld:0,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
+  rogueRun.skills=window.MaxSkillLoadouts.clean(classId,selection.skills);
   rogueRun.mode=['last-seed','high-tide','night-relay'].indexOf(selection.mode)>=0?selection.mode:'garden';resetLastSeed();resetHighTide();resetNightRelay();
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
@@ -4401,7 +4404,7 @@ function updateGardenFun(dt){
   if(gardenRaidGrace<=0&&gardenRaidSpawn<=0&&rogueRun.raidRemaining>0&&raidAlive<concurrent&&floatKrek.length<MAX_ACTIVE_ENEMIES){
     var bossWave=gardenWave===FINAL_WAVE,elite=bossWave&&!gardenBossSpawned;
     var index=rogueRun.raidTotal-rogueRun.raidRemaining,side=(Math.floor(index/2)+worldLevel()+gardenWave)%2?1:-1;
-    var k=makeKrek(side,elite,waveEnemyKind(index));k.raid=true;floatKrek.push(k);
+    var k=makeKrek(side,elite,nextRunEnemyKind());k.raid=true;floatKrek.push(k);
     rogueRun.raidRemaining--;raidAlive++;
     if(elite)gardenBossSpawned=true;
     gardenRaidSpawn=runRaidInterval();
@@ -4463,6 +4466,8 @@ function plantFalls(p){
 }
 function krekAt(wx,wy,maxD){var best=null,bd=maxD==null?999:maxD;for(var i=0;i<floatKrek.length;i++){var k=floatKrek[i],d=enemyDistance(k,wx,wy);if(d<bd){bd=d;best=k;}}return best;}
 function burstKrek(k,context,ownerBuild){
+  if(k.overstay)runHazards=runHazards.filter(function(h){return h.guardianOwner!==k.ph;});
+  if(k.keeperWorld===worldLevel()&&wonders.en==='keeper'&&wonders.ens===1&&!wonders.end)wonders.keeperKills=(wonders.keeperKills||0)+1;
   if(isRat(k))cancelRatAttack(k);
   if(window.MaxNativeArt)window.MaxNativeArt.enemyDefeated(k,tSec);
   if(k.divePhase)cancelPestDive(k);
@@ -4489,7 +4494,7 @@ function updateKrek(dt){
   var cleared=rogueRun.clearedWorld===worldLevel(),ambientAllowed=!lastSeedMode()&&!gardenRaidActive&&(cleared||gardenRaidT>3);
   if(ambientAllowed)krekSpawnT-=dt;
   if(ambientAllowed&&(active||runElapsed>=22)&&krekSpawnT<=0&&floatKrek.length<runPatrolLimit(active,cleared)){
-    var patrolIndex=rogueRun.patrolIndex||0,patrolKind=!active&&runElapsed<75?2:waveEnemyKind(patrolIndex),patrol=makeKrek(patrolIndex%2?1:-1,runElapsed>=180&&patrolIndex%Math.max(1,4-Math.floor(runElapsed/300))===0,patrolKind);
+    var patrolIndex=rogueRun.patrolIndex||0,patrolKind=!active&&runElapsed<40?2:nextRunEnemyKind(),patrol=makeKrek(patrolIndex%2?1:-1,runElapsed>=180&&patrolIndex%Math.max(1,4-Math.floor(runElapsed/300))===0,patrolKind);
     patrol.patrol=true;patrol.scout=!active;floatKrek.push(patrol);rogueRun.patrolIndex=patrolIndex+1;krekSpawnT=runPatrolInterval();
   }
   if(!active&&floatKrek.length===0)krekSpawnT=Math.min(krekSpawnT,4);

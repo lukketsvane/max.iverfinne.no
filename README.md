@@ -164,13 +164,34 @@ Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts 
 
 The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Max bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Max can move while charging. Rattus norvegicus kicks nearby targets and uses a radial salto kick in the air; Cairn and Pølge show their close attack reach. Mycel fires aimed spores. Sligo retains aimed flesh throws.
 
+Staying in the same campaign garden summons roaming guardians after 110 seconds on Medium, 90 on Hard, 70 on Insane or 240 on Easy. A five-second exact-position warning precedes each arrival. Mossback, Bellkeeper and Moon Moth rotate through the seeded order; repeated arrivals come sooner and grow tougher, with at most three live roaming bosses. The unbounded global clock continues raising enemy damage and durability. Roaming victories never replace the garden's required guardian or unlock its exit. During the required guardian fight, new roaming arrivals wait; physical ascent remains available after clearing.
+
+### Skill loadouts
+
+Before Play, **03 / SKILLS** chooses secondary and special abilities. Choices are saved locally and confirmed in the shared-game handshake. Each character keeps its original primary and utility controls. The accepted loadout stays fixed for that membership, survives host handoff and never grants free boon ranks.
+
+| Character | Alternate secondary | Alternate special |
+| --- | --- | --- |
+| Max | Shock pulse: immediate close damage for one Circuit | Steam vent: radial damage and Wet for two Circuit, without rover priority |
+| Rattus | Snapkick: close knockback for 15 Momentum | Earthshaker: grounded area strike for 35 Momentum, without a leap |
+| Cairn | Fault clap: close forward cleave for one Strata | Quake: wider immediate damage for two Strata, without Ridge's ward |
+| Mycel | Miasma burst: close damage and a brief slow for two Culture | Spore storm: wide damage for four Culture, without Bloom restoration |
+| Pølge | Rising clinch: lifts one close pest for one Rhythm | Haymaker: one strong close uppercut for three Rhythm |
+| Sligo | Existing colony controls | Watchful tun: half the duration, wider plant protection |
+
+Offensive alternates require an actual reachable enemy before spending a resource. Solid walls, water, accepted movement phases, cooldowns and replayed guest actions cannot bypass admission. All hits remain owner-scoped and use the existing native art; Pølge stays melee-only. See [skill loadout implementation](docs/design/skill-loadouts.md).
+
 New boss objectives reward tactics: crack Glass Snail’s front or flank it, snuff Wick Hermit’s wicks, cut Spindle Widow’s silk anchors, find Orchard Mimic’s cyan fruit, interrupt Tuning Fork’s echo, carry dew into Ash Ferryman, silence all Compost Choir voices, and break Seed Engine’s orbiting seeds. These actions open longer damage windows; ordinary attacks still work.
 
 Optional trials include Dew Relay (retrieve a drop from a platform route), Rain Loom (tend both seedbeds before they dry), and Echo Nest (hit the cyan egg three times). Each awards a personal upgrade to every player. Defeating all the guards at a Nest, Rain or Cache shrine makes its remaining charge four times faster while a player is present. All six trial types fade after 75 seconds without a reward and retire their guards, so an abandoned optional route cannot lock the guardian altar forever.
 
 Before starting a trial, its shrine shows the reward, seed cost and number of guards. Amber marks show the exact entry point for 1.35 seconds before each sentry arrives; a solo fight has at most two live trial sentries, while a full party has at most four. Sentries stay near their landing and within melee reach. Leave the trial area for four seconds to withdraw and open the other route; spent seeds are not refunded. Dew Relay counts the journey to its drop as participation. The global pressure clock keeps running.
 
-Later specialist enemies include seed thieves, spore casters, shield beetles, healing moths, thorn casters, dew leeches and rammers.
+Enemy variety starts immediately. Seed thieves join the three basic pests in Garden 1; spore casters, shield beetles and healing moths become available after 18, 32 and 48 seconds on Medium, followed by thorn casters at 65, dew leeches at 82 and rammers at 100 seconds. Reaching Gardens 2–4 can introduce them sooner. Easy delays the timed introductions by 14 seconds and retains its low damage, density and 28-second opening. Rats retain their separate later gates.
+
+The host introduces an unseen role on the next ordinary spawn, avoids consecutive repeats and favours roles missing from the live crowd. Last Seed starts with four roles, adds casters and shields in wave 2, healing moths in wave 3, thorns and leeches in wave 4 and rammers in wave 5. Enemy history survives authority handoff.
+
+Every ordinary opening garden has a puzzle and a chance encounter. A completed encounter can reveal a different second one. Seed offerings, lantern pacts, hidden springs and warned cache-keeper challenges join the existing discoveries. Two different seeded garden events begin around 18–27 seconds and 58–85 seconds: seedfall, bloom, drizzle, dew showers or hidden caches, with drought reserved for later non-Easy gardens. Event progress and one-time gifts remain host-owned. See [secrets and special events](docs/design/secrets.md).
 
 Rats are deliberately a later threat and were softened after playtesting. Their introduction is difficulty-aware:
 

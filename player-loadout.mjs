@@ -12,10 +12,11 @@ export function validLoadout(value, unlocked = []) {
   if (!open) return null;
   const difficulty = DIFFICULTY_IDS.includes(value?.difficulty) ? value.difficulty : 'medium';
   const skinId = CLASS_OUTFITS[classId].includes(value?.skinId) ? value.skinId : CLASS_SKINS[classId];
-  return { classId, skinId, difficulty };
+  const skills = SkillLoadouts.clean(classId, value?.skills);
+  return { classId, skinId, difficulty, ...(Object.keys(skills).length ? { skills } : {}) };
 }
 export function sameLoadout(a, b) {
-  return !!a && !!b && a.classId === b.classId && a.skinId === b.skinId && a.difficulty === b.difficulty;
+  return !!a && !!b && a.classId === b.classId && a.skinId === b.skinId && a.difficulty === b.difficulty && JSON.stringify(SkillLoadouts.clean(a.classId,a.skills)) === JSON.stringify(SkillLoadouts.clean(b.classId,b.skills));
 }
 export function readLoadout(storage, unlocked = []) {
   try {
@@ -31,3 +32,6 @@ export function writeLoadout(storage, value, unlocked = []) {
   try { storage.setItem('max-loadout-v1', JSON.stringify(loadout)); return true; }
   catch { return false; }
 }
+import ClassKits from './max-classes.js';
+const SkillLoadouts = ClassKits.skillLoadouts;
+export const skillOptions = classId => SkillLoadouts.options(classId);
