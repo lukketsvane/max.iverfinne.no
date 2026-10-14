@@ -215,6 +215,13 @@
       "passed": 63,
       "total": 63,
       "failed": 0
+    },
+    "codeCheckpointCommit": "edb20060e3dfb2865f9e2f2a2bfc685540493c9a",
+    "releaseVerification": {
+      "status": "pending_at_publication",
+      "codeCheckpoint": "https://github.com/lukketsvane/max.iverfinne.no/commit/edb20060e3dfb2865f9e2f2a2bfc685540493c9a",
+      "exactShaCI": "Required on the final published main commit containing this receipt",
+      "production": "Verify production Vercel and the custom-domain build against the same final main SHA"
     }
   }
 }
