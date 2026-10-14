@@ -173,8 +173,19 @@ test('runtime source generation is exact and every established Figma production 
     assert.deepEqual(fs.readFileSync(file),fs.readFileSync(path.join(root,'turtle-garden-art-data.js')),'generator reproduces committed editable runtime data');
   }finally{fs.rmSync(output,{recursive:true,force:true});}
   const manifestText=fs.readFileSync(path.join(root,'assets/figma-manifest.json'),'utf8');
-  const added=JSON.parse(manifestText).production.filter(entry=>entry.path==='assets/tiara-head-v1/sprites.png');
+  const manifest=JSON.parse(manifestText),added=manifest.production.filter(entry=>entry.path==='assets/tiara-head-v1/sprites.png');
   assert.equal(added.length,1);assert.equal(added[0].sourceKind,'vector-export');
-  const original=manifestText.replace(/^    \{ "path": "assets\/tiara-head-v1\/sprites\.png",[^\n]+ \},\n/m,'');
-  assert.equal(sha(Buffer.from(original)),'332492df488c2d11bbc53ab4d66ee95ff7a06ab27ce680c95da3968c082d2f53','only the separately verified Tiara master may be added; every original manifest byte and all 665 production pins stay intact');
+  const promoted=manifest.production.filter(entry=>entry.path==='assets/enemies-v2/sprites.png');
+  assert.deepEqual(promoted,[{path:'assets/enemies-v2/sprites.png',nodeId:'414:3',group:'enemies',width:256,height:288,sha1:'dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e'}]);
+  assert.equal(manifest.unused.some(entry=>entry.path===promoted[0].path),false,'the authenticated original source moved into production');
+  assert.equal(crypto.createHash('sha1').update(fs.readFileSync(path.join(root,promoted[0].path))).digest('hex'),promoted[0].sha1,'promotion preserves original archived PNG bytes');
+  // Undo only the two independently verified source changes to reconstruct
+  // the byte-pinned historical manifest. All other bytes and old pins remain
+  // protected, including the archive entry that originally held this sheet.
+  let original=manifestText.replace(/^    \{ "path": "assets\/tiara-head-v1\/sprites\.png",[^\n]+ \},\n/m,'')
+    .replace(/^    \{ "path": "assets\/enemies-v2\/sprites\.png", "nodeId": "414:3", "group": "enemies",[^\n]+ \},\n/m,'');
+  const unused=original.indexOf('  "unused": [\n');assert.ok(unused>0);
+  const archived='    { "path": "assets/enemies-v2/sprites.png", "nodeId": "414:3", "section": "451:8", "width": 256, "height": 288, "sha1": "dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e", "status": "unused" },\n';
+  original=original.slice(0,unused)+original.slice(unused).replace(/^(    \{ "path": "assets\/results-native\/sprites\/ui-labels-en\.png",)/m,archived+'$1');
+  assert.equal(sha(Buffer.from(original)),'332492df488c2d11bbc53ab4d66ee95ff7a06ab27ce680c95da3968c082d2f53','only the verified Tiara addition and byte-exact enemy promotion differ; every historical manifest byte and all 665 production pins stay intact');
 });
