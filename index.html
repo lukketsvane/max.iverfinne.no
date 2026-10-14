@@ -580,7 +580,7 @@ function pollPads(){
     if(lanternChord&&!pad.lanternChord)lampToggle=true;pad.lanternChord=lanternChord;
     if(single){
       if(hit(4)&&!work){if(charge&&charge.src==='pad')charge=null;requestDodge();padRumble(30,.2);}
-      if(hit(3)&&(shovelChord?useCairnBurrow():rogueRun.classId==='bulwark'?cairnBreakwater():useClassSkill()))padRumble(45,.3);
+      if(hit(3)&&(shovelChord?useCairnBurrow():useClassSkill()))padRumble(45,.3);
       if(hit(8)){if(refillChord)refillCompanion();else if(rogueRun.classId==='sligo')cycleSligo();else if(['polge','mech','bulwark','herbalist'].includes(rogueRun.classId))useClassSecondary();else if(!runnerPad)refillCompanion();}
       if(hit(10)&&['mech','bulwark','herbalist'].includes(rogueRun.classId)&&!lanternChord)useClassUtility();
       if(hit(16)||hit(10)&&['sligo','mech','runner','bulwark','herbalist'].indexOf(rogueRun.classId)<0)lampToggle=true;
@@ -588,7 +588,7 @@ function pollPads(){
     }else{
       if((hit(10)||hit(11))&&!D&&!work&&!aiming)requestDodge();
       if(hit(6)&&rogueRun.classId==='sligo')cycleSligo();
-      if(hit(4)){if(shovelChord)useCairnBurrow();else if(rogueRun.classId==='bulwark')cairnBreakwater();else useClassSkill();}if(hit(6)&&['mech','bulwark','herbalist'].includes(rogueRun.classId)&&!lanternChord)useClassUtility();else if(hit(6)&&!hasUtility&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(16)&&hasUtility)lampToggle=true;if(hit(8)){if(refillChord)refillCompanion();else if(['polge','mech','bulwark','herbalist'].includes(rogueRun.classId))useClassSecondary();else if(!runnerPad)refillCompanion();}
+      if(hit(4)){if(shovelChord)useCairnBurrow();else useClassSkill();}if(hit(6)&&['mech','bulwark','herbalist'].includes(rogueRun.classId)&&!lanternChord)useClassUtility();else if(hit(6)&&!hasUtility&&rogueRun.classId!=='sligo')lampToggle=true;if(hit(16)&&hasUtility)lampToggle=true;if(hit(8)){if(refillChord)refillCompanion();else if(['polge','mech','bulwark','herbalist'].includes(rogueRun.classId))useClassSecondary();else if(!runnerPad)refillCompanion();}
     }
     if(hit(9))padEscape();
     if(b.some(Boolean)||Math.abs(ax)>.12||Math.abs(ay)>.12||pad.rattusAim){rattusWake();unlockAudio();}
@@ -2696,7 +2696,7 @@ function classProtection(plant,context){return cairnProtection(plant,context||{k
 function plantProtection(plant,bite,context){var perks=plantPerks(plant);return classProtection(plant,context||{kind:bite?'bite':'hazard',pointX:plant.x,pointY:surfaceY(plant.x)})*Math.pow(.85,auraAt(plant.x,'shelter'))*Math.pow(.78,(bite?perks.shield:perks.bark)||0);}
 function useClassSecondary(){
   if(runIsPaused()||seedDown())return false;
-  if(alternateSkill('secondary'))return useLoadoutSkill('secondary');
+  if(alternateSkill('secondary')){var alternate=useLoadoutSkill('secondary');if(!alternate)P.skillDenied=.2;return alternate;}
   if(ownClass().id==='herbalist'){var cloud=mycelCloud(mycelInputAim());if(!cloud)P.skillDenied=.2;return cloud;}
   if(ownClass().id==='bulwark'){var stone=cairnStone(cairnInputAim());if(!stone)P.skillDenied=.2;return stone;}
   if(ownClass().id==='runner'){var aim=rattusInputAim();if(!pad.rattusAim&&!(mouse.seen&&mouse.locked))aim=rattusDirectionalAnchorAim(aim)||aim;var latch=rattusLatch(aim);if(!latch)P.skillDenied=.2;return latch;}
@@ -2795,14 +2795,15 @@ function useCairnBurrow(){
   cairnCancelMotion(null,'burrow');task=holdWater=null;gardenPress=false;P.autoIdlePose=false;P.still=0;P.lampLit=0;return startBurrow();
 }
 function useClassSkill(){
-  if(seedDown())return false;
-  if(ownClass().id!=='sligo'&&alternateSkill('special'))return useLoadoutSkill('special');
-  var kit=ownClass(),ok=false;if(runIsPaused())return false;
-  if(kit.id==='mech'){ok=mechOverload();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
-  if(kit.id==='runner'){ok=rattusStomp();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
-  if(kit.id==='bulwark'){ok=heldDown?useCairnBurrow():cairnBreakwater();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
-  if(kit.id==='herbalist'){ok=mycelBloom();if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}return ok;}
-  if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
+  if(seedDown()||runIsPaused())return false;
+  var kit=ownClass(),ok=false;
+  if(kit.id==='bulwark'&&heldDown&&rogueRun.shovel)ok=useCairnBurrow();
+  else if(kit.id!=='sligo'&&alternateSkill('special'))ok=useLoadoutSkill('special');
+  else if(kit.id==='mech')ok=mechOverload();
+  else if(kit.id==='runner')ok=rattusStomp();
+  else if(kit.id==='bulwark')ok=heldDown?useCairnBurrow():cairnBreakwater();
+  else if(kit.id==='herbalist')ok=mycelBloom();
+  else if((P.skillCool<=0||P.st==='burrow')&&!P.pounce&&P.st!=='float'&&!warp&&!(climb&&climb.exit)&&P.dodgeT<=0)
     ok=kit.skill==='dispatch'?mechDispatch():kit.skill==='pounce'?mossPounce():kit.skill==='brace'?(P.st==='burrow'?(burrowErupt(),true):canBurrow()?startBurrow():bulwarkBrace()):kit.skill==='bloom'?bloomSkill():kit.skill==='tun'?sligoTun():kit.skill==='flurry'?polgeFlurry():false;
   if(!ok){P.skillDenied=.2;chime([330,262],.06,.02);}
   return ok;
@@ -3117,16 +3118,17 @@ function drawCairnCombat(time){
 
 function drawSkillPip(){
   if(!runActive||rogueRun.ended)return;
-  var kit=ownClass(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
-  if(kit.id==='polge'){var q=fighterState();for(var beat=0;beat<3;beat++){ctx.fillStyle=beat<(q.rhythm||0)?'#efd17e':'#755b51';ctx.fillRect(x-2+beat*3,y+3,2,2);}if(q.counter>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-29,13,1);}}
-  if(kit.id==='mech'){var engineer=engineerState();for(var cell=0;cell<3;cell++){ctx.fillStyle=cell<engineer.charge?'#80d1b1':'#354d51';ctx.fillRect(x-2+cell*3,y+3,2,2);}}
-  if(kit.id==='bulwark'){var stone=cairnPeek()||{};for(var plate=0;plate<3;plate++){ctx.fillStyle=plate<stone.strata?(stone.ridgeReserved?'#d0bd82':'#8eb6b8'):'#394749';ctx.fillRect(x-2+plate*3,y+3,2,2);}}
-  if(kit.id==='runner'){var wrestler=wrestlerState();ctx.fillStyle='#59404c';ctx.fillRect(x-4,y+3,13,2);ctx.fillStyle='#efd17e';ctx.fillRect(x-4,y+3,Math.round(13*wrestler.momentum/100),2);if(lastSeedMode()&&wrestler.barrier>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-30,Math.round(13*wrestler.barrier/16),1);}}
+  var view=classSkillFeedback(),x=Math.round(P.x-camX)-2,y=Math.round(P.y-camY)+3;
+  if(view.classId==='runner'){ctx.fillStyle='#59404c';ctx.fillRect(x-4,y+3,13,2);ctx.fillStyle='#efd17e';ctx.fillRect(x-4,y+3,Math.round(13*view.amount/view.max),2);if(lastSeedMode()&&view.barrier>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-30,Math.round(13*view.barrier/16),1);}}
+  else if(view.max){var colors={mech:['#80d1b1','#354d51'],bulwark:[view.reserved?'#d0bd82':'#8eb6b8','#394749'],herbalist:['#a9c996','#394749'],polge:['#efd17e','#755b51']}[view.classId],start=view.max===6?x-7:x-2;
+    for(var i=0;i<view.max;i++){ctx.fillStyle=colors[1];ctx.fillRect(start+i*3,y+3,2,2);var fill=Math.max(0,Math.min(1,view.amount-i));if(fill>0){ctx.fillStyle=colors[0];ctx.fillRect(start+i*3,y+3,Math.ceil(2*fill),2);}}
+    if(view.classId==='polge'&&view.counter>0){ctx.fillStyle='#80d1b1';ctx.fillRect(x-4,y-29,13,1);}
+  }
   ctx.fillStyle='rgba(236,232,220,.22)';ctx.fillRect(x,y,5,1);
-  if(P.skillDenied>0){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
-  else if(P.tun>0){var left=Math.round(5*P.tun/kit.tunTime);ctx.fillStyle='rgba(236,232,220,.5)';if(left>0)ctx.fillRect(x,y,left,1);}
-  else if(P.skillCool>0||P.pounce){var w=Math.round(5*(1-P.skillCool/kit.skillCd));ctx.fillStyle='rgba(236,232,220,.5)';if(w>0)ctx.fillRect(x,y,w,1);}
-  else{ctx.fillStyle=kit.id==='mech'&&engineer.charge<3?'#5e9caa':'#ece8dc';ctx.fillRect(x,y,5,1);}
+  if(view.denied){ctx.fillStyle='#c2432a';ctx.fillRect(x,y,5,1);}
+  else if(view.tun>0){var left=Math.round(5*view.tun/view.tunTime);ctx.fillStyle='rgba(236,232,220,.5)';if(left>0)ctx.fillRect(x,y,left,1);}
+  else if(view.left>0||P.pounce){var w=Math.round(5*view.progress);ctx.fillStyle='rgba(236,232,220,.5)';if(w>0)ctx.fillRect(x,y,w,1);}
+  else{ctx.fillStyle=view.resourceReady?'#ece8dc':'#5e9caa';ctx.fillRect(x,y,5,1);}
 }
 var EXIT_ARROW=['..#..','.###.','#####','..#..','..#..'];
 function exitStalk(){if(rogueRun.clearedWorld!==worldLevel()||worldLevel()>=RUN_STAGES)return null;for(var i=0;i<gardenPlots.length;i++){var p=gardenPlots[i];if(p.stalk&&!p.dead&&p.health>0)return p;}return null;}
@@ -6564,7 +6566,7 @@ function attachGameMenu(){
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},
-    plantCollection:plantCollection,wonderLog:wonderLog,drawPlant:drawResultPlant,drawGardenScene:drawGardenScene,gallerySpacing:GALLERY_SP,
+    plantCollection:plantCollection,wonderLog:wonderLog,drawPlant:drawResultPlant,drawGardenScene:drawGardenScene,gallerySpacing:GALLERY_SP,skillLoadout:function(){return {classId:rogueRun.classId,skills:actorSkills()};},
     openGardenRecords:openGardenRecords,
     beginRun:function(selection){coop=null;resetRogueRun('NEW RUN',selection);},
     clearInput:clearRunInput,exitRun:function(){crownResultPresentation=null;if(runActive&&!rogueRun.ended)finalizeRogueRun(false);stopCoop();if(window.MaxRunResults)window.MaxRunResults.hide();},

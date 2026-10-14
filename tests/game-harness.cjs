@@ -26,7 +26,7 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
-  'actorSkills', 'alternateSkill', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat', 'runDamageScale',
+  'actorSkills', 'alternateSkill', 'classSkillFeedback', 'drawSkillPip', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat', 'runDamageScale',
   'enemyUnlocked', 'waveEnemyKind', 'nextRunEnemyKind', 'updateGardenFun', 'makeStageWeather', 'updateStageWeather', 'runPatrolLimit', 'openingRaidT',
   'secretEventFor', 'rollSecrets', 'updateSecrets', 'rollWonders', 'rollMeeting', 'updateWonders', 'updatePuzzle', 'updateMeeting', 'secretStarLive', 'grantWish', 'wonderLog',
   'baseSurfaceY', 'naturalPondNear', 'pondNear', 'pondInBucket', 'pondsInView', 'terrainY', 'nextPond', 'pondDeco', 'populatePond', 'updateSwans', 'spawnFlyers', 'updateFlyers',

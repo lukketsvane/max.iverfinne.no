@@ -722,6 +722,12 @@ async function exitToMenu() {
 }
 function help() {
   page('help', 'Controls');
+  const current = liveSettings && game.skillLoadout?.() || selected;
+  const classId = ALL_CLASS_IDS.includes(current.classId) ? current.classId : selected.classId;
+  const options = skillOptions(classId), chosen = slot => options[slot]?.find(choice => choice[0] === (current.skills?.[slot] || 'base')) || options[slot]?.[0];
+  const special = chosen('special'), secondary = chosen('secondary');
+  const utility = { mech: 'V: Rover dispatch / recall.', runner: 'Hold V for Driving, then release to kick.', bulwark: 'V: Brace. With a Shovel, Down + E burrows.', herbalist: 'V: Drift.', polge: 'X: Slip through a warned attack.', sligo: 'Q cycles your colony bodies.' }[classId];
+  const actions = 'Keyboard/controller only. ' + (secondary ? 'C: ' + secondary[1] + '. ' + secondary[2] + '. ' : '') + utility;
   const rows = [
     ['MOVE', 'Drag left / right.'],
     ['JUMP', 'Swipe up. With three feathers, lower your thumb and swipe up again to double-jump.'],
@@ -729,12 +735,12 @@ function help() {
     ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
     ['LADDERS', 'Hold a vertical drag beside a ladder. Release to hold; move sideways to step off. Keyboard/controller: Up or Down.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['SKILL', 'Tap your character: Max uses Overload; Rattus lands a splits Stomp; Cairn raises a Ridge; Mycel Blooms; Pølge unleashes a moving Flurry.' + (eggs.has('sligo') ? ' Sligo curls into a Tun until you jump.' : '')],
+    ['SKILL', 'Tap your character: ' + special[1] + '. ' + special[2] + '.'],
     ['CLIMB', 'Rattus climbs half-grown plants and jumps between them. Every character can climb a cleared exit stalk. Tap the held stem to climb faster.'],
     ['MAX', 'Bombs stay at your feet and explode after two seconds. Hold an attack to charge. Tap a nearby rover to refill it; any teammate can help.'],
     ['EXPLORE', 'Find the amber shrine, grow a plant beside its clearing and tend the shrine. Defeat its guardian, choose a boon and climb the exit plant. Time strengthens enemies.'],
     ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J / B to aim, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 boon · Esc settings'],
-    ['CLASS ACTIONS', 'Keyboard/controller: C uses Max Fan, Rattus Tail latch, Cairn Stone or Pølge Clinch; V uses Max Rover, Rattus Driving or Cairn Brace. Hold and release Rattus actions. Cairn with a Shovel: Down + E burrows.'],
+    ['CLASS ACTIONS', actions],
     ['MOUSE', 'Click to lock and aim; Esc frees the mouse. Left click attacks, right click dodges, middle click uses your skill. Hold an attack to charge. Click a boon to choose it.'],
     ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
     ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
@@ -946,7 +952,11 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', () => { onlinePlayers?.stop(); clearTimeout(playersTimer); });
 window.addEventListener('pageshow', () => { if (!document.hidden) onlinePlayers?.start(); });
 window.addEventListener('offline', () => onlinePlayers?.stop());
-window.addEventListener('online', () => { if (!document.hidden) onlinePlayers?.start(); });
+window.addEventListener('online', () => {
+  if (document.hidden) return;
+  onlinePlayers?.start();
+  if (session?.playing) void session.resume();
+});
 window.dispatchEvent(new Event('max-menu-ready'));
 if (client) {
   client.auth.onAuthStateChange((_event, authSession) => {

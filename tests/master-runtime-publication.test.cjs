@@ -142,12 +142,37 @@ test('a later stage import preserves earlier native rows and exact source-key gu
   assert.throws(() => publication.mergeScenes(first.scenes, next.scenes, [2], wrong), /unchanged native scene no longer matches/);
 });
 
-test('actual frozen Hollow Tree source recompiles to exactly the committed geometry and native scene bytes', async () => {
+test('historical Hollow Tree source still recompiles to its preserved original geometry and native scene bytes', async () => {
   const artDir = path.join(repo, 'docs/design/master-levels/art'), capture = JSON.parse(fs.readFileSync(path.join(artDir, 'hollow-master-geometry-actual.json')));
   const complete = JSON.parse(fs.readFileSync(path.join(artDir, 'hollow-master-native-actual.json'))), art = joinChunks(complete.nativeART);
-  const levelsBytes = fs.readFileSync(path.join(repo, 'levels-data.js')), sceneBytes = fs.readFileSync(path.join(repo, 'level-scenes-data.js'));
+  const archive = path.join(artDir, 'hollow-tree-actual'), receipt = JSON.parse(fs.readFileSync(path.join(archive, 'compilation-receipt.json')));
+  const levelsBytes = fs.readFileSync(path.join(archive, 'candidate-levels-data.js')), sceneBytes = fs.readFileSync(path.join(archive, 'level-scenes-data.js'));
+  assert.equal(crypto.createHash('sha256').update(levelsBytes).digest('hex'), receipt.candidateLevelsDataSHA256);
+  assert.equal(crypto.createHash('sha256').update(sceneBytes).digest('hex'), receipt.levelScenesDataSHA256);
   const result = await publication.compileData(capture, art, publication.readData(levelsBytes, 'MaxLevelData'), publication.readData(sceneBytes, 'MaxLevelScenesData'));
   assert.equal(result.levelsText, levelsBytes.toString()); assert.equal(result.scenesText, sceneBytes.toString()); assert.deepEqual(result.stages, [1]);
   assert.equal(result.levelData.gardens[1][0].masterSceneSourceKey, '62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f');
+  assert.equal(result.levelData.gardens[1][0].node, '887:13528');
+  assert.ok(fs.readFileSync(path.join(archive, 'candidate-levels-data.js')).equals(levelsBytes)); assert.ok(fs.readFileSync(path.join(archive, 'level-scenes-data.js')).equals(sceneBytes));
+});
+
+test('current authenticated October 14 Hollow Tree source recompiles to exactly the committed geometry and native scene bytes', async () => {
+  const receipt = JSON.parse(fs.readFileSync(path.join(repo, 'docs/design/master-levels/art/hollow-platforming-oct14/compilation-receipt.json')));
+  const geometryBytes = fs.readFileSync(path.join(repo, 'docs/design/platforming-oct14/actual-master-geometry.json'));
+  const artBytes = fs.readFileSync(path.join(repo, 'docs/design/platforming-oct14/actual-native-art-chunks.json'));
+  assert.equal(crypto.createHash('sha256').update(geometryBytes).digest('hex'), receipt.geometry.sha256);
+  assert.equal(receipt.geometry.path, 'docs/design/platforming-oct14/actual-master-geometry.json');
+  assert.equal(receipt.artChunks.length, 1);
+  assert.equal(receipt.artChunks[0].path, 'docs/design/platforming-oct14/actual-native-art-chunks.json');
+  assert.equal(crypto.createHash('sha256').update(artBytes).digest('hex'), receipt.artChunks[0].sha256);
+  const capture = JSON.parse(geometryBytes), art = joinChunks(JSON.parse(artBytes));
+  const levelsBytes = fs.readFileSync(path.join(repo, 'levels-data.js')), sceneBytes = fs.readFileSync(path.join(repo, 'level-scenes-data.js'));
+  const result = await publication.compileData(capture, art, publication.readData(levelsBytes, 'MaxLevelData'), publication.readData(sceneBytes, 'MaxLevelScenesData'));
+  assert.equal(result.levelsText, levelsBytes.toString()); assert.equal(result.scenesText, sceneBytes.toString()); assert.deepEqual(result.stages, [1]);
+  assert.deepEqual(result.bound.bindings, receipt.bindings);
+  assert.equal(result.levelData.gardens[1][0].node, '941:2784');
+  assert.equal(result.levelData.gardens[1][0].masterSceneSourceKey, '68c2e25f7bc75f36aa159a9cdefdc0ec6d89c3bdd87897a39d26678de9357698');
+  assert.equal(art.rows[0].totalOperations, 7077);
+  assert.equal(result.scenes.sourceDigest, receipt.sceneSourceDigest);
   assert.ok(fs.readFileSync(path.join(repo, 'levels-data.js')).equals(levelsBytes)); assert.ok(fs.readFileSync(path.join(repo, 'level-scenes-data.js')).equals(sceneBytes));
 });

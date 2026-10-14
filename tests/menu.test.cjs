@@ -14,6 +14,55 @@ const compiled = build({
 }).then(r => r.outputFiles[0].text);
 const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
 
+test('Controls describes the selected secondary/special variants without inventing touch bindings', async () => {
+  for (const [classId, secondary, special] of [['mech', 'shock', 'steam'], ['runner', 'snap', 'quake'], ['bulwark', 'clap', 'quake'], ['herbalist', 'miasma', 'storm'], ['polge', 'rise', 'haymaker'], ['sligo', undefined, 'watch']]) {
+    const skills = { special }; if (secondary) skills.secondary = secondary;
+    const m = await menu(JSON.stringify({ classId, skills }), { eggs: { local: ['sligo'], accounts: {} } });
+    try {
+      m.click('Settings'); m.click('Controls');
+      const row = key => [...m.w.document.querySelectorAll('.max-help-row')].find(node => node.querySelector('strong')?.textContent === key).textContent;
+      const options = m.w.MaxClasses.skillLoadouts.options(classId);
+      assert.ok(row('SKILL').includes(options.special[1][1])); assert.ok(row('SKILL').includes(options.special[1][2]));
+      assert.match(row('CLASS ACTIONS'), /Keyboard\/controller only\./);
+      if (secondary) assert.ok(row('CLASS ACTIONS').includes('C: ' + options.secondary[1][1]));
+      else assert.doesNotMatch(row('CLASS ACTIONS'), /C:/);
+    } finally { m.dom.window.close(); }
+  }
+});
+
+test('live Controls reads the accepted equipped kit rather than an old saved menu choice', async () => {
+  const m = await menu(JSON.stringify({ classId: 'mech', skills: { special: 'steam' } }), { controller: { skillLoadout: () => ({ classId: 'polge', skills: { secondary: 'rise', special: 'haymaker' } }) } });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle();
+    m.w.dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape' })); m.click('Controls');
+    const row = key => [...m.w.document.querySelectorAll('.max-help-row')].find(node => node.querySelector('strong')?.textContent === key).textContent;
+    assert.match(row('SKILL'), /Haymaker/); assert.doesNotMatch(row('SKILL'), /Steam vent|Flurry/);
+    assert.match(row('CLASS ACTIONS'), /Rising clinch/); assert.doesNotMatch(row('CLASS ACTIONS'), /Fan|Shock pulse/);
+  } finally { m.dom.window.close(); }
+});
+
+test('a visible online event resumes the admitted session without joining a new room, while hidden tabs wait', async () => {
+  const m = await menu();
+  try {
+    m.click('Play'); m.click('Play'); await m.settle(); assert.equal(m.active, true);
+    const stateName = `max-coop:${INVITE_ROOM}:state`, initial = m.channels.get(stateName); assert.ok(initial);
+    const reads = () => m.calls.filter(([name, args]) => name === 'max_coop' && args.p_action === 'get');
+    const before = reads().length;
+    m.w.dispatchEvent(new m.w.Event('offline')); await m.settle();
+    Object.defineProperty(m.w.document, 'hidden', { configurable: true, value: true });
+    m.w.dispatchEvent(new m.w.Event('online')); await m.settle();
+    assert.equal(reads().length, before); assert.equal(m.channels.get(stateName), initial);
+    Object.defineProperty(m.w.document, 'hidden', { configurable: true, value: false });
+    m.w.dispatchEvent(new m.w.Event('online')); await m.settle();
+    assert.equal(reads().length, before + 1, 'resume validates the same admitted room');
+    assert.equal(reads().at(-1)[1].p_args.room, INVITE_ROOM);
+    assert.notEqual(m.channels.get(stateName), initial, 'resume replaces the stale state subscription');
+    assert.equal(m.beginCount, 1); assert.equal(m.active, true); assert.equal(m.w.MaxGameMenu.isOpen(), false);
+    assert.equal(m.calls.filter(([name]) => name === 'max_coop_global').length, 1);
+    assert.equal(m.calls.filter(([name, args]) => name === 'max_coop' && ['create', 'join', 'leave'].includes(args.p_action)).length, 0);
+  } finally { m.dom.window.close(); }
+});
+
 test('long character names reserve two compact lines without changing the hero footprint', async () => {
   const m = await menu(undefined, { eggs: { local: ['sligo'], accounts: {} } });
   try {

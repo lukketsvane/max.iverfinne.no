@@ -2,6 +2,13 @@
 
 This file is the engineering handoff for the next primary agent. Read `README.md` first, then this file, then the relevant tests before changing behavior.
 
+The owner's October 14 completion goal is the governing development direction:
+follow [the finished-game master plan](docs/design/finished-game-master-plan.md)
+and [execution ledger](docs/design/finished-game-progress.json), starting with
+the earliest unfinished milestone unless a new user instruction or actual
+critical defect changes priority. Keep native garden identity, Figma source
+authority and the release gate; a content count is not proof of fun or finish.
+
 ## Start here
 
 ```sh
@@ -574,3 +581,30 @@ Canopy furnishing explicitly admits only its reviewed historical/current
 digests and exact native anchors, not array-index assumptions. New continuous
 30/60/120 Hz tests cover all six unupgraded classes, return routes, lower cache
 and east ladder escape. All nineteen other complete layouts remain unchanged.
+
+## October 14 finished-game foundation
+
+The first master-plan checkpoint repairs the stale live-source publication
+fixture while retaining exact historical archive reproduction. The separate
+October 14 capture test validates receipt hashes, current node/source digest,
+7,077 ART operations and byte-equal committed geometry/scenery. Do not point
+the historical capture at new live output or relax source equality.
+
+`CoopSession` preserves admitted reservations through transient network,
+timeout, rate-limit and server failures, with capped 1/2/4/8/10-second retries.
+Poll/resume admissions are serialized, including queued foreground resumption.
+A healthy playing host emits a departure hint and guests confirm roster/host
+from the server; genuine ended state/end remains terminal. Auth loss, closed or
+invalid rooms and confirmed missing membership still fail safely. Visible
+online/foreground events resume the same room. No hosted SQL, SDK or access
+change was made. Keep actual-session reliability/transport tests; the separate
+Realtime channel-error loop and real-phone soak remain later measurement work.
+
+`classSkillFeedback` is a pure local-owner projection of equipped metadata and
+existing accepted/predicted class clocks/resources. The native foot pip uses
+true costs/cooldown denominators and Mycel's fractional six-cell Culture.
+Controls resolves accepted live loadout through the read-only menu bridge;
+rejected alternates retain the brief denied signal. Cairn's two controller
+layouts honor Quake, and actual owned Shovel Down+E/Tend+Special still takes
+precedence. C/V touch policy has not changed. Keep the guest/handoff, read-only
+draw, Tun-duration, controller, Shovel and online-event regressions.

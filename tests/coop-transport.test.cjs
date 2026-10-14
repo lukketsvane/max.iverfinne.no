@@ -258,7 +258,7 @@ test('real sessions pace a long archive without overlapping transfers and acknow
   } finally { await host.leave(); await guest.leave(); }
 });
 
-test('ordinary six-hundred-plant sessions retain ten snapshots per second, and leaving cancels a fragmented transfer', async t => {
+test('ordinary six-hundred-plant sessions retain ten snapshots per second, and a true run end cancels a fragmented transfer', async t => {
   const { CoopSession } = await import('../coop-session.mjs');
   t.mock.timers.enable({ apis: ['setTimeout', 'Date'], now: 200000 });
   const { host, guest, sent, received } = sessions(CoopSession);
@@ -268,7 +268,8 @@ test('ordinary six-hundred-plant sessions retain ten snapshots per second, and l
     t.mock.timers.tick(99); host.tick({}, () => state); assert.equal(sent.length, 1);
     t.mock.timers.tick(1); host.tick({}, () => state); assert.equal(sent.length, 2);
     guest.receive('state', sent[1].payload); assert.equal(received.length, 1);
-    t.mock.timers.tick(100); host.tick({}, () => snapshot(1, 20000).state);
+    const ended = snapshot(1, 20000).state; ended.ended = true;
+    t.mock.timers.tick(100); host.tick({}, () => ended);
     assert.equal(host.sendingState, true); const firstPart = sent.at(-1).payload;
     guest.receive('state', firstPart);
     await host.leave(); const end = sent.at(-1).payload;
