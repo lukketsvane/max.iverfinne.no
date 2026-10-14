@@ -1,0 +1,36 @@
+name: Menu layout browser review
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: menu-layout-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  menu-layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright@latest
+      - run: npx playwright install --with-deps chromium webkit
+      - run: node scripts/check-menu-layout-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: menu-layout-browser-review
+          path: menu-browser-review/
+          if-no-files-found: error

@@ -150,7 +150,7 @@ function updateRat(k,dt){
     k.face=dx<0?-1:1;k.ratAimX=target.x;k.ratAimY=target.y;k.ratTargetId=target.plant?target.plant.id:0;
     beginEnemyWarning(k);k.tell=k.windup=.6;ratState(k,'windup');k.vx=k.vy=0;
     var warning=enemyHazard(k,'rat-bite',target.x,12,.86,0,k.x,k.y,target.y);
-    if(warning){cairnTagHazard(warning,k,'strike');k.ratWarning=warning.id;}
+    if(warning){cairnTagHazard(warning,k,'strike');if(campaignDamageMode())warning.gardenerPower=.75*ratStats(k).damage;k.ratWarning=warning.id;}
     return;
   }
   ratJumpToward(k,target.x,target.y);

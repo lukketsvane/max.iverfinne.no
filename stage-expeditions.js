@@ -132,11 +132,16 @@
     return null;
   }
   function hollowCanopy(L,ground){
-    if(L.hollowCanopy||L.stage!==1||!L.designed||L.replacePicture!==true||L.masterSceneSourceKey!=='62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f')return;
+    var sources=['62becf64d12195c503d6616439c1e9f909fd574447fa202e3e72e46b4b898c8f','68c2e25f7bc75f36aa159a9cdefdc0ec6d89c3bdd87897a39d26678de9357698'];
+    if(L.hollowCanopy||L.stage!==1||!L.designed||L.replacePicture!==true||sources.indexOf(L.masterSceneSourceKey)<0)return;
     var soil=L.authoredSoilY,origin=L.origin;
     if(!Number.isFinite(soil))return;
-    var left=L.platforms.find(function(p){return p.id==='1:d1';}),right=L.platforms.find(function(p){return p.id==='1:d4';});
-    if(!left||!right)return;
+    // Native source order (and consequently compiler IDs) can change when an
+    // authored branch is inserted. Reviewed source keys plus the registered
+    // chamber replace brittle indices. A mismatched source or shape skips it.
+    function support(x,rise,w,solid,h){return L.platforms.find(function(p){return p.x===origin+x&&p.y===soil-rise&&p.w===w&&!!p.solid===!!solid&&(!solid||p.h===h);});}
+    var left=support(-220,200,100),right=support(100,200,100);
+    if(!left||!right||!support(-165,0,395,true,24)||!support(-145,-78,395,true,20))return;
     // Optional native branch furnishing joins the two existing upper terraces.
     // The registered Figma surfaces and their source binding stay intact.
     var added=[];

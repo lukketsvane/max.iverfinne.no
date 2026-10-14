@@ -468,7 +468,7 @@ function gardenerDodging(member,a){
 }
 function enemyHazard(k,type,x,r,tell,power,sourceX,sourceY,targetY){
   var h=addRunHazard(type,x,r,tell,power,sourceX,sourceY,targetY);
-  if(h){h.warned=tell>0;cairnTagHazard(h,k,'hazard');}
+  if(h){h.warned=tell>0;if(campaignDamageMode()&&tell>0&&power===0)h.gardenerPower=.6;cairnTagHazard(h,k,'hazard');}
   return h;
 }
 function addRunHazard(type,x,r,tell,power,sourceX,sourceY,targetY){
@@ -538,9 +538,11 @@ function runHazardGardenerContact(h){
   if(h.absorbed)return;
   runPlayers().forEach(function(a){
     if(seedDown(a.member)||!runHazardTouches(h,a.p.x,a.p.y))return;
+    if(campaignDamageMode()&&(a.p.st==='float'||a.p.st==='climb'&&a.p.exitClimb||a.p===P&&climb&&climb.exit))return;
     if(h.crownOrbit&&(a.p.st==='float'||a.p.st==='climb'&&a.p.exitClimb||a.p===P&&climb&&climb.exit||!spendCrownRingContact(h,a.member)))return;
     var warning=polgeHazardWarning(h),contact=cairnContact(h,{kind:h.cairnContactKind||'hazard',pointX:a.p.x,pointY:a.p.y-12,accepted:true});
-    if(singleSeedMode()&&h.power>0)damageGardener(a.member,24*h.power*runDamageScale(),warning,contact);
+    var damagePower=campaignDamageMode()&&Number.isFinite(h.gardenerPower)?h.gardenerPower:h.power;
+    if((singleSeedMode()||campaignDamageMode())&&damagePower>0)damageGardener(a.member,24*damagePower*runDamageScale(),warning,contact);
     else if(a.p.st!=='float'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit)){if(gardenerDodging(a.member,a.p))polgeAvoidedWarning(a.member,warning);else if(!curledMember(a.member,a.p))cairnStrike(a.member,contact);}
   });
 }

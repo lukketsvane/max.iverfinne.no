@@ -19,8 +19,10 @@ function tree(width = 390, height = 844, inset = 0, dpr = 1) {
   assert.ok(scene, 'fixture uses the committed, bound normal Play MASTER');
   return { ...h, L, scene, clips, cameraCalls, safeTop: Math.ceil(inset * g.IH / height) };
 }
-function stand(h, id, x) {
-  const p = h.L.platforms.find(p => p.id === id);
+function stand(h, rect, x) {
+  // Authored source insertion may reindex compiler IDs. Keep these phone
+  // framing cases on their original, exact registered native terrace.
+  const p = h.L.platforms.find(p => p.x===h.L.origin+rect[0]-320 && p.y===h.L.authoredSoilY+rect[1]-280 && p.w===rect[2] && !p.solid);
   assert.ok(p);
   Object.assign(h.game.P, { x: x ?? p.x + p.w / 2, y: p.y, vx: 0, vy: 0, st: 'free', grounded: true, platform: p.id, wet: false });
   return p;
@@ -31,7 +33,7 @@ function bounds(h, difference = {}) {
 }
 
 test('390×844 portrait holds actual native ART at the roof through easing and shake', () => {
-  const h = tree(), g = h.game; stand(h, '1:d4'); g.menuPaused = true;
+  const h = tree(), g = h.game; stand(h, [420,80,100]); g.menuPaused = true;
   assert.equal(g.IW, 130); assert.equal(g.IH, 282); assert.equal(g.ANCHOR, 190);
   const before = JSON.stringify(h.L), nativeBefore = h.scene.row.sourceDigest;
   assert.equal(bounds(h).minY, h.scene.bounds.y);
@@ -53,7 +55,7 @@ test('390×844 portrait holds actual native ART at the roof through easing and s
 test('ordinary upper ladder and full jump keep the roof hidden and the native body below the phone notch', () => {
   for (const dpr of [1, 3]) {
     const h = tree(390, 844, 44, dpr), g = h.game;
-    stand(h, '1:d6', 180); h.key('keydown', 'ArrowUp');
+    stand(h, [490,120,100], 180); h.key('keydown', 'ArrowUp');
     let climbed = false;
     for (let n = 0; n < 160 && g.P.y > h.L.authoredSoilY - 200; n++) {
       h.tick(16); climbed ||= g.P.st === 'ladder';
@@ -80,7 +82,7 @@ test('ordinary upper ladder and full jump keep the roof hidden and the native bo
 });
 
 test('roof framing yields only when real body clearance requires it, or travel leaves the native chamber', () => {
-  const h = tree(), g = h.game; stand(h, '1:d4');
+  const h = tree(), g = h.game; stand(h, [420,80,100]);
   const high = bounds(h, { feet: h.scene.bounds.y + 10 });
   assert.equal(high.minY, h.scene.bounds.y + 10 - 34); assert.equal(high.maxY, high.minY);
   assert.equal(bounds(h, { feet: h.scene.bounds.y - 1 }), null, 'above-source travel follows the continuing world');
@@ -99,7 +101,7 @@ test('roof framing yields only when real body clearance requires it, or travel l
 });
 
 test('side-nook look-ahead keeps the native roof while the actor stays inside its registered chamber', () => {
-  const h = tree(), g = h.game; stand(h, '1:d4'); g.menuPaused = true;
+  const h = tree(), g = h.game; stand(h, [420,80,100]); g.menuPaused = true;
   g.P.x = h.L.origin - 253; g.P.vx = -48; g.camY = g.P.y - g.ANCHOR;
   for (let n = 0; n < 10; n++) { h.tick(16); assert.ok(g.camY >= h.scene.bounds.y); }
   assert.ok(g.camX < h.scene.bounds.x, 'the actual view/look-ahead crosses the side edge');
@@ -109,7 +111,7 @@ test('side-nook look-ahead keeps the native roof while the actor stays inside it
 });
 
 test('landscape retains normal framing at the same actual upper terrace', () => {
-  const h = tree(844, 390), g = h.game; stand(h, '1:d4'); g.menuPaused = true;
+  const h = tree(844, 390), g = h.game; stand(h, [420,80,100]); g.menuPaused = true;
   assert.equal(g.IW, 282); assert.equal(g.IH, 130); assert.equal(bounds(h), null);
   g.camY = g.P.y - g.ANCHOR; const ordinary = g.camY;
   for (let n = 0; n < 10; n++) { h.tick(16); assert.equal(g.camY, ordinary); }

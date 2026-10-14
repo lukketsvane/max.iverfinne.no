@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "status": "actual-master-source-written-to-runtime-data",
+  "geometry": {
+    "path": "docs/design/platforming-oct14/actual-master-geometry.json",
+    "sha256": "a0149939fddc7d46193ac545422e4f9f3d9b2bfba5dd2e746dd974480650991d"
+  },
+  "artChunks": [
+    {
+      "path": "docs/design/platforming-oct14/actual-native-art-chunks.json",
+      "sha256": "0e6caf03d77e5541c9fbb3985683efc4f340f2a966baab6e8012f7da1a65e806"
+    }
+  ],
+  "baselineLevelsDataSHA256": "878093c577b827fe1ba3205d50d4d849bf93fa1ef8b313b1b275ff7785254bee",
+  "candidateLevelsDataSHA256": "abaa4afa08307a95dacf19cdb1dca8f5dd6f1bdac5bc5448187fb09cb312dcf6",
+  "levelScenesDataSHA256": "56692992da9bf5715956ef11c79fc660c7b28f3ebf8c494ebdf01d69a6e76f89",
+  "sceneSourceDigest": "95547d65b44af21e5add971b8891c606267a8d39797b9b991cfc755711b39fc2",
+  "bindings": [
+    {
+      "stage": 1,
+      "frame": "garden-01b",
+      "rowId": "941:2784",
+      "sourceId": "941:2784",
+      "sourceDigest": "68c2e25f7bc75f36aa159a9cdefdc0ec6d89c3bdd87897a39d26678de9357698",
+      "artDigest": "07d21992aadbb6970dba3843e703976083322c097362b0735dd8a8f17aa6232c",
+      "geometryDigest": "55922959d314f2b066c28dd8bd42a7cf63e3e477ceb896522f03ca88a68d77b1"
+    }
+  ],
+  "replacedStages": [
+    1
+  ],
+  "normalCompiler": "scripts/master-levels.mjs -> scripts/figma-levels.mjs exportLevels()",
+  "unchangedStages": [],
+  "sourcePNGs": [
+    {
+      "path": "assets/tiles-v1/sanctuary.png",
+      "imageHash": "8b0552caf2119b1ce407f92d45fc0c09128fccbf",
+      "width": 128,
+      "height": 75,
+      "sha256": "2dab27519a47db0d037ea89aa3a7b0aca12a96df2a4971b042e0708ebc6c21ef"
+    }
+  ],
+  "pixels": "Editable ordered integer primitives and unchanged native PNG crops, not a flattened scene PNG",
+  "productionActivated": false
+}

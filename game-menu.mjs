@@ -33,6 +33,16 @@ let invitedRoom = null, inviteState = null;
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
 window.MaxEasterEggs = { has: eggs.has, list: eggs.list, allDiscovered: () => hasFullDiscovery(user) };
 let selected = readLoadout(window.localStorage, eggs.list());
+let skillDetailSlot = 'special';
+// Reuse the registered native 9×9 symbols; ability selection adds no new artwork.
+const SKILL_SYMBOLS = {
+  mech: { secondary: ['water', 'wild'], special: ['blast', 'updraft'] },
+  runner: { secondary: ['chain', 'haymaker'], special: ['spring', 'aftershock'] },
+  bulwark: { secondary: ['fault', 'counter'], special: ['bedrock', 'aftershock'] },
+  herbalist: { secondary: ['colony', 'ferment'], special: ['bloom', 'outbreak'] },
+  polge: { secondary: ['counter', 'updraft'], special: ['cadence', 'haymaker'] },
+  sligo: { special: ['shield', 'sanctuary'] },
+};
 let sharedStatus = { active: false, players: 0, taken: [], difficulty: null, mine: null, members: [] };
 const onlinePlayers = client ? new OnlinePlayers(client, () => renderPlayers()) : null;
 
@@ -397,7 +407,10 @@ function chooseMax() {
     pixelText(choice, id, 2, 0); choice.append(el('span', detail[id], 'max-role-ability')); difficultyGrid.append(choice);
   }
   difficulty.append(difficultyGrid);
-  const skills = el('fieldset', undefined, 'max-skill-picker'); skills.append(el('legend', '03 / SKILLS'), el('div', undefined, 'max-skill-slots'));
+  const skills = el('fieldset', undefined, 'max-skill-picker');
+  const readout = el('div', undefined, 'max-skill-readout');
+  readout.append(el('span', '', 'max-skill-name'), el('span', '', 'max-skill-detail'));
+  skills.append(el('legend', '03 / SKILLS'), el('div', undefined, 'max-skill-slots'), readout);
   card.append(characters, difficulty, skills);
   updateSelection();
 }
@@ -421,6 +434,16 @@ function selectMax(change) {
   selected = { ...selected, ...change };
   if (change.classId && !change.skinId) { selected.skinId = characterSkin(change.classId); selected.skills = {}; }
   writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
+}
+function showSkillDetail(slot = skillDetailSlot, id = selected.skills?.[slot] || 'base') {
+  const options = skillOptions(selected.classId);
+  if (!options[slot]) { slot = 'special'; id = selected.skills?.[slot] || 'base'; }
+  const variant = options[slot]?.find(choice => choice[0] === id) || options[slot]?.[0];
+  const readout = card.querySelector('.max-skill-readout');
+  if (!readout || !variant) return;
+  readout.dataset.slot = slot; readout.dataset.id = variant[0];
+  readout.querySelector('.max-skill-name').textContent = variant[1];
+  readout.querySelector('.max-skill-detail').textContent = variant[2];
 }
 function updateSelection() {
   const taken = new Set(Array.isArray(sharedStatus.taken) ? sharedStatus.taken : []);
@@ -468,17 +491,28 @@ function updateSelection() {
     const options = skillOptions(selected.classId), signature = selected.classId + JSON.stringify(selected.skills || {});
     if (skillSlots.dataset.selection !== signature) {
       skillSlots.dataset.selection = signature; skillSlots.replaceChildren();
-      for (const [slot, variants] of Object.entries(options)) {
+      // Both columns always exist, including Sligo's empty secondary slot.
+      // Removing a slot must not move Play or any of the preceding sections.
+      for (const slot of ['secondary', 'special']) {
+        const variants = options[slot];
+        if (!variants) {
+          const empty = el('div', undefined, 'max-skill-slot max-skill-slot-empty');
+          empty.dataset.skillSlot = slot; empty.setAttribute('aria-hidden', 'true'); skillSlots.append(empty); continue;
+        }
         const group = el('div', undefined, 'max-skill-slot'); group.append(el('span', slot === 'secondary' ? 'SECONDARY · C' : 'SPECIAL · E', 'max-skill-slot-name'));
         const row = el('div', undefined, 'max-skill-options');
-        for (const [id, name, description] of variants) {
-          const choice = button('', () => { selectMax({ skills: { ...selected.skills, [slot]: id } }); card.querySelector(`[data-skill-slot="${slot}"][data-skill-id="${id}"]`)?.focus({ preventScroll: true }); }, 'max-skill-choice');
+        variants.forEach(([id, name, description], index) => {
+          const choice = button('', () => { skillDetailSlot = slot; selectMax({ skills: { ...selected.skills, [slot]: id } }); card.querySelector(`[data-skill-slot="${slot}"][data-skill-id="${id}"]`)?.focus({ preventScroll: true }); }, 'max-skill-choice');
           choice.dataset.skillSlot = slot; choice.dataset.skillId = id; choice.setAttribute('aria-pressed', String((selected.skills?.[slot] || 'base') === id));
-          choice.setAttribute('aria-label', name + ': ' + description); choice.append(el('span', name, 'max-skill-name'), el('span', description, 'max-skill-detail')); row.append(choice);
-        }
+          choice.setAttribute('aria-label', name + ': ' + description); choice.title = name + ': ' + description;
+          const icon = el('img'); icon.alt = ''; icon.draggable = false; icon.width = icon.height = 9;
+          icon.src = 'assets/boon-symbols-v1/' + SKILL_SYMBOLS[selected.classId][slot][index] + '.png';
+          choice.append(icon); choice.addEventListener('focus', () => showSkillDetail(slot, id)); row.append(choice);
+        });
         group.append(row); skillSlots.append(group);
       }
     }
+    showSkillDetail();
   }
 }
 function readInvite() {

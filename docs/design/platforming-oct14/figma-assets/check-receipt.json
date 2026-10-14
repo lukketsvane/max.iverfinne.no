@@ -1,0 +1,13 @@
+{
+  "command": "npm run figma:check",
+  "capture": "production-capture.json",
+  "captureSHA256": "c348dc83ea4caf3a8d1723b53269891b210931d3112d64d673fdbf88c1166a69",
+  "transport": "Documented production-only replay of fresh authenticated Figma Plugin API reads; replay and unchanged checker run in one process environment",
+  "repositoryPinsUsedByReplay": false,
+  "productionPage": "10:2",
+  "layers": 665,
+  "matches": 665,
+  "problems": 0,
+  "figmaToolCalls": 2,
+  "exitCode": 0
+}

@@ -543,3 +543,34 @@ foe's actual final warning frame, avoiding driver transit through the unchanged
 .28-second parry window. Accepted serials, remaining delay, actual contacts,
 resource spends, reward gates and native body assertions remain intact; no
 production clock, contact or gameplay outcome is manufactured.
+
+## October 14 setup, campaign health and Hollow Tree branches
+
+The pre-run screen is top-anchored and preserves every section's placement
+across class/skill changes. Both secondary/special columns always retain space,
+including Sligo. Skill choices use existing native boon symbols with 48 px
+targets and a selected underline; a separate fixed readout holds name/effect.
+Long names fit their fixed title area. `check-menu-layout-browser.cjs` checks
+actual taps, keyboard selection, saved choices, all six classes, four viewports,
+native canvas ink containment and unchanged section bounds in Chromium/WebKit.
+
+Ordinary Garden Hard/Insane now use the existing host-owned 100 HP vitality,
+down/revive and reserved-roster defeat rules, without turning Garden into a
+relic mode. Enemy contacts warn first; real dodge/Tun/Brace protection remains.
+Hits grant .85 s immunity; healthy watered plants restore 3 HP/s after 4 s
+without damage. Three-second grounded Tend revives at 50 HP. Health survives
+ascent and handoff; cleared physical-exit motion remains protected. Easy/Medium
+and relic behavior are unchanged. No auth/schema/SDK change was made.
+
+The actual MASTER Level 01 row `941:2784` now has eight extra one-way native
+branches and a supported lower-gallery cache. ART registration was corrected
+to the gameplay planes' existing y100 without changing local original artwork.
+The normal source compiler installed all 7,077 captured ART operations, retaining
+the original 6,965 operations and native PNG bytes. `docs/design/platforming-oct14/`
+holds the actual geometry, 29 gap-free ART chunks, authoring recipe and fresh
+665-MATCH production source audit. The new source digest is
+`68c2e25f7bc75f36aa159a9cdefdc0ec6d89c3bdd87897a39d26678de9357698`.
+Canopy furnishing explicitly admits only its reviewed historical/current
+digests and exact native anchors, not array-index assumptions. New continuous
+30/60/120 Hz tests cover all six unupgraded classes, return routes, lower cache
+and east ladder escape. All nineteen other complete layouts remain unchanged.
