@@ -155,7 +155,8 @@ Bosses telegraph attacks in amber and expose themselves in cyan for double damag
 Garden 10's **Tiara** is the owner's tiara-wearing head sprite: a native 40-pixel
 body that jumps, rolls and headbutts in a readable three-move rotation. Amber
 marks the committed destination. Actual contact and landing strikes remain
-host-owned; cyan recovery leaves time for a planted bomb. Lower health adds
+host-owned; recovery leaves time for a planted bomb. Tiara keeps the authored
+sprite colours without a procedural silhouette outline. Lower health adds
 landing shock lanes and quicker movement. Bellkeeper remains a roaming guardian.
 The eight 8-frame animation rows are registered in the
 [Tiara atlas](assets/tiara-head-v1/README.md); see [the encounter contract](docs/design/tiara-head.md).

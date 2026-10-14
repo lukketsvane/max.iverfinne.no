@@ -150,7 +150,6 @@ export function createNativeArt() {
         for (const guard of ['chimera-ground', 'chimera-air']) { atlases[guard] = atlas; flashes[guard] = flashes[id]; }
         for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef', wounded: '#b5a8de' })) crownOutlines[name] = flashAtlas(atlas, color);
       }
-      if (id === 'tiara-head') for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef' })) crownOutlines['tiara-' + name] = flashAtlas(atlas, color);
       return id;
     })).then(results => {
       const status = {
@@ -183,10 +182,6 @@ export function createNativeArt() {
     const options = { facing: enemy.face, progress: state.progress };
     if (id === 'hollow-crown') {
       const outline = crownOutlines[enemy.exposed > 0 ? 'open' : enemy.windup > 0 ? 'tell' : enemy.crownStage === 4 || enemy.phase === 4 ? 'wounded' : 'dark'];
-      if (outline) for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) drawAtlas(ctx, outline, state.name, state.seconds, x + dx, footY + dy, options);
-    }
-    if (id === 'tiara-head') {
-      const outline = crownOutlines['tiara-' + (enemy.exposed > 0 ? 'open' : enemy.windup > 0 ? 'tell' : 'dark')];
       if (outline) for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) drawAtlas(ctx, outline, state.name, state.seconds, x + dx, footY + dy, options);
     }
     const frame = drawAtlas(ctx, atlas, state.name, state.seconds, x, footY, options);

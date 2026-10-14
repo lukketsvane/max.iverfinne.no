@@ -23,7 +23,7 @@ these decisions or spend its own damage.
 
 Movement slows reduce the actual horizontal path. A jump's ground shock starts
 at the actual landing and has its own .3 s warning; phases 2–3 add two side
-shocks, warned for .5 s. All active shocks finish before the ordinary cyan
+shocks, warned for .5 s. All active shocks finish before the ordinary recovery
 opening: 3.2/2.75/2.5/2.35 s on Easy/Medium/Hard/Insane. The exposed head sits
 on the ground, takes double damage and stays reachable by a two-second bomb.
 At one-third health newly committed attacks move 10% faster and jump higher.
