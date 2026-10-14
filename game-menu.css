@@ -111,7 +111,7 @@
   .max-menu[data-screen="play"]::before{background:linear-gradient(0deg,#06101bc9,#071522d9 55%,#070f1bac)}
   .max-menu[data-screen="play"] .max-menu-card{display:block;width:min(100%,360px);padding:8px 0}
   .max-menu[data-screen="play"] .max-menu-header{margin-bottom:22px}
-  .max-menu[data-screen="play"] .max-back{top:5px;right:-9px}
+  .max-menu[data-screen="play"] .max-back{top:5px;right:0}
   .max-character-hero{flex-direction:row;align-items:center;gap:20px;padding:0;margin:0 0 26px;text-align:left;height:156px;min-height:156px;overflow:hidden}
   .max-character-stage{flex:none;width:96px;height:108px;margin:0 0 7px}
   .max-character-intro{min-width:0;height:156px;max-height:156px;overflow:hidden}
