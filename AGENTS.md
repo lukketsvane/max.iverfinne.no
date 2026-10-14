@@ -2,6 +2,8 @@
 
 Read `README.md` and `CLAUDE.md` before editing this repository. They describe the current product contract, multiplayer model, release gate and infrastructure.
 
+For game development, read `docs/design/finished-game-master-plan.md` and its execution ledger. Work toward the earliest unfinished milestone and preserve MAX's native garden identity. New user instructions and actual critical defects may change that order; record the reason and update the ledger.
+
 Keep `main` authoritative. Do not merge old asset/gameplay branches wholesale into current code; preserved divergent branches contain archival or optional work and must be reviewed selectively.
 
 Before changing runtime artwork, read the relevant `assets/**/README.md` and preserve native 1:1 pixel registration, integer anchors and disabled smoothing.

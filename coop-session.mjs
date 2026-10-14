@@ -4,6 +4,13 @@ import { encodeFrame, CoopFrameReceiver, COOP_TRANSPORT_LIMITS } from './coop-tr
 const validLoadout = value => checkLoadout(value, HIDDEN_CLASS_IDS);
 
 const COOP_PROTOCOL = 2;
+const ROOM_RETRY_DELAYS = [1000, 2000, 4000, 8000, 10000];
+const transientRoomError = error => {
+  const status = Number(error?.status), code = String(error?.code || '');
+  if ([401, 403, 404, 410].includes(status) || /^(42501|PT40[0134]|PGRST30[123])$/.test(code)) return false;
+  if (status === 408 || status === 429 || status >= 500 && status <= 599) return true;
+  return error?.name === 'AbortError' || /(?:failed to fetch|fetch failed|networkerror|network request (?:failed|timed out)|load failed|aborterror|connection (?:lost|timed out)|room connection timed out)/i.test(error?.message || '');
+};
 const token = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 const validToken = value => typeof value === 'string' && /^[a-zA-Z0-9-]{8,80}$/.test(value);
 const memberList = members => Array.isArray(members) && members.length > 0 && members.length <= 4 &&
@@ -22,6 +29,7 @@ export class CoopSession {
     this.frameReceiver = new CoopFrameReceiver(); this.sendingState = false; this.nextStateAt = 0;
     this.playing = false; this.closed = false; this.lastHost = Date.now();
     this.lastSend = 0; this.lastPoll = 0; this.polling = false;
+    this.pollFailures = 0; this.nextPollRetry = 0; this.runEnded = false; this.connectionExpired = false; this.resumeQueued = null;
     this.acknowledged = false; this.preparing = null; this.preparedId = null; this.launchId = null;
   }
   get host() { return this.room?.host === this.user.id; }
@@ -31,11 +39,28 @@ export class CoopSession {
       this.room.members.every(p => p.ready && validLoadout(this.loadouts[p.id]) && this.memberTokens[p.id]);
   }
   async rpc(action, args = {}) {
-    const { data, error } = await this.client.rpc('max_coop', { p_action: action, p_args: { room: this.room?.id, ...args } });
-    if (error) throw new Error(error.message || 'Could not reach the room.');
+    const { data, error, status } = await this.client.rpc('max_coop', { p_action: action, p_args: { room: this.room?.id, ...args } });
+    if (error) throw Object.assign(new Error(error.message || 'Could not reach the room.'), { code: error.code, status: status ?? error.status });
     return data;
   }
+  admittedRoom(room) {
+    if (room?.closed || room?.state === 'closed') throw new Error('This garden has closed.');
+    if (!room || room.id !== this.room?.id || !memberList(room.members) || !['lobby', 'playing'].includes(room.state) || !room.members.some(p => p.id === room.host)) throw new Error('The server returned an invalid garden.');
+    if (!room.members.some(p => p.id === this.user.id)) throw new Error('You are not in this garden.');
+    return room;
+  }
+  recover(error) {
+    if (this.closed) return;
+    if (!(this.entered || this.playing) || !transientRoomError(error)) { this.fail(error.message || 'Could not reach the room.'); return; }
+    this.pollFailures = Math.min(ROOM_RETRY_DELAYS.length, this.pollFailures + 1);
+    const delay = ROOM_RETRY_DELAYS[this.pollFailures - 1];
+    // Preserve the admitted reservation and cap the retry rate. A visible
+    // player also recovers from a long outage without needing a focus event.
+    this.nextPollRetry = Date.now() + delay;
+  }
+  recovered() { this.pollFailures = 0; this.nextPollRetry = 0; this.connectionExpired = false; }
   async enter(code) {
+    if (this.closed) throw new Error('This session has ended. Start a new garden.');
     await this.client.realtime.setAuth();
     if (code && typeof code === 'object' && code.global) {
       const { data, error } = await this.client.rpc('max_coop_global', {
@@ -99,7 +124,7 @@ export class CoopSession {
           if (!this.closed && this.channels.get(suffix) === channel) {
             this.channels.delete(suffix);
             void this.client.removeChannel(channel);
-            if (!(typeof document !== 'undefined' && document.hidden)) setTimeout(() => { void this.resume(); }, 350);
+            if (!(typeof document !== 'undefined' && document.hidden)) setTimeout(() => { void this.resume(true); }, 350);
           }
           resolve();
         }
@@ -132,11 +157,13 @@ export class CoopSession {
     this.hooks.room?.(this.room);
   }
   async poll(force = false) {
-    if (this.closed || this.polling) return;
+    if (this.closed || this.polling || this.resuming) return;
+    if (!force && Date.now() < this.nextPollRetry) return;
     if (!force && this.playing && Date.now() - this.lastPoll < 2000) return;
+    if (force) this.recovered();
     this.polling = true;
     try {
-      const room = await this.rpc('get'); if (this.closed) return;
+      const room = this.admittedRoom(await this.rpc('get')); if (this.closed) return;
       const previousHost = this.room?.host;
       this.room = room; this.lastPoll = Date.now();
       if (previousHost && previousHost !== room.host) {
@@ -145,9 +172,9 @@ export class CoopSession {
           this.channels.delete('state');
           await this.client.removeChannel(stateChannel);
         }
-        await this.subscribe('state');
         if (this.host) this.pending = [];
       }
+      await this.subscribe('state');
       if (!this.host) {
         await this.subscribe(this.user.id);
         for (const [id, channel] of [...this.channels]) if (id !== 'state' && id !== this.user.id) {
@@ -157,8 +184,13 @@ export class CoopSession {
       await this.syncChannels();
       this.notifyRoom();
       this.sendLobby();
-    } catch (error) { this.fail(error.message); }
-    finally { this.polling = false; }
+      this.recovered();
+    } catch (error) { this.recover(error); }
+    finally {
+      this.polling = false;
+      const resume = this.resumeQueued; this.resumeQueued = null;
+      if (resume !== null) void this.resume(resume);
+    }
   }
   async ready(value) {
     if (value && !this.canReady) throw new Error('Waiting for the host to receive your selection.');
@@ -237,11 +269,17 @@ export class CoopSession {
     this.received.set(stream, packet.seq);
     if (this.received.size > 32) this.received.delete(this.received.keys().next().value);
     if (sender === 'state' && !this.host) {
-      if (packet.end) { this.fail('The host left the garden.'); return; }
+      if (packet.end || packet.depart) {
+        if (packet.end && (packet.ended === true || this.runEnded || !this.playing)) this.fail('The garden ended.');
+        else void this.poll(true);
+        return;
+      }
       const matched = this.acceptLobby(packet.lobby);
       if (!packet.state) return;
       if (!this.playing && !matched) { this.fail('Your selection was not confirmed. Rejoin the garden before starting.'); return; }
       this.lastHost = Date.now(); this.begin();
+      this.connectionExpired = false;
+      if (packet.state.ended === true) this.runEnded = true;
       const ack = packet.state.acks?.[this.user.id];
       if (Number.isSafeInteger(ack)) this.pending = this.pending.filter(a => a.id > ack);
       this.hooks.state?.(packet.state);
@@ -277,22 +315,26 @@ export class CoopSession {
       } else this.hooks.input?.(sender, packet);
     }
   }
-  async resume() {
+  async resume(automatic = false) {
     if (this.closed || !this.room || this.resuming) return;
+    if (this.polling) { if (!automatic || this.resumeQueued === null) this.resumeQueued = automatic; return; }
+    if (automatic && Date.now() < this.nextPollRetry) return;
+    if (!automatic) this.recovered();
     this.resuming = true; this.lastHost = Date.now();
     try {
       await this.client.realtime.setAuth();
       const stale = [...this.channels.values()];
       this.channels.clear();
       await Promise.allSettled(stale.map(channel => this.client.removeChannel(channel)));
-      const room = await this.rpc('get'); if (this.closed) return;
+      const room = this.admittedRoom(await this.rpc('get')); if (this.closed) return;
       this.room = room; this.lastPoll = Date.now();
       if (this.host) this.pending = [];
       await this.subscribe('state');
       if (this.host) await this.syncChannels();
       else await this.subscribe(this.user.id);
       this.notifyRoom(); this.sendLobby();
-    } catch (_) {
+      this.recovered();
+    } catch (error) { this.recover(error);
     } finally { this.resuming = false; }
   }
   action(type, data = {}) {
@@ -301,11 +343,15 @@ export class CoopSession {
   }
   tick(avatar, capture, now = Date.now()) {
     if (!this.playing || this.closed) return;
-    if (!this.host && !(typeof document !== 'undefined' && document.hidden) && now - this.lastHost > 90000) { this.fail('The garden connection expired.'); return; }
+    if (!this.host && !(typeof document !== 'undefined' && document.hidden) && now - this.lastHost > 90000) {
+      if (!this.connectionExpired) { this.connectionExpired = true; void this.resume(true); }
+      return;
+    }
     if (this.host && (this.sendingState || now < this.nextStateAt)) return;
     if (now - this.lastSend < (this.host ? 100 : 66)) return;
     this.lastSend = now;
     const state = this.host ? capture() : null;
+    if (state?.ended === true) this.runEnded = true;
     if (state?.ended && this.room.members.length === 1) { void this.leave(); return; }
     this.send(this.host ? { lobby: this.lobbyPacket(), state } : { selection: this.selection, avatar, actions: this.pending });
   }
@@ -334,7 +380,7 @@ export class CoopSession {
   }
   async leave() {
     if (this.closed) return this.leaving;
-    this.send({ end: true }); this.closed = true; this.playing = false;
+    this.send(this.host && this.playing && !this.runEnded ? { depart: true } : { end: true, ...(this.runEnded ? { ended: true } : {}) }); this.closed = true; this.playing = false;
     this.cancelPrepare('You left the garden.'); clearInterval(this.timer); clearTimeout(this.transferTimer);
     this.frameReceiver.reset(); this.sendingState = false;
     const channels = [...this.channels.values()]; this.channels.clear();

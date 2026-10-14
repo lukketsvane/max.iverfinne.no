@@ -7,6 +7,12 @@ A phone-first native-pixel garden roguelite. Grow a garden, defend it, explore t
 **Runtime:** static HTML/JS/CSS built with esbuild and deployed on Vercel  
 **Realtime/backend:** Supabase Auth + Realtime + Postgres RPCs
 
+The [finished-game master plan](docs/design/finished-game-master-plan.md) sets the
+ordered path toward Risk of Rain 2's depth and polish through MAX's own garden,
+native art and physical ascent. Its [execution ledger](docs/design/finished-game-progress.json)
+records verified work and the next milestone; planned quality targets are not
+claims of completed playtesting.
+
 ## The current game contract
 
 These are product rules, not suggestions. Preserve them unless the design is explicitly changed.
@@ -26,6 +32,12 @@ Unlocked **relic stones** in the collection garden select game modes using the s
 - When a run ends with one player left in the room, the client leaves immediately so its dead session cannot be rejoined. Play again waits for that departure before joining a fresh run.
 - Settings and boon selection do **not** pause the world.
 - The app must work with normal current Safari/WebKit behavior. Experimental WebKit feature flags are not a requirement.
+
+Temporary room polling failures retain the admitted membership and retry with
+1/2/4/8/10-second capped backoff. Returning online or to the foreground rebuilds
+the same room's channels. A healthy host's departure lets the server promote a
+remaining gardener; a genuine ended run or confirmed expired membership still
+closes safely. These repairs do not create reload checkpoints or change access.
 
 ### Characters are exclusive
 
@@ -173,6 +185,14 @@ Staying in the same campaign garden summons roaming guardians after 110 seconds 
 Before Play, **03 / SKILLS** chooses secondary and special abilities. Choices are saved locally and confirmed in the shared-game handshake. Each character keeps its original primary and utility controls. The accepted loadout stays fixed for that membership, survives host handoff and never grants free boon ranks.
 
 The setup page keeps its sections at fixed positions for every character, including Sligo. Native skill icons have 48-pixel touch targets and a selected underline; the current name and effect appear in a separate fixed-height readout.
+
+During play, the small skill/resource meter and Controls describe the equipped
+ability's actual cost and cooldown. Mycel's Culture has six small cells; an
+unaffordable or rejected cast uses the existing brief denied pip. Controller
+specials follow the same equipped verb as keyboard/touch, while Cairn's owned
+Shovel keeps its explicit Tend/Down + Special chord. Rendering reads existing
+owner state and does not create or alter a cast. C/V remain keyboard/controller
+only until the master plan's explicit phone-input milestone is implemented.
 
 | Character | Alternate secondary | Alternate special |
 | --- | --- | --- |

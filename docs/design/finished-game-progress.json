@@ -1,0 +1,22 @@
+{
+  "goal": "Finish MAX to at least Risk of Rain 2's depth and polish while preserving MAX's identity",
+  "established": "2026-10-14",
+  "baselineCommit": "778ab6e98f54d3c025045c126bddd0b538b7a675",
+  "plan": "docs/design/finished-game-master-plan.md",
+  "releaseCommit": null,
+  "nextMilestone": "M0",
+  "milestones": [
+    { "id": "M0", "name": "Trustworthy baseline", "status": "verifying", "evidence": ["Historical/current source repair: 64 focused checks and build passed; full suite pending"] },
+    { "id": "M1", "name": "Dependable, honest play", "status": "in_progress", "tasks": ["Recover transient session polling failures", "Healthy host departure preserves remaining run", "Equipped skill feedback, help and controller parity"] },
+    { "id": "M2", "name": "Whole kit on iPhone", "status": "pending" },
+    { "id": "M3", "name": "Coherent, surprising builds", "status": "pending" },
+    { "id": "M4", "name": "Complete opening chapter", "status": "pending", "firstTask": "Figma MASTER Garden 3 Broken Aqueduct loop" },
+    { "id": "M5", "name": "Encounter identity and rhythm", "status": "pending" },
+    { "id": "M6", "name": "Twenty memorable places", "status": "pending" },
+    { "id": "M7", "name": "Risk, bosses and repeat play", "status": "pending" },
+    { "id": "M8", "name": "Visual, sonic and tactile finish", "status": "pending" },
+    { "id": "M9", "name": "Meaningful records and retention", "status": "pending" },
+    { "id": "M10", "name": "Demonstrate a finished product", "status": "pending", "unmeasured": ["Human first-time comprehension/replay desire", "Real target-iPhone late-run performance", "Quality parity with Risk of Rain 2"] }
+  ],
+  "concurrentWork": "Tiara/Garden 10 head boss: preserve separate task and integrate tested main commits"
+}

@@ -252,6 +252,20 @@ function drawCombatStrike(b,x,y){
 
 function actorSkills(member){var m=member||(coop&&(coopActor||coop.members[coop.me]));return window.MaxSkillLoadouts.clean(m?m.classId:rogueRun.classId,m?m.skills:rogueRun.skills);}
 function alternateSkill(slot,member){return actorSkills(member)[slot]||'';}
+// Presentation reads existing owner state; drawing cannot create, tick or cancel a cast.
+function classSkillFeedback(){
+  var member=coop&&(coopActor||coop.members[coop.me]),holder=member||rogueRun,kit=ownClass(),id=kit.id,spec=loadoutSkillSpec('special',member||undefined),q={},resource='',max=0,cost=0,left=0;
+  if(id==='mech'){q=holder.engineer||{};resource='charge';max=3;cost=3;left=q.specialCool||0;}
+  else if(id==='runner'){q=holder.wrestler||{};resource='momentum';max=100;left=rattusTimerRemaining(q,'specialCool');}
+  else if(id==='bulwark'){q=holder.cairn||{};resource='strata';max=3;cost=3;left=cairnRemaining(q,'specialCool');}
+  else if(id==='herbalist'){q=holder.mycel||{};resource='culture';max=6;cost=4;left=mycelRemaining(q,'specialCool');}
+  else if(id==='polge'){q=classFighters.find(function(f){return f.owner===(member?member.id:'')&&f.world===worldLevel();})||{};resource='rhythm';max=3;left=spec?q.loadoutSpecialCool||0:0;}
+  if(spec)cost=spec.cost;
+  var amount=Number.isFinite(q[resource])?Math.max(0,Math.min(max,q[resource])):0,full=spec?spec.cd:classSkillCooldown();
+  left=Math.max(0,Number.isFinite(left)?left:0,Number.isFinite(P.skillCool)?P.skillCool:0);
+  var options=window.MaxSkillLoadouts.options(id).special,choice=options.find(function(v){return v[0]===(alternateSkill('special',member||undefined)||'base');})||options[0];
+  return {classId:id,name:choice[1],resource:resource,amount:amount,max:max,cost:cost,resourceReady:amount>=cost,cooldown:full,left:left,progress:Math.max(0,Math.min(1,1-left/full)),tun:Math.max(0,P.tun||0),tunTime:kit.tunTime||0,denied:P.skillDenied>0,counter:Math.max(0,q.counter||0),reserved:!!q.ridgeReserved,barrier:Math.max(0,q.barrier||0)};
+}
 function loadoutSkillSpec(slot,member){
   var id=member?member.classId:ownClass().id,key=alternateSkill(slot,member);if(!key||id==='sligo')return null;
   return {
