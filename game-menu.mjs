@@ -350,7 +350,7 @@ function gardenGestures() {
     }
   }, { passive: false });
 }
-function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
+function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Erasmus Berg', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return CLASS_SKINS[id] || 'moss-pink'; }
 function characterChoice(node, id) {
   node.addEventListener('click', () => {
@@ -736,8 +736,8 @@ function help() {
     ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J / B to aim, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 boon · Esc settings'],
     ['CLASS ACTIONS', 'Keyboard/controller: C uses Max Fan, Rattus Tail latch, Cairn Stone or Pølge Clinch; V uses Max Rover, Rattus Driving or Cairn Brace. Hold and release Rattus actions. Cairn with a Shovel: Down + E burrows.'],
     ['MOUSE', 'Click to lock and aim; Esc frees the mouse. Left click attacks, right click dodges, middle click uses your skill. Hold an attack to charge. Click a boon to choose it.'],
-    ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
-    ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
+    ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Erasmus Berg: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
+    ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Erasmus Berg: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
     ['BUILDS', 'Boons change your attacks and skills. Combine their named prerequisites to unlock signature abilities.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
