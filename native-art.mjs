@@ -3,6 +3,7 @@ import { updateRattusMotion } from './rattus-motion.mjs';
 import { updateCairnMotion } from './cairn-motion.mjs';
 import { updateMycelMotion } from './mycel-motion.mjs';
 import { crownPose, crownClip, crownGuardPose } from './hollow-crown-art.mjs';
+import { tiaraHeadPose } from './tiara-head-art.mjs';
 
 const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
@@ -26,29 +27,37 @@ function playerCell(skin, player) {
   return null;
 }
 const ON_DEMAND = Object.freeze(['sligo']);
-const ENEMIES = { 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth' };
+const ENEMIES = Object.freeze({ 3: 'seed-thief', 4: 'spore-caster', 5: 'shield-beetle', 6: 'healing-moth', 9: 'thorn-caster', 10: 'dew-leech', 11: 'rammer' });
 const RATS = Object.freeze(['common', 'black', 'albino', 'plague']);
 const MILESTONES = Object.freeze({ mossback: '05-mossback', bellkeeper: '10-bellkeeper', 'moon-moth': '15-moon-moth' });
 const GUARDIANS = Object.freeze(['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','root-ram','silk-weaver','frostjaw','kiln-beetle','glass-snail','wick-hermit','spindle-widow','orchard-mimic','tuning-fork','ash-ferryman','compost-choir','seed-engine']);
+export const NATIVE_ART_LOAD_TIMEOUT_MS = 15000;
+function loadWithDeadline(url, id) {
+  let timer;
+  return Promise.race([loadAtlas(url), new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Native art timed out: ${id}`)), NATIVE_ART_LOAD_TIMEOUT_MS);
+  })]).finally(() => clearTimeout(timer));
+}
 
 export function createNativeArt() {
   const atlases = Object.create(null), flashes = Object.create(null), demand = Object.create(null), crownOutlines = Object.create(null);
+  const failedSkins = new Set();
   const clocks = new Map();
   let anonymousClocks = new WeakMap(), deaths = [], loading, sweptAt = 0;
 
   function reset() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
-  function milestone(enemy) { return !!enemy.boss && (Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
+  function milestone(enemy) { return !!enemy.boss && (enemy.bossId === 'tiara-head' || Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
   function idFor(enemy) { return enemy.crownGuard ? 'chimera-' + (enemy.crownGuardKind === 'ground' || enemy.kind === 5 ? 'ground' : 'air') : enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
-  function footOffset(enemy) { return enemy.crownGuard ? 10 : enemy.boss ? enemy.bossId === 'hollow-crown' ? 32 : enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
+  function footOffset(enemy) { return enemy.crownGuard ? 10 : enemy.boss ? enemy.bossId === 'hollow-crown' ? 32 : enemy.bossId === 'tiara-head' ? 19 : enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function renderTime() { return typeof performance !== 'undefined' ? performance.now() / 1000 : 0; }
   function clockFor(enemy, time) {
     const key = Number.isFinite(enemy.ph) ? `${idFor(enemy)}:${enemy.ph}` : null;
     let clock = key ? clocks.get(key) : anonymousClocks.get(enemy);
     if (!clock || time < clock.last - .5) {
       clock = { name: '', since: time, last: time, windup: 0, bite: 0, flash: 0, exposed: 0, attackT: 0,
-        releasedAt: -Infinity, recoveredAt: -Infinity, hitAt: -Infinity, defeated: false };
+        chargeT: 0, releasedAt: -Infinity, recoveredAt: -Infinity, hitAt: -Infinity, defeated: false };
       if (key) clocks.set(key, clock); else anonymousClocks.set(enemy, clock);
     }
     clock.last = time;
@@ -61,6 +70,7 @@ export function createNativeArt() {
   function pose(enemy, time) {
     const clock = clockFor(enemy, time);
     if (enemy.boss && enemy.bossId === 'hollow-crown') return crownPose(enemy, time, clock);
+    if (enemy.boss && enemy.bossId === 'tiara-head') return tiaraHeadPose(enemy, time, clock);
     if (enemy.crownGuard) return crownGuardPose(enemy, time, clock);
     if (!enemy.boss && enemy.kind === 8) {
       const allowed = ['idle', 'walk', 'run', 'jump', 'windup', 'attack', 'recover', 'hurt'];
@@ -73,7 +83,8 @@ export function createNativeArt() {
       return { name, seconds: Number.isFinite(enemy.ratStateT) ? Math.max(0, enemy.ratStateT) : Math.max(0, time - clock.since), progress };
     }
     if (clock.windup > 0 && !(enemy.windup > 0) && !(enemy.flee > 0) &&
-        ((enemy.bite || 0) > clock.bite + .05 || enemy.stolen && !clock.stolen)) clock.releasedAt = time;
+        ((enemy.bite || 0) > clock.bite + .05 || enemy.stolen && !clock.stolen || enemy.kind === 9)) clock.releasedAt = time;
+    if (enemy.kind === 11 && clock.chargeT > 0 && !(enemy.chargeT > 0) && !(enemy.flee > 0)) clock.recoveredAt = time;
     if (enemy.boss && clock.exposed > 0 && !(enemy.exposed > 0)) clock.recoveredAt = time;
     if (enemy.boss && clock.attackT > 0 && !(enemy.attackT > 0)) clock.recoveredAt = time;
     if (enemy.boss && (enemy.flash > clock.flash || enemy.hp < clock.hp)) clock.hitAt = time;
@@ -100,7 +111,10 @@ export function createNativeArt() {
     else if (enemy.kind === 3 && enemy.stolen) name = 'carry';
     else if (enemy.kind === 5 && enemy.flee > 0) name = 'exposed';
     else if (enemy.kind === 6 && enemy.healing) name = 'heal';
-    else if (time - clock.releasedAt < .3) { name = 'attack'; progress = (time - clock.releasedAt) / .3; }
+    else if (enemy.kind === 10 && enemy.draining) name = 'drain';
+    else if (enemy.kind === 11 && enemy.chargeT > 0 && Math.abs(enemy.chargeV || 0) > 0) { name = 'charge'; progress = 1 - enemy.chargeT / .46; }
+    else if (enemy.kind === 11 && time - clock.recoveredAt < .35) { name = 'recover'; progress = (time - clock.recoveredAt) / .35; }
+    else if (time - clock.releasedAt < .3) { name = enemy.kind === 9 ? 'cast' : 'attack'; progress = (time - clock.releasedAt) / .3; }
     else if (time - clock.releasedAt < .65) { name = 'recover'; progress = (time - clock.releasedAt - .3) / .35; }
     else if (Math.hypot(enemy.vx || 0, enemy.vy || 0) > 2) name = 'move';
     else if (enemy.kind === 5) name = 'guard';
@@ -110,7 +124,7 @@ export function createNativeArt() {
       clock.name = name; clock.since = time;
     }
     clock.last = time; clock.windup = enemy.windup || 0; clock.bite = enemy.bite || 0;
-    clock.flash = enemy.flash || 0; clock.hp = enemy.hp; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0; clock.attackT = enemy.attackT || 0;
+    clock.flash = enemy.flash || 0; clock.hp = enemy.hp; clock.stolen = enemy.stolen || 0; clock.exposed = enemy.exposed || 0; clock.attackT = enemy.attackT || 0; clock.chargeT = enemy.chargeT || 0;
     return { name, seconds: Math.max(0, time - clock.since), progress };
   }
   function flashAtlas(atlas, color = '#e6dfbb') {
@@ -136,11 +150,14 @@ export function createNativeArt() {
       .concat([['rattus-motion', 'assets/rattus-motion/atlas.json']])
       .concat(Object.values(ENEMIES).map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
       .concat([['hollow-crown', 'assets/crown-ascendant-v1/atlas.json']])
+      .concat([['tiara-head', 'assets/tiara-head-v1/atlas.json']])
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
       .concat(GUARDIANS.map(id => [id, `assets/garden-guardians-v1/native/${id}.json`]));
-    loading = Promise.allSettled(files.map(async ([id, url]) => {
-      const atlas = await loadAtlas(url);
+    // A failed request must not poison every subsequent Play. Keep successful
+    // decoded atlases, serialize the current attempt and retry only missing ones.
+    loading = Promise.allSettled(files.filter(([id]) => !atlases[id]).map(async ([id, url]) => {
+      const atlas = await loadWithDeadline(url, id);
       atlases[id] = atlas;
       if (!SKINS.includes(id) && id !== 'rattus-motion') flashes[id] = flashAtlas(atlas);
       if (id === 'hollow-crown') {
@@ -148,22 +165,38 @@ export function createNativeArt() {
         for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef', wounded: '#b5a8de' })) crownOutlines[name] = flashAtlas(atlas, color);
       }
       return id;
-    })).then(results => {
+    })).then(() => {
       const status = {
-        loaded: results.filter(r => r.status === 'fulfilled').map(r => r.value),
-        failed: results.map((r, i) => r.status === 'rejected' ? files[i][0] : null).filter(Boolean),
+        loaded: files.filter(([id]) => atlases[id]).map(([id]) => id),
+        failed: files.filter(([id]) => !atlases[id]).map(([id]) => id),
       };
       announceReady(status);
       return status;
-    });
+    }).finally(() => { loading = null; });
     return loading;
   }
-  function loadSkin(id) {
-    if (demand[id] || !ON_DEMAND.includes(id) || typeof fetch !== 'function') return;
-    demand[id] = loadAtlas(`assets/max-skins-v1/${id}/atlas.json`).then(atlas => {
+  async function ready(skin) {
+    const status = await load();
+    if (ON_DEMAND.includes(skin)) {
+      await loadSkin(skin, true);
+      (atlases[skin] ? status.loaded : status.failed).push(skin);
+    }
+    if (status.failed.length) throw new Error(`Could not load garden art (${status.failed.join(', ')}). Try Play again.`);
+    return status;
+  }
+  function loadSkin(id, retry = false) {
+    if (atlases[id]) return Promise.resolve();
+    if (demand[id]) return demand[id];
+    if (!ON_DEMAND.includes(id) || typeof fetch !== 'function' || failedSkins.has(id) && !retry) return Promise.resolve();
+    demand[id] = loadWithDeadline(`assets/max-skins-v1/${id}/atlas.json`, id).then(atlas => {
       atlases[id] = atlas;
+      failedSkins.delete(id);
       announceReady({ loaded: [id], failed: [] });
-    }, () => {});
+    }, () => {
+      failedSkins.add(id);
+      announceReady({ loaded: [], failed: [id] });
+    }).finally(() => { delete demand[id]; });
+    return demand[id];
   }
   function playerImage(skin, sheet) {
     if (skin === 'moss') skin = 'moss-pink';
@@ -194,9 +227,9 @@ export function createNativeArt() {
     const clock = clockFor(enemy, time);
     if (clock.defeated) return;
     clock.defeated = true; clock.last = time;
-    const name = enemy.crownGuard ? idFor(enemy) + '/death' : enemy.bossId === 'hollow-crown' && (enemy.crownStage === 4 || enemy.phase === 4) ? crownClip(atlas.manifest, 'wounded/death') : 'death';
+    const name = enemy.bossId === 'tiara-head' ? 'hurt' : enemy.crownGuard ? idFor(enemy) + '/death' : enemy.bossId === 'hollow-crown' && (enemy.crownStage === 4 || enemy.phase === 4) ? crownClip(atlas.manifest, 'wounded/death') : 'death';
     const clip = atlas.manifest.animations[name];
-    deaths.push({ atlas, name, crown: enemy.bossId === 'hollow-crown', x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
+    deaths.push({ atlas, name, fade: enemy.bossId === 'tiara-head', crown: enemy.bossId === 'hollow-crown', x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
       duration: clip.frames.length / clip.fps });
     if (deaths.length > 32) deaths.shift();
   }
@@ -206,7 +239,10 @@ export function createNativeArt() {
     deaths = deaths.filter(death => time >= death.at && elapsed(death) < death.duration);
     for (const death of deaths) {
       if (death.crown !== foreground) continue;
+      ctx.save();
+      if (death.fade) ctx.globalAlpha *= Math.max(0, 1 - elapsed(death) / death.duration);
       drawAtlas(ctx, death.atlas, death.name, elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
+      ctx.restore();
     }
   }
   function drawCrownEffect(ctx, name, seconds, x, y, progress, facing = 1) {
@@ -239,7 +275,7 @@ export function createNativeArt() {
     updateCairnMotion(player, dt, speedScale, context);
     updateMycelMotion(player, dt, speedScale, context);
   }
-  return { skins: SKINS, load, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion, drawEnemy, drawCrownEffect, crownDeathRemaining, enemyDefeated, drawDefeated, reset };
+  return { skins: SKINS, load, ready, playerPath, playerRow, playerCell, playerImage, drawPlayerMotion, updatePlayerMotion, drawEnemy, drawCrownEffect, crownDeathRemaining, enemyDefeated, drawDefeated, reset };
 }
 
 if (typeof window !== 'undefined') {

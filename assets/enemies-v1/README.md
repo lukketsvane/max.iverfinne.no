@@ -21,9 +21,12 @@ This pack is an art handoff, with no changes to collisions, attacks or balance.
 | spore-caster | k.kind === 4 | 16×16 / (8,15) | channel |
 | shield-beetle | k.kind === 5 | 16×16 / (8,15) | guard; exposed while k.flee > 0 |
 | healing-moth | k.kind === 6 | 16×16 / (8,15) | heal while k.healing |
+| thorn-caster | k.kind === 9 | 32×32 / (16,31) | cast; original enemies-v2 master row 6 |
+| dew-leech | k.kind === 10 | 32×32 / (16,31) | drain; original enemies-v2 master row 1 |
+| rammer | k.kind === 11 | 32×32 / (16,31) | charge; original enemies-v2 master row 4 |
 | hollow-crown | k.boss, phase 1–3 | 32×32 / (16,31) | phaseN/vulnerable while k.exposed > 0 |
 
-Each small enemy has a 128×128 sheet: eight frames in each row, ordered
+The original four small enemies each have a 128×128 sheet: eight frames in each row, ordered
 idle / move / windup / attack / recover / hurt / death / special. The beetle's
 `exposed` clip reuses recovery frames. Bodies are roughly 7–12px; antennae,
 seeds, wings and particles may extend farther. Ground enemies end on the bottom
@@ -46,6 +49,11 @@ Supply the renderer the corresponding native foot/hover anchor; do not change
 enemy positions, physics or hitboxes to align art. Keep crown health lights,
 healing links, elite marks, damage flash and gameplay hazard tells as overlays.
 Health lights remain on the crown, never in a new screen HUD.
+
+The three October 14 role bindings use the unchanged archived
+[enemies-v2 master](../enemies-v2/README.md), now a production Figma source.
+Their separate 32px native contract preserves the original pixels. They no
+longer use provisional rectangle bodies.
 
 Use state-local elapsed time rather than global time for one-shots; save/reset
 the visual state clock independently of authoritative gameplay state. For

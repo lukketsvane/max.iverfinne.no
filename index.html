@@ -6553,10 +6553,32 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
+var nativeImagePending=new WeakMap(),nativeImageFailed=new WeakSet();
+function prepareNativeImage(image,name){
+  if(ready(image))return Promise.resolve();
+  if(nativeImagePending.has(image))return nativeImagePending.get(image);
+  if(nativeImageFailed.has(image)||image.complete&&!image.naturalWidth)image.src=image.src;
+  var timer,pending=Promise.race([
+    Promise.resolve().then(function(){return image.decode();}),
+    new Promise(function(resolve,reject){timer=setTimeout(function(){reject(new Error('Native image timed out: '+name));},15000);})
+  ]).then(function(){
+    if(!ready(image))throw new Error('Native image unavailable: '+name);
+    nativeImageFailed.delete(image);
+  }).catch(function(error){nativeImageFailed.add(image);throw error;}).finally(function(){clearTimeout(timer);nativeImagePending.delete(image);});
+  nativeImagePending.set(image,pending);return pending;
+}
+async function prepareNativeArt(skin){
+  if(!window.MaxNativeArt||typeof window.MaxNativeArt.ready!=='function')throw new Error('Game art is unavailable. Reload and try Play again.');
+  var images=Object.keys(PEST_BIRDS).map(function(id){return [PEST_BIRDS[id].im,id];}).concat([[districtProps,'district props'],[districtLandmarks,'district landmarks']]);
+  var results=await Promise.allSettled([window.MaxNativeArt.ready(skin)].concat(images.map(function(pair){return prepareNativeImage(pair[0],pair[1]);})));
+  var failures=results.map(function(result,i){return result.status==='rejected'?(i?images[i-1][1]:result.reason.message||'enemy atlases'):null;}).filter(Boolean);
+  if(failures.length)throw new Error('Could not load garden art ('+failures.join(', ')+'). Try Play again.');
+}
 function attachGameMenu(){
   if(!window.MaxGameMenu)return;
   window.MaxGameMenu.attach({
     pause:setMenuPaused,
+    prepareNativeArt:prepareNativeArt,
     setCovered:function(v){worldCovered=!!v;},
     effectsVolume:function(){return effectsVolume;},
     musicVolume:function(){return musicVolume;},

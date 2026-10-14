@@ -4,15 +4,131 @@ const path = require('node:path');
 const { readFileSync } = require('node:fs');
 const { build } = require('esbuild');
 const { JSDOM } = require('jsdom');
-const compiled = build({
+const compileMenu = publishableKey => build({
   entryPoints: [path.join(__dirname, '../game-menu.mjs')], bundle: true, write: false, format: 'iife',
-  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify({ url: 'https://example.supabase.co', publishableKey: 'sb_publishable_test' }) },
+  define: { __MAX_SUPABASE_CONFIG__: JSON.stringify({ url: 'https://example.supabase.co', publishableKey }) },
   plugins: [{ name: 'auth-service', setup(b) {
     b.onResolve({ filter: /^@supabase\/supabase-js$/ }, () => ({ path: 'test-client', namespace: 'test' }));
     b.onLoad({ filter: /.*/, namespace: 'test' }, () => ({ contents: 'export const createClient = () => window.testClient;' }));
   } }],
 }).then(r => r.outputFiles[0].text);
+const compiled = compileMenu('sb_publishable_test'), offlineCompiled = compileMenu('');
 const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
+
+test('Play waits for the actual native-art bridge before reserving or starting a shared run', async () => {
+  let release, preparations = 0;
+  const m = await menu(undefined, { controller: { prepareNativeArt: skin => {
+    preparations++; assert.equal(skin, 'tide'); return new Promise(resolve => { release = resolve; });
+  } } });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(preparations, 1); assert.equal(m.beginCount, 0); assert.equal(m.active, false);
+    assert.equal(m.w.document.querySelector('.max-menu').hidden, false);
+    assert.equal(m.calls.some(([name]) => name === 'max_coop_global'), false, 'no membership while any dangerous body is still decoding');
+    assert.equal(m.pauses.at(-1), true); assert.match(m.w.document.querySelector('.max-status').textContent, /Loading garden art/);
+    m.click('Play'); await m.settle(); assert.equal(preparations, 1, 'repeated Play shares the current attempt');
+    release(); await m.settle(); assert.equal(m.beginCount, 1); assert.equal(m.pauses.at(-1), false);
+  } finally { release?.(); m.dom.window.close(); }
+});
+
+test('failed native art is surfaced without admission or simulation, and the next Play retries', async () => {
+  let attempts = 0;
+  const m = await menu(undefined, { controller: { prepareNativeArt: async () => {
+    if (++attempts === 1) throw new Error('Could not load garden art (rammer). Try Play again.');
+  } } });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 0); assert.equal(m.active, false); assert.equal(m.pauses.at(-1), true);
+    assert.equal(m.calls.some(([name]) => name === 'max_coop_global'), false);
+    assert.equal(m.w.document.querySelector('.max-menu').hidden, false);
+    assert.match(m.w.document.querySelector('.max-status').textContent, /rammer.*Try Play again/);
+    m.click('Play'); await m.settle(); assert.equal(attempts, 2); assert.equal(m.beginCount, 1);
+  } finally { m.dom.window.close(); }
+});
+
+test('a missing native-art entrypoint fails closed instead of starting primitive enemies', async () => {
+  const m = await menu(undefined, { nativeArt: null });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 0); assert.equal(m.active, false); assert.equal(m.pauses.at(-1), true);
+    assert.equal(m.calls.some(([name]) => name === 'max_coop_global'), false);
+    assert.match(m.w.document.querySelector('.max-status').textContent, /art is unavailable.*Reload/);
+  } finally { m.dom.window.close(); }
+});
+
+test('unconfigured offline Play also waits for native art, surfaces failures and retries before starting', async () => {
+  let attempts = 0, release;
+  const m = await menu(undefined, { offline: true, controller: { prepareNativeArt: async () => {
+    if (++attempts === 1) throw new Error('Could not load garden art (crow). Try Play again.');
+    await new Promise(resolve => { release = resolve; });
+  } } });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(m.beginCount, 0); assert.equal(m.active, false); assert.equal(m.pauses.at(-1), true);
+    assert.match(m.w.document.querySelector('.max-status').textContent, /crow.*Try Play again/);
+    m.click('Play'); await m.settle(); assert.equal(m.beginCount, 0); assert.equal(m.w.document.querySelector('.max-menu').hidden, false);
+    release(); await m.settle(); assert.equal(m.beginCount, 1); assert.equal(m.active, true); assert.equal(m.pauses.at(-1), false);
+    assert.equal(m.calls.length, 0, 'offline art gate never invents a shared room');
+  } finally { release?.(); m.dom.window.close(); }
+});
+
+test('Back cancels online/offline loading, and an obsolete completion cannot start or unlock a newer Play', async () => {
+  for (const offline of [false, true]) {
+    const attempts = [];
+    const m = await menu(undefined, { offline, controller: { prepareNativeArt: skin => new Promise((resolve, reject) => attempts.push({ skin, resolve, reject })) } });
+    try {
+      m.click('Play'); m.click('Play'); await m.settle(); assert.equal(attempts.length, 1);
+      m.click('Back'); await m.settle(); assert.equal(m.w.document.querySelector('.max-menu').dataset.screen, 'home');
+      m.click('Play'); m.click('Mycel'); m.click('Play'); await m.settle(); assert.equal(attempts.length, 2);
+      assert.equal(attempts[1].skin, 'moon');
+      attempts[0].resolve(); await m.settle(); assert.equal(m.beginCount, 0);
+      m.click('Play'); await m.settle(); assert.equal(attempts.length, 2, 'old finally cannot clear the newer attempt busy guard');
+      attempts[1].resolve(); await m.settle(); assert.equal(m.beginCount, 1); assert.equal(m.begun.selection.classId, 'herbalist');
+    } finally { for (const attempt of attempts) attempt.resolve(); m.dom.window.close(); }
+  }
+});
+
+test('Back cancels failed loading without surfacing a stale error on home or reserving a room', async () => {
+  for (const offline of [false, true]) {
+    let reject;
+    const m = await menu(undefined, { offline, controller: { prepareNativeArt: () => new Promise((_, fail) => { reject = fail; }) } });
+    try {
+      m.click('Play'); m.click('Play'); await m.settle(); m.click('Back');
+      reject(new Error('stale native decode failure')); await m.settle();
+      assert.equal(m.beginCount, 0); assert.equal(m.active, false); assert.equal(m.pauses.at(-1), true);
+      assert.equal(m.w.document.querySelector('.max-menu').dataset.screen, 'home'); assert.equal(m.w.document.querySelector('.max-menu').hidden, false);
+      assert.doesNotMatch(m.w.document.body.textContent, /stale native decode failure/);
+      assert.equal(m.calls.some(([name]) => name === 'max_coop_global'), false);
+    } finally { m.dom.window.close(); }
+  }
+});
+
+test('changing equipped skill or difficulty cancels pending Play and only a fresh intent accepts the new choice', async () => {
+  for (const offline of [false, true]) {
+    const releases = [];
+    const m = await menu(undefined, { offline, controller: { prepareNativeArt: () => new Promise(resolve => releases.push(resolve)) } });
+    try {
+      m.click('Play'); m.click('Play'); await m.settle();
+      const steam = m.w.document.querySelector('[data-skill-slot="special"][data-skill-id="steam"]'); assert.ok(steam); steam.click();
+      releases[0](); await m.settle(); assert.equal(m.beginCount, 0);
+      m.click('Play'); await m.settle(); m.click('hard difficulty'); releases[1](); await m.settle(); assert.equal(m.beginCount, 0);
+      m.click('Play'); await m.settle(); releases[2](); await m.settle(); assert.equal(m.beginCount, 1);
+      assert.equal(m.begun.selection.skills.special, 'steam'); assert.equal(m.begun.selection.difficulty, 'hard');
+    } finally { for (const release of releases) release(); m.dom.window.close(); }
+  }
+});
+
+test('a synchronous engine-start failure leaves the setup visible and paused instead of hiding the error', async () => {
+  for (const offline of [false, true]) {
+    const m = await menu(undefined, { offline, controller: { [offline ? 'beginRun' : 'beginCoop']: () => { throw new Error('engine start failed'); } } });
+    try {
+      m.click('Play'); m.click('Play'); await m.settle();
+      assert.equal(m.active, false); assert.equal(m.pauses.at(-1), true);
+      assert.equal(m.w.document.querySelector('.max-menu').hidden, false); assert.equal(m.w.MaxGameMenu.isOpen(), true);
+      assert.match(m.w.document.querySelector('.max-status').textContent, /engine start failed/);
+    } finally { m.dom.window.close(); }
+  }
+});
 
 test('Controls describes the selected secondary/special variants without inventing touch bindings', async () => {
   for (const [classId, secondary, special] of [['mech', 'shock', 'steam'], ['runner', 'snap', 'quake'], ['bulwark', 'clap', 'quake'], ['herbalist', 'miasma', 'storm'], ['polge', 'rise', 'haymaker'], ['sligo', undefined, 'watch']]) {
@@ -134,9 +250,10 @@ test('pre-run secondary and special choices persist and reach the accepted share
   } finally { m.dom.window.close(); }
 });
 
-async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, summaryStarted = false, controller = {}, url = 'https://max.iverfinne.no' } = {}) {
+async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = false, sharedStatus = null, scenes = null, rpc = null, eggs, present = {}, summaryStarted = false, controller = {}, nativeArt = { ready: async () => {} }, offline = false, url = 'https://max.iverfinne.no' } = {}) {
   const dom = new JSDOM('<!doctype html><html><body></body></html>', { url, runScripts: 'outside-only', pretendToBeVisual: true });
   const { window: w } = dom; w.TextEncoder = TextEncoder; w.MaxClasses = require('../max-classes.js');
+  w.MaxNativeArt = nativeArt;
   if (savedLoadout !== undefined) w.localStorage.setItem('max-loadout-v1', savedLoadout);
   if (eggs !== undefined) w.localStorage.setItem('max-easter-eggs-v1', JSON.stringify(eggs));
   const calls = [], signIns = [];
@@ -190,10 +307,10 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
     async removeChannel(ch) { channels.delete(ch.name); ch.status?.('CLOSED'); },
     from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }) }),
   };
-  w.eval(await compiled);
+  w.eval(await (offline ? offlineCompiled : compiled));
   const bridge = {
     pause: value => pauses.push(value), summary: () => ({ started: active || summaryStarted, ended: false }), canOpenMenu: () => !active,
-    beginRun() { throw new Error('normal production Play must enter the shared garden'); },
+    beginRun(selection) { if (!offline) throw new Error('normal production Play must enter the shared garden'); active = true; beginCount++; begun = { selection }; },
     beginCoop(network) { active = true; beginCount++; begun = { selection: { ...network.selection }, host: network.host, room: { ...network.room } }; },
     coopRoster() {}, coopState() {}, coopInput() {}, coopDepart() {}, coopJoin() {}, stopCoop() { active = false; },
     exitRun() { active = false; }, clearInput() {}, musicVolume: () => music, effectsVolume: () => effects, setMusicVolume: value => { music = value; }, setEffectsVolume: value => { effects = value; },
@@ -365,4 +482,40 @@ test('a first-time guest opens High Tide, chooses a character and keeps the reli
     m.w.MaxGameMenu.replay();await m.settle();m.click('Play');await m.settle();
     assert.equal(m.begun.room.mode,'high-tide');
   }finally{m.dom.window.close();}
+});
+
+test('Back while actual shared-room admission is pending cannot let the old candidate start or hide the home menu', async () => {
+  let releaseAdmission;
+  const m = await menu(undefined, { rpc: (name) => name === 'max_coop_global' ? new Promise(resolve => { releaseAdmission = () => resolve(null); }) : null });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle(); assert.equal(typeof releaseAdmission, 'function');
+    assert.equal(m.beginCount, 0); m.click('Back');
+    assert.equal(m.w.document.querySelector('.max-menu').dataset.screen, 'home');
+    releaseAdmission(); await m.settle();
+    assert.equal(m.beginCount, 0); assert.equal(m.active, false); assert.equal(m.w.MaxGameMenu.isOpen(), true);
+    assert.equal(m.w.document.querySelector('.max-menu').hidden, false); assert.equal(m.pauses.at(-1), true);
+    assert.equal(m.calls.filter(([name, args]) => name === 'max_coop' && args?.p_action === 'leave').length, 1, 'late admitted candidate releases its own reserved membership');
+    assert.equal([...m.channels.keys()].some(name => name.startsWith('max-coop:')), false, 'canceled candidate leaves no live game channel');
+  } finally { releaseAdmission?.(); m.dom.window.close(); }
+});
+
+test('a fresh Play after canceling delayed admission waits for that candidate to leave before joining and starts only once', async () => {
+  let releaseAdmission, releaseLeave, admissions = 0;
+  const m = await menu(undefined, { rpc: (name, args) => {
+    if (name === 'max_coop_global' && ++admissions === 1) return new Promise(resolve => { releaseAdmission = () => resolve(null); });
+    if (name === 'max_coop' && args?.p_action === 'leave') return new Promise(resolve => { releaseLeave = () => resolve({ data: { closed: true }, error: null }); });
+    return null;
+  } });
+  try {
+    m.click('Play'); m.click('Play'); await m.settle(); assert.equal(typeof releaseAdmission, 'function');
+    m.click('Back'); m.click('Play'); m.click('Play'); await m.settle();
+    assert.equal(admissions, 1, 'new Play does not race a still-pending old reservation'); assert.equal(m.beginCount, 0);
+    releaseAdmission(); await m.settle(); assert.equal(typeof releaseLeave, 'function');
+    assert.equal(admissions, 1, 'new Play waits for actual server departure completion too'); assert.equal(m.beginCount, 0);
+    assert.equal(m.w.document.querySelector('.max-menu').hidden, false); assert.equal(m.pauses.at(-1), true);
+    releaseLeave(); await m.settle(); assert.equal(admissions, 2); assert.equal(m.beginCount, 1); assert.equal(m.active, true);
+    assert.equal(m.w.document.querySelector('.max-menu').hidden, true); assert.equal(m.pauses.at(-1), false);
+    const globals = m.calls.map(([name], index) => name === 'max_coop_global' ? index : -1).filter(index => index >= 0);
+    const leave = m.calls.findIndex(([name, args]) => name === 'max_coop' && args?.p_action === 'leave'); assert.ok(globals[0] < leave && leave < globals[1]);
+  } finally { releaseAdmission?.(); releaseLeave?.(); m.dom.window.close(); }
 });

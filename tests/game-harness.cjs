@@ -24,6 +24,7 @@ const stateNames = [
   'ctx',
   'bossEvent', 'guardianView', 'worldBanner',
   'WALK_V',
+  'COMBAT_PROFILES', 'GARDEN_BOSSES', 'PEST_BIRDS',
 ];
 const functionNames = [
   'actorSkills', 'alternateSkill', 'classSkillFeedback', 'drawSkillPip', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat', 'runDamageScale',
@@ -52,6 +53,7 @@ const functionNames = [
   'updateYeet', 'drawYeet', 'yeetSync', 'yeetArt',
   'pollPads', 'configurePad',
   'drawCharge', 'drawBossBar',
+  'drawKrek', 'drawRoleEnemy', 'drawBirdPest', 'drawCrownForeground', 'gardenBossSpec', 'prepareNativeArt',
   'RELAY_LOCKS', 'relayProfile', 'relayBeam', 'updateNightRelay', 'nightRelayMode',
   'highTidePods', 'HIGH_TIDE_GATES', 'highTideRoutePoint', 'highTideTip', 'highTideBoons', 'highTideSpawnBoss', 'updateHighTideEnemies', 'highTideBossDefeated',
   'HIGH_TIDE', 'highTideMode', 'highTideProfile', 'highTidePlant', 'updateHighTide',

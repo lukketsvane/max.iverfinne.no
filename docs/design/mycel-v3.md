@@ -172,7 +172,7 @@ E briefly crouches. Real Drift ascent/descent uses existing jump cells and
 actual landing keeps the ordinary landing animation. Moving/jumping/tending
 owners never acquire a Bloom channel pose. Rejected exact cues and cancellation
 policy override stale snapshots. Only presentation clocks/cells change; there
-are no combat callbacks or body transformations. Rattus, Cairn and Crown remain
+are no combat callbacks or body transformations. Rattus, Erasmus Berg and Crown remain
 on their own native adapters.
 
 ## Live review

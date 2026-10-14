@@ -17,4 +17,12 @@ test('the production build ships every character outfit with its exact native sh
   for (const asset of shipped.assets) for (const file of ['atlas.json', 'main.png', 'interaction.png']) {
     assert.deepEqual(readFileSync(join(root, 'dist', pack, asset.id, file)), readFileSync(join(root, pack, asset.id, file)), `${asset.id}/${file} ships unchanged`);
   }
+  const enemies = JSON.parse(readFileSync(join(root, 'dist/assets/enemies-v1/manifest.json'), 'utf8'));
+  for (const id of ['thorn-caster', 'dew-leech', 'rammer']) {
+    assert.ok(enemies.assets.some(asset => asset.id === id), id + ' ships as a native enemy atlas');
+    const relative = `assets/enemies-v1/${id}/atlas.json`;
+    assert.deepEqual(readFileSync(join(root, 'dist', relative)), readFileSync(join(root, relative)));
+    assert.equal(JSON.parse(readFileSync(join(root, relative), 'utf8')).sheets.sprites.image, '../../enemies-v2/sprites.png');
+  }
+  assert.deepEqual(readFileSync(join(root, 'dist/assets/enemies-v2/sprites.png')), readFileSync(join(root, 'assets/enemies-v2/sprites.png')), 'restored original enemy master ships byte-equal');
 });

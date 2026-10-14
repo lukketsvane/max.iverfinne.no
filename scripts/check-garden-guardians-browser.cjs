@@ -3,7 +3,25 @@ const {spawn}=require('node:child_process'),{webkit,chromium}=require('playwrigh
 const port=8782,base=`http://127.0.0.1:${port}`;
 const server=spawn('python3',['-m','http.server',String(port),'--directory',process.env.GUARDIANS_REVIEW_DIST||'dist'],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','bellkeeper','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
+const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','tiara-head','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
+async function checkNativeRoles(page,engineName,errors){
+ await page.goto(base+'/review.html?mode=native-enemies&portrait=1');
+ await page.waitForFunction(()=>document.querySelector('iframe')?.contentWindow?.maxNativeRoleObservation,{},{timeout:15000});
+ const game=page.frames().find(f=>f!==page.mainFrame());
+ const status=await game.evaluate(()=>window.MaxNativeArt.ready());assert.deepEqual(status.failed,[]);
+ await game.waitForFunction(()=>Object.keys(window.maxNativeRoleObservation().bodies).length===7,{},{timeout:5000});
+ const observation=await game.evaluate(()=>window.maxNativeRoleObservation());
+ assert.deepEqual(observation.roles,[3,4,5,6,9,10,11]);
+ for(const kind of observation.roles){
+  const {body}=observation.bodies[kind],cell=kind>=9?32:16;
+  assert.equal(body.smoothing,false,'role '+kind+' preserves native pixels');
+  assert.equal(body.rect.length,8);assert.deepEqual(body.rect.slice(2,4),[cell,cell]);assert.deepEqual(body.rect.slice(6),[cell,cell]);
+  assert.ok(body.rect.every(Number.isInteger));
+  if(kind>=9){assert.match(body.src,/\/assets\/enemies-v2\/sprites\.png$/);assert.equal(body.rect[1],({9:6,10:1,11:4})[kind]*32);assert.deepEqual(body.rect.slice(4,6),[-16,-31]);}
+ }
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-native-roles-phone.png`});
+ assert.deepEqual(errors,[]);console.log(engineName,'all seven role bodies draw decoded original native sprites on phone OK');
+}
 async function checkCircuit(page,engineName,errors){
  const observation=async()=>JSON.parse(await page.locator('#status').getAttribute('data-circuit'));
  const ready=async()=>page.waitForFunction(()=>{
@@ -61,6 +79,7 @@ async function checkCircuit(page,engineName,errors){
    page.on('pageerror',e=>errors.push(e.message));
    page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
    if(!process.argv.includes('--native-kits-only')){
+   await checkNativeRoles(page,engineName,errors);
    await checkCircuit(page,engineName,errors);
    if(process.argv.includes('--circuit-only'))continue;
    for(let stage=1;stage<=20;stage++){

@@ -1,7 +1,9 @@
-# Rattus norvegicus, Cairn, Mycel
+# Rattus norvegicus, Erasmus Berg, Mycel
 
 Current authoring: [Figma native masters](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2). Tool instructions below describe historical imports; the retired scripts and demos are linked to their final source revision. Follow [the current art contract](https://github.com/lukketsvane/max.iverfinne.no/blob/main/docs/figma.md) for edits.
 Three original characters replace the old Moss, Ember and Moon Max recolours.
+Erasmus Berg is the display name; the existing `cairn/` pack, atlas IDs,
+registration recipes and image pins remain unchanged.
 Rattus norvegicus occupies the runner slot. The sole active Rattus outfit is
 Ring gear, `rattle-norvegicus-pink`, with saved cosmetic key `moss-pink`.
 Earlier wizard, black/gold and pink costumes are retired from runtime packs;
@@ -12,7 +14,7 @@ The remaining pack is independent and has no `variantOf` dependency.
 | Character | Role | Silhouette | Palette |
 | --- | --- | --- | --- |
 | Rattus norvegicus | pro wrestler / runner | grey fur, muscular hips/thighs, orange hair, pink tail, magenta/gold athletic ring gear; no hat or cape | grey, magenta, gold, orange |
-| Cairn | stone tank / bulwark | broad boulder, slab fists, massive short feet | slate, ceramic, amber |
+| Erasmus Berg | stone tank / bulwark | broad boulder, slab fists, massive short feet | slate, ceramic, amber |
 | Mycel | spore support / herbalist | wide cap, luminous gills, root feet | burgundy, ivory, mint |
 
 All six sheets are native **256×256** PNGs with **32×32** cells and integer

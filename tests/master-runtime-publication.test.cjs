@@ -165,6 +165,8 @@ test('current authenticated October 14 Hollow Tree source recompiles to exactly 
   assert.equal(receipt.artChunks.length, 1);
   assert.equal(receipt.artChunks[0].path, 'docs/design/platforming-oct14/actual-native-art-chunks.json');
   assert.equal(crypto.createHash('sha256').update(artBytes).digest('hex'), receipt.artChunks[0].sha256);
+  assert.equal(crypto.createHash('sha256').update(geometryBytes).digest('hex'), 'a0149939fddc7d46193ac545422e4f9f3d9b2bfba5dd2e746dd974480650991d');
+  assert.equal(crypto.createHash('sha256').update(artBytes).digest('hex'), '0e6caf03d77e5541c9fbb3985683efc4f340f2a966baab6e8012f7da1a65e806');
   const capture = JSON.parse(geometryBytes), art = joinChunks(JSON.parse(artBytes));
   const levelsBytes = fs.readFileSync(path.join(repo, 'levels-data.js')), sceneBytes = fs.readFileSync(path.join(repo, 'level-scenes-data.js'));
   const result = await publication.compileData(capture, art, publication.readData(levelsBytes, 'MaxLevelData'), publication.readData(sceneBytes, 'MaxLevelScenesData'));

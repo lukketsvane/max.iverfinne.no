@@ -1,0 +1,35 @@
+{
+  "format": "max-figma-vector-receipt/v1",
+  "sourceKind": "vector-export",
+  "path": "assets/tiara-head-v1/sprites.png",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "sectionId": "451:4",
+  "nodeId": "1021:13527",
+  "capturedAt": "2026-10-14T15:35:06.736Z",
+  "capture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-vector-capture.json",
+    "sha256": "cc838cb2226b96b5867bb40bc425d1fad44fb7ee818b068c7dcebf90ec6e2e37"
+  },
+  "rawCapture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-vector-capture.raw.json",
+    "sha256": "57fa99b80f4ab983958ded6d872a958f7aba0dfb7ae05ce3077741915db4684b"
+  },
+  "captureScript": {
+    "path": "docs/asset-review/tiara-head-v1/capture.use-figma.js",
+    "sha256": "885417ed87e120685a59cc20e0d7e907b007463d2c53222507de6e4b5ad65af7"
+  },
+  "export": {
+    "path": "docs/asset-review/tiara-head-v1/figma-export.png",
+    "sha256": "123c7dbb88538907f44a705d3fd0d006ee005ccbf23c02212d71b2ce289d2914"
+  },
+  "approvedNative": {
+    "path": "docs/asset-review/tiara-head-v1/approved-native.png",
+    "sha256": "1b2d166d5874f3b042ef09c7fe539f9e8762f8608aeb07da5a06a7848075d694"
+  },
+  "atlas": {
+    "path": "assets/tiara-head-v1/atlas.json",
+    "sha256": "c81120ef2064330176fefee3a227d48c80d375cf98ca0b1d96f0508b31238d99"
+  },
+  "note": "Actual native Figma path geometry and actual Figma exportAsync PNG are verified against the approved downscaled candidate. The PNG SHA-1 is an export byte hash, never a stored Figma imageHash."
+}

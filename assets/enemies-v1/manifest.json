@@ -21,6 +21,18 @@
     {
       "id": "hollow-crown",
       "manifest": "hollow-crown/atlas.json"
+    },
+    {
+      "id": "thorn-caster",
+      "manifest": "thorn-caster/atlas.json"
+    },
+    {
+      "id": "dew-leech",
+      "manifest": "dew-leech/atlas.json"
+    },
+    {
+      "id": "rammer",
+      "manifest": "rammer/atlas.json"
     }
   ]
 }

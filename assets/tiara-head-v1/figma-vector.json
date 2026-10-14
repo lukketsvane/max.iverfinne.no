@@ -1,0 +1,43 @@
+{
+  "format": "max-figma-vector-receipt/v1",
+  "sourceKind": "vector-export",
+  "path": "assets/tiara-head-v1/sprites.png",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "sectionId": "451:4",
+  "nodeId": "1032:21911",
+  "capturedAt": "2026-10-14T16:02:17.953Z",
+  "capture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-vector-capture.json",
+    "sha256": "b444923fe86187722495028ce33167c623304c86a302761a470edaa46afea239"
+  },
+  "rawCapture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-vector-capture.raw.json",
+    "sha256": "a5d6153a410f0fb82d534866f5ed8d1c2753e3d8107acdad4ceb9743f9a353a8"
+  },
+  "captureScript": {
+    "path": "docs/asset-review/tiara-head-v1/capture.use-figma.js",
+    "sha256": "8967b58728aadea98dc35bfc6f36238298c84c7ca9fae81854ff34e5c8e24a03"
+  },
+  "runtimeCapture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-runtime-capture.json",
+    "sha256": "3c69d25ab2c68b73600a16355bf13a6a1b7c03e6a6d0b4ece8f07283775570af"
+  },
+  "export": {
+    "path": "docs/asset-review/tiara-head-v1/figma-export.png",
+    "sha256": "123c7dbb88538907f44a705d3fd0d006ee005ccbf23c02212d71b2ce289d2914"
+  },
+  "approvedNative": {
+    "path": "docs/asset-review/tiara-head-v1/approved-native.png",
+    "sha256": "1b2d166d5874f3b042ef09c7fe539f9e8762f8608aeb07da5a06a7848075d694"
+  },
+  "atlas": {
+    "path": "assets/tiara-head-v1/atlas.json",
+    "sha256": "c81120ef2064330176fefee3a227d48c80d375cf98ca0b1d96f0508b31238d99"
+  },
+  "note": "The actual canonical Figma COMPONENT drives all animation and level instances. Its native vector path geometry and actual exportAsync PNG are verified against the approved downscaled candidate. PNG SHA-1 is an export byte hash, never a stored Figma imageHash.",
+  "comparison": {
+    "path": "docs/asset-review/tiara-head-v1/figma-comparison.json",
+    "sha256": "0ff295a76c8b7a00c61653fe50df1716f3302bd364738b371a86d9fa31eb9ac7"
+  }
+}

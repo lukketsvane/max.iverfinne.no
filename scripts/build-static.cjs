@@ -36,16 +36,18 @@ for (const file of [
   'assets/cavern-v1', 'assets/rattus-motion', 'assets/yeet-encounter-v1', 'manifest.webmanifest',
 ]) copy(file);
 for (const file of ['boss.png', 'effects.png', 'chimera.png', 'atlas.json', 'README.md']) copy('assets/crown-ascendant-v1/' + file);
+for (const file of ['sprites.png', 'atlas.json', 'README.md']) copy('assets/tiara-head-v1/' + file);
 for (const file of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, file))) copy(file);
 for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
+copy('assets/enemies-v2/sprites.png');
 for (const [pack, ids, sheets] of [
   ['max-skins-v1', ['tide', 'polge'], ['atlas.json', 'main.png', 'interaction.png']],
   ['characters-v2', ['rattle-norvegicus-pink', 'cairn', 'mycel'], ['atlas.json', 'main.png', 'interaction.png']],
   ['rat-enemies-v1', ['common', 'black', 'albino', 'plague'], ['atlas.json', 'sprites.png']],
-  ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown'], ['atlas.json', 'sprites.png']],
+  ['enemies-v1', ['seed-thief', 'spore-caster', 'shield-beetle', 'healing-moth', 'hollow-crown', 'thorn-caster', 'dew-leech', 'rammer'], ['atlas.json', 'sprites.png']],
 ]) {
   for (const id of ids) {
-    for (const file of sheets) copy(join('assets', pack, id, file));
+    for (const file of pack === 'enemies-v1' && ['thorn-caster', 'dew-leech', 'rammer'].includes(id) ? ['atlas.json'] : sheets) copy(join('assets', pack, id, file));
   }
   const packManifest = JSON.parse(readFileSync(join(root, 'assets', pack, 'manifest.json'), 'utf8'));
   const shippedIds = pack === 'max-skins-v1' ? ids.concat('sligo') : ids;

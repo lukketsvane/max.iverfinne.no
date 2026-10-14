@@ -148,6 +148,46 @@ masters.
 
 ## Tools
 
+### Tiara native vector master
+
+The owner's October 14 Tiara sheet has one explicit native vector export binding:
+`assets/tiara-head-v1/sprites.png`. Its master is a transparent 320×320 Figma
+component with 65 disjoint solid path parts in 63 colors, at the original 40×40 registration.
+This was authored in the configured production section after the PNG upload
+endpoint failed, then exported by Figma's actual `exportAsync` at 1×. The game
+uses that PNG export. The Figma source remains editable pixel geometry.
+
+Its manifest entry has `sourceKind: vector-export` and names the pinned receipt
+`assets/tiara-head-v1/figma-vector.json`. The `sha1` is the hash of the actual PNG
+export; it is **not** a stored Figma `imageHash`. All other production entries
+keep the ordinary one-image-fill contract and its original checks.
+
+`scripts/figma-vector-source.mjs` checks the complete authenticated source
+capture, actual exported PNG bytes, the lossless native geometry reconstruction,
+approved downscaled pixels and the atlas palette. The pinned parser running in
+Figma rejects curves, partial opacity, strokes, effects, transformed shapes and
+overlapping colors. Offline validation rejects incomplete parser audits, missing
+palette parts and changed evidence pins. `figma:check` also compares the current native
+node hierarchy and complete captured geometry, fills and export bytes through the
+`get_vector_export` replay capability. This capability must be served from an
+actual authenticated `use_figma` capture and actual Figma export, never from
+repository source pins. A server without that capability fails closed.
+
+The compact source capture retains every actual vector ID, fill and native
+bound, plus the lossless 102,400-cell palette-index geometry plane computed by
+the pinned parser running on the actual Figma paths. The untouched tool capture
+and executed parser remain pinned separately. Locally derived export hashes and
+coverage totals are labelled as derived evidence; they add no source-read claim.
+The decoded geometry plane must equal both the actual Figma PNG and the approved
+native candidate at every RGBA coordinate.
+
+For a future Tiara edit, capture the complete actual native master and its PNG
+export again, update the receipt and reviewed export together, and run the same
+authenticated comparison plus `npm test` and `npm run build`. An ordinary
+metadata-only snapshot cannot prove a vector fill or path has stayed unchanged.
+The capture timestamp describes the verification scope; it does not establish
+an ongoing live desktop connection.
+
 `scripts/figma-sync.mjs` talks to the Figma desktop app's local Dev Mode MCP server (`http://127.0.0.1:3845/mcp`; `FIGMA_MCP_URL` overrides it, for a local replay server only). It needs no token. Before running it:
 
 1. open the Figma desktop app (the browser has no local server),
@@ -183,7 +223,7 @@ Figma caps MCP tool calls per day; once spent it answers "Rate limit exceeded, p
 | REMOVED-FROM-FIGMA | the layer left a runtime section | remove the runtime use, then `figma:manifest` |
 | REJECTED | the layer or its pixels break a rule; the listed problems say which, the status it would have had is in brackets | fix it; nothing is pulled |
 
-A layer is REJECTED when it is off the integer grid, has not exactly one image fill, has anything drawn over or inside it, differs in size from its PNG, or has a name that is not a posix path inside `assets/`. A download is REJECTED when it is not a PNG, differs from the Figma hash or the layer size, differs from the current repo size (without `--allow-resize`), has partial alpha, colour under alpha 0 or colours outside the pack palette, is an exact k× upscale,.
+A raster layer is REJECTED when it is off the integer grid, has not exactly one image fill, has anything drawn over or inside it, differs in size from its PNG, or has a name that is not a posix path inside `assets/`. The one Tiara vector master uses the stricter captured-path and actual-export proof above. A download is REJECTED when it is not a PNG, differs from the Figma hash or the layer size, differs from the current repo size (without `--allow-resize`), has partial alpha, colour under alpha 0 or colours outside the pack palette, or is an exact k× upscale.
 
 ## Draft → production
 

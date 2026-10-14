@@ -1,0 +1,157 @@
+{
+  "format": "max-native-role-production-comparison/v1",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "productionSections": [
+    "451:2",
+    "451:3",
+    "451:4",
+    "451:5",
+    "451:6",
+    "451:7"
+  ],
+  "runtimeCapturedAt": "2026-10-14T16:48:19.372Z",
+  "vectorCapturedAt": "2026-10-14T17:12:39.145Z",
+  "completedAt": "2026-10-14T17:18:02.141Z",
+  "sourceNodes": 1425,
+  "pngNamedNodes": 670,
+  "nonMasterNamedComponents": 3,
+  "production": 667,
+  "match": 667,
+  "problems": 0,
+  "promotedOriginal": {
+    "path": "assets/enemies-v2/sprites.png",
+    "nodeId": "414:3",
+    "parent": "1040:21976",
+    "width": 256,
+    "height": 288,
+    "imageHash": "dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e"
+  },
+  "tiara": {
+    "master": "1032:21911",
+    "pngSha1": "daa9788b7b6b168510ee8d635447d2aa105e3e95",
+    "nativeAudit": {
+      "algorithm": "axis-aligned-integer-unit-row-rectangles/v1",
+      "rectCount": 54503,
+      "opaquePixels": 62801,
+      "note": "Totals are derived locally from the untouched actual Figma path capture; no additional source read is claimed."
+    },
+    "sourceException": "unchanged explicit strict vector-export binding"
+  },
+  "command": "npm run figma:check",
+  "transport": "authenticated-capture-replay",
+  "evidence": [
+    {
+      "path": "docs/asset-review/native-role-coverage/capture-runtime.use-figma.js",
+      "sha256": "66161be22aad13e912731ffc47b4dd78a9a663cbc9aaddcb24b14879bb97289d"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/figma-runtime-capture.json",
+      "sha256": "b8c3a2448610a022d6ced84276c9ad21db9a921668dc9ae169e29928a081fcaa"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/capture-tiara.use-figma.js",
+      "sha256": "41de6922a41aafeaa53f43b322bcf92eb9e471876cdeaccd42b17251bf8a067a"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-capture.raw.json",
+      "sha256": "9664c214c14abab14fedc3cfe92c6fc8d90ba8d07d4652dc6825189d9aae8bf3"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-capture.json",
+      "sha256": "357c2a92e3c5ef5236b2a6a75dcdcb0e9b6dde78c99f21305e571c1b9177e6f0"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-fresh-export.base64",
+      "sha256": "c21a37c69ccb626b0690e7f6ba7eb208b83ea0ef076d95e0aa5641740025719b"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-fresh-export.png",
+      "sha256": "123c7dbb88538907f44a705d3fd0d006ee005ccbf23c02212d71b2ce289d2914"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/figma-check.log",
+      "sha256": "9f889452ca77de0188c2d1f6b1bc22b420a2f98ae7da76904d1e23d726f8a3ed"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/figma-check-exit.json",
+      "sha256": "89f3e393cf52752faf3d6fa90b4640e954d441fd95ccd0807a3e3d9488b33f82"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-0.json",
+      "sha256": "98318b81b35e9ce366c4bbdc328d7daa10570b6ecf77ecbfde6243c28779e447"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-1.json",
+      "sha256": "74f24644d88aa9c5e5d2bd01a775739385905a3e90b5957241fa889dc66f01f7"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-2.json",
+      "sha256": "0a468eb574445af7cadde3851ec21652d86758b0fed1468d04ec2480dcf92481"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-3.json",
+      "sha256": "406e37e8fabbedc45392d1457af8d44f7ad850a4ffe8ca46f88c1b9945c25361"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-4.json",
+      "sha256": "4c4b677e8f43e248779a2baa30457cb948bcf74468cf8457f56c77ae0066a7d6"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-5.json",
+      "sha256": "c833aac54d56b08af784394aaf68f0626c2fc4e4297ff6fdf0157b9a712ddea8"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-6.json",
+      "sha256": "2fd708abc7edd7e5673c6eb34affc31b0e49095d74141952e358d0a5d0bbd11e"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-7.json",
+      "sha256": "f91ca73119e373bc397480b75c47fb67cf25d7e5d639f8961362cceae49d707d"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-8.json",
+      "sha256": "ebf34de2196759f4b1784660df05d5d8f21ac4c044fd0fd0c6055bd6ffd6b711"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-9.json",
+      "sha256": "dafcda914ffe22f6cac8bdae054deecda257a97a7ca06c99ea3430e6834a2285"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/runtime-part-10.json",
+      "sha256": "c41931483627ce457e617e92d5f65615410fe561e77d4cd4a7d10fe746ba4cc1"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-0.json",
+      "sha256": "933c131fba928d2064c932f25399b76d1807ffc36ecc41ed0f8fcf529e040e9f"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-1.json",
+      "sha256": "2c0495fdfd4f51bfae85955fe6e0b53a0c796b98b0342cd5f1a201bda7b9dd72"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-2.json",
+      "sha256": "e45ce5ed198c1aad23c7703e430326c57276b5206503a74b852f35b90e23c3a9"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-3.json",
+      "sha256": "118ee2f7e548b51ef226bfbb3cf1f624cce6a38bfb74bfe4d15fabe2f8091bcb"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-4.json",
+      "sha256": "8668675e96c30bc1f62100b546c1a6819f9b883e5fc6eea1d2027d48b4661d7c"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-5.json",
+      "sha256": "b3bb984bfeed645711f927a9abc5ff80b2031645af5aed0e34fe17ca07091e59"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-6.json",
+      "sha256": "8f7400e9efbbfca32ea6d9a1ef95042c25da38221a2327aa80816bbf98dc4fcd"
+    },
+    {
+      "path": "docs/asset-review/native-role-coverage/tiara-vector-part-7.json",
+      "sha256": "b73a175f9e5fea7f684c2d38a486bfd9b3ed90f936606c62b07cae1e13a57a4d"
+    }
+  ]
+}
