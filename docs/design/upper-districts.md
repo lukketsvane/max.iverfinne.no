@@ -8,7 +8,7 @@ The choice is time: collect a guaranteed feather on the ordinary route and leave
 
 Districts rise roughly 208–340 native pixels. Gardens 1–5 use shorter introductions of 13–16 ascent shelves, while gardens 6–20 retain the full phrases. The first seven shelves preserve the guardian approach. Above them, two different seeded motifs alternate transit steps with 64–76 pixel encounter landings, giving each climb distinct turns and places to regroup.
 
-Three cache detours keep their two-shelf structure but offer different footing: a 64 pixel Sheltered Landing, a 32 pixel Needle Nook approach and a 76 pixel Outer Gallery. Each leads to a reachable cache shelf and a reversible return to its branch. All routes work with a walking, unupgraded Cairn; feathers and class movement make them faster. Walk off an outer edge to return to soil. There are no solid cages, forced fall damage or one-use traversal gates.
+Three cache detours keep their two-shelf structure but offer different footing: a 64 pixel Sheltered Landing, a 32 pixel Needle Nook approach and a 76 pixel Outer Gallery. Each leads to a reachable cache shelf and a reversible return to its branch. All routes work with a walking, unupgraded Erasmus Berg; feathers and class movement make them faster. Walk off an outer edge to return to soil. There are no solid cages, forced fall damage or one-use traversal gates.
 
 - **Relay:** tend three beacons, in any order. Each light wakes keepers.
 - **Bells:** blast the bells in their visible one/two/three pip order. Wrong notes do not reset progress or charge seeds.

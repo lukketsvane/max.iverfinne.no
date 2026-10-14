@@ -47,15 +47,15 @@ Five open characters and the hidden Sligo each own a gameplay role. Before Play,
 | --- | --- | --- |
 | Max | Stationary bombs, fixed two-second fuse | Spend three Circuit on Floodgate Overload |
 | Rattus norvegicus | Ground boot combination and airborne salto kick | Spend Momentum on one leaping splits-stomp landing |
-| Cairn | Sweep → reverse sweep → planted knuckle; confirmed contacts build Strata | Spend three Strata on a garden ridge and bite ward |
+| Erasmus Berg | Sweep → reverse sweep → planted knuckle; confirmed contacts build Strata | Spend three Strata on a garden ridge and bite ward |
 | Mycel | Spore bolts that chain near living plants | Bloom heals and waters plants, revives a recent fall and strikes nearby pests |
 | Pølge | Jab → cross → uppercut; confirmed contacts build Rhythm | Spend Rhythm in a freely steered close flurry |
 
-Rattus norvegicus defaults to a grey-furred rat wrestler with orange hair, a pink tail, powerful thighs and magenta-and-gold ring gear, without a hat or cape. Her Figma-authored animation bank adds four-legged walking and sprinting, braking, kneeling after four seconds of input silence, resting and varied ground and aerial strikes. The 25 clips preserve native body scale, variable pose timing and co-op presentation. Cairn is a broad stone creature and Mycel a walking mushroom. Rattus fights with her boots: close dropkicks, airborne saltos and a wide splits stomp. She also lowers into a split while planting, then returns to her guard. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
+Rattus norvegicus defaults to a grey-furred rat wrestler with orange hair, a pink tail, powerful thighs and magenta-and-gold ring gear, without a hat or cape. Her Figma-authored animation bank adds four-legged walking and sprinting, braking, kneeling after four seconds of input silence, resting and varied ground and aerial strikes. The 25 clips preserve native body scale, variable pose timing and co-op presentation. Erasmus Berg is a broad stone creature and Mycel a walking mushroom. Rattus fights with her boots: close dropkicks, airborne saltos and a wide splits stomp. She also lowers into a split while planting, then returns to her guard. Their generated native sheets replace the old Max recolours in the game, menus and results. The persisted IDs `runner`, `bulwark`, `herbalist` and legacy skin keys remain wire-compatible with existing accounts and room reservations; those are compatibility identifiers, not additional characters.
 
 Rattus builds up to 100 **Momentum** from real sprinting, tail-pull travel and confirmed boot contacts. Hold **Tail latch** (C) toward a mature living stem, real ledge or pest; heavy anchors pull her and light pests are tugged toward her. Hold **Driving** (V) for .2–.6 seconds, then release for a short body kick through real collision. **Stomp** (E / tap Rattus) spends Momentum and hits only her first actual landing; longer falls add damage. A genuine boot contact at 40 Momentum gives three seconds of knockback resistance, with a bounded temporary barrier only in Last Seed. Tend, dodge and ordinary climbing remain separate. Her existing Ring gear and complete planting poses stay unchanged. See [Rattus's complete kit](docs/design/rattus-v3.md) for timings, controls and all five retained upgrades.
 
-Cairn is a living stone guardian. Every third confirmed sweep or a truly reduced plant bite can build one of three **Strata** plates, with a shared 1.5-second gate. **Stone** (C) spends one plate on a low physical throw that leaves a short grounded-pest slow after enemy contact. **Brace** (V) protects nearby living plants; timing its first .28 seconds against a real frontal strike gives one close counter. **Ridge** (E / tap Cairn) reserves three plates, then raises a reachable dry ridge: one emergence hit, two seconds of ordinary grounded-pest obstruction and six seconds of bite protection. Players, flight, bosses and progression pass through. His existing stone body, moss and native sheets stay unchanged. See [Cairn’s complete kit](docs/design/cairn-v3.md) and [live review](review.html?mode=cairn).
+Erasmus Berg is a living stone guardian. Every third confirmed sweep or a truly reduced plant bite can build one of three **Strata** plates, with a shared 1.5-second gate. **Stone** (C) spends one plate on a low physical throw that leaves a short grounded-pest slow after enemy contact. **Brace** (V) protects nearby living plants; timing its first .28 seconds against a real frontal strike gives one close counter. **Ridge** (E / tap Erasmus Berg) reserves three plates, then raises a reachable dry ridge: one emergence hit, two seconds of ordinary grounded-pest obstruction and six seconds of bite protection. Players, flight, bosses and progression pass through. His existing stone body, moss and native sheets stay unchanged. See [Erasmus Berg’s complete kit](docs/design/cairn-v3.md) and [live review](review.html?mode=cairn).
 
 Mycel is a walking mushroom colony. Initial spore hits and nearby living wet plants build **Culture** (0–6). **Cloud** (C) spends two on a fixed slow cloud with three damage pulses. **Drift** (V) is a vulnerable short hop; one real network landing waters one living plant by at most .04. **Bloom** (E / tap Mycel) spends four on three fixed pulses at 0, 2 and 4 seconds, while she remains free to move, shoot and tend. The whole cast restores at most .12 health / .15 water per plant; Last Seed adds at most 12 total HP to other living allies. Her burgundy cap, mint gills, ivory roots and original sheets stay unchanged. See [Mycel’s complete kit](docs/design/mycel-v3.md) and [live review](review.html?mode=mycel).
 
@@ -100,12 +100,12 @@ Gameplay uses canvas gestures without on-screen action buttons. C/V class action
 - Tap a threat / B: throw/defend.
 - X or a quick horizontal flick: dodge.
 - Max: B plants a bomb; C / Fan spends one Circuit; V / Rover dispatches or recalls; E / tap Max uses Overload and spends three Circuit. Controller View/minus (8) uses Fan, left trigger (6) dispatches and left shoulder (4) overloads; horizontal single controllers use View/minus (8), stick click (10) and top face (3).
-- Cairn: B / threat tap sweeps; C / Stone spends one Strata; V / Brace defends and can counter an actual frontal strike; E / tap Cairn uses Ridge and spends three Strata after valid placement. Controller C8/V6/E4, horizontal single C8/V10/E3. Moving, jumping or dodging releases Brace. A solo owned Shovel burrows with Down+E or controller Tend+Special.
+- Erasmus Berg: B / threat tap sweeps; C / Stone spends one Strata; V / Brace defends and can counter an actual frontal strike; E / tap Erasmus Berg uses Ridge and spends three Strata after valid placement. Controller C8/V6/E4, horizontal single C8/V10/E3. Moving, jumping or dodging releases Brace. A solo owned Shovel burrows with Down+E or controller Tend+Special.
 - Pølge: C / Clinch makes room; X / horizontal flick uses Slip through a warned attack. Controller View/minus (button 8) clinches; his skill and dodge retain the existing controller mapping.
-- Tap your character / E: class skill (Max Overload, Rattus Stomp, Cairn Ridge, Mycel Bloom, Pølge Flurry, Sligo Tun). A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a character tap throws at a pest near the finger, or boosts a stem climb. Interrupted committed Rattus motion retains its spent Momentum and accepted cooldown.
+- Tap your character / E: class skill (Max Overload, Rattus Stomp, Erasmus Berg Ridge, Mycel Bloom, Pølge Flurry, Sligo Tun). A pest body right under the finger, or anywhere on a boss, still takes the tap, and every tap during an exit climb boosts the climb. While the skill cools, a character tap throws at a pest near the finger, or boosts a stem climb. Interrupted committed Rattus motion retains its spent Momentum and accepted cooldown.
 - Mycel: B / threat tap fires Spore; C / Cloud spends two Culture; V / Drift hops without immunity; E / Bloom spends four. Controller C8/V6/E4, horizontal single C8/V10/E3. B can fire during Drift; X cancels its movement and landing reward. Tend+C refills and Tend+V or Home16 toggles the lantern.
-- R or tap a nearby Max rover: refill; any grounded, stationary teammate can help. Max, Rattus and Cairn can also hold controller Tend and press their secondary (button 8), on standard and horizontal single controllers; the chord suppresses garden action while held.
-- L: lantern. Max, Rattus and Cairn use controller Home (16), or hold Tend + Utility (standard left trigger 6 / horizontal single stick click 10) when Home is reserved by the device; the chord suppresses garden action.
+- R or tap a nearby Max rover: refill; any grounded, stationary teammate can help. Max, Rattus and Erasmus Berg can also hold controller Tend and press their secondary (button 8), on standard and horizontal single controllers; the chord suppresses garden action while held.
+- L: lantern. Max, Rattus and Erasmus Berg use controller Home (16), or hold Tend + Utility (standard left trigger 6 / horizontal single stick click 10) when Home is reserved by the device; the chord suppresses garden action.
 - Sligo: hold an AI clone for half a second to swap; Q / left trigger cycles bodies.
 - Shift: run on keyboard.
 
@@ -119,7 +119,7 @@ The stones stand beside the collected flowers, at the beginning of **Garden**. T
 
 **Last Seed** uses the main garden engine with different rules. The team shares exactly one seed. Planting it starts the timer and endless waves of existing enemies. No more seeds drop, the single plant can be tended but never harvested, and the team stays in the same garden. Clearing a wave earns a boon and a short care break. A living, watered plant heals nearby gardeners; losing it removes that recovery but does not end the run.
 
-Each player has 100 health. Attacks have a warning, dodging avoids damage and Cairn's brace reduces it. At zero health a gardener goes down. A living teammate holds the normal Tend control (↓ / Space, controller Tend, or touch drag down) within reach for three uninterrupted seconds to revive them at half health. Moving away, taking damage or releasing Tend resets progress. The run ends when everyone is down. Health, waves, the plant and revives replicate from the host and survive a host handoff.
+Each player has 100 health. Attacks have a warning, dodging avoids damage and Erasmus Berg's brace reduces it. At zero health a gardener goes down. A living teammate holds the normal Tend control (↓ / Space, controller Tend, or touch drag down) within reach for three uninterrupted seconds to revive them at half health. Moving away, taking damage or releasing Tend resets progress. The run ends when everyone is down. Health, waves, the plant and revives replicate from the host and survive a host handoff.
 
 Last Seed, High Tide and Night Relay check everyone still in the server room before declaring the team down. A living teammate whose PWA is briefly hidden keeps their reserved place; missing health after a host handoff waits for accepted state or a confirmed departure. Night Relay still freezes with fewer than two fresh players, and High Tide still ends if the motherplant dies.
 
@@ -127,7 +127,7 @@ Results preserve the actual single plant, wave, survival time and plant lifetime
 
 ## Garden runs
 
-Generated gardens also have a **place** of their own to explore beside their routes (`garden-places.js`): a Shepherd Hut, a Hollow Oak, a Broken Aqueduct, a Sunken Chapel, a Root Stair, Cairn Terraces, Lantern Roots, a Silo Stair, a Collapsed Tower, a Bell Cellar, an Old Quarry, Weeping Roots, Twin Shafts, a Catacomb, Fault Steps, a Giant's Stair, a Reactor Nest, the Last Sluice, a Surface Breach and Crown Containment. Each has rooms, climbs and a false wall; one seed cache is out in the open and one is hidden behind the false wall. The run seed only picks its side and footing. A walking Cairn reaches both caches, can always get back out, and can cross the place in both directions.
+Generated gardens also have a **place** of their own to explore beside their routes (`garden-places.js`): a Shepherd Hut, a Hollow Oak, a Broken Aqueduct, a Sunken Chapel, a Root Stair, Cairn Terraces, Lantern Roots, a Silo Stair, a Collapsed Tower, a Bell Cellar, an Old Quarry, Weeping Roots, Twin Shafts, a Catacomb, Fault Steps, a Giant's Stair, a Reactor Nest, the Last Sluice, a Surface Breach and Crown Containment. Each has rooms, climbs and a false wall; one seed cache is out in the open and one is hidden behind the false wall. The run seed only picks its side and footing. A walking Erasmus Berg reaches both caches, can always get back out, and can cross the place in both directions.
 
 Routes now look like their family: mossy cobble for terraces and crossings, ashlar ruins with broken pillars, leafy canopy branches and hanging roots on switchbacks. The frost gardens (11–15) wear snow and the ember gardens (16–19) ember moss. Each route side can grow a **bounce bloom**: jump or drop onto it and it springs Max through the ledge above, a shortcut up the route. Ledges also pay in a fight: a bomb thrown from high ground (20 px or more above the soil) hits harder, up to 35% from two ledges up. Hand-made gardens (the Seed Vault, the Railway Ruins and gardens drawn in Figma) now use their marked spots: a secret cache that only shows itself up close, cracked soil you blast open for seeds, a wonder puzzle on their puzzle spot, and a secret-garden gate at their door.
 
@@ -137,7 +137,7 @@ The run begins underground and climbs toward the surface. Gardens 1–17 remain 
 
 Hollow Tree also has an optional canopy crossing joining its two upper terraces, two side nooks and three additional hidden seed caches. These use the existing native branch renderer and leave the registered Figma surfaces intact. Portrait framing stays inside the chamber above the upper route, preserving safe-area clearance during jumps.
 
-Twenty campaign profiles give each garden a distinct traversal rhythm. Seeded sides pair a broad preparation route with a higher exploration route, using galleries, promenades, crossings and rest terraces. Both required paths remain reachable by an unupgraded walking Cairn. Upper districts pace shorter early climbs before the later, longer routes, with broad completion landings and differently shaped seed-cache branches. The physical exit climb, continuous threat clock and shared seed remain unchanged.
+Twenty campaign profiles give each garden a distinct traversal rhythm. Seeded sides pair a broad preparation route with a higher exploration route, using galleries, promenades, crossings and rest terraces. Both required paths remain reachable by an unupgraded walking Erasmus Berg. Upper districts pace shorter early climbs before the later, longer routes, with broad completion landings and differently shaped seed-cache branches. The physical exit climb, continuous threat clock and shared seed remain unchanged.
 
 [The level design stack](docs/design/levels-overview/) pairs a unique full-scene reference for each of the twenty levels with its playable preview. Its Figma importer places one image frame in each level's ASSETS or an aligned reference column, and can create a separate vertical comparison stack. Generated references guide native authoring; the actual game keeps its verified source artwork and collision geometry.
 
@@ -158,11 +158,20 @@ Bosses telegraph attacks in amber and expose themselves in cyan for double damag
 | 1–4 | Sprout Sentinel, Dew Duke, Thorn Duelist, Spore Oracle |
 | 5 | Mossback |
 | 6–9 | Root Ram, Silk Weaver, Glass Snail, Wick Hermit |
-| 10 | Bellkeeper |
+| 10 | Tiara |
 | 11–14 | Frostjaw, Spindle Widow, Orchard Mimic, Tuning Fork |
 | 15 | Moon Moth |
 | 16–19 | Kiln Beetle, Ash Ferryman, Compost Choir, Seed Engine |
 | 20 | Hollow Crown |
+
+Garden 10's **Tiara** is the owner's tiara-wearing head sprite: a native 40-pixel
+body that jumps, rolls and headbutts in a readable three-move rotation. Amber
+marks the committed destination. Actual contact and landing strikes remain
+host-owned; recovery leaves time for a planted bomb. Tiara keeps the authored
+sprite colours without a procedural silhouette outline. Lower health adds
+landing shock lanes and quicker movement. Bellkeeper remains a roaming guardian.
+The eight 8-frame animation rows are registered in the
+[Tiara atlas](assets/tiara-head-v1/README.md); see [the encounter contract](docs/design/tiara-head.md).
 
 Hollow Crown is a tall native silver king with a faceless helmet and massive maul. Its four
 acts follow the final-boss rhythm of Risk of Rain 2: a maul duel, a lunar
@@ -176,7 +185,7 @@ Cyan begins after the guardian's entire volley has landed and cleared. Every gua
 
 Bomb flashes and camera kicks are brief, local and bounded; simultaneous blasts do not stack the shake. Planted bombs show their actual upgraded reach, and a short input buffer accepts an attack released just before a reload or bomb slot becomes ready.
 
-The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Max bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Max can move while charging. Rattus norvegicus kicks nearby targets and uses a radial salto kick in the air; Cairn and Pølge show their close attack reach. Mycel fires aimed spores. Sligo retains aimed flesh throws.
+The global run clock raises pressure continuously, including after a garden is cleared, so camping remains dangerous. Active populations and hazards are capped. Max bombs keep their two-second fuse on enemy contact, stay on ledges and fall vertically when placed in midair. Max can move while charging. Rattus norvegicus kicks nearby targets and uses a radial salto kick in the air; Erasmus Berg and Pølge show their close attack reach. Mycel fires aimed spores. Sligo retains aimed flesh throws.
 
 Staying in the same campaign garden summons roaming guardians after 110 seconds on Medium, 90 on Hard, 70 on Insane or 240 on Easy. A five-second exact-position warning precedes each arrival. Mossback, Bellkeeper and Moon Moth rotate through the seeded order; repeated arrivals come sooner and grow tougher, with at most three live roaming bosses. The unbounded global clock continues raising enemy damage and durability. Roaming victories never replace the garden's required guardian or unlock its exit. During the required guardian fight, new roaming arrivals wait; physical ascent remains available after clearing.
 
@@ -189,7 +198,7 @@ The setup page keeps its sections at fixed positions for every character, includ
 During play, the small skill/resource meter and Controls describe the equipped
 ability's actual cost and cooldown. Mycel's Culture has six small cells; an
 unaffordable or rejected cast uses the existing brief denied pip. Controller
-specials follow the same equipped verb as keyboard/touch, while Cairn's owned
+specials follow the same equipped verb as keyboard/touch, while Erasmus Berg's owned
 Shovel keeps its explicit Tend/Down + Special chord. Rendering reads existing
 owner state and does not create or alter a cast. C/V remain keyboard/controller
 only until the master plan's explicit phone-input milestone is implemented.
@@ -198,7 +207,7 @@ only until the master plan's explicit phone-input milestone is implemented.
 | --- | --- | --- |
 | Max | Shock pulse: immediate close damage for one Circuit | Steam vent: radial damage and Wet for two Circuit, without rover priority |
 | Rattus | Snapkick: close knockback for 15 Momentum | Earthshaker: grounded area strike for 35 Momentum, without a leap |
-| Cairn | Fault clap: close forward cleave for one Strata | Quake: wider immediate damage for two Strata, without Ridge's ward |
+| Erasmus Berg | Fault clap: close forward cleave for one Strata | Quake: wider immediate damage for two Strata, without Ridge's ward |
 | Mycel | Miasma burst: close damage and a brief slow for two Culture | Spore storm: wide damage for four Culture, without Bloom restoration |
 | Pølge | Rising clinch: lifts one close pest for one Rhythm | Haymaker: one strong close uppercut for three Rhythm |
 | Sligo | Existing colony controls | Watchful tun: half the duration, wider plant protection |
@@ -243,7 +252,7 @@ Each offer has one free **Redraw alternatives** (tap its small footer, keyboard 
 
 Thorns, Barkskin and Bramble follow the player who planted or last watered each plant. Evergreen gives each carer one rescue per garden across all their plants; changing carers does not refund a used rescue. Departed carers take their protection ranks with them. Mulch follows the attacker for confirmed player attacks.
 
-The close and spore fighters have three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Cairn; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on confirmed hits for Pølge. Pølge's Haymaker extends uppercuts and strengthens them against guards without lifting bosses; Second wind restores plants only when his flurry finish contacts an enemy. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Max and Sligo. Max keeps every existing robot, Guard bot, harvest and bomb upgrade; the new base abilities add no prerequisite boon.
+The close and spore fighters have three mutation directions and two signature combinations: Heavy boots, Wide stance and Ring tempo combine into Crowd crush and Flying press for Rattus norvegicus; cleave/parry/shelter for Erasmus Berg; chains/fermentation/plant symbiosis for Mycel; flurry/uppercut/skill recovery on confirmed hits for Pølge. Pølge's Haymaker extends uppercuts and strengthens them against guards without lifting bosses; Second wind restores plants only when his flurry finish contacts an enemy. Early choices introduce class mutations, while later choices continue invested paths and offer alternatives. Signatures show a gold edge. Offers use the actual run seed, so a new run can open differently. Bomb-only boons are restricted to Max and Sligo. Max keeps every existing robot, Guard bot, harvest and bomb upgrade; the new base abilities add no prerequisite boon.
 
 Max-only robot boons remain exclusive to Max. Last Seed excludes harvest, loose-seed and neighbour-watering upgrades that cannot work with its single, unharvestable plant. High Tide also offers only upgrades supported by its motherplant rules.
 
@@ -412,8 +421,8 @@ One horizontal Joy-Con (L) is detected automatically, with the stick on the left
 | Top face button, printed → | Class skill; focus an offered boon, then use the stick and bottom to choose |
 | SL | Dodge; cancels a held attack |
 | ZL | Hold and use the stick to aim precisely; release to attack; Max keeps moving while charging its planted bomb |
-| L | Max Fan, Rattus Tail latch, Cairn Stone, Pølge Clinch; hold Tend + L to refill; Sligo cycles bodies |
-| Stick click | Max dispatches/recalls, Rattus Driving, Cairn Brace; hold Tend + stick click for their lantern; Mycel/Pølge use lantern and Sligo cycles bodies |
+| L | Max Fan, Rattus Tail latch, Erasmus Berg Stone, Pølge Clinch; hold Tend + L to refill; Sligo cycles bodies |
+| Stick click | Max dispatches/recalls, Rattus Driving, Erasmus Berg Brace; hold Tend + stick click for their lantern; Mycel/Pølge use lantern and Sligo cycles bodies |
 | Home / Capture | Lantern when the browser exposes this button |
 | Minus | Settings |
 

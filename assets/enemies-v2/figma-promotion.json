@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "capturedAt": "2026-10-14",
+  "source": "authenticated-figma-connector",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "promotion": {
+    "frame": {
+      "id": "1040:21976",
+      "name": "Enemies / Native role coverage — 32px original master",
+      "x": 12,
+      "y": 1648,
+      "width": 256,
+      "height": 288
+    },
+    "source": {
+      "id": "414:3",
+      "name": "assets/enemies-v2/sprites.png",
+      "type": "RECTANGLE",
+      "parent": "1040:21976",
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 288,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e"
+        }
+      ]
+    },
+    "section": {
+      "id": "451:3",
+      "width": 1692,
+      "height": 1948
+    },
+    "oldParentId": "425:2"
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "schema": "max-native-atlas/v1",
+  "id": "rammer",
+  "kind": "enemy",
+  "cell": [
+    32,
+    32
+  ],
+  "anchor": [
+    16,
+    31
+  ],
+  "facing": "right",
+  "palette": [
+    "#10171c",
+    "#1d2b34",
+    "#285b57",
+    "#29382f",
+    "#303a2f",
+    "#35283d",
+    "#3d5146",
+    "#46625b",
+    "#493650",
+    "#4b342b",
+    "#536448",
+    "#758164",
+    "#79b7b0",
+    "#82725b",
+    "#847088",
+    "#9a745d",
+    "#a38b9c",
+    "#a6b5a0",
+    "#acd6c5",
+    "#b5b190",
+    "#d4a64e",
+    "#d9aa4b",
+    "#edc878"
+  ],
+  "sheets": {
+    "sprites": {
+      "image": "../../enemies-v2/sprites.png",
+      "size": [
+        256,
+        288
+      ]
+    }
+  },
+  "frames": [
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        14,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        32,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        4,
+        13,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        64,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        2,
+        13,
+        31,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        96,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        1,
+        13,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        128,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        1,
+        8,
+        32,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        160,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        0,
+        14,
+        32,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        192,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        0,
+        13,
+        30,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        224,
+        128,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": [
+        0,
+        20,
+        29,
+        32
+      ]
+    },
+    {
+      "sheet": "sprites",
+      "rect": [
+        0,
+        256,
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        31
+      ],
+      "opaqueBounds": null
+    }
+  ],
+  "animations": {
+    "idle": {
+      "frames": [
+        0,
+        1
+      ],
+      "fps": 3,
+      "loop": true
+    },
+    "move": {
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "windup": {
+      "frames": [
+        4
+      ],
+      "fps": 6,
+      "loop": false
+    },
+    "attack": {
+      "frames": [
+        5
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "recover": {
+      "frames": [
+        6,
+        0
+      ],
+      "fps": 7,
+      "loop": false
+    },
+    "hurt": {
+      "frames": [
+        6
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "death": {
+      "frames": [
+        7,
+        8
+      ],
+      "fps": 4,
+      "loop": false
+    },
+    "charge": {
+      "frames": [
+        4,
+        5
+      ],
+      "fps": 7,
+      "loop": true
+    }
+  }
+}

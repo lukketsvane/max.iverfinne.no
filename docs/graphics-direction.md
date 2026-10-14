@@ -56,7 +56,7 @@ plants. Never substitute the preview names or example bouquets for player data.
 
 ## Native co-op art integration
 
-Rattus norvegicus, Cairn and Mycel replace the three cosmetic Max recolours. They have
+Rattus norvegicus, Erasmus Berg and Mycel replace the three cosmetic Max recolours. They have
 independent rat-mask, stone and mushroom silhouettes, generated main/interaction
 sheets and individual sixteen-colour palettes. Rattus's wrestling source adds
 dropkicks, upside-down saltos and wide splits stomps. Native 32×32 cells,

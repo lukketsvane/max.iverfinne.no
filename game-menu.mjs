@@ -26,6 +26,7 @@ let status;
 let gardenNote, gardenCanvas, gardenHud, gardenTitle, gardenCount, gardenPrev, gardenNext, gardenHint, pinch = null, wheelPinch = 0;
 let session = null;
 let leavingSession = null;
+let playIntent = null;
 let liveSettings = false, settingsButton;
 let controllerCapture = null;
 let selectedMode = 'garden', focusedRelic = null, relicTargets;
@@ -59,7 +60,23 @@ function message(text, error = false) {
   if (!status) return;
   status.textContent = text; status.dataset.error = String(error); status.hidden = false;
 }
+function cancelPlayIntent() {
+  if (!playIntent) return;
+  if (playIntent.connecting) leavingSession = playIntent.connecting;
+  playIntent = null; busy = false;
+}
+function currentPlayIntent(intent) {
+  return playIntent === intent && opened && screen === 'play' && !liveSettings && selectedMode === intent.mode && invitedRoom === intent.room;
+}
+function beginPlayIntent() {
+  const intent = { mode: selectedMode, room: invitedRoom, selection: { ...selected, skills: { ...selected.skills } } };
+  playIntent = intent; busy = true; return intent;
+}
+function finishPlayIntent(intent) {
+  if (playIntent === intent) { playIntent = null; busy = false; }
+}
 function page(name, title) {
+  cancelPlayIntent();
   if (name !== 'controller') controllerCapture = null;
   screen = name; overlay.dataset.screen = name; card.replaceChildren();
   const header = el('header', undefined, 'max-menu-header');
@@ -350,7 +367,7 @@ function gardenGestures() {
     }
   }, { passive: false });
 }
-function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Cairn', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
+function classInfo(id) { return window.MaxClasses?.get(id) || { id, name: ({ runner: 'Rattus norvegicus', bulwark: 'Erasmus Berg', herbalist: 'Mycel' })[id] || id.charAt(0).toUpperCase() + id.slice(1), desc: '' }; }
 function characterSkin(id) { return CLASS_SKINS[id] || 'moss-pink'; }
 function characterChoice(node, id) {
   node.addEventListener('click', () => {
@@ -425,15 +442,18 @@ function roleChoices(grid) {
   }
 }
 function unlocksChanged() {
-  selected = readLoadout(window.localStorage, eggs.list());
+  const next = readLoadout(window.localStorage, eggs.list());
+  if (JSON.stringify(next) !== JSON.stringify(selected)) cancelPlayIntent();
+  selected = next;
   const grid = screen === 'play' && card?.querySelector('.max-role-grid');
   if (grid) { roleChoices(grid); updateSelection(); updatePlayReady(); }
   refreshRelicTargets();
 }
 function selectMax(change) {
+  cancelPlayIntent();
   selected = { ...selected, ...change };
   if (change.classId && !change.skinId) { selected.skinId = characterSkin(change.classId); selected.skills = {}; }
-  writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
+  writeLoadout(window.localStorage, selected, eggs.list()); updateSelection(); updatePlayReady();
 }
 function showSkillDetail(slot = skillDetailSlot, id = selected.skills?.[slot] || 'base') {
   const options = skillOptions(selected.classId);
@@ -588,13 +608,17 @@ async function ensurePlayIdentity() {
 }
 async function joinSharedGarden() {
   if (!sessionReady || busy) { updatePlayReady(); return; }
-  if (!client) { close(); return; }
-  busy = true; message('Joining garden…');
+  if (!client) { await close(); return; }
+  const intent = beginPlayIntent(); message('Joining garden…');
   try {
-    await leavingSession; leavingSession = null;
+    await ensureNativeArt(intent.selection.skinId); if (!currentPlayIntent(intent)) return;
+    await leavingSession; if (!currentPlayIntent(intent)) return; leavingSession = null;
     await ensurePlayIdentity();
+    if (!currentPlayIntent(intent)) return;
     if (HIDDEN_CLASS_IDS.includes(selected.classId)) await eggs.ensure(client, user, selected.classId);
+    if (!currentPlayIntent(intent)) return;
     await refreshSharedStatus();
+    if (!currentPlayIntent(intent)) return;
     if (invitedRoom && inviteState !== 'ready') throw new Error(inviteState === 'expired' ? 'This session has ended.' : 'Could not check invite. Try Play again.');
     const unavailable = new Set(sharedStatus.taken || []);
     if (unavailable.has(selected.classId) && selected.classId !== sharedStatus.mine) {
@@ -603,13 +627,20 @@ async function joinSharedGarden() {
       selected = { ...selected, classId: free, skinId: characterSkin(free), skills: {} };
       writeLoadout(window.localStorage, selected, eggs.list()); updateSelection();
     }
+    // Server status may choose a different free character. Prepare that exact
+    // skin too, then freeze the accepted kit for this intent rather than read a
+    // later menu selection from an asynchronous start callback.
+    if (selected.skinId !== intent.selection.skinId) { await ensureNativeArt(selected.skinId); if (!currentPlayIntent(intent)) return; }
+    intent.selection = { ...selected, skills: { ...selected.skills } };
+    intent.connecting = enterRoom({ global: true, ...(intent.room ? { id: intent.room } : {}) }, intent);
+    await intent.connecting;
   }
-  catch (error) { busy = false; message(error.message || 'Could not join yet. Try Play again.', true); return; }
-  busy = false;
-  await enterRoom({ global: true, ...(invitedRoom ? { id: invitedRoom } : {}) });
+  catch (error) { if (currentPlayIntent(intent)) message(error.message || 'Could not join yet. Try Play again.', true); }
+  finally { finishPlayIntent(intent); }
 }
 function updatePlayReady() {
   if (screen !== 'play') return;
+  if (busy) { status.hidden = false; return; }
   const taken = new Set(sharedStatus.taken || []);
   const noCharacter = visibleClassIds().every(id => taken.has(id) && id !== sharedStatus.mine);
   const full = !!sharedStatus.active && Number(sharedStatus.players || 0) >= 4 && !sharedStatus.mine;
@@ -624,33 +655,43 @@ function updatePlayReady() {
   else if (full) message('Garden full · four players are playing', true);
   else if (status.dataset.error !== 'true') status.textContent = '';
 }
-async function enterRoom(code) {
-  if (busy || session) return;
-  busy = true; message('Connecting…');
+async function enterRoom(code, intent) {
+  if (!currentPlayIntent(intent) || session) return;
+  message('Connecting…');
   const candidate = new CoopSession(client, user, {
-    room: room => game.coopRoster?.(room),
+    room: room => { if (session === candidate && (intent.started || currentPlayIntent(intent))) game.coopRoster?.(room); },
     start: network => {
+      if (session !== candidate || !currentPlayIntent(intent)) return;
+      game.beginCoop(network);
+      intent.started = true; finishPlayIntent(intent);
       opened = false; overlay.hidden = true; exitGarden(); stopScene();
       settingsButton.hidden = false;
-      game.beginCoop(network); game.pause(false);
+      game.pause(false);
     },
-    state: state => game.coopState(state),
-    input: (id, packet) => game.coopInput(id, packet),
-    depart: id => game.coopDepart(id),
-    join: (id, kit) => game.coopJoin?.(id, kit),
+    state: state => { if (session === candidate && intent.started) game.coopState(state); },
+    input: (id, packet) => { if (session === candidate && intent.started) game.coopInput(id, packet); },
+    depart: id => { if (session === candidate && intent.started) game.coopDepart(id); },
+    join: (id, kit) => { if (session === candidate && intent.started) game.coopJoin?.(id, kit); },
     error: reason => {
+      if (session !== candidate || !intent.started && !currentPlayIntent(intent)) return;
       game.stopCoop?.(); session = null; opened = true; overlay.hidden = false;
       liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
       game.pause(true); play(selectedMode, invitedRoom); card.append(status); message(reason, true); startScene();
     },
-  }, { ...selected, mode: selectedMode });
+  }, { ...intent.selection, mode: intent.mode });
   session = candidate;
   try {
     await candidate.enter(code);
+    if (!intent.started && !currentPlayIntent(intent)) return;
     if (!candidate.playing) { await candidate.leave(); throw new Error('Could not enter the running garden. Try Play again.'); }
   }
-  catch (error) { if (session === candidate) session = null; message(joinRefusal(error), true); }
-  finally { busy = false; }
+  catch (error) {
+    if (session === candidate) session = null;
+    if (currentPlayIntent(intent)) { game.stopCoop?.(); game.pause(true); message(joinRefusal(error), true); }
+  }
+  finally {
+    if (!intent.started && !currentPlayIntent(intent)) { await candidate.leave(); if (session === candidate) session = null; }
+  }
 }
 function joinRefusal(error) {
   const text = error?.message || 'Could not join the garden.';
@@ -742,8 +783,8 @@ function help() {
     ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J / B to aim, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 boon · Esc settings'],
     ['CLASS ACTIONS', actions],
     ['MOUSE', 'Click to lock and aim; Esc frees the mouse. Left click attacks, right click dodges, middle click uses your skill. Hold an attack to charge. Click a boon to choose it.'],
-    ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
-    ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Cairn: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
+    ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Erasmus Berg: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
+    ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Erasmus Berg: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
     ['BUILDS', 'Boons change your attacks and skills. Combine their named prerequisites to unlock signature abilities.'],
   ];
   for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
@@ -877,11 +918,23 @@ function open() {
   if ((opened && !liveSettings) || !game || game.canOpenMenu?.() === false) return;
   opened = true; liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true; game.pause(true); overlay.hidden = false; home(); startScene();
 }
-function close() {
-  if (!sessionReady) { updatePlayReady(); return; }
-  if (session) { void session.leave(); session = null; }
-  opened = false; exitGarden(); stopScene(); overlay.hidden = true; game.beginRun({ ...selected, skin: selected.skinId, mode: selectedMode }); game.pause(false);
-  settingsButton.hidden = false;
+async function ensureNativeArt(skin) {
+  message('Loading garden art…');
+  if (typeof game.prepareNativeArt === 'function') { await game.prepareNativeArt(skin); return; }
+  if (typeof window.MaxNativeArt?.ready !== 'function') throw new Error('Game art is unavailable. Reload and try Play again.');
+  await window.MaxNativeArt.ready(skin);
+}
+async function close() {
+  if (!sessionReady || busy) { updatePlayReady(); return; }
+  const intent = beginPlayIntent();
+  try {
+    await ensureNativeArt(intent.selection.skinId); if (!currentPlayIntent(intent)) return;
+    if (session) { void session.leave(); session = null; }
+    game.beginRun({ ...intent.selection, skin: intent.selection.skinId, mode: intent.mode });
+    opened = false; exitGarden(); stopScene(); overlay.hidden = true; game.pause(false);
+    settingsButton.hidden = false;
+  } catch (error) { if (currentPlayIntent(intent)) message(error.message || 'Could not load garden art. Try Play again.', true); }
+  finally { finishPlayIntent(intent); }
 }
 function attach(bridge) {
   if (game) return;

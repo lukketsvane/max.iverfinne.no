@@ -35,6 +35,6 @@ test('review Stone and Brace send normal independent tap keys without borrowing 
   assert.deepEqual(messages.map(m=>[m.key,m.down]),[['c',true],['v',true]]);
   await new Promise(resolve=>setTimeout(resolve,110));
   assert.deepEqual(messages.slice(2).map(m=>[m.key,m.down]),[['c',false],['v',false]]);
-  assert.match(w.document.getElementById('fixture-help').textContent,/All five Cairn boons enabled/);
+  assert.match(w.document.getElementById('fixture-help').textContent,/All five Erasmus Berg boons enabled/);
  }finally{dom.window.close();}
 });

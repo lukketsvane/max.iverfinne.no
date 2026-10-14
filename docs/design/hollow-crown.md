@@ -55,7 +55,7 @@ target. Defeat uses the existing final-victory and actual-run result path.
   3.2 seconds on Easy, 2.75 on Medium, 2.5 on Hard and 2.35 on Insane.
 - Leap targets and strike positions are chosen before contact. Low wave crests
   remain jumpable; tall lanes leave actual traversable gaps, including in the
-  narrowest shrine courts with an unupgraded walking Cairn.
+  narrowest shrine courts with an unupgraded walking Erasmus Berg.
 - Boss art, warnings, effects and objectives render above decorative vegetation.
   Camera framing includes the boss and the nearby player without moving either
   actor or changing native pixel scale.

@@ -9,6 +9,7 @@ const root = path.join(__dirname, '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'assets/figma-manifest.json'), 'utf8'));
 const sync = import(pathToFileURL(path.join(root, 'scripts/figma-sync.mjs')).href);
 const generated = import(pathToFileURL(path.join(root, 'scripts/generated-art-contract.mjs')).href);
+const vector = import(pathToFileURL(path.join(root, 'scripts/figma-vector-source.mjs')).href);
 const bytes = p => fs.readFileSync(path.join(root, p));
 const sha1 = b => crypto.createHash('sha1').update(b).digest('hex');
 const nodeId = /^\d+:\d+$/, hash = /^[0-9a-f]{40}$/;
@@ -36,7 +37,7 @@ async function runtime() {
   const bundle = entry => buildSync({ entryPoints: [entry], absWorkingDir: root, bundle: true, write: false, metafile: true, format: 'iife', logLevel: 'silent' });
   const art = bundle('native-art.mjs');
   const sandbox = {
-    URL, Promise, Map, WeakMap, console, CustomEvent: class {},
+    URL, Promise, Map, WeakMap, console, setTimeout, clearTimeout, CustomEvent: class {},
     document: { baseURI: 'https://max.example/', createElement: () => ({ getContext: () => ({ drawImage() {}, fillRect() {} }) }) },
     Image: class { set src(url) { loaded.add(new URL(url).pathname.slice(1)); } async decode() {} },
     fetch: async url => ({ ok: true, json: async () => JSON.parse(fs.readFileSync(path.join(root, url.pathname), 'utf8')) }),
@@ -97,7 +98,12 @@ test('figma manifest names the file, the source-of-truth section, the rules and 
   assert.equal(new Set(production).size, production.length);
   assert.equal(new Set(manifest.production.map(e => e.nodeId)).size, production.length);
   for (const e of manifest.production) {
-    assert.deepEqual(Object.keys(e), ['path', 'nodeId', 'group', 'width', 'height', 'sha1']);
+    if (e.sourceKind) {
+      assert.equal(e.path, 'assets/tiara-head-v1/sprites.png', 'vector source coverage is bound to the one authenticated Tiara master');
+      assert.equal(e.sourceKind, 'vector-export');
+      assert.equal(e.sourceProof, 'assets/tiara-head-v1/figma-vector.json');
+      assert.deepEqual(Object.keys(e), ['path', 'nodeId', 'group', 'width', 'height', 'sha1', 'sourceKind', 'sourceProof']);
+    } else assert.deepEqual(Object.keys(e), ['path', 'nodeId', 'group', 'width', 'height', 'sha1']);
     assert.match(e.nodeId, nodeId); assert.match(e.sha1, hash); assert.ok(groups.includes(e.group), e.path);
     assert.ok(Number.isInteger(e.width) && e.width > 0 && Number.isInteger(e.height) && e.height > 0, e.path);
   }
@@ -105,6 +111,14 @@ test('figma manifest names the file, the source-of-truth section, the rules and 
     assert.equal(e.status, 'unused'); assert.match(e.nodeId, nodeId); assert.ok(!production.includes(e.path), e.path);
   }
   for (const e of manifest.reference) { assert.equal(e.status, 'reference'); assert.match(e.sha1, hash); }
+});
+
+test('the one native vector master proves actual Figma export bytes and captured pixel paths without a stored imageHash claim', async () => {
+  const { VECTOR_PATH, vectorSourceProblems } = await vector, { decode } = await sync;
+  const vectors = manifest.production.filter(entry => entry.sourceKind);
+  assert.deepEqual(vectors.map(entry => entry.path), [VECTOR_PATH]);
+  assert.ok(manifest.production.filter(entry => !entry.sourceKind).length >= 665, 'all established raster image-fill masters remain covered by the unchanged pixel and byte checks');
+  for (const entry of vectors) assert.deepEqual(vectorSourceProblems(entry, bytes(entry.path), decode), [], entry.path);
 });
 
 test('every production entry is a posix path inside assets/ whose PNG equals the Figma layer byte for byte', () => {

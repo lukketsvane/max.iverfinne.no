@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | Max | Shock: 1 Circuit / 6 s / 40 px / .9 D, Wet | Steam: 2 Circuit / 14 s / 56 px / 1.6 D, Wet |
 | Rattus | Snapkick: 15 Momentum / 4 s / 28 px / 1 D, forward push | Earthshaker: 35 Momentum / 8 s / 44 px / 1.8 D, grounded |
-| Cairn | Fault clap: 1 Strata / 5 s / 32 px / 1.3 D, forward | Quake: 2 Strata / 16 s / 56 px / 1.8 D, grounded |
+| Erasmus Berg | Fault clap: 1 Strata / 5 s / 32 px / 1.3 D, forward | Quake: 2 Strata / 16 s / 56 px / 1.8 D, grounded |
 | Mycel | Miasma: 2 Culture / 5 s / 36 px / .9 D, .7 s slow | Storm: 4 Culture / 12 s / 72 px / 2 D, no restoration |
 | Pølge | Rising clinch: 1 Rhythm / 4 s / 24 px / 1 D, one forward target | Haymaker: 3 Rhythm / 10 s / 32 px / 3.2 D, one forward target |
 | Sligo | Existing controls | Watchful tun: 1.5 s / existing 9 s cooldown after uncurl / 64 px plant protection |

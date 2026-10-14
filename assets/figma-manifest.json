@@ -161,6 +161,7 @@
     { "path": "assets/enemies-v1/seed-thief/sprites.png", "nodeId": "389:49", "group": "enemies", "width": 128, "height": 128, "sha1": "942e67c628dc15722b962cebaffc627001895b76" },
     { "path": "assets/enemies-v1/shield-beetle/sprites.png", "nodeId": "389:50", "group": "enemies", "width": 128, "height": 128, "sha1": "c20590fdd14a43fb8ad8c0d129430bbc39437d6d" },
     { "path": "assets/enemies-v1/spore-caster/sprites.png", "nodeId": "389:51", "group": "enemies", "width": 128, "height": 128, "sha1": "3116212a78f1875e9e145e8dbbf0939d19c53378" },
+    { "path": "assets/enemies-v2/sprites.png", "nodeId": "414:3", "group": "enemies", "width": 256, "height": 288, "sha1": "dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e" },
     { "path": "assets/garden-guardians-v1/native/ash-ferryman.png", "nodeId": "370:3", "group": "enemies", "width": 128, "height": 288, "sha1": "11bc3d0603795f6e3363d7d77a9931e6b0ab2e93" },
     { "path": "assets/garden-guardians-v1/native/compost-choir.png", "nodeId": "370:4", "group": "enemies", "width": 128, "height": 288, "sha1": "51155d4545d553c7b242ee96de746442241063ba" },
     { "path": "assets/garden-guardians-v1/native/dew-duke.png", "nodeId": "366:3", "group": "enemies", "width": 128, "height": 288, "sha1": "cb19c64e488d7b8991fc14e3346861018c74cf3f" },
@@ -732,6 +733,7 @@
     { "path": "assets/rattus-motion/uppercut.png", "nodeId": "558:13537", "group": "player-characters", "width": 512, "height": 40, "sha1": "13b0e8b98d2808a4bd3fa2e2bb80db2d42bd33aa" },
     { "path": "assets/rattus-motion/walk.png", "nodeId": "558:13528", "group": "player-characters", "width": 512, "height": 40, "sha1": "929add9d8ac1d973ef6851f503697e904184533c" },
     { "path": "assets/results-native/sprites/font-5x7.png", "nodeId": "389:436", "group": "ui,-boons-&-results", "width": 96, "height": 32, "sha1": "972d11f3bcb444d13d8b748fd56585bd8f0d53bb" },
+    { "path": "assets/tiara-head-v1/sprites.png", "nodeId": "1032:21911", "group": "bosses", "width": 320, "height": 320, "sha1": "daa9788b7b6b168510ee8d635447d2aa105e3e95", "sourceKind": "vector-export", "sourceProof": "assets/tiara-head-v1/figma-vector.json" },
     { "path": "assets/tiles-v1/sanctuary.png", "nodeId": "340:3", "group": "environment", "width": 128, "height": 75, "sha1": "8b0552caf2119b1ce407f92d45fc0c09128fccbf" },
     { "path": "assets/yeet-encounter-v1/cat.png", "nodeId": "582:13528", "group": "enemies", "width": 128, "height": 64, "sha1": "45ecb7f5fd293bdc3b487ca33f57536ed41dfb13" },
     { "path": "assets/yeet-encounter-v1/yeet.png", "nodeId": "574:13527", "group": "enemies", "width": 256, "height": 128, "sha1": "8783ddf7b17f7387965f42c1cf977e573ffde224" }
@@ -741,7 +743,6 @@
     { "path": "assets/characters-v2/kestrel/main.png", "nodeId": "386:10", "section": "451:8", "width": 256, "height": 256, "sha1": "8e0e4cc3610414e112cc66f0ba9bbe5773f35d9d", "status": "unused" },
     { "path": "assets/characters-v2/rattle-norvegicus/interaction.png", "nodeId": "425:4", "section": "451:8", "width": 256, "height": 256, "sha1": "37096b107d57aa4977e3efe7f59769764b39dda3", "status": "unused" },
     { "path": "assets/characters-v2/rattle-norvegicus/main.png", "nodeId": "425:3", "section": "451:8", "width": 256, "height": 256, "sha1": "ed7e283c560c5a3ff65561121eb7608e10a4c059", "status": "unused" },
-    { "path": "assets/enemies-v2/sprites.png", "nodeId": "414:3", "section": "451:8", "width": 256, "height": 288, "sha1": "dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e", "status": "unused" },
     { "path": "assets/results-native/sprites/ui-labels-en.png", "nodeId": "428:2", "section": "451:8", "width": 256, "height": 64, "sha1": "cb7c2f063cb3b82922e1a46a76f6f8a6aaa1e301", "status": "unused" },
     { "path": "assets/yeet-encounter-v1/01-encounter.png", "nodeId": "527:13518", "section": "527:13515", "width": 256, "height": 256, "sha1": "2a175fc79a0e2ae9a065cb82d0d4b4607e7d8d91", "status": "unused" },
     { "path": "assets/yeet-encounter-v1/02-chase.png", "nodeId": "527:13521", "section": "527:13515", "width": 256, "height": 224, "sha1": "1ac58127ffcdd18ccc2eb29b027657acb0a76e52", "status": "unused" },

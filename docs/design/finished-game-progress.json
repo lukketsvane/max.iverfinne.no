@@ -4,19 +4,187 @@
   "baselineCommit": "778ab6e98f54d3c025045c126bddd0b538b7a675",
   "plan": "docs/design/finished-game-master-plan.md",
   "releaseCommit": null,
-  "nextMilestone": "M0",
+  "publishedDisplayRename": {
+    "displayName": "Erasmus Berg",
+    "commit": "18f1d67d1c7ebeda2bbe90fef4d3d13cd03e8f3e",
+    "status": "published_to_main",
+    "scope": "Owner-directed display-name rename; internal cairn identifiers/assets remain unchanged",
+    "verification": "Published directly without waiting for checks; does not verify pending graphics or production release"
+  },
+  "nextMilestone": "MG",
+  "priorityOverride": {
+    "date": "2026-10-14",
+    "reason": "Owner screenshot exposes a flat cyan enemy; explicit request replaces all remaining crude placeholder bodies before M2 or content expansion",
+    "preserve": [
+      "M0/M1 release verification",
+      "Concurrent Tiara/Garden 10 source and gameplay contracts",
+      "MAX native style and existing stage contracts"
+    ]
+  },
+  "foundationVerification": {
+    "commit": "ce97f671ff3127490a877fc00727e8688f3da70b",
+    "scope": "Foundation only; excludes subsequently staged Tiara integration and urgent graphics changes",
+    "localTests": {
+      "passed": 916,
+      "total": 916,
+      "failed": 0,
+      "exitCode": 0,
+      "finished": "2026-10-14T16:28:06.404700+00:00"
+    },
+    "log": "/tmp/max-finished-foundation-tests.log",
+    "statusReceipt": "/tmp/max-finished-foundation-tests-status.json",
+    "evidenceRetention": "Local temporary receipts; append durable exact-SHA CI/deployment evidence before marking released"
+  },
+  "releaseReview": {
+    "pullRequest": 54,
+    "status": "pending",
+    "exactShaCI": "unverified",
+    "productionAndCustomDomain": "unverified"
+  },
   "milestones": [
-    { "id": "M0", "name": "Trustworthy baseline", "status": "verifying", "evidence": ["Historical/current source repair: 64 focused checks and build passed; full suite pending"] },
-    { "id": "M1", "name": "Dependable, honest play", "status": "in_progress", "tasks": ["Recover transient session polling failures", "Healthy host departure preserves remaining run", "Equipped skill feedback, help and controller parity"] },
-    { "id": "M2", "name": "Whole kit on iPhone", "status": "pending" },
-    { "id": "M3", "name": "Coherent, surprising builds", "status": "pending" },
-    { "id": "M4", "name": "Complete opening chapter", "status": "pending", "firstTask": "Figma MASTER Garden 3 Broken Aqueduct loop" },
-    { "id": "M5", "name": "Encounter identity and rhythm", "status": "pending" },
-    { "id": "M6", "name": "Twenty memorable places", "status": "pending" },
-    { "id": "M7", "name": "Risk, bosses and repeat play", "status": "pending" },
-    { "id": "M8", "name": "Visual, sonic and tactile finish", "status": "pending" },
-    { "id": "M9", "name": "Meaningful records and retention", "status": "pending" },
-    { "id": "M10", "name": "Demonstrate a finished product", "status": "pending", "unmeasured": ["Human first-time comprehension/replay desire", "Real target-iPhone late-run performance", "Quality parity with Risk of Rain 2"] }
+    {
+      "id": "M0",
+      "name": "Trustworthy baseline",
+      "status": "verifying",
+      "evidence": [
+        "Historical/current source repair: 64 focused checks and build passed",
+        "Foundation ce97f671: full local suite passed 916/916; exact-SHA CI/production verification for PR 54 remains pending"
+      ]
+    },
+    {
+      "id": "M1",
+      "name": "Dependable, honest play",
+      "status": "verifying",
+      "tasks": [
+        "Recover transient session polling failures",
+        "Healthy host departure preserves remaining run",
+        "Equipped skill feedback, help and controller parity"
+      ],
+      "evidence": [
+        "Foundation implementation included in ce97f671 local 916/916 run; release verification remains pending"
+      ]
+    },
+    {
+      "id": "MG",
+      "name": "Complete native sprite coverage",
+      "status": "in_progress",
+      "inventory": "docs/design/finished-game-art-inventory.md",
+      "tasks": [
+        {
+          "task": "Native thorn caster, dew leech and rammer bodies with actual role-state mapping",
+          "status": "verifying",
+          "note": "Implementation present: original Figma 414:3 promoted from archive 425:2 to production 451:3/frame 1040:21976; unchanged SHA-1 dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e; native 32px cells/anchor 16,31, reviewed rows 6/1/4 and cast/drain/charge clips; full acceptance/release pending",
+          "sourceEvidence": [
+            "assets/enemies-v2/README.md",
+            "assets/enemies-v2/figma-promotion.json",
+            "assets/enemies-v1/thorn-caster/atlas.json",
+            "assets/enemies-v1/dew-leech/atlas.json",
+            "assets/enemies-v1/rammer/atlas.json"
+          ]
+        },
+        {
+          "task": "Guardian and six trial altars use approved native district altar",
+          "status": "verifying",
+          "note": "Both production render hooks implemented at native anchor; focused checks pass, complete integrated source/test/build/phone/release verification pending",
+          "evidence": [
+            "Integration agent reports node --test tests/native-altar-rendering.test.cjs tests/level-guide.test.cjs passed 11/11 (4 altar + 7 guide); no dedicated persisted log",
+            "Separate Tiara checks: tests/tiara-head.test.cjs 10 plus tests/tiara-head-art.test.cjs 2 passed; not a new full integrated-suite result"
+          ]
+        },
+        {
+          "task": "Remaining confirmed physical prop/projectile/node bodies in inventory",
+          "status": "pending"
+        },
+        {
+          "task": "Retryable complete-art admission and loading/failure coverage",
+          "status": "verifying",
+          "note": "Complete-art admission, explicit failed-pack retries, Back/selection cancellation and late reservation cleanup implemented; 61 focused checks pass"
+        },
+        {
+          "task": "Exhaustive spawn/render coverage and same-camera phone inspection",
+          "status": "verifying",
+          "note": "Actual PNG render coverage includes all spawn profiles, rats, guardians, Crown/helpers and death/anchors; CI phone screenshots added for all seven role sprites"
+        },
+        {
+          "task": "Full test/build/native-source gate and exact-SHA release verification",
+          "status": "pending"
+        }
+      ],
+      "unmeasured": [
+        "Final crowded-phone visual acceptance",
+        "All inventory replacements",
+        "Post-integration complete release gate"
+      ]
+    },
+    {
+      "id": "M2",
+      "name": "Whole kit on iPhone",
+      "status": "pending",
+      "inputContract": "Rattus latch/Driving uses holds; Erasmus Berg Brace uses tap/toggle up to 3 seconds, not a held action"
+    },
+    {
+      "id": "M3",
+      "name": "Coherent, surprising builds",
+      "status": "pending"
+    },
+    {
+      "id": "M4",
+      "name": "Complete opening chapter",
+      "status": "pending",
+      "firstTask": "Figma MASTER Garden 3 Broken Aqueduct loop"
+    },
+    {
+      "id": "M5",
+      "name": "Encounter identity and rhythm",
+      "status": "pending"
+    },
+    {
+      "id": "M6",
+      "name": "Twenty memorable places",
+      "status": "pending"
+    },
+    {
+      "id": "M7",
+      "name": "Risk, bosses and repeat play",
+      "status": "pending"
+    },
+    {
+      "id": "M8",
+      "name": "Visual, sonic and tactile finish",
+      "status": "pending"
+    },
+    {
+      "id": "M9",
+      "name": "Meaningful records and retention",
+      "status": "pending"
+    },
+    {
+      "id": "M10",
+      "name": "Demonstrate a finished product",
+      "status": "pending",
+      "unmeasured": [
+        "Human first-time comprehension/replay desire",
+        "Real target-iPhone late-run performance",
+        "Quality parity with Risk of Rain 2"
+      ]
+    }
   ],
-  "concurrentWork": "Tiara/Garden 10 head boss: preserve separate task and integrate tested main commits"
+  "concurrentWork": "Tiara/Garden 10 head boss: preserve separate task and integrate tested main commits",
+  "verificationSnapshot": {
+    "stage": "Before graphics checkpoint publication",
+    "focusedTests": {
+      "passed": 61,
+      "total": 61,
+      "failed": 0
+    },
+    "nativeSource": {
+      "masters": 667,
+      "matching": 667,
+      "problems": 0,
+      "receipt": "docs/asset-review/native-role-coverage/figma-comparison.json"
+    },
+    "rendererEvidence": "docs/asset-review/native-role-coverage/renderer-observation.json",
+    "fullIntegratedTests": "Running; final result and exact commit CI/deployment receipts are recorded on pull request 54",
+    "releaseReceiptLocation": "https://github.com/lukketsvane/max.iverfinne.no/pull/54"
+  }
 }

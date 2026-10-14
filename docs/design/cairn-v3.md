@@ -1,8 +1,10 @@
-# Cairn — Strata and the garden ridge
+# Erasmus Berg — Strata and the garden ridge
 
-Cairn remains the broad living stone creature, with his existing moss, palette,
+Erasmus Berg remains the broad living stone creature, with his existing moss, palette,
 body sheets and foot registration. Class ID `bulwark` and skin `ember` remain
-compatible with saved players and co-op reservations. This kit develops the
+compatible with saved players and co-op reservations. The display name is
+Erasmus Berg; `cairn` filenames, asset paths and internal state keys remain
+unchanged. This kit develops the
 connected proposal; the unapproved replacement-art proposal is not used.
 
 Sources: [Cairn](https://app.notion.com/p/3ec1c6815f7881afa426caf601377f26),
@@ -14,7 +16,7 @@ Sources: [Cairn](https://app.notion.com/p/3ec1c6815f7881afa426caf601377f26),
 The preserved native sheets are [main454:599](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/MAX?node-id=454-599)
 and [interaction454:598](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF/MAX?node-id=454-598).
 
-Cairn makes a defended patch of garden valuable. Land deliberate close sweeps
+Erasmus Berg makes a defended patch of garden valuable. Land deliberate close sweeps
 to earn plates, or stand where a real plant bite benefits from his guard. Spend
 one plate to slow a grounded approach with Loose Stone; save three to raise a
 Ridge. Brace rewards reading an actual frontal attack, while its short counter
@@ -58,7 +60,7 @@ and does not consume that pending primary opportunity.
 Plant guard lookup is pure. Passive30%, Brace65%, Ridge45% and Sligo's class
 guard select the strongest eligible contribution instead of multiplying.
 Existing Shelter, Shield and Barkskin keep their separate rules. Equal guards
-choose the lower member slot, then stable owner ID. Only the effective Cairn
+choose the lower member slot, then stable owner ID. Only the effective Erasmus Berg
 owner can receive the plate, and only if the reduction saved positive actual
 health from a living plant's accepted pest bite.
 
@@ -127,7 +129,7 @@ IDs, ranks, prerequisites, paths and mode lists are unchanged.
 ## Controls and preserved Shovel
 
 B / threat tap uses Three-Stone Rhythm; C / Stone throws Loose Stone; V / Brace
-starts a stationary brace; E / Ridge or tap Cairn uses Garden Breakwater.
+starts a stationary brace; E / Ridge or tap Erasmus Berg uses Garden Breakwater.
 X or a quick horizontal flick dodges. Standard controller C8/V6/E4; horizontal single C8/V10/E3.
 Held Tend+C8 refills, Home16 or held Tend+V toggles the lantern; these chords
 suppress garden work. Ordinary tending and lantern L remain available.

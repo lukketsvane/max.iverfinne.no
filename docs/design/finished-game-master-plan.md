@@ -52,11 +52,12 @@ gates. It is not a completed human playtest or a claim of parity with RoR2.
 | Combat pace | Fast role introductions, warned strikes, continuous clock, overstay guardians, bounded populations | Stage role profiles are deduplicated, losing composition weights; encounters need deliberate tactical phrases and measured recovery | `run-director.inc.js:combatProfiles/waveEnemyKind/nextRunEnemyKind` |
 | Levels | Twenty stage identities, shared seeded routes, places/districts, physical ascent; bound Figma Garden 1 and native Turtle Garden 4 | Sixteen stages still derive much traversal from shared components; author distinct route problems and local consequences | `stage-layout.js`, `stage-expeditions.js`, level/source data |
 | Discovery | Caches, puzzles, six trials, encounters, weather and secret modifiers | Several outcomes are automatic gifts or next-map modifiers; add genuine physical side spaces and meaningful commitments | `wonders.inc.js`, `run-director.inc.js`, `secrets.inc.js` |
+| Native graphics coverage | Approved character, bird, rat, guardian and original ordinary-role packs; missing thorn/leech/rammer mappings now implemented from the promoted original Figma sheet | Three role replacements and native altar hooks are under verification, not released; remaining production objects/projectiles still need native bodies and loading/failure coverage | `native-art.mjs:ENEMIES/idFor/load`; [audited inventory](finished-game-art-inventory.md) |
 | Phone clarity | Stable icon loadout; 48 Chromium/WebKit cases passed; tiny HUD and native cues | Live meter/help can describe the default skill after an alternate is selected; first-minute tests are not a fresh touch story | `index.html:drawSkillPip/help`, first-minute/browser fixtures |
 | Co-op continuity | Host-owned combat, room reservations, snapshots, admission and promotion logic | A transient polling failure can leave the room; a departing host can send terminal `end` before promotion | `coop-session.mjs`; isolated real-session reproductions |
 | Results/retention | Exact plant archive, actual-run bouquet, collection and optional accounts | Record the build, equipped loadout, difficulty and actual loss/win cause; explain why this attempt differed | `run-results.js`, `runStats`, records |
 | Sound/finish | Separate music/effects, bounded voices, positional effects, priority warnings and iOS recovery | Two cycling music tracks; add chapter/combat dynamics and check mix/readability under real crowded play | `soundtrack.mjs`, effects/listenRun, audio pack |
-| Release confidence | Extensive tests, browser reviews, source receipts and exact deployment checks | Baseline full run: 881/882 pass; one historical source fixture incorrectly compares against the newer live export. Live smoke and performance coverage need strengthening | full-run log; `master-runtime-publication.test.cjs`; workflows/transport |
+| Release confidence | Extensive tests, browser reviews, source receipts and exact deployment checks; foundation `ce97f671` passed 916/916 locally | Original baseline was 881/882 before the historical/current source fixture repair. PR 54 release is pending; the local foundation result does not verify later Tiara integration or graphics changes. Live smoke and performance coverage need strengthening | `/tmp/max-finished-foundation-tests.log` and status receipt; `master-runtime-publication.test.cjs`; workflows/transport |
 
 Concurrent Tiara/Garden 10 work belongs to the separate head-boss task. Integrate
 its tested commits from current main; do not overwrite it or quietly count
@@ -69,6 +70,12 @@ updated [execution ledger](finished-game-progress.json). Work on independent
 repairs may proceed together; the release gates below determine completion.
 Do not jump to a larger asset/content batch while a preceding player-facing
 blocker remains. Development targets below are targets, not measured results.
+
+**October 14 priority override:** the owner's screenshot and explicit request
+to replace all remaining placeholder art make complete native-body coverage the
+immediate next checkpoint, before M2 or any new content expansion. M0/M1 still
+need their release evidence; their locally tested foundation is not a finished
+game. Keep the separately authored Tiara/Garden 10 integration intact.
 
 ### M0 — a trustworthy baseline
 
@@ -99,11 +106,60 @@ departure and confirmed closure; actual combat/input tests prove all equipped
 specials, resource rejection and cooldown feedback without changing combat
 spends. Existing guest replay, PWA, controller and class gates remain green.
 
+### MG — complete native sprite coverage (urgent user priority)
+
+Fix the permanent missing ordinary-enemy mappings first: kind 9 thorn caster,
+kind 10 dew leech and kind 11 rammer. The dew leech's flat cyan/teal body is the
+likely screenshot defect, not a new intentional style. Existing birds, rats,
+role packs and bosses remain native; do not substitute oversized boss sprites
+or recolour a rectangular placeholder and call it finished.
+
+**Implementation checkpoint, not a release:** the unchanged original Figma
+enemy sheet `414:3` has been promoted from archive `425:2` to production
+`451:3`/`1040:21976`. Three native 32px role atlases now bind reviewed original
+poses with anchor `(16,31)`; no rescaling or hitbox change. Guardian/trial altar
+hooks use the approved native district altar. The integration owner reports
+11 focused checks plus 12 Tiara checks passed. Retryable complete-art admission
+is being implemented/verified; full source/test/build, phone and release gates
+remain outstanding. The inventory records the exact source and remaining work.
+
+Work through the [production placeholder inventory](finished-game-art-inventory.md)
+until every confirmed crude body has an accepted native replacement: guardian
+and trial altars, small guardian objective nodes, Mycel/hostile spores, root
+strikes, Loom/Echo physical props, High Tide boon tokens and the Night Relay
+carried lantern. Reuse a suitable approved source only at its native size and
+anchor; otherwise author the missing asset in the actual Figma production
+source and record its pack, atlas, provenance and authenticated readback.
+An archived sheet is a candidate, not approved runtime coverage until verified.
+
+Also audit loading and failed-asset paths. An atlas omitted from the load list
+is a permanent coverage defect; a supported sprite missing because loading has
+not finished is a different failure. Neither may silently leave a crude flat
+body in normal playable production. Define and test bounded loading/recovery
+behavior without changing enemy admission, hitboxes, timing or damage.
+
+Preserve deliberately simple HUD pips, bars, warning/impact extents, particles,
+existing shaped native pixel motifs and approved Crown objective art. A
+`fillRect` call alone is not evidence of a placeholder. Changing hazard art must
+not obscure its exact threatened region or turn animation into damage logic.
+
+**Done when:** an exhaustive actual-spawn/render matrix covers ordinary roles
+0–11, rat variants, all campaign/roaming bosses and trial/event/circuit guards;
+the real native PNGs draw accepted movement, windup, attack, recovery, hurt and
+death states where the role supports them. Every confirmed inventory row is
+closed with source evidence and same-camera crowded-phone review; startup and
+failed-load tests cannot silently retain flat fallback bodies. Native 1:1
+registration, source/PNG pins, gameplay and untouched-stage contracts pass.
+Run the full test/build/source gates and verify the exact release SHA. This
+checkpoint fixes graphics coverage; it does not establish RoR2 quality parity.
+
 ### M2 — the whole kit on iPhone
 
 Implement an explicit touch design for secondary and utility actions, including
-Rattus's held latch/Driving and Cairn's held Brace, while retaining unobscured
-canvas play and the existing short character tap. Start with a transient native
+Rattus's held latch/Driving and Erasmus Berg's actual tap/toggle Brace (up to three
+seconds, released by movement/jump/dodge or an explicit toggle), while retaining
+unobscured canvas play and the existing short character tap. Do not invent a
+held-Brace requirement. Start with a transient native
 icon gesture from the character; test its recognition before adopting it.
 Separate movement and action fingers, cancellation, interrupted touches and
 intentional holds. Cover lantern/refill/Shovel access only where the owned kit
@@ -159,7 +215,7 @@ class movement offer shortcuts without making upgrades mandatory.
 
 **Done when:** measured from actual spawn on declared seeds/input modes, the
 first route decision is visible within a target 12 seconds; Garden 3's direct
-court approach targets ≤35 seconds for unupgraded walking Cairn, without sprint,
+court approach targets ≤35 seconds for unupgraded walking Erasmus Berg, without sprint,
 setup relocation or skills;
 measure each detour's extra time and reward against the pressure clock. All
 six unupgraded classes complete continuous outbound/return at 30/60/120Hz,

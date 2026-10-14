@@ -4,7 +4,7 @@ Pølge is an additional playable pack using the same cell, anchor, palette limit
 and clip/event contract. Its supplied poses and source provenance are
 documented in `docs/asset-review/polge-v1/README.md`.
 
-Tide is Mech's runtime art. Pølge and Sligo have their own packs here. Rattus, Cairn and Mycel use `assets/characters-v2/`. The earlier Moss, Ember and Moon sheets remain source references; appearance is fixed by the selected character.
+Tide is Mech's runtime art. Pølge and Sligo have their own packs here. Rattus, Erasmus Berg and Mycel use `assets/characters-v2/`. The earlier Moss, Ember and Moon sheets remain source references; appearance is fixed by the selected character.
 
 ![Native frames enlarged exactly 4x](preview/contact-4x.png)
 ![Animation preview](preview/animations-4x.gif)
@@ -42,7 +42,7 @@ Preview labels are for review only and are not game UI assets.
 
 Native runtime sheets are edited in [Figma frame 160:2](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=160-2); follow [docs/figma.md](../../docs/figma.md). Original reductions, prompts, master hashes and registration data remain as provenance. The import/packing generator was retired after integration.
 
-Appearance belongs to the character. The build ships Tide for Mech, Pølge's own sheets and Sligo's sheets. Rattus, Cairn and Mycel use `assets/characters-v2/`; the older Moss, Ember and Moon sheets are historical references. `native-art.mjs` retains original Max as a loading/failure fallback.
+Appearance belongs to the character. The build ships Tide for Mech, Pølge's own sheets and Sligo's sheets. Rattus, Erasmus Berg and Mycel use `assets/characters-v2/`; the older Moss, Ember and Moon sheets are historical references. `native-art.mjs` retains original Max as a loading/failure fallback.
 
 ## Sligo, the easter egg
 
