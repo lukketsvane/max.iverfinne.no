@@ -48,8 +48,19 @@ async function measure(page) {
       overflow: document.querySelector('.max-menu-card').scrollWidth > document.querySelector('.max-menu-card').clientWidth + 1,
       readoutFits: document.querySelector('.max-skill-readout').scrollHeight <= document.querySelector('.max-skill-readout').clientHeight + 1,
       name: { text: name.textContent, bounds: nameBox, ink: nameInk, fullyVisible: nameInk.length > 0 && nameInk.every(word => word.contained) },
+      card: { bounds: box(document.querySelector('.max-menu-card')), width: document.querySelector('.max-menu-card').clientWidth, scrollWidth: document.querySelector('.max-menu-card').scrollWidth, back: box(document.querySelector('.max-back')) },
     };
   }, selectors);
+}
+async function nativeMenuReady(page) {
+  await page.waitForFunction(() => {
+    const title = document.querySelector('.max-menu-header h2');
+    const words = [...document.querySelectorAll('.max-character-name canvas.pixel-label')];
+    return title?.classList.contains('pixel-ready') && words.length > 0 && words.every(canvas => {
+      const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+      return pixels.some((value, index) => index % 4 === 3 && value > 0);
+    }) && [...document.querySelectorAll('.max-skill-choice img')].every(image => image.complete && image.naturalWidth === 9);
+  });
 }
 function sameBounds(before, after, message) {
   for (const key of ['x', 'y', 'width', 'height']) assert.ok(Math.abs(before[key] - after[key]) <= .5, `${message} ${key}: ${before[key]} → ${after[key]}`);
@@ -71,7 +82,7 @@ async function run() {
         await page.addInitScript(() => localStorage.setItem('max-easter-eggs-v1', JSON.stringify({ local: ['sligo'], accounts: {} })));
         await page.goto(base, { waitUntil: 'domcontentloaded' });
         await page.locator('.max-home-button.primary').tap();
-        await page.waitForFunction(() => document.querySelector('.max-menu-header h2').classList.contains('pixel-ready') && [...document.querySelectorAll('.max-skill-choice img')].every(image => image.complete && image.naturalWidth === 9));
+        await nativeMenuReady(page);
         const initial = await measure(page);
         assert.equal(initial.alignment, 'flex-start', 'setup is not recentered by content changes');
         assert.equal(initial.readout.height, 58);
@@ -79,16 +90,17 @@ async function run() {
         assert.deepEqual(classes, ['mech', 'runner', 'bulwark', 'herbalist', 'polge', 'sligo']);
         for (const classId of classes) {
           await page.locator(`[data-class-id="${classId}"]`).tap();
-          await page.waitForFunction(() => [...document.querySelectorAll('.max-skill-choice img')].every(image => image.complete && image.naturalWidth === 9));
+          await nativeMenuReady(page);
           const layout = await measure(page);
+          fs.writeFileSync(path.join(output, 'last-layout.json'), JSON.stringify({ engine, viewport, classId, initial, layout }, null, 2));
           for (const selector of selectors) sameBounds(initial.sections[selector], layout.sections[selector], `${engine}/${viewport}/${classId} ${selector}`);
           sameBounds(initial.readout, layout.readout, `${classId} readout`);
           assert.equal(layout.slots.length, 2);
           layout.slots.forEach((box, i) => sameBounds(initial.slots[i], box, `${classId} slot ${i}`));
           assert.equal(layout.icons.length, classId === 'sligo' ? 2 : 4);
-          assert.equal(layout.overflow, false, 'no horizontal card overflow');
+          assert.equal(layout.overflow, false, `${engine}/${viewport}/${classId}: no horizontal card overflow ${JSON.stringify(layout.card)}`);
           assert.equal(layout.readoutFits, true, 'ability effect fits the separate readout');
-          assert.equal(layout.name.fullyVisible, true, `${engine}/${viewport}/${classId}: every actual native name canvas and painted pixel fits the title, intro and hero`);
+          assert.equal(layout.name.fullyVisible, true, `${engine}/${viewport}/${classId}: every actual native name canvas and painted pixel fits the title, intro and hero ${JSON.stringify(layout.name)}`);
           for (const icon of layout.icons) {
             assert.ok(icon.width >= 44 && icon.height >= 44, 'each icon has a usable touch target');
             assert.ok(icon.x >= 0 && icon.x + icon.width <= layout.width + .5, 'touch targets stay on screen');
@@ -106,6 +118,7 @@ async function run() {
             assert.equal(saved.classId, classId);
             assert.equal(saved.skills?.[slot] || 'base', id, `actual ${input} choice persists`);
             const selected = await measure(page);
+            fs.writeFileSync(path.join(output, 'last-layout.json'), JSON.stringify({ engine, viewport, classId, slot, id, input, initial, layout: selected }, null, 2));
             for (const selector of selectors) sameBounds(initial.sections[selector], selected.sections[selector], `${classId}/${slot}/${id} ${selector}`);
             sameBounds(initial.readout, selected.readout, `${classId}/${slot}/${id} readout`);
             assert.equal(selected.overflow, false);

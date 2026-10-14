@@ -19,6 +19,9 @@ test('long character names reserve two compact lines without changing the hero f
   try {
     const style = m.w.document.createElement('style');
     style.textContent = readFileSync(path.join(__dirname, '../game-menu.css'), 'utf8'); m.w.document.head.append(style);
+    const phone = [...style.sheet.cssRules].find(rule => rule.conditionText === '(max-width:640px)');
+    const back = [...phone.cssRules].find(rule => rule.selectorText === '.max-menu[data-screen="play"] .max-back');
+    assert.equal(parseFloat(back.style.right), 0, 'the phone Back target cannot extend beyond the stable card');
     m.click('Play');
     for (const label of ['Rattus norvegicus', 'Sligo']) {
       m.click(label);
