@@ -3,8 +3,9 @@
 Rattus is a mobile rat wrestler. Real sprint travel, a tail pull and confirmed
 boot contacts build Momentum. She can keep a latch while charging a Driving
 dropkick, spend the meter on a short collision-resolved kick, then finish with
-one splits-stomp landing. Gardening, ordinary climbing and dodge remain
-separate actions.
+one splits-stomp landing. Gardening and dodge remain separate actions.
+Ordinary plants cannot be climbed; the shared cleared-exit ascent, ladders
+and High Tide’s motherplant route remain available.
 
 ## Kit
 
@@ -77,11 +78,11 @@ locks steering. Matched release/cancel remains available for its own start.
 | Lantern | L | — | Home (16), or hold Tend + Utility (6) | Home (16), or hold Tend + Utility (10) |
 
 Refill/lantern chords suppress garden work while held. They do not start a
-latch or Driving charge. Normal jump, sprint, mature-plant climbing, separate
+latch or Driving charge. Normal jump, sprint, shared exit ascent, separate
 gardening and Sligo's own Q/left-trigger exchange keep their roles. Gameplay
 has no on-screen action buttons. Tail latch, Driving and lantern require
 keyboard or controller input; touch retains canvas movement, attack, Stomp,
-gardening, dodge, refill and plant climbing. Blur and released controls cancel
+gardening, dodge, refill, ladders and the cleared exit climb. Blur and released controls cancel
 an uncommitted charge.
 
 ## Existing upgrades
@@ -124,7 +125,8 @@ still paid.
 An old start snapshot cannot re-arm locally released guest input. Neither
 guest pose, raw velocity, claimed apex/drop nor client hold decides hits.
 
-Ordinary plants still need half their maximum **physical height** to climb.
+Mature ordinary plants remain Tail latch anchors; they do not allow ordinary
+stem climbing.
 High Tide uses its bent current stem and genuine head/water/breath checks.
 Anchors, motion and contacts cannot bypass stage bounds, water, guardian
 locks, physical exit ascent, shared seeds or exclusive player reservations.
