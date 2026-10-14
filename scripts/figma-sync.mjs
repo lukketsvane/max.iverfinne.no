@@ -5,6 +5,7 @@ import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { inflateSync } from 'node:zlib';
 import { FIGMA, FigmaError, all, connect, download, metadata, tool, toolCalls, unxml } from './figma-mcp.mjs';
+import { VECTOR_PATH, VECTOR_RECEIPT, vectorSourceProblems } from './figma-vector-source.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE = FIGMA.pages.production, RULES = { pixelArt: '396:3', exportCheck: '396:12' }, GRIDS = '396:19', PALETTE = '396:25';
@@ -123,21 +124,33 @@ async function pool(items, fn, width = 4) {
 }
 
 function assetLayers(section) {
-  const nodes = [...all(section)], png = n => n.type === 'rectangle' && safePath(n.name), layers = nodes.filter(png);
+  const nodes = [...all(section)], vector = n => ['frame', 'component', 'symbol'].includes(n.type) && n.name === VECTOR_PATH;
+  const png = n => n.type === 'rectangle' && safePath(n.name) || vector(n), layers = nodes.filter(png);
   const up = n => { const out = []; for (let p = n.parent; p !== section; p = p.parent) out.push(p); return out; };
   const box = n => up(n).reduce(([x0, y0, x1, y1], p) => [x0 + p.x, y0 + p.y, x1 + p.x, y1 + p.y], [n.x, n.y, n.x + n.width, n.y + n.height]);
-  const holders = new Set(layers.flatMap(up)), strays = nodes.filter(n => n.type !== 'text' && !png(n) && !holders.has(n)).map(n => [n, box(n)]);
+  const vectorChildren = new Set(layers.filter(vector).flatMap(n => [...all(n)]));
+  const holders = new Set(layers.flatMap(up)), strays = nodes.filter(n => n.type !== 'text' && !png(n) && !holders.has(n) && !vectorChildren.has(n)).map(n => [n, box(n)]);
   return layers.map(n => {
     const [x0, y0, x1, y1] = box(n), frame = up(n).at(-1);
     const over = strays.filter(([, b]) => b[0] < x1 && b[2] > x0 && b[1] < y1 && b[3] > y0).map(([s]) => `${s.type} ${s.id}`);
-    return { path: n.name, nodeId: n.id, group: frame ? groupOf(frame.name) : null, x: n.x, y: n.y, width: n.width, height: n.height, over };
+    return { path: n.name, nodeId: n.id, group: frame ? groupOf(frame.name) : null, x: n.x, y: n.y, width: n.width, height: n.height, over,
+      ...(vector(n) ? { sourceKind: 'vector-export', sourceProof: VECTOR_RECEIPT, sourceNodeType: n.type, descendants: [...all(n)] } : {}) };
   });
 }
 const repoSha = p => { const f = resolve(root, p); return f.startsWith(root + sep) && existsSync(f) ? sha1(readFileSync(f)) : null; };
 const unconfirmed = (n, h) => h.length !== 1 || h[0] !== repoSha(n.path);
 async function withImages(layers) {
-  const found = await hashes(layers, [SOURCE], unconfirmed);
-  for (const l of layers) { l.images = found.get(l.nodeId); l.sha1 = l.images.length === 1 ? l.images[0] : null; }
+  const raster = layers.filter(l => !l.sourceKind), found = await hashes(raster, [SOURCE], unconfirmed);
+  for (const l of raster) { l.images = found.get(l.nodeId); l.sha1 = l.images.length === 1 ? l.images[0] : null; }
+  for (const l of layers.filter(l => l.sourceKind === 'vector-export')) {
+    l.images = [];
+    // This extension is served only from an authenticated use_figma capture
+    // and the actual exportAsync PNG. A desktop server without it fails closed.
+    const text = (await tool('get_vector_export', l.nodeId)).find(text => text.trimStart().startsWith('{'));
+    const capture = JSON.parse(text || '{}');
+    l.vectorCapture = capture; l.sha1 = capture.png?.sha1 ?? null;
+    if (l.sha1) l.vectorBytes = await download(l.sha1);
+  }
   const seen = new Set();
   for (const l of layers) {
     l.problems = [];
@@ -146,7 +159,14 @@ async function withImages(layers) {
     if (!safePath(l.path)) l.problems.push('layer name is not a posix repository path inside assets/');
     if (!l.group) l.problems.push(`not inside a group frame of section ${SOURCE}`);
     for (const k of ['x', 'y', 'width', 'height']) if (!Number.isInteger(l[k])) l.problems.push(`${k} ${l[k]} is not an integer`);
-    if (!l.sha1) l.problems.push(`${l.images.length} image fills, expected exactly one`);
+    if (l.sourceKind === 'vector-export') {
+      l.problems.push(...vectorSourceProblems({ ...l, sourceProof: VECTOR_RECEIPT }, l.vectorBytes ?? Buffer.alloc(0), decode, root, l.vectorCapture));
+      const master = l.vectorCapture.master;
+      if (!master || !(master.type === 'COMPONENT' ? ['component', 'symbol'] : ['frame']).includes(l.sourceNodeType)) l.problems.push('current vector master type differs from its authenticated source capture');
+      if (!master || ![l.x, l.y, l.width, l.height].every((value, i) => value === [master.x, master.y, master.width, master.height][i])) l.problems.push('current vector master metadata differs from its authenticated source capture');
+      const shapes = l.vectorCapture.shapes ?? [];
+      if (l.descendants.length !== shapes.length || l.descendants.some(n => !shapes.some(s => s.nodeId === n.id && n.type === s.type.toLowerCase() && n.name === s.name && [n.x, n.y, n.width, n.height].every((value, i) => value === [s.x, s.y, s.width, s.height][i])))) l.problems.push('current vector descendants differ from the complete authenticated palette-path capture');
+    } else if (!l.sha1) l.problems.push(`${l.images.length} image fills, expected exactly one`);
     if (l.over.length) l.problems.push(`drawn over by ${l.over.join(', ')}: flatten, export at 1× and make that PNG the layer's only fill`);
   }
   return layers;
@@ -161,13 +181,14 @@ async function sourceSection() {
   });
   return section;
 }
-const entryOf = l => ({ path: l.path, nodeId: l.nodeId, group: l.group, width: l.width, height: l.height, sha1: l.sha1 });
+const entryOf = l => ({ path: l.path, nodeId: l.nodeId, group: l.group, width: l.width, height: l.height, sha1: l.sha1,
+  ...(l.sourceKind ? { sourceKind: l.sourceKind, sourceProof: l.sourceProof } : {}) });
 const repoFile = p => safePath(p) && existsSync(join(root, p)) ? readFileSync(join(root, p)) : null;
 
 function validate(bytes, layer, current, allowResize) {
   try {
     const errors = [], png = pngInfo(bytes);
-    if (sha1(bytes) !== layer.sha1) errors.push('downloaded bytes differ from the Figma image hash');
+    if (sha1(bytes) !== layer.sha1) errors.push(layer.sourceKind === 'vector-export' ? 'downloaded bytes differ from the actual Figma vector PNG export' : 'downloaded bytes differ from the Figma image hash');
     if (png.width !== layer.width || png.height !== layer.height) errors.push(`PNG ${png.width}×${png.height} ≠ layer ${layer.width}×${layer.height}`);
     if (current && !allowResize) {
       const was = pngInfo(current);
@@ -184,14 +205,14 @@ async function compare(manifest, allowResize) {
     const entry = known.get(l.path), current = repoFile(l.path), have = current && sha1(current), problems = l.problems;
     known.delete(l.path);
     const status = !l.sha1 ? 'REJECTED' : !entry ? 'NEW-IN-FIGMA' : !current ? 'MISSING-IN-REPO'
-      : l.sha1 === have ? (['nodeId', 'group', 'width', 'height', 'sha1'].every(k => entry[k] === l[k]) ? 'MATCH' : 'MANIFEST-STALE')
+      : l.sha1 === have ? (['nodeId', 'group', 'width', 'height', 'sha1', 'sourceKind', 'sourceProof'].every(k => entry[k] === l[k]) ? 'MATCH' : 'MANIFEST-STALE')
       : have === entry.sha1 ? 'DRIFT' : l.sha1 === entry.sha1 ? 'REPO-CHANGED' : 'CONFLICT';
     const row = { status, path: l.path, nodeId: l.nodeId, size: `${l.width}×${l.height}`, layer: l, problems };
     if (current && l.sha1 === have) {
       try { const png = pngInfo(current); if (png.width !== l.width || png.height !== l.height) problems.push(`layer ${row.size} ≠ PNG ${png.width}×${png.height}`); }
       catch (e) { problems.push(e.message); }
     } else if (l.sha1 && safePath(l.path) && ['DRIFT', 'NEW-IN-FIGMA', 'MISSING-IN-REPO'].includes(status)) {
-      row.bytes = await download(l.sha1);
+      row.bytes = l.vectorBytes ?? await download(l.sha1);
       problems.push(...validate(row.bytes, l, current, allowResize));
     }
     if (problems.length && status !== 'REJECTED') Object.assign(row, { status: 'REJECTED', was: status });

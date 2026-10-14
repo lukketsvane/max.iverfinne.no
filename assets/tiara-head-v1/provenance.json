@@ -1,0 +1,76 @@
+{
+  "source": {
+    "type": "approved-image-generation",
+    "filename": "exec-7002bf7a-6fd9-43f9-8c22-e62724aec46e.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "f41ca3fdd3dfc72b2e1c7368bc6413306fa35582d299105e9777e60f875fedb1"
+  },
+  "native": {
+    "filename": "sprites.png",
+    "size": [
+      320,
+      320
+    ],
+    "cell": [
+      40,
+      40
+    ],
+    "grid": [
+      8,
+      8
+    ],
+    "resizeFilter": "nearest-neighbour (ImageMagick point)",
+    "scale": 0.2551834130781499,
+    "alphaThreshold": "50%",
+    "alphaValues": [
+      0,
+      255
+    ],
+    "transparentRGB": [
+      0,
+      0,
+      0
+    ],
+    "rgbaPaletteCount": 64,
+    "opaquePaletteCount": 63,
+    "sha256": "123c7dbb88538907f44a705d3fd0d006ee005ccbf23c02212d71b2ce289d2914",
+    "approvedCandidateSha256": "1b2d166d5874f3b042ef09c7fe539f9e8762f8608aeb07da5a06a7848075d694"
+  },
+  "operations": [
+    "Resize the entire sheet uniformly to 320x320 using nearest-neighbour.",
+    "Threshold alpha to binary at 50%.",
+    "Set RGB of fully transparent pixels to 0,0,0.",
+    "Quantize without dithering to 64 or fewer RGBA entries.",
+    "Reapply binary alpha and transparent RGB sanitation."
+  ],
+  "gridPreservation": {
+    "frameOrder": "row-major, left-to-right then top-to-bottom",
+    "frameCount": 64,
+    "independentTrimming": false,
+    "individualFrameRepositioning": false
+  },
+  "figma": {
+    "status": "synchronized",
+    "sourceKind": "vector-export",
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "10:2",
+    "sectionId": "451:4",
+    "nodeId": "1032:21911",
+    "nodeType": "COMPONENT",
+    "capturedAt": "2026-10-14T16:02:17.953Z",
+    "receipt": "assets/tiara-head-v1/figma-vector.json",
+    "exportSha1": "daa9788b7b6b168510ee8d635447d2aa105e3e95",
+    "exportSha256": "123c7dbb88538907f44a705d3fd0d006ee005ccbf23c02212d71b2ce289d2914",
+    "note": "The actual canonical Figma COMPONENT drives all animation and level instances. Its native vector path geometry and actual exportAsync PNG are verified against the approved downscaled candidate. PNG SHA-1 is an export byte hash, never a stored Figma imageHash.",
+    "comparison": {
+      "path": "docs/asset-review/tiara-head-v1/figma-comparison.json",
+      "sha256": "0ff295a76c8b7a00c61653fe50df1716f3302bd364738b371a86d9fa31eb9ac7",
+      "status": "MATCH",
+      "production": 666,
+      "problems": 0
+    }
+  }
+}

@@ -36,6 +36,7 @@ for (const file of [
   'assets/cavern-v1', 'assets/rattus-motion', 'assets/yeet-encounter-v1', 'manifest.webmanifest',
 ]) copy(file);
 for (const file of ['boss.png', 'effects.png', 'chimera.png', 'atlas.json', 'README.md']) copy('assets/crown-ascendant-v1/' + file);
+for (const file of ['sprites.png', 'atlas.json', 'README.md']) copy('assets/tiara-head-v1/' + file);
 for (const file of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, file))) copy(file);
 for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
 for (const [pack, ids, sheets] of [

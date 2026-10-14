@@ -3,6 +3,7 @@ import { updateRattusMotion } from './rattus-motion.mjs';
 import { updateCairnMotion } from './cairn-motion.mjs';
 import { updateMycelMotion } from './mycel-motion.mjs';
 import { crownPose, crownClip, crownGuardPose } from './hollow-crown-art.mjs';
+import { tiaraHeadPose } from './tiara-head-art.mjs';
 
 const SKINS = Object.freeze(['original', 'moss-pink', 'tide', 'ember', 'moon', 'polge', 'sligo']);
 const CHARACTER_ART = Object.freeze({ moss: 'rattle-norvegicus-pink', 'moss-pink': 'rattle-norvegicus-pink', ember: 'cairn', moon: 'mycel' });
@@ -39,9 +40,9 @@ export function createNativeArt() {
   function reset() {
     clocks.clear(); anonymousClocks = new WeakMap(); deaths = []; sweptAt = 0;
   }
-  function milestone(enemy) { return !!enemy.boss && (Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
+  function milestone(enemy) { return !!enemy.boss && (enemy.bossId === 'tiara-head' || Object.hasOwn(MILESTONES, enemy.bossId) || GUARDIANS.includes(enemy.bossId)); }
   function idFor(enemy) { return enemy.crownGuard ? 'chimera-' + (enemy.crownGuardKind === 'ground' || enemy.kind === 5 ? 'ground' : 'air') : enemy.boss ? milestone(enemy) ? enemy.bossId : 'hollow-crown' : enemy.kind === 8 ? 'rat-' + (RATS.includes(enemy.ratVariant) ? enemy.ratVariant : 'common') : ENEMIES[enemy.kind]; }
-  function footOffset(enemy) { return enemy.crownGuard ? 10 : enemy.boss ? enemy.bossId === 'hollow-crown' ? 32 : enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
+  function footOffset(enemy) { return enemy.crownGuard ? 10 : enemy.boss ? enemy.bossId === 'hollow-crown' ? 32 : enemy.bossId === 'tiara-head' ? 19 : enemy.bossId === 'mossback' ? 8 : 13 : enemy.kind === 8 ? 8 : 5; }
   function renderTime() { return typeof performance !== 'undefined' ? performance.now() / 1000 : 0; }
   function clockFor(enemy, time) {
     const key = Number.isFinite(enemy.ph) ? `${idFor(enemy)}:${enemy.ph}` : null;
@@ -61,6 +62,7 @@ export function createNativeArt() {
   function pose(enemy, time) {
     const clock = clockFor(enemy, time);
     if (enemy.boss && enemy.bossId === 'hollow-crown') return crownPose(enemy, time, clock);
+    if (enemy.boss && enemy.bossId === 'tiara-head') return tiaraHeadPose(enemy, time, clock);
     if (enemy.crownGuard) return crownGuardPose(enemy, time, clock);
     if (!enemy.boss && enemy.kind === 8) {
       const allowed = ['idle', 'walk', 'run', 'jump', 'windup', 'attack', 'recover', 'hurt'];
@@ -136,6 +138,7 @@ export function createNativeArt() {
       .concat([['rattus-motion', 'assets/rattus-motion/atlas.json']])
       .concat(Object.values(ENEMIES).map(id => [id, `assets/enemies-v1/${id}/atlas.json`]))
       .concat([['hollow-crown', 'assets/crown-ascendant-v1/atlas.json']])
+      .concat([['tiara-head', 'assets/tiara-head-v1/atlas.json']])
       .concat(RATS.map(id => ['rat-' + id, `assets/rat-enemies-v1/${id}/atlas.json`]))
       .concat(Object.entries(MILESTONES).map(([id, file]) => [id, `assets/boss-milestones-v1/native/${file}.json`]))
       .concat(GUARDIANS.map(id => [id, `assets/garden-guardians-v1/native/${id}.json`]));
@@ -147,6 +150,7 @@ export function createNativeArt() {
         for (const guard of ['chimera-ground', 'chimera-air']) { atlases[guard] = atlas; flashes[guard] = flashes[id]; }
         for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef', wounded: '#b5a8de' })) crownOutlines[name] = flashAtlas(atlas, color);
       }
+      if (id === 'tiara-head') for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef' })) crownOutlines['tiara-' + name] = flashAtlas(atlas, color);
       return id;
     })).then(results => {
       const status = {
@@ -181,6 +185,10 @@ export function createNativeArt() {
       const outline = crownOutlines[enemy.exposed > 0 ? 'open' : enemy.windup > 0 ? 'tell' : enemy.crownStage === 4 || enemy.phase === 4 ? 'wounded' : 'dark'];
       if (outline) for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) drawAtlas(ctx, outline, state.name, state.seconds, x + dx, footY + dy, options);
     }
+    if (id === 'tiara-head') {
+      const outline = crownOutlines['tiara-' + (enemy.exposed > 0 ? 'open' : enemy.windup > 0 ? 'tell' : 'dark')];
+      if (outline) for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) drawAtlas(ctx, outline, state.name, state.seconds, x + dx, footY + dy, options);
+    }
     const frame = drawAtlas(ctx, atlas, state.name, state.seconds, x, footY, options);
     if (enemy.flash > 0 && flashes[id]) {
       ctx.save(); ctx.globalAlpha *= Math.min(.7, enemy.flash * .7);
@@ -194,9 +202,9 @@ export function createNativeArt() {
     const clock = clockFor(enemy, time);
     if (clock.defeated) return;
     clock.defeated = true; clock.last = time;
-    const name = enemy.crownGuard ? idFor(enemy) + '/death' : enemy.bossId === 'hollow-crown' && (enemy.crownStage === 4 || enemy.phase === 4) ? crownClip(atlas.manifest, 'wounded/death') : 'death';
+    const name = enemy.bossId === 'tiara-head' ? 'hurt' : enemy.crownGuard ? idFor(enemy) + '/death' : enemy.bossId === 'hollow-crown' && (enemy.crownStage === 4 || enemy.phase === 4) ? crownClip(atlas.manifest, 'wounded/death') : 'death';
     const clip = atlas.manifest.animations[name];
-    deaths.push({ atlas, name, crown: enemy.bossId === 'hollow-crown', x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
+    deaths.push({ atlas, name, fade: enemy.bossId === 'tiara-head', crown: enemy.bossId === 'hollow-crown', x: enemy.x, y: enemy.y + footOffset(enemy), face: enemy.face, at: time, renderedAt: renderTime(),
       duration: clip.frames.length / clip.fps });
     if (deaths.length > 32) deaths.shift();
   }
@@ -206,7 +214,10 @@ export function createNativeArt() {
     deaths = deaths.filter(death => time >= death.at && elapsed(death) < death.duration);
     for (const death of deaths) {
       if (death.crown !== foreground) continue;
+      ctx.save();
+      if (death.fade) ctx.globalAlpha *= Math.max(0, 1 - elapsed(death) / death.duration);
       drawAtlas(ctx, death.atlas, death.name, elapsed(death), death.x - cameraX, death.y - cameraY, { facing: death.face });
+      ctx.restore();
     }
   }
   function drawCrownEffect(ctx, name, seconds, x, y, progress, facing = 1) {

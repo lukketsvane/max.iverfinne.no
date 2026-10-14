@@ -1,0 +1,33 @@
+{
+  "format": "max-figma-vector-production-comparison/v1",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "sourceKind": "vector-export",
+  "masterNodeId": "1032:21911",
+  "runtimeCapture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-runtime-capture.json",
+    "sha256": "3c69d25ab2c68b73600a16355bf13a6a1b7c03e6a6d0b4ece8f07283775570af"
+  },
+  "vectorCapture": {
+    "path": "docs/asset-review/tiara-head-v1/figma-vector-capture.json",
+    "sha256": "b444923fe86187722495028ce33167c623304c86a302761a470edaa46afea239"
+  },
+  "sourceCapturedAt": "2026-10-14T15:50:19.238Z",
+  "sourceCompletedAt": "2026-10-14T16:04:11.886Z",
+  "updatedSections": {
+    "451:4": "2026-10-14T16:04:11.886Z"
+  },
+  "vectorCapturedAt": "2026-10-14T16:02:17.953Z",
+  "sourceNodes": 1423,
+  "production": 666,
+  "match": 666,
+  "problems": 0,
+  "legacyRasterEntries": 665,
+  "vectorEntries": 1,
+  "replayToolCalls": 3,
+  "log": {
+    "path": "docs/asset-review/tiara-head-v1/figma-check.log",
+    "sha256": "24a98d54b2c9d4192cdfaac5d10f8edefeae9007ced5fe20ce097e3a560834af"
+  },
+  "scope": "The normal figma:check command, with its narrowly scoped native-vector adapter, ran against the authenticated 1423-node runtime capture and actual canonical-component export. Boss-section records were refreshed after component conversion; other sections retain their explicitly recorded earlier capture window."
+}
