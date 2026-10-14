@@ -146,11 +146,19 @@ Bosses telegraph attacks in amber and expose themselves in cyan for double damag
 | 1–4 | Sprout Sentinel, Dew Duke, Thorn Duelist, Spore Oracle |
 | 5 | Mossback |
 | 6–9 | Root Ram, Silk Weaver, Glass Snail, Wick Hermit |
-| 10 | Bellkeeper |
+| 10 | Tiara |
 | 11–14 | Frostjaw, Spindle Widow, Orchard Mimic, Tuning Fork |
 | 15 | Moon Moth |
 | 16–19 | Kiln Beetle, Ash Ferryman, Compost Choir, Seed Engine |
 | 20 | Hollow Crown |
+
+Garden 10's **Tiara** is the owner's tiara-wearing head sprite: a native 40-pixel
+body that jumps, rolls and headbutts in a readable three-move rotation. Amber
+marks the committed destination. Actual contact and landing strikes remain
+host-owned; cyan recovery leaves time for a planted bomb. Lower health adds
+landing shock lanes and quicker movement. Bellkeeper remains a roaming guardian.
+The eight 8-frame animation rows are registered in the
+[Tiara atlas](assets/tiara-head-v1/README.md); see [the encounter contract](docs/design/tiara-head.md).
 
 Hollow Crown is a tall native silver king with a faceless helmet and massive maul. Its four
 acts follow the final-boss rhythm of Risk of Rain 2: a maul duel, a lunar

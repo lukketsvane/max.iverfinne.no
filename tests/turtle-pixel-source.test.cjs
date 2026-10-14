@@ -161,7 +161,7 @@ test('actual editor and Figma import exports carry the same selected native trea
   assert.ok(editor.has('garden-geometry.json')&&kit.has('figma-plugin/manifest.json')&&kit.has('figma-plugin/code.js'));
 });
 
-test('runtime source generation is exact and the ordinary Figma production contract remains unchanged',()=>{
+test('runtime source generation is exact and every established Figma production pin remains unchanged',()=>{
   const native=json('turtle-native-rects.json'),data=require('../turtle-garden-art-data.js');
   assert.equal(data.schema,1);assert.equal(data.source,'Pixel Mill');assert.equal(data.sourceSha256,PHOTO7);
   assert.equal(data.rgbaSha256,RGBA);assert.equal(data.recipeSha256,sha(read('recipe.json')));
@@ -172,5 +172,9 @@ test('runtime source generation is exact and the ordinary Figma production contr
     fs.writeFileSync(file,result.code);
     assert.deepEqual(fs.readFileSync(file),fs.readFileSync(path.join(root,'turtle-garden-art-data.js')),'generator reproduces committed editable runtime data');
   }finally{fs.rmSync(output,{recursive:true,force:true});}
-  assert.equal(sha(fs.readFileSync(path.join(root,'assets/figma-manifest.json'))),'332492df488c2d11bbc53ab4d66ee95ff7a06ab27ce680c95da3968c082d2f53','original Figma production entries and pins stay intact');
+  const manifestText=fs.readFileSync(path.join(root,'assets/figma-manifest.json'),'utf8');
+  const added=JSON.parse(manifestText).production.filter(entry=>entry.path==='assets/tiara-head-v1/sprites.png');
+  assert.equal(added.length,1);assert.equal(added[0].sourceKind,'vector-export');
+  const original=manifestText.replace(/^    \{ "path": "assets\/tiara-head-v1\/sprites\.png",[^\n]+ \},\n/m,'');
+  assert.equal(sha(Buffer.from(original)),'332492df488c2d11bbc53ab4d66ee95ff7a06ab27ce680c95da3968c082d2f53','only the separately verified Tiara master may be added; every original manifest byte and all 665 production pins stay intact');
 });

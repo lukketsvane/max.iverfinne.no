@@ -3,7 +3,7 @@ const {spawn}=require('node:child_process'),{webkit,chromium}=require('playwrigh
 const port=8782,base=`http://127.0.0.1:${port}`;
 const server=spawn('python3',['-m','http.server',String(port),'--directory',process.env.GUARDIANS_REVIEW_DIST||'dist'],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','bellkeeper','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
+const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','tiara-head','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
 async function checkCircuit(page,engineName,errors){
  const observation=async()=>JSON.parse(await page.locator('#status').getAttribute('data-circuit'));
  const ready=async()=>page.waitForFunction(()=>{

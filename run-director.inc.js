@@ -4,7 +4,7 @@ var GARDEN_BOSSES=[
   ['thorn-duelist','THORN DUELIST','dash'],['spore-oracle','SPORE ORACLE','spores'],
   ['mossback','MOSSBACK','milestone'],['root-ram','ROOT RAM','charge'],
   ['silk-weaver','SILK WEAVER','web'],['glass-snail','GLASS SNAIL','shell'],
-  ['wick-hermit','WICK HERMIT','wick'],['bellkeeper','BELLKEEPER','milestone'],
+  ['wick-hermit','WICK HERMIT','wick'],['tiara-head','TIARA','head'],
   ['frostjaw','FROSTJAW','pincer'],['spindle-widow','SPINDLE WIDOW','spindle'],
   ['orchard-mimic','ORCHARD MIMIC','orchard'],['tuning-fork','TUNING FORK','echo'],
   ['moon-moth','MOON MOTH','milestone'],['kiln-beetle','KILN BEETLE','furnace'],
@@ -12,6 +12,7 @@ var GARDEN_BOSSES=[
   ['seed-engine','SEED ENGINE','engine'],['hollow-crown','HOLLOW CROWN','crown']
 ];
 function gardenBossSpec(stage){var w=Math.max(1,Math.min(RUN_STAGES,stage|0)),s=GARDEN_BOSSES[w-1];return {id:s[0],name:s[1],pattern:s[2],stage:w,remix:Math.floor((w-1)/7)};}
+function guardianBodyOffset(id){return id==='hollow-crown'?32:id==='tiara-head'?19:id==='mossback'?8:13;}
 function guardianSiteIndex(seed,stage){
   var h=Math.imul((seed>>>0)^Math.imul(stage,0x9e3779b9),0x85ebca6b);
   h=Math.imul(h^h>>>13,0xc2b2ae35);return ((h^h>>>16)>>>0)%3;
@@ -38,7 +39,7 @@ function interactBossEvent(){
   if(floatKrek.length>=MAX_ACTIVE_ENEMIES){return true;}
   var k=makeStageBoss(worldLevel());
   k.courtX=bossEvent.courtX;k.courtY=bossEvent.courtY;k.courtLeft=bossEvent.courtLeft;k.courtRight=bossEvent.courtRight;
-  var spawnX=guardianAimX(k,dryX(k.courtX+(worldLevel()%2?1:-1)*76)),offset=k.bossId==='hollow-crown'?32:k.bossId==='mossback'?8:13;
+  var spawnX=guardianAimX(k,dryX(k.courtX+(worldLevel()%2?1:-1)*76)),offset=guardianBodyOffset(k.bossId);
   safeEnemyPosition(k,spawnX,surfaceY(spawnX)-offset);k.x=guardianAimX(k,k.x);k.y=surfaceY(k.x)-offset;k.cool=2.6;
   resetGuardianNodes(k);
   bossEvent.status='active';bossEvent.startedAt=runElapsed;
@@ -453,8 +454,8 @@ function beginEnemyWarning(k){
 function polgeEnemyWarning(k,landed){
   if(!k||k.hp<=0||!k.warnedAttack||k.healing||k.draining||k.stolen)return null;
   if(!landed){
-    var rat=isRat(k)&&k.ratState==='attack',charge=k.chargeT>0||k.dashLeft>0||k.boss&&k.attackT>0&&(k.bossId==='mossback'||k.pattern==='dash'||k.pattern==='charge');
-    if(!(k.divePhase===2||rat||charge||k.boss&&k.attackT>0&&k.pattern==='leap'))return null;
+    var rat=isRat(k)&&k.ratState==='attack',head=k.bossId==='tiara-head'&&k.attackT>0,charge=k.chargeT>0||k.dashLeft>0||k.boss&&k.attackT>0&&(k.bossId==='mossback'||k.pattern==='dash'||k.pattern==='charge'||head&&k.headMove!=='jump');
+    if(!(k.divePhase===2||rat||charge||head||k.boss&&k.attackT>0&&k.pattern==='leap'))return null;
     if(rat&&(Math.abs(P.y-k.y-RAT_FOOT)>=14||(P.x-k.x)*(k.face||1)<-4))return null;
     if(charge&&(P.x-k.x)*(Math.sign(k.chargeV||k.dashV)||k.face||1)<-5)return null;
   }
@@ -550,16 +551,17 @@ function updateHazardContact(){
   if(seedDown())return;
   for(var i=0;i<runHazards.length;i++){
     var h=runHazards[i],key=h.crownGroup||h.id;if(h.tell>0||h.absorbed||hazardHits[key]||P.st==='float'||climb&&climb.exit)continue;
+    if(h.headContactOwner&&h.headContactOwner!==(coop?coop.me:'solo'))continue;
     if(runHazardTouches(h,P.x,P.y)){
       hazardHits[key]=true;
       var member=coop&&coop.members[coop.me],fresh=spendCrownRingContact(h,member);
       if(P.dodgeT>0){if(fresh)polgeAvoidedWarning(member,polgeHazardWarning(h));continue;}
-      cairnStrike(member,cairnContact(h,{kind:h.cairnContactKind||'hazard',pointX:P.x,pointY:P.y-12,accepted:true}));
+      if(!h.headContactOwner)cairnStrike(member,cairnContact(h,{kind:h.cairnContactKind||'hazard',pointX:P.x,pointY:P.y-12,accepted:true}));
       if(P.brace>0||P.tun>0)continue;
       var resistance=ownClass().id==='runner'?rattusKnockbackFactor():1;if(ownClass().id==='runner')rattusCancelMotion(rattusMember(),'hazard');
       if(ownClass().id==='bulwark')cairnCancelMotion(undefined,'hazard');
       if(ownClass().id==='herbalist')mycelInterrupt('hazard');
-      P.hurt=2;P.vx=(P.x<h.x?-1:1)*68*ownClass().knockback*resistance;P.vy=-88*ownClass().knockback*resistance;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
+      P.hurt=2;P.vx=(h.headContactOwner?h.headFace:P.x<h.x?-1:1)*68*ownClass().knockback*resistance;P.vy=-88*ownClass().knockback*resistance;P.grounded=false;P.coyote=0;P.pounce=0;task=null;holdWater=null;if(climb&&!climb.exit){P.climbRegrab=.35;P.climbIgnoreId=climb.p&&climb.p.id||null;P.platform=null;climb=null;climbGoal=null;}P.st='free';setAnim('rise');
     }
   }
   if(Object.keys(hazardHits).length>80){var active={};runHazards.forEach(function(h){var key=h.crownGroup||h.id;if(hazardHits[key])active[key]=true;});hazardHits=active;}
@@ -580,7 +582,7 @@ function updateOverstay(dt){
     o.x=ingress.ingressX;o.y=ingress.ingressY;o.bossStage=[5,10,15][(Math.floor(secretHash(rogueRun.seed,worldLevel()*811)*3)+o.count)%3];o.pending=true;o.tell=5;return;
   }
   o.tell=Math.max(0,o.tell-dt);if(o.tell>0)return;
-  var k=makeStageBoss(o.bossStage);k.x=o.x;k.y=o.y;k.guardianStage=-1;k.overstay=true;k.raid=false;k.finalBoss=false;k.elite=true;
+  var k=makeStageBoss(o.bossStage,true);k.x=o.x;k.y=o.y;k.guardianStage=-1;k.overstay=true;k.raid=false;k.finalBoss=false;k.elite=true;
   k.hp=k.maxHp=(10+worldLevel()*2+o.count*6)*(1+Math.max(0,coopSize()-1)*.55);k.cool=2;
   floatKrek.push(k);o.count++;o.pending=false;
   o.at=rogueRun.worldElapsed+Math.max(20,limits[1]-o.count*7);
@@ -773,15 +775,17 @@ function makeHollowCrown(){
   initHollowCrown(k);
   return k;
 }
-function makeStageBoss(stage){
+function makeStageBoss(stage,roaming){
   var w=stage||worldLevel(),spec=gardenBossSpec(w),id=spec.id;
+  if(roaming&&w===10){spec={id:'bellkeeper',name:'BELLKEEPER',pattern:'milestone',remix:1};id=spec.id;}
   if(w===RUN_STAGES){var crown=makeHollowCrown();crown.guardianStage=w;crown.bossName=spec.name;return crown;}
-  var k=makeKrek(w%2?1:-1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x,offset=id==='mossback'?8:13;
+  var k=makeKrek(w%2?1:-1,true),p=gardenPlots.find(function(p){return !p.dead;}),x=p?p.x:P.x,offset=guardianBodyOffset(id);
   safeEnemyPosition(k,x+(w%2?1:-1)*90,surfaceY(x)-offset);
   k.boss=true;k.finalBoss=false;k.bossId=id;k.queen=false;k.raid=true;k.kind=7;
   k.guardianStage=w;k.bossName=spec.name;k.pattern=spec.pattern;k.remix=spec.remix;
   k.hp=k.maxHp=(8+w*2.3)*(1+Math.max(0,coopSize()-1)*.55);
   k.phase=1;k.attack=0;k.cool=2;k.exposed=0;k.windup=0;k.vx=k.vy=0;k.target=null;k.attackT=0;k.attackDuration=.35;
+  if(id==='tiara-head'){k.headMove='idle';k.headMotionT=0;k.headLandT=0;k.bodyHalfW=16;k.bodyTop=18;k.bodyBottom=19;}
   resetGuardianNodes(k);
   return k;
 }
@@ -994,6 +998,7 @@ function updateGardenGuardian(k,dt){
   }
 }
 function updateStageBoss(k,dt){
+  if(k.bossId==='tiara-head'){updateTiaraBoss(k,dt);return;}
   if(k.pattern&&k.pattern!=='milestone'){updateGardenGuardian(k,dt);return;}
   var anchor=updateBossCombat(k,dt,'milestone');if(anchor===null)return;
   beginEnemyWarning(k);k.attack++;k.tell=k.windup=k.guardianStage&&rogueRun.difficulty==='easy'?1.4:k.bossId==='mossback'?1:.95;k.attackDuration=k.bossId==='mossback'?.42:.35;k.settleT=0;
@@ -1013,6 +1018,81 @@ function updateStageBoss(k,dt){
       guardianPlayers(k).forEach(function(a){guardianHazard(k,'gust',a.p.x,12,k.tell+.15,0,a.p.y);});
     }
   }
+}
+function tiaraAimX(k,x){
+  var aim=guardianAimX(k,dryX(x));
+  return Number.isFinite(k.courtLeft)&&Number.isFinite(k.courtRight)?Math.max(k.courtLeft+20,Math.min(k.courtRight-20,aim)):aim;
+}
+function tiaraHeadContact(k,fromX,fromY){
+  if(coopGuest())return;
+  var dx=k.x-fromX,dy=k.y-fromY,length=dx*dx+dy*dy;
+  guardianPlayers(k).forEach(function(a){
+    if(k.hp<=0)return;
+    if(seedDown(a.member)||a.p.st==='float'||a.p.st==='burrow'||a.p.st==='climb'&&a.p.exitClimb||a.p===P&&climb&&climb.exit)return;
+    var id=a.member?a.member.id:'solo';
+    if([1,2,3,4].some(function(i){return k['headContact'+i]===id;}))return;
+    var px=a.p.x,py=a.p.y-12,f=length?Math.max(0,Math.min(1,((px-fromX)*dx+(py-fromY)*dy)/length)):0;
+    var x=fromX+dx*f,y=fromY+dy*f;
+    if(Math.hypot(px-x,py-y)>20||!combatLineClear(x,y,px,py))return;
+    for(var i=1;i<=4;i++)if(!k['headContact'+i]){k['headContact'+i]=id;break;}
+    var warning=polgeEnemyWarning(k,true),contact=cairnContact(k,{kind:'strike',pointX:px,pointY:py,accepted:true});
+    if(gardenerDodging(a.member,a.p)){polgeAvoidedWarning(a.member,warning);return;}
+    if(gardenerHealthMode())damageGardener(a.member,(k.headMove==='headbutt'?25:20)*runDamageScale(),warning,contact);
+    else if(!curledMember(a.member,a.p))cairnStrike(a.member,contact);
+    // This short owner-scoped receipt only supplies the existing local recoil.
+    // The host has already spent contact, health and any Cairn counter above.
+    if(k.hp>0&&!seedDown(a.member)&&!curledMember(a.member,a.p)){
+      var h=addRunHazard('head-impact',a.p.x,20,0,0,k.x,k.y,a.p.y);
+      if(h){h.hit=true;h.life=.15;h.headContactOwner=id;h.headFace=k.face||1;h.guardianOwner=k.ph;h.guardianStage=k.guardianStage;}
+    }
+  });
+}
+function updateTiaraBoss(k,dt){
+  if(coopGuest()||k.hp<=0)return;
+  k.phase=k.hp<=k.maxHp/3?3:k.hp<=k.maxHp*2/3?2:1;
+  k.life=(k.life||0)+dt;k.flee=0;k.exposed=Math.max(0,k.exposed-dt);k.headLandT=Math.max(0,(k.headLandT||0)-dt);
+  if(k.windup>0){
+    k.vx=k.vy=0;k.windup=Math.max(0,k.windup-dt);
+    if(!k.windup){k.attackT=k.attackDuration;k.headMotionT=0;k.headFromX=k.x;k.headJumpHeight=48+(k.phase-1)*8;}
+    return;
+  }
+  if(k.attackT>0){
+    var oldX=k.x,oldY=k.y,step=Math.min(dt,k.attackT),duration=k.attackDuration;
+    k.attackT=Math.max(0,k.attackT-dt);if(k.attackT<1e-9)k.attackT=0;
+    k.headMotionT=Math.min(duration,(k.headMotionT||0)+step*mechWetFactor(k)*mycelSlowFactor(k));
+    var f=k.headMotionT/duration,arc=1-k.attackT/duration;
+    var nextX=tiaraAimX(k,k.headFromX+(k.headAimX-k.headFromX)*f),nextY=surfaceY(nextX)-19;
+    if(k.headMove==='jump')nextY-=Math.sin(arc*Math.PI)*(k.headJumpHeight||48);
+    if(combatLineClear(oldX,oldY,nextX,nextY)){k.x=nextX;k.y=nextY;}
+    k.vx=step?(k.x-oldX)/step:0;k.vy=step?(k.y-oldY)/step:0;
+    tiaraHeadContact(k,oldX,oldY);
+    if(k.hp<=0)return;
+    if(!k.attackT){
+      k.y=surfaceY(k.x)-19;k.vx=k.vy=0;k.headLandT=.4;
+      // Impact originates at the actual landing, including movement slows.
+      // Its short ground warning clears before the normal bomb opening starts.
+      if(k.headMove==='jump'){
+        k.settleT=.001;
+        guardianHazard(k,'root',k.x,18,.3,.8);
+        if(k.phase>1)for(var side=-1;side<=1;side+=2)guardianHazard(k,'root',k.x+side*30,9,.5,.55);
+      }
+      if(!(k.settleT>0))guardianRecovery(k);
+    }
+    return;
+  }
+  if(guardianSettles(k,dt))return;
+  k.cool-=dt;
+  if(k.exposed>0){k.vx=k.vy=0;k.y=surfaceY(k.x)-19;return;}
+  var players=guardianPlayers(k).filter(function(a){return !seedDown(a.member);});if(!players.length)return;
+  var a=players[(k.attack||0)%players.length].p,anchor=guardianTarget(k),court=anchor?anchor.x:Number.isFinite(k.courtX)?k.courtX:a.x;
+  if(k.cool>0){moveEnemyTo(k,tiaraAimX(k,court+(k.attack%2?-52:52)),surfaceY(k.x)-19,dt,17);k.y=surfaceY(k.x)-19;return;}
+  beginEnemyWarning(k);k.attack++;k.headMove=['jump','roll','headbutt'][(k.attack-1)%3];
+  k.face=a.x<k.x?-1:1;k.headAimX=tiaraAimX(k,k.x+Math.max(-112,Math.min(112,a.x-k.x+(k.headMove==='roll'?k.face*28:0))));
+  if(k.headMove==='headbutt')k.headAimX=tiaraAimX(k,k.x+k.face*Math.min(48,Math.max(28,Math.abs(a.x-k.x))));
+  k.tell=k.windup=rogueRun.difficulty==='easy'?1.5:k.headMove==='roll'?1.25:1.15;
+  k.attackDuration=(k.headMove==='jump'?.8:k.headMove==='roll'?.9:.36)*(k.phase===3?.9:1);
+  k.headMotionT=0;k.headFromX=k.x;k.settleT=0;k.vx=k.vy=0;
+  for(var i=1;i<=4;i++)k['headContact'+i]='';
 }
 function drawRunItem(type,x,y,bright){
   ctx.fillStyle=bright?'#fbf4cf':type==='embers'?'#dfa462':type==='dew'?'#8ccbd3':'#dcdcca';
@@ -1086,6 +1166,7 @@ function drawRunExploration(t){
 }
 function drawRunHazards(t){
   runHazards.forEach(function(h){
+    if(h.headContactOwner)return;
     if(/^crown-/.test(h.type)||floatKrek.some(function(k){return k.bossId==='hollow-crown'&&k.ph===h.guardianOwner;}))return;
     var x=Math.round(h.x-camX),y=Math.round(h.y-camY);if(x<-h.r||x>IW+h.r)return;
     if(drawRatHazard(h,x,y))return;
@@ -1107,6 +1188,12 @@ function drawRoleEnemy(k,x,y,t){
   if(isRat(k)){drawRat(k,x,y,t,!!native);return true;}
   if(k.boss){
     var color=k.exposed>0?'#89c5cd':k.windup>0?'#dbad63':'#888a72';
+    if(k.bossId==='tiara-head'&&k.windup>0&&Number.isFinite(k.headAimX)){
+      var hx=Math.round(k.headAimX-camX),hy=Math.round(surfaceY(k.headAimX)-camY);
+      ctx.fillStyle='#dbad63';ctx.fillRect(hx-18,hy-2,37,1);ctx.fillRect(hx-18,hy-6,1,4);ctx.fillRect(hx+18,hy-6,1,4);
+      if(k.headMove==='jump')drawArrow(hx,hy-13,'down','#dbad63');
+      else for(var n=1;n<=3;n++)ctx.fillRect(Math.round(x+(hx-x)*n/4),hy-4,2,2);
+    }
     if(!native){
     ctx.fillStyle='#202b2a';ctx.fillRect(x-9,y-10,19,18);ctx.fillRect(x-6,y-14,13,4);
     ctx.fillStyle=k.flash?'#c6c4a1':'#49534a';ctx.fillRect(x-8,y-9,3,16);ctx.fillRect(x+5,y-9,3,16);
