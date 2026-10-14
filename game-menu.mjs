@@ -777,7 +777,7 @@ function help() {
     ['LADDERS', 'Hold a vertical drag beside a ladder. Release to hold; move sideways to step off. Keyboard/controller: Up or Down.'],
     ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
     ['SKILL', 'Tap your character: ' + special[1] + '. ' + special[2] + '.'],
-    ['CLIMB', 'Rattus climbs half-grown plants and jumps between them. Every character can climb a cleared exit stalk. Tap the held stem to climb faster.'],
+    ['CLIMB', 'Every character can climb a cleared exit stalk. Tap the held stem to climb faster.'],
     ['MAX', 'Bombs stay at your feet and explode after two seconds. Hold an attack to charge. Tap a nearby rover to refill it; any teammate can help.'],
     ['EXPLORE', 'Find the amber shrine, grow a plant beside its clearing and tend the shrine. Defeat its guardian, choose a boon and climb the exit plant. Time strengthens enemies.'],
     ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J / B to aim, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 boon · Esc settings'],

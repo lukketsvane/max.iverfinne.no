@@ -186,5 +186,35 @@
     "rendererEvidence": "docs/asset-review/native-role-coverage/renderer-observation.json",
     "fullIntegratedTests": "Running; final result and exact commit CI/deployment receipts are recorded on pull request 54",
     "releaseReceiptLocation": "https://github.com/lukketsvane/max.iverfinne.no/pull/54"
+  },
+  "rattusPlantTraversal": {
+    "requested": "2026-10-14",
+    "reason": "Owner requested removal of Rattus ordinary plant climbing",
+    "status": "implemented_pending_release_verification",
+    "preserve": [
+      "Ladders",
+      "Shared cleared-exit physical ascent",
+      "High Tide motherplant route",
+      "Bounded Tail latch combat ability"
+    ],
+    "changedFiles": [
+      "max-classes.js",
+      "index.html",
+      "game-menu.mjs",
+      "review.html",
+      "tests/plant-climb-policy.test.cjs",
+      "README.md",
+      "CLAUDE.md",
+      "docs/design/rattus-v3.md",
+      "docs/design/finished-game-master-plan.md",
+      "docs/design/finished-game-progress.json"
+    ],
+    "verification": "Current-main focused policy, co-op, High Tide, ladder, Rattus kit and review tests passed 63/63; build passed. Full integrated tests and exact-SHA CI/production remain pending at publication.",
+    "nextMilestone": "MG",
+    "focusedTests": {
+      "passed": 63,
+      "total": 63,
+      "failed": 0
+    }
   }
 }

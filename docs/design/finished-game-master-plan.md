@@ -77,6 +77,12 @@ immediate next checkpoint, before M2 or any new content expansion. M0/M1 still
 need their release evidence; their locally tested foundation is not a finished
 game. Keep the separately authored Tiara/Garden 10 integration intact.
 
+**October 14 traversal adjustment:** at the owner's request, ordinary plants
+no longer attach Rattus to a stem climb. Preserve ladders, the shared cleared
+exit ascent, High Tide's motherplant route and the separate bounded Tail latch.
+Verify normal touch/keyboard and guest input, then continue MG; this adjustment
+does not complete any graphics or finished-game milestone.
+
 ### M0 — a trustworthy baseline
 
 Repair the stale source-publication fixture. Keep the original Hollow Tree
