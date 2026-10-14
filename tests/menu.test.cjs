@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
+const { readFileSync } = require('node:fs');
 const { build } = require('esbuild');
 const { JSDOM } = require('jsdom');
 const compiled = build({
@@ -12,6 +13,63 @@ const compiled = build({
   } }],
 }).then(r => r.outputFiles[0].text);
 const INVITE_ROOM = '11111111-2222-4333-8444-555555555555';
+
+test('long character names reserve two compact lines without changing the hero footprint', async () => {
+  const m = await menu(undefined, { eggs: { local: ['sligo'], accounts: {} } });
+  try {
+    const style = m.w.document.createElement('style');
+    style.textContent = readFileSync(path.join(__dirname, '../game-menu.css'), 'utf8'); m.w.document.head.append(style);
+    m.click('Play');
+    for (const label of ['Rattus norvegicus', 'Sligo']) {
+      m.click(label);
+      const name = m.w.document.querySelector('.max-character-name'), title = m.w.getComputedStyle(name);
+      assert.equal(title.fontSize, '14px'); assert.equal(title.lineHeight, '20px');
+      assert.equal(title.height, '44px'); assert.ok(parseFloat(title.height) >= parseFloat(title.lineHeight) * 2);
+      const intro = m.w.getComputedStyle(m.w.document.querySelector('.max-character-intro'));
+      const detail = m.w.getComputedStyle(m.w.document.querySelector('.max-class-detail'));
+      assert.equal(intro.height, '220px');
+      assert.equal(parseFloat(title.height) + parseFloat(title.marginBottom) + parseFloat(detail.maxHeight), parseFloat(intro.height), 'title space is taken from the bounded scroll area, not the screen layout');
+    }
+  } finally { m.dom.window.close(); }
+});
+
+test('every character retains the two-slot icon rail and separate fixed-size ability readout', async () => {
+  const m = await menu(undefined, { eggs: { local: ['sligo'], accounts: {} } });
+  try {
+    m.click('Play'); await m.settle();
+    const selectors = ['.max-menu-header', '.max-character-hero', '.max-role-picker', '.max-difficulty-picker', '.max-skill-picker', '.max-play-actions', '.max-status'];
+    const sections = selectors.map(selector => m.w.document.querySelector(selector));
+    const classButtons = [...m.w.document.querySelectorAll('[data-class-id]')];
+    assert.equal(classButtons.length, 6);
+    for (const character of classButtons) {
+      character.click();
+      assert.deepEqual(selectors.map(selector => m.w.document.querySelector(selector)), sections, 'class selection never replaces the screen structure');
+      const slots = [...m.w.document.querySelectorAll('.max-skill-slot')];
+      assert.equal(slots.length, 2, 'Sligo keeps the vacant secondary space');
+      assert.equal(slots[1].querySelector('.max-skill-slot-name').textContent, 'SPECIAL · E');
+      const choices = [...m.w.document.querySelectorAll('.max-skill-choice')];
+      assert.equal(choices.length, character.dataset.classId === 'sligo' ? 2 : 4);
+      for (const choice of choices) {
+        assert.equal(choice.textContent, '', 'skill controls show an icon only');
+        assert.equal(choice.children.length, 1);
+        const icon = choice.querySelector('img');
+        assert.ok(icon); assert.equal(icon.alt, ''); assert.equal(icon.width, 9); assert.equal(icon.height, 9);
+        assert.match(icon.src, /assets\/boon-symbols-v1\/[a-z]+\.png$/);
+        assert.ok(choice.getAttribute('aria-label').includes(': '), 'name and effect remain accessible');
+        const pressed = choice.getAttribute('aria-pressed');
+        choice.focus();
+        assert.equal(choice.getAttribute('aria-pressed'), pressed, 'focus previews without changing the equipped skill');
+        assert.equal(m.w.document.querySelector('.max-skill-readout').dataset.id, choice.dataset.skillId);
+        assert.equal(m.w.document.querySelector('.max-skill-name').textContent, choice.getAttribute('aria-label').split(': ')[0]);
+      }
+      if (character.dataset.classId === 'sligo') assert.equal(slots[0].getAttribute('aria-hidden'), 'true');
+      choices.at(-1).click();
+      const focused = m.w.document.activeElement;
+      assert.equal(focused.dataset.skillId, choices.at(-1).dataset.skillId, 'rebuilding selected state retains keyboard focus');
+      assert.equal(focused.getAttribute('aria-pressed'), 'true');
+    }
+  } finally { m.dom.window.close(); }
+});
 
 test('pre-run secondary and special choices persist and reach the accepted shared-game selection', async () => {
   const m = await menu(JSON.stringify({ classId: 'polge' }));

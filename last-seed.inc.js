@@ -1,9 +1,11 @@
 function lastSeedMode(){return rogueRun.mode==='last-seed';}
+function campaignDamageMode(){return rogueRun.mode==='garden'&&(rogueRun.difficulty==='hard'||rogueRun.difficulty==='insane');}
+function gardenerHealthMode(){return relicRunMode()||campaignDamageMode();}
 function seedVital(member){
   var owner=member||(!coop?rogueRun:coop.members[coop.me]);
   return owner.vital||(owner.vital={hp:100,shield:0,revive:0,hurt:0});
 }
-function seedDown(member){return relicRunMode()&&seedVital(member).hp<=0;}
+function seedDown(member){return gardenerHealthMode()&&seedVital(member).hp<=0;}
 function seedActors(){return coop?coopMembers().map(function(m){return {member:m,p:coopMemberAvatar(m),v:seedVital(m),id:m.id};}):[{member:null,p:P,v:seedVital(null),id:'solo'}];}
 function seedTeamDown(){
   if(!coop)return !!(rogueRun.vital&&Number.isFinite(rogueRun.vital.hp)&&rogueRun.vital.hp<=0);
@@ -17,11 +19,11 @@ function seedTeamDown(){
 }
 function seedHeld(){return !!(heldDown||heldSpace||swipeDown||(!highTideMode()&&gardenPress));}
 function seedReviveTarget(actor){
-  if(!lastSeedMode()||actor.v.hp<=0)return null;
+  if(!(lastSeedMode()||campaignDamageMode())||actor.v.hp<=0)return null;
   return seedActors().find(function(a){return a.id!==actor.id&&a.v.hp<=0&&Math.hypot(a.p.x-actor.p.x,a.p.y-actor.p.y)<19;})||null;
 }
 function seedReviveNearby(){
-  if(!lastSeedMode())return false;
+  if(!(lastSeedMode()||campaignDamageMode()))return false;
   var m=coop&&(coopActor||coop.members[coop.me]);
   return !!seedReviveTarget({member:m,p:P,v:seedVital(m),id:m?m.id:'solo'});
 }
@@ -38,7 +40,7 @@ function startLastSeed(plant){
   gardenSeeds=0;runElapsed=0;plant.moisture=.8;
 }
 function damageGardener(member,amount,warning,contact){
-  if(!relicRunMode()||coopGuest()||rogueRun.ended)return false;
+  if(!gardenerHealthMode()||coopGuest()||rogueRun.ended||!Number.isFinite(amount)||amount<=0)return false;
   var v=seedVital(member),a=member?coopMemberAvatar(member):P;
   var remote=member&&member.id!==coop.me;
   if(v.hp<=0||v.shield>0)return false;
@@ -56,6 +58,51 @@ function damageGardener(member,amount,warning,contact){
     if(!member||member.id===coop.me){task=holdWater=climb=warp=null;clearRunInput();setAnim('rest');}
   }
   return true;
+}
+function updateCampaignHealth(dt){
+  if(!campaignDamageMode()||coopGuest()||!runActive||runIsPaused()||rogueRun.ended)return;
+  var actors=seedActors();
+  actors.forEach(function(a){a.v.shield=Math.max(0,a.v.shield-dt);a.v.hurt=Math.max(0,a.v.hurt-dt);});
+  actors.forEach(function(a){
+    if(a.v.hp>0){
+      if(a.v.hurt<=0&&gardenPlots.some(function(p){return !p.dead&&p.health>.25&&p.moisture>.15&&Math.hypot(a.p.x-p.x,a.p.y-surfaceY(p.x))<44;}))a.v.hp=Math.min(100,a.v.hp+dt*3);
+      return;
+    }
+    var helper=actors.find(function(b){
+      var remote=b.member&&b.member.id!==coop.me;
+      var held=remote?b.member.reviveHeld&&performance.now()-b.member.last<500:seedHeld();
+      var target=held&&b.v.shield<=0&&b.p.grounded&&!b.p.wet&&Math.abs(b.p.vx)<8&&seedReviveTarget(b);
+      return target&&target.id===a.id;
+    });
+    a.v.revive=helper?Math.min(3,a.v.revive+dt):0;
+    if(a.v.revive>=3){
+      a.v.hp=50;a.v.shield=3;a.v.revive=0;a.v.hurt=3;a.p.st='free';a.p.anim='idle';
+      if(!a.member||a.member.id===coop.me){P.st='free';setAnim('idle');}
+      skillCue('bloom',0);
+    }
+  });
+  if(seedTeamDown())endRogueRun();
+}
+function campaignEnemyContact(k,dt){
+  if(!campaignDamageMode()||coopGuest()||k.boss||isRat(k)||k.stolen||k.flee>0)return false;
+  var actors=runPlayers().filter(function(a){return !seedDown(a.member)&&a.p.st!=='float'&&a.p.st!=='burrow'&&!(a.p.st==='climb'&&a.p.exitClimb)&&!(a.p===P&&climb&&climb.exit);});
+  if(k.gardenerTarget){
+    if(!(k.windup>0)||!k.warnedAttack){k.gardenerTarget='';return false;}
+    var target=actors.find(function(a){return (a.member?a.member.id:'solo')===k.gardenerTarget;}),distance=target?Math.hypot(target.p.x-k.x,target.p.y-12-k.y):Infinity;
+    if(!target||distance>=18||!combatLineClear(k.x,k.y,target.p.x,target.p.y-12)){
+      k.gardenerTarget='';k.windup=0;k.warnedAttack=false;k.bite=Math.max(k.bite,.25);return true;
+    }
+    k.vx=k.vy=0;k.face=target.p.x<k.x?-1:1;k.windup=Math.max(0,k.windup-dt);
+    if(!k.windup){
+      k.gardenerTarget='';k.bite=.9;
+      damageGardener(target.member,(k.elite?26:18)*runDamageScale(),polgeEnemyWarning(k,true),cairnContact(k,{kind:'strike',pointX:target.p.x,pointY:target.p.y-12,accepted:true}));
+    }
+    return true;
+  }
+  if(k.bite>0||k.windup>0||k.attackT>0||k.divePhase>0||k.chargeT>0)return false;
+  var target=actors.find(function(a){return Math.hypot(a.p.x-k.x,a.p.y-12-k.y)<13&&combatLineClear(k.x,k.y,a.p.x,a.p.y-12);});
+  if(!target)return false;
+  beginEnemyWarning(k);k.gardenerTarget=target.member?target.member.id:'solo';k.tell=k.windup=.55;k.attackTarget=null;k.vx=k.vy=0;k.face=target.p.x<k.x?-1:1;return true;
 }
 function updateLastSeed(dt){
   if(!lastSeedMode()||coopGuest()||!runActive||runIsPaused())return;
@@ -131,5 +178,10 @@ function drawLastSeedHud(){
   if(s.started)text('W'+s.wave+' '+Math.floor(runElapsed/60)+':'+String(Math.floor(runElapsed%60)).padStart(2,'0'),8,y);
   else if(v.hp>0)drawGuideLabel('PLANT',P.x-camX,P.y-camY-43,'#a7c68c');
   if(v.hp>0&&seedReviveNearby())drawGuideLabel('HOLD TEND',P.x-camX,P.y-camY-48,'#dca977');
+  drawGardenerVitals();
+}
+function drawGardenerVitals(){
+  if(!gardenerHealthMode()||!runActive||rogueRun.ended)return;
+  if(campaignDamageMode()&&!seedDown()&&seedReviveNearby())drawGuideLabel('HOLD TEND',P.x-camX,P.y-camY-48,'#dca977');
   seedActors().forEach(function(a){var x=Math.round(a.p.x-camX)-9,py=Math.round(a.p.y-camY)-37;ctx.fillStyle='#152028';ctx.fillRect(x-1,py-1,20,4);ctx.fillStyle=a.v.hp<=0?'#dca977':'#9fdbbf';ctx.fillRect(x,py,Math.round(18*(a.v.hp>0?a.v.hp/100:a.v.revive/3)),2);if(a.v.hp<=0){ctx.fillStyle='#dca977';ctx.fillRect(x+7,py-7,5,1);ctx.fillRect(x+9,py-9,1,5);}});
 }

@@ -3273,6 +3273,7 @@ function resetRogueRun(reason,selection){
   rogueRun={classId:classId,skinId:skin,difficulty:difficulty,seed:(Math.random()*4294967296)>>>0,garden:[],nextPlantId:1,worldElapsed:0,level:1,xp:0,next:4,choice:null,choiceRedrawn:false,choiceRound:0,ended:false,finalized:false,world:keepWorld,evergreenWorld:0,traits:emptyTraits(),perks:window.MaxClasses.perks(classId)};
   rogueRun.skills=window.MaxSkillLoadouts.clean(classId,selection.skills);
   rogueRun.mode=['last-seed','high-tide','night-relay'].indexOf(selection.mode)>=0?selection.mode:'garden';resetLastSeed();resetHighTide();resetNightRelay();
+  if(campaignDamageMode())seedVital(null);
   var identity=window.MaxGardenLeaderboard&&window.MaxGardenLeaderboard.identity();
   rogueRun.ownerId=identity&&identity.id||null;rogueRun.playerName=identity&&identity.name||'Guest';
   rogueRun.recordId=window.MaxRunRecords?window.MaxRunRecords.uuid():null;
@@ -4331,6 +4332,7 @@ function drawRunHud(){
   if(highTideMode()){drawHighTideHud();drawRoster();return;}
   if(!runActive||rogueRun.ended)return;
   if(lastSeedMode()){drawLastSeedHud();drawRoster();return;}
+  if(campaignDamageMode())drawGardenerVitals();
   var crown=crownPresentationBoss();if(crown){drawCrownHud(crown);return;}
   drawLevelTallies(worldLevel());
   var boons=runHudBoons();
@@ -4355,6 +4357,7 @@ function updateGardenFun(dt){
   if(nightRelayMode()){updateNightRelay(dt);return;}
   if(highTideMode()){updateHighTide(dt);return;}
   if(lastSeedMode()){updateLastSeed(dt);return;}
+  if(campaignDamageMode()){updateCampaignHealth(dt);if(rogueRun.ended)return;}
   if(runIsPaused()||climb&&climb.exit||warp||P.st==='float')return;
   var active=0,alive=0;
   for(var i=0;i<gardenPlots.length;i++)if(!gardenPlots[i].dead){alive++;if(gardenPlots[i].growth>.12)active++;}
@@ -4506,6 +4509,7 @@ function updateKrek(dt){
     var lamp=!k.boss&&k.lampCooldown<=0&&runPlayers().find(function(a){return a.p.lampLit>.45&&Math.hypot(k.x-a.p.x,k.y-(a.p.y-12))<42;});
     if(lamp){k.lampCooldown=7;staggerKrek(k,.85);k.fleeFromX=lamp.p.x;continue;}
     if(lastSeedEnemy(k,dt))continue;
+    if(campaignEnemyContact(k,dt))continue;
     if(updateEnemyRole(k,dt))continue;
     var shoo=k.kind<3&&!k.elite&&!k.queen&&!k.boss&&!k.scout&&!k.startle&&runPlayers().find(function(a){return Math.abs(a.p.vx)>30&&Math.abs(a.p.x-k.x)<18&&Math.abs(a.p.y-12-k.y)<22&&(k.x-a.p.x)*a.p.vx>0;});
     if(shoo){staggerKrek(k,.5);k.fleeFromX=shoo.p.x;k.startle=4;continue;}

@@ -26,7 +26,7 @@ const stateNames = [
   'WALK_V',
 ];
 const functionNames = [
-  'actorSkills', 'alternateSkill', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat',
+  'actorSkills', 'alternateSkill', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat', 'runDamageScale',
   'enemyUnlocked', 'waveEnemyKind', 'nextRunEnemyKind', 'updateGardenFun', 'makeStageWeather', 'updateStageWeather', 'runPatrolLimit', 'openingRaidT',
   'secretEventFor', 'rollSecrets', 'updateSecrets', 'rollWonders', 'rollMeeting', 'updateWonders', 'updatePuzzle', 'updateMeeting', 'secretStarLive', 'grantWish', 'wonderLog',
   'baseSurfaceY', 'naturalPondNear', 'pondNear', 'pondInBucket', 'pondsInView', 'terrainY', 'nextPond', 'pondDeco', 'populatePond', 'updateSwans', 'spawnFlyers', 'updateFlyers',
@@ -55,7 +55,7 @@ const functionNames = [
   'RELAY_LOCKS', 'relayProfile', 'relayBeam', 'updateNightRelay', 'nightRelayMode',
   'highTidePods', 'HIGH_TIDE_GATES', 'highTideRoutePoint', 'highTideTip', 'highTideBoons', 'highTideSpawnBoss', 'updateHighTideEnemies', 'highTideBossDefeated',
   'HIGH_TIDE', 'highTideMode', 'highTideProfile', 'highTidePlant', 'updateHighTide',
-  'lastSeedMode', 'seedVital', 'seedDown', 'seedActors', 'damageGardener', 'updateLastSeed', 'lastSeedEnemy',
+  'lastSeedMode', 'campaignDamageMode', 'gardenerHealthMode', 'seedVital', 'seedDown', 'seedActors', 'damageGardener', 'updateLastSeed', 'lastSeedEnemy', 'updateCampaignHealth', 'campaignEnemyContact',
   'classSkillCooldown', 'updateClassCombat', 'boxerDodge', 'fighterState', 'polgeClinch', 'polgeClinchWorld', 'polgeAvoidedWarning', 'polgeUtilityReady', 'polgePunch', 'polgeFlurryWorld', 'combatLineClear', 'classAttackCooldown', 'updateRunHazards', 'updateHazardContact', 'addRunHazard', 'polgeEnemyWarning', 'finishRatBite', 'updateRat', 'updateEnemyRole', 'updateStageBoss', 'dodgeSweep', 'useClassSecondary',
   'SLIGO_LIFE', 'sligoColony', 'sligoBody', 'sligoFeed', 'sligoHeight', 'sligoMass', 'spawnSligoMeat', 'updateSligoLife', 'requestSligoSwap',
   'chargeStart', 'chargeRelease', 'updateCharge', 'finalizeRogueRun', 'setEffectsVolume',
@@ -65,7 +65,7 @@ const functionNames = [
   'updatePlayer', 'doJump', 'requestDodge', 'throwBomb', 'updateBombs', 'makeKrek', 'updateKrek', 'waterAt',
   'harvestGardenPlot', 'saveGarden',
   'frame', 'surfaceY', 'seedBucketSpawn', 'recordGardenPlant', 'enterLevel',
-  'initRunStage', 'interactEncounter', 'updateEncounters', 'damagePest', 'makeHollowCrown', 'levelCleared',
+  'initRunStage', 'interactEncounter', 'updateEncounters', 'damagePest', 'makeHollowCrown', 'makeStageBoss', 'levelCleared',
   'updateHollowCrown', 'crownEnterPhase', 'hollowCrownDamage', 'crownBeginAttack', 'crownWave', 'crownLaneVolley', 'crownOrbitVolley',
   'guardianBlast', 'updateRunHazards', 'updateHazardContact', 'runHazardTouches', 'interactBossEvent', 'guardianRecovery', 'enemyDistance',
   'biteGarden', 'plantProtection', 'fighterState',

@@ -18,6 +18,7 @@ function cross(g, from, to, hz) {
   g.jumpBuf = 0; g.climb = null; g.heldUp = g.heldDown = false;
   return launch(g, to, hz);
 }
+function native(L,x,y,w){return L.platforms.find(p=>p.x===L.origin+x-320&&p.y===L.authoredSoilY+y-280&&p.w===w&&!p.solid);}
 test('native Hollow Tree furnishing is deterministic, idempotent and keeps the authored supports intact', () => {
   for (const seed of [1, 0xdecafbad]) {
     const { game: g, L } = fresh('bulwark', seed), initial = JSON.stringify(L);
@@ -25,9 +26,10 @@ test('native Hollow Tree furnishing is deterministic, idempotent and keeps the a
     assert.ok(canopy); assert.equal(canopy.platformIds.length, 7);
     assert.equal(JSON.stringify(g.stageLayout()), initial);
     assert.equal(JSON.stringify(fresh('bulwark', seed).L), initial);
-    assert.equal(L.platforms.filter(p => /^1:[db]/.test(p.id)).length, 14);
-    assert.equal(L.platforms.find(p => p.id === '1:d1').y, L.authoredSoilY - 200);
-    assert.equal(L.platforms.find(p => p.id === '1:d4').y, L.authoredSoilY - 200);
+    assert.equal(L.platforms.filter(p => /^1:[db]/.test(p.id)).length, 22);
+    assert.ok(native(L,100,80,100)); assert.ok(native(L,420,80,100));
+    assert.equal(canopy.path[0], native(L,100,80,100).id);
+    assert.equal(canopy.path.at(-1), native(L,420,80,100).id);
     assert.equal(L.spots.secret.length, 4);
     assert.equal(g.seedPickups.filter(q => q.hidden && /^secret:1:/.test(q.id)).length, 4);
     assert.equal(new Set(g.seedPickups.filter(q => q.id).map(q => q.id)).size, g.seedPickups.filter(q => q.id).length);
@@ -40,7 +42,7 @@ test('all classes cross the upper branches both ways at 30, 60 and 120 Hz withou
     for (const ids of [L.hollowCanopy.path, L.hollowCanopy.path.slice().reverse()]) {
       for (let i = 1; i < ids.length; i++) assert.ok(cross(g, by.get(ids[i - 1]), by.get(ids[i]), hz), `${classId} ${hz} Hz: ${ids[i - 1]} → ${ids[i]}`);
     }
-    for (const [source, nook] of [['1:d0', 'canopy:1:west-nook'], ['1:d5', 'canopy:1:east-nook']]) {
+    for (const [source, nook] of [[native(L,90,160,95).id, 'canopy:1:west-nook'], [native(L,445,200,105).id, 'canopy:1:east-nook']]) {
       assert.ok(cross(g, by.get(source), by.get(nook), hz), `${classId} ${hz} Hz: ${source} → ${nook}`);
       assert.ok(cross(g, by.get(nook), by.get(source), hz), `${classId} ${hz} Hz: ${nook} → ${source}`);
     }

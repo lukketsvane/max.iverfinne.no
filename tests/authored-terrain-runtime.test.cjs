@@ -133,7 +133,10 @@ test('Cairn keyboard abilities use the real court and lower floor while rejectin
     // Initial ability fixtures supply a stationary target and three earned plates.
     // The player reaches the tested floor solely through ordinary keyboard input.
     g.gardenPlots = []; g.runHazards = []; q.strata = 3;
-    const enemy = Object.assign(g.makeKrek(1, false, 1), { x: L.origin + (lower ? -22 : 22), y: floor - 16, hp: 100, maxHp: 100, boss: false, queen: false });
+    // Keep this floor-specific ability proof west of the new root staircase.
+    // The lower departure also leaves Ridge's real footprint clear of the wall.
+    const departureX = L.origin + (lower ? -60 : 0);
+    const enemy = Object.assign(g.makeKrek(1, false, 1), { x: departureX + (lower ? -22 : 22), y: floor - 16, hp: 100, maxHp: 100, boss: false, queen: false });
     g.floatKrek = key === 'c' ? [enemy] : [];
     const label = `${hz}Hz ${lower ? 'lower room' : 'court'} ${key}`;
     function step() { h.advance(1000 / hz); g.updatePlayer(1 / hz, g.readInput()); g.updateCairnCombat(1 / hz); }
@@ -146,7 +149,7 @@ test('Cairn keyboard abilities use the real court and lower floor while rejectin
     if (lower) {
       hold('ArrowRight', () => g.P.x >= L.origin + 235);
       hold('ArrowDown', () => g.P.y >= floor, 4);
-      hold('ArrowLeft', () => g.P.x <= L.origin + 2);
+      hold('ArrowLeft', () => g.P.x <= departureX);
     }
     assert.equal(g.P.y, floor); assert.equal(g.P.grounded, true);
     h.key('keydown', key); h.key('keyup', key);

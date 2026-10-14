@@ -65,6 +65,8 @@ Only the first player starting an empty shared garden chooses it. Once a run exi
 
 Easy is intentionally forgiving. It has much lower enemy damage, durability, density and wave budget, slower pressure growth and a longer opening grace period.
 
+Ordinary gardens on **Hard and Insane** also give each gardener 100 HP. Actual warned enemy contacts and hazards cause damage; dodge, Tun and Brace retain their protection. A hit grants .85 seconds of immunity. After four seconds without damage, a nearby healthy, watered plant restores 3 HP per second. A grounded teammate holding Tend for three seconds revives a downed gardener at 50 HP. Health persists through physical ascent and host handoff; all-down ends the run. Easy and Medium retain their plant-focused, no-player-HP rules. Own bombs remain knockback-only for players.
+
 ### Progression must be physical
 
 Do not replace stage progression with a ground-level teleport.
@@ -169,6 +171,8 @@ Staying in the same campaign garden summons roaming guardians after 110 seconds 
 ### Skill loadouts
 
 Before Play, **03 / SKILLS** chooses secondary and special abilities. Choices are saved locally and confirmed in the shared-game handshake. Each character keeps its original primary and utility controls. The accepted loadout stays fixed for that membership, survives host handoff and never grants free boon ranks.
+
+The setup page keeps its sections at fixed positions for every character, including Sligo. Native skill icons have 48-pixel touch targets and a selected underline; the current name and effect appear in a separate fixed-height readout.
 
 | Character | Alternate secondary | Alternate special |
 | --- | --- | --- |
