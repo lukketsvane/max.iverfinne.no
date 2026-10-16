@@ -130,30 +130,18 @@ test('a synchronous engine-start failure leaves the setup visible and paused ins
   }
 });
 
-test('Controls describes the selected secondary/special variants without inventing touch bindings', async () => {
-  for (const [classId, secondary, special] of [['mech', 'shock', 'steam'], ['runner', 'snap', 'quake'], ['bulwark', 'clap', 'quake'], ['herbalist', 'miasma', 'storm'], ['polge', 'rise', 'haymaker'], ['sligo', undefined, 'watch']]) {
-    const skills = { special }; if (secondary) skills.secondary = secondary;
-    const m = await menu(JSON.stringify({ classId, skills }), { eggs: { local: ['sligo'], accounts: {} } });
-    try {
-      m.click('Settings'); m.click('Controls');
-      const row = key => [...m.w.document.querySelectorAll('.max-help-row')].find(node => node.querySelector('strong')?.textContent === key).textContent;
-      const options = m.w.MaxClasses.skillLoadouts.options(classId);
-      assert.ok(row('SKILL').includes(options.special[1][1])); assert.ok(row('SKILL').includes(options.special[1][2]));
-      assert.match(row('CLASS ACTIONS'), /Keyboard\/controller only\./);
-      if (secondary) assert.ok(row('CLASS ACTIONS').includes('C: ' + options.secondary[1][1]));
-      else assert.doesNotMatch(row('CLASS ACTIONS'), /C:/);
-    } finally { m.dom.window.close(); }
-  }
-});
-
-test('live Controls reads the accepted equipped kit rather than an old saved menu choice', async () => {
-  const m = await menu(JSON.stringify({ classId: 'mech', skills: { special: 'steam' } }), { controller: { skillLoadout: () => ({ classId: 'polge', skills: { secondary: 'rise', special: 'haymaker' } }) } });
+test('settings replace Controls with a subpixel toggle that writes the game setting', async () => {
+  let on = true; const calls = [];
+  const m = await menu(undefined, { controller: { subpixel: () => on, setSubpixel: value => { calls.push(value); on = value; } } });
   try {
-    m.click('Play'); m.click('Play'); await m.settle();
-    m.w.dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape' })); m.click('Controls');
-    const row = key => [...m.w.document.querySelectorAll('.max-help-row')].find(node => node.querySelector('strong')?.textContent === key).textContent;
-    assert.match(row('SKILL'), /Haymaker/); assert.doesNotMatch(row('SKILL'), /Steam vent|Flurry/);
-    assert.match(row('CLASS ACTIONS'), /Rising clinch/); assert.doesNotMatch(row('CLASS ACTIONS'), /Fan|Shock pulse/);
+    m.click('Settings');
+    const names = () => [...m.w.document.querySelectorAll('.max-menu button')].map(b => b.textContent);
+    assert.ok(!names().includes('Controls'));
+    const toggle = () => [...m.w.document.querySelectorAll('.max-menu button')].find(b => /^Subpixels /.test(b.textContent));
+    assert.equal(toggle().textContent, 'Subpixels on'); assert.equal(toggle().getAttribute('aria-pressed'), 'true');
+    m.click('Subpixels on');
+    assert.deepEqual(calls, [false]); assert.equal(toggle().textContent, 'Subpixels off'); assert.equal(toggle().getAttribute('aria-pressed'), 'false');
+    m.click('Subpixels off'); assert.deepEqual(calls, [false, true]);
   } finally { m.dom.window.close(); }
 });
 
@@ -354,7 +342,7 @@ test('Joy-Con calibration captures one control per release and saves the physica
     assert.deepEqual(JSON.parse(JSON.stringify(saved[0][1].directions)), { right: { button: 15 }, left: { button: 14 }, up: { button: 12 }, down: { button: 13 } });
     assert.equal(saved[0][1].buttons[1], 2); assert.equal(saved[0][1].buttons[2], 1); assert.equal(saved[0][1].buttons[16], -1);
     assert.match(prompt.textContent, /Layout saved/); assert.equal(m.w.MaxGameMenu.captureController(gp), false);
-    m.click('Back'); m.click('Controls'); assert.match(m.w.document.body.textContent, /JOY-CON \(L\)/);
+    m.click('Back'); assert.match(m.w.document.body.textContent, /Map Joy-Con \(L\)/);
   } finally { m.dom.window.close(); }
 });
 
@@ -365,7 +353,7 @@ test('live settings advertise input ownership and a bubbled Back returns to game
     m.click('Play'); m.click('Play'); await m.settle(); assert.equal(m.w.MaxGameMenu.isOpen(), false);
     m.w.dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape' }));
     assert.equal(m.w.MaxGameMenu.isOpen(), true);
-    m.click('Controls');
+    m.click('Subpixels on');
     m.w.document.querySelector('.max-menu button').dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     assert.equal(m.w.MaxGameMenu.isOpen(), false); assert.equal(m.active, true);
   } finally { m.dom.window.close(); }

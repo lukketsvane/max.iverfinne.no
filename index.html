@@ -156,13 +156,21 @@ var cv = document.getElementById('c');
 var subpx = document.getElementById('subpx');
 var ctx = cv.getContext('2d', { alpha: false });
 var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
+var SCREEN_ASPECT = window.MaxScreenAspect != null ? +window.MaxScreenAspect : 3 / 4;
+var subpixelOn = true, subpixelArgs = null;
+try { subpixelOn = localStorage.getItem('max-subpixel') !== '0'; } catch (e) {}
 var crownCompactScale = false;
 
 
 var lastVW = 0, lastVH = 0;
+function setSubpixel(on) {
+  subpixelOn = !!on;
+  try { localStorage.setItem('max-subpixel', subpixelOn ? '1' : '0'); } catch (e) {}
+  if (subpixelArgs) subpixelMask.apply(null, subpixelArgs);
+}
 function subpixelMask(dpr, pw, ph, left, top) {
   var st = subpx.style, S = SCALE;
-  if (S < 3) { st.display = 'none'; cv.style.filter = ''; return; }
+  if (S < 3 || !subpixelOn) { st.display = 'none'; cv.style.filter = ''; return; }
   var u = function (v) { return (v / dpr) + 'px'; }, lo = .5, w = S / 3, gap = S >= 6 ? w * .24 : 0, rh = S >= 4 ? Math.max(1, Math.round(S * .12)) : 0, cols = [], mean = 0;
   for (var c = 0; c < S; c++) {
     var rgb = [];
@@ -182,18 +190,19 @@ function resize() {
   var dpr = window.devicePixelRatio || 1;
   var vw = window.innerWidth, vh = window.innerHeight;
   lastVW = vw; lastVH = vh;
-  var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr);
+  var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr), bw = dw, bh = dh;
+  if (SCREEN_ASPECT) { if (dw > dh * SCREEN_ASPECT) bw = Math.round(dh * SCREEN_ASPECT); else bh = Math.round(dw / SCREEN_ASPECT); }
   var desk = !!(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches);
-  SCALE = Math.max(2, Math.round(Math.min(dw, dh) / (desk ? 220 : 150)));
-  if(crownCompactScale)SCALE=Math.max(1,Math.min(SCALE,Math.floor(dh/200)||1));
-  IW = Math.ceil(dw / SCALE); IH = Math.ceil(dh / SCALE);
+  SCALE = Math.max(2, Math.round(Math.min(bw, bh) / (desk ? 220 : 150)));
+  if(crownCompactScale)SCALE=Math.max(1,Math.min(SCALE,Math.floor(bh/200)||1));
+  IW = Math.ceil(bw / SCALE); IH = Math.ceil(bh / SCALE);
   if (cv.width !== IW) cv.width = IW;
   if (cv.height !== IH) cv.height = IH;
   var pw = IW * SCALE, ph = IH * SCALE;
   cv.style.width = (pw / dpr) + 'px'; cv.style.height = (ph / dpr) + 'px';
   cv.style.left = (Math.floor((dw - pw) / 2) / dpr) + 'px';
   cv.style.top = (Math.floor((dh - ph) / 2) / dpr) + 'px';
-  subpixelMask(dpr, pw, ph, cv.style.left, cv.style.top);
+  subpixelArgs = [dpr, pw, ph, cv.style.left, cv.style.top]; subpixelMask.apply(null, subpixelArgs);
   ctx.imageSmoothingEnabled = false;
   groundPat = null; vig = null;
   surf = new Float32Array(IW + 10);
@@ -6652,6 +6661,8 @@ function attachGameMenu(){
     setEffectsVolume:setEffectsVolume,
     relicSound:function(kind){unlockAudio();socialTone(kind);},
     setMusicVolume:setMusicVolume,
+    subpixel:function(){return subpixelOn;},
+    setSubpixel:setSubpixel,
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},

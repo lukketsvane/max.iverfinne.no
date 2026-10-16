@@ -147,7 +147,7 @@ function loadGame(saved = {}) {
     clearTimeout() {}, setInterval() {}, clearInterval() {},
     requestAnimationFrame() {}, cancelAnimationFrame() {},
     getComputedStyle() { return { paddingTop: '0px' }; },
-    innerWidth: 960, innerHeight: 540, devicePixelRatio: 1,
+    innerWidth: 960, innerHeight: 540, devicePixelRatio: 1, MaxScreenAspect: 0,
     addEventListener(name, fn) { (listeners[name] ||= []).push(fn); },
   };
   sandbox.window = sandbox;
