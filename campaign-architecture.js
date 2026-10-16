@@ -714,7 +714,7 @@
   function buildScene(layout, ground, wet) {
     var stage = layout && layout.stage | 0;
     // The first two authored pictures and Crown are intentionally left intact.
-    if (!layout || stage < 3 || stage > 19 || typeof ground !== 'function') return empty(stage);
+    if (!layout || layout.scene || stage < 3 || stage > 19 || typeof ground !== 'function') return empty(stage);
     var ps = (layout.platforms || []).filter(function (p) { return !p.place && !p.solid && (!layout.art || !p.art); });
     var geometry = ps.reduce(function (value, p) { return (value ^ hash(p.x * 17 + p.w * 3, p.y * 11 + (p.depth || 0))) >>> 0; }, 0);
     var stamp = ps.length + ':' + geometry + ':' + layout.seed;

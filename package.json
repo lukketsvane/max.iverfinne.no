@@ -12,7 +12,10 @@
     "figma:levels": "node scripts/figma-levels.mjs",
     "figma:level-drafts": "node scripts/figma-level-drafts.mjs",
     "figma:master-levels": "node scripts/master-levels.mjs",
-    "figma:studio": "node docs/design/figma-level-studio/plugin/preview.mjs --listen"
+    "figma:studio": "node docs/design/figma-level-studio/plugin/preview.mjs --listen",
+    "figma:scenes": "node scripts/scene-levels-figma.mjs",
+    "scenes:sweep": "node scripts/scene-sweep.mjs",
+    "scenes:pixel-mill": "node scripts/scene-levels-pixel-mill.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.116.0"

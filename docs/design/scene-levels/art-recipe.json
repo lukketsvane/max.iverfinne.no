@@ -1,0 +1,740 @@
+{
+ "scenes": [
+  {
+   "id": "frozen-seed-wheel",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:18",
+    "backdrop": "1271:36",
+    "foregroundHash": "06a835aed901f1a984c08600db10c19f0276aa18",
+    "backdropHash": "be266b9f1336e56c73c957aaa2cafcc90bb5dfa4"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      141,
+      336,
+      28,
+      36
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      196,
+      328,
+      62,
+      44
+     ]
+    },
+    {
+     "note": "rat",
+     "box": [
+      1518,
+      573,
+      50,
+      22
+     ]
+    }
+   ],
+   "backdropScale": 0.975
+  },
+  {
+   "id": "magnetworks",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:24",
+    "backdrop": "1263:11",
+    "foregroundHash": "b55c38d823f379ffb5a9f7ef1f7e91ad46e094cf",
+    "backdropHash": "521ca7155f080fe8d8412fea79ccf5ff47ef8bbc"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      136,
+      192,
+      64,
+      46
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      230,
+      710,
+      46,
+      44
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      590,
+      306,
+      68,
+      48
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      543,
+      18,
+      74,
+      48
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      934,
+      140,
+      74,
+      42
+     ]
+    }
+   ]
+  },
+  {
+   "id": "railway-depot",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:19",
+    "backdrop": "1263:6",
+    "foregroundHash": "768cebc1d2861c3e4a92c2d8670684da796bb2fd",
+    "backdropHash": "d0a0a9f0dc75855327555f0058de976850741ff4"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener and rover",
+     "box": [
+      702,
+      358,
+      108,
+      46
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      774,
+      168,
+      30,
+      36
+     ]
+    },
+    {
+     "note": "rat",
+     "box": [
+      112,
+      654,
+      66,
+      28
+     ]
+    }
+   ]
+  },
+  {
+   "id": "living-root-vault",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:23",
+    "backdrop": "1263:10",
+    "foregroundHash": "86c083881cf5a1b6833ff207991963baea4182b8",
+    "backdropHash": "83a47056da32ab8b837785f2542a2bad6989523a"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      122,
+      722,
+      38,
+      44
+     ]
+    },
+    {
+     "note": "cart",
+     "box": [
+      184,
+      732,
+      88,
+      58
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      218,
+      52,
+      50,
+      42
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      550,
+      274,
+      56,
+      40
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1498,
+      634,
+      64,
+      40
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      1291,
+      460,
+      40,
+      46
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mycelium-sanctuary",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:21",
+    "backdrop": "1263:8",
+    "foregroundHash": "92a0a6fac014eaf041065d82b81300c13445ff03",
+    "backdropHash": "4873dcdd22840531eb8d02321f512eac0637a2a7"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      462,
+      244,
+      48,
+      50
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      518,
+      244,
+      90,
+      52
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      103,
+      136,
+      60,
+      46
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1090,
+      158,
+      58,
+      50
+     ]
+    }
+   ]
+  },
+  {
+   "id": "giant-beaked-fossil",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:20",
+    "backdrop": "1263:7",
+    "foregroundHash": "fb4ef6c1f45c3014c7b8b8a3b876777d3c99ff21",
+    "backdropHash": "4193ca570ce3260d64d27439d33836cab7be3d47"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      78,
+      280,
+      38,
+      42
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      128,
+      290,
+      70,
+      38
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      400,
+      492,
+      44,
+      44
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      684,
+      618,
+      94,
+      50
+     ]
+    },
+    {
+     "note": "beetles",
+     "box": [
+      750,
+      638,
+      222,
+      46
+     ],
+     "from": [
+      -205,
+      0
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      510,
+      174,
+      56,
+      34
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1388,
+      316,
+      58,
+      44
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      1412,
+      634,
+      44,
+      48
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bellflower-marsh",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:26",
+    "backdrop": "1263:13",
+    "foregroundHash": "99bff7032a2ebbce9057f5666a5bc36e9fd96251",
+    "backdropHash": "875d4f7d13ad9229c146335cfb0a46c75f883514"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      172,
+      296,
+      54,
+      66
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      725,
+      456,
+      64,
+      64
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      633,
+      210,
+      70,
+      74
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1185,
+      18,
+      68,
+      56
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      1320,
+      702,
+      70,
+      58
+     ]
+    }
+   ]
+  },
+  {
+   "id": "night-watermill",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:22",
+    "backdrop": "1263:9",
+    "foregroundHash": "54c6430adac57c63f8f943088d2e79d2ade512d8",
+    "backdropHash": "01f3335d05b959ee94a80617c42cdd16a7a7f59d"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      84,
+      226,
+      32,
+      46
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      128,
+      228,
+      64,
+      44
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1112,
+      268,
+      58,
+      48
+     ]
+    },
+    {
+     "note": "rats",
+     "box": [
+      1220,
+      756,
+      104,
+      32
+     ]
+    }
+   ]
+  },
+  {
+   "id": "corvid-aqueduct",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:25",
+    "backdrop": "1263:12",
+    "foregroundHash": "6e74e52d63e1435616d9ddfe1f67d63077fd71d4",
+    "backdropHash": "37dfd9ce65e0e6e7deab669c474952ace14413f0"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      213,
+      247,
+      38,
+      39
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      270,
+      244,
+      54,
+      42
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      955,
+      738,
+      34,
+      38
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      1035,
+      730,
+      47,
+      48
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      570,
+      181,
+      76,
+      44
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1122,
+      42,
+      48,
+      58
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1320,
+      135,
+      70,
+      48
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1552,
+      75,
+      64,
+      49
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1388,
+      540,
+      68,
+      46
+     ]
+    }
+   ]
+  },
+  {
+   "id": "heliostat-greenhouse",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1271:37",
+    "backdrop": "1266:30",
+    "foregroundHash": "8c0c91ea6797094be43f3afa3c4a1c08fa260837",
+    "backdropHash": "2acd877f499afda6171da8dfc1006db7cca5fc0b"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "crow",
+     "box": [
+      90,
+      40,
+      58,
+      44
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1215,
+      25,
+      41,
+      32
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1567,
+      387,
+      60,
+      44
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      707,
+      545,
+      54,
+      41
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      347,
+      692,
+      28,
+      45
+     ]
+    }
+   ]
+  },
+  {
+   "id": "salt-cistern-terraces",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1271:31",
+    "backdrop": "1266:17",
+    "foregroundHash": "d33627d57749d122f629341ac126a5bc48e20572",
+    "backdropHash": "9513785a4f9407eca7a68320ee59b078b8d9b1a7"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "gardener",
+     "box": [
+      92,
+      177,
+      32,
+      44
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      172,
+      193,
+      46,
+      40
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      642,
+      392,
+      32,
+      41
+     ]
+    },
+    {
+     "note": "crow",
+     "box": [
+      1587,
+      88,
+      54,
+      50
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      1478,
+      583,
+      28,
+      38
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      1287,
+      732,
+      28,
+      41
+     ]
+    }
+   ]
+  },
+  {
+   "id": "twin-gondola-ravine",
+   "figma": {
+    "section": "1271:34",
+    "foreground": "1266:29",
+    "backdrop": "1263:16",
+    "foregroundHash": "b863118a8996601bc621b1f549306e5e3722d329",
+    "backdropHash": "c6918a35a9fcf56c721c17b8793e6323ba370d0f"
+   },
+   "scale": 0.75,
+   "colors": 64,
+   "patches": [
+    {
+     "note": "crows",
+     "box": [
+      464,
+      122,
+      144,
+      56
+     ],
+     "from": [
+      300,
+      68
+     ]
+    },
+    {
+     "note": "rover",
+     "box": [
+      381,
+      564,
+      60,
+      49
+     ]
+    },
+    {
+     "note": "gardener",
+     "box": [
+      472,
+      573,
+      28,
+      43
+     ]
+    },
+    {
+     "note": "drone",
+     "box": [
+      1203,
+      368,
+      64,
+      37
+     ],
+     "clear": true
+    }
+   ]
+  }
+ ]
+}

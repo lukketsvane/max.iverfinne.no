@@ -608,3 +608,19 @@ rejected alternates retain the brief denied signal. Erasmus Berg's two controlle
 layouts honor Quake, and actual owned Shovel Down+E/Tend+Special still takes
 precedence. C/V touch policy has not changed. Keep the guest/handoff, read-only
 draw, Tun-duration, controller, Shovel and online-event regressions.
+
+## October 16 scene levels
+
+The owner's Figma `levelart` pairs (section `1271:34`) become tall bounded scene
+rooms through `scene-levels-data.js`. `pictureLayout` draws the transparent
+foreground 1:1 over its collision, the backdrop behind it with parallax, adds
+solid room walls, stepped ground, real scene pools and three guardian courts,
+and clamps the camera to the room; scenes skip expeditions, places and campaign
+architecture. Both PNGs per scene are `Environment/Scene Levels` production
+layers (`1280:22024`). Collision is authored in Figma section `03 · SCENE LEVELS`
+(`1284:22011`) and exported by `npm run figma:scenes`; the test proves the data is
+exactly the compiled capture and sweeps every scene with real physics. Stage 3
+Frozen Seed Wheel is live; the other eleven pairs are processed in
+`docs/design/scene-levels/` and land as their collision passes the sweep. Stages
+1, 2, 4 and 20 keep their own sources. See `docs/design/scene-levels/README.md`.
+
