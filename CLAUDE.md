@@ -620,8 +620,8 @@ architecture. Both PNGs per scene are `Environment/Scene Levels` production
 layers (`1280:22024`). Collision is authored in Figma section `03 · SCENE LEVELS`
 (`1284:22011`) and exported by `npm run figma:scenes`; the test proves the data is
 exactly the compiled capture and sweeps every scene with real physics. Stage 3
-Frozen Seed Wheel is live; the other eleven pairs are processed in
-`docs/design/scene-levels/` and land as their collision passes the sweep. Stages
+Frozen Seed Wheel and stage 6 Magnetworks are live; the other ten pairs are
+processed in `docs/design/scene-levels/` and land as their collision passes the sweep. Stages
 1, 2, 4 and 20 keep their own sources. See `docs/design/scene-levels/README.md`.
 
 The game canvas is letterboxed to a 3:4 (width:height) screen (`SCREEN_ASPECT`;

@@ -202,7 +202,7 @@
     { "path": "assets/levels-v2/living-root-vault-bg.png", "nodeId": "1280:21991", "group": "environment", "width": 1254, "height": 705, "sha1": "88d6563256d82d4ed476c8c3874fbda71a174bdd" },
     { "path": "assets/levels-v2/living-root-vault-fg.png", "nodeId": "1280:21989", "group": "environment", "width": 1254, "height": 706, "sha1": "5bd992b9f743664e441e889a6acb6d573aa26107" },
     { "path": "assets/levels-v2/magnetworks-bg.png", "nodeId": "1280:21987", "group": "environment", "width": 1254, "height": 706, "sha1": "851d43dfa6ee6136ffc1251c302ed62ef3bf0d62" },
-    { "path": "assets/levels-v2/magnetworks-fg.png", "nodeId": "1280:21985", "group": "environment", "width": 1254, "height": 706, "sha1": "11436e652f3b0fad0ac25341740e73d09f8f3289" },
+    { "path": "assets/levels-v2/magnetworks-fg.png", "nodeId": "1280:21985", "group": "environment", "width": 1254, "height": 706, "sha1": "86d20df3bd40387ef94d56a0464dd81d5c6d9f9c" },
     { "path": "assets/levels-v2/mycelium-sanctuary-bg.png", "nodeId": "1280:21995", "group": "environment", "width": 1254, "height": 706, "sha1": "8f14efe66d73e0fc955cc89ba0653d8df65844e8" },
     { "path": "assets/levels-v2/mycelium-sanctuary-fg.png", "nodeId": "1280:21993", "group": "environment", "width": 1253, "height": 706, "sha1": "68787a9631d7cefe6772fce9041bae4c34ab5a18" },
     { "path": "assets/levels-v2/night-watermill-bg.png", "nodeId": "1280:22007", "group": "environment", "width": 1254, "height": 706, "sha1": "c7653bc78a5b9a35ad33fa849002fb4c09006605" },
