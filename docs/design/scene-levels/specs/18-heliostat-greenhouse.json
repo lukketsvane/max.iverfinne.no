@@ -1,0 +1,89 @@
+{
+ "stage": 18,
+ "id": "heliostat-greenhouse",
+ "title": "Heliostat Greenhouse",
+ "originX": 300,
+ "ground": [
+  [0, 62, 382],
+  [62, 172, 577],
+  [172, 206, 595],
+  [206, 252, 614],
+  [252, 340, 631],
+  [340, 440, 648],
+  [440, 572, 638],
+  [572, 640, 566],
+  [640, 958, 436],
+  [958, 970, 445],
+  [970, 1062, 460],
+  [1062, 1184, 598],
+  [1184, 1254, 457]
+ ],
+ "pools": [
+  ["basement-pool", 340, 440, 633]
+ ],
+ "ledges": [
+  ["west-sill", 62, 382, 24],
+  ["west-step-1", 86, 394, 40],
+  ["west-step-2", 124, 402, 14],
+  ["west-arcade", 136, 413, 196],
+  ["arcade-step", 330, 421, 12],
+  ["greenhouse-floor", 340, 436, 300],
+  ["west-shelf", 192, 551, 98],
+  ["chamber-stair-1", 168, 568, 14],
+  ["chamber-stair-2", 180, 559, 14],
+  ["east-shelf-low", 430, 567, 66],
+  ["east-shelf", 495, 557, 83],
+  ["pot-floor", 296, 258, 60],
+  ["terrace", 356, 272, 130],
+  ["stair-landing", 238, 248, 60],
+  ["stair-1", 226, 234, 14],
+  ["stair-2", 210, 221, 18],
+  ["stair-3", 194, 207, 18],
+  ["stair-4", 180, 193, 16],
+  ["plant-floor", 95, 178, 88],
+  ["upper-step", 190, 166, 14],
+  ["upper-landing", 203, 157, 62],
+  ["heliostat-deck", 265, 139, 122],
+  ["west-crown", 62, 138, 64],
+  ["sunflower-rail", 632, 318, 168],
+  ["east-deck", 798, 331, 170],
+  ["tower-roof", 820, 166, 260],
+  ["east-span", 1060, 460, 126]
+ ],
+ "blocks": [],
+ "ladders": [
+  ["deck-ladder", 372, 139, 272],
+  ["shaft-ladder", 352, 258, 436],
+  ["cave-ladder", 238, 551, 614],
+  ["tower-ladder", 920, 166, 436],
+  ["niche-ladder", 1086, 460, 598],
+  ["crown-ladder", 112, 138, 178],
+  ["hatch-ladder", 626, 436, 566],
+  ["shelf-ladder", 552, 557, 638]
+ ],
+ "paintLadders": [
+  ["crown-ladder", 112, 138, 178],
+  ["hatch-ladder", 626, 436, 566],
+  ["shelf-ladder", 552, 557, 638]
+ ],
+ "points": [
+  ["start", "basement-arrival", 300, 631],
+  ["seed", "cabinet-seed", 968, 166],
+  ["trial", "terrace-trial", 450, 272],
+  ["trial", "arcade-trial", 270, 413],
+  ["reward", "mirror-cache", 345, 139],
+  ["reward", "crown-cache", 85, 138],
+  ["bonus", "sunflower-dew", 690, 318],
+  ["bonus", "plant-dew", 140, 178],
+  ["bonus", "shelf-dew", 230, 551],
+  ["puzzle", "valve-lever", 215, 413],
+  ["door", "glasshouse-door", 428, 436],
+  ["dig", "root-bed", 800, 436],
+  ["secret", "niche-nook", 1140, 598]
+ ],
+ "sites": [
+  ["nursery-shrine", 530, 557, 505, "east-shelf"],
+  ["glasshouse-shrine", 720, 436, 704, null],
+  ["tower-shrine", 880, 331, 860, "east-deck"]
+ ]
+}

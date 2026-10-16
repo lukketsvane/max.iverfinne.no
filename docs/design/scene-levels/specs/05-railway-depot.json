@@ -1,0 +1,84 @@
+{
+ "stage": 5,
+ "id": "railway-depot",
+ "title": "Railway Depot",
+ "originX": 210,
+ "ground": [
+  [0, 125, 513],
+  [125, 160, 522],
+  [160, 200, 527],
+  [200, 230, 529],
+  [230, 254, 531],
+  [254, 335, 525],
+  [335, 392, 542],
+  [392, 420, 551],
+  [420, 545, 567],
+  [545, 598, 552],
+  [598, 680, 494],
+  [680, 700, 501],
+  [700, 805, 510],
+  [805, 952, 532],
+  [952, 1100, 501],
+  [1100, 1205, 543],
+  [1205, 1218, 425],
+  [1218, 1254, 419]
+ ],
+ "pools": [
+  ["platform-pool", 420, 545, 541]
+ ],
+ "ledges": [
+  ["west-deck", 0, 306, 868],
+  ["east-deck", 899, 306, 355],
+  ["tower-top", 1104, 129, 66],
+  ["block-lip", 940, 501, 12]
+ ],
+ "blocks": [
+  ["arcade-west", 0, 390, 66, 14],
+  ["arcade-mid", 66, 396, 46, 12],
+  ["arcade-east", 112, 407, 440, 12],
+  ["arcade-hump", 212, 401, 114, 6],
+  ["arch-pier", 0, 87, 34, 14],
+  ["arch-crown-w", 34, 81, 126, 16],
+  ["arch-saddle", 160, 87, 42, 12],
+  ["arch-dip", 202, 103, 64, 10],
+  ["arch-step", 266, 97, 16, 10],
+  ["arch-crown-e", 282, 79, 126, 18]
+ ],
+ "ladders": [
+  ["arcade-ladder", 157, 407, 522],
+  ["deck-vine", 471, 306, 407],
+  ["arch-ladder", 18, 87, 306],
+  ["viaduct-vine", 748, 306, 510],
+  ["block-ladder", 946, 501, 532],
+  ["shaft-ladder", 1108, 306, 543],
+  ["tower-ladder", 1160, 129, 306],
+  ["column-vine", 1210, 306, 425]
+ ],
+ "paintLadders": [
+  ["arcade-ladder", 157, 407, 522],
+  ["arch-ladder", 18, 87, 306],
+  ["block-ladder", 946, 501, 532],
+  ["shaft-ladder", 1108, 306, 543],
+  ["tower-ladder", 1160, 129, 306]
+ ],
+ "points": [
+  ["start", "arrival", 210, 529],
+  ["seed", "cart-seed", 720, 306],
+  ["trial", "arcade-trial", 270, 401],
+  ["trial", "east-deck-trial", 1200, 306],
+  ["reward", "crown-cache", 345, 79],
+  ["reward", "tower-cache", 1137, 129],
+  ["bonus", "arch-dew", 100, 81],
+  ["bonus", "pocket-dew", 575, 552],
+  ["bonus", "terrace-dew", 640, 494],
+  ["puzzle", "pool-gauge", 365, 542],
+  ["door", "arch-door", 295, 525],
+  ["dig", "yard-dig", 1075, 501],
+  ["secret", "column-nest", 1238, 419]
+ ],
+ "sites": [
+  ["arch-hall", 40, 513, 70, null],
+  ["lever-watch", 845, 306, 880, "west-deck"],
+  ["lamp-landing", 990, 306, 1020, "east-deck"]
+ ]
+}
