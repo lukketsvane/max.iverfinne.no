@@ -157,7 +157,7 @@ var subpx = document.getElementById('subpx');
 var ctx = cv.getContext('2d', { alpha: false });
 var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
 var SCREEN_ASPECT = window.MaxScreenAspect != null ? +window.MaxScreenAspect : 3 / 4;
-var subpixelOn = true, subpixelArgs = null;
+var subpixelOn = true, subpixelArgs = null, subpixelGain = 0;
 try { subpixelOn = localStorage.getItem('max-subpixel') !== '0'; } catch (e) {}
 var crownCompactScale = false;
 
@@ -170,7 +170,7 @@ function setSubpixel(on) {
 }
 function subpixelMask(dpr, pw, ph, left, top) {
   var st = subpx.style, S = SCALE;
-  if (S < 3 || !subpixelOn) { st.display = 'none'; cv.style.filter = ''; return; }
+  if (S < 3 || !subpixelOn) { st.display = 'none'; subpixelGain = 0; return; }
   var u = function (v) { return (v / dpr) + 'px'; }, lo = .5, w = S / 3, gap = S >= 6 ? w * .24 : 0, rh = S >= 4 ? Math.max(1, Math.round(S * .12)) : 0, cols = [], mean = 0;
   for (var c = 0; c < S; c++) {
     var rgb = [];
@@ -183,7 +183,7 @@ function subpixelMask(dpr, pw, ph, left, top) {
   mean *= (S - rh * .58) / S;
   st.display = 'block'; st.left = left; st.top = top; st.width = u(pw); st.height = u(ph);
   st.backgroundImage = 'repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 ' + u(S - rh) + ',rgba(0,0,0,.58) ' + u(S - rh) + ' ' + u(S) + '),repeating-linear-gradient(90deg,' + cols.join(',') + ')';
-  cv.style.filter = 'brightness(' + Math.min(1.6, .9 / mean).toFixed(2) + ')';
+  subpixelGain = Math.max(0, Math.min(.6, .9 / mean - 1));
 }
 function resize() {
   cancelAscentPresentation();
@@ -6624,6 +6624,7 @@ function frame(now) {
   rememberAscentFrame();drawAscentPresentation(true);
   if(!crownLayer)drawWorldBanner(tSec);drawBossBar(dt);
   rosterShown=false;drawRunHud();if(!rosterShown)hideRoster();
+  if(subpixelGain){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=subpixelGain;ctx.drawImage(cv,0,0);ctx.restore();}
 
   camX = fx; camY = fy;
   requestAnimationFrame(frame);
