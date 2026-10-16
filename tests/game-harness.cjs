@@ -27,6 +27,7 @@ const stateNames = [
   'COMBAT_PROFILES', 'GARDEN_BOSSES', 'PEST_BIRDS',
 ];
 const functionNames = [
+  'listenHaptics', 'setRumble', 'rumble',
   'actorSkills', 'alternateSkill', 'classSkillFeedback', 'drawSkillPip', 'loadoutSkillSpec', 'loadoutSkillState', 'loadoutSkillAllowed', 'loadoutSkillWorld', 'useLoadoutSkill', 'updateOverstay', 'runTimeThreat', 'runDamageScale',
   'enemyUnlocked', 'waveEnemyKind', 'nextRunEnemyKind', 'updateGardenFun', 'makeStageWeather', 'updateStageWeather', 'runPatrolLimit', 'openingRaidT',
   'secretEventFor', 'rollSecrets', 'updateSecrets', 'rollWonders', 'rollMeeting', 'updateWonders', 'updatePuzzle', 'updateMeeting', 'secretStarLive', 'grantWish', 'wonderLog',
