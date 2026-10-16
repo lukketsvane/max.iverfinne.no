@@ -161,12 +161,21 @@ var crownCompactScale = false;
 
 var lastVW = 0, lastVH = 0;
 function subpixelMask(dpr, pw, ph, left, top) {
-  var st = subpx.style;
-  if (SCALE < 3) { st.display = 'none'; return; }
-  var u = function (v) { return (v / dpr) + 'px'; }, p = SCALE, gap = SCALE >= 4 ? 'rgba(0,0,0,.08)' : 'rgba(0,0,0,0)';
+  var st = subpx.style, S = SCALE;
+  if (S < 3) { st.display = 'none'; cv.style.filter = ''; return; }
+  var u = function (v) { return (v / dpr) + 'px'; }, lo = .5, w = S / 3, gap = S >= 6 ? w * .24 : 0, rh = S >= 4 ? Math.max(1, Math.round(S * .12)) : 0, cols = [], mean = 0;
+  for (var c = 0; c < S; c++) {
+    var rgb = [];
+    for (var k = 0; k < 3; k++) {
+      var o = Math.max(0, Math.min(c + 1, (k + 1) * w - gap / 2) - Math.max(c, k * w + gap / 2));
+      rgb.push(Math.round(255 * (lo + (1 - lo) * o))); mean += rgb[k] / 765 / S;
+    }
+    cols.push('rgb(' + rgb.join(',') + ') ' + u(c) + ' ' + u(c + 1));
+  }
+  mean *= (S - rh * .58) / S;
   st.display = 'block'; st.left = left; st.top = top; st.width = u(pw); st.height = u(ph);
-  st.backgroundImage = 'repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 ' + u(p - 1) + ',' + gap + ' ' + u(p - 1) + ' ' + u(p) + '),' +
-    'repeating-linear-gradient(90deg,#ffe6e6 0 ' + u(p / 3) + ',#e6ffe6 ' + u(p / 3) + ' ' + u(p * 2 / 3) + ',#e6e6ff ' + u(p * 2 / 3) + ' ' + u(p) + ')';
+  st.backgroundImage = 'repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 ' + u(S - rh) + ',rgba(0,0,0,.58) ' + u(S - rh) + ' ' + u(S) + '),repeating-linear-gradient(90deg,' + cols.join(',') + ')';
+  cv.style.filter = 'brightness(' + Math.min(1.6, .9 / mean).toFixed(2) + ')';
 }
 function resize() {
   cancelAscentPresentation();
