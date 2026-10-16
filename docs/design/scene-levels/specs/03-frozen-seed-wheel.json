@@ -3,55 +3,239 @@
  "id": "frozen-seed-wheel",
  "title": "Frozen Seed Wheel",
  "reference": "01.png",
- "originX": 560,
+ "originX": 433,
  "ground": [
-  [0, 1254, 572]
+  [
+   0,
+   970,
+   442
+  ]
  ],
  "ledges": [
-  ["upper-west-floor", 12, 279, 363],
-  ["west-gallery", 62, 418, 370],
-  ["west-pier-step", 428, 396, 16],
-  ["west-pier", 442, 383, 73],
-  ["ice-bridge", 515, 390, 235],
-  ["east-pier", 750, 383, 72],
-  ["east-pier-step", 822, 396, 10],
-  ["east-ledge", 830, 416, 47],
-  ["east-gallery", 866, 446, 359],
-  ["east-terrace", 868, 330, 352],
-  ["crown-store", 980, 176, 235]
+  [
+   "upper-west-floor",
+   9,
+   216,
+   281
+  ],
+  [
+   "west-gallery",
+   48,
+   323,
+   286
+  ],
+  [
+   "west-pier-step",
+   331,
+   305,
+   12
+  ],
+  [
+   "west-pier",
+   342,
+   297,
+   56
+  ],
+  [
+   "ice-bridge",
+   398,
+   301,
+   182
+  ],
+  [
+   "east-pier",
+   580,
+   297,
+   56
+  ],
+  [
+   "east-pier-step",
+   636,
+   305,
+   8
+  ],
+  [
+   "east-ledge",
+   642,
+   320,
+   36
+  ],
+  [
+   "east-gallery",
+   670,
+   345,
+   277
+  ],
+  [
+   "east-terrace",
+   671,
+   255,
+   272
+  ],
+  [
+   "crown-store",
+   758,
+   136,
+   182
+  ]
  ],
  "blocks": [
-  ["furnace-step", 82, 561, 147, 11]
+  [
+   "furnace-step",
+   63,
+   434,
+   114,
+   8
+  ]
  ],
  "ladders": [
-  ["west-low-ladder", 181, 418, 561],
-  ["west-high-ladder", 291, 279, 418],
-  ["east-mid-ladder", 995, 330, 446],
-  ["east-low-ladder", 1036, 446, 572],
-  ["crown-ladder", 1150, 176, 330],
-  ["east-ledge-ladder", 870, 416, 446]
+  [
+   "west-low-ladder",
+   140,
+   323,
+   434
+  ],
+  [
+   "west-high-ladder",
+   225,
+   216,
+   323
+  ],
+  [
+   "east-mid-ladder",
+   769,
+   255,
+   345
+  ],
+  [
+   "east-low-ladder",
+   801,
+   345,
+   442
+  ],
+  [
+   "crown-ladder",
+   889,
+   136,
+   255
+  ],
+  [
+   "east-ledge-ladder",
+   673,
+   320,
+   345
+  ]
  ],
  "paintLadders": [
-  ["crown-ladder", 1150, 176, 330],
-  ["east-ledge-ladder", 870, 416, 446]
+  [
+   "crown-ladder",
+   889,
+   136,
+   255
+  ],
+  [
+   "east-ledge-ladder",
+   673,
+   320,
+   345
+  ]
  ],
  "points": [
-  ["reward", "crown-store-cache", 1100, 176],
-  ["reward", "west-door-cache", 60, 279],
-  ["seed", "bridge-seed", 632, 390],
-  ["trial", "west-gallery-shrine", 230, 418],
-  ["trial", "east-gallery-shrine", 1120, 446],
-  ["bonus", "west-pier-dew", 478, 383],
-  ["bonus", "east-terrace-dew", 1180, 330],
-  ["puzzle", "valve-wheel", 380, 572],
-  ["door", "archive-door", 1092, 572],
-  ["dig", "pit-edge", 760, 572],
-  ["secret", "furnace-cache", 120, 561],
-  ["start", "arrival", 560, 572]
+  [
+   "reward",
+   "crown-store-cache",
+   851,
+   136
+  ],
+  [
+   "reward",
+   "west-door-cache",
+   46,
+   216
+  ],
+  [
+   "seed",
+   "bridge-seed",
+   489,
+   301
+  ],
+  [
+   "trial",
+   "west-gallery-shrine",
+   178,
+   323
+  ],
+  [
+   "trial",
+   "east-gallery-shrine",
+   866,
+   345
+  ],
+  [
+   "bonus",
+   "west-pier-dew",
+   370,
+   297
+  ],
+  [
+   "bonus",
+   "east-terrace-dew",
+   913,
+   255
+  ],
+  [
+   "puzzle",
+   "valve-wheel",
+   294,
+   442
+  ],
+  [
+   "door",
+   "archive-door",
+   844,
+   442
+  ],
+  [
+   "dig",
+   "pit-edge",
+   588,
+   442
+  ],
+  [
+   "secret",
+   "furnace-cache",
+   93,
+   434
+  ],
+  [
+   "start",
+   "arrival",
+   433,
+   442
+  ]
  ],
  "sites": [
-  ["cold-store", 150, 279, 330, "upper-west-floor"],
-  ["east-pier-watch", 786, 383, 900, "east-pier"],
-  ["archive-floor", 1110, 572, 1160, null]
- ]
+  [
+   "cold-store",
+   116,
+   216,
+   255,
+   "upper-west-floor"
+  ],
+  [
+   "east-pier-watch",
+   608,
+   297,
+   696,
+   "east-pier"
+  ],
+  [
+   "archive-floor",
+   858,
+   442,
+   897,
+   null
+  ]
+ ],
+ "pools": []
 }

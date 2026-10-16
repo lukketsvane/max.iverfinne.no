@@ -2,109 +2,538 @@
  "stage": 13,
  "id": "night-watermill",
  "title": "Night Watermill",
- "originX": 950,
+ "originX": 887,
  "ground": [
-  [0, 52, 418],
-  [52, 88, 409],
-  [88, 142, 418],
-  [142, 200, 520],
-  [200, 214, 528],
-  [214, 228, 538],
-  [228, 360, 551],
-  [360, 368, 560],
-  [368, 510, 568],
-  [510, 520, 580],
-  [520, 528, 592],
-  [528, 660, 604],
-  [660, 760, 598],
-  [760, 796, 603],
-  [796, 808, 596],
-  [808, 1076, 589],
-  [1076, 1112, 582],
-  [1112, 1200, 462],
-  [1200, 1254, 390]
+  [
+   0,
+   49,
+   390
+  ],
+  [
+   49,
+   82,
+   382
+  ],
+  [
+   82,
+   133,
+   390
+  ],
+  [
+   133,
+   187,
+   485
+  ],
+  [
+   187,
+   200,
+   493
+  ],
+  [
+   200,
+   213,
+   502
+  ],
+  [
+   213,
+   336,
+   514
+  ],
+  [
+   336,
+   343,
+   523
+  ],
+  [
+   343,
+   476,
+   530
+  ],
+  [
+   476,
+   485,
+   541
+  ],
+  [
+   485,
+   493,
+   553
+  ],
+  [
+   493,
+   616,
+   564
+  ],
+  [
+   616,
+   709,
+   558
+  ],
+  [
+   709,
+   743,
+   563
+  ],
+  [
+   743,
+   754,
+   556
+  ],
+  [
+   754,
+   1004,
+   550
+  ],
+  [
+   1004,
+   1038,
+   543
+  ],
+  [
+   1038,
+   1120,
+   431
+  ],
+  [
+   1120,
+   1170,
+   364
+  ]
  ],
  "pools": [
-  ["mill-pool", 512, 806, 594]
+  [
+   "mill-pool",
+   478,
+   752,
+   554
+  ]
  ],
  "ledges": [
-  ["west-boardwalk", 0, 200, 267],
-  ["west-crag", 238, 183, 194],
-  ["cave-step-1", 266, 212, 12],
-  ["cave-step-2", 274, 223, 12],
-  ["cave-step-3", 280, 234, 14],
-  ["cave-step-4", 286, 246, 14],
-  ["cave-ledge", 290, 258, 60],
-  ["cave-stair-1", 346, 268, 12],
-  ["cave-stair-2", 352, 277, 14],
-  ["cave-stair-3", 358, 286, 14],
-  ["cave-stair-4", 364, 296, 16],
-  ["cave-shelf", 362, 307, 90],
-  ["planter-shelf", 469, 352, 80],
-  ["axle-beam", 549, 363, 181],
-  ["flower-slab", 676, 580, 58],
-  ["mill-bridge", 430, 222, 270],
-  ["wheel-crest", 700, 232, 90],
-  ["sluice-ledge", 790, 277, 44],
-  ["crank-terrace", 832, 285, 288],
-  ["east-sill", 1120, 300, 66],
-  ["east-rim", 1184, 309, 70],
-  ["high-shelf", 1044, 201, 81],
-  ["stair-block-1", 1118, 192, 12],
-  ["stair-block-2", 1124, 182, 12],
-  ["stair-block-3", 1130, 172, 12],
-  ["stair-block-top", 1136, 162, 44],
-  ["ladder-cap", 216, 358, 28],
-  ["mid-gallery", 140, 418, 128],
-  ["mid-gallery-step", 268, 426, 30],
-  ["mid-gallery-end", 298, 434, 64],
-  ["arch-roof", 351, 486, 134],
-  ["mill-floor", 776, 492, 252],
-  ["mill-stair-1", 1026, 485, 14],
-  ["mill-stair-2", 1038, 477, 14],
-  ["mill-stair-3", 1048, 469, 16],
-  ["lantern-walk", 1062, 462, 50],
-  ["post-slab", 957, 362, 47],
-  ["pillar-slab", 981, 398, 52],
-  ["summit-step", 1170, 149, 24],
-  ["lamp-summit", 1188, 135, 66]
+  [
+   "west-boardwalk",
+   0,
+   186,
+   249
+  ],
+  [
+   "west-crag",
+   222,
+   169,
+   181
+  ],
+  [
+   "cave-step-1",
+   248,
+   198,
+   11
+  ],
+  [
+   "cave-step-2",
+   256,
+   208,
+   11
+  ],
+  [
+   "cave-step-3",
+   261,
+   218,
+   13
+  ],
+  [
+   "cave-step-4",
+   267,
+   230,
+   13
+  ],
+  [
+   "cave-ledge",
+   271,
+   241,
+   56
+  ],
+  [
+   "cave-stair-1",
+   323,
+   250,
+   11
+  ],
+  [
+   "cave-stair-2",
+   329,
+   259,
+   13
+  ],
+  [
+   "cave-stair-3",
+   334,
+   267,
+   13
+  ],
+  [
+   "cave-stair-4",
+   340,
+   276,
+   15
+  ],
+  [
+   "cave-shelf",
+   338,
+   287,
+   84
+  ],
+  [
+   "planter-shelf",
+   438,
+   329,
+   74
+  ],
+  [
+   "axle-beam",
+   512,
+   339,
+   169
+  ],
+  [
+   "flower-slab",
+   631,
+   541,
+   54
+  ],
+  [
+   "mill-bridge",
+   401,
+   206,
+   252
+  ],
+  [
+   "wheel-crest",
+   653,
+   216,
+   84
+  ],
+  [
+   "sluice-ledge",
+   737,
+   258,
+   41
+  ],
+  [
+   "crank-terrace",
+   777,
+   266,
+   268
+  ],
+  [
+   "east-sill",
+   1045,
+   280,
+   62
+  ],
+  [
+   "east-rim",
+   1105,
+   288,
+   65
+  ],
+  [
+   "high-shelf",
+   974,
+   186,
+   76
+  ],
+  [
+   "stair-block-1",
+   1043,
+   180,
+   12
+  ],
+  [
+   "stair-block-2",
+   1049,
+   170,
+   11
+  ],
+  [
+   "stair-block-3",
+   1055,
+   161,
+   11
+  ],
+  [
+   "stair-block-top",
+   1060,
+   150,
+   41
+  ],
+  [
+   "ladder-cap",
+   202,
+   331,
+   26
+  ],
+  [
+   "mid-gallery",
+   131,
+   388,
+   119
+  ],
+  [
+   "mid-gallery-step",
+   250,
+   398,
+   28
+  ],
+  [
+   "mid-gallery-end",
+   278,
+   405,
+   60
+  ],
+  [
+   "arch-roof",
+   328,
+   454,
+   125
+  ],
+  [
+   "mill-floor",
+   724,
+   459,
+   235
+  ],
+  [
+   "mill-stair-1",
+   958,
+   453,
+   13
+  ],
+  [
+   "mill-stair-2",
+   969,
+   445,
+   13
+  ],
+  [
+   "mill-stair-3",
+   978,
+   438,
+   15
+  ],
+  [
+   "lantern-walk",
+   991,
+   431,
+   47
+  ],
+  [
+   "post-slab",
+   893,
+   338,
+   44
+  ],
+  [
+   "pillar-slab",
+   916,
+   369,
+   48
+  ],
+  [
+   "summit-step",
+   1092,
+   139,
+   22
+  ],
+  [
+   "lamp-summit",
+   1109,
+   126,
+   61
+  ]
  ],
  "blocks": [],
  "ladders": [
-  ["painted-ladder", 228, 358, 418],
-  ["alcove-ladder", 180, 418, 520],
-  ["cap-ladder", 238, 200, 358],
-  ["basement-ladder", 924, 492, 589],
-  ["pillar-ladder", 970, 362, 492],
-  ["slab-ladder", 992, 285, 362],
-  ["terrace-ladder", 1052, 201, 285]
+  [
+   "painted-ladder",
+   213,
+   331,
+   388
+  ],
+  [
+   "alcove-ladder",
+   168,
+   388,
+   485
+  ],
+  [
+   "cap-ladder",
+   222,
+   186,
+   331
+  ],
+  [
+   "basement-ladder",
+   862,
+   459,
+   550
+  ],
+  [
+   "pillar-ladder",
+   905,
+   338,
+   459
+  ],
+  [
+   "slab-ladder",
+   926,
+   266,
+   338
+  ],
+  [
+   "terrace-ladder",
+   982,
+   186,
+   266
+  ]
  ],
  "paintLadders": [
-  ["alcove-ladder", 180, 418, 520],
-  ["cap-ladder", 238, 200, 358],
-  ["basement-ladder", 924, 492, 589],
-  ["pillar-ladder", 970, 362, 492],
-  ["slab-ladder", 992, 285, 362],
-  ["terrace-ladder", 1052, 201, 285]
+  [
+   "alcove-ladder",
+   168,
+   388,
+   485
+  ],
+  [
+   "cap-ladder",
+   222,
+   186,
+   331
+  ],
+  [
+   "basement-ladder",
+   862,
+   459,
+   550
+  ],
+  [
+   "pillar-ladder",
+   905,
+   338,
+   459
+  ],
+  [
+   "slab-ladder",
+   926,
+   266,
+   338
+  ],
+  [
+   "terrace-ladder",
+   982,
+   186,
+   266
+  ]
  ],
  "points": [
-  ["start", "arrival", 950, 589],
-  ["seed", "axle-seed", 650, 363],
-  ["trial", "boardwalk-trial", 90, 200],
-  ["trial", "crank-trial", 960, 285],
-  ["reward", "lamp-cache", 1225, 135],
-  ["reward", "crag-cache", 400, 183],
-  ["bonus", "cave-dew", 320, 258],
-  ["bonus", "slab-dew", 1015, 398],
-  ["bonus", "flower-dew", 705, 580],
-  ["puzzle", "basement-crank", 1040, 589],
-  ["door", "arch-door", 447, 568],
-  ["dig", "alcove-dig", 170, 520],
-  ["secret", "loop-nook", 1094, 582]
+  [
+   "start",
+   "arrival",
+   887,
+   550
+  ],
+  [
+   "seed",
+   "axle-seed",
+   607,
+   339
+  ],
+  [
+   "trial",
+   "boardwalk-trial",
+   84,
+   186
+  ],
+  [
+   "trial",
+   "crank-trial",
+   896,
+   266
+  ],
+  [
+   "reward",
+   "lamp-cache",
+   1143,
+   126
+  ],
+  [
+   "reward",
+   "crag-cache",
+   373,
+   169
+  ],
+  [
+   "bonus",
+   "cave-dew",
+   299,
+   241
+  ],
+  [
+   "bonus",
+   "slab-dew",
+   947,
+   369
+  ],
+  [
+   "bonus",
+   "flower-dew",
+   658,
+   541
+  ],
+  [
+   "puzzle",
+   "basement-crank",
+   971,
+   550
+  ],
+  [
+   "door",
+   "arch-door",
+   417,
+   530
+  ],
+  [
+   "dig",
+   "alcove-dig",
+   159,
+   485
+  ],
+  [
+   "secret",
+   "loop-nook",
+   1021,
+   543
+  ]
  ],
  "sites": [
-  ["arch-roof-shrine", 420, 486, 300, "arch-roof"],
-  ["sluice-floor-shrine", 840, 492, 880, "mill-floor"],
-  ["lantern-walk-shrine", 1090, 462, 1010, "lantern-walk"]
+  [
+   "arch-roof-shrine",
+   392,
+   454,
+   280,
+   "arch-roof"
+  ],
+  [
+   "sluice-floor-shrine",
+   784,
+   459,
+   815,
+   "mill-floor"
+  ],
+  [
+   "lantern-walk-shrine",
+   1017,
+   431,
+   943,
+   "lantern-walk"
+  ]
  ]
 }

@@ -54,11 +54,12 @@ test('scene compiler rejects floating ladders, points and obstructed guardian co
   const art = { width: 400, height: 300 };
   const base = { stage: 6, id: 'probe', title: 'Probe', originX: 200, ground: [[0, 400, 250]], pools: [], ledges: [['shelf', 100, 180, 80]], blocks: [],
     ladders: [['up', 140, 180, 250]], points: [['start', 'arrival', 200, 250], ['seed', 's', 140, 180], ['trial', 'a', 20, 250], ['trial', 'b', 380, 250], ['reward', 'r', 160, 180]],
-    sites: [['one', 40, 250, 60, null], ['two', 200, 250, 200, null], ['three', 340, 250, 340, null]] };
+    sites: [['one', 40, 250, 60, null], ['two', 100, 180, 200, 'shelf'], ['three', 380, 250, 340, null]] };
   assert.deepEqual(checkScene(base, art), []);
   assert.match(checkScene({ ...base, ladders: [['up', 300, 180, 250]] }, art).join('\n'), /no upper landing/);
   assert.match(checkScene({ ...base, points: base.points.concat([['bonus', 'air', 300, 120]]) }, art).join('\n'), /floats/);
   assert.match(checkScene({ ...base, blocks: [['rock', 180, 200, 40, 60]] }, art).join('\n'), /obstructed/);
+  assert.match(checkScene({ ...base, sites: [base.sites[0], ['two', 200, 250, 200, null], base.sites[2]] }, art).join('\n'), /within 160 px of the entrance/);
   assert.match(checkScene({ ...base, ground: [[0, 380, 250]] }, art).join('\n'), /full 400 px width/);
 });
 

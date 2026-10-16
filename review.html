@@ -54,7 +54,7 @@
   status.removeAttribute('data-guardian');combatStatus.hidden=true;combatStatus.textContent='';
   const circuit=mode==='circuit',custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
-  const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):8):mode==='runner'?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):6):['cairn','mycel'].includes(mode)?(Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):1):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
+  const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):14):mode==='runner'?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):6):['cairn','mycel'].includes(mode)?(Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):1):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
   if(mode.startsWith('sligo-'))classChooser.value='sligo';

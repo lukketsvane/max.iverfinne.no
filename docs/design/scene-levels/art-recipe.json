@@ -9,7 +9,7 @@
     "foregroundHash": "06a835aed901f1a984c08600db10c19f0276aa18",
     "backdropHash": "be266b9f1336e56c73c957aaa2cafcc90bb5dfa4"
    },
-   "scale": 0.75,
+   "scale": 0.58,
    "colors": 64,
    "patches": [
     {
@@ -40,7 +40,7 @@
      ]
     }
    ],
-   "backdropScale": 0.975
+   "backdropScale": 0.754
   },
   {
    "id": "magnetworks",
@@ -51,7 +51,7 @@
     "foregroundHash": "b55c38d823f379ffb5a9f7ef1f7e91ad46e094cf",
     "backdropHash": "521ca7155f080fe8d8412fea79ccf5ff47ef8bbc"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {
@@ -110,7 +110,7 @@
     "foregroundHash": "768cebc1d2861c3e4a92c2d8670684da796bb2fd",
     "backdropHash": "d0a0a9f0dc75855327555f0058de976850741ff4"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {
@@ -151,7 +151,7 @@
     "foregroundHash": "86c083881cf5a1b6833ff207991963baea4182b8",
     "backdropHash": "83a47056da32ab8b837785f2542a2bad6989523a"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {
@@ -219,7 +219,7 @@
     "foregroundHash": "92a0a6fac014eaf041065d82b81300c13445ff03",
     "backdropHash": "4873dcdd22840531eb8d02321f512eac0637a2a7"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {
@@ -269,7 +269,7 @@
     "foregroundHash": "fb4ef6c1f45c3014c7b8b8a3b876777d3c99ff21",
     "backdropHash": "4193ca570ce3260d64d27439d33836cab7be3d47"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {
@@ -359,7 +359,7 @@
     "foregroundHash": "99bff7032a2ebbce9057f5666a5bc36e9fd96251",
     "backdropHash": "875d4f7d13ad9229c146335cfb0a46c75f883514"
    },
-   "scale": 0.75,
+   "scale": 0.62,
    "colors": 64,
    "patches": [
     {
@@ -418,7 +418,7 @@
     "foregroundHash": "54c6430adac57c63f8f943088d2e79d2ade512d8",
     "backdropHash": "01f3335d05b959ee94a80617c42cdd16a7a7f59d"
    },
-   "scale": 0.75,
+   "scale": 0.7,
    "colors": 64,
    "patches": [
     {
@@ -468,7 +468,7 @@
     "foregroundHash": "6e74e52d63e1435616d9ddfe1f67d63077fd71d4",
     "backdropHash": "37dfd9ce65e0e6e7deab669c474952ace14413f0"
    },
-   "scale": 0.75,
+   "scale": 0.7,
    "colors": 64,
    "patches": [
     {
@@ -563,7 +563,7 @@
     "foregroundHash": "8c0c91ea6797094be43f3afa3c4a1c08fa260837",
     "backdropHash": "2acd877f499afda6171da8dfc1006db7cca5fc0b"
    },
-   "scale": 0.75,
+   "scale": 0.66,
    "colors": 64,
    "patches": [
     {
@@ -622,7 +622,7 @@
     "foregroundHash": "d33627d57749d122f629341ac126a5bc48e20572",
     "backdropHash": "9513785a4f9407eca7a68320ee59b078b8d9b1a7"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {
@@ -690,7 +690,7 @@
     "foregroundHash": "b863118a8996601bc621b1f549306e5e3722d329",
     "backdropHash": "c6918a35a9fcf56c721c17b8793e6323ba370d0f"
    },
-   "scale": 0.75,
+   "scale": 0.65,
    "colors": 64,
    "patches": [
     {

@@ -91,6 +91,7 @@ export function checkScene(spec, art) {
     named('site', key); inside('site ' + key, x, y); inside('court ' + key, courtX, groundY(spec, courtX));
     if (platform != null && !spec.ledges.some(l => l[0] === platform)) errors.push(`${at}: site ${key} names missing ledge ${platform}`);
     if (platform == null && y !== groundY(spec, x)) errors.push(`${at}: ground site ${key} must stand on the ground`);
+    if (Math.abs(x - spec.originX) + Math.abs(y - groundY(spec, spec.originX)) < 160) errors.push(`${at}: site ${key} is within 160 px of the entrance`);
     const cy = groundY(spec, courtX), solids = spec.blocks.concat(walls(spec));
     if (solids.some(([, bx, by, bw, bh]) => courtX + 56 > bx && courtX - 56 < bx + bw && by < cy - 5 && by + bh > cy - 32)) errors.push(`${at}: court ${key} is obstructed by a solid block or wall`);
     for (let dx = -50; dx <= 50; dx += 2) if (Math.abs(groundY(spec, courtX + dx) - cy) > 24) { errors.push(`${at}: court ${key} is not flat within 50 px`); break; }

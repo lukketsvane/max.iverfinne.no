@@ -110,7 +110,7 @@ function home() {
     pixelText(b, label, icon === 'play' ? 3 : 2, 1);
     if (icon === 'settings' || icon === 'credits') links.append(b); else nav.append(b);
   }
-  if (!signedIn) links.append(button('Login', account, 'max-home-login'));
+  if (!signedIn) links.append(pixelText(button('', account, 'max-home-login'), 'Login', 2, 1));
   nav.append(links); content.append(brand, nav);
   content.append(el('p', 'GROW · EXPLORE · SURVIVE', 'max-home-note'));
   const players = el('div', '', 'max-home-players'); players.hidden = true; players.setAttribute('aria-label', 'Online players'); content.append(players);

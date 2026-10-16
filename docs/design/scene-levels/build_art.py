@@ -11,7 +11,8 @@ from scipy import ndimage
 
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
-OUT = ROOT / 'assets' / 'levels-v2'
+OUT = Path(os.environ.get('SCENE_OUT', ROOT / 'assets' / 'levels-v2'))
+SPECS = Path(os.environ.get('SCENE_SPECS', HERE / 'specs'))
 
 
 def sources_dir():
@@ -108,7 +109,7 @@ def paint_ladders(rgb, opaque, ladders):
 
 
 def painted(scene_id):
-    for spec in sorted((HERE / 'specs').glob('*.json')):
+    for spec in sorted(SPECS.glob('*.json')):
         data = json.loads(spec.read_text())
         if data.get('id') == scene_id:
             return data.get('paintLadders', [])
@@ -166,8 +167,8 @@ def build(scene):
     bg_colors = save_indexed(bg_rgb, full, bg_out)
     return {
         'id': scene['id'],
-        'foreground': {'path': str(fg_out.relative_to(ROOT)), 'width': size[0], 'height': size[1], 'colors': fg_colors, 'sha1': digest(fg_out), 'source': digest(fg_path)},
-        'backdrop': {'path': str(bg_out.relative_to(ROOT)), 'width': bg_size[0], 'height': bg_size[1], 'colors': bg_colors, 'sha1': digest(bg_out), 'source': digest(bg_path)},
+        'foreground': {'path': fg_out.name, 'width': size[0], 'height': size[1], 'colors': fg_colors, 'sha1': digest(fg_out), 'source': digest(fg_path)},
+        'backdrop': {'path': bg_out.name, 'width': bg_size[0], 'height': bg_size[1], 'colors': bg_colors, 'sha1': digest(bg_out), 'source': digest(bg_path)},
         'patches': used,
     }
 
