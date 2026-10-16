@@ -83,6 +83,17 @@ test('each mapped stage becomes a bounded scene room with backdrop, guardian cou
   }
 });
 
+test('the scene room camera keeps a player standing on the highest surface below the top edge', () => {
+  const g = game();
+  g.IW = 195; g.IH = 260;
+  for (const s of stages) {
+    const L = enter(g, s.stage), cam = g.sceneRoomCamera(L);
+    const top = L.art.y + Math.min(...s.ledges.map(l => l[1]), ...s.ground.map(q => q[2]));
+    assert.equal(cam.minY, Math.min(L.bounds.y0, top - 34), s.id);
+    assert.ok(cam.maxY >= cam.minY && cam.maxY === L.bounds.y1 - g.IH, s.id);
+  }
+});
+
 test('scene pools are real water for movement, planting and bombs without drawing a second surface', () => {
   const g = game();
   for (const s of stages.filter(s => s.pools.length)) {

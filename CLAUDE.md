@@ -625,9 +625,10 @@ scene's art is scaled by its `art-recipe.json` `scale` so the painted ladders ma
 the 14 px game ladder, and the sweep window reaches the deepest ground step. Stages
 1, 2, 4 and 20 keep their own sources. See `docs/design/scene-levels/README.md`.
 
-The game canvas is letterboxed to a 3:4 (width:height) screen (`SCREEN_ASPECT`;
-`window.MaxScreenAspect` overrides it, and the VM harness and review fixtures set
-0 to keep their free viewports, `review.html?aspect=1` shows the real frame). A
+The game canvas is letterboxed to a 3:4 (width:height) screen in portrait windows
+and a 4:3 screen in landscape windows (`screenAspect`; `window.MaxScreenAspect`
+overrides it, and the VM harness and review fixtures set 0 to keep their free
+viewports, `review.html?aspect=1` shows the real frame). A
 display-resolution LCD subpixel mask (`#subpx`, multiplied over the canvas)
 splits each native pixel into RGB stripes; a final additive pass over the finished
 frame (`subpixelGain`) restores its mean exposure. Do not use a CSS filter for the
