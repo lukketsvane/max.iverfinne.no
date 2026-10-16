@@ -4,7 +4,8 @@
  "title": "Night Watermill",
  "originX": 950,
  "ground": [
-  [0, 88, 409],
+  [0, 52, 418],
+  [52, 88, 409],
   [88, 142, 418],
   [142, 200, 520],
   [200, 214, 528],
@@ -53,9 +54,6 @@
   ["stair-block-2", 1124, 182, 12],
   ["stair-block-3", 1130, 172, 12],
   ["stair-block-top", 1136, 162, 44],
-  ["summit-step-1", 1176, 153, 14],
-  ["summit-step-2", 1184, 145, 12],
-  ["lamp-summit", 1192, 137, 62],
   ["ladder-cap", 216, 358, 28],
   ["mid-gallery", 140, 418, 128],
   ["mid-gallery-step", 268, 426, 30],
@@ -67,12 +65,14 @@
   ["mill-stair-3", 1048, 469, 16],
   ["lantern-walk", 1062, 462, 50],
   ["post-slab", 957, 362, 47],
-  ["pillar-slab", 981, 398, 52]
+  ["pillar-slab", 981, 398, 52],
+  ["summit-step", 1170, 149, 24],
+  ["lamp-summit", 1188, 135, 66]
  ],
  "blocks": [],
  "ladders": [
   ["painted-ladder", 228, 358, 418],
-  ["alcove-ladder", 216, 418, 538],
+  ["alcove-ladder", 180, 418, 520],
   ["cap-ladder", 238, 200, 358],
   ["basement-ladder", 924, 492, 589],
   ["pillar-ladder", 970, 362, 492],
@@ -80,7 +80,7 @@
   ["terrace-ladder", 1052, 201, 285]
  ],
  "paintLadders": [
-  ["alcove-ladder", 216, 418, 538],
+  ["alcove-ladder", 180, 418, 520],
   ["cap-ladder", 238, 200, 358],
   ["basement-ladder", 924, 492, 589],
   ["pillar-ladder", 970, 362, 492],
@@ -92,7 +92,7 @@
   ["seed", "axle-seed", 650, 363],
   ["trial", "boardwalk-trial", 90, 200],
   ["trial", "crank-trial", 960, 285],
-  ["reward", "lamp-cache", 1225, 137],
+  ["reward", "lamp-cache", 1225, 135],
   ["reward", "crag-cache", 400, 183],
   ["bonus", "cave-dew", 320, 258],
   ["bonus", "slab-dew", 1015, 398],
