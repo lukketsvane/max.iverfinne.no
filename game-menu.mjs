@@ -735,7 +735,9 @@ function settings() {
     const control = button(volumeLabel(name, value), () => { game['set' + name + 'Volume']?.(nextVolume(value)); settings(); });
     control.setAttribute('aria-label', name + ' volume ' + Math.round(value * 100) + ' percent'); card.append(control);
   }
-  card.append(button('Controls', help));
+  const sub = game.subpixel?.() ?? true;
+  const toggle = button('Subpixels ' + (sub ? 'on' : 'off'), () => { game.setSubpixel?.(!sub); settings(); });
+  toggle.setAttribute('aria-pressed', String(sub)); card.append(toggle);
   card.append(button('Map Joy-Con (L)', controllerSetup));
   if (!liveSettings && signedInUser()) {
     if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords()));
@@ -760,35 +762,6 @@ async function exitToMenu() {
   game.exitRun?.(); if (old) leavingSession = old.leave();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; game.pause(true); home(); startScene();
-}
-function help() {
-  page('help', 'Controls');
-  const current = liveSettings && game.skillLoadout?.() || selected;
-  const classId = ALL_CLASS_IDS.includes(current.classId) ? current.classId : selected.classId;
-  const options = skillOptions(classId), chosen = slot => options[slot]?.find(choice => choice[0] === (current.skills?.[slot] || 'base')) || options[slot]?.[0];
-  const special = chosen('special'), secondary = chosen('secondary');
-  const utility = { mech: 'V: Rover dispatch / recall.', runner: 'Hold V for Driving, then release to kick.', bulwark: 'V: Brace. With a Shovel, Down + E burrows.', herbalist: 'V: Drift.', polge: 'X: Slip through a warned attack.', sligo: 'Q cycles your colony bodies.' }[classId];
-  const actions = 'Keyboard/controller only. ' + (secondary ? 'C: ' + secondary[1] + '. ' + secondary[2] + '. ' : '') + utility;
-  const rows = [
-    ['MOVE', 'Drag left / right.'],
-    ['JUMP', 'Swipe up. With three feathers, lower your thumb and swipe up again to double-jump.'],
-    ['DODGE', 'Quick flick left / right.'],
-    ['GROW', 'Drag down near a plant to tend it. On empty soil, plant a seed.'],
-    ['LADDERS', 'Hold a vertical drag beside a ladder. Release to hold; move sideways to step off. Keyboard/controller: Up or Down.'],
-    ['DEFEND', 'Tap a pest or incoming spore. Cleared spores water nearby plants.'],
-    ['SKILL', 'Tap your character: ' + special[1] + '. ' + special[2] + '.'],
-    ['CLIMB', 'Every character can climb a cleared exit stalk. Tap the held stem to climb faster.'],
-    ['MAX', 'Bombs stay at your feet and explode after two seconds. Hold an attack to charge. Tap a nearby rover to refill it; any teammate can help.'],
-    ['EXPLORE', 'Find the amber shrine, grow a plant beside its clearing and tend the shrine. Defeat its guardian, choose a boon and climb the exit plant. Time strengthens enemies.'],
-    ['KEYBOARD', 'A D / ← → move · Shift run · W / ↑ jump · S / ↓ / Space grow · hold J / B to aim, release to attack · K / X dodge · E skill · R refill · L lamp · 1–3 boon · Esc settings'],
-    ['CLASS ACTIONS', actions],
-    ['MOUSE', 'Click to lock and aim; Esc frees the mouse. Left click attacks, right click dodges, middle click uses your skill. Hold an attack to charge. Click a boon to choose it.'],
-    ['JOY-CON (L)', 'Hold horizontally. Stick moves · bottom (←) jumps · right (↓) grows · left (↑) / SR attacks · top (→) skill · SL dodge · ZL precise aim · Minus settings. L uses a class action or refill; stick click uses a class utility or lamp. Max/Rattus/Erasmus Berg: hold Grow + L to refill, Grow + stick click for lamp, or use Home/Capture. Sligo: L or stick click swaps bodies. Menus: stick chooses, bottom confirms, right returns.'],
-    ['CONTROLLER', 'Stick moves · A jump · B / Y grow · stick click dodge · X / ZR aim and attack · LB skill · RB run · + settings. View/minus uses a class action or refill; LT uses a class utility or lamp. Max/Rattus/Erasmus Berg: hold Grow + View/minus to refill, Grow + LT for lamp, or use Home. Sligo: LT swaps bodies. Menus: stick / D-pad chooses, A confirms, B returns.'],
-    ['BUILDS', 'Boons change your attacks and skills. Combine their named prerequisites to unlock signature abilities.'],
-  ];
-  for (const [heading, text] of rows) { const row = el('div', undefined, 'max-help-row'); row.append(el('strong', heading), document.createTextNode(text)); card.append(row); }
-  card.append(button('Back', settings, 'subtle'));
 }
 function controllerSetup() {
   page('controller', 'Joy-Con (L)');

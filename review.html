@@ -359,7 +359,7 @@
     }
     "MAX_REVIEW_FIXTURE_END";
   `;
-  let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'">'+setup)
+  let html=source.replace('<head>','<head><base href="'+location.href.replace(/review.html.*$/,'')+'"><script>window.MaxScreenAspect='+(params.has('aspect')?'null':'0')+'</'+'script>'+setup)
    .replace('<script src="game-menu.js" defer><'+'/script>',menu?'<script src="game-menu-review.js" defer><'+'/script>':'')
    .replace(/\}\)\(\);\s*<\/script>/g,hook+'})();<'+'/script>');
   frame.srcdoc=html;

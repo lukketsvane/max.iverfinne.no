@@ -624,3 +624,11 @@ Frozen Seed Wheel is live; the other eleven pairs are processed in
 `docs/design/scene-levels/` and land as their collision passes the sweep. Stages
 1, 2, 4 and 20 keep their own sources. See `docs/design/scene-levels/README.md`.
 
+The game canvas is letterboxed to a 3:4 (width:height) screen (`SCREEN_ASPECT`;
+`window.MaxScreenAspect` overrides it, and the VM harness and review fixtures set
+0 to keep their free viewports, `review.html?aspect=1` shows the real frame). A
+display-resolution LCD subpixel mask (`#subpx`, multiplied over the canvas with a
+matching CSS brightness lift) splits each native pixel into RGB stripes; Settings
+toggles it (`Subpixels on/off`, saved in `max-subpixel`) in place of the removed
+Controls page. Canvas pixel data and native art are unchanged by either.
+
