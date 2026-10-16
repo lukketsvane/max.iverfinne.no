@@ -29,17 +29,17 @@ async function checkCircuit(page,engineName,errors){
  },{},{timeout:15000});
  await page.goto(base+'/review.html?mode=circuit&portrait=1');await ready();
  const initial=await observation(),geometry=JSON.stringify(initial.geometry);
- assert.equal(initial.classId,'polge');assert.equal(initial.world,8);assert.equal(initial.seed,73);
- assert.equal(initial.geometry.family,'bell');assert.equal(initial.choice,-1);assert.equal(initial.active,false);
+ assert.equal(initial.classId,'polge');assert.equal(initial.world,14);assert.equal(initial.seed,73);
+ assert.equal(initial.geometry.family,'arch');assert.equal(initial.choice,-1);assert.equal(initial.active,false);
  assert.equal(initial.guards.length,0);assert.equal(initial.boonOpen,false);
  assert.ok(Math.abs(initial.player.x-initial.geometry.choices[0].x)<2);
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-bell-phone.png`});
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${initial.geometry.family}-phone.png`});
  await page.getByRole('button',{name:'Game Tend',exact:true}).click();
  await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).active,{},{timeout:4000});
  await page.getByRole('button',{name:'Game Tend',exact:true}).click();
  const warning=await observation();assert.equal(warning.choice,0);assert.equal(warning.spawned,0);
  assert.equal(warning.guards.length,0);assert.ok(warning.tell>0);
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-bell-warning.png`});
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${initial.geometry.family}-warning.png`});
  await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).log.arrivals.length>0,{},{timeout:5000});
  const active=await observation(),arrival=active.log.arrivals[0];
  assert.ok(active.log.warnings[0].tell>=1.3,'the first ingress receives the full warning');
@@ -48,7 +48,7 @@ async function checkCircuit(page,engineName,errors){
  assert.equal(JSON.stringify(active.geometry),geometry,'combat preserves the generated geometry');
  await page.locator('#viewport').selectOption('landscape');
  await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).view.width===844,{},{timeout:3000});
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-bell-landscape.png`});
+ await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${initial.geometry.family}-landscape.png`});
  const beforeLeaving=await observation(),a=beforeLeaving.geometry.arena;
  const key=beforeLeaving.player.x-a.left<a.right-beforeLeaving.player.x?'ArrowLeft':'ArrowRight';
  const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
@@ -62,7 +62,7 @@ async function checkCircuit(page,engineName,errors){
  assert.equal(withdrawn.boonOpen,false);assert.equal(withdrawn.ended,false);assert.ok(withdrawn.away>=4);
  assert.equal(JSON.stringify(withdrawn.geometry),geometry);
  await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-withdrawn.png`});
- for(const [seed,family] of [[8,'arch'],[3,'pump']]){
+ for(const [seed,family] of [[4,'bell'],[8,'pump']]){
   await page.goto(base+'/review.html?mode=circuit&portrait=1&seed='+seed);await ready();
   const variant=await observation();assert.equal(variant.geometry.family,family);assert.equal(variant.active,false);
   await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${family}-phone.png`});

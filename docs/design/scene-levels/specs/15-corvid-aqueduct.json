@@ -2,68 +2,311 @@
  "stage": 15,
  "id": "corvid-aqueduct",
  "title": "Corvid Aqueduct",
- "originX": 200,
+ "originX": 187,
  "ground": [
-  [0, 118, 442],
-  [118, 165, 477],
-  [165, 300, 627],
-  [300, 394, 477],
-  [394, 452, 559],
-  [452, 1088, 578],
-  [1088, 1104, 566],
-  [1104, 1176, 549],
-  [1176, 1224, 568],
-  [1224, 1236, 584],
-  [1236, 1254, 600]
+  [
+   0,
+   110,
+   413
+  ],
+  [
+   110,
+   154,
+   445
+  ],
+  [
+   154,
+   280,
+   585
+  ],
+  [
+   280,
+   368,
+   445
+  ],
+  [
+   368,
+   422,
+   522
+  ],
+  [
+   422,
+   1015,
+   539
+  ],
+  [
+   1015,
+   1030,
+   528
+  ],
+  [
+   1030,
+   1098,
+   512
+  ],
+  [
+   1098,
+   1142,
+   530
+  ],
+  [
+   1142,
+   1154,
+   545
+  ],
+  [
+   1154,
+   1170,
+   560
+  ]
  ],
  "ledges": [
-  ["west-shelf", 118, 400, 68],
-  ["stone-walk", 165, 477, 135],
-  ["stone-lip", 386, 477, 20],
-  ["upper-bridge", 0, 214, 350],
-  ["scaffold-step", 352, 197, 24],
-  ["scaffold-rise", 376, 184, 22],
-  ["scaffold-walk", 398, 172, 292],
-  ["aqueduct-scaffold", 510, 380, 388],
-  ["east-gallery", 900, 444, 270],
-  ["nest-beam", 693, 196, 493],
-  ["crow-basket", 750, 93, 40],
-  ["nest-floor", 790, 133, 290],
-  ["hanging-basket", 1178, 301, 60]
+  [
+   "west-shelf",
+   110,
+   373,
+   64
+  ],
+  [
+   "stone-walk",
+   154,
+   445,
+   126
+  ],
+  [
+   "stone-lip",
+   360,
+   446,
+   19
+  ],
+  [
+   "upper-bridge",
+   0,
+   200,
+   327
+  ],
+  [
+   "scaffold-step",
+   329,
+   181,
+   22
+  ],
+  [
+   "scaffold-rise",
+   351,
+   170,
+   20
+  ],
+  [
+   "scaffold-walk",
+   371,
+   160,
+   273
+  ],
+  [
+   "aqueduct-scaffold",
+   476,
+   354,
+   362
+  ],
+  [
+   "east-gallery",
+   840,
+   414,
+   252
+  ],
+  [
+   "nest-beam",
+   647,
+   183,
+   460
+  ],
+  [
+   "crow-basket",
+   700,
+   87,
+   37
+  ],
+  [
+   "nest-floor",
+   737,
+   124,
+   271
+  ],
+  [
+   "hanging-basket",
+   1099,
+   281,
+   56
+  ]
  ],
  "blocks": [],
  "ladders": [
-  ["shelf-ladder", 161, 400, 477],
-  ["pit-ladder", 231, 477, 627],
-  ["grass-step-ladder", 400, 477, 559],
-  ["aqueduct-ladder", 683, 172, 380],
-  ["deck-ladder", 697, 380, 578],
-  ["nest-pole", 983, 196, 444],
-  ["basket-posts", 773, 93, 196]
+  [
+   "shelf-ladder",
+   150,
+   373,
+   445
+  ],
+  [
+   "pit-ladder",
+   216,
+   445,
+   585
+  ],
+  [
+   "grass-step-ladder",
+   373,
+   446,
+   522
+  ],
+  [
+   "aqueduct-ladder",
+   637,
+   160,
+   354
+  ],
+  [
+   "deck-ladder",
+   651,
+   354,
+   539
+  ],
+  [
+   "nest-pole",
+   917,
+   183,
+   414
+  ],
+  [
+   "basket-posts",
+   721,
+   87,
+   183
+  ]
  ],
  "paintLadders": [
-  ["aqueduct-ladder-head", 683, 172, 196],
-  ["deck-ladder-foot", 697, 450, 578],
-  ["grass-step-ladder", 400, 477, 559]
+  [
+   "aqueduct-ladder-head",
+   637,
+   160,
+   183
+  ],
+  [
+   "deck-ladder-foot",
+   651,
+   420,
+   539
+  ],
+  [
+   "grass-step-ladder",
+   373,
+   446,
+   522
+  ]
  ],
  "points": [
-  ["start", "arrival", 200, 627],
-  ["seed", "basket-seed", 748, 380],
-  ["trial", "nest-trial", 930, 133],
-  ["trial", "stone-walk-trial", 262, 477],
-  ["reward", "crow-basket-cache", 770, 93],
-  ["reward", "hanging-basket-cache", 1208, 301],
-  ["bonus", "upper-bridge-dew", 150, 214],
-  ["bonus", "west-shelf-dew", 140, 400],
-  ["bonus", "pillar-top-dew", 640, 172],
-  ["puzzle", "deck-puzzle", 486, 578],
-  ["door", "lantern-door", 45, 442],
-  ["dig", "deck-dig", 880, 578],
-  ["secret", "mound-corner-cache", 1246, 600]
+  [
+   "start",
+   "arrival",
+   187,
+   585
+  ],
+  [
+   "seed",
+   "basket-seed",
+   698,
+   354
+  ],
+  [
+   "trial",
+   "nest-trial",
+   868,
+   124
+  ],
+  [
+   "trial",
+   "stone-walk-trial",
+   245,
+   445
+  ],
+  [
+   "reward",
+   "crow-basket-cache",
+   719,
+   87
+  ],
+  [
+   "reward",
+   "hanging-basket-cache",
+   1127,
+   281
+  ],
+  [
+   "bonus",
+   "upper-bridge-dew",
+   140,
+   200
+  ],
+  [
+   "bonus",
+   "west-shelf-dew",
+   131,
+   373
+  ],
+  [
+   "bonus",
+   "pillar-top-dew",
+   597,
+   160
+  ],
+  [
+   "puzzle",
+   "deck-puzzle",
+   454,
+   539
+  ],
+  [
+   "door",
+   "lantern-door",
+   42,
+   413
+  ],
+  [
+   "dig",
+   "deck-dig",
+   821,
+   539
+  ],
+  [
+   "secret",
+   "mound-corner-cache",
+   1163,
+   560
+  ]
  ],
  "sites": [
-  ["deck-court", 530, 578, 580, null],
-  ["scaffold-shrine", 820, 380, 780, "aqueduct-scaffold"],
-  ["gallery-shrine", 1050, 444, 980, "east-gallery"]
- ]
+  [
+   "deck-court",
+   495,
+   539,
+   541,
+   null
+  ],
+  [
+   "scaffold-shrine",
+   765,
+   354,
+   728,
+   "aqueduct-scaffold"
+  ],
+  [
+   "gallery-shrine",
+   980,
+   414,
+   915,
+   "east-gallery"
+  ]
+ ],
+ "pools": []
 }

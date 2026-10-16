@@ -57,6 +57,7 @@
 .max-home-links{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:5px;border-top:1px solid #97b0a433;padding-top:12px}
 .max-menu .max-home-links button{min-height:44px;padding:10px 2px;background:transparent;border-color:transparent;gap:0;color:#a7bebb}
 .max-home-links svg{display:none}
+.max-menu .max-home-links .max-home-login{grid-column:1/-1}
 .max-menu .max-home-note{margin:24px 0 0;font-size:9px;letter-spacing:.17em;color:#99aead}
 .max-menu .max-home-players{position:fixed;left:0;right:0;bottom:max(34px,calc(env(safe-area-inset-bottom) + 22px));margin:0;padding:0 12px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 16px;max-height:20vh;overflow:auto}
 .max-menu .max-home-players p{margin:0}

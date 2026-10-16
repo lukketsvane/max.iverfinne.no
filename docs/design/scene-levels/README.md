@@ -22,8 +22,7 @@ joined by the painted ladders, so the rooms climb instead of stretching flat.
 | 18 | Heliostat Greenhouse | `1271:37` / `1266:30` |
 | 19 | Twin Gondola Ravine | `1266:29` / `1263:16` |
 
-Stages 3, 8, 12 and 18 are live. The other eight pairs are processed and in
-Figma production; each one ships when its collision frame passes the sweep.
+Stages 3, 5, 7, 8, 9, 10, 12, 13, 15, 17, 18 and 19 are live.
 
 Hollow Tree (1), Railway Ruins (2), Mossback Sanctuary (4) and the Crown arena
 (20) keep their existing authored sources; the compiler refuses scenes on 1, 4
@@ -33,8 +32,9 @@ and 20. The remaining stages keep their seeded layouts until they get art.
 
 1. **Art.** `build_art.py` reads each raw Figma image (pinned by its Figma image
    hash in `art-recipe.json`), paints out the reference figures that are not
-   player characters (gardeners, rovers, crows, rats, beetles, drone), scales to
-   0.75 so the painted figures match the player sprites, makes alpha binary,
+   player characters (gardeners, rovers, crows, rats, beetles, drone), scales by
+   the scene's `scale` (0.58 to 0.70, measured so the painted ladders match the
+   14 px game ladder and the painted figures match the player sprites), makes alpha binary,
    reduces each layer to 64 colours and paints any ladder a spec lists under
    `paintLadders`. Output: `assets/levels-v2/<id>-fg.png` and `-bg.png`.
    Run it with `SCENE_SOURCES=<folder with <id>-fg.png and <id>-bg.png>`.

@@ -2,88 +2,418 @@
  "stage": 18,
  "id": "heliostat-greenhouse",
  "title": "Heliostat Greenhouse",
- "originX": 300,
+ "originX": 264,
  "ground": [
-  [0, 62, 382],
-  [62, 172, 577],
-  [172, 206, 595],
-  [206, 252, 614],
-  [252, 340, 631],
-  [340, 440, 648],
-  [440, 572, 638],
-  [572, 640, 566],
-  [640, 958, 436],
-  [958, 970, 445],
-  [970, 1062, 460],
-  [1062, 1184, 598],
-  [1184, 1254, 457]
+  [
+   0,
+   55,
+   336
+  ],
+  [
+   55,
+   151,
+   508
+  ],
+  [
+   151,
+   181,
+   524
+  ],
+  [
+   181,
+   222,
+   540
+  ],
+  [
+   222,
+   299,
+   555
+  ],
+  [
+   299,
+   387,
+   570
+  ],
+  [
+   387,
+   503,
+   561
+  ],
+  [
+   503,
+   563,
+   498
+  ],
+  [
+   563,
+   843,
+   384
+  ],
+  [
+   843,
+   854,
+   392
+  ],
+  [
+   854,
+   935,
+   405
+  ],
+  [
+   935,
+   1042,
+   526
+  ],
+  [
+   1042,
+   1104,
+   402
+  ]
  ],
  "pools": [
-  ["basement-pool", 340, 440, 633]
+  [
+   "basement-pool",
+   299,
+   387,
+   557
+  ]
  ],
  "ledges": [
-  ["west-sill", 62, 382, 24],
-  ["west-step-1", 86, 394, 40],
-  ["west-step-2", 124, 402, 14],
-  ["west-arcade", 136, 413, 196],
-  ["arcade-step", 330, 421, 12],
-  ["greenhouse-floor", 340, 436, 300],
-  ["west-shelf", 192, 551, 98],
-  ["chamber-stair-1", 168, 568, 14],
-  ["chamber-stair-2", 180, 559, 14],
-  ["east-shelf-low", 430, 567, 66],
-  ["east-shelf", 495, 557, 83],
-  ["pot-floor", 296, 258, 60],
-  ["terrace", 356, 272, 130],
-  ["stair-landing", 238, 248, 60],
-  ["stair-1", 226, 234, 14],
-  ["stair-2", 210, 221, 18],
-  ["stair-3", 194, 207, 18],
-  ["stair-4", 180, 193, 16],
-  ["plant-floor", 95, 178, 88],
-  ["upper-step", 190, 166, 14],
-  ["upper-landing", 203, 157, 62],
-  ["heliostat-deck", 265, 139, 122],
-  ["west-crown", 62, 138, 64],
-  ["sunflower-rail", 632, 318, 168],
-  ["east-deck", 798, 331, 170],
-  ["tower-roof", 820, 166, 260],
-  ["east-span", 1060, 460, 126]
+  [
+   "west-sill",
+   55,
+   336,
+   21
+  ],
+  [
+   "west-step-1",
+   76,
+   347,
+   35
+  ],
+  [
+   "west-step-2",
+   109,
+   354,
+   12
+  ],
+  [
+   "west-arcade",
+   120,
+   363,
+   172
+  ],
+  [
+   "arcade-step",
+   290,
+   370,
+   11
+  ],
+  [
+   "greenhouse-floor",
+   299,
+   384,
+   264
+  ],
+  [
+   "west-shelf",
+   169,
+   485,
+   86
+  ],
+  [
+   "chamber-stair-1",
+   148,
+   500,
+   12
+  ],
+  [
+   "chamber-stair-2",
+   158,
+   492,
+   13
+  ],
+  [
+   "east-shelf-low",
+   378,
+   499,
+   58
+  ],
+  [
+   "east-shelf",
+   436,
+   490,
+   73
+  ],
+  [
+   "pot-floor",
+   260,
+   227,
+   53
+  ],
+  [
+   "terrace",
+   313,
+   239,
+   115
+  ],
+  [
+   "stair-landing",
+   209,
+   218,
+   53
+  ],
+  [
+   "stair-1",
+   199,
+   206,
+   12
+  ],
+  [
+   "stair-2",
+   185,
+   194,
+   16
+  ],
+  [
+   "stair-3",
+   171,
+   182,
+   16
+  ],
+  [
+   "stair-4",
+   158,
+   170,
+   14
+  ],
+  [
+   "plant-floor",
+   84,
+   157,
+   77
+  ],
+  [
+   "upper-step",
+   167,
+   146,
+   13
+  ],
+  [
+   "upper-landing",
+   179,
+   138,
+   54
+  ],
+  [
+   "heliostat-deck",
+   233,
+   122,
+   108
+  ],
+  [
+   "west-crown",
+   55,
+   121,
+   56
+  ],
+  [
+   "sunflower-rail",
+   556,
+   280,
+   148
+  ],
+  [
+   "east-deck",
+   702,
+   291,
+   150
+  ],
+  [
+   "tower-roof",
+   722,
+   146,
+   228
+  ],
+  [
+   "east-span",
+   933,
+   405,
+   111
+  ]
  ],
  "blocks": [],
  "ladders": [
-  ["deck-ladder", 372, 139, 272],
-  ["shaft-ladder", 352, 258, 436],
-  ["cave-ladder", 238, 551, 614],
-  ["tower-ladder", 920, 166, 436],
-  ["niche-ladder", 1086, 460, 598],
-  ["crown-ladder", 112, 138, 178],
-  ["hatch-ladder", 626, 436, 566],
-  ["shelf-ladder", 552, 557, 638]
+  [
+   "deck-ladder",
+   327,
+   122,
+   239
+  ],
+  [
+   "shaft-ladder",
+   310,
+   227,
+   384
+  ],
+  [
+   "cave-ladder",
+   209,
+   485,
+   540
+  ],
+  [
+   "tower-ladder",
+   810,
+   146,
+   384
+  ],
+  [
+   "niche-ladder",
+   956,
+   405,
+   526
+  ],
+  [
+   "crown-ladder",
+   99,
+   121,
+   157
+  ],
+  [
+   "hatch-ladder",
+   551,
+   384,
+   498
+  ],
+  [
+   "shelf-ladder",
+   486,
+   490,
+   561
+  ]
  ],
  "paintLadders": [
-  ["crown-ladder", 112, 138, 178],
-  ["hatch-ladder", 626, 436, 566],
-  ["shelf-ladder", 552, 557, 638]
+  [
+   "crown-ladder",
+   99,
+   121,
+   157
+  ],
+  [
+   "hatch-ladder",
+   551,
+   384,
+   498
+  ],
+  [
+   "shelf-ladder",
+   486,
+   490,
+   561
+  ]
  ],
  "points": [
-  ["start", "basement-arrival", 300, 631],
-  ["seed", "cabinet-seed", 968, 166],
-  ["trial", "terrace-trial", 450, 272],
-  ["trial", "arcade-trial", 270, 413],
-  ["reward", "mirror-cache", 345, 139],
-  ["reward", "crown-cache", 85, 138],
-  ["bonus", "sunflower-dew", 690, 318],
-  ["bonus", "plant-dew", 140, 178],
-  ["bonus", "shelf-dew", 230, 551],
-  ["puzzle", "valve-lever", 215, 413],
-  ["door", "glasshouse-door", 428, 436],
-  ["dig", "root-bed", 800, 436],
-  ["secret", "niche-nook", 1140, 598]
+  [
+   "start",
+   "basement-arrival",
+   264,
+   555
+  ],
+  [
+   "seed",
+   "cabinet-seed",
+   852,
+   146
+  ],
+  [
+   "trial",
+   "terrace-trial",
+   396,
+   239
+  ],
+  [
+   "trial",
+   "arcade-trial",
+   238,
+   363
+  ],
+  [
+   "reward",
+   "mirror-cache",
+   304,
+   122
+  ],
+  [
+   "reward",
+   "crown-cache",
+   75,
+   121
+  ],
+  [
+   "bonus",
+   "sunflower-dew",
+   607,
+   280
+  ],
+  [
+   "bonus",
+   "plant-dew",
+   123,
+   157
+  ],
+  [
+   "bonus",
+   "shelf-dew",
+   202,
+   485
+  ],
+  [
+   "puzzle",
+   "valve-lever",
+   189,
+   363
+  ],
+  [
+   "door",
+   "glasshouse-door",
+   377,
+   384
+  ],
+  [
+   "dig",
+   "root-bed",
+   704,
+   384
+  ],
+  [
+   "secret",
+   "niche-nook",
+   1003,
+   526
+  ]
  ],
  "sites": [
-  ["nursery-shrine", 530, 557, 505, "east-shelf"],
-  ["glasshouse-shrine", 720, 436, 704, null],
-  ["tower-shrine", 880, 331, 860, "east-deck"]
+  [
+   "nursery-shrine",
+   466,
+   490,
+   444,
+   "east-shelf"
+  ],
+  [
+   "glasshouse-shrine",
+   634,
+   384,
+   620,
+   null
+  ],
+  [
+   "tower-shrine",
+   774,
+   291,
+   757,
+   "east-deck"
+  ]
  ]
 }

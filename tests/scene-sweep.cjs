@@ -1,16 +1,16 @@
 const HZ_DEFAULT = 60;
 
 function exploreScene(g, layout, { classId = 'bulwark', hz = HZ_DEFAULT, limit = 9000, fast = false } = {}) {
-  const DT = 1 / hz, art = layout.art, ladders = layout.ladders || [], grid = fast ? 12 : 2;
+  const DT = 1 / hz, art = layout.art, ladders = layout.ladders || [], grid = fast ? 6 : 2;
   const actions = [];
   for (const dir of [-1, 1]) for (const dur of fast ? [.2, 1.2] : [.08, .2, .45, 1.2]) actions.push({ walk: dir, dur });
   for (const dir of [-1, 0, 1]) for (const hold of fast ? [.22, 1] : [.1, .22, 1]) actions.push({ jump: dir, hold });
   for (const dir of [-1, 1]) for (const late of fast ? [.25] : [.12, .25, .4]) actions.push({ jump: 0, hold: 1, late, dir });
-  for (const dir of [-1, 1]) for (const stop of fast ? [.15] : [.1, .2]) actions.push({ jump: dir, hold: 1, stop });
+  for (const dir of [-1, 1]) for (const stop of fast ? [.1, .2] : [.1, .2]) actions.push({ jump: dir, hold: 1, stop });
   for (const q of ladders) for (const dir of [-1, 1]) actions.push({ ladder: q, dir });
   Object.assign(g.rogueRun, { classId, traits: { feathers: 0, dew: 0, embers: 0 } });
   g.P.classId = classId; g.rogueRun.perks.spring = 0; g.rogueRun.perks.stride = 0; g.floatKrek = []; g.gardenPlots = [];
-  const win = { x0: art.x - 40, x1: art.x + art.w + 40, y0: art.y - 40, y1: layout.ground.y + 20 };
+  const win = { x0: art.x - 40, x1: art.x + art.w + 40, y0: art.y - 40, y1: layout.ground.y + Math.max(20, ...(layout.ground.steps || []).map(q => q[2])) + 20 };
   const marks = [['reward', layout.rewards], ['trial', layout.trials], ['bonus', layout.bonuses]]
     .flatMap(([kind, list]) => list.map(q => ({ kind, x: q.x, y: q.y })))
     .concat(Object.entries(layout.spots || {}).map(([kind, q]) => ({ kind, x: q.x, y: q.y })))
