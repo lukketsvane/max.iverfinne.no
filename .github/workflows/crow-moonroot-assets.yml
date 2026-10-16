@@ -1,0 +1,35 @@
+name: Crow and Moonroot native validation
+on:
+  push:
+    branches: [main, assets/crow-moonroot-native-v1]
+    paths:
+      - 'assets/boss-crow-moonroot-v1/**'
+      - 'assets/native-atlas.mjs'
+      - '.github/workflows/crow-moonroot-assets.yml'
+  pull_request:
+    paths:
+      - 'assets/boss-crow-moonroot-v1/**'
+      - 'assets/native-atlas.mjs'
+      - '.github/workflows/crow-moonroot-assets.yml'
+permissions:
+  contents: read
+jobs:
+  validate-native-pngs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reproduce committed PNGs and check actual game adapter
+        run: |
+          python3 assets/boss-crow-moonroot-v1/export.py
+          node --test assets/boss-crow-moonroot-v1/test.mjs
+          git diff --exit-code -- assets/boss-crow-moonroot-v1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raven-moonroot-native-pngs
+          path: assets/boss-crow-moonroot-v1/
+          retention-days: 14
