@@ -593,6 +593,36 @@ function releasePad(){
   padAx=0;pad={b:[]};
 }
 function padAim(x,y){var d=Math.hypot(x,y);if(d<=.12)return null;var m=Math.pow(Math.min(1,(d-.12)/.63),.65);return {x:x/d*m,y:y/d*m};}
+var rumbleOn=true,padUsedAt=0,rumbleUntil=0,rumbleLevel=0,felt=null;
+try{rumbleOn=localStorage.getItem('max-rumble')!=='0';}catch(e){}
+function setRumble(on){rumbleOn=!!on;try{localStorage.setItem('max-rumble',rumbleOn?'1':'0');}catch(e){}if(on)rumble(.4,.6,140);}
+function rumble(strong,weak,ms,trigger){
+  var gp=lastPad,now=performance.now(),level=Math.max(strong,weak);
+  if(!rumbleOn||!gp||now-padUsedAt>20000||now<rumbleUntil&&level<rumbleLevel)return;
+  rumbleUntil=now+ms;rumbleLevel=level;
+  try{
+    var a=gp.vibrationActuator;
+    if(a&&a.playEffect){
+      var fx=a.effects||['dual-rumble'];
+      if(trigger&&fx.indexOf('trigger-rumble')>=0)a.playEffect('trigger-rumble',{startDelay:0,duration:ms,strongMagnitude:strong,weakMagnitude:weak,leftTrigger:0,rightTrigger:trigger});
+      else a.playEffect('dual-rumble',{startDelay:0,duration:ms,strongMagnitude:strong,weakMagnitude:weak});
+    }else if(gp.hapticActuators&&gp.hapticActuators[0]&&gp.hapticActuators[0].pulse)gp.hapticActuators[0].pulse(level,ms);
+  }catch(e){}
+}
+function listenHaptics(){
+  var b=felt,mine=bombs.filter(function(q){return !coop||q.owner===(coopActor?coopActor.id:coop.me);}).length;
+  var now={world:worldLevel(),hurt:P.hurt||0,shake:shake,grounded:!!P.grounded,vy:P.vy||0,dodge:P.dodgeId||0,bombs:mine,clear:rogueRun.clearedWorld===worldLevel(),choice:!!rogueRun.choice,boss:liveBoss()?1:0};
+  felt=now;if(!b)return;
+  if(now.world!==b.world){rumble(.5,.35,260);return;}
+  if(now.hurt>b.hurt+.05)rumble(.9,.6,210);
+  else if(now.shake>b.shake+.3)rumble(Math.min(.85,(now.shake-b.shake)*.3),.35,120);
+  if(now.grounded&&!b.grounded&&b.vy>200)rumble(Math.min(.55,.12+(b.vy-200)/450),.12,70);
+  if(now.dodge!==b.dodge)rumble(0,.32,60);
+  if(now.bombs>b.bombs)rumble(.08,.22,45,.25);
+  if(now.clear&&!b.clear)rumble(.65,.65,320);
+  if(now.choice&&!b.choice)rumble(.15,.45,110);
+  if(now.boss&&!b.boss)rumble(.7,.4,380);
+}
 function pollPads(){
   if(window.MaxGameMenu&&window.MaxGameMenu.ownsInput&&window.MaxGameMenu.ownsInput()){padRelicOwned=true;releasePad();return;}
   var all=typeof navigator!=='undefined'&&navigator.getGamepads?[].slice.call(navigator.getGamepads()).filter(function(g){return g&&g.connected!==false;}):[];
@@ -601,6 +631,7 @@ function pollPads(){
   if(!gp||!active(gp))gp=all.find(active)||gp||all[0];
   if(!gp){releasePad();lastPad=null;return;}
   if(lastPad&&(gp.index!==lastPad.index||gp.id!==lastPad.id))releasePad();lastPad=gp;
+  if(active(gp))padUsedAt=performance.now();
   if(window.MaxGameMenu&&window.MaxGameMenu.captureController&&window.MaxGameMenu.captureController(gp)){releasePad();padRelicOwned=true;return;}
   if(padRelicOwned){releasePad();if(all.some(active))return;padRelicOwned=false;}
   var input=readPad(gp),single=input.single,b=input.b,ax=input.ax,ay=input.ay,was=pad.b,now=performance.now();
@@ -6481,7 +6512,7 @@ function frame(now) {
     updateFeathers(dt);
   }
   if(!runIsPaused())updateHazardContact();
-  if(!runIsPaused())listenRun();
+  if(!runIsPaused()){listenRun();listenHaptics();}
   if(!runIsPaused()&&!relicRunMode())updateSecrets(dt);
   if(!runIsPaused()&&!relicRunMode())updateYeet(dt);
   if(!runIsPaused()&&!relicRunMode())updateWonders(dt);
@@ -6663,6 +6694,8 @@ function attachGameMenu(){
     relicSound:function(kind){unlockAudio();socialTone(kind);},
     setMusicVolume:setMusicVolume,
     subpixel:function(){return subpixelOn;},
+    rumble:function(){return rumbleOn;},
+    setRumble:setRumble,
     setSubpixel:setSubpixel,
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},

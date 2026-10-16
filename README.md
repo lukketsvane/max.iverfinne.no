@@ -426,6 +426,8 @@ One horizontal Joy-Con (L) is detected automatically, with the stick on the left
 | Home / Capture | Lantern when the browser exposes this button |
 | Minus | Settings |
 
+Controllers rumble through the standard Gamepad haptics (`dual-rumble`, plus `trigger-rumble` where a pad offers impulse triggers): hits on your gardener, nearby blasts and impacts, hard landings, dodges, your own throws, a cleared garden, boon offers, guardian arrivals and stage travel. DualSense, Xbox and Switch pads rumble wherever the browser exposes their actuator; adaptive triggers and motion sensors are outside the Gamepad API. Only the pad used in the last 20 s rumbles, and Settings → Rumble turns it off. WebKit's nonstandard face aliases and analog D-pad stick values are normalized.
+
 Other controllers keep B/Y tending and stick-click dodge. Menus use spatial stick/D-pad navigation, held-direction repeat, confirm and back, with focus kept in the visible dialog. Live settings own controller input while the world continues. Held buttons are released before they can trigger a gameplay action after closing a menu or selecting a boon.
 
 Aim has a 0.12 radial deadzone and reaches full throw distance at 0.75 stick travel; small resting drift is ignored. Light trigger pressure starts charging. A single Joy-Con can aim down with its movement stick without planting. Disconnecting cancels a held throw and releases controller movement.

@@ -737,6 +737,9 @@ function settings() {
   const sub = game.subpixel?.() ?? true;
   const toggle = pixelButton('Subpixels ' + (sub ? 'on' : 'off'), () => { game.setSubpixel?.(!sub); settings(); });
   toggle.setAttribute('aria-pressed', String(sub)); card.append(toggle);
+  const shake = game.rumble?.() ?? true;
+  const rumble = pixelButton('Rumble ' + (shake ? 'on' : 'off'), () => { game.setRumble?.(!shake); settings(); });
+  rumble.setAttribute('aria-pressed', String(shake)); card.append(rumble);
   if (!liveSettings && signedInUser()) {
     if (game.openGardenRecords) card.append(pixelButton('View runs', () => game.openGardenRecords()));
     card.append(pixelButton(playerName(user) + ' · Account', account));
