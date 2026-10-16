@@ -11,8 +11,8 @@ joined by the painted ladders, so the rooms climb instead of stretching flat.
 | --- | --- | --- |
 | 3 | Frozen Seed Wheel | `1266:18` / `1271:36` |
 | 5 | Railway Depot | `1266:19` / `1263:6` |
-| 6 | Magnetworks | `1266:24` / `1263:11` |
 | 7 | Living Root Vault | `1266:23` / `1263:10` |
+| 8 | Magnetworks | `1266:24` / `1263:11` |
 | 9 | Mycelium Sanctuary | `1266:21` / `1263:8` |
 | 10 | Giant Beaked Fossil | `1266:20` / `1263:7` |
 | 12 | Bellflower Marsh | `1266:26` / `1263:13` |
@@ -22,7 +22,7 @@ joined by the painted ladders, so the rooms climb instead of stretching flat.
 | 18 | Heliostat Greenhouse | `1271:37` / `1266:30` |
 | 19 | Twin Gondola Ravine | `1266:29` / `1263:16` |
 
-Stages 3, 6, 12 and 18 are live. The other eight pairs are processed and in
+Stages 3, 8, 12 and 18 are live. The other eight pairs are processed and in
 Figma production; each one ships when its collision frame passes the sweep.
 
 Hollow Tree (1), Railway Ruins (2), Mossback Sanctuary (4) and the Crown arena
