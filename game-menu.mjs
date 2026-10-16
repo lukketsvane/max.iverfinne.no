@@ -28,7 +28,6 @@ let session = null;
 let leavingSession = null;
 let playIntent = null;
 let liveSettings = false, settingsButton;
-let controllerCapture = null;
 let selectedMode = 'garden', focusedRelic = null, relicTargets;
 let invitedRoom = null, inviteState = null;
 const eggs = createEasterEggs(window.localStorage, { onChange: unlocksChanged });
@@ -56,6 +55,7 @@ function el(tag, text, className) {
 function button(text, action, className) {
   const b = el('button', text, className); b.type = 'button'; b.addEventListener('click', action); return b;
 }
+function pixelButton(text, action, className) { return pixelText(button('', action, className), text, 2, 0); }
 function message(text, error = false) {
   if (!status) return;
   status.textContent = text; status.dataset.error = String(error); status.hidden = false;
@@ -77,10 +77,9 @@ function finishPlayIntent(intent) {
 }
 function page(name, title) {
   cancelPlayIntent();
-  if (name !== 'controller') controllerCapture = null;
   screen = name; overlay.dataset.screen = name; card.replaceChildren();
   const header = el('header', undefined, 'max-menu-header');
-  header.append(el('p', 'THE WILD GARDEN', 'max-menu-kicker'));
+  header.append(pixelText(el('p', undefined, 'max-menu-kicker'), 'THE WILD GARDEN', 1, 1));
   const h = name === 'account' ? el('h2', title) : pixelText(el('h2'), title, 2, 0);
   h.id = 'max-menu-title'; h.tabIndex = -1; header.append(h); card.append(header);
   status = el('p', '', 'max-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
@@ -732,19 +731,18 @@ function settings() {
   if (liveSettings && session?.playing && !session.closed) card.append(inviteControl());
   for (const name of ['Music', 'Effects']) {
     const value = game[name.toLowerCase() + 'Volume']?.() ?? 1;
-    const control = button(volumeLabel(name, value), () => { game['set' + name + 'Volume']?.(nextVolume(value)); settings(); });
+    const control = pixelButton(volumeLabel(name, value), () => { game['set' + name + 'Volume']?.(nextVolume(value)); settings(); });
     control.setAttribute('aria-label', name + ' volume ' + Math.round(value * 100) + ' percent'); card.append(control);
   }
   const sub = game.subpixel?.() ?? true;
-  const toggle = button('Subpixels ' + (sub ? 'on' : 'off'), () => { game.setSubpixel?.(!sub); settings(); });
+  const toggle = pixelButton('Subpixels ' + (sub ? 'on' : 'off'), () => { game.setSubpixel?.(!sub); settings(); });
   toggle.setAttribute('aria-pressed', String(sub)); card.append(toggle);
-  card.append(button('Map Joy-Con (L)', controllerSetup));
   if (!liveSettings && signedInUser()) {
-    if (game.openGardenRecords) card.append(button('View runs', () => game.openGardenRecords()));
-    card.append(button(playerName(user) + ' · Account', account));
+    if (game.openGardenRecords) card.append(pixelButton('View runs', () => game.openGardenRecords()));
+    card.append(pixelButton(playerName(user) + ' · Account', account));
   }
-  if (liveSettings) card.append(button('Exit to main menu', exitToMenu, 'subtle'));
-  back();
+  if (liveSettings) card.append(pixelButton('Exit to main menu', exitToMenu, 'subtle'));
+  card.append(pixelButton('Back', liveSettings ? dismissSettings : home, 'subtle max-back'));
 }
 function openSettings() {
   if (opened || game.canOpenMenu?.() !== false) return;
@@ -752,7 +750,6 @@ function openSettings() {
   game.clearInput?.(); settings();
 }
 function dismissSettings() {
-  controllerCapture = null;
   liveSettings = false; opened = false; overlay.hidden = true; delete overlay.dataset.live;
   game.clearInput?.();
   settingsButton.focus({ preventScroll: true });
@@ -762,52 +759,6 @@ async function exitToMenu() {
   game.exitRun?.(); if (old) leavingSession = old.leave();
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; game.pause(true); home(); startScene();
-}
-function controllerSetup() {
-  page('controller', 'Joy-Con (L)');
-  card.append(el('p', 'Hold the controller horizontally with the stick on the left. Release each control between steps. Skip buttons your device does not expose.'));
-  const prompt = el('p', 'Centre the stick and release every button.'); prompt.setAttribute('role', 'status'); card.append(prompt);
-  const steps = [['right', 'Move the stick right'], ['left', 'Move the stick left'], ['up', 'Move the stick up'], ['down', 'Move the stick down'],
-    [0, 'Press the bottom face button (←)'], [1, 'Press the right face button (↓)'], [2, 'Press the left face button (↑)'], [3, 'Press the top face button (→)'],
-    [4, 'Press SL'], [5, 'Press SR'], [6, 'Press ZL'], [8, 'Press L'], [10, 'Click the stick'], [9, 'Press Minus'], [16, 'Press Capture']];
-  const state = controllerCapture = { prompt, steps, index: 0, id: null, centre: null, ready: false, config: { buttons: {}, directions: {} } };
-  const skip = button('Skip unavailable button', () => {
-    if (controllerCapture !== state || state.index < 4) return;
-    state.config.buttons[steps[state.index][0]] = -1; nextControllerStep(state);
-  }); skip.hidden = true; state.skip = skip; card.append(skip);
-  card.append(button('Use automatic layout', () => { const info = game.controllerInfo?.(); if (info) game.configureController?.(info.id, null); settings(); }, 'subtle'));
-  card.append(button('Back', settings, 'subtle'));
-}
-function nextControllerStep(state) {
-  state.index++; state.ready = false;
-  if (state.index === state.steps.length) {
-    game.configureController?.(state.id, state.config); controllerCapture = null;
-    state.prompt.textContent = 'Layout saved for this controller.'; state.skip.hidden = true; return;
-  }
-  state.skip.hidden = state.index < 4;
-  state.prompt.textContent = 'Release, then: ' + state.steps[state.index][1] + ' (' + (state.index + 1) + ' / ' + state.steps.length + ').';
-}
-function captureController(gp) {
-  const state = controllerCapture; if (!state) return false;
-  const values = gp.buttons.map(b => Math.max(b.value || 0, b.pressed ? 1 : 0));
-  if (state.id && state.id !== gp.id) return true;
-  if (!state.centre) {
-    if (values.some(v => v > .2) || gp.axes.some(a => Number.isFinite(a) && Math.abs(a) <= 1 && Math.abs(a) > .22)) return true;
-    state.id = gp.id; state.centre = gp.axes.slice(); state.ready = true; state.prompt.textContent = state.steps[0][1] + ' (1 / ' + state.steps.length + ').'; return true;
-  }
-  const moved = gp.axes.map((a, i) => Number.isFinite(a) && Math.abs(a) <= 1 ? a - state.centre[i] : 0);
-  if (!values.some(v => v > .2) && !moved.some(v => Math.abs(v) > .22)) { state.ready = true; return true; }
-  if (!state.ready) return true;
-  const key = state.steps[state.index][0], axis = moved.findIndex(v => Math.abs(v) >= .55), pressed = values.findIndex(v => v >= .55);
-  if (typeof key === 'string') {
-    if (axis < 0 && pressed < 0) return true;
-    state.config.directions[key] = axis >= 0 ? { axis, sign: Math.sign(moved[axis]), centre: state.centre[axis] } : { button: pressed };
-  } else {
-    if (pressed < 0) return true;
-    if (Object.values(state.config.buttons).includes(pressed) || Object.values(state.config.directions).some(d => d.button === pressed)) { state.prompt.textContent = 'That control is already mapped. Release, then: ' + state.steps[state.index][1] + '.'; state.ready = false; return true; }
-    state.config.buttons[key] = pressed;
-  }
-  nextControllerStep(state); return true;
 }
 function credits() {
   page('credits', 'MAX');
@@ -967,7 +918,7 @@ function replay() {
   liveSettings = false; delete overlay.dataset.live; settingsButton.hidden = true;
   opened = true; overlay.hidden = false; game.pause(true); play(selectedMode); startScene();
 }
-window.MaxGameMenu = { attach, open, replay, ownsInput: () => false, isOpen: () => opened, captureController };
+window.MaxGameMenu = { attach, open, replay, ownsInput: () => false, isOpen: () => opened };
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { onlinePlayers?.stop(); clearTimeout(playersTimer); return; }
   if (client && client.realtime.isConnected && !client.realtime.isConnected()) client.realtime.connect();

@@ -324,28 +324,6 @@ async function menu(savedLoadout, { restoredUser = null, anonymousDisabled = fal
   return { w, dom, click, settle, pauses, calls, signIns, type, classIds, channels, emit, get begun() { return begun; }, get beginCount() { return beginCount; }, get active() { return active; } };
 }
 
-test('Joy-Con calibration captures one control per release and saves the physical layout', async () => {
-  const saved = [], m = await menu(undefined, { controller: { configureController: (id, config) => saved.push([id, config]) } });
-  try {
-    m.click('Settings'); m.click('Map Joy-Con (L)');
-    const gp = { id: 'Joy-Con (L) Gamepad', axes: [0, 0, 0, 0], buttons: [] };
-    const report = (pressed = [], axes = [0, 0, 0, 0]) => {
-      gp.axes = axes; gp.buttons = Array.from({ length: 17 }, (_, i) => ({ value: Number(pressed.includes(i)), pressed: pressed.includes(i) }));
-      assert.equal(m.w.MaxGameMenu.captureController(gp), true);
-    };
-    report(); report([15]);
-    const prompt = m.w.document.querySelector('[data-screen="controller"] [role="status"]');
-    const first = prompt.textContent; report([15]); assert.equal(prompt.textContent, first);
-    for (const b of [14, 12, 13, 0, 2, 1, 3, 4, 5, 6, 8, 10, 9]) { report(); report([b]); }
-    m.click('Skip unavailable button');
-    assert.equal(saved.length, 1); assert.equal(saved[0][0], gp.id);
-    assert.deepEqual(JSON.parse(JSON.stringify(saved[0][1].directions)), { right: { button: 15 }, left: { button: 14 }, up: { button: 12 }, down: { button: 13 } });
-    assert.equal(saved[0][1].buttons[1], 2); assert.equal(saved[0][1].buttons[2], 1); assert.equal(saved[0][1].buttons[16], -1);
-    assert.match(prompt.textContent, /Layout saved/); assert.equal(m.w.MaxGameMenu.captureController(gp), false);
-    m.click('Back'); assert.match(m.w.document.body.textContent, /Map Joy-Con \(L\)/);
-  } finally { m.dom.window.close(); }
-});
-
 test('live settings advertise input ownership and a bubbled Back returns to gameplay', async () => {
   const m = await menu();
   try {

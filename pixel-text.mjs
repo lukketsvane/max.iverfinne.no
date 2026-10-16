@@ -15,6 +15,8 @@ export function pixelText(node, text, scale = 3, spacing = 1) {
         rows.forEach((row, y) => [...row].forEach((bit, x) => { if (bit === '1') ctx.fillRect(i * (6 + spacing) + x, y, 1, 1); }));
         continue;
       }
+      if (str[i] === '·') { ctx.fillStyle = '#e8e4d8'; ctx.fillRect(i * (6 + spacing) + 2, 3, 1, 1); continue; }
+      if (str[i] === '%') { ctx.fillStyle = '#e8e4d8'; ['11001', '11010', '00010', '00100', '01000', '01011', '10011'].forEach((row, y) => [...row].forEach((bit, x) => { if (bit === '1') ctx.fillRect(i * (6 + spacing) + x, y, 1, 1); })); continue; }
       const n = Math.max(0, Math.min(63, str.charCodeAt(i) - 32));
       ctx.drawImage(font, n % 16 * 6, Math.floor(n / 16) * 8, 5, 7, i * (6 + spacing), 0, 5, 7);
     }
