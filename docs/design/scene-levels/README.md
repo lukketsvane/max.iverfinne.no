@@ -22,8 +22,8 @@ joined by the painted ladders, so the rooms climb instead of stretching flat.
 | 18 | Heliostat Greenhouse | `1271:37` / `1266:30` |
 | 19 | Twin Gondola Ravine | `1266:29` / `1263:16` |
 
-Stage 3 is live. The other eleven pairs are processed and in Figma production;
-each one ships when its collision frame passes the sweep.
+Stages 3 and 6 are live. The other ten pairs are processed and in Figma
+production; each one ships when its collision frame passes the sweep.
 
 Hollow Tree (1), Railway Ruins (2), Mossback Sanctuary (4) and the Crown arena
 (20) keep their existing authored sources; the compiler refuses scenes on 1, 4
