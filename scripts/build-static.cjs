@@ -10,7 +10,7 @@ const copy = file => {
   mkdirSync(dirname(join(output, file)), { recursive: true });
   cpSync(join(root, file), join(output, file), { recursive: true });
 };
-const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'level-scenes-data.js', 'level-scenes.js', 'high-tide-map.js', 'garden-places.js', 'campaign-architecture.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'crown-review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
+const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'level-scenes-data.js', 'level-scenes.js', 'scene-levels-data.js', 'high-tide-map.js', 'garden-places.js', 'campaign-architecture.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'crown-review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -37,7 +37,7 @@ for (const file of [
 ]) copy(file);
 for (const file of ['boss.png', 'effects.png', 'chimera.png', 'atlas.json', 'README.md']) copy('assets/crown-ascendant-v1/' + file);
 for (const file of ['sprites.png', 'atlas.json', 'README.md']) copy('assets/tiara-head-v1/' + file);
-for (const file of ['levels-v1', 'assets/levels-v1']) if (existsSync(join(root, file))) copy(file);
+for (const file of ['levels-v1', 'assets/levels-v1', 'assets/levels-v2']) if (existsSync(join(root, file))) copy(file);
 for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
 copy('assets/enemies-v2/sprites.png');
 for (const [pack, ids, sheets] of [

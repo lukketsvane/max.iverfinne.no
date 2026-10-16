@@ -189,6 +189,8 @@
     { "path": "assets/levels-v1/high-tide.png", "nodeId": "394:17", "group": "environment", "width": 628, "height": 1614, "sha1": "ae68d490e68d8cdd18e3ff20a1f1457abbb6d357" },
     { "path": "assets/levels-v1/railway-ruins.png", "nodeId": "477:11670", "group": "environment", "width": 1080, "height": 224, "sha1": "1dac33281c47b5467ff3cd25259b1f08a26dc5de" },
     { "path": "assets/levels-v1/seed-vault.png", "nodeId": "477:11669", "group": "environment", "width": 557, "height": 314, "sha1": "f53f24e98d5ec8dbbdb4e9d87fdc2cb1590cb09f" },
+    { "path": "assets/levels-v2/frozen-seed-wheel-bg.png", "nodeId": "1280:21979", "group": "environment", "width": 2118, "height": 706, "sha1": "9ad77a65b4c3e869ed7150340c3ddb5f826c53f8" },
+    { "path": "assets/levels-v2/frozen-seed-wheel-fg.png", "nodeId": "1280:21977", "group": "environment", "width": 1254, "height": 706, "sha1": "ad9d47fe58c0630ef17a36e8ea5d43d4135b434d" },
     { "path": "assets/max-skins-v1/ember/interaction.png", "nodeId": "389:60", "group": "player-characters", "width": 256, "height": 256, "sha1": "7e8b77d2987e4016c3cdb363ffedf56a22061920" },
     { "path": "assets/max-skins-v1/ember/main.png", "nodeId": "389:61", "group": "player-characters", "width": 256, "height": 256, "sha1": "605ec297a37acc78ea92a1ecd52de72c6478d9fb" },
     { "path": "assets/max-skins-v1/moon/interaction.png", "nodeId": "389:62", "group": "player-characters", "width": 256, "height": 256, "sha1": "5aa3c76cf59ce60bc068e17ad905d5531c1f1389" },

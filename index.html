@@ -14,6 +14,7 @@
 <script src="levels-v1/seed-vault.js"></script>
 <script src="levels-v1/railway-ruins.js"></script>
 <script src="levels-v1/sunken-sanctuary.js"></script>
+<script src="scene-levels-data.js"></script>
 <script src="high-tide-map.js"></script>
 <script src="levels-data.js"></script>
 <script src="turtle-garden-art-data.js"></script>
@@ -248,7 +249,22 @@ function pondIsCurrent(p) {
   var L = activePondLayout();
   return p.authored ? !!L && L.ponds.indexOf(p) >= 0 : !L || window.MaxLevels.pondAllowed(L, p);
 }
+function sceneGroundY(pg, x) {
+  var steps = pg.steps, i;
+  for (i = 0; i < steps.length; i++) if (x < steps[i][1]) return steps[i][2];
+  return steps[steps.length - 1][2];
+}
+function scenePondHidden(p) {
+  var L = activeStageLayout, g = L && L.scene && L.ground;
+  return !!(g && p && !p.scene && p.cx + p.hw + p.bank > g.x0 - 60 && p.cx - p.hw - p.bank < g.x1 + 60);
+}
+function scenePoolNear(x) {
+  var pools = activeStageLayout && activeStageLayout.scene && activeStageLayout.pools;
+  if (pools) for (var i = 0; i < pools.length; i++) if (Math.abs(x - pools[i].cx) < pools[i].hw) return pools[i];
+  return null;
+}
 function pondNear(x) {
+  if (activeStageLayout && activeStageLayout.scene) { var pool = scenePoolNear(x); if (pool) return pool; var hidden = naturalPondNear(x); if (hidden && scenePondHidden(hidden)) return null; }
   var L = activePondLayout(), authored = L && window.MaxLevels.pondNear(L, x);
   if (authored) return authored;
   if (!L) return naturalPondNear(x);
@@ -266,8 +282,8 @@ function surfaceY(x) {
   if(authored)return window.MaxLevels.surfaceAt(authored,x,terrainY);
   var pg = activeStageLayout && activeStageLayout.ground;
   if (pg && x > pg.x0 - 24 && x < pg.x1 + 24) {
-    var t = x < pg.x0 ? (pg.x0 - x) / 24 : x > pg.x1 ? (x - pg.x1) / 24 : 0;
-    return t ? pg.y * (1 - t) + terrainY(x) * t : pg.y;
+    var t = x < pg.x0 ? (pg.x0 - x) / 24 : x > pg.x1 ? (x - pg.x1) / 24 : 0, gy = pg.steps ? sceneGroundY(pg, x) : pg.y;
+    return t ? gy * (1 - t) + terrainY(x) * t : gy;
   }
   return terrainY(x);
 }
@@ -282,16 +298,26 @@ function terrainY(x) {
 function pondsInView(fn) {
   var L = activePondLayout(), left = camX - 260, right = camX + IW + 260;
   var b0 = Math.floor(left / POND_B), b1 = Math.floor(right / POND_B);
-  for (var b = b0; b <= b1; b++) { var p = pondInBucket(b); if (p && (!L || window.MaxLevels.pondAllowed(L, p))) fn(p); }
+  for (var b = b0; b <= b1; b++) { var p = pondInBucket(b); if (p && !scenePondHidden(p) && (!L || window.MaxLevels.pondAllowed(L, p))) fn(p); }
   if (L) L.ponds.forEach(function (p) { if (p.cx + p.hw + p.bank >= left && p.cx - p.hw - p.bank <= right) fn(p); });
 }
 
 function dryX(x) { var w = waterAt(x); return w ? w.cx + (x < w.cx ? -1 : 1) * (w.hw + 2) : x; }
 var activeStageLayout=null;
 var PICTURE_ART={};
+function scenePicture(level){var d=window.MaxSceneLevels&&window.MaxSceneLevels.stages;return d&&d[level]||null;}
 function pictureLayout(level){
-  var d=window.MaxPictureLevels&&window.MaxPictureLevels[level];if(!d)return null;
-  var o=levelOriginX(level),ax=Math.round(o+40),ay=Math.floor(terrainY(ax+d.entry.x))-d.entry.y,L={stage:level,seed:rogueRun.seed,origin:o,theme:'picture',kind:'picture',picture:d.id,ground:{x0:ax,x1:ax+d.w,y:ay+d.entry.y},platforms:[],routes:[],rewards:[],trials:[],bonuses:[],spots:{},nodes:[],hazards:[]};
+  var d=scenePicture(level)||window.MaxPictureLevels&&window.MaxPictureLevels[level];if(!d)return null;
+  var o=levelOriginX(level),ax=Math.round(d.scene?o-d.entry.x:o+40),ay=Math.floor(terrainY(ax+d.entry.x))-d.entry.y,L={stage:level,seed:rogueRun.seed,origin:o,theme:'picture',kind:'picture',picture:d.id,ground:{x0:ax,x1:ax+d.w,y:ay+d.entry.y},platforms:[],routes:[],rewards:[],trials:[],bonuses:[],spots:{},nodes:[],hazards:[]};
+  if(d.scene){
+    L.scene=true;L.pictureSites=d.sites;L.campaign=Object.assign({},window.MaxStageLayout.profile(level),{title:d.title});
+    L.bounds={x0:ax,y0:ay,x1:ax+d.w,y1:ay+d.h};
+    L.backdrop={img:PICTURE_ART[d.backdrop.art]||(PICTURE_ART[d.backdrop.art]=loadImg(d.backdrop.art)),w:d.backdrop.w,h:d.backdrop.h};
+    L.ground.steps=d.ground.map(function(q){return [ax+q[0],ax+q[1],ay+q[2]];});
+    d.ground.forEach(function(q,i){var a=d.ground[i-1];if(!a||Math.abs(q[2]-a[2])<=6)return;var high=q[2]<a[2];L.platforms.push({id:'w'+i,x:ax+(high?q[0]:a[1]-6),y:ay+Math.min(q[2],a[2]),w:6,h:Math.abs(q[2]-a[2]),depth:6,route:1,style:'stone',solid:true});});
+    L.platforms.push({id:'room-west',x:ax-8,y:ay-480,w:8,h:d.h+960,depth:6,route:1,style:'stone',solid:true},{id:'room-east',x:ax+d.w,y:ay-480,w:8,h:d.h+960,depth:6,route:1,style:'stone',solid:true});
+    L.pools=(d.pools||[]).map(function(q,i){return {id:level+':pool:'+i,scene:true,b:'scene:'+i,cx:ax+(q[0]+q[1])/2,hw:(q[1]-q[0])/2,bank:0,depth:Math.max(2,sceneGroundY(L.ground,ax+(q[0]+q[1])/2)-(ay+q[2])),level:ay+q[2],pop:true,deco:[],df:true};});
+  }
   L.art={img:PICTURE_ART[d.art]||(PICTURE_ART[d.art]=loadImg(d.art)),x:ax,y:ay,w:d.w,h:d.h};
   d.blocks.forEach(function(b,i){L.platforms.push({id:'r'+i,x:ax+b[0],y:ay+b[1],w:b[2],h:b[3],depth:6,route:1,style:'stone',solid:true});});
   L.platforms.push({id:'base',x:ax,y:ay+d.h-2,w:d.w,h:90,depth:6,route:1,style:'stone',solid:true,draw:d.h-d.entry.y<=12});
@@ -313,13 +339,13 @@ function stageLayout(){
   var level=worldLevel(),garden=window.MaxLevels.pick(level,rogueRun.seed),authoredWater=garden&&garden.ponds&&garden.ponds.length,authoredTerrain=garden&&garden.terrain&&garden.terrain.length,authoredScene=garden&&garden.masterSceneSourceKey;
   if(!activeStageLayout||activeStageLayout.stage!==level||activeStageLayout.seed!==rogueRun.seed||((authoredWater||activeStageLayout.ponds&&activeStageLayout.ponds.length)&&activeStageLayout.authoredPondSource!==garden)||((authoredTerrain||activeStageLayout.terrain&&activeStageLayout.terrain.length)&&activeStageLayout.authoredTerrainSource!==garden)||((authoredScene||activeStageLayout.masterSceneSourceKey)&&activeStageLayout.authoredSceneSource!==garden)){
     activeStageLayout=null;
-    activeStageLayout=(level<=2&&!(garden&&garden.replacePicture)&&pictureLayout(level))||(garden&&window.MaxLevels.build(garden,level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed,{baseGround:baseSurfaceY,pondNear:naturalPondNear}))||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
+    activeStageLayout=((level<=2||scenePicture(level))&&!(garden&&garden.replacePicture)&&pictureLayout(level))||(garden&&window.MaxLevels.build(garden,level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed,{baseGround:baseSurfaceY,pondNear:naturalPondNear}))||window.MaxPlaces.furnish(window.MaxStageLayout.create(level,levelOriginX(level),surfaceY,waterAt,rogueRun.seed),surfaceY,waterAt);
     if(authoredWater)Object.defineProperty(activeStageLayout,'authoredPondSource',{value:garden});
     if(authoredTerrain)Object.defineProperty(activeStageLayout,'authoredTerrainSource',{value:garden});
     if(authoredScene)Object.defineProperty(activeStageLayout,'authoredSceneSource',{value:garden});
     if(activeStageLayout.designed&&activeStageLayout.furnishPlace)window.MaxPlaces.furnish(activeStageLayout,surfaceY,waterAt);
   }
-  window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
+  if(!activeStageLayout.scene)window.MaxExpeditions.furnish(activeStageLayout,surfaceY,waterAt);
   window.MaxGuardianSites.furnish(activeStageLayout,surfaceY,waterAt);
   if(!activeStageLayout.campaign&&window.MaxStageLayout.profile)activeStageLayout.campaign=window.MaxStageLayout.profile(level);
   return activeStageLayout;
@@ -331,9 +357,27 @@ function playerWetAt(x,y){var p=waterAt(x);return !!(p&&y>p.level+1);}
 var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTiles.pieces}:null;
 function drawPlatforms(t){var L=stageLayout(),a=L.art,presentation=!isolatedRelicMode()&&window.MaxLevelScenes?window.MaxLevelScenes.presentation(L,surfaceY):L;if(!isolatedRelicMode()&&window.MaxTurtleArt)presentation=window.MaxTurtleArt.presentation(presentation);if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));if(isolatedRelicMode()||!window.MaxTurtleArt||!window.MaxTurtleArt.drawSupports(ctx,presentation,camX,camY,IW,IH,TILES))window.MaxStageLayout.draw(ctx,presentation,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
 function drawLevelScene(layer){if(isolatedRelicMode())return;var L=stageLayout();if(window.MaxLevelScenes)window.MaxLevelScenes.draw(ctx,L,camX,camY,IW,IH,surfaceY,layer,TILES);if(window.MaxTurtleArt)window.MaxTurtleArt.draw(ctx,L,camX,camY,IW,IH,layer);}
+function sceneRoomCamera(L){
+  var b=L.bounds,minX=b.x0,maxX=b.x1-IW,minY=b.y0,maxY=b.y1-IH;
+  if(maxX<minX)minX=maxX=Math.round((b.x0+b.x1-IW)/2);
+  if(maxY<minY)minY=maxY=Math.round((b.y0+b.y1-IH)/2);
+  return {minX:minX,maxX:maxX,minY:minY,maxY:maxY};
+}
+function drawSceneBackdrop(){
+  if(isolatedRelicMode())return false;
+  var L=stageLayout();if(!L.scene||!L.backdrop)return false;
+  var b=L.bounds,bd=L.backdrop,img=bd.img;
+  ctx.fillStyle='#05070b';ctx.fillRect(0,0,IW,IH);
+  if(!img||!img.complete||!img.naturalWidth)return true;
+  var k=Math.max(1,Math.ceil(Math.max(IW/bd.w,IH/bd.h))),w=bd.w*k,h=bd.h*k;
+  var x=Math.round((IW-w)/2-(camX-(b.x0+b.x1-IW)/2)*.45),y=Math.round((IH-h)/2-(camY-(b.y0+b.y1-IH)/2)*.3);
+  ctx.save();ctx.imageSmoothingEnabled=false;ctx.drawImage(img,Math.max(IW-w,Math.min(0,x)),Math.max(IH-h,Math.min(0,y)),w,h);ctx.restore();
+  return true;
+}
 function levelSceneCamera(){
   if(relicRunMode()||warp||P.st==='float'||climb&&climb.exit)return null;
   var L=stageLayout(),view={actorX:P.x,feet:P.y,width:IW,height:IH,headroom:safeTopArt()+34};
+  if(L.scene&&L.bounds)return sceneRoomCamera(L);
   return window.MaxTurtleArt&&window.MaxTurtleArt.camera(L,view)||window.MaxLevelScenes&&window.MaxLevelScenes.camera&&window.MaxLevelScenes.camera(L,view,surfaceY)||null;
 }
 function drawLadders(L){
@@ -6428,12 +6472,14 @@ function frame(now) {
   if(crownResultPresentation){tx=crownResultPresentation.x;ty=crownResultPresentation.y;}
   var sceneCamera=levelSceneCamera();
   if(sceneCamera)ty=Math.max(sceneCamera.minY,Math.min(sceneCamera.maxY,ty));
+  if(sceneCamera&&sceneCamera.minX!=null)tx=Math.max(sceneCamera.minX,Math.min(sceneCamera.maxX,tx));
   if (!started) { camX = tx; camY = ty; started = true; }
   camX += (tx - camX) * (1 - Math.pow(0.0026, dt));
   camY += (ty - camY) * (1 - Math.pow(0.012, dt));
   if(Number.isFinite(crownCamera.minX))camX=Math.max(crownCamera.minX,Math.min(crownCamera.maxX,camX));
   if(Number.isFinite(crownCamera.minY))camY=Math.max(crownCamera.minY,Math.min(crownCamera.maxY,camY));
   if(sceneCamera)camY=Math.max(sceneCamera.minY,Math.min(sceneCamera.maxY,camY));
+  if(sceneCamera&&sceneCamera.minX!=null)camX=Math.max(sceneCamera.minX,Math.min(sceneCamera.maxX,camX));
 
   var fx = camX, fy = camY;
   if (shake > 0) { camX += (Math.random() * 2 - 1) * shake; camY += (Math.random() * 2 - 1) * shake * 0.6; }
@@ -6441,12 +6487,13 @@ function frame(now) {
   if(Number.isFinite(crownCamera.minX))camX=Math.max(crownCamera.minX,Math.min(crownCamera.maxX,camX));
   if(Number.isFinite(crownCamera.minY))camY=Math.max(crownCamera.minY,Math.min(crownCamera.maxY,camY));
   if(sceneCamera)camY=Math.max(sceneCamera.minY,Math.min(sceneCamera.maxY,camY));
+  if(sceneCamera&&sceneCamera.minX!=null)camX=Math.max(sceneCamera.minX,Math.min(sceneCamera.maxX,camX));
   camX = Math.round(camX); camY = Math.round(camY);
   prepareAscentPresentation();
   buildSurfCache();
   var crownLayer=floatKrek.some(function(k){return k.bossId==='hollow-crown';})||!!crownResultPresentation;
 
-  if(nightRelayMode()){drawRelayBackdrop();}else if(highTideMode()){ctx.fillStyle='#080a0f';ctx.fillRect(0,0,IW,IH);}else{
+  if(nightRelayMode()){drawRelayBackdrop();}else if(highTideMode()){ctx.fillStyle='#080a0f';ctx.fillRect(0,0,IW,IH);}else if(drawSceneBackdrop()){HY=ANCHOR+6+backdropLift();applyBiomePalette(P.x);}else{
   var hy = HY = ANCHOR + 6;
   hy += backdropLift();
   var mh = ready(IMG.mtn) ? IMG.mtn.naturalHeight : 159;

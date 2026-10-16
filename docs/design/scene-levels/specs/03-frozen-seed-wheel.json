@@ -1,0 +1,57 @@
+{
+ "stage": 3,
+ "id": "frozen-seed-wheel",
+ "title": "Frozen Seed Wheel",
+ "reference": "01.png",
+ "originX": 560,
+ "ground": [
+  [0, 1254, 572]
+ ],
+ "ledges": [
+  ["upper-west-floor", 12, 279, 363],
+  ["west-gallery", 62, 418, 370],
+  ["west-pier-step", 428, 396, 16],
+  ["west-pier", 442, 383, 73],
+  ["ice-bridge", 515, 390, 235],
+  ["east-pier", 750, 383, 72],
+  ["east-pier-step", 822, 396, 10],
+  ["east-ledge", 830, 416, 47],
+  ["east-gallery", 866, 446, 359],
+  ["east-terrace", 868, 330, 352],
+  ["crown-store", 980, 176, 235]
+ ],
+ "blocks": [
+  ["furnace-step", 82, 561, 147, 11]
+ ],
+ "ladders": [
+  ["west-low-ladder", 181, 418, 561],
+  ["west-high-ladder", 291, 279, 418],
+  ["east-mid-ladder", 995, 330, 446],
+  ["east-low-ladder", 1036, 446, 572],
+  ["crown-ladder", 1150, 176, 330],
+  ["east-ledge-ladder", 870, 416, 446]
+ ],
+ "paintLadders": [
+  ["crown-ladder", 1150, 176, 330],
+  ["east-ledge-ladder", 870, 416, 446]
+ ],
+ "points": [
+  ["reward", "crown-store-cache", 1100, 176],
+  ["reward", "west-door-cache", 60, 279],
+  ["seed", "bridge-seed", 632, 390],
+  ["trial", "west-gallery-shrine", 230, 418],
+  ["trial", "east-gallery-shrine", 1120, 446],
+  ["bonus", "west-pier-dew", 478, 383],
+  ["bonus", "east-terrace-dew", 1180, 330],
+  ["puzzle", "valve-wheel", 380, 572],
+  ["door", "archive-door", 1092, 572],
+  ["dig", "pit-edge", 760, 572],
+  ["secret", "furnace-cache", 120, 561],
+  ["start", "arrival", 560, 572]
+ ],
+ "sites": [
+  ["cold-store", 150, 279, 330, "upper-west-floor"],
+  ["east-pier-watch", 786, 383, 900, "east-pier"],
+  ["archive-floor", 1110, 572, 1160, null]
+ ]
+}

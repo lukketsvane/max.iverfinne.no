@@ -35,7 +35,7 @@
     ]
   };
   function center(p){return p.x+Math.floor(p.w/2);}
-  function groundAt(L,ground,x){return L.ground&&x>=L.ground.x0&&x<=L.ground.x1?L.ground.y:ground(x);}
+  function groundAt(L,ground,x){var g=L.ground;if(!g||x<g.x0||x>g.x1)return ground(x);if(!g.steps)return g.y;for(var i=0;i<g.steps.length;i++)if(x<g.steps[i][1])return g.steps[i][2];return g.steps[g.steps.length-1][2];}
   function clearSoil(L,ground,wet,x){
     var y=groundAt(L,ground,x);
     if(wet&&wet(x))return false;
@@ -135,7 +135,7 @@
   }
   function furnish(L,ground,wet){
     if(!L||L.guardianSites||!designs[L.stage])return L;
-    var row=designs[L.stage],raw=pictureSites[L.picture],sites;
+    var row=designs[L.stage],raw=L.pictureSites||pictureSites[L.picture],sites;
     if(raw)sites=raw.map(function(s,i){
       var x=L.art.x+s.x,y=L.art.y+s.y,c=court(L,ground,wet,L.art.x+s.courtX);
       if(!c)throw Error('Guardian court is blocked: '+L.picture+' '+s.key);
