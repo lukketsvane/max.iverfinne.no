@@ -179,11 +179,13 @@ test('runtime source generation is exact and every established Figma production 
   assert.deepEqual(promoted,[{path:'assets/enemies-v2/sprites.png',nodeId:'414:3',group:'enemies',width:256,height:288,sha1:'dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e'}]);
   assert.equal(manifest.unused.some(entry=>entry.path===promoted[0].path),false,'the authenticated original source moved into production');
   assert.equal(crypto.createHash('sha1').update(fs.readFileSync(path.join(root,promoted[0].path))).digest('hex'),promoted[0].sha1,'promotion preserves original archived PNG bytes');
-  // Undo only the two independently verified source changes to reconstruct
+  // Undo only the independently verified source changes (Tiara, the enemy
+  // promotion and the scene level pairs) to reconstruct
   // the byte-pinned historical manifest. All other bytes and old pins remain
   // protected, including the archive entry that originally held this sheet.
   let original=manifestText.replace(/^    \{ "path": "assets\/tiara-head-v1\/sprites\.png",[^\n]+ \},\n/m,'')
-    .replace(/^    \{ "path": "assets\/enemies-v2\/sprites\.png", "nodeId": "414:3", "group": "enemies",[^\n]+ \},\n/m,'');
+    .replace(/^    \{ "path": "assets\/enemies-v2\/sprites\.png", "nodeId": "414:3", "group": "enemies",[^\n]+ \},\n/m,'')
+    .replace(/^    \{ "path": "assets\/levels-v2\/[^\n]+ \},\n/gm,'');
   const unused=original.indexOf('  "unused": [\n');assert.ok(unused>0);
   const archived='    { "path": "assets/enemies-v2/sprites.png", "nodeId": "414:3", "section": "451:8", "width": 256, "height": 288, "sha1": "dd8c215a6ed39ec1db6a4e197ab5eb1829c84e2e", "status": "unused" },\n';
   original=original.slice(0,unused)+original.slice(unused).replace(/^(    \{ "path": "assets\/results-native\/sprites\/ui-labels-en\.png",)/m,archived+'$1');
