@@ -1220,7 +1220,7 @@ function updateParts(dt) {
   }
 }
 var flies = [];
-for (var fi = 0; fi < 26; fi++) flies.push({
+for (var fi = 0; fi < 7; fi++) flies.push({
   ax: h2(fi, 11) * 900 - 450, ay: -12 - h2(fi, 12) * 48, ph: h2(fi, 13) * 6.28,
   sp: 0.22 + h2(fi, 14) * 0.45, r: 9 + h2(fi, 15) * 26, bl: h2(fi, 16) * 6.28, hue: h2(fi, 17)
 });
@@ -2099,7 +2099,7 @@ function spawnFlyers() {
                    grey: h1(l.b * 11 + i) > 0.5, x: l.x, y: 0, face: 1 });
     }
   });
-  while (fireflies.length < (secretEvent() === 'fireflies' ? 18 : secretEvent() === 'moon' ? 10 : 5)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
+  while (fireflies.length < (secretEvent() === 'fireflies' ? 7 : secretEvent() === 'moon' ? 4 : 2)) fireflies.push({ x: P.x + (Math.random() - 0.5) * IW * 1.6, alt: 5 + Math.random() * 24,
     ph: Math.random() * 6.28, sp: 0.2 + Math.random() * 0.3, f: (Math.random() * 7) | 0, clock: 0 });
   for (var i = fireflies.length - 1; i >= 0; i--) if (Math.abs(fireflies[i].x - P.x) > IW * 1.2) fireflies.splice(i, 1);
   for (var retired = dflies.length - 1; retired >= 0; retired--) if (!pondIsCurrent(dflies[retired].pond)) { dflies[retired].pond.df = false; dflies.splice(retired, 1); }
@@ -2110,7 +2110,7 @@ function spawnFlyers() {
     for (var k = 0; k < n; k++) dflies.push({ pond: p, x: p.cx + (k ? 20 : -20), y: p.level - 14, tx: p.cx, ty: p.level - 14, wait: Math.random() * 2, face: 1, f: 0 });
   });
   for (var d = dflies.length - 1; d >= 0; d--) if (Math.abs(dflies[d].x - P.x) > IW * 2.5) { dflies[d].pond.df = false; dflies.splice(d, 1); }
-  while (orbs.length < 4) orbs.push({ x: P.x + (Math.random() - 0.5) * IW * 1.4, alt: 14 + Math.random() * 40, ph: Math.random() * 6.28, k: (Math.random() * 3) | 0 });
+  while (orbs.length < 1) orbs.push({ x: P.x + (Math.random() - 0.5) * IW * 1.4, alt: 14 + Math.random() * 40, ph: Math.random() * 6.28, k: (Math.random() * 3) | 0 });
   for (var o = orbs.length - 1; o >= 0; o--) if (Math.abs(orbs[o].x - P.x) > IW * 1.1) orbs.splice(o, 1);
 }
 function updateFlyers(dt, t) {
@@ -2145,17 +2145,12 @@ function drawFlyers(t) {
   for (var o = 0; o < orbs.length; o++) {
     var ob = orbs[o], x = Math.round(ob.x - cxr), y = Math.round(surfaceY(ob.x) - ob.alt + Math.sin(t * 1.3 + ob.ph) * 2) - cyr;
     var pulse = 0.5 + 0.5 * Math.sin(t * 1.9 + ob.ph);
-    ctx.globalCompositeOperation = 'lighter';
-    disc(x, y, 5, 'rgba(150,210,90,' + (0.05 + pulse * 0.05).toFixed(3) + ')');
-    ctx.globalCompositeOperation = 'source-over';
-    var r = GM.orb[ob.k]; ctx.globalAlpha = 0.55 + pulse * 0.45;
-    gRect(r, x - (r[2] >> 1), y - (r[3] >> 1), false); ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(170,220,110,' + (0.35 + pulse * 0.45).toFixed(2) + ')'; ctx.fillRect(x, y, 1, 1);
   }
   for (var f = 0; f < fireflies.length; f++) {
-    var ff = fireflies[f], r2 = GM.firefly[ff.f];
+    var ff = fireflies[f];
     var fx = Math.round(ff.x - cxr), fy = Math.round(surfaceY(ff.x) - ff.alt) - cyr;
-    if (ff.f >= 2) { ctx.globalCompositeOperation = 'lighter'; disc(fx, fy + 2, 4, 'rgba(200,230,90,0.07)'); ctx.globalCompositeOperation = 'source-over'; }
-    gRect(r2, fx - (r2[2] >> 1), fy - (r2[3] >> 1), ff.ph > 3.14);
+    if (ff.f >= 2) { ctx.fillStyle = 'rgba(214,232,120,' + (ff.f >= 4 ? .9 : .5) + ')'; ctx.fillRect(fx, fy, 1, 1); }
   }
   for (var i = 0; i < moths.length; i++) {
     var m = moths[i], frames = m.grey ? GM.moth_grey : GM.moth_brown;
@@ -6229,9 +6224,7 @@ function drawFlies(t) {
     if (bl < 0.15) continue;
     var a = Math.min(1, (bl - 0.15) * 1.6);
     var col = f.hue < 0.6 ? '228,216,142' : '188,220,168';
-    ctx.fillStyle = 'rgba(' + col + ',' + (a * 0.16).toFixed(2) + ')';
-    ctx.fillRect(sx - 1, sy, 3, 1); ctx.fillRect(sx, sy - 1, 1, 3);
-    ctx.fillStyle = 'rgba(' + col + ',' + a.toFixed(2) + ')';
+    ctx.fillStyle = 'rgba(' + col + ',' + (a * 0.7).toFixed(2) + ')';
     ctx.fillRect(sx, sy, 1, 1);
   }
 }
