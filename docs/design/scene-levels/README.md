@@ -4,7 +4,9 @@ Twelve campaign gardens are tall, bounded rooms built from the owner's Figma
 `levelart` pairs (section `1271:34` on page `508:11825`): one transparent
 foreground terrain painting and one backdrop painting per level. The game draws
 the foreground 1:1 over the collision, the backdrop behind it with parallax, and
-keeps the camera and players inside the room. Tiers sit 80–150 px apart and are
+keeps the camera and players inside the room (the camera may rise above the
+painting only as far as a player standing on its highest ledge needs, 34 px plus
+the safe-area inset). Tiers sit 80–150 px apart and are
 joined by the painted ladders, so the rooms climb instead of stretching flat.
 
 | Stage | Scene | Figma foreground / backdrop |

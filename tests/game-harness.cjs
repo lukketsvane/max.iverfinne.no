@@ -72,7 +72,7 @@ const functionNames = [
   'updateHollowCrown', 'crownEnterPhase', 'hollowCrownDamage', 'crownBeginAttack', 'crownWave', 'crownLaneVolley', 'crownOrbitVolley',
   'guardianBlast', 'updateRunHazards', 'updateHazardContact', 'runHazardTouches', 'interactBossEvent', 'guardianRecovery', 'enemyDistance',
   'biteGarden', 'plantProtection', 'fighterState',
-  'stageLayout', 'pictureLayout', 'levelOriginX',
+  'stageLayout', 'pictureLayout', 'sceneRoomCamera', 'levelOriginX',
   'collectSeed', 'updateSeedPickups',
   'beginClimb',
   'useClassSkill', 'mossSlam', 'braceShove',
@@ -148,7 +148,7 @@ function loadGame(saved = {}) {
     clearTimeout() {}, setInterval() {}, clearInterval() {},
     requestAnimationFrame() {}, cancelAnimationFrame() {},
     getComputedStyle() { return { paddingTop: '0px' }; },
-    innerWidth: 960, innerHeight: 540, devicePixelRatio: 1, MaxScreenAspect: 0,
+    innerWidth: 960, innerHeight: 540, devicePixelRatio: 1, MaxScreenAspect: saved.__screenAspect === undefined ? 0 : saved.__screenAspect,
     addEventListener(name, fn) { (listeners[name] ||= []).push(fn); },
   };
   sandbox.window = sandbox;

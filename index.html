@@ -156,7 +156,8 @@ var cv = document.getElementById('c');
 var subpx = document.getElementById('subpx');
 var ctx = cv.getContext('2d', { alpha: false });
 var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
-var SCREEN_ASPECT = window.MaxScreenAspect != null ? +window.MaxScreenAspect : 3 / 4;
+var SCREEN_ASPECT = window.MaxScreenAspect != null ? +window.MaxScreenAspect : null;
+function screenAspect(w, h) { return SCREEN_ASPECT != null ? SCREEN_ASPECT : w > h ? 4 / 3 : 3 / 4; }
 var subpixelOn = true, subpixelArgs = null, subpixelGain = 0;
 try { subpixelOn = localStorage.getItem('max-subpixel') !== '0'; } catch (e) {}
 var crownCompactScale = false;
@@ -190,8 +191,8 @@ function resize() {
   var dpr = window.devicePixelRatio || 1;
   var vw = window.innerWidth, vh = window.innerHeight;
   lastVW = vw; lastVH = vh;
-  var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr), bw = dw, bh = dh;
-  if (SCREEN_ASPECT) { if (dw > dh * SCREEN_ASPECT) bw = Math.round(dh * SCREEN_ASPECT); else bh = Math.round(dw / SCREEN_ASPECT); }
+  var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr), bw = dw, bh = dh, aspect = screenAspect(dw, dh);
+  if (aspect) { if (dw > dh * aspect) bw = Math.round(dh * aspect); else bh = Math.round(dw / aspect); }
   var desk = !!(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches);
   SCALE = Math.max(2, Math.round(Math.min(bw, bh) / (desk ? 220 : 150)));
   if(crownCompactScale)SCALE=Math.max(1,Math.min(SCALE,Math.floor(bh/200)||1));
@@ -341,6 +342,7 @@ function pictureLayout(level){
   if(d.scene){
     L.scene=true;L.pictureSites=d.sites;L.campaign=Object.assign({},window.MaxStageLayout.profile(level),{title:d.title});
     L.bounds={x0:ax,y0:ay,x1:ax+d.w,y1:ay+d.h};
+    L.topSurface=ay+Math.min.apply(null,(d.ledges||[]).map(function(b){return b[1];}).concat(d.ground.map(function(q){return q[2];})));
     L.backdrop={img:PICTURE_ART[d.backdrop.art]||(PICTURE_ART[d.backdrop.art]=loadImg(d.backdrop.art)),w:d.backdrop.w,h:d.backdrop.h};
     L.ground.steps=d.ground.map(function(q){return [ax+q[0],ax+q[1],ay+q[2]];});
     d.ground.forEach(function(q,i){var a=d.ground[i-1];if(!a||Math.abs(q[2]-a[2])<=6)return;var high=q[2]<a[2];L.platforms.push({id:'w'+i,x:ax+(high?q[0]:a[1]-6),y:ay+Math.min(q[2],a[2]),w:6,h:Math.abs(q[2]-a[2]),depth:6,route:1,style:'stone',solid:true});});
@@ -387,7 +389,7 @@ var TILES=window.MaxTiles?{img:loadImg(window.MaxTiles.src),pieces:window.MaxTil
 function drawPlatforms(t){var L=stageLayout(),a=L.art,presentation=!isolatedRelicMode()&&window.MaxLevelScenes?window.MaxLevelScenes.presentation(L,surfaceY):L;if(!isolatedRelicMode()&&window.MaxTurtleArt)presentation=window.MaxTurtleArt.presentation(presentation);if(a&&a.img.complete&&a.img.naturalWidth)ctx.drawImage(a.img,Math.round(a.x-camX),Math.round(a.y-camY));if(isolatedRelicMode()||!window.MaxTurtleArt||!window.MaxTurtleArt.drawSupports(ctx,presentation,camX,camY,IW,IH,TILES))window.MaxStageLayout.draw(ctx,presentation,camX,camY,IW,IH,TILES);window.MaxPlaces.draw(ctx,L,camX,camY,IW,IH,t,placeTaken);drawLadders(L);window.MaxPlaces.drawBlooms(ctx,L,camX,camY,IW,IH,t,function(q){return q.hitAt!=null&&bloomT-q.hitAt<.22?1:0;});}
 function drawLevelScene(layer){if(isolatedRelicMode())return;var L=stageLayout();if(window.MaxLevelScenes)window.MaxLevelScenes.draw(ctx,L,camX,camY,IW,IH,surfaceY,layer,TILES);if(window.MaxTurtleArt)window.MaxTurtleArt.draw(ctx,L,camX,camY,IW,IH,layer);}
 function sceneRoomCamera(L){
-  var b=L.bounds,minX=b.x0,maxX=b.x1-IW,minY=b.y0,maxY=b.y1-IH;
+  var b=L.bounds,minX=b.x0,maxX=b.x1-IW,minY=Math.min(b.y0,(L.topSurface!=null?L.topSurface:b.y0)-safeTopArt()-34),maxY=b.y1-IH;
   if(maxX<minX)minX=maxX=Math.round((b.x0+b.x1-IW)/2);
   if(maxY<minY)minY=maxY=Math.round((b.y0+b.y1-IH)/2);
   return {minX:minX,maxX:maxX,minY:minY,maxY:maxY};
