@@ -158,11 +158,15 @@ export function createNativeArt() {
     // decoded atlases, serialize the current attempt and retry only missing ones.
     loading = Promise.allSettled(files.filter(([id]) => !atlases[id]).map(async ([id, url]) => {
       const atlas = await loadWithDeadline(url, id);
+      const flash = !SKINS.includes(id) && id !== 'rattus-motion' ? flashAtlas(atlas) : null;
+      const outlines = id === 'hollow-crown' ? Object.fromEntries(
+        Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef', wounded: '#b5a8de' })
+          .map(([name, color]) => [name, flashAtlas(atlas, color)])) : null;
       atlases[id] = atlas;
-      if (!SKINS.includes(id) && id !== 'rattus-motion') flashes[id] = flashAtlas(atlas);
-      if (id === 'hollow-crown') {
-        for (const guard of ['chimera-ground', 'chimera-air']) { atlases[guard] = atlas; flashes[guard] = flashes[id]; }
-        for (const [name, color] of Object.entries({ dark: '#111923', tell: '#ffc872', open: '#8ce9ef', wounded: '#b5a8de' })) crownOutlines[name] = flashAtlas(atlas, color);
+      if (flash) flashes[id] = flash;
+      if (outlines) {
+        Object.assign(crownOutlines, outlines);
+        for (const guard of ['chimera-ground', 'chimera-air']) { atlases[guard] = atlas; flashes[guard] = flash; }
       }
       return id;
     })).then(() => {

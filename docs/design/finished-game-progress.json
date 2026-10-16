@@ -223,5 +223,24 @@
       "exactShaCI": "Required on the final published main commit containing this receipt",
       "production": "Verify production Vercel and the custom-domain build against the same final main SHA"
     }
+  },
+  "nativeArtPreparation": {
+    "date": "2026-10-16",
+    "milestone": "MG",
+    "status": "implemented_pending_full_ci",
+    "branch": "codex/native-art-preparation-retry",
+    "problem": "Atlas cache was published before canvas flash and Crown outline preparation. A thrown preparation error could falsely pass Play readiness and permanently skip retry.",
+    "changedFiles": [
+      "native-art.mjs",
+      "tests/native-art-preparation.test.cjs",
+      "docs/design/finished-game-progress.json"
+    ],
+    "verification": {
+      "baseline": "Both focused regressions failed on main 4f7ef656 with missing expected readiness rejection.",
+      "focused": "node --test tests/native-art-preparation.test.cjs: 2/2 passed after atomic preparation; ordinary flash failure and later Crown outline failure reject shared readiness, expose no partial body, retry only the failed pack and restore native body/flash rendering.",
+      "fullTestsAndBuild": "Pending on isolated branch CI; local Git clone was unavailable because github.com DNS resolution failed.",
+      "production": "Not published to main; exact-SHA release and production verification remain pending."
+    },
+    "nextStep": "Require full npm test and npm run build on this branch before integration; preserve concurrent scene-level work, then continue the remaining MG inventory."
   }
 }
