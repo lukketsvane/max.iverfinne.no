@@ -13,6 +13,8 @@ native art and physical ascent. Its [execution ledger](docs/design/finished-game
 records verified work and the next milestone; planned quality targets are not
 claims of completed playtesting.
 
+The game uses the full screen width and height in both orientations, without a fixed aspect frame or cropping the canvas. Whole-pixel fitting can leave less than one native pixel of unused space per axis.
+
 Settings → Pixels cycles Auto, 4x, 6x, 8x and 10x native-canvas enlargement, defaulting to 8x. These change the actual render resolution, not a display mask. Each native pixel becomes an integer block of physical display pixels; smaller screens and the Crown retain readable framing. The saved device choice does not pause or restart the garden. See [pixel display strategies](docs/design/pixel-render-strategies.md).
 
 ## The current game contract

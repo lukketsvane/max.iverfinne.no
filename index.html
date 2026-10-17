@@ -155,7 +155,7 @@ var cv = document.getElementById('c');
 var ctx = cv.getContext('2d', { alpha: false });
 var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
 var SCREEN_ASPECT = window.MaxScreenAspect != null ? +window.MaxScreenAspect : null;
-function screenAspect(w, h) { return SCREEN_ASPECT != null ? SCREEN_ASPECT : w > h ? 4 / 3 : 3 / 4; }
+function screenAspect() { return SCREEN_ASPECT > 0 && Number.isFinite(SCREEN_ASPECT) ? SCREEN_ASPECT : 0; }
 "MAX_PIXEL_RENDER";
 var crownCompactScale = false;
 var lastVW = 0, lastVH = 0;
