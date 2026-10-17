@@ -1,0 +1,106 @@
+{
+  "format": "max-railway-prior-scale/v1",
+  "reason": "Preserved full-size exports and authenticated prior import before owner-directed quarter-size native registration",
+  "files": [
+    {
+      "path": "arches.png",
+      "sha256": "6c4dc552bbfd62131aa1d8d6d3046ead0a31023c1cca9860dec81e48b816e850"
+    },
+    {
+      "path": "atlas.json",
+      "sha256": "2557b3662e1c068b36316026ead875a7b9a60ad2a5a92762f4fbcdbd0ff3c4f3"
+    },
+    {
+      "path": "bridge.png",
+      "sha256": "c582510541cbd21346ed110e28b26171acaa994a96c8fe10f742113ae803aafc"
+    },
+    {
+      "path": "build-railway-modules.mjs",
+      "sha256": "80a0d7e3ccc62629d3d44f79a2ca380aaa557492ead40aeec15856fc85dcdaa4"
+    },
+    {
+      "path": "figma-check/capture-runtime.use-figma.js",
+      "sha256": "2163e32244d20572d96f1f10637dee28e54ff49c4c898acdc9d8c447194c6263"
+    },
+    {
+      "path": "figma-check/capture-tiara.use-figma.js",
+      "sha256": "dbeffb785bf47a9ca82fac0e3d892f21dc74328696ef44e7f498a508f3f685cb"
+    },
+    {
+      "path": "figma-check/check-captured-source.mjs",
+      "sha256": "de17fb6f63028605728e6ca287b732c97e0a7ee39d212c1526c50333cf3e65d1"
+    },
+    {
+      "path": "figma-check/figma-check-exit.json",
+      "sha256": "52da8b5c783b680a9a31a6df167246e1d3e250307faf62909caf7db1ce80ee63"
+    },
+    {
+      "path": "figma-check/figma-check.log",
+      "sha256": "8fe7dc7691d6a5d1a5b90a9d5991d329c897d14df1d57c84132eb224a0526657"
+    },
+    {
+      "path": "figma-check/figma-runtime-capture.json",
+      "sha256": "a2ef796f82e3eae192e695c3cc6bd72281505026b028444b19ba954de3ef692a"
+    },
+    {
+      "path": "figma-check/preexisting-source-drift.json",
+      "sha256": "b9dde62c9c4969d620b9c2d1c2426f37d266df8d5f1912212b8a0f2f0fe0de93"
+    },
+    {
+      "path": "figma-check/tiara-fresh-export.base64",
+      "sha256": "c21a37c69ccb626b0690e7f6ba7eb208b83ea0ef076d95e0aa5641740025719b"
+    },
+    {
+      "path": "figma-check/tiara-fresh-export.png",
+      "sha256": "123c7dbb88538907f44a705d3fd0d006ee005ccbf23c02212d71b2ce289d2914"
+    },
+    {
+      "path": "figma-check/tiara-vector-capture.json",
+      "sha256": "9bad42d022cfb3298ac8a08987d7193c6c9e4f27c0c63662c159918b26c80486"
+    },
+    {
+      "path": "figma-check/tiara-vector-capture.raw.json",
+      "sha256": "9d044b35a82a01fb2d3944de7d23b4b9c16cba77938d94b6ac2df3da77b1199f"
+    },
+    {
+      "path": "figma-import.json",
+      "sha256": "2795e9ec2eabe1711af6cc2fac2571950ff171e1aa8e85694312161acbf84308"
+    },
+    {
+      "path": "figma-modules.png",
+      "sha256": "c15e8633051ef0c8f2c6c9705cbbd4a345ab6790e0d3cd41d5303a9ec88cfe45"
+    },
+    {
+      "path": "figma-state.json",
+      "sha256": "6c20481b4f7664a286aac6c359d1775743f0cee2adca3ef455fe74e0a1612bee"
+    },
+    {
+      "path": "junction.png",
+      "sha256": "ec9889d7ee511c3c64e9846be94940dcb86f69166c8b667fb044605932ca54ef"
+    },
+    {
+      "path": "lift.png",
+      "sha256": "9c824a53d6982b87f09ee6c7f54d35c2dbda35accffa14159e2e023378cc9166"
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "36027ce214c7e389945f9c1f9f4dbb500d473ea7ff79314475d19c20377e77fd"
+    },
+    {
+      "path": "README.md",
+      "sha256": "8d0185ebbb3f22198c7b803336411a8f520865efbc71b646b1338a77f7401012"
+    },
+    {
+      "path": "recipe.json",
+      "sha256": "56017e2cab5d4f7d25336975f0164e001550f53fe2445b2e2db7381c95ab20de"
+    },
+    {
+      "path": "train.png",
+      "sha256": "82d07d8fda488fbbc4fba9c4fe4c9b83f3b4e047e8da09b7ab7f671095e6af89"
+    },
+    {
+      "path": "tunnel.png",
+      "sha256": "952f75a80e50476f86451b48cafe322230bae741aae85ecafe3bc74f74d78bcf"
+    }
+  ]
+}

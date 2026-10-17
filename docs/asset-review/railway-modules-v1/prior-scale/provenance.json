@@ -1,0 +1,220 @@
+{
+  "format": "max-generated-art/v1",
+  "pack": "railway-modules-v1",
+  "origin": "imagegen-native-import-candidate",
+  "reference": {
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "nodeId": "1266:19",
+    "componentId": "1433:22051",
+    "ownerLinkNodeId": "1271:34",
+    "role": "owner-selected railway ruin appearance reference"
+  },
+  "source": {
+    "path": "docs/asset-review/railway-modules-v1/source/railway-ruins-generated.png",
+    "originalName": "exec-126721cf-6cc2-458a-a0a7-42f648c50005.png",
+    "sha256": "ee888712303a0c3a17d226f489a071cd010353f5dbb3bcde4d9332883721dd1b",
+    "width": 1536,
+    "height": 1024
+  },
+  "recipe": {
+    "path": "docs/asset-review/railway-modules-v1/recipe.json",
+    "sha256": "56017e2cab5d4f7d25336975f0164e001550f53fe2445b2e2db7381c95ab20de"
+  },
+  "builder": {
+    "path": "scripts/build-railway-modules.mjs",
+    "sha256": "80a0d7e3ccc62629d3d44f79a2ca380aaa557492ead40aeec15856fc85dcdaa4"
+  },
+  "atlas": {
+    "path": "assets/railway-modules-v1/atlas.json",
+    "sha256": "2557b3662e1c068b36316026ead875a7b9a60ad2a5a92762f4fbcdbd0ff3c4f3"
+  },
+  "processing": [
+    "explicit module windows",
+    "tight alpha-128 source bounds",
+    "one source pixel per native output pixel",
+    "four transparent pixels of integer padding",
+    "128-color source-derived palette with fixed brick, metal, vine, amber and flower anchors",
+    "binary alpha at 128",
+    "zero RGB under transparent pixels",
+    "no resampling, isolation, redraw or geometric deformation"
+  ],
+  "figma": {
+    "status": "pending-import",
+    "productionPage": "10:2",
+    "productionSection": "451:2",
+    "sourceNodes": []
+  },
+  "validation": {
+    "moduleCount": 6,
+    "nativeScale": 1,
+    "binaryAlpha": true,
+    "cleanTransparency": true,
+    "palette": true,
+    "sourcePixelRegistration": true,
+    "artProblems": []
+  },
+  "outputs": [
+    {
+      "id": "arches",
+      "path": "assets/railway-modules-v1/arches.png",
+      "width": 508,
+      "height": 390,
+      "sourceWindow": [
+        0,
+        60,
+        520,
+        406
+      ],
+      "sourceRect": [
+        14,
+        83,
+        500,
+        382
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        504,
+        386
+      ],
+      "opaquePixels": 99796,
+      "sha1": "9784101b5a67844b860cbea744aa498557633c8f",
+      "sha256": "6c4dc552bbfd62131aa1d8d6d3046ead0a31023c1cca9860dec81e48b816e850"
+    },
+    {
+      "id": "bridge",
+      "path": "assets/railway-modules-v1/bridge.png",
+      "width": 498,
+      "height": 345,
+      "sourceWindow": [
+        520,
+        100,
+        498,
+        370
+      ],
+      "sourceRect": [
+        520,
+        126,
+        490,
+        337
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        494,
+        341
+      ],
+      "opaquePixels": 59689,
+      "sha1": "a4a47720f58b2e6291bdfb59968b310731a65111",
+      "sha256": "c582510541cbd21346ed110e28b26171acaa994a96c8fe10f742113ae803aafc"
+    },
+    {
+      "id": "tunnel",
+      "path": "assets/railway-modules-v1/tunnel.png",
+      "width": 507,
+      "height": 313,
+      "sourceWindow": [
+        1018,
+        150,
+        518,
+        330
+      ],
+      "sourceRect": [
+        1023,
+        174,
+        499,
+        305
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        503,
+        309
+      ],
+      "opaquePixels": 96610,
+      "sha1": "4c24b0b5d534e134a98fd4f946d2451371a27def",
+      "sha256": "952f75a80e50476f86451b48cafe322230bae741aae85ecafe3bc74f74d78bcf"
+    },
+    {
+      "id": "lift",
+      "path": "assets/railway-modules-v1/lift.png",
+      "width": 366,
+      "height": 531,
+      "sourceWindow": [
+        0,
+        466,
+        395,
+        529
+      ],
+      "sourceRect": [
+        30,
+        468,
+        358,
+        523
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        362,
+        527
+      ],
+      "opaquePixels": 87413,
+      "sha1": "e38cc56ae063ec92837d943ec2a67a7014bf24ce",
+      "sha256": "9c824a53d6982b87f09ee6c7f54d35c2dbda35accffa14159e2e023378cc9166"
+    },
+    {
+      "id": "train",
+      "path": "assets/railway-modules-v1/train.png",
+      "width": 564,
+      "height": 302,
+      "sourceWindow": [
+        395,
+        625,
+        575,
+        360
+      ],
+      "sourceRect": [
+        402,
+        650,
+        556,
+        294
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        560,
+        298
+      ],
+      "opaquePixels": 81177,
+      "sha1": "75fd862e5ddbc45ec52e57ecb819da7453d387d7",
+      "sha256": "82d07d8fda488fbbc4fba9c4fe4c9b83f3b4e047e8da09b7ab7f671095e6af89"
+    },
+    {
+      "id": "junction",
+      "path": "assets/railway-modules-v1/junction.png",
+      "width": 546,
+      "height": 384,
+      "sourceWindow": [
+        970,
+        560,
+        566,
+        425
+      ],
+      "sourceRect": [
+        977,
+        573,
+        538,
+        376
+      ],
+      "opaqueBounds": [
+        4,
+        4,
+        542,
+        380
+      ],
+      "opaquePixels": 109706,
+      "sha1": "a45990af3e962dfcf3e437fd717ad3af46dde691",
+      "sha256": "ec9889d7ee511c3c64e9846be94940dcb86f69166c8b667fb044605932ca54ef"
+    }
+  ]
+}

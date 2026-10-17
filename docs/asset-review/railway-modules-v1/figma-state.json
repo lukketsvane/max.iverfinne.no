@@ -1,0 +1,71 @@
+{
+  "createdNodeIds": [
+    "1443:21979",
+    "1443:21980",
+    "1443:21981",
+    "1443:21982",
+    "1443:21983",
+    "1443:21984",
+    "1443:21985",
+    "1443:21986",
+    "1443:21987",
+    "1443:21988",
+    "1443:21989",
+    "1443:21990",
+    "1443:21991"
+  ],
+  "mutatedNodeIds": [
+    "451:2"
+  ],
+  "frameId": "1443:21979",
+  "entries": [
+    {
+      "name": "arches",
+      "componentId": "1443:21980",
+      "nodeId": "1443:21981",
+      "w": 508,
+      "h": 390,
+      "path": "assets/railway-modules-v1/arches.png"
+    },
+    {
+      "name": "bridge",
+      "componentId": "1443:21982",
+      "nodeId": "1443:21983",
+      "w": 498,
+      "h": 345,
+      "path": "assets/railway-modules-v1/bridge.png"
+    },
+    {
+      "name": "tunnel",
+      "componentId": "1443:21984",
+      "nodeId": "1443:21985",
+      "w": 507,
+      "h": 313,
+      "path": "assets/railway-modules-v1/tunnel.png"
+    },
+    {
+      "name": "lift",
+      "componentId": "1443:21986",
+      "nodeId": "1443:21987",
+      "w": 366,
+      "h": 531,
+      "path": "assets/railway-modules-v1/lift.png"
+    },
+    {
+      "name": "train",
+      "componentId": "1443:21988",
+      "nodeId": "1443:21989",
+      "w": 564,
+      "h": 302,
+      "path": "assets/railway-modules-v1/train.png"
+    },
+    {
+      "name": "junction",
+      "componentId": "1443:21990",
+      "nodeId": "1443:21991",
+      "w": 546,
+      "h": 384,
+      "path": "assets/railway-modules-v1/junction.png"
+    }
+  ]
+}

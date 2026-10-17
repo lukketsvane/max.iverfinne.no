@@ -79,6 +79,7 @@ function page(name, title) {
   cancelPlayIntent();
   screen = name; overlay.dataset.screen = name; card.replaceChildren();
   const header = el('header', undefined, 'max-menu-header');
+  if (name === 'play' && selectedMode === 'garden') header.classList.add('max-menu-header-hidden');
   header.append(pixelText(el('p', undefined, 'max-menu-kicker'), 'THE WILD GARDEN', 1, 1));
   const h = name === 'account' ? el('h2', title) : pixelText(el('h2'), title, 2, 0);
   h.id = 'max-menu-title'; h.tabIndex = -1; header.append(h); card.append(header);

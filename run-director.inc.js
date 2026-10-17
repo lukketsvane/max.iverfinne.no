@@ -138,14 +138,15 @@ function nextRunEnemyKind(){
   d.seen|=1<<kind;d.last=kind;d.serial=(d.serial|0)+1;return kind;
 }
 function safeEnemyPosition(k,x,y){
+  if(masterMapMode())x=window.MaxMasterMap.x(window.MaxMasterMapData,x,12);
   var chosen=null,best=-1,players=runPlayers();
   for(var i=0;i<9;i++){
-    var dx=i?Math.ceil(i/2)*44*(i%2?1:-1):0,cx=x+dx,cy=y+surfaceY(cx)-surfaceY(x),distance=Infinity;
+    var dx=i?Math.ceil(i/2)*44*(i%2?1:-1):0,cx=x+dx;if(masterMapMode())cx=window.MaxMasterMap.x(window.MaxMasterMapData,cx,12);var cy=y+surfaceY(cx)-surfaceY(x),distance=Infinity;
     players.forEach(function(a){distance=Math.min(distance,Math.hypot(cx-a.p.x,cy-(a.p.y-12)));});
     if(distance>best){best=distance;chosen={x:cx,y:cy};}
     if(distance>=72)break;
   }
-  if(best<72){
+  if(best<72&&!masterMapMode()){
     var left=Math.min.apply(null,players.map(function(a){return a.p.x;}))-80,right=Math.max.apply(null,players.map(function(a){return a.p.x;}))+80;
     var outside=Math.abs(left-x)<Math.abs(right-x)?left:right;chosen={x:outside,y:y+surfaceY(outside)-surfaceY(x)};
   }
@@ -198,6 +199,7 @@ function updateRunLoot(){
 }
 function initRunStage(){
   if(relicRunMode()){bossEvent=null;runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;seedPickups=[];return;}
+  if(masterMapMode()){bossEvent=null;runLoot=[];runEncounters=[];runHazards=[];runExpedition=null;stageWeather=null;seedPickups=[];hazardHits={};pickupNotice=null;rogueRun.overstay=null;rogueRun.bossDefeated=false;return;}
   if(worldLevel()>1)runCheckpoint();
   runLoot=[];runEncounters=[];runHazards=[];hazardHits={};pickupNotice=null;
   var w=worldLevel(),origin=levelOriginX(w),side=w%2?1:-1;
@@ -570,7 +572,7 @@ function updateHazardContact(){
 }
 function updateRunDirector(dt){
   if(nightRelayMode())return;
-  if(highTideMode()||lastSeedMode()){updateRunLoot();updateRunHazards(dt);return;}
+  if(highTideMode()||lastSeedMode()||masterMapMode()){updateRunLoot();updateRunHazards(dt);return;}
   updateRunLoot();updateEncounters(dt);updateExpedition(dt);updateStageWeather(dt);updateOverstay(dt);updateRunHazards(dt);
 }
 function updateOverstay(dt){

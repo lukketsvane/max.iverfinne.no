@@ -9,10 +9,12 @@ whose actual native sources and authenticated comparison are recorded below.
 
 ## The rule
 
+The owner's 17 October map reset makes section `1433:22060` on page `508:11825` the sole map-authoring source for the ordinary game. The real game engine renders its captured native artwork through `master-map-data.js` and `master-source.json`, with Max animated and controlled separately at the authored spawn. The Cavern piece supplies ground support; historical campaign layouts and generated scenery are bypassed. Keep map artwork loose and omit organizing frames and visible labels. Future changes require a fresh export and rebuild. See `assets/master-source-v1/README.md` and its authenticated source receipt.
+
 The production page **10:2** contains six runtime sections, `451:2` through `451:7`, configured in `scripts/figma-mcp.mjs`. They replaced the removed frame `160:2`. Each runtime section contains native PNG source rectangles, often inside component sets. Source layers use exact repository paths and native dimensions; export them as PNG at 1×. Separate encounter workbenches are promoted explicitly when their runtime integration is ready.
 A production layer is:
 
-- a rectangle inside one of the group frames of the configured runtime sections,
+- a rectangle inside a configured runtime section, directly or as part of a reusable component,
 - named with the exact repository path (`assets/native/rover.png`),
 - whose only fill is the PNG itself at native 1×, so layer W×H = PNG W×H,
 - on integer X / Y / W / H, with nothing drawn over it.

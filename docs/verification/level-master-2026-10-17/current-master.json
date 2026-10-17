@@ -1,0 +1,355 @@
+{
+  "capturedAt": "2026-10-17T21:56:15.052Z",
+  "source": {
+    "mode": "master-only",
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "masterNodeId": "1433:22060",
+    "exportPath": "assets/master-source-v1/master.png",
+    "width": 836,
+    "height": 561,
+    "sourceSha256": "c8e91c5dd6701e6b815f1a1855c843069433e095f17523ef78477514f506547f",
+    "sourceRegion": {
+      "x": 100,
+      "y": 100,
+      "w": 836,
+      "h": 561
+    }
+  },
+  "sourceNodes": {
+    "id": "1433:22060",
+    "type": "SECTION",
+    "name": "MASTER",
+    "parentId": "508:11825",
+    "x": -44982,
+    "y": 20940,
+    "width": 1036,
+    "height": 761,
+    "fills": [
+      {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 0.2666666805744171,
+          "g": 0.2666666805744171,
+          "b": 0.2666666805744171
+        },
+        "boundVariables": {}
+      }
+    ],
+    "children": [
+      {
+        "id": "1433:22075",
+        "type": "RECTANGLE",
+        "name": "23",
+        "x": 100,
+        "y": 100,
+        "width": 836,
+        "height": 470.5
+      },
+      {
+        "id": "1433:22082",
+        "type": "INSTANCE",
+        "name": "Environment/Night",
+        "x": 100,
+        "y": 100,
+        "width": 836,
+        "height": 471
+      },
+      {
+        "id": "1433:22063",
+        "type": "INSTANCE",
+        "name": "Characters/Max",
+        "x": 115,
+        "y": 449,
+        "width": 32,
+        "height": 32
+      },
+      {
+        "id": "1433:22080",
+        "type": "INSTANCE",
+        "name": "Environment/Cavern",
+        "x": 100,
+        "y": 481,
+        "width": 836,
+        "height": 180
+      }
+    ]
+  },
+  "export": {
+    "method": "Figma Plugin API exportAsync PNG at SCALE 1; temporary slice at the source artwork bounds",
+    "bytes": 504711,
+    "sha1": "43a2921e1e9cc250d28161c6d5ee3d68d31cda88",
+    "sha256": "c8e91c5dd6701e6b815f1a1855c843069433e095f17523ef78477514f506547f",
+    "productionNodeId": "1449:21994",
+    "temporarySlicesRemoved": true,
+    "pixelProcessing": "none"
+  },
+  "looseArtwork": [
+    {
+      "id": "1449:11",
+      "type": "RECTANGLE",
+      "name": "assets/railway-modules-v1/arches.png",
+      "parentId": "508:11825",
+      "x": -44765,
+      "y": 19519,
+      "width": 127,
+      "height": 98,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "e4a324ee5b815c0169e24247c0d3afbffeb3acff"
+        }
+      ]
+    },
+    {
+      "id": "1449:12",
+      "type": "RECTANGLE",
+      "name": "assets/railway-modules-v1/bridge.png",
+      "parentId": "508:11825",
+      "x": -44627,
+      "y": 19519,
+      "width": 125,
+      "height": 87,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "8d27313d9ec019cefcade373ff8d8e7eded2122d"
+        }
+      ]
+    },
+    {
+      "id": "1449:13",
+      "type": "RECTANGLE",
+      "name": "assets/railway-modules-v1/tunnel.png",
+      "parentId": "508:11825",
+      "x": -44491,
+      "y": 19519,
+      "width": 127,
+      "height": 79,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "9f61b107656921fb5aabd0ec8d46e7fa8a8ef957"
+        }
+      ]
+    },
+    {
+      "id": "1449:14",
+      "type": "RECTANGLE",
+      "name": "assets/railway-modules-v1/lift.png",
+      "parentId": "508:11825",
+      "x": -44765,
+      "y": 19626,
+      "width": 92,
+      "height": 133,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "ef5bcd7c75b699a0528f804aacaff0b37666d406"
+        }
+      ]
+    },
+    {
+      "id": "1449:15",
+      "type": "RECTANGLE",
+      "name": "assets/railway-modules-v1/train.png",
+      "parentId": "508:11825",
+      "x": -44662,
+      "y": 19626,
+      "width": 141,
+      "height": 76,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "e7d70368385a4bf9b1d1ba2cf01df9a77e2e793c"
+        }
+      ]
+    },
+    {
+      "id": "1449:16",
+      "type": "RECTANGLE",
+      "name": "assets/railway-modules-v1/junction.png",
+      "parentId": "508:11825",
+      "x": -44510,
+      "y": 19626,
+      "width": 137,
+      "height": 96,
+      "fills": [
+        {
+          "type": "IMAGE",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "scaleMode": "FILL",
+          "scalingFactor": 1,
+          "rotation": 0,
+          "filters": {
+            "exposure": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "temperature": 0,
+            "tint": 0,
+            "highlights": 0,
+            "shadows": 0
+          },
+          "imageTransform": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "imageHash": "12afc4970e78a6afda9f7bce772d6bdafe86af42"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Current source is an authoring canvas. No collision, exits or new playable levels were added.",
+    "Source changes require a fresh Figma export and source hash update; this receipt is a captured snapshot."
+  ],
+  "role": "Historical static-snapshot comparison; superseded by real game integration",
+  "supersededBy": "game-browser.json"
+}

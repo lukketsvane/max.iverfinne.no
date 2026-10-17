@@ -179,6 +179,10 @@ function loadGame(saved = {}) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'levels.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'companion.js'), 'utf8'), sandbox);
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'high-tide-map.js'), 'utf8'), sandbox);
+  if (saved.__masterMap !== undefined) {
+    sandbox.MaxMasterMapData = saved.__masterMap;
+    vm.runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'master-map.js'), 'utf8'), sandbox);
+  } else sandbox.MaxLegacyMapFixtures = true;
   vm.runInNewContext(instrumented, sandbox, { filename: 'index.html', timeout: 2000 });
   return {
     game: sandbox.game, document, elements, storage, timers, images, window: sandbox,

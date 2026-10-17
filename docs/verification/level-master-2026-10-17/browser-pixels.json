@@ -1,0 +1,22 @@
+{
+  "url": "http://127.0.0.1:8765/",
+  "verificationUrl": "http://127.0.0.1:8765/master-verification.html",
+  "expectedPixelHash": "3890afc1bd73ac02ea232a847471e76b6a457b801b9d2d60e13df883ef81043e",
+  "pixelHash": "3890afc1bd73ac02ea232a847471e76b6a457b801b9d2d60e13df883ef81043e",
+  "result": "pass",
+  "nativeSize": [
+    836,
+    561
+  ],
+  "comparedPixels": 468996,
+  "screenshot": "docs/verification/level-master-2026-10-17/master-local.jpg",
+  "display": {
+    "width": 836,
+    "height": 561,
+    "left": 222,
+    "top": 79,
+    "devicePixelRatio": 1
+  },
+  "role": "Historical static-snapshot comparison; superseded by real game integration",
+  "supersededBy": "game-browser.json"
+}

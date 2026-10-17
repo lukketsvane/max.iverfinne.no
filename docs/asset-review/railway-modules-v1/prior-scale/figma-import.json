@@ -1,0 +1,378 @@
+{
+  "created": {
+    "createdNodeIds": [
+      "1443:21979",
+      "1443:21980",
+      "1443:21981",
+      "1443:21982",
+      "1443:21983",
+      "1443:21984",
+      "1443:21985",
+      "1443:21986",
+      "1443:21987",
+      "1443:21988",
+      "1443:21989",
+      "1443:21990",
+      "1443:21991"
+    ],
+    "mutatedNodeIds": [
+      "451:2"
+    ],
+    "frameId": "1443:21979",
+    "entries": [
+      {
+        "name": "arches",
+        "componentId": "1443:21980",
+        "nodeId": "1443:21981",
+        "w": 508,
+        "h": 390,
+        "path": "assets/railway-modules-v1/arches.png"
+      },
+      {
+        "name": "bridge",
+        "componentId": "1443:21982",
+        "nodeId": "1443:21983",
+        "w": 498,
+        "h": 345,
+        "path": "assets/railway-modules-v1/bridge.png"
+      },
+      {
+        "name": "tunnel",
+        "componentId": "1443:21984",
+        "nodeId": "1443:21985",
+        "w": 507,
+        "h": 313,
+        "path": "assets/railway-modules-v1/tunnel.png"
+      },
+      {
+        "name": "lift",
+        "componentId": "1443:21986",
+        "nodeId": "1443:21987",
+        "w": 366,
+        "h": 531,
+        "path": "assets/railway-modules-v1/lift.png"
+      },
+      {
+        "name": "train",
+        "componentId": "1443:21988",
+        "nodeId": "1443:21989",
+        "w": 564,
+        "h": 302,
+        "path": "assets/railway-modules-v1/train.png"
+      },
+      {
+        "name": "junction",
+        "componentId": "1443:21990",
+        "nodeId": "1443:21991",
+        "w": 546,
+        "h": 384,
+        "path": "assets/railway-modules-v1/junction.png"
+      }
+    ],
+    "palette": {
+      "createdNodeIds": [
+        "1443:21992",
+        "1443:21993",
+        "1443:21994",
+        "1443:21995",
+        "1443:21996",
+        "1443:21997",
+        "1443:21999",
+        "1443:22000",
+        "1443:22001",
+        "1443:22003",
+        "1443:22004",
+        "1443:22005",
+        "1443:22007",
+        "1443:22008",
+        "1443:22009",
+        "1443:22010",
+        "1443:22012",
+        "1443:22013",
+        "1443:22014",
+        "1443:22016",
+        "1443:22017",
+        "1443:22018",
+        "1443:22020"
+      ],
+      "boardId": "1443:21992",
+      "bounds": {
+        "x": -43800,
+        "y": 18538,
+        "w": 1665,
+        "h": 1207
+      },
+      "entries": [
+        {
+          "id": "1443:21997",
+          "componentId": "1443:21980",
+          "w": 508,
+          "h": 390
+        },
+        {
+          "id": "1443:22001",
+          "componentId": "1443:21982",
+          "w": 498,
+          "h": 345
+        },
+        {
+          "id": "1443:22005",
+          "componentId": "1443:21984",
+          "w": 507,
+          "h": 313
+        },
+        {
+          "id": "1443:22010",
+          "componentId": "1443:21986",
+          "w": 366,
+          "h": 531
+        },
+        {
+          "id": "1443:22014",
+          "componentId": "1443:21988",
+          "w": 564,
+          "h": 302
+        },
+        {
+          "id": "1443:22018",
+          "componentId": "1443:21990",
+          "w": 546,
+          "h": 384
+        }
+      ]
+    }
+  },
+  "verification": {
+    "mutatedNodeIds": [
+      "1443:21993",
+      "1443:21994",
+      "1443:21999",
+      "1443:22003",
+      "1443:22007",
+      "1443:22012",
+      "1443:22016",
+      "1443:22020"
+    ],
+    "boardId": "1443:21992",
+    "sources": [
+      {
+        "nodeId": "1443:21981",
+        "path": "assets/railway-modules-v1/arches.png",
+        "x": 0,
+        "y": 0,
+        "w": 508,
+        "h": 390,
+        "rotation": 0,
+        "opacity": 1,
+        "visible": true,
+        "imageHash": "9784101b5a67844b860cbea744aa498557633c8f",
+        "imageSize": {
+          "width": 508,
+          "height": 390
+        },
+        "scaleMode": "FILL",
+        "fillCount": 1,
+        "parent": "1443:21980"
+      },
+      {
+        "nodeId": "1443:21983",
+        "path": "assets/railway-modules-v1/bridge.png",
+        "x": 0,
+        "y": 0,
+        "w": 498,
+        "h": 345,
+        "rotation": 0,
+        "opacity": 1,
+        "visible": true,
+        "imageHash": "a4a47720f58b2e6291bdfb59968b310731a65111",
+        "imageSize": {
+          "width": 498,
+          "height": 345
+        },
+        "scaleMode": "FILL",
+        "fillCount": 1,
+        "parent": "1443:21982"
+      },
+      {
+        "nodeId": "1443:21985",
+        "path": "assets/railway-modules-v1/tunnel.png",
+        "x": 0,
+        "y": 0,
+        "w": 507,
+        "h": 313,
+        "rotation": 0,
+        "opacity": 1,
+        "visible": true,
+        "imageHash": "4c24b0b5d534e134a98fd4f946d2451371a27def",
+        "imageSize": {
+          "width": 507,
+          "height": 313
+        },
+        "scaleMode": "FILL",
+        "fillCount": 1,
+        "parent": "1443:21984"
+      },
+      {
+        "nodeId": "1443:21987",
+        "path": "assets/railway-modules-v1/lift.png",
+        "x": 0,
+        "y": 0,
+        "w": 366,
+        "h": 531,
+        "rotation": 0,
+        "opacity": 1,
+        "visible": true,
+        "imageHash": "e38cc56ae063ec92837d943ec2a67a7014bf24ce",
+        "imageSize": {
+          "width": 366,
+          "height": 531
+        },
+        "scaleMode": "FILL",
+        "fillCount": 1,
+        "parent": "1443:21986"
+      },
+      {
+        "nodeId": "1443:21989",
+        "path": "assets/railway-modules-v1/train.png",
+        "x": 0,
+        "y": 0,
+        "w": 564,
+        "h": 302,
+        "rotation": 0,
+        "opacity": 1,
+        "visible": true,
+        "imageHash": "75fd862e5ddbc45ec52e57ecb819da7453d387d7",
+        "imageSize": {
+          "width": 564,
+          "height": 302
+        },
+        "scaleMode": "FILL",
+        "fillCount": 1,
+        "parent": "1443:21988"
+      },
+      {
+        "nodeId": "1443:21991",
+        "path": "assets/railway-modules-v1/junction.png",
+        "x": 0,
+        "y": 0,
+        "w": 546,
+        "h": 384,
+        "rotation": 0,
+        "opacity": 1,
+        "visible": true,
+        "imageHash": "a45990af3e962dfcf3e437fd717ad3af46dde691",
+        "imageSize": {
+          "width": 546,
+          "height": 384
+        },
+        "scaleMode": "FILL",
+        "fillCount": 1,
+        "parent": "1443:21990"
+      }
+    ],
+    "instances": [
+      {
+        "id": "1443:21997",
+        "w": 508,
+        "h": 390,
+        "transform": [
+          [
+            1,
+            0,
+            -43768
+          ],
+          [
+            0,
+            1,
+            18694
+          ]
+        ]
+      },
+      {
+        "id": "1443:22001",
+        "w": 498,
+        "h": 345,
+        "transform": [
+          [
+            1,
+            0,
+            -43216
+          ],
+          [
+            0,
+            1,
+            18694
+          ]
+        ]
+      },
+      {
+        "id": "1443:22005",
+        "w": 507,
+        "h": 313,
+        "transform": [
+          [
+            1,
+            0,
+            -42674
+          ],
+          [
+            0,
+            1,
+            18694
+          ]
+        ]
+      },
+      {
+        "id": "1443:22010",
+        "w": 366,
+        "h": 531,
+        "transform": [
+          [
+            1,
+            0,
+            -43768
+          ],
+          [
+            0,
+            1,
+            19160
+          ]
+        ]
+      },
+      {
+        "id": "1443:22014",
+        "w": 564,
+        "h": 302,
+        "transform": [
+          [
+            1,
+            0,
+            -43358
+          ],
+          [
+            0,
+            1,
+            19160
+          ]
+        ]
+      },
+      {
+        "id": "1443:22018",
+        "w": 546,
+        "h": 384,
+        "transform": [
+          [
+            1,
+            0,
+            -42750
+          ],
+          [
+            0,
+            1,
+            19160
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+{"command":"node --test tests/figma-assets.test.cjs tests/figma-vector-source.test.cjs","exitCode":0,"tests":11,"passed":11,"failed":0,"durationMs":28279.3873,"completedAt":"2026-10-17T21:58:26Z","scope":"Offline manifest, all production PNG byte pins and native pixel rules, atlas bounds, and Tiara source evidence"}

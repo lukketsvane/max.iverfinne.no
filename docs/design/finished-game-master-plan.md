@@ -37,7 +37,8 @@ onward → leave behind the actual garden of that attempt**.
   revises the current C/V-only policy instead of pretending parity exists.
 - Figma MASTER is the authoring authority for new level design. Reference
   images and review boards are studies, not collision/art exports. Preserve the
-  existing Pixel Mill Turtle source until a verified MASTER replacement exists.
+  retired layouts only as regression fixtures. All twenty ordinary campaign
+  slots now use the sparse MASTER while new levels are authored there.
 
 ## Assessment of the actual baseline
 

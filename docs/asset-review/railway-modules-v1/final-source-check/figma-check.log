@@ -1,0 +1,6 @@
+
+> figma:check
+> node scripts/figma-sync.mjs check
+
+Figma could not serve image f2d9cf7a309607b4a27b4fdbc2940c0e19809d49 (404)
+31 Figma tool call(s)
