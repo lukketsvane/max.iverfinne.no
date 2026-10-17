@@ -628,11 +628,13 @@ the 14 px game ladder, and the sweep window reaches the deepest ground step. Sta
 The game canvas is letterboxed to a 3:4 (width:height) screen in portrait windows
 and a 4:3 screen in landscape windows (`screenAspect`; `window.MaxScreenAspect`
 overrides it, and the VM harness and review fixtures set 0 to keep their free
-viewports, `review.html?aspect=1` shows the real frame). A
-display-resolution LCD subpixel mask (`#subpx`, multiplied over the canvas)
-splits each native pixel into RGB stripes; a final additive pass over the finished
-frame (`subpixelGain`) restores its mean exposure. Do not use a CSS filter for the
-lift: WebKit's software path drops frames with it. Settings toggles the mask
-(`Subpixels on/off`, saved in `max-subpixel`) in place of the removed Controls
-page. Native art is unchanged by either.
+viewports, `review.html?aspect=1` shows the real frame). Settings → Pixels cycles
+Native, LCD, Scanlines, Grille and Dot mask without restarting or pausing the run.
+`pixel-render.inc.js` builds the display-resolution mask (`#subpx`) only on a
+mode change or resize, with the existing bounded additive exposure compensation
+(`subpixelGain`). Keep integer registration and disabled smoothing; do not use a
+CSS brightness filter. The choice is saved in `max-pixel-render-v1`; explicit
+legacy `max-subpixel` choices migrate, while new devices default to Native.
+Small scales and failed mask preparation fall back to Native. See
+`docs/design/pixel-render-strategies.md`; source art and geometry stay unchanged.
 

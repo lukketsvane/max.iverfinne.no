@@ -1,0 +1,46 @@
+{
+  "indexSha256": "a7da331f14856028c9d3ab8f47e9d70c663b6795c6108d56302f1a16409fcd41",
+  "engines": [
+    "chromium"
+  ],
+  "results": [
+    {
+      "engine": "chromium",
+      "viewport": "phone",
+      "dpr": 3,
+      "fiveModes": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.254011311111107,
+      "rotation": true,
+      "screenshots": [
+        "chromium-phone-native.png",
+        "chromium-phone-lcd.png",
+        "chromium-phone-scanlines.png",
+        "chromium-phone-grille.png",
+        "chromium-phone-shadow.png"
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "landscape",
+      "dpr": 3,
+      "fiveModes": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.440676111111102,
+      "rotation": true,
+      "screenshots": [
+        "chromium-landscape-native.png",
+        "chromium-landscape-lcd.png",
+        "chromium-landscape-scanlines.png",
+        "chromium-landscape-grille.png",
+        "chromium-landscape-shadow.png"
+      ],
+      "errors": []
+    }
+  ],
+  "baseCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+  "scope": "Automated browser flow, not a human visual-quality or real-iPhone performance acceptance"
+}

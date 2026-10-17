@@ -130,18 +130,28 @@ test('a synchronous engine-start failure leaves the setup visible and paused ins
   }
 });
 
-test('settings replace Controls with a subpixel toggle that writes the game setting', async () => {
-  let on = true; const calls = [];
-  const m = await menu(undefined, { controller: { subpixel: () => on, setSubpixel: value => { calls.push(value); on = value; } } });
+test('settings cycle five pixel strategies in place without losing focus or changing the run', async () => {
+  const labels = ['Native', 'LCD', 'Scanlines', 'Grille', 'Dot mask'], calls = [];
+  let index = 0;
+  const m = await menu(undefined, { controller: {
+    pixelRender: () => ({ label: labels[index], index, total: 5, description: labels[index], next: labels[(index + 1) % 5] }),
+    cyclePixelRender: () => { index = (index + 1) % 5; calls.push(index); }
+  } });
   try {
     m.click('Settings');
-    const names = () => [...m.w.document.querySelectorAll('.max-menu button')].map(b => b.textContent);
-    assert.ok(!names().includes('Controls'));
-    const toggle = () => [...m.w.document.querySelectorAll('.max-menu button')].find(b => /^Subpixels /.test(b.textContent));
-    assert.equal(toggle().textContent, 'Subpixels on'); assert.equal(toggle().getAttribute('aria-pressed'), 'true');
-    m.click('Subpixels on');
-    assert.deepEqual(calls, [false]); assert.equal(toggle().textContent, 'Subpixels off'); assert.equal(toggle().getAttribute('aria-pressed'), 'false');
-    m.click('Subpixels off'); assert.deepEqual(calls, [false, true]);
+    assert.ok(![...m.w.document.querySelectorAll('.max-menu button')].some(b => b.textContent === 'Controls'));
+    const control = [...m.w.document.querySelectorAll('.max-menu button')].find(b => b.textContent === 'Pixels: Native');
+    control.focus(); const pauses = [...m.pauses];
+    for (let step = 0; step < 5; step++) {
+      assert.equal(control.textContent, 'Pixels: ' + labels[step]);
+      assert.match(control.getAttribute('aria-label'), new RegExp((step + 1) + ' of 5'));
+      control.click();
+      assert.equal(m.w.document.activeElement, control);
+      assert.ok(control.isConnected);
+    }
+    assert.deepEqual(calls, [1, 2, 3, 4, 0]);
+    assert.equal(control.textContent, 'Pixels: Native');
+    assert.deepEqual(m.pauses, pauses); assert.equal(m.beginCount, 0);
   } finally { m.dom.window.close(); }
 });
 
@@ -331,7 +341,7 @@ test('live settings advertise input ownership and a bubbled Back returns to game
     m.click('Play'); m.click('Play'); await m.settle(); assert.equal(m.w.MaxGameMenu.isOpen(), false);
     m.w.dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape' }));
     assert.equal(m.w.MaxGameMenu.isOpen(), true);
-    m.click('Subpixels on');
+    m.click('Pixels: Native');
     m.w.document.querySelector('.max-menu button').dispatchEvent(new m.w.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     assert.equal(m.w.MaxGameMenu.isOpen(), false); assert.equal(m.active, true);
   } finally { m.dom.window.close(); }
