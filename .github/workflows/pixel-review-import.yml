@@ -1,0 +1,41 @@
+name: Import isolated pixel review
+on:
+  push:
+    branches: [codex/level-render-strategies]
+    paths: [.github/workflows/pixel-review-import.yml]
+permissions:
+  contents: write
+concurrency:
+  group: pixel-review-import
+  cancel-in-progress: false
+jobs:
+  import:
+    if: github.ref == 'refs/heads/codex/level-render-strategies'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/level-render-strategies
+          fetch-depth: 2
+      - name: Import exact isolated patch into the review branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD^)" = 801e5172506431754d089f4f832e45abf8adffb1
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = 801e5172506431754d089f4f832e45abf8adffb1
+          curl --fail --silent --show-error --proto '=https' --max-time 30 https://sb-4vhi0r8v7f4r.vercel.run/scoped.patch -o /tmp/pixel-review.patch
+          echo '5f337059dbd0cd42390d499bf08125ebda709d4ae4758d4f9f70c495727eb6ab  /tmp/pixel-review.patch' | sha256sum --check
+          git apply --check /tmp/pixel-review.patch
+          git apply --index /tmp/pixel-review.patch
+          python - <<'PY'
+          import subprocess
+          expected = {'CLAUDE.md','README.md','docs/design/finished-game-progress.json','docs/design/pixel-render-strategies.md','docs/verification/pixel-render/chromium.json','game-menu.mjs','index.html','pixel-render.inc.js','scripts/check-pixel-render-browser.cjs','tests/menu.test.cjs','tests/pixel-render.test.cjs'}
+          actual = set(subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines())
+          assert actual == expected, (actual, expected)
+          PY
+          git diff --cached --check
+          git -c user.name=Codex -c user.email=codex@users.noreply.github.com commit -m 'Add five pixel display strategies and verified menu flow'
+          test "$(git ls-remote origin refs/heads/codex/level-render-strategies | cut -f1)" = "$GITHUB_SHA"
+          git push origin HEAD:refs/heads/codex/level-render-strategies
