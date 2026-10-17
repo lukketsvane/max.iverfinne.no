@@ -1,0 +1,12 @@
+✔ current Figma level_01 compiles only into stage one with exact registered graphics and colliders (707.824799ms)
+✔ all six characters start at the actual level-one START marker on its registered landing (3026.83504ms)
+✔ normal movement can descend to the floor and climb the first actual visible ladder back to the opening landing (536.991184ms)
+✔ the current level-one production PNG is the exact Figma image at native dimensions (1.799324ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4361.536552

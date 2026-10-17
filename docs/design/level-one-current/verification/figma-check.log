@@ -1,0 +1,10 @@
+
+> figma:check
+> node scripts/figma-sync.mjs check
+
+Cannot reach the Figma Dev Mode MCP server at http://127.0.0.1:3845/mcp.
+  1. Open the Figma desktop app (the browser version has no local server).
+  2. Open https://www.figma.com/file/TC0PHGMTCMR6im4hb3CSbF and keep it as the active tab.
+  3. Switch to Dev Mode with Shift+D.
+  4. Enable the desktop MCP server (Dev Mode inspect panel → MCP server, or Figma menu → Preferences → Enable Dev Mode MCP Server).
+Then run the command again.

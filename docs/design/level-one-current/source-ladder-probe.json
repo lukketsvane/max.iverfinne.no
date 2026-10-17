@@ -1,0 +1,28 @@
+{
+  "elapsedMs": 247499,
+  "complete": true,
+  "across": true,
+  "states": 2354,
+  "unreached": [
+    {
+      "kind": "site:1:landmark-court",
+      "x": -120,
+      "y": 333.68082131663544
+    }
+  ],
+  "unvisited": [
+    "1:d18",
+    "1:d19",
+    "1:d20",
+    "1:d21",
+    "1:d22",
+    "1:d23",
+    "1:d24",
+    "1:d43",
+    "1:d111"
+  ],
+  "trapCount": 0,
+  "traps": [],
+  "climbed": 26,
+  "totalLadders": 14
+}

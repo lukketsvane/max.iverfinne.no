@@ -1,0 +1,5 @@
+
+> build
+> node scripts/build-static.cjs
+
+Built game in dist/. Accounts: configured.
