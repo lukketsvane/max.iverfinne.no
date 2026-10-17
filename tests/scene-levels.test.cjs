@@ -33,6 +33,8 @@ test('the committed scene levels are exactly the compiled Figma capture', async 
   const decoded = decodeCapture(capture);
   assert.deepEqual(decoded.errors, []);
   assert.equal(dataFile(compileScenes(decoded.scenes, { source: decoded.source })), fs.readFileSync(path.join(root, 'scene-levels-data.js'), 'utf8'));
+  const invalid = decodeCapture({ ...capture, metadata: capture.metadata.replace('LADDER · west-gondola-ladder · visible', 'LADDER · west-gondola-ladder · hidden') });
+  assert.match(invalid.errors.join('\n'), /LADDER · key or LADDER · key · visible/);
 });
 
 test('every scene binds its exact native foreground and backdrop PNGs and keeps the authored stages free', () => {
@@ -56,6 +58,8 @@ test('scene compiler rejects floating ladders, points and obstructed guardian co
     ladders: [['up', 140, 180, 250]], points: [['start', 'arrival', 200, 250], ['seed', 's', 140, 180], ['trial', 'a', 20, 250], ['trial', 'b', 380, 250], ['reward', 'r', 160, 180]],
     sites: [['one', 40, 250, 60, null], ['two', 100, 180, 200, 'shelf'], ['three', 380, 250, 340, null]] };
   assert.deepEqual(checkScene(base, art), []);
+  assert.deepEqual(checkScene({ ...base, ladders: [['up', 140, 180, 250, 0]] }, art), []);
+  assert.match(checkScene({ ...base, ladders: [['up', 140, 180, 250, 2]] }, art).join('\n'), /art must be 0 or 1/);
   assert.match(checkScene({ ...base, ladders: [['up', 300, 180, 250]] }, art).join('\n'), /no upper landing/);
   assert.match(checkScene({ ...base, points: base.points.concat([['bonus', 'air', 300, 120]]) }, art).join('\n'), /floats/);
   assert.match(checkScene({ ...base, blocks: [['rock', 180, 200, 40, 60]] }, art).join('\n'), /obstructed/);

@@ -56,19 +56,20 @@ test('tree entrance artifacts reproduce an explicitly offline editable source an
     'current runtime adds only pixel-render.inc.js to the historical source file list');
   const historicalCampaign = { title: 'Seed Vault', focus: 'Find your footing' },
     currentCampaign = { title: 'Hollow Tree', focus: 'Find your footing inside the hollow tree' };
+  assert.deepEqual(plain(authored.source.sourceFiles), [...snapshot.sourceFiles, 'pixel-render.inc.js'].sort(),
+    'the current runtime baseline adds only the pixel renderer include');
   const stableSource = (value, campaign) => {
     const { baselineDigest, sourceDigest, sourceFiles, ...stable } = plain(value);
     assert.match(baselineDigest, /^[a-f0-9]{64}$/);
     assert.match(stable.geometryDigest, /^[a-f0-9]{64}$/);
     assert.equal(sourceDigest, sha(stable.geometryDigest + '\n' + baselineDigest),
       'each source digest binds its own geometry and runtime baseline');
+    delete stable.sourceFiles;
     if (campaign) {
       assert.equal(stable.gardens.length, 1); assert.equal(stable.gardens[0].stage, 1);
       const profile = stable.gardens[0].profile;
       assert.deepEqual({ title: profile.title, focus: profile.focus }, campaign,
         'current and historical campaign labels are asserted before their metadata-only comparison');
-      // This immutable offline study predates the Hollow Tree campaign name.
-      // Normalize only its two presentation labels; every other field stays exact.
       Object.assign(profile, historicalCampaign);
     }
     return stable;

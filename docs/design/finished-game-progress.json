@@ -196,6 +196,21 @@
       ]
     }
   ],
+  "levelFinalePass": {
+    "requested": "2026-10-17",
+    "reason": "Owner corrected the earlier numeric scope with the exact levelart screenshot: THESE LEVELS NO OTHER. This supersedes the broader 16-20 draft and generator work.",
+    "status": "pictured_scenes_only_review_pending_gates",
+    "scope": [
+      17,
+      18,
+      19
+    ],
+    "approvedSource": "Figma TC0PHGMTCMR6im4hb3CSbF / 508:11825 / 1271:34; all 24 original image hashes match art-recipe.json",
+    "evidence": "docs/design/levels-16-20/README.md",
+    "source": "Retain only the Salt Cistern, Heliostat Greenhouse and Twin Gondola scene edits from this pass. Restore the unrelated stage-16/Crown generator and both historical geometry tests to main 37d21a9. Older wide drafts are excluded, not active sources.",
+    "verification": "Authenticated readback matches all 24 source paintings with no additional images. Restored generator and historical tests match main byte-for-byte. Production build passed; the full regression rerun is not yet complete.",
+    "release": "Draft PR 58 only. No production publication or campaign reordering."
+  },
   "concurrentWork": "Tiara/Garden 10 head boss: preserve separate task and integrate tested main commits",
   "verificationSnapshot": {
     "stage": "Before graphics checkpoint publication",
