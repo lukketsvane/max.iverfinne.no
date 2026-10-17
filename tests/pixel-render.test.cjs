@@ -64,11 +64,11 @@ test('the real canvas has native dimensions and exact integer device-pixel enlar
     }
   }
 });
-test('8x draws a 146 by 195 phone canvas into exactly 1168 by 1560 display pixels', () => {
+test('8x draws a 146 by 316 phone canvas using the full display without clipping', () => {
   const h = loadGame({ __screenAspect: null }), api = bridge(h);
   Object.assign(h.window, { innerWidth:390, innerHeight:844, devicePixelRatio:3 }); h.emit('resize');
   const info = api.pixelRender(); assert.equal(info.id, '8x'); assert.equal(info.scale, 8);
-  assert.equal(info.width,146); assert.equal(info.height,195); assert.equal(info.limited,false);
+  assert.equal(info.width,146); assert.equal(info.height,316); assert.equal(info.limited,false);
   Object.assign(h.window, { innerWidth:320, innerHeight:568, devicePixelRatio:1 }); h.emit('resize');
   assert.equal(api.pixelRender().scale,2); assert.equal(api.pixelRender().limited,true);
 });

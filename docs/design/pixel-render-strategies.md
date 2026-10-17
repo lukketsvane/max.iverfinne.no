@@ -2,7 +2,7 @@
 
 The owner's 17 October clarification replaces display masks with actual low-resolution rendering. Settings → Pixels cycles **Auto, 4x, 6x, 8x, 10x**, defaulting to **8x**. This is one small game canvas, not a high-resolution scene with a pixel-pattern overlay.
 
-A 390×844 CSS-pixel phone viewport at devicePixelRatio 3 uses a **146×195 native canvas** displayed as **1168×1560 physical pixels** at 8x. Every source pixel occupies one uniform 8×8 block. The existing portrait/landscape frame is centred, with whole-pixel letterboxing rather than fractional stretching.
+A 390×844 CSS-pixel phone viewport at devicePixelRatio 3 uses a **146×316 native canvas** displayed as **1168×2528 physical pixels** at 8x. Every source pixel occupies one uniform 8×8 block. The existing portrait/landscape frame is centred, with whole-pixel letterboxing rather than fractional stretching.
 
 ## Rendering contract
 

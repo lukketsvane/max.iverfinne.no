@@ -1,0 +1,442 @@
+{
+  "indexSha256": "8b911413ed324b54374c250ce708b0a175c83ea2534fa8306cc9640d3284a3b3",
+  "engines": [
+    "chromium",
+    "webkit"
+  ],
+  "cases": [
+    {
+      "engine": "chromium",
+      "viewport": "phone",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.47731324444443,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 146,
+          "height": 316,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1151
+        },
+        {
+          "choice": "4x",
+          "width": 292,
+          "height": 633,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2944
+        },
+        {
+          "choice": "6x",
+          "width": 195,
+          "height": 422,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1559
+        },
+        {
+          "choice": "8x",
+          "width": 146,
+          "height": 316,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 989
+        },
+        {
+          "choice": "10x",
+          "width": 130,
+          "height": 281,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 1079
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "landscape",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.428947311111095,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 316,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1640
+        },
+        {
+          "choice": "4x",
+          "width": 633,
+          "height": 292,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 3993
+        },
+        {
+          "choice": "6x",
+          "width": 422,
+          "height": 195,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 2266
+        },
+        {
+          "choice": "8x",
+          "width": 316,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1619
+        },
+        {
+          "choice": "10x",
+          "width": 281,
+          "height": 130,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 1944
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "small",
+      "dpr": 1,
+      "default8x": false,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.466398133333307,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1171
+        },
+        {
+          "choice": "4x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1167
+        },
+        {
+          "choice": "6x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1163
+        },
+        {
+          "choice": "8x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1160
+        },
+        {
+          "choice": "10x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1184
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "desktop",
+      "dpr": 1,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.253744911111106,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 274,
+          "height": 154,
+          "scale": 7,
+          "uniformBlocks": true,
+          "colours": 1591
+        },
+        {
+          "choice": "4x",
+          "width": 480,
+          "height": 270,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2819
+        },
+        {
+          "choice": "6x",
+          "width": 320,
+          "height": 180,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1648
+        },
+        {
+          "choice": "8x",
+          "width": 240,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1464
+        },
+        {
+          "choice": "10x",
+          "width": 240,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1577
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "phone",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 21.054166666666667,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 146,
+          "height": 316,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 850
+        },
+        {
+          "choice": "4x",
+          "width": 292,
+          "height": 633,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2491
+        },
+        {
+          "choice": "6x",
+          "width": 195,
+          "height": 422,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1157
+        },
+        {
+          "choice": "8x",
+          "width": 146,
+          "height": 316,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 758
+        },
+        {
+          "choice": "10x",
+          "width": 130,
+          "height": 281,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 608
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "landscape",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 18.654166666666676,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 316,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1266
+        },
+        {
+          "choice": "4x",
+          "width": 633,
+          "height": 292,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2920
+        },
+        {
+          "choice": "6x",
+          "width": 422,
+          "height": 195,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1751
+        },
+        {
+          "choice": "8x",
+          "width": 316,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1233
+        },
+        {
+          "choice": "10x",
+          "width": 281,
+          "height": 130,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 1247
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "small",
+      "dpr": 1,
+      "default8x": false,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.58868133333333,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 894
+        },
+        {
+          "choice": "4x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 885
+        },
+        {
+          "choice": "6x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 888
+        },
+        {
+          "choice": "8x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 898
+        },
+        {
+          "choice": "10x",
+          "width": 160,
+          "height": 284,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 895
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "desktop",
+      "dpr": 1,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.338118666666666,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 274,
+          "height": 154,
+          "scale": 7,
+          "uniformBlocks": true,
+          "colours": 1226
+        },
+        {
+          "choice": "4x",
+          "width": 480,
+          "height": 270,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2226
+        },
+        {
+          "choice": "6x",
+          "width": 320,
+          "height": 180,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1277
+        },
+        {
+          "choice": "8x",
+          "width": 240,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1136
+        },
+        {
+          "choice": "10x",
+          "width": 240,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1144
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "pixelMeasurement": "Saved screenshots retain the DOM Settings launcher. A second capture hides only that separate DOM button while checking every game-canvas block for equal RGBA. Launcher bounds, 44px target and actual tap remain separately asserted."
+}
