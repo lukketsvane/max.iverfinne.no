@@ -199,7 +199,7 @@
     layout.trials = list('trial'); layout.bonuses = list('bonus');
     SPOTS.forEach(function (key) { layout.spots[key] = list(key); });
     layout.decor = (garden.decor || []).map(function (d) { return { src: d.src, x: origin + d.x, y: base - d.rise, w: d.w, h: d.h }; });
-    if (garden.ladders && garden.ladders.length) layout.ladders = garden.ladders.map(function (q, i) { return { id: stage + ':ladder' + i, x: origin + q.x, top: base - q.rise, bottom: base - q.rise + q.h, w: q.w }; });
+    if (garden.ladders && garden.ladders.length) layout.ladders = garden.ladders.map(function (q, i) { return { id: stage + ':ladder' + i, x: origin + q.x, top: base - q.rise, bottom: base - q.rise + q.h, w: q.w, ...(q.art === true ? { art: true } : {}) }; });
     layout.nodes = tiers(layout, ground, wet);
     layout.routes = layout.ladders ? ladderRoutes(layout, ground, wet) : routes(layout, ground, wet);
     layout.seed = seed == null ? seed : seed >>> 0;

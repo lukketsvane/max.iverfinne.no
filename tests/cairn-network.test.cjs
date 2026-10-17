@@ -10,7 +10,7 @@ function party(count=2,mode='garden'){
   const host=peers[0].game,index=count-1,guest=peers[index].game,member=host.coop.members[ids[index]];
   function clearTerrain(g){const layout=g.stageLayout();layout.platforms=[];layout.ladders=[];layout.hazards=[];}
   host.floatKrek=[];host.gardenPlots=[];host.runHazards=[];clearTerrain(host);
-  Object.values(host.coop.members).forEach(m=>Object.assign(m.avatar,{x:200+(m.slot-1)*12,y:host.surfaceY(200+(m.slot-1)*12),st:'free',grounded:true,wet:false,vx:0,vy:0,pounce:0}));Object.assign(host.P,host.coop.members[ids[0]].avatar);
+  Object.values(host.coop.members).forEach(m=>Object.assign(m.avatar,{x:200+(m.slot-1)*12,y:host.surfaceY(200+(m.slot-1)*12),st:'free',grounded:true,platform:null,wet:false,vx:0,vy:0,pounce:0}));Object.assign(host.P,host.coop.members[ids[0]].avatar);
   function sync(){const state=JSON.parse(JSON.stringify(host.coopCapture()));peers.slice(1).forEach(h=>{h.game.coopState(state);clearTerrain(h.game);});return state;}
   sync();peers.slice(1).forEach((h,i)=>Object.assign(h.game.P,host.coop.members[ids[i+1]].avatar));
   function send(actions=peers[index].pending,avatar=guest.coopAvatar()){host.coopInput(member.id,{avatar,actions});}
