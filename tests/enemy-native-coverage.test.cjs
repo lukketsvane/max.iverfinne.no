@@ -1,7 +1,7 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
+const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto'), vm = require('node:vm');
 const { loadGame } = require('./game-harness.cjs');
 const root = path.resolve(__dirname, '..');
 const adapters = import('../native-art.mjs'), pngTools = import('../scripts/figma-sync.mjs');
@@ -118,6 +118,45 @@ function draw(g, ctx, enemy, time = 10) {
   const before = JSON.stringify(k); g.floatKrek = [k]; ctx.clear(); g.drawKrek(time); g.drawCrownForeground(time);
   assert.equal(JSON.stringify(k), before, 'body presentation never changes authoritative enemy state'); return k;
 }
+
+test('native enemy review fits all seven original bodies in phone, landscape and desktop native viewports', async () => {
+  const review = fs.readFileSync(path.join(root, 'review.html'), 'utf8');
+  const fixture = review.match(/if\(\$\{mode==='native-enemies'\}\)\{([\s\S]*?)\n    \}/);
+  assert.ok(fixture);
+  await withArt({}, async ({ art }) => {
+    assert.deepEqual((await art.ready()).failed, []);
+    for (const [width, height, dpr] of [[390, 844, 1], [390, 844, 3], [844, 390, 1], [1000, 650, 1]]) {
+      const h = loadGame({ __randomSeed: 4242 }), g = h.game;
+      g.resetRogueRun('NATIVE REVIEW', { difficulty: 'medium' });
+      Object.assign(h.window, { innerWidth: width, innerHeight: height, devicePixelRatio: dpr });
+      h.emit('resize');
+      g.P.x = 0; g.P.y = g.surfaceY(0); g.P.vx = 0;
+      g.runActive = false; g.menuPaused = true; g.floatKrek = [];
+      h.tick();
+      const ctx = context(), scope = { window: h.window, makeKrek: g.makeKrek, surfaceY: g.surfaceY };
+      g.ctx = ctx; h.window.MaxNativeArt = { ...art };
+      for (const key of ['P', 'floatKrek', 'tSec']) Object.defineProperty(scope, key, {
+        get() { return g[key]; }, set(value) { g[key] = value; },
+      });
+      vm.runInNewContext(fixture[1], scope);
+      g.drawKrek(.5);
+      const observation = h.window.maxNativeRoleObservation(), expected = Object.keys(roles).map(Number);
+      const view = JSON.stringify({ width, height, dpr, nativeWidth: g.IW, nativeHeight: g.IH,
+        actors: g.floatKrek.map(k => ({ kind: k.kind, x: Math.round(k.x - g.camX), y: Math.round(k.y - g.camY) })) });
+      assert.deepEqual(Array.from(observation.roles), expected);
+      assert.deepEqual(Object.keys(observation.bodies).map(Number), expected, view);
+      for (const kind of expected) {
+        const body = observation.bodies[kind].body;
+        const call = ctx.calls.find(c => c.image.src === body.src && c.args.every((n, i) => n === body.rect[i]));
+        await nativeBody([call], enemyAtlas({ kind }), 'review kind ' + kind);
+        const x0 = call.matrix.x + call.matrix.a * call.args[4], x1 = x0 + call.matrix.a * call.args[6];
+        const y0 = call.matrix.y + call.args[5], y1 = y0 + call.args[7];
+        assert.ok(Math.min(x0, x1) >= 0 && Math.max(x0, x1) <= g.IW && y0 >= 0 && y1 <= g.IH,
+          'complete native body stays inside the real viewport: ' + kind + ' ' + view);
+      }
+    }
+  });
+});
 
 test('every actual spawn-profile role has a decoded, nonempty registered native body on the normal game draw path', async () => {
   await withArt({}, async ({ art }) => {

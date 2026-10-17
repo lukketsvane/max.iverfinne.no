@@ -432,15 +432,25 @@ async function presentation(page,game,engine,results,visuals) {
   assert.equal(initial.culture,0,'Public Mycel review has no resource prefill');
   for(const [viewport,width,height] of [['desktop',1000,650],['phone',390,844],['small',320,568]]) {
     await page.locator('#viewport').selectOption(viewport);
-    await game.waitForFunction(({width,height})=>{const c=window.__mycelCombat.canvas,r=c.getBoundingClientRect(),scale=r.width/c.width;return innerWidth===width&&innerHeight===height&&Number.isInteger(scale)&&scale>=2&&r.width>=width&&r.width<width+scale&&r.height>=height&&r.height<height+scale;},{width,height});
+    await game.waitForFunction(({width,height})=>{const c=window.__mycelCombat.canvas,r=c.getBoundingClientRect(),dpr=devicePixelRatio||1,scale=Math.round(r.width*dpr/c.width);return innerWidth===width&&innerHeight===height&&scale>=1&&c.width===Math.floor(Math.round(width*dpr)/scale)&&c.height===Math.floor(Math.round(height*dpr)/scale)&&Math.abs(r.width*dpr-c.width*scale)<.01&&Math.abs(r.height*dpr-c.height*scale)<.01;},{width,height});
     const view=await game.evaluate(()=>({
-      width:innerWidth,height:innerHeight,skin:window.__mycelCombat.player.skin,
+      width:innerWidth,height:innerHeight,dpr:devicePixelRatio||1,skin:window.__mycelCombat.player.skin,
       smoothing:window.__mycelCombat.canvas.getContext('2d').imageSmoothingEnabled,
-      canvas:(()=>{const r=window.__mycelCombat.canvas.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,scale:r.width/window.__mycelCombat.canvas.width};})(),
+      drawTransform:(()=>{const m=window.__mycelCombat.canvas.getContext('2d').getTransform();return [m.a,m.b,m.c,m.d,m.e,m.f];})(),
+      canvas:(()=>{const c=window.__mycelCombat.canvas,r=c.getBoundingClientRect(),s=getComputedStyle(c),m=new DOMMatrixReadOnly(s.transform);return {width:c.width,height:c.height,left:r.left,right:r.right,top:r.top,bottom:r.bottom,renderedWidth:r.width,renderedHeight:r.height,scale:r.width*(devicePixelRatio||1)/c.width,cssWidth:parseFloat(s.width),cssHeight:parseFloat(s.height),cssLeft:parseFloat(s.left),cssTop:parseFloat(s.top),origin:s.transformOrigin,pixels:s.imageRendering,transform:[m.a,m.b,m.c,m.d,m.e,m.f]};})(),
       actionControls:document.querySelectorAll('#mycelControls').length
     }));
     assert.equal(view.skin,'moon');assert.equal(view.smoothing,false);assert.equal(view.actionControls,0);
-    assert.ok(view.canvas.left<=0&&view.canvas.right>=width&&view.canvas.top<=0&&view.canvas.bottom>=height&&view.canvas.left>-view.canvas.scale&&view.canvas.top>-view.canvas.scale,'Native canvas covers viewport with bounded integer-pixel overscan');
+    const c=view.canvas,dpr=view.dpr,scale=Math.round(c.scale),dw=Math.round(width*dpr),dh=Math.round(height*dpr);
+    assert.equal(c.width,Math.floor(dw/scale));assert.equal(c.height,Math.floor(dh/scale));
+    assert.equal(c.cssWidth,c.width);assert.equal(c.cssHeight,c.height);assert.equal(c.cssLeft,0);assert.equal(c.cssTop,0);
+    assert.equal(c.origin,'0px 0px');assert.equal(c.pixels,'pixelated');assert.deepEqual(view.drawTransform,[1,0,0,1,0,0]);
+    assert.equal(c.transform[1],0);assert.equal(c.transform[2],0);
+    near(c.transform[0]*dpr,scale,.0001);near(c.transform[3]*dpr,scale,.0001);
+    near(c.renderedWidth*dpr,c.width*scale,.01);near(c.renderedHeight*dpr,c.height*scale,.01);
+    near(c.left*dpr,Math.floor((dw-c.width*scale)/2),.01);near(c.top*dpr,Math.floor((dh-c.height*scale)/2),.01);
+    near(c.transform[4],c.left,.01/dpr);near(c.transform[5],c.top,.01/dpr);
+    assert.ok(c.left>=0&&c.top>=0&&c.right*dpr<=dw+.01&&c.bottom*dpr<=dh+.01,'Native canvas fits the viewport on centered physical pixels');
     visuals.push(view);await shot(page,engine,viewport);
   }
   await page.locator('#viewport').selectOption('phone');

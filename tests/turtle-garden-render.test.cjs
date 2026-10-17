@@ -128,7 +128,7 @@ test('actual notched portrait framing preserves the full native body and source 
     Object.assign(g.P, { x: p.x + 29, y: p.y, vx: 0, vy: 0, grounded: true, platform: p.id, st: 'free', wet: false });
     const before = JSON.stringify(h.L), start = g.P.y;
     g.ctx.drawImage = (...args) => { if (args[0].width === 640 && args[0].height === 360) draws.push(args); };
-    assert.deepEqual([g.IW, g.IH], dpr === 1 ? [130, 282] : [147, 317]);
+    assert.deepEqual([g.IW, g.IH], dpr === 1 ? [130, 281] : [146, 316]);
     g.camY = g.P.y - g.ANCHOR; h.key('keydown', 'ArrowUp');
     let apex = start, airborne = 0, frames = 0;
     for (let n = 0; n < 60; n++) {

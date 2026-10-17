@@ -24,6 +24,33 @@ function loadProbeGame(probe=probeSource){
  const loaded=new Module(file,module);loaded.filename=file;loaded.paths=Module._nodeModulePaths(path.dirname(file));loaded._compile(injected,file);
  const h=loaded.exports.loadGame({__randomSeed:17});h.game.resetRogueRun('IDLE FIXTURE',{classId:'herbalist'});return h;
 }
+const presentationStart=source.indexOf('async function presentation('),presentationEnd=source.indexOf('\nasync function primary(',presentationStart);
+assert.ok(presentationStart>=0&&presentationEnd>presentationStart,'Execute the tracked viewport presentation gate itself');
+const presentationSource=source.slice(presentationStart,presentationEnd);
+const canvasCSS=Object.fromEntries(fs.readFileSync(path.join(__dirname,'../index.html'),'utf8').match(/#c \{([^}]+)\}/)[1].split(';').filter(part=>part.trim()).map(part=>part.split(':').map(value=>value.trim())));
+function presentationBrowser(dpr,mutate=()=>{}){
+ const h=loadProbeGame(),c=h.elements.get('c'),viewports={desktop:[1000,650],phone:[390,844],small:[320,568]},selected=[],shots=[];
+ h.game.resetRogueRun('MYCEL VIEWPORT',{classId:'herbalist',skinId:'moon'});h.game.mycelState();
+ let current;
+ const page={locator(selector){assert.equal(selector,'#viewport');return {async selectOption(name){
+  selected.push(name);const [width,height]=viewports[name];Object.assign(h.window,{innerWidth:width,innerHeight:height,devicePixelRatio:dpr});h.emit('resize');
+  const [,left,top,scale]=c.style.transform.match(/translate\(([^,]+)px,([^)]*)px\) scale\(([^)]+)\)/).map(Number);
+  current={h,c,scale,controls:0,rect:{left,top,width:c.width*scale,height:c.height*scale,right:left+c.width*scale,bottom:top+c.height*scale},
+   style:{...c.style,transform:'matrix('+[scale,0,0,scale,left,top].join(',')+')',transformOrigin:canvasCSS['transform-origin'].replace(/\b0\b/g,'0px'),imageRendering:canvasCSS['image-rendering']},
+   draw:{a:1,b:0,c:0,d:1,e:0,f:0}};
+  c.getBoundingClientRect=()=>current.rect;h.game.ctx.getTransform=()=>current.draw;mutate(current,name);
+ }};}};
+ const evaluate=(callback,arg)=>structuredClone(vm.runInNewContext('('+callback.toString()+')(arg)',{
+  arg,window:h.window,innerWidth:h.window.innerWidth,innerHeight:h.window.innerHeight,devicePixelRatio:dpr,
+  document:{querySelectorAll:()=>Array(current?.controls||0)},getComputedStyle:()=>current.style,
+  DOMMatrixReadOnly:class{constructor(value){[this.a,this.b,this.c,this.d,this.e,this.f]=value.match(/^matrix\((.*)\)$/)[1].split(',').map(Number);}}
+ }));
+ const game={async evaluate(callback,arg){return evaluate(callback,arg);},async waitForFunction(predicate,arg){
+  if(!evaluate(predicate,arg))throw Error('Canvas resize condition rejected');
+ }};
+ const presentation=Function('assert','shot',source.slice(source.indexOf('const near ='),source.indexOf('\nconst options ='))+'\nreturn ('+presentationSource+');')(assert,async(_,engine,name)=>shots.push({engine,name}));
+ return {selected,shots,async run(){const results=[],visuals=[];await presentation(page,game,'fixture',results,visuals);return {results,visuals};}};
+}
 function draw(fields={}){
  return {at:34617.3,source:'interaction.png',rect:[64,160,32,32,49,159,32,32],
   cell:{sheet:'interaction',row:5,column:2,face:1},q:{primarySerial:16,primaryPoseT:.1813},...fields};
@@ -120,4 +147,47 @@ test('Mycel native hurt priority suppresses the entire short accepted cue instea
  }
  player.hurt=0;updateMycelMotion(player,1/60,1,{mycel:{primarySerial:17,primaryPoseT:0,primaryFace:1}});
  assert.equal(player.mycelMotionCell,null,'Recovered hurt cannot revive an already expired accepted pose');
+});
+
+test('Mycel presentation accepts actual floor-fitted native canvas output in every retained viewport across DPRs',async()=>{
+ for(const dpr of [1,1.25,1.5,2,3]){
+  const review=presentationBrowser(dpr),{results,visuals}=await review.run();
+  assert.deepEqual(review.selected,['desktop','phone','small','phone']);
+  assert.deepEqual(review.shots.map(shot=>shot.name),['desktop','phone','small']);
+  assert.equal(results.length,1);assert.equal(visuals.length,3);
+  const phone=visuals[1];
+  if(dpr===1){assert.equal(phone.canvas.width,130);assert.equal(phone.canvas.height,281);assert.equal(phone.canvas.bottom,843);}
+  if(dpr===3){assert.equal(phone.canvas.scale,8);assert.equal(Number.isInteger(phone.canvas.renderedWidth/phone.canvas.width),false,'Native integer physical blocks need not have an integer CSS scale');}
+ }
+});
+
+test('Mycel presentation rejects ceil overscan, undersized fitting and fractional or unequal physical enlargement',async()=>{
+ for(const mutate of [
+  f=>{f.c.height++;f.rect.height+=f.scale;f.rect.bottom+=f.scale;},
+  f=>{f.c.width--;f.rect.width-=f.scale;f.rect.right-=f.scale;},
+  f=>{f.rect.width+=.5;f.rect.right+=.5;},
+  f=>{f.rect.height+=1;f.rect.bottom+=1;}
+ ]){
+  const review=presentationBrowser(1,(f,name)=>{if(name==='phone')mutate(f);});
+  await assert.rejects(review.run(),/Canvas resize condition rejected/);assert.deepEqual(review.selected,['desktop','phone']);
+ }
+});
+
+test('Mycel presentation rejects stretching, off-grid placement, smoothing, transformed native drawing and replacement controls',async()=>{
+ for(const mutate of [
+  f=>{f.style.width=(f.c.width+.5)+'px';},
+  f=>{f.style.left='1px';},
+  f=>{f.style.transformOrigin='50% 50%';},
+  f=>{f.style.imageRendering='auto';},
+  f=>{f.h.game.ctx.imageSmoothingEnabled=true;},
+  f=>{f.draw.a=2;},
+  f=>{f.style.transform='matrix('+[f.scale,.1,0,f.scale,0,0].join(',')+')';},
+  f=>{f.rect.left+=.5;f.rect.right+=.5;},
+  f=>{f.rect.top+=1;f.rect.bottom+=1;},
+  f=>{f.controls=1;},
+  f=>{f.h.game.P.skin='tide';}
+ ]){
+  const review=presentationBrowser(1,(f,name)=>{if(name==='phone')mutate(f);});
+  await assert.rejects(review.run(),assert.AssertionError);assert.deepEqual(review.selected,['desktop','phone']);
+ }
 });
