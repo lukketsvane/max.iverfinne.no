@@ -1,0 +1,30 @@
+name: Import isolated native canvas change
+on:
+  push:
+    branches: [codex/native-canvas-scaling]
+    paths: [.github/workflows/import-native-canvas.yml]
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.ref == 'refs/heads/codex/native-canvas-scaling'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Import verified scoped patch on the isolated branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = 62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8
+          curl --fail --silent --show-error --max-time 30 https://sb-7g70228rkkjl.vercel.run/native-canvas.patch -o /tmp/native-canvas.patch
+          echo '4d53d8ca27fb8b0fd201d90f58a16dbf7ddf1095422c1741c431ac455e9f0732  /tmp/native-canvas.patch' | sha256sum --check
+          git apply --check /tmp/native-canvas.patch
+          git apply /tmp/native-canvas.patch
+          git add CLAUDE.md README.md docs/design/finished-game-progress.json docs/design/pixel-render-strategies.md docs/verification/pixel-render/native-canvas.json game-menu.mjs index.html pixel-render.inc.js scripts/check-pixel-render-browser.cjs tests/hollow-crown-art.test.cjs tests/level-scenes-camera.test.cjs tests/menu.test.cjs tests/pixel-render.test.cjs tests/screen-frame.test.cjs
+          git diff --cached --check
+          test "$(git diff --cached --name-only | wc -l)" -eq 14
+          git -c user.name=Codex -c user.email=codex@users.noreply.github.com commit -m 'Render native canvas at integer display scale'
+          git push origin HEAD:refs/heads/codex/native-canvas-scaling
