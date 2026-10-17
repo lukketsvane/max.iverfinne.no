@@ -1,5 +1,11 @@
 # Scene levels
 
+**Owner source correction, 17 October 2026:** use only the twelve `levelart`
+foreground/backdrop pairs below for level-design work. The supplied screenshot
+selects these actual paintings, not the old twenty-level MASTER drafts or
+procedural replacements. The existing campaign slot numbers below are a
+runtime inventory, not permission to use other artwork.
+
 Twelve campaign gardens are tall, bounded rooms built from the owner's Figma
 `levelart` pairs (section `1271:34` on page `508:11825`): one transparent
 foreground terrain painting and one backdrop painting per level. The game draws
@@ -66,6 +72,6 @@ and 20. The remaining stages keep their seeded layouts until they get art.
    `tests/scene-levels.test.cjs` runs the same sweep for every scene and proves
    the committed data is exactly the compiled capture.
 
-The [levels 16–20 pass](../levels-16-20/README.md) selectively refreshes the
-authenticated scene frames for 17–19. The capture records which other scene
+The [corrected pictured-scene pass](../levels-16-20/README.md) selectively refreshes
+only the authenticated scene frames for 17–19. The capture records which other scene
 frames remain pinned to their prior committed snapshot.

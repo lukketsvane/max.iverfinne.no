@@ -103,13 +103,16 @@ test('fractional-camera drawing culls scenery and preserves existing tiles at so
   assert.equal(state.globalAlpha, .8); assert.equal(state.imageSmoothingEnabled, false);
 });
 
-test('intentional Garden 3/7/14/16/17 passes preserve every untouched chamber and original geometry', () => {
+test('intentional Garden 3/7/14 passes preserve every untouched chamber and original geometry', () => {
+  // Untouched stages are independently derived from 805551b, excluding only
+  // the three intentional passes. Whole Garden 7 scenes retain 8680e00 and
+  // whole Garden 14 retains d5f501e; no combined hash blesses the new Garden 3.
   const untouched = createHash('sha256'), gardenGeometry = createHash('sha256'),
     gardenSeven = createHash('sha256'), fossilGeometry = createHash('sha256'),
     gardenFourteen = createHash('sha256'), aqueductGeometry = createHash('sha256');
   for (const seed of [1, 81, 260931841]) for (let stage = 3; stage <= 19; stage++) {
     const scene = A.buildScene(layout(stage, seed), ground, wet);
-    if (![3, 7, 14, 16, 17].includes(stage)) untouched.update(JSON.stringify(scene));
+    if (stage !== 3 && stage !== 7 && stage !== 14) untouched.update(JSON.stringify(scene));
     if (stage === 7) {
       gardenSeven.update(JSON.stringify(scene));
       gardenGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
@@ -120,7 +123,7 @@ test('intentional Garden 3/7/14/16/17 passes preserve every untouched chamber an
     }
     if (stage === 3) aqueductGeometry.update(JSON.stringify({ bounds: scene.bounds, rooms: scene.rooms, footings: scene.footings }));
   }
-  assert.equal(untouched.digest('hex'), '59e7209d28e6472b4546d9592bd88f3e7512e80d7ad791e9d615d66259764684');
+  assert.equal(untouched.digest('hex'), '90e5b9298543b4618d42f374b2523c5fe50f4c571d0b26ce803a16f2151f31f5');
   assert.equal(gardenSeven.digest('hex'), '3352829178fe0514cfdb0a503bf7e4de2ee9021baca0792e52eaeb17c5caada8');
   assert.equal(gardenGeometry.digest('hex'), '2f0a62113454d437f7df83d153efd105fea995cde2ebcf08deeac9eee43daef0');
   assert.equal(fossilGeometry.digest('hex'), 'c2f94c68c939bd997b86c8ba59259474ab1f729f04c0461622bd8919b4ad04c8');

@@ -7,7 +7,7 @@
     crossing: { x: [58, 92, 126, 160, 194, 228, 262], rise: [14, 13, 12, 7, -8, -12, -13], width: [40, 32, 28, 36, 28, 32, 40], style: 'stone' },
     ruins: { x: [60, 86, 108, 136, 114, 142, 169, 145], rise: [18, 17, 17, 12, 18, 17, 16, 18], width: [44, 28, 40, 34, 28, 42, 48, 34], style: 'ruin' },
     switchbacks: { x: [56, 84, 62, 88, 65, 92, 72, 100, 80], rise: [17, 18, 16, 18, 16, 18, 17, 16, 18], width: [38, 30, 28, 32, 28, 30, 28, 34, 40], style: 'root' },
-    crown: { x: [60, 88, 116, 144, 171, 195, 173, 148, 122], rise: [16, 18, 16, 16, 16, 14, 17, 16, 17], width: [44, 36, 62, 40, 36, 64, 32, 36, 66], style: 'ruin' }
+    crown: { x: [60, 88, 116, 144, 171, 195, 173, 148, 122], rise: [16, 18, 16, 16, 16, 14, 17, 16, 17], width: [44, 36, 34, 40, 36, 48, 32, 36, 48], style: 'ruin' }
   };
   var sequence = ['terraces', 'canopy', 'crossing', 'ruins', 'switchbacks'];
   function theme(stage) { return stage === 20 ? 'crown' : sequence[(Math.max(1, stage | 0) - 1) % sequence.length]; }
@@ -64,8 +64,8 @@
       route('Gallery', [112, 126], [28, 40], [8, 12], [2, 3], .18, .25, ['step step gallery switch arch', 'step step switch rest gallery']),
       route('Spine', [180, 194], [22, 32], [9, 13], [2, 3], .26, .35, ['step step switch stack switch rest', 'step step stack gallery switch'])],
     ["Giant's Stair", 'Cross the ash terraces',
-      route('Crossing', [100, 114], [36, 44], [10, 14], [2, 3], .1, .2, ['step step promenade gallery rest', 'step step bridge gallery rest']),
-      route('Lookout', [186, 200], [22, 32], [10, 15], [2, 3], .3, .4, ['step step switch stack gallery', 'step step stack switch rest'])],
+      route('Crossing', [108, 122], [30, 42], [10, 14], [2, 3], .14, .25, ['step step promenade gallery arch', 'step step rest hop gallery']),
+      route('Lookout', [170, 184], [22, 32], [10, 15], [2, 3], .22, .4, ['step step fork stack gallery switch', 'step step stack hop rest'])],
     ['Reactor Nest', 'Reach the irradiated root chamber',
       route('Refuge', [116, 130], [28, 40], [9, 13], [2, 3], .22, .35, ['step step arch gallery stack', 'step step fork rest switch']),
       route('Roots', [186, 200], [20, 30], [10, 14], [2, 3], .32, .45, ['step step switch stack fork rest', 'step step stack gallery switch'])],
