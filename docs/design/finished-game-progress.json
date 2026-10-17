@@ -14,27 +14,30 @@
   "nextMilestone": "MG",
   "levelPresentation": {
     "requested": "2026-10-17",
-    "baseCommit": "801e5172506431754d089f4f832e45abf8adffb1",
-    "branch": "codex/level-render-strategies",
-    "status": "implemented_pending_review_gates",
-    "priorityReason": "Owner explicitly redirected this run to level design and five researched pixel-render strategies; do not continue unrelated native-art or Yeet work in this checkpoint.",
-    "scope": "One Settings button cycles Native, LCD, Scanlines, Grille and Dot mask. Display-only; source pixels, scene geometry, camera, collision, character roles and shared simulation are unchanged.",
+    "baseCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+    "branch": "codex/native-canvas-scaling",
+    "status": "implemented_pending_full_ci",
+    "priorityReason": "Owner clarified that actual low-resolution rendering and integer enlargement are required, not display masks.",
+    "supersedes": {
+      "pullRequest": 57,
+      "mainCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+      "historicalReceipt": "docs/verification/pixel-render/chromium.json"
+    },
+    "scope": "Default 8x native canvas; Auto/4x/6x/8x/10x choice. Remove masks and brightness pass; preserve art, source registration, collision, character roles and shared run.",
     "verification": {
-      "focusedTests": "28/28 passed: six renderer tests and 22 actual menu tests.",
-      "build": "npm run build passed in the isolated worktree.",
-      "browser": "Chromium: portrait and landscape at DPR 3; all five modes, reload persistence, ordinary movement with real collision, live Settings clock, keyboard focus and rotation passed with no page errors.",
-      "browserReceipt": "docs/verification/pixel-render/chromium.json",
-      "fullTests": "npm test invoked; full suite still running at this evidence checkpoint. Exact review-branch CI must complete.",
-      "webkit": "Local execution blocked: Ubuntu 26.04 lacks the libraries required by the installed Ubuntu 24.04 WebKit build. Run the committed browser check in repository Ubuntu CI.",
-      "figmaCheck": "npm run figma:check attempted, exit 2: local Figma Dev Mode MCP at http://127.0.0.1:3845/mcp unavailable. No runtime art masters or source files changed.",
-      "production": "Not merged or released; no production SHA verification claimed."
+      "focusedTests": "48/48 passed. Native dimensions, persistence, DPR sweep, all six unchanged characters, pointer mapping, actual tree clearance and Crown framing.",
+      "build": "npm run build passed.",
+      "browser": "Chromium and WebKit, four viewports each, 40 actual game screenshots verified at every physical pixel block; normal movement, live Settings, persistence, focus and rotation pass.",
+      "browserReceipt": "docs/verification/pixel-render/native-canvas.json",
+      "fullTests": "Initial local npm test stopped after the renderer changed; final exact-SHA repository CI required.",
+      "production": "Not published to main; final-SHA CI and production verification not claimed."
     },
     "limitations": [
-      "No target-iPhone frame-time or crowded-scene visual acceptance claim.",
-      "This checkpoint changes display presentation, not authored level geometry.",
-      "Full test/build CI and WebKit browser verification remain review gates."
+      "Integer enlargement changes field of view; it does not resample native sprites.",
+      "Selected scale is capped for small screens and the existing Crown guard; actual scale is reported.",
+      "Real-iPhone performance and human visual acceptance remain unmeasured."
     ],
-    "nextStep": "Run the committed five-mode browser check in Chromium and WebKit on the review branch, then compare Garden 5 ladder and pool readability on the target iPhone before integration."
+    "nextStep": "Complete full regression CI on the review branch, then review actual iPhone readability before publishing this correction."
   },
   "priorityOverride": {
     "date": "2026-10-14",

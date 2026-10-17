@@ -8,7 +8,8 @@ function frame(width, height, aspect) {
   h.window.innerWidth = width; h.window.innerHeight = height; h.window.devicePixelRatio = 1;
   h.emit('resize');
   const c = h.elements.get('c');
-  return { g, pw: parseFloat(c.style.width), ph: parseFloat(c.style.height), left: parseFloat(c.style.left), top: parseFloat(c.style.top) };
+  const [, left, top, scale] = c.style.transform.match(/translate\(([^,]+)px,([^)]*)px\) scale\(([^)]+)\)/).map(Number);
+  return { g, pw: parseFloat(c.style.width) * scale, ph: parseFloat(c.style.height) * scale, left, top };
 }
 
 test('landscape windows get a centred 4:3 frame and portrait windows a 3:4 frame', () => {

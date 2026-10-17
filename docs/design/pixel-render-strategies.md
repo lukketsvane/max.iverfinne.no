@@ -1,29 +1,25 @@
-# Five pixel display strategies
+# Native low-resolution canvas
 
-Owner-directed level-presentation checkpoint, 17 October 2026. Settings replaces the two-state Subpixels control with one button cycling Native, LCD, Scanlines, Grille and Dot mask. It changes the display, not level geometry or runtime art masters. The same choice applies to every ordinary and scene garden, including their gardeners and cues.
+The owner's 17 October clarification replaces display masks with actual low-resolution rendering. Settings → Pixels cycles **Auto, 4x, 6x, 8x, 10x**, defaulting to **8x**. This is one small game canvas, not a high-resolution scene with a pixel-pattern overlay.
 
-## Selection
+A 390×844 CSS-pixel phone viewport at devicePixelRatio 3 uses a **146×195 native canvas** displayed as **1168×1560 physical pixels** at 8x. Every source pixel occupies one uniform 8×8 block. The existing portrait/landscape frame is centred, with whole-pixel letterboxing rather than fractional stretching.
 
-| Mode | Treatment | Purpose |
-| --- | --- | --- |
-| Native | Original nearest-neighbour integer pixels, no mask or exposure pass | Unmodified reference and lowest-cost default |
-| LCD | RGB cells with a fine horizontal pixel grid | Retains the earlier explicit Subpixels-on preference |
-| Scanlines | Neutral horizontal lines without RGB separation | Compare horizontal structure without colour texture |
-| Grille | Continuous vertical RGB stripes | A distinct aperture-grille-inspired surface without horizontal breaks |
-| Dot mask | Alternating offset RGB cells | Compare a staggered phosphor-like texture against continuous stripes |
+## Rendering contract
 
-These are restrained display masks, not full historical display emulators. There is no bloom, curvature, motion blur, invented detail, palette replacement or AI-generated art. Native remains available immediately; comparisons must judge ladders, ledges, small characters and warning readability rather than texture alone.
+Draw source artwork into the small canvas at native 1:1. Keep `imageSmoothingEnabled = false` and `image-rendering: pixelated`. The canvas's CSS width and height equal its native dimensions. A single origin-zero `translate(...) scale(SCALE / devicePixelRatio)` transform aligns and enlarges it. The scale is an integer in **physical display pixels**, not CSS layout pixels.
 
-Primary research: [MDN crisp pixel-art rendering](https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look) and [Canvas imageSmoothingEnabled](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled) support retaining the integer game canvas without filtering. [Libretro's CRT shader overview](https://docs.libretro.com/shader/crt/) distinguishes scanlines and phosphor-mask treatments. These sources inform the selected families; they do not establish a measured performance or visual-quality win for MAX.
+Direct fractional CSS width/left sizing shifted the grid in both local browser tests: the isolated checkerboard had 112,320 wrong physical pixels. Keeping native CSS dimensions and using the transform produced zero mismatches on the same test. The actual game screenshot check now verifies every block, not just CSS properties.
 
-## Runtime contract
+Auto retains adaptive sizing. Explicit enlargement is reduced only when necessary to preserve 128 native pixels on the shorter axis; the existing Crown minimum-height safeguard remains. The menu reports the actual native dimensions and applied scale. Higher magnification shows less of the world, rather than resampling sprites or changing collision. Normal input maps through the real transformed canvas bounds.
 
-The mask is generated at physical display resolution only when resizing or selecting a mode. A repeated tile avoids per-frame pixel readback, shader compilation and asset downloads. Existing bounded exposure compensation is retained. Native releases the mask buffer; scales below three physical pixels and canvas-preparation failures fall back to Native without discarding the selected preference. Explicit legacy on/off choices migrate; new devices start Native.
+The saved key is `max-pixel-scale-v1`. Retired mask preferences cannot re-enable a mask. Selection retains focus and does not pause, restart, teleport or alter the shared run. The old mask and additive exposure pass are removed. Runtime PNG masters, scene geometry, source files and camera logic are unchanged.
 
-The button retains focus, announces its position among five choices, persists locally and does not restart or pause the shared simulation. Source registration, camera bounds, hitboxes, input coordinates and production Figma PNGs remain unchanged.
+## Evidence
 
-## Verification
+48 focused tests passed, including all six characters' unchanged state, DPR 1/1.25/1.5/2/3, native dimensions, persistence, input mapping, real scene roof/ladder/jump clearance and the existing Crown framing guard. Exact old fixture extents change by one pixel because floor fitting replaces clipped ceil fitting; the geometry and clearance assertions remain.
 
-`node --test tests/pixel-render.test.cjs tests/menu.test.cjs`: 28 passed. The build passed. `scripts/check-pixel-render-browser.cjs` exercises the built game through the existing account-free review bundle: touch selection, reload, normal movement, live Settings, all five masks, keyboard focus and rotation. Chromium passed both phone orientations at DPR 3; its receipt is in `docs/verification/pixel-render/chromium.json`. CI runs this check alongside the existing Chromium/WebKit menu review and retains screenshots.
+Chromium and WebKit passed phone, landscape, small-screen and desktop flows: **8 cases and 40 pixel-verified game screenshots**, all with uniform integer blocks and no page errors. Tests retain ordinary movement with real collision, live Settings, reload persistence, keyboard focus and rotation. The first actual simulation frame must run before movement input, avoiding a startup event race without fabricating player state. The durable summary is `docs/verification/pixel-render/native-canvas.json`; repository browser CI retains full screenshots.
 
-Full test completion, WebKit, target-device visual acceptance and release verification remain separate gates. Figma check was attempted but cannot reach the local desktop MCP server in this isolated environment. No artwork source or master is replaced by this checkpoint.
+`npm run build` passed. The initial full `npm test` was stopped when the renderer changed, so it is not a complete pass. Full final-SHA regression CI and production verification remain pending. Real-iPhone performance and human readability are not certified by automated browser screenshots.
+
+Primary references: [MDN crisp pixel-art rendering](https://developer.mozilla.org/en-US/docs/Games/Techniques/Crisp_pixel_art_look) and [Canvas imageSmoothingEnabled](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled). The fractional-sizing comparison above is this project's measured result, not a performance claim from those references.

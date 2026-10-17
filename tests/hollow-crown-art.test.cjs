@@ -53,7 +53,7 @@ test('native Chimera attack ends before its gameplay cooldown and does not hide 
 test('real shrine arrival and a rapid airborne maul keep both bodies visible below the compact HUD', () => {
   const { loadGame, plot } = require('./game-harness.cjs');
   for (const [width, height] of [[107, 190], [131, 282], [250, 280], [300, 200], [360, 280]]) {
-    const h = loadGame({ __randomSeed: 4242 }), g = h.game;
+    const h = loadGame({ __randomSeed: 4242, 'max-pixel-scale-v1': 'auto' }), g = h.game;
     g.resetRogueRun('test', { classId: 'mech', difficulty: 'medium' });
     g.rogueRun.seed = 260926; g.enterLevel(20);
     const e = g.bossEvent;
@@ -79,7 +79,7 @@ test('real shrine arrival and a rapid airborne maul keep both bodies visible bel
 
 test('the actual summon gives shallow Crown views enough native height and restores normal zoom on exit', () => {
   const { loadGame, plot } = require('./game-harness.cjs');
-  const h = loadGame({ __randomSeed: 4242 }), g = h.game;
+  const h = loadGame({ __randomSeed: 4242, 'max-pixel-scale-v1': 'auto' }), g = h.game;
   Object.assign(h.window, { innerWidth: 1200, innerHeight: 800 }); h.emit('resize');
   assert.equal(g.IH, 160, 'ordinary coarse-pointer desktop keeps its existing pixel zoom');
   g.resetRogueRun('test', { classId: 'mech', difficulty: 'medium' });
@@ -90,7 +90,8 @@ test('the actual summon gives shallow Crown views enough native height and resto
   const terrain = JSON.stringify(g.activeStageLayout);
   assert.equal(g.interactBossEvent(), true); h.tick(16);
   assert.equal(g.IH, 200); assert.equal(g.IW, 300);
-  assert.equal(h.elements.get('c').style.width, '1200px', 'the entire canvas uses integer zoom without stretching source cells');
+  const canvas = h.elements.get('c'), zoom = Number(canvas.style.transform.match(/scale\(([^)]+)\)/)[1]);
+  assert.equal(parseFloat(canvas.style.width) * zoom, 1200, 'the entire canvas uses integer zoom without stretching source cells');
   assert.equal(JSON.stringify(g.activeStageLayout), terrain, 'framing cannot regenerate any real route or platform');
   const boss = g.liveBoss();
   Object.assign(boss, { crownState: 'attack', crownMove: 'leap', crownTransition: 0, cool: 0, windup: 0,
