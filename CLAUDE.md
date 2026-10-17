@@ -629,12 +629,15 @@ The game canvas is letterboxed to a 3:4 (width:height) screen in portrait window
 and a 4:3 screen in landscape windows (`screenAspect`; `window.MaxScreenAspect`
 overrides it, and the VM harness and review fixtures set 0 to keep their free
 viewports, `review.html?aspect=1` shows the real frame). Settings → Pixels cycles
-Native, LCD, Scanlines, Grille and Dot mask without restarting or pausing the run.
-`pixel-render.inc.js` builds the display-resolution mask (`#subpx`) only on a
-mode change or resize, with the existing bounded additive exposure compensation
-(`subpixelGain`). Keep integer registration and disabled smoothing; do not use a
-CSS brightness filter. The choice is saved in `max-pixel-render-v1`; explicit
-legacy `max-subpixel` choices migrate, while new devices default to Native.
-Small scales and failed mask preparation fall back to Native. See
-`docs/design/pixel-render-strategies.md`; source art and geometry stay unchanged.
-
+Auto, 4x, 6x, 8x and 10x actual canvas enlargement, defaulting to 8x. The
+`max-pixel-scale-v1` device choice is independent of retired mask preferences.
+`pixel-render.inc.js` selects an integer physical-pixel scale, capped to retain
+128 native pixels on the shorter screen axis; the existing Crown height guard
+still takes precedence. The low-resolution canvas draws native art at 1:1 with
+smoothing disabled. Its CSS dimensions remain native; one origin-zero transform
+places and enlarges it on the physical pixel grid. Fractional CSS width/left
+sizing produced uneven blocks in both tested browsers and must not return.
+There is no subpixel overlay or additive brightness pass. Field of view changes
+with resolution; world coordinates, collision, source artwork and character
+rules do not. `screenToWorld` uses the transformed actual canvas bounds.
+See `docs/design/pixel-render-strategies.md` and the native-canvas receipt.

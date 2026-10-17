@@ -13,7 +13,7 @@ native art and physical ascent. Its [execution ledger](docs/design/finished-game
 records verified work and the next milestone; planned quality targets are not
 claims of completed playtesting.
 
-Settings → Pixels cycles Native, LCD, Scanlines, Grille and Dot mask. The choice is local and does not pause or restart the garden. See [pixel display strategies](docs/design/pixel-render-strategies.md) for the comparison and verification limits.
+Settings → Pixels cycles Auto, 4x, 6x, 8x and 10x native-canvas enlargement, defaulting to 8x. These change the actual render resolution, not a display mask. Each native pixel becomes an integer block of physical display pixels; smaller screens and the Crown retain readable framing. The saved device choice does not pause or restart the garden. See [pixel display strategies](docs/design/pixel-render-strategies.md).
 
 ## The current game contract
 

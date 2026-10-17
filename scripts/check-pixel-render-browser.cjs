@@ -9,7 +9,7 @@ const output = path.resolve(process.env.PIXEL_BROWSER_OUTPUT || 'pixel-browser-r
 const requested = process.env.PIXEL_BROWSER_ENGINE;
 assert.ok(requested === undefined || ['chromium', 'webkit'].includes(requested), 'Unknown pixel review engine');
 const engines = requested === undefined ? ['chromium', 'webkit'] : [requested];
-const modes = ['native', 'lcd', 'scanlines', 'grille', 'shadow'];
+const modes = ['auto', '4x', '6x', '8x', '10x'];
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.json': 'application/json' };
 const server = http.createServer((req, res) => {
   try {
@@ -26,6 +26,7 @@ const server = http.createServer((req, res) => {
 });
 async function state(page) { return page.evaluate(() => window.__pixelReview()); }
 async function main() {
+  const { decode } = await import('./figma-sync.mjs');
   fs.mkdirSync(output, { recursive: true });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const base = 'http://127.0.0.1:' + server.address().port, results = [];
@@ -33,70 +34,87 @@ async function main() {
     for (const engine of engines) {
       const browser = await ({ chromium, webkit }[engine]).launch({ headless: true });
       try {
-        for (const [name, viewport] of Object.entries({ phone: { width: 390, height: 844 }, landscape: { width: 844, height: 390 } })) {
-          const page = await browser.newPage({ viewport, deviceScaleFactor: 3, hasTouch: true }), errors = [];
+        const cases = [
+          { name: 'phone', viewport: { width: 390, height: 844 }, dpr: 3 },
+          { name: 'landscape', viewport: { width: 844, height: 390 }, dpr: 3 },
+          { name: 'small', viewport: { width: 320, height: 568 }, dpr: 1 },
+          { name: 'desktop', viewport: { width: 1920, height: 1080 }, dpr: 1 }
+        ];
+        for (const { name, viewport, dpr } of cases) {
+          const page = await browser.newPage({ viewport, deviceScaleFactor: dpr, hasTouch: true }), errors = [];
           page.on('pageerror', error => errors.push(error.message));
           await page.goto(base);
           await page.getByRole('button', { name: 'Settings', exact: true }).tap();
           const control = page.getByRole('button', { name: /^Pixel rendering / });
-          for (let i = 0; i < 4; i++) await control.tap();
-          assert.equal((await state(page)).render.id, 'shadow');
+          assert.equal((await state(page)).render.id, '8x');
+          const initial = await state(page);
+          if (name === 'phone') { assert.equal(initial.width, 146); assert.equal(initial.height, 195); assert.equal(initial.scale, 8); }
+          await control.tap(); assert.equal((await state(page)).render.id, '10x');
           await page.reload();
           await page.getByRole('button', { name: 'Settings', exact: true }).tap();
-          assert.equal((await state(page)).render.id, 'shadow');
-          await control.tap();
-          assert.equal((await state(page)).render.id, 'native');
+          assert.equal((await state(page)).render.id, '10x');
+          await control.tap(); assert.equal((await state(page)).render.id, 'auto');
           await page.getByRole('button', { name: 'Back', exact: true }).tap();
           await page.getByRole('button', { name: 'Play', exact: true }).tap();
           await page.getByRole('button', { name: 'Play', exact: true }).tap();
-          await page.waitForFunction(() => window.__pixelReview().active && !window.__pixelReview().paused);
+          await page.waitForFunction(() => window.__pixelReview().active && !window.__pixelReview().paused && window.__pixelReview().elapsed > 0 && document.querySelector('.max-menu').hidden);
           const start = await state(page);
           await page.keyboard.down('ArrowRight'); await page.waitForTimeout(500); await page.keyboard.up('ArrowRight');
           await page.waitForTimeout(200);
           const walked = await state(page);
-          assert.ok(walked.x > start.x + 5, 'ordinary input must move the gardener with real collision');
+          assert.ok(walked.x > start.x + 5, engine + '/' + name + ': ordinary input must move the gardener with real collision ' + JSON.stringify({start,walked}));
           await page.keyboard.press('Escape');
           const beforeMenu = await state(page);
           const controlBounds = await control.boundingBox();
-          const maskSignatures = new Set(), screenshots = [];
+          const sizes = new Set(), screenshots = [], scales = [];
           for (let i = 0; i < 5; i++) {
             const current = await state(page);
-            assert.equal(current.render.id, modes[i]); assert.equal(current.render.active, modes[i]);
-            assert.equal(current.paused, false); assert.equal(current.width, beforeMenu.width); assert.equal(current.height, beforeMenu.height);
+            assert.equal(current.render.id, modes[i]); assert.equal(current.paused, false);
+            assert.ok(Number.isInteger(current.scale));
             const bounds = await control.boundingBox();
             assert.ok(bounds.width >= 44 && bounds.height >= 44);
             assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= viewport.width + 1);
             assert.equal(bounds.width, controlBounds.width);
-            const mask = await page.evaluate(() => {
-              const node = document.querySelector('#subpx'), canvas = node.querySelector('canvas'), game = document.querySelector('#c');
-              const box = n => { const r = n.getBoundingClientRect(); return [r.x, r.y, r.width, r.height]; };
-              const visible = getComputedStyle(node).display !== 'none';
-              return { visible, bounds: visible ? box(node) : null, game: box(game), pointer: getComputedStyle(node).pointerEvents, smoothing: game.getContext('2d').imageSmoothingEnabled, pixels: visible ? Array.from(canvas.getContext('2d').getImageData(0, 0, 24, 24).data) : [] };
+            const canvas = await page.evaluate(() => {
+              const c = document.querySelector('#c'), r = c.getBoundingClientRect(), context = c.getContext('2d');
+              return { width: c.width, height: c.height, left: r.left, top: r.top, cssWidth: r.width, cssHeight: r.height, smoothing: context.imageSmoothingEnabled, transform: [context.getTransform().a, context.getTransform().d], mask: !!document.querySelector('#subpx') };
             });
-            assert.equal(mask.smoothing, false); assert.equal(mask.pointer, 'none'); assert.equal(mask.visible, i !== 0);
-            if (mask.visible) {
-              mask.bounds.forEach((n, axis) => assert.ok(Math.abs(n - mask.game[axis]) < .5));
-              maskSignatures.add(crypto.createHash('sha256').update(Buffer.from(mask.pixels)).digest('hex'));
-            }
+            assert.equal(canvas.width,current.width); assert.equal(canvas.height,current.height);
+            assert.equal(canvas.smoothing,false); assert.equal(canvas.mask,false); assert.deepEqual(canvas.transform,[1,1]);
+            assert.ok(Math.abs(canvas.cssWidth*dpr-current.width*current.scale)<.1);
+            assert.ok(Math.abs(canvas.cssHeight*dpr-current.height*current.scale)<.1);
+            assert.ok(canvas.left>=0 && canvas.top>=0);
+            sizes.add(current.width+'x'+current.height);
             await page.getByRole('button', { name: 'Back', exact: true }).tap();
             const image = `${engine}-${name}-${modes[i]}.png`;
-            await page.locator('#stage').screenshot({ path: path.join(output, image) }); screenshots.push(image);
+            const screenshot = await page.screenshot({ path: path.join(output, image) });
+            const pixels = decode(screenshot), block = current.scale, colours = new Set();
+            assert.equal(pixels.width,Math.round(viewport.width*dpr)); assert.equal(pixels.height,Math.round(viewport.height*dpr));
+            const left=Math.round(canvas.left*dpr),top=Math.round(canvas.top*dpr);
+            for (let y=0;y<current.height*block;y+=block) for(let x=0;x<current.width*block;x+=block) {
+              const colour=pixels.rgba.readUInt32BE(((top+y)*pixels.width+left+x)*4);colours.add(colour);
+              for(let dy=0;dy<block;dy++)for(let dx=0;dx<block;dx++) assert.equal(pixels.rgba.readUInt32BE(((top+y+dy)*pixels.width+left+x+dx)*4),colour,`uneven ${block}x block at ${x},${y}`);
+            }
+            assert.ok(colours.size>16,'pixel proof must contain real game detail, not a blank frame');
+            screenshots.push(image);scales.push({choice:modes[i],width:current.width,height:current.height,scale:block,uniformBlocks:true,colours:colours.size});
             await page.keyboard.press('Escape');
             await control.focus(); await page.keyboard.press('Enter');
             assert.equal(await control.evaluate(n => document.activeElement === n), true);
           }
-          assert.equal(maskSignatures.size, 4); assert.equal((await state(page)).render.id, 'native');
-          assert.ok((await state(page)).elapsed > beforeMenu.elapsed, 'live settings must not pause the shared world');
+          if(dpr===3)assert.ok(sizes.size>=3,'the choices must change native render resolution, not an overlay');
+          assert.equal((await state(page)).render.id,'auto');
+          assert.ok((await state(page)).elapsed>beforeMenu.elapsed,'live Settings must not pause the world');
           await control.tap();
-          const rotated = { width: viewport.height, height: viewport.width };
-          await page.setViewportSize(rotated);
+          await page.setViewportSize({width:viewport.height,height:viewport.width});
           await page.waitForFunction(() => {
-            const a = document.querySelector('#c').getBoundingClientRect(), b = document.querySelector('#subpx').getBoundingClientRect();
-            return Math.abs(a.width - b.width) < .5 && Math.abs(a.height - b.height) < .5;
+            const c=document.querySelector('#c'),r=c.getBoundingClientRect(),s=window.__pixelReview();
+            return Math.abs(r.width*devicePixelRatio-c.width*s.scale)<.1 && Math.abs(r.height*devicePixelRatio-c.height*s.scale)<.1 && r.width<=innerWidth+.1 && r.height<=innerHeight+.1;
           });
-          assert.equal((await state(page)).render.active, 'lcd');
-          assert.deepEqual(errors, []);
-          results.push({ engine, viewport: name, dpr: 3, fiveModes: true, persistence: true, liveClock: true, ordinaryWalk: walked.x - start.x, rotation: true, screenshots, errors });
+          assert.equal((await state(page)).render.id,'4x');
+          assert.deepEqual(errors,[]);
+          results.push({engine,viewport:name,dpr,default8x:initial.scale===8,fiveChoices:true,persistence:true,liveClock:true,ordinaryWalk:walked.x-start.x,rotation:true,scales,screenshots,errors});
+          console.log(engine + '/' + name + ': all five canvas scales have uniform pixel blocks');
+          fs.writeFileSync(path.join(output, 'partial.json'), JSON.stringify({engines,results},null,2));
           await page.close();
         }
       } finally { await browser.close(); }
