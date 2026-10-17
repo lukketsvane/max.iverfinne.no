@@ -292,9 +292,9 @@
   ],
   [
    "seed",
-   "falls-seed",
-   520,
-   327
+   "pier-seed",
+   515,
+   452
   ],
   [
    "trial",
@@ -304,9 +304,9 @@
   ],
   [
    "trial",
-   "terrace-trial",
-   277,
-   337
+   "tunnel-trial",
+   1018,
+   394
   ],
   [
    "reward",
@@ -346,9 +346,9 @@
   ],
   [
    "door",
-   "crystal-door",
-   969,
-   394
+   "sluice-door",
+   277,
+   337
   ],
   [
    "dig",

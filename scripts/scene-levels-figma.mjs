@@ -45,7 +45,10 @@ export function decodeCapture(capture) {
         case 'POOL': spec.pools.push([key, x, x + w, y]); break;
         case 'LEDGE': spec.ledges.push([key, x, y, w]); break;
         case 'BLOCK': spec.blocks.push([key, x, y, w, h]); break;
-        case 'LADDER': spec.ladders.push([key, x + Math.floor(w / 2), y, y + h]); break;
+        case 'LADDER':
+          if (parts.length !== 2 && !(parts.length === 3 && parts[2] === 'visible')) errors.push(`${at}/${name}: LADDER · key or LADDER · key · visible`);
+          spec.ladders.push([parts[1], x + Math.floor(w / 2), y, y + h, ...(parts[2] === 'visible' ? [0] : [])]);
+          break;
         case 'POINT': if (parts.length !== 3) errors.push(`${at}/${name}: POINT · kind · key`); else spec.points.push([parts[1], key, x + Math.floor(w / 2), y + h]); break;
         case 'SITE': sites.push([key, x + Math.floor(w / 2), y + h]); break;
         case 'COURT': courts.set(key, x + Math.floor(w / 2)); break;

@@ -48,7 +48,9 @@ and 20. The remaining stages keep their seeded layouts until they get art.
    locked BACKDROP and FOREGROUND instances and a `COLLISION` frame of plain
    rectangles: `GROUND · n` (floor steps; a step over 6 px becomes a wall),
    `LEDGE · key` (one-way top), `BLOCK · key` (solid), `LADDER · key` (14 px
-   wide, top and bottom on a surface), `POOL · key` (water level at the top
+   wide, top and bottom on a surface; `LADDER · key · visible` draws the native
+   runtime rails and rungs when the foreground has no painted ladder),
+   `POOL · key` (water level at the top
    edge), `POINT · kind · key` (7×7, standing on its bottom edge), `SITE · key`
    and `COURT · key` (guardian shrine and its 100 px ground court). Rename the
    frame's `NN` to move a scene to another stage.
@@ -63,3 +65,7 @@ and 20. The remaining stages keep their seeded layouts until they get art.
    ledge reached, every ladder climbed both ways, nothing cut off from the spawn.
    `tests/scene-levels.test.cjs` runs the same sweep for every scene and proves
    the committed data is exactly the compiled capture.
+
+The [levels 16–20 pass](../levels-16-20/README.md) selectively refreshes the
+authenticated scene frames for 17–19. The capture records which other scene
+frames remain pinned to their prior committed snapshot.
