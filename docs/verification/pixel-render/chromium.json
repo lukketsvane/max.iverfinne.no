@@ -1,0 +1,68 @@
+{
+  "indexSha256": "a7da331f14856028c9d3ab8f47e9d70c663b6795c6108d56302f1a16409fcd41",
+  "engines": [
+    "chromium"
+  ],
+  "results": [
+    {
+      "engine": "chromium",
+      "viewport": "phone",
+      "dpr": 3,
+      "fiveModes": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.254011311111107,
+      "rotation": true,
+      "screenshots": [
+        "chromium-phone-native.png",
+        "chromium-phone-lcd.png",
+        "chromium-phone-scanlines.png",
+        "chromium-phone-grille.png",
+        "chromium-phone-shadow.png"
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "landscape",
+      "dpr": 3,
+      "fiveModes": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.440676111111102,
+      "rotation": true,
+      "screenshots": [
+        "chromium-landscape-native.png",
+        "chromium-landscape-lcd.png",
+        "chromium-landscape-scanlines.png",
+        "chromium-landscape-grille.png",
+        "chromium-landscape-shadow.png"
+      ],
+      "errors": []
+    }
+  ],
+  "baseCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+  "scope": "Automated browser flow, not a human visual-quality or real-iPhone performance acceptance",
+  "followUp": {
+    "sourceCommit": "5ec2033edb740e214e643ae47fe1b2413d1ac132",
+    "browserCI": {
+      "url": "https://github.com/lukketsvane/max.iverfinne.no/actions/runs/39058442051",
+      "status": "success",
+      "engines": [
+        "chromium",
+        "webkit"
+      ],
+      "build": "passed",
+      "existingMenuReview": "passed",
+      "fiveModeReview": "passed",
+      "screenshots": "uploaded successfully"
+    },
+    "focusedTests": {
+      "command": "node --test tests/menu-layout-review-config.test.cjs tests/browser-review-config.test.cjs tests/pixel-render.test.cjs tests/menu.test.cjs",
+      "passed": 33,
+      "failed": 0
+    },
+    "fullTests": "The initial local npm test exposed the menu artifact-path assertion after changing the workflow path to a list. Keep the original menu artifact step and add a separate pixel artifact step; all 33 focused tests now pass without removing tests. Full exact-SHA npm test remains required.",
+    "sourceChange": "Only workflow artifact output and this receipt differ from the browser-tested source commit."
+  }
+}

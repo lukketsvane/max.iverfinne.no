@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "purpose": "Reconcile historical layout references with the authored finale changes while preserving independent Hollow Tree geometry, traversal and furnishing isolation checks.",
+  "layoutPartition": {
+    "test": "tests/hollow-branch-platforming.test.cjs",
+    "baseline": {
+      "commit": "801e5172506431754d089f4f832e45abf8adffb1",
+      "materialization": "git archive of the committed runtime and existing game harness",
+      "completeLayoutSha256": "2b0a8cb4b9204cd21461f0a86e45ea463868d81decec75ffac3a725f2e940d84"
+    },
+    "current": {
+      "completeLayoutSha256": "103297edcd9a7ffe937ee49fc28dda6d2eb8f2b357b723714e3fd564d56c14a2",
+      "matchesInitialCiReportedActual": true,
+      "initialCiJobId": 117481475984
+    },
+    "fixture": {
+      "classId": "bulwark",
+      "seeds": [
+        1,
+        2026,
+        4294967295
+      ],
+      "randomSeed": 123,
+      "pictures": true,
+      "sceneOverrides": false,
+      "stageRangeInclusive": [
+        2,
+        20
+      ],
+      "serialization": "JSON.stringify of the complete plain layout array in seed-then-stage order"
+    },
+    "changedStages": [
+      16,
+      17,
+      20
+    ],
+    "changedStageSeedPairs": [
+      {
+        "stage": 16,
+        "seed": 1
+      },
+      {
+        "stage": 17,
+        "seed": 1
+      },
+      {
+        "stage": 20,
+        "seed": 1
+      },
+      {
+        "stage": 16,
+        "seed": 2026
+      },
+      {
+        "stage": 17,
+        "seed": 2026
+      },
+      {
+        "stage": 20,
+        "seed": 2026
+      },
+      {
+        "stage": 16,
+        "seed": 4294967295
+      },
+      {
+        "stage": 17,
+        "seed": 4294967295
+      },
+      {
+        "stage": 20,
+        "seed": 4294967295
+      }
+    ],
+    "retainedStages": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      18,
+      19
+    ],
+    "retainedLayoutCount": 48,
+    "baselineRetainedSha256": "2e38f31510cb1775efb39e2763c6162c3e787e3fffdd2fc93650597628482b79",
+    "currentRetainedSha256": "2e38f31510cb1775efb39e2763c6162c3e787e3fffdd2fc93650597628482b79",
+    "hollowCanopyAbsenceAssertions": {
+      "baseline": 57,
+      "current": 57
+    },
+    "correction": "Exclude only stages 16, 17 and 20 from the historical-layout hash. Continue asserting absence of Hollow Tree furnishing for every stage 2 through 20. Preserve all native geometry and connected traversal assertions."
+  },
+  "focusedValidation": {
+    "command": "node --test tests/hollow-branch-platforming.test.cjs",
+    "permissions": "permitted child-process execution",
+    "exitCode": 0,
+    "tests": 39,
+    "suites": 0,
+    "pass": 39,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 69701.733446,
+    "testFileSha256": "63f7144623b84237ef8697f23b8c27d6a8cd609e58b4e907d6913853d1ae4df8"
+  },
+  "initialCi": {
+    "runId": 39061926690,
+    "jobId": 117481475984,
+    "url": "https://github.com/lukketsvane/max.iverfinne.no/actions/runs/39061926690/job/117481475984",
+    "workflow": ".github/workflows/test.yml",
+    "head": {
+      "sha": "673abe62de544ad3676659d08c73517f78480fc9",
+      "tree": "1ed0929c44f70b23205fe7e66b85e0976f07f2f2"
+    },
+    "base": {
+      "sha": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+      "tree": "abcdd3fa12f3657655e0c64eb43d6b58e7bba251"
+    },
+    "checkout": {
+      "ref": "refs/remotes/pull/58/merge",
+      "sha": "0c037b8c7ab69937cb310393e18c4b22ac127acd",
+      "tree": "3070bfc3155800b5287a89562a2d159029acbf57",
+      "kind": "GitHub synthetic pull-request merge"
+    },
+    "testedHeadTreeDirectly": false,
+    "startedAt": "2026-10-17T19:19:00Z",
+    "completedAt": "2026-10-17T19:37:38Z",
+    "conclusion": "failure",
+    "npmTest": {
+      "startedAt": "2026-10-17T19:19:11Z",
+      "completedAt": "2026-10-17T19:37:36Z",
+      "exitCode": 1,
+      "tests": 993,
+      "suites": 0,
+      "pass": 991,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 1105184.484536
+    },
+    "buildStep": {
+      "command": "npm run build",
+      "conclusion": "skipped"
+    },
+    "failures": [
+      {
+        "file": "tests/hollow-branch-platforming.test.cjs",
+        "line": 169,
+        "test": "Hollow Tree authoring leaves the complete other nineteen layouts unchanged",
+        "expectedHash": "2b0a8cb4b9204cd21461f0a86e45ea463868d81decec75ffac3a725f2e940d84",
+        "actualHash": "103297edcd9a7ffe937ee49fc28dda6d2eb8f2b357b723714e3fd564d56c14a2"
+      },
+      {
+        "file": "tests/tree-hollow-entrance-review.test.cjs",
+        "line": 47,
+        "test": "tree entrance artifacts reproduce an explicitly offline editable source and synthetic compiler candidate",
+        "difference": "Current sourceFiles contains pixel-render.inc.js; the frozen historical sourceFiles list does not."
+      }
+    ],
+    "logSha256": "984d268bc6fab50ae5cceb2edbf470eae9617dab852d8d8721a50970081c0e44",
+    "checkoutEvidence": "HEAD is now at 0c037b8 Merge 673abe62de544ad3676659d08c73517f78480fc9 into 62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8"
+  }
+}

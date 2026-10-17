@@ -1,0 +1,115 @@
+{
+  "status": "partial verification",
+  "rawHarnessStatus": "failed",
+  "startedAt": "2026-10-17T19:32:57.195Z",
+  "finishedAt": "2026-10-17T19:35:45.745Z",
+  "wallSeconds": 168.55,
+  "method": "Current local game through the existing isolated review fixture; read-only state observer; ordinary real-time requestAnimationFrame and held keyboard input. No fake clock or actor repositioning after fixture initialization.",
+  "sourceSHA256": {
+    "stage-layout.js": "aff77b9c7f0c1382b7bfbbda70c8c0dcff34ab2e0360e5c96801d523acc75b17",
+    "scene-levels-data.js": "d52500a77f39d3fe04c4f6d5ca9672716a439720ba7b620168f7db338e3eeb4b"
+  },
+  "sourcesUnchangedDuringRun": true,
+  "evidence": {
+    "report-focused.json": {
+      "sha256": "5e8e52cf6a909dcd49b351ae587fe767fddc7a123c61d1adb8e2cd8da94077a1",
+      "bytes": 39192
+    },
+    "stage19-west-gondola-landscape.png": {
+      "sha256": "29a53571cc9155af6f7d976f41c003bfd61b000c6fe6654de2ab08e03a06353b",
+      "bytes": 85928
+    }
+  },
+  "observed": {
+    "stage": 19,
+    "classId": "bulwark",
+    "fixture": "review.html?mode=layout19&class=bulwark&seed=1&ladder=4",
+    "route": "Continuous west gondola ladder ascent and grounded deck approach to the Nest trial marker.",
+    "start": {
+      "x": 442,
+      "y": 426,
+      "grounded": true,
+      "simulationSeconds": 5.666300000000009
+    },
+    "end": {
+      "x": 420.6432339930907,
+      "y": 176,
+      "grounded": true,
+      "platform": "l26",
+      "simulationSeconds": 12.199299999999972
+    },
+    "ascentPixels": 250,
+    "routeSimulationSeconds": 6.533,
+    "stateSamples": 40,
+    "keyTransitions": [
+      {
+        "key": "ArrowUp",
+        "down": true
+      },
+      {
+        "key": "ArrowUp",
+        "down": false
+      },
+      {
+        "key": "ArrowLeft",
+        "down": true
+      },
+      {
+        "key": "ArrowLeft",
+        "down": false
+      }
+    ],
+    "nativeAssets": "All loaded successfully before input.",
+    "isolatedStorage": true,
+    "pageRequestOrHTTPFailures": [],
+    "landscape": {
+      "viewport": {
+        "w": 844,
+        "h": 390
+      },
+      "canvas": {
+        "w": 422,
+        "h": 195,
+        "smoothing": false
+      },
+      "screenshot": "stage19-west-gondola-landscape.png",
+      "visualInspection": "Character stands on the gondola deck; visible ladder aligns with the deck; TEND prompt is readable; native pixel art renders clearly."
+    },
+    "portrait": {
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "canvas": {
+        "w": 195,
+        "h": 422,
+        "smoothing": false
+      },
+      "resizeObserved": true,
+      "screenshotCaptured": false,
+      "visualInspection": "Unverified."
+    }
+  },
+  "limitations": [
+    "Portrait screenshot timed out after 30000 ms; the fallback failure screenshot also timed out.",
+    "The browser closed before the stage 18 page could initialize.",
+    "The raw failed status is retained. This evidence is not a complete route, trial, campaign, mobile, WebKit, multiplayer or production pass."
+  ],
+  "unverifiedByThisAttempt": [
+    "Stage 19 west gondola descent.",
+    "Stage 19 east gondola ascent and descent.",
+    "Stage 19 Nest and Rain trial activation, keeper spawning, retreat and combat completion.",
+    "Stage 18 brace crossing and reverse ascent.",
+    "Stage 16, 17 and 20 browser routes or screenshots.",
+    "Portrait visual appearance, other classes, touch controls, WebKit and multiplayer."
+  ],
+  "recordedFailures": {
+    "route": "page.screenshot: Timeout 30000ms exceeded.",
+    "browser": "browserContext.newPage: Target page, context or browser has been closed"
+  },
+  "testedCheckpoint": {
+    "commit": "673abe62de544ad3676659d08c73517f78480fc9",
+    "tree": "1ed0929c44f70b23205fe7e66b85e0976f07f2f2",
+    "scope": "This browser capture predates the later integration of main 37d21a9. The scoped level geometry and generator source hashes are pinned above."
+  }
+}

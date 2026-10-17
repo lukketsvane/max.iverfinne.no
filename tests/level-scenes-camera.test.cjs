@@ -34,7 +34,7 @@ function bounds(h, difference = {}) {
 
 test('390×844 portrait holds actual native ART at the roof through easing and shake', () => {
   const h = tree(), g = h.game; stand(h, [420,80,100]); g.menuPaused = true;
-  assert.equal(g.IW, 130); assert.equal(g.IH, 282); assert.equal(g.ANCHOR, 190);
+  assert.equal(g.IW, 130); assert.equal(g.IH, 281); assert.equal(g.ANCHOR, 189);
   const before = JSON.stringify(h.L), nativeBefore = h.scene.row.sourceDigest;
   assert.equal(bounds(h).minY, h.scene.bounds.y);
   g.camY = g.P.y - g.ANCHOR;
@@ -112,7 +112,7 @@ test('side-nook look-ahead keeps the native roof while the actor stays inside it
 
 test('landscape retains normal framing at the same actual upper terrace', () => {
   const h = tree(844, 390), g = h.game; stand(h, [420,80,100]); g.menuPaused = true;
-  assert.equal(g.IW, 282); assert.equal(g.IH, 130); assert.equal(bounds(h), null);
+  assert.equal(g.IW, 281); assert.equal(g.IH, 130); assert.equal(bounds(h), null);
   g.camY = g.P.y - g.ANCHOR; const ordinary = g.camY;
   for (let n = 0; n < 10; n++) { h.tick(16); assert.equal(g.camY, ordinary); }
 });

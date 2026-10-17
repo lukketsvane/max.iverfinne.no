@@ -37,8 +37,7 @@
     -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent; cursor: none;
   }
-  #c { position: absolute; display: block; image-rendering: pixelated; }
-  #subpx { position: absolute; display: none; pointer-events: none; mix-blend-mode: multiply; }
+  #c { position: absolute; display: block; left: 0; top: 0; transform-origin: 0 0; image-rendering: pixelated; }
   #perkMenu{
     position:fixed;z-index:40;left:50%;transform:translateX(-50%);
     bottom:max(8px,calc(env(safe-area-inset-bottom) + 5px));
@@ -74,7 +73,7 @@
     #perkMenu small{font-size:10px}.perkIcon{width:18px;height:18px}
   }
 </style>
-<div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas><div id="subpx"></div></div>
+<div id="stage"><canvas id="c" width="540" height="312" style="width: 1080px; height: 624px; left: 180px; top: 268px;"></canvas></div>
 <div id="perkMenu" aria-live="polite"></div>
 <script>
 (function () {
@@ -153,39 +152,13 @@ var HY = 200;
 
 var stage = document.getElementById('stage');
 var cv = document.getElementById('c');
-var subpx = document.getElementById('subpx');
 var ctx = cv.getContext('2d', { alpha: false });
 var IW = 320, IH = 180, SCALE = 4, ANCHOR = 120;
 var SCREEN_ASPECT = window.MaxScreenAspect != null ? +window.MaxScreenAspect : null;
 function screenAspect(w, h) { return SCREEN_ASPECT != null ? SCREEN_ASPECT : w > h ? 4 / 3 : 3 / 4; }
-var subpixelOn = true, subpixelArgs = null, subpixelGain = 0;
-try { subpixelOn = localStorage.getItem('max-subpixel') !== '0'; } catch (e) {}
+"MAX_PIXEL_RENDER";
 var crownCompactScale = false;
-
-
 var lastVW = 0, lastVH = 0;
-function setSubpixel(on) {
-  subpixelOn = !!on;
-  try { localStorage.setItem('max-subpixel', subpixelOn ? '1' : '0'); } catch (e) {}
-  if (subpixelArgs) subpixelMask.apply(null, subpixelArgs);
-}
-function subpixelMask(dpr, pw, ph, left, top) {
-  var st = subpx.style, S = SCALE;
-  if (S < 3 || !subpixelOn) { st.display = 'none'; subpixelGain = 0; return; }
-  var u = function (v) { return (v / dpr) + 'px'; }, lo = .5, w = S / 3, gap = S >= 6 ? w * .24 : 0, rh = S >= 4 ? Math.max(1, Math.round(S * .12)) : 0, cols = [], mean = 0;
-  for (var c = 0; c < S; c++) {
-    var rgb = [];
-    for (var k = 0; k < 3; k++) {
-      var o = Math.max(0, Math.min(c + 1, (k + 1) * w - gap / 2) - Math.max(c, k * w + gap / 2));
-      rgb.push(Math.round(255 * (lo + (1 - lo) * o))); mean += rgb[k] / 765 / S;
-    }
-    cols.push('rgb(' + rgb.join(',') + ') ' + u(c) + ' ' + u(c + 1));
-  }
-  mean *= (S - rh * .58) / S;
-  st.display = 'block'; st.left = left; st.top = top; st.width = u(pw); st.height = u(ph);
-  st.backgroundImage = 'repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 ' + u(S - rh) + ',rgba(0,0,0,.58) ' + u(S - rh) + ' ' + u(S) + '),repeating-linear-gradient(90deg,' + cols.join(',') + ')';
-  subpixelGain = Math.max(0, Math.min(.6, .9 / mean - 1));
-}
 function resize() {
   cancelAscentPresentation();
   var dpr = window.devicePixelRatio || 1;
@@ -194,16 +167,15 @@ function resize() {
   var dw = Math.round(vw * dpr), dh = Math.round(vh * dpr), bw = dw, bh = dh, aspect = screenAspect(dw, dh);
   if (aspect) { if (dw > dh * aspect) bw = Math.round(dh * aspect); else bh = Math.round(dw / aspect); }
   var desk = !!(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches);
-  SCALE = Math.max(2, Math.round(Math.min(bw, bh) / (desk ? 220 : 150)));
+  SCALE = pixelRenderScale(bw, bh, Math.max(2, Math.round(Math.min(bw, bh) / (desk ? 220 : 150))));
   if(crownCompactScale)SCALE=Math.max(1,Math.min(SCALE,Math.floor(bh/200)||1));
-  IW = Math.ceil(bw / SCALE); IH = Math.ceil(bh / SCALE);
+  IW = Math.max(1, Math.floor(bw / SCALE)); IH = Math.max(1, Math.floor(bh / SCALE));
   if (cv.width !== IW) cv.width = IW;
   if (cv.height !== IH) cv.height = IH;
   var pw = IW * SCALE, ph = IH * SCALE;
-  cv.style.width = (pw / dpr) + 'px'; cv.style.height = (ph / dpr) + 'px';
-  cv.style.left = (Math.floor((dw - pw) / 2) / dpr) + 'px';
-  cv.style.top = (Math.floor((dh - ph) / 2) / dpr) + 'px';
-  subpixelArgs = [dpr, pw, ph, cv.style.left, cv.style.top]; subpixelMask.apply(null, subpixelArgs);
+  cv.style.width = IW + 'px'; cv.style.height = IH + 'px';
+  cv.style.left = '0px'; cv.style.top = '0px';
+  cv.style.transform = 'translate(' + (Math.floor((dw - pw) / 2) / dpr) + 'px,' + (Math.floor((dh - ph) / 2) / dpr) + 'px) scale(' + (SCALE / dpr) + ')';
   ctx.imageSmoothingEnabled = false;
   groundPat = null; vig = null;
   surf = new Float32Array(IW + 10);
@@ -6650,7 +6622,6 @@ function frame(now) {
   rememberAscentFrame();drawAscentPresentation(true);
   if(!crownLayer)drawWorldBanner(tSec);drawBossBar(dt);
   rosterShown=false;drawRunHud();if(!rosterShown)hideRoster();
-  if(subpixelGain){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=subpixelGain;ctx.drawImage(cv,0,0);ctx.restore();}
 
   camX = fx; camY = fy;
   requestAnimationFrame(frame);
@@ -6688,10 +6659,10 @@ function attachGameMenu(){
     setEffectsVolume:setEffectsVolume,
     relicSound:function(kind){unlockAudio();socialTone(kind);},
     setMusicVolume:setMusicVolume,
-    subpixel:function(){return subpixelOn;},
+    pixelRender:pixelRenderInfo,
+    cyclePixelRender:cyclePixelRender,
     rumble:function(){return rumbleOn;},
     setRumble:setRumble,
-    setSubpixel:setSubpixel,
     summary:function(){return{started:runElapsed>0||gardenSeeds>0||rogueRun.garden.length>0,ended:!!rogueRun.ended};},
     canOpenMenu:function(){return !runActive||rogueRun.ended;},
     records:function(){return{runs:rogueMeta.runs|0,world:rogueMeta.bestWorld|0,plants:rogueMeta.bestPlants|0};},

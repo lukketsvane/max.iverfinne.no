@@ -12,6 +12,33 @@
     "verification": "Published directly without waiting for checks; does not verify pending graphics or production release"
   },
   "nextMilestone": "MG",
+  "levelPresentation": {
+    "requested": "2026-10-17",
+    "baseCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+    "branch": "codex/native-canvas-scaling",
+    "status": "implemented_pending_full_ci",
+    "priorityReason": "Owner clarified that actual low-resolution rendering and integer enlargement are required, not display masks.",
+    "supersedes": {
+      "pullRequest": 57,
+      "mainCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+      "historicalReceipt": "docs/verification/pixel-render/chromium.json"
+    },
+    "scope": "Default 8x native canvas; Auto/4x/6x/8x/10x choice. Remove masks and brightness pass; preserve art, source registration, collision, character roles and shared run.",
+    "verification": {
+      "focusedTests": "48/48 passed. Native dimensions, persistence, DPR sweep, all six unchanged characters, pointer mapping, actual tree clearance and Crown framing.",
+      "build": "npm run build passed.",
+      "browser": "Chromium and WebKit, four viewports each, 40 actual game screenshots verified at every physical pixel block; normal movement, live Settings, persistence, focus and rotation pass.",
+      "browserReceipt": "docs/verification/pixel-render/native-canvas.json",
+      "fullTests": "Initial local npm test stopped after the renderer changed; final exact-SHA repository CI required.",
+      "production": "Not published to main; final-SHA CI and production verification not claimed."
+    },
+    "limitations": [
+      "Integer enlargement changes field of view; it does not resample native sprites.",
+      "Selected scale is capped for small screens and the existing Crown guard; actual scale is reported.",
+      "Real-iPhone performance and human visual acceptance remain unmeasured."
+    ],
+    "nextStep": "Complete full regression CI on the review branch, then review actual iPhone readability before publishing this correction."
+  },
   "priorityOverride": {
     "date": "2026-10-14",
     "reason": "Owner screenshot exposes a flat cyan enemy; explicit request replaces all remaining crude placeholder bodies before M2 or content expansion",
@@ -171,12 +198,13 @@
   ],
   "levelFinalePass": {
     "requested": "2026-10-17",
-    "reason": "Owner explicitly requested improvements to levels 16–20 in Figma, authorizing this bounded M6 task alongside the unfinished MG milestone",
-    "status": "implemented_pending_verification",
+    "reason": "Owner explicitly requested improvements to levels 16-20 in Figma, authorizing this bounded M6 task alongside the unfinished MG milestone",
+    "status": "implemented_review_pending_gates",
     "scope": [16, 17, 18, 19, 20],
     "evidence": "docs/design/levels-16-20/README.md",
-    "source": "Scenes 17–19 compile from selectively refreshed authenticated Figma frames; MASTER 16/20 remain inactive wide drafts with related runtime pacing edits",
-    "release": "Review branch only; exact-SHA CI and production deployment are not verified"
+    "source": "Scenes 17-19 compile from selectively refreshed authenticated Figma frames; MASTER 16/20 remain inactive wide drafts with related runtime pacing edits",
+    "verification": "Build, 24 class/seed/rate physics cases, 32 extra generation seeds and all three scene sweeps passed. Initial PR CI passed 991/993; both historical reference assertions were reconciled and their two full test files passed 46/46. Follow-up full CI remains pending. Continuous browser proof covers the west gondola ascent only; the desktop Figma master check remains a gate.",
+    "release": "Draft PR 58, integrated with main 37d21a9; follow-up full CI is pending and production deployment is not verified"
   },
   "concurrentWork": "Tiara/Garden 10 head boss: preserve separate task and integrate tested main commits",
   "verificationSnapshot": {
