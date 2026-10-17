@@ -1,0 +1,37 @@
+{
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "master": "1228:21976",
+  "capturedAt": "2026-10-17T20:56:48.231Z",
+  "registrationCapturedAt": "2026-10-17T21:04:49.704Z",
+  "source": "authenticated-use-figma",
+  "idPrefix": "1228:",
+  "captureSelection": "Traverse ROUTES and POINTS recursively, accumulating integer local X/Y. Record instances, rectangles and nodes named LADDER, ladder guide or sampled climb. Derive kind from the first actual name token; V03 surface guides are oneway, ladder guides and sampled climbs are ladder. Stop descending recorded nodes. Reference rows and ART are excluded from geometry.",
+  "checksumScope": "FNV-1a32 covers the complete newline-joined records without the CSV header or terminal newline; this is a transport-integrity check, not a cryptographic source-authentication claim.",
+  "rows": [
+    {
+      "stage": 2,
+      "row": {"id":"1228:30814","name":"level_02 / Railway Ruins / 5 screens","width":3555,"height":400},
+      "routesId":"1228:30989", "pointsId":"1228:31165",
+      "csv":"level-02.csv", "records":176, "recordCharacters":4730, "fnv1a32":"0cfe2e2c",
+      "registration":{"id":"1228:31175","width":3555,"height":400,"originX":194,"soilY":350,"originId":"1430:22035","soilId":"1430:22036"},
+      "art":{"nodeId":"1228:30816","width":3555,"height":400,"path":"assets/levels-v2/railway-ruins-current.png","sha1":"8f9b79d7b224227b8f7a29c4352624a642160bdb"}
+    },
+    {
+      "stage": 4,
+      "row": {"id":"1228:32376","name":"level_04 / Mossback Sanctuary / 5 screens","width":3555,"height":400},
+      "routesId":"1228:32573", "pointsId":"1228:32783",
+      "csv":"level-04.csv", "records":209, "recordCharacters":5602, "fnv1a32":"7e225e94",
+      "registration":{"id":"1228:32793","width":3555,"height":400,"originX":210,"soilY":350,"originId":"1430:22037","soilId":"1430:22038"},
+      "art":{"nodeId":"1228:32378","width":3555,"height":400,"path":"assets/levels-v2/mossback-sanctuary-current.png","sha1":"bc56aac8c6292a9cbd941cd2aad48830296179d1"}
+    },
+    {
+      "stage": 6,
+      "row": {"id":"1228:33596","name":"level_06 / Cairn Terraces / 5 screens","width":3555,"height":400},
+      "routesId":"1228:33779", "pointsId":"1228:34040",
+      "csv":"level-06.csv", "records":263, "recordCharacters":7049, "fnv1a32":"64e193e3",
+      "registration":{"id":"1228:34050","width":3555,"height":400,"originX":168,"soilY":350,"originId":"1430:22039","soilId":"1430:22040"},
+      "art":{"nodeId":"1228:33598","width":3555,"height":400,"path":"assets/levels-v2/cairn-terraces-current.png","sha1":"4fcca6a3e9c5ace87a8bb7353280f021b1b734e0"}
+    }
+  ]
+}
