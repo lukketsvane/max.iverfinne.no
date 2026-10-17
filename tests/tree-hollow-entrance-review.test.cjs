@@ -52,10 +52,12 @@ test('tree entrance artifacts reproduce an explicitly offline editable source an
   assert.match(synthetic.status, /not-figma-capture/);
   assert.match(input.source.limits, /review-only ground\/water fixtures/);
   assert.equal(input.source.runtimeBaseline, '8c9dadb7425c8432f8b24147a77994c814e31c66');
+  assert.deepEqual(authored.source.sourceFiles, [...snapshot.sourceFiles, 'pixel-render.inc.js'].sort(),
+    'current runtime adds only pixel-render.inc.js to the historical source file list');
   const historicalCampaign = { title: 'Seed Vault', focus: 'Find your footing' },
     currentCampaign = { title: 'Hollow Tree', focus: 'Find your footing inside the hollow tree' };
   const stableSource = (value, campaign) => {
-    const { baselineDigest, sourceDigest, ...stable } = plain(value);
+    const { baselineDigest, sourceDigest, sourceFiles, ...stable } = plain(value);
     assert.match(baselineDigest, /^[a-f0-9]{64}$/);
     assert.match(stable.geometryDigest, /^[a-f0-9]{64}$/);
     assert.equal(sourceDigest, sha(stable.geometryDigest + '\n' + baselineDigest),
