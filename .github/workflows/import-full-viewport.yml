@@ -1,0 +1,28 @@
+name: Import isolated full viewport correction
+on:
+  push:
+    branches: [codex/full-viewport]
+    paths: [.github/workflows/import-full-viewport.yml]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+      - name: Apply the exact tested viewport patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = 37d21a9ab8a645081d2c77a9b6a6cfae390665f9
+          curl -fsSL --max-time 30 https://sb-7f6rngjemale.vercel.run/full-viewport.patch -o /tmp/full-viewport.patch
+          echo '4880c96693b920631a06cf064f759d17b8e72fab34c2381486a273bb76087e6f  /tmp/full-viewport.patch' | sha256sum -c -
+          git apply --index /tmp/full-viewport.patch
+          git config user.name 'Codex'
+          git config user.email 'codex@users.noreply.github.com'
+          git commit -m 'Use the full viewport without cropping native game pixels'
+          git push origin HEAD:refs/heads/codex/full-viewport
