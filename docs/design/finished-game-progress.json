@@ -258,6 +258,7 @@
     "changedFiles": [
       "yeet.inc.js",
       "tests/yeet.test.cjs",
+      "tests/tree-hollow-entrance-review.test.cjs",
       "docs/design/finished-game-progress.json"
     ],
     "evidence": [
@@ -266,8 +267,10 @@
       "npm run build passed",
       "Initial sandboxed full-suite run was stopped after child-process EPERM failures; the same 30 unchanged Figma CLI/fixture checks passed with the required subprocess access",
       "Both full regression workflows at 0b8576dbfce21e1ef7c4da6ada7c5f92036cea2e passed all 993 tests and built successfully; Chromium/WebKit menu review passed all 48 class/viewport cases",
-      "The local parallel rerun reported one Cairn failure; that unchanged test passed in an isolated rerun and in both full CI runs. Final local error details remain pending",
-      "Concurrent main 62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8 was integrated while preserving the pixel display work and both ledger entries. All 14 focused Yeet tests and npm run build passed again on the combined tree; fresh full CI and production verification remain required"
+      "The obsolete local parallel rerun was stopped after 60 minutes: 971 passed, one VM-initialization timeout after 2000ms in the unchanged Cairn test, and two interrupted test files. The same Cairn test passed in isolation and in both old-head full CI runs, and passed again in the integrated CI run",
+      "Concurrent main 62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8 was integrated while preserving the pixel display work and all existing ledger entries. All 14 focused Yeet tests and npm run build passed again on the combined tree",
+      "Integrated head c6dc3330f77fc24f0d96259591eae7fe284238d0 passed 998/999 tests in PR CI; its only failure was the frozen tree-study comparison treating the newly included pixel-render.inc.js as a geometry change. All Yeet tests passed; Chromium/WebKit menu, pixel, mobile, co-op and guardian checks also passed",
+      "The historical tree-study check now asserts the exact one-file runtime-list addition before comparing geometry, while preserving all archived bytes and candidate/source bindings. The original failure reproduced, then all seven existing tree-study tests passed. Fresh full CI and production verification remain required for the corrected head"
     ],
     "scope": "Use existing scene bounds for a reachable western threshold and supported, unobstructed native-sized Yeet/cat placement; preserve original art, authored geometry, non-scene approach and host-owned encounter state",
     "nextMilestone": "MG"
