@@ -166,11 +166,12 @@ for(const classId of classes)for(const hz of [30,60,120])test(`${classId} reache
   g.initRunStage();assert.equal(g.seedPickups.some(q=>q.id==='secret:1:0'),false,'cache stays collected through stage reinitialization');
 });
 
-test('Hollow Tree authoring preserves untouched layouts after Garden 16/17/20 route changes',()=>{
+test('Hollow Tree authoring leaves the complete other nineteen layouts unchanged',()=>{
   const snapshots=[];
   for(const seed of [1,2026,0xffffffff]) {
     const h=fresh('bulwark',seed),g=h.game;
-    for(let stage=2;stage<=20;stage++){g.enterLevel(stage);const L=g.stageLayout();assert.equal(L.hollowCanopy,undefined);if(![16,17,20].includes(stage))snapshots.push(plain(L));}
+    for(let stage=2;stage<=20;stage++){g.enterLevel(stage);const L=g.stageLayout();assert.equal(L.hollowCanopy,undefined);snapshots.push(plain(L));}
   }
-  assert.equal(sha(JSON.stringify(snapshots)),'2e38f31510cb1775efb39e2763c6162c3e787e3fffdd2fc93650597628482b79');
+  // Taken from authoritative main before this Garden-1-only Figma source edit.
+  assert.equal(sha(JSON.stringify(snapshots)),'2b0a8cb4b9204cd21461f0a86e45ea463868d81decec75ffac3a725f2e940d84');
 });

@@ -4,6 +4,8 @@ Read `README.md` and `CLAUDE.md` before editing this repository. They describe t
 
 For game development, read `docs/design/finished-game-master-plan.md` and its execution ledger. Work toward the earliest unfinished milestone and preserve MAX's native garden identity. New user instructions and actual critical defects may change that order; record the reason and update the ledger.
 
+For current level-design work, use only the twelve foreground/backdrop pairs in Figma `levelart` section `1271:34`, page `508:11825`, as explicitly selected by the owner on 17 October 2026. The exact source IDs and image hashes are pinned in `docs/design/scene-levels/art-recipe.json`. Do not substitute the older twenty-level MASTER drafts or generated scenery for these paintings. See `docs/design/levels-16-20/README.md` for the corrected scope of PR 58.
+
 Keep `main` authoritative. Do not merge old asset/gameplay branches wholesale into current code; preserved divergent branches contain archival or optional work and must be reviewed selectively.
 
 Before changing runtime artwork, read the relevant `assets/**/README.md` and preserve native 1:1 pixel registration, integer anchors and disabled smoothing.
