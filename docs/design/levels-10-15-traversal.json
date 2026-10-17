@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "verifiedAt": "2026-10-17T19:40:21Z",
+  "implementationCommit": "013ac388d93cfa14c879a7570f2ec526c0c119e6",
+  "runtimeSha256": "f081f74983f83de74627ac2673bc5474f4831b6a6de12fe85ee15f87d962244d",
+  "figmaCaptureSha256": "74e49f62354c907b769ef523b02e0cac1d1b121a1f85a0e59f3132d52390a05b",
+  "method": "Existing scripts/scene-sweep.mjs, using per-scene specs decoded directly from the actual committed Figma capture",
+  "classId": "bulwark",
+  "displayName": "Erasmus Berg",
+  "hz": 60,
+  "mode": "fast",
+  "processExitCodes": {
+    "10": 0,
+    "12": 0,
+    "13": 0,
+    "15": 0
+  },
+  "results": [
+    {
+      "scene": "giant-beaked-fossil",
+      "stage": 10,
+      "states": 1106,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "10:ruin-shrine",
+          "at": [
+            120,
+            553
+          ],
+          "court": [
+            196,
+            358,
+            593
+          ]
+        },
+        {
+          "id": "10:mushroom-shrine",
+          "at": [
+            352,
+            429
+          ],
+          "court": [
+            288,
+            512,
+            590
+          ]
+        },
+        {
+          "id": "10:jaw-shrine",
+          "at": [
+            1010,
+            369
+          ],
+          "court": [
+            668,
+            892,
+            578
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "bellflower-marsh",
+      "stage": 12,
+      "states": 558,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "12:island-shrine",
+          "at": [
+            157,
+            331
+          ],
+          "court": [
+            74,
+            202,
+            486
+          ]
+        },
+        {
+          "id": "12:walkway-shrine",
+          "at": [
+            529,
+            319
+          ],
+          "court": [
+            459,
+            611,
+            508
+          ]
+        },
+        {
+          "id": "12:bell-house-shrine",
+          "at": [
+            827,
+            465
+          ],
+          "court": [
+            748,
+            972,
+            465
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "night-watermill",
+      "stage": 13,
+      "states": 724,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "13:arch-roof-shrine",
+          "at": [
+            392,
+            454
+          ],
+          "court": [
+            218,
+            334,
+            514
+          ]
+        },
+        {
+          "id": "13:sluice-floor-shrine",
+          "at": [
+            784,
+            459
+          ],
+          "court": [
+            753,
+            927,
+            550
+          ]
+        },
+        {
+          "id": "13:lantern-walk-shrine",
+          "at": [
+            1017,
+            431
+          ],
+          "court": [
+            831,
+            999,
+            550
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "corvid-aqueduct",
+      "stage": 15,
+      "states": 614,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "15:deck-court",
+          "at": [
+            495,
+            539
+          ],
+          "court": [
+            429,
+            653,
+            539
+          ]
+        },
+        {
+          "id": "15:scaffold-shrine",
+          "at": [
+            765,
+            354
+          ],
+          "court": [
+            616,
+            840,
+            539
+          ]
+        },
+        {
+          "id": "15:gallery-shrine",
+          "at": [
+            980,
+            414
+          ],
+          "court": [
+            803,
+            1009,
+            539
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": "Headless real-player physics in four scene rooms; does not claim a physical iPhone playtest, human enjoyment, full regression approval or runtime activation of the level 11 and 14 drafts."
+}
