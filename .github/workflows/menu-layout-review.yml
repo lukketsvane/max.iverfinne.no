@@ -28,9 +28,16 @@ jobs:
       - run: npm install --no-save playwright@latest
       - run: npx playwright install --with-deps chromium webkit
       - run: node scripts/check-menu-layout-browser.cjs
+      - run: node scripts/check-pixel-render-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: menu-layout-browser-review
           path: menu-browser-review/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pixel-render-browser-review
+          path: pixel-browser-review/
           if-no-files-found: error

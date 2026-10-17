@@ -45,16 +45,104 @@
   },
   "build": {
     "status": "passed",
-    "command": "npm run build"
+    "command": "npm run build",
+    "integrationBase": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9"
   },
   "fullSuite": {
-    "status": "running",
+    "status": "reference_assertions_reconciled_pending_ci",
     "command": "npm test",
-    "environment": "Child-process execution permitted. Initial sandboxed run was interrupted after spawnSync EPERM; the two affected test files passed4/4 when rerun with permission."
+    "environment": "Child-process execution permitted. Initial sandboxed run was interrupted after spawnSync EPERM; the two affected test files passed 4/4 when rerun with permission.",
+    "local": {
+      "status": "interrupted",
+      "passingResultLines": 327,
+      "failingResultLines": 0,
+      "finalSummary": false,
+      "exitCode": null,
+      "reason": "The execution session and all runner processes were absent after the turn boundary. The retained log is partial and cannot establish full-suite completion."
+    },
+    "ci": {
+      "status": "failed",
+      "headCommit": "673abe62de544ad3676659d08c73517f78480fc9",
+      "testedCommit": "0c037b8c7ab69937cb310393e18c4b22ac127acd",
+      "testedTree": "3070bfc3155800b5287a89562a2d159029acbf57",
+      "baseCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+      "checkout": "GitHub pull-request synthetic merge, not the isolated head tree.",
+      "run": "https://github.com/lukketsvane/max.iverfinne.no/actions/runs/39061926690",
+      "job": 117481475984,
+      "tests": 993,
+      "passed": 991,
+      "failed": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 1105184.484536,
+      "exitCode": 1,
+      "build": "skipped after npm test failed",
+      "failures": [
+        {
+          "file": "tests/hollow-branch-platforming.test.cjs",
+          "reason": "Historical unchanged-stage hash still includes the intentionally modified finale generator layouts."
+        },
+        {
+          "file": "tests/tree-hollow-entrance-review.test.cjs",
+          "reason": "Concurrent main renderer adds pixel-render.inc.js to current compiler sourceFiles; the historical offline source list stays frozen."
+        }
+      ]
+    },
+    "referenceReconciliation": {
+      "status": "passed",
+      "historicalSourceFiles": {
+        "status": "passed",
+        "command": "node --test tests/tree-hollow-entrance-review.test.cjs",
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "durationMs": 2543.76341,
+        "change": "Assert the exact new pixel-render.inc.js include in the current baseline; compare stable geometry across baselines while retaining per-source candidate file-list equality and all frozen historical hashes."
+      },
+      "receipt": "reference-reconciliation.json",
+      "hollowBranchPartition": {
+        "status": "passed",
+        "command": "node --test tests/hollow-branch-platforming.test.cjs",
+        "tests": 39,
+        "passed": 39,
+        "failed": 0,
+        "durationMs": 69701.733446,
+        "change": "Prove byte equality for 48 unaffected seeded layouts, exclude only stages 16/17/20 from the historical hash, retain Hollow canopy absence for all 57 non-Hollow layouts and all independent traversal checks."
+      },
+      "totalFocusedTests": 46,
+      "testSHA256": {
+        "tests/hollow-branch-platforming.test.cjs": "63f7144623b84237ef8697f23b8c27d6a8cd609e58b4e907d6913853d1ae4df8",
+        "tests/tree-hollow-entrance-review.test.cjs": "de44fdfe0c95b9b306e3441d44ea8ece227e09ba0984ab9306dc490a6b48f732"
+      }
+    },
+    "recheck": {
+      "status": "pending_result",
+      "pullRequest": "https://github.com/lukketsvane/max.iverfinne.no/pull/58",
+      "scope": "Follow-up PR checks on the integrated branch; this receipt does not assert a completed full-suite pass."
+    }
   },
   "browser": {
-    "status": "running",
-    "scope": "Continuous real-input routes and viewport inspection; no completed browser result yet."
+    "status": "partial",
+    "receipt": "browser/summary.json",
+    "rawReport": "browser/report-focused.json",
+    "landscapeCapture": "browser/stage19-west-gondola-landscape.png",
+    "scope": "Stage 19 west gondola ascent and approach to its trial using real RAF and held keyboard input, from the existing layout19&ladder=4 fixture. No repositioning after fixture initialization.",
+    "passed": [
+      "Bulwark climbed the complete 250 px west gondola ladder and walked onto the trial support in 6.533 observed simulation seconds.",
+      "All native assets loaded; no page, request or HTTP errors were recorded.",
+      "Landscape capture was visually inspected; ladder, support, character and TEND prompt align.",
+      "Landscape and portrait canvas dimensions use integer 2x scaling with smoothing disabled."
+    ],
+    "unverified": [
+      "West gondola descent",
+      "East gondola ascent and descent",
+      "Browser trial activation",
+      "Stage 18 brace crossing in the browser",
+      "Portrait visual inspection",
+      "A continuous entrance-to-exit playthrough"
+    ],
+    "limitation": "The portrait screenshot timed out after 30 seconds. The browser then closed before stage 18 initialized. The raw harness status remains failed; the successful west ascent is partial evidence, separate from the complete scene physics sweeps."
   },
   "review": {
     "status": "passed",
@@ -63,11 +151,24 @@
   "productionMasterCheck": {
     "status": "blocked_environment",
     "command": "npm run figma:check",
-    "reason": "The local desktop MCP endpoint127.0.0.1:3845 is unavailable. Authenticated cloud Figma edits and readback succeeded. No production image changed."
+    "reason": "The local desktop MCP endpoint 127.0.0.1:3845 is unavailable. Authenticated cloud Figma edits and readback succeeded. No production image changed."
   },
   "release": {
     "status": "not_released",
     "exactCommitCI": "pending",
+    "pullRequest": "https://github.com/lukketsvane/max.iverfinne.no/pull/58",
     "production": "unverified"
+  },
+  "integration": {
+    "mainCommit": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9",
+    "method": "Merge current main into the isolated review branch; preserve its renderer, menu, instructions and verification evidence.",
+    "scopedRuntimeHashesUnchanged": true,
+    "sourceSHA256": {
+      "stage-layout.js": "aff77b9c7f0c1382b7bfbbda70c8c0dcff34ab2e0360e5c96801d523acc75b17",
+      "scene-levels-data.js": "d52500a77f39d3fe04c4f6d5ca9672716a439720ba7b620168f7db338e3eeb4b",
+      "index.html": "6cf6263ebd38b6918f3660071033c511ccad647d48b901b8f29e67400a895a32",
+      "pixel-render.inc.js": "906b663a6fbe2cf5dd10e7bacad1d7228c5eedc92ce73e5dd7df193f5a800689",
+      "game-menu.mjs": "f19aff4570d6378f0dba661ee731f35ebdb757ae35f37725b5b358b63acea613"
+    }
   }
 }

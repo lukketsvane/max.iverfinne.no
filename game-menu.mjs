@@ -734,9 +734,18 @@ function settings() {
     const control = pixelButton(volumeLabel(name, value), () => { game['set' + name + 'Volume']?.(nextVolume(value)); settings(); });
     control.setAttribute('aria-label', name + ' volume ' + Math.round(value * 100) + ' percent'); card.append(control);
   }
-  const sub = game.subpixel?.() ?? true;
-  const toggle = pixelButton('Subpixels ' + (sub ? 'on' : 'off'), () => { game.setSubpixel?.(!sub); settings(); });
-  toggle.setAttribute('aria-pressed', String(sub)); card.append(toggle);
+  const resolution = el('p', '', 'max-status'); resolution.setAttribute('aria-live', 'polite');
+  const render = button('', () => { game.cyclePixelRender?.(); renderLabel(); });
+  const renderLabel = () => {
+    const mode = game.pixelRender?.() || { label: '8x', index: 3, total: 5, description: 'Native pixels enlarged without smoothing', next: '10x' };
+    render.replaceChildren();
+    pixelText(render, 'Pixels: ' + mode.label, 2, 0);
+    render.setAttribute('aria-label', 'Pixel rendering ' + (mode.index + 1) + ' of ' + mode.total + ': ' + mode.label + '. ' + mode.description + '. Next: ' + mode.next);
+    render.title = mode.description;
+    resolution.textContent = mode.width ? mode.width + ' x ' + mode.height + ' pixels at ' + mode.scale + 'x' + (mode.limited ? ' (fits this screen)' : '') : '';
+    resolution.hidden = !mode.width;
+  };
+  renderLabel(); card.append(render, resolution);
   const shake = game.rumble?.() ?? true;
   const rumble = pixelButton('Rumble ' + (shake ? 'on' : 'off'), () => { game.setRumble?.(!shake); settings(); });
   rumble.setAttribute('aria-pressed', String(shake)); card.append(rumble);

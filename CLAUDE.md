@@ -628,11 +628,16 @@ the 14 px game ladder, and the sweep window reaches the deepest ground step. Sta
 The game canvas is letterboxed to a 3:4 (width:height) screen in portrait windows
 and a 4:3 screen in landscape windows (`screenAspect`; `window.MaxScreenAspect`
 overrides it, and the VM harness and review fixtures set 0 to keep their free
-viewports, `review.html?aspect=1` shows the real frame). A
-display-resolution LCD subpixel mask (`#subpx`, multiplied over the canvas)
-splits each native pixel into RGB stripes; a final additive pass over the finished
-frame (`subpixelGain`) restores its mean exposure. Do not use a CSS filter for the
-lift: WebKit's software path drops frames with it. Settings toggles the mask
-(`Subpixels on/off`, saved in `max-subpixel`) in place of the removed Controls
-page. Native art is unchanged by either.
-
+viewports, `review.html?aspect=1` shows the real frame). Settings → Pixels cycles
+Auto, 4x, 6x, 8x and 10x actual canvas enlargement, defaulting to 8x. The
+`max-pixel-scale-v1` device choice is independent of retired mask preferences.
+`pixel-render.inc.js` selects an integer physical-pixel scale, capped to retain
+128 native pixels on the shorter screen axis; the existing Crown height guard
+still takes precedence. The low-resolution canvas draws native art at 1:1 with
+smoothing disabled. Its CSS dimensions remain native; one origin-zero transform
+places and enlarges it on the physical pixel grid. Fractional CSS width/left
+sizing produced uneven blocks in both tested browsers and must not return.
+There is no subpixel overlay or additive brightness pass. Field of view changes
+with resolution; world coordinates, collision, source artwork and character
+rules do not. `screenToWorld` uses the transformed actual canvas bounds.
+See `docs/design/pixel-render-strategies.md` and the native-canvas receipt.

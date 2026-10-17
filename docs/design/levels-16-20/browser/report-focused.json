@@ -1,0 +1,1606 @@
+{
+  "startedAt": "2026-10-17T19:32:57.195Z",
+  "authority": "Current working source, compiled runtime Figma scene data, read-only local HTTP overlay with snapshot observer.",
+  "inputs": "Real keyboard keydown/keyup with ordinary real-time requestAnimationFrame. No actor repositioning beyond original level fixture initialization.",
+  "inputSHA256": {
+    "stage-layout.js": "aff77b9c7f0c1382b7bfbbda70c8c0dcff34ab2e0360e5c96801d523acc75b17",
+    "scene-levels-data.js": "d52500a77f39d3fe04c4f6d5ca9672716a439720ba7b620168f7db338e3eeb4b"
+  },
+  "captures": [
+    {
+      "stage": 19,
+      "viewport": "landscape",
+      "screenshot": "/tmp/max-finale-browser-review/stage19-west-gondola-landscape.png",
+      "state": {
+        "sim": 27.78189999999957,
+        "world": 19,
+        "classId": "bulwark",
+        "frame": null,
+        "picture": "twin-gondola-ravine",
+        "scene": true,
+        "at": {
+          "x": 420.6432339930907,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "lamp",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        "canvas": {
+          "w": 422,
+          "h": 195,
+          "smoothing": false
+        },
+        "viewport": {
+          "w": 844,
+          "h": 390
+        },
+        "camera": {
+          "x": 209.64323399262503,
+          "y": 39.00000000000023,
+          "scale": 2
+        },
+        "artReady": true,
+        "ladders": [
+          {
+            "id": "picture-ladder-0",
+            "x": 447,
+            "top": 426,
+            "bottom": 559,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-1",
+            "x": 371,
+            "top": 229,
+            "bottom": 426,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-2",
+            "x": 789,
+            "top": 365,
+            "bottom": 504,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-3",
+            "x": 964,
+            "top": 236,
+            "bottom": 329,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-4",
+            "x": 442,
+            "top": 176,
+            "bottom": 426,
+            "art": false
+          },
+          {
+            "id": "picture-ladder-5",
+            "x": 665,
+            "top": 225,
+            "bottom": 471,
+            "art": false
+          }
+        ],
+        "ledges": [
+          {
+            "id": "l0",
+            "x": 104,
+            "y": 536,
+            "w": 130
+          },
+          {
+            "id": "l1",
+            "x": 52,
+            "y": 364,
+            "w": 106
+          },
+          {
+            "id": "l2",
+            "x": 156,
+            "y": 380,
+            "w": 31
+          },
+          {
+            "id": "l3",
+            "x": 185,
+            "y": 390,
+            "w": 18
+          },
+          {
+            "id": "l4",
+            "x": 201,
+            "y": 399,
+            "w": 142
+          },
+          {
+            "id": "l5",
+            "x": 341,
+            "y": 413,
+            "w": 16
+          },
+          {
+            "id": "l6",
+            "x": 347,
+            "y": 426,
+            "w": 105
+          },
+          {
+            "id": "l7",
+            "x": 452,
+            "y": 447,
+            "w": 47
+          },
+          {
+            "id": "l8",
+            "x": 498,
+            "y": 456,
+            "w": 40
+          },
+          {
+            "id": "l9",
+            "x": 537,
+            "y": 471,
+            "w": 151
+          },
+          {
+            "id": "l10",
+            "x": 692,
+            "y": 385,
+            "w": 86
+          },
+          {
+            "id": "l11",
+            "x": 778,
+            "y": 365,
+            "w": 97
+          },
+          {
+            "id": "l12",
+            "x": 874,
+            "y": 358,
+            "w": 33
+          },
+          {
+            "id": "l13",
+            "x": 905,
+            "y": 350,
+            "w": 15
+          },
+          {
+            "id": "l14",
+            "x": 919,
+            "y": 342,
+            "w": 19
+          },
+          {
+            "id": "l15",
+            "x": 936,
+            "y": 329,
+            "w": 151
+          },
+          {
+            "id": "l16",
+            "x": 823,
+            "y": 320,
+            "w": 96
+          },
+          {
+            "id": "l17",
+            "x": 957,
+            "y": 236,
+            "w": 71
+          },
+          {
+            "id": "l18",
+            "x": 1026,
+            "y": 224,
+            "w": 61
+          },
+          {
+            "id": "l19",
+            "x": 250,
+            "y": 229,
+            "w": 123
+          },
+          {
+            "id": "l20",
+            "x": 239,
+            "y": 212,
+            "w": 14
+          },
+          {
+            "id": "l21",
+            "x": 231,
+            "y": 201,
+            "w": 12
+          },
+          {
+            "id": "l22",
+            "x": 111,
+            "y": 185,
+            "w": 121
+          },
+          {
+            "id": "l23",
+            "x": 64,
+            "y": 176,
+            "w": 49
+          },
+          {
+            "id": "l24",
+            "x": 35,
+            "y": 163,
+            "w": 31
+          },
+          {
+            "id": "l25",
+            "x": 0,
+            "y": 151,
+            "w": 36
+          },
+          {
+            "id": "l26",
+            "x": 408,
+            "y": 176,
+            "w": 74
+          },
+          {
+            "id": "l27",
+            "x": 626,
+            "y": 225,
+            "w": 81
+          }
+        ],
+        "trials": [
+          {
+            "id": 38,
+            "x": 422,
+            "y": 176,
+            "type": "nest",
+            "active": false,
+            "done": false,
+            "failed": false,
+            "withdrawn": false,
+            "progress": 0,
+            "ingress": false,
+            "ingressT": 0,
+            "guardsRemaining": 0
+          },
+          {
+            "id": 39,
+            "x": 691,
+            "y": 225,
+            "type": "rain",
+            "active": false,
+            "done": false,
+            "failed": false,
+            "withdrawn": false,
+            "progress": 0,
+            "ingress": false,
+            "ingressT": 0,
+            "guardsRemaining": 0
+          }
+        ],
+        "enemies": [
+          {
+            "x": 321.53121394617483,
+            "y": 354.18800826345813,
+            "eventId": 0,
+            "kind": 2
+          },
+          {
+            "x": 524.5176635901444,
+            "y": 472.0698343486095,
+            "eventId": 0,
+            "kind": 2
+          }
+        ],
+        "isolatedStorage": true
+      }
+    }
+  ],
+  "routes": [
+    {
+      "stage": 19,
+      "classId": "bulwark",
+      "fixture": "layout19&ladder=4",
+      "steps": [
+        {
+          "name": "west gondola ascent",
+          "state": {
+            "sim": 12.199299999999972,
+            "world": 19,
+            "classId": "bulwark",
+            "frame": null,
+            "picture": "twin-gondola-ravine",
+            "scene": true,
+            "at": {
+              "x": 420.6432339930907,
+              "y": 176,
+              "vx": 0,
+              "vy": 0,
+              "st": "free",
+              "grounded": true,
+              "platform": "l26",
+              "ladder": null
+            },
+            "canvas": {
+              "w": 422,
+              "h": 195,
+              "smoothing": false
+            },
+            "viewport": {
+              "w": 844,
+              "h": 390
+            },
+            "camera": {
+              "x": 208.24422751786187,
+              "y": 39.07789707237521,
+              "scale": 2
+            },
+            "artReady": true,
+            "ladders": [
+              {
+                "id": "picture-ladder-0",
+                "x": 447,
+                "top": 426,
+                "bottom": 559,
+                "art": true
+              },
+              {
+                "id": "picture-ladder-1",
+                "x": 371,
+                "top": 229,
+                "bottom": 426,
+                "art": true
+              },
+              {
+                "id": "picture-ladder-2",
+                "x": 789,
+                "top": 365,
+                "bottom": 504,
+                "art": true
+              },
+              {
+                "id": "picture-ladder-3",
+                "x": 964,
+                "top": 236,
+                "bottom": 329,
+                "art": true
+              },
+              {
+                "id": "picture-ladder-4",
+                "x": 442,
+                "top": 176,
+                "bottom": 426,
+                "art": false
+              },
+              {
+                "id": "picture-ladder-5",
+                "x": 665,
+                "top": 225,
+                "bottom": 471,
+                "art": false
+              }
+            ],
+            "ledges": [
+              {
+                "id": "l0",
+                "x": 104,
+                "y": 536,
+                "w": 130
+              },
+              {
+                "id": "l1",
+                "x": 52,
+                "y": 364,
+                "w": 106
+              },
+              {
+                "id": "l2",
+                "x": 156,
+                "y": 380,
+                "w": 31
+              },
+              {
+                "id": "l3",
+                "x": 185,
+                "y": 390,
+                "w": 18
+              },
+              {
+                "id": "l4",
+                "x": 201,
+                "y": 399,
+                "w": 142
+              },
+              {
+                "id": "l5",
+                "x": 341,
+                "y": 413,
+                "w": 16
+              },
+              {
+                "id": "l6",
+                "x": 347,
+                "y": 426,
+                "w": 105
+              },
+              {
+                "id": "l7",
+                "x": 452,
+                "y": 447,
+                "w": 47
+              },
+              {
+                "id": "l8",
+                "x": 498,
+                "y": 456,
+                "w": 40
+              },
+              {
+                "id": "l9",
+                "x": 537,
+                "y": 471,
+                "w": 151
+              },
+              {
+                "id": "l10",
+                "x": 692,
+                "y": 385,
+                "w": 86
+              },
+              {
+                "id": "l11",
+                "x": 778,
+                "y": 365,
+                "w": 97
+              },
+              {
+                "id": "l12",
+                "x": 874,
+                "y": 358,
+                "w": 33
+              },
+              {
+                "id": "l13",
+                "x": 905,
+                "y": 350,
+                "w": 15
+              },
+              {
+                "id": "l14",
+                "x": 919,
+                "y": 342,
+                "w": 19
+              },
+              {
+                "id": "l15",
+                "x": 936,
+                "y": 329,
+                "w": 151
+              },
+              {
+                "id": "l16",
+                "x": 823,
+                "y": 320,
+                "w": 96
+              },
+              {
+                "id": "l17",
+                "x": 957,
+                "y": 236,
+                "w": 71
+              },
+              {
+                "id": "l18",
+                "x": 1026,
+                "y": 224,
+                "w": 61
+              },
+              {
+                "id": "l19",
+                "x": 250,
+                "y": 229,
+                "w": 123
+              },
+              {
+                "id": "l20",
+                "x": 239,
+                "y": 212,
+                "w": 14
+              },
+              {
+                "id": "l21",
+                "x": 231,
+                "y": 201,
+                "w": 12
+              },
+              {
+                "id": "l22",
+                "x": 111,
+                "y": 185,
+                "w": 121
+              },
+              {
+                "id": "l23",
+                "x": 64,
+                "y": 176,
+                "w": 49
+              },
+              {
+                "id": "l24",
+                "x": 35,
+                "y": 163,
+                "w": 31
+              },
+              {
+                "id": "l25",
+                "x": 0,
+                "y": 151,
+                "w": 36
+              },
+              {
+                "id": "l26",
+                "x": 408,
+                "y": 176,
+                "w": 74
+              },
+              {
+                "id": "l27",
+                "x": 626,
+                "y": 225,
+                "w": 81
+              }
+            ],
+            "trials": [
+              {
+                "id": 38,
+                "x": 422,
+                "y": 176,
+                "type": "nest",
+                "active": false,
+                "done": false,
+                "failed": false,
+                "withdrawn": false,
+                "progress": 0,
+                "ingress": false,
+                "ingressT": 0,
+                "guardsRemaining": 0
+              },
+              {
+                "id": 39,
+                "x": 691,
+                "y": 225,
+                "type": "rain",
+                "active": false,
+                "done": false,
+                "failed": false,
+                "withdrawn": false,
+                "progress": 0,
+                "ingress": false,
+                "ingressT": 0,
+                "guardsRemaining": 0
+              }
+            ],
+            "enemies": [],
+            "isolatedStorage": true
+          }
+        }
+      ],
+      "start": {
+        "sim": 5.666300000000009,
+        "world": 19,
+        "classId": "bulwark",
+        "frame": null,
+        "picture": "twin-gondola-ravine",
+        "scene": true,
+        "at": {
+          "x": 442,
+          "y": 426,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l6",
+          "ladder": null
+        },
+        "canvas": {
+          "w": 422,
+          "h": 195,
+          "smoothing": false
+        },
+        "viewport": {
+          "w": 844,
+          "h": 390
+        },
+        "camera": {
+          "x": 244.3876962051727,
+          "y": 282.8038832813065,
+          "scale": 2
+        },
+        "artReady": true,
+        "ladders": [
+          {
+            "id": "picture-ladder-0",
+            "x": 447,
+            "top": 426,
+            "bottom": 559,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-1",
+            "x": 371,
+            "top": 229,
+            "bottom": 426,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-2",
+            "x": 789,
+            "top": 365,
+            "bottom": 504,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-3",
+            "x": 964,
+            "top": 236,
+            "bottom": 329,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-4",
+            "x": 442,
+            "top": 176,
+            "bottom": 426,
+            "art": false
+          },
+          {
+            "id": "picture-ladder-5",
+            "x": 665,
+            "top": 225,
+            "bottom": 471,
+            "art": false
+          }
+        ],
+        "ledges": [
+          {
+            "id": "l0",
+            "x": 104,
+            "y": 536,
+            "w": 130
+          },
+          {
+            "id": "l1",
+            "x": 52,
+            "y": 364,
+            "w": 106
+          },
+          {
+            "id": "l2",
+            "x": 156,
+            "y": 380,
+            "w": 31
+          },
+          {
+            "id": "l3",
+            "x": 185,
+            "y": 390,
+            "w": 18
+          },
+          {
+            "id": "l4",
+            "x": 201,
+            "y": 399,
+            "w": 142
+          },
+          {
+            "id": "l5",
+            "x": 341,
+            "y": 413,
+            "w": 16
+          },
+          {
+            "id": "l6",
+            "x": 347,
+            "y": 426,
+            "w": 105
+          },
+          {
+            "id": "l7",
+            "x": 452,
+            "y": 447,
+            "w": 47
+          },
+          {
+            "id": "l8",
+            "x": 498,
+            "y": 456,
+            "w": 40
+          },
+          {
+            "id": "l9",
+            "x": 537,
+            "y": 471,
+            "w": 151
+          },
+          {
+            "id": "l10",
+            "x": 692,
+            "y": 385,
+            "w": 86
+          },
+          {
+            "id": "l11",
+            "x": 778,
+            "y": 365,
+            "w": 97
+          },
+          {
+            "id": "l12",
+            "x": 874,
+            "y": 358,
+            "w": 33
+          },
+          {
+            "id": "l13",
+            "x": 905,
+            "y": 350,
+            "w": 15
+          },
+          {
+            "id": "l14",
+            "x": 919,
+            "y": 342,
+            "w": 19
+          },
+          {
+            "id": "l15",
+            "x": 936,
+            "y": 329,
+            "w": 151
+          },
+          {
+            "id": "l16",
+            "x": 823,
+            "y": 320,
+            "w": 96
+          },
+          {
+            "id": "l17",
+            "x": 957,
+            "y": 236,
+            "w": 71
+          },
+          {
+            "id": "l18",
+            "x": 1026,
+            "y": 224,
+            "w": 61
+          },
+          {
+            "id": "l19",
+            "x": 250,
+            "y": 229,
+            "w": 123
+          },
+          {
+            "id": "l20",
+            "x": 239,
+            "y": 212,
+            "w": 14
+          },
+          {
+            "id": "l21",
+            "x": 231,
+            "y": 201,
+            "w": 12
+          },
+          {
+            "id": "l22",
+            "x": 111,
+            "y": 185,
+            "w": 121
+          },
+          {
+            "id": "l23",
+            "x": 64,
+            "y": 176,
+            "w": 49
+          },
+          {
+            "id": "l24",
+            "x": 35,
+            "y": 163,
+            "w": 31
+          },
+          {
+            "id": "l25",
+            "x": 0,
+            "y": 151,
+            "w": 36
+          },
+          {
+            "id": "l26",
+            "x": 408,
+            "y": 176,
+            "w": 74
+          },
+          {
+            "id": "l27",
+            "x": 626,
+            "y": 225,
+            "w": 81
+          }
+        ],
+        "trials": [
+          {
+            "id": 38,
+            "x": 422,
+            "y": 176,
+            "type": "nest",
+            "active": false,
+            "done": false,
+            "failed": false,
+            "withdrawn": false,
+            "progress": 0,
+            "ingress": false,
+            "ingressT": 0,
+            "guardsRemaining": 0
+          },
+          {
+            "id": 39,
+            "x": 691,
+            "y": 225,
+            "type": "rain",
+            "active": false,
+            "done": false,
+            "failed": false,
+            "withdrawn": false,
+            "progress": 0,
+            "ingress": false,
+            "ingressT": 0,
+            "guardsRemaining": 0
+          }
+        ],
+        "enemies": [],
+        "isolatedStorage": true
+      },
+      "westScreenshot": "/tmp/max-finale-browser-review/stage19-west-gondola-landscape.png",
+      "status": "failed",
+      "failure": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at Object.screenshot (/tmp/max-finale-browser-verify.cjs:94:480)\n    at async route19 (/tmp/max-finale-browser-verify.cjs:126:114)\n    at async main (/tmp/max-finale-browser-verify.cjs:144:68)",
+      "failedState": {
+        "sim": 41.33149999999985,
+        "world": 19,
+        "classId": "bulwark",
+        "frame": null,
+        "picture": "twin-gondola-ravine",
+        "scene": true,
+        "at": {
+          "x": 421.68519799318165,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "toSit",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        "canvas": {
+          "w": 195,
+          "h": 422,
+          "smoothing": false
+        },
+        "viewport": {
+          "w": 390,
+          "h": 844
+        },
+        "camera": {
+          "x": 324.1852268073708,
+          "y": 2.2737367544323206e-13,
+          "scale": 2
+        },
+        "artReady": true,
+        "ladders": [
+          {
+            "id": "picture-ladder-0",
+            "x": 447,
+            "top": 426,
+            "bottom": 559,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-1",
+            "x": 371,
+            "top": 229,
+            "bottom": 426,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-2",
+            "x": 789,
+            "top": 365,
+            "bottom": 504,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-3",
+            "x": 964,
+            "top": 236,
+            "bottom": 329,
+            "art": true
+          },
+          {
+            "id": "picture-ladder-4",
+            "x": 442,
+            "top": 176,
+            "bottom": 426,
+            "art": false
+          },
+          {
+            "id": "picture-ladder-5",
+            "x": 665,
+            "top": 225,
+            "bottom": 471,
+            "art": false
+          }
+        ],
+        "ledges": [
+          {
+            "id": "l0",
+            "x": 104,
+            "y": 536,
+            "w": 130
+          },
+          {
+            "id": "l1",
+            "x": 52,
+            "y": 364,
+            "w": 106
+          },
+          {
+            "id": "l2",
+            "x": 156,
+            "y": 380,
+            "w": 31
+          },
+          {
+            "id": "l3",
+            "x": 185,
+            "y": 390,
+            "w": 18
+          },
+          {
+            "id": "l4",
+            "x": 201,
+            "y": 399,
+            "w": 142
+          },
+          {
+            "id": "l5",
+            "x": 341,
+            "y": 413,
+            "w": 16
+          },
+          {
+            "id": "l6",
+            "x": 347,
+            "y": 426,
+            "w": 105
+          },
+          {
+            "id": "l7",
+            "x": 452,
+            "y": 447,
+            "w": 47
+          },
+          {
+            "id": "l8",
+            "x": 498,
+            "y": 456,
+            "w": 40
+          },
+          {
+            "id": "l9",
+            "x": 537,
+            "y": 471,
+            "w": 151
+          },
+          {
+            "id": "l10",
+            "x": 692,
+            "y": 385,
+            "w": 86
+          },
+          {
+            "id": "l11",
+            "x": 778,
+            "y": 365,
+            "w": 97
+          },
+          {
+            "id": "l12",
+            "x": 874,
+            "y": 358,
+            "w": 33
+          },
+          {
+            "id": "l13",
+            "x": 905,
+            "y": 350,
+            "w": 15
+          },
+          {
+            "id": "l14",
+            "x": 919,
+            "y": 342,
+            "w": 19
+          },
+          {
+            "id": "l15",
+            "x": 936,
+            "y": 329,
+            "w": 151
+          },
+          {
+            "id": "l16",
+            "x": 823,
+            "y": 320,
+            "w": 96
+          },
+          {
+            "id": "l17",
+            "x": 957,
+            "y": 236,
+            "w": 71
+          },
+          {
+            "id": "l18",
+            "x": 1026,
+            "y": 224,
+            "w": 61
+          },
+          {
+            "id": "l19",
+            "x": 250,
+            "y": 229,
+            "w": 123
+          },
+          {
+            "id": "l20",
+            "x": 239,
+            "y": 212,
+            "w": 14
+          },
+          {
+            "id": "l21",
+            "x": 231,
+            "y": 201,
+            "w": 12
+          },
+          {
+            "id": "l22",
+            "x": 111,
+            "y": 185,
+            "w": 121
+          },
+          {
+            "id": "l23",
+            "x": 64,
+            "y": 176,
+            "w": 49
+          },
+          {
+            "id": "l24",
+            "x": 35,
+            "y": 163,
+            "w": 31
+          },
+          {
+            "id": "l25",
+            "x": 0,
+            "y": 151,
+            "w": 36
+          },
+          {
+            "id": "l26",
+            "x": 408,
+            "y": 176,
+            "w": 74
+          },
+          {
+            "id": "l27",
+            "x": 626,
+            "y": 225,
+            "w": 81
+          }
+        ],
+        "trials": [
+          {
+            "id": 38,
+            "x": 422,
+            "y": 176,
+            "type": "nest",
+            "active": false,
+            "done": false,
+            "failed": false,
+            "withdrawn": false,
+            "progress": 0,
+            "ingress": false,
+            "ingressT": 0,
+            "guardsRemaining": 0
+          },
+          {
+            "id": 39,
+            "x": 691,
+            "y": 225,
+            "type": "rain",
+            "active": false,
+            "done": false,
+            "failed": false,
+            "withdrawn": false,
+            "progress": 0,
+            "ingress": false,
+            "ingressT": 0,
+            "guardsRemaining": 0
+          }
+        ],
+        "enemies": [
+          {
+            "x": 370.35028697224334,
+            "y": 143.35504912085116,
+            "eventId": 0,
+            "kind": 2
+          },
+          {
+            "x": 369.31637344509363,
+            "y": 144.1376301656237,
+            "eventId": 0,
+            "kind": 2
+          },
+          {
+            "x": 342.2780771832913,
+            "y": 301.07749604093647,
+            "eventId": 0,
+            "kind": 11
+          }
+        ],
+        "isolatedStorage": true
+      },
+      "captureFailure": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n",
+      "screenshot": null,
+      "errors": [],
+      "trace": [
+        {
+          "x": 442,
+          "y": 426,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l6",
+          "ladder": null
+        },
+        {
+          "x": 442,
+          "y": 417.20160000000004,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 409.2048,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 400.40160000000014,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 391.60320000000024,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 383.6064000000004,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 374.80320000000063,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 366.0048000000007,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 357.201600000001,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 348.4032000000012,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 338.8032000000013,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 330.8064000000015,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 321.2064000000016,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 313.20480000000174,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 304.40640000000184,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 296.4096000000021,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 286.8048000000022,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 279.60960000000244,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 270.0096000000027,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 262.00800000000277,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 253.20960000000287,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 243.60960000000296,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 232.41120000000313,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 223.6128000000033,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 214.80960000000334,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 206.01120000000344,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 197.2128000000036,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 188.4144000000037,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 179.61120000000375,
+          "vx": 0,
+          "vy": -48,
+          "st": "ladder",
+          "grounded": false,
+          "platform": null,
+          "ladder": "picture-ladder-4"
+        },
+        {
+          "x": 442,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 442,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 439.62074559926987,
+          "y": 176,
+          "vx": -40.8,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 434.8634655987844,
+          "y": 176,
+          "vx": -40.8,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 432.14618559740484,
+          "y": 176,
+          "vx": -40.8,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 426.02210559742525,
+          "y": 176,
+          "vx": -40.8,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 421.9421055978164,
+          "y": 176,
+          "vx": -40.8,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 420.6432339930907,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 420.6432339930907,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "free",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 420.6432339930907,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "lamp",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        },
+        {
+          "x": 421.68519799318165,
+          "y": 176,
+          "vx": 0,
+          "vy": 0,
+          "st": "rest",
+          "grounded": true,
+          "platform": "l26",
+          "ladder": null
+        }
+      ],
+      "actions": [
+        {
+          "key": "ArrowUp",
+          "down": true
+        },
+        {
+          "key": "ArrowUp",
+          "down": false
+        },
+        {
+          "key": "ArrowLeft",
+          "down": true
+        },
+        {
+          "key": "ArrowLeft",
+          "down": false
+        }
+      ]
+    }
+  ],
+  "failure": "browserContext.newPage: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /tmp/max-finale-chromium/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --no-zygote --single-process --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --user-data-dir=/tmp/playwright_chromiumdev_profile-DvLmFc --remote-debugging-pipe --no-startup-window\n<launched> pid=40690\n[pid=40690][err] [1017/163258.393306:INFO:CONSOLE:0] \"An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.\", source: about:blank (0)\n[pid=40690][err] [1017/163258.822397:INFO:CONSOLE:0] \"An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.\", source: about:srcdoc (0)\n[pid=40690][err] [1017/163351.967858:WARNING:../services/audio/sync_reader.cc:175] SyncReader::Read timed out, audio glitch count=10\n[pid=40690][err] [1017/163401.446129:WARNING:../services/audio/sync_reader.cc:175] SyncReader::Read timed out, audio glitch count=20\n[pid=40690][err] [1017/163441.292339:WARNING:../services/audio/sync_reader.cc:175] SyncReader::Read timed out, audio glitch count=30\n    at fixture (/tmp/max-finale-browser-verify.cjs:34:28)\n    at async route18 (/tmp/max-finale-browser-verify.cjs:108:11)\n    at async main (/tmp/max-finale-browser-verify.cjs:144:106)",
+  "finishedAt": "2026-10-17T19:35:45.745Z",
+  "inputsUnchanged": true,
+  "status": "failed"
+}

@@ -1,6 +1,6 @@
-# Levels 16–20: route and pacing pass
+# Levels 16-20: route and pacing pass
 
-The owner requested improvements to levels 16–20 in Figma on 2026-10-17. This
+The owner requested improvements to levels 16-20 in Figma on 2026-10-17. This
 is a bounded M6 task alongside the unfinished MG work. It does not mark the
 twenty-level campaign, native-art milestone or production release complete.
 
@@ -36,7 +36,7 @@ affected IDs and write results.
 | Wide draft 16 | [1228:39056](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=1228-39056) |
 | Wide draft 20 | [1228:51785](https://www.figma.com/design/TC0PHGMTCMR6im4hb3CSbF?node-id=1228-51785) |
 
-Scenes 17–19 use the normal Figma scene compiler. The current
+Scenes 17-19 use the normal Figma scene compiler. The current
 [scene capture](../scene-levels/figma-capture.json) refreshes only those three
 authenticated frame subtrees. The other nine committed scene subtrees are
 retained verbatim from commit `801e517`. Its provenance records both the
@@ -62,7 +62,11 @@ Changing the stage-16 profile also changes the seeded stage-17 fallback for
 seed 81 because the generator compares neighboring profiles. The active
 stage-17 scene still comes from Figma. The historical geometry partition
 therefore excludes 16 and this fallback 17 while retaining its independent
-3/7/14 pins and all other unchanged-stage coverage.
+3/7/14 pins and all other unchanged-stage coverage. The older Hollow Tree
+regression partition also keeps all 48 unchanged layouts at its three seeds,
+excluding only the authorized changes to 16, 17 and 20 from its historical
+hash. It still asserts absence of Hollow Tree scenery for all 57 non-Hollow
+layouts and retains every independent Hollow Tree traversal check.
 
 ## Verification
 
@@ -77,9 +81,41 @@ across three seed/rate pairs, all 24 cases passing. An additional 32 stage-16
 seeds selected authored generated routes without fallback. These checks
 measure traversal, not first-time comprehension or human enjoyment.
 
-The full suite, build and browser results are recorded in
-[verification.json](verification.json). The desktop-only `npm run
-figma:check` could not connect to `127.0.0.1:3845` in this environment.
+The build passed. The permitted local full-suite run was interrupted at the
+turn boundary after 327 passing result lines and no failure lines; it has no
+final summary or known exit code and is not a completed pass. The
+[Game regression CI run](https://github.com/lukketsvane/max.iverfinne.no/actions/runs/39061926690)
+checked synthetic merge `0c037b8c`, combining this PR head `673abe62` with
+main `62c4f4d9`. It completed with 991 of 993 tests passing. Two historical
+reference assertions failed: the unchanged-stage hash still includes the
+intentionally edited finale layouts, and the offline Hollow Tree source
+comparison predates main's new `pixel-render.inc.js` include. These assertions
+are reconciled explicitly while preserving historical source evidence and
+independent route checks. The following CI build step was skipped.
+The review branch integrates subsequent main `37d21a9`, preserving both
+renderer updates. The integrated build passed, and the two complete affected
+test files passed 46/46 after the reference reconciliations. The
+[partition receipt](reference-reconciliation.json) records the independent
+baseline comparison. Follow-up full-suite CI remains pending; see
+[verification.json](verification.json) and the PR checks.
+
+The focused browser check provides partial continuous-play evidence. Starting
+at the existing west-ladder fixture, Bulwark climbed the complete 250 px ladder
+and walked onto the Nest trial support using held Up and Left, with no
+repositioning after initialization. The landscape screenshot was visually
+checked at the earlier `673abe62` checkpoint, before the newer main renderer
+was integrated. Native assets loaded, no page or request errors were recorded, and
+smoothing remained disabled in both viewport orientations. The portrait
+screenshot timed out and the browser closed before the remaining routes ran.
+Descents, the east gondola, trial activation, the greenhouse crossing and
+portrait appearance therefore remain outside this browser proof. The
+[browser summary](browser/summary.json) links the unchanged raw report and
+the [landscape capture](browser/stage19-west-gondola-landscape.png).
+
+The desktop-only `npm run figma:check` could not connect to
+`127.0.0.1:3845` in this environment.
 Authenticated connector readback and exact scene compilation succeeded;
 the full production-master check remains a release gate. No production
 deployment or physical-phone performance result is claimed here.
+
+The implementation is available in [draft PR 58](https://github.com/lukketsvane/max.iverfinne.no/pull/58).
