@@ -169,6 +169,15 @@
       ]
     }
   ],
+  "levelFinalePass": {
+    "requested": "2026-10-17",
+    "reason": "Owner explicitly requested improvements to levels 16–20 in Figma, authorizing this bounded M6 task alongside the unfinished MG milestone",
+    "status": "implemented_pending_verification",
+    "scope": [16, 17, 18, 19, 20],
+    "evidence": "docs/design/levels-16-20/README.md",
+    "source": "Scenes 17–19 compile from selectively refreshed authenticated Figma frames; MASTER 16/20 remain inactive wide drafts with related runtime pacing edits",
+    "release": "Review branch only; exact-SHA CI and production deployment are not verified"
+  },
   "concurrentWork": "Tiara/Garden 10 head boss: preserve separate task and integrate tested main commits",
   "verificationSnapshot": {
     "stage": "Before graphics checkpoint publication",

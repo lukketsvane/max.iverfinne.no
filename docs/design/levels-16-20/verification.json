@@ -1,0 +1,73 @@
+{
+  "baselineCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+  "codeSha256": {
+    "stage-layout.js": "aff77b9c7f0c1382b7bfbbda70c8c0dcff34ab2e0360e5c96801d523acc75b17",
+    "scripts/scene-levels.mjs": "023697c6c5e370da538341ff67c804d804ac2f6e4ad572eb4f7848a9c2780440",
+    "scripts/scene-levels-figma.mjs": "8511dca15031d39b8fddb0a083da5eccb1762945232557b4d1c533f8af1ccd12",
+    "scene-levels-data.js": "d52500a77f39d3fe04c4f6d5ca9672716a439720ba7b620168f7db338e3eeb4b"
+  },
+  "scope": [
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "sceneSource": {
+    "status": "passed",
+    "changedStages": [
+      17,
+      18,
+      19
+    ],
+    "retainedSceneCount": 9,
+    "compiler": "node scripts/scene-levels-figma.mjs --from docs/design/scene-levels/figma-capture.json",
+    "capture": "../scene-levels/figma-capture.json",
+    "independentReview": "Retained snapshot hash, selected frame hashes and unaffected compiled objects reproduced."
+  },
+  "jumpPhysics": {
+    "status": "passed",
+    "receipt": "jump-verification.json",
+    "cases": 24,
+    "additionalStage16Seeds": 32,
+    "scope": "Per-hop actual player physics; not a continuous playthrough."
+  },
+  "scenePhysics": {
+    "status": "passed",
+    "receipt": "scene-route-verification.json",
+    "classId": "bulwark",
+    "hz": 60,
+    "scenes": 3,
+    "traps": 0,
+    "missedPoints": 0,
+    "unvisitedLedges": 0,
+    "laddersNotClimbedBothWays": 0
+  },
+  "build": {
+    "status": "passed",
+    "command": "npm run build"
+  },
+  "fullSuite": {
+    "status": "running",
+    "command": "npm test",
+    "environment": "Child-process execution permitted. Initial sandboxed run was interrupted after spawnSync EPERM; the two affected test files passed4/4 when rerun with permission."
+  },
+  "browser": {
+    "status": "running",
+    "scope": "Continuous real-input routes and viewport inspection; no completed browser result yet."
+  },
+  "review": {
+    "status": "passed",
+    "scope": "Independent diff, collision/interaction, source-isolation and provenance review; no material defect found."
+  },
+  "productionMasterCheck": {
+    "status": "blocked_environment",
+    "command": "npm run figma:check",
+    "reason": "The local desktop MCP endpoint127.0.0.1:3845 is unavailable. Authenticated cloud Figma edits and readback succeeded. No production image changed."
+  },
+  "release": {
+    "status": "not_released",
+    "exactCommitCI": "pending",
+    "production": "unverified"
+  }
+}

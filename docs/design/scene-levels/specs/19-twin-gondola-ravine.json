@@ -239,6 +239,18 @@
    0,
    151,
    36
+  ],
+  [
+   "west-gondola",
+   408,
+   176,
+   74
+  ],
+  [
+   "east-gondola",
+   626,
+   225,
+   81
   ]
  ],
  "blocks": [],
@@ -266,6 +278,20 @@
    964,
    236,
    329
+  ],
+  [
+   "west-gondola-ladder",
+   442,
+   176,
+   426,
+   0
+  ],
+  [
+   "east-gondola-ladder",
+   665,
+   225,
+   471,
+   0
   ]
  ],
  "paintLadders": [
@@ -309,15 +335,15 @@
   ],
   [
    "trial",
-   "rim-trial",
-   260,
-   399
+   "west-gondola-trial",
+   422,
+   176
   ],
   [
    "trial",
-   "shelf-trial",
-   997,
-   329
+   "east-gondola-trial",
+   691,
+   225
   ],
   [
    "reward",

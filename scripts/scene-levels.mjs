@@ -66,8 +66,9 @@ export function checkScene(spec, art) {
   const inside = (label, x, y, ww = 0, hh = 0) => { if (![x, y, ww, hh].every(int) || x < 0 || y < 0 || x + ww > w || y + hh > h) errors.push(`${at}: ${label} must use integer pixels inside the ${w}×${h} art`); };
   for (const [key, x, y, lw] of spec.ledges) { named('ledge', key); inside('ledge ' + key, x, y, lw); if (!(lw >= 8)) errors.push(`${at}: ledge ${key} is narrower than 8 px`); }
   for (const [key, x, y, bw, bh] of spec.blocks) { named('block', key); inside('block ' + key, x, y, bw, bh); if (!(bw > 0 && bh > 0)) errors.push(`${at}: block ${key} needs positive size`); }
-  for (const [key, x, top, bottom] of spec.ladders) {
+  for (const [key, x, top, bottom, art] of spec.ladders) {
     named('ladder', key); inside('ladder ' + key, x, top, 0, bottom - top);
+    if (art != null && art !== 0 && art !== 1) errors.push(`${at}: ladder ${key} art must be 0 or 1`);
     if (!(bottom > top)) errors.push(`${at}: ladder ${key} must descend`);
     if (!supported(spec, x, top)) errors.push(`${at}: ladder ${key} has no upper landing at ${x},${top}`);
     if (!supported(spec, x, bottom)) errors.push(`${at}: ladder ${key} has no lower landing at ${x},${bottom}`);
@@ -117,7 +118,7 @@ export function compileScenes(specs, { base = root, source = null } = {}) {
       entry: { x: spec.originX, y: groundY(spec, spec.originX) }, ground: spec.ground.map(q => q.slice()),
       ledges: spec.ledges.map(([, x, y, w]) => [x, y, w]),
       blocks: spec.blocks.map(([, x, y, w, h]) => [x, y, w, h]),
-      ladders: spec.ladders.map(([, x, top, bottom]) => [x, top, bottom, LADDER_W, 1]),
+      ladders: spec.ladders.map(([, x, top, bottom, art = 1]) => [x, top, bottom, LADDER_W, art]),
       hazards: [],
       markers: spec.points.map(([kind, , x, y]) => [kind, x, y]),
       sites: spec.sites.map(([key, x, y, courtX, platform]) => platform ? { key, x, y, platformId: index[platform], courtX } : { key, x, y, courtX }),

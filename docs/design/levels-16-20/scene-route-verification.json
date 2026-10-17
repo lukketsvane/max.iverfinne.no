@@ -1,0 +1,158 @@
+{
+  "method": "Existing scene-sweep.mjs with actual game movement physics. Graph exploration starts at spawn and repositions between explored states; this is not continuous browser play.",
+  "class": "bulwark",
+  "hz": 60,
+  "command": "node scripts/scene-sweep.mjs <spec.json> 60 bulwark fast",
+  "reports": [
+    {
+      "scene": "salt-cistern-terraces",
+      "stage": 17,
+      "states": 511,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "17:alcove-shrine",
+          "at": [
+            95,
+            297
+          ],
+          "court": [
+            5,
+            171,
+            435
+          ]
+        },
+        {
+          "id": "17:pier-shrine",
+          "at": [
+            490,
+            452
+          ],
+          "court": [
+            362,
+            470,
+            496
+          ]
+        },
+        {
+          "id": "17:tunnel-shrine",
+          "at": [
+            880,
+            394
+          ],
+          "court": [
+            789,
+            991,
+            507
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "heliostat-greenhouse",
+      "stage": 18,
+      "states": 606,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "18:nursery-shrine",
+          "at": [
+            466,
+            490
+          ],
+          "court": [
+            388,
+            498,
+            561
+          ]
+        },
+        {
+          "id": "18:glasshouse-shrine",
+          "at": [
+            634,
+            384
+          ],
+          "court": [
+            564,
+            732,
+            384
+          ]
+        },
+        {
+          "id": "18:tower-shrine",
+          "at": [
+            774,
+            291
+          ],
+          "court": [
+            645,
+            841,
+            384
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "twin-gondola-ravine",
+      "stage": 19,
+      "states": 574,
+      "complete": true,
+      "across": true,
+      "traps": [],
+      "trapCount": 0,
+      "missedPoints": [],
+      "unvisitedLedges": [],
+      "laddersNotClimbedBothWays": [],
+      "sites": [
+        {
+          "id": "19:cave-shrine",
+          "at": [
+            173,
+            536
+          ],
+          "court": [
+            58,
+            258,
+            553
+          ]
+        },
+        {
+          "id": "19:fern-shrine",
+          "at": [
+            867,
+            504
+          ],
+          "court": [
+            784,
+            900,
+            504
+          ]
+        },
+        {
+          "id": "19:windmill-shrine",
+          "at": [
+            1053,
+            537
+          ],
+          "court": [
+            967,
+            1081,
+            537
+          ]
+        }
+      ]
+    }
+  ]
+}
