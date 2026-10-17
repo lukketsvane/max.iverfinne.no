@@ -208,7 +208,7 @@ function browserProbe() {
         if (!wall.solid || wall.h < 18) return false;
         return [1, -1].some(function(face) {
           var x = face > 0 ? wall.x - 5 : wall.x + wall.w + 5, y = surfaceY(x);
-          if (mycelWetBody({x:x,y:y,st:'free'}) || !cairnSupportPoint(x, y, null) ||
+          if (y - 12 <= wall.y || y - 12 >= wall.y + wall.h || mycelWetBody({x:x,y:y,st:'free'}) || !cairnSupportPoint(x, y, null) ||
               combatLineClear(x, y - 12, x + face * (wall.w + 12), y - 12)) return false;
           selected = {x:x, y:y, face:face, wall:wall}; return true;
         });
@@ -291,7 +291,6 @@ function browserProbe() {
     },
     touchPoint:function(character){var p=character?P:floatKrek[0],r=cv.getBoundingClientRect(),x=(p.x-camX)*r.width/cv.width,y=((character?P.y-12:p.y)-camY)*r.height/cv.height;return {x:x,y:y,clientX:r.left+x,clientY:r.top+y};},
     floodFoot:function() { rogueRun.survival.waterY=P.y-1; },
-    enterActualWater:function() { for(var b=1;b<20;b++){var pond=pondInBucket(b);if(!pond)continue;var x=pond.cx,y=pond.level+4;if(!playerWetAt(x,y)||window.MaxStageLayout.inRock(stageLayout(),x,y))continue;Object.assign(P,{x:x,y:y,vy:0,vx:0,grounded:false,platform:null,wet:false,st:'free'});return {x:x,y:y,level:pond.level};}throw Error('No real open water fixture'); },
     placeAir:function() { P.y-=28;P.vy=80;P.grounded=false;P.platform=null;P.coyote=0;P.airJumpUsed=true; },
     causal:function(kind,castKind) {
       arrange('empty');var p=plant(18,.08,.3,1),q=mycelState();q.culture=6;
@@ -537,6 +536,7 @@ async function cloud(page,game,engine,results) {
   assert.equal(await game.evaluate(()=>window.__mycelCombat.cloudWorld(window.__mycelCombat.player.x+81,window.__mycelCombat.player.y-12,999)),false);
   s=await state(game);assert.equal(s.q.culture,before.q.culture);assert.equal(s.q.cloudCool,0);
   await arrange(game,'wall');
+  s=await state(game);assert.ok(Math.hypot(s.targets[0].x-s.actor.x,s.targets[0].y-(s.actor.y-12))<=80,'The blocked Cloud target is within cast range');
   assert.equal(await game.evaluate(()=>{const s=window.__mycelCombat.state,k=s.targets[0];return window.__mycelCombat.cloudWorld(k.x,k.y,1000);}),false);
   assert.equal((await state(game)).q.cloudCool,0);
   results.push('C spends2/CD5 only after clear<=80 placement; three1/2/3s.25D slots/.75D cap, Ferment slow-anchor tail6s without added damage or restoration; wall/range rejection unpaid');
@@ -562,9 +562,9 @@ async function bloom(page,game,engine,results) {
   await press(page,game,'e');s=await state(game);
   assert.equal(s.q.culture,4);assert.equal(s.q.specialCool,0);assert.equal(s.q.bloom,null);
   assert.ok(s.q.chorusT>3.5,'Empty denial preserves the genuinely stored opportunity');
-  await arrange(game,'bloom');await press(page,game,'e');
+  await game.evaluate(()=>{window.__mycelCombat.mode('high-tide','stem');window.__mycelCombat.seed({culture:4});});await press(page,game,'e');
   await game.waitForFunction(()=>window.__mycelCombat.q.bloom?.pulseMask===1);
-  await game.evaluate(()=>window.__mycelCombat.enterActualWater());await game.waitForTimeout(60);
+  await game.evaluate(()=>window.__mycelCombat.floodFoot());await game.waitForTimeout(60);
   s=await state(game);assert.equal(s.q.bloom.cancelled,1);assert.equal(s.q.bloom.pulseMask,7);
   assert.ok(s.q.specialCool>0);assert.equal(s.accepts.find(a=>a.name==='bloom').before.culture-s.accepts.find(a=>a.name==='bloom').q.culture,4);
   results.push('E acceptedfixedr48 centre/three0/2/4s.8D slots; actualmovement staysfree, wholeplot.12/.15 debt, emptydenial preservesstock/Chorus, wetpaidcancel preservescost/CD');

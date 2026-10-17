@@ -7,7 +7,7 @@
 <div class="players" id="players"></div><pre id="log"></pre>
 <script>
 (async()=>{
- const source=await fetch('index.html').then(r=>r.text()),graph=await fetch('high-tide-playtest-routes.json').then(r=>r.json()),root=document.querySelector('#players');
+ const source=await fetch('index.html').then(r=>r.text()).then(s=>s.replace(/\r\n/g,'\n')),graph=await fetch('high-tide-playtest-routes.json').then(r=>r.json()),root=document.querySelector('#players');
  const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222'];
  let frames=[],serial=0,latest=[],playing=false;
  const send=(i,data)=>frames[i]?.contentWindow.postMessage({...data,serial},location.origin);

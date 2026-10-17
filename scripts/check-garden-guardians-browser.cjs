@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const {spawn}=require('node:child_process'),{webkit,chromium}=require('playwright');
 const port=8782,base=`http://127.0.0.1:${port}`;
-const server=spawn('python3',['-m','http.server',String(port),'--directory',process.env.GUARDIANS_REVIEW_DIST||'dist'],{stdio:'ignore'});
+const server=spawn(process.platform==='win32'?'python':'python3',['-m','http.server',String(port),'--directory',process.env.GUARDIANS_REVIEW_DIST||'dist'],{stdio:'ignore'});
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const names=['sprout-sentinel','dew-duke','thorn-duelist','spore-oracle','mossback','root-ram','silk-weaver','glass-snail','wick-hermit','tiara-head','frostjaw','spindle-widow','orchard-mimic','tuning-fork','moon-moth','kiln-beetle','ash-ferryman','compost-choir','seed-engine','hollow-crown'];
 async function checkNativeRoles(page,engineName,errors){
@@ -22,57 +22,32 @@ async function checkNativeRoles(page,engineName,errors){
  await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-native-roles-phone.png`});
  assert.deepEqual(errors,[]);console.log(engineName,'all seven role bodies draw decoded original native sprites on phone OK');
 }
-async function checkCircuit(page,engineName,errors){
- const observation=async()=>JSON.parse(await page.locator('#status').getAttribute('data-circuit'));
- const ready=async()=>page.waitForFunction(()=>{
-  const data=document.querySelector('#status').dataset.circuit;return data&&JSON.parse(data).propsReady;
- },{},{timeout:15000});
- await page.goto(base+'/review.html?mode=circuit&portrait=1');await ready();
- const initial=await observation(),geometry=JSON.stringify(initial.geometry);
- assert.equal(initial.classId,'polge');assert.equal(initial.world,14);assert.equal(initial.seed,73);
- assert.equal(initial.geometry.family,'arch');assert.equal(initial.choice,-1);assert.equal(initial.active,false);
- assert.equal(initial.guards.length,0);assert.equal(initial.boonOpen,false);
- assert.ok(Math.abs(initial.player.x-initial.geometry.choices[0].x)<2);
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${initial.geometry.family}-phone.png`});
- await page.getByRole('button',{name:'Game Tend',exact:true}).click();
- await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).active,{},{timeout:4000});
- await page.getByRole('button',{name:'Game Tend',exact:true}).click();
- const warning=await observation();assert.equal(warning.choice,0);assert.equal(warning.spawned,0);
- assert.equal(warning.guards.length,0);assert.ok(warning.tell>0);
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${initial.geometry.family}-warning.png`});
- await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).log.arrivals.length>0,{},{timeout:5000});
- const active=await observation(),arrival=active.log.arrivals[0];
- assert.ok(active.log.warnings[0].tell>=1.3,'the first ingress receives the full warning');
- assert.ok(arrival.warning.shownFor>=1.3,'a keeper never arrives early');
- assert.ok(Math.hypot(arrival.x-arrival.warning.x,arrival.y-arrival.warning.y)<8,'keeper arrives at its displayed marker');
- assert.equal(JSON.stringify(active.geometry),geometry,'combat preserves the generated geometry');
- await page.locator('#viewport').selectOption('landscape');
- await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).view.width===844,{},{timeout:3000});
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${initial.geometry.family}-landscape.png`});
- const beforeLeaving=await observation(),a=beforeLeaving.geometry.arena;
- const key=beforeLeaving.player.x-a.left<a.right-beforeLeaving.player.x?'ArrowLeft':'ArrowRight';
- const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
- await page.keyboard.down('Shift');await page.keyboard.down(key);
- try{
-  await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.circuit).failed,{},{timeout:18000});
- }finally{await page.keyboard.up(key);await page.keyboard.up('Shift');}
- const withdrawn=await observation();
- assert.equal(withdrawn.active,false);assert.equal(withdrawn.done,false);assert.equal(withdrawn.queued,0);
- assert.equal(withdrawn.tell,0);assert.equal(withdrawn.guards.length,0);assert.equal(withdrawn.log.rewards.length,0);
- assert.equal(withdrawn.boonOpen,false);assert.equal(withdrawn.ended,false);assert.ok(withdrawn.away>=4);
- assert.equal(JSON.stringify(withdrawn.geometry),geometry);
- await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-withdrawn.png`});
- for(const [seed,family] of [[4,'bell'],[8,'pump']]){
-  await page.goto(base+'/review.html?mode=circuit&portrait=1&seed='+seed);await ready();
-  const variant=await observation();assert.equal(variant.geometry.family,family);assert.equal(variant.active,false);
-  await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-circuit-${family}-phone.png`});
+async function checkMasterStages(page,engineName,errors){
+ for(let stage=1;stage<=20;stage++){
+  await page.goto(base+'/review.html?mode=layout'+stage+'&portrait=1');
+  await page.waitForFunction(()=>document.querySelector('#status').dataset.guardian&&document.querySelector('iframe')?.contentWindow?.maxMasterMapObservation,{},{timeout:15000});
+  const game=page.frames().find(f=>f!==page.mainFrame());
+  const observed=await game.evaluate(()=>window.maxMasterMapObservation()),layout=observed.layout;
+  assert.equal(observed.world,stage);assert.equal(layout.stage,stage);assert.equal(layout.master,true);
+  assert.equal(layout.source.fileKey,'TC0PHGMTCMR6im4hb3CSbF');assert.equal(layout.source.masterNodeId,'1433:22060');
+  assert.equal(layout.source.art,'assets/master-source-v1/map.png');
+  assert.deepEqual(layout.bounds,{x0:0,y0:0,x1:836,y1:561});
+  assert.deepEqual(layout.platforms,[{id:'master-ground',x:0,y:380,w:836,h:181,solid:true,art:true}]);
+  for(const key of ['routes','rewards','trials','bonuses','nodes','hazards','ladders','ponds'])assert.deepEqual(layout[key],[],key);
+  assert.deepEqual(layout.spots,{});assert.equal(layout.guardianSites,undefined);
+  for(const key of ['shrine','expedition','weather'])assert.equal(observed[key],null,key);
+  for(const key of ['encounters','loot','hazards','plants'])assert.equal(observed[key],0,key);
+  assert.ok(observed.seeds.every(seed=>seed.x>=0&&seed.x<=836&&!seed.guardianCache&&!seed.routeReward&&!seed.placeCache),'ordinary seeds stay within MASTER without retired campaign caches');
+  assert.deepEqual(errors,[]);
+  if(stage===1||stage===20)await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-master-${stage}-phone.png`});
  }
- assert.deepEqual(errors,[]);console.log(engineName,'circuit native props, Tend commitment, warned ingress, fixed geometry and real-input withdrawal OK');
+ console.log(engineName,'all twenty campaign stages use only the current empty MASTER geometry OK');
 }
 (async()=>{
  fs.mkdirSync('guardian-browser-review',{recursive:true});
  for(let i=0;i<50;i++){try{if((await fetch(base)).ok)break;}catch{}await pause(100);}
- for(const [engineName,engine] of Object.entries({chromium,webkit})){
+ const engines=process.argv.includes('--chromium-only')?{chromium}:{chromium,webkit};
+ for(const [engineName,engine] of Object.entries(engines)){
   const browser=await engine.launch({headless:true,...(engineName==='chromium'&&process.env.GUARDIANS_CHROMIUM_EXECUTABLE?{executablePath:process.env.GUARDIANS_CHROMIUM_EXECUTABLE}:{})});
   try{
    const page=await browser.newPage({viewport:{width:1050,height:1030},deviceScaleFactor:1}),errors=[];
@@ -80,8 +55,8 @@ async function checkCircuit(page,engineName,errors){
    page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url());});
    if(!process.argv.includes('--native-kits-only')){
    await checkNativeRoles(page,engineName,errors);
-   await checkCircuit(page,engineName,errors);
-   if(process.argv.includes('--circuit-only'))continue;
+   await checkMasterStages(page,engineName,errors);
+   if(process.argv.includes('--master-only'))continue;
    for(let stage=1;stage<=20;stage++){
     await page.goto(base+'/review.html?mode='+(stage===20?'boss':'boss'+stage));
     if(stage===20)await page.waitForURL('**/crown-review.html?**');
@@ -106,32 +81,6 @@ async function checkCircuit(page,engineName,errors){
     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-${String(stage).padStart(2,'0')}.png`});
     assert.deepEqual(errors,[]);console.log(engineName,'guardian',stage,'native art + live warning OK');
    }
-   for(let stage=1;stage<=20;stage++)for(let site=0;site<3;site++){
-    await page.goto(base+'/review.html?mode=layout'+stage+'&site='+site+'&portrait=1');
-    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
-    const observed=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
-    assert.equal(observed.sites.length,3);assert.equal(new Set(observed.sites.map(s=>s.id)).size,3);
-    assert.equal(observed.shrine.siteId,observed.sites[site].id);
-    assert.equal(observed.shrine.siteIndex,site);assert.ok(Math.abs(observed.shrine.x-observed.entrance.x)+Math.abs(observed.shrine.y-observed.entrance.y)>=160,'shrine requires exploring away from the entrance');
-    await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-shrine-${stage}-${site}.png`});
-    assert.deepEqual(errors,[]);
-   }
-   console.log(engineName,'all sixty authored shrine destinations render away from their entrances OK');
-   for(const stage of [1,2]){
-    await page.goto(base+'/review.html?mode=layout'+stage+'&ladder=0&portrait=1&class=bulwark');
-    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});
-    const first=JSON.parse(await page.locator('#status').getAttribute('data-guardian'));
-    for(let ladder=0;ladder<first.ladders.length;ladder++){
-     if(ladder){await page.goto(base+'/review.html?mode=layout'+stage+'&ladder='+ladder+'&portrait=1&class=bulwark');await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});}
-     const game=page.frames().find(f=>f!==page.mainFrame());await game.evaluate(()=>window.focus());
-     await page.keyboard.down('ArrowUp');
-     await page.waitForFunction(()=>JSON.parse(document.querySelector('#status').dataset.guardian).motion==='ladder',{},{timeout:3000});
-     await page.locator('iframe').screenshot({path:`guardian-browser-review/${engineName}-ladder-${stage}-${ladder}.png`});
-     await page.waitForFunction(index=>{const o=JSON.parse(document.querySelector('#status').dataset.guardian);return o.playerY<=o.ladders[index].top+2;},ladder,{timeout:10000});
-     await page.keyboard.up('ArrowUp');assert.deepEqual(errors,[]);
-    }
-   }
-   console.log(engineName,'all nine authored ladders climb with real Cairn keyboard input OK');
    for(const classId of ['mech']){
    await page.goto(base+'/review.html?mode=layout1&portrait=1&class='+classId);
    await page.waitForFunction(()=>!!document.querySelector('#status').dataset.guardian,{},{timeout:15000});

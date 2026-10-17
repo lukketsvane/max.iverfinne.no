@@ -27,12 +27,12 @@ window.__polgeBrowser={
   begin:beginCoop,capture:coopCapture,stateIn:coopState,input:coopInput,avatar:coopAvatar,
   arrange:function(kind){
     clearRunInput();classFighters=[];classShots=[];bombs=[];booms=[];polgeBrowserFx=[];runHazards=[];
-    P.x=levelOriginX(1);P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.wet=false;P.st='free';P.face=1;P.dodgeT=P.dodgeCool=P.skillCool=P.secondaryCool=0;P.hurt=0;bombCool=0;
+    var bounds=stageLayout().bounds;if(!bounds)throw Error('Combat review requires bounded MASTER');P.x=Math.round((bounds.x0+bounds.x1)/2);P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.wet=false;P.st='free';P.face=1;P.dodgeT=P.dodgeCool=P.skillCool=P.secondaryCool=0;P.hurt=0;bombCool=0;
     // Camera easing from the preceding moving case must not relocate a world
     // target while Playwright waits for the canvas to receive a genuine tap.
     camX=P.x-IW*.5;camY=P.y-climbAnchor();shake=0;
     floatKrek=[];runEncounters=[];gardenRaidActive=false;krekSpawnT=60;gardenRaidT=60;
-    gardenPlots.forEach(function(p){p.health=.55;p.moisture=.4;});
+    gardenPlots.forEach(function(p,i){p.x=P.x+i*26;p.health=.55;p.moisture=.4;});
     if(kind==='empty')return;
     var e={id:901,x:P.x,y:P.y,type:'cache',cost:0,active:true,done:false,locked:false,progress:0,duration:75,guardsRemaining:0,age:0,away:0};runEncounters=[e];
     var k=makeKrek(1,false,0);Object.assign(k,{x:P.x+12,y:P.y-12,vx:0,vy:0,hp:100,maxHp:100,scout:false,trialGuard:true,eventId:e.id,eventX:e.x,eventY:e.y,bite:kind==='warning'?0:60,hitStaggerCooldown:60});floatKrek.push(k);
