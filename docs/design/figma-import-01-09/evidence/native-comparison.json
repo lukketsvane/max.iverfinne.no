@@ -1,0 +1,54 @@
+{
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "source": "authenticated Figma source reads and byte-exact exports",
+  "sourceReadAt": "2026-10-17T21:40:06.487Z",
+  "matches": [
+    {
+      "path": "assets/levels-v2/hollow-tree-current.png",
+      "nodeId": "1412:21977",
+      "parentId": "1412:21976",
+      "x": 0,
+      "y": 0,
+      "width": 3555,
+      "height": 400,
+      "sha1": "89298c6b2d99e71d93977c45d2fa2eec3eedf38f",
+      "status": "MATCH"
+    },
+    {
+      "path": "assets/levels-v2/railway-ruins-current.png",
+      "nodeId": "1432:21977",
+      "parentId": "1442:21979",
+      "x": 0,
+      "y": 0,
+      "width": 3555,
+      "height": 400,
+      "sha1": "8f9b79d7b224227b8f7a29c4352624a642160bdb",
+      "status": "MATCH"
+    },
+    {
+      "path": "assets/levels-v2/mossback-sanctuary-current.png",
+      "nodeId": "1432:21978",
+      "parentId": "1442:21980",
+      "x": 0,
+      "y": 0,
+      "width": 3555,
+      "height": 400,
+      "sha1": "bc56aac8c6292a9cbd941cd2aad48830296179d1",
+      "status": "MATCH"
+    },
+    {
+      "path": "assets/levels-v2/cairn-terraces-current.png",
+      "nodeId": "1432:21979",
+      "parentId": "1442:21981",
+      "x": 0,
+      "y": 0,
+      "width": 3555,
+      "height": 400,
+      "sha1": "4fcca6a3e9c5ace87a8bb7353280f021b1b734e0",
+      "status": "MATCH"
+    }
+  ],
+  "globalCheckPassed": false,
+  "globalCheckLimitation": "The ordinary full-file figma:check was run in the original sandbox and did not pass: 24 pre-existing scene PNGs differ between actual Figma and unchanged main. These unrelated masters were not overwritten. The four new masters alone match. The complete bounded capture and global checker log remain in the persistent max-figma-import-20261017 snapshot; quota exhaustion prevents retrieving those files in this recovery run."
+}

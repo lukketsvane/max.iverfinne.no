@@ -46,6 +46,7 @@ function frameOf(layout, game, api) {
   const annotations = [], unsupported = [];
   const rect = (name, x, y, w, h, color) => annotations.push({ name, x: X(x), y: Y(y), w: Math.max(1, Math.round(w)), h: Math.max(1, Math.round(h)), ...(color ? { color } : {}) });
   if (layout.art) { unsupported.push(`Picture artwork ${layout.art.img.src}; geometry review does not replace the authored picture level`); rect('Picture bounds: ' + layout.art.img.src, layout.art.x, layout.art.y, layout.art.w, layout.art.h, '6a818c'); }
+  if (layout.masterSceneSourceKey) unsupported.push(`Bound native artwork ${layout.masterSceneSourceKey}; geometry review does not replace its registered Figma art source`);
   if (layout.ladders?.length) { unsupported.push(`${layout.ladders.length} ladders require runtime ladder support`); layout.ladders.forEach(l => rect('Ladder: ' + l.id, l.x - l.w / 2, l.top, l.w, l.bottom - l.top, '82c7de')); }
   if (layout.place) { unsupported.push(`${layout.place.name}: false walls, caches, decorative cells and furnishing are runtime data`); rect('Place: ' + layout.place.name, layout.place.x, layout.place.y, layout.place.w, layout.place.h, '91b899'); }
   if (layout.blooms?.length) { unsupported.push(`${layout.blooms.length} bounce blooms require runtime launch behavior`); layout.blooms.forEach(b => rect('Bounce bloom: ' + b.id, b.x - 5, b.y - 6, 10, 6, 'a1d89d')); }

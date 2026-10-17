@@ -2,6 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { loadGame } = require('./game-harness.cjs');
+const legacyHollowScope={window:{}};require('node:vm').runInNewContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../docs/design/master-levels/art/hollow-platforming-oct14/candidate-levels-data.js'),'utf8'),legacyHollowScope);
 const levels = require('../levels.js');
 const source = require('../docs/design/tree-hollow-entrance/geometry.json').gardens[0];
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -125,7 +126,7 @@ test('normal lower-room body replay, Sligo food, bombs and grounded pests keep t
 });
 test('Cairn keyboard abilities use the real court and lower floor while rejecting the entrance gap', () => {
   for (const hz of [30, 60, 120]) for (const lower of [false, true]) for (const key of ['b', 'c', 'v', 'e']) {
-    const h = loadGame({ __pictures: true, __randomSeed: 123 }), g = h.game;
+    const h = loadGame({ __levelData: legacyHollowScope.window.MaxLevelData, __pictures: true, __randomSeed: 123 }), g = h.game;
     g.resetRogueRun('Cairn actual MASTER floor', { classId: 'bulwark' }); g.rogueRun.seed = 1;
     g.enterLevel(1, 'local', true);
     const L = g.stageLayout(), base = L.authoredSoilY, floor = base + (lower ? 78 : 0), q = g.cairnState();
