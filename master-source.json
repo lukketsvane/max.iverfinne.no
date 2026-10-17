@@ -1,0 +1,33 @@
+{
+  "mode": "master-game",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "masterNodeId": "1433:22060",
+  "exportPath": "assets/master-source-v1/master.png",
+  "width": 836,
+  "height": 561,
+  "sourceSha256": "c8e91c5dd6701e6b815f1a1855c843069433e095f17523ef78477514f506547f",
+  "sourceRegion": {
+    "x": 100,
+    "y": 100,
+    "w": 836,
+    "h": 561
+  },
+  "map": {
+    "exportPath": "assets/master-source-v1/map.png",
+    "sourceSha256": "ecdcff3b48c5a897829850fb06431127e6ddd508fb780aca90d9a900faa03d93",
+    "width": 836,
+    "height": 561,
+    "omittedActorNodeId": "1433:22063",
+    "spawn": {
+      "x": 31,
+      "y": 380
+    },
+    "ground": {
+      "nodeId": "1433:22080",
+      "x": 0,
+      "y": 381,
+      "w": 836,
+      "h": 180
+    }
+  }
+}

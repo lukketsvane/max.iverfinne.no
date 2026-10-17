@@ -5,6 +5,7 @@
 .max-menu::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#060f1dde,#07142380 58%,#080e2040),linear-gradient(0deg,#070f1b66,transparent 60%)}
 .max-menu-card{position:relative;width:min(100%,408px);padding:30px;background:#091521ed;border:1px solid var(--line);box-shadow:0 12px 60px #030a1466}
 .max-menu-header{margin:0 0 28px}
+.max-menu-header-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;pointer-events:none}
 .max-menu .max-menu-kicker{margin:0 0 12px;color:#a9bdb7;font-size:9px;letter-spacing:.22em;line-height:1.4}
 .max-menu h1,.max-menu h2{color:var(--ink);margin:0;line-height:1.2;font-weight:400}
 .max-menu h1:focus,.max-menu h2:focus{outline:none}
@@ -68,6 +69,7 @@
 .max-menu[data-screen="play"] .max-menu-header{grid-column:1/-1;margin:0 0 28px;padding-right:70px}
 .max-menu[data-screen="play"] .max-back{position:absolute;right:0;top:25px;width:auto;min-width:64px;min-height:44px;margin:0;padding:12px}
 .max-character-hero{grid-column:1;grid-row:2/6;display:flex;flex-direction:column;align-items:center;padding-top:4px;text-align:center}
+.max-menu-header-hidden~.max-character-hero{grid-row:1/5}
 .max-character-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;width:132px;height:126px;margin-bottom:24px;border-bottom:3px solid #5c7864;background:linear-gradient(0deg,#375a4b33,transparent 68%)}
 .max-character-stage::after{content:"";position:absolute;left:14px;right:14px;bottom:-7px;height:4px;background:#203731}
 .max-character-stage .max-skin-preview{width:96px;height:96px;margin-bottom:3px}

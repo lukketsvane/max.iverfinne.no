@@ -10,7 +10,18 @@ const copy = file => {
   mkdirSync(dirname(join(output, file)), { recursive: true });
   cpSync(join(root, file), join(output, file), { recursive: true });
 };
-const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels-data.js', 'levels.js', 'level-scenes-data.js', 'level-scenes.js', 'scene-levels-data.js', 'high-tide-map.js', 'garden-places.js', 'campaign-architecture.js', 'stage-expeditions.js', 'guardian-sites.js', 'tiles.js', 'review.html', 'crown-review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
+const master = JSON.parse(readFileSync(join(root, 'master-source.json'), 'utf8'));
+const map = master.map;
+if (master.fileKey !== 'TC0PHGMTCMR6im4hb3CSbF' || master.masterNodeId !== '1433:22060' || !map || map.exportPath !== 'assets/master-source-v1/map.png' || !Number.isSafeInteger(map.width) || map.width <= 0 || !Number.isSafeInteger(map.height) || map.height <= 0 || !/^[a-f0-9]{64}$/.test(map.sourceSha256 || '')) throw Error('The current Figma MASTER game map receipt is required.');
+const mapPng = readFileSync(join(root, map.exportPath));
+if (mapPng.length < 24 || mapPng.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a' || mapPng.readUInt32BE(16) !== map.width || mapPng.readUInt32BE(20) !== map.height) throw Error('MASTER map PNG dimensions do not match the source.');
+if (require('node:crypto').createHash('sha256').update(mapPng).digest('hex') !== map.sourceSha256) throw Error('MASTER map PNG hash does not match the source.');
+const mapScope = { window: {} };
+require('node:vm').runInNewContext(readFileSync(join(root, 'master-map-data.js'), 'utf8'), mapScope, { timeout: 1000 });
+const mapData = mapScope.window.MaxMasterMapData;
+if (!mapData || mapData.fileKey !== master.fileKey || mapData.masterNodeId !== master.masterNodeId || mapData.art !== map.exportPath || mapData.width !== map.width || mapData.height !== map.height) throw Error('MASTER game map metadata does not match its source receipt.');
+if (!existsSync(join(root, 'master-map.js'))) throw Error('MASTER game map runtime is missing.');
+const files = ['run-results.js', 'run-results.css', 'game-menu.css', 'companion.js', 'build-paths.js', 'max-classes.js', 'stage-layout.js', 'levels.js', 'high-tide-map.js', 'garden-places.js', 'tiles.js', 'review.html', 'crown-review.html', 'guardian-motion-review.html', 'playtest.html', 'night-relay-review.html', 'night-relay-playtest-pilot.js', 'high-tide-playtest-pilot.js', 'high-tide-playtest-routes.json'];
 const configFile = join(root, 'supabase', 'public-config.json');
 const savedConfig = existsSync(configFile) ? JSON.parse(readFileSync(configFile, 'utf8')) : {};
 const config = {
@@ -26,7 +37,8 @@ if (config.publishableKey && !/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config
 
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
-for (const file of files.concat(['turtle-garden-data.js', 'turtle-garden-art-data.js', 'turtle-garden-art.js'])) copy(file);
+for (const file of files) copy(file);
+for (const file of ['master-map.js', 'master-map-data.js', 'master-source.json', map.exportPath]) copy(file);
 copy('review/crown-ascent');
 writeFileSync(join(output, 'index.html'), require('./game-source.cjs')());
 require('./build-companion.cjs')(output);
@@ -37,7 +49,7 @@ for (const file of [
 ]) copy(file);
 for (const file of ['boss.png', 'effects.png', 'chimera.png', 'atlas.json', 'README.md']) copy('assets/crown-ascendant-v1/' + file);
 for (const file of ['sprites.png', 'atlas.json', 'README.md']) copy('assets/tiara-head-v1/' + file);
-for (const file of ['levels-v1', 'assets/levels-v1', 'assets/levels-v2']) if (existsSync(join(root, file))) copy(file);
+copy('assets/levels-v1/high-tide.png');
 for (const file of ['props.png', 'props.json', 'landmarks.png', 'landmarks.json']) copy('assets/district-props-v1/' + file);
 copy('assets/enemies-v2/sprites.png');
 for (const [pack, ids, sheets] of [

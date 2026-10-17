@@ -1,0 +1,20 @@
+{
+  "build": "passed",
+  "masterEngineTests": 6,
+  "assetChecks": 11,
+  "historicalPinGuard": "passed",
+  "fullSuite": {
+    "command": "npm test",
+    "status": "stopped after confirming pre-existing Windows symlink failures",
+    "isolatedCommand": "node --test --test-name-pattern='offline output writes only|publication rejects non-regular' tests/figma-authored-drafts.test.cjs",
+    "isolatedFailures": 2,
+    "error": "EPERM: operation not permitted, symlink",
+    "log": "C:/Users/Shadow/AppData/Local/Temp/max-master-game-platform-failures.log"
+  },
+  "figmaCheck": {
+    "command": "npm run figma:check",
+    "exitCode": 2,
+    "error": "Local Dev Mode MCP server unavailable",
+    "authenticatedSource": "assets/master-source-v1/map-source.json"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "url": "http://127.0.0.1:8765/",
+  "flow": "Main menu → Play → Max → Play",
+  "actions": [
+    "twelve Right key presses moved Max and camera across the authored map",
+    "Space planted a living plant",
+    "Up and B exercised jump and primary defence controls",
+    "live raid enemies appeared around the grown plant"
+  ],
+  "devicePixelRatio": 1.25,
+  "display": {
+    "height": 864,
+    "left": 0,
+    "top": 55.20000076293945,
+    "width": 1155.2000732421875
+  },
+  "nativeCanvas": {
+    "height": 270,
+    "width": 361
+  },
+  "title": "MAX FUGLESPRENGER",
+  "visibleText": "",
+  "screenshots": [
+    "game-start.jpg",
+    "game-moving.jpg",
+    "game-action.jpg"
+  ],
+  "nativePixelDisplay": {
+    "scale": 4,
+    "physicalLeft": 0,
+    "physicalTop": 69,
+    "integerRegistration": true
+  }
+}

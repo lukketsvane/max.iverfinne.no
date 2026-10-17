@@ -310,5 +310,41 @@
     "scope": "Use existing scene bounds for a reachable western threshold and supported, unobstructed native-sized Yeet/cat placement; preserve original art, authored geometry, non-scene approach and host-owned encounter state",
     "nextMilestone": "MG",
     "nextStep": "Complete the exact-version release gate, then re-read current owner priorities and concurrent level-design work before choosing the next independent improvement"
+  },
+  "levelMasterAlignment": {
+    "requested": "2026-10-17",
+    "priorityReason": "Owner explicitly corrected the static viewer: retain the real game, movement and gameplay; use only MASTER for the ordinary campaign map, at one Figma pixel per native game pixel, with no added map content.",
+    "status": "master_reset_publication_requested",
+    "file": "TC0PHGMTCMR6im4hb3CSbF",
+    "page": "508:11825",
+    "master": "1433:22060",
+    "finding": "The normal Play flow uses the existing game engine and animated characters on the current MASTER map. All twenty ordinary campaign stages bypass historical layouts and generated map furnishing.",
+    "visualAuthority": "Railway ruin reference 1271:34 / 1266:19. Six loose modules use owner-directed quarter-size native PNGs. None were added inside MASTER.",
+    "evidence": "docs/verification/level-master-2026-10-17/game-browser.json",
+    "verification": {
+      "nativeArt": "Actual 836x561 Figma environment export omits only the Max instance; all 468793 pixels outside his 203 visible body pixels match the complete export. Production rectangle 1452:22020 matches local PNG bytes.",
+      "source": "assets/master-source-v1/map-source.json",
+      "browser": "Normal Main menu → Play → Max → Play verified at localhost. Keyboard movement moved Max and the camera; planting and live raid enemies appeared. Screenshots: game-start.jpg, game-moving.jpg, game-action.jpg.",
+      "scale": "One native map draw without resampling. Browser canvas361x270 displayed at1155.2x864 CSSpixels with DPR1.25: four physical displaypixels per nativepixel.",
+      "build": "npm run build and existing build test passed.",
+      "focusedTests": "24/24 MASTER, gameplay and co-op checks; build test1/1; review compilation3/3. Historical fixtures explicitly opt in; missing MASTER source fails visibly without fallback.",
+      "fullTests": "Fresh npm test reached the same two existing Windows symlink failures. Both were reproduced in isolation as EPERM. The broad repeat was stopped after confirming those platform failures; no full-suite pass is claimed.",
+      "figma": "Actual map export/upload/readback and all local native source checks passed. npm run figma:check exited2 because its separate local Dev Mode MCP server at127.0.0.1:3845 was unavailable. Older full-production drift remains recorded separately."
+    },
+    "limits": [
+      "MASTER has no authored exit route or guardian site; these are not generated. Movement, jumping, planting, bomb defence and raids work on the authored ground.",
+      "Figma changes require a fresh native export and rebuild."
+    ],
+    "nextStep": "Continue editing map artwork only in MASTER when requested; preserve the existing game engine and native registration.",
+    "publicationRequest": {
+      "requested": "2026-10-17",
+      "target": "main",
+      "scope": "All twenty ordinary campaign slots use the current sparse MASTER. Retired map payloads are excluded from production while controls, animated characters, planting, bombs, raids and co-op remain active.",
+      "upstreamPreserved": "9bc37222ec4ade63f5fa4ad8d83b91985baf018f",
+      "retiredImports": 13,
+      "removedBuildFiles": 41,
+      "removedBuildBytes": 8279253,
+      "focusedVerification": "24 gameplay/co-op/MASTER tests, the production build test and three review-compilation tests passed. Exact-SHA CI and deployment checks follow the push."
+    }
   }
 }

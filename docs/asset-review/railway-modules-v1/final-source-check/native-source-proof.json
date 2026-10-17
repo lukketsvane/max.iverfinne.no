@@ -1,0 +1,91 @@
+{
+  "format": "max-native-source-readback/v1",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "10:2",
+  "capturedAt": "2026-10-17T21:56:15.935Z",
+  "sourceCapture": "docs/asset-review/railway-modules-v1/final-source-check/source-readback.json",
+  "productionHierarchy": "docs/asset-review/railway-modules-v1/final-source-check/figma-runtime-capture.json",
+  "sourceCount": 7,
+  "matched": 7,
+  "problems": 0,
+  "scope": "Seven requested PNG masters; this does not assert full production synchronization.",
+  "sources": [
+    {
+      "path": "assets/railway-modules-v1/arches.png",
+      "nodeId": "1443:21981",
+      "group": "environment",
+      "width": 127,
+      "height": 98,
+      "sha1": "e4a324ee5b815c0169e24247c0d3afbffeb3acff",
+      "sha256": "4df1e4741ae10663b635a8b2fe5ebecfed4bfe37804b0649f701429605411e06",
+      "bytes": 9296,
+      "artProblems": []
+    },
+    {
+      "path": "assets/railway-modules-v1/bridge.png",
+      "nodeId": "1443:21983",
+      "group": "environment",
+      "width": 125,
+      "height": 87,
+      "sha1": "8d27313d9ec019cefcade373ff8d8e7eded2122d",
+      "sha256": "0d4f9113158aa2d2405ffee8d6055a14528442964265a4397ae71bbfadb7e927",
+      "bytes": 5808,
+      "artProblems": []
+    },
+    {
+      "path": "assets/railway-modules-v1/tunnel.png",
+      "nodeId": "1443:21985",
+      "group": "environment",
+      "width": 127,
+      "height": 79,
+      "sha1": "9f61b107656921fb5aabd0ec8d46e7fa8a8ef957",
+      "sha256": "4156bb53f9c2b5adb9eec921717f138f0212fd660834bd5a1e155083121a6a47",
+      "bytes": 7949,
+      "artProblems": []
+    },
+    {
+      "path": "assets/railway-modules-v1/lift.png",
+      "nodeId": "1443:21987",
+      "group": "environment",
+      "width": 92,
+      "height": 133,
+      "sha1": "ef5bcd7c75b699a0528f804aacaff0b37666d406",
+      "sha256": "defaa8109e0959f040629a6582d5439a16affa9d7132830a687e2644a18684f5",
+      "bytes": 8213,
+      "artProblems": []
+    },
+    {
+      "path": "assets/railway-modules-v1/train.png",
+      "nodeId": "1443:21989",
+      "group": "environment",
+      "width": 141,
+      "height": 76,
+      "sha1": "e7d70368385a4bf9b1d1ba2cf01df9a77e2e793c",
+      "sha256": "d826cd6d2919c301a8bc1e6dc22b8d31d46236b20a8e6c4a2f146e6423b9b579",
+      "bytes": 7097,
+      "artProblems": []
+    },
+    {
+      "path": "assets/railway-modules-v1/junction.png",
+      "nodeId": "1443:21991",
+      "group": "environment",
+      "width": 137,
+      "height": 96,
+      "sha1": "12afc4970e78a6afda9f7bce772d6bdafe86af42",
+      "sha256": "ecfbd55fe3a06d0005b280c20edbcd289d38611beae9a5cf716e22d9705afd69",
+      "bytes": 9412,
+      "artProblems": []
+    },
+    {
+      "path": "assets/master-source-v1/master.png",
+      "nodeId": "1449:21994",
+      "group": "environment",
+      "width": 836,
+      "height": 561,
+      "sha1": "43a2921e1e9cc250d28161c6d5ee3d68d31cda88",
+      "sha256": "c8e91c5dd6701e6b815f1a1855c843069433e095f17523ef78477514f506547f",
+      "bytes": 504711,
+      "artProblems": []
+    }
+  ]
+}

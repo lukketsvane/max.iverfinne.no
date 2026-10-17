@@ -1,0 +1,362 @@
+{
+  "format": "max-figma-environment-export/v1",
+  "capturedAt": "2026-10-17T22:08:06.561Z",
+  "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+  "pageId": "508:11825",
+  "masterNodeId": "1433:22060",
+  "sourceRegion": {
+    "x": 100,
+    "y": 100,
+    "w": 836,
+    "h": 561
+  },
+  "sourceSnapshot": {
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "508:11825",
+    "master": {
+      "id": "1433:22060",
+      "parentId": "508:11825",
+      "type": "SECTION",
+      "name": "MASTER",
+      "x": -44982,
+      "y": 20940,
+      "width": 1036,
+      "height": 761,
+      "visible": true,
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.2666666805744171,
+            "g": 0.2666666805744171,
+            "b": 0.2666666805744171
+          },
+          "boundVariables": {}
+        }
+      ],
+      "absoluteTransform": [
+        [
+          1,
+          0,
+          -44982
+        ],
+        [
+          0,
+          1,
+          20940
+        ]
+      ]
+    },
+    "children": [
+      {
+        "id": "1433:22075",
+        "parentId": "1433:22060",
+        "type": "RECTANGLE",
+        "name": "23",
+        "x": 100,
+        "y": 100,
+        "width": 836,
+        "height": 470.5,
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "PASS_THROUGH",
+        "rotation": 0,
+        "fills": [
+          {
+            "type": "IMAGE",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "scaleMode": "FILL",
+            "scalingFactor": 0.5,
+            "rotation": 0,
+            "filters": {
+              "exposure": 0,
+              "contrast": 0,
+              "saturation": 0,
+              "temperature": 0,
+              "tint": 0,
+              "highlights": 0,
+              "shadows": 0
+            },
+            "imageTransform": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ]
+            ],
+            "imageHash": "d0a0a9f0dc75855327555f0058de976850741ff4"
+          }
+        ],
+        "absoluteTransform": [
+          [
+            1,
+            0,
+            -44882
+          ],
+          [
+            0,
+            1,
+            21040
+          ]
+        ]
+      },
+      {
+        "id": "1433:22082",
+        "parentId": "1433:22060",
+        "type": "INSTANCE",
+        "name": "Environment/Night",
+        "x": 100,
+        "y": 100,
+        "width": 836,
+        "height": 471,
+        "visible": true,
+        "opacity": 0.20000000298023224,
+        "blendMode": "SCREEN",
+        "rotation": 0,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": false,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "boundVariables": {}
+          }
+        ],
+        "absoluteTransform": [
+          [
+            1,
+            0,
+            -44882
+          ],
+          [
+            0,
+            1,
+            21040
+          ]
+        ]
+      },
+      {
+        "id": "1433:22063",
+        "parentId": "1433:22060",
+        "type": "INSTANCE",
+        "name": "Characters/Max",
+        "x": 115,
+        "y": 449,
+        "width": 32,
+        "height": 32,
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "PASS_THROUGH",
+        "rotation": 0,
+        "fills": [
+          {
+            "type": "IMAGE",
+            "visible": true,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "scaleMode": "CROP",
+            "scalingFactor": 1,
+            "filters": {
+              "exposure": 0,
+              "contrast": 0,
+              "saturation": 0,
+              "temperature": 0,
+              "tint": 0,
+              "highlights": 0,
+              "shadows": 0
+            },
+            "imageTransform": [
+              [
+                0.015625,
+                0,
+                0.0078125
+              ],
+              [
+                0,
+                0.05714285746216774,
+                0.5142857432365417
+              ]
+            ],
+            "imageHash": "8acc302236629665f1b302cc6ff9f4a3d7e8e9be"
+          }
+        ],
+        "absoluteTransform": [
+          [
+            1,
+            0,
+            -44867
+          ],
+          [
+            0,
+            1,
+            21389
+          ]
+        ]
+      },
+      {
+        "id": "1433:22080",
+        "parentId": "1433:22060",
+        "type": "INSTANCE",
+        "name": "Environment/Cavern",
+        "x": 100,
+        "y": 481,
+        "width": 836,
+        "height": 180,
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "PASS_THROUGH",
+        "rotation": 0,
+        "fills": [
+          {
+            "type": "SOLID",
+            "visible": false,
+            "opacity": 1,
+            "blendMode": "NORMAL",
+            "color": {
+              "r": 1,
+              "g": 1,
+              "b": 1
+            },
+            "boundVariables": {}
+          }
+        ],
+        "absoluteTransform": [
+          [
+            1,
+            0,
+            -44882
+          ],
+          [
+            0,
+            1,
+            21421
+          ]
+        ]
+      }
+    ]
+  },
+  "excludedNode": {
+    "nodeId": "1433:22063",
+    "reason": "Max is a live animated runtime character",
+    "restoredVisible": true
+  },
+  "spawn": {
+    "instanceLocal": {
+      "x": 115,
+      "y": 449,
+      "width": 32,
+      "height": 32
+    },
+    "nativeAnchor": [
+      16,
+      31
+    ],
+    "cropLocalFeet": [
+      31,
+      380
+    ],
+    "cropLocalBoundsBottom": 381
+  },
+  "export": {
+    "path": "assets/master-source-v1/map.png",
+    "width": 836,
+    "height": 561,
+    "bytes": 504403,
+    "sha1": "9d19207b52d9a9a3b4237aed2a220c94ec8dd368",
+    "sha256": "ecdcff3b48c5a897829850fb06431127e6ddd508fb780aca90d9a900faa03d93",
+    "method": "Figma exportAsync PNG SCALE 1, contentsOnly false, temporary 836x561 slice inside MASTER at 100,100; only Max visibility excluded and restored in finally",
+    "pixelProcessing": "none",
+    "chunkCount": 38,
+    "chunkCharacters": 18000,
+    "consistentExportFingerprint": 590297194,
+    "temporarySlicesRemoved": true,
+    "masterUnchangedAfterExport": true
+  },
+  "comparison": {
+    "snapshotPath": "assets/master-source-v1/master.png",
+    "snapshotSha256": "c8e91c5dd6701e6b815f1a1855c843069433e095f17523ef78477514f506547f",
+    "changedPixels": 203,
+    "changedBounds": [
+      26,
+      355,
+      38,
+      380
+    ],
+    "allOtherPixelsMatch": true
+  },
+  "production": {
+    "capturedAt": "2026-10-17T22:08:06.561Z",
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "pageId": "10:2",
+    "parentId": "451:2",
+    "nodeId": "1452:22020",
+    "path": "assets/master-source-v1/map.png",
+    "x": 600,
+    "y": 14500,
+    "width": 836,
+    "height": 561,
+    "visible": true,
+    "rotation": 0,
+    "opacity": 1,
+    "fills": [
+      {
+        "type": "IMAGE",
+        "visible": true,
+        "opacity": 1,
+        "blendMode": "NORMAL",
+        "scaleMode": "FILL",
+        "scalingFactor": 0.5,
+        "rotation": 0,
+        "filters": {
+          "exposure": 0,
+          "contrast": 0,
+          "saturation": 0,
+          "temperature": 0,
+          "tint": 0,
+          "highlights": 0,
+          "shadows": 0
+        },
+        "imageTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "imageHash": "9d19207b52d9a9a3b4237aed2a220c94ec8dd368"
+      }
+    ],
+    "strokes": [],
+    "effects": [],
+    "imageSize": {
+      "width": 836,
+      "height": 561
+    },
+    "imageBytes": 504403
+  },
+  "validation": {
+    "binaryAlpha": true,
+    "cleanTransparency": true,
+    "artProblems": []
+  }
+}

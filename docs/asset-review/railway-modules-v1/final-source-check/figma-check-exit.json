@@ -1,0 +1,8 @@
+{
+  "command": "npm run figma:check",
+  "comparisonTransport": "authenticated-capture-replay",
+  "sourceNodes": 1496,
+  "capturedAt": "2026-10-17T21:56:15.935Z",
+  "finishedAt": "2026-10-17T21:57:14.323Z",
+  "exitCode": 2
+}

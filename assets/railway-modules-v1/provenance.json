@@ -1,0 +1,283 @@
+{
+  "format": "max-generated-art/v1",
+  "pack": "railway-modules-v1",
+  "origin": "imagegen-native-import-candidate",
+  "reference": {
+    "fileKey": "TC0PHGMTCMR6im4hb3CSbF",
+    "nodeId": "1266:19",
+    "componentId": "1433:22051",
+    "ownerLinkNodeId": "1271:34",
+    "role": "owner-selected railway ruin appearance reference"
+  },
+  "source": {
+    "path": "docs/asset-review/railway-modules-v1/source/railway-ruins-generated.png",
+    "originalName": "exec-126721cf-6cc2-458a-a0a7-42f648c50005.png",
+    "sha256": "ee888712303a0c3a17d226f489a071cd010353f5dbb3bcde4d9332883721dd1b",
+    "width": 1536,
+    "height": 1024
+  },
+  "recipe": {
+    "path": "docs/asset-review/railway-modules-v1/recipe.json",
+    "sha256": "76ff9f96576d1f04fec9b905c957a2fc778e603b42ef48149afbbc14709ebdca"
+  },
+  "builder": {
+    "path": "scripts/build-railway-modules.mjs",
+    "sha256": "491c6f633a151e4f996919fc8514006dc94e14ebb3735236558d50fe2e969ac8"
+  },
+  "atlas": {
+    "path": "assets/railway-modules-v1/atlas.json",
+    "sha256": "425477553196db20f95492527d6b7d5632b7550fcff990843013d25611c5c55e"
+  },
+  "priorScale": {
+    "path": "docs/asset-review/railway-modules-v1/prior-scale/archive.json",
+    "sha256": "2c09a0905f99e6af12b8aed8a4c2de27c064f884a970fa5f8e3ff9dfcbfcc44c"
+  },
+  "processing": [
+    "explicit module windows",
+    "tight alpha-128 source bounds",
+    "owner-directed quarter-scale nearest-pixel-center preparation from immutable original",
+    "ceil native dimensions and one transparent pixel of integer padding",
+    "unchanged 128-color railway palette",
+    "binary alpha at 128",
+    "zero RGB under transparent pixels",
+    "no filtering, isolation, redraw or geometric deformation",
+    "native outputs require one Figma pixel per game pixel after import"
+  ],
+  "figma": {
+    "status": "synchronized",
+    "productionPage": "10:2",
+    "productionSection": "451:2",
+    "capturedAt": "2026-10-17T21:56:15.935Z",
+    "sourceNodes": [
+      {
+        "path": "assets/railway-modules-v1/arches.png",
+        "nodeId": "1443:21981",
+        "width": 127,
+        "height": 98,
+        "imageHash": "e4a324ee5b815c0169e24247c0d3afbffeb3acff"
+      },
+      {
+        "path": "assets/railway-modules-v1/bridge.png",
+        "nodeId": "1443:21983",
+        "width": 125,
+        "height": 87,
+        "imageHash": "8d27313d9ec019cefcade373ff8d8e7eded2122d"
+      },
+      {
+        "path": "assets/railway-modules-v1/tunnel.png",
+        "nodeId": "1443:21985",
+        "width": 127,
+        "height": 79,
+        "imageHash": "9f61b107656921fb5aabd0ec8d46e7fa8a8ef957"
+      },
+      {
+        "path": "assets/railway-modules-v1/lift.png",
+        "nodeId": "1443:21987",
+        "width": 92,
+        "height": 133,
+        "imageHash": "ef5bcd7c75b699a0528f804aacaff0b37666d406"
+      },
+      {
+        "path": "assets/railway-modules-v1/train.png",
+        "nodeId": "1443:21989",
+        "width": 141,
+        "height": 76,
+        "imageHash": "e7d70368385a4bf9b1d1ba2cf01df9a77e2e793c"
+      },
+      {
+        "path": "assets/railway-modules-v1/junction.png",
+        "nodeId": "1443:21991",
+        "width": 137,
+        "height": 96,
+        "imageHash": "12afc4970e78a6afda9f7bce772d6bdafe86af42"
+      }
+    ],
+    "verification": {
+      "scope": "Six railway library sources; all seven requested PNG masters match actual Figma and local native bytes.",
+      "proof": {
+        "path": "docs/asset-review/railway-modules-v1/final-source-check/native-source-proof.json",
+        "sha256": "f905b27697a029f72a35abb93f7220bd807c2cb0d53f8cc5d76ffb5d542b0339"
+      },
+      "comparison": {
+        "path": "docs/asset-review/railway-modules-v1/final-source-check/comparison.json",
+        "sha256": "e4bd37dbc33076e2aeee7ecf5be4162d11a8e353f2bd216736c52ac26f5973a7"
+      },
+      "fullProductionCheck": "blocked by 24 pre-existing scene PNG hash differences and 4 missing local source PNGs",
+      "runtimePlacement": "Asset library only; no railway module was added to the MASTER map."
+    }
+  },
+  "validation": {
+    "moduleCount": 6,
+    "nativeScale": 1,
+    "sourceScale": 0.25,
+    "binaryAlpha": true,
+    "cleanTransparency": true,
+    "palette": true,
+    "nearestInputRegistration": true,
+    "artProblems": []
+  },
+  "outputs": [
+    {
+      "id": "arches",
+      "path": "assets/railway-modules-v1/arches.png",
+      "width": 127,
+      "height": 98,
+      "sourceWindow": [
+        0,
+        60,
+        520,
+        406
+      ],
+      "sourceRect": [
+        14,
+        83,
+        500,
+        382
+      ],
+      "opaqueBounds": [
+        1,
+        1,
+        126,
+        96
+      ],
+      "opaquePixels": 6250,
+      "sha1": "e4a324ee5b815c0169e24247c0d3afbffeb3acff",
+      "sha256": "4df1e4741ae10663b635a8b2fe5ebecfed4bfe37804b0649f701429605411e06"
+    },
+    {
+      "id": "bridge",
+      "path": "assets/railway-modules-v1/bridge.png",
+      "width": 125,
+      "height": 87,
+      "sourceWindow": [
+        520,
+        100,
+        498,
+        370
+      ],
+      "sourceRect": [
+        520,
+        126,
+        490,
+        337
+      ],
+      "opaqueBounds": [
+        1,
+        1,
+        123,
+        84
+      ],
+      "opaquePixels": 3689,
+      "sha1": "8d27313d9ec019cefcade373ff8d8e7eded2122d",
+      "sha256": "0d4f9113158aa2d2405ffee8d6055a14528442964265a4397ae71bbfadb7e927"
+    },
+    {
+      "id": "tunnel",
+      "path": "assets/railway-modules-v1/tunnel.png",
+      "width": 127,
+      "height": 79,
+      "sourceWindow": [
+        1018,
+        150,
+        518,
+        330
+      ],
+      "sourceRect": [
+        1023,
+        174,
+        499,
+        305
+      ],
+      "opaqueBounds": [
+        1,
+        1,
+        126,
+        77
+      ],
+      "opaquePixels": 6041,
+      "sha1": "9f61b107656921fb5aabd0ec8d46e7fa8a8ef957",
+      "sha256": "4156bb53f9c2b5adb9eec921717f138f0212fd660834bd5a1e155083121a6a47"
+    },
+    {
+      "id": "lift",
+      "path": "assets/railway-modules-v1/lift.png",
+      "width": 92,
+      "height": 133,
+      "sourceWindow": [
+        0,
+        466,
+        395,
+        529
+      ],
+      "sourceRect": [
+        30,
+        468,
+        358,
+        523
+      ],
+      "opaqueBounds": [
+        1,
+        1,
+        90,
+        131
+      ],
+      "opaquePixels": 5421,
+      "sha1": "ef5bcd7c75b699a0528f804aacaff0b37666d406",
+      "sha256": "defaa8109e0959f040629a6582d5439a16affa9d7132830a687e2644a18684f5"
+    },
+    {
+      "id": "train",
+      "path": "assets/railway-modules-v1/train.png",
+      "width": 141,
+      "height": 76,
+      "sourceWindow": [
+        395,
+        625,
+        575,
+        360
+      ],
+      "sourceRect": [
+        402,
+        650,
+        556,
+        294
+      ],
+      "opaqueBounds": [
+        1,
+        1,
+        140,
+        74
+      ],
+      "opaquePixels": 5085,
+      "sha1": "e7d70368385a4bf9b1d1ba2cf01df9a77e2e793c",
+      "sha256": "d826cd6d2919c301a8bc1e6dc22b8d31d46236b20a8e6c4a2f146e6423b9b579"
+    },
+    {
+      "id": "junction",
+      "path": "assets/railway-modules-v1/junction.png",
+      "width": 137,
+      "height": 96,
+      "sourceWindow": [
+        970,
+        560,
+        566,
+        425
+      ],
+      "sourceRect": [
+        977,
+        573,
+        538,
+        376
+      ],
+      "opaqueBounds": [
+        1,
+        1,
+        135,
+        94
+      ],
+      "opaquePixels": 6830,
+      "sha1": "12afc4970e78a6afda9f7bce772d6bdafe86af42",
+      "sha256": "ecfbd55fe3a06d0005b280c20edbcd289d38611beae9a5cf716e22d9705afd69"
+    }
+  ]
+}

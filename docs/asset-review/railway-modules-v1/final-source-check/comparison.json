@@ -1,0 +1,235 @@
+{
+  "format": "max-requested-source-comparison/v1",
+  "capturedAt": "2026-10-17T21:56:15.935Z",
+  "scope": "Six quarter-size railway library masters and the existing MASTER source export",
+  "requestedSources": 7,
+  "matched": 7,
+  "requestedSourceProblems": 0,
+  "fullProduction": {
+    "sourceNodes": 1496,
+    "pngNamedNodes": 705,
+    "command": "npm run figma:check",
+    "exitCode": 2,
+    "completedAt": "2026-10-17T21:57:14.323Z",
+    "status": "blocked-by-preexisting-source-drift",
+    "hashDrift": 24,
+    "missingLocal": 4,
+    "firstUncapturedPNG": "f2d9cf7a309607b4a27b4fdbc2940c0e19809d49",
+    "details": [
+      {
+        "nodeId": "1280:21977",
+        "path": "assets/levels-v2/frozen-seed-wheel-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "f2d9cf7a309607b4a27b4fdbc2940c0e19809d49",
+        "localSha1": "97ba1cbab38ea64946212352aa2072a6b23eb885"
+      },
+      {
+        "nodeId": "1280:21979",
+        "path": "assets/levels-v2/frozen-seed-wheel-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "e91a64c1db45b00dcdcef9e506bc906f465c41ad",
+        "localSha1": "a6b92334200d4aa2d929dfe7478ae8696a956b82"
+      },
+      {
+        "nodeId": "1280:21981",
+        "path": "assets/levels-v2/railway-depot-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "31035fb2d56a347a131c4d7e5885b7424f828c00",
+        "localSha1": "4464329c73dcad9dba4c89842aa1a6080510275e"
+      },
+      {
+        "nodeId": "1280:21983",
+        "path": "assets/levels-v2/railway-depot-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "dae5c913fb0a8feef45a73c303db6e6367b48a7d",
+        "localSha1": "28964a706ab9458bf96bf4b639619738296eebc5"
+      },
+      {
+        "nodeId": "1280:21985",
+        "path": "assets/levels-v2/magnetworks-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "2cf6f8142e3f3322aeddfdde4ca3f1157a76cecd",
+        "localSha1": "2928fe1488ae8da05fae7c96c178e06cc4025bc7"
+      },
+      {
+        "nodeId": "1280:21987",
+        "path": "assets/levels-v2/magnetworks-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "2e5dc5b835b733fa2e2ac9e017710bbb15307c77",
+        "localSha1": "8bec0a570eba3e16221d3b66f108510f3238daa4"
+      },
+      {
+        "nodeId": "1280:21989",
+        "path": "assets/levels-v2/living-root-vault-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "d39fa9c2425514362d15ac1afdf24f8fa04d1aa0",
+        "localSha1": "c4b9f653474f8d599f79e6415c13d58e76ed0a14"
+      },
+      {
+        "nodeId": "1280:21991",
+        "path": "assets/levels-v2/living-root-vault-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "36b04a929c34d5ceed55fe7942c1ac95d4baccfb",
+        "localSha1": "f9a9d5370bb961763564f5c6c8ba7cdbb317fdba"
+      },
+      {
+        "nodeId": "1280:21993",
+        "path": "assets/levels-v2/mycelium-sanctuary-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "7f82adae6b2e33735ab57ed801fb4490c7be4105",
+        "localSha1": "b9a5dc11b6cc3d72b44dcc973bebde636f8261f8"
+      },
+      {
+        "nodeId": "1280:21995",
+        "path": "assets/levels-v2/mycelium-sanctuary-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "1156b502a842d5a161ade2c6b39fad0e24af1da3",
+        "localSha1": "90c5071eb6651e132bdae17f2dbc38e6ca585c58"
+      },
+      {
+        "nodeId": "1280:21997",
+        "path": "assets/levels-v2/giant-beaked-fossil-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "f7b9ee299779de1ef9fbecacc8da738dcffc8f63",
+        "localSha1": "5762235cf6e74dbf97fc36cbe34b72c2ebdbb5ee"
+      },
+      {
+        "nodeId": "1280:21999",
+        "path": "assets/levels-v2/giant-beaked-fossil-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "30fb2d8063cc29d1d7ae0103406b3c892cc88a68",
+        "localSha1": "5663a5ef47e8365e32d2c82ef2c079d37df4c84b"
+      },
+      {
+        "nodeId": "1280:22001",
+        "path": "assets/levels-v2/bellflower-marsh-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "23f36a2b31864c3ec15ceef844e67b86d6a53609",
+        "localSha1": "f75cdbbf8a59a44848e63a8655c90ad1f3d9327a"
+      },
+      {
+        "nodeId": "1280:22003",
+        "path": "assets/levels-v2/bellflower-marsh-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "16b7998d6578cd812c78f3a53cacf729b22dff92",
+        "localSha1": "03c8d7dd04236eebf1d8fb62bbf61ad106f7cd82"
+      },
+      {
+        "nodeId": "1280:22005",
+        "path": "assets/levels-v2/night-watermill-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "7e4102422322d2b887ba585c371ac5c20a27a2b9",
+        "localSha1": "5a851cfef94619cfefb5d1fadbe1741c337cdb1d"
+      },
+      {
+        "nodeId": "1280:22007",
+        "path": "assets/levels-v2/night-watermill-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "bfef7f4603c05cf1d9d4b30560cc79497afb27df",
+        "localSha1": "6c0114feef72338acb4e924092bcac4717beaa2f"
+      },
+      {
+        "nodeId": "1280:22009",
+        "path": "assets/levels-v2/corvid-aqueduct-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "8869622c858e42164798877e2e17bd9b8b0fee4e",
+        "localSha1": "12a771465b5a0821b203fcd9355ee930205ce095"
+      },
+      {
+        "nodeId": "1280:22011",
+        "path": "assets/levels-v2/corvid-aqueduct-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "1918a249dde7c8dee8e75c5bca48757540a20392",
+        "localSha1": "d30a26e724c682cc345f4375d013f10e09b224f8"
+      },
+      {
+        "nodeId": "1280:22013",
+        "path": "assets/levels-v2/salt-cistern-terraces-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "f6a7666c69f95aafb171bb619aa5f587faa5a055",
+        "localSha1": "23ded7c0010029a8d7c7718d471bd8324e6916b5"
+      },
+      {
+        "nodeId": "1280:22015",
+        "path": "assets/levels-v2/salt-cistern-terraces-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "7ca03cfd60868a205bb92a8704a5771f09bcc1c1",
+        "localSha1": "7a546f02f04fa4843043c46e287ea08551331b6d"
+      },
+      {
+        "nodeId": "1280:22017",
+        "path": "assets/levels-v2/heliostat-greenhouse-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "546de65c82acd3cb32a8e2602df47c1e562479b9",
+        "localSha1": "baefb1d5ba9700e48b240c36bf7a7dde84d84a3f"
+      },
+      {
+        "nodeId": "1280:22019",
+        "path": "assets/levels-v2/heliostat-greenhouse-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "e08d344dfa74fbc36881a8199abc9ec44841f46d",
+        "localSha1": "17599b6047e02964df22a3d7a3697755aa788e89"
+      },
+      {
+        "nodeId": "1280:22021",
+        "path": "assets/levels-v2/twin-gondola-ravine-fg.png",
+        "status": "hash-drift",
+        "figmaSha1": "bb7b27d2d828d503593c31cc2ab0b27460bd2e6a",
+        "localSha1": "0cd8252ee12c1c04dce2b49bdb814f27aaccd059"
+      },
+      {
+        "nodeId": "1280:22023",
+        "path": "assets/levels-v2/twin-gondola-ravine-bg.png",
+        "status": "hash-drift",
+        "figmaSha1": "b2f09976559c5e1324907a777bb52234133e75cb",
+        "localSha1": "fc7f43f0a806ee999706678776201b65c0dbbc64"
+      },
+      {
+        "nodeId": "1412:21977",
+        "path": "assets/levels-v2/hollow-tree-current.png",
+        "status": "missing-local"
+      },
+      {
+        "nodeId": "1432:21977",
+        "path": "assets/levels-v2/railway-ruins-current.png",
+        "status": "missing-local"
+      },
+      {
+        "nodeId": "1432:21978",
+        "path": "assets/levels-v2/mossback-sanctuary-current.png",
+        "status": "missing-local"
+      },
+      {
+        "nodeId": "1432:21979",
+        "path": "assets/levels-v2/cairn-terraces-current.png",
+        "status": "missing-local"
+      }
+    ]
+  },
+  "tiara": {
+    "captureReused": "docs/asset-review/railway-modules-v1/figma-check/tiara-vector-capture.json",
+    "reason": "Tiara actual native paths and export were captured earlier this session; subsequent authorized edits only changed Environment sources."
+  },
+  "evidence": [
+    {
+      "path": "docs/asset-review/railway-modules-v1/final-source-check/source-readback.json",
+      "sha256": "48eed254c3c1537b20360a8fadb6a0e1f16264c4764810cc4a062c90756acc1e"
+    },
+    {
+      "path": "docs/asset-review/railway-modules-v1/final-source-check/figma-runtime-capture.json",
+      "sha256": "96cc74746fb1a1a04ba93869fdaccd12ae28ad26a8139e9fa617f201568e69ab"
+    },
+    {
+      "path": "docs/asset-review/railway-modules-v1/final-source-check/native-source-proof.json",
+      "sha256": "f905b27697a029f72a35abb93f7220bd807c2cb0d53f8cc5d76ffb5d542b0339"
+    },
+    {
+      "path": "docs/asset-review/railway-modules-v1/final-source-check/figma-check.log",
+      "sha256": "8fe7dc7691d6a5d1a5b90a9d5991d329c897d14df1d57c84132eb224a0526657"
+    },
+    {
+      "path": "docs/asset-review/railway-modules-v1/final-source-check/figma-check-exit.json",
+      "sha256": "db159538f28de53cec97bbed890e697ef2a5f72dc936d8a97386b881f616799c"
+    }
+  ]
+}

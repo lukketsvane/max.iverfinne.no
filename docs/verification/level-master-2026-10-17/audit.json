@@ -1,0 +1,3804 @@
+{
+  "date": "2026-10-17",
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "master": "1228:21976",
+  "status": "blocked_source_missing",
+  "sourceTitle": "MASTER / ALL 20 LEVELS / 5 SCREENS EACH / 3555 x 400",
+  "runtimeSources": {
+    "historicalMaster": [
+      1
+    ],
+    "legacyPicture": [
+      2
+    ],
+    "pixelMill": [
+      4
+    ],
+    "separateSceneRooms": [
+      3,
+      5,
+      7,
+      8,
+      9,
+      10,
+      12,
+      13,
+      15,
+      17,
+      18,
+      19
+    ],
+    "generated": [
+      6,
+      11,
+      14,
+      16,
+      20
+    ]
+  },
+  "findings": [
+    "Historical MASTER node 863:15150 is missing.",
+    "New MASTER had twenty 3555x400 level frames.",
+    "New MASTER disappeared during read-only capture; getNodeByIdAsync returned null and neither page contained it.",
+    "Runtime furnishings add geometry beyond imported source rectangles; historical MASTER Garden 1 has 22 authored surfaces and 49 runtime platforms."
+  ],
+  "figmaMutations": 0,
+  "runtimeLevelChanges": 0,
+  "initialNativeFrameInventory": [
+    {
+      "row": [
+        "1228:29201",
+        "level_01 / Hollow Tree / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:29202",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:29203",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:29382",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 5,
+          "items": [
+            [
+              "1228:29383",
+              "TERRAIN L01 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:29415",
+              "V02 RETURN LANDINGS | L01 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:29423",
+              "V03 / terrain surface / L01 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:29567",
+              "V03 / authored cliff connections / L01",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:29587",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:29588",
+              "TERRAIN L01 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:29597",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 2,
+          "items": [
+            [
+              "1411:22035",
+              "ORIGIN",
+              "RECTANGLE",
+              168,
+              0,
+              1,
+              400,
+              true
+            ],
+            [
+              "1411:22036",
+              "SOIL",
+              "RECTANGLE",
+              0,
+              350,
+              3555,
+              1,
+              true
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:30814",
+        "level_02 / Railway Ruins / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:30815",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:30816",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:30989",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:30990",
+              "TERRAIN L02 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:31019",
+              "V02 RETURN LANDINGS | L02 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:31027",
+              "V03 / terrain surface / L02 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:31144",
+              "V03 / authored cliff connections / L02",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:31165",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:31166",
+              "TERRAIN L02 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:31175",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 2,
+          "items": [
+            [
+              "1430:22035",
+              "ORIGIN",
+              "RECTANGLE",
+              194,
+              0,
+              1,
+              400,
+              true
+            ],
+            [
+              "1430:22036",
+              "SOIL",
+              "RECTANGLE",
+              0,
+              350,
+              3555,
+              1,
+              true
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:32017",
+        "level_03 / Broken Aqueduct / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:32018",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:32019",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:32191",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:32192",
+              "TERRAIN L03 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:32222",
+              "V02 RETURN LANDINGS | L03 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:32230",
+              "V03 / terrain surface / L03 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:32331",
+              "V03 / authored cliff connections / L03",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:32352",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:32353",
+              "TERRAIN L03 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:32362",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:32376",
+        "level_04 / Mossback Sanctuary / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:32377",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:32378",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:32573",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:32574",
+              "TERRAIN L04 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:32603",
+              "V02 RETURN LANDINGS | L04 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:32611",
+              "V03 / terrain surface / L04 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:32750",
+              "V03 / authored cliff connections / L04",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:32783",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:32784",
+              "TERRAIN L04 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:32793",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 2,
+          "items": [
+            [
+              "1430:22037",
+              "ORIGIN",
+              "RECTANGLE",
+              210,
+              0,
+              1,
+              400,
+              true
+            ],
+            [
+              "1430:22038",
+              "SOIL",
+              "RECTANGLE",
+              0,
+              350,
+              3555,
+              1,
+              true
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:32797",
+        "level_05 / Sunken Chapel / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:32798",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:32799",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:32972",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:32973",
+              "TERRAIN L05 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33003",
+              "V02 RETURN LANDINGS | L05 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33011",
+              "V03 / terrain surface / L05 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33150",
+              "V03 / authored cliff connections / L05",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:33169",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:33170",
+              "TERRAIN L05 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:33179",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:33183",
+        "level_07 / Lantern Roots / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:33184",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:33185",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:33371",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:33372",
+              "TERRAIN L07 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33404",
+              "V02 RETURN LANDINGS | L07 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33412",
+              "V03 / terrain surface / L07 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33552",
+              "V03 / authored cliff connections / L07",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:33573",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:33574",
+              "TERRAIN L07 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:33583",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:33596",
+        "level_06 / Cairn Terraces / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:33597",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:33598",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:33779",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:33780",
+              "TERRAIN L06 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33812",
+              "V02 RETURN LANDINGS | L06 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:33820",
+              "V03 / terrain surface / L06 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34019",
+              "V03 / authored cliff connections / L06",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:34040",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:34041",
+              "TERRAIN L06 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:34050",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 2,
+          "items": [
+            [
+              "1430:22039",
+              "ORIGIN",
+              "RECTANGLE",
+              168,
+              0,
+              1,
+              400,
+              true
+            ],
+            [
+              "1430:22040",
+              "SOIL",
+              "RECTANGLE",
+              0,
+              350,
+              3555,
+              1,
+              true
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:34062",
+        "level_08 / Silo Stair / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:34063",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:34064",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:34239",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:34240",
+              "TERRAIN L08 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34270",
+              "V02 RETURN LANDINGS | L08 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34277",
+              "V03 / terrain surface / L08 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34390",
+              "V03 / authored cliff connections / L08",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:34411",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:34412",
+              "TERRAIN L08 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:34421",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:34433",
+        "level_09 / Collapsed Tower / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:34434",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:34435",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:34594",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:34595",
+              "TERRAIN L09 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34625",
+              "V02 RETURN LANDINGS | L09 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34632",
+              "V03 / terrain surface / L09 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:34837",
+              "V03 / authored cliff connections / L09",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:34847",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:34848",
+              "TERRAIN L09 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:34857",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:35722",
+        "level_10 / Bell Cellar / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:35723",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:35724",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:35897",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:35898",
+              "TERRAIN L10 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:35928",
+              "V02 RETURN LANDINGS | L10 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:35936",
+              "V03 / terrain surface / L10 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36052",
+              "V03 / authored cliff connections / L10",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:36073",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:36074",
+              "TERRAIN L10 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:36083",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:36096",
+        "level_11 / Old Quarry / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:36097",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:36098",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:36263",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:36264",
+              "TERRAIN L11 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36294",
+              "V02 RETURN LANDINGS | L11 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36302",
+              "V03 / terrain surface / L11 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36507",
+              "V03 / authored cliff connections / L11",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:36519",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:36520",
+              "TERRAIN L11 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:36529",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:36541",
+        "level_12 / Weeping Roots / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:36542",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:36543",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:36736",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:36737",
+              "TERRAIN L12 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36767",
+              "V02 RETURN LANDINGS | L12 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36775",
+              "V03 / terrain surface / L12 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:36913",
+              "V03 / authored cliff connections / L12",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:36945",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:36946",
+              "TERRAIN L12 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:36955",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:37869",
+        "level_13 / Twin Shafts / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:37870",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:37871",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:38033",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:38034",
+              "TERRAIN L13 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38066",
+              "V02 RETURN LANDINGS | L13 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38074",
+              "V03 / terrain surface / L13 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38281",
+              "V03 / authored cliff connections / L13",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:38289",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:38290",
+              "TERRAIN L13 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:38299",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:38314",
+        "level_14 / Catacomb / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:38315",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:38316",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:38461",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:38462",
+              "TERRAIN L14 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38491",
+              "V02 RETURN LANDINGS | L14 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38499",
+              "V03 / terrain surface / L14 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38592",
+              "V03 / authored cliff connections / L14",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:38596",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:38597",
+              "TERRAIN L14 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:38606",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:38618",
+        "level_15 / Fault Steps / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:38619",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:38620",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:38774",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:38775",
+              "TERRAIN L15 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38806",
+              "V02 RETURN LANDINGS | L15 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:38813",
+              "V03 / terrain surface / L15 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39026",
+              "V03 / authored cliff connections / L15",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:39034",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:39035",
+              "TERRAIN L15 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:39044",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:39056",
+        "level_16 / Giant's Stair / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:39057",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:39058",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:39218",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:39219",
+              "TERRAIN L16 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39249",
+              "V02 RETURN LANDINGS | L16 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39256",
+              "V03 / terrain surface / L16 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39459",
+              "V03 / authored cliff connections / L16",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:39475",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:39476",
+              "TERRAIN L16 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:39485",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:39497",
+        "level_17 / Reactor Nest / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:39498",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:39499",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:39672",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:39673",
+              "TERRAIN L17 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39703",
+              "V02 RETURN LANDINGS | L17 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39711",
+              "V03 / terrain surface / L17 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:39817",
+              "V03 / authored cliff connections / L17",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:39838",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:39839",
+              "TERRAIN L17 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:39848",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:44226",
+        "level_18 / Last Sluice / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:44227",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:44228",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:44405",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:44406",
+              "TERRAIN L18 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:44438",
+              "V02 RETURN LANDINGS | L18 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:44446",
+              "V03 / terrain surface / L18 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:44563",
+              "V03 / authored cliff connections / L18",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:44584",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:44585",
+              "TERRAIN L18 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:44594",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            7818,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:51358",
+        "level_19 / Surface Breach / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:51359",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:51360",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 9,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:51529",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:51530",
+              "TERRAIN L19 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:51561",
+              "V02 RETURN LANDINGS | L19 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:51568",
+              "V03 / terrain surface / L19 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:51754",
+              "V03 / authored cliff connections / L19",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:51771",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:51772",
+              "TERRAIN L19 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:51781",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    },
+    {
+      "row": [
+        "1228:51785",
+        "level_20 / Crown Summit / 5 screens",
+        "FRAME",
+        0,
+        64,
+        3555,
+        400,
+        true
+      ],
+      "planes": [
+        {
+          "node": [
+            "1228:51786",
+            "FULL WIDTH / initialized",
+            "FRAME",
+            0,
+            0,
+            1,
+            1,
+            false
+          ],
+          "count": 0,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:51787",
+            "ART",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            true
+          ],
+          "count": 10,
+          "items": []
+        },
+        {
+          "node": [
+            "1228:51947",
+            "ROUTES",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 4,
+          "items": [
+            [
+              "1228:51948",
+              "TERRAIN L20 | 03 native routes",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:51980",
+              "V02 RETURN LANDINGS | L20 | ROUTES",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:51987",
+              "V03 / terrain surface / L20 / sampled guides",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ],
+            [
+              "1228:52081",
+              "V03 / authored cliff connections / L20",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:52091",
+            "POINTS",
+            "FRAME",
+            0,
+            0,
+            3555,
+            400,
+            false
+          ],
+          "count": 1,
+          "items": [
+            [
+              "1228:52092",
+              "TERRAIN L20 | 04 native points",
+              "FRAME",
+              0,
+              0,
+              3555,
+              400,
+              true
+            ]
+          ]
+        },
+        {
+          "node": [
+            "1228:52101",
+            "REGISTRATION",
+            "FRAME",
+            0,
+            0,
+            5760,
+            400,
+            false
+          ],
+          "count": 0,
+          "items": []
+        }
+      ]
+    }
+  ],
+  "initialGameplayKindAudit": [
+    {
+      "id": "1228:29201",
+      "name": "level_01 / Hollow Tree / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 178,
+        "ladder": 21,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:29561",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:29562",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:29563",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:29564",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:29565",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:29566",
+          "V03 / terrain surface / L01 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:30814",
+      "name": "level_02 / Railway Ruins / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 147,
+        "ladder": 9,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:31138",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:31139",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:31140",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:31141",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:31142",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:31143",
+          "V03 / terrain surface / L02 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:32017",
+      "name": "level_03 / Broken Aqueduct / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 131,
+        "ladder": 12,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:32325",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32326",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32327",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32328",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32329",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32330",
+          "V03 / terrain surface / L03 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:32376",
+      "name": "level_04 / Mossback Sanctuary / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 178,
+        "ladder": 12,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:32745",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32746",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32747",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32748",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:32749",
+          "V03 / terrain surface / L04 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:32797",
+      "name": "level_05 / Sunken Chapel / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 171,
+        "ladder": 8,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:33144",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33145",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33146",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33147",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33148",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33149",
+          "V03 / terrain surface / L05 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:33183",
+      "name": "level_07 / Lantern Roots / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 176,
+        "ladder": 8,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:33546",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33547",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33548",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33549",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33550",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:33551",
+          "V03 / terrain surface / L07 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:33596",
+      "name": "level_06 / Cairn Terraces / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 232,
+        "ladder": 11,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:34013",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34014",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34015",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34016",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34017",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34018",
+          "V03 / terrain surface / L06 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:34062",
+      "name": "level_08 / Silo Stair / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 144,
+        "ladder": 10,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:34384",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34385",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34386",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34387",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34388",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34389",
+          "V03 / terrain surface / L08 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:34433",
+      "name": "level_09 / Collapsed Tower / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 228,
+        "ladder": 7,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:34831",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34832",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34833",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34834",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34835",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:34836",
+          "V03 / terrain surface / L09 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:35722",
+      "name": "level_10 / Bell Cellar / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 147,
+        "ladder": 11,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:36046",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36047",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36048",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36049",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36050",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36051",
+          "V03 / terrain surface / L10 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:36096",
+      "name": "level_11 / Old Quarry / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 229,
+        "ladder": 9,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:36501",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36502",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36503",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36504",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36505",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36506",
+          "V03 / terrain surface / L11 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:36541",
+      "name": "level_12 / Weeping Roots / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 178,
+        "ladder": 13,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:36907",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36908",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36909",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36910",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36911",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:36912",
+          "V03 / terrain surface / L12 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:37869",
+      "name": "level_13 / Twin Shafts / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 230,
+        "ladder": 8,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:38275",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38276",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38277",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38278",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38279",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38280",
+          "V03 / terrain surface / L13 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:38314",
+      "name": "level_14 / Catacomb / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 110,
+        "ladder": 7,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:38586",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38587",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38588",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38589",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38590",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:38591",
+          "V03 / terrain surface / L14 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:38618",
+      "name": "level_15 / Fault Steps / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 236,
+        "ladder": 6,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:39020",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39021",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39022",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39023",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39024",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39025",
+          "V03 / terrain surface / L15 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:39056",
+      "name": "level_16 / Giant's Stair / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 233,
+        "ladder": 9,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:39453",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39454",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39455",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39456",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39457",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39458",
+          "V03 / terrain surface / L16 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:39497",
+      "name": "level_17 / Reactor Nest / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 136,
+        "ladder": 12,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:39811",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39812",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39813",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39814",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39815",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:39816",
+          "V03 / terrain surface / L17 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:44226",
+      "name": "level_18 / Last Sluice / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 150,
+        "ladder": 11,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:44557",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:44558",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:44559",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:44560",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:44561",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:44562",
+          "V03 / terrain surface / L18 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:51358",
+      "name": "level_19 / Surface Breach / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 216,
+        "ladder": 8,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:51748",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:51749",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:51750",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:51751",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:51752",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:51753",
+          "V03 / terrain surface / L19 / complete",
+          "FRAME"
+        ]
+      ]
+    },
+    {
+      "id": "1228:51785",
+      "name": "level_20 / Crown Summit / 5 screens",
+      "kinds": {
+        "solid": 7,
+        "ledge": 119,
+        "ladder": 7,
+        "seed": 3,
+        "start": 1,
+        "puzzle": 1,
+        "secret": 1,
+        "reward": 1,
+        "door": 1
+      },
+      "unknown": [
+        [
+          "1228:52075",
+          "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:52076",
+          "V03 TERRAIN ACCESS / chapter 2 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:52077",
+          "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:52078",
+          "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:52079",
+          "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+          "FRAME"
+        ],
+        [
+          "1228:52080",
+          "V03 / terrain surface / L20 / complete",
+          "FRAME"
+        ]
+      ]
+    }
+  ],
+  "artSample": {
+    "path": "level-01-art.png",
+    "node": "1228:29203",
+    "type": "actual ART export from download_assets",
+    "width": 3555,
+    "height": 400,
+    "colors": 28597,
+    "alphaLevels": 1,
+    "partialAlphaPixels": 0
+  },
+  "historical": true,
+  "supersededBy": "current-master.json",
+  "supersededReason": "Owner replaced the deleted board with 1433:22060 and requested an empty starting workflow without old-level fallbacks."
+}

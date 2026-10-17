@@ -15,11 +15,10 @@
  const params=new URLSearchParams(location.search),chooser=document.getElementById('fixture'),classChooser=document.getElementById('review-class'),help=document.getElementById('fixture-help');
  const layouts=Array.from({length:20},(_,i)=>i+1),bosses=Object.fromEntries(['Sprout Sentinel','Dew Duke','Thorn Duelist','Spore Oracle','Mossback','Root Ram','Silk Weaver','Glass Snail','Wick Hermit','Tiara','Frostjaw','Spindle Widow','Orchard Mimic','Tuning Fork','Moon Moth','Kiln Beetle','Ash Ferryman','Compost Choir','Seed Engine'].map((name,i)=>['boss'+(i+1),name+' · Garden '+(i+1)]));
  const pressureMinutes=[0,5,10,20];
- const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','mech','runner','cairn','mycel','last-seed','high-tide','boons','class-kits','circuit');
+ const newModes=layouts.map(world=>'layout'+world).concat(layouts.map(world=>'place'+world),Object.keys(bosses),'mixed',pressureMinutes.map(minutes=>'pressure'+minutes),'plant-climb','rats','sligo-life','sligo-colony','polge','mech','runner','cairn','mycel','last-seed','high-tide','boons','class-kits');
  const modeLabels=new Map([...document.querySelectorAll('[data-mode]')].map(b=>[b.dataset.mode,b.textContent]));
  function group(title,entries){const g=document.createElement('optgroup');g.label=title;entries.forEach(([value,text])=>{const o=document.createElement('option');o.value=value;o.textContent=text;g.appendChild(o);modeLabels.set(value,text);});chooser.appendChild(g);}
  group('Class combat',[['class-kits','Class kits · primary and special']]);
- group('Exploration',[['circuit','Circuit · choose and defend']]);
  group('Build choices',[['boons','Boons · live readable choices']]);
  group('Time pressure',pressureMinutes.map(minutes=>['pressure'+minutes,'Garden 1 · '+minutes+':00 elapsed']));
  group('Game modes',[['last-seed','Last Seed · live survival'],['high-tide','High Tide · motherplant and guardians']]);
@@ -36,12 +35,11 @@
  group('Bosses and encounters',[...Object.entries(bosses),['boss','Hollow Crown · Garden 20'],['mixed','Mixed encounter · Garden 16'],['rats','Rat pack · Four variants']]);
  group('Original fixtures',[...modeLabels.entries()].filter(([mode])=>!newModes.includes(mode)&&mode!=='boss'&&mode!=='relic-garden'));
  const requestedStage=Number.parseInt(params.get('stage'),10),platformStage=Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):6;
- const requestedMode=params.get('mode'),reviewMode=requestedMode==='platforms'?'layout'+platformStage:requestedMode==='pressure'?'pressure10':requestedMode;
+ const requestedMode=params.get('mode'),reviewMode=requestedMode==='circuit'?'layout'+(requestedStage>=1&&requestedStage<=20?requestedStage:14):requestedMode==='platforms'?'layout'+platformStage:requestedMode==='pressure'?'pressure10':requestedMode;
  const requestedClass=params.get('class')==='moss'?'runner':params.get('class');
  const requestedSeed=Number.parseInt(params.get('seed'),10),reviewSeed=params.has('authored')?'undefined':Number.isFinite(requestedSeed)?requestedSeed>>>0:1;
- const circuitSeed=Number.isFinite(requestedSeed)?requestedSeed>>>0:73;
  let current=modeLabels.has(reviewMode)?reviewMode:'results',fixtureSerial=0;
- classChooser.value=['mech','runner','bulwark','herbalist','polge','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':['plant-climb','runner'].includes(current)?'runner':current==='cairn'?'bulwark':current==='mycel'?'herbalist':current==='circuit'?'polge':'mech';
+ classChooser.value=['mech','runner','bulwark','herbalist','polge','sligo'].includes(requestedClass)?requestedClass:current.startsWith('sligo-')?'sligo':['plant-climb','runner'].includes(current)?'runner':current==='cairn'?'bulwark':current==='mycel'?'herbalist':'mech';
  const viewport=document.getElementById('viewport'),viewports={desktop:[1000,650],phone:[390,844],small:[320,568],landscape:[844,390],compact:[568,320]};
  function resize(name){viewport.value=name;[frame.width,frame.height]=viewports[name];}
  resize(params.has('portrait')?'phone':'desktop');
@@ -50,11 +48,10 @@
   current=mode;chooser.value=mode;const serial=++fixtureSerial;
   document.querySelectorAll('#review-input button[aria-pressed]').forEach(button=>button.setAttribute('aria-pressed','false'));
   status.textContent='Loading '+modeLabels.get(mode)+'…';status.removeAttribute('data-state');
-  status.removeAttribute('data-circuit');
   status.removeAttribute('data-guardian');combatStatus.hidden=true;combatStatus.textContent='';
-  const circuit=mode==='circuit',custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
+  const custom=newModes.includes(mode)||mode==='boss',placeView=mode.startsWith('place'),layout=mode.startsWith('layout')||placeView,milestone=Object.hasOwn(bosses,mode),finalBoss=mode==='boss',mixed=mode==='mixed',pressure=mode.startsWith('pressure'),plantClimb=mode==='plant-climb',rats=mode==='rats';
   const elapsedMinutes=pressure?Number(mode.slice(8)):0;
-  const world=circuit?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):14):mode==='runner'?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):6):['cairn','mycel'].includes(mode)?(Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):1):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
+  const world=mode==='runner'?(Number.isFinite(requestedStage)?Math.max(3,Math.min(19,requestedStage)):6):['cairn','mycel'].includes(mode)?(Number.isFinite(requestedStage)?Math.max(1,Math.min(20,requestedStage)):1):placeView?Number(mode.slice(5)):layout?Number(mode.slice(6)):milestone?Number(mode.slice(4)):finalBoss?20:mixed?16:1;
   const gameplay=custom||['controls','combat','feathers','trial','enemies','boss','native-skins','native-enemies','native-crown'].includes(mode);
   if(mode.startsWith('robot'))classChooser.value='mech';
   if(mode.startsWith('sligo-'))classChooser.value='sligo';
@@ -68,7 +65,6 @@
   help.textContent=mode.startsWith('sligo-')?'Harvest the red cords with ↓ / Space; walk over meat to eat. B throws flesh and shrinks you. Hold a clone for half a second, Q, or left trigger to swap. Four divisions per run.':rats?'Live common, black, albino and plague rats. Amber brackets warn before a bite; green marks warn before a plague pulse. B defend · X dodge · ↑ jump · ↓ / Space tend.':pressure?'The same cleared Garden 1 at '+elapsedMinutes+':00 on the run clock. Patrol density and enemy strength come from the live director; time keeps advancing. B defend · X dodge · ↓ / Space tend.':plantClimb?'Jump and run beside these living plants. Change class to compare movement. ↑ jump · Shift run · ↓ / Space tend. The run clock stays active.':layout?'Explore both directions with normal collision and the selected class. ↑ jump · Shift run · B defend · X dodge. Touch: drag to move, swipe up to jump.':milestone||finalBoss?'Live boss encounter: watch its tell, dodge the attack, then defend while it is exposed. B defend · X dodge · ↓ / Space tend.':mixed?'Live enemy roles together: diver, seed thief, spore caster, shield beetle, healing moth, thorn caster, dew leech and rammer. B defend · X dodge.':gameplay?'Normal controls are active. ↑ jump · Shift run · B defend · X dodge · ↓ / Space tend.':'Choose a scene, then rotate or reset without changing your own saves.';
   if(mode==='cairn')help.textContent='B: sweep → reverse sweep → planted knuckle. Three confirmed contacts or a genuinely guarded plant bite build one Strata, with one shared 1.5-second gate. C / Stone spends one plate on a low stone and grounded grit slow. V / Brace protects the garden; time it against a real frontal strike for one counter. E / Ridge reserves three plates, then raises a reachable garden ridge: two seconds of grounded pest obstruction and six seconds of bite protection. X dodges; moving releases Brace. Start with zero plates and earn them against live sentries, a rat and a floor ram. '+(params.get('boons')==='1'?'All five Erasmus Berg boons enabled.':'Base kit. Add &boons=1 for all five upgrades.');
   if(mode==='mycel')help.textContent='B / Spore: an initial landed dart earns .5 Culture once; nearby living wet plants contribute up to 1 Culture per second. C / Cloud spends 2 on three slow spore pulses; V / Drift is a vulnerable short hop, with one .04-water landing near a real living network. E / Bloom spends 4 on three fixed pulses at 0, 2 and 4 seconds; move, shoot or tend while they run. Plant restoration is capped at .12 health / .15 water for the whole cast. Start with zero Culture, real wet/dry plants and a recently fallen retained plant. '+(params.get('network')==='none'?'Plant-free setup: earn Culture with real darts and use clouds as temporary chain anchors. ':'')+(params.get('boons')==='1'?'All five Mycel boons enabled; restoration caps stay absolute.':'Base kit. Add &boons=1 for all five upgrades.');
-  if(circuit)help.textContent='Choose either gift altar with ↓ / Space. Amber marks show where each keeper arrives. Defend the terrace to earn your chosen gift, or leave the terrace to withdraw. B punch · E flurry · X dodge · ↑ jump.';
   if(mode==='polge')help.textContent='B: jab → cross → uppercut. Confirmed hits build 0–3 Rhythm; misses keep the current combo step. C / touch Clinch: make room at close range. X / touch Slip: weave through an amber warned attack, then B for one stronger counter. E / tap Pølge: moving close flurry. Trial sentries use their real warnings and attacks; reset after defeating them. '+(params.get('boons')==='1'?'All Pølge boons enabled; a landed flurry finish can restore the damaged plants.':'Base kit, no boons. Add &boons=1 to compare the upgraded build.');
   if(mode==='mech')help.textContent='B: plant a bomb with its full two-second fuse. Real Tend / Space and ordinary rover care build 0–3 Circuit, at most one beat every four seconds. C / Mist spends one beat on a forward fan; V / Dispatch sends the rover to reachable soil or recalls it on foot; E / Overload spends three beats on one planted ring and four seconds of threatened-plant priority. X remains dodge. The close keepers use their real warnings and attacks. '+(params.get('boons')==='1'?'Existing rover, Guard bot and bomb branches enabled.':'Base kit, no chosen boons. Add &boons=1 for the existing upgraded build.');
   if(mode==='runner')help.textContent='Run / Shift plus movement earns Momentum from real travel. B kicks. Hold C / Latch toward a living stem, real ledge or pest; release keeps actual velocity. Hold V / Driving for .2–.6 seconds, then release to kick; drag out to cancel. E spends Momentum on one actual splits-stomp landing. X dodge and Space Tend stay separate. Mature plants and nearby natural ledges are legal anchors; sentries use real warnings. No Momentum is granted by this scene. '+(params.get('boons')==='1'?'All five existing wrestler boons enabled.':'Base kit. Add &boons=1 to compare the complete build.');
@@ -140,7 +136,7 @@
       });};
     }
     if(${custom}){
-      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${circuit?circuitSeed:reviewSeed};
+      resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
       if(${layout}&&${params.has('expedition')}){var ex=stageLayout().expedition;P.x=ex.start.x;P.y=ex.start.y;if(${params.has('summit')}){P.x=ex.summit.x;P.y=ex.summit.y;P.platform=ex.nodes[2].platformId;}}
@@ -172,7 +168,7 @@
         }
         if(!cairnGroundFound)throw new Error('No legal dry Cairn review footprint on this stage and seed.');
       }
-      if(!${layout||plantClimb||circuit}){
+      if(!${layout||plantClimb}){
         (${mode==='mech'}?[18,56]:${mode==='cairn'}?[-20,28]:[-26,26]).forEach(function(offset,i){var x=dryX(P.x+offset),p={id:i+1,x:x,kind:i?6:3,seed:79+i*23.7,growth:1.35,stalk:false,health:1,moisture:.85,pulse:0,hit:0,age:0};gardenPlots.push(p);recordGardenPlant(p);});
         rogueRun.nextPlantId=3;
       }
@@ -251,14 +247,6 @@
         [-24,22,60].forEach(function(dx,i){var k=makeKrek(dx<0?-1:1,false,i===2?5:0);k.combatId=++classPestId;k.scout=false;k.x=P.x+dx;k.y=surfaceY(k.x)-12;k.vx=k.vy=0;k.hp=k.maxHp=24;k.trialGuard=true;k.eventId=wrestlingTrial.id;k.eventX=P.x;k.eventY=P.y;k.bite=1.5+i*.7;floatKrek.push(k);});
         gardenPlots.forEach(function(p){p.growth=1.5;p.health=.8;p.moisture=.55;});
       }
-      if(${circuit}){
-        var reviewCircuit=stageLayout().expedition&&stageLayout().expedition.circuit;
-        if(!reviewCircuit)throw new Error('This stage and seed have no circuit terrace.');
-        var reviewAltar=reviewCircuit.choices[0];
-        P.x=reviewAltar.x;P.y=reviewAltar.y;P.platform=reviewAltar.platformId;P.grounded=true;P.wet=false;P.st='free';P.vx=P.vy=0;
-        P.face=reviewCircuit.focus.x>P.x?1:-1;
-        runEncounters=[];runLoot=[];runHazards=[];seedPickups=[];gardenSeeds=0;started=false;
-      }
       if(${mode.startsWith('sligo-')}){
         P.skin='sligo';gardenPlots.forEach(function(p,i){p.kind=25+i;});
         if(${mode==='sligo-colony'}){
@@ -311,37 +299,14 @@
     if(!${robot}&&!${menu}){rogueRun.ended=true;showRunResult();}
     if(${gameplay}){
       var reviewStateClock=0,reviewFrame=frame,reviewCombat={strikes:{},cues:{},fx:[],bombPeak:0,shotPeak:0,lastFx:0};
-      var reviewCircuitLog={warnings:[],arrivals:[],rewards:[],guardPeak:0,lastArrival:0};
       frame=function(now){
-        // Read before simulation so even the first warning frame is measured.
-        // The log never creates enemies, changes a clock, or completes a trial.
-        if(${circuit}&&runExpedition&&runExpedition.circuitActive&&runExpedition.circuitQueued>0){
-          var e=runExpedition,warnings=reviewCircuitLog.warnings,previous=warnings[warnings.length-1];
-          if(!previous||previous.serial!==e.circuitSerial||previous.x!==e.circuitSpawnX||previous.y!==e.circuitSpawnY||e.circuitTell>previous.lastTell+.01){
-            warnings.push({serial:e.circuitSerial,x:e.circuitSpawnX,y:e.circuitSpawnY,kind:e.circuitKind,age:e.circuitAge,tell:e.circuitTell,lastTell:e.circuitTell});
-          }else previous.lastTell=e.circuitTell;
-        }
         reviewFrame(now);
         // Observe every frame, before the slower status publication, so browser
         // checks never depend on catching a short-lived projectile or fist pose.
         booms.forEach(function(b){if(!(b.id>reviewCombat.lastFx))return;reviewCombat.lastFx=b.id;if(b.strike)reviewCombat.strikes[b.strike]=(reviewCombat.strikes[b.strike]||0)+1;if(b.cue)reviewCombat.cues[b.cue]=(reviewCombat.cues[b.cue]||0)+1;reviewCombat.fx.push({id:b.id,owner:b.owner||'',kind:b.strike||b.cue||'',x:b.x,y:b.y,r:b.r});if(reviewCombat.fx.length>96)reviewCombat.fx.shift();});
         reviewCombat.bombPeak=Math.max(reviewCombat.bombPeak,bombs.length);reviewCombat.shotPeak=Math.max(reviewCombat.shotPeak,classShots.length);
-        if(${circuit}&&runExpedition){
-          var e=runExpedition,guards=floatKrek.filter(function(k){return k.eventId===2000+worldLevel();});
-          reviewCircuitLog.guardPeak=Math.max(reviewCircuitLog.guardPeak,guards.length);
-          if(e.circuitSerial>reviewCircuitLog.lastArrival){
-            var k=guards[guards.length-1],warning=reviewCircuitLog.warnings[reviewCircuitLog.warnings.length-1];
-            reviewCircuitLog.arrivals.push({serial:e.circuitSerial,age:e.circuitAge,x:k&&k.x,y:k&&k.y,warning:warning?{x:warning.x,y:warning.y,shownFor:e.circuitAge-warning.age}:null});
-            reviewCircuitLog.lastArrival=e.circuitSerial;
-          }
-          if(e.circuitDone)runLoot.forEach(function(q){if(reviewCircuitLog.rewards.indexOf(q.id)<0)reviewCircuitLog.rewards.push(q.id);});
-        }
         if(now-reviewStateClock<250)return;reviewStateClock=now;
         var observedBoss=floatKrek.find(function(k){return k.boss;}),observedLayout=typeof stageLayout==='function'?stageLayout():null;
-        if(${circuit}){
-          var C=observedLayout.expedition.circuit,e=runExpedition;
-          parent.postMessage({type:'max-circuit-observation',serial:${serial},geometry:C,seed:rogueRun.seed,world:worldLevel(),classId:rogueRun.classId,player:{x:P.x,y:P.y,grounded:P.grounded,platformId:P.platform},active:e.circuitActive,choice:e.circuitChoice,done:e.circuitDone,failed:e.circuitFailed,queued:e.circuitQueued,spawned:e.circuitSerial,age:e.circuitAge,away:e.circuitAway,tell:e.circuitTell,warning:{x:e.circuitSpawnX,y:e.circuitSpawnY,kind:e.circuitKind},guards:floatKrek.filter(function(k){return k.eventId===2000+worldLevel();}).map(function(k){return {x:k.x,y:k.y,kind:k.kind};}),log:reviewCircuitLog,propsReady:ready(districtProps)&&ready(districtLandmarks),loot:runLoot.map(function(q){return {id:q.id,type:q.type,x:q.x,y:q.y};}),traits:rogueRun.traits,boonOpen:!!rogueRun.choice,ended:rogueRun.ended},${JSON.stringify(location.origin)});
-        }
         var reviewCanvasBounds=cv.getBoundingClientRect(),observedFighter=classFighters.find(function(q){return q.owner===skillOwner();}),observedEngineer=coop&&coop.members[coop.me]?coop.members[coop.me].engineer:rogueRun.engineer,observedCrew=coop&&coop.members[coop.me]?coop.members[coop.me].crew||[]:soloCrew||[];
         var observedWrestler=rogueRun.classId==='runner'?(coop&&coop.members[coop.me]?coop.members[coop.me].wrestler:rogueRun.wrestler):null;
         var observedWrestling=observedWrestler&&typeof rattusCaptureWrestler==='function'?rattusCaptureWrestler(observedWrestler):null;
@@ -369,7 +334,6 @@
   const data=event.data;
   if(event.source!==frame.contentWindow||event.origin!==location.origin||!data||data.serial!==fixtureSerial)return;
   if(data.type==='max-review-error'){status.textContent='Fixture error: '+data.message;return;}
-  if(data.type==='max-circuit-observation'){status.dataset.circuit=JSON.stringify(data);return;}
   if(data.type==='max-guardian-observation'){
    status.dataset.guardian=JSON.stringify(data);
    const c=data.combat,f=c&&c.fighter;
@@ -386,7 +350,7 @@
   const className={mech:'Max',runner:'Rattus norvegicus',bulwark:'Cairn',herbalist:'Mycel',polge:'Pølge',sligo:'Sligo'}[data.classId]||data.classId,clock=Math.floor(data.elapsed/60)+':'+String(data.elapsed%60).padStart(2,'0');
   status.textContent='Garden '+data.world+(data.campaign?' · '+data.campaign:data.theme?' · '+data.theme:'')+(data.atmosphere?' · '+data.atmosphere.label:'')+' · '+className+' · '+clock+' · '+(data.motion==='climb'?'climbing plant '+data.climbPlantId:data.grounded?'grounded':'airborne')+' · '+data.height+' px above local soil · x '+data.x+' · pressure '+data.pressure+(data.bossId?' · '+data.bossId+' phase '+data.phase:' · '+data.enemies+' enemies')+(data.ended?' · encounter ended':'');
  });
- chooser.onchange=()=>{if(chooser.value==='plant-climb')classChooser.value='runner';if(chooser.value==='circuit')classChooser.value='polge';show(chooser.value);};classChooser.onchange=()=>show(current);
+ chooser.onchange=()=>{if(chooser.value==='plant-climb')classChooser.value='runner';show(chooser.value);};classChooser.onchange=()=>show(current);
  document.getElementById('restart').onclick=()=>show(current);
  document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>show(b.dataset.mode));
  viewport.onchange=()=>resize(viewport.value);
