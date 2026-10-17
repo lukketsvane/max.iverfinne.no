@@ -1,0 +1,446 @@
+{
+  "baseCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+  "indexSha256": "105d7714b80dedd64551d33e28fd6eaa754e7a0475d7f52e05c0f8df38d4d547",
+  "playwright": "1.64.1",
+  "focusedTests": {
+    "passed": 48,
+    "failed": 0
+  },
+  "build": "passed",
+  "fullTests": "Initial local npm test stopped after the renderer changed; final exact-SHA repository CI required.",
+  "scope": "Actual local built-game flow and complete uniform pixel-block checks, not human visual acceptance or physical-iPhone performance.",
+  "results": [
+    {
+      "engine": "chromium",
+      "viewport": "phone",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.43683277777781,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 146,
+          "height": 195,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1131
+        },
+        {
+          "choice": "4x",
+          "width": 292,
+          "height": 390,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2017
+        },
+        {
+          "choice": "6x",
+          "width": 195,
+          "height": 260,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1502
+        },
+        {
+          "choice": "8x",
+          "width": 146,
+          "height": 195,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1184
+        },
+        {
+          "choice": "10x",
+          "width": 130,
+          "height": 173,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 1129
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "landscape",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.46639813333334,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 195,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1349
+        },
+        {
+          "choice": "4x",
+          "width": 390,
+          "height": 292,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2366
+        },
+        {
+          "choice": "6x",
+          "width": 260,
+          "height": 195,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1582
+        },
+        {
+          "choice": "8x",
+          "width": 195,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1703
+        },
+        {
+          "choice": "10x",
+          "width": 173,
+          "height": 130,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 1416
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "small",
+      "dpr": 1,
+      "default8x": false,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 23.445934799999993,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1199
+        },
+        {
+          "choice": "4x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1197
+        },
+        {
+          "choice": "6x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1206
+        },
+        {
+          "choice": "8x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1199
+        },
+        {
+          "choice": "10x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 1211
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "viewport": "desktop",
+      "dpr": 1,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.24227611111114,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 205,
+          "height": 154,
+          "scale": 7,
+          "uniformBlocks": true,
+          "colours": 1390
+        },
+        {
+          "choice": "4x",
+          "width": 360,
+          "height": 270,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 2076
+        },
+        {
+          "choice": "6x",
+          "width": 240,
+          "height": 180,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1472
+        },
+        {
+          "choice": "8x",
+          "width": 180,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1288
+        },
+        {
+          "choice": "10x",
+          "width": 180,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1618
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "phone",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.28240666666667,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 146,
+          "height": 195,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 859
+        },
+        {
+          "choice": "4x",
+          "width": 292,
+          "height": 390,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 1720
+        },
+        {
+          "choice": "6x",
+          "width": 195,
+          "height": 260,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1051
+        },
+        {
+          "choice": "8x",
+          "width": 146,
+          "height": 195,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 816
+        },
+        {
+          "choice": "10x",
+          "width": 130,
+          "height": 173,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 726
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "landscape",
+      "dpr": 3,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.266173066666667,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 195,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1059
+        },
+        {
+          "choice": "4x",
+          "width": 390,
+          "height": 292,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 1752
+        },
+        {
+          "choice": "6x",
+          "width": 260,
+          "height": 195,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1181
+        },
+        {
+          "choice": "8x",
+          "width": 195,
+          "height": 146,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1027
+        },
+        {
+          "choice": "10x",
+          "width": 173,
+          "height": 130,
+          "scale": 9,
+          "uniformBlocks": true,
+          "colours": 940
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "small",
+      "dpr": 1,
+      "default8x": false,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.41887333333331,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 924
+        },
+        {
+          "choice": "4x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 944
+        },
+        {
+          "choice": "6x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 934
+        },
+        {
+          "choice": "8x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 947
+        },
+        {
+          "choice": "10x",
+          "width": 160,
+          "height": 213,
+          "scale": 2,
+          "uniformBlocks": true,
+          "colours": 950
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "viewport": "desktop",
+      "dpr": 1,
+      "default8x": true,
+      "fiveChoices": true,
+      "persistence": true,
+      "liveClock": true,
+      "ordinaryWalk": 24.44176666666668,
+      "rotation": true,
+      "scales": [
+        {
+          "choice": "auto",
+          "width": 205,
+          "height": 154,
+          "scale": 7,
+          "uniformBlocks": true,
+          "colours": 1077
+        },
+        {
+          "choice": "4x",
+          "width": 360,
+          "height": 270,
+          "scale": 4,
+          "uniformBlocks": true,
+          "colours": 1509
+        },
+        {
+          "choice": "6x",
+          "width": 240,
+          "height": 180,
+          "scale": 6,
+          "uniformBlocks": true,
+          "colours": 1161
+        },
+        {
+          "choice": "8x",
+          "width": 180,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 952
+        },
+        {
+          "choice": "10x",
+          "width": 180,
+          "height": 135,
+          "scale": 8,
+          "uniformBlocks": true,
+          "colours": 1020
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

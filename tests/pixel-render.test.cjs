@@ -3,106 +3,95 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
+const { loadGame } = require('./game-harness.cjs');
 const source = fs.readFileSync(path.join(__dirname, '../pixel-render.inc.js'), 'utf8');
-function renderer(saved = {}, failure = '') {
-  const storage = new Map(Object.entries(saved)), calls = { paints: 0, children: 0 };
-  const context = {
-    createImageData: (w, h) => ({ data: new Uint8ClampedArray(w * h * 4) }),
-    putImageData() {}, createPattern: () => failure === 'pattern' ? null : {},
-    fillRect() { calls.paints++; }
-  };
+function renderer(saved = {}, denied = false) {
+  const storage = new Map(Object.entries(saved)); let resizes = 0;
   const game = vm.createContext({
-    Uint8ClampedArray, SCALE: 6,
+    IW: 146, IH: 195, SCALE: 8,
     localStorage: {
-      getItem(key) { if (failure === 'storage') throw Error('denied'); return storage.get(key) ?? null; },
-      setItem(key, value) { if (failure === 'storage') throw Error('denied'); storage.set(key, value); }
+      getItem(key) { if (denied) throw Error('denied'); return storage.get(key) ?? null; },
+      setItem(key, value) { if (denied) throw Error('denied'); storage.set(key, value); }
     },
-    subpx: { style: {}, appendChild() { calls.children++; } },
-    document: { createElement: () => ({ style: {}, setAttribute() {}, getContext: () => failure === 'context' ? null : context }) }
+    resize() { resizes++; }
   });
   vm.runInContext(source, game);
-  return { game, storage, calls, context };
+  return { game, storage, get resizes() { return resizes; } };
 }
-test('five named strategies wrap, persist and preserve unrelated device preferences', () => {
-  const { game, storage } = renderer({ 'max-subpixel': '0', garden: 'unchanged' });
-  const ids = ['native', 'lcd', 'scanlines', 'grille', 'shadow'];
+function bridge(h) {
+  let api; h.window.MaxGameMenu = { attach(value) { api = value; } }; h.emit('max-menu-ready'); return api;
+}
+test('five real scale choices wrap, persist and resize without overwriting unrelated preferences', () => {
+  const h = renderer({ 'max-pixel-scale-v1': 'auto', 'max-pixel-render-v1': 'lcd', garden: 'unchanged' });
+  const ids = ['auto', '4x', '6x', '8x', '10x'];
   for (let i = 0; i < 5; i++) {
-    assert.equal(game.pixelRenderInfo().id, ids[i]);
-    assert.equal(game.pixelRenderInfo().index, i);
-    assert.equal(game.pixelRenderInfo().total, 5);
-    game.cyclePixelRender();
-    assert.equal(storage.get('max-pixel-render-v1'), ids[(i + 1) % 5]);
+    assert.equal(h.game.pixelRenderInfo().id, ids[i]); assert.equal(h.game.pixelRenderInfo().total, 5);
+    h.game.cyclePixelRender(); assert.equal(h.storage.get('max-pixel-scale-v1'), ids[(i + 1) % 5]);
   }
-  assert.equal(storage.get('max-subpixel'), '0'); assert.equal(storage.get('garden'), 'unchanged');
+  assert.equal(h.resizes, 5); assert.equal(h.storage.get('max-pixel-render-v1'), 'lcd'); assert.equal(h.storage.get('garden'), 'unchanged');
 });
-test('saved modes migrate explicit legacy choices and recover from invalid or denied storage', () => {
-  for (const [saved, expected] of [
-    [{}, 'native'], [{ 'max-subpixel': '1' }, 'lcd'], [{ 'max-subpixel': '0' }, 'native'],
-    [{ 'max-pixel-render-v1': 'shadow', 'max-subpixel': '1' }, 'shadow'],
-    [{ 'max-pixel-render-v1': 'invalid', 'max-subpixel': '1' }, 'native']
-  ]) assert.equal(renderer(saved).game.pixelRenderInfo().id, expected);
-  const { game } = renderer({}, 'storage');
-  assert.equal(game.pixelRenderInfo().id, 'native');
-  game.cyclePixelRender(); assert.equal(game.pixelRenderInfo().id, 'lcd');
+test('8x is the default; old display masks, corrupt values and denied storage cannot restore a filter', () => {
+  for (const saved of [{}, { 'max-pixel-render-v1': 'shadow' }, { 'max-subpixel': '1' }, { 'max-pixel-scale-v1': 'invalid' }]) assert.equal(renderer(saved).game.pixelRenderInfo().id, '8x');
+  for (const id of ['auto', '4x', '6x', '8x', '10x']) assert.equal(renderer({ 'max-pixel-scale-v1': id }).game.pixelRenderInfo().id, id);
+  const h = renderer({}, true); assert.equal(h.game.pixelRenderInfo().id, '8x'); h.game.cyclePixelRender(); assert.equal(h.game.pixelRenderInfo().id, '10x');
 });
-test('four masks remain distinct, integer-sized, opaque and chromatically neutral at every supported scale', () => {
-  const { game } = renderer();
-  for (const scale of [3, 4, 5, 6, 7, 9, 12, 16, 32, 64]) {
-    const signatures = new Set();
-    for (const id of ['lcd', 'scanlines', 'grille', 'shadow']) {
-      const tile = game.pixelRenderTile(id, scale), sums = [0, 0, 0];
-      assert.equal(tile.width, scale); assert.equal(tile.height, id === 'shadow' ? scale * 2 : scale);
-      assert.equal(tile.data.length, tile.width * tile.height * 4);
-      assert.ok(Number.isFinite(tile.gain) && tile.gain >= 0 && tile.gain <= .6);
-      for (let i = 0; i < tile.data.length; i += 4) {
-        assert.equal(tile.data[i + 3], 255);
-        for (let c = 0; c < 3; c++) sums[c] += tile.data[i + c];
-      }
-      assert.ok((Math.max(...sums) - Math.min(...sums)) / (tile.width * tile.height) < 1, id + ' must not tint the garden');
-      signatures.add(Buffer.from(tile.data).toString('hex'));
+test('requested magnification is integral and only reduces to retain a readable native viewport', () => {
+  for (const id of ['auto', '4x', '6x', '8x', '10x']) {
+    const { game } = renderer({ 'max-pixel-scale-v1': id });
+    for (const [width, height] of [[1170,1560], [1440,1080], [390,520], [320,426], [100,80]]) {
+      const scale = game.pixelRenderScale(width, height, 5);
+      const requested = id === 'auto' ? 5 : parseInt(id, 10);
+      assert.equal(scale, Math.max(1, Math.min(requested, Math.floor(Math.min(width, height) / 128))));
+      assert.ok(Number.isInteger(scale));
     }
-    assert.equal(signatures.size, 4);
   }
-  for (const scale of [0, 1, 2, 2.5, 65, Infinity, NaN]) assert.equal(game.pixelRenderTile('lcd', scale), null);
-  assert.equal(game.pixelRenderTile('native', 6), null); assert.equal(game.pixelRenderTile('unknown', 6), null);
+  assert.equal(renderer().game.pixelRenderScale(1170,1560,8),8);
 });
-test('scanlines only vary vertically, grille only horizontally and dot rows are staggered', () => {
-  const { game } = renderer(), scale = 6;
-  const pixel = (tile, x, y) => Array.from(tile.data.slice((y * scale + x) * 4, (y * scale + x) * 4 + 3));
-  const scan = game.pixelRenderTile('scanlines', scale), grille = game.pixelRenderTile('grille', scale), dot = game.pixelRenderTile('shadow', scale);
-  for (let y = 0; y < scale; y++) for (let x = 0; x < scale; x++) {
-    const p = pixel(scan, x, y); assert.equal(p[0], p[1]); assert.equal(p[1], p[2]); assert.deepEqual(p, pixel(scan, 0, y));
-    assert.deepEqual(pixel(grille, x, y), pixel(grille, x, 0));
-    assert.deepEqual(pixel(dot, x, scale), pixel(dot, (x + scale / 2) % scale, 0));
+test('the real canvas has native dimensions and exact integer device-pixel enlargement across DPRs', () => {
+  for (const dpr of [1, 1.25, 1.5, 2, 3]) for (const [width, height] of [[390,844],[844,390],[1920,1080]]) {
+    const h = loadGame({ __screenAspect: null }), g = h.game, api = bridge(h);
+    Object.assign(h.window, { innerWidth: width, innerHeight: height, devicePixelRatio: dpr }); h.emit('resize');
+    for (let i = 0; i < 5; i++) {
+      const info = api.pixelRender(), canvas = h.elements.get('c');
+      assert.equal(canvas.width, g.IW); assert.equal(canvas.height, g.IH);
+      assert.ok(Number.isInteger(info.scale) && info.scale > 0);
+      const [,left,top,scale]=canvas.style.transform.match(/translate\(([^,]+)px,([^)]*)px\) scale\(([^)]+)\)/).map(Number);
+      assert.equal(parseFloat(canvas.style.width),canvas.width); assert.equal(parseFloat(canvas.style.height),canvas.height);
+      assert.ok(Math.abs(scale*dpr-info.scale)<1e-8);
+      for(const value of [left,top])assert.ok(Math.abs(value*dpr-Math.round(value*dpr))<1e-8);
+      assert.ok(canvas.width * info.scale <= Math.round(width * dpr)); assert.ok(canvas.height * info.scale <= Math.round(height * dpr));
+      assert.equal(g.ctx.imageSmoothingEnabled, false); api.cyclePixelRender();
+    }
   }
-  assert.notDeepEqual(pixel(scan, 0, 0), pixel(scan, 0, scale - 1));
-  assert.notDeepEqual(pixel(grille, 0, 0), pixel(grille, 2, 0));
 });
-test('the display mask follows exact physical bounds and releases its buffer on Native', () => {
-  const { game, calls, context } = renderer();
-  game.subpixelMask(3, 1170, 1560, '0px', '84px'); assert.equal(calls.paints, 0);
-  game.cyclePixelRender();
-  assert.equal(game.pixelRenderInfo().active, 'lcd'); assert.equal(calls.children, 1); assert.equal(calls.paints, 1);
-  assert.equal(game.pixelRenderCanvas.width, 1170); assert.equal(game.pixelRenderCanvas.height, 1560);
-  assert.equal(game.subpx.style.width, '390px'); assert.equal(game.subpx.style.height, '520px');
-  assert.equal(game.subpx.style.top, '84px'); assert.equal(context.imageSmoothingEnabled, false);
-  game.SCALE = 4; game.subpixelMask(1.25, 800, 600, '1.6px', '0px');
-  assert.equal(game.subpx.style.width, '640px'); assert.equal(game.pixelRenderCanvas.width, 800);
-  for (let i = 0; i < 4; i++) game.cyclePixelRender();
-  assert.equal(game.pixelRenderInfo().active, 'native'); assert.equal(game.subpixelGain, 0);
-  assert.equal(game.subpx.style.display, 'none'); assert.equal(game.pixelRenderCanvas.width, 1);
-  assert.equal(calls.children, 1);
+test('8x draws a 146 by 195 phone canvas into exactly 1168 by 1560 display pixels', () => {
+  const h = loadGame({ __screenAspect: null }), api = bridge(h);
+  Object.assign(h.window, { innerWidth:390, innerHeight:844, devicePixelRatio:3 }); h.emit('resize');
+  const info = api.pixelRender(); assert.equal(info.id, '8x'); assert.equal(info.scale, 8);
+  assert.equal(info.width,146); assert.equal(info.height,195); assert.equal(info.limited,false);
+  Object.assign(h.window, { innerWidth:320, innerHeight:568, devicePixelRatio:1 }); h.emit('resize');
+  assert.equal(api.pixelRender().scale,2); assert.equal(api.pixelRender().limited,true);
 });
-test('small displays and failed canvas preparation fall back without losing the selected mode', () => {
-  for (const failure of ['context', 'pattern', '']) {
-    const { game } = renderer({ 'max-pixel-render-v1': 'shadow' }, failure);
-    if (!failure) game.SCALE = 2;
-    game.subpixelMask(1, 400, 600, '0px', '0px');
-    assert.equal(game.pixelRenderInfo().id, 'shadow'); assert.equal(game.pixelRenderInfo().active, 'native');
-    assert.equal(game.subpx.style.display, 'none'); assert.equal(game.subpixelGain, 0);
+test('changing native resolution preserves every class, actual position, collision and live run clock', () => {
+  for (const classId of ['mech','runner','bulwark','herbalist','polge','sligo']) {
+    const h = loadGame({ __randomSeed: 17 }), g = h.game, api = bridge(h);
+    g.resetRogueRun('Canvas scale', { classId }); g.rogueRun.seed = 17; g.enterLevel(1,'local',true);
+    Object.assign(h.window, { innerWidth:390,innerHeight:844,devicePixelRatio:3 }); h.emit('resize');
+    const snapshot = () => JSON.stringify({ player:g.P, layout:g.stageLayout(), plots:g.gardenPlots, run:g.rogueRun, elapsed:g.runElapsed, paused:g.menuPaused });
+    const before = snapshot();
+    for (let i=0;i<5;i++) { api.cyclePixelRender(); assert.equal(snapshot(),before,classId); }
   }
-  const { game } = renderer({ 'max-pixel-render-v1': 'shadow' });
-  game.SCALE = 2; game.subpixelMask(1, 400, 600, '0px', '0px');
-  game.SCALE = 6; game.subpixelMask(3, 1200, 1800, '0px', '0px');
-  assert.equal(game.pixelRenderInfo().active, 'shadow');
+});
+test('pointer mapping uses the resized native canvas without changing world coordinates', () => {
+  const h=loadGame(),g=h.game,api=bridge(h); Object.assign(h.window,{innerWidth:390,innerHeight:844,devicePixelRatio:3});h.emit('resize');
+  const canvas=h.elements.get('c');canvas.getBoundingClientRect=()=>{const [,left,top,scale]=canvas.style.transform.match(/translate\(([^,]+)px,([^)]*)px\) scale\(([^)]+)\)/).map(Number);return {left,top,width:canvas.width*scale,height:canvas.height*scale};};
+  for(let i=0;i<5;i++){
+    const r=canvas.getBoundingClientRect(),point=g.screenToWorld(r.left+r.width/2,r.top+r.height/2);
+    assert.equal(point.x,g.camX+g.IW/2);assert.equal(point.y,g.camY+g.IH/2);api.cyclePixelRender();
+  }
+});
+test('production uses one small game canvas with neither a display mask nor an exposure redraw', () => {
+  const html=require('../scripts/game-source.cjs')();
+  assert.doesNotMatch(html,/subpixelGain|subpixelMask|id="subpx"|mix-blend-mode: multiply/);
+  assert.match(html,/image-rendering: pixelated/);assert.match(html,/ctx\.imageSmoothingEnabled = false/);
 });
