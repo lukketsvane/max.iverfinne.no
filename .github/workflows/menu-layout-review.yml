@@ -33,7 +33,11 @@ jobs:
         if: always()
         with:
           name: menu-layout-browser-review
-          path: |
-            menu-browser-review/
-            pixel-browser-review/
+          path: menu-browser-review/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pixel-render-browser-review
+          path: pixel-browser-review/
           if-no-files-found: error
