@@ -42,5 +42,27 @@
     }
   ],
   "baseCommit": "801e5172506431754d089f4f832e45abf8adffb1",
-  "scope": "Automated browser flow, not a human visual-quality or real-iPhone performance acceptance"
+  "scope": "Automated browser flow, not a human visual-quality or real-iPhone performance acceptance",
+  "followUp": {
+    "sourceCommit": "5ec2033edb740e214e643ae47fe1b2413d1ac132",
+    "browserCI": {
+      "url": "https://github.com/lukketsvane/max.iverfinne.no/actions/runs/39058442051",
+      "status": "success",
+      "engines": [
+        "chromium",
+        "webkit"
+      ],
+      "build": "passed",
+      "existingMenuReview": "passed",
+      "fiveModeReview": "passed",
+      "screenshots": "uploaded successfully"
+    },
+    "focusedTests": {
+      "command": "node --test tests/menu-layout-review-config.test.cjs tests/browser-review-config.test.cjs tests/pixel-render.test.cjs tests/menu.test.cjs",
+      "passed": 33,
+      "failed": 0
+    },
+    "fullTests": "The initial local npm test exposed the menu artifact-path assertion after changing the workflow path to a list. Keep the original menu artifact step and add a separate pixel artifact step; all 33 focused tests now pass without removing tests. Full exact-SHA npm test remains required.",
+    "sourceChange": "Only workflow artifact output and this receipt differ from the browser-tested source commit."
+  }
 }
