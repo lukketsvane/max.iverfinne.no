@@ -56,7 +56,7 @@ gates. It is not a completed human playtest or a claim of parity with RoR2.
 | Phone clarity | Stable icon loadout; 48 Chromium/WebKit cases passed; tiny HUD and native cues | Live meter/help can describe the default skill after an alternate is selected; first-minute tests are not a fresh touch story | `index.html:drawSkillPip/help`, first-minute/browser fixtures |
 | Co-op continuity | Host-owned combat, room reservations, snapshots, admission and promotion logic | A transient polling failure can leave the room; a departing host can send terminal `end` before promotion | `coop-session.mjs`; isolated real-session reproductions |
 | Results/retention | Exact plant archive, actual-run bouquet, collection and optional accounts | Record the build, equipped loadout, difficulty and actual loss/win cause; explain why this attempt differed | `run-results.js`, `runStats`, records |
-| Sound/finish | Separate music/effects, bounded voices, positional effects, priority warnings and iOS recovery | Two cycling music tracks; add chapter/combat dynamics and check mix/readability under real crowded play | `soundtrack.mjs`, effects/listenRun, audio pack |
+| Sound/finish | Separate music/effects, bounded voices, positional effects, priority warnings and iOS recovery | Four cycling music tracks, with the owner-requested Theme first; add chapter/combat dynamics and check mix/readability under real crowded play | `soundtrack.mjs`, effects/listenRun, audio pack |
 | Release confidence | Extensive tests, browser reviews, source receipts and exact deployment checks; foundation `ce97f671` passed 916/916 locally | Original baseline was 881/882 before the historical/current source fixture repair. PR 54 release is pending; the local foundation result does not verify later Tiara integration or graphics changes. Live smoke and performance coverage need strengthening | `/tmp/max-finished-foundation-tests.log` and status receipt; `master-runtime-publication.test.cjs`; workflows/transport |
 
 Concurrent Tiara/Garden 10 work belongs to the separate head-boss task. Integrate
@@ -82,6 +82,11 @@ no longer attach Rattus to a stem climb. Preserve ladders, the shared cleared
 exit ascent, High Tide's motherplant route and the separate bounded Tail latch.
 Verify normal touch/keyboard and guest input, then continue MG; this adjustment
 does not complete any graphics or finished-game milestone.
+
+**October 17 soundtrack request:** the owner supplied Theme - Instrumental and
+Stormy Weather and asked for Theme to play first. Add the two unique recordings
+to the streamed playlist before resuming MG; this bounded audio update does not
+complete the M8 music/dynamics milestone.
 
 ### M0 — a trustworthy baseline
 
