@@ -247,5 +247,29 @@
       "exactShaCI": "Required on the final published main commit containing this receipt",
       "production": "Verify production Vercel and the custom-domain build against the same final main SHA"
     }
+  },
+  "yeetSceneEncounterRepair": {
+    "requested": "2026-10-17",
+    "reason": "Immediate owner-requested improvement pass: real scene walls and cliffs prevented the existing western Yeet encounter",
+    "status": "implemented_pending_release_verification",
+    "baselineCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+    "integratedMainCommit": "62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8",
+    "branch": "codex/yeet-scene-boundaries",
+    "changedFiles": [
+      "yeet.inc.js",
+      "tests/yeet.test.cjs",
+      "docs/design/finished-game-progress.json"
+    ],
+    "evidence": [
+      "Six new real-scene movement and delayed-art regressions failed against the unchanged baseline",
+      "After repair, all 14 focused Yeet checks passed, including Gardens 5/7/15/18, delayed loading at Gardens 3/18, first visible flash, flee/completion, legacy routes, MASTER Tree, guest/handoff and native art",
+      "npm run build passed",
+      "Initial sandboxed full-suite run was stopped after child-process EPERM failures; the same 30 unchanged Figma CLI/fixture checks passed with the required subprocess access",
+      "Both full regression workflows at 0b8576dbfce21e1ef7c4da6ada7c5f92036cea2e passed all 993 tests and built successfully; Chromium/WebKit menu review passed all 48 class/viewport cases",
+      "The local parallel rerun reported one Cairn failure; that unchanged test passed in an isolated rerun and in both full CI runs. Final local error details remain pending",
+      "Concurrent main 62c4f4d9ba10fcb0b51c48ae2c8708cbd2f7edd8 was integrated while preserving the pixel display work and both ledger entries. All 14 focused Yeet tests and npm run build passed again on the combined tree; fresh full CI and production verification remain required"
+    ],
+    "scope": "Use existing scene bounds for a reachable western threshold and supported, unobstructed native-sized Yeet/cat placement; preserve original art, authored geometry, non-scene approach and host-owned encounter state",
+    "nextMilestone": "MG"
   }
 }
