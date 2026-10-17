@@ -21,6 +21,88 @@ function encounter(g) {
   g.updateYeet(1 / 60); assert.equal(g.yeet.phase, 'arrive');
 }
 
+function walkSceneWest(h, reached) {
+  const g = h.game, L = g.stageLayout();
+  function frame() {
+    h.advance(1000 / 60);
+    g.updatePlayer(1 / 60, g.readInput()); g.updateYeet(1 / 60);
+    assert.ok(g.P.x >= L.bounds.x0 + 4 && g.P.x <= L.bounds.x1 - 4, 'ordinary movement stays inside the room walls');
+  }
+  function leg(key, goal) {
+    h.key('keydown', key);
+    for (let i = 0; i < 600 && !goal(); i++) frame();
+    h.key('keyup', key);
+    assert.ok(goal(), 'the existing ladder route is reached by ' + key);
+  }
+  if (L.stage === 15) {
+    leg('ArrowRight', () => g.P.x >= L.bounds.x0 + 213);
+    leg('ArrowUp', () => g.P.y <= L.bounds.y0 + 445);
+    leg('ArrowLeft', () => g.P.x <= L.bounds.x0 + 153);
+    leg('ArrowUp', () => g.P.y <= L.bounds.y0 + 373);
+  }
+  h.key('keydown', 'ArrowLeft');
+  let jumpFrames = 0;
+  for (let i = 0; i < 900 && !reached(); i++) {
+    if (i % 60 === 0 && g.P.grounded) { h.key('keydown', 'ArrowUp'); jumpFrames = 25; }
+    frame();
+    if (jumpFrames && !--jumpFrames) h.key('keyup', 'ArrowUp');
+  }
+  h.key('keyup', 'ArrowLeft'); h.key('keyup', 'ArrowUp');
+}
+
+function assertSceneEncounter(h, phase = 'arrive') {
+  const g = h.game, L = g.stageLayout();
+  assert.equal(g.yeet.phase, phase, 'western exploration reaches Yeet');
+  for (const [name, x, y, halfWidth] of [
+    ['Yeet', g.yeet.x, g.yeet.y, 16], ['cat', g.yeet.catX, g.yeet.catY, 8],
+  ]) {
+    assert.ok(x >= L.bounds.x0 + halfWidth && x <= L.bounds.x1 - halfWidth, name + ' begins visibly inside the room');
+    const platform = h.window.MaxStageLayout.at(L, x, y, 0);
+    assert.ok(platform || Math.abs(y - g.surfaceY(x)) < 1e-6, name + ' stands on existing scene geometry');
+    assert.equal(h.window.MaxStageLayout.inRock(L, x, y - 8), false, name + ' does not spawn inside a solid');
+    assert.ok(Math.abs(y - g.P.y) <= 24, name + ' shares the player\'s accessible height');
+  }
+}
+
+for (const [stage, picture] of [[5, 'railway-depot'], [7, 'living-root-vault'], [15, 'corvid-aqueduct'], [18, 'heliostat-greenhouse']]) {
+  test('ordinary western exploration reaches Yeet and his cat inside scene garden ' + stage, () => {
+    const h = scene(stage, { __scenes: true }), g = h.game, L = g.stageLayout();
+    assert.equal(L.scene, true); assert.equal(L.picture, picture);
+    g.P.y = g.surfaceY(g.P.x);
+    const before = JSON.stringify({ bounds: L.bounds, ground: L.ground, platforms: L.platforms, ladders: L.ladders });
+    g.updateYeet(1 / 60); assert.equal(g.yeet.phase, 'idle');
+    walkSceneWest(h, () => g.yeet.phase !== 'idle');
+    assertSceneEncounter(h);
+    if (stage === 18) {
+      let flashed = false, fled = false;
+      for (let i = 0; i < 600 && g.yeet.phase !== 'done'; i++) {
+        h.advance(1000 / 60);
+        g.updatePlayer(1 / 60, g.readInput()); g.updateYeet(1 / 60);
+        if (!flashed && g.yeet.phase === 'flash') { assertSceneEncounter(h, 'flash'); flashed = true; }
+        if (g.yeet.phase === 'flee') fled = true;
+      }
+      assert.ok(flashed && fled, 'the visible encounter flashes and flees');
+      assert.equal(g.yeet.phase, 'done'); assert.ok(g.yeet.seen & (1 << (stage - 1)));
+    }
+    assert.equal(JSON.stringify({ bounds: L.bounds, ground: L.ground, platforms: L.platforms, ladders: L.ladders }), before);
+  });
+}
+
+for (const [stage, edge] of [[3, 4], [18, 59]]) {
+  test('delayed cat art keeps both actors supported inside scene garden ' + stage, () => {
+    const h = scene(stage, { __scenes: true }), g = h.game, L = g.stageLayout();
+    assert.equal(L.scene, true);
+    g.P.y = g.surfaceY(g.P.x);
+    const cat = h.images.find(i => i.src.endsWith('/cat.png'));
+    cat.complete = false;
+    walkSceneWest(h, () => g.P.grounded && g.P.x <= L.bounds.x0 + edge);
+    assert.ok(g.P.grounded && g.P.x <= L.bounds.x0 + edge, 'ordinary movement reaches the real western obstacle');
+    assert.equal(g.yeet.phase, 'idle');
+    cat.complete = true; g.updateYeet(1 / 60);
+    assertSceneEncounter(h);
+  });
+}
+
 test('walking left reaches Yeet in all twenty legacy procedural gardens, including boss gardens', () => {
   for (let stage = 1; stage <= 20; stage++) {
     // This walking-only fixture predates authored solid banks and tests the

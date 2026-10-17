@@ -1,6 +1,8 @@
 export const SOUNDTRACK = Object.freeze([
+  { title: 'Theme - Instrumental', artist: 'Moondog', src: 'assets/audio/theme-instrumental.mp3' },
   { title: 'Ozan Koukle', artist: 'Ice', src: 'assets/audio/ozan-koukle.mp3' },
   { title: 'Concierto De Aranjuez', artist: 'Jim Hall', src: 'assets/audio/concierto-de-aranjuez.m4a' },
+  { title: 'Stormy Weather', artist: 'Oscar Peterson', src: 'assets/audio/stormy-weather.mp3' },
 ]);
 
 export function createSoundtrack({ enabled = true, volume = 1, host = window } = {}) {

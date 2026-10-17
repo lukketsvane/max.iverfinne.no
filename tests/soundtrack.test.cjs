@@ -30,15 +30,18 @@ async function setup(enabled = true, volume = 1) {
   return { sound, host, document, players, contexts, gesture, visibility, tracks: SOUNDTRACK };
 }
 
-test('gesture starts one streamed player; both complete tracks cycle without recreating it', async () => {
+test('gesture starts Theme first; every complete track cycles without recreating the streamed player', async () => {
   const m = await setup(); assert.equal(m.players.length, 0);
+  assert.deepEqual(m.tracks[0], { title: 'Theme - Instrumental', artist: 'Moondog', src: 'assets/audio/theme-instrumental.mp3' });
   m.gesture(); await settle(); const a = m.players[0];
   assert.equal(a.preload, 'none'); assert.equal(a.src, m.tracks[0].src);
   assert.equal(m.contexts[0].gain.gain.value, .28);
   m.gesture(); assert.equal(a.plays, 1);
-  a.dispatchEvent(new Event('ended')); await settle(); assert.equal(a.src, m.tracks[1].src);
-  a.dispatchEvent(new Event('ended')); await settle(); assert.equal(a.src, m.tracks[0].src);
-  assert.equal(m.players.length, 1); assert.equal(a.plays, 3); m.sound.destroy();
+  for (let i = 1; i <= m.tracks.length; i++) {
+    a.dispatchEvent(new Event('ended')); await settle();
+    assert.equal(a.src, m.tracks[i % m.tracks.length].src);
+  }
+  assert.equal(m.players.length, 1); assert.equal(a.plays, m.tracks.length + 1); m.sound.destroy();
 });
 test('music volume changes are independent and zero is a true mute', async () => {
   const m = await setup(true, .75); m.gesture(); await settle(); const a = m.players[0];
@@ -72,8 +75,14 @@ test('blocked playback retries on a gesture and late rejection cannot skip anoth
 test('missing tracks are skipped with a bounded failure path and disposal removes gesture handlers', async () => {
   const m = await setup(); m.gesture(); await settle(); const a = m.players[0];
   a.dispatchEvent(new Event('error')); await settle(); assert.equal(a.src, m.tracks[1].src);
-  a.dispatchEvent(new Event('ended')); await settle(); assert.equal(a.src, m.tracks[1].src);
-  a.dispatchEvent(new Event('error')); await settle(); const attempts = a.plays;
+  for (const track of [...m.tracks.slice(2), m.tracks[1]]) {
+    a.dispatchEvent(new Event('ended')); await settle(); assert.equal(a.src, track.src);
+  }
+  for (let i = 1; i < m.tracks.length; i++) {
+    a.dispatchEvent(new Event('error')); await settle();
+    if (i + 1 < m.tracks.length) assert.equal(a.src, m.tracks[i + 1].src);
+  }
+  const attempts = a.plays;
   m.gesture(); assert.equal(a.paused, true); assert.equal(a.plays, attempts);
   m.sound.destroy(); m.gesture(); assert.equal(a.plays, attempts); assert.equal(m.contexts[0].state, 'closed');
 });
