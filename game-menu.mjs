@@ -734,9 +734,15 @@ function settings() {
     const control = pixelButton(volumeLabel(name, value), () => { game['set' + name + 'Volume']?.(nextVolume(value)); settings(); });
     control.setAttribute('aria-label', name + ' volume ' + Math.round(value * 100) + ' percent'); card.append(control);
   }
-  const sub = game.subpixel?.() ?? true;
-  const toggle = pixelButton('Subpixels ' + (sub ? 'on' : 'off'), () => { game.setSubpixel?.(!sub); settings(); });
-  toggle.setAttribute('aria-pressed', String(sub)); card.append(toggle);
+  const render = button('', () => { game.cyclePixelRender?.(); renderLabel(); });
+  const renderLabel = () => {
+    const mode = game.pixelRender?.() || { label: 'Native', index: 0, total: 5, description: 'Original sharp pixels', next: 'LCD' };
+    render.replaceChildren();
+    pixelText(render, 'Pixels: ' + mode.label, 2, 0);
+    render.setAttribute('aria-label', 'Pixel rendering ' + (mode.index + 1) + ' of ' + mode.total + ': ' + mode.label + '. ' + mode.description + '. Next: ' + mode.next);
+    render.title = mode.description + (mode.active && mode.active !== mode.id ? ' (Native fallback at this display scale)' : '');
+  };
+  renderLabel(); card.append(render);
   const shake = game.rumble?.() ?? true;
   const rumble = pixelButton('Rumble ' + (shake ? 'on' : 'off'), () => { game.setRumble?.(!shake); settings(); });
   rumble.setAttribute('aria-pressed', String(shake)); card.append(rumble);

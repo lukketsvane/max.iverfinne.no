@@ -13,6 +13,8 @@ native art and physical ascent. Its [execution ledger](docs/design/finished-game
 records verified work and the next milestone; planned quality targets are not
 claims of completed playtesting.
 
+Settings → Pixels cycles Native, LCD, Scanlines, Grille and Dot mask. The choice is local and does not pause or restart the garden. See [pixel display strategies](docs/design/pixel-render-strategies.md) for the comparison and verification limits.
+
 ## The current game contract
 
 These are product rules, not suggestions. Preserve them unless the design is explicitly changed.

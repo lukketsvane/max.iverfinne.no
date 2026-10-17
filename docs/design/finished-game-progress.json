@@ -12,6 +12,30 @@
     "verification": "Published directly without waiting for checks; does not verify pending graphics or production release"
   },
   "nextMilestone": "MG",
+  "levelPresentation": {
+    "requested": "2026-10-17",
+    "baseCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+    "branch": "codex/level-render-strategies",
+    "status": "implemented_pending_review_gates",
+    "priorityReason": "Owner explicitly redirected this run to level design and five researched pixel-render strategies; do not continue unrelated native-art or Yeet work in this checkpoint.",
+    "scope": "One Settings button cycles Native, LCD, Scanlines, Grille and Dot mask. Display-only; source pixels, scene geometry, camera, collision, character roles and shared simulation are unchanged.",
+    "verification": {
+      "focusedTests": "28/28 passed: six renderer tests and 22 actual menu tests.",
+      "build": "npm run build passed in the isolated worktree.",
+      "browser": "Chromium: portrait and landscape at DPR 3; all five modes, reload persistence, ordinary movement with real collision, live Settings clock, keyboard focus and rotation passed with no page errors.",
+      "browserReceipt": "docs/verification/pixel-render/chromium.json",
+      "fullTests": "npm test invoked; full suite still running at this evidence checkpoint. Exact review-branch CI must complete.",
+      "webkit": "Local execution blocked: Ubuntu 26.04 lacks the libraries required by the installed Ubuntu 24.04 WebKit build. Run the committed browser check in repository Ubuntu CI.",
+      "figmaCheck": "npm run figma:check attempted, exit 2: local Figma Dev Mode MCP at http://127.0.0.1:3845/mcp unavailable. No runtime art masters or source files changed.",
+      "production": "Not merged or released; no production SHA verification claimed."
+    },
+    "limitations": [
+      "No target-iPhone frame-time or crowded-scene visual acceptance claim.",
+      "This checkpoint changes display presentation, not authored level geometry.",
+      "Full test/build CI and WebKit browser verification remain review gates."
+    ],
+    "nextStep": "Run the committed five-mode browser check in Chromium and WebKit on the review branch, then compare Garden 5 ladder and pool readability on the target iPhone before integration."
+  },
   "priorityOverride": {
     "date": "2026-10-14",
     "reason": "Owner screenshot exposes a flat cyan enemy; explicit request replaces all remaining crude placeholder bodies before M2 or content expansion",
