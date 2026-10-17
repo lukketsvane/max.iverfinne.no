@@ -4,6 +4,27 @@
   "baselineCommit": "778ab6e98f54d3c025045c126bddd0b538b7a675",
   "plan": "docs/design/finished-game-master-plan.md",
   "releaseCommit": null,
+  "soundtrackExpansion": {
+    "requested": "2026-10-17",
+    "reason": "Owner supplied two unique songs and requested Theme - Instrumental first in the game playlist",
+    "status": "implemented_pending_release_verification",
+    "scope": "Theme - Instrumental by Moondog first, existing Ozan and Concierto order preserved, Stormy Weather by Oscar Peterson appended once; duplicate Stormy uploads deduplicated by SHA-256",
+    "changedFiles": [
+      "soundtrack.mjs",
+      "assets/audio/theme-instrumental.mp3",
+      "assets/audio/stormy-weather.mp3",
+      "assets/audio/README.md",
+      "tests/soundtrack.test.cjs",
+      "docs/design/finished-game-master-plan.md",
+      "docs/design/finished-game-progress.json"
+    ],
+    "verification": {
+      "source": "Both new MP3s retain the supplied bytes; source SHA-256 hashes recorded in assets/audio/README.md",
+      "playback": "Theme-first metadata, complete playlist cycling/wraparound and failed-track skipping covered by soundtrack tests",
+      "release": "Full npm test, production build, exact-SHA GitHub CI and custom-domain production verification required before reporting live"
+    },
+    "nextMilestone": "MG"
+  },
   "publishedDisplayRename": {
     "displayName": "Erasmus Berg",
     "commit": "18f1d67d1c7ebeda2bbe90fef4d3d13cd03e8f3e",
