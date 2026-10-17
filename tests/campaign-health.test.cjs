@@ -68,7 +68,7 @@ test('real warned rat bites and optional sentry gusts damage Hard gardeners with
   a.updateEnemyRole(guard,.01);const gust=a.runHazards.find(q=>q.trialId===1);assert.ok(gust);close(gust.power,0);close(gust.gardenerPower,.6);a.updateRunHazards(1.2);close(a.seedVital().hp,100);a.updateRunHazards(.01);assert.ok(a.seedVital().hp<100);
 });
 test('the actual garden guardian volley damages Hard gardeners only after its amber warning',()=>{
-  const {game:g}=fresh();g.gardenPlots=[plot({id:1,x:g.P.x,growth:.3})];const boss=g.makeStageBoss(1);boss.cool=0;g.floatKrek=[boss];
+  const {game:g}=fresh();Object.assign(g.P,{y:g.surfaceY(g.P.x),platform:null,grounded:true});g.gardenPlots=[plot({id:1,x:g.P.x,growth:.3})];const boss=g.makeStageBoss(1);boss.cool=0;g.floatKrek=[boss];
   g.updateStageBoss(boss,.01);assert.ok(boss.windup>0);const root=g.runHazards.find(h=>h.guardianOwner===boss.ph);assert.ok(root);assert.ok(root.tell>1);close(g.seedVital().hp,100);
   g.updateRunHazards(root.tell);close(g.seedVital().hp,100);g.updateRunHazards(.01);assert.ok(g.seedVital().hp<100);
 });

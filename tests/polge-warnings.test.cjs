@@ -5,6 +5,7 @@ const {loadGame,plot}=require('./game-harness.cjs');
 function fresh(mode='garden'){
   const h=loadGame({__randomSeed:42}),g=h.game;
   g.resetRogueRun('WARNINGS',{classId:'polge',skinId:'polge',mode});
+  Object.assign(g.P,{y:g.surfaceY(g.P.x),platform:null,grounded:true});
   g.floatKrek=[];g.runHazards=[];g.gardenPlots=[];return h;
 }
 function slip(g,direction=1){
@@ -26,6 +27,7 @@ function pair(mode='garden'){
     h.game.beginCoop({room,user:{id},host:i===0,action(type,data){pending.push({id:pending.length+1,type,...data});return true;},tick(){}});
     return {...h,pending};});
   const host=players[0].game,guest=players[1].game;
+  for(const {game:g} of players){Object.assign(g.P,{y:g.surfaceY(g.P.x),platform:null,grounded:true});for(const m of Object.values(g.coop.members))if(m.avatar)Object.assign(m.avatar,{y:g.surfaceY(m.avatar.x),platform:null,grounded:true});}
   guest.coopState(JSON.parse(JSON.stringify(host.coopCapture())));
   host.floatKrek=[];host.runHazards=[];
   return {host,guest,ids,players,send(){host.coopInput(ids[1],{avatar:guest.coopAvatar(),actions:players[1].pending});}};

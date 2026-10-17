@@ -2,13 +2,14 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { loadGame } = require('./game-harness.cjs');
+const legacyHollowScope={window:{}};require('node:vm').runInNewContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../docs/design/master-levels/art/hollow-platforming-oct14/candidate-levels-data.js'),'utf8'),legacyHollowScope);
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'];
 function passageParty(hz) {
   const room = { id: 'room', host: ids[0], mode: 'garden', members: ids.map((id, i) => ({ id, slot: i + 1, ready: true })) };
   const loadouts = { [ids[0]]: { classId: 'mech', skinId: 'tide' }, [ids[1]]: { classId: 'runner', skinId: 'rattus' } };
   const peers = ids.map(id => {
-    const h = loadGame({ __pictures: true, __randomSeed: 123 }), pending = []; let sequence = 0;
+    const h = loadGame({ __levelData: legacyHollowScope.window.MaxLevelData, __pictures: true, __randomSeed: 123 }), pending = []; let sequence = 0;
     h.game.beginCoop({ room, loadouts, user: { id }, host: id === ids[0], action(type, data) { pending.push({ id: ++sequence, type, ...data }); return true; }, tick() {} });
     return { ...h, pending };
   });

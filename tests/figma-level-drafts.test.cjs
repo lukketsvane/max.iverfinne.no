@@ -45,7 +45,7 @@ test('runtime review drafts preserve integer geometry and truthful compiler limi
     assert.equal(g.setting, g.stage < 18 ? 'underground' : g.stage < 20 ? 'underground with first dawn breaches' : 'radioactive hellscape at sunrise');
   }
   assert.match(s.gardens[0].unsupported.join(' '), /ladders/);
-  assert.match(s.gardens[1].unsupported.join(' '), /railway-ruins\.png/);
+  assert.match(s.gardens[1].unsupported.join(' '), /Bound native artwork .+registered Figma art source/);
   assert.match(s.gardens[2].unsupported.join(' '), /false walls/);
 });
 

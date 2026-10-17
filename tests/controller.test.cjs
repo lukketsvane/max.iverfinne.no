@@ -5,7 +5,7 @@ const { loadGame, plot } = require('./game-harness.cjs');
 function setup(classId = 'mech', options = {}) {
   const h = loadGame(), g = h.game;
   g.resetRogueRun('CONTROLLER', { classId });
-  Object.assign(g.P, { x: 0, y: g.surfaceY(0), vx: 0, vy: 0, grounded: true, wet: false, st: 'free' });
+  Object.assign(g.P, { x: 0, y: g.surfaceY(0), vx: 0, vy: 0, grounded: true, platform: null, wet: false, st: 'free' });
   g.menuPaused = false; g.runActive = true;
   h.document.querySelectorAll = () => [];
   const gp = { id: 'Joy-Con (L)', mapping: 'standard', index: 0, connected: true, axes: [0, 0, 0, 0], buttons: [], ...options };

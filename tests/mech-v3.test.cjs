@@ -1,7 +1,7 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
-function fresh(){const h=loadGame(),g=h.game;g.resetRogueRun('test',{classId:'mech',skinId:'tide',difficulty:'medium'});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];return h;}
+function fresh(){const h=loadGame(),g=h.game;g.resetRogueRun('test',{classId:'mech',skinId:'tide',difficulty:'medium'});Object.assign(g.P,{y:g.surfaceY(g.P.x),platform:null,grounded:true});g.floatKrek=[];g.gardenPlots=[];g.runHazards=[];return h;}
 function pest(g,fields={}){const k=Object.assign(g.makeKrek(1,false,0),{x:g.P.x+14,y:g.P.y-12,hp:100,maxHp:100,scout:false,raid:true},fields);g.floatKrek.push(k);return k;}
 function close(a,b){assert.ok(Math.abs(a-b)<1e-7,a+' should equal '+b);}
 function tick(g,time,hz=60,bombs=false){for(let i=0;i<Math.round(time*hz);i++){g.updateMechCombat(1/hz);if(bombs)g.updateBombs(1/hz);}}

@@ -310,5 +310,28 @@
     "scope": "Use existing scene bounds for a reachable western threshold and supported, unobstructed native-sized Yeet/cat placement; preserve original art, authored geometry, non-scene approach and host-owned encounter state",
     "nextMilestone": "MG",
     "nextStep": "Complete the exact-version release gate, then re-read current owner priorities and concurrent level-design work before choosing the next independent improvement"
+  },
+  "approvedWideLevelImport": {
+    "status": "verifying",
+    "reason": "Owner explicitly requested immediate runtime import of all approved level 1\u20139 work; unrelated milestone status is unchanged.",
+    "stages": [
+      1,
+      2,
+      4,
+      6
+    ],
+    "previousSceneImport": "PR #63: stages 3, 5, 7, 8, 9",
+    "source": "docs/design/figma-import-01-09/README.md",
+    "localVerification": [
+      "Four native masters match; source bindings and all normal-class starts pass",
+      "Level 1 full physical sweep passed, 2357 states, every marker/platform and every ladder both ways",
+      "Corrected ground and archived-passage fixtures passed focused reruns",
+      "Production build passed"
+    ],
+    "pending": [
+      "Final GitHub Actions checks",
+      "24 pre-existing whole-file Figma source mismatches",
+      "Exact production deployment SHA"
+    ]
   }
 }

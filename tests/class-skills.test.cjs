@@ -6,6 +6,7 @@ const ids = [1, 2, 3, 4].map(i => `${i}`.repeat(8) + '-' + `${i}`.repeat(4) + '-
 
 function fresh(classId = 'mech', skinId = 'original', difficulty) {
   const h = loadGame(); h.game.resetRogueRun('test', { classId, skinId, difficulty });
+  Object.assign(h.game.P,{y:h.game.surfaceY(h.game.P.x),platform:null,grounded:true});
   h.game.gardenRaidT = h.game.krekSpawnT = 9999;
   return h;
 }
@@ -19,6 +20,7 @@ function party(classIds = classes.all.map(c => c.id)) {
     const network = { room, loadouts, user: { id }, host: id === ids[0], action(type, data) { pending.push({ id: pending.length + 1, type, ...data }); return true; }, tick() {}, fail(reason) { throw Error(reason); } };
     h.game.beginCoop(network); h.game.gardenRaidT = h.game.krekSpawnT = 9999; return { ...h, pending };
   });
+  for(const {game:g} of players){Object.assign(g.P,{y:g.surfaceY(g.P.x),platform:null,grounded:true});for(const m of Object.values(g.coop.members))if(m.avatar)Object.assign(m.avatar,{y:g.surfaceY(m.avatar.x),platform:null,grounded:true});}
   function sync() { const state = JSON.parse(JSON.stringify(players[0].game.coopCapture())); players.slice(1).forEach(p => p.game.coopState(state)); return state; }
   function send(index, override = {}) { const p = players[index]; players[0].game.coopInput(ids[index], { avatar: { ...JSON.parse(JSON.stringify(p.game.coopAvatar())), ...override }, actions: p.pending }); }
   return { players, sync, send };

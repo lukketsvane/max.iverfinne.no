@@ -1,7 +1,7 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {loadGame,plot}=require('./game-harness.cjs');
-function ready(){const h=loadGame(),g=h.game;g.resetRogueRun('test',{classId:'mech',skinId:'tide'});g.floatKrek=[];g.runHazards=[];g.gardenPlots=[plot({id:1,x:g.P.x+24,health:.7,moisture:.4})];Object.assign(g.ensureCompanion().state,{x:g.P.x,state:'idle',water:1});return h;}
+function ready(){const h=loadGame(),g=h.game;g.resetRogueRun('test',{classId:'mech',skinId:'tide'});Object.assign(g.P,{y:g.surfaceY(g.P.x),platform:null,grounded:true});g.floatKrek=[];g.runHazards=[];g.gardenPlots=[plot({id:1,x:g.P.x+24,health:.7,moisture:.4})];Object.assign(g.ensureCompanion().state,{x:g.P.x,state:'idle',water:1});return h;}
 test('Max keyboard retains independent Fan, Rover and Overload without consuming Tend',()=>{
   const h=ready(),g=h.game;g.engineerState().charge=1;
   h.key('keydown','c');assert.equal(g.engineerState().charge,0);assert.equal(g.engineerState().fanBeats,3);assert.equal(g.P.secondaryCool,6);assert.equal(g.P.skillCool,0);
