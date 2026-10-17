@@ -10,10 +10,27 @@ function yeetCue(kind){
   if(Math.abs(P.x-yeet.x)>120||Math.abs(P.y-yeet.y)>48)return;
   chime(kind==='arrive'?[196,147,98]:[880,1320,880],.055,.025,'yeet:'+kind);
 }
-function yeetStart(p){
-  yeet.phase='arrive';yeet.t=0;yeet.x=Math.round(p.x-60);yeet.y=playerSupportY(yeet.x,p.y);yeet.face=1;
-  if(Math.abs(yeet.y-p.y)>24){yeet.x=Math.round(p.x-20);yeet.y=playerSupportY(yeet.x,p.y);}
-  yeet.catX=yeet.x-16;yeet.catY=playerSupportY(yeet.catX,yeet.y);yeet.catFace=1;yeet.vx=0;yeet.catVx=0;yeetCue('arrive');
+function yeetSpawnClear(L,x,y,half,height){
+  return x-half>=L.bounds.x0&&x+half<=L.bounds.x1&&y-height>=L.bounds.y0&&y<=L.bounds.y1&&!L.platforms.some(function(b){
+    return b.solid&&x+half>b.x&&x-half<b.x+b.w&&y>b.y+1&&y-height<b.y+b.h;
+  });
+}
+function yeetStart(p,L){
+  var spot=null;
+  if(L.scene&&L.bounds){
+    [-60,-20,20,60].some(function(offset){
+      var x=Math.round(p.x+offset),y=playerSupportY(x,p.y),face=offset<0?1:-1,catX=x-face*16,catY=playerSupportY(catX,y);
+      if(Math.abs(y-p.y)>24||Math.abs(catY-p.y)>24||Math.abs(catY-y)>12||!yeetSpawnClear(L,x,y,16,31)||!yeetSpawnClear(L,catX,catY,8,15))return false;
+      spot={x:x,y:y,face:face,catX:catX,catY:catY};return true;
+    });
+  }else{
+    var x=Math.round(p.x-60),y=playerSupportY(x,p.y);
+    if(Math.abs(y-p.y)>24){x=Math.round(p.x-20);y=playerSupportY(x,p.y);}
+    spot={x:x,y:y,face:1,catX:x-16,catY:playerSupportY(x-16,y)};
+  }
+  if(!spot)return;
+  yeet.phase='arrive';yeet.t=0;yeet.x=spot.x;yeet.y=spot.y;yeet.face=spot.face;
+  yeet.catX=spot.catX;yeet.catY=spot.catY;yeet.catFace=spot.face;yeet.vx=0;yeet.catVx=0;yeetCue('arrive');
 }
 function updateYeet(dt){
   if(!runActive||rogueRun.ended||relicRunMode())return;
@@ -24,9 +41,9 @@ function updateYeet(dt){
   }
   var players=yeetPlayers();
   if(yeet.phase==='idle'){
-    var origin=levelOriginX(worldLevel()),west=null;
+    var origin=levelOriginX(worldLevel()),L=stageLayout(),threshold=L.scene&&L.bounds?Math.max(origin-260,L.bounds.x0+64):origin-260,west=null;
     players.forEach(function(a){if(a.p.grounded&&a.p.st!=='float'&&(west===null||a.p.x<west.x))west=a.p;});
-    if(west&&west.x<=origin-260)yeetStart(west);
+    if(west&&west.x<=threshold)yeetStart(west,L);
     return;
   }
   if(yeet.phase==='done')return;
