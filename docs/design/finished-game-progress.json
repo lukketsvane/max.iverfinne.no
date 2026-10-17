@@ -217,7 +217,7 @@
   "figmaLevels10To15": {
     "requested": "2026-10-17",
     "reason": "Owner explicitly requested Figma improvements to levels 10 to 15; this bounded source-design pass takes priority for this task while MG remains the next milestone",
-    "status": "source_updated_export_verifying",
+    "status": "source_and_traversal_verified_pending_full_ci",
     "baselineCommit": "801e5172506431754d089f4f832e45abf8adffb1",
     "integrationBase": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9",
     "file": "TC0PHGMTCMR6im4hb3CSbF",
@@ -240,7 +240,8 @@
       "goalPlacement": "Static review confirmed all 15 moved scene goals have exact existing support, retain at least 10 px of supporting-surface edge clearance, and introduce no duplicate names or positions",
       "unaffectedSources": "All eight non-target frame XML subtrees are byte-identical to the baseline, as are their compiled runtime stage objects",
       "build": "Passed with the current native pixel renderer from main",
-      "sceneTraversal": "The earlier test runner reported only a file-level pass with no completed per-scene evidence. Direct existing scene-sweep CLI runs from decoded actual Figma specs are in progress at this checkpoint",
+      "sceneTraversal": "4/4 direct actual-source scene-sweep CLI runs passed with walking Erasmus Berg at 60 Hz: every marker and ledge reached, every ladder climbed both ways, and no trapped states",
+      "traversalReceipt": "docs/design/levels-10-15-traversal.json",
       "fullTests": "The earlier local full run has no complete result. Its co-op snapshot/authority-handoff redraw test failed and then passed in isolation. Final full-suite CI remains required",
       "release": "Draft integration only; exact-SHA CI and production verification remain pending"
     }
