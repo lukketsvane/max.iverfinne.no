@@ -442,15 +442,15 @@
   ],
   [
    "seed",
-   "axle-seed",
-   607,
-   339
+   "mill-floor-seed",
+   845,
+   459
   ],
   [
    "trial",
-   "boardwalk-trial",
-   84,
-   186
+   "axle-trial",
+   598,
+   339
   ],
   [
    "trial",
@@ -508,9 +508,9 @@
   ],
   [
    "secret",
-   "loop-nook",
-   1021,
-   543
+   "wheel-arch-nook",
+   365,
+   530
   ]
  ],
  "sites": [

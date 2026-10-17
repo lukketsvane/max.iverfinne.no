@@ -1,0 +1,335 @@
+{
+  "schema": 1,
+  "file": "TC0PHGMTCMR6im4hb3CSbF",
+  "page": "508:11825",
+  "baseCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+  "status": "applied-figma-source-only",
+  "authority": "Actual Figma before metadata; exact six positions applied and returned by the root use_figma success response. Source drafts remain inactive.",
+  "runtimeActivation": false,
+  "visualVerification": {
+    "date": "2026-10-17",
+    "frames": ["1228:36096", "1228:38314"],
+    "result": "Both final drafts inspected over painted art with POINTS temporarily visible; marker positions match the intended terrain routes",
+    "restoredVisibility": {"1228:36519": false, "1228:38596": false}
+  },
+  "changes": [
+    {
+      "stage": 11,
+      "row": "1228:36096",
+      "benefit": "Place the cart seed on the existing quarry ridge reached by the chapter-one access ladder.",
+      "before": {
+        "id": "1228:36521",
+        "name": "SEED · 01 Old cart landing optional upper objective",
+        "x": 426,
+        "y": 280,
+        "width": 16,
+        "height": 16
+      },
+      "support": {
+        "id": "1228:36331",
+        "name": "V03 TERRAIN TOP / sampled one-way guide 029",
+        "x": 439,
+        "y": 240,
+        "width": 34,
+        "height": 6
+      },
+      "existingAccessLadder": {
+        "id": "1228:36501",
+        "name": "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+        "x": 449,
+        "y": 240,
+        "width": 14,
+        "height": 56
+      },
+      "checks": {
+        "integerCoordinates": true,
+        "bottomOnSupport": true,
+        "fullMarkerWidthOnSupport": true
+      },
+      "readback": {
+        "source": "root use_figma success response",
+        "id": "1228:36521",
+        "x": 448,
+        "y": 224,
+        "width": 16,
+        "height": 16
+      },
+      "after": {
+        "id": "1228:36521",
+        "name": "SEED · 01 Old cart landing optional upper objective",
+        "x": 448,
+        "y": 224,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "stage": 11,
+      "row": "1228:36096",
+      "benefit": "Reward the far crane ridge and give the existing upper return route a destination.",
+      "before": {
+        "id": "1228:36526",
+        "name": "REWARD · 04 Crane-counterweight climb optional upper objective",
+        "x": 2315,
+        "y": 298,
+        "width": 16,
+        "height": 16
+      },
+      "support": {
+        "id": "1228:36449",
+        "name": "V03 TERRAIN TOP / sampled one-way guide 147",
+        "x": 2583,
+        "y": 239,
+        "width": 58,
+        "height": 6
+      },
+      "existingAccessLadder": {
+        "id": "1228:36504",
+        "name": "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+        "x": 2605,
+        "y": 239,
+        "width": 14,
+        "height": 75
+      },
+      "checks": {
+        "integerCoordinates": true,
+        "bottomOnSupport": true,
+        "fullMarkerWidthOnSupport": true
+      },
+      "readback": {
+        "source": "root use_figma success response",
+        "id": "1228:36526",
+        "x": 2604,
+        "y": 223,
+        "width": 16,
+        "height": 16
+      },
+      "after": {
+        "id": "1228:36526",
+        "name": "REWARD · 04 Crane-counterweight climb optional upper objective",
+        "x": 2604,
+        "y": 223,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "stage": 11,
+      "row": "1228:36096",
+      "benefit": "Separate the optional rim seed from the exit marker and place it on the painted summit.",
+      "before": {
+        "id": "1228:36527",
+        "name": "SEED · 05 Quarry-rim escape optional upper objective",
+        "x": 3355,
+        "y": 262,
+        "width": 16,
+        "height": 16
+      },
+      "support": {
+        "id": "1228:36488",
+        "name": "V03 TERRAIN TOP / sampled one-way guide 186",
+        "x": 3311,
+        "y": 239,
+        "width": 42,
+        "height": 6
+      },
+      "existingAccessLadder": {
+        "id": "1228:36505",
+        "name": "V03 TERRAIN ACCESS / chapter 5 / sampled climb",
+        "x": 3325,
+        "y": 239,
+        "width": 14,
+        "height": 39
+      },
+      "checks": {
+        "integerCoordinates": true,
+        "bottomOnSupport": true,
+        "fullMarkerWidthOnSupport": true
+      },
+      "readback": {
+        "source": "root use_figma success response",
+        "id": "1228:36527",
+        "x": 3324,
+        "y": 223,
+        "width": 16,
+        "height": 16
+      },
+      "after": {
+        "id": "1228:36527",
+        "name": "SEED · 05 Quarry-rim escape optional upper objective",
+        "x": 3324,
+        "y": 223,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "stage": 14,
+      "row": "1228:38314",
+      "benefit": "Give the crypt entrance ridge an optional climbing objective above the low entry route.",
+      "before": {
+        "id": "1228:38598",
+        "name": "SEED · 01 Crypt threshold optional upper objective",
+        "x": 447,
+        "y": 280,
+        "width": 16,
+        "height": 16
+      },
+      "support": {
+        "id": "1228:38511",
+        "name": "V03 TERRAIN TOP / sampled one-way guide 012",
+        "x": 219,
+        "y": 256,
+        "width": 18,
+        "height": 6
+      },
+      "existingAccessLadder": {
+        "id": "1228:38586",
+        "name": "V03 TERRAIN ACCESS / chapter 1 / sampled climb",
+        "x": 221,
+        "y": 256,
+        "width": 14,
+        "height": 76
+      },
+      "checks": {
+        "integerCoordinates": true,
+        "bottomOnSupport": true,
+        "fullMarkerWidthOnSupport": true
+      },
+      "readback": {
+        "source": "root use_figma success response",
+        "id": "1228:38598",
+        "x": 220,
+        "y": 240,
+        "width": 16,
+        "height": 16
+      },
+      "after": {
+        "id": "1228:38598",
+        "name": "SEED · 01 Crypt threshold optional upper objective",
+        "x": 220,
+        "y": 240,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "stage": 14,
+      "row": "1228:38314",
+      "benefit": "Place the puzzle on the upper sarcophagus traverse, contrasting with the preserved lower secret.",
+      "before": {
+        "id": "1228:38601",
+        "name": "PUZZLE · 03 Rooted sarcophagus optional upper objective",
+        "x": 1711,
+        "y": 298,
+        "width": 16,
+        "height": 16
+      },
+      "support": {
+        "id": "1228:38545",
+        "name": "V03 TERRAIN TOP / sampled one-way guide 046",
+        "x": 1703,
+        "y": 175,
+        "width": 98,
+        "height": 6
+      },
+      "existingAccessLadder": {
+        "id": "1228:38588",
+        "name": "V03 TERRAIN ACCESS / chapter 3 / sampled climb",
+        "x": 1565,
+        "y": 168,
+        "width": 14,
+        "height": 164
+      },
+      "checks": {
+        "integerCoordinates": true,
+        "bottomOnSupport": true,
+        "fullMarkerWidthOnSupport": true
+      },
+      "readback": {
+        "source": "root use_figma success response",
+        "id": "1228:38601",
+        "x": 1742,
+        "y": 159,
+        "width": 16,
+        "height": 16
+      },
+      "after": {
+        "id": "1228:38601",
+        "name": "PUZZLE · 03 Rooted sarcophagus optional upper objective",
+        "x": 1742,
+        "y": 159,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "stage": 14,
+      "row": "1228:38314",
+      "benefit": "Place the ossuary cache on the raised ridge reached by its existing access ladder.",
+      "before": {
+        "id": "1228:38603",
+        "name": "REWARD · 04 Ossuary crossing optional upper objective",
+        "x": 2513,
+        "y": 280,
+        "width": 16,
+        "height": 16
+      },
+      "support": {
+        "id": "1228:38560",
+        "name": "V03 TERRAIN TOP / sampled one-way guide 061",
+        "x": 2343,
+        "y": 260,
+        "width": 26,
+        "height": 6
+      },
+      "existingAccessLadder": {
+        "id": "1228:38589",
+        "name": "V03 TERRAIN ACCESS / chapter 4 / sampled climb",
+        "x": 2349,
+        "y": 260,
+        "width": 14,
+        "height": 54
+      },
+      "checks": {
+        "integerCoordinates": true,
+        "bottomOnSupport": true,
+        "fullMarkerWidthOnSupport": true
+      },
+      "readback": {
+        "source": "root use_figma success response",
+        "id": "1228:38603",
+        "x": 2348,
+        "y": 244,
+        "width": 16,
+        "height": 16
+      },
+      "after": {
+        "id": "1228:38603",
+        "name": "REWARD · 04 Ossuary crossing optional upper objective",
+        "x": 2348,
+        "y": 244,
+        "width": 16,
+        "height": 16
+      }
+    }
+  ],
+  "preservedByScope": [
+    "ART",
+    "ROUTES",
+    "REGISTRATION",
+    "activation markers",
+    "START",
+    "DOOR",
+    "other level rows"
+  ],
+  "limitation": "These are existing 3555×400 Figma source drafts; the change does not activate either draft in production or claim runtime playtest coverage.",
+  "mutatedNodeIds": [
+    "1228:36521",
+    "1228:36526",
+    "1228:36527",
+    "1228:38598",
+    "1228:38601",
+    "1228:38603"
+  ]
+}
