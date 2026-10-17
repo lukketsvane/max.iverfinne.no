@@ -51,7 +51,7 @@ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
    const pairStates=()=>pair.locator('.status').evaluateAll(nodes=>nodes.map(n=>n.dataset.state&&JSON.parse(n.dataset.state)));
    await pair.waitForFunction(()=>document.querySelectorAll('.status').length===2&&[...document.querySelectorAll('.status')].every(n=>n.dataset.state&&JSON.parse(n.dataset.state).ready),{},{timeout:30000});
    await pair.getByRole('button',{name:'Spel',exact:true}).click();
-   await pair.waitForFunction(()=>[...document.querySelectorAll('.status')].every(n=>JSON.parse(n.dataset.state).time>=18),{},{timeout:90000});
+   await pair.waitForFunction(()=>[...document.querySelectorAll('.status')].every(n=>{const s=JSON.parse(n.dataset.state);return s.time>=18&&s.height>60&&s.hp>0;}),{},{timeout:90000});
    let states=await pairStates();assert.ok(states.every(s=>s.height>60&&s.hp>0));
    const hostGuest=states[0].peers.find(a=>a.id.startsWith('2222')),ownGuest=states[1].peers.find(a=>a.id.startsWith('2222'));
    assert.ok(Math.hypot(hostGuest.x-ownGuest.x,hostGuest.y-ownGuest.y)<35,'guest climbing must stay authoritative');

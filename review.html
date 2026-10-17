@@ -68,6 +68,7 @@
   if(mode==='polge')help.textContent='B: jab → cross → uppercut. Confirmed hits build 0–3 Rhythm; misses keep the current combo step. C / touch Clinch: make room at close range. X / touch Slip: weave through an amber warned attack, then B for one stronger counter. E / tap Pølge: moving close flurry. Trial sentries use their real warnings and attacks; reset after defeating them. '+(params.get('boons')==='1'?'All Pølge boons enabled; a landed flurry finish can restore the damaged plants.':'Base kit, no boons. Add &boons=1 to compare the upgraded build.');
   if(mode==='mech')help.textContent='B: plant a bomb with its full two-second fuse. Real Tend / Space and ordinary rover care build 0–3 Circuit, at most one beat every four seconds. C / Mist spends one beat on a forward fan; V / Dispatch sends the rover to reachable soil or recalls it on foot; E / Overload spends three beats on one planted ring and four seconds of threatened-plant priority. X remains dodge. The close keepers use their real warnings and attacks. '+(params.get('boons')==='1'?'Existing rover, Guard bot and bomb branches enabled.':'Base kit, no chosen boons. Add &boons=1 for the existing upgraded build.');
   if(mode==='runner')help.textContent='Run / Shift plus movement earns Momentum from real travel. B kicks. Hold C / Latch toward a living stem, real ledge or pest; release keeps actual velocity. Hold V / Driving for .2–.6 seconds, then release to kick; drag out to cancel. E spends Momentum on one actual splits-stomp landing. X dodge and Space Tend stay separate. Mature plants and nearby natural ledges are legal anchors; sentries use real warnings. No Momentum is granted by this scene. '+(params.get('boons')==='1'?'All five existing wrestler boons enabled.':'Base kit. Add &boons=1 to compare the complete build.');
+  if(['cairn','mycel'].includes(mode))help.textContent+=' The outlined wall is a review-only collision fixture for blocked attacks.';
   const count=custom||mode==='empty'?0:mode==='many'?53:gameplay?2:12;
   const menu=mode==='menu'||mode==='relic-garden',robot=mode.startsWith('robot')||gameplay,tier=mode.startsWith('robot')?Number(mode.at(-1)):0;
   const setup='<script>'+`(function(){
@@ -92,6 +93,18 @@
       if(event.data.cancel){window.dispatchEvent(new Event('blur'));return;}
       window.dispatchEvent(new KeyboardEvent(event.data.down?'keydown':'keyup',{key:event.data.key,bubbles:true,cancelable:true}));
     });
+    if(${['cairn','mycel'].includes(mode)}){
+      var combatReviewLayout=stageLayout,combatReviewMap=drawMasterMap;
+      stageLayout=function(){
+        var L=combatReviewLayout();
+        if(L.master&&!L.platforms.some(function(p){return p.id==='review-combat-wall';}))L.platforms.push({id:'review-combat-wall',x:Math.floor(window.MaxMasterMapData.width/2)+112,y:L.ground.y-48,w:12,h:48,solid:true,reviewOnly:true});
+        return L;
+      };
+      drawMasterMap=function(){
+        combatReviewMap();var wall=stageLayout().platforms.find(function(p){return p.id==='review-combat-wall';});
+        if(wall){var x=Math.round(wall.x-camX),y=Math.round(wall.y-camY);ctx.fillStyle='#e8e492';ctx.fillRect(x,y,wall.w,1);ctx.fillRect(x,y,1,wall.h);ctx.fillRect(x+wall.w-1,y,1,wall.h);ctx.fillRect(x,y+wall.h-1,wall.w,1);}
+      };
+    }
     menuPaused=false;runActive=${gameplay};rogueRun.next=1000000000;rogueRun.ended=false;rogueRun.choice=null;rogueRun.perks.robot=${tier};
     companion=null;P.x=0;P.y=surfaceY(0);P.vx=0;P.face=1;gardenSeeds=3;
     gardenPlots=[];rogueRun.garden=[];
@@ -111,6 +124,7 @@
       });P=actual;};
     }
     if(${mode==='native-enemies'}){
+      if(masterMapMode()){P.x=Math.floor(window.MaxMasterMapData.width/2);P.y=surfaceY(P.x);}
       floatKrek=[];[3,4,5,6,9,10,11].forEach(function(kind,q){var k=makeKrek(1);k.kind=kind;k.x=P.x+(q<4?(q-1.5)*24:(q-5)*40);k.y=P.y-(q<4?76:40);k.vx=k.vy=0;floatKrek.push(k);});
       var nativeRoleBodies={};
       window.maxNativeRoleObservation=function(){return {roles:floatKrek.map(function(k){return k.kind;}),bodies:nativeRoleBodies};};
@@ -139,8 +153,10 @@
       resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},skinId:({mech:'tide',runner:'moss-pink',bulwark:'ember',herbalist:'moon',sligo:'sligo',polge:'polge'})[${JSON.stringify(classChooser.value)}]});rogueRun.seed=${reviewSeed};
       if(${world}!==1)enterLevel(${world});
       P.x=levelOriginX(${world});P.y=surfaceY(P.x);P.vx=P.vy=0;P.grounded=true;P.platform=null;P.coyote=.1;P.airJumpUsed=false;P.st='free';P.wet=false;P.face=1;setAnim('idle');started=false;
+      if(${['cairn','mycel'].includes(mode)}&&masterMapMode()){P.x=Math.floor(window.MaxMasterMapData.width/2);P.y=surfaceY(P.x);}
       if(${layout}&&${params.has('expedition')}){var ex=stageLayout().expedition;P.x=ex.start.x;P.y=ex.start.y;if(${params.has('summit')}){P.x=ex.summit.x;P.y=ex.summit.y;P.platform=ex.nodes[2].platformId;}}
       if(${placeView}){var placeAt=stageLayout().place;if(placeAt){P.face=placeAt.side;P.x=placeAt.side>0?placeAt.bounds.x-8:placeAt.bounds.x+placeAt.bounds.w+8;P.y=surfaceY(P.x);}}
+      if(${milestone||finalBoss}){var reviewCourtX=Math.floor(window.MaxMasterMapData.width/2),reviewCourtY=surfaceY(reviewCourtX);bossEvent={stage:worldLevel(),siteId:'review-guardian',siteIndex:0,x:reviewCourtX,y:reviewCourtY,courtX:reviewCourtX,courtY:reviewCourtY,courtLeft:reviewCourtX-180,courtRight:reviewCourtX+180,status:'ready',startedAt:0};}
       if(${milestone||finalBoss}&&bossEvent){
         P.x=bossEvent.courtX;P.y=surfaceY(P.x);P.platform=null;P.grounded=true;P.wet=false;started=false;
       }
@@ -211,8 +227,6 @@
         runEncounters=[mycelTrial];runLoot=[];runHazards=[];
         [20,46,74].forEach(function(dx,i){var k=makeKrek(1,false,0);k.combatId=++classPestId;k.scout=false;k.x=P.x+dx;k.y=P.y-12;k.vx=k.vy=0;k.hp=k.maxHp=50;k.trialGuard=true;k.eventId=mycelTrial.id;k.eventX=P.x;k.eventY=P.y;k.bite=1.4+i*.6;floatKrek.push(k);});
         if(gardenPlots[0]){var mycelPlant=gardenPlots[0],mycelPlantPest=makeKrek(-1,false,0);mycelPlantPest.combatId=++classPestId;mycelPlantPest.x=mycelPlant.x;mycelPlantPest.y=surfaceY(mycelPlant.x)-18;mycelPlantPest.vx=mycelPlantPest.vy=0;mycelPlantPest.hp=mycelPlantPest.maxHp=50;mycelPlantPest.scout=false;mycelPlantPest.target=mycelPlantPest.attackTarget=mycelPlant;mycelPlantPest.bite=.8;floatKrek.push(mycelPlantPest);}
-        // Use an existing solid wall for a separate blocked target; normal
-        // sentry AI remains active at its ordinary encounter elevation.
         var mycelBarrier=null;
         (stageLayout().platforms||[]).filter(function(rock){return rock.solid&&rock.h>=8;}).some(function(rock){return [rock.x-8,rock.x+rock.w+8].some(function(x){var y=rock.y+rock.h/2;if(Math.hypot(x-P.x,y-(P.y-12))>160||combatLineClear(P.x,P.y-12,x,y))return false;mycelBarrier={x:x,y:y};return true;});});
         if(mycelBarrier){var blockedTrial=Object.assign({},mycelTrial,{id:906,x:mycelBarrier.x,y:mycelBarrier.y+12});runEncounters.push(blockedTrial);var blockedPest=makeKrek(1,false,0);blockedPest.combatId=++classPestId;blockedPest.x=mycelBarrier.x;blockedPest.y=mycelBarrier.y;blockedPest.vx=blockedPest.vy=0;blockedPest.hp=blockedPest.maxHp=50;blockedPest.scout=false;blockedPest.trialGuard=true;blockedPest.eventId=blockedTrial.id;blockedPest.eventX=blockedTrial.x;blockedPest.eventY=blockedTrial.y;blockedPest.mycelReviewBlocked=true;floatKrek.push(blockedPest);}
@@ -259,7 +273,7 @@
       if(${milestone||finalBoss}){
         bossEvent.status='active';bossEvent.startedAt=runElapsed;
         gardenWave=3;gardenRaidActive=true;gardenRaidGrace=0;gardenBossSpawned=true;rogueRun.raidRemaining=0;
-        var stageBoss=${finalBoss?'makeHollowCrown()':'makeStageBoss('+world+')'};stageBoss.cool=.8;floatKrek=[stageBoss];
+        var stageBoss=${finalBoss?'makeHollowCrown()':'makeStageBoss('+world+')'};stageBoss.cool=.8;Object.assign(stageBoss,{courtX:bossEvent.courtX,courtY:bossEvent.courtY,courtLeft:bossEvent.courtLeft,courtRight:bossEvent.courtRight});floatKrek=[stageBoss];
         rogueRun.traits={feathers:3,embers:3,dew:3};rogueRun.perks.cadence=2;
         runEncounters=[];runLoot=[];runHazards=[];
       }
@@ -292,6 +306,7 @@
         rogueRun.nextPlantId=4;runEncounters=[];runHazards=[];runLoot=[];
       }
       ensureCompanion();clearRunInput();
+      if(${layout})window.maxMasterMapObservation=function(){return {world:worldLevel(),layout:stageLayout(),shrine:bossEvent,expedition:runExpedition,weather:stageWeather,encounters:runEncounters.length,loot:runLoot.length,hazards:runHazards.length,seeds:seedPickups.map(function(q){return {x:q.x,y:q.y,guardianCache:!!q.guardianCache,routeReward:!!q.routeReward,placeCache:!!q.placeCache};}),plants:gardenPlots.length};};
     }
     if(${['last-seed','high-tide'].includes(mode)}){resetRogueRun('REVIEW',{classId:${JSON.stringify(classChooser.value)},mode:${JSON.stringify(mode)}});clearRunInput();}
     if(${mode==='high-tide'&&params.has('zone')}){plantGardenSeed(0);var z=Math.max(0,Math.min(4,${Number(params.get('zone'))||0})),s=rogueRun.survival,p=highTidePlant();s.bosses=z;s.height=HIGH_TIDE_GATES[z];p.tideHeight=s.height;var q=highTideRoutePoint(s.height);P.x=q.x;P.y=q.y;P.grounded=true;P.st='free';s.waterY=q.y+120;started=false;highTideSpawnBoss();}

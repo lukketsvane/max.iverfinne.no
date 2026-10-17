@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hollow Crown · encounter review</title>
 <style>*{box-sizing:border-box}body{margin:0;background:#101923;color:#e0e7e9;font:13px/1.45 monospace}main{padding:12px}h1{margin:0;font-size:20px}p{margin:5px 0 10px;max-width:90em}.controls{display:flex;align-items:end;gap:7px;flex-wrap:wrap;margin:8px 0}label{display:flex;flex-direction:column;gap:3px}button,select{background:#263745;color:inherit;border:1px solid #7d929e;border-radius:0;min-height:38px;padding:7px;font:inherit}button[aria-pressed=true]{background:#72613d}button:focus-visible,select:focus-visible{outline:2px solid #ffcb79;outline-offset:2px}details{margin:8px 0}summary{cursor:pointer;color:#ffcb79}#status{min-height:38px;margin:8px 0;color:#aee0df}iframe{display:block;border:0;outline:1px solid #46545f;background:#101923;margin:auto;max-width:100%}.note{font-size:11px;color:#b1bec6}@media(max-width:480px){main{padding:8px}h1{font-size:17px}button,select{font-size:11px;min-height:38px}.controls{gap:5px}iframe{max-width:none;margin-left:-8px}}</style></head><body><main>
-<h1>Hollow Crown · Garden 20</h1><p>The actual sunrise encounter. Tend the young garden, read the amber warning, jump or dodge, then strike during cyan recovery.</p>
+<h1>Hollow Crown · encounter review</h1><p>An isolated encounter on the current MASTER ground. Tend the young garden, read the amber warning, jump or dodge, then strike during cyan recovery.</p>
 <div class="controls"><label>Character<select id="class"><option value="mech">Mech</option><option value="runner">Rattus norvegicus</option><option value="bulwark">Cairn</option><option value="herbalist">Mycel</option><option value="polge">Pølge</option><option value="sligo">Sligo</option></select></label><label>Difficulty<select id="difficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option><option value="insane">Insane</option></select></label><label>Viewport<select id="viewport"><option value="desktop">Desktop · 1200 × 800</option><option value="phone">Phone · 390 × 844</option><option value="small">Phone · 320 × 568</option></select></label><button id="new-fight">New playable fight</button><button id="resume">Resume fight</button><button id="pause">Pause review</button></div>
 <details><summary>Phase demonstrations and captures</summary><p class="note">These review buttons reset the isolated fight to an act. They are demonstrations; ordinary play progresses by damage and breaking seals. Capture buttons freeze a real attack frame after its timers advance.</p><div class="controls" id="phases"><button data-phase="1">Demonstrate I · Sovereign</button><button data-phase="2">Demonstrate II · Seals</button><button data-phase="3">Demonstrate III · Ascendant</button><button data-phase="4">Demonstrate IV · Dethroned</button></div><div class="controls" id="captures"><button data-capture="hammer-warning">Capture · hammer warning</button><button data-capture="hammer-slam">Capture · hammer slam</button><button data-capture="leap">Capture · airborne slam</button><button data-capture="lanes">Capture · ascendant lanes</button><button data-capture="wounded">Capture · wounded last stand</button></div></details>
 <p class="note">Memory-only fixture; no account, live room or saved run. Keyboard: ← → move · ↑ jump · B attack · X dodge · E skill · Space tend. Touch controls remain active inside the game.</p><p id="status" role="status">Loading real game…</p><div class="controls" id="inputs" aria-label="Game controls"></div>
@@ -28,6 +28,8 @@
     const reviewLog={attackInputs:0,dodges:0,jumps:0,tends:0,strikes:0,shots:0,bombPeak:0,maxJumpHeight:0,dodgeFrames:0,lastFx:0};
     let reviewArt=null;const reviewNativeRenderer=window.MaxNativeArt.drawEnemy;
     window.MaxNativeArt.drawEnemy=function(ctx,k,x,y,time){const result=reviewNativeRenderer(ctx,k,x,y,time);if(k.bossId==='hollow-crown'&&result)reviewArt={clip:result.clip,top:result.top};return result;};
+    const reviewEnemyRenderer=drawKrek;
+    drawKrek=function(time){reviewEnemyRenderer(time);drawCrownForeground(time);};
     menuPaused=true;
     function reviewKey(key,down){window.dispatchEvent(new KeyboardEvent(down?'keydown':'keyup',{key,bubbles:true,cancelable:true}));}
     window.addEventListener('message',event=>{
@@ -48,6 +50,8 @@
         Object.assign(rogueRun.perks,rogueRun.classId==='bulwark'?{fault:3}:rogueRun.classId==='polge'?{splinters:3,varnish:2,raincoat:1,haymaker:1,secondwind:1}:rogueRun.classId==='runner'?{needle:3,fletching:2}:rogueRun.classId==='herbalist'?{ferment:3,colony:2}:{blast:3});
       }
       runActive=true;menuPaused=false;gardenPlots=[];rogueRun.garden=[];floatKrek=[];runEncounters=[];runLoot=[];runHazards=[];bombs=[];gardenSeeds=8;krekSpawnT=gardenRaidT=9999;
+      const courtX=Math.floor(window.MaxMasterMapData.width/2),courtY=surfaceY(courtX);
+      bossEvent={stage:20,siteId:'review-crown',siteIndex:0,x:courtX,y:courtY,courtX,courtY,courtLeft:courtX-180,courtRight:courtX+180,status:'ready',startedAt:0};
       const e=bossEvent,plant={id:2001,x:e.courtX,kind:3,seed:79,growth:.24,stalk:false,health:1,moisture:.95,pulse:0,hit:0,age:0};
       gardenPlots.push(plant);recordGardenPlant(plant);rogueRun.nextPlantId=2002;
       Object.assign(P,{x:e.x,y:e.y,st:'free',grounded:true,wet:false,vx:0,vy:0,platform:playerSupportId(e.x,e.y)});
@@ -85,7 +89,7 @@
     }).catch(error=>parent.postMessage({type:'crown-error',serial:reviewSerial,message:error.message},reviewOrigin));
     "MAX_REVIEW_FIXTURE_END";
   `;
-  const html=source.replace('<head>','<head><base href="'+new URL('.',location.href).href+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace('start();\n})();','start();\n'+hook+'})();');
+  const html=source.replace('<head>','<head><base href="'+new URL('.',location.href).href+'">'+setup).replace('<script src="game-menu.js" defer><'+'/script>','').replace(/start\(\);\s*\}\)\(\);/,'start();\n'+hook+'})();');
   if(!html.includes('reviewInitialize()'))throw new Error('Cannot install isolated Crown fixture.');
   frame.srcdoc=html;
  }

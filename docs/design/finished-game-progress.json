@@ -314,7 +314,7 @@
   "levelMasterAlignment": {
     "requested": "2026-10-17",
     "priorityReason": "Owner explicitly corrected the static viewer: retain the real game, movement and gameplay; use only MASTER for the ordinary campaign map, at one Figma pixel per native game pixel, with no added map content.",
-    "status": "master_reset_publication_requested",
+    "status": "master_reset_pushed_review_cleanup",
     "file": "TC0PHGMTCMR6im4hb3CSbF",
     "page": "508:11825",
     "master": "1433:22060",
@@ -344,7 +344,12 @@
       "retiredImports": 13,
       "removedBuildFiles": 41,
       "removedBuildBytes": 8279253,
-      "focusedVerification": "24 gameplay/co-op/MASTER tests, the production build test and three review-compilation tests passed. Exact-SHA CI and deployment checks follow the push."
+      "focusedVerification": "24 gameplay/co-op/MASTER tests, the production build test and three review-compilation tests passed. Exact-SHA CI and deployment checks follow the push.",
+      "pushedCommit": "57441563ab43ac2a9f6e6597758fa93e4e0f8409",
+      "productionReadback": "Vercel production alias returned READY at the pushed commit; published gameplay and native MASTER artwork were captured in production-game.jpg. This does not replace the CI release gate.",
+      "reviewCleanup": "Retired Circuit/site/ladder browser expectations are replaced with all-twenty-stage empty MASTER source and geometry assertions. Combat walls, ledges and guardian events exist only in isolated review fixtures; ordinary map data and gameplay runtime are unchanged. Native character combat, collision, paired authority and Crown encounter checks remain active.",
+      "reviewCleanupVerification": "Full Rattus, Polge, Cairn, Mycel, Guardian and Crown browser suites passed in Chromium and WebKit, including paired authority and actual Crown victories, with zero browser errors. High Tide passed the full WebKit flow. Seventeen MASTER/High Tide unit tests and seventeen build/review/observer tests passed; npm run build passed. Production index.html, MASTER data/runtime and run-director code are unchanged from the first push.",
+      "releaseGate": "The first push exposed obsolete browser fixtures. Their corrections are verified locally before the follow-up push; fresh exact-version CI remains required. Windows full-suite runs are not reported as passing."
     }
   }
 }
