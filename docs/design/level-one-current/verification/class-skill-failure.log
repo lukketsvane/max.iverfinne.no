@@ -1,0 +1,30 @@
+✖ tapping a character fires its funded class skill and never bombs its own feet (1631.000157ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1711.832347
+
+✖ failing tests:
+
+test at tests/class-skills.test.cjs:32:1
+✖ tapping a character fires its funded class skill and never bombs its own feet (1631.000157ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  0 !== 3
+
+      at TestContext.<anonymous> (/vercel/max-level-one/tests/class-skills.test.cjs:42:99)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

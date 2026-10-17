@@ -199,6 +199,7 @@
     { "path": "assets/levels-v2/giant-beaked-fossil-fg.png", "nodeId": "1280:21997", "group": "environment", "width": 1087, "height": 612, "sha1": "5762235cf6e74dbf97fc36cbe34b72c2ebdbb5ee" },
     { "path": "assets/levels-v2/heliostat-greenhouse-bg.png", "nodeId": "1280:22019", "group": "environment", "width": 1104, "height": 621, "sha1": "17599b6047e02964df22a3d7a3697755aa788e89" },
     { "path": "assets/levels-v2/heliostat-greenhouse-fg.png", "nodeId": "1280:22017", "group": "environment", "width": 1104, "height": 621, "sha1": "baefb1d5ba9700e48b240c36bf7a7dde84d84a3f" },
+    {"path":"assets/levels-v2/hollow-tree-current.png","nodeId":"1412:21977","group":"environment","width":3555,"height":400,"sha1":"89298c6b2d99e71d93977c45d2fa2eec3eedf38f"},
     { "path": "assets/levels-v2/living-root-vault-bg.png", "nodeId": "1280:21991", "group": "environment", "width": 1087, "height": 611, "sha1": "f9a9d5370bb961763564f5c6c8ba7cdbb317fdba" },
     { "path": "assets/levels-v2/living-root-vault-fg.png", "nodeId": "1280:21989", "group": "environment", "width": 1087, "height": 612, "sha1": "c4b9f653474f8d599f79e6415c13d58e76ed0a14" },
     { "path": "assets/levels-v2/magnetworks-bg.png", "nodeId": "1280:21987", "group": "environment", "width": 1087, "height": 612, "sha1": "8bec0a570eba3e16221d3b66f108510f3238daa4" },
