@@ -24,9 +24,9 @@ jobs:
           node-version: '22'
       - name: Preserve current main and recover source bytes
         env:
-          SOURCE_A: https://www.figma.com/api/mcp/asset/b41328d2-00c9-477d-bccf-d80631c7b7f6
-          SOURCE_B: https://www.figma.com/api/mcp/asset/890f0995-761c-4195-b0a1-b41f2341a649
-          SOURCE_C: https://www.figma.com/api/mcp/asset/d33d173c-629c-4bbd-b015-a737c1316ee1
+          SOURCE_A: https://www.figma.com/api/mcp/asset/8e798f14-2c3d-4111-9c5a-703bb6b902a7.png
+          SOURCE_B: https://www.figma.com/api/mcp/asset/358aada7-bb64-4ed2-828f-1d6262f7de8a.png
+          SOURCE_C: https://www.figma.com/api/mcp/asset/5937d0ac-65ca-41c2-b1ec-900b0fbddd92.png
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]
@@ -40,8 +40,11 @@ jobs:
           found = set()
           for key in ['SOURCE_A', 'SOURCE_B', 'SOURCE_C']:
               print('::add-mask::' + os.environ[key])
-              data = urllib.request.urlopen(os.environ[key], timeout=60).read()
+              response = urllib.request.urlopen(os.environ[key], timeout=60)
+              data = response.read()
               digest = hashlib.sha1(data).hexdigest()
+              print(key, response.headers.get('Content-Type'), len(data), digest, data[:8].hex())
+              assert data[:8] == b'\x89PNG\r\n\x1a\n', 'Source response is not PNG'
               assert digest in expected and digest not in found, 'Unexpected source bytes'
               found.add(digest)
               Path('assets/levels-v2/' + expected[digest] + '.png').write_bytes(data)
