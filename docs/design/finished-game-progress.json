@@ -272,10 +272,52 @@
       "production": "Verify production Vercel and the custom-domain build against the same final main SHA"
     }
   },
+  "fullViewport": {
+    "requested": "2026-10-17",
+    "baseCommit": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9",
+    "branch": "codex/full-viewport",
+    "status": "implemented_pending_final_ci",
+    "integrationReview": {
+      "date": "2026-10-17",
+      "mainCommit": "9bc37222ec4ade63f5fa4ad8d83b91985baf018f",
+      "reason": "Continue existing PR61 instead of duplicating the owner's full-viewport correction. Its head 027582c failed 2 of 995 CI tests: historical tree runtime-list comparison and stale ceil-fitted Crown height. Both repairs are already released in PR56 and are now inherited from current main without weakening assertions.",
+      "focusedTests": "23/23 passed: pixel-render, screen-frame, turtle-garden-render and tree-hollow-entrance-review. Includes ordinary Crown jump/landing, pointer mapping, all class positions and collisions, saved scale choices and live clock.",
+      "build": "npm run build passed after integration.",
+      "browser": "Local runner stopped before browser launch: installed Playwright lacks chromium_headless_shell-1234. Existing 027582c browser evidence remains historical, not proof for this integration; repository Chromium/WebKit menu/pixel review required.",
+      "fullTests": "Use the existing repository CI npm test and build on the final review SHA; no duplicate local full suite started in the shared workspace. Pending at publication.",
+      "scope": "Preserved current main's released fixes, authored Figma scene imports and soundtrack update verbatim. No new art, source geometry, balance changes or changes from open PRs 55/58/60/62. Resolved the ledger append conflict by retaining both entries and reconciled PR56's completed release receipt.",
+      "nextStep": "Require green exact-review-head full regression and Chromium/WebKit menu/pixel CI before review; do not auto-merge or claim a production release."
+    },
+    "priorityReason": "Owner explicitly requested that the game use screen width and height without the fixed 4:3/3:4 frame or canvas cropping. This disjoint display correction does not publish overlapping active Figma level PRs 58/60.",
+    "scope": "Remove the automatic aspect restriction. Render the full viewport into the native canvas and retain exact integer physical-pixel enlargement, whole-pixel containment, pointer mapping and Crown clearance. Explicit review aspect overrides remain supported.",
+    "verification": {
+      "focusedTests": "46/46 display, menu, native-pixel, scene roof/ladder/jump and Crown checks passed again on the isolated main-based branch.",
+      "build": "npm run build passed on the isolated main-based branch.",
+      "browser": "Chromium and WebKit passed all five pixel settings on four viewports each: full width/height, no clipped canvas edges, exact pixel blocks, live clock, real movement, menu launcher taps, persistence and rotation. See docs/verification/pixel-render/full-viewport.json.",
+      "fullTests": "Initial source-integration npm test has an outstanding historical other-nineteen-layouts failure and is not a final full-viewport pass. Run mandatory npm test on this exact isolated review branch through CI.",
+      "production": "Not published to main and no verified production SHA claimed."
+    },
+    "levelOne": {
+      "status": "source_selection_required",
+      "candidates": [
+        {
+          "nodeId": "1133:22294",
+          "label": "01 Silo"
+        },
+        {
+          "nodeId": "1228:29201",
+          "label": "LEVEL 01 / Hollow Tree / 5 screens"
+        }
+      ],
+      "question": "Which current Figma level 1 should ordinary Play start in?",
+      "currentRuntime": "Retained the existing verified Hollow Tree source; did not rename or substitute another scene."
+    },
+    "nextStep": "Verify integrated review-head full and browser CI. Keep the separate level-one source decision outside this viewport correction; do not change Play admission here."
+  },
   "yeetSceneEncounterRepair": {
     "requested": "2026-10-17",
     "reason": "Immediate owner-requested improvement pass: real scene walls and cliffs prevented the existing western Yeet encounter",
-    "status": "implemented_pending_release_verification",
+    "status": "released_verified",
     "baselineCommit": "801e5172506431754d089f4f832e45abf8adffb1",
     "integratedMainCommit": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9",
     "branch": "codex/yeet-scene-boundaries",
@@ -309,6 +351,17 @@
     ],
     "scope": "Use existing scene bounds for a reachable western threshold and supported, unobstructed native-sized Yeet/cat placement; preserve original art, authored geometry, non-scene approach and host-owned encounter state",
     "nextMilestone": "MG",
-    "nextStep": "Complete the exact-version release gate, then re-read current owner priorities and concurrent level-design work before choosing the next independent improvement"
+    "releaseReceipt": {
+      "verifiedAt": "2026-10-17T20:51:00Z",
+      "pullRequest": "https://github.com/lukketsvane/max.iverfinne.no/pull/56",
+      "commit": "4fa9654e399999bfe35baaafe066e2ca0b9927f1",
+      "tree": "40121ab5d15725b4ed8512d460ddf20368182b47",
+      "ci": "Both full regression workflows passed 1005/1005, zero failures/cancellations, and successful builds; all 13 checks green, including Chromium/WebKit guardian/Crown, all 13 Mycel groups per engine, phone and co-op.",
+      "productionDeployment": "dpl_H8sqdFVvmHRHKBctmPeMKe9GH8MF",
+      "production": "READY at the exact release SHA and owning max.iverfinne.no; custom-domain index and canonical /review byte-identical to the tested build. Menu, character selection and native garden start passed in preview and production without recorded app console errors.",
+      "indexSha256": "bf3dfc6b504571ea77d944fa650b1d6d7ba08518c6f36440a1a909871fbb3fd0",
+      "limit": "Historical release receipt, not a claim that later main or full-viewport commits have been released."
+    },
+    "nextStep": "Repair released; follow the owner's newer level-design and native-pixel priorities without duplicating PR56."
   }
 }

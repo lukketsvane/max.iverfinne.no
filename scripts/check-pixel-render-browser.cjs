@@ -48,7 +48,7 @@ async function main() {
           const control = page.getByRole('button', { name: /^Pixel rendering / });
           assert.equal((await state(page)).render.id, '8x');
           const initial = await state(page);
-          if (name === 'phone') { assert.equal(initial.width, 146); assert.equal(initial.height, 195); assert.equal(initial.scale, 8); }
+          if (name === 'phone') { assert.equal(initial.width, 146); assert.equal(initial.height, 316); assert.equal(initial.scale, 8); }
           await control.tap(); assert.equal((await state(page)).render.id, '10x');
           await page.reload();
           await page.getByRole('button', { name: 'Settings', exact: true }).tap();
@@ -80,6 +80,9 @@ async function main() {
               return { width: c.width, height: c.height, left: r.left, top: r.top, cssWidth: r.width, cssHeight: r.height, smoothing: context.imageSmoothingEnabled, transform: [context.getTransform().a, context.getTransform().d], mask: !!document.querySelector('#subpx') };
             });
             assert.equal(canvas.width,current.width); assert.equal(canvas.height,current.height);
+            assert.ok(canvas.left >= -.01 && canvas.top >= -.01, 'no cropped leading edges');
+            assert.ok(canvas.left + canvas.cssWidth <= viewport.width + .01 && canvas.top + canvas.cssHeight <= viewport.height + .01, 'no cropped trailing edges');
+            assert.ok(viewport.width*dpr-current.width*current.scale < current.scale && viewport.height*dpr-current.height*current.scale < current.scale, 'full physical viewport used in both axes');
             assert.equal(canvas.smoothing,false); assert.equal(canvas.mask,false); assert.deepEqual(canvas.transform,[1,1]);
             assert.ok(Math.abs(canvas.cssWidth*dpr-current.width*current.scale)<.1);
             assert.ok(Math.abs(canvas.cssHeight*dpr-current.height*current.scale)<.1);
@@ -87,7 +90,11 @@ async function main() {
             sizes.add(current.width+'x'+current.height);
             await page.getByRole('button', { name: 'Back', exact: true }).tap();
             const image = `${engine}-${name}-${modes[i]}.png`;
-            const screenshot = await page.screenshot({ path: path.join(output, image) });
+            await page.screenshot({ path: path.join(output, image) });
+            const launcher = page.locator('.max-live-settings'), launcherBox = await launcher.boundingBox();
+            assert.ok(launcherBox && launcherBox.width >= 44 && launcherBox.height >= 44);
+            assert.ok(launcherBox.x >= 0 && launcherBox.y >= 0 && launcherBox.x + launcherBox.width <= viewport.width && launcherBox.y + launcherBox.height <= viewport.height, 'settings stays inside the full viewport');
+            const screenshot = await page.screenshot({ style: '.max-live-settings{visibility:hidden!important}' });
             const pixels = decode(screenshot), block = current.scale, colours = new Set();
             assert.equal(pixels.width,Math.round(viewport.width*dpr)); assert.equal(pixels.height,Math.round(viewport.height*dpr));
             const left=Math.round(canvas.left*dpr),top=Math.round(canvas.top*dpr);
@@ -97,7 +104,7 @@ async function main() {
             }
             assert.ok(colours.size>16,'pixel proof must contain real game detail, not a blank frame');
             screenshots.push(image);scales.push({choice:modes[i],width:current.width,height:current.height,scale:block,uniformBlocks:true,colours:colours.size});
-            await page.keyboard.press('Escape');
+            await launcher.tap();
             await control.focus(); await page.keyboard.press('Enter');
             assert.equal(await control.evaluate(n => document.activeElement === n), true);
           }
