@@ -34,17 +34,28 @@ jobs:
           git fetch origin main
           git merge --no-edit origin/main
           python3 - <<'PY'
-          import hashlib, os, urllib.request
+          import hashlib, os, subprocess, sys
           from pathlib import Path
           expected = {'8f9b79d7b224227b8f7a29c4352624a642160bdb':'railway-ruins-current', 'bc56aac8c6292a9cbd941cd2aad48830296179d1':'mossback-sanctuary-current', '4fcca6a3e9c5ace87a8bb7353280f021b1b734e0':'cairn-terraces-current'}
           found = set()
+          fallback = None
           for key in ['SOURCE_A', 'SOURCE_B', 'SOURCE_C']:
-              print('::add-mask::' + os.environ[key])
-              response = urllib.request.urlopen(os.environ[key], timeout=60)
-              data = response.read()
+              url = os.environ[key]
+              print('::add-mask::' + url, flush=True)
+              result = subprocess.run(['curl','--fail','--location','--silent','--show-error','--max-time','60',url], capture_output=True)
+              data = result.stdout
+              print(key, 'curl', result.returncode, len(data), hashlib.sha1(data).hexdigest(), flush=True)
+              if not data.startswith(b'\x89PNG\r\n\x1a\n'):
+                  if fallback is None:
+                      subprocess.run([sys.executable,'-m','pip','install','--quiet','--target','/tmp/figma-transport','curl_cffi'], check=True)
+                      sys.path.insert(0,'/tmp/figma-transport')
+                      from curl_cffi import requests
+                      fallback = requests
+                  response = fallback.get(url, impersonate='chrome', timeout=60)
+                  data = response.content
+                  print(key, 'browser transport', response.status_code, response.headers.get('content-type'), len(data), hashlib.sha1(data).hexdigest(), flush=True)
               digest = hashlib.sha1(data).hexdigest()
-              print(key, response.headers.get('Content-Type'), len(data), digest, data[:8].hex())
-              assert data[:8] == b'\x89PNG\r\n\x1a\n', 'Source response is not PNG'
+              assert data.startswith(b'\x89PNG\r\n\x1a\n'), 'Source response is not PNG'
               assert digest in expected and digest not in found, 'Unexpected source bytes'
               found.add(digest)
               Path('assets/levels-v2/' + expected[digest] + '.png').write_bytes(data)
