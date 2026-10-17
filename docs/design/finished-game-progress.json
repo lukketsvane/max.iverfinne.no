@@ -214,6 +214,37 @@
     "fullIntegratedTests": "Running; final result and exact commit CI/deployment receipts are recorded on pull request 54",
     "releaseReceiptLocation": "https://github.com/lukketsvane/max.iverfinne.no/pull/54"
   },
+  "figmaLevels10To15": {
+    "requested": "2026-10-17",
+    "reason": "Owner explicitly requested Figma improvements to levels 10 to 15; this bounded source-design pass takes priority for this task while MG remains the next milestone",
+    "status": "source_updated_export_verifying",
+    "baselineCommit": "801e5172506431754d089f4f832e45abf8adffb1",
+    "integrationBase": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9",
+    "file": "TC0PHGMTCMR6im4hb3CSbF",
+    "page": "508:11825",
+    "sceneExport": {
+      "stages": [10, 12, 13, 15],
+      "capture": "docs/design/scene-levels/figma-capture.json",
+      "changedPoints": 15,
+      "intent": "Earlier seeds on the lower route, trials at stronger landmarks, and optional rewards split across distinct detours",
+      "preserved": "Terrain, ladders, art, point counts, guardian courts and Tiara/Garden 10 boss behavior"
+    },
+    "draftSources": {
+      "stages": [11, 14],
+      "changedPoints": 6,
+      "receipt": "docs/design/levels-10-15-drafts.json",
+      "runtime": "Existing seeded levels remain active; these Figma drafts are not activated by this pass"
+    },
+    "verification": {
+      "sourceAndRuntime": "6/6 focused checks passed on the integrated branch: exact Figma compilation, native art, invalid-source rejection, room bounds, camera headroom and pools",
+      "goalPlacement": "Static review confirmed all 15 moved scene goals have exact existing support, retain at least 10 px of supporting-surface edge clearance, and introduce no duplicate names or positions",
+      "unaffectedSources": "All eight non-target frame XML subtrees are byte-identical to the baseline, as are their compiled runtime stage objects",
+      "build": "Passed with the current native pixel renderer from main",
+      "sceneTraversal": "The earlier test runner reported only a file-level pass with no completed per-scene evidence. Direct existing scene-sweep CLI runs from decoded actual Figma specs are in progress at this checkpoint",
+      "fullTests": "The earlier local full run has no complete result. Its co-op snapshot/authority-handoff redraw test failed and then passed in isolation. Final full-suite CI remains required",
+      "release": "Draft integration only; exact-SHA CI and production verification remain pending"
+    }
+  },
   "rattusPlantTraversal": {
     "requested": "2026-10-14",
     "reason": "Owner requested removal of Rattus ordinary plant climbing",

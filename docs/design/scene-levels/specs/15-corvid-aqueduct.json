@@ -214,9 +214,9 @@
   ],
   [
    "seed",
-   "basket-seed",
-   698,
-   354
+   "arrival-seed",
+   252,
+   445
   ],
   [
    "trial",
@@ -226,9 +226,9 @@
   ],
   [
    "trial",
-   "stone-walk-trial",
-   245,
-   445
+   "scaffold-trial",
+   692,
+   354
   ],
   [
    "reward",
@@ -238,9 +238,9 @@
   ],
   [
    "reward",
-   "hanging-basket-cache",
-   1127,
-   281
+   "west-bridge-cache",
+   80,
+   200
   ],
   [
    "bonus",
@@ -280,9 +280,9 @@
   ],
   [
    "secret",
-   "mound-corner-cache",
-   1163,
-   560
+   "hanging-basket-nook",
+   1127,
+   281
   ]
  ],
  "sites": [

@@ -370,15 +370,15 @@
   ],
   [
    "seed",
-   "pad-d-seed",
-   500,
-   268
+   "great-pad-seed",
+   579,
+   404
   ],
   [
    "trial",
-   "island-trial",
-   124,
-   331
+   "lily-trial",
+   206,
+   273
   ],
   [
    "trial",
@@ -412,9 +412,9 @@
   ],
   [
    "bonus",
-   "great-pad-dew",
-   579,
-   404
+   "pad-d-dew",
+   500,
+   268
   ],
   [
    "puzzle",
@@ -436,9 +436,9 @@
   ],
   [
    "secret",
-   "under-pad-nook",
-   575,
-   365
+   "root-underpass-nook",
+   430,
+   359
   ]
  ],
  "sites": [
