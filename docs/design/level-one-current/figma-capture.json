@@ -1,0 +1,2083 @@
+{
+ "file": "TC0PHGMTCMR6im4hb3CSbF",
+ "page": "508:11825",
+ "master": "1228:21976",
+ "row": {
+  "id": "1228:29201",
+  "name": "level_01 / Hollow Tree / 5 screens",
+  "width": 3555,
+  "height": 400
+ },
+ "art": {
+  "nodeId": "1228:29203",
+  "sha1": "89298c6b2d99e71d93977c45d2fa2eec3eedf38f",
+  "width": 3555,
+  "height": 400,
+  "productionNodeId": "1412:21977",
+  "path": "assets/levels-v2/hollow-tree-current.png"
+ },
+ "capturedAt": "2026-10-17T20:03:39.105Z",
+ "nodes": [
+  {
+   "id": "1228:29384",
+   "type": "INSTANCE",
+   "name": "SOLID · 01 Rootfoot arrival continuous ground",
+   "x": 0,
+   "y": 350,
+   "width": 711,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29385",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 01 Rootfoot arrival optional landing 1",
+   "x": 110,
+   "y": 314,
+   "width": 116,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29386",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 01 Rootfoot arrival optional landing 2",
+   "x": 230,
+   "y": 314,
+   "width": 140,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29387",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 01 Rootfoot arrival optional landing 3",
+   "x": 398,
+   "y": 314,
+   "width": 112,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29390",
+   "type": "INSTANCE",
+   "name": "SOLID · 02 Hollow trunk ascent left ground",
+   "x": 711,
+   "y": 350,
+   "width": 356,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29391",
+   "type": "INSTANCE",
+   "name": "SOLID · 02 Hollow trunk ascent right ground",
+   "x": 1079,
+   "y": 350,
+   "width": 343,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29392",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 02 Hollow trunk ascent optional landing 1",
+   "x": 831,
+   "y": 332,
+   "width": 100,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29393",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 02 Hollow trunk ascent optional landing 2",
+   "x": 935,
+   "y": 314,
+   "width": 100,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29394",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 02 Hollow trunk ascent optional landing 3",
+   "x": 1039,
+   "y": 296,
+   "width": 100,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29395",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 02 Hollow trunk ascent optional landing 4",
+   "x": 1143,
+   "y": 278,
+   "width": 128,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29397",
+   "type": "INSTANCE",
+   "name": "SOLID · 03 Ancient canopy chamber continuous ground",
+   "x": 1422,
+   "y": 350,
+   "width": 711,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29398",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 1",
+   "x": 1502,
+   "y": 332,
+   "width": 92,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29399",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 2",
+   "x": 1598,
+   "y": 314,
+   "width": 92,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29400",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 3",
+   "x": 1694,
+   "y": 296,
+   "width": 92,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29401",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 4",
+   "x": 1790,
+   "y": 314,
+   "width": 92,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29402",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 5",
+   "x": 1886,
+   "y": 332,
+   "width": 92,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29404",
+   "type": "INSTANCE",
+   "name": "SOLID · 04 Fallen limb crossing left ground",
+   "x": 2133,
+   "y": 350,
+   "width": 390,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29405",
+   "type": "INSTANCE",
+   "name": "SOLID · 04 Fallen limb crossing right ground",
+   "x": 2535,
+   "y": 350,
+   "width": 309,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29406",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 04 Fallen limb crossing optional landing 1",
+   "x": 2277,
+   "y": 332,
+   "width": 100,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29407",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 04 Fallen limb crossing optional landing 2",
+   "x": 2381,
+   "y": 314,
+   "width": 100,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29408",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 04 Fallen limb crossing optional landing 3",
+   "x": 2485,
+   "y": 296,
+   "width": 140,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29410",
+   "type": "INSTANCE",
+   "name": "SOLID · 05 North woodland gate continuous ground",
+   "x": 2844,
+   "y": 350,
+   "width": 711,
+   "height": 50,
+   "visible": true
+  },
+  {
+   "id": "1228:29411",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 05 North woodland gate optional landing 1",
+   "x": 2980,
+   "y": 332,
+   "width": 120,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29412",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 05 North woodland gate optional landing 2",
+   "x": 3104,
+   "y": 314,
+   "width": 120,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29413",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 05 North woodland gate optional landing 3",
+   "x": 3228,
+   "y": 296,
+   "width": 120,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29416",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 01 Rootfoot arrival optional landing 90 / return branch",
+   "x": 121,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29417",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 01 Rootfoot arrival optional landing 91 / return branch",
+   "x": 413,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29418",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 02 Hollow trunk ascent optional landing 90 / return branch",
+   "x": 1166,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29419",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 90 / return branch",
+   "x": 1703,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29420",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 04 Fallen limb crossing optional landing 90 / return branch",
+   "x": 2502,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29421",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 05 North woodland gate optional landing 90 / return branch",
+   "x": 3247,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29422",
+   "type": "INSTANCE",
+   "name": "ONEWAY · 03 Ancient canopy chamber optional landing 98 / secret alcove",
+   "x": 1466,
+   "y": 350,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29424",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 001",
+   "x": 7,
+   "y": 236,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29425",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 002",
+   "x": 31,
+   "y": 228,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29426",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 003",
+   "x": 47,
+   "y": 225,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29427",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 004",
+   "x": 71,
+   "y": 232,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29428",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 005",
+   "x": 87,
+   "y": 236,
+   "width": 98,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29429",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 006",
+   "x": 183,
+   "y": 234,
+   "width": 50,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29430",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 007",
+   "x": 231,
+   "y": 226,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29431",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 008",
+   "x": 247,
+   "y": 234,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29432",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 009",
+   "x": 279,
+   "y": 232,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29433",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 010",
+   "x": 311,
+   "y": 237,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29434",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 011",
+   "x": 327,
+   "y": 233,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29435",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 012",
+   "x": 343,
+   "y": 239,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29436",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 013",
+   "x": 367,
+   "y": 247,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29437",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 014",
+   "x": 391,
+   "y": 258,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29438",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 015",
+   "x": 411,
+   "y": 262,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29439",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 016",
+   "x": 419,
+   "y": 270,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29440",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 017",
+   "x": 427,
+   "y": 276,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29441",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 018",
+   "x": 439,
+   "y": 284,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29442",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 019",
+   "x": 467,
+   "y": 276,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29443",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 020",
+   "x": 479,
+   "y": 236,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29444",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 021",
+   "x": 503,
+   "y": 226,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29445",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 022",
+   "x": 543,
+   "y": 234,
+   "width": 98,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29446",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 023",
+   "x": 639,
+   "y": 236,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29447",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 024",
+   "x": 691,
+   "y": 232,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29448",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 025",
+   "x": 703,
+   "y": 224,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29449",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 026",
+   "x": 727,
+   "y": 218,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29450",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 027",
+   "x": 767,
+   "y": 224,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29451",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 028",
+   "x": 807,
+   "y": 230,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29452",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 029",
+   "x": 847,
+   "y": 239,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29453",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 030",
+   "x": 863,
+   "y": 252,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29454",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 031",
+   "x": 883,
+   "y": 256,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29455",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 032",
+   "x": 891,
+   "y": 268,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29456",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 033",
+   "x": 903,
+   "y": 278,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29457",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 034",
+   "x": 919,
+   "y": 284,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29458",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 035",
+   "x": 939,
+   "y": 288,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29459",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 036",
+   "x": 947,
+   "y": 300,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29460",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 037",
+   "x": 959,
+   "y": 234,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29461",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 038",
+   "x": 983,
+   "y": 226,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29462",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 039",
+   "x": 1023,
+   "y": 234,
+   "width": 98,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29463",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 040",
+   "x": 1119,
+   "y": 236,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29464",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 041",
+   "x": 1175,
+   "y": 228,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29465",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 042",
+   "x": 1199,
+   "y": 237,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29466",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 043",
+   "x": 1231,
+   "y": 244,
+   "width": 82,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29467",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 044",
+   "x": 1311,
+   "y": 251,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29468",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 045",
+   "x": 1331,
+   "y": 264,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29469",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 046",
+   "x": 1343,
+   "y": 312,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29470",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 047",
+   "x": 1399,
+   "y": 306,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29471",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 048",
+   "x": 1431,
+   "y": 261,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29472",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 049",
+   "x": 1443,
+   "y": 248,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29473",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 050",
+   "x": 1455,
+   "y": 234,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29474",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 051",
+   "x": 1479,
+   "y": 232,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29475",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 052",
+   "x": 1511,
+   "y": 237,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29476",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 053",
+   "x": 1527,
+   "y": 233,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29477",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 054",
+   "x": 1543,
+   "y": 239,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29478",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 055",
+   "x": 1567,
+   "y": 247,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29479",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 056",
+   "x": 1591,
+   "y": 258,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29480",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 057",
+   "x": 1611,
+   "y": 262,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29481",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 058",
+   "x": 1619,
+   "y": 270,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29482",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 059",
+   "x": 1627,
+   "y": 276,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29483",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 060",
+   "x": 1635,
+   "y": 282,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29484",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 061",
+   "x": 1647,
+   "y": 234,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29485",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 062",
+   "x": 1671,
+   "y": 226,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29486",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 063",
+   "x": 1711,
+   "y": 234,
+   "width": 98,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29487",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 064",
+   "x": 1807,
+   "y": 236,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29488",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 065",
+   "x": 1863,
+   "y": 228,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29489",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 066",
+   "x": 1883,
+   "y": 236,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29490",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 067",
+   "x": 1891,
+   "y": 244,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29491",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 068",
+   "x": 1903,
+   "y": 260,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29492",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 069",
+   "x": 1915,
+   "y": 244,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29493",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 070",
+   "x": 1927,
+   "y": 232,
+   "width": 50,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29494",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 071",
+   "x": 1975,
+   "y": 236,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29495",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 072",
+   "x": 1995,
+   "y": 230,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29496",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 073",
+   "x": 2007,
+   "y": 238,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29497",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 074",
+   "x": 2031,
+   "y": 244,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29498",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 075",
+   "x": 2051,
+   "y": 250,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29499",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 076",
+   "x": 2063,
+   "y": 258,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29500",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 077",
+   "x": 2083,
+   "y": 262,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29501",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 078",
+   "x": 2091,
+   "y": 272,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29502",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 079",
+   "x": 2103,
+   "y": 280,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29503",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 080",
+   "x": 2119,
+   "y": 282,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29504",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 081",
+   "x": 2139,
+   "y": 244,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29505",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 082",
+   "x": 2151,
+   "y": 237,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29506",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 083",
+   "x": 2183,
+   "y": 244,
+   "width": 82,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29507",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 084",
+   "x": 2263,
+   "y": 251,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29508",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 085",
+   "x": 2283,
+   "y": 264,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29509",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 086",
+   "x": 2295,
+   "y": 312,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29510",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 087",
+   "x": 2351,
+   "y": 305,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29511",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 088",
+   "x": 2367,
+   "y": 263,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29512",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 089",
+   "x": 2379,
+   "y": 258,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29513",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 090",
+   "x": 2387,
+   "y": 242,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29514",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 091",
+   "x": 2399,
+   "y": 232,
+   "width": 50,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29515",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 092",
+   "x": 2447,
+   "y": 236,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29516",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 093",
+   "x": 2467,
+   "y": 230,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29517",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 094",
+   "x": 2479,
+   "y": 238,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29518",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 095",
+   "x": 2503,
+   "y": 245,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29519",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 096",
+   "x": 2523,
+   "y": 250,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29520",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 097",
+   "x": 2535,
+   "y": 259,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29521",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 098",
+   "x": 2555,
+   "y": 264,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29522",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 099",
+   "x": 2567,
+   "y": 276,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29523",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 100",
+   "x": 2583,
+   "y": 284,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29524",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 101",
+   "x": 2607,
+   "y": 221,
+   "width": 34,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29525",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 102",
+   "x": 2639,
+   "y": 217,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29526",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 103",
+   "x": 2655,
+   "y": 224,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29527",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 104",
+   "x": 2695,
+   "y": 229,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29528",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 105",
+   "x": 2735,
+   "y": 238,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29529",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 106",
+   "x": 2747,
+   "y": 246,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29530",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 107",
+   "x": 2759,
+   "y": 254,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29531",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 108",
+   "x": 2779,
+   "y": 260,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29532",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 109",
+   "x": 2791,
+   "y": 277,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29533",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 110",
+   "x": 2807,
+   "y": 282,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29534",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 111",
+   "x": 2827,
+   "y": 286,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29535",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 112",
+   "x": 2835,
+   "y": 294,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29536",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 113",
+   "x": 2843,
+   "y": 304,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29537",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 114",
+   "x": 2855,
+   "y": 234,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29538",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 115",
+   "x": 2879,
+   "y": 226,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29539",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 116",
+   "x": 2919,
+   "y": 234,
+   "width": 98,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29540",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 117",
+   "x": 3015,
+   "y": 236,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29541",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 118",
+   "x": 3071,
+   "y": 228,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29542",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 119",
+   "x": 3091,
+   "y": 236,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29543",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 120",
+   "x": 3099,
+   "y": 244,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29544",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 121",
+   "x": 3107,
+   "y": 258,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29545",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 122",
+   "x": 3115,
+   "y": 240,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29546",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 123",
+   "x": 3127,
+   "y": 232,
+   "width": 50,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29547",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 124",
+   "x": 3175,
+   "y": 235,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29548",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 125",
+   "x": 3195,
+   "y": 230,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29549",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 126",
+   "x": 3207,
+   "y": 239,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29550",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 127",
+   "x": 3231,
+   "y": 245,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29551",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 128",
+   "x": 3251,
+   "y": 252,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29552",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 129",
+   "x": 3263,
+   "y": 259,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29553",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 130",
+   "x": 3279,
+   "y": 237,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29554",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 131",
+   "x": 3299,
+   "y": 232,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29555",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 132",
+   "x": 3311,
+   "y": 226,
+   "width": 42,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29556",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 133",
+   "x": 3351,
+   "y": 234,
+   "width": 98,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29557",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 134",
+   "x": 3447,
+   "y": 236,
+   "width": 58,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29558",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 135",
+   "x": 3503,
+   "y": 228,
+   "width": 26,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29559",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 136",
+   "x": 3523,
+   "y": 238,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29560",
+   "type": "INSTANCE",
+   "name": "V03 TERRAIN TOP / sampled one-way guide 137",
+   "x": 3531,
+   "y": 244,
+   "width": 18,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29568",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 1 / moss step 1 / one-way design guide",
+   "x": 464,
+   "y": 263,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29569",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 1 / moss step 2 / one-way design guide",
+   "x": 480,
+   "y": 249,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29570",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 2 / ladder rest 0 / one-way design guide",
+   "x": 928,
+   "y": 234,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29571",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 2 / ladder rest 1 / one-way design guide",
+   "x": 928,
+   "y": 300,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29573",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 3 / moss step 1 / one-way design guide",
+   "x": 1416,
+   "y": 291,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29574",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 3 / moss step 2 / one-way design guide",
+   "x": 1432,
+   "y": 276,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29575",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 4 / moss step 1 / one-way design guide",
+   "x": 1632,
+   "y": 266,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29576",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 4 / moss step 2 / one-way design guide",
+   "x": 1648,
+   "y": 250,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29577",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 5 / moss step 1 / one-way design guide",
+   "x": 2128,
+   "y": 269,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29578",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 5 / moss step 2 / one-way design guide",
+   "x": 2144,
+   "y": 257,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29579",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 6 / moss step 1 / one-way design guide",
+   "x": 2352,
+   "y": 291,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29580",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 6 / moss step 2 / one-way design guide",
+   "x": 2368,
+   "y": 277,
+   "width": 32,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29581",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 7 / ladder rest 0 / one-way design guide",
+   "x": 2576,
+   "y": 221,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29582",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 7 / ladder rest 1 / one-way design guide",
+   "x": 2576,
+   "y": 284,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29584",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 8 / ladder rest 0 / one-way design guide",
+   "x": 2824,
+   "y": 234,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29585",
+   "type": "INSTANCE",
+   "name": "V03 / cliff 8 / ladder rest 1 / one-way design guide",
+   "x": 2824,
+   "y": 304,
+   "width": 64,
+   "height": 6,
+   "visible": true
+  },
+  {
+   "id": "1228:29589",
+   "type": "INSTANCE",
+   "name": "SEED · 01 Rootfoot arrival optional upper objective",
+   "x": 306,
+   "y": 298,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29590",
+   "type": "INSTANCE",
+   "name": "START · mandatory level entry",
+   "x": 160,
+   "y": 298,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29591",
+   "type": "INSTANCE",
+   "name": "SEED · 02 Hollow trunk ascent optional upper objective",
+   "x": 1092,
+   "y": 280,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29592",
+   "type": "INSTANCE",
+   "name": "PUZZLE · 03 Ancient canopy chamber optional upper objective",
+   "x": 1743,
+   "y": 280,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29593",
+   "type": "INSTANCE",
+   "name": "SECRET · 03 Ancient canopy chamber lower secret",
+   "x": 1490,
+   "y": 334,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29594",
+   "type": "INSTANCE",
+   "name": "REWARD · 04 Fallen limb crossing optional upper objective",
+   "x": 2564,
+   "y": 280,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29595",
+   "type": "INSTANCE",
+   "name": "SEED · 05 North woodland gate optional upper objective",
+   "x": 3028,
+   "y": 316,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  },
+  {
+   "id": "1228:29596",
+   "type": "INSTANCE",
+   "name": "DOOR · mandatory accessible level exit",
+   "x": 3280,
+   "y": 280,
+   "width": 16,
+   "height": 16,
+   "visible": true
+  }
+ ],
+ "registration": {
+  "id": "1228:29597",
+  "x": 0,
+  "y": 0,
+  "width": 3555,
+  "height": 400,
+  "originId": "1411:22035",
+  "soilId": "1411:22036",
+  "originX": 168,
+  "soilY": 350
+ },
+ "registrationCapturedAt": "2026-10-17T20:22:04.369Z",
+ "ladders": [
+  {
+   "id": "1411:22038",
+   "artNode": "1228:29237",
+   "name": "LADDER · 1228:29237",
+   "x": 146,
+   "y": 314,
+   "width": 14,
+   "height": 36
+  },
+  {
+   "id": "1411:22039",
+   "artNode": "1228:29238",
+   "name": "LADDER · 1228:29238",
+   "x": 438,
+   "y": 314,
+   "width": 14,
+   "height": 36
+  },
+  {
+   "id": "1411:22040",
+   "artNode": "1228:29254",
+   "name": "LADDER · 1228:29254",
+   "x": 1191,
+   "y": 278,
+   "width": 14,
+   "height": 72
+  },
+  {
+   "id": "1411:22041",
+   "artNode": "1228:29273",
+   "name": "LADDER · 1228:29273",
+   "x": 1728,
+   "y": 296,
+   "width": 14,
+   "height": 54
+  },
+  {
+   "id": "1411:22042",
+   "artNode": "1228:29287",
+   "name": "LADDER · 1228:29287",
+   "x": 2527,
+   "y": 296,
+   "width": 14,
+   "height": 54
+  },
+  {
+   "id": "1411:22043",
+   "artNode": "1228:29302",
+   "name": "LADDER · 1228:29302",
+   "x": 3272,
+   "y": 296,
+   "width": 14,
+   "height": 54
+  },
+  {
+   "id": "1411:22044",
+   "artNode": "1228:29338",
+   "name": "LADDER · 1228:29338",
+   "x": 233,
+   "y": 226,
+   "width": 14,
+   "height": 88
+  },
+  {
+   "id": "1411:22045",
+   "artNode": "1228:29339",
+   "name": "LADDER · 1228:29339",
+   "x": 997,
+   "y": 226,
+   "width": 14,
+   "height": 88
+  },
+  {
+   "id": "1411:22046",
+   "artNode": "1228:29340",
+   "name": "LADDER · 1228:29340",
+   "x": 1697,
+   "y": 226,
+   "width": 14,
+   "height": 70
+  },
+  {
+   "id": "1411:22047",
+   "artNode": "1228:29341",
+   "name": "LADDER · 1228:29341",
+   "x": 2609,
+   "y": 221,
+   "width": 14,
+   "height": 75
+  },
+  {
+   "id": "1411:22048",
+   "artNode": "1228:29342",
+   "name": "LADDER · 1228:29342",
+   "x": 3323,
+   "y": 226,
+   "width": 14,
+   "height": 70
+  },
+  {
+   "id": "1411:22049",
+   "artNode": "1228:29352",
+   "name": "LADDER · 1228:29352",
+   "x": 953,
+   "y": 234,
+   "width": 14,
+   "height": 66
+  },
+  {
+   "id": "1411:22050",
+   "artNode": "1228:29378",
+   "name": "LADDER · 1228:29378",
+   "x": 2849,
+   "y": 234,
+   "width": 14,
+   "height": 70
+  }
+ ]
+}

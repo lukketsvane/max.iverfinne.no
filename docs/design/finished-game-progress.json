@@ -250,5 +250,23 @@
       "exactShaCI": "Required on the final published main commit containing this receipt",
       "production": "Verify production Vercel and the custom-domain build against the same final main SHA"
     }
+  },
+  "currentLevelOne": {
+    "requested": "2026-10-17",
+    "baseCommit": "37d21a9ab8a645081d2c77a9b6a6cfae390665f9",
+    "branch": "codex/level-one-figma-identity",
+    "status": "candidate_blocked_source_choice_and_regressions",
+    "source": "Hollow Tree row 1228:29201; the file also contains 01 Silo 1133:22294 and the owner has not selected between them",
+    "scope": "Candidate stage1 native 3555x400 source, thirteen existing visible ladders, exact registered START. Fullscreen is disjoint PR61.",
+    "evidence": "docs/design/level-one-current/README.md",
+    "verification": {
+      "focused": "4/4 passed",
+      "nativeAssets": "2/2 passed",
+      "build": "passed",
+      "browser": "Chromium Play/Play in phone and landscape passed, exact row and ordinary movement",
+      "npmTest": "invoked; observed character-action, authored-ground and cooperative failures, no full pass",
+      "figmaCheck": "exit2: no desktop MCP at127.0.0.1:3845"
+    },
+    "next": "Confirm source choice; resolve reproduced action/co-op failures without removing safeguards; finish final-SHA CI and whole-source figma:check before merging."
   }
 }

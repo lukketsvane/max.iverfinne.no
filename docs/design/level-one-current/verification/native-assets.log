@@ -1,0 +1,10 @@
+✔ figma manifest names the file, the source-of-truth section, the rules and one entry per production asset (3.625713ms)
+✔ production PNGs follow the native pixel rules: binary alpha, clean transparency, pack palette, 1× scale (12729.012906ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12817.397411
