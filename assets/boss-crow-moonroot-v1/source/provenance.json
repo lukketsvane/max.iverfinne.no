@@ -1,0 +1,59 @@
+{
+  "sourceMode": "Extracted from the lossless sheets corresponding to the two user-selected boss JPEGs. No replacement image generation is used by the deterministic repository exporter.",
+  "sourceImages": {
+    "raven": {
+      "filename": "pixelkunst_spritesett_med_ravnesjef.png",
+      "sha256": "e99533998f8edeff22de2c193c7637988691d4738c05a7623cedaad1105eff54",
+      "size": [
+        1774,
+        887
+      ],
+      "fixedSourcePixelsPerArtPixel": 6,
+      "approvedJpeg": "F7126837-FE78-4C5C-BA8A-85EA27E45B66.jpeg"
+    },
+    "moonroot": {
+      "filename": "måneblomst_boss_komplett_pixel_spritesett.png",
+      "sha256": "f2bda339911afedcfc59ecc20308d0fe1da9196d55f11ed3a77b89acf1f4a711",
+      "size": [
+        1774,
+        887
+      ],
+      "extractionPixelsPerArtPixel": 7,
+      "approvedJpeg": "716A0DB9-9A51-402A-A39D-BB777D68C9A5.jpeg",
+      "finalizedOutputScale": "4:3 nearest-neighbour around fixed foot anchor (24,44)",
+      "finalizedFirstIdleBounds": [
+        12,
+        7,
+        25,
+        37
+      ]
+    }
+  },
+  "conversion": "Per-actor fixed block extraction, binary alpha threshold 0.4, no dither, 28 opaque colours, anatomy-aware registration and component-separated FX. Final Moonroot output is deterministically enlarged 4:3 from the indexed extraction master using nearest-neighbour pixels around the fixed foot anchor; sockets use the same anchor-relative transform.",
+  "megasheet": {
+    "filename": "megasheet.png",
+    "size": [
+      384,
+      504
+    ],
+    "frames": 95,
+    "groups": {
+      "raven": [
+        0,
+        0
+      ],
+      "moonroot": [
+        0,
+        192
+      ],
+      "effects": [
+        64,
+        384
+      ]
+    }
+  },
+  "paletteNote": "Game crow/plant colours plus two dark petal midtones (#473344,#68435f) and game moon colour (#e9e6d6).",
+  "auditedMain": "a24a164f767023e5ee76c44a05c34f4328e2d2a0",
+  "adapter": "assets/native-atlas.mjs",
+  "adapterBlob": "2bc87a6ada5e2a419536aeb4b1123d5af1fa8eda"
+}
