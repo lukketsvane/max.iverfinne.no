@@ -1,0 +1,334 @@
+{
+  "version": 2,
+  "direction": "bottom-to-top",
+  "levels": [
+    {
+      "id": 1,
+      "name": "Frostarkivet",
+      "scene": "Frozen seed-vault wheel; cold blue symmetrical stone-and-steel machine hall, monumental circular wheel, botanical ice vitrines, side stairs and a central gap",
+      "entryX": 20,
+      "exitX": 78,
+      "bottomMaterial": "cold blue flooded stone and ice",
+      "topMaterial": "icy masonry, blue steel pipe and maintenance ladder",
+      "previous": null,
+      "next": "Tinesjakta",
+      "image": "images/level-01.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Tinesjakta",
+      "scene": "Thawing service shaft; diagonal cracked reservoir, dripping remnants of ice, offset maintenance bridges; blue machine pipes gradually meet dark brick ventilation arches",
+      "entryX": 78,
+      "exitX": 28,
+      "bottomMaterial": "icy masonry, blue steel pipe and maintenance ladder",
+      "topMaterial": "dark brick ventilation shaft and dripping blue pipe",
+      "previous": "Frostarkivet",
+      "next": "Den gløymde stasjonen",
+      "image": "images/level-02.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Den gløymde stasjonen",
+      "scene": "Abandoned metro; fallen planted carriage, broken rails and platform gaps, red-brown brick arches and a tall rooted lift",
+      "entryX": 28,
+      "exitX": 80,
+      "bottomMaterial": "dark brick ventilation shaft and dripping blue pipe",
+      "topMaterial": "rooted lift cage, red-brown brick and a drainpipe",
+      "previous": "Tinesjakta",
+      "next": "Rot- og beinbrotet",
+      "image": "images/level-03.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Rot- og beinbrotet",
+      "scene": "Root-and-bone quarry; railway salvage ramp penetrates calcite and ancient fossil fragments; asymmetrical switchback excavation terraces, first teal spores",
+      "entryX": 80,
+      "exitX": 35,
+      "bottomMaterial": "rooted lift cage, red-brown brick and a drainpipe",
+      "topMaterial": "pale calcite, fossil fragments and embedded roots",
+      "previous": "Den gløymde stasjonen",
+      "next": "Leviatanen",
+      "image": "images/level-04.png",
+      "imageDimensions": [
+        1670,
+        942
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Leviatanen",
+      "scene": "Huge leviathan skeleton; long spine, arching traversable ribs and skull eye chamber; three uneven pathways, moss on bones and turquoise pools",
+      "entryX": 35,
+      "exitX": 73,
+      "bottomMaterial": "pale calcite, fossil fragments and embedded roots",
+      "topMaterial": "mossy ivory rib and damp dark limestone",
+      "previous": "Rot- og beinbrotet",
+      "next": "Sopphvelvet",
+      "image": "images/level-05.png",
+      "imageDimensions": [
+        1669,
+        942
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Sopphvelvet",
+      "scene": "Bioluminescent mushroom cavern; broad asymmetric cap islands, vaulted rock, winding low blue pools, cyan fungal roots and small ochre mushrooms",
+      "entryX": 73,
+      "exitX": 23,
+      "bottomMaterial": "mossy ivory rib and damp dark limestone",
+      "topMaterial": "turquoise seep, cave rock and stalactite beside a rope ladder",
+      "previous": "Leviatanen",
+      "next": "Trykksisternene",
+      "image": "images/level-06.png",
+      "imageDimensions": [
+        1670,
+        942
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Trykksisternene",
+      "scene": "Underground pressure cistern; stacked circular settling pools, narrow brick buttresses, water elevator, teal fungal cavern becoming engineered waterworks",
+      "entryX": 23,
+      "exitX": 77,
+      "bottomMaterial": "turquoise seep, cave rock and stalactite beside a rope ladder",
+      "topMaterial": "cyan sluice masonry, wet brick and water elevator cable",
+      "previous": "Sopphvelvet",
+      "next": "Nattdemninga",
+      "image": "images/level-07.png",
+      "imageDimensions": [
+        1670,
+        942
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Nattdemninga",
+      "scene": "Night reservoir and giant waterwheel; stepped mossy dam, timber catwalks and distant dark lake view; roots emerging from engineering",
+      "entryX": 77,
+      "exitX": 30,
+      "bottomMaterial": "cyan sluice masonry, wet brick and water elevator cable",
+      "topMaterial": "root-bound damp stone gate and narrow canal",
+      "previous": "Trykksisternene",
+      "next": "Rotslusa",
+      "image": "images/level-08.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Rotslusa",
+      "scene": "Overflowing spillway swallowed by immense roots; corkscrew root climb, root arches grip waterworks masonry, blue rivulet, moss and warm wood",
+      "entryX": 30,
+      "exitX": 72,
+      "bottomMaterial": "root-bound damp stone gate and narrow canal",
+      "topMaterial": "warm massive trunk, blue rivulet and root arch",
+      "previous": "Nattdemninga",
+      "next": "Holtreet",
+      "image": "images/level-09.png",
+      "imageDimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Holtreet",
+      "scene": "Ancient enormous hollow tree; rounded rooms, branch bridges, pulley basket, tiny flower shrine, varied moss shelves and deep blue forest gaps",
+      "entryX": 72,
+      "exitX": 24,
+      "bottomMaterial": "warm massive trunk, blue rivulet and root arch",
+      "topMaterial": "bark, living roots and rope gantry",
+      "previous": "Rotslusa",
+      "next": "Den poda planteskulen",
+      "image": "images/level-10.png",
+      "imageDimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Den poda planteskulen",
+      "scene": "Grafted salvage nursery; steel salvage crane rig bolted through tree limbs, dangling planted counterweights, reclaimed rail parts, irregular root and metal bridges",
+      "entryX": 24,
+      "exitX": 75,
+      "bottomMaterial": "bark, living roots and rope gantry",
+      "topMaterial": "rust steel beam, cable and living tree roots",
+      "previous": "Holtreet",
+      "next": "Magnetgarden",
+      "image": "images/level-11.png",
+      "imageDimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Magnetgarden",
+      "scene": "Twin giant rusted curved horseshoe MAGNETS on opposed industrial cranes, suspended salvage bridge and iron load, vast center void, rigging and planted timber",
+      "entryX": 75,
+      "exitX": 28,
+      "bottomMaterial": "rust steel beam, cable and living tree roots",
+      "topMaterial": "rusty truss, hoist cable and mossy stone pier",
+      "previous": "Den poda planteskulen",
+      "next": "Stormstillaset",
+      "image": "images/level-12.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Stormstillaset",
+      "scene": "Storm spillway scaffold; broken magnetic crane beams become diagonal bridges over waterfall, rope switches between rust infrastructure and first stone arches",
+      "entryX": 28,
+      "exitX": 74,
+      "bottomMaterial": "rusty truss, hoist cable and mossy stone pier",
+      "topMaterial": "mossy aqueduct pier, water mist and rope",
+      "previous": "Magnetgarden",
+      "next": "Kråkeakvedukten",
+      "image": "images/level-13.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Kråkeakvedukten",
+      "scene": "Ruined tall multi-tier stone aqueduct; broken arcades, waterfall mist, woven crow rooftop nest, seed baskets and different-height traversable arches",
+      "entryX": 74,
+      "exitX": 35,
+      "bottomMaterial": "mossy aqueduct pier, water mist and rope",
+      "topMaterial": "wet mossy stone, reed roots and shallow runnel",
+      "previous": "Stormstillaset",
+      "next": "Klokkeblommyra",
+      "image": "images/level-14.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Klokkeblommyra",
+      "scene": "Enormous hanging brass-yellow bell-shaped flowers over a wetland; lily-pad islands, root hut, reed pockets and asymmetric branch bridges",
+      "entryX": 35,
+      "exitX": 80,
+      "bottomMaterial": "wet mossy stone, reed roots and shallow runnel",
+      "topMaterial": "reeds, muddy ledge and a hanging planted basket",
+      "previous": "Kråkeakvedukten",
+      "next": "Sivklippene",
+      "image": "images/level-15.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Sivklippene",
+      "scene": "Reed-cliff nursery; wetland breaks into steep basalt cliffs, seed baskets suspended from proto-cable supports, bellflower stalks thinning into alpine plants",
+      "entryX": 80,
+      "exitX": 26,
+      "bottomMaterial": "reeds, muddy ledge and a hanging planted basket",
+      "topMaterial": "basalt, plant-covered cable support and moss shelf",
+      "previous": "Klokkeblommyra",
+      "next": "Taubanekløfta",
+      "image": "images/level-16.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Taubanekløfta",
+      "scene": "Gondola ravine; two very different cliff masses, planted gondola cars, slender lower bridge, small windmill, blue alpine flowers and distant lavender mountains",
+      "entryX": 26,
+      "exitX": 75,
+      "bottomMaterial": "basalt, plant-covered cable support and moss shelf",
+      "topMaterial": "pale rock, windmill shaft and cable pulley",
+      "previous": "Sivklippene",
+      "next": "Vindkvernløpet",
+      "image": "images/level-17.png",
+      "imageDimensions": [
+        1670,
+        941
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Vindkvernløpet",
+      "scene": "Windmill headrace; windmill gears drive a limestone lift, narrow water channels run through basalt-to-travertine geological transition, small stone ledges",
+      "entryX": 75,
+      "exitX": 32,
+      "bottomMaterial": "pale rock, windmill shaft and cable pulley",
+      "topMaterial": "white travertine water channel, lift and pipe",
+      "previous": "Taubanekløfta",
+      "next": "Kalkterrassene",
+      "image": "images/level-18.png",
+      "imageDimensions": [
+        1670,
+        941
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Kalkterrassene",
+      "scene": "Pale terraced watermill; asymmetric white travertine basins with cascading stream, large timber waterwheel, pink alpine vegetation and warm distant mountain vista",
+      "entryX": 32,
+      "exitX": 70,
+      "bottomMaterial": "white travertine water channel, lift and pipe",
+      "topMaterial": "limestone, greenhouse irrigation pipe and iron frame",
+      "previous": "Vindkvernløpet",
+      "next": "Glashustoppen",
+      "image": "images/level-19.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Glashustoppen",
+      "scene": "Summit overgrown broken glasshouse domes, lush hanging garden, golden star-shaped rotor, broad final planted terrace, warm amber sunset",
+      "entryX": 70,
+      "exitX": null,
+      "bottomMaterial": "limestone, greenhouse irrigation pipe and iron frame",
+      "topMaterial": "summit cap",
+      "previous": "Kalkterrassene",
+      "next": null,
+      "image": "images/level-20.png",
+      "imageDimensions": [
+        1671,
+        941
+      ]
+    }
+  ],
+  "requestedDimensions": [
+    1536,
+    864
+  ],
+  "coordinateSpace": "entryX and exitX are normalized concept percentages, not authored collision coordinates",
+  "sourceManifest": "source/manifest.json",
+  "imageManifest": "manifest.json",
+  "continuityStatus": "material/landmark repairs; cropped concept assembly; edges are not pixel-identical"
+}
